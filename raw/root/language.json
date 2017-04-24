@@ -1,0 +1,44 @@
+{
+  "lzh": {
+    "name": "Chinese",
+    "priority": "1",
+    "search_priority": "3",
+    "iso_code": "lzh"
+  },
+  "pi": {
+    "name": "Pāli",
+    "priority": "3",
+    "search_priority": "2",
+    "iso_code": "pi"
+  },
+  "skt": {
+    "name": "Sanskrit",
+    "priority": "4",
+    "search_priority": "7",
+    "iso_code": "sa"
+  },
+  "bo": {
+    "name": "Tibetan",
+    "priority": "5",
+    "search_priority": "18",
+    "iso_code": "bo"
+  },
+  "gr": {
+    "name": "Gāndhārī",
+    "priority": "5",
+    "search_priority": "19",
+    "iso_code": "gr"
+  },
+  "pr": {
+    "name": "Prākrit",
+    "priority": "5",
+    "search_priority": "19",
+    "iso_code": "pr"
+  },
+  "oth": {
+    "name": "Other",
+    "priority": "9",
+    "search_priority": "20",
+    "iso_code": "ot"
+  }
+}

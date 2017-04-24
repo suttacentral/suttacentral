@@ -1,0 +1,139 @@
+{
+  "en": {
+    "name": "English",
+    "iso_code": "en"
+  },
+  "si": {
+    "name": "සිංහල",
+    "search_priority": "10.5",
+    "iso_code": "si"
+  },
+  "hi": {
+    "name": "हिन्दी",
+    "iso_code": "hi"
+  },
+  "mr": {
+    "name": "मराठी",
+    "iso_code": "mr"
+  },
+  "ta": {
+    "name": "தமிழ்",
+    "search_priority": "10.5",
+    "iso_code": "ta"
+  },
+  "zh": {
+    "name": "汉语",
+    "search_priority": "5.5",
+    "iso_code": "zh"
+  },
+  "es": {
+    "name": "Español",
+    "iso_code": "es"
+  },
+  "fi": {
+    "name": "Suomi",
+    "iso_code": "fi"
+  },
+  "fr": {
+    "name": "Français",
+    "search_priority": "6.5",
+    "iso_code": "fr"
+  },
+  "id": {
+    "name": "Indonesian",
+    "iso_code": "id"
+  },
+  "my": {
+    "name": "မြန်မာဘာသာ",
+    "iso_code": "my"
+  },
+  "nl": {
+    "name": "Nederlands",
+    "iso_code": "nl"
+  },
+  "no": {
+    "name": "Norsk",
+    "search_priority": "14.5",
+    "iso_code": "no"
+  },
+  "th": {
+    "name": "ไทย",
+    "iso_code": "th"
+  },
+  "af": {
+    "name": "Afrikaans",
+    "search_priority": "20.5",
+    "iso_code": "af"
+  },
+  "de": {
+    "name": "Deutsch",
+    "iso_code": "de"
+  },
+  "he": {
+    "name": "Hebrew",
+    "iso_code": "he"
+  },
+  "ro": {
+    "name": "Română",
+    "iso_code": "ro"
+  },
+  "sr": {
+    "name": "Srpski",
+    "search_priority": "19.5",
+    "iso_code": "sr"
+  },
+  "sv": {
+    "name": "Svenska",
+    "iso_code": "sv"
+  },
+  "jp": {
+    "name": "日本語",
+    "search_priority": "12.5",
+    "iso_code": "jp"
+  },
+  "ko": {
+    "name": "한국어/조선말",
+    "iso_code": "ko"
+  },
+  "cs": {
+    "name": "Čeština",
+    "iso_code": "cs"
+  },
+  "vn": {
+    "name": "Tiếng Việt",
+    "iso_code": "vn"
+  },
+  "ca": {
+    "name": "Català",
+    "iso_code": "ca"
+  },
+  "fa": {
+    "name": "Farsi",
+    "iso_code": "fa"
+  },
+  "hu": {
+    "name": "Magyar",
+    "iso_code": "hu"
+  },
+  "it": {
+    "name": "Italiano",
+    "iso_code": "it"
+  },
+  "pl": {
+    "name": "Polski",
+    "iso_code": "pl"
+  },
+  "pt": {
+    "name": "Português",
+    "iso_code": "pt"
+  },
+  "ru": {
+    "name": "ру́сский язы́к",
+    "iso_code": "ru"
+  },
+  "ug": {
+    "name": "Uighur",
+    "search_priority": "15.5",
+    "iso_code": "ug"
+  }
+}
