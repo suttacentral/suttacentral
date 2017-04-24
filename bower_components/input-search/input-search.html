@@ -1,0 +1,218 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
+<link rel="import" href="../iron-input/iron-input.html">
+<link rel="import" href="../paper-input/paper-input-behavior.html">
+<link rel="import" href="../iron-iconset-svg/iron-iconset-svg.html">
+
+<iron-iconset-svg name="input-search" size="24">
+<svg><defs>
+<g id="search"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></g>
+<g id="clear"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></g>
+</defs></svg>
+</iron-iconset-svg>
+
+<!--
+`input-search` is a single-line text filed used to designate the
+input as being used for search.
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--input-search-container`          | Mixin for input container | `{}`
+`--input-search-input`              | Mixin for input element | `{}`
+`--input-search-input-placeholder`  | Mixin for input placeholder | `{}`
+`--input-search-icon`               | Mixin for search icon | `{}`
+`--input-search-clear-icon`         | Mixin for clear icon | `{}`
+
+@element input-search
+@hero hero.svg
+@demo demo/index.html
+-->
+
+<dom-module id="input-search">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        outline: 0;
+        height: 44px;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        border: 1px solid rgba(0,0,0,0.15);
+      }
+
+      .input-content {
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+
+        @apply --input-search-container;
+      }
+
+      input {
+        color: inherit;
+        font: inherit;
+        line-height: inherit;
+        height: 56px;
+        position: relative; /* to make a stacking context */
+        outline: none;
+        box-shadow: none;
+        padding: 0;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        background: transparent;
+        border: none;
+        -webkit-appearance: none;
+        text-align: inherit;
+        vertical-align: bottom;
+
+        @apply --input-search-input;
+      }
+
+      [prefix],
+      [suffix] {
+        flex: none;
+      }
+
+      input::-webkit-input-placeholder {
+        @apply --input-search-input-placeholder;
+      }
+
+      input:-moz-placeholder {
+        @apply --input-search-input-placeholder;
+      }
+
+      input::-moz-placeholder {
+        @apply --input-search-input-placeholder;
+      }
+
+      input:-ms-input-placeholder {
+        @apply --input-search-input-placeholder;
+      }
+
+      #search {
+        margin-right: 8px;
+        @apply --input-search-icon;
+      }
+
+      #clear {
+        margin-left: 8px;
+        padding-left: 9px;
+        padding-right: 9px;
+        @apply --input-search-clear-icon;
+      }
+    </style>
+
+    <div class="input-content">
+      <paper-icon-button id="search" prefix icon="[[icon]]" on-tap="_onIconClick" tabindex="-1"></paper-icon-button>
+
+      <input is="iron-input" id="input"
+        on-focus="_onInputFocus"
+        aria-labelledby$="[[_ariaLabelledBy]]"
+        aria-describedby$="[[_ariaDescribedBy]]"
+        disabled$="[[disabled]]"
+        title$="[[title]]"
+        bind-value="{{value}}"
+        invalid="{{invalid}}"
+        prevent-invalid-input="[[preventInvalidInput]]"
+        allowed-pattern="[[allowedPattern]]"
+        validator="[[validator]]"
+        type$="[[type]]"
+        pattern$="[[pattern]]"
+        required$="[[required]]"
+        autocomplete$="[[autocomplete]]"
+        autofocus$="[[autofocus]]"
+        inputmode$="[[inputmode]]"
+        minlength$="[[minlength]]"
+        maxlength$="[[maxlength]]"
+        min$="[[min]]"
+        max$="[[max]]"
+        step$="[[step]]"
+        name$="[[name]]"
+        placeholder$="[[placeholder]]"
+        readonly$="[[readonly]]"
+        list$="[[list]]"
+        size$="[[size]]"
+        autocapitalize$="[[autocapitalize]]"
+        autocorrect$="[[autocorrect]]"
+        on-change="_onChange"
+        tabindex$="[[tabindex]]"
+        autosave$="[[autosave]]"
+        results$="[[results]]"
+        accept$="[[accept]]"
+        multiple$="[[multiple]]">
+
+      <template is="dom-if" if="[[value]]">
+        <paper-icon-button id="clear" suffix icon="[[iconClear]]" on-click="_clear" tabindex="-1"></paper-icon-button>
+      </template>
+    </div>
+
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'input-search',
+
+    behaviors: [
+      Polymer.IronFormElementBehavior,
+      Polymer.PaperInputBehavior
+    ],
+
+    properties: {
+      /**
+       * Fired when the user clicks the icon.
+       *
+       * @event icon-click
+       */
+
+      /**
+       * Fired when the user clicks the X icon.
+       *
+       * @event clear
+       */
+
+      /**
+       * Specifies the icon name or index in the set of icons available
+       * in the icon's icon set.
+       */
+      icon: {
+        type: String,
+        value: 'input-search:search'
+      },
+
+      /**
+       * Specifies the icon name or index in the set of icons available
+       * in the icon's icon set for the clear button.
+       */
+      iconClear: {
+        type: String,
+        value: 'input-search:clear'
+      }
+    },
+
+    /**
+     * Removes current value.
+     */
+    _clear: function() {
+      this.value = '';
+      this.dispatchEvent(new CustomEvent('change'), {bubbles: true});
+      this.dispatchEvent(new CustomEvent('clear'), {bubbles: false});
+    },
+
+    _onIconClick: function() {
+      this.dispatchEvent(new CustomEvent('change'), {bubbles: true});
+      this.dispatchEvent(new CustomEvent('icon-click'), {bubbles: false});
+    },
+
+    _onInputFocus: function(e) {
+      e.currentTarget.setSelectionRange(0, e.currentTarget.value.length);
+    }
+
+  });
+</script>

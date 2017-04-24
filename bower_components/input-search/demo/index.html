@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <title>input-search demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../input-search.html">
+    <style is="custom-style" include="demo-pages-shared-styles"></style>
+
+  </head>
+  <body>
+
+    <div class="vertical-section-container centered">
+      <h3>Basic input-search Demo</h3>
+      <demo-snippet>
+        <template>
+          <input-search placeholder="Search"></input-search>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Styling input-search Demo</h3>
+      <demo-snippet>
+        <template>
+          <input-search class="searcher"></input-search>
+
+          <style>
+            .searcher {
+              border: 0;
+              background: #7cb342;
+              color: #fff;
+              border-radius: 22px;
+              padding: 0 8px;
+            }
+          </style>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Icon input-search Demo</h3>
+      <demo-snippet>
+        <template>
+          <input-search icon="question-answer" icon-clear="cancel" value="Top questions"></input-search>
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>

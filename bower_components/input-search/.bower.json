@@ -1,0 +1,40 @@
+{
+  "name": "input-search",
+  "main": "input-search.html",
+  "description": "Single-line text field used for search.",
+  "authors": [
+    "Eduardo Sada"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "input",
+    "search"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.7.0",
+    "paper-input": "PolymerElements/paper-input#^1.1.22",
+    "paper-icon-button": "PolymerElements/paper-icon-button#^1.1.4",
+    "iron-form-element-behavior": "PolymerElements/iron-form-element-behavior#^1.0.6",
+    "iron-input": "PolymerElements/iron-input#^1.0.10",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/eduardosada/input-search",
+  "version": "1.0.0",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.0",
+    "commit": "9f6db50d14227fef4c399acf2c7c2165b7141cc2"
+  },
+  "_source": "https://github.com/eduardosada/input-search.git",
+  "_target": "^1.0.0",
+  "_originalSource": "eduardosada/input-search",
+  "_direct": true
+}
