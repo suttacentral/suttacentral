@@ -1,0 +1,66 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="tool-bar.html">
+<link rel="stylesheet" href="../styles/text.css">
+
+<dom-module id="text-page">
+<style is="custom-style">
+paper-scroll-header-panel {
+  height: 100%;
+}
+
+.textpage {
+  height: 4em;
+  background-color: var(--sc-gold-500);
+  @apply(--shadow-elevation-8dp);
+}
+
+.textcontent {
+  background-color: var(--paper-blue-grey-50);
+  color: var(--primary-text-color);
+  padding: 24px 0;
+}
+
+</style>
+<template>
+
+<iron-ajax
+      auto
+      url="[[_computeURL(suttaPath)]]"
+      handle-as="text"
+      last-response="{{suttaText}}"></iron-ajax>
+
+<paper-scroll-header-panel>
+  <div class="paper-header textpage">
+    <tool-bar
+        toolbar-color="var(--sc-gold-500)" 
+        toolbar-size=""
+        top-title="Digha Nikaya 1—Bhikkhu Bodhi"
+        setting-button="true"
+        data-page='text'>
+    </tool-bar>
+  </div>
+
+<div class="textcontent">
+    <div inner-h-t-m-l="{{suttaText}}"></div>
+</div>
+</paper-scroll-header-panel>
+</template>
+<script>
+    Polymer({
+      is: 'text-page',
+      
+      properties: {
+        suttaPath: String
+      },
+
+      _computeURL: function(category) {
+        return `../texts${category}.html`;
+      },
+
+    });
+
+</script>
+</dom-module>
+

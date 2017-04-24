@@ -1,0 +1,218 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<dom-module id="paper-tree-node">
+
+    <style>
+
+        :host(.selected) > .node-container > .node-row {
+            background-color: var(--paper-tree-selected-background-color, rgba(200, 200, 200, 0.5));
+            color: var(--paper-tree-selected-color, inherit);
+        }
+
+        :host(.selected) > .node-container > .node-row > #actions {
+            display: inline-block;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--paper-cyan-500);
+        }
+
+        .node-row {
+            padding: 5px 0px 5px 8px;
+            display: inline-block;
+            width: 95%;
+        }
+
+
+        .node-preicon.collapsed,
+        .node-preicon.expanded {
+            padding-left: 0px;
+            font-size: 28px;
+            color: var(--disabled-text-color);
+        }
+
+        .node-preicon.collapsed:before {
+            content: '\2304';
+            float: right;
+            padding-bottom:5px;
+            line-height: 20px;
+        }
+
+        .node-preicon.expanded:before {
+            content: '\2303';
+            float: right;
+            line-height: 20px;
+            padding-top: 10px;
+        }
+
+        .node-preicon, .node-name {
+            cursor: pointer;
+        }
+        
+        .node-preicon.expanded + a {
+            font-weight: bold;
+        }
+
+        .node-icon {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
+
+        .data-lang {
+            padding-left:4px;
+            color: var(--paper-grey-600);
+            font-size: 0.8em;
+        }
+
+        .data-name {
+            font-size: 1.1em;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 10px;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        [hidden] {
+            display: none;
+        }
+
+
+
+    </style>
+
+    <template>
+        <div class="node-container">
+            <div class="node-row">
+                <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
+                <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
+                <template is="dom-if" if="{{data.uid}}">
+                    <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-click="select"><span class="data-name">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
+                </template>
+                <template is="dom-if" if="{{!data.uid}}">
+                    <span class="node-name" on-click="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span class="data-lang">{{data.lang}}</span></span></span>
+                </template>
+
+            </div>
+            <ul hidden$={{!data.open}}>
+                <template is="dom-repeat" items="{{data.children}}">
+                    <li>
+                        <paper-tree-node data="{{item}}" actions="{{actions}}"></paper-tree-node>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </template>
+
+</dom-module>
+
+<script>
+
+    Polymer({
+
+        is: 'paper-tree-node',
+
+        properties: {
+
+            /**
+             * Data hold by this node (contains the children).
+             *
+             * Specific data:
+             *
+             * - `data.name`: string representing the node name.
+             * - `data.icon`: string telling which icon to use (default to 'folder' icon).
+             * - `data.open`: boolean telling whether the node is expanded or not.
+             * - `data.children` array containing the children of the node.
+             */
+            data: {
+                type: Object,
+                value: function() {
+                    return null;
+                }
+            },
+
+            /**
+             * `actions` available for this node. Each action object has the following fields:
+             *
+             * - `action.label`: string representing the display name of the menu item.
+             * - `action.event`: string which is the event name to dispatch whenever the item is clicked.
+             *
+             */
+            actions: {
+                type: Array,
+                value: function() {
+                    return null;
+                }
+            }
+
+        },
+
+        /**
+         * The `select` event is fired whenever `select()` is called on the node.
+         *
+         * @event select
+         */
+
+        /**
+         * Returns the necessary classes.
+         *
+         * @param {object} change An object containing the property that changed and its value.
+         * @return {string} The class name indicating whether the node is open or closed
+         */
+        _computeClass: function(change) {
+            var open = change && change.base && change.base.open;
+            var children = change && change.base && change.base.children;
+            return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
+        },
+
+        /**
+         * Compute the necessary node icon.
+         *
+         * @param {string=folder} an icon name.
+         * @return {string} the computed icon name.
+         */
+        _computeIcon: function(icon) {
+            return icon ? icon : 'folder';
+        },
+
+        _actionClicked: function (event) {
+            this.fire(event.model.item.event, this);
+        },
+
+        /**
+         * Highlights node as the selected node.
+         */
+        select: function() {
+            this.fire("select", this);
+        },
+
+        /**
+         * Returns the parent node. Returns `null` if root.
+         */
+        getParent: function () {
+            return this.domHost.tagName === 'WOOD-TREE-NODE' ? this.domHost : null;
+        },
+
+        /**
+         * Display/Hide the children nodes.
+         */
+        toggleChildren: function() {
+            this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
+        }
+
+    });
+
+</script>

@@ -1,0 +1,145 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="menus/language-drop.html">
+<link rel="import" href="addons/sutta-note.html">
+<link rel="import" href="../styles/sc-styles.html">
+
+<dom-module id="parallels-input">
+<style  is="custom-style">
+.parallels-parallel-title {
+  @apply(--paper-font-subhead);
+  font-family: "Skolar PE";
+}
+.parallels-nerdy-row{
+  @apply(--paper-font-body2);
+  font-family: "Skolar Sans PE", sans-serif;
+  color: var(--secondary-text-color);
+}
+.parallels-nerdy-row span{
+  margin-right: 12px;
+}
+paper-button{
+  letter-spacing: .02em
+}
+paper-button.blue a {
+  color: var(--paper-blue-700);
+  --paper-button-ink-color: var(--paper-grey-500);
+  text-decoration: none;
+  font-family: "Skolar Sans PE", sans-serif;
+}
+paper-button.dense {
+  font-size: 15px;
+  padding-bottom:0.6em;
+}
+iron-icon,
+paper-icon-button {
+  color: var(--disabled-text-color);
+}
+.book iron-icon{
+  --iron-icon-height: 15px;
+  --iron-icon-width: 15px;
+}
+.languagedrop {
+  display: inline-block;
+  vertical-align:middle;
+  margin:-16px 4px 0;
+  padding: 0 8px;
+}
+.parallels-actions {
+  margin-top:8px;
+}
+details {
+  display: inline-block;
+}
+details p{
+  position:absolute;
+  z-index:200;
+  background-color:#fff;
+  @apply(--shadow-elevation-3dp);
+  padding:12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+</style>
+<template>
+<iron-ajax
+      auto
+      url="[[_computeURL(parallelUrl)]]"
+      handle-as="json"
+      last-response="{{inputData}}"></iron-ajax>
+
+  <template is="dom-if" if="[[languageData.titlelan]]">
+        <div class="parallels-parallel-title" title="Translated title">[[languageData.titlelan]]</div>
+  </template>
+  <template is="dom-if" if="[[!languageData.titlelan]]">
+    <template is="dom-if" if="[[inputData.titlepi]]">
+        <div class="parallels-parallel-title" title="Original title">[[inputData.titlepi]]</div>
+    </template>
+    <template is="dom-if" if="[[!inputData.titlepi]]">
+        <div class="parallels-parallel-title" title="SuttaCentral ID">[[parallelId]]</div>
+    </template>
+  </template>
+
+  <div class="parallels-nerdy-row">
+    <template is="dom-if" if="[[inputData.titlepi]]">
+      <span title="Original title">[[inputData.titlepi]]</span>
+    </template>
+    <span title="SuttaCentral ID">[[parallelId]]</span>
+    <template is="dom-if" if="[[inputData.volpage]]">
+      <template is="dom-if" if="[[inputData.bib]]">
+          <details><summary>
+          <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
+          <span class="vol-page" title="Volume and page number">[[inputData.volpage]]</span></summary><p inner-h-t-m-l="{{inputData.bib}}"></p></details>
+      </template>
+      <template is="dom-if" if="[[!inputData.bib]]">
+          <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
+          <span class="vol-page" title="Volume and page number">[[inputData.volpage]]</span>
+      </template>
+    </template>
+    <template is="dom-if" if="[[inputData.note]]">
+      <sutta-note note-data="{{inputData.note}}"></sutta-note>
+    </template>
+  </div>
+
+  <div class="parallels-actions">
+      <paper-button flat class="dense blue" title="Go to text in original language"><a href="">{{inputData.orlan}}</a></paper-button>
+      <template is="dom-if" if="{{inputData.languages}}">
+          <div class="languagedrop"><language-drop language-choice="{{inputData.languages}}" title-label="Translations" input-language="" original-language=""></language-drop></div>
+      </template>
+  </div>
+
+</template>
+
+<script>
+    Polymer({
+        is: 'parallels-input',
+
+        properties: {
+          parallelUrl: String,
+          parallelId: String,
+          inputLanguage: String,
+          languageData: {
+              type: Object,
+              computed: '_computeLanguage(inputData,inputLanguage)'
+            }
+        },
+        _computeURL: function(sutta) {
+          return `../data/suttas/${sutta}.json`;
+        },
+        _computeLanguage: function(inputData,inputLanguage) {
+          var lanarray = "";
+          if (inputData.languages){
+            for (var i=0; i<inputData.languages.length; i=i+1) {
+              if (inputData.languages[i].id === inputLanguage) {
+                var lanarray = inputData.languages[i]
+              }
+            }
+          }
+          return lanarray ? lanarray : "";
+        }
+    });
+</script>
+</dom-module>

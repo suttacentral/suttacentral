@@ -1,0 +1,154 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="menus/more-menu.html">
+<link rel="import" href="menus/settings-menu.html">
+
+<link rel="import" href="../bower_components/input-search/input-search.html">
+
+<dom-module id="tool-bar" attributes="togdraw">
+<style is="custom-style">
+.sutta {
+  font-family: 'Skolar PE', serif;
+}
+
+h1{
+  font-family: 'Skolar PE', serif;
+  font-size: 2.5em;
+  font-variant-caps: small-caps;
+  text-align: left;
+  color: white;
+  padding-top: 0.5em;
+  letter-spacing: .02em;
+  margin: 0;
+  line-height: 1em;
+  font-weight: normal;
+}
+
+.subtitle {
+  font-family: 'Skolar PE', serif;
+  color: white;
+  font-style: italic;
+  font-size: 1.5em;
+  text-align: left;
+  margin-bottom: .75em;
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+    h1 {
+      font-size: 2em;
+      padding-top: 0.2em;
+    };
+    .subtitle {
+      font-size: 1em;
+    };
+    .paper-header {
+      height: 11em;
+    };
+}
+
+paper-icon-button {
+  color: white;
+}
+paper-item {
+    font-family: 'Skolar PE', serif;
+}
+
+paper-menu-button {
+  --paper-menu-button-dropdown: {
+    max-width: 100%;
+    };
+}
+
+input-search {
+    border-radius: 22px;
+    font-family: 'Skolar Sans PE', sans-serif;
+    display: inline-block;
+    background-color: white;
+    --input-search-icon: {
+      color: var(--disabled-text-color);
+    };
+    --input-search-input: {
+      color: var(--disabled-text-color);
+    };
+    --input-search-clear-icon: {
+      color: var(--disabled-text-color);
+    };
+}
+
+@media screen and (min-width: 769px) {
+    #drawertoggle {
+        display:none;
+    }
+}
+
+</style>
+
+<template>
+    <paper-toolbar class$="{{toolbarSize}}" style$="background-color:{{toolbarColor}};">
+      <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
+      <span class="title"><p class="sutta">{{topTitle}}</p></span>
+
+            <paper-icon-button id="searchicon" icon="search" class="dropdown-trigger" on-tap="openSearch"></paper-icon-button>
+            <div id="searchbox" hidden>
+              <input-search placeholder="Search SuttaCentral …"></input-search>
+            </div>
+
+          <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button icon="communication:forum"></paper-icon-button></a>
+
+          <template is="dom-if" if="{{settingButton}}">
+            <paper-menu-button horizontal-align="right">
+                <paper-icon-button icon="settings" class="dropdown-trigger"></paper-icon-button>
+                    <paper-menu class="dropdown-content">
+                        <settings-menu></settings-menu>
+                    </paper-menu>
+            </paper-menu-button>
+          </template>
+
+          <paper-menu-button horizontal-align="right">
+            <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+            <div class="dropdown-content"></div>
+            <paper-menu class="dropdown-content" tabindex="0">
+                <more-menu></more-menu>
+            </paper-menu>
+          </paper-menu-button>
+
+      <span class="middle title"><h1>{{middleTitle}}</h1></span>
+      <span class="bottom title"><p class="subtitle">{{bottomTitle}}</p></span>
+    </paper-toolbar>
+</template>
+<script>
+    Polymer({
+      is: 'tool-bar',
+      properties: {
+        topTitle: String,
+        middleTitle: String,
+        bottomTitle: String,
+        toolbarSize: String,
+        toolbarColor: String,
+        settingButton: String
+      },
+      openSearch: function() {
+        sb = document.getElementById("searchbox");
+        si = document.getElementById("searchicon");
+        if (sb.hasAttribute("hidden")) {
+          sb.removeAttribute("hidden");
+          si.hidden = true;
+        };
+      },
+      toggleDrawer: function() {
+        this.fire('eventFromChild',{togdraw:"drawer"});
+      }
+    });
+</script>
+</dom-module>

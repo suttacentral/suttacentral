@@ -1,0 +1,65 @@
+{
+	"url": "dn12",
+	"id": "DN 12",
+	"titlepi": "Sāmaññaphala Sutta",
+	"orlan": "pali",
+	"level": "advanced",
+	"volpage": "DN ii 1",
+	"note": "This is a tooltip note for dn12",
+	"languages": [{
+			"id": "en",
+			"authors": ["bodhi", "sujato"],
+			"titlelan": "English title",
+			"slug": "English slug"
+		},{
+			"id": "pt",
+			"authors": ["Laera"],
+			"titlelan": "Title in Portuguese",
+			"slug": "Portugese translation of Slug"
+		},{
+			"id": "fr",
+			"authors": ["Moi"],
+			"titlelan": "Title in French"
+		},{
+			"id": "es",
+			"authors": ["Jesus"]
+	}],
+	"parallels": [{
+		"id": "DN 12",
+		"relations": [{
+			"url": "ea1.35",
+			"id": "EA 1.35",
+			"icon": "swap-horiz"
+		}, {
+			"url": "mn123",
+			"id": "MN 123",
+			"icon": "swap-horiz"
+		}, {
+			"url": "an3.6",
+			"id": "AN 3.6",
+			"icon": "compare-arrows"
+		}]
+	}, {
+		"id": "DN 12#15",
+		"relations": [{
+			"url": "ea1.34",
+			"id": "EA 1.34#3",
+			"icon": "swap-horiz"
+		}, {
+			"url": "ea1.34",
+			"id": "EA 1.34#15",
+			"icon": "compare-arrows"
+		}]
+	}, {
+		"id": "DN 12#43–#45",
+		"relations": [{
+			"url": "ea1.35",
+			"id": "EA 1.35#78–#81",
+			"icon": "editor:format-quote"
+		}, {
+			"url": "ea1.38",
+			"id": "EA 1.38",
+			"icon": "cached"
+		}]
+	}]
+}

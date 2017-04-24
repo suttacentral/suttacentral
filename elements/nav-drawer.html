@@ -1,0 +1,125 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="paper-tree-sc/paper-tree.html">
+<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="page-selector.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+
+<dom-module id="nav-drawer">
+<style is="custom-style">
+paper-tree {
+  font-family: 'Skolar Sans PE', sans-serif;
+}
+
+#container {
+  padding-top:1em;
+}
+
+#wheel {
+  color: white;
+  font-size: 1.6em;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#hometitle {
+  line-height: 60px;
+  font-weight: normal;
+  font-size: 1.6em;
+  font-feature-settings: "smcp";
+  font-variant-caps: small-caps;
+  color: var(--paper-indigo-500);
+  vertical-align: middle;
+  background-color: var(--paper-amber-400);
+  border-bottom: 4px solid var(--paper-deep-orange-900);
+  margin: 0;
+  padding: 0 0 0 15px;
+}
+
+#hometitle a {
+  color: var(--paper-indigo-500);
+  text-decoration: none;
+}
+#drawerbox {
+  @apply(--shadow-elevation-16dp);
+  overflow: auto;
+}
+
+</style>
+<template>
+
+<app-location route="{{route}}"></app-location>
+
+<app-route route="{{route}}"
+           pattern="/:category"
+           data="{{categoryData}}"
+           tail="{{categoryTail}}"></app-route>
+
+<iron-ajax
+      auto
+      url="../data/menu/discoursetree.json"
+      handle-as="json"
+      last-response="{{navList}}"></iron-ajax>
+
+<paper-drawer-panel drawerFocusSelector="" selected="{{selectPanel}}">
+  <div drawer id="drawerbox"> 
+      <div id="hometitle">
+        <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
+            <a data-page="home" href="/home"><div id="wheel">☸</div>&nbsp;SuttaCentral</a>
+      </div>
+
+
+    <div id="container">
+        <paper-tree data='{{navList}}'></paper-tree>
+        <paper-tree data='{
+            "name": "<b>Monastic Code</b>"
+        }'></paper-tree>
+        <paper-tree data='{
+            "name": "<b>Abhidhamma</b>"
+        }'></paper-tree>
+
+    </div>
+  </div>
+
+  <div main>
+    <page-selector category="{{categoryData.category}}" route="{{categoryTail}}"></page-selector>
+  </div>
+</paper-drawer-panel>
+
+</template>
+<script>
+    Polymer({
+      is: 'nav-drawer',
+
+      properties: {
+          selectPanel: String
+      },
+
+
+        observers: [
+        '_updateScroll(route)'
+      ],
+
+      attached: function() {
+        if (!this.route.path) {
+          this.set('route.path', '/home');
+        }
+      },
+
+      _updateScroll: function() {
+        window.scroll(0, 0);
+      },
+      ready: function() {
+        this.addEventListener('eventFromChild', this.toggleDrawer);
+      },
+      toggleDrawer: function(event,selectPanel) {
+        this.selectPanel = event.detail.togdraw;
+        return selectPanel = event.detail.togdraw;
+
+      }
+
+    });
+</script>
+</dom-module>

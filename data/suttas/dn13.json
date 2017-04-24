@@ -1,0 +1,54 @@
+{
+	"url": "dn13",
+	"id": "DN 13",
+	"titlepi": "Brahmajāla Sutta",
+	"orlan": "pali",
+	"level": "beginner",
+	"volpage": "DN iii 1",
+	"note": "This is a tooltip note for dn13",
+	"languages": [{
+			"id": "en",
+			"authors": ["bodhi", "sujato"],
+			"titlelan": "Fear And Loathing",
+			"slug": "English slug"
+		},{
+			"id": "pt",
+			"authors": ["Laera"],
+			"titlelan": "Title in Portuguese",
+			"slug": "Portugese translation of Slug"
+		},{
+			"id": "fr",
+			"authors": ["Moi"],
+			"titlelan": "Title in French"
+		},{
+			"id": "es",
+			"authors": ["Jesus"]
+	}],
+	"parallels": [{
+		"id": "DN 13",
+		"relations": [{
+			"url": "ea1.35",
+			"id": "EA 1.35",
+			"icon": "swap-horiz"
+		}, {
+			"url": "mn123",
+			"id": "MN 123",
+			"icon": "swap-horiz"
+		}, {
+			"url": "an3.6",
+			"id": "AN 3.6",
+			"icon": "compare-arrows"
+		}]
+	}, {
+		"id": "DN 13#43–#45",
+		"relations": [{
+			"url": "ea1.35",
+			"id": "EA 1.35#78–#81",
+			"icon": "editor:format-quote"
+		}, {
+			"url": "ea1.38",
+			"id": "EA 1.38",
+			"icon": "cached"
+		}]
+	}]
+}

@@ -1,0 +1,294 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="menus/language-drop.html">
+<link rel="import" href="../styles/sc-styles.html">
+<link rel="import" href="addons/sutta-note.html">
+<link rel="import" href="parallel-view.html">
+<link rel="import" href="menus/more-par-menu.html">
+
+
+<dom-module id="sutta-plex" attributes="open url">
+<style is="custom-style">
+.heading {
+  cursor: pointer;
+}
+
+.suttaplex-head-container{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+iron-icon,
+paper-icon-button {
+  color: var(--disabled-text-color);
+}
+
+paper-card.suttaplex {
+    border-radius: 0px;
+    border-top: 1px solid var(--paper-grey-100);
+    display:block;
+}
+paper-card.suttaplex .card-content {
+    padding-top: 24px;
+    padding-bottom: 1px;
+}
+
+.suttaplex-heading{
+  @apply(--paper-font-headline);
+  font-family: "Skolar PE", serif;
+}
+
+.suttaplex-nerdy-row{
+  @apply(--paper-font-body2);
+  font-family: "Skolar Sans PE", sans-serif;
+  color: var(--secondary-text-color);
+}
+.suttaplex-nerdy-row span{
+  margin-right: 12px;
+}
+
+.suttaplex-description{
+  @apply(--paper-font-body-sc1);
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2; 
+   max-height: 42px;
+}
+
+paper-card.suttaplex .card-actions {
+    padding: 0px 16px;
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top:0;
+}
+.card-actions-left {
+    display: inline-block;
+}
+.card-actions-right {
+    display: inline-block;
+}
+
+paper-button{
+  letter-spacing: .02em;
+}
+paper-button.green a {
+  color: var(--paper-green-a700);
+  --paper-button-ink-color: var(--paper-grey-500);
+  text-decoration: none;
+  font-family: "Skolar Sans PE", sans-serif;
+}
+
+paper-button.dense {
+  font-size: 15px;
+  padding-bottom:0.6em;
+}
+
+.book iron-icon{
+  --iron-icon-height: 15px;
+  --iron-icon-width: 15px;
+}
+.languagedrop {
+  display: inline-block;
+  vertical-align:middle;
+  margin:-18px 4px 0;
+  padding: 0 8px;
+}
+
+paper-badge {
+  --paper-badge-background: var(--paper-green-a700);
+}
+
+#moremenu {
+  visibility:hidden;
+}
+details {
+  display: inline-block;
+}
+details p {
+  position:absolute;
+  z-index:200;
+  background-color:#fff;
+  @apply(--shadow-elevation-3dp);
+  padding:12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+paper-menu-button {
+  padding:0;
+}
+</style>
+<template>
+
+<iron-ajax
+      auto
+      url="[[_computeURL(inputUrl)]]"
+      handle-as="json"
+      last-response="{{inputData}}"></iron-ajax>
+
+  <paper-card class="suttaplex" id="{{inputData.url}}">
+      <div class="card-content">
+
+        <div class="suttaplex-head-container">
+          <template is="dom-if" if="[[languageData.titlelan]]">
+            <h3 class="suttaplex-heading" title="Translated title">{{languageData.titlelan}}</h3>
+          </template>
+          <template is="dom-if" if="[[!languageData.titlelan]]">
+            <template is="dom-if" if="[[inputData.titlepi]]">
+              <h3 class="suttaplex-heading" title="Original title">[[inputData.titlepi]]</h3>
+            </template>
+            <template is="dom-if" if="[[!inputData.titlepi]]">
+              <h3 class="suttaplex-heading" title="SuttaCentral ID">[[inputData.id]]</h3>
+            </template>
+          </template>
+          <div class="difficulty-icon" inner-h-t-m-l="[[_computeLevel(inputData.level)]]"></div>
+        </div>
+
+        <div class="suttaplex-nerdy-row">
+          <template is="dom-if" if="[[inputData.titlepi]]">
+            <span title="Original title">[[inputData.titlepi]]</span> 
+          </template>
+          <span title="SuttaCentral ID">[[inputData.id]]</span>
+          <template is="dom-if" if="[[inputData.volpage]]">
+            <template is="dom-if" if="[[inputData.bib]]">
+                <details><summary>
+                <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
+                <span class="vol-page" title="Volume and page">[[inputData.volpage]]</span></summary><p inner-h-t-m-l="{{inputData.bib}}"></p></details>
+            </template>
+            <template is="dom-if" if="[[!inputData.bib]]">
+                <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
+                <span class="vol-page" title="Volume and page">[[inputData.volpage]]</span>
+            </template>
+          </template>
+          <template is="dom-if" if="[[inputData.note]]">
+            <sutta-note note-data="{{inputData.note}}"></sutta-note>
+          </template>
+        </div>
+
+        <template is="dom-if" if="[[languageData.slug]]">
+            <p class="suttaplex-description" title="Description">[[languageData.slug]]</p>
+        </template>
+      </div>
+      <div class="card-actions">
+        <div class="card-actions-left">
+            <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
+            <template is="dom-repeat" items="{{languageData.authors}}" as="author">
+                <paper-button flat class="green" title$="Go to a translation by {{author}}"><a data-page="[[inputData.url]]/[[author]]" href="/[[inputData.url]]/[[author]]">{{author}}</a></paper-button>
+            </template>
+            <div class="languagedrop"><language-drop language-choice="{{inputData.languages}}" title-label="Other" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></language-drop></div>
+        </div>
+        <template is="dom-if" if="{{inputData.parallels}}">
+            <div class="card-actions-right">
+                <paper-menu-button horizontal-align="right" id="[[_toggleMoreIcon]]">
+                  <paper-icon-button class="dropdown-trigger" icon="icons:more-vert"></paper-icon-button>
+                  <div class="dropdown-content"></div>
+                  <paper-menu class="dropdown-content" tabindex="0">
+                      <more-par-menu></more-par-menu>
+                  </paper-menu>
+                </paper-menu-button>
+                <span class="heading" title="View Parallels & References" on-tap="_toggleOpened">
+                  <paper-icon-button icon="[[_toggleIcon]]" on-tap="passParams"></paper-icon-button>
+                  <paper-badge label="{{_parallelsNumber(inputData)}}" title$="This text has {{inputData.parallels}} parallels"></paper-badge>
+                </span>
+            </div>
+        </template>
+      </div>
+      <template is="dom-if" if="{{inputData.parallels}}">
+        <iron-collapse id$="collapse{{inputUrl}}" opened="{{opened}}">
+			      <parallel-view show-parallel="{{inputData.parallels}}" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></parallel-view>
+        </iron-collapse>
+      </template>
+  </paper-card>
+
+</template>
+<script>
+    Polymer({
+      is: 'sutta-plex',
+      properties: {
+
+        inputUrl: String,
+      	inputLanguage: String,
+
+        languageData: {
+          type: Object,
+          computed: '_computeLanguage(inputData,inputLanguage)'
+        },
+
+        opened: {
+          type: Boolean,
+          reflectToAttribute: true,
+          notify: true
+        },
+
+        _toggleIcon: {
+          type: String,
+          computed: '_computeToggleIcon(opened)'
+        },
+
+        _toggleMoreIcon: {
+          type: String,
+          computed: '_computeToggleMoreIcon(opened)'
+        }
+
+      },
+
+      _computeToggleIcon: function(opened) {
+        return opened ? 'icons:expand-less' : 'icons:expand-more';
+      },
+
+      _computeToggleMoreIcon: function(opened) {
+        return opened ? '' : 'moremenu';
+      },
+      _toggleOpened: function(e) {
+  			this.opened = !this.opened;
+  			this.fire('toggle', this);
+		  },
+      passParams: function() {
+        this.fire('eventFromChild',{open:this._toggleIcon, url:this.inputUrl});
+      },
+      _computeLevel: function(level) {
+        return level ? "<img src='../img/"+level+".png' title='Recommended for "+level+" students' style='width:32px;opacity:0.38;'>" : "";
+      },
+      _computeURL: function(sutta) {
+        return `../data/suttas/${sutta}.json`;
+      },
+      _computeLanguage: function(inputData,inputLanguage) {
+        var lanarray = "";
+        if (inputData.languages){
+          for (var i=0; i<inputData.languages.length; i=i+1) {
+            if (inputData.languages[i].id === inputLanguage) {
+              var lanarray = inputData.languages[i]
+            }
+          }
+        }
+        return lanarray ? lanarray : "";
+      },
+      _parallelsNumber: function(inputData) {
+        var parlength = 0;
+        for (var i=0; i<inputData.parallels.length; i=i+1) {
+          parlength = parlength + inputData.parallels[i].relations.length;
+        }
+        return parlength;
+      }
+
+    });
+</script>
+</dom-module>

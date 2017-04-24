@@ -1,0 +1,74 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../elements/addons/pick-epigraph.html">
+
+<dom-module id="home-page">
+<style  is="custom-style">
+#page-wrap {
+  min-height: 100%;
+  height: auto!important;
+  margin: 0 auto -240px;
+  color: #2b2b2b;
+  font-family: 'Skolar PE', serif;
+  font-size: 1em;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+  min-width: 320px;
+}
+
+main {
+  margin-top: 3em;
+}
+
+h1 {
+  font-size: 2em;
+  font-feature-settings: "smcp";
+  font-variant-caps: small-caps;
+  color: #767676;
+  text-align: center;
+  letter-spacing: .02em;
+  margin: 0;
+  line-height: 1em;
+  font-weight: normal;
+}
+
+p {
+  margin-bottom: .75em;
+  margin-top: 0;
+}
+
+section {
+  margin: 6em auto 0!important;
+  padding: 0 5%!important;
+  max-width: 40em;
+  display: block; 
+}
+</style>
+<template>
+<div id="page-wrap">
+	<main>
+    <section id="home">
+      <pick-epigraph></pick-epigraph> 
+      <h1>About SuttaCentral</h1>
+
+      <p>SuttaCentral aims at facilitating the study of Buddhist texts from comparative and historical perspectives. It focuses on the texts that represent “Early Buddhism”, texts preserved not only in the Pali Sutta and Vinaya Piṭakas but also in Chinese and Tibetan translations and in fragmentary remains in Sanskrit and other languages.</p>
+
+      <p>SuttaCentral offers a gateway to this material by enabling users to quickly identify the Chinese, Tibetan, and/or Sanskrit parallels of any given Pali discourses, or vice versa. Having found that information, one can consult the actual texts or view available translations.</p>
+
+      <p>Work on the Dīgha and Majjhima Nikāyas is essentially completed. For the Saṃyutta and Aṅguttara Nikāyas, however, while the main outlines are reasonably reliable, much research remains to be done. We also include extensive parallels for Vinaya texts.</p>
+
+      <p>This collection of data offers substantial improvements over that provided in Akanuma’s pioneering work, <cite class="book">Comparative Catalogue of Chinese Āgamas &amp; Pāli Nikāyas</cite>, 1929, until now the standard reference work in this area. Nevertheless, there remains much room for improvement. We therefore invite other scholars working on this same early Buddhist material to provide input to SuttaCentral (see <a href="/contacts">Contacts</a>), so that the material displayed can be continually refined for greater accuracy and completeness.</p>
+
+      <p>We hope, by providing this service, to advance the study of Early Buddhism. We also hope to promote recognition of the need for such study to take account not only of the Pali texts but also of their counterparts in other languages.</p>
+
+      <p>SuttaCentral is under heavy development and updates are made regularly. To keep up with what’s new, <a href="https://discourse.suttacentral.net/c/meta/updates" target="_blank">check the Updates category in our forum</a>.</p>
+    </section>
+	</main>
+</div>
+</template>
+
+<script>
+    Polymer({
+        is: 'home-page',
+    });
+</script>
+</dom-module>

@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+
+<dom-module id="sutta-note">
+<style>
+.note{
+  cursor: help;
+}
+.note iron-icon{
+  --iron-icon-height: 20px;
+  --iron-icon-width: 20px;
+}
+
+</style>
+<template>
+    <span class="note">
+      <iron-icon icon="info-outline" id="note1"></iron-icon>
+      <paper-tooltip for="note1">{{noteData}}</paper-tooltip>
+    </span>
+</template>
+<script>
+    Polymer({
+        is: 'sutta-note',
+        properties: {
+            noteData: String
+        }
+    });
+</script>
+</dom-module>

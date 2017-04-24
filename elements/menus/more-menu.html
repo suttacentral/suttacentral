@@ -1,0 +1,34 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+
+
+<dom-module id="more-menu">
+<style is="custom-style">
+a {
+  text-decoration: none;
+  color: black;
+}
+paper-item iron-icon {
+    margin-right: 4px;
+}
+paper-item {
+  font-family: 'Skolar Sans PE', sans-serif;
+}
+</style>
+<template>
+
+<iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
+    <a data-page="home" href="/home"><paper-item><iron-icon icon="language"></iron-icon> Language</paper-item></a>
+    <a data-page="dons" href="/dons"><paper-item><iron-icon src="../../img/pray.png"></iron-icon> Donations</paper-item></a>
+    <a data-page="downloads" href="/downloads"><paper-item><iron-icon icon="file-download"></iron-icon> Downloads</paper-item></a>
+    <a data-page="people" href="/people"><paper-item><iron-icon icon="social:people"></iron-icon> Acknowledgements</paper-item></a>
+
+</template>
+<script>
+    Polymer({
+      is: 'more-menu',
+    });
+</script>

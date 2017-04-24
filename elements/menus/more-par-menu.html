@@ -1,0 +1,36 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+
+
+<dom-module id="more-par-menu">
+<style is="custom-style">
+a {
+  text-decoration: none;
+  color: var(--disabled-text-color);
+}
+
+paper-item iron-icon {
+    margin-right: 4px;
+}
+
+paper-item {
+	font-family: 'Skolar Sans PE', sans-serif;
+}
+
+</style>
+<template>
+
+    <paper-item><iron-icon icon="link"></iron-icon> Copy link</paper-item>
+    <paper-item><iron-icon icon="content-copy"></iron-icon> Copy table</paper-item>
+    <paper-item><iron-icon icon="editor:format-quote"></iron-icon> Cite</paper-item>
+
+</template>
+<script>
+    Polymer({
+      is: 'more-par-menu',
+    });
+</script>

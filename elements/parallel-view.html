@@ -1,0 +1,129 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="parallels-input.html">
+
+<dom-module id="parallel-view">
+<style  is="custom-style">
+.parallels-expanded {
+    padding: 16px;
+}
+.parallels-table {
+    border-collapse: separate;
+    border-spacing: 8px 8px;
+    margin: 0 auto;
+    width: 80%;
+}
+.parallels-root-cell,
+.parallels-parallel-cell {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    padding: 8px 12px 2px;
+}
+
+.parallels-parallel-cell {
+  width:100%;
+}
+.parallels-root-cell {
+    text-align: center;
+}
+
+.parallels-root-id {
+  @apply(--paper-font-subhead);
+  font-family: "Skolar PE";
+}
+
+paper-button{
+  letter-spacing: .02em
+}
+paper-button.blue a {
+  color: var(--paper-blue-700);
+  --paper-button-ink-color: var(--paper-grey-500);
+  text-decoration: none;
+  font-family: "Skolar Sans PE", sans-serif;
+}
+paper-button.dense {
+  font-size: 15px;
+  padding-bottom:0.6em;
+}
+iron-icon,
+paper-icon-button {
+  color: var(--disabled-text-color);
+}
+</style>
+<template>
+
+<div class="parallels-expanded">
+<table class="parallels-table">
+  <template is="dom-repeat" items="{{showParallel}}" as="suttaurl">
+        <tr class="parallels-row">
+            <td class="parallels-root-cell parallels-table-cell" rowspan$="{{_computeRowspan(suttaurl)}}">
+              <div class="parallels-root-id root" title="SuttaCentral ID">{{suttaurl.id}}</div>
+              <paper-button flat class="dense blue" title="Go to text in original language"><a href="">{{originalLanguage}}</a></paper-button>
+            </td>
+            <td class="parallels-relation-cell"><iron-icon icon$="{{_computeFirstParallelIcon(suttaurl)}}" title$="{{_computeTitle(_computeFirstParallelIcon(suttaurl))}}"></iron-icon></td>
+            <td class="parallels-parallel-cell">
+              <parallels-input parallel-url$="[[_computeFirstParallelUrl(suttaurl)]]" parallel-id$="[[_computeFirstParallelId(suttaurl)]]" input-language="{{inputLanguage}}"></parallels-input>
+            </td>
+        </tr>
+        <template is="dom-repeat" items$="{{_computeOtherParallels(suttaurl)}}" as="item">
+          <tr>
+            <td class="parallels-relation-cell"><iron-icon icon="{{item.icon}}" title="{{_computeTitle(item.icon)}}"></iron-icon></td>
+            <td class="parallels-parallel-cell">
+              <parallels-input parallel-url="{{item.url}}" parallel-id="{{item.id}}" input-language="{{inputLanguage}}"></parallels-input>
+            </td>
+          </tr>
+        </template>     
+  </template>
+<table>
+</div>
+</template>
+
+<script>
+    Polymer({
+        is: 'parallel-view',
+
+        properties: {
+          showParallel: Array,
+          originalLanguage: String,
+          inputLanguage: String
+        },
+
+        _computeTitle: function(icon) {
+          if (icon === 'swap-horiz') {
+            return 'Full Parallel';
+          }
+          if (icon === 'compare-arrows') {
+            return 'Resembling Parallel';
+          }
+          if (icon === 'editor:format-quote') {
+            return 'Mention';
+          }
+          if (icon === 'cached') {
+            return 'Retelling';
+          }          
+        },
+        _computeRowspan: function(suttaurl){
+          return suttaurl.relations.length;
+        },
+        _computeFirstParallelIcon: function(suttaurl){
+          console.log(suttaurl.relations[0]);
+          return suttaurl.relations[0].icon;
+        },
+        _computeFirstParallelUrl: function(suttaurl){
+          return suttaurl.relations[0].url;
+        },
+        _computeFirstParallelId: function(suttaurl){
+          return suttaurl.relations[0].id;
+        },
+        _computeOtherParallels: function(suttaurl){
+          var parallelarray = [];
+          for (var i=1; i<suttaurl.relations.length; i=i+1) {
+            parallelarray[i-1] = suttaurl.relations[i];
+          }
+          return parallelarray;
+        }
+    });
+</script>
+</dom-module>

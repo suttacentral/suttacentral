@@ -1,0 +1,137 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+
+<link rel="import" href="tool-bar.html">
+<link rel="import" href="sutta-plex.html">
+<link rel="import" href="addons/insert-node.html">
+
+<dom-module id="division-page" name="parent-element">
+<style is="custom-style">
+paper-scroll-header-panel {
+  height: 100%;
+}
+
+.textpage {
+  height: 4em;
+  background-color: var(--paper-deep-orange-900);
+  @apply(--shadow-elevation-8dp);
+}
+
+.divisioncontent {
+  background-color: var(--paper-blue-grey-50);
+  color: var(--primary-text-color);
+  padding: 24px 0;
+}
+
+main {
+  margin: 0 auto;
+  max-width: 720px;
+}
+
+.suttalist {
+  margin: 0 auto;
+  max-width: 720px;
+  transition: margin-top 0.3s, margin-bottom 0.3s;
+}
+
+.suttalist.expandeditem {
+  @apply(--shadow-elevation-8dp);
+  margin-top:20px;
+  margin-bottom: 20px;
+}
+.node {
+    padding: 16px 16px 0;
+    color: var(--secondary-text-color);
+}
+.vagganode{
+    padding: 24px 16px 16px;
+    color: var(--secondary-text-color);
+}
+.node+.vagganode {
+  padding-top: 0;
+}
+</style>
+<template>
+
+<iron-ajax
+      auto
+      url="[[_computeURL(category)]]"
+      handle-as="json"
+      last-response="{{suttaList}}"></iron-ajax>
+
+<paper-scroll-header-panel>
+  <div class="paper-header textpage">
+    <tool-bar
+        toolbar-color="var(--paper-deep-orange-900)" 
+        toolbar-size=""
+        top-title="{{languageData.name}}—{{suttaList.namepi}}"
+        setting-button=""
+        data-page='text'>
+    </tool-bar>
+  </div>
+
+<div class="divisioncontent">
+  <main>
+    <section class="node">
+        <insert-node input-title="{{languageData.name}}" input-text="{{languageData.description}}" style-header="node-top-heading"></insert-node>
+    </section>
+
+    <template is="dom-repeat" items="{{suttaList.vaggas}}" as="vagga">
+      <section class="vagganode">
+        <insert-node input-title="{{_computeVagganame(vagga,inputLanguage)}}" input-text="{{_computeVaggadescription(vagga,inputLanguage)}}" style-header="node-secondary-heading"></insert-node>
+      </section>
+
+      <template is="dom-repeat" items="{{vagga.suttas}}" as="item">
+        <div class="suttalist" id$="{{item}}">
+          <sutta-plex input-url="{{item}}" input-language="{{inputLanguage}}"></sutta-plex>
+        </div>
+      </template>
+    </template>
+  </main>
+</div>
+
+</paper-scroll-header-panel>
+</template>
+<script>
+    Polymer({
+      is: 'division-page',
+      properties: {
+        inputLanguage: String,
+        languageData: {
+          type: Object,
+          computed: '_computeLanguage(suttaList,inputLanguage)'
+        }
+      },
+
+      ready: function() {
+        this.addEventListener('eventFromChild', this.elevateBox);
+      },
+      elevateBox: function(event) {
+        var sutta = document.getElementById(event.detail.url);
+        if (event.detail.open === "icons:expand-more") {
+          sutta.classList.add('expandeditem');
+        }
+        if (event.detail.open === "icons:expand-less") {
+          sutta.classList.remove('expandeditem');
+        }
+
+      },
+
+      _computeURL: function(category) {
+        return `../data/list/${category}.json`;
+      },
+      _computeLanguage: function(suttaList,inputLanguage) {
+        return suttaList[inputLanguage];
+      },
+      _computeVagganame: function(vagga,inputLanguage) {
+        return vagga[inputLanguage].vagganame;
+      },
+      _computeVaggadescription: function(vagga,inputLanguage) {
+        return vagga[inputLanguage].description;
+      }
+    });
+
+</script>
+</dom-module>
+

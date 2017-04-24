@@ -1,0 +1,95 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="menus/more-menu.html">
+<link rel="import" href="menus/settings-menu.html">
+<link rel="import" href="tool-bar.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../data/sc/home-page.html">
+<link rel="stylesheet" href="../styles/text.css">
+
+<dom-module id="static-page">
+<style is="custom-style">
+paper-scroll-header-panel {
+  height: 100%;
+}
+.staticpage {
+  height: 13em;
+  background-color: var(--sc-gold-500);
+  @apply(--shadow-elevation-8dp);
+}
+
+.textcontent {
+  min-height: 100%;
+  height: auto!important;
+  margin: 0 auto -240px;
+  color: #2b2b2b;
+  font-family: 'Skolar PE', serif;
+  font-size: 1em;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+  min-width: 320px;
+}
+
+main {
+  margin-top: 3em;
+}
+</style>
+<template>
+<paper-scroll-header-panel>
+  <div class="paper-header staticpage">
+    <tool-bar
+        toolbar-color="var(--sc-gold-500)" 
+        toolbar-size="tall" 
+        middle-title="SuttaCentral" 
+        bottom-title="Early Buddhist texts, translations, and parallels"
+        setting-button="">
+    </tool-bar>
+  </div>
+
+<template is="dom-if" if="{{_checkhomeURL(category)}}" restamp>
+    <home-page></home-page>
+</template>
+
+<template is="dom-if" if="{{!_checkhomeURL(category)}}" restamp>
+    <iron-ajax
+      auto
+      url="[[_computeURL(category)]]"
+      handle-as="text"
+      last-response="{{staticPage}}"></iron-ajax>
+
+      <div class="textcontent">
+        <main>
+              <p inner-h-t-m-l="{{staticPage}}"></p>
+        </main>
+      </div>
+</template>
+
+</paper-scroll-header-panel>
+</template>
+<script>
+    Polymer({
+      is: 'static-page',
+
+      _computeURL: function(category) {
+        return `../data/sc/${category}.html`;
+      },
+
+      _checkhomeURL: function(category) {
+        if (category === 'home' || category === '') {
+          return true;
+        }
+      }
+
+    });
+</script>
+</dom-module>

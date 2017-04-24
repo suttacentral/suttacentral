@@ -1,0 +1,74 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../styles/language-styles.html">
+
+<dom-module id="language-drop">
+<style is="custom-style" include="language-styles">
+paper-dropdown-menu, paper-listbox {
+    width: 200px;
+}
+
+/*paper-dropdown-menu {
+    --paper-dropdown-menu-label: {
+      font-family: "Skolar Sans PE", sans-serif;
+    };
+    --paper-dropdown-menu-input: {
+      font-family: "Skolar Sans PE", sans-serif;
+      text-transform: capitalize;
+    };
+    --paper-input-container
+}
+*/
+paper-item {
+	  font-family: "Skolar Sans PE", sans-serif;
+    text-transform: capitalize;
+}
+
+.orlang {
+  color: var(--paper-blue-700);
+}
+
+</style>
+<template>
+	<paper-dropdown-menu class="custom" label="{{titleLabel}}" title="Select a translation in another language">
+	  <paper-listbox class="dropdown-content">
+      <template is="dom-if" if="{{originalLanguage}}">
+        <paper-item class="orlang">{{originalLanguage}}</paper-item>
+      </template>
+	  	<template is="dom-repeat" items="{{languageChoice}}" as="language">
+        <template is="dom-if" if="{{!_otherLanguage(language, inputLanguage)}}">
+          <template is="dom-repeat" items="{{language.authors}}" as="author">
+	    	    <paper-item class$="{{language.id}}">{{author}}</paper-item>
+          </template>
+        </template>
+	    </template>
+	  </paper-listbox>
+	</paper-dropdown-menu-light>
+</template>
+
+<script>
+    Polymer({
+        is: 'language-drop',
+
+        properties: {
+          languageChoice: Array,
+          titleLabel: String,
+          inputLanguage: String,
+          originalLanguage: String,
+          newLanguage: {
+            type: String,
+            computed: "_otherLanguage(languageChoice, inputLanguage)"
+          }
+    	  },
+        _otherLanguage: function(language, inputLanguage) {
+          if (language.id === inputLanguage) {  
+            return true;
+          }
+        }
+    });
+
+</script>
+</dom-module>

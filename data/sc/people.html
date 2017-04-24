@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div id="onecol">
+<section>
+<article>
+<h1>SuttaCentral People</h1>
+
+<p>SuttaCentral was conceived and designed by the collective imaginations of Venerable Anālayo (Germany), Rod Bucknell (Australia), and Bhante Sujato (Australia), based on sutta correspondence tables compiled by Rod Bucknell and Ven. Anālayo.</p>
+
+<p>The initial launch of the site was in 2005. Key people involved with that launch were:</p>
+
+<ul>
+
+<li>Ong Yong Peng (Australia)—system, database and web design; web programming.</li>
+
+<li>John Kelly (Australia)—project coordination; system and database design; database and data administration; data entry.</li>
+
+<li>Hugo Gayosso (USA), Chris Kang (Australia)—data entry.</li>
+
+</ul>
+
+<p>In late 2012 we began a new redesign, with the core team being Rod Bucknell, John Kelly, and Bhante Sujato. This was originally spurred by John Kelly’s work assisting Bhikkhu Bodhi on the Aṅguttara Nikāya translation, which resulted in a number of new parallels being discovered. However we decided to go beyond just making some additions, and have embarked on a complete redesign. While the data structure has been retained with only incremental improvements, the entire code for the website has been rewritten. For this new edition, the main team is as follows.</p>
+
+<p>Rod Bucknell—lead researcher, parallels and references.</p>
+
+<p style="overflow:hidden;"><img src="/img/sujato10.jpg" alt="Bhante Sujato" title="Bhante Sujato" height="118" width="118" style="margin:5px 2em 5px 5px;">Bhante Sujato—design; project coordination; text preparation; translation.</p>
+
+<p style="overflow:hidden;"><img src="/img/john10.jpg" alt="John Kelly" title="John Kelly"  height="118" width="118" style="margin:5px 2em 5px 5px;">John Kelly—project coordination; system and database design; database and data administration; data entry.</p>
+
+<p style="overflow:hidden;"><img src="/img/nandiya10.jpg" alt="Blake Walsh" title="Blake Walsh" height="118" width="118" style="margin:5px 2em 5px 5px;">Blake Walsh (formerly Bhante Nandiya)—chief developer, web programming, text preparation, general hacking.</p>
+
+<p style="overflow:hidden;"><img src="/img/jr10.jpg" alt="Bhante Jhanarato (JR)" title="Bhante Jhanarato (JR)" height="118" width="118" style="margin:5px 2em 5px 5px;">Bhante Jhanarato (JR)—web service scripting.</p>
+
+<p>In addition, we express our grateful thanks to the following, in no particular order. SuttaCentral exists to draw together the diverse strands of the early Buddhist tradition, and we can only do this through the help of many people.</p>
+<br>
+<p id="listContributors"></p>
+<script>
+var index;
+var tab = "<table><caption><strong>Acknowledgements</strong></caption>";
+var text = '{"contributors":[' +
+'{"Name":"Akincano Marc Weber","workDone":"German translations: consultation and advice." },' +
+'{"Name":"Alain René Bernay","workDone":"French translations: sourcing and text preparation." },' +
+'{"Name":"Alex Genaud","workDone":"Consultation." },' +
+'{"Name":"Alexander баян купи-ка","workDone":"Russian translations." },' +
+'{"Name":"Alpesh Raval, Jatin, and the team at Hi-Tech","workDone":"Typing and markup of several texts, including the English translations of the Pali Vinaya, Vibhaṅga, and Kathāvatthu, and several Hindi texts." },' +
+'{"Name":"Amaradasa Liyanagamage","workDone":"Consultation and liason." },' +
+'{"Name":"Andrew Glass","workDone":"Advice regarding font encodings." },' +
+'{"Name":"Antoni Baron","workDone":"Spanish translations: consultation." },' +
+'{"Name":"Ashok Tapase","workDone":"Marathi translations"},' +
+'{"Name":"Ayyā Agganyani","workDone":"German translations: consultation and advice on Abhidhamma, text preparation." },' +
+'{"Name":"Ayyā Ãraññadevī","workDone":"English translations: corrections for dictionaries." },' +
+'{"Name":"Ayyā Kathrin","workDone":"German translations: text preparation." },' +
+'{"Name":"Ben Arasu","workDone":"Tamil translations." },' +
+'{"Name":"Ben Mitchell of Rosetta Type","workDone":"Help with fonts." },' +
+'{"Name":"Bhikkhu Anālayo","workDone":"English translation of the Saṁyuktāgama, help with parallels." },' +
+'{"Name":"Bhikkhu Ānandajoti","workDone":"Consultation and advice on texts and metres, translations and parallels." },' +
+'{"Name":"Bhikkhu Bodhi","workDone":"English translations." },' +
+'{"Name":"Bhikkhu Brahmāli","workDone":"English translation of the Pali Vinaya." },' +
+'{"Name":"Bhikkhu Dhammadāsa (AKA Brother Joe Smith)","workDone":"English translations: text preparation." },' +
+'{"Name":"Bhikkhu Indacanda","workDone":"Vietnamese translations." },' +
+'{"Name":"Bhikkhu Jaganātha","workDone":"English translation: preparation of <em>The Book of the Discipline</em>." },' +
+'{"Name":"Bhikkhu Jodoshinshu","workDone":"Japanese translations: permission to link to his site." },' +
+'{"Name":"Bhikkhu Karunabhanga","workDone":"Bengali translations: support." },' +
+'{"Name":"Bhikkhu Khemacāro (박석현)","workDone":"Korean translations." },' +
+'{"Name":"Bhikkhu Kheminda (Бхиккху Кхеминда)","workDone":"Russian translations: support." },' +
+'{"Name":"Bhikkhu Mettavihāri","workDone":"Sinhala translations: support." },' +
+'{"Name":"Bhikkhu Mettiko","workDone":"German translation of the Majjhima Nikāya." },' +
+'{"Name":"Bhikkhu Ñāṇatusita","workDone":"Permission to use Bhikkhu Bodhi’s Dīgha translations and John Ireland’s Udāna and Itivuttaka." },' +
+'{"Name":"Bhikkhu Pāsādika","workDone":"English translation of the Ekottarikāgama." },' +
+'{"Name":"Bhikkhu Santuttho","workDone":"German translations: consultation, advice and Pali→German dictionary." },' +
+'{"Name":"Bhikkhu Yuttadhammo","workDone":"Pali-English dictionary, Pali lookup code, Pali transliteration code." },' +
+'{"Name":"Bhikkhunī Dhammadinnā","workDone":"English translation of the Upāyikā." },' +
+'{"Name":"Bhikkhunī Nibbidā","workDone":"English translation: preparation of <em>The Book of the Discipline</em>." },' +
+'{"Name":"Bhikkhunī Vimalā","workDone":"Programming, text preparation and coordination." },' +
+'{"Name":"Binh Anson","workDone":"Vietnamese translations: text preparation." },' +
+'{"Name":"Buddhist Library (Sydney)","workDone":"Use of facilities." },' +
+'{"Name":"Buddhist Society of WA","workDone":"Use of facilities." },' +
+'{"Name":"Buddhist Studies Review","workDone":"Permission to use the English translation of the Ekottarikāgama." },' +
+'{"Name":"Charles Muller","workDone":"Digital Dictionary of Buddhism." },' +
+'{"Name":"Dave Strandberg","workDone":"SASS and JS enhancements." },' +
+'{"Name":"David Březina of Rosetta Type","workDone":"Help with fonts." },' +
+'{"Name":"David Dargie and Michelle Styles-Williams","workDone":"Transcription of Sanskrit texts." },' +
+'{"Name":"Deepika Weerakoon","workDone":"General support, Financial Officer for SuttaCentral Development Trust." },' +
+'{"Name":"Dheerayupa Sukonthapanthu","workDone":"Thai translations: coordination, consultation, and text preparation." },' +
+'{"Name":"Dilbag Bhangu","workDone":"Hindi translations: support." },' +
+'{"Name":"Dr. Mark Allon","workDone":"Consultation." },' +
+'{"Name":"Dustin Cheah","workDone":"General support." },' +
+'{"Name":"Enzo Alfano","workDone":"Italian translations." },' +
+'{"Name":"G. Radhakrishnan","workDone":"General support." },' +
+'{"Name":"Gabriel Laera","workDone":"Portuguese translations: preparation and creation of Pali→Portugese dictionary." },' +
+'{"Name":"Gia Hieu Nguyen","workDone":"General support." },' +
+'{"Name":"Handaka Vijjananda","workDone":"General support." },' +
+'{"Name":"Hero Barua","workDone":"Bengali translations: support." },' +
+'{"Name":"Indra Anggara","workDone":"Indonesian translations." },' +
+'{"Name":"Jacqueline Rodgers","workDone":"Japanese translations: support." },' +
+'{"Name":"Janaka Liyanage","workDone":"Sinhala translations: text preparation and support." },' +
+'{"Name":"Jessica Hefes","workDone":"French translations: text preparation." },' +
+'{"Name":"John Nishinaga","workDone":"Setting up VPS, managing shift from PHP to Python, IT consultant and technician." },' +
+'{"Name":"Karel Chromovský","workDone":"Czech translations." },' +
+'{"Name":"Ken Yifer","workDone":"Dharmapada parallels of the Taisho texts." },' +
+'{"Name":"Kumārī Jayawardena","workDone":"Sinhala translations: permission to use the work by her father, A.P. de Zoysa." },' +
+'{"Name":"Kåre A. Lie","workDone":"Norwegian translations." },' +
+'{"Name":"Maithri Panagoda","workDone":"Sinhala translations: support." },' +
+'{"Name":"Manfred Wierich","workDone":"German translations: text preparation and support." },' +
+'{"Name":"Marco A. Montava Belda and friends at Buddhismo Theravada Hispano","workDone":"Pali→Spanish Dictionary." },' +
+'{"Name":"Marcus Bingenheimer","workDone":"Permission to use translations of the shorter Saṁyuktāgama, consultation." },' +
+'{"Name":"Maria Backes","workDone":"German translations: text preparation and organisation of fund-raising events." },' +
+'{"Name":"Michael Beisert","workDone":"Portuguese translations." },' +
+'{"Name":"Mukta Barua","workDone":"Bengali translations: support." },' +
+'{"Name":"Nathan Win","workDone":"Burmese translations: support." },' +
+'{"Name":"Patcharaporn Sahaponghirun","workDone":"Thai translations: text preparation." },' +
+'{"Name":"Penny Jordan","workDone":"General text preparation." },' +
+'{"Name":"Peter van Loosbroek","workDone":"Dutch translations." },' +
+'{"Name":"Piotr Marcinow","workDone":"Polish translations: text preparation." },' +
+'{"Name":"Premalal Mirihagalla","workDone":"General support." },' +
+'{"Name":"Prof. Kobus Kruger","workDone":"Afrikaans translations." },' +
+'{"Name":"Randolph Alwis","workDone":"Legal advice." },' +
+'{"Name":"Raimund Beyerlein and Verlag Beyerlein-Steinschulte","workDone":"German translations: copyrights and advice." },' +
+'{"Name":"Rémy Zins","workDone":"French translations and text preparation." },' +
+'{"Name":"Sarah “Samurai” Lappin","workDone":"Japanese translations: support." },' +
+'{"Name":"Seniya Ariyakumara","workDone":"Indonesian translations." },' +
+'{"Name":"Shai Schwartz","workDone":"Hebrew translations." },' +
+'{"Name":"Shikha Panjwani, Rahul Patel, and the team at Edatamine Services","workDone":"Typing and markup of several Hindi texts." },' +
+'{"Name":"Shisanu Tongchim","workDone":"Thai translations: technical assistance." },' +
+'{"Name":"Shravasti Dhammika","workDone":"Geographic consultation, dictionary of nature and environment." },' +
+'{"Name":"Sirisumana Godage","workDone":"Sinhala translations: support." },' +
+'{"Name":"Sister Uppalavanna","workDone":"Draft English translations of most of the nikayas." },' +
+'{"Name":"Štěpán Chromovský","workDone":"Czech translations." },' +
+'{"Name":"Udayan Barua","workDone":"Bengali translations: support." },' +
+'{"Name":"Vipassana Research Institute","workDone":"Permission to use translations of the Mahā­satipaṭṭhāna Sutta." }]}';
+
+obj = JSON.parse(text);
+for (index = 0; index < obj.contributors.length; index++) {
+    tab += "<tr><td>" + obj.contributors[index].Name + "</td><td>" + obj.contributors[index].workDone + "</td></tr>";
+}
+tab += "</table>";
+document.getElementById("listContributors").innerHTML = tab;
+</script>
+<p>To contact the SuttaCentral team, our preferred method is via our discussion forum at https://discourse.suttacentral.net. If for some reason this is not suitable, please send us an email:</p>
+
+<address><p>suttacentralDOTnet&lt;no-spam&gt;ATgmail&lt;no-spam&gt;DOTcom</p></address>
+
+<p>(remembering of course to omit the &lt;no-spam&gt; tags and replace the letters AT with the symbol "@" and DOT with a ".").</p>
+
+</article>
+</section>
+</div>
+
+</body>
+</html>

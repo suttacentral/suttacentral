@@ -1,0 +1,78 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+
+<dom-module id="insert-node">
+<style is="custom-style">
+h1, h2, h3 {
+  margin: 0;
+}
+.node-head-container{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.node-top-heading {
+  @apply(--paper-font-headline);
+  font-family: "Skolar Sans PE", sans-serif;
+}
+.node-secondary-heading {
+  @apply(--paper-font-title);
+  font-family: "Skolar Sans PE", sans-serif;
+}
+.node-description{
+  @apply(--paper-font-body1);
+  font-family: "Skolar Sans PE", sans-serif;
+}
+</style>
+<template>
+
+  <div class="node-head-container">
+      <h1 class$="{{styleHeader}}">{{inputTitle}}</h1>
+      <template is="dom-if" if="{{inputText}}">
+          <paper-icon-button icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
+      </template>
+  </div>
+  <template is="dom-if" if="{{inputText}}">
+    <iron-collapse id="collapse" opened="{{opened}}">
+      <div inner-h-t-m-l="{{inputText}}"></div> 
+    </iron-collapse>
+  </template>
+
+</template>
+<script>
+    Polymer({
+      is: 'insert-node',
+      properties: {
+
+      	inputTitle: String,
+      	inputText: String,
+        styleHeader: String,
+
+
+        opened: {
+          type: Boolean,
+          reflectToAttribute: true,
+          notify: true
+        },
+
+        _toggleIcon: {
+          type: String,
+          computed: '_computeToggleIcon(opened)'
+        }
+      },
+
+      _computeToggleIcon: function(opened) {
+        return opened ? 'icons:expand-less' : 'icons:expand-more';
+      },
+
+      _toggleOpened: function(e) {
+  			this.opened = !this.opened;
+  			this.fire('toggle', this);
+		  }
+
+    });
+</script>
+</dom-module>
