@@ -21,3 +21,7 @@
   max-width: 40em;
   display: block; 
 }
+
+.textcontent aside {
+  display:none;
+}

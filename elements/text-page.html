@@ -17,11 +17,9 @@ paper-scroll-header-panel {
 }
 
 .textcontent {
-  background-color: var(--paper-blue-grey-50);
   color: var(--primary-text-color);
   padding: 24px 0;
 }
-
 </style>
 <template>
 
@@ -42,9 +40,8 @@ paper-scroll-header-panel {
     </tool-bar>
   </div>
 
-<div class="textcontent">
-    <div inner-h-t-m-l="{{suttaText}}"></div>
-</div>
+<div class="textcontent" id="suttatext" inner-h-t-m-l="{{suttaText}}"></div>
+
 </paper-scroll-header-panel>
 </template>
 <script>
@@ -58,6 +55,10 @@ paper-scroll-header-panel {
       _computeURL: function(category) {
         return `../texts${category}.html`;
       },
+      ready: function() {
+        var test = document.getElementById("suttatext");
+        console.log(test);
+      }
 
     });
 

@@ -98,11 +98,10 @@ input-search {
     <paper-toolbar class$="{{toolbarSize}}" style$="background-color:{{toolbarColor}};">
       <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"><p class="sutta">{{topTitle}}</p></span>
-
-            <paper-icon-button id="searchicon" icon="search" class="dropdown-trigger" on-tap="openSearch"></paper-icon-button>
-            <div id="searchbox" hidden>
+            <div id="searchbox">
               <input-search placeholder="Search SuttaCentral …"></input-search>
             </div>
+            <paper-icon-button id="searchicon" icon="search" on-tap="openSearch"></paper-icon-button>
 
           <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button icon="communication:forum"></paper-icon-button></a>
 
@@ -137,15 +136,17 @@ input-search {
         toolbarSize: String,
         toolbarColor: String,
         settingButton: String
+
       },
       openSearch: function() {
-        sb = document.getElementById("searchbox");
-        si = document.getElementById("searchicon");
+        var sb = document.getElementById("searchbox");
         if (sb.hasAttribute("hidden")) {
           sb.removeAttribute("hidden");
-          si.hidden = true;
-        };
+        } else {
+          sb.hidden = true;
+        }
       },
+
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});
       }

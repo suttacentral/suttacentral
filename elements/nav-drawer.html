@@ -115,9 +115,7 @@ paper-tree {
         this.addEventListener('eventFromChild', this.toggleDrawer);
       },
       toggleDrawer: function(event,selectPanel) {
-        this.selectPanel = event.detail.togdraw;
-        return selectPanel = event.detail.togdraw;
-
+        return this.selectPanel = event.detail.togdraw;
       }
 
     });
