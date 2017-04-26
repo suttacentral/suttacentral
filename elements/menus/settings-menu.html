@@ -103,6 +103,19 @@ paper-toggle-button{
 		      </div>
 
 		      <div class="dialogue-section">
+			      <h3>Activate Chinese word lookup</h3>
+			      <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.</div>
+			      <paper-dropdown-menu label="Lookup">
+			        <paper-listbox class="dropdown-content" selected="0">
+			          <paper-item>Chinese → English</paper-item>
+			          <paper-item>Chinese → Chinese</paper-item>
+			          <paper-item>Chinese → Spanish</paper-item>
+			          <paper-item>Chinese → Indonesian</paper-item>
+			        </paper-listbox>
+			      </paper-dropdown-menu>
+		      </div>
+
+		      <div class="dialogue-section">
 			      <h3>Change the script of the Pali text</h3>
 			      <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
 			      <paper-dropdown-menu label="Script">
@@ -135,7 +148,7 @@ paper-toggle-button{
 			      <div class="nerdy-row">Updated by Vimala, 8672d2a on Jan 32, 2018.</div>
 		      </div>
 		    </div>
-	 </paper-dialog-scrollable>
+	   </paper-dialog-scrollable>
 	</paper-dialog>
 </template>
 <script>

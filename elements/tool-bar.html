@@ -98,7 +98,7 @@ input-search {
     <paper-toolbar class$="{{toolbarSize}}" style$="background-color:{{toolbarColor}};">
       <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"><p class="sutta">{{topTitle}}</p></span>
-            <div id="searchbox">
+            <div id="searchbox" hidden>
               <input-search placeholder="Search SuttaCentral …"></input-search>
             </div>
             <paper-icon-button id="searchicon" icon="search" on-tap="openSearch"></paper-icon-button>
@@ -135,7 +135,8 @@ input-search {
 
       },
       openSearch: function() {
-        this.$.searchbox.toggleAttribute('hidden');
+        this.toggleAttribute("hidden", false, this.$.searchbox);
+        // this.toggleAttribute("", false, this.$.searchbox);
       },
 
       toggleDrawer: function() {
