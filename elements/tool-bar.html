@@ -106,12 +106,8 @@ input-search {
           <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button icon="communication:forum"></paper-icon-button></a>
 
           <template is="dom-if" if="{{settingButton}}">
-            <paper-menu-button horizontal-align="right">
-                <paper-icon-button icon="settings" class="dropdown-trigger"></paper-icon-button>
-                    <paper-menu class="dropdown-content">
-                        <settings-menu></settings-menu>
-                    </paper-menu>
-            </paper-menu-button>
+                
+                <settings-menu></settings-menu>
           </template>
 
           <paper-menu-button horizontal-align="right">
@@ -139,12 +135,7 @@ input-search {
 
       },
       openSearch: function() {
-        var sb = document.getElementById("searchbox");
-        if (sb.hasAttribute("hidden")) {
-          sb.removeAttribute("hidden");
-        } else {
-          sb.hidden = true;
-        }
+        this.$.searchbox.toggleAttribute('hidden');
       },
 
       toggleDrawer: function() {

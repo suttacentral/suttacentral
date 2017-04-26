@@ -40,7 +40,7 @@ paper-scroll-header-panel {
     </tool-bar>
   </div>
 
-<div class="textcontent" id="suttatext" inner-h-t-m-l="{{suttaText}}"></div>
+<div class="textcontent" inner-h-t-m-l="{{suttaText}}"></div>
 
 </paper-scroll-header-panel>
 </template>
@@ -56,12 +56,11 @@ paper-scroll-header-panel {
         return `../texts${category}.html`;
       },
       ready: function() {
-        var test = document.getElementById("suttatext");
-        console.log(test);
+        var test = document.getElementsByClassName("author");
+        console.log(test[0]);
       }
 
     });
 
 </script>
 </dom-module>
-

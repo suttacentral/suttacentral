@@ -1,3 +1,7 @@
+.textcontent {
+  font-family: 'Skolar Sans PE', sans-serif;
+}
+
 .textcontent h1 {
   font-size: 2em;
   font-feature-settings: "smcp";

@@ -7,21 +7,13 @@
 
 <dom-module id="language-drop">
 <style is="custom-style" include="language-styles">
+:host {
+  --primary-color: var(--sc-gold-500);
+}
 paper-dropdown-menu, paper-listbox {
     width: 200px;
 }
 
-/*paper-dropdown-menu {
-    --paper-dropdown-menu-label: {
-      font-family: "Skolar Sans PE", sans-serif;
-    };
-    --paper-dropdown-menu-input: {
-      font-family: "Skolar Sans PE", sans-serif;
-      text-transform: capitalize;
-    };
-    --paper-input-container
-}
-*/
 paper-item {
 	  font-family: "Skolar Sans PE", sans-serif;
     text-transform: capitalize;
