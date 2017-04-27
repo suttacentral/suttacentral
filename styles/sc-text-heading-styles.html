@@ -20,11 +20,6 @@
             letter-spacing: 0.02em;
         }
 
-       .hgroup     p {
-                @apply(--sc-sans-small-caps-font);
-                letter-spacing: 0.02em;
-            }
-
     h1 {
         margin-bottom: 1.3em;
         padding-top: 0em;
@@ -49,13 +44,13 @@
         font-size: 18px;
         line-height: 28px;
     }
-    
+
     h5{
         margin: 0 0 0.75rem 0;
         font-size: 16px;
         line-height: 24px;
     }
-    
+
     h6 {
         text-align:left;
         font-variant-caps: all-small-caps;
@@ -71,14 +66,23 @@
             padding:0;
             font-size: 16px;
             text-transform:lowercase;
+            letter-spacing: 0.02em;
         }
         p + h1 {
             margin-top: 12px
         }
+        .hgroup     p.subheading{
+                 @apply(--sc-serif-font);
+                 font-size: 18px;
+                 font-style: italic;
+                 margin:-20px 0 44px 0;
+                 text-transform: none;
+                 letter-spacing: none;
+                 font-feature-settings: normal
+             }
 
-  
-    
-    
+
+
     /*bilingual headings*/
     .mirror {
         display:table;
@@ -89,8 +93,8 @@
         .mirror > * {
             display:table-row;
         }
-    
-    
+
+
     .mirror-left {
         text-align:right;
         display:table-cell;
@@ -98,19 +102,19 @@
         border-right: 1px solid var(--dark-divider-opacity);
         width: 50%;
     }
-    
+
     .mirror-right {
         text-align:left;
         display:table-cell;
         padding-left: 16px;
     }
-    
+
     .mirror-middle {
         text-align:right;
         position:absolute;
         margin-top:0.2em;
     }
-    
+
     h1.mirror-row {
         line-height:1.2
     }

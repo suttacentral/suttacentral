@@ -162,22 +162,15 @@ TITLE: Text hypothetically reconstructed by the editor or translator.
 #text:lang(pr) .add,
 #text:lang(en) .add,
 .infomode .add {
-    border: 1px solid var(--paper-grey-100);
     display: inline;
-    padding: 0.2em .3em 0.1em;
     color: var(--secondary-text-color);
-    font-size: 100%;
-    background: var(--paper-grey-50);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    @apply(--sc-sans-font);
 }
 p .author {
     @apply(--sc-serif-small-caps-font);
     text-transform: lowercase
 }
-p.add,
-p .add {
-    @apply(--sc-sans-font);
-}
+
 /*There are some editorial additions marked <span class="add"></span>. Previously these were hidden by default, but they are now visible by default.
 
 TITLE: Text added by the editor or translator for clarification.
