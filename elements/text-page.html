@@ -2,7 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="tool-bar.html">
-<link rel="stylesheet" href="../styles/text.css">
+<link rel="import" href="../styles/sc-text-styles.html">
 
 <dom-module id="text-page">
 <style is="custom-style">
@@ -32,7 +32,7 @@ paper-scroll-header-panel {
 <paper-scroll-header-panel>
   <div class="paper-header textpage">
     <tool-bar
-        toolbar-color="var(--sc-gold-500)" 
+        toolbar-color="var(--sc-gold-500)"
         toolbar-size=""
         top-title="Digha Nikaya 1—Bhikkhu Bodhi"
         setting-button="true"
@@ -47,7 +47,7 @@ paper-scroll-header-panel {
 <script>
     Polymer({
       is: 'text-page',
-      
+
       properties: {
         suttaPath: String
       },

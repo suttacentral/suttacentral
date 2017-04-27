@@ -17,17 +17,35 @@
       line-height: 24px;
     };
 
-    --paper-font-body-sc2: {
+   --paper-font-body-sc2: {
       @apply(--paper-font-common-base);
       font-family: "Skolar Sans PE", sans-serif;
       font-size: 14px;
-      font-weight: 500;
-      line-height: 24px;
+      font-weight: 400;
+      line-height: 20px;
     };
 
     --sc-sans-font: {
       @apply(--paper-font-common-base);
       font-family: "Skolar Sans PE", sans-serif;
+    };
+    --sc-sans-font: {
+      @apply(--paper-font-common-base);
+      font-family: "Skolar Sans PE", sans-serif;
+      font-feature-settings: "smcp";
+    };
+    --sc-serif-font: {
+      @apply(--paper-font-common-base);
+      font-family: "Skolar PE", 'Noto Serif', serif;
+    };
+    --sc-serif-small-caps-font: {
+      @apply(--paper-font-common-base);
+      font-family: "Skolar PE", 'Noto Serif', serif;
+      font-feature-settings: "smcp";
+    };
+    --paper-font-common-base: {
+      font-family: 'Skolar Sans PE', 'Noto', sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
   }
