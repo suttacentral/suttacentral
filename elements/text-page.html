@@ -39,27 +39,54 @@ paper-scroll-header-panel {
     </tool-bar>
   </div>
 
-<div class="textcontent" inner-h-t-m-l="{{suttaText}}"></div>
+<div class="textcontent" inner-h-t-m-l="[[suttaText2]]"></div>
 
 </paper-scroll-header-panel>
 </template>
 <script>
-    Polymer({
-      is: 'text-page',
+// addEventListener('WebComponentsReady', function() {
 
-      properties: {
-        suttaPath: String
+  Polymer({
+    is: 'text-page',
+    properties: {
+      suttaPath: String,
+      suttaText: {
+        type: String,
+        notify: true,
+        value: function(){return []}
       },
 
+      suttaText2: {
+        type: String,
+        computed: "_computeSutta(suttaText)"
+      }
+
+    },
       _computeURL: function(category) {
         return `../texts${category}.html`;
       },
-      ready: function() {
-        var test = document.getElementsByClassName("author");
-        console.log(test[0]);
+      _computeSutta(suttaText) {
+        const test = this.getElementsByClassName('author');
+        const first = Array.from(test)[0];
+        if (first !== undefined) {
+          console.log('First element innerText --->', first.innerText);
+        }
+        return suttaText;
       }
+      // ready: function() {
+      //   // 1° solution
+      //   const test = this.getElementsByClassName('author');
+      //   const first = Array.from(test)[0];
+      //   console.log('First element innerText --->', first.innerText);
 
-    });
+      //   // // Or you can simply loop on the array
+      //   // Array.from(test).forEach(item => console.log(item.innerText));
 
+      //   // // 2° solution
+      //   // const test2 = this.querySelectorAll('.author');
+      //   // test2.forEach(item => console.log(item.innerText));
+      // }
+  });
+// });
 </script>
 </dom-module>
