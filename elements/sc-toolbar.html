@@ -15,10 +15,11 @@
 
 <link rel="import" href="../bower_components/input-search/input-search.html">
 
-<dom-module id="tool-bar" attributes="togdraw">
+<dom-module id="sc-toolbar" attributes="togdraw">
 <style is="custom-style">
 .sutta {
   font-family: 'Skolar PE', serif;
+  text-transform: capitalize;
 }
 
 h1{
@@ -92,13 +93,23 @@ input-search {
     }
 }
 
+.base {
+  width: 0px;
+  visibility:hidden;
+  transition: width 0.3s;
+}
+.base.expanded {
+  visibility:visible;
+  width: 300px;
+}
+
 </style>
 
 <template>
     <paper-toolbar class$="{{toolbarSize}}" style$="background-color:{{toolbarColor}};">
       <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"><p class="sutta">{{topTitle}}</p></span>
-            <div id="searchbox" hidden>
+            <div id="searchbox" class="base">
               <input-search placeholder="Search SuttaCentral …"></input-search>
             </div>
             <paper-icon-button id="searchicon" icon="search" on-tap="openSearch"></paper-icon-button>
@@ -107,7 +118,7 @@ input-search {
 
           <template is="dom-if" if="{{settingButton}}">
                 
-                <settings-menu></settings-menu>
+                <settings-menu meta-area="{{metaArea}}"></settings-menu>
           </template>
 
           <paper-menu-button horizontal-align="right">
@@ -124,19 +135,18 @@ input-search {
 </template>
 <script>
     Polymer({
-      is: 'tool-bar',
+      is: 'sc-toolbar',
       properties: {
         topTitle: String,
         middleTitle: String,
         bottomTitle: String,
         toolbarSize: String,
         toolbarColor: String,
-        settingButton: String
-
+        settingButton: String,
+        metaArea: Object
       },
       openSearch: function() {
-        this.toggleAttribute("hidden", false, this.$.searchbox);
-        // this.toggleAttribute("", false, this.$.searchbox);
+        this.toggleClass("expanded", true, this.$.searchbox);
       },
 
       toggleDrawer: function() {

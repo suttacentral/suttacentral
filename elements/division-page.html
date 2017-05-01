@@ -2,7 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 
-<link rel="import" href="tool-bar.html">
+<link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sutta-plex.html">
 <link rel="import" href="addons/insert-node.html">
 
@@ -62,13 +62,13 @@ main {
 
 <paper-scroll-header-panel>
   <div class="paper-header textpage">
-    <tool-bar
+    <sc-toolbar
         toolbar-color="var(--paper-deep-orange-900)" 
         toolbar-size=""
         top-title="{{languageData.name}}—{{suttaList.namepi}}"
         setting-button=""
         data-page='text'>
-    </tool-bar>
+    </sc-toolbar>
   </div>
 
 <div class="divisioncontent">
@@ -111,11 +111,9 @@ main {
         var sutta = document.getElementById(event.detail.url);
         if (event.detail.open === "icons:expand-more") {
           sutta.classList.add('expandeditem');
-        }
-        if (event.detail.open === "icons:expand-less") {
+        } else {
           sutta.classList.remove('expandeditem');
         }
-
       },
 
       _computeURL: function(category) {

@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
-<link rel="import" href="tool-bar.html">
+<link rel="import" href="sc-toolbar.html">
 
 <dom-module id="text-page">
 <style is="custom-style">
@@ -30,16 +30,19 @@ paper-scroll-header-panel {
 
 <paper-scroll-header-panel>
   <div class="paper-header textpage">
-    <tool-bar
+    <sc-toolbar
         toolbar-color="var(--sc-gold-500)"
         toolbar-size=""
-        top-title="Digha Nikaya 1—Bhikkhu Bodhi"
+        top-title="[[_obsInputText(suttaText)]]—[[_computeAuthor(suttaText)]]"
         setting-button="true"
-        data-page='text'>
-    </tool-bar>
+        data-page='text'
+        meta-area="[[_computeMeta(suttaText)]]">
+    </sc-toolbar>
   </div>
 
-<div class="textcontent" inner-h-t-m-l="{{suttaText}}"></div>
+<div class="textcontent">
+  <div inner-h-t-m-l="{{suttaText}}"></div>
+</div>
 
 </paper-scroll-header-panel>
 </template>
@@ -48,15 +51,34 @@ paper-scroll-header-panel {
       is: 'text-page',
 
       properties: {
-        suttaPath: String
+        suttaPath: String,
+
+        suttaText: {
+          type: String,
+          observer: '_obsInputText'
+        },
       },
 
       _computeURL: function(category) {
         return `../texts${category}.html`;
       },
-      ready: function() {
-        var test = document.getElementsByClassName("author");
-        console.log(test[0]);
+
+      _obsInputText: function(suttaText) {
+        var title = this.querySelectorAll('.division');
+        var firstTitle = Array.from(title)[0];
+        if (firstTitle !== undefined) {
+          return firstTitle.innerText;
+        }
+      },
+      _computeAuthor: function(suttaText) {
+        var author = this.querySelectorAll('.author');
+        var firstAuthor = Array.from(author)[0];
+        return firstAuthor.innerText;        
+      },
+      _computeMeta: function(suttaText) {
+        var meta = this.querySelectorAll('#metaarea');
+        var firstMeta = Array.from(meta)[0];
+        return firstMeta.innerHTML;
       }
 
     });

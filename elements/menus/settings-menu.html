@@ -139,13 +139,7 @@ paper-toggle-button{
 
 		      <div class="dialogue-section">
 			      <h3>Publication details</h3>
-			      <p class="meta-details">© Bhikkhu Bodhi, <cite class="book">The Middle Length Discourses of the Buddha</cite> (Wisdom Publications, 2009)</p>
-			      <p class="meta-details">This excerpt from <cite class="book">The Middle Length Discourses of the Buddha</cite> by <a href="http://www.wisdompubs.org/author/bhikkhu-bodhi"><span class="author">Bhikkhu Bodhi</span></a> is licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US" rel="license">Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License</a>.</p>
-			      <p class="meta-details">Based on the work <a href="http://www.wisdompubs.org/book/middle-length-discourses-buddha"><cite class="book">The Middle Length Discourses of the Buddha</cite></a> at Wisdom Publications.</p><p class="meta-details">
-			      Permissions beyond the scope of this license may be available at <a href="http://www.wisdompubs.org/terms-use">Wisdom Publications</a>.</p>
-			      <div class="nerdy-row">Prepared for SuttaCentral by <span class="editor">Blake Walsh</span>.</div>
-			      <div class="nerdy-row">Added by Sujato, 8672d1a on Jan 30, 2016.</div>
-			      <div class="nerdy-row">Updated by Vimala, 8672d2a on Jan 32, 2018.</div>
+			      <div inner-h-t-m-l="{{metaArea}}"></div>
 		      </div>
 		    </div>
 	   </paper-dialog-scrollable>
@@ -154,5 +148,8 @@ paper-toggle-button{
 <script>
     Polymer({
       is: 'settings-menu',
+      properties: {
+      	metaArea: Object
+      }
     });
 </script>

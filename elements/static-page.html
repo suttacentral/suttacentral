@@ -12,7 +12,7 @@
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="menus/more-menu.html">
 <link rel="import" href="menus/settings-menu.html">
-<link rel="import" href="tool-bar.html">
+<link rel="import" href="sc-toolbar.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../data/sc/home-page.html">
 
@@ -46,13 +46,13 @@ main {
 <template>
 <paper-scroll-header-panel>
   <div class="paper-header staticpage">
-    <tool-bar
+    <sc-toolbar
         toolbar-color="var(--sc-gold-500)" 
         toolbar-size="tall" 
         middle-title="SuttaCentral" 
         bottom-title="Early Buddhist texts, translations, and parallels"
         setting-button="">
-    </tool-bar>
+    </sc-toolbar>
   </div>
 
 <template is="dom-if" if="{{_checkhomeURL(category)}}" restamp>
