@@ -35,7 +35,7 @@ paper-scroll-header-panel {
       last-response="{{paragraphTitles}}"></iron-ajax>
 
 <paper-scroll-header-panel>
-  <div class="paper-header textpage">
+  <div class="textpage">
     <sc-toolbar
         toolbar-color="var(--sc-gold-500)"
         toolbar-size=""
@@ -92,7 +92,7 @@ paper-scroll-header-panel {
         var firstMeta = Array.from(meta)[0];
         for (var key in paragraphTitles) {
                 var refs = this.querySelectorAll('.'+key);
-                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(/[a-z\-]*/g,""));
+                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
         };
         if (firstMeta !== undefined) {
           return firstMeta.innerHTML;
