@@ -242,25 +242,21 @@ paper-menu-button {
           type: String,
           computed: '_computeToggleIcon(opened)'
         },
-
         _toggleMoreIcon: {
           type: String,
           computed: '_computeToggleMoreIcon(opened)'
         }
-
       },
-
       _computeToggleIcon: function(opened) {
         return opened ? 'icons:expand-less' : 'icons:expand-more';
       },
-
       _computeToggleMoreIcon: function(opened) {
         return opened ? '' : 'moremenu';
       },
       _toggleOpened: function(e) {
-  			this.opened = !this.opened;
-  			this.fire('toggle', this);
-		  },
+  	this.opened = !this.opened;
+  	this.fire('toggle', this);
+      },
       passParams: function() {
         this.fire('eventFromChild',{open:this._toggleIcon, url:this.inputUrl});
       },

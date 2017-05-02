@@ -28,15 +28,21 @@ paper-scroll-header-panel {
       handle-as="text"
       last-response="{{suttaText}}"></iron-ajax>
 
+<iron-ajax
+      auto
+      url="../data/paragraphtitles.json"
+      handle-as="json"
+      last-response="{{paragraphTitles}}"></iron-ajax>
+
 <paper-scroll-header-panel>
   <div class="paper-header textpage">
     <sc-toolbar
         toolbar-color="var(--sc-gold-500)"
         toolbar-size=""
-        top-title="[[_obsInputText(suttaText)]]—[[_computeAuthor(suttaText)]]"
+        top-title="[[_computeTitle(suttaText)]]—[[_computeAuthor(suttaText)]]"
         setting-button="true"
         data-page='text'
-        meta-area="[[_computeMeta(suttaText)]]">
+        meta-area="[[_computeMeta(suttaText,paragraphTitles)]]">
     </sc-toolbar>
   </div>
 
@@ -52,11 +58,10 @@ paper-scroll-header-panel {
 
       properties: {
         suttaPath: String,
-
         suttaText: {
           type: String,
           observer: '_obsInputText'
-        },
+        }
       },
 
       _computeURL: function(category) {
@@ -64,6 +69,11 @@ paper-scroll-header-panel {
       },
 
       _obsInputText: function(suttaText) {
+        var sutta = this.querySelectorAll('h1');
+        console.log(sutta);
+      },
+
+      _computeTitle: function(suttaText) {
         var title = this.querySelectorAll('.division');
         var firstTitle = Array.from(title)[0];
         if (firstTitle !== undefined) {
@@ -73,12 +83,20 @@ paper-scroll-header-panel {
       _computeAuthor: function(suttaText) {
         var author = this.querySelectorAll('.author');
         var firstAuthor = Array.from(author)[0];
-        return firstAuthor.innerText;        
+        if (firstAuthor !== undefined) {
+          return firstAuthor.innerText;
+        }
       },
-      _computeMeta: function(suttaText) {
+      _computeMeta: function(suttaText,paragraphTitles) {
         var meta = this.querySelectorAll('#metaarea');
         var firstMeta = Array.from(meta)[0];
-        return firstMeta.innerHTML;
+        for (var key in paragraphTitles) {
+                var refs = this.querySelectorAll('.'+key);
+                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(/[a-z\-]*/g,""));
+        };
+        if (firstMeta !== undefined) {
+          return firstMeta.innerHTML;
+        }
       }
 
     });

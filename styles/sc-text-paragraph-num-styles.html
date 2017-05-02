@@ -1,5 +1,112 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <style is="custom-style">
+/*a.bl:before {content:"bl "}*/
+a.adh-v:before {content:"Adhik-v "}
+a.apz:before {content:"APZ "}
+a.ba:before {content:"BA "}
+a.bhaisv:before {content:"Bhais-v "}
+a.bi:before {content:"BI "}
+a.bjt:before {content:"BJT "}
+a.bm:before {content:"BM "}
+a.bn:before {content:"BN "}
+a.bps:before {content:"BPS "}
+a.bv:before {content:"BV "}
+a.bjt:before {content:"BJT "}
+a.cps:before {content:"Cps "}
+a.d-vp:before {content:"D vp "}
+a.divy:before {content:"Divy "}
+a.dhskd:before {content:"DhskD "}
+a.dhskm:before {content:"DhskM "}
+a.eno89:before {content:"Eno "}
+a.es:before {content:"ES "}
+a.fa:before {content:"Fa "}
+a.fuk03:before {content:"Fuk "}
+a.fol:before {content:"Fol "}
+a.gatha-number:before {content:"Verse "}
+a.hh:before {content:"HH "}
+/*a.gatn:before {content:" "}*/
+a.ia:before {content:"IA "}
+a.flw:before {content:"FLW "}
+a.gbm:before {content:"GBM "}
+a.gno78:before {content:"Gno "}
+a.har04:before {content:"Har "}
+a.hoe16:before {content:"Hoe "}
+a.hos89a:before, a.hos89b:before, a.hos91:before {content:"Hos "}
+a.hs:before {content:"Hs "}
+a.jb:before {content:"JB "}
+a.jd:before {content:"JD "}
+a.jsk:before {content:"JSK "}
+a.lh:before {content:"LH "}
+a.kat:before {content:"Kathina-v "}
+a.kel:before {content:"Kel "}
+a.kl:before {content:"KL "}
+a.ks:before {content:"KS "}
+a.mat85:before, a.mat88:before, a.mat96:before {content:"Mat "}
+a.mc:before {content:"MC "}
+a.mkv:before {content:"Mkv "}
+a.mit57:before {content:"Mit "}
+a.ms:before {content:"MS "}
+a.msdiv:before {content:"Msdiv "}
+a.msvi:before {content:"Msv i "}
+a.msvii:before {content:"Msv ii "}
+a.msviii:before {content:"Msv iii "}
+a.msviv:before {content:"Msv iv "}
+a.msvwi:before {content:"Msv Wi "}
+a.mt:before {content:"MT "}
+a.nm:before {content:"NM "}
+a.np:before {content:"NP "}
+a.nst:before {content:"NST "}
+a.of:before {content:"OF "}
+a.pand-v:before {content:"Pand-v "}
+a.pl:before {content:"PL "}
+a.pos-v:before {content:"Pos-v "}
+a.prava-v:before {content:"Prava-v "}
+a.pravr-v-i:before {content:"Pravr-v i "}
+a.pravr-v-ii:before {content:"Pravr-v ii "}
+a.pravr-v-iii:before {content:"Pravr-v iii "}
+a.pravr-v-iv:before {content:"Pravr-v iv "}
+a.pts:before {content:"PTS "}
+a.pts1ed:before {content:"PTS \(1st ed.) "}
+a.pts2ed:before {content:"PTS \(2nd ed.) "}
+a.pts-vp-pi:before {content: "PTS vp pi ";}
+a.pts-vp-en:before {content: "PTS vp en ";}
+a.pts_pn:before {content:"PTS "}
+a.pts-s:before {content:"PTS s ";}
+a.pts-cs:before {content:"PTS cs ";}
+a.pts-p-pi:before {content: "PTS p pi "}
+a.rs-vp:before {content: "RS vp "}
+a.san87:before, a.san89:before {content:"San "}
+a.say-v:before {content:"Say-v "}
+a.sb:before {content:"SB "}
+a.sbvi:before {content:"Sbv i "}
+a.sbvii:before {content:"Sbv ii "}
+a.sc:before {content:"SC "}
+a.sen:before {content:"Sen "}
+a.sht:before {content:"SHT "}
+a.snp-vagga-section-verse:before, a.snp-vagga-verse:before {content:"SNP "}
+a.ss:before {content:"SS "}
+a.t:before, a.t-linehead:before {content:"T "}
+a.tb:before {content:"TB "}
+a.thv:before {content:"THV "}
+a.tri62:before, a.tri95:before {content:"Tri "}
+a.ud-sutta:before, a.ud-vagga-sutta:before {content:"Ud "}
+a.ttc:before {content:"TTC "}
+/*a.tu:before {content:" "}*/
+a.uv:before {content:"Uv "}
+a.vagga-gatha-num-sc:before {content:"Vagga/verse "}
+a.vai58:before, a.vai59:before, a.vai61:before {content:"Vai "}
+a.var-v:before {content:"Var-v "}
+a.verse-num-sc:before {content:"SC verse "}
+a.verse-num-pts:before {content:"PTS verse "}
+a.vn:before {content:"Vn "}
+a.wal48:before, a.wal50:before, a.wal52:before, a.wal57c:before, a.wal58:before, a.wal59a:before, a.wal60:before, a.wal61:before, a.wal68a:before, a.wal70a:before, a.wal70b:before, a.wal76:before, a.wal78:before, a.wal80c:before {content:"Wal "}
+a.wg:before {content:"WG "}
+a.wp:before {content:"WP "}
+a.wp-verse:before {content:"WP verse "}
+a.wr:before {content:"WR "}
+a.yam72:before {content:"Yam "}
+
+
 a.msdiv,
 a.ms,
 a.ms-pa,
@@ -355,4 +462,27 @@ a.pts-vp-pi,
 a.pts-p-pi {
     color: var(--paper-purple-500);
 }
+
+/*Rare character indicated in Chinese text of CBETA. These are coded thus:
+<span class="t-gaiji">勅<!--gaiji,敕,1[束*力],2&#x52C5;,3--></span>
+
+Rare character.
+*/
+
+.t-juannum {}
+/*Sutra number, possibly other numbers.*/
+
+.t-juanname {}
+/*Title of sutra, end of sutra.*/
+
+.t-byline {}
+/*attribution in CBETA.*/
+
+.titus {display:none}
+/*reference numbers that appear in some titus editions, eg. sf217. I don't know what these refer to. set display:none.*/
+
+
+.titus-random {display:none}
+/*inexplicable numbers that appear to serve the purpose of clunking up the text in Titus editions. display:none.
+I cannot find any explanation for either of the above two ref systems, and they are kept solely for legacy purposes.*/
 </style>

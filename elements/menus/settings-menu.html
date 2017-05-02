@@ -61,9 +61,10 @@ paper-toggle-button{
 </style>
 <template>
 
+
 <paper-icon-button id="settingsbutton" icon="settings" onclick="scrolling.open()"></paper-icon-button>
 
-	<paper-dialog class="text-tools-dialogue" id="scrolling" modal>
+	<paper-dialog id="scrolling">
 	  <div class="buttons">
 		  <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
 	  </div>
@@ -74,7 +75,7 @@ paper-toggle-button{
 		      <div class="dialogue-section">
 		      	<h3>View textual information</h3>
 		      	<div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-		      	<paper-toggle-button></paper-toggle-button>
+		      	<paper-toggle-button noink on-tap="_getReferences"></paper-toggle-button>
 		      </div>
 
 		      <div class="dialogue-section">
@@ -107,10 +108,8 @@ paper-toggle-button{
 			      <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.</div>
 			      <paper-dropdown-menu label="Lookup">
 			        <paper-listbox class="dropdown-content" selected="0">
+                                                             <paper-item>None</paper-item>
 			          <paper-item>Chinese → English</paper-item>
-			          <paper-item>Chinese → Chinese</paper-item>
-			          <paper-item>Chinese → Spanish</paper-item>
-			          <paper-item>Chinese → Indonesian</paper-item>
 			        </paper-listbox>
 			      </paper-dropdown-menu>
 		      </div>
@@ -150,6 +149,15 @@ paper-toggle-button{
       is: 'settings-menu',
       properties: {
       	metaArea: Object
+      },
+      _getReferences: function() {
+        var basetext = document.querySelectorAll('.textcontent.text-page');
+        var infotext = Array.from(basetext)[0];
+        if (infotext.classList.contains('infomode')) {
+            infotext.classList.remove('infomode');
+        } else {
+            infotext.classList.add('infomode');
+        }
       }
     });
 </script>

@@ -1,8 +1,7 @@
 <dom-module id="language-styles">
 <template>
 <style>
-  paper-item.en:after{
-  content:"en";
+  paper-item:after{
     color: var(--secondary-text-color);
     @apply(--paper-font-caption);
     position:absolute;
@@ -10,35 +9,10 @@
     text-transform:none;
     font-family: "Skolar Sans PE", sans-serif;
   }
-
-  paper-item.pt:after{
-  content:"pt";
-    color: var(--secondary-text-color);
-    @apply(--paper-font-caption);
-    position:absolute;
-    right:20px;
-    text-transform:none;
-    font-family: "Skolar Sans PE", sans-serif;
-  }
-  paper-item.fr:after{
-  content:"fr";
-    color: var(--secondary-text-color);
-    @apply(--paper-font-caption);
-    position:absolute;
-    right:20px;
-    text-transform:none;
-    font-family: "Skolar Sans PE", sans-serif;
-  }
-
-  paper-item.es:after{
-  content:"es";
-    color: var(--secondary-text-color);
-    @apply(--paper-font-caption);
-    position:absolute;
-    right:20px;
-    text-transform:none;
-    font-family: "Skolar Sans PE", sans-serif;
-  }
+  paper-item.en:after{content:"en"}
+  paper-item.pt:after{content:"pt"}
+  paper-item.fr:after{content:"fr"}
+  paper-item.es:after{content:"es"}
 </style>
 </template>
 </dom-module>
