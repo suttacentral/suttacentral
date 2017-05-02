@@ -9,7 +9,7 @@
 <link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
 <dom-module id="settings-menu">
 <style is="custom-style">
 :host{
@@ -61,10 +61,9 @@ paper-toggle-button{
 </style>
 <template>
 
-
 <paper-icon-button id="settingsbutton" icon="settings" onclick="scrolling.open()"></paper-icon-button>
 
-	<paper-dialog id="scrolling" modal>
+	<paper-dialog id="scrolling">
 	  <div class="buttons">
 		  <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
 	  </div>

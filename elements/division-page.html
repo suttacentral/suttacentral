@@ -1,23 +1,45 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
-
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sutta-plex.html">
 <link rel="import" href="addons/insert-node.html">
 
-<dom-module id="division-page" name="parent-element">
+<dom-module id="division-page" attributes="togdraw">
 <style is="custom-style">
 paper-scroll-header-panel {
-  height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 100%;
 }
-
-.textpage {
-  height: 4em;
-  background-color: var(--paper-deep-orange-900);
+paper-toolbar {
+   background-color: var(--paper-deep-orange-900);
   @apply(--shadow-elevation-8dp);
 }
+.sutta {
+  font-family: 'Skolar PE', serif;
+  text-transform: capitalize;
+}
 
+@media (max-width: 600px) {
+    h1 {
+      font-size: 2em;
+      padding-top: 0.2em;
+    };
+    .subtitle {
+      font-size: 1em;
+    };
+    .paper-header {
+      height: 11em;
+    };
+}
+paper-icon-button {
+  color: white;
+}
 .divisioncontent {
   background-color: var(--paper-blue-grey-50);
   color: var(--primary-text-color);
@@ -51,6 +73,11 @@ main {
 .node+.vagganode {
   padding-top: 0;
 }
+@media screen and (min-width: 769px) {
+    #drawertoggle {
+        display:none;
+    }
+}
 </style>
 <template>
 
@@ -60,16 +87,13 @@ main {
       handle-as="json"
       last-response="{{suttaList}}"></iron-ajax>
 
-<paper-scroll-header-panel>
-  <div class="textpage">
-    <sc-toolbar
-        toolbar-color="var(--paper-deep-orange-900)" 
-        toolbar-size=""
-        top-title="{{languageData.name}}—{{suttaList.namepi}}"
-        setting-button=""
-        data-page='text'>
-    </sc-toolbar>
-  </div>
+<paper-scroll-header-panel main>
+
+<paper-toolbar>
+      <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
+      <span class="title"><p class="sutta">{{languageData.name}}—{{suttaList.namepi}}</p></span>
+      <sc-toolbar setting-button="" data-page='text'></sc-toolbar>
+</paper-toolbar>
 
 <div class="divisioncontent">
   <main>
@@ -127,6 +151,9 @@ main {
       },
       _computeVaggadescription: function(vagga,inputLanguage) {
         return vagga[inputLanguage].description;
+      },
+      toggleDrawer: function() {
+        this.fire('eventFromChild',{togdraw:"drawer"});
       }
     });
 

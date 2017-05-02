@@ -1,23 +1,51 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="sc-toolbar.html">
 
-<dom-module id="text-page">
+<dom-module id="text-page" attributes="togdraw">
 <style is="custom-style">
 paper-scroll-header-panel {
-  height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 100%;
 }
-
-.textpage {
-  height: 4em;
-  background-color: var(--sc-gold-500);
+paper-toolbar {
+   background-color: var(--sc-gold-500);
   @apply(--shadow-elevation-8dp);
 }
+.sutta {
+  font-family: 'Skolar PE', serif;
+  text-transform: capitalize;
+}
 
+@media (max-width: 600px) {
+    h1 {
+      font-size: 2em;
+      padding-top: 0.2em;
+    };
+    .subtitle {
+      font-size: 1em;
+    };
+    .paper-header {
+      height: 11em;
+    };
+}
+paper-icon-button {
+  color: white;
+}
 .textcontent {
   color: var(--primary-text-color);
   padding: 24px 0;
+}
+@media screen and (min-width: 769px) {
+    #drawertoggle {
+        display:none;
+    }
 }
 </style>
 <template>
@@ -34,17 +62,13 @@ paper-scroll-header-panel {
       handle-as="json"
       last-response="{{paragraphTitles}}"></iron-ajax>
 
-<paper-scroll-header-panel>
-  <div class="textpage">
-    <sc-toolbar
-        toolbar-color="var(--sc-gold-500)"
-        toolbar-size=""
-        top-title="[[_computeTitle(suttaText)]]—[[_computeAuthor(suttaText)]]"
-        setting-button="true"
-        data-page='text'
-        meta-area="[[_computeMeta(suttaText,paragraphTitles)]]">
-    </sc-toolbar>
-  </div>
+<paper-scroll-header-panel main>
+
+<paper-toolbar>
+      <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
+      <span class="title"><p class="sutta">[[_computeTitle(suttaText)]]—[[_computeAuthor(suttaText)]]</p></span>
+      <sc-toolbar setting-button="true" data-page='text' meta-area="[[_computeMeta(suttaText,paragraphTitles)]]"></sc-toolbar>
+</paper-toolbar>
 
 <div class="textcontent">
   <div inner-h-t-m-l="{{suttaText}}"></div>
@@ -97,6 +121,9 @@ paper-scroll-header-panel {
         if (firstMeta !== undefined) {
           return firstMeta.innerHTML;
         }
+      },
+      toggleDrawer: function() {
+        this.fire('eventFromChild',{togdraw:"drawer"});
       }
 
     });

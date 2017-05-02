@@ -4,18 +4,60 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="../data/sc/home-page.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 
-<dom-module id="static-page">
+<dom-module id="static-page" attributes="togdraw">
 <style is="custom-style">
 paper-scroll-header-panel {
-  height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 100%;
 }
-.staticpage {
-  height: 13em;
-  background-color: var(--sc-gold-500);
+paper-toolbar {
+   background-color: var(--sc-gold-500);
   @apply(--shadow-elevation-8dp);
 }
+h1{
+  font-family: 'Skolar PE', serif;
+  font-size: 2.5em;
+  font-variant-caps: small-caps;
+  text-align: left;
+  color: white;
+  padding-top: 0.5em;
+  letter-spacing: .02em;
+  margin: 0;
+  line-height: 1em;
+  font-weight: normal;
+}
 
+.subtitle {
+  font-family: 'Skolar PE', serif;
+  color: white;
+  font-style: italic;
+  font-size: 1.5em;
+  text-align: left;
+  margin-bottom: .75em;
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+    h1 {
+      font-size: 2em;
+      padding-top: 0.2em;
+    };
+    .subtitle {
+      font-size: 1em;
+    };
+    .paper-header {
+      height: 11em;
+    };
+}
+paper-icon-button {
+  color: white;
+}
 .textcontent {
   min-height: 100%;
   height: auto!important;
@@ -31,18 +73,22 @@ paper-scroll-header-panel {
 main {
   margin-top: 3em;
 }
+@media screen and (min-width: 769px) {
+    #drawertoggle {
+        display:none;
+    }
+}
 </style>
 <template>
-<paper-scroll-header-panel>
-  <div class="staticpage">
-    <sc-toolbar
-        toolbar-color="var(--sc-gold-500)" 
-        toolbar-size="tall" 
-        middle-title="SuttaCentral" 
-        bottom-title="Early Buddhist texts, translations, and parallels"
-        setting-button="">
-    </sc-toolbar>
-  </div>
+<paper-scroll-header-panel main>
+
+<paper-toolbar class="tall">
+      <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
+      <span class="title"></span>
+      <sc-toolbar setting-button=""></sc-toolbar>
+      <span class="middle title"><h1>SuttaCentral</h1></span>
+      <span class="bottom title"><p class="subtitle">Early Buddhist texts, translations, and parallels</p></span>
+</paper-toolbar>
 
 <template is="dom-if" if="{{_checkhomeURL(category)}}" restamp>
     <home-page></home-page>
@@ -76,6 +122,9 @@ main {
         if (category === 'home' || category === '') {
           return true;
         }
+      },
+      toggleDrawer: function() {
+        this.fire('eventFromChild',{togdraw:"drawer"});
       }
 
     });
