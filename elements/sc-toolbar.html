@@ -6,7 +6,6 @@
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="menus/more-menu.html">
-<link rel="import" href="menus/settings-menu.html">
 
 <link rel="import" href="../bower_components/input-search/input-search.html">
 
@@ -40,12 +39,11 @@ input-search {
 
 .base {
   width: 0px;
-  visibility:hidden;
   transition: width 0.3s;
-  display: inline;
+  display: none;
 }
 .base.expanded {
-  visibility:visible;
+  display: inline;
   width: 300px;
 }
 </style>
@@ -58,10 +56,6 @@ input-search {
 
           <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button icon="communication:forum"></paper-icon-button></a>
 
-          <template is="dom-if" if="{{settingButton}}">
-                <settings-menu meta-area="{{metaArea}}"></settings-menu>
-          </template>
-
           <paper-menu-button horizontal-align="right">
             <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
             <div class="dropdown-content"></div>
@@ -73,10 +67,6 @@ input-search {
 <script>
     Polymer({
       is: 'sc-toolbar',
-      properties: {
-        settingButton: String,
-        metaArea: Object
-      },
       openSearch: function() {
         this.toggleClass("expanded", true, this.$.searchbox);
       }

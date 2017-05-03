@@ -2,6 +2,11 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../bower_components/vaadin-split-layout/vaadin-split-layout.html">
+<link rel="import" href="menus/settings-menu.html">
 <link rel="import" href="sc-toolbar.html">
 
 <dom-module id="text-page" attributes="togdraw">
@@ -47,6 +52,27 @@ paper-icon-button {
         display:none;
     }
 }
+paper-dialog paper-icon-button {
+  color: var(--disabled-text-color);
+}
+.splitterbar {
+      --vaadin-split-layout-splitter: {
+        min-width: 6px;
+        min-height: 4px;
+        background: var(--paper-indigo-500);
+        fill: none;
+      };
+}
+
+.splitterbar.nosplit {
+  --vaadin-split-layout-splitter: {
+        visibility: hidden;
+  };
+}
+
+.noshow {
+  display: none;
+}
 </style>
 <template>
 
@@ -55,6 +81,12 @@ paper-icon-button {
       url="[[_computeURL(suttaPath)]]"
       handle-as="text"
       last-response="{{suttaText}}"></iron-ajax>
+
+<iron-ajax
+      auto
+      url="[[_computeURLOriginal(suttaPath)]]"
+      handle-as="text"
+      last-response="{{originalText}}"></iron-ajax>
 
 <iron-ajax
       auto
@@ -67,12 +99,24 @@ paper-icon-button {
 <paper-toolbar>
       <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"><p class="sutta">[[_computeTitle(suttaText)]]—[[_computeAuthor(suttaText)]]</p></span>
-      <sc-toolbar setting-button="true" data-page='text' meta-area="[[_computeMeta(suttaText,paragraphTitles)]]"></sc-toolbar>
+      <sc-toolbar></sc-toolbar>
+      <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
 </paper-toolbar>
 
-<div class="textcontent">
-  <div inner-h-t-m-l="{{suttaText}}"></div>
-</div>
+  <paper-dialog id="dialog" modal>
+    <div class="buttons">
+      <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
+    </div>
+    <h2>Tools and Information</h2>
+    <paper-dialog-scrollable>
+        <settings-menu meta-area="[[_computeMeta(suttaText,originalText,paragraphTitles)]]"></settings-menu>
+    </paper-dialog-scrollable>
+  </paper-dialog>
+
+<vaadin-split-layout id="splitterlayout" class="splitterbar">
+  <div class="textcontent" inner-h-t-m-l="{{suttaText}}"></div>
+  <div class="textcontent noshow" id="original" inner-h-t-m-l="{{originalText}}"></div>
+</vaadin-split-layout>
 
 </paper-scroll-header-panel>
 </template>
@@ -85,18 +129,41 @@ paper-icon-button {
         suttaText: {
           type: String,
           observer: '_obsInputText'
+        },
+        originalText: {
+          type: String,
+          observer: '_obsOriginalText'          
+        }
+      },
+      ready: function() {
+        this.addEventListener('eventFromChild', this.changeView);
+      },
+      changeView: function(event) {
+        var orText = document.getElementById("original");
+        var splitter = document.getElementById("splitterlayout");
+        if (event.detail.selectedView === "sidebyside") {
+          orText.classList.remove('noshow');
+          splitter.classList.remove('nosplit');
+        } else {
+          orText.classList.add('noshow');
+          splitter.classList.add('nosplit');
         }
       },
 
       _computeURL: function(category) {
         return `../texts${category}.html`;
       },
-
+      _computeURLOriginal: function(category) {
+        return `../texts/pi${category}.html`;
+      },
       _obsInputText: function(suttaText) {
         var sutta = this.querySelectorAll('h1');
         console.log(sutta);
       },
-
+      _obsOriginalText: function(originalText) {
+        var sutta = this.querySelectorAll('h1');
+        console.log(sutta);
+      },
       _computeTitle: function(suttaText) {
         var title = this.querySelectorAll('.division');
         var firstTitle = Array.from(title)[0];
@@ -111,16 +178,23 @@ paper-icon-button {
           return firstAuthor.innerText;
         }
       },
-      _computeMeta: function(suttaText,paragraphTitles) {
-        var meta = this.querySelectorAll('#metaarea');
-        var firstMeta = Array.from(meta)[0];
-        for (var key in paragraphTitles) {
-                var refs = this.querySelectorAll('.'+key);
-                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
-        };
+      _computeMeta: function(suttaText,originalText,paragraphTitles) {
+        var firstMeta = Array.from(this.querySelectorAll('#metaarea'))[0];
+        this._computePars(suttaText,paragraphTitles);
+        this._computePars(originalText,paragraphTitles);
         if (firstMeta !== undefined) {
           return firstMeta.innerHTML;
         }
+      },
+
+     _computePars: function(inputText,paragraphTitles) {
+        for (var key in paragraphTitles) {
+                var refs = this.querySelectorAll('.'+key);
+                console.log(key);
+                console.log(refs);
+                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
+                Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
+          }
       },
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});

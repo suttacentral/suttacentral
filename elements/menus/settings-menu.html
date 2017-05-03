@@ -1,8 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
@@ -10,7 +8,8 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
-<dom-module id="settings-menu">
+
+<dom-module id="settings-menu" attributes="selectedView">
 <style is="custom-style">
 :host{
     --primary-color: var(--sc-gold-500);
@@ -60,94 +59,86 @@ paper-toggle-button{
 }
 </style>
 <template>
+  <div class="paper-dialogue-container">
+      <div class="dialogue-section">
+      	<h3>View textual information</h3>
+      	<div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
+      	<paper-toggle-button noink on-tap="_getReferences"></paper-toggle-button>
+      </div>
 
-<paper-icon-button id="settingsbutton" icon="settings" onclick="scrolling.open()"></paper-icon-button>
+      <div class="dialogue-section">
+      	<h3>View original text with translation</h3>
+      	<div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.</div>
+                <paper-radio-group on-change="viewChanger" selected="{{radioSelected}}">
+                   	<paper-radio-button name="none">None</paper-radio-button>
+                    	<paper-radio-button name="sidebyside"><iron-icon icon="view-column"></iron-icon> Side by side</paper-radio-button>
+                    	<paper-radio-button name="linebyline" disabled><iron-icon icon="view-headline" ></iron-icon> Line by line</paper-radio-button>
+                    	<paper-radio-button name="popup"><iron-icon icon="editor:insert-comment"></iron-icon> Pop-up</paper-radio-button>
+                </paper-radio-group>
+      </div>
 
-	<paper-dialog id="scrolling">
-	  <div class="buttons">
-		  <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
-	  </div>
-	  
-	  <h2>Tools and Information</h2>
-	  <paper-dialog-scrollable>
-	      <div class="paper-dialogue-container">
-		      <div class="dialogue-section">
-		      	<h3>View textual information</h3>
-		      	<div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-		      	<paper-toggle-button noink on-tap="_getReferences"></paper-toggle-button>
-		      </div>
+      <div class="dialogue-section">
+	      <h3>Activate Pali word lookup</h3>
+	      <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this  is an aid only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.</div>
+	      <paper-dropdown-menu label="Lookup">
+	        <paper-listbox class="dropdown-content" selected="0">
+	          <paper-item>None</paper-item>
+	          <paper-item>Pali → English</paper-item>
+	          <paper-item>Pali → Chinese</paper-item>
+	          <paper-item>Pali → Spanish</paper-item>
+	          <paper-item>Pali → Indonesian</paper-item>
+	        </paper-listbox>
+	      </paper-dropdown-menu>
+      </div>
 
-		      <div class="dialogue-section">
-		      	<h3>View original text with translation</h3>
-		      	<div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.</div>
-		        <paper-radio-group selected="none">
-		       		<paper-radio-button name="none">None</paper-radio-button>
-		        	<paper-radio-button name="small"><iron-icon icon="view-column"></iron-icon> Side by side</paper-radio-button>
-		        	<paper-radio-button name="medium"><iron-icon icon="view-headline" ></iron-icon> Line by line</paper-radio-button>
-		        	<paper-radio-button name="large"><iron-icon icon="editor:insert-comment"></iron-icon> Pop-up</paper-radio-button>
-		      	</paper-radio-group>
-		      </div>
+      <div class="dialogue-section">
+	      <h3>Activate Chinese word lookup</h3>
+	      <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.</div>
+	      <paper-dropdown-menu label="Lookup">
+	        <paper-listbox class="dropdown-content" selected="0">
+                            <paper-item>None</paper-item>
+	           <paper-item>Chinese → English</paper-item>
+	        </paper-listbox>
+	      </paper-dropdown-menu>
+      </div>
 
-		      <div class="dialogue-section">
-			      <h3>Activate Pali word lookup</h3>
-			      <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this  is an aid only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.</div>
-			      <paper-dropdown-menu label="Lookup">
-			        <paper-listbox class="dropdown-content" selected="0">
-			          <paper-item>None</paper-item>
-			          <paper-item>Pali → English</paper-item>
-			          <paper-item>Pali → Chinese</paper-item>
-			          <paper-item>Pali → Spanish</paper-item>
-			          <paper-item>Pali → Indonesian</paper-item>
-			        </paper-listbox>
-			      </paper-dropdown-menu>
-		      </div>
+      <div class="dialogue-section">
+	      <h3>Change the script of the Pali text</h3>
+	      <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
+	      <paper-dropdown-menu label="Script">
+	        <paper-listbox class="dropdown-content" selected="0">
+	          <paper-item>Latin</paper-item>
+	          <paper-item>සිංහල</paper-item>
+	          <paper-item>ไทย</paper-item>
+	          <paper-item>नागरी</paper-item>
+	        </paper-listbox>
+	      </paper-dropdown-menu>
+      </div>
 
-		      <div class="dialogue-section">
-			      <h3>Activate Chinese word lookup</h3>
-			      <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.</div>
-			      <paper-dropdown-menu label="Lookup">
-			        <paper-listbox class="dropdown-content" selected="0">
-                                                             <paper-item>None</paper-item>
-			          <paper-item>Chinese → English</paper-item>
-			        </paper-listbox>
-			      </paper-dropdown-menu>
-		      </div>
+      <div class="dialogue-section">
+      	<h3>Remember what I have selected on this page</h3>
+      	<paper-toggle-button></paper-toggle-button>
+      </div>
 
-		      <div class="dialogue-section">
-			      <h3>Change the script of the Pali text</h3>
-			      <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
-			      <paper-dropdown-menu label="Script">
-			        <paper-listbox class="dropdown-content" selected="0">
-			          <paper-item>Latin</paper-item>
-			          <paper-item>සිංහල</paper-item>
-			          <paper-item>ไทย</paper-item>
-			          <paper-item>नागरी</paper-item>
-			        </paper-listbox>
-			      </paper-dropdown-menu>
-		      </div>
+      <div class="dialogue-section">
+      	<h3>View parallels and references for this sutta <paper-icon-button icon="open-in-new"></paper-icon-button></h3>
+      </div>
 
-		      <div class="dialogue-section">
-		      	<h3>Remember what I have selected on this page</h3>
-		      	<paper-toggle-button></paper-toggle-button>
-		      </div>
-
-		      <div class="dialogue-section">
-		      	<h3>View parallels and references for this sutta <paper-icon-button icon="open-in-new"></paper-icon-button></h3>
-		      </div>
-
-		      <div class="dialogue-section">
-			      <h3>Publication details</h3>
-			      <div inner-h-t-m-l="{{metaArea}}"></div>
-		      </div>
-		    </div>
-	   </paper-dialog-scrollable>
-	</paper-dialog>
+      <div class="dialogue-section">
+	      <h3>Publication details</h3>
+	      <div inner-h-t-m-l="{{metaArea}}"></div>
+      </div>
+    </div>
 </template>
 <script>
     Polymer({
       is: 'settings-menu',
       properties: {
-      	metaArea: Object
+                metaArea: Object,
+                radioSelected: {
+                    type: String,
+                    value: "none"
+                }
       },
       _getReferences: function() {
         var basetext = document.querySelectorAll('.textcontent.text-page');
@@ -157,6 +148,10 @@ paper-toggle-button{
         } else {
             infotext.classList.add('infomode');
         }
+      },
+      viewChanger: function() {
+        console.log(this.radioSelected);
+        this.fire('eventFromChild',{selectedView:this.radioSelected});
       }
     });
 </script>

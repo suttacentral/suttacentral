@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sutta-plex.html">
 <link rel="import" href="addons/insert-node.html">
@@ -92,7 +93,7 @@ main {
 <paper-toolbar>
       <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"><p class="sutta">{{languageData.name}}—{{suttaList.namepi}}</p></span>
-      <sc-toolbar setting-button="" data-page='text'></sc-toolbar>
+      <sc-toolbar></sc-toolbar>
 </paper-toolbar>
 
 <div class="divisioncontent">
