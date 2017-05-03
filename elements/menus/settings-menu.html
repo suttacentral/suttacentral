@@ -69,7 +69,7 @@ paper-toggle-button{
       <div class="dialogue-section">
       	<h3>View original text with translation</h3>
       	<div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.</div>
-                <paper-radio-group on-change="viewChanger" selected="{{radioSelected}}">
+                <paper-radio-group selected="{{radioSelected}}">
                    	<paper-radio-button name="none">None</paper-radio-button>
                     	<paper-radio-button name="sidebyside"><iron-icon icon="view-column"></iron-icon> Side by side</paper-radio-button>
                     	<paper-radio-button name="linebyline" disabled><iron-icon icon="view-headline" ></iron-icon> Line by line</paper-radio-button>
@@ -137,7 +137,8 @@ paper-toggle-button{
                 metaArea: Object,
                 radioSelected: {
                     type: String,
-                    value: "none"
+                    value: "none",
+                    observer: '_radioGroupChanged'
                 }
       },
       _getReferences: function() {
@@ -149,7 +150,7 @@ paper-toggle-button{
             infotext.classList.add('infomode');
         }
       },
-      viewChanger: function() {
+      _radioGroupChanged: function() {
         console.log(this.radioSelected);
         this.fire('eventFromChild',{selectedView:this.radioSelected});
       }
