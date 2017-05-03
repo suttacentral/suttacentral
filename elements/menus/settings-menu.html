@@ -32,10 +32,7 @@ a {
   text-decoration: none;
   @apply(--accent-color);
 }
-h2{
-  @apply(--paper-font-headline);
-  font-family: 'Skolar Sans PE', sans-serif;
-}
+
 .dialogue-section{
   margin-top:36px;
 }
@@ -143,15 +140,16 @@ paper-toggle-button{
       },
       _getReferences: function() {
         var basetext = document.querySelectorAll('.textcontent.text-page');
-        var infotext = Array.from(basetext)[0];
-        if (infotext.classList.contains('infomode')) {
-            infotext.classList.remove('infomode');
-        } else {
-            infotext.classList.add('infomode');
+        var infotext = Array.from(basetext);
+        for (var i=0; i<infotext.length; i++) {
+            if (infotext[i].classList.contains('infomode')) {
+                infotext[i].classList.remove('infomode');
+            } else {
+                infotext[i].classList.add('infomode');
+            }
         }
       },
       _radioGroupChanged: function() {
-        console.log(this.radioSelected);
         this.fire('eventFromChild',{selectedView:this.radioSelected});
       }
     });

@@ -55,6 +55,11 @@ paper-icon-button {
 paper-dialog paper-icon-button {
   color: var(--disabled-text-color);
 }
+h2{
+  @apply(--paper-font-headline);
+  font-family: 'Skolar Sans PE', sans-serif;
+  margin: 0;
+}
 .splitterbar {
       --vaadin-split-layout-splitter: {
         min-width: 6px;
@@ -113,7 +118,7 @@ paper-dialog paper-icon-button {
     </paper-dialog-scrollable>
   </paper-dialog>
 
-<vaadin-split-layout id="splitterlayout" class="splitterbar">
+<vaadin-split-layout id="splitterlayout" class="splitterbar nosplit">
   <div class="textcontent" inner-h-t-m-l="{{suttaText}}"></div>
   <div class="textcontent noshow" id="original" inner-h-t-m-l="{{originalText}}"></div>
 </vaadin-split-layout>
@@ -148,8 +153,8 @@ paper-dialog paper-icon-button {
           orText.classList.add('noshow');
           splitter.classList.add('nosplit');
         }
+        this.updateStyles();
       },
-
       _computeURL: function(category) {
         return `../texts${category}.html`;
       },
@@ -165,33 +170,22 @@ paper-dialog paper-icon-button {
         console.log(sutta);
       },
       _computeTitle: function(suttaText) {
-        var title = this.querySelectorAll('.division');
-        var firstTitle = Array.from(title)[0];
-        if (firstTitle !== undefined) {
-          return firstTitle.innerText;
-        }
+        var firstTitle = Array.from(this.querySelectorAll('.division'))[0];
+        if (firstTitle !== undefined) {return firstTitle.innerText;}
       },
       _computeAuthor: function(suttaText) {
-        var author = this.querySelectorAll('.author');
-        var firstAuthor = Array.from(author)[0];
-        if (firstAuthor !== undefined) {
-          return firstAuthor.innerText;
-        }
+        var firstAuthor = Array.from(this.querySelectorAll('.author'))[0];
+        if (firstAuthor !== undefined) {return firstAuthor.innerText;}
       },
       _computeMeta: function(suttaText,originalText,paragraphTitles) {
         var firstMeta = Array.from(this.querySelectorAll('#metaarea'))[0];
         this._computePars(suttaText,paragraphTitles);
         this._computePars(originalText,paragraphTitles);
-        if (firstMeta !== undefined) {
-          return firstMeta.innerHTML;
-        }
+        if (firstMeta !== undefined) {return firstMeta.innerHTML;}
       },
-
      _computePars: function(inputText,paragraphTitles) {
         for (var key in paragraphTitles) {
                 var refs = this.querySelectorAll('.'+key);
-                console.log(key);
-                console.log(refs);
                 Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
                 Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
           }
@@ -199,8 +193,6 @@ paper-dialog paper-icon-button {
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});
       }
-
     });
-
 </script>
 </dom-module>

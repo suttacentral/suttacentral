@@ -132,7 +132,7 @@ details p{
         _computeLanguage: function(inputData,inputLanguage) {
           var lanarray = "";
           if (inputData.languages){
-            for (var i=0; i<inputData.languages.length; i=i+1) {
+            for (var i=0; i<inputData.languages.length; i++) {
               if (inputData.languages[i].id === inputLanguage) {
                 var lanarray = inputData.languages[i]
               }
