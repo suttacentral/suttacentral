@@ -118,7 +118,7 @@ paper-icon-button {
         },
         _computeOtherParallels: function(suttaurl){
           var parallelarray = [];
-          for (var i=1; i<suttaurl.relations.length; i=i+1) {
+          for (var i=1; i<suttaurl.relations.length; i++) {
             parallelarray[i-1] = suttaurl.relations[i];
           }
           return parallelarray;

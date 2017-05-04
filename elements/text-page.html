@@ -5,7 +5,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../bower_components/vaadin-split-layout/vaadin-split-layout.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="menus/settings-menu.html">
 <link rel="import" href="sc-toolbar.html">
 
@@ -60,24 +60,6 @@ h2{
   font-family: 'Skolar Sans PE', sans-serif;
   margin: 0;
 }
-.splitterbar {
-      --vaadin-split-layout-splitter: {
-        min-width: 6px;
-        min-height: 4px;
-        background: var(--paper-indigo-500);
-        fill: none;
-      };
-}
-
-.splitterbar.nosplit {
-  --vaadin-split-layout-splitter: {
-        visibility: hidden;
-  };
-}
-
-.noshow {
-  display: none;
-}
 </style>
 <template>
 
@@ -86,12 +68,6 @@ h2{
       url="[[_computeURL(suttaPath)]]"
       handle-as="text"
       last-response="{{suttaText}}"></iron-ajax>
-
-<iron-ajax
-      auto
-      url="[[_computeURLOriginal(suttaPath)]]"
-      handle-as="text"
-      last-response="{{originalText}}"></iron-ajax>
 
 <iron-ajax
       auto
@@ -114,14 +90,11 @@ h2{
     </div>
     <h2>Tools and Information</h2>
     <paper-dialog-scrollable>
-        <settings-menu meta-area="[[_computeMeta(suttaText,originalText,paragraphTitles)]]"></settings-menu>
+        <settings-menu meta-area="[[_computeMeta(suttaText)]]"></settings-menu>
     </paper-dialog-scrollable>
   </paper-dialog>
 
-<vaadin-split-layout id="splitterlayout" class="splitterbar nosplit">
   <div class="textcontent" inner-h-t-m-l="{{suttaText}}"></div>
-  <div class="textcontent noshow" id="original" inner-h-t-m-l="{{originalText}}"></div>
-</vaadin-split-layout>
 
 </paper-scroll-header-panel>
 </template>
@@ -131,43 +104,20 @@ h2{
 
       properties: {
         suttaPath: String,
-        suttaText: {
-          type: String,
-          observer: '_obsInputText'
-        },
-        originalText: {
-          type: String,
-          observer: '_obsOriginalText'          
-        }
+        suttaText: String,
+        paragraphTitles: Object
       },
+      observers: [
+        '_computePars(suttaText,paragraphTitles)'
+      ],
       ready: function() {
         this.addEventListener('eventFromChild', this.changeView);
       },
       changeView: function(event) {
-        var orText = document.getElementById("original");
-        var splitter = document.getElementById("splitterlayout");
-        if (event.detail.selectedView === "sidebyside") {
-          orText.classList.remove('noshow');
-          splitter.classList.remove('nosplit');
-        } else {
-          orText.classList.add('noshow');
-          splitter.classList.add('nosplit');
-        }
-        this.updateStyles();
+        console.log("radiobutton pressed: " + event.detail.selectedView);
       },
       _computeURL: function(category) {
-        return `../texts${category}.html`;
-      },
-      _computeURLOriginal: function(category) {
         return `../texts/pi${category}.html`;
-      },
-      _obsInputText: function(suttaText) {
-        var sutta = this.querySelectorAll('h1');
-        console.log(sutta);
-      },
-      _obsOriginalText: function(originalText) {
-        var sutta = this.querySelectorAll('h1');
-        console.log(sutta);
       },
       _computeTitle: function(suttaText) {
         var firstTitle = Array.from(this.querySelectorAll('.division'))[0];
@@ -177,10 +127,8 @@ h2{
         var firstAuthor = Array.from(this.querySelectorAll('.author'))[0];
         if (firstAuthor !== undefined) {return firstAuthor.innerText;}
       },
-      _computeMeta: function(suttaText,originalText,paragraphTitles) {
+      _computeMeta: function(suttaText) {
         var firstMeta = Array.from(this.querySelectorAll('#metaarea'))[0];
-        this._computePars(suttaText,paragraphTitles);
-        this._computePars(originalText,paragraphTitles);
         if (firstMeta !== undefined) {return firstMeta.innerHTML;}
       },
      _computePars: function(inputText,paragraphTitles) {

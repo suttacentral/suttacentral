@@ -1,0 +1,39 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="load-pali-lookup">
+<template>
+<iron-ajax
+      auto
+      url="[[_computeInputDict(inputDictionary)]]"
+      handle-as="json"
+      last-response="{{lookupDict}}"></iron-ajax>
+</template>
+<script>
+    Polymer({
+      is: 'load-pali-lookup',
+      properties: {
+        wordTest: {
+          type: String,
+          value: "aṃsa"
+        },
+        suttaInput: String,
+        inputDictionary: Number
+      },
+      _computeInputDict: function(inputDictionary){
+        if (inputDictionary === 1) {
+          console.log("English dictionary loaded");
+          return `../../data/dictionaries/pi2en.json`;
+          }
+        },
+        _wordMeaning: function(lookupDict,word) {
+          return lookupDict[word];
+        },
+        ready: function() {
+          console.log("I'm ready");
+          var paliRex = /([aiueokgcjtdnpbmyrlvshāīūṭḍṅṇṃñḷ’­”]+)/i;
+          var splitRex = /([^  \n,.– —:;?!"'“‘-]+)/;
+          // I did not get much further with this one, realising the difficulties with it. You need to pass info back to text-page.html where the textcontent is loaded and change the markup there.
+        }
+});
+</script>

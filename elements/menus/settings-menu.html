@@ -8,6 +8,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
+<link rel="import" href="load-pali-lookup.html">
 
 <dom-module id="settings-menu" attributes="selectedView">
 <style is="custom-style">
@@ -54,6 +55,11 @@ paper-dropdown-menu, paper-listbox {
 paper-toggle-button{
   margin-top:8px;
 }
+@media screen and (max-width: 769px) {
+    #sides {
+        display:none;
+    }
+}
 </style>
 <template>
   <div class="paper-dialogue-container">
@@ -68,7 +74,7 @@ paper-toggle-button{
       	<div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.</div>
                 <paper-radio-group selected="{{radioSelected}}">
                    	<paper-radio-button name="none">None</paper-radio-button>
-                    	<paper-radio-button name="sidebyside"><iron-icon icon="view-column"></iron-icon> Side by side</paper-radio-button>
+                    	<paper-radio-button id="sides" name="sidebyside"><iron-icon icon="view-column"></iron-icon> Side by side</paper-radio-button>
                     	<paper-radio-button name="linebyline" disabled><iron-icon icon="view-headline" ></iron-icon> Line by line</paper-radio-button>
                     	<paper-radio-button name="popup"><iron-icon icon="editor:insert-comment"></iron-icon> Pop-up</paper-radio-button>
                 </paper-radio-group>
@@ -78,7 +84,7 @@ paper-toggle-button{
 	      <h3>Activate Pali word lookup</h3>
 	      <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this  is an aid only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.</div>
 	      <paper-dropdown-menu label="Lookup">
-	        <paper-listbox class="dropdown-content" selected="0">
+	        <paper-listbox class="dropdown-content" selected="{{paliLookupSelected}}">
 	          <paper-item>None</paper-item>
 	          <paper-item>Pali → English</paper-item>
 	          <paper-item>Pali → Chinese</paper-item>
@@ -86,6 +92,9 @@ paper-toggle-button{
 	          <paper-item>Pali → Indonesian</paper-item>
 	        </paper-listbox>
 	      </paper-dropdown-menu>
+              <template is="dom-if" if="[[paliLookupEnabled]]">
+                  <load-pali-lookup input-dictionary="[[paliLookupSelected]]"></load-pali-lookup>
+              </template>
       </div>
 
       <div class="dialogue-section">
@@ -136,8 +145,19 @@ paper-toggle-button{
                     type: String,
                     value: "none",
                     observer: '_radioGroupChanged'
+                },
+                 paliLookupSelected: {
+                    type: Number,
+                    value: 0
+                },
+                paliLookupEnabled: {
+                  type: Boolean,
+                  value: false
                 }
       },
+      observers: [
+        '_paliLookup(paliLookupSelected,paliLookupEnabled)'
+      ],
       _getReferences: function() {
         var basetext = document.querySelectorAll('.textcontent.text-page');
         var infotext = Array.from(basetext);
@@ -151,6 +171,9 @@ paper-toggle-button{
       },
       _radioGroupChanged: function() {
         this.fire('eventFromChild',{selectedView:this.radioSelected});
+      },
+      _paliLookup: function(paliLookupSelected,paliLookupEnabled) {
+        if (paliLookupSelected > 0) {this.paliLookupEnabled = true;}
       }
     });
 </script>
