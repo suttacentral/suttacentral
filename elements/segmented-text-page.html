@@ -180,21 +180,17 @@ h2{
         for (var i=0; i<sideways.length; i++) {
                 sideways[i].classList.remove('sidebyside');
             }
-        if (event.detail.selectedView === "none") {
-          this.querySelectorAll('.textcontent')[0].classList.add('nopops');
-          this.paliLoadEnabled = false;
-          this.paliShowEnabled = false;
-          }
+        this.querySelectorAll('.textcontent')[0].classList.add('nopops');
+        this.paliLoadEnabled = false;
+        this.paliShowEnabled = false;
         if (event.detail.selectedView === "sidebyside") {
           this.querySelectorAll('.textcontent')[0].classList.add('expanded');
-          this.querySelectorAll('.textcontent')[0].classList.add('nopops');
           this.paliLoadEnabled = true;
           this.paliShowEnabled = true;
           this._computeSideSegments(originalText,paragraphTitles);
           this._addSideBySideCode(originalText);
         }
        if (event.detail.selectedView === "linebyline") {
-        this.querySelectorAll('.textcontent')[0].classList.add('nopops');
         this.paliLoadEnabled = true;
         this.paliShowEnabled = true;
         this._computeSideSegments(originalText,paragraphTitles);
