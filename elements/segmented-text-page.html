@@ -236,7 +236,7 @@ h2{
       },
       _addPopUps: function(originalText) {
         if (originalText) {
-          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML+"<paper-tooltip>"+originalText.segments[item.id]+"</paper-tooltip>");
+          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML+"<paper-tooltip position='left'>"+originalText.segments[item.id]+"</paper-tooltip>");
         }
       },
       toggleDrawer: function() {
