@@ -1,0 +1,251 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="addons/sc-segment.html">
+<link rel="import" href="menus/settings-menu.html">
+<link rel="import" href="sc-toolbar.html">
+
+<dom-module id="segmented-text-page" attributes="togdraw">
+<style is="custom-style">
+paper-scroll-header-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 100%;
+}
+paper-toolbar {
+   background-color: var(--sc-gold-500);
+  @apply(--shadow-elevation-8dp);
+}
+.sutta {
+  font-family: 'Skolar PE', serif;
+  text-transform: capitalize;
+}
+
+@media (max-width: 600px) {
+    h1 {
+      font-size: 2em;
+      padding-top: 0.2em;
+    };
+    .subtitle {
+      font-size: 1em;
+    };
+    .paper-header {
+      height: 11em;
+    };
+}
+paper-icon-button {
+  color: white;
+}
+.textcontent {
+  @apply(--sc-serif-font)
+  color: var(--primary-text-color);
+  margin: 6em auto 0!important;
+  padding: 0 5%!important;
+  max-width: 40em;
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+.textcontent.expanded {
+  max-width: 60em;
+}
+
+@media screen and (min-width: 769px) {
+    #drawertoggle {
+        display:none;
+    }
+}
+paper-dialog paper-icon-button {
+  color: var(--disabled-text-color);
+}
+h2{
+  @apply(--paper-font-headline);
+  font-family: 'Skolar Sans PE', sans-serif;
+  margin: 0;
+}
+.lineblock >div {
+  vertical-align: top;
+}
+.linepi {
+  font-family: 'Skolar Sans PE', sans-serif;
+}
+
+.sidebyside >div {
+  display: inline-block;
+  width: 48%;
+  padding: 0 5px;
+}
+
+</style>
+<template>
+<iron-ajax
+      auto
+      url="[[_computeURLBase(suttaPath)]]"
+      handle-as="json"
+      last-response="{{baseText}}"></iron-ajax>
+
+<iron-ajax
+      auto
+      url="[[_computeURL(suttaPath)]]"
+      handle-as="json"
+      last-response="{{suttaText}}"></iron-ajax>
+
+<iron-ajax
+      auto
+      url="../data/paragraphtitles.json"
+      handle-as="json"
+      last-response="{{paragraphTitles}}"></iron-ajax>
+
+  <template is="dom-if" if="[[paliLoadEnabled]]">
+      <iron-ajax
+              auto
+              url="[[_computeURLOriginal(suttaPath)]]"
+              handle-as="json"
+              last-response="{{originalText}}"></iron-ajax>
+ </template>
+
+<paper-scroll-header-panel main>
+
+<paper-toolbar>
+      <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
+      <span class="title"><p class="sutta">[[suttaText.title]]—[[suttaText.author]]</p></span>
+      <sc-toolbar></sc-toolbar>
+      <paper-icon-button id="settingsbutton" icon="settings" onclick="settings.open()"></paper-icon-button>
+</paper-toolbar>
+
+  <paper-dialog id="settings" modal>
+    <div class="buttons">
+      <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
+    </div>
+    <h2>Tools and Information</h2>
+    <paper-dialog-scrollable>
+        <settings-menu meta-area="[[suttaText.meta]]"></settings-menu>
+    </paper-dialog-scrollable>
+  </paper-dialog>
+
+  <div class="textcontent">
+      <div inner-h-t-m-l="{{suttaText.hgroup}}"></div>
+      <template is="dom-repeat" items="{{baseText.lines}}" as="line">
+        <div class="lineblock">
+            <div class="line" id="line{{line.lineid}}" inner-h-t-m-l="{{line.linetext}}"></div>
+              <template is="dom-if" if="[[paliShowEnabled]]">
+                      <div class="linepi" id='linepi{{line.lineid}}' inner-h-t-m-l="{{line.linetext}}"></div>
+              </template>
+        </div>
+      </template>
+  </div>
+
+</paper-scroll-header-panel>
+</template>
+<script>
+    Polymer({
+      is: 'segmented-text-page',
+
+      properties: {
+        suttaPath: String,
+        suttaText: Object,
+        paragraphTitles: Object,
+        originalText: Object,
+        paliShowEnabled: {
+          type: Boolean,
+          value: false
+        },
+        paliLoadEnabled: {
+          type: Boolean,
+          value: false
+        }
+      },
+      observers: [
+        '_computeSegments(suttaText,paragraphTitles)',
+        '_computeSideSegments(originalText,paragraphTitles)',
+        '_addPopUps(originalText)'
+      ],
+      ready: function() {
+        this.addEventListener('eventFromChild', this.changeView);
+      },
+      changeView: function(event,originalText,paragraphTitles) {
+        console.log("radiobutton pressed: " + event.detail.selectedView);
+        this.querySelectorAll('.textcontent')[0].classList.remove('expanded');
+        var sideways = this.querySelectorAll(".sidebyside");
+        for (var i=0; i<sideways.length; i++) {
+                sideways[i].classList.remove('sidebyside');
+            }
+        if (event.detail.selectedView === "none") {
+          this.querySelectorAll('.textcontent')[0].classList.add('nopops');
+          this.paliLoadEnabled = false;
+          this.paliShowEnabled = false;
+          }
+        if (event.detail.selectedView === "sidebyside") {
+          this.querySelectorAll('.textcontent')[0].classList.add('expanded');
+          this.querySelectorAll('.textcontent')[0].classList.add('nopops');
+          this.paliLoadEnabled = true;
+          this.paliShowEnabled = true;
+          this._computeSideSegments(originalText,paragraphTitles);
+          this._addSideBySideCode(originalText);
+        }
+       if (event.detail.selectedView === "linebyline") {
+        this.querySelectorAll('.textcontent')[0].classList.add('nopops');
+        this.paliLoadEnabled = true;
+        this.paliShowEnabled = true;
+        this._computeSideSegments(originalText,paragraphTitles);
+       }
+       if (event.detail.selectedView === "popup") {
+        this.querySelectorAll('.textcontent')[0].classList.remove('nopops');
+        this.paliLoadEnabled = true;
+        this.paliShowEnabled = false;
+        this._addPopUps(originalText);
+       }
+      },
+      _computeURL: function(category) {
+        return `../texts/sujato/${category}.json`;
+      },
+      _computeURLBase: function(category) {
+        return `../texts/${category}.json`;
+      },
+      _computeURLOriginal: function(category) {
+        return `../texts/pi/${category}.json`;
+      },
+     _computePars: function(paragraphTitles) {
+        for (var key in paragraphTitles) {
+                var refs = this.querySelectorAll('.'+key);
+                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
+                Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
+          }
+      },
+      _computeSegments: function(suttaText,paragraphTitles) {
+        Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = suttaText.segments[item.id]);
+        this._computePars(paragraphTitles);
+      },
+      _addSideBySideCode: function(originalText) {
+        var sideways = this.querySelectorAll(".lineblock");
+        for (var i=0; i<sideways.length; i++) {
+                sideways[i].classList.add('sidebyside');
+            }
+        },
+      _computeSideSegments: function(originalText,paragraphTitles) {
+        if (originalText) {
+          Array.from(this.querySelectorAll(".linepi sc-segment")).forEach(item => item.innerHTML = originalText.segments[item.id]);
+          this._computePars(paragraphTitles);
+        }
+      },
+      _addPopUps: function(originalText) {
+        if (originalText) {
+          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML+"<paper-tooltip>"+originalText.segments[item.id]+"</paper-tooltip>");
+        }
+      },
+      toggleDrawer: function() {
+        this.fire('eventFromChild',{togdraw:"drawer"});
+      }
+    });
+</script>
+</dom-module>

@@ -45,7 +45,6 @@ paper-icon-button {
 }
 .textcontent {
   color: var(--primary-text-color);
-  padding: 24px 0;
 }
 @media screen and (min-width: 769px) {
     #drawertoggle {
@@ -79,7 +78,7 @@ h2{
 
 <paper-toolbar>
       <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
-      <span class="title"><p class="sutta">[[_computeTitle(suttaText)]]—[[_computeAuthor(suttaText)]]</p></span>
+      <span class="title"><p class="sutta">[[_computeTitle(suttaText)]][[_computeAuthor(suttaText)]]</p></span>
       <sc-toolbar></sc-toolbar>
       <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
 </paper-toolbar>
@@ -110,14 +109,8 @@ h2{
       observers: [
         '_computePars(suttaText,paragraphTitles)'
       ],
-      ready: function() {
-        this.addEventListener('eventFromChild', this.changeView);
-      },
-      changeView: function(event) {
-        console.log("radiobutton pressed: " + event.detail.selectedView);
-      },
       _computeURL: function(category) {
-        return `../texts/pi${category}.html`;
+        return `../texts/${category}.html`;
       },
       _computeTitle: function(suttaText) {
         var firstTitle = Array.from(this.querySelectorAll('.division'))[0];
@@ -125,7 +118,7 @@ h2{
       },
       _computeAuthor: function(suttaText) {
         var firstAuthor = Array.from(this.querySelectorAll('.author'))[0];
-        if (firstAuthor !== undefined) {return firstAuthor.innerText;}
+        if (firstAuthor !== undefined) {return "—"+firstAuthor.innerText;}
       },
       _computeMeta: function(suttaText) {
         var firstMeta = Array.from(this.querySelectorAll('#metaarea'))[0];

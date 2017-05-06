@@ -3,6 +3,7 @@
 <link rel="import" href="division-page.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="text-page.html">
+<link rel="import" href="segmented-text-page.html">
 <dom-module id="page-selector">
 <style is="custom-style">
 
@@ -38,6 +39,11 @@
       active="{{suttaActive}}"></text-page>
 </template>
 
+<template is="dom-if" if="{{_checkSujato(route)}}">
+  <segmented-text-page sutta-path="{{route.prefix}}"
+      active="{{suttaActive}}"></segmented-text-page>
+</template>
+
 </div>
 </template>
 <script>
@@ -55,7 +61,12 @@
         }
       },
       _checkText: function(route) {
-        if (route.path !== "/list" && route.path !== "") {
+        if (route.path !== "/list" && route.path !== "" && route.path !=="/sujato") {
+          return true;
+          }
+        },
+      _checkSujato: function(route) {
+        if (route.path === "/sujato") {
           return true;
         }
       }

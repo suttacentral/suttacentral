@@ -140,12 +140,11 @@ main {
           sutta.classList.remove('expandeditem');
         }
       },
-
       _computeURL: function(category) {
         return `../data/list/${category}.json`;
       },
       _computeLanguage: function(suttaList,inputLanguage) {
-        return suttaList[inputLanguage];
+        return suttaList ? suttaList[inputLanguage] : "";
       },
       _computeVagganame: function(vagga,inputLanguage) {
         return vagga[inputLanguage].vagganame;

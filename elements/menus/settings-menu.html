@@ -8,7 +8,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
-<link rel="import" href="load-pali-lookup.html">
+<link rel="import" href="../addons/load-dictionary-lookup.html">
 
 <dom-module id="settings-menu" attributes="selectedView">
 <style is="custom-style">
@@ -66,7 +66,7 @@ paper-toggle-button{
       <div class="dialogue-section">
       	<h3>View textual information</h3>
       	<div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-      	<paper-toggle-button noink on-tap="_getReferences"></paper-toggle-button>
+      	<paper-toggle-button noink active="{{textualInfoEnabled}}"></paper-toggle-button>
       </div>
 
       <div class="dialogue-section">
@@ -75,7 +75,7 @@ paper-toggle-button{
                 <paper-radio-group selected="{{radioSelected}}">
                    	<paper-radio-button name="none">None</paper-radio-button>
                     	<paper-radio-button id="sides" name="sidebyside"><iron-icon icon="view-column"></iron-icon> Side by side</paper-radio-button>
-                    	<paper-radio-button name="linebyline" disabled><iron-icon icon="view-headline" ></iron-icon> Line by line</paper-radio-button>
+                    	<paper-radio-button name="linebyline"><iron-icon icon="view-headline" ></iron-icon> Line by line</paper-radio-button>
                     	<paper-radio-button name="popup"><iron-icon icon="editor:insert-comment"></iron-icon> Pop-up</paper-radio-button>
                 </paper-radio-group>
       </div>
@@ -85,15 +85,13 @@ paper-toggle-button{
 	      <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this  is an aid only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.</div>
 	      <paper-dropdown-menu label="Lookup">
 	        <paper-listbox class="dropdown-content" selected="{{paliLookupSelected}}">
-	          <paper-item>None</paper-item>
-	          <paper-item>Pali → English</paper-item>
-	          <paper-item>Pali → Chinese</paper-item>
-	          <paper-item>Pali → Spanish</paper-item>
-	          <paper-item>Pali → Indonesian</paper-item>
+                  <template is="dom-repeat" items="{{paliLookupArray}}" as="dictlanguage">
+	               <paper-item>{{dictlanguage.language}}</paper-item>
+                  </template>
 	        </paper-listbox>
 	      </paper-dropdown-menu>
-              <template is="dom-if" if="[[paliLookupEnabled]]">
-                  <load-pali-lookup input-dictionary="[[paliLookupSelected]]"></load-pali-lookup>
+              <template is="dom-if" if="{{_dictionaryLookup(paliLookupSelected)}}">
+                  <load-dictionary-lookup input-dictionary="[[_getDictionary(paliLookupArray,paliLookupSelected)]]"></load-dictionary-lookup>
               </template>
       </div>
 
@@ -101,11 +99,15 @@ paper-toggle-button{
 	      <h3>Activate Chinese word lookup</h3>
 	      <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.</div>
 	      <paper-dropdown-menu label="Lookup">
-	        <paper-listbox class="dropdown-content" selected="0">
-                            <paper-item>None</paper-item>
-	           <paper-item>Chinese → English</paper-item>
+	        <paper-listbox class="dropdown-content" selected="{{chineseLookupSelected}}">
+                  <template is="dom-repeat" items="{{chineseLookupArray}}" as="dictlanguage">
+                        <paper-item>{{dictlanguage.language}}</paper-item>
+                  </template>
 	        </paper-listbox>
 	      </paper-dropdown-menu>
+              <template is="dom-if" if="{{_dictionaryLookup(chineseLookupSelected)}}">
+                  <load-dictionary-lookup input-dictionary="[[_getDictionary(chineseLookupArray,chineseLookupSelected)]]"></load-dictionary-lookup>
+              </template>
       </div>
 
       <div class="dialogue-section">
@@ -146,23 +148,50 @@ paper-toggle-button{
                     value: "none",
                     observer: '_radioGroupChanged'
                 },
+                paliLookupArray: {
+                  type: Array,
+                  value: [{
+                                "dict": "none",
+                                "language": "None"
+                              },
+                              {
+                                "dict": "pi2en",
+                                "language": "Pali → English"
+                              },
+                              {
+                                "dict": "pi2es",
+                                "language": "Pali → Spanish"
+                              }]
+                },
                  paliLookupSelected: {
                     type: Number,
-                    value: 0
+                    value: 0,
                 },
-                paliLookupEnabled: {
+                chineseLookupArray: {
+                  type: Array,
+                  value: [{
+                                "dict": "none",
+                                "language": "None"
+                              },
+                              {
+                                "dict": "lzh2en",
+                                "language": "Chinese → English"
+                              }]
+                },
+                 chineseLookupSelected: {
+                    type: Number,
+                    value: 0,
+                },
+                textualInfoEnabled: {
                   type: Boolean,
-                  value: false
+                  value: false,
+                  observer: "_getReferences"
                 }
       },
-      observers: [
-        '_paliLookup(paliLookupSelected,paliLookupEnabled)'
-      ],
-      _getReferences: function() {
-        var basetext = document.querySelectorAll('.textcontent.text-page');
-        var infotext = Array.from(basetext);
+      _getReferences: function(textualInfoEnabled) {
+        var infotext = Array.from(document.querySelectorAll('.textcontent'));
         for (var i=0; i<infotext.length; i++) {
-            if (infotext[i].classList.contains('infomode')) {
+            if (textualInfoEnabled === false) {
                 infotext[i].classList.remove('infomode');
             } else {
                 infotext[i].classList.add('infomode');
@@ -172,8 +201,11 @@ paper-toggle-button{
       _radioGroupChanged: function() {
         this.fire('eventFromChild',{selectedView:this.radioSelected});
       },
-      _paliLookup: function(paliLookupSelected,paliLookupEnabled) {
-        if (paliLookupSelected > 0) {this.paliLookupEnabled = true;}
+      _dictionaryLookup: function(valueSelected) {
+        return (valueSelected > 0) ? true : false;
+      },
+      _getDictionary: function(valueArray,valueSelected) {
+        return valueArray[valueSelected].dict;
       }
     });
 </script>
