@@ -1,0 +1,4 @@
+# Contents of this folder should not be checked in
+*
+# Except this file
+!.gitignore
