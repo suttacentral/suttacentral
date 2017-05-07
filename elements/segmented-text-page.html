@@ -155,7 +155,10 @@ h2{
         suttaPath: String,
         suttaText: Object,
         paragraphTitles: Object,
-        originalText: Object,
+        originalText: {
+          type: Object,
+          observer: "_isPaliLoaded"
+        },
         paliShowEnabled: {
           type: Boolean,
           value: false
@@ -166,14 +169,17 @@ h2{
         }
       },
       observers: [
-        '_computeSegments(suttaText,paragraphTitles)',
-        '_computeSideSegments(originalText,paragraphTitles)',
-        '_addPopUps(originalText)'
+        '_computeSegments(suttaText,".line")',
+        '_computeSegments(originalText,".linepi")'
       ],
       ready: function() {
         this.addEventListener('eventFromChild', this.changeView);
       },
-      changeView: function(event,originalText,paragraphTitles) {
+      _isPaliLoaded(newValue,oldValue){
+        console.log("Oldvalue:" + oldValue + " Newvalue: " + newValue);
+        console.log(this.originalText);
+      },
+      changeView: function(event) {
         console.log("radiobutton pressed: " + event.detail.selectedView);
         this.querySelectorAll('.textcontent')[0].classList.remove('expanded');
         var sideways = this.querySelectorAll(".sidebyside");
@@ -187,19 +193,19 @@ h2{
           this.querySelectorAll('.textcontent')[0].classList.add('expanded');
           this.paliLoadEnabled = true;
           this.paliShowEnabled = true;
-          this._computeSideSegments(originalText,paragraphTitles);
-          this._addSideBySideCode(originalText);
+          this._computeSegments(this.originalText,".linepi");
+          this._addSideBySideCode();
         }
        if (event.detail.selectedView === "linebyline") {
         this.paliLoadEnabled = true;
         this.paliShowEnabled = true;
-        this._computeSideSegments(originalText,paragraphTitles);
+        this._computeSegments(this.originalText,".linepi");
        }
        if (event.detail.selectedView === "popup") {
         this.querySelectorAll('.textcontent')[0].classList.remove('nopops');
         this.paliLoadEnabled = true;
         this.paliShowEnabled = false;
-        this._addPopUps(originalText);
+        this._addPopUps();
        }
       },
       _computeURL: function(category) {
@@ -211,33 +217,23 @@ h2{
       _computeURLOriginal: function(category) {
         return `../texts/pi/${category}.json`;
       },
-     _computePars: function(paragraphTitles) {
-        for (var key in paragraphTitles) {
+     _computePars: function() {
+        for (var key in this.paragraphTitles) {
                 var refs = this.querySelectorAll('.'+key);
                 Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
-                Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
+                Array.from(refs).forEach(item => item.title = this.paragraphTitles[key]);
           }
       },
-      _computeSegments: function(suttaText,paragraphTitles) {
-        Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = suttaText.segments[item.id]);
-        this._computePars(paragraphTitles);
+      _computeSegments: function(inputText,linetype) {
+        Array.from(this.querySelectorAll(linetype+" sc-segment")).forEach(item => item.innerHTML = inputText.segments[item.id]);
+        this._computePars();
       },
-      _addSideBySideCode: function(originalText) {
+      _addSideBySideCode: function() {
         var sideways = this.querySelectorAll(".lineblock");
-        for (var i=0; i<sideways.length; i++) {
-                sideways[i].classList.add('sidebyside');
-            }
+        for (var i=0; i<sideways.length; i++) {sideways[i].classList.add('sidebyside');}
         },
-      _computeSideSegments: function(originalText,paragraphTitles) {
-        if (originalText) {
-          Array.from(this.querySelectorAll(".linepi sc-segment")).forEach(item => item.innerHTML = originalText.segments[item.id]);
-          this._computePars(paragraphTitles);
-        }
-      },
-      _addPopUps: function(originalText) {
-        if (originalText) {
-          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML+"<paper-tooltip position='left'>"+originalText.segments[item.id]+"</paper-tooltip>");
-        }
+      _addPopUps: function() {
+          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML+"<paper-tooltip position='top' fitToVisibleBounds>"+this.originalText.segments[item.id]+"</paper-tooltip>");
       },
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});
