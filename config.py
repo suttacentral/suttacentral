@@ -33,5 +33,3 @@ po_mappings = [
         'markup_to': 'markup/an'
     }
 ]
-    
-        

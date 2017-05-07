@@ -8,5 +8,11 @@ collections = [
 ]
 
 for collection in collections:
-    exec('from tasks import {} as module'.format(collection))
+    try:
+        exec('from tasks import {} as module'.format(collection))
+    except ImportError as e:
+        print(e.msg)
+        print('Maybe try running "pip install -r python-requirements.txt"')
+        exit(1)
+        
     ns.add_collection(module)
