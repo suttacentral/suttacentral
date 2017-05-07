@@ -30,7 +30,7 @@ po_mappings = [
         'po_path': 'an/en',
         'msgstr_to': 'en/sujato/an',
         'msgid_to': 'pi/an',
-        'markup_to': 'markup/sn'
+        'markup_to': 'markup/an'
     }
 ]
     
