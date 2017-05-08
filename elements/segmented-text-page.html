@@ -123,11 +123,11 @@ h2{
 
   <div class="textcontent">
       <div inner-h-t-m-l="{{suttaText.hgroup}}"></div>
-      <template is="dom-repeat" items="{{baseText.lines}}" as="line">
+      <template is="dom-repeat" items="{{baseText}}" as="line">
         <div class="lineblock">
-            <div class="line" id="line{{line.lineid}}" inner-h-t-m-l="{{line.linetext}}"></div>
+            <div class="line" inner-h-t-m-l="{{line}}"></div>
               <template is="dom-if" if="[[paliShowEnabled]]">
-                      <div class="linepi" id='linepi{{line.lineid}}' inner-h-t-m-l="{{line.linetext}}"></div>
+                      <div class="linepi" inner-h-t-m-l="{{line}}"></div>
               </template>
         </div>
       </template>
