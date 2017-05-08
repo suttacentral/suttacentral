@@ -1,4 +1,3 @@
-import babel.dates
 import errno
 import fcntl
 import os
@@ -8,7 +7,7 @@ import time
 import regex
 import hashlib
 import pickle
-import lz4
+
 
 from pathlib import Path
 from collections import deque
@@ -19,7 +18,7 @@ from datetime import datetime
 from typing import Union, Callable, Optional
 HASH = hashlib._hashlib.HASH
 
-from . import config
+import config
 
 @contextmanager
 def filelock(path, block=True):
@@ -51,24 +50,6 @@ def filelock(path, block=True):
                 raise
         yield acquired
 
-def format_date(value, format='short', locale=config.default_locale):
-    return babel.dates.format_date(value, format=format, locale=locale)
-
-def format_datetime(value, format='short', locale=config.default_locale):
-    rfc3339 = format == 'rfc3339'
-    if rfc3339:
-        format = 'yyyy-MM-ddTHH:mm:ssZ'
-    datetime = babel.dates.format_datetime(value, format=format, locale=locale)
-    if rfc3339:
-        datetime = datetime[:-2] + ':' + datetime[-2:]
-    return datetime
-
-def format_time(value, format='short', locale=config.default_locale):
-    return babel.dates.format_time(value, format=format, locale=locale)
-
-def format_timedelta(value, locale=config.default_locale):
-    delta = datetime.now() - value
-    return babel.dates.format_timedelta(delta, locale=locale)
 
 def wrap(text, width=80, indent=0):
     """Returns text wrapped and indented."""
@@ -298,14 +279,3 @@ def get_folder_deep_md5(folder:Union[str, Path], check_mtime=True, follow_symlin
         if check_mtime:
             md5.update(str(os.stat(file).st_mtime_ns).encode('utf-16'))
     return md5
-
-def lz4_pickle_dump(data, filename):
-    path = pathlib.Path(filename)
-    with path.open('wb') as f:
-        f.write(lz4.compress(pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)))
-    
-def lz4_pickle_load(filename):
-    path = pathlib.Path(filename)
-    with path.open('rb') as f:
-        return pickle.loads(lz4.uncompress(f.read()))
-
