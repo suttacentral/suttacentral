@@ -113,15 +113,15 @@ h2{
         return `../texts/${category}.html`;
       },
       _computeTitle: function(suttaText) {
-        var firstTitle = Array.from(this.querySelectorAll('.division'))[0];
+        var firstTitle = this.$$('.division');
         if (firstTitle !== undefined) {return firstTitle.innerText;}
       },
       _computeAuthor: function(suttaText) {
-        var firstAuthor = Array.from(this.querySelectorAll('.author'))[0];
+        var firstAuthor = this.$$('.author');
         if (firstAuthor !== undefined) {return "—"+firstAuthor.innerText;}
       },
       _computeMeta: function(suttaText) {
-        var firstMeta = Array.from(this.querySelectorAll('#metaarea'))[0];
+        var firstMeta = this.$$('#metaarea');
         if (firstMeta !== undefined) {return firstMeta.innerHTML;}
       },
      _computePars: function(inputText,paragraphTitles) {

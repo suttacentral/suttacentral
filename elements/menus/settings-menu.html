@@ -197,13 +197,11 @@ paper-toggle-button{
                 }
       },
       _getReferences: function(textualInfoEnabled) {
-        var infotext = Array.from(document.querySelectorAll('body'));
-        for (var i=0; i<infotext.length; i++) {
-            if (textualInfoEnabled === false) {
-                infotext[i].classList.remove('infomode');
-            } else {
-                infotext[i].classList.add('infomode');
-            }
+        var infotext = document.querySelector('body');
+        if (textualInfoEnabled === false) {
+            infotext.classList.remove('infomode');
+        } else {
+            infotext.classList.add('infomode');
         }
       },
       _radioGroupChanged: function() {

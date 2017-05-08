@@ -85,7 +85,9 @@ h2{
   width: 48%;
   padding: 0 5px;
 }
-
+.hidepali {
+    display:none;
+}
 </style>
 <template>
 <iron-ajax
@@ -93,14 +95,6 @@ h2{
       url="[[_computeURLBase(suttaPath)]]"
       handle-as="json"
       last-response="{{baseText}}"></iron-ajax>
-
-  <template is="dom-if" if="[[paliLoadEnabled]]">
-      <iron-ajax
-              auto
-              url="[[_computeURLOriginal(suttaPath)]]"
-              handle-as="json"
-              last-response="{{originalText}}"></iron-ajax>
- </template>
 
 <paper-scroll-header-panel main>
 
@@ -126,14 +120,18 @@ h2{
       <template is="dom-repeat" items="{{baseText}}" as="line">
         <div class="lineblock">
             <div class="line" inner-h-t-m-l="{{line}}"></div>
-              <template is="dom-if" if="[[paliShowEnabled]]">
-                      <div class="linepi" inner-h-t-m-l="{{line}}"></div>
-              </template>
+            <div class="linepi hidepali" inner-h-t-m-l="{{line}}"></div>
         </div>
       </template>
   </div>
 
 </paper-scroll-header-panel>
+
+<iron-ajax
+              auto
+              url="[[_computeURLOriginal(suttaPath)]]"
+              handle-as="json"
+              last-response="{{originalText}}"></iron-ajax>
 
 <iron-ajax
       auto
@@ -156,14 +154,6 @@ h2{
         suttaText: Object,
         paragraphTitles: Object,
         originalText: Object,
-        paliShowEnabled: {
-          type: Boolean,
-          value: false
-        },
-        paliLoadEnabled: {
-          type: Boolean,
-          value: false
-        },
         showViewer: {
           type: String,
           value: "none"
@@ -183,32 +173,17 @@ h2{
       },
       setView: function(showViewer) {
         console.log("I'm at setView", showViewer);
-        this.querySelectorAll('.textcontent')[0].classList.remove('expanded');
-        this.querySelectorAll('.textcontent')[0].classList.add('nopops');
-        var sideways = this.querySelectorAll(".sidebyside");
-        for (var i=0; i<sideways.length; i++) {
-                sideways[i].classList.remove('sidebyside');
-            }
-        if (showViewer === "none") {
-          this.paliShowEnabled = false;
-          this.paliLoadEnabled = false;
-        }
+        this._cleanCode();
         if (showViewer === "sidebyside") {
-          this.querySelectorAll('.textcontent')[0].classList.add('expanded');
-          this.paliShowEnabled = true;
-          this.paliLoadEnabled = true;
-          this._computeSegments(this.originalText,".linepi");
+          this.$$('.textcontent').classList.add('expanded');
+          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
           this._addSideBySideCode();
         }
        if (showViewer === "linebyline") {
-        this.paliShowEnabled = true;
-        this.paliLoadEnabled = true;
-        this._computeSegments(this.originalText,".linepi");
+          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
        }
        if (showViewer === "popup") {
-        this.querySelectorAll('.textcontent')[0].classList.remove('nopops');
-        this.paliShowEnabled = false;
-        this.paliLoadEnabled = true;
+        // this.$$('.textcontent').classList.remove('nopops'); USED FOR TOOLTIPS ONLY
         this._addPopUps();
        }
       },
@@ -232,15 +207,22 @@ h2{
         if (inputText) {
           Array.from(this.querySelectorAll(linetype+" sc-segment")).forEach(item => item.innerHTML = inputText.segments[item.id]);
           this._computePars();
+          this.setView(this.showViewer);
         }
       },
       _addSideBySideCode: function() {
-        var sideways = this.querySelectorAll(".lineblock");
-        for (var i=0; i<sideways.length; i++) {sideways[i].classList.add('sidebyside');}
+        Array.from(this.querySelectorAll(".lineblock")).forEach(item => item.classList.add('sidebyside'));
         },
       _addPopUps: function() {
           // Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML+"<paper-tooltip position='top' fitToVisibleBounds>"+this.originalText.segments[item.id]+"</paper-tooltip>");
           Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.title = this.originalText.segments[item.id]);
+      },
+      _cleanCode: function() {
+          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.title = "");
+          Array.from(this.querySelectorAll(".sidebyside")).forEach(item => item.classList.remove('sidebyside'));
+          this.$$('.textcontent').classList.remove('expanded');
+          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.add('hidepali'));
+          // this.$$('.textcontent').classList.add('nopops');   USED FOR TOOLTIPS ONLY
       },
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});
