@@ -155,10 +155,7 @@ h2{
         suttaPath: String,
         suttaText: Object,
         paragraphTitles: Object,
-        originalText: {
-          type: Object,
-          observer: "_isPaliLoaded"
-        },
+        originalText: Object,
         paliShowEnabled: {
           type: Boolean,
           value: false
@@ -166,45 +163,52 @@ h2{
         paliLoadEnabled: {
           type: Boolean,
           value: false
+        },
+        showViewer: {
+          type: String,
+          value: "none"
         }
       },
       observers: [
-        '_computeSegments(suttaText,".line")',
-        '_computeSegments(originalText,".linepi")'
+       'setView(showViewer)',
+       ' _computeSegments(suttaText,".line")',
+       ' _computeSegments(originalText,".linepi")'
       ],
       ready: function() {
         this.addEventListener('eventFromChild', this.changeView);
       },
-      _isPaliLoaded(newValue,oldValue){
-        console.log("Oldvalue:" + oldValue + " Newvalue: " + newValue);
-        console.log(this.originalText);
-      },
       changeView: function(event) {
-        console.log("radiobutton pressed: " + event.detail.selectedView);
+        this.showViewer = event.detail.selectedView;
+        console.log("radiobutton pressed: " + this.showViewer);
+      },
+      setView: function(showViewer) {
+        console.log("I'm at setView", showViewer);
         this.querySelectorAll('.textcontent')[0].classList.remove('expanded');
+        this.querySelectorAll('.textcontent')[0].classList.add('nopops');
         var sideways = this.querySelectorAll(".sidebyside");
         for (var i=0; i<sideways.length; i++) {
                 sideways[i].classList.remove('sidebyside');
             }
-        this.querySelectorAll('.textcontent')[0].classList.add('nopops');
-        this.paliLoadEnabled = false;
-        this.paliShowEnabled = false;
-        if (event.detail.selectedView === "sidebyside") {
+        if (showViewer === "none") {
+          this.paliShowEnabled = false;
+          this.paliLoadEnabled = false;
+        }
+        if (showViewer === "sidebyside") {
           this.querySelectorAll('.textcontent')[0].classList.add('expanded');
-          this.paliLoadEnabled = true;
           this.paliShowEnabled = true;
+          this.paliLoadEnabled = true;
           this._computeSegments(this.originalText,".linepi");
           this._addSideBySideCode();
         }
-       if (event.detail.selectedView === "linebyline") {
-        this.paliLoadEnabled = true;
+       if (showViewer === "linebyline") {
         this.paliShowEnabled = true;
+        this.paliLoadEnabled = true;
         this._computeSegments(this.originalText,".linepi");
        }
-       if (event.detail.selectedView === "popup") {
+       if (showViewer === "popup") {
         this.querySelectorAll('.textcontent')[0].classList.remove('nopops');
-        this.paliLoadEnabled = true;
         this.paliShowEnabled = false;
+        this.paliLoadEnabled = true;
         this._addPopUps();
        }
       },
@@ -225,8 +229,10 @@ h2{
           }
       },
       _computeSegments: function(inputText,linetype) {
-        Array.from(this.querySelectorAll(linetype+" sc-segment")).forEach(item => item.innerHTML = inputText.segments[item.id]);
-        this._computePars();
+        if (inputText) {
+          Array.from(this.querySelectorAll(linetype+" sc-segment")).forEach(item => item.innerHTML = inputText.segments[item.id]);
+          this._computePars();
+        }
       },
       _addSideBySideCode: function() {
         var sideways = this.querySelectorAll(".lineblock");

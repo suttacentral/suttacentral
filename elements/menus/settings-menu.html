@@ -197,7 +197,7 @@ paper-toggle-button{
                 }
       },
       _getReferences: function(textualInfoEnabled) {
-        var infotext = Array.from(document.querySelectorAll('.textcontent'));
+        var infotext = Array.from(document.querySelectorAll('body'));
         for (var i=0; i<infotext.length; i++) {
             if (textualInfoEnabled === false) {
                 infotext[i].classList.remove('infomode');
