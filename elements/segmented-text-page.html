@@ -94,18 +94,6 @@ h2{
       handle-as="json"
       last-response="{{baseText}}"></iron-ajax>
 
-<iron-ajax
-      auto
-      url="[[_computeURL(suttaPath)]]"
-      handle-as="json"
-      last-response="{{suttaText}}"></iron-ajax>
-
-<iron-ajax
-      auto
-      url="../data/paragraphtitles.json"
-      handle-as="json"
-      last-response="{{paragraphTitles}}"></iron-ajax>
-
   <template is="dom-if" if="[[paliLoadEnabled]]">
       <iron-ajax
               auto
@@ -146,6 +134,18 @@ h2{
   </div>
 
 </paper-scroll-header-panel>
+
+<iron-ajax
+      auto
+      url="[[_computeURL(suttaPath)]]"
+      handle-as="json"
+      last-response="{{suttaText}}"></iron-ajax>
+
+<iron-ajax
+      auto
+      url="../data/paragraphtitles.json"
+      handle-as="json"
+      last-response="{{paragraphTitles}}"></iron-ajax>
 </template>
 <script>
     Polymer({
@@ -239,7 +239,8 @@ h2{
         for (var i=0; i<sideways.length; i++) {sideways[i].classList.add('sidebyside');}
         },
       _addPopUps: function() {
-          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML+"<paper-tooltip position='top' fitToVisibleBounds>"+this.originalText.segments[item.id]+"</paper-tooltip>");
+          // Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML+"<paper-tooltip position='top' fitToVisibleBounds>"+this.originalText.segments[item.id]+"</paper-tooltip>");
+          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.title = this.originalText.segments[item.id]);
       },
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});
