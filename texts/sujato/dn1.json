@@ -1,9 +1,7 @@
 {
-  "url": "mn1",
-  "language": "en",
   "author": "Bhikkhu Sujato",
-  "title": "Middle Discourses 1",
-  "hgroup": "<div class='hgroup'><p class='division'>Middle Discourses 1</p><h1>The Root of All Things</h1>",
+  "division": "Middle Discourses 1",
+  "title": "The Root of All Things",
   "meta": "<p><span class='author'>Bhikkhu Sujato</span><p><p>Translated into English from the Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500</p>",
   "segments": {
         "segment3.1": "<span class='evam'>So I have heard.</span>", 

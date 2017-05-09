@@ -1,9 +1,7 @@
 {
-  "url": "mn1",
-  "language": "pi",
   "author": "PTS",
-  "title": "Majjhima Nikāya 1",
-  "hgroup": "<div class='hgroup'><p class='division'>Majjhima Nikāya 1</p><h1>Mūlapariyāyasutta</h1>",
+  "division": "Majjhima Nikāya 1",
+  "title": "Mūlapariyāyasutta",
   "meta": "<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500</p>",
   "segments": {
         "segment3.1": "<span class='evam'>Evaṃ me sutaṃ—​</span>", 

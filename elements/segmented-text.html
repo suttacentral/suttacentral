@@ -45,7 +45,7 @@
       last-response="{{baseText}}"></iron-ajax>
 
   <div class="textcontent">
-      <div inner-h-t-m-l="{{suttaText.hgroup}}"></div>
+      <div class="hgroup" inner-h-t-m-l="<p class='division'>{{suttaText.division}}</p><h1>{{suttaText.title}}</h1>"></div>
       <template is="dom-repeat" items="{{baseText}}" as="line">
         <div class="lineblock">
             <div class="line" inner-h-t-m-l="{{line}}"></div>
@@ -137,7 +137,7 @@
           Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.add('hidepali'));
       },
       infoToParent: function() {
-        this.fire('eventFromChild',{suttatitle:this.suttaText.title,suttaauthor:this.suttaText.author,suttameta:this.suttaText.meta});
+        this.fire('eventFromChild',{suttatitle:this.suttaText.division,suttaauthor:this.suttaText.author,suttameta:this.suttaText.meta});
       }
     });
 </script>

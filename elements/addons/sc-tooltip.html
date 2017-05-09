@@ -6,7 +6,7 @@
 <dom-module id="sc-tooltip">
 <style is="custom-style">
 :host {
-        display: block;
+        display: table;
         position: absolute;
         outline: none;
         z-index: 1002;
@@ -17,22 +17,18 @@
         cursor: default;
         max-width: 640px;
       }
-
-      #tooltip {
+#tooltip {
         display: block;
         outline: none;
         @apply(--paper-font-common-base);
         font-family: 'Skolar Sans',sans-serif;
         font-size: 1em;
         line-height: 1;
-        background-color: var(--paper-tooltip-background, #E5E0EC);
-        opacity: var(--paper-tooltip-opacity, 1);
-        color: var(--paper-tooltip-text-color, #2b2b2b);
-
+        background-color: var(--sc-tooltip-background, #E5E0EC);
+        opacity: var(--sc-tooltip-opacity, 1);
+        color: var(--sc-tooltip-text-color, #2b2b2b);
         padding: 8px;
         border-radius: 2px;
-
-        @apply(--paper-tooltip);
       }
       .hidden {
         display: none !important;
