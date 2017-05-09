@@ -97,17 +97,6 @@
         },
 
         /**
-         * This property is deprecated, but left over so that it doesn't
-         * break exiting code. Please use `offset` instead. If both `offset` and
-         * `marginTop` are provided, `marginTop` will be ignored.
-         * @deprecated since version 1.0.3
-         */
-        marginTop: {
-          type: Number,
-          value: 14
-        },
-
-        /**
          * The delay that will be applied before the `entry` animation is
          * played when showing the tooltip.
          */
@@ -165,7 +154,6 @@
           target = parentNode.nodeType == Node.DOCUMENT_FRAGMENT_NODE ?
               ownerRoot.host : parentNode;
         }
-
         return target;
       },
 
