@@ -92,31 +92,28 @@
        ' _computeSegments(alternateText,".linepi")'
       ],
        setView: function(showViewer) {
-        console.log("I'm at setView", showViewer);
         this._cleanCode();
-        if (showViewer === "sidebyside") {
-          this.$$('.textcontent').classList.add('expanded');
-          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
-          Array.from(this.querySelectorAll(".lineblock")).forEach(item => item.classList.add('sidebyside'));
+        switch (showViewer) {
+          case "sidebyside":
+              this.$$('.textcontent').classList.add('expanded');
+              Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
+              Array.from(this.querySelectorAll(".lineblock")).forEach(item => item.classList.add('sidebyside'));
+              break;
+          case "linebyline":
+              Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
+              break;
+          case "popup":
+              Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML + "<sc-tooltip>" + this.alternateText.segments[item.id] + "</sc-tooltip>");
+              break;
         }
-       if (showViewer === "linebyline") {
-          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
-       }
-       if (showViewer === "popup") {
-        // Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.title = this.alternateText.segments[item.id]);
-        Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML + "<sc-tooltip>" + this.alternateText.segments[item.id] + "</sc-tooltip>");
-       }
       },
       _computeURL: function(category) {
-        console.log("loading sutta text");
         return `../texts/sujato/${category}.json`;
       },
       _computeURLBase: function(category) {
-        console.log("loading base text");
         return `../texts/${category}.json`;
       },
       _computeURLOriginal: function(category) {
-        console.log("loading pali text");
         return `../texts/pi/${category}.json`;
       },
      _computePars: function() {
@@ -134,7 +131,6 @@
         if (this.suttaText) {this.infoToParent();}
       },
       _cleanCode: function() {
-          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.title = "");
           Array.from(this.querySelectorAll(".line sc-tooltip")).forEach(item => item.innerHTML = item.innerHTML.replace("<sc-tooltip>/([^]*)/ </sc-tooltip>",""));
           Array.from(this.querySelectorAll(".sidebyside")).forEach(item => item.classList.remove('sidebyside'));
           this.$$('.textcontent').classList.remove('expanded');
