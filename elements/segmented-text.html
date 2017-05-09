@@ -1,0 +1,148 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="addons/sc-segment.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="addons/sc-tooltip.html">
+
+<dom-module id="segmented-text" attributes="suttatitle suttaauthor suttameta">
+<style is="custom-style">
+.textcontent {
+  @apply(--sc-serif-font)
+  color: var(--primary-text-color);
+  margin: 6em auto 4em!important;
+  padding: 0 5%!important;
+  max-width: 640px;
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+.textcontent.expanded {
+  max-width: 60em;
+}
+.lineblock >div {
+  vertical-align: top;
+}
+.linepi {
+  font-family: 'Skolar Sans PE', sans-serif;
+}
+
+.sidebyside >div {
+  display: inline-block;
+  width: 48%;
+  padding: 0 5px;
+}
+.hidepali {
+    display:none;
+}
+</style>
+<template>
+<iron-ajax
+      auto
+      url="[[_computeURLBase(suttaPath)]]"
+      handle-as="json"
+      last-response="{{baseText}}"></iron-ajax>
+
+  <div class="textcontent">
+      <div inner-h-t-m-l="{{suttaText.hgroup}}"></div>
+      <template is="dom-repeat" items="{{baseText}}" as="line">
+        <div class="lineblock">
+            <div class="line" inner-h-t-m-l="{{line}}"></div>
+            <div class="linepi hidepali" inner-h-t-m-l="{{line}}"></div>
+        </div>
+      </template>
+  </div>
+
+<iron-ajax
+              auto
+              url="[[_computeURLOriginal(suttaPath)]]"
+              handle-as="json"
+              last-response="{{alternateText}}"></iron-ajax>
+
+<iron-ajax
+      auto
+      url="[[_computeURL(suttaPath)]]"
+      handle-as="json"
+      last-response="{{suttaText}}"></iron-ajax>
+
+<iron-ajax
+      auto
+      url="../data/paragraphtitles.json"
+      handle-as="json"
+      last-response="{{paragraphTitles}}"></iron-ajax>
+
+</template>
+<script>
+    Polymer({
+        is: 'segmented-text',
+      properties: {
+        suttaPath: String,
+        suttaText: Object,
+        paragraphTitles: Object,
+        alternateText: Object,
+        showViewer: {
+          type: String,
+          value: "none"
+        }
+      },
+      observers: [
+       'setView(showViewer)',
+       ' _computeSegments(suttaText,".line")',
+       ' _computeSegments(alternateText,".linepi")'
+      ],
+       setView: function(showViewer) {
+        console.log("I'm at setView", showViewer);
+        this._cleanCode();
+        if (showViewer === "sidebyside") {
+          this.$$('.textcontent').classList.add('expanded');
+          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
+          Array.from(this.querySelectorAll(".lineblock")).forEach(item => item.classList.add('sidebyside'));
+        }
+       if (showViewer === "linebyline") {
+          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
+       }
+       if (showViewer === "popup") {
+        // Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.title = this.alternateText.segments[item.id]);
+        Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML + "<sc-tooltip>" + this.alternateText.segments[item.id] + "</sc-tooltip>");
+       }
+      },
+      _computeURL: function(category) {
+        console.log("loading sutta text");
+        return `../texts/sujato/${category}.json`;
+      },
+      _computeURLBase: function(category) {
+        console.log("loading base text");
+        return `../texts/${category}.json`;
+      },
+      _computeURLOriginal: function(category) {
+        console.log("loading pali text");
+        return `../texts/pi/${category}.json`;
+      },
+     _computePars: function() {
+        for (var key in this.paragraphTitles) {
+                var refs = this.querySelectorAll('.'+key);
+                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
+                Array.from(refs).forEach(item => item.title = this.paragraphTitles[key]);
+          }
+      },
+      _computeSegments: function(inputText,linetype) {
+        if (inputText) {
+          Array.from(this.querySelectorAll(linetype+" sc-segment")).forEach(item => item.innerHTML = inputText.segments[item.id]);
+          this._computePars();
+        }
+        if (this.suttaText) {this.infoToParent();}
+      },
+      _cleanCode: function() {
+          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.title = "");
+          Array.from(this.querySelectorAll(".line sc-tooltip")).forEach(item => item.innerHTML = item.innerHTML.replace("<sc-tooltip>/([^]*)/ </sc-tooltip>",""));
+          Array.from(this.querySelectorAll(".sidebyside")).forEach(item => item.classList.remove('sidebyside'));
+          this.$$('.textcontent').classList.remove('expanded');
+          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.add('hidepali'));
+      },
+      infoToParent: function() {
+        this.fire('eventFromChild',{suttatitle:this.suttaText.title,suttaauthor:this.suttaText.author,suttameta:this.suttaText.meta});
+      }
+    });
+</script>
+</dom-module>

@@ -205,6 +205,7 @@ paper-toggle-button{
         }
       },
       _radioGroupChanged: function() {
+        console.log("fire now ", this.radioSelected);
         this.fire('eventFromChild',{selectedView:this.radioSelected});
       },
       _dictionaryLookup: function(valueSelected) {

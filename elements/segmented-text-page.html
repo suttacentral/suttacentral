@@ -1,14 +1,12 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="addons/sc-segment.html">
 <link rel="import" href="menus/settings-menu.html">
 <link rel="import" href="sc-toolbar.html">
+<link rel="import" href="segmented-text.html">
 
 <dom-module id="segmented-text-page" attributes="togdraw">
 <style is="custom-style">
@@ -44,21 +42,6 @@ paper-toolbar {
 paper-icon-button {
   color: white;
 }
-.textcontent {
-  @apply(--sc-serif-font)
-  color: var(--primary-text-color);
-  margin: 6em auto 0!important;
-  padding: 0 5%!important;
-  max-width: 40em;
-  display: block;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  -webkit-font-smoothing: antialiased;
-}
-.textcontent.expanded {
-  max-width: 60em;
-}
 
 @media screen and (min-width: 769px) {
     #drawertoggle {
@@ -73,34 +56,13 @@ h2{
   font-family: 'Skolar Sans PE', sans-serif;
   margin: 0;
 }
-.lineblock >div {
-  vertical-align: top;
-}
-.linepi {
-  font-family: 'Skolar Sans PE', sans-serif;
-}
-
-.sidebyside >div {
-  display: inline-block;
-  width: 48%;
-  padding: 0 5px;
-}
-.hidepali {
-    display:none;
-}
 </style>
 <template>
-<iron-ajax
-      auto
-      url="[[_computeURLBase(suttaPath)]]"
-      handle-as="json"
-      last-response="{{baseText}}"></iron-ajax>
-
 <paper-scroll-header-panel main>
 
 <paper-toolbar>
       <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
-      <span class="title"><p class="sutta">[[suttaText.title]]—[[suttaText.author]]</p></span>
+      <span class="title"><p class="sutta">[[suttaTitle]]—[[suttaAuthor]]</p></span>
       <sc-toolbar></sc-toolbar>
       <paper-icon-button id="settingsbutton" icon="settings" onclick="settings.open()"></paper-icon-button>
 </paper-toolbar>
@@ -111,39 +73,14 @@ h2{
     </div>
     <h2>Tools and Information</h2>
     <paper-dialog-scrollable>
-        <settings-menu meta-area="[[suttaText.meta]]"></settings-menu>
+        <settings-menu meta-area="[[suttaMeta]]"></settings-menu>
     </paper-dialog-scrollable>
   </paper-dialog>
 
-  <div class="textcontent">
-      <div inner-h-t-m-l="{{suttaText.hgroup}}"></div>
-      <template is="dom-repeat" items="{{baseText}}" as="line">
-        <div class="lineblock">
-            <div class="line" inner-h-t-m-l="{{line}}"></div>
-            <div class="linepi hidepali" inner-h-t-m-l="{{line}}"></div>
-        </div>
-      </template>
-  </div>
+<segmented-text sutta-path="{{suttaPath}}" show-viewer="{{showViewer}}"></segmented-text>
 
 </paper-scroll-header-panel>
 
-<iron-ajax
-              auto
-              url="[[_computeURLOriginal(suttaPath)]]"
-              handle-as="json"
-              last-response="{{originalText}}"></iron-ajax>
-
-<iron-ajax
-      auto
-      url="[[_computeURL(suttaPath)]]"
-      handle-as="json"
-      last-response="{{suttaText}}"></iron-ajax>
-
-<iron-ajax
-      auto
-      url="../data/paragraphtitles.json"
-      handle-as="json"
-      last-response="{{paragraphTitles}}"></iron-ajax>
 </template>
 <script>
     Polymer({
@@ -151,78 +88,31 @@ h2{
 
       properties: {
         suttaPath: String,
-        suttaText: Object,
-        paragraphTitles: Object,
-        originalText: Object,
+        suttaAuthor: String,
+        suttaTitle: String,
+        suttaMeta: String,
         showViewer: {
           type: String,
-          value: "none"
+          observer: 'messageChanged'
         }
       },
-      observers: [
-       'setView(showViewer)',
-       ' _computeSegments(suttaText,".line")',
-       ' _computeSegments(originalText,".linepi")'
-      ],
       ready: function() {
         this.addEventListener('eventFromChild', this.changeView);
       },
       changeView: function(event) {
-        this.showViewer = event.detail.selectedView;
-        console.log("radiobutton pressed: " + this.showViewer);
-      },
-      setView: function(showViewer) {
-        console.log("I'm at setView", showViewer);
-        this._cleanCode();
-        if (showViewer === "sidebyside") {
-          this.$$('.textcontent').classList.add('expanded');
-          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
-          this._addSideBySideCode();
-        }
-       if (showViewer === "linebyline") {
-          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
-       }
-       if (showViewer === "popup") {
-        // this.$$('.textcontent').classList.remove('nopops'); USED FOR TOOLTIPS ONLY
-        this._addPopUps();
-       }
-      },
-      _computeURL: function(category) {
-        return `../texts/sujato/${category}.json`;
-      },
-      _computeURLBase: function(category) {
-        return `../texts/${category}.json`;
-      },
-      _computeURLOriginal: function(category) {
-        return `../texts/pi/${category}.json`;
-      },
-     _computePars: function() {
-        for (var key in this.paragraphTitles) {
-                var refs = this.querySelectorAll('.'+key);
-                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
-                Array.from(refs).forEach(item => item.title = this.paragraphTitles[key]);
+          if (this.suttaAuthor === undefined) 
+            {this.addTitles(event);
+          } else {
+            this.showViewer = event.detail.selectedView;
           }
       },
-      _computeSegments: function(inputText,linetype) {
-        if (inputText) {
-          Array.from(this.querySelectorAll(linetype+" sc-segment")).forEach(item => item.innerHTML = inputText.segments[item.id]);
-          this._computePars();
-          this.setView(this.showViewer);
-        }
-      },
-      _addSideBySideCode: function() {
-        Array.from(this.querySelectorAll(".lineblock")).forEach(item => item.classList.add('sidebyside'));
+      messageChanged: function(newValue, oldValue) {
+          if (newValue === undefined) {this.showViewer = oldValue;}
         },
-      _addPopUps: function() {
-          // Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = item.innerHTML+"<paper-tooltip position='top' fitToVisibleBounds>"+this.originalText.segments[item.id]+"</paper-tooltip>");
-          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.title = this.originalText.segments[item.id]);
-      },
-      _cleanCode: function() {
-          Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.title = "");
-          Array.from(this.querySelectorAll(".sidebyside")).forEach(item => item.classList.remove('sidebyside'));
-          this.$$('.textcontent').classList.remove('expanded');
-          Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.add('hidepali'));
-          // this.$$('.textcontent').classList.add('nopops');   USED FOR TOOLTIPS ONLY
+      addTitles: function(event) {
+        this.suttaAuthor = event.detail.suttaauthor;
+        this.suttaTitle = event.detail.suttatitle;
+        this.suttaMeta = event.detail.suttameta;
       },
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});

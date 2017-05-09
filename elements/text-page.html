@@ -43,7 +43,7 @@ paper-toolbar {
 paper-icon-button {
   color: white;
 }
-.textcontent {
+.htmltextcontent {
   color: var(--primary-text-color);
 }
 @media screen and (min-width: 769px) {
@@ -93,7 +93,7 @@ h2{
     </paper-dialog-scrollable>
   </paper-dialog>
 
-  <div class="textcontent" inner-h-t-m-l="{{suttaText}}"></div>
+  <div class="htmltextcontent" inner-h-t-m-l="{{suttaText}}"></div>
 
 </paper-scroll-header-panel>
 </template>
@@ -113,16 +113,13 @@ h2{
         return `../texts/${category}.html`;
       },
       _computeTitle: function(suttaText) {
-        var firstTitle = this.$$('.division');
-        if (firstTitle !== undefined) {return firstTitle.innerText;}
+        return (this.$$('.division') !== undefined) ? this.$$('.division').innerText : "";
       },
       _computeAuthor: function(suttaText) {
-        var firstAuthor = this.$$('.author');
-        if (firstAuthor !== undefined) {return "—"+firstAuthor.innerText;}
+        return (this.$$('.author') !== undefined) ? "—"+this.$$('.author').innerText : "";
       },
       _computeMeta: function(suttaText) {
-        var firstMeta = this.$$('#metaarea');
-        if (firstMeta !== undefined) {return firstMeta.innerHTML;}
+        return (this.$$('#metaarea') !== undefined) ? this.$$('#metaarea').innerHTML : "";
       },
      _computePars: function(inputText,paragraphTitles) {
         for (var key in paragraphTitles) {
