@@ -84,6 +84,10 @@
           type: Boolean,
           value: false
         },
+        horizontalOffset: {
+          type: Number,
+          value: 0
+        },
 
         /**
          * If true, no parts of the tooltip will ever be shown offscreen.
@@ -221,7 +225,6 @@
         var parentRect = this.offsetParent.getBoundingClientRect();
         var targetRect = this._target.getBoundingClientRect();
         var thisRect = this.getBoundingClientRect();
-
         var horizontalCenterOffset = (targetRect.width - thisRect.width) / 2;
         var verticalCenterOffset = (targetRect.height - thisRect.height) / 2;
 
@@ -239,7 +242,8 @@
             if (this.positionTooltip) {
               tooltipLeft = targetLeft + horizontalCenterOffset;
             } else {
-              tooltipLeft = targetLeft;
+              tooltipLeft = targetLeft - this.horizontalOffset;
+
             };
             tooltipTop = targetTop + targetRect.height + offset;
             break;
@@ -254,10 +258,16 @@
         }
 
         if (this.fitToVisibleBounds) {
+          console.log(window.innerWidth);
           // Clip the left/right side.
-          if (tooltipLeft + thisRect.width > window.innerWidth) {
+          if (thisRect.left + thisRect.width > (window.innerWidth-295)) {
             this.style.right = '0px';
-            this.style.left = 'auto';
+             if (thisRect.left + thisRect.width > window.innerWidth) {
+              console.log("Too big by: ", window.innerWidth-(thisRect.left + thisRect.width));
+              this.style.left = window.innerWidth - (thisRect.left + thisRect.width + 32) + 'px';
+            } else {
+              this.style.left = 'auto';
+            };
           } else {
             this.style.left = Math.max(0, tooltipLeft) + 'px';
             this.style.right = 'auto';
