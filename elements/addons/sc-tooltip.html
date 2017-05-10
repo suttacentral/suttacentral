@@ -10,25 +10,24 @@
         position: absolute;
         outline: none;
         z-index: 1002;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -webkit-user-select: none;
-        user-select: none;
-        cursor: default;
-        max-width: 640px;
+        max-width: 320px;
+        left:0;
       }
 #tooltip {
         display: block;
         outline: none;
         @apply(--paper-font-common-base);
-        font-family: 'Skolar Sans',sans-serif;
-        font-size: 1em;
-        line-height: 1;
-        background-color: var(--sc-tooltip-background, #E5E0EC);
-        opacity: var(--sc-tooltip-opacity, 1);
-        color: var(--sc-tooltip-text-color, #2b2b2b);
-        padding: 8px;
+        @var(--sc-sans-font);
+        font-size: 12px;
+        line-height: 16px;
+        background-color: var(--paper-grey-700);
+        opacity: 0.9;
+        color: #ffffff;
+        padding: 8px 16px;
         border-radius: 2px;
+        text-shadow:0px 0px #ffffff;
+        @apply(--shadow-elevation-6dp);
+
       }
       .hidden {
         display: none !important;
@@ -84,7 +83,7 @@
          */
         fitToVisibleBounds: {
           type: Boolean,
-          value: false
+          value: true
         },
 
         /**
@@ -102,7 +101,7 @@
          */
         animationDelay: {
           type: Number,
-          value: 500
+          value: 150
         },
 
         /**
