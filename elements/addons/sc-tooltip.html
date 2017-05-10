@@ -18,18 +18,20 @@
         outline: none;
         @apply(--paper-font-common-base);
         @var(--sc-sans-font);
+        @apply(--shadow-elevation-6dp);
         font-size: 12px;
         line-height: 16px;
-        background-color: var(--paper-grey-700);
-        opacity: 0.9;
-        color: #ffffff;
         padding: 8px 16px;
         border-radius: 2px;
         text-shadow:0px 0px #ffffff;
-        @apply(--shadow-elevation-6dp);
 
+        background-color: var(--sc-tooltip-background, --paper-grey-700);
+        opacity: var(--sc-tooltip-opacity, 1);
+        color: var(--sc-tooltip-text-color, white);
+
+        @apply(--sc-tooltip);
       }
-      .hidden {
+.hidden {
         display: none !important;
       }
 </style>
@@ -84,11 +86,6 @@
           type: Boolean,
           value: false
         },
-        horizontalOffset: {
-          type: Number,
-          value: 0
-        },
-
         /**
          * If true, no parts of the tooltip will ever be shown offscreen.
          */
@@ -242,8 +239,7 @@
             if (this.positionTooltip) {
               tooltipLeft = targetLeft + horizontalCenterOffset;
             } else {
-              tooltipLeft = targetLeft - this.horizontalOffset;
-
+              tooltipLeft = targetLeft;
             };
             tooltipTop = targetTop + targetRect.height + offset;
             break;
@@ -258,20 +254,20 @@
         }
 
         if (this.fitToVisibleBounds) {
-          console.log(window.innerWidth);
+          var viewPort = document.querySelector('.hgroup').getBoundingClientRect();
           // Clip the left/right side.
-          if (thisRect.left + thisRect.width > (window.innerWidth-295)) {
-            this.style.right = '0px';
-             if (thisRect.left + thisRect.width > window.innerWidth) {
-              console.log("Too big by: ", window.innerWidth-(thisRect.left + thisRect.width));
-              this.style.left = window.innerWidth - (thisRect.left + thisRect.width + 32) + 'px';
-            } else {
-              this.style.left = 'auto';
-            };
-          } else {
-            this.style.left = Math.max(0, tooltipLeft) + 'px';
-            this.style.right = 'auto';
+          if (thisRect.right > viewPort.right) {
+            var differenceright = (viewPort.right - thisRect.right);
+            this.style.right = '16px';
+            this.style.left = differenceright + "px";
           }
+
+          if (thisRect.left < viewPort.left) {
+            var differenceleft = (thisRect.left - viewPort.left);
+            this.style.right = differenceleft + "px";
+            this.style.left = '16px';
+          }
+
 
           // Clip the top/bottom side.
           if (tooltipTop + thisRect.height > window.innerHeight) {
