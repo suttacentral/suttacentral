@@ -29,7 +29,7 @@
         @apply(--shadow-elevation-6dp);
 
       }
-      .hidden {
+.hidden {
         display: none !important;
       }
 </style>
@@ -77,13 +77,6 @@
           type: String,
           value: 'bottom'
         },
-        /**
-         * When positions is set to bottom, if set to true, the tooltip will appear in the middle below the icon. Use for icons only.
-         */
-        positionTooltip: {
-          type: Boolean,
-          value: false
-        },
 
         /**
          * If true, no parts of the tooltip will ever be shown offscreen.
@@ -91,6 +84,11 @@
         fitToVisibleBounds: {
           type: Boolean,
           value: false
+        },
+
+        positionTooltip: {
+            type: Boolean,
+            value: false
         },
 
         /**
@@ -185,7 +183,7 @@
         this._showing = true;
         this.toggleClass('hidden', false, this.$.tooltip);
         this.updatePosition();
-        
+
         this.animationConfig.entry[0].timing = this.animationConfig.entry[0].timing || {};
         this.animationConfig.entry[0].timing.delay = this.animationDelay;
         this._animationPlaying = true;
@@ -213,6 +211,7 @@
       },
 
       updatePosition: function() {
+        console.log("updating position");
         if (!this._target || !this.offsetParent)
           return;
 
@@ -236,11 +235,7 @@
             tooltipTop = targetTop - thisRect.height - offset;
             break;
           case 'bottom':
-            if (this.positionTooltip) {
-              tooltipLeft = targetLeft + horizontalCenterOffset;
-            } else {
-              tooltipLeft = targetLeft;
-            };
+            tooltipLeft = targetLeft;
             tooltipTop = targetTop + targetRect.height + offset;
             break;
           case 'left':

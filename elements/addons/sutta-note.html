@@ -1,12 +1,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/sc-tooltip/sc-tooltip.html">
+<link rel="import" href="sc-tooltip.html">
 
 <dom-module id="sutta-note">
 <style is="custom-style">
 .note{
   cursor: help;
-  position:relative;
+/*  position:relative;*/
 }
 .note iron-icon{
   --iron-icon-height: 20px;
@@ -17,7 +17,7 @@
 <template>
     <span class="note">
       <iron-icon icon="info-outline" id="note1"></iron-icon>
-      <sc-tooltip for="note1">{{noteData}}</sc-tooltip>
+      <sc-tooltip for="note1" position-tooltip=true>{{noteData}}</sc-tooltip>
     </span>
 </template>
 <script>
