@@ -1,0 +1,29 @@
+<script>
+// add "toggled"-class to host.
+    ToggleBehavior = {
+      properties: {
+        isToggled: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          observer: '_toggledChanged'
+        }
+      },
+      
+      listeners: {
+        click: '_toggle'
+      },
+      
+      created: function() {
+        console.log('Toggled for ', this, 'enabled!');
+      },
+      
+      _toggle: function() {
+        this.isToggled = !this.isToggled;
+      },
+      
+      _toggledChanged: function(value) {
+        this.toggleClass('toggled', value);
+      }
+    };
+</script>

@@ -97,11 +97,11 @@ h2{
         }
       },
       ready: function() {
-        this.addEventListener('eventFromChild', this.changeView);
+        this.addEventListener('eventFromTools', this.changeView);
       },
       changeView: function(event) {
-          if (this.suttaAuthor === undefined) 
-            {this.addTitles(event);
+          if (this.suttaAuthor === undefined) {
+            this.addTitles(event);
           } else {
             this.showViewer = event.detail.selectedView;
           }

@@ -138,7 +138,7 @@
           Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.add('hidepali'));
       },
       infoToParent: function() {
-        this.fire('eventFromChild',{suttatitle:this.suttaText.division,suttaauthor:this.suttaText.author,suttameta:this.suttaText.meta});
+        this.fire('eventFromTools',{suttatitle:this.suttaText.division,suttaauthor:this.suttaText.author,suttameta:this.suttaText.meta});
       }
     });
 </script>

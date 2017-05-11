@@ -253,10 +253,8 @@
         if (this.fitToVisibleBounds) {
           var viewPort = document.querySelector(this.fitToVisibleBounds).getBoundingClientRect();
           // Calculate segment mid-point
-          if (targetRect.width >= viewPort.width-100) {
-            console.log ("Wrapping line");
+          if (targetRect.width >= viewPort.width-150) {
             var midPointOffset = (viewPort.left + viewPort.width/2) - (thisRect.left + thisRect.width/2);
-            console.log (midPointOffset);
             if (midPointOffset != 0) {
               this.style.left = midPointOffset + "px";
             }

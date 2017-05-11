@@ -126,7 +126,7 @@ paper-toggle-button{
 
       <div class="dialogue-section">
       	<h3>Remember what I have selected on this page</h3>
-      	<paper-toggle-button></paper-toggle-button>
+      	<paper-toggle-button noink></paper-toggle-button>
       </div>
 
       <div class="dialogue-section">
@@ -205,7 +205,7 @@ paper-toggle-button{
         }
       },
       _radioGroupChanged: function() {
-        this.fire('eventFromChild',{selectedView:this.radioSelected});
+        this.fire('eventFromTools',{selectedView:this.radioSelected});
       },
       _dictionaryLookup: function(valueSelected) {
         return (valueSelected > 0) ? true : false;
