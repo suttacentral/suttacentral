@@ -4,10 +4,7 @@
 
 .sutta{
   @apply(--sc-serif-font);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  -webkit-font-smoothing: antialiased;
+@apply(--sc-paper-font-body);
 }
 
 .htmltextcontent section, .textcontent section {
@@ -32,9 +29,7 @@ p > * {
 /* These rules always apply */
 
 .evam {
-    @apply(--sc-small-caps);
-    @apply(--sc-serif-font);
-    letter-spacing: 0.01em;
+    @apply(--sc-mixed-small-caps);
 }
 .infomode .term,
 .infomode .gloss {
@@ -46,8 +41,8 @@ p > * {
 .suttainfo,
 .xu,
 .w {
-    @apply(--paper-font-body2);
-    font-family: "Skolar Sans PE", sans-serif;
+    @apply(--paper-font-body1);
+    @apply(--sc-sans-font);
     color: var(--secondary-text-color);
     background: var(--paper-grey-50);
     padding: 1em;
@@ -169,9 +164,7 @@ TITLE: Text hypothetically reconstructed by the editor or translator.
     @apply(--sc-sans-font);
 }
 p .author {
-    @apply(--sc-small-caps);
-    @apply(--sc-serif-font);
-    text-transform: lowercase
+    @apply(--sc-all-small-caps);
 }
 
 /*There are some editorial additions marked <span class="add"></span>. Previously these were hidden by default, but they are now visible by default.

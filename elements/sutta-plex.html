@@ -50,12 +50,11 @@ paper-card.suttaplex .card-content {
 
 .suttaplex-heading{
   @apply(--paper-font-headline);
-  font-family: "Skolar PE", serif;
+  @apply(--sc-serif-font);
 }
 
 .suttaplex-nerdy-row{
   @apply(--paper-font-body2);
-  font-family: "Skolar Sans PE", sans-serif;
   color: var(--secondary-text-color);
 }
 .suttaplex-nerdy-row span{
@@ -63,12 +62,12 @@ paper-card.suttaplex .card-content {
 }
 
 .suttaplex-description{
-  @apply(--paper-font-body-sc1);
+  @apply(--sc-paper-font-body);
    overflow: hidden;
    text-overflow: ellipsis;
    display: -webkit-box;
    -webkit-box-orient: vertical;
-   -webkit-line-clamp: 2; 
+   -webkit-line-clamp: 2;
    max-height: 42px;
 }
 
@@ -93,7 +92,6 @@ paper-button.green a {
   color: var(--paper-green-a700);
   --paper-button-ink-color: var(--paper-grey-500);
   text-decoration: none;
-  font-family: "Skolar Sans PE", sans-serif;
 }
 
 paper-button.dense {
@@ -123,12 +121,14 @@ details {
   display: inline-block;
 }
 details p {
+  @apply(--paper-font-body1);
   position:absolute;
   z-index:200;
   background-color:#fff;
   @apply(--shadow-elevation-3dp);
   padding:12px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 0 48px 0 0;
 }
 
 paper-menu-button {
@@ -163,7 +163,7 @@ paper-menu-button {
 
         <div class="suttaplex-nerdy-row">
           <template is="dom-if" if="[[inputData.titlepi]]">
-            <span title="Original title">[[inputData.titlepi]]</span> 
+            <span title="Original title">[[inputData.titlepi]]</span>
           </template>
           <span title="SuttaCentral ID">[[inputData.id]]</span>
           <template is="dom-if" if="[[inputData.volpage]]">

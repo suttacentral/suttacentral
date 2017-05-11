@@ -23,9 +23,8 @@
         padding: 8px 16px;
         border-radius: 2px;
         text-shadow:0px 0px #ffffff;
-
         background-color: var(--sc-tooltip-background, --paper-grey-700);
-        opacity: var(--sc-tooltip-opacity, 1);
+        opacity: 0.98;
         color: var(--sc-tooltip-text-color, white);
 
         @apply(--sc-tooltip);
@@ -183,7 +182,7 @@
         this._showing = true;
         this.toggleClass('hidden', false, this.$.tooltip);
         this.updatePosition();
-        
+
         this.animationConfig.entry[0].timing = this.animationConfig.entry[0].timing || {};
         this.animationConfig.entry[0].timing.delay = this.animationDelay;
         this._animationPlaying = true;

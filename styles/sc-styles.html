@@ -18,22 +18,24 @@
       -webkit-font-smoothing: antialiased;
     };
 
-    --paper-font-body-sc1: {
+    --sc-paper-font-body: {
       @apply(--sc-sans-font);
       font-size: 16px;
       font-weight: 400;
       line-height: 24px;
     };
 
-   --paper-font-body-sc2: {
-      @apply(--sc-sans-font);
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 20px;
+    --sc-all-small-caps: {
+      font-feature-settings: "smcp","c2sc";
+      text-transform: lowercase;
+      letter-spacing: 0.02em;
     };
-    --sc-small-caps: {
+
+        --sc-mixed-small-caps: {
       font-feature-settings: "smcp";
+      letter-spacing: 0.02em;
     };
+
     --paper-font-common-base: {
         @apply(--sc-sans-font);
     };
