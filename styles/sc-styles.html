@@ -9,51 +9,34 @@
     --sc-gold-700: #B37800;
     --sc-gold-900: #8A5D00;
 
-    --paper-font-common-base: {
-        font-family: 'Skolar Sans PE', 'Noto', sans-serif;
-        -webkit-font-smoothing: antialiased;
+    --sc-sans-font: {
+      font-family: "Skolar Sans PE", "Noto", sans-serif;
+      -webkit-font-smoothing: antialiased;
     };
+    --sc-serif-font: {
+      font-family: "Skolar PE", 'Noto Serif', serif;
+      -webkit-font-smoothing: antialiased;
+    };
+
     --paper-font-body-sc1: {
-      @apply(--paper-font-common-base);
-      font-family: "Skolar Sans PE", sans-serif;
+      @apply(--sc-sans-font);
       font-size: 16px;
       font-weight: 400;
       line-height: 24px;
     };
 
    --paper-font-body-sc2: {
-      @apply(--paper-font-common-base);
-      font-family: "Skolar Sans PE", sans-serif;
+      @apply(--sc-sans-font);
       font-size: 14px;
       font-weight: 400;
       line-height: 20px;
     };
-
-    --sc-sans-font: {
-      @apply(--paper-font-common-base);
-      font-family: "Skolar Sans PE", sans-serif;
-    };
-    --sc-sans-small-caps-font: {
-      @apply(--paper-font-common-base);
-      font-family: "Skolar Sans PE", 'Noto Sans', serif;
-      font-feature-settings: "smcp";
-    };
-    --sc-serif-font: {
-      @apply(--paper-font-common-base);
-      font-family: "Skolar PE", 'Noto Serif', serif;
-    };
-    --sc-serif-small-caps-font: {
-      @apply(--paper-font-common-base);
-      font-family: "Skolar PE", 'Noto Serif', serif;
+    --sc-small-caps: {
       font-feature-settings: "smcp";
     };
     --paper-font-common-base: {
-      font-family: 'Skolar Sans PE', 'Noto', sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-
-  }
-a{
-  text-decoration: none;
+        @apply(--sc-sans-font);
+    };
 }
+
 </style>

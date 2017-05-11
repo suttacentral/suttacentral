@@ -31,7 +31,8 @@ p > * {
 /* These rules always apply */
 
 .evam {
-    @apply(--sc-serif-small-caps-font);
+    @apply(--sc-small-caps);
+    @apply(--sc-serif-font);
     letter-spacing: 0.01em;
 }
 .infomode .term,
@@ -167,7 +168,8 @@ TITLE: Text hypothetically reconstructed by the editor or translator.
     @apply(--sc-sans-font);
 }
 p .author {
-    @apply(--sc-serif-small-caps-font);
+    @apply(--sc-small-caps);
+    @apply(--sc-serif-font);
     text-transform: lowercase
 }
 

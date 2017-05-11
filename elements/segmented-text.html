@@ -104,7 +104,7 @@
               Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.remove('hidepali'));
               break;
           case "popup":
-              Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = "<sc-tooltip fit-to-visible-bounds=true>" + this.alternateText.segments[item.id] + "</sc-tooltip>" + item.innerHTML);
+              Array.from(this.querySelectorAll(".line sc-segment")).forEach(item => item.innerHTML = "<sc-tooltip fit-to-visible-bounds='.line'>" + this.alternateText.segments[item.id] + "</sc-tooltip>" + item.innerHTML);
               break;
         }
       },

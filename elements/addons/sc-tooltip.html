@@ -16,8 +16,7 @@
 #tooltip {
         display: block;
         outline: none;
-        @apply(--paper-font-common-base);
-        @var(--sc-sans-font);
+        @apply(--sc-sans-font);
         @apply(--shadow-elevation-6dp);
         font-size: 12px;
         line-height: 16px;
@@ -88,11 +87,9 @@
         },
         /**
          * If true, no parts of the tooltip will ever be shown offscreen.
+         * Important: only works when parent is set to :host {position: relative}
          */
-        fitToVisibleBounds: {
-          type: Boolean,
-          value: false
-        },
+        fitToVisibleBounds: String,
 
         /**
          * The spacing between the top of the tooltip and the element it is
@@ -254,20 +251,31 @@
         }
 
         if (this.fitToVisibleBounds) {
-          var viewPort = document.querySelector('.hgroup').getBoundingClientRect();
-          // Clip the left/right side.
-          if (thisRect.right > viewPort.right) {
-            var differenceright = (viewPort.right - thisRect.right);
-            this.style.right = '16px';
-            this.style.left = differenceright + "px";
-          }
+          var viewPort = document.querySelector(this.fitToVisibleBounds).getBoundingClientRect();
+          // Calculate segment mid-point
+          if (targetRect.width >= viewPort.width-100) {
+            console.log ("Wrapping line");
+            var midPointOffset = (viewPort.left + viewPort.width/2) - (thisRect.left + thisRect.width/2);
+            console.log (midPointOffset);
+            if (midPointOffset != 0) {
+              this.style.left = midPointOffset + "px";
+            }
+            this.style.right= "auto";
+          } else {
 
-          if (thisRect.left < viewPort.left) {
-            var differenceleft = (thisRect.left - viewPort.left);
-            this.style.right = differenceleft + "px";
-            this.style.left = '16px';
-          }
+                // Clip the left/right side.
+                if (thisRect.right > viewPort.right) {
+                  var differenceright = viewPort.right - thisRect.right;
+                  this.style.right = '16px';
+                  this.style.left = differenceright + "px";
+                }
 
+                if (thisRect.left < viewPort.left) {
+                  var differenceleft = thisRect.left - viewPort.left;
+                  this.style.right = differenceleft + "px";
+                  this.style.left = '16px';
+                }
+          }
 
           // Clip the top/bottom side.
           if (tooltipTop + thisRect.height > window.innerHeight) {
