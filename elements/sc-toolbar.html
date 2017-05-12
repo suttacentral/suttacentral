@@ -4,10 +4,10 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="menus/more-menu.html">
-
-<link rel="import" href="../bower_components/input-search/input-search.html">
+<link rel="import" href="addons/sc-searchbox.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 
 <dom-module id="sc-toolbar">
 <style is="custom-style">
@@ -21,38 +21,15 @@ paper-menu-button {
     };
 }
 
-input-search {
-    border-radius: 22px;
-    @apply(--sc-sans-font);
-    display: inline-block;
-    background-color: white;
-    --input-search-icon: {
-      color: var(--disabled-text-color);
-    };
-    --input-search-input: {
-      color: var(--disabled-text-color);
-    };
-    --input-search-clear-icon: {
-      color: var(--disabled-text-color);
-    };
-}
-
-.base {
-  width: 0px;
-  transition: width 0.3s;
+#closebutton {
   display: none;
-}
-.base.expanded {
-  display: inline;
-  width: 300px;
 }
 </style>
 
 <template>
-            <div id="searchbox" class="base">
-              <input-search placeholder="Search SuttaCentral …"></input-search>
-            </div>
-            <paper-icon-button id="searchicon" icon="search" on-tap="openSearch"></paper-icon-button>
+          <sc-searchbox id="searchbox"></sc-searchbox>
+          <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
+          <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
           <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button icon="communication:forum"></paper-icon-button></a>
 
@@ -67,9 +44,23 @@ input-search {
 <script>
     Polymer({
       is: 'sc-toolbar',
-      openSearch: function() {
-        this.toggleClass("expanded", true, this.$.searchbox);
-      }
+      openSearch: function(event) {
+        var dropdown = this.querySelector('#searchbox');
+        if (dropdown) {
+          dropdown.show();
+          this.querySelector('#searchboxbutton').style.display='none';
+          this.querySelector('#closebutton').style.display='inline-block';
+        }
+      },
+      closeSearch: function(event) {
+        var dropdown = this.querySelector('#searchbox');
+        if (dropdown) {
+          dropdown.hide();
+          this.querySelector('#closebutton').style.display='none';
+          this.querySelector('#searchboxbutton').style.display='inline-block';
+        }
+      },
     });
+
 </script>
 </dom-module>
