@@ -25,7 +25,6 @@ paper-toolbar {
   @apply(--shadow-elevation-8dp);
 }
 .sutta {
-  font-family: 'Skolar PE', serif;
   text-transform: capitalize;
 }
 
@@ -70,11 +69,11 @@ main {
     color: var(--secondary-text-color);
 }
 .vagganode{
-    padding: 24px 16px 16px;
+    padding: 0px 16px 24px 16px;
     color: var(--secondary-text-color);
 }
-.node+.vagganode {
-  padding-top: 0;
+template +.vagganode {
+  padding-top: 24px;
 }
 @media screen and (min-width: 769px) {
     #drawertoggle {

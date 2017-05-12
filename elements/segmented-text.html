@@ -7,16 +7,13 @@
 <dom-module id="segmented-text" attributes="suttatitle suttaauthor suttameta">
 <style is="custom-style">
 .textcontent {
-  @apply(--sc-serif-font)
+  @apply(--sc-paper-font-body);
+  @apply(--sc-serif-font);
   color: var(--primary-text-color);
   margin: 6em auto 4em!important;
   padding: 0 5%!important;
   max-width: 640px;
   display: block;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  -webkit-font-smoothing: antialiased;
 }
 .textcontent.expanded {
   max-width: 60em;
@@ -25,7 +22,7 @@
   vertical-align: top;
 }
 .linepi {
-  font-family: 'Skolar Sans PE', sans-serif;
+  @apply(--sc-sans-font);
 }
 
 .sidebyside >div {
