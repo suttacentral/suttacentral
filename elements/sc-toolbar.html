@@ -8,6 +8,7 @@
 <link rel="import" href="addons/sc-searchbox.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
 
 <dom-module id="sc-toolbar">
 <style is="custom-style">
@@ -20,15 +21,38 @@ paper-menu-button {
     max-width: 100%;
     };
 }
-
+paper-input {
+  display:inline-block;
+  vertical-align: text-bottom;
+  --paper-input-container: {
+    padding: 0;
+  };
+  --paper-input-container-color: white;
+  --paper-input-container-label: {
+    color:var(--sc-gold-300);
+  };
+  --paper-input-container-input: {
+    color:white;
+  };
+}
 #closebutton {
   display: none;
+}
+
+#searchinput {
+  width: 0;
+  transition: width 0.2s
+}
+
+#searchinput.opened {
+  width: 370px;
 }
 </style>
 
 <template>
-          <sc-searchbox id="searchbox"></sc-searchbox>
+          
           <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
+          <paper-input label="Search" no-label-float id="searchinput"></paper-input>
           <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
           <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button icon="communication:forum"></paper-icon-button></a>
@@ -45,20 +69,14 @@ paper-menu-button {
     Polymer({
       is: 'sc-toolbar',
       openSearch: function(event) {
-        var dropdown = this.querySelector('#searchbox');
-        if (dropdown) {
-          dropdown.show();
-          this.querySelector('#searchboxbutton').style.display='none';
-          this.querySelector('#closebutton').style.display='inline-block';
-        }
+        var dropdown = this.querySelector('#searchinput');
+        dropdown.classList.add('opened');
+        this.querySelector('#closebutton').style.display='inline-block';
       },
       closeSearch: function(event) {
-        var dropdown = this.querySelector('#searchbox');
-        if (dropdown) {
-          dropdown.hide();
-          this.querySelector('#closebutton').style.display='none';
-          this.querySelector('#searchboxbutton').style.display='inline-block';
-        }
+        var dropdown = this.querySelector('#searchinput');
+        dropdown.classList.remove('opened');
+        this.querySelector('#closebutton').style.display='none';
       },
     });
 
