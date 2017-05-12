@@ -78,14 +78,8 @@
           value: 'bottom'
         },
         /**
-         * When positions is set to bottom, if set to true, the tooltip will appear in the middle below the icon. Use for icons only.
-         */
-        positionTooltip: {
-          type: Boolean,
-          value: false
-        },
-        /**
-         * If true, no parts of the tooltip will ever be shown offscreen.
+         * If set, no parts of the tooltip will ever be shown offscreen.
+         * Set value has to be the class or id name of the element host element.
          * Important: only works when parent is set to :host {position: relative}
          */
         fitToVisibleBounds: String,
@@ -232,11 +226,7 @@
             tooltipTop = targetTop - thisRect.height - offset;
             break;
           case 'bottom':
-            if (this.positionTooltip) {
-              tooltipLeft = targetLeft + horizontalCenterOffset;
-            } else {
-              tooltipLeft = targetLeft;
-            };
+            tooltipLeft = targetLeft + horizontalCenterOffset;
             tooltipTop = targetTop + targetRect.height + offset;
             break;
           case 'left':
@@ -252,7 +242,7 @@
         if (this.fitToVisibleBounds) {
           var viewPort = document.querySelector(this.fitToVisibleBounds).getBoundingClientRect();
           // Calculate segment mid-point
-          if (targetRect.width >= viewPort.width-150) {
+          if (targetRect.width >= viewPort.width*0.8) {
             var midPointOffset = (viewPort.left + viewPort.width/2) - (thisRect.left + thisRect.width/2);
             if (midPointOffset != 0) {
               this.style.left = midPointOffset + "px";

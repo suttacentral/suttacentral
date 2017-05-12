@@ -30,8 +30,9 @@
 </template>
 
 <template is="dom-if" if="{{_checkList(route)}}">
-  <division-page category="{{category}}"
+  <division-page category="{{category}}" vagga-number="{{_getVaggaNumber(route)}}"
       active="{{listActive}}" input-language="en"></division-page>
+
 </template>
 
 <template is="dom-if" if="{{_checkText(route)}}">
@@ -49,19 +50,26 @@
 <script>
     Polymer({
       is: 'page-selector',
-
       _checkStatic: function(route) {
         if (route.path === "") {
           return true;
         }
       },
       _checkList: function(route) {
-        if (route.path === "/list") {
+        if (route.path.endsWith("/list")) {
           return true;
         }
       },
+      _getVaggaNumber: function(route) {
+        if (route.path !== "/list" && route.path.endsWith("/list")) {
+            var vnr = route.path.replace("/list","");
+            return vnr.replace("/","");
+          } else {
+            return "";
+          }
+      },
       _checkText: function(route) {
-        if (route.path !== "/list" && route.path !== "" && route.path !=="/sujato") {
+        if (!route.path.endsWith("/list") && route.path !== "" && route.path !=="/sujato") {
           return true;
           }
         },

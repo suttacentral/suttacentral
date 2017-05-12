@@ -103,16 +103,19 @@ main {
     </section>
 
     <template is="dom-repeat" items="{{suttaList.vaggas}}" as="vagga">
-      <section class="vagganode">
-        <insert-node input-title="{{_computeVagganame(vagga,inputLanguage)}}" input-text="{{_computeVaggadescription(vagga,inputLanguage)}}" style-header="node-secondary-heading"></insert-node>
-      </section>
+      <template is="dom-if" if="{{_selectVagga(vagga,vaggaNumber)}}">
+            <section class="vagganode">
+              <insert-node input-title="{{_computeVagganame(vagga,inputLanguage)}}" input-text="{{_computeVaggadescription(vagga,inputLanguage)}}" style-header="node-secondary-heading"></insert-node>
+            </section>
 
-      <template is="dom-repeat" items="{{vagga.suttas}}" as="item">
-        <div class="suttalist" id$="{{item}}">
-          <sutta-plex input-url="{{item}}" input-language="{{inputLanguage}}"></sutta-plex>
-        </div>
-      </template>
+            <template is="dom-repeat" items="{{vagga.suttas}}" as="item">
+              <div class="suttalist" id$="{{item}}">
+                <sutta-plex input-url="{{item}}" input-language="{{inputLanguage}}"></sutta-plex>
+              </div>
+            </template>
+        </template>
     </template>
+
   </main>
 </div>
 
@@ -123,14 +126,18 @@ main {
       is: 'division-page',
       properties: {
         inputLanguage: String,
+        suttaList: Object,
         languageData: {
           type: Object,
           computed: '_computeLanguage(suttaList,inputLanguage)'
+        },
+        vaggaNumber: {
+          type: String,
+          value: ""
         }
       },
-
       ready: function() {
-        this.addEventListener('eventFromChild', this.elevateBox);
+        this.addEventListener('toggleParallelNote', this.elevateBox);
       },
       elevateBox: function(event) {
         var sutta = document.getElementById(event.detail.url);
@@ -141,7 +148,14 @@ main {
         }
       },
       _computeURL: function(category) {
-        return `../data/list/${category}.json`;
+        return `../../data/list/${category}.json`;
+      },
+      _selectVagga: function(vagga,vaggaNumber) {
+        if (vaggaNumber == undefined || vaggaNumber == "" || vaggaNumber == vagga.vagganr) {
+          return true;
+        } else {
+          return false;
+        }
       },
       _computeLanguage: function(suttaList,inputLanguage) {
         return suttaList ? suttaList[inputLanguage] : "";

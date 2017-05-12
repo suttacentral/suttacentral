@@ -132,7 +132,7 @@
         if (this.suttaText) {this.infoToParent();}
       },
       _cleanCode: function() {
-          Array.from(this.querySelectorAll(".line sc-tooltip")).forEach(item => item.innerHTML = item.innerHTML.replace("<sc-tooltip/([^]*)/ </sc-tooltip>",""));
+          Array.from(this.querySelectorAll(".line sc-tooltip")).forEach(item => item.innerHTML = item.innerHTML.replace("<sc-tooltip/([^]*)/</sc-tooltip>",""));
           Array.from(this.querySelectorAll(".sidebyside")).forEach(item => item.classList.remove('sidebyside'));
           this.$$('.textcontent').classList.remove('expanded');
           Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.add('hidepali'));

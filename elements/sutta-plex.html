@@ -230,6 +230,7 @@ paper-menu-button {
           type: Object,
           computed: '_computeLanguage(inputData,inputLanguage)'
         },
+        vaggaNumber: String,
 
         opened: {
           type: Boolean,
@@ -257,13 +258,13 @@ paper-menu-button {
   	this.fire('toggle', this);
       },
       passParams: function() {
-        this.fire('eventFromChild',{open:this._toggleIcon, url:this.inputUrl});
+        this.fire('toggleParallelNote',{open:this._toggleIcon, url:this.inputUrl});
       },
       _computeLevel: function(level) {
-        return level ? "<img src='../img/"+level+".png' title='Recommended for "+level+" students' style='width:32px;opacity:0.38;'>" : "";
+        return level ? "<img src='../../img/"+level+".png' title='Recommended for "+level+" students' style='width:32px;opacity:0.38;'>" : "";
       },
       _computeURL: function(sutta) {
-        return `../data/suttas/${sutta}.json`;
+          return `../../data/suttas/${sutta}.json`;
       },
       _computeLanguage: function(inputData,inputLanguage) {
         var lanarray = "";
