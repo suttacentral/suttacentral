@@ -5,9 +5,9 @@
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="menus/more-menu.html">
-<link rel="import" href="addons/sc-searchbox.html">
+<!-- <link rel="import" href="addons/sc-searchbox.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
-<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animations.html"> -->
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 
 <dom-module id="sc-toolbar">
@@ -41,11 +41,11 @@ paper-input {
 
 #searchinput {
   width: 0;
-  transition: width 0.2s
+  transition: width .2s cubic-bezier(.4,0,.2,1);
 }
 
 #searchinput.opened {
-  width: 370px;
+  width: 250px;
 }
 </style>
 
