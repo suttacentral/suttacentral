@@ -83,6 +83,7 @@ paper-input {
       is: 'sc-toolbar',
       openSearch: function() {
         this.$$('#searchinput').classList.add('opened');
+        this.$$('#searchinput').focus();
         this.$$('#closebutton').style.display='inline-block';
         this.$$('#searchinput').value = '';
       },
