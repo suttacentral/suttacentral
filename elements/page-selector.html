@@ -1,9 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="static-page.html">
-<link rel="import" href="division-page.html">
+<link rel="import" href="sc-page-static.html">
+<link rel="import" href="sc-view-suttaplex.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="text-page.html">
-<link rel="import" href="segmented-text-page.html">
+<link rel="import" href="sc-page-text.html">
+<link rel="import" href="sc-page-segmented-text.html">
 <dom-module id="page-selector">
 <style is="custom-style">
 
@@ -25,24 +25,24 @@
       tail="{{suttaTail}}"></app-route> -->
 
 <template is="dom-if" if="{{_checkStatic(route)}}">
-  <static-page category="{{category}}"
-      active="{{staticActive}}"></static-page>
+  <sc-page-static category="{{category}}"
+      active="{{staticActive}}"></sc-page-static>
 </template>
 
 <template is="dom-if" if="{{_checkList(route)}}">
-  <division-page category="{{category}}" vagga-number="{{_getVaggaNumber(route)}}"
-      active="{{listActive}}" input-language="en"></division-page>
+  <sc-view-suttaplex category="{{category}}" vagga-number="{{_getVaggaNumber(route)}}"
+      active="{{listActive}}" input-language="en"></sc-view-suttaplex>
 
 </template>
 
 <template is="dom-if" if="{{_checkText(route)}}">
-  <text-page sutta-path="{{route.prefix}}"
-      active="{{suttaActive}}"></text-page>
+  <sc-page-text sutta-path="{{route.prefix}}"
+      active="{{suttaActive}}"></sc-page-text>
 </template>
 
 <template is="dom-if" if="{{_checkSujato(route)}}">
-  <segmented-text-page sutta-path="{{route.prefix}}"
-      active="{{suttaActive}}"></segmented-text-page>
+  <sc-page-segmented-text sutta-path="{{route.prefix}}"
+      active="{{suttaActive}}"></sc-page-segmented-text>
 </template>
 
 </div>
@@ -51,14 +51,10 @@
     Polymer({
       is: 'page-selector',
       _checkStatic: function(route) {
-        if (route.path === "") {
-          return true;
-        }
+        return (route.path === "") ? true : false;
       },
       _checkList: function(route) {
-        if (route.path.endsWith("/list")) {
-          return true;
-        }
+        return (route.path.endsWith("/list")) ? true : false;
       },
       _getVaggaNumber: function(route) {
         if (route.path !== "/list" && route.path.endsWith("/list")) {
@@ -69,14 +65,10 @@
           }
       },
       _checkText: function(route) {
-        if (!route.path.endsWith("/list") && route.path !== "" && route.path !=="/sujato") {
-          return true;
-          }
+        return (!route.path.endsWith("/list") && route.path !== "" && route.path !=="/sujato") ? true : false;
         },
       _checkSujato: function(route) {
-        if (route.path === "/sujato") {
-          return true;
-        }
+        return (route.path === "/sujato") ? true : false;
       }
 
     });

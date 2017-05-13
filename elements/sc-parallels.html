@@ -3,11 +3,11 @@
 <link rel="import" href="../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="menus/language-drop.html">
-<link rel="import" href="addons/sutta-note.html">
+<link rel="import" href="menus/language-menu.html">
+<link rel="import" href="addons/sc-sutta-note.html">
 <link rel="import" href="../styles/sc-styles.html">
 
-<dom-module id="parallels-input">
+<dom-module id="sc-parallels">
 <style  is="custom-style">
 .parallels-parallel-title {
   @apply(--paper-font-subhead);
@@ -100,14 +100,14 @@ details p{
       </template>
     </template>
     <template is="dom-if" if="[[inputData.note]]">
-      <sutta-note note-data="{{inputData.note}}"></sutta-note>
+      <sc-sutta-note note-data="{{inputData.note}}"></sc-sutta-note>
     </template>
   </div>
 
   <div class="parallels-actions">
       <paper-button flat class="dense blue" title="Go to text in original language"><a href="">{{inputData.orlan}}</a></paper-button>
       <template is="dom-if" if="{{inputData.languages}}">
-          <div class="languagedrop"><language-drop language-choice="{{inputData.languages}}" title-label="Translations" input-language="" original-language=""></language-drop></div>
+          <div class="languagedrop"><language-menu language-choice="{{inputData.languages}}" title-label="Translations" input-language="" original-language=""></language-menu></div>
       </template>
   </div>
 
@@ -115,7 +115,7 @@ details p{
 
 <script>
     Polymer({
-        is: 'parallels-input',
+        is: 'sc-parallels',
 
         properties: {
           parallelUrl: String,

@@ -1,5 +1,4 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
@@ -7,8 +6,9 @@
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="menus/settings-menu.html">
 <link rel="import" href="sc-toolbar.html">
+<link rel="import" href="sc-segmented-text.html">
 
-<dom-module id="text-page" attributes="togdraw">
+<dom-module id="sc-page-segmented-text" attributes="togdraw">
 <style is="custom-style">
 paper-scroll-header-panel {
       position: absolute;
@@ -55,75 +55,59 @@ h2{
   @apply(--sc-sans-font);
   margin: 0;
 }
-
 </style>
 <template>
-
-<iron-ajax
-      auto
-      url="[[_computeURL(suttaPath)]]"
-      handle-as="text"
-      last-response="{{suttaText}}"></iron-ajax>
-
-<iron-ajax
-      auto
-      url="../data/paragraphtitles.json"
-      handle-as="json"
-      last-response="{{paragraphTitles}}"></iron-ajax>
-
 <paper-scroll-header-panel main>
 
 <paper-toolbar>
       <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
-      <span class="title"><p class="sutta">[[_computeTitle(suttaText)]][[_computeAuthor(suttaText)]]</p></span>
+      <span class="title"><p class="sutta">[[suttaTitle]]—[[suttaAuthor]]</p></span>
       <sc-toolbar></sc-toolbar>
-      <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
+      <paper-icon-button id="settingsbutton" icon="settings" onclick="settings.open()"></paper-icon-button>
 </paper-toolbar>
 
-  <paper-dialog id="dialog" modal>
+  <paper-dialog id="settings" modal>
     <div class="buttons">
       <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
     </div>
     <h2>Tools and Information</h2>
     <paper-dialog-scrollable>
-        <settings-menu meta-area="[[_computeMeta(suttaText)]]" disable-views="true"></settings-menu>
+        <settings-menu meta-area="[[suttaMeta]]"></settings-menu>
     </paper-dialog-scrollable>
   </paper-dialog>
 
-  <div class="htmltextcontent" inner-h-t-m-l="{{suttaText}}"></div>
+<sc-segmented-text sutta-path="{{suttaPath}}" show-viewer="{{showViewer}}"></sc-segmented-text>
 
 </paper-scroll-header-panel>
+
 </template>
 <script>
     Polymer({
-      is: 'text-page',
+      is: 'sc-page-segmented-text',
 
       properties: {
         suttaPath: String,
-        suttaText: String,
-        paragraphTitles: Object
+        suttaAuthor: String,
+        suttaTitle: String,
+        suttaMeta: String,
+        showViewer: {
+          type: String,
+          observer: 'messageChanged'
+        }
       },
-      observers: [
-        '_computePars(suttaText,paragraphTitles)'
-      ],
-      _computeURL: function(category) {
-        return `../texts/${category}.html`;
+      ready: function() {
+        this.addEventListener('eventFromTools', this.changeView);
       },
-      _computeTitle: function(suttaText) {
-        return (this.$$('.division') !== undefined) ? this.$$('.division').innerText : "";
+      changeView: function(event) {
+          return (this.suttaAuthor === undefined) ? this.addTitles(event) : this.showViewer = event.detail.selectedView;
       },
-      _computeAuthor: function(suttaText) {
-        return (this.$$('.author') !== undefined) ? "—"+this.$$('.author').innerText : "";
-      },
-      _computeMeta: function(suttaText) {
-        return (this.$$('#metaarea') !== undefined) ? this.$$('#metaarea').innerHTML : "";
-      },
-     _computePars: function(inputText,paragraphTitles) {
-        for (var key in paragraphTitles) {
-                var refs = this.querySelectorAll('.'+key);
-                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
-                Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
-          }
+      messageChanged: function(newValue, oldValue) {
+          if (newValue === undefined) {this.showViewer = oldValue;}
+        },
+      addTitles: function(event) {
+        this.suttaAuthor = event.detail.suttaauthor;
+        this.suttaTitle = event.detail.suttatitle;
+        this.suttaMeta = event.detail.suttameta;
       },
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});

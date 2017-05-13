@@ -4,10 +4,10 @@
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="sc-toolbar.html">
-<link rel="import" href="sutta-plex.html">
-<link rel="import" href="addons/insert-node.html">
+<link rel="import" href="sc-suttaplex.html">
+<link rel="import" href="addons/sc-node.html">
 
-<dom-module id="division-page" attributes="togdraw">
+<dom-module id="sc-view-suttaplex" attributes="togdraw">
 <style is="custom-style">
 paper-scroll-header-panel {
       position: absolute;
@@ -69,11 +69,11 @@ main {
     color: var(--secondary-text-color);
 }
 .vagganode{
-    padding: 0px 16px 24px 16px;
+    padding: 24px 16px 16px;
     color: var(--secondary-text-color);
 }
-template +.vagganode {
-  padding-top: 24px;
+.vagganode.firstvagga, .node+.vagganode {
+  padding-top: 0;
 }
 @media screen and (min-width: 769px) {
     #drawertoggle {
@@ -99,18 +99,18 @@ template +.vagganode {
 <div class="divisioncontent">
   <main>
     <section class="node">
-        <insert-node input-title="{{languageData.name}}" input-text="{{languageData.description}}" style-header="node-top-heading"></insert-node>
+        <sc-node input-title="{{languageData.name}}" input-text="{{languageData.description}}" style-header="node-top-heading"></sc-node>
     </section>
 
     <template is="dom-repeat" items="{{suttaList.vaggas}}" as="vagga">
       <template is="dom-if" if="{{_selectVagga(vagga,vaggaNumber)}}">
-            <section class="vagganode">
-              <insert-node input-title="{{_computeVagganame(vagga,inputLanguage)}}" input-text="{{_computeVaggadescription(vagga,inputLanguage)}}" style-header="node-secondary-heading"></insert-node>
+            <section class$="vagganode {{_checkFirstVagga(vagga,vaggaNumber)}}">
+              <sc-node input-title="{{_computeVagganame(vagga,inputLanguage)}}" input-text="{{_computeVaggadescription(vagga,inputLanguage)}}" style-header="node-secondary-heading"></sc-node>
             </section>
 
             <template is="dom-repeat" items="{{vagga.suttas}}" as="item">
               <div class="suttalist" id$="{{item}}">
-                <sutta-plex input-url="{{item}}" input-language="{{inputLanguage}}"></sutta-plex>
+                <sc-suttaplex input-url="{{item}}" input-language="{{inputLanguage}}"></sc-suttaplex>
               </div>
             </template>
         </template>
@@ -123,7 +123,7 @@ template +.vagganode {
 </template>
 <script>
     Polymer({
-      is: 'division-page',
+      is: 'sc-view-suttaplex',
       properties: {
         inputLanguage: String,
         suttaList: Object,
@@ -141,21 +141,16 @@ template +.vagganode {
       },
       elevateBox: function(event) {
         var sutta = document.getElementById(event.detail.url);
-        if (event.detail.open === "icons:expand-more") {
-          sutta.classList.add('expandeditem');
-        } else {
-          sutta.classList.remove('expandeditem');
-        }
+        return (event.detail.open === "icons:expand-more") ? sutta.classList.add('expandeditem') : sutta.classList.remove('expandeditem');
       },
       _computeURL: function(category) {
         return `../../data/list/${category}.json`;
       },
       _selectVagga: function(vagga,vaggaNumber) {
-        if (vaggaNumber == undefined || vaggaNumber == "" || vaggaNumber == vagga.vagganr) {
-          return true;
-        } else {
-          return false;
-        }
+        return (vaggaNumber == undefined || vaggaNumber == "" || vaggaNumber == vagga.vagganr) ? true : false;
+      },
+      _checkFirstVagga: function(vagga,vaggaNumber) {
+        return vaggaNumber ? ((vaggaNumber == vagga.vagganr) ? "firstvagga" : "") : "";
       },
       _computeLanguage: function(suttaList,inputLanguage) {
         return suttaList ? suttaList[inputLanguage] : "";

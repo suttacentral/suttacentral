@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
-<dom-module id="load-pali-lookup">
+<dom-module id="sc-dictionary-lookup">
 <template>
 <iron-ajax
       auto
@@ -11,19 +11,15 @@
 </template>
 <script>
     Polymer({
-      is: 'load-pali-lookup',
+      is: 'sc-dictionary-lookup',
       properties: {
-        wordTest: {
-          type: String,
-          value: "aṃsa"
-        },
         suttaInput: String,
-        inputDictionary: Number
+        inputDictionary: String
       },
       _computeInputDict: function(inputDictionary){
-        if (inputDictionary === 1) {
-          console.log("English dictionary loaded");
-          return `../../data/dictionaries/pi2en.json`;
+        if (inputDictionary !== "none") {
+            console.log("inputDictionary loaded:" + inputDictionary);
+            return `../../data/dictionaries/${inputDictionary}.json`;
           }
         },
         _wordMeaning: function(lookupDict,word) {

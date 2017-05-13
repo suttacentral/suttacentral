@@ -2,9 +2,9 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="parallels-input.html">
+<link rel="import" href="sc-parallels.html">
 
-<dom-module id="parallel-view">
+<dom-module id="sc-view-parallels">
 <style  is="custom-style">
 .parallels-expanded {
     padding: 16px;
@@ -62,16 +62,16 @@ paper-icon-button {
               <div class="parallels-root-id root" title="SuttaCentral ID">{{suttaurl.id}}</div>
               <paper-button flat class="dense blue" title="Go to text in original language"><a href="">{{originalLanguage}}</a></paper-button>
             </td>
-            <td class="parallels-relation-cell"><iron-icon icon$="{{_computeFirstParallelIcon(suttaurl)}}" title$="{{_computeTitle(_computeFirstParallelIcon(suttaurl))}}"></iron-icon></td>
+            <td class="parallels-relation-cell"><iron-icon icon$="{{_computeFirstParallelIcon(suttaurl)}}" title$="{{_computeFirstParallelTitle(suttaurl)}}"></iron-icon></td>
             <td class="parallels-parallel-cell">
-              <parallels-input parallel-url$="[[_computeFirstParallelUrl(suttaurl)]]" parallel-id$="[[_computeFirstParallelId(suttaurl)]]" input-language="{{inputLanguage}}"></parallels-input>
+              <sc-parallels parallel-url$="[[_computeFirstParallelUrl(suttaurl)]]" parallel-id$="[[_computeFirstParallelId(suttaurl)]]" input-language="{{inputLanguage}}"></sc-parallels>
             </td>
         </tr>
         <template is="dom-repeat" items$="{{_computeOtherParallels(suttaurl)}}" as="item">
           <tr>
             <td class="parallels-relation-cell"><iron-icon icon="{{item.icon}}" title="{{_computeTitle(item.icon)}}"></iron-icon></td>
             <td class="parallels-parallel-cell">
-              <parallels-input parallel-url="{{item.url}}" parallel-id="{{item.id}}" input-language="{{inputLanguage}}"></parallels-input>
+              <sc-parallels parallel-url="{{item.url}}" parallel-id="{{item.id}}" input-language="{{inputLanguage}}"></sc-parallels>
             </td>
           </tr>
         </template>     
@@ -82,7 +82,7 @@ paper-icon-button {
 
 <script>
     Polymer({
-        is: 'parallel-view',
+        is: 'sc-view-parallels',
 
         properties: {
           showParallel: Array,
@@ -91,24 +91,21 @@ paper-icon-button {
         },
 
         _computeTitle: function(icon) {
-          if (icon === 'swap-horiz') {
-            return 'Full Parallel';
-          }
-          if (icon === 'compare-arrows') {
-            return 'Resembling Parallel';
-          }
-          if (icon === 'editor:format-quote') {
-            return 'Mention';
-          }
-          if (icon === 'cached') {
-            return 'Retelling';
-          }          
+          switch (icon) {
+            case 'swap-horiz': return 'Full Parallel';
+            case 'compare-arrows': return 'Resembling Parallel';
+            case 'editor:format-quote': return 'Mention';
+            case 'cached': return 'Retelling';
+          }   
         },
         _computeRowspan: function(suttaurl){
           return suttaurl.relations.length;
         },
         _computeFirstParallelIcon: function(suttaurl){
           return suttaurl.relations[0].icon;
+        },
+        _computeFirstParallelTitle: function(suttaurl){
+          return this._computeTitle(suttaurl.relations[0].icon);
         },
         _computeFirstParallelUrl: function(suttaurl){
           return suttaurl.relations[0].url;

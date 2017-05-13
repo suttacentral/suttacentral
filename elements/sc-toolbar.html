@@ -5,9 +5,6 @@
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="menus/more-menu.html">
-<!-- <link rel="import" href="addons/sc-searchbox.html">
-<link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
-<link rel="import" href="../bower_components/neon-animation/neon-animations.html"> -->
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 
 <dom-module id="sc-toolbar">
@@ -28,6 +25,7 @@ paper-input {
     padding: 0;
   };
   --paper-input-container-color: white;
+  --paper-input-container-focus-color: white;
   --paper-input-container-label: {
     color:var(--sc-gold-300);
   };
@@ -46,6 +44,21 @@ paper-input {
 
 #searchinput.opened {
   width: 250px;
+}
+
+@media screen and (max-width: 540px) and (min-width: 440px){
+    #searchinput.opened {
+          width: 150px;
+        }
+}
+@media screen and (max-width: 440px){
+    #searchinput.opened {
+          width: 150px;
+          display:block;
+          position: absolute;
+          margin-top: -16px;
+          margin-left: -32px;
+        }
 }
 </style>
 
@@ -68,15 +81,14 @@ paper-input {
 <script>
     Polymer({
       is: 'sc-toolbar',
-      openSearch: function(event) {
-        var dropdown = this.querySelector('#searchinput');
-        dropdown.classList.add('opened');
-        this.querySelector('#closebutton').style.display='inline-block';
+      openSearch: function() {
+        this.$$('#searchinput').classList.add('opened');
+        this.$$('#closebutton').style.display='inline-block';
+        this.$$('#searchinput').value = '';
       },
-      closeSearch: function(event) {
-        var dropdown = this.querySelector('#searchinput');
-        dropdown.classList.remove('opened');
-        this.querySelector('#closebutton').style.display='none';
+      closeSearch: function() {
+        this.$$('#searchinput').classList.remove('opened');
+        this.$$('#closebutton').style.display='none';
       },
     });
 

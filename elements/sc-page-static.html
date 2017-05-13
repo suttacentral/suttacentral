@@ -6,7 +6,7 @@
 <link rel="import" href="../data/sc/home-page.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 
-<dom-module id="static-page" attributes="togdraw">
+<dom-module id="sc-page-static" attributes="togdraw">
 <style is="custom-style">
 paper-scroll-header-panel {
       position: absolute;
@@ -109,16 +109,14 @@ main {
 </template>
 <script>
     Polymer({
-      is: 'static-page',
+      is: 'sc-page-static',
 
       _computeURL: function(category) {
         return `../data/sc/${category}.html`;
       },
 
       _checkhomeURL: function(category) {
-        if (category === 'home' || category === '') {
-          return true;
-        }
+        return (category === 'home' || category === '') ? true : false;
       },
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});

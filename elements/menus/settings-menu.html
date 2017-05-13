@@ -8,7 +8,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
-<link rel="import" href="../addons/load-dictionary-lookup.html">
+<link rel="import" href="../addons/sc-dictionary-lookup.html">
 
 <dom-module id="settings-menu" attributes="selectedView">
 <style is="custom-style">
@@ -92,7 +92,7 @@ paper-toggle-button{
 	        </paper-listbox>
 	      </paper-dropdown-menu>
               <template is="dom-if" if="{{_dictionaryLookup(paliLookupSelected)}}">
-                  <load-dictionary-lookup input-dictionary="[[_getDictionary(paliLookupArray,paliLookupSelected)]]"></load-dictionary-lookup>
+                  <sc-dictionary-lookup input-dictionary="[[_getDictionary(paliLookupArray,paliLookupSelected)]]"></sc-dictionary-lookup>
               </template>
       </div>
 
@@ -107,7 +107,7 @@ paper-toggle-button{
 	        </paper-listbox>
 	      </paper-dropdown-menu>
               <template is="dom-if" if="{{_dictionaryLookup(chineseLookupSelected)}}">
-                  <load-dictionary-lookup input-dictionary="[[_getDictionary(chineseLookupArray,chineseLookupSelected)]]"></load-dictionary-lookup>
+                  <sc-dictionary-lookup input-dictionary="[[_getDictionary(chineseLookupArray,chineseLookupSelected)]]"></sc-dictionary-lookup>
               </template>
       </div>
 
@@ -198,11 +198,7 @@ paper-toggle-button{
       },
       _getReferences: function(textualInfoEnabled) {
         var infotext = document.querySelector('body');
-        if (textualInfoEnabled === false) {
-            infotext.classList.remove('infomode');
-        } else {
-            infotext.classList.add('infomode');
-        }
+        return (textualInfoEnabled === false) ? infotext.classList.remove('infomode') : infotext.classList.add('infomode');
       },
       _radioGroupChanged: function() {
         this.fire('eventFromTools',{selectedView:this.radioSelected});

@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 
 
-<dom-module id="insert-node">
+<dom-module id="sc-node">
 <style is="custom-style">
 h1, h2, h3 {
   margin: 0;
@@ -44,7 +44,7 @@ h1, h2, h3 {
 </template>
 <script>
     Polymer({
-      is: 'insert-node',
+      is: 'sc-node',
       properties: {
 
       	inputTitle: String,
@@ -69,9 +69,9 @@ h1, h2, h3 {
       },
 
       _toggleOpened: function(e) {
-  			this.opened = !this.opened;
-  			this.fire('toggle', this);
-		  }
+        	this.opened = !this.opened;
+        	this.fire('toggle', this);
+        }
 
     });
 </script>

@@ -11,13 +11,13 @@
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html">
-<link rel="import" href="menus/language-drop.html">
+<link rel="import" href="menus/language-menu.html">
 <link rel="import" href="../styles/sc-styles.html">
-<link rel="import" href="addons/sutta-note.html">
-<link rel="import" href="parallel-view.html">
+<link rel="import" href="addons/sc-sutta-note.html">
+<link rel="import" href="sc-view-parallels.html">
 <link rel="import" href="menus/more-par-menu.html">
 
-<dom-module id="sutta-plex" attributes="open url">
+<dom-module id="sc-suttaplex" attributes="open url">
 <style is="custom-style">
 .heading {
   cursor: pointer;
@@ -178,7 +178,7 @@ paper-menu-button {
             </template>
           </template>
           <template is="dom-if" if="[[inputData.note]]">
-            <sutta-note note-data="{{inputData.note}}"></sutta-note>
+            <sc-sutta-note note-data="{{inputData.note}}"></sc-sutta-note>
           </template>
         </div>
 
@@ -192,7 +192,7 @@ paper-menu-button {
             <template is="dom-repeat" items="{{languageData.authors}}" as="author">
                 <paper-button flat class="green" title$="Go to a translation by {{author}}"><a data-page="[[inputData.url]]/[[author]]" href="/[[inputData.url]]/[[author]]">{{author}}</a></paper-button>
             </template>
-            <div class="languagedrop"><language-drop language-choice="{{inputData.languages}}" title-label="Other" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></language-drop></div>
+            <div class="languagedrop"><language-menu language-choice="{{inputData.languages}}" title-label="Other" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></language-menu></div>
         </div>
         <template is="dom-if" if="{{inputData.parallels}}">
             <div class="card-actions-right">
@@ -212,7 +212,7 @@ paper-menu-button {
       </div>
       <template is="dom-if" if="{{inputData.parallels}}">
         <iron-collapse id$="collapse{{inputUrl}}" opened="{{opened}}">
-			      <parallel-view show-parallel="{{inputData.parallels}}" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></parallel-view>
+			      <sc-view-parallels show-parallel="{{inputData.parallels}}" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></sc-view-parallels>
         </iron-collapse>
       </template>
   </paper-card>
@@ -220,7 +220,7 @@ paper-menu-button {
 </template>
 <script>
     Polymer({
-      is: 'sutta-plex',
+      is: 'sc-suttaplex',
       properties: {
 
         inputUrl: String,
