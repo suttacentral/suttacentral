@@ -74,13 +74,16 @@ paper-input {
             <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
             <div class="dropdown-content"></div>
             <paper-menu class="dropdown-content" tabindex="0">
-                <more-menu></more-menu>
+                <more-menu input-language="{{inputLanguage}}"></more-menu>
             </paper-menu>
           </paper-menu-button>
 </template>
 <script>
     Polymer({
       is: 'sc-toolbar',
+      properties: {
+        inputLanguage: String
+      },
       openSearch: function() {
         this.$$('#searchinput').classList.add('opened');
         this.$$('#searchinput').focus();

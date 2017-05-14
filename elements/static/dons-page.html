@@ -1,13 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-<div id="onecol">
-<section>
-<article class="donations">
-<h1>SuttaCentral Donations</h1>
-<p>Your donation is greatly appreciated, and will support the ongoing development of SuttaCentral. We want to continue bring the Buddha’s word to people all around the world.</p>
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../styles/static-styles.html">
+
+<dom-module id="dons-page">
+<style  is="custom-style"  include="static-styles">
+
+</style>
+<template>
+<div id="page-wrap">
+	<main>
+    <section>
+
+      <h1>SuttaCentral Donations</h1>
+
+<p> This is dons-page.html</p>
+      <p>Your donation is greatly appreciated, and will support the ongoing development of SuttaCentral. We want to continue bring the Buddha’s word to people all around the world.</p>
 
 <form action="donate/plan" method="post">
 <button class="donate-button">Give Now</button>
@@ -45,9 +51,14 @@
 <p>The accountants and auditors of the Trust are Randolph Alwis & Co Pty Ltd: http://www.alwisco.com.au/. The ABN is 858 188 75744.</p>
 
 <p>Financial details of the trust are available if you have any inquiries. The Trust was created solely to support the development of SuttaCentral. All funds in the Trust will be solely spent on SuttaCentral, and none on trust administration which is being managed by volunteers.</p>
-
-</article>
-</section>
+    </section>
+	</main>
 </div>
-</body>
-</html>
+</template>
+
+<script>
+    Polymer({
+        is: 'dons-page'
+    });
+</script>
+</dom-module>

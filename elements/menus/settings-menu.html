@@ -39,18 +39,18 @@ a {
 }
 h3{
   @apply(--paper-font-title);
-  font-family: 'Skolar Sans PE', sans-serif;
+  @apply(--sc-sans-font);
 }
 .nerdy-row{
-  @apply(--paper-font-body2);
+  @apply(--sc-paper-font-body);
   color: var(--secondary-text-color);
-  font-family: 'Skolar Sans PE', sans-serif;
+  @apply(--sc-sans-font);
 }
 paper-item iron-icon {
     margin-right: 4px;
 }
 paper-dropdown-menu, paper-listbox {
-	width: 200px;
+    width: 200px;
 }
 paper-toggle-button{
   margin-top:8px;

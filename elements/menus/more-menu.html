@@ -3,7 +3,7 @@
 <link rel="import" href="../../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
-
+<link rel="import" href="language-base-menu.html">
 
 <dom-module id="more-menu">
 <style is="custom-style">
@@ -15,13 +15,16 @@ paper-item iron-icon {
     margin-right: 4px;
 }
 paper-item {
-  font-family: 'Skolar Sans PE', sans-serif;
+  @apply(--sc-sans-font);
+}
+language-base-menu:after {
+  content: "    ";
 }
 </style>
 <template>
 
 <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
-    <a data-page="home" href="/home"><paper-item><iron-icon icon="language"></iron-icon> Language</paper-item></a>
+    <paper-item><iron-icon icon="language"></iron-icon><language-base-menu input-language="{{inputLanguage}}"></language-base-menu></paper-item>
     <a data-page="dons" href="/dons"><paper-item><iron-icon src="../../img/pray.png"></iron-icon> Donations</paper-item></a>
     <a data-page="downloads" href="/downloads"><paper-item><iron-icon icon="file-download"></iron-icon> Downloads</paper-item></a>
     <a data-page="people" href="/people"><paper-item><iron-icon icon="social:people"></iron-icon> Acknowledgements</paper-item></a>
@@ -30,5 +33,8 @@ paper-item {
 <script>
     Polymer({
       is: 'more-menu',
+      properties: {
+        inputLanguage: String
+      }
     });
 </script>

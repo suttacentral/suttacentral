@@ -31,7 +31,7 @@
 
 <template is="dom-if" if="{{_checkList(route)}}">
   <sc-view-suttaplex category="{{category}}" vagga-number="{{_getVaggaNumber(route)}}"
-      active="{{listActive}}" input-language="en"></sc-view-suttaplex>
+      active="{{listActive}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
 
 </template>
 
@@ -50,10 +50,14 @@
 <script>
     Polymer({
       is: 'page-selector',
+      properties: {
+        inputLanguage: String
+      },
       _checkStatic: function(route) {
         return (route.path === "") ? true : false;
       },
       _checkList: function(route) {
+        console.log(this.inputLanguage);
         return (route.path.endsWith("/list")) ? true : false;
       },
       _getVaggaNumber: function(route) {

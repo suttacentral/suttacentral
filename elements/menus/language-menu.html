@@ -12,10 +12,13 @@
 }
 paper-dropdown-menu, paper-listbox {
     width: 200px;
+    --paper-input-container-input: {
+      text-transform: capitalize;
+  };
 }
 
 paper-item {
-	  font-family: "Skolar Sans PE", sans-serif;
+    @apply(--sc-sans-font);
     text-transform: capitalize;
 }
 
@@ -23,19 +26,20 @@ paper-item {
   color: var(--paper-blue-700);
 }
 
+
 </style>
 <template>
 	<paper-dropdown-menu class="custom" label="{{titleLabel}}" title="Select a translation in another language">
 	  <paper-listbox class="dropdown-content">
-      <template is="dom-if" if="{{originalLanguage}}">
-        <paper-item class="orlang">{{originalLanguage}}</paper-item>
-      </template>
-	  	<template is="dom-repeat" items="{{languageChoice}}" as="language">
-        <template is="dom-if" if="{{!_otherLanguage(language, inputLanguage)}}">
-          <template is="dom-repeat" items="{{language.authors}}" as="author">
-	    	    <paper-item class$="{{language.id}}">{{author}}</paper-item>
-          </template>
-        </template>
+              <template is="dom-if" if="{{originalLanguage}}">
+                <paper-item class="orlang">{{originalLanguage}}</paper-item>
+              </template>
+	     <template is="dom-repeat" items="{{languageChoice}}" as="language">
+                  <template is="dom-if" if="{{!_otherLanguage(language, inputLanguage)}}">
+                      <template is="dom-repeat" items="{{language.authors}}" as="author">
+	    	          <paper-item class$="{{language.id}}">{{author}}</paper-item>
+                      </template>
+                  </template>
 	    </template>
 	  </paper-listbox>
 	</paper-dropdown-menu-light>

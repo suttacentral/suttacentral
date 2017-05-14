@@ -89,7 +89,7 @@ paper-tree {
   </div>
 
   <div main>
-    <page-selector category="{{categoryData.category}}" route="{{categoryTail}}"></page-selector>
+    <page-selector category="{{categoryData.category}}" route="{{categoryTail}}" input-language="{{inputLanguage}}"></page-selector>
   </div>
 </paper-drawer-panel>
 
@@ -99,7 +99,8 @@ paper-tree {
       is: 'sc-navdrawer',
 
       properties: {
-          selectPanel: String
+          selectPanel: String,
+          inputLanguage: String
       },
 
 
@@ -118,9 +119,14 @@ paper-tree {
       },
       ready: function() {
         this.addEventListener('eventFromChild', this.toggleDrawer);
+        this.addEventListener('languageSelection',this.changeLanguage);
       },
       toggleDrawer: function(event,selectPanel) {
         return this.selectPanel = event.detail.togdraw;
+      },
+      changeLanguage: function(event) {
+        console.log(event.detail.Language);
+        return this.inputLanguage = event.detail.Language;
       }
 
     });

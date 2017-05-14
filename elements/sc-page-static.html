@@ -2,9 +2,12 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="sc-toolbar.html">
-<link rel="import" href="../data/sc/home-page.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="sc-toolbar.html">
+<link rel="import" href="static/home-page.html">
+<link rel="import" href="static/dons-page.html">
+<link rel="import" href="static/downloads-page.html">
+<link rel="import" href="static/people-page.html">
 
 <dom-module id="sc-page-static" attributes="togdraw">
 <style is="custom-style">
@@ -91,18 +94,16 @@ main {
     <home-page></home-page>
 </template>
 
-<template is="dom-if" if="{{!_checkhomeURL(category)}}" restamp>
-    <iron-ajax
-      auto
-      url="[[_computeURL(category)]]"
-      handle-as="text"
-      last-response="{{staticPage}}"></iron-ajax>
+<template is="dom-if" if="{{_checkdonsURL(category)}}" restamp>
+    <dons-page></dons-page>
+</template>
 
-      <div class="textcontent">
-        <main>
-              <p inner-h-t-m-l="{{staticPage}}"></p>
-        </main>
-      </div>
+<template is="dom-if" if="{{_checkdownloadsURL(category)}}" restamp>
+    <downloads-page></downloads-page>
+</template>
+
+<template is="dom-if" if="{{_checkpeopleURL(category)}}" restamp>
+    <people-page></people-page>
 </template>
 
 </paper-scroll-header-panel>
@@ -111,12 +112,17 @@ main {
     Polymer({
       is: 'sc-page-static',
 
-      _computeURL: function(category) {
-        return `../data/sc/${category}.html`;
-      },
-
       _checkhomeURL: function(category) {
         return (category === 'home' || category === '') ? true : false;
+      },
+      _checkdonsURL: function(category) {
+        return (category === 'dons') ? true : false;
+      },
+      _checkdownloadsURL: function(category) {
+        return (category === 'downloads') ? true : false;
+      },
+      _checkpeopleURL: function(category) {
+        return (category === 'people') ? true : false;
       },
       toggleDrawer: function() {
         this.fire('eventFromChild',{togdraw:"drawer"});

@@ -1,12 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-<div id="onecol">
-<section>
-<article>
-<h1>Downloads</h1>
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../styles/static-styles.html">
+
+<dom-module id="downloads-page">
+<style  is="custom-style" include="static-styles">
+
+</style>
+<template>
+<div id="page-wrap">
+	<main>
+    <section>
+
+      <h1>Downloads</h1>
 
 <h2 id="book_of_the_discipline">The Book of the Discipline</h2>
 
@@ -32,8 +36,7 @@ e-book version suitable for use with e-readers. Mobi (Kindle) and ePub are the m
 <article>
 <h2>Sutta Nipata by Laurence Mills</h2>
 <p>The Sutta Nipāta is a well known and well loved early Buddhist text. It is a compilation of poems that inspire, educate, and admonish. Touching devotion, profound philosophy, pragmatic ethics, and insights into early Buddhist culture all find their place here. This translation expresses these teachings in a poetic voice. The primary translator and commentator is the experienced Pali scholar Laurence Khantipalo Mills, with portions by others including Bhikkhu Ñānamoli and Bhikkhu Sujato. Download the <a class="file" href="/files/snp.pdf">PDF</a> (0.8mb) here or you can order the paperback on Lulu.com.</p>
-</article>
-<article>
+
 <h2>Offline SuttaCentral</h2>
 <p>An offline version of SuttaCentral suitable for when you don't have an Internet connection.
 This is an enhanced offline version superior to the results of running a site-scraper.
@@ -49,8 +52,14 @@ better compression ratio, the <a href="http://www.7-zip.org/">7-zip archiver</a>
     <a href="https://github.com/suttacentral/suttacentral-data/archive/master.zip">download
     a Zip copy here</a>.</p>
 
-</article>
-</section>
+    </section>
+	</main>
 </div>
-</body>
-</html>
+</template>
+
+<script>
+    Polymer({
+        is: 'downloads-page'
+    });
+</script>
+</dom-module>

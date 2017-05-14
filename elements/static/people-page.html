@@ -1,12 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-<div id="onecol">
-<section>
-<article>
-<h1>SuttaCentral People</h1>
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../styles/static-styles.html">
+
+<dom-module id="people-page">
+<style  is="custom-style" include="static-styles">
+
+</style>
+<template>
+<div id="page-wrap">
+	<main>
+    <section>
+
+      <h1>SuttaCentral People</h1>
 
 <p>SuttaCentral was conceived and designed by the collective imaginations of Venerable Anālayo (Germany), Rod Bucknell (Australia), and Bhante Sujato (Australia), based on sutta correspondence tables compiled by Rod Bucknell and Ven. Anālayo.</p>
 
@@ -145,9 +149,14 @@ document.getElementById("listContributors").innerHTML = tab;
 
 <p>(remembering of course to omit the &lt;no-spam&gt; tags and replace the letters AT with the symbol "@" and DOT with a ".").</p>
 
-</article>
-</section>
+    </section>
+	</main>
 </div>
+</template>
 
-</body>
-</html>
+<script>
+    Polymer({
+        is: 'people-page'
+    });
+</script>
+</dom-module>
