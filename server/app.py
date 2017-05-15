@@ -94,7 +94,11 @@ def generic(path):
                 tree.append(json_element)
                 
                 return lxml.html.tostring(tree, method='html', encoding='unicode')
-
+    try:
+        return send_file(root_path / path)
+    except Exception as e:
+        pass
+        
     if debug:
         
         return f'<p>{path} : {path.parts} : {request.args}<p>But no page was found at this address</p>'
