@@ -10,3 +10,4 @@ polib==1.0.8
 regex==2017.4.5
 six==1.10.0
 Werkzeug==0.12.1
+lxml==3.7.3
