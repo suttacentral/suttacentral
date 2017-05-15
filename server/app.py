@@ -1,19 +1,25 @@
 #!/usr/bin/env python
+try:
 
+    import json
+    import hashlib
+    import pathlib
+    import logging
+    import lxml.html
+    from urllib.parse import urlparse
 
-import json
-import hashlib
-import pathlib
-import lxml.html
-from urllib.parse import urlparse
+    import flask
+    from flask import render_template, session, request, send_from_directory, send_file
 
-import flask
-from flask import render_template, session, request, send_from_directory, send_file
+    import sys
+    sys.path.insert(0, str(pathlib.Path('.').absolute()))
 
-import sys
-sys.path.insert(0, str(pathlib.Path('.').absolute()))
+    from settings import config
 
-from settings import config
+except ModuleNotFoundError as e:
+    print('ModuleNotFoundError: ', e.msg)
+    print('Maybe try running "pip install -r python-requirements.txt"')
+    exit(1)
 
 app = flask.Flask('suttacentral')
 
