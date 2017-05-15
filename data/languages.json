@@ -8,9 +8,6 @@
     "id": "af",
     "full": "Afrikaans"
     }, {
-    "id": "bo",
-    "full": "Tibetan"
-    }, {
     "id": "ca",
     "full": "Català"
     }, {
@@ -71,9 +68,6 @@
     "id": "ru",
     "full": "ру́сский язы́к"
     }, {
-    "id": "skt",
-    "full": "Sanskrit"
-    }, {
     "id": "si",
     "full": "සිංහල"
     }, {
@@ -95,20 +89,11 @@
     "id": "vn",
     "full": "Tiếng Việt"
     }, {
-    "id": "lzh",
-    "full": "Chinese"
-    }, {
     "id": "zh",
     "full": "汉语"
     }, {
     "id": "my",
     "full": "မြန်မာဘာသာ"
-    }, {
-    "id": "gr",
-    "full": "Gāndhārī"
-    }, {
-    "id": "pr",
-    "full": "Prākrit"
     }, {
     "id": "mr",
     "full": "मराठी"

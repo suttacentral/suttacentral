@@ -30,7 +30,7 @@ paper-item {
 	<paper-dropdown-menu class="custom" label="Language" title="Select the site in another language">
 	  <paper-listbox class="dropdown-content" selected="{{languageSelectedNr}}">
 	  <template is="dom-repeat" items="{{languageChoice}}" as="language">
-	    	  <paper-item class$="{{language.id}}">{{language.full}}</paper-item>
+	    	  <paper-item id$="{{language.id}}">{{language.full}}</paper-item>
 	    </template>
 	  </paper-listbox>
 	</paper-dropdown-menu-light>

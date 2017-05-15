@@ -26,7 +26,7 @@
 
 <template is="dom-if" if="{{_checkStatic(route)}}">
   <sc-page-static category="{{category}}"
-      active="{{staticActive}}"></sc-page-static>
+      active="{{staticActive}}" input-language="{{inputLanguage}}"></sc-page-static>
 </template>
 
 <template is="dom-if" if="{{_checkList(route)}}">
@@ -37,12 +37,12 @@
 
 <template is="dom-if" if="{{_checkText(route)}}">
   <sc-page-text sutta-path="{{route.prefix}}"
-      active="{{suttaActive}}"></sc-page-text>
+      active="{{suttaActive}}" input-language="{{inputLanguage}}"></sc-page-text>
 </template>
 
 <template is="dom-if" if="{{_checkSujato(route)}}">
   <sc-page-segmented-text sutta-path="{{route.prefix}}"
-      active="{{suttaActive}}"></sc-page-segmented-text>
+      active="{{suttaActive}}" input-language="{{inputLanguage}}"></sc-page-segmented-text>
 </template>
 
 </div>

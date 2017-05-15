@@ -62,7 +62,7 @@ h2{
 <paper-toolbar>
       <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"><p class="sutta">[[suttaTitle]]—[[suttaAuthor]]</p></span>
-      <sc-toolbar></sc-toolbar>
+      <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
       <paper-icon-button id="settingsbutton" icon="settings" onclick="settings.open()"></paper-icon-button>
 </paper-toolbar>
 
@@ -87,6 +87,7 @@ h2{
 
       properties: {
         suttaPath: String,
+        inputLanguage: String,
         suttaAuthor: String,
         suttaTitle: String,
         suttaMeta: String,
