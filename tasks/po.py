@@ -27,8 +27,14 @@ def download_po_files():
     return out_dir
 
 @task
+def clear_segment_dir(ctx=None):
+    import shutil
+    shutil.rmtree(config.seg_dir)
+
+@task
 def process_po_files(ctx=None):
-    seg_dir = config.data_dir / 'segmented_texts'
+    clear_segment_dir()
+    seg_dir = config.seg_dir
     
     for entry in config.po_mappings:
         po_path = entry.get('po_path')
@@ -47,9 +53,29 @@ def process_po_files(ctx=None):
         
         for po_file in po_files:
             print('\r' + str(po_file.relative_to(source_dir)) + '          ', end='')
+            
+            stem = remove_leading_zeros(po_file.stem)
+            markup_parent = seg_dir / markup_to / po_file.relative_to(source_dir).parent
+            msgid_text_parent = seg_dir / msgid_to / po_file.relative_to(source_dir).parent
+            msgstr_text_parent = seg_dir / msgstr_to / po_file.relative_to(source_dir).parent
+            
+            markup_file = markup_parent / (stem + '.html')
+            msgid_file = msgid_text_parent / (stem + '.json')
+            msgstr_file = msgstr_text_parent / (stem + '.json')
+            
             markup = []
             msgids = OrderedDict()
             msgstrs = OrderedDict()
+            
+            msgids['_markup_path'] = str(markup_file.relative_to(seg_dir))
+            msgstrs['_markup_path'] = str(markup_file.relative_to(seg_dir))
+            
+            msgids['_alt_strings'] = [
+                str(msgstr_file.relative_to(seg_dir))
+            ]
+            msgstrs['_alt_strings'] = [
+                str(msgid_file.relative_to(seg_dir))
+            ]
             po = polib.pofile(po_file)
             
             for entry in po:
@@ -61,23 +87,21 @@ def process_po_files(ctx=None):
                 if entry.msgstr:
                     msgstrs[entry.msgctxt] = entry.msgstr
         
-            markup_parent = seg_dir / markup_to / po_file.relative_to(source_dir).parent
-            msgid_text_parent = seg_dir / msgid_to / po_file.relative_to(source_dir).parent
-            msgstr_text_parent = seg_dir / msgstr_to / po_file.relative_to(source_dir).parent
+            
             
             for d in (markup_parent, msgid_text_parent, msgstr_text_parent):
                 if not d.exists():
                     d.mkdir(parents=True)
             
-            stem = remove_leading_zeros(po_file.stem)
+
             
-            with (markup_parent / (stem + '.html')).open('w') as f:
+            with markup_file.open('w') as f:
                 f.write(clean_html(''.join(markup)))
             
-            with (msgid_text_parent / (stem + '.json')).open('w') as f:
+            with msgid_file.open('w') as f:
                 json.dump(msgids, f, ensure_ascii=False, indent=2)
             
-            with (msgstr_text_parent / (stem + '.json')).open('w') as f:
+            with msgstr_file.open('w') as f:
                 json.dump(msgstrs, f, ensure_ascii=False, indent=2)
                 
     

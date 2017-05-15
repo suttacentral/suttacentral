@@ -5,6 +5,7 @@ tmp_dir = base_dir / 'tmp'
 data_dir = base_dir / 'data'
 raw_dir = base_dir / 'raw'
 po_dir = tmp_dir / 'po'
+seg_dir = data_dir / 'segmented_texts'
 
 
 po_mappings = [
