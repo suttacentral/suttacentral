@@ -12,7 +12,7 @@
     <style>
 
         :host(.selected) > .node-container > .node-row {
-            background-color: var(--paper-tree-selected-background-color, rgba(200, 200, 200, 0.5));
+            background-color: var(--paper-blue-grey-50);
             color: var(--paper-tree-selected-color, inherit);
         }
 
@@ -26,9 +26,12 @@
         }
 
         .node-row {
-            padding: 5px 0px 5px 8px;
+            padding: 8px 16px 8px 16px;
             display: inline-block;
-            width: 95%;
+            width: 90%;
+            white-space: nowrap;
+            @apply(--paper-font-body2);
+
         }
 
 
@@ -60,7 +63,6 @@
         .node-preicon.expanded + a {
             font-weight: bold;
         }
-
         .node-icon {
             cursor: pointer;
             width: 24px;
@@ -68,18 +70,19 @@
         }
 
         .data-lang {
-            padding-left:4px;
+            padding-left:12px;
             color: var(--paper-grey-600);
-            font-size: 0.8em;
+            font-size: 12px;
+            font-weight:normal;
         }
 
         .data-name {
-            font-size: 1.1em;
+         
         }
 
         ul {
             margin: 0;
-            padding-left: 10px;
+            padding-left: 0px;
         }
 
         li {

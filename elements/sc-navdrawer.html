@@ -22,25 +22,25 @@ paper-tree {
 
 #wheel {
   color: white;
-  font-size: 1.6em;
+  font-size: 45px;
   display: inline-block;
   vertical-align: middle;
-  font-family: 'Skolar PE', 'Noto', serif;
+  @apply(--sc-serif-font);
 }
 
 #hometitle {
-  font-family: 'Skolar PE', 'Noto', serif;
-  line-height: 60px;
+  @apply(--sc-serif-font);
+  @apply(--sc-mixed-small-caps);
+  font-size: 24px;
   font-weight: normal;
-  font-size: 1.6em;
-  font-feature-settings: "smcp";
-  font-variant-caps: small-caps;
   color: var(--paper-indigo-500);
-  vertical-align: middle;
   background-color: var(--paper-amber-400);
   border-bottom: 4px solid var(--paper-deep-orange-900);
   margin: 0;
-  padding: 0 0 0 15px;
+  padding:  0 0 0 16px;
+  white-space: nowrap;
+  height:60px;
+  line-height: 1.4;
 }
 
 #hometitle a {
