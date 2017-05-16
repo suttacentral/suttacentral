@@ -13,7 +13,7 @@
 
         :host(.selected) > .node-container > .node-row {
             background-color: var(--paper-blue-grey-50);
-            color: var(--paper-tree-selected-color, inherit);
+           
         }
 
         :host(.selected) > .node-container > .node-row > #actions {
@@ -22,7 +22,11 @@
 
         a {
             text-decoration: none;
-            color: var(--paper-cyan-500);
+            color: var(--paper-green-500);
+        }
+
+        :host(.selected) > .node-container > .node-row a{
+             color: var(--sc-gold-700);
         }
 
         .node-row {
@@ -77,7 +81,7 @@
         }
 
         .data-name {
-         
+    
         }
 
         ul {

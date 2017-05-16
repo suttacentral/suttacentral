@@ -6,19 +6,20 @@
 .epigraph {
   margin: 0 5% 4em;
   border: 1px solid var(--paper-grey-300);
-  padding:1.5em 1.5em 0 1.5em;
+  padding:16px 32px;
 }
 
 .epigraph-text {
   font-style: italic;
+  @apply(--sc-paper-font-body);
+  @apply(--sc-serif-font);
 }
 
 .epigraph-reference {
   margin-bottom: .5em;
-  letter-spacing: .02em;
-  font-variant-caps: all-small-caps;
-  font-style: normal;
   margin-top: -1em;
+  @apply(--sc-all-small-caps);
+  font-style: normal;
 }
 </style>
 <template>
