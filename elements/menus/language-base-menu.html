@@ -42,10 +42,7 @@ paper-item {
 
         properties: {
           languageChoice: Array,
-          languageSelectedNr: {
-                    type: Number,
-                    value: 0
-          },
+          languageSelectedNr: Number,
           selectedLanguage: {
             type: String,
             computed: '_computeNewLanguage(languageSelectedNr,languageChoice)',
@@ -57,30 +54,25 @@ paper-item {
           }
     	},
       observers: [
-            '_checkLanguageNr(languageSelectedNr,languageChoice)'
+            '_checkLanguageNr(inputLanguage,languageChoice)'
       ],
 
       ready: function() {
-        console.log(this.inputLanguage, this.selectedLanguage);
-        if (this.inputLanguage !== this.selectedLanguage) {
-          this.selectedLanguage = this.inputLanguage;
-        }
+        if (this.inputLanguage === undefined) {return this.languageSelectedNr = 0;}
       },
-      _checkLanguageNr: function(languageSelectedNr,languageChoice) {
-        if (this.inputLanguage && languageChoice) {
-          console.log("array= ", languageChoice);
-            if (languageChoice[languageSelectedNr].id !== this.inputLanguage) {
-              for (var i=0 ; i<languageChoice.length ; i++) {
-                if (languageChoice[i].id === this.inputLanguage) {
-                  this.languageSelectedNr = i;
-                }
-              }
+      _checkLanguageNr: function(inputLanguage,languageChoice) {
+        if (inputLanguage === undefined) {return this.languageSelectedNr = 0;}
+        else {
+          for (var i = 0 ; i < languageChoice.length ; i++) {
+            if (languageChoice[i].id === inputLanguage) {
+              return this.languageSelectedNr = i;
             }
           }
+        }
       },
         _passNewLanguageSelected: function(selectedLanguage) {
-          console.log(selectedLanguage);
           this.fire('languageSelection',{Language:selectedLanguage});
+          this.inputLanguage = this.selectedLanguage;
         },
         _computeNewLanguage: function(languageSelectedNr,languageChoice) {
            return languageChoice ? languageChoice[languageSelectedNr].id : "en";
