@@ -12,7 +12,7 @@
     <style>
 
         :host(.selected) > .node-container > .node-row {
-            background-color: var(--paper-blue-grey-50);
+            background-color: var(--paper-grey-200);
            
         }
 
@@ -23,6 +23,7 @@
         a {
             text-decoration: none;
             color: var(--paper-green-500);
+            cursor:pointer;
         }
 
         :host(.selected) > .node-container > .node-row a{
@@ -30,12 +31,17 @@
         }
 
         .node-row {
-            padding: 8px 16px 8px 16px;
-            display: inline-block;
-            width: 90%;
+            width: 100%;
             white-space: nowrap;
             @apply(--paper-font-body2);
+            position:relative;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
 
+        .node-row a{
+            text-transform: none;
+            letter-spacing: 0em;
         }
 
 
@@ -48,25 +54,27 @@
 
         .node-preicon.collapsed:before {
             content: '\2304';
-            float: right;
-            padding-bottom:5px;
-            line-height: 20px;
+            position:absolute;
+            right:16px;
+            top:5px;
         }
 
         .node-preicon.expanded:before {
             content: '\2303';
-            float: right;
-            line-height: 20px;
-            padding-top: 10px;
+            position:absolute;
+            right:16px;
+            top:18px;
         }
 
-        .node-preicon, .node-name {
-            cursor: pointer;
-        }
         
-        .node-preicon.expanded + a {
+        .node-preicon.expanded + a{
             font-weight: bold;
         }
+
+        a[href*="v"]{
+            padding-left: 16px;
+        }
+
         .node-icon {
             cursor: pointer;
             width: 24px;
@@ -75,13 +83,16 @@
 
         .data-lang {
             padding-left:12px;
-            color: var(--paper-grey-600);
+            color: var(--secondary-text-color);
             font-size: 12px;
             font-weight:normal;
         }
 
         .data-name {
-    
+            padding: 4px 0px 4px 16px;
+            margin:4px 0;
+            display:inline-block;
+            width:70%;
         }
 
         ul {

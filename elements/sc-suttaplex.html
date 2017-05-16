@@ -40,7 +40,7 @@ paper-icon-button {
 
 paper-card.suttaplex {
     border-radius: 0px;
-    border-top: 1px solid var(--paper-grey-100);
+    border-top: 1px solid var(--paper-grey-300);
     display:block;
 }
 paper-card.suttaplex .card-content {
@@ -56,23 +56,24 @@ paper-card.suttaplex .card-content {
 .suttaplex-nerdy-row{
   @apply(--paper-font-body2);
   color: var(--secondary-text-color);
+  white-space: nowrap;
 }
 .suttaplex-nerdy-row span{
-  margin-right: 12px;
+  margin-right: 24px;
 }
+
+.suttaplex-nerdy-row span:nth-of-type(1){
+  @apply(--sc-all-small-caps);
+}
+
 
 .suttaplex-description{
   @apply(--sc-paper-font-body);
    overflow: hidden;
-   text-overflow: ellipsis;
-   display: -webkit-box;
-   -webkit-box-orient: vertical;
-   -webkit-line-clamp: 2;
-   max-height: 42px;
 }
 
 paper-card.suttaplex .card-actions {
-    padding: 0px 16px;
+    padding: 0px 16px 8px;
     display:flex;
     justify-content: space-between;
     align-items: baseline;
@@ -90,7 +91,6 @@ paper-button{
 }
 paper-button.green a {
   color: var(--paper-green-a700);
-  --paper-button-ink-color: var(--paper-grey-500);
   text-decoration: none;
 }
 
@@ -117,6 +117,9 @@ paper-badge {
 #moremenu {
   visibility:hidden;
 }
+summary::-webkit-details-marker{
+  color:var(--paper-grey-300);
+}
 details {
   display: inline-block;
 }
@@ -129,6 +132,7 @@ details p {
   padding:12px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin: 0 48px 0 0;
+  white-space: normal;
 }
 
 paper-menu-button {

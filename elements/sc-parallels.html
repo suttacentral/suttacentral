@@ -11,24 +11,23 @@
 <style  is="custom-style">
 .parallels-parallel-title {
   @apply(--paper-font-subhead);
-  font-family: "Skolar PE";
+  @apply(--sc-serif-font);
 }
 .parallels-nerdy-row{
   @apply(--paper-font-body2);
-  font-family: "Skolar Sans PE", sans-serif;
   color: var(--secondary-text-color);
+  white-space: nowrap;
 }
 .parallels-nerdy-row span{
-  margin-right: 12px;
+  margin-right: 24px;
 }
 paper-button{
   letter-spacing: .02em
 }
 paper-button.blue a {
-  color: var(--paper-blue-700);
-  --paper-button-ink-color: var(--paper-grey-500);
+  color: var(--paper-cyan-500);
   text-decoration: none;
-  font-family: "Skolar Sans PE", sans-serif;
+  
 }
 paper-button.dense {
   font-size: 15px;
@@ -51,16 +50,22 @@ paper-icon-button {
 .parallels-actions {
   margin-top:8px;
 }
+summary::-webkit-details-marker{
+  color:var(--paper-grey-300);
+}
 details {
   display: inline-block;
 }
 details p{
+  @apply(--paper-font-body1);
   position:absolute;
   z-index:200;
   background-color:#fff;
   @apply(--shadow-elevation-3dp);
   padding:12px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 0 48px 0 0;
+  white-space: normal;
 }
 
 </style>
