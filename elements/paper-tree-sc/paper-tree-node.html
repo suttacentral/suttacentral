@@ -20,12 +20,6 @@
             display: inline-block;
         }
 
-        a {
-            text-decoration: none;
-            color: var(--paper-green-500);
-            cursor:pointer;
-        }
-
         :host(.selected) > .node-container > .node-row a{
              color: var(--sc-gold-700);
         }
@@ -36,12 +30,15 @@
             @apply(--paper-font-body2);
             position:relative;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.04em;
         }
 
         .node-row a{
             text-transform: none;
             letter-spacing: 0em;
+             text-decoration: none;
+            color: var(--paper-green-500);
+            cursor:pointer;
         }
 
 
@@ -71,9 +68,7 @@
             font-weight: bold;
         }
 
-        a[href*="v"]{
-            padding-left: 16px;
-        }
+
 
         .node-icon {
             cursor: pointer;
@@ -93,6 +88,10 @@
             margin:4px 0;
             display:inline-block;
             width:70%;
+        }
+
+        a[href*="v"]{
+            padding-left:16px;
         }
 
         ul {
