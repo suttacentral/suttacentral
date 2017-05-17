@@ -113,22 +113,22 @@
     </style>
 
     <template>
-        <div class="node-container">
-            <div class="node-row">
+        <div class="node-container test10">
+            <div class="node-row test11">
                 <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
-                <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
+                <span class$="{{_computeClass(data.*)}} test2" on-click="toggleChildren"></span>
                 <template is="dom-if" if="{{data.uid}}">
-                    <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-click="select"><span class="data-name">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
+                    <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name test3" on-click="select"><span class="data-name test4">{{data.name}}<span class="data-lang test5">{{data.lang}}</span></span></span></a>
                 </template>
                 <template is="dom-if" if="{{!data.uid}}">
-                    <span class="node-name" on-click="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span class="data-lang">{{data.lang}}</span></span></span>
+                    <span class="node-name test6" on-click="select"><span class="data-name  test7" inner-h-t-m-l="{{data.name}}"><span class="data-lang test8">{{data.lang}}</span></span></span>
                 </template>
 
             </div>
-            <ul hidden$={{!data.open}}>
+            <ul hidden$={{!data.open}} class="test9">
                 <template is="dom-repeat" items="{{data.children}}">
                     <li>
-                        <paper-tree-node data="{{item}}" actions="{{actions}}"></paper-tree-node>
+                        <paper-tree-node class="test10" data="{{item}}" actions="{{actions}}"></paper-tree-node>
                     </li>
                 </template>
             </ul>
