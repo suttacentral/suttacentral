@@ -90,7 +90,7 @@
             width:70%;
         }
 
-        a[href*="v"]{
+        .vagga {
             padding-left:16px;
         }
 
@@ -112,22 +112,27 @@
     </style>
 
     <template>
-        <div class="node-container test10">
-            <div class="node-row test11">
+        <div class="node-container">
+            <div class="node-row">
                 <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
-                <span class$="{{_computeClass(data.*)}} test2" on-click="toggleChildren"></span>
+                <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
                 <template is="dom-if" if="{{data.uid}}">
-                    <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name test3" on-click="select"><span class="data-name test4">{{data.name}}<span class="data-lang test5">{{data.lang}}</span></span></span></a>
+                    <template is="dom-if" if="{{_checkUid(data.uid)}}">
+                            <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name vagga" on-click="select"><span class="data-name">{{data.name}}<span class="data-lang5">{{data.lang}}</span></span></span></a>
+                    </template>
+                    <template is="dom-if" if="{{!_checkUid(data.uid)}}">
+                            <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-click="select"><span class="data-name">{{data.name}}<span class="data-lang5">{{data.lang}}</span></span></span></a>
+                    </template>
                 </template>
                 <template is="dom-if" if="{{!data.uid}}">
-                    <span class="node-name test6" on-click="select"><span class="data-name  test7" inner-h-t-m-l="{{data.name}}"><span class="data-lang test8">{{data.lang}}</span></span></span>
+                    <span class="node-name" on-click="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span class="data-lang">{{data.lang}}</span></span></span>
                 </template>
 
             </div>
-            <ul hidden$={{!data.open}} class="test9">
+            <ul hidden$={{!data.open}}>
                 <template is="dom-repeat" items="{{data.children}}">
                     <li>
-                        <paper-tree-node class="test10" data="{{item}}" actions="{{actions}}"></paper-tree-node>
+                        <paper-tree-node data="{{item}}" actions="{{actions}}"></paper-tree-node>
                     </li>
                 </template>
             </ul>
@@ -194,7 +199,9 @@
             var children = change && change.base && change.base.children;
             return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
         },
-
+        _checkUid: function(uid) {
+            return (uid.includes("/v")) ? true : false;
+        },
         /**
          * Compute the necessary node icon.
          *

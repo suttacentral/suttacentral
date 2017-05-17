@@ -40,22 +40,22 @@
                     "uid": "an1",
                     "children": [{
                         "name": "Cittapariyādāna Vagga",
-                        "uid": "an1/first-vagga"
+                        "uid": "an1/v1"
                         }, {
                         "name": "Nīvaraṇappahāṇa Vagga",
-                        "uid": "an1/second-vagga"
+                        "uid": "an1/v2"
                         }, {
                         "name": "Akammanīya Vagga",
-                        "uid": "an1/third-vagga"
+                        "uid": "an1/v3"
                         }, {
                         "name": "Adanta Vagga",
-                        "uid": "an1/fourth-vagga"
+                        "uid": "an1/v4"
                         }, {
                         "name": "Sūka Vagga",
-                        "uid": "an1/fifth-vagga"
+                        "uid": "an1/v5"
                         }, {
                         "name": "Pabhassara Vagga",
-                        "uid": "an1/sixth-vagga"
+                        "uid": "an1/v6"
                     }]
                     }, {
                     "name": "AN2 Duka Nipāta",
