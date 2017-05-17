@@ -115,12 +115,12 @@
         <div class="node-container">
             <div class="node-row">
                 <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
-                <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
+                <span class$="{{_computeClass(data.*)}}" on-tap="toggleChildren"></span>
                 <template is="dom-if" if="{{data.uid}}">
-                    <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-click="select"><span class$="data-name {{_computeIndent(data.children)}}">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
+                    <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-tap="select"><span class$="data-name {{_computeIndent(data.children)}}">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
                 </template>
                 <template is="dom-if" if="{{!data.uid}}">
-                    <span class="node-name" on-click="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span class="data-lang">{{data.lang}}</span></span></span>
+                    <span class="node-name" on-tap="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span class="data-lang">{{data.lang}}</span></span></span>
                 </template>
 
             </div>
