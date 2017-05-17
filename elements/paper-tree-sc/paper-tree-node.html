@@ -117,12 +117,7 @@
                 <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
                 <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
                 <template is="dom-if" if="{{data.uid}}">
-                    <template is="dom-if" if="{{_checkUid(data.uid)}}">
-                            <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-click="select"><span class="data-name indent">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
-                    </template>
-                    <template is="dom-if" if="{{!_checkUid(data.uid)}}">
-                            <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-click="select"><span class="data-name">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
-                    </template>
+                    <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-click="select"><span class$="data-name {{_computeIndent(data.uid)}}">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
                 </template>
                 <template is="dom-if" if="{{!data.uid}}">
                     <span class="node-name" on-click="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span class="data-lang">{{data.lang}}</span></span></span>
@@ -199,8 +194,8 @@
             var children = change && change.base && change.base.children;
             return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
         },
-        _checkUid: function(uid) {
-            return (uid.includes("/v")) ? true : false;
+        _computeIndent: function(uid) {
+            return (uid.includes("/v")) ? "indent" : "";
         },
         /**
          * Compute the necessary node icon.
