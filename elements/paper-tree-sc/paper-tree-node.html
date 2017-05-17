@@ -90,7 +90,7 @@
             width:70%;
         }
 
-        .vagga {
+        .indent {
             padding-left:16px;
         }
 
@@ -118,10 +118,10 @@
                 <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
                 <template is="dom-if" if="{{data.uid}}">
                     <template is="dom-if" if="{{_checkUid(data.uid)}}">
-                            <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name vagga" on-click="select"><span class="data-name">{{data.name}}<span class="data-lang5">{{data.lang}}</span></span></span></a>
+                            <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name indent" on-click="select"><span class="data-name">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
                     </template>
                     <template is="dom-if" if="{{!_checkUid(data.uid)}}">
-                            <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-click="select"><span class="data-name">{{data.name}}<span class="data-lang5">{{data.lang}}</span></span></span></a>
+                            <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-click="select"><span class="data-name">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
                     </template>
                 </template>
                 <template is="dom-if" if="{{!data.uid}}">
