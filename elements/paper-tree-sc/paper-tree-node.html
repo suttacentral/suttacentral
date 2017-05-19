@@ -117,7 +117,7 @@
                 <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
                 <span class$="{{_computeClass(data.*)}}" on-tap="toggleChildren"></span>
                 <template is="dom-if" if="{{data.uid}}">
-                    <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-tap="select"><span class$="data-name {{_computeIndent(data.children)}}">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
+                    <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-tap="select"><span class$="data-name {{_computeIndent(data)}}">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
                 </template>
                 <template is="dom-if" if="{{!data.uid}}">
                     <span class="node-name" on-tap="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span class="data-lang">{{data.lang}}</span></span></span>
@@ -194,8 +194,8 @@
             var children = change && change.base && change.base.children;
             return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
         },
-        _computeIndent: function(children) {
-            return (children) ? "" : "indent";
+        _computeIndent: function(data) {
+            return (data.children || data.lang) ? "" : "indent";
         },
         /**
          * Compute the necessary node icon.
