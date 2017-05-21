@@ -5,7 +5,7 @@
             "children": [{
                 "name": "Dīgha Nikāya",
                 "uid": "dn",
-                "lang": "𑀧𑀇",
+                "lang": "pi",
                 "children": [{
                     "name": "Chapter on Ethics",
                     "uid": "dn/v1"
@@ -19,11 +19,11 @@
             }, {
                 "name": "Dīrghāgama",
                 "uid": "da",
-                "lang": "中文"
+                "lang": "lzh"
             }, {
                 "name": "Other",
                 "uid": "long-ot",
-                "lang": "中文"
+                "lang": "lzh"
             }]            
         }, {
             "name": "Medium"
@@ -34,7 +34,7 @@
             "children": [{
                 "name": "Aṅguttara Nikāya",
                 "uid": "an",
-                "lang": "स",
+                "lang": "pi",
                 "children": [{
                     "name": "AN1 Ekaka Nipāta",
                     "uid": "an1",
@@ -91,11 +91,11 @@
             }, {
                 "name": "Ekottarikāgama",
                 "uid": "ea",
-                "lang": "བོད"
+                "lang": "lzh"
             }, {
                 "name": "Other",
                 "uid": "ot",
-                "lang": "𐨤𐨒𐨡"
+                "lang": "lzh"
             }]            
         }, {
             "name": "Minor"
