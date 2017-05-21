@@ -5,7 +5,7 @@
 
     <template>
         <div>
-            <paper-tree-node id="root" data="[[data]]" actions="[[actions]]"></paper-tree-node>
+            <paper-tree-node id="root" data="[[data]]"></paper-tree-node>
         </div>
     </template>
 
@@ -45,21 +45,6 @@
                 value: null,
                 notify: true
             },
-
-            /**
-             * `actions` available for all nodes. Each action object has the following fields:
-             *
-             * - `action.label`: string representing the display name of the menu item.
-             * - `action.event`: string which is the event name to dispatch whenever the item is clicked.
-             *
-             */
-            actions: {
-                type: Array,
-                value: function() {
-                    return null;
-                },
-                observer: "_actionsChanged"
-            }
         },
 
         listeners: {
@@ -71,13 +56,6 @@
          */
         _dataChanged: function()  {
             this.$.root.data = this.data;
-        },
-
-        /**
-         * Called whenever the actions list is changed to notify the lower nodes.
-         */
-        _actionsChanged: function()  {
-            this.$.root.actions = this.actions;
         },
 
         /**

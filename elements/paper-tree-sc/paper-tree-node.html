@@ -1,121 +1,67 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <dom-module id="paper-tree-node">
 
     <style>
-
-        :host(.selected) > .node-container > .node-row {
-            background-color: var(--paper-grey-200);
-           
-        }
-
-        :host(.selected) > .node-container > .node-row > #actions {
-            display: inline-block;
-        }
-
-        :host(.selected) > .node-container > .node-row a{
-             color: var(--sc-gold-700);
-        }
-
-        .node-row {
-            width: 100%;
-            white-space: nowrap;
-            @apply(--paper-font-body2);
-            position:relative;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-
-        .node-row a{
-            text-transform: none;
-            letter-spacing: 0em;
-             text-decoration: none;
-            color: var(--paper-green-500);
-            cursor:pointer;
-        }
-
-
-        .node-preicon.collapsed,
-        .node-preicon.expanded {
-            padding-left: 0px;
-            font-size: 28px;
-            color: var(--disabled-text-color);
-        }
-
-        .node-preicon.collapsed:before {
-            content: '\2304';
-            position:absolute;
-            right:16px;
-            top:5px;
-        }
-
-        .node-preicon.expanded:before {
-            content: '\2303';
-            position:absolute;
-            right:16px;
-            top:18px;
-        }
-
-        
-        .node-preicon.expanded + a{
-            font-weight: bold;
-        }
-
-
-
-        .node-icon {
-            cursor: pointer;
-            width: 24px;
-            height: 24px;
-        }
-
-        .data-lang {
-            padding-left:12px;
-            color: var(--secondary-text-color);
-            font-size: 12px;
-            font-weight:normal;
-        }
-
-        .data-name {
-            padding: 4px 0px 4px 16px;
-            margin:4px 0;
-            display:inline-block;
-            width:70%;
-        }
-
-        .indent {
-            padding-left:32px;
-        }
-
-        ul {
-            margin: 0;
-            padding-left: 0px;
-        }
-
-        li {
-            list-style-type: none;
-        }
-
-        [hidden] {
-            display: none;
-        }
-
-
-
+:host(.selected) > .node-container > .node-row {
+    background-color: var(--paper-grey-200);
+}
+:host(.selected) > .node-container > .node-row > #actions {
+    display: inline-block;
+}
+:host(.selected) > .node-container > .node-row a{
+     color: var(--sc-gold-700);
+}
+.node-row {
+    width: 100%;
+    white-space: nowrap;
+    @apply(--paper-font-body2);
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.node-row a{
+    text-transform: none;
+    letter-spacing: 0em;
+     text-decoration: none;
+    color: var(--paper-green-500);
+    cursor: pointer;
+}
+iron-icon {
+    color: var(--disabled-text-color);
+    float: right;
+    padding: 6px 8px 0 0;
+    cursor: pointer;
+}
+.data-lang {
+    padding-left: 12px;
+    color: var(--secondary-text-color);
+    font-size: 12px;
+    font-weight: normal;
+}
+.data-name {
+    padding: 4px 0px 4px 16px;
+    margin: 4px 0;
+    display: inline-block;
+    width: 70%;
+}
+.indent {
+    padding-left: 32px;
+}
+ul {
+    margin: 0;
+    padding-left: 0px;
+}
+li {
+    list-style-type: none;
+}
     </style>
 
     <template>
         <div class="node-container">
             <div class="node-row">
-                <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
-                <span class$="{{_computeClass(data.*)}}" on-tap="toggleChildren"></span>
+                <iron-icon icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></iron-icon>
                 <template is="dom-if" if="{{data.uid}}">
                     <a data-page$="{{data.uid}}" href$="/{{data.uid}}/list"><span class="node-name" on-tap="select"><span class$="data-name {{_computeIndent(data)}}">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
                 </template>
@@ -124,13 +70,15 @@
                 </template>
 
             </div>
-            <ul hidden$={{!data.open}}>
+            <iron-collapse id="collapse" opened="{{opened}}">
+            <ul class$={{!data.open}}>
                 <template is="dom-repeat" items="{{data.children}}">
                     <li>
                         <paper-tree-node data="{{item}}" actions="{{actions}}"></paper-tree-node>
                     </li>
                 </template>
             </ul>
+            </iron-collapse>
         </div>
     </template>
 
@@ -160,21 +108,6 @@
                     return null;
                 }
             },
-
-            /**
-             * `actions` available for this node. Each action object has the following fields:
-             *
-             * - `action.label`: string representing the display name of the menu item.
-             * - `action.event`: string which is the event name to dispatch whenever the item is clicked.
-             *
-             */
-            actions: {
-                type: Array,
-                value: function() {
-                    return null;
-                }
-            }
-
         },
 
         /**
@@ -189,28 +122,15 @@
          * @param {object} change An object containing the property that changed and its value.
          * @return {string} The class name indicating whether the node is open or closed
          */
-        _computeClass: function(change) {
+        _computeIcon: function(change) {
             var open = change && change.base && change.base.open;
             var children = change && change.base && change.base.children;
-            return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
+            // return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
+            return ((open && children && children.length) ? 'expand-less' : children && children.length ? 'expand-more' : '');
         },
         _computeIndent: function(data) {
             return (data.children || data.lang) ? "" : "indent";
         },
-        /**
-         * Compute the necessary node icon.
-         *
-         * @param {string=folder} an icon name.
-         * @return {string} the computed icon name.
-         */
-        _computeIcon: function(icon) {
-            return icon ? icon : 'folder';
-        },
-
-        _actionClicked: function (event) {
-            this.fire(event.model.item.event, this);
-        },
-
         /**
          * Highlights node as the selected node.
          */
@@ -228,7 +148,9 @@
         /**
          * Display/Hide the children nodes.
          */
-        toggleChildren: function() {
+        toggleChildren: function(e) {
+            this.opened = !this.opened;
+            this.fire('toggle', this);
             this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
         }
 
