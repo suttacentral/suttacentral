@@ -77,11 +77,34 @@
         }
 
         .data-lang {
-            padding-left:12px;
-            color: var(--secondary-text-color);
-            font-size: 12px;
-            font-weight:normal;
+            margin-right:12px;
+            padding-left:0px;
+            color: white;
+            background-color: #9b9b9b;
+            font-size: 9px;
+            font-weight:700;
+            float:left;
+            display: inline-block;
+            height:20px;
+            width:20px;
+            border-radius: 3px 3px 3px 3px;
+            text-align: center;
+            line-height: 22px;
+            position: relative;
         }
+        .data-lang:before{
+            top: 100%;
+            left: 3px;
+            border: solid;
+            content: " ";
+            position: absolute;
+        }
+
+
+.data-lang:before {
+    border-top-color: #9b9b9b;
+    border-width: 5px;
+}    
 
         .data-name {
             padding: 4px 0px 4px 16px;
