@@ -8,7 +8,7 @@
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sc-segmented-text.html">
 
-<dom-module id="sc-page-segmented-text" attributes="togdraw">
+<dom-module id="sc-page-segmented-text">
 <style is="custom-style">
 paper-scroll-header-panel {
       position: absolute;
@@ -42,11 +42,6 @@ paper-icon-button {
   color: white;
 }
 
-@media screen and (min-width: 769px) {
-    #drawertoggle {
-        display:none;
-    }
-}
 paper-dialog paper-icon-button {
   color: var(--disabled-text-color);
 }
@@ -60,7 +55,6 @@ h2{
 <paper-scroll-header-panel main>
 
 <paper-toolbar>
-      <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"><p class="sutta">[[suttaTitle]]—[[suttaAuthor]]</p></span>
       <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
       <paper-icon-button id="settingsbutton" icon="settings" onclick="settings.open()"></paper-icon-button>
@@ -109,9 +103,6 @@ h2{
         this.suttaAuthor = event.detail.suttaauthor;
         this.suttaTitle = event.detail.suttatitle;
         this.suttaMeta = event.detail.suttameta;
-      },
-      toggleDrawer: function() {
-        this.fire('eventFromChild',{togdraw:"drawer"});
       }
     });
 </script>

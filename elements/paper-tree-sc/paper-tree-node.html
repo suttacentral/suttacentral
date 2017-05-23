@@ -71,7 +71,7 @@ li {
 
             </div>
             <iron-collapse id="collapse" opened="{{opened}}">
-            <ul class$={{!data.open}}>
+            <ul>
                 <template is="dom-repeat" items="{{data.children}}">
                     <li>
                         <paper-tree-node data="{{item}}" actions="{{actions}}"></paper-tree-node>
@@ -151,7 +151,6 @@ li {
         toggleChildren: function(e) {
             this.opened = !this.opened;
             this.fire('toggle', this);
-            this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
         }
 
     });

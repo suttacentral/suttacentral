@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="paper-tree-sc/paper-tree.html">
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="page-selector.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
@@ -51,7 +52,11 @@ paper-tree {
   @apply(--shadow-elevation-16dp);
   overflow: auto;
 }
-
+#drawertoggle {
+  margin: 12px 16px 16px 16px;
+  z-index: 1;
+  color: white;
+}
 </style>
 <template>
 
@@ -89,6 +94,7 @@ paper-tree {
   </div>
 
   <div main>
+    <paper-icon-button id="drawertoggle" icon="menu" paper-drawer-toggle></paper-icon-button>
     <page-selector category="{{categoryData.category}}" route="{{categoryTail}}" input-language="{{inputLanguage}}"></page-selector>
   </div>
 </paper-drawer-panel>
@@ -105,7 +111,8 @@ paper-tree {
 
 
         observers: [
-        '_updateScroll(route)'
+        '_updateScroll(route)',
+        'hideToggle(selectPanel)'
       ],
 
       attached: function() {
@@ -118,14 +125,13 @@ paper-tree {
         window.scroll(0, 0);
       },
       ready: function() {
-        this.addEventListener('eventFromChild', this.toggleDrawer);
         this.addEventListener('languageSelection',this.changeLanguage);
-      },
-      toggleDrawer: function(event,selectPanel) {
-        return this.selectPanel = event.detail.togdraw;
       },
       changeLanguage: function(event) {
         return this.inputLanguage = event.detail.Language;
+      },
+      hideToggle: function() {
+        return (this.$$('paper-drawer-panel').selected == 'drawer') ? this.toggleAttribute('hidden', true, this.$.drawertoggle) : this.toggleAttribute('hidden', false, this.$.drawertoggle);
       }
 
     });

@@ -2,12 +2,11 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sc-suttaplex.html">
 <link rel="import" href="addons/sc-node.html">
 
-<dom-module id="sc-view-suttaplex" attributes="togdraw">
+<dom-module id="sc-view-suttaplex">
 <style is="custom-style">
 paper-scroll-header-panel {
       position: absolute;
@@ -39,9 +38,6 @@ paper-toolbar {
     .paper-header {
       height: 11em;
     };
-}
-paper-icon-button {
-  color: white;
 }
 .divisioncontent {
   color: var(--primary-text-color);
@@ -75,11 +71,6 @@ main {
 .vagganode.firstvagga, .node+.vagganode {
   padding-top: 0;
 }
-@media screen and (min-width: 769px) {
-    #drawertoggle {
-        display:none;
-    }
-}
 </style>
 <template>
 <iron-ajax
@@ -91,7 +82,6 @@ main {
 <paper-scroll-header-panel main>
 
 <paper-toolbar>
-      <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"><p class="sutta">{{languageData.name}}—{{suttaList.namepi}}</p></span>
       <sc-toolbar input-language="{{inputLanguage}}"></sc-toolbar>
 </paper-toolbar>
@@ -160,9 +150,6 @@ main {
       },
       _computeVaggadescription: function(vagga,inputLanguage) {
         return vagga[inputLanguage].description;
-      },
-      toggleDrawer: function() {
-        this.fire('eventFromChild',{togdraw:"drawer"});
       }
     });
 

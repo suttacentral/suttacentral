@@ -1,7 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="static/home-page.html">
@@ -9,7 +8,7 @@
 <link rel="import" href="static/downloads-page.html">
 <link rel="import" href="static/people-page.html">
 
-<dom-module id="sc-page-static" attributes="togdraw">
+<dom-module id="sc-page-static">
 <style is="custom-style">
 paper-scroll-header-panel {
       position: absolute;
@@ -57,9 +56,6 @@ h1{
       height: 11em;
     };
 }
-paper-icon-button {
-  color: white;
-}
 .textcontent {
   min-height: 100%;
   height: auto!important;
@@ -73,17 +69,11 @@ paper-icon-button {
 main {
   margin-top: 3em;
 }
-@media screen and (min-width: 769px) {
-    #drawertoggle {
-        display:none;
-    }
-}
 </style>
 <template>
 <paper-scroll-header-panel main>
 
 <paper-toolbar class="tall">
-      <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"></span>
       <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
       <span class="middle title"><h1>SuttaCentral</h1></span>
@@ -125,9 +115,6 @@ main {
       },
       _checkpeopleURL: function(category) {
         return (category === 'people') ? true : false;
-      },
-      toggleDrawer: function() {
-        this.fire('eventFromChild',{togdraw:"drawer"});
       }
 
     });

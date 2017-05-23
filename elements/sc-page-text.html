@@ -8,7 +8,7 @@
 <link rel="import" href="menus/settings-menu.html">
 <link rel="import" href="sc-toolbar.html">
 
-<dom-module id="sc-page-text" attributes="togdraw">
+<dom-module id="sc-page-text">
 <style is="custom-style">
 paper-scroll-header-panel {
       position: absolute;
@@ -42,11 +42,6 @@ paper-icon-button {
   color: white;
 }
 
-@media screen and (min-width: 769px) {
-    #drawertoggle {
-        display:none;
-    }
-}
 paper-dialog paper-icon-button {
   color: var(--disabled-text-color);
 }
@@ -74,7 +69,6 @@ h2{
 <paper-scroll-header-panel main>
 
 <paper-toolbar>
-      <paper-icon-button id="drawertoggle" icon="menu" on-tap="toggleDrawer"></paper-icon-button>
       <span class="title"><p class="sutta">[[_computeTitle(suttaText)]][[_computeAuthor(suttaText)]]</p></span>
       <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
       <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
@@ -125,9 +119,6 @@ h2{
                 Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
                 Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
           }
-      },
-      toggleDrawer: function() {
-        this.fire('eventFromChild',{togdraw:"drawer"});
       }
     });
 </script>
