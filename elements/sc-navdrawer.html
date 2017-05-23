@@ -131,7 +131,14 @@ paper-tree {
         return this.inputLanguage = event.detail.Language;
       },
       hideToggle: function() {
-        return (this.$$('paper-drawer-panel').selected == 'drawer') ? this.toggleAttribute('hidden', true, this.$.drawertoggle) : this.toggleAttribute('hidden', false, this.$.drawertoggle);
+        var self = this;
+        if (self.$$('paper-drawer-panel').selected == 'drawer') {
+            self.toggleAttribute('hidden', true, self.$.drawertoggle);
+        } else {
+            setTimeout(function() {
+              self.toggleAttribute('hidden', false, self.$.drawertoggle);
+            }, 200);
+       }
       }
 
     });
