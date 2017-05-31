@@ -1,44 +1,27 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
-<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sc-suttaplex.html">
 <link rel="import" href="addons/sc-node.html">
-
+ <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <dom-module id="sc-view-suttaplex">
 <style is="custom-style">
-paper-scroll-header-panel {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 100%;
-      --paper-scroll-header-panel-container: {
-        background-color: var(--paper-blue-grey-50);
-      };
+app-header-layout {
+  background-color: var(--paper-blue-grey-50);
 }
-paper-toolbar {
+app-toolbar {
    background-color: var(--paper-deep-orange-900);
   @apply(--shadow-elevation-8dp);
 }
 .sutta {
   text-transform: capitalize;
+  @apply(--sc-sans-font);
+  color: white;
 }
 
-@media (max-width: 600px) {
-    h1 {
-      font-size: 2em;
-      padding-top: 0.2em;
-    };
-    .subtitle {
-      font-size: 1em;
-    };
-    .paper-header {
-      height: 11em;
-    };
-}
 .divisioncontent {
   color: var(--primary-text-color);
   padding: 24px 0;
@@ -54,7 +37,9 @@ main {
   max-width: 720px;
   transition: margin-top 0.3s, margin-bottom 0.3s;
 }
-
+.title {
+  margin-left: 64px;
+}
 .suttalist.expandeditem {
   @apply(--shadow-elevation-8dp);
   margin-top:20px;
@@ -79,12 +64,13 @@ main {
       handle-as="json"
       last-response="{{suttaList}}"></iron-ajax>
 
-<paper-scroll-header-panel main>
-
-<paper-toolbar>
-      <span class="title"><p class="sutta">{{languageData.name}}—{{suttaList.namepi}}</p></span>
-      <sc-toolbar input-language="{{inputLanguage}}"></sc-toolbar>
-</paper-toolbar>
+    <app-header-layout has-scrolling-region>
+      <app-header condenses reveals effects="waterfall" slot="header">
+        <app-toolbar>
+          <div class="title" main-title><p class="sutta">{{languageData.name}}—{{suttaList.namepi}}</p></div>
+          <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
+        </app-toolbar>
+      </app-header>
 
 <div class="divisioncontent">
   <main>
@@ -108,8 +94,7 @@ main {
 
   </main>
 </div>
-
-</paper-scroll-header-panel>
+</app-header-layout>
 </template>
 <script>
     Polymer({

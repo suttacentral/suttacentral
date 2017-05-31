@@ -1,42 +1,27 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
-<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="menus/settings-menu.html">
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sc-segmented-text.html">
-
+ <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <dom-module id="sc-page-segmented-text">
 <style is="custom-style">
-paper-scroll-header-panel {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 100%;
-}
-paper-toolbar {
+app-toolbar {
    background-color: var(--sc-gold-500);
   @apply(--shadow-elevation-8dp);
 }
 .sutta {
   text-transform: capitalize;
+  @apply(--sc-sans-font);
+  color: white;
 }
-
-@media (max-width: 600px) {
-    h1 {
-      font-size: 2em;
-      padding-top: 0.2em;
-    };
-    .subtitle {
-      font-size: 1em;
-    };
-    .paper-header {
-      height: 11em;
-    };
+.title {
+  margin-left: 64px;
 }
 paper-icon-button {
   color: white;
@@ -52,15 +37,17 @@ h2{
 }
 </style>
 <template>
-<paper-scroll-header-panel main>
 
-<paper-toolbar>
-      <span class="title"><p class="sutta">[[suttaTitle]]—[[suttaAuthor]]</p></span>
-      <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
-      <paper-icon-button id="settingsbutton" icon="settings" onclick="settings.open()"></paper-icon-button>
-</paper-toolbar>
+    <app-header-layout has-scrolling-region>
+      <app-header condenses reveals effects="waterfall" slot="header">
+        <app-toolbar>
+          <div class="title" main-title><p class="sutta">[[suttaTitle]]—[[suttaAuthor]]</p></div>
+          <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
+          <paper-icon-button id="settingsbutton" icon="settings" onclick="settings.open()"></paper-icon-button>
+        </app-toolbar>
+      </app-header>
 
-  <paper-dialog id="settings" modal>
+  <paper-dialog id="settings">
     <div class="buttons">
       <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
     </div>
@@ -72,8 +59,7 @@ h2{
 
 <sc-segmented-text sutta-path="{{suttaPath}}" show-viewer="{{showViewer}}"></sc-segmented-text>
 
-</paper-scroll-header-panel>
-
+</app-header-layout>
 </template>
 <script>
     Polymer({

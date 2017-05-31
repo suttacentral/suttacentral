@@ -1,27 +1,26 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
-<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="static/home-page.html">
 <link rel="import" href="static/dons-page.html">
 <link rel="import" href="static/downloads-page.html">
 <link rel="import" href="static/people-page.html">
-
+ <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <dom-module id="sc-page-static">
 <style is="custom-style">
-paper-scroll-header-panel {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 100%;
-}
-paper-toolbar {
+app-toolbar {
    background-color: var(--sc-gold-500);
-  @apply(--shadow-elevation-8dp);
 }
+app-toolbar:nth-of-type(2) {
+  z-index: -1;
+}
+app-toolbar:last-of-type {
+  @apply(--shadow-elevation-8dp);
+  z-index: -2;
+}
+
 h1{
   @apply(--sc-serif-font);
   @apply(--sc-mixed-small-caps);
@@ -44,6 +43,20 @@ h1{
   margin-top: 0;
 }
 
+.title {
+  margin-left: 64px;
+}
+@media (max-width: 925px) {
+    .subtitle {
+      font-size: 1.2em;
+      margin-bottom: 0.5em;
+    };
+}
+@media (max-width: 800px) {
+    .title {
+      margin-left: initial;
+    };
+}
 @media (max-width: 600px) {
     h1 {
       font-size: 2em;
@@ -51,34 +64,25 @@ h1{
     };
     .subtitle {
       font-size: 1em;
+      margin-bottom: 0.5em;
     };
-    .paper-header {
-      height: 11em;
-    };
-}
-.textcontent {
-  min-height: 100%;
-  height: auto!important;
-  margin: 0 auto -240px;
-  color: #2b2b2b;
-  @apply(--sc-serif-font);
-  @apply(--sc-paper-font-body);
-  min-width: 320px;
-}
-
-main {
-  margin-top: 3em;
 }
 </style>
 <template>
-<paper-scroll-header-panel main>
-
-<paper-toolbar class="tall">
-      <span class="title"></span>
-      <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
-      <span class="middle title"><h1>SuttaCentral</h1></span>
-      <span class="bottom title"><p class="subtitle">Early Buddhist texts, translations, and parallels</p></span>
-</paper-toolbar>
+    <app-header-layout has-scrolling-region>
+      <app-header condenses reveals effects="waterfall" slot="header">
+        <app-toolbar>
+          
+          <div main-title></div>
+          <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
+        </app-toolbar>
+        <app-toolbar>
+              <div class="title" main-title><h1>SuttaCentral</h1></div>
+        </app-toolbar>
+        <app-toolbar>
+            <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
+        </app-toolbar>
+      </app-header>
 
 <template is="dom-if" if="{{_checkhomeURL(category)}}" restamp>
     <home-page></home-page>
@@ -96,7 +100,7 @@ main {
     <people-page></people-page>
 </template>
 
-</paper-scroll-header-panel>
+</app-header-layout>
 </template>
 <script>
     Polymer({

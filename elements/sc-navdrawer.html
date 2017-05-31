@@ -1,12 +1,15 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="paper-tree-sc/paper-tree.html">
-<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="page-selector.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 
 <dom-module id="sc-navdrawer">
 <style is="custom-style">
@@ -51,12 +54,22 @@ paper-tree {
 #drawerbox {
   @apply(--shadow-elevation-16dp);
   overflow: auto;
+  height: 100%;
+  overflow: auto;
 }
+
 #drawertoggle {
   margin: 12px 16px 16px 16px;
   z-index: 1;
   color: white;
+  position:absolute;
 }
+@media screen and (min-width: 640px) {
+    #drawertoggle {
+      display: none;
+    }
+}
+
 </style>
 <template>
 
@@ -73,31 +86,31 @@ paper-tree {
       handle-as="json"
       last-response="{{navList}}"></iron-ajax>
 
-<paper-drawer-panel drawerFocusSelector="" selected="{{selectPanel}}">
-  <div drawer id="drawerbox"> 
-      <div id="hometitle">
-        <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
-            <a data-page="home" href="/home"><div id="wheel">☸</div>&nbsp;SuttaCentral</a>
-      </div>
+  <app-drawer-layout fullbleed>
 
+    <app-drawer slot="drawer">
+        <div id="drawerbox"> 
+            <div id="hometitle">
+              <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
+                  <a data-page="home" href="/home"><div id="wheel">☸</div>&nbsp;SuttaCentral</a>
+            </div>
 
-    <div id="container">
-        <paper-tree data='{{navList}}'></paper-tree>
-        <paper-tree data='{
-            "name": "<b>Monastic Code</b>"
-        }'></paper-tree>
-        <paper-tree data='{
-            "name": "<b>Abhidhamma</b>"
-        }'></paper-tree>
+          <div id="container">
+              <paper-tree data='{{navList}}'></paper-tree>
+              <paper-tree data='{
+                  "name": "<b>Monastic Code</b>"
+              }'></paper-tree>
+              <paper-tree data='{
+                  "name": "<b>Abhidhamma</b>"
+              }'></paper-tree>
 
-    </div>
-  </div>
+          </div>
+        </div>
+    </app-drawer>
+          <paper-icon-button icon="menu" drawer-toggle id="drawertoggle"></paper-icon-button>
+          <page-selector category="{{categoryData.category}}" route="{{categoryTail}}" input-language="{{inputLanguage}}"></page-selector>
 
-  <div main>
-    <paper-icon-button id="drawertoggle" icon="menu" paper-drawer-toggle></paper-icon-button>
-    <page-selector category="{{categoryData.category}}" route="{{categoryTail}}" input-language="{{inputLanguage}}"></page-selector>
-  </div>
-</paper-drawer-panel>
+  </app-drawer-layout>
 
 </template>
 <script>
@@ -129,16 +142,6 @@ paper-tree {
       },
       changeLanguage: function(event) {
         return this.inputLanguage = event.detail.Language;
-      },
-      hideToggle: function() {
-        var self = this;
-        if (self.$$('paper-drawer-panel').selected == 'drawer') {
-            self.toggleAttribute('hidden', true, self.$.drawertoggle);
-        } else {
-            setTimeout(function() {
-              self.toggleAttribute('hidden', false, self.$.drawertoggle);
-            }, 200);
-       }
       }
 
     });
