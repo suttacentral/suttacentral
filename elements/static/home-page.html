@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../addons/sc-epigraph.html">
+<link rel="import" href="../addons/random-image.html">
 <link rel="import" href="../../styles/static-styles.html">
 
 <dom-module id="home-page">
@@ -10,7 +11,11 @@
 <div id="page-wrap">
 	<main>
     <section id="home">
-      <sc-epigraph></sc-epigraph> 
+
+
+			<random-image images-list='[
+			  { "path": "http://www.buscoseo.com/wp-content/uploads/2015/07/HTML5.png", "title": "old man smoking" }
+			]'></random-image>
       <h1>About SuttaCentral</h1>
 
       <p>SuttaCentral aims at facilitating the study of Buddhist texts from comparative and historical perspectives. It focuses on the texts that represent “Early Buddhism”, texts preserved not only in the Pali Sutta and Vinaya Piṭakas but also in Chinese and Tibetan translations and in fragmentary remains in Sanskrit and other languages.</p>
