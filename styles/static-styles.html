@@ -14,22 +14,37 @@ main {
   margin-top: 3em;
   margin-bottom:3em;
 }
-
-h1 {
-  @apply(--paper-font-display1);
-  color: var(--secondary-text-color);
-}
-h2 {
-
-  color: var(--secondary-text-color);
-}
-
 section {
   margin: 6em auto 0!important;
   padding: 0 5%!important;
   max-width: 40em;
   display: block; 
 }
+h1 {
+  @apply(--paper-font-display1);
+  color: var(--secondary-text-color);
+}
+h2 {
+  color: var(--secondary-text-color);
+}
+a {
+    color: inherit;
+    text-decoration: none;
+    background: linear-gradient(to top, rgba(223, 153, 10, 0) 1.5px, rgba(223, 153, 10, 1) 1.5px, rgba(223, 153, 10, 1) 2.5px, rgba(223, 153, 10, 0) 2.5px)
+}
+
+a:hover {
+    background: linear-gradient(to top, rgba(223, 153, 10, 0) 1px, rgba(223, 153, 10, 1) 1px, rgba(223, 153, 10, 1) 3px, rgba(223, 153, 10, 0) 3px)
+}
+
+a:active{
+  background-color:var(--paper-amber-300)
+}
+
+a:visited{
+  background: linear-gradient(to top, rgba(161, 136, 127, 0) 1px, rgba(161, 136, 127, 1) 1px, rgba(161, 136, 127, 1) 3px, rgba(161, 136, 127, 0) 3px)
+}
+
 </style>
 </template>
 </dom-module>
