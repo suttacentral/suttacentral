@@ -4,24 +4,8 @@
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sc-suttaplex.html">
 <link rel="import" href="addons/sc-node.html">
- <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<dom-module id="sc-view-suttaplex">
+<dom-module id="sc-view-suttaplex" attributes="divisiontitle">
 <style is="custom-style">
-app-header-layout {
-  background-color: var(--paper-blue-grey-50);
-}
-app-toolbar {
-   background-color: var(--paper-deep-orange-900);
-  @apply(--shadow-elevation-8dp);
-}
-.sutta {
-  text-transform: capitalize;
-  @apply(--sc-sans-font);
-  color: white;
-}
-
 .divisioncontent {
   color: var(--primary-text-color);
   padding: 24px 0;
@@ -64,14 +48,6 @@ main {
       handle-as="json"
       last-response="{{suttaList}}"></iron-ajax>
 
-    <app-header-layout has-scrolling-region>
-      <app-header condenses reveals effects="waterfall" slot="header">
-        <app-toolbar>
-          <div class="title" main-title><p class="sutta">{{languageData.name}}—{{suttaList.namepi}}</p></div>
-          <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
-        </app-toolbar>
-      </app-header>
-
 <div class="divisioncontent">
   <main>
     <section class="node">
@@ -94,7 +70,6 @@ main {
 
   </main>
 </div>
-</app-header-layout>
 </template>
 <script>
     Polymer({
@@ -111,6 +86,9 @@ main {
           value: ""
         }
       },
+      observers: [
+        'infoToParent(suttaList,inputLanguage)'
+      ],
       ready: function() {
         this.addEventListener('toggleParallelNote', this.elevateBox);
       },
@@ -135,6 +113,11 @@ main {
       },
       _computeVaggadescription: function(vagga,inputLanguage) {
         return vagga[inputLanguage].description;
+      },
+      infoToParent: function(suttaList,inputLanguage) {
+        if (suttaList) {
+        this.fire('eventFromSuttaplexPage',{divisiontitle:this._computeLanguage(suttaList,inputLanguage)['name']+"—"+suttaList['namepi']});
+        }
       }
     });
 

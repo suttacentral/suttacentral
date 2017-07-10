@@ -4,7 +4,7 @@
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="addons/sc-tooltip.html">
 
-<dom-module id="sc-segmented-text" attributes="suttatitle suttaauthor suttameta">
+<dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
 <style is="custom-style">
 .textcontent {
   @apply(--sc-paper-font-body);
@@ -91,6 +91,7 @@
       ],
        setView: function(showViewer) {
         this._cleanCode();
+        console.log("segmented Text showViewer = "+showViewer);
         switch (showViewer) {
           case "sidebyside":
               this.$$('.textcontent').classList.add('expanded');
@@ -135,7 +136,7 @@
           Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.add('hidepali'));
       },
       infoToParent: function() {
-        this.fire('eventFromTools',{suttatitle:this.suttaText.division,suttaauthor:this.suttaText.author,suttameta:this.suttaText.meta});
+        this.fire('eventFromSegmentedTextPage',{suttasegtitle:this.suttaText.division+"—"+this.suttaText.author,suttasegmeta:this.suttaText.meta});
       }
     });
 </script>

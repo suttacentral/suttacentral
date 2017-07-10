@@ -2,38 +2,11 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="menus/settings-menu.html">
 <link rel="import" href="sc-toolbar.html">
- <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<dom-module id="sc-page-text">
+<dom-module id="sc-page-text" attributes="suttatitle suttameta">
 <style is="custom-style">
-app-toolbar {
-   background-color: var(--sc-gold-500);
-  @apply(--shadow-elevation-8dp);
-}
-.sutta {
-  text-transform: capitalize;
-  @apply(--sc-sans-font);
-  color: white;
-}
-.title {
-  margin-left: 64px;
-}
-paper-icon-button {
-  color: white;
-}
-paper-dialog paper-icon-button {
-  color: var(--disabled-text-color);
-}
-h2{
-  @apply(--paper-font-headline);
-  @apply(--sc-sans-font);
-  margin: 0;
-}
+
 </style>
 <template>
 
@@ -49,28 +22,7 @@ h2{
       handle-as="json"
       last-response="{{paragraphTitles}}"></iron-ajax>
 
-    <app-header-layout has-scrolling-region>
-      <app-header condenses reveals effects="waterfall" slot="header">
-        <app-toolbar>
-          <div class="title" main-title><p class="sutta">[[_computeTitle(suttaText)]][[_computeAuthor(suttaText)]]</p></div>
-          <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
-          <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
-        </app-toolbar>
-      </app-header>
-
-  <paper-dialog id="dialog" fit-into="[[computeBox]]">
-    <div class="buttons">
-      <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
-    </div>
-    <h2>Tools and Information</h2>
-    <paper-dialog-scrollable>
-        <settings-menu meta-area="[[_computeMeta(suttaText)]]" disable-views="true"></settings-menu>
-    </paper-dialog-scrollable>
-  </paper-dialog>
-
   <div class="htmltextcontent" inner-h-t-m-l="{{suttaText}}"></div>
-
-</app-header-layout>
 
 </template>
 <script>
@@ -79,12 +31,12 @@ h2{
 
       properties: {
         suttaPath: String,
-        inputLanguage: String,
         suttaText: String,
         paragraphTitles: Object
       },
       observers: [
-        '_computePars(suttaText,paragraphTitles)'
+        '_computePars(suttaText,paragraphTitles)',
+        'infoToParent(suttaText)'
       ],
       _computeURL: function(category) {
         return `../texts/${category}.html`;
@@ -104,6 +56,9 @@ h2{
                 Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
                 Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
           }
+      },
+      infoToParent: function(suttaText) {
+        this.fire('eventFromTextPage',{suttatitle:this._computeTitle(suttaText)+this._computeAuthor(suttaText),suttameta:this._computeMeta(suttaText)});
       }
     });
 </script>

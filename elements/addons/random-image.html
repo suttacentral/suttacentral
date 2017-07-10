@@ -1,5 +1,5 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
 
 <!--
 `random-image`
@@ -20,7 +20,7 @@ border-radius: 50%;
 box-shadow: 0px 5px 10px #CCC;
       }
     </style>
-    <iron-image style="width:640px; height:360px;" class$="{{mode}}" sizing="contain" src$="{{imgSrc}}" title="{{imgTitle}}"></iron-image>
+    <iron-image style="width:640px; height:360px;z-index:-1;" class$="{{mode}}" sizing="contain" src$="{{imgSrc}}" title="{{imgTitle}}"></iron-image>
   </template>
 
     <script>
@@ -56,12 +56,9 @@ box-shadow: 0px 5px 10px #CCC;
                 for (var prop in obj)
                     if (Math.random() < 1 / ++count)
                         result = prop;
-                console.log(result);
                 return result;
             },
             ready: function() {
-                console.log('random-image ready!');
-                console.log(this.imagesList);
                 var randomPos = this._pickRandomProperty(this.imagesList);
                 this.imgSrc = this.imagesList[randomPos].path;
                 this.imgTitle = this.imagesList[randomPos].title;

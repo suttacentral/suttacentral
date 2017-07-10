@@ -5,123 +5,61 @@
 <link rel="import" href="static/dons-page.html">
 <link rel="import" href="static/downloads-page.html">
 <link rel="import" href="static/people-page.html">
- <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <dom-module id="sc-page-static">
 <style is="custom-style">
-app-toolbar {
-   background-color: var(--sc-gold-500);
-}
-app-toolbar:nth-of-type(2) {
-  z-index: -1;
-}
-app-toolbar:last-of-type {
-  @apply(--shadow-elevation-8dp);
-  z-index: -2;
-}
 
-h1{
-  @apply(--sc-serif-font);
-  @apply(--sc-mixed-small-caps);
-  font-size: 2.5em;
-  text-align: left;
-  color: white;
-  padding-top: 0.5em;
-  margin: 0;
-  line-height: 1em;
-  font-weight: normal;
-}
-
-.subtitle {
-  @apply(--sc-sans-font);
-  color: white;
-  font-style: italic;
-  font-size: 1.5em;
-  text-align: left;
-  margin-bottom: .75em;
-  margin-top: 0;
-}
-
-.title {
-  margin-left: 64px;
-}
-
-@media (max-width: 925px) {
-    .subtitle {
-      font-size: 1.2em;
-      margin-bottom: 0.5em;
-    };
-}
-@media (max-width: 800px) {
-    .title {
-      margin-left: initial;
-    };
-}
-@media (max-width: 600px) {
-    h1 {
-      font-size: 2em;
-      padding-top: 0.2em;
-    };
-    .subtitle {
-      font-size: 1em;
-      margin-bottom: 0.5em;
-    };
-}
 </style>
 <template>
-    <app-header-layout has-scrolling-region>
-      <app-header condenses reveals effects="waterfall" slot="header">
-        <app-toolbar>
+        <iron-pages id="pages" role="main" selected="{{pages}}" attr-for-selected="name">
+          <div name="home">
+                <home-page></home-page>
+          </div>
+          <div name="dons">
+                <dons-page></dons-page>
+          </div>
+          <div name="downloads">
+              <downloads-page></downloads-page>
+          </div>
+          <div name="people">
+              <people-page></people-page>
+        </iron-pages>
 
-          <div main-title></div>
-          <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
-        </app-toolbar>
-        <app-toolbar>
-              <div class="title" main-title><h1>SuttaCentral</h1></div>
-        </app-toolbar>
-        <app-toolbar>
-            <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
-        </app-toolbar>
-      </app-header>
-
-<template is="dom-if" if="{{_checkhomeURL(category)}}" restamp>
-    <home-page></home-page>
-</template>
-
-<template is="dom-if" if="{{_checkdonsURL(category)}}" restamp>
-    <dons-page></dons-page>
-</template>
-
-<template is="dom-if" if="{{_checkdownloadsURL(category)}}" restamp>
-    <downloads-page></downloads-page>
-</template>
-
-<template is="dom-if" if="{{_checkpeopleURL(category)}}" restamp>
-    <people-page></people-page>
-</template>
-
-</app-header-layout>
 </template>
 <script>
     Polymer({
       is: 'sc-page-static',
       properties: {
-        inputLanguage: String
+        inputLanguage: String,
+        category: {
+          type: String,
+          observer: '_changeView'
+        },
+        pages: {
+          type: String,
+          value: 'home'
+        }
       },
-      _checkhomeURL: function(category) {
-        return (category === 'home' || category === '') ? true : false;
+      _changeView: function(category) {
+        // this.$.header.resetLayout();
+        switch (category) {
+        case 'home':
+          this.$.pages.selected = "home";
+          break;
+        case '':
+          this.$.pages.selected = "home";
+          break;
+        case 'dons':
+          this.$.pages.selected = "dons";
+          break;
+        case 'downloads':
+          this.$.pages.selected = "downloads";
+          break;
+        case 'people':
+          this.$.pages.selected = "people";
+          break;
+        }
       },
-      _checkdonsURL: function(category) {
-        return (category === 'dons') ? true : false;
-      },
-      _checkdownloadsURL: function(category) {
-        return (category === 'downloads') ? true : false;
-      },
-      _checkpeopleURL: function(category) {
-        return (category === 'people') ? true : false;
-      }
-
     });
 </script>
 </dom-module>

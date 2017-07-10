@@ -25,14 +25,14 @@
     "paper-menu": "PolymerElements/paper-menu#^1.2.2",
     "paper-item": "PolymerElements/paper-item#^1.2.1",
     "paper-input": "PolymerElements/paper-input#^1.1.23",
-    "iron-pages": "PolymerElements/iron-pages#^1.0.8",
+    "iron-pages": "PolymerElements/iron-pages#^2.0.0",
     "iron-list": "PolymerElements/iron-list#^1.4.4",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0",
     "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
     "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#stacking-context",
     "paper-button": "PolymerElements/paper-button#^1.0.14",
     "paper-card": "PolymerElements/paper-card#^1.1.4",
-    "paper-styles": "PolymerElements/paper-styles#^1.2.0",
+    "paper-styles": "PolymerElements/paper-styles#^2.0.0",
     "paper-badge": "PolymerElements/paper-badge#^1.1.4",
     "paper-dialog-behavior": "PolymerElements/paper-dialog-behavior#^1.2.8",
     "paper-dialog": "PolymerElements/paper-dialog#^1.1.0",
@@ -43,6 +43,7 @@
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.0.0",
     "iron-image": "PolymerElements/iron-image#^1.2.5",
     "app-layout": "PolymerElements/app-layout#^2.0.0",
-    "app-storage": "PolymerElements/app-storage#^2.0.0"
+    "app-storage": "PolymerElements/app-storage#^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0"
   }
 }

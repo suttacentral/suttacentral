@@ -40,8 +40,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var pages;
 
         suite('defaults', function() {
-          setup(function () {
+          setup(function(done) {
             pages = fixture('basic');
+            pages.addEventListener('iron-items-changed', function onIronItemsChanged() {
+              pages.removeEventListener('iron-items-changed', onIronItemsChanged);
+              done();
+            });
           });
 
           test('to nothing selected', function() {
@@ -70,9 +74,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
 
         suite('set the selected attribute', function() {
-          setup(function () {
+          setup(function(done) {
             pages = fixture('basic');
-            pages.selected = 0;
+            pages.addEventListener('iron-items-changed', function onIronItemsChanged() {
+              pages.removeEventListener('iron-items-changed', onIronItemsChanged);
+
+              pages.selected = 0;
+              done();
+            });
           });
 
           test('selected value', function() {

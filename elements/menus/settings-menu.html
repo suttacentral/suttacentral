@@ -197,6 +197,7 @@ paper-toggle-button{
         return (textualInfoEnabled === false) ? infotext.classList.remove('infomode') : infotext.classList.add('infomode');
       },
       _radioGroupChanged: function() {
+        console.log("button clicked: "+this.radioSelected);
         this.fire('eventFromTools',{selectedView:this.radioSelected});
       },
       _dictionaryLookup: function(valueSelected) {

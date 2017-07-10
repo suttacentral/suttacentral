@@ -19,7 +19,7 @@ Material design: [Lists](https://www.google.com/design/spec/components/lists.htm
 Shared styles for a native `button` to be used as an item in a `paper-listbox` element:
 
     <custom-style>
-      <style is="custom-style" include="paper-item"></style>
+      <style is="custom-style" include="paper-item-styles"></style>
     </custom-style>
 
     <paper-listbox>
@@ -32,20 +32,26 @@ Shared styles for a native `button` to be used as an item in a `paper-listbox` e
 @demo demo/index.html
 -->
 
-<dom-module id="paper-item">
+<dom-module id="paper-item-styles">
   <template>
     <style>
+      :host, html {
+        --paper-item: {
+          display: block;
+          position: relative;
+          min-height: var(--paper-item-min-height, 48px);
+          padding: 0px 16px;
+          @apply --paper-font-subhead;
+          border:none;
+          outline: none;
+          background: white;
+          width: 100%;
+          text-align: left;
+        };
+      }
+
       .paper-item {
-        display: block;
-        position: relative;
-        min-height: var(--paper-item-min-height, 48px);
-        padding: 0px 16px;
-        @apply --paper-font-subhead;
-        border:none;
-        outline: none;
-        background: white;
-        width: 100%;
-        text-align: left;
+        @apply --paper-item;
       }
 
       .paper-item[hidden] {
