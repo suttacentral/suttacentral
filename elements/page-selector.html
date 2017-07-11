@@ -114,7 +114,18 @@ h2{
   text-transform: capitalize;
   @apply(--sc-sans-font);
   color: white;
+  z-index:-10;
 }
+
+@media screen and (max-width: 640px) {
+    #toolbartitle {
+      margin-left:50px;
+    }
+}
+@media screen and (max-width: 450px) {
+    #toolbartitle {
+      font-size:16px;
+    }
 }
 </style>
 <template>
@@ -149,7 +160,7 @@ h2{
           </div>
           <h2>Tools and Information</h2>
           <paper-dialog-scrollable>
-              <settings-menu meta-area="{{metaArea}}"></settings-menu>
+              <settings-menu meta-area="{{metaArea}}" disable-views="{{viewsDisabled}}"></settings-menu>
           </paper-dialog-scrollable>
         </paper-dialog>
 
@@ -179,6 +190,10 @@ h2{
           type: String,
           value: ""
         },
+        viewsDisabled: {
+          type: Boolean,
+          value: false
+        },
         metaArea: {
           type: String,
           value: ""
@@ -201,12 +216,12 @@ h2{
         this.addEventListener('eventFromSuttaplexPage', this.addSuttaplexTitles);
         this.addEventListener('eventFromSegmentedTextPage', this.addSegmentedTextTitles);
         this.addEventListener('eventFromTools', this.changeSegmentedView);
-        console.log("page selector at startup: "+this.showViewer);
       },
       addTextTitles: function(event) {
         if (this.$.pages.selected === "text") {
           this.toolbarTitle = event.detail.suttatitle;
           this.metaArea = event.detail.suttameta;
+          // this.viewsDisabled = true;
         }
       },
       addSuttaplexTitles: function(event) {
@@ -218,21 +233,23 @@ h2{
         if (this.$.pages.selected === "segmented") {
           this.toolbarTitle = event.detail.suttasegtitle;
           this.metaArea = event.detail.suttasegmeta;
+          this.viewsDisabled = false;
         }
       },
       changeSegmentedView: function(event) {
+        console.log("changingSegmentedView: "+event.detail.selectedView);
           return this.showViewer = event.detail.selectedView;
-          console.log("changing view: "+this.showViewer);
       },
       messageChanged: function(newValue, oldValue) {
-        console.log("before messageChanged showViewer= "+this.showViewer);
-        console.log("before messageChanged newValue= "+newValue);
-        console.log("before messageChanged oldValue= "+oldValue);
+        console.log("messageChanged showViewer= "+this.showViewer);
+        console.log("messageChanged newValue= "+newValue);
+        console.log("messageChanged oldValue= "+oldValue);
           if (newValue === undefined) {this.showViewer = oldValue;}
       },
       _changeView: function(route) {
         this.$.header.resetLayout();
         this.toolbarTitle = '';
+        this.viewsDisabled = false;
         var toolbarheader = this.$.toolbarheader;
         var settings = this.$.settingsbutton;
         toolbarheader.classList.remove('darktoolbar');

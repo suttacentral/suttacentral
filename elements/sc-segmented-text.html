@@ -80,8 +80,11 @@
         paragraphTitles: Object,
         alternateText: Object,
         showViewer: {
+          type: String
+        },
+        hidePali: {
           type: String,
-          value: "none"
+          value: "hidepali"
         }
       },
       observers: [
@@ -91,7 +94,7 @@
       ],
        setView: function(showViewer) {
         this._cleanCode();
-        console.log("segmented Text showViewer = "+showViewer);
+        console.log("setView showViewer = "+showViewer);
         switch (showViewer) {
           case "sidebyside":
               this.$$('.textcontent').classList.add('expanded');

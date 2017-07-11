@@ -46,15 +46,17 @@ paper-input {
   width: 250px;
 }
 
-@media screen and (max-width: 540px) and (min-width: 440px){
+@media screen and (max-width: 750px) and (min-width: 440px){
     #searchinput.opened {
           width: 150px;
         }
 }
+
 @media screen and (max-width: 440px){
     #searchinput.opened {
           width: 150px;
           display:block;
+          background-color: var(--sc-gold-500);
           position: absolute;
           margin-top: -16px;
           margin-left: -32px;
@@ -89,10 +91,12 @@ paper-input {
         this.$$('#searchinput').focus();
         this.$$('#closebutton').style.display='inline-block';
         this.$$('#searchinput').value = '';
+        document.getElementById('toolbartitle').setAttribute('style', "visibility:hidden; width:5px");
       },
       closeSearch: function() {
         this.$$('#searchinput').classList.remove('opened');
         this.$$('#closebutton').style.display='none';
+        document.getElementById('toolbartitle').removeAttribute('style', "visibility:hidden;");
       },
     });
 
