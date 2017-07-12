@@ -5,6 +5,7 @@
 <link rel="import" href="addons/sc-tooltip.html">
 
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
+<template>
 <style is="custom-style">
 .textcontent {
   @apply(--sc-paper-font-body);
@@ -35,7 +36,6 @@
 }
 
 </style>
-<template>
 <iron-ajax
       auto
       url="[[_computeURLBase(suttaPath)]]"
@@ -94,7 +94,6 @@
       ],
        setView: function(showViewer) {
         this._cleanCode();
-        console.log("setView showViewer = "+showViewer);
         switch (showViewer) {
           case "sidebyside":
               this.$$('.textcontent').classList.add('expanded');
@@ -139,6 +138,7 @@
           Array.from(this.querySelectorAll('.linepi')).forEach(item => item.classList.add('hidepali'));
       },
       infoToParent: function() {
+        if(this.showViewer != undefined){this.setView(this.showViewer);};
         this.fire('eventFromSegmentedTextPage',{suttasegtitle:this.suttaText.division+"—"+this.suttaText.author,suttasegmeta:this.suttaText.meta});
       }
     });

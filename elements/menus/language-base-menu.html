@@ -6,6 +6,7 @@
 <link rel="import" href="../../styles/language-styles.html">
 
 <dom-module id="language-base-menu" attributes="Language">
+<template>
 <style is="custom-style" include="language-styles">
 :host {
   --primary-color: var(--sc-gold-500);
@@ -20,7 +21,6 @@ paper-item {
 }
 
 </style>
-<template>
     <iron-ajax
           auto
           url="../../data/languages.json"

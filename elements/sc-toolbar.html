@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 
 <dom-module id="sc-toolbar">
+<template>
 <style is="custom-style">
 paper-icon-button {
   color: white;
@@ -63,8 +64,6 @@ paper-input {
         }
 }
 </style>
-
-<template>
           
           <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
           <paper-input label="Search" no-label-float id="searchinput"></paper-input>

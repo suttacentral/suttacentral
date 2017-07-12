@@ -8,6 +8,7 @@
 <link rel="import" href="../styles/sc-styles.html">
 
 <dom-module id="sc-parallels">
+<template>
 <style  is="custom-style">
 .parallels-parallel-title {
   @apply(--paper-font-subhead);
@@ -74,7 +75,6 @@ details p{
 }
 
 </style>
-<template>
 <iron-ajax
       auto
       url="[[_computeURL(parallelUrl)]]"

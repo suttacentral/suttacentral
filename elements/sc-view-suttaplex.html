@@ -4,7 +4,9 @@
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sc-suttaplex.html">
 <link rel="import" href="addons/sc-node.html">
+
 <dom-module id="sc-view-suttaplex" attributes="divisiontitle">
+<template>
 <style is="custom-style">
 .divisioncontent {
   color: var(--primary-text-color);
@@ -41,7 +43,6 @@ main {
   padding-top: 0;
 }
 </style>
-<template>
 <iron-ajax
       auto
       url="[[_computeURL(category)]]"

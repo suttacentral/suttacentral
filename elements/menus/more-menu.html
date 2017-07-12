@@ -5,6 +5,7 @@
 <link rel="import" href="language-base-menu.html">
 
 <dom-module id="more-menu">
+<template>
 <style is="custom-style">
 a {
   text-decoration: none;
@@ -20,7 +21,6 @@ language-base-menu:after {
   content: "    ";
 }
 </style>
-<template>
 
     <paper-item><iron-icon icon="language"></iron-icon><language-base-menu input-language="{{inputLanguage}}"></language-base-menu></paper-item>
     <a data-page="dons" href="/dons"><paper-item><iron-icon src="../../img/pray.png"></iron-icon> Donations</paper-item></a>

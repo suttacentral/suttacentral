@@ -1,9 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
-<dom-module id="paper-tree-node">
 
-    <style>
+<dom-module id="paper-tree-node">
+<template>
+<style>
 :host(.selected) > .node-container > .node-row {
     background-color: var(--paper-grey-200);
 }
@@ -58,7 +59,7 @@ li {
 }
     </style>
 
-    <template>
+
         <div class="node-container">
             <div class="node-row">
                 <iron-icon icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></iron-icon>

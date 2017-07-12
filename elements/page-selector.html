@@ -17,6 +17,7 @@
 <link rel="import" href="menus/settings-menu.html">
 
 <dom-module id="page-selector">
+<template>
 <style is="custom-style">
 :host {
   display: block;
@@ -128,7 +129,6 @@ h2{
     }
 }
 </style>
-<template>
 <app-route route="{{route}}"
       pattern="/"
       active="{{staticActive}}"></app-route>
@@ -206,10 +206,7 @@ h2{
           type: String,
           value: 'static'
         },
-        showViewer: {
-          type: String,
-          observer: 'messageChanged'
-        }
+        showViewer: String
       },
       ready: function() {
         this.addEventListener('eventFromTextPage', this.addTextTitles);
@@ -237,14 +234,7 @@ h2{
         }
       },
       changeSegmentedView: function(event) {
-        console.log("changingSegmentedView: "+event.detail.selectedView);
           return this.showViewer = event.detail.selectedView;
-      },
-      messageChanged: function(newValue, oldValue) {
-        console.log("messageChanged showViewer= "+this.showViewer);
-        console.log("messageChanged newValue= "+newValue);
-        console.log("messageChanged oldValue= "+oldValue);
-          if (newValue === undefined) {this.showViewer = oldValue;}
       },
       _changeView: function(route) {
         this.$.header.resetLayout();

@@ -11,6 +11,7 @@
 <link rel="import" href="../addons/sc-dictionary-lookup.html">
 
 <dom-module id="settings-menu" attributes="selectedView">
+<template>
 <style is="custom-style">
 :host{
     --primary-color: var(--sc-gold-500);
@@ -57,7 +58,6 @@ paper-toggle-button{
     }
 }
 </style>
-<template>
 {{enableViews}}
   <div class="paper-dialogue-container">
       <div class="dialogue-section">

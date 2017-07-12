@@ -3,6 +3,7 @@
 <link rel="import" href="sc-tooltip.html">
 
 <dom-module id="sc-sutta-note">
+<template>
 <style is="custom-style">
 .note{
   cursor: help;
@@ -12,7 +13,6 @@
   --iron-icon-width: 20px;
 }
 </style>
-<template>
     <span class="note">
       <iron-icon icon="info-outline" id="note1"></iron-icon>
       <sc-tooltip for="note1">{{noteData}}</sc-tooltip>
