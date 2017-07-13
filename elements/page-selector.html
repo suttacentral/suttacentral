@@ -97,12 +97,12 @@ h1{
 }
 
 paper-dialog {
+  position:fixed;
   top: 50px;
+  left: 250px;
   max-width: 600px;
 }
-paper-dialog-scrollable {
-  padding-bottom:20px;
-}
+
 paper-dialog paper-icon-button {
   color: var(--disabled-text-color);
 }
@@ -121,6 +121,9 @@ h2{
 @media screen and (max-width: 640px) {
     #toolbartitle {
       margin-left:50px;
+    };
+    paper-dialog {
+      left: 0px;
     }
 }
 @media screen and (max-width: 450px) {
