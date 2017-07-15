@@ -112,6 +112,7 @@ h2{
   margin: 0;
 }
 #toolbartitle {
+  width: 1px;
   text-transform: capitalize;
   @apply(--sc-sans-font);
   color: white;
@@ -145,7 +146,7 @@ h2{
         <app-header id="header" condenses reveals effects="waterfall" slot="header">
                 <app-toolbar id="toolbarheader">
                   <div main-title id="toolbartitle">{{toolbarTitle}}</div>
-                  <sc-toolbar  input-language="{{inputLanguage}}"></sc-toolbar>
+                  <sc-toolbar  input-language="{{inputLanguage}}" search-size="{{searchSize}}"></sc-toolbar>
                    <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
                 </app-toolbar>
           
@@ -197,6 +198,10 @@ h2{
       is: 'page-selector',
       properties: {
         inputLanguage: String,
+        searchSize: {
+          type: Number,
+          computed: '_computeSearchSize(route)'
+        },
         toolbarTitle: {
           type: String,
           value: ""
@@ -277,6 +282,9 @@ h2{
           } else {
             return "";
           }
+      },
+      _computeSearchSize: function(route) {
+        return (route.path === "" || route.path.endsWith("/list")) ? 500 : 540;
       },
       _checkStatic: function(route) {
         return (route.path === "") ? true : false;

@@ -5,7 +5,6 @@
 <link rel="import" href="page-selector.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
@@ -72,12 +71,12 @@ paper-tree {
 }
 
 </style>
-<app-location route="{{route}}"></app-location>
+<app-location route={{route}}></app-location>
 
 <app-route route="{{route}}"
-           pattern="/:category"
-           data="{{categoryData}}"
-           tail="{{categoryTail}}"></app-route>
+           pattern="/:collection"
+           data="{{collectionData}}"
+           tail="{{collectionTail}}"></app-route>
 
 <iron-ajax
       auto
@@ -90,10 +89,8 @@ paper-tree {
     <app-drawer slot="drawer">
         <div id="drawerbox"> 
             <div id="hometitle">
-              <iron-selector selected="{{categoryData.category}}" attr-for-selected="data-page"></iron-selector>
                   <a data-page="home" href="/home"><div id="wheel">☸</div>&nbsp;SuttaCentral</a>
             </div>
-
           <div id="container">
               <paper-tree data='{{navList}}'></paper-tree>
               <paper-tree data='{
@@ -107,7 +104,7 @@ paper-tree {
         </div>
     </app-drawer>
           <paper-icon-button icon="menu" drawer-toggle id="drawertoggle"></paper-icon-button>
-          <page-selector category="{{categoryData.category}}" route="{{categoryTail}}" input-language="{{inputLanguage}}"></page-selector>
+          <page-selector category="{{collectionData.collection}}" route="{{collectionTail}}" input-language="{{inputLanguage}}"></page-selector>
 
   </app-drawer-layout>
 
@@ -118,10 +115,11 @@ paper-tree {
 
       properties: {
           selectPanel: String,
-          inputLanguage: String
+          inputLanguage: String,
+          route: Object,
+          data: Object,
+          tail: Object
       },
-
-
         observers: [
         '_updateScroll(route)',
         'hideToggle(selectPanel)'
@@ -132,12 +130,14 @@ paper-tree {
           this.set('route.path', '/home');
         }
       },
-
       _updateScroll: function() {
         window.scroll(0, 0);
       },
       ready: function() {
         this.addEventListener('languageSelection',this.changeLanguage);
+        console.log("route: ", this.route);
+        console.log("data: ", this.data);
+        console.log("tail: ", this.tail);
       },
       changeLanguage: function(event) {
         return this.inputLanguage = event.detail.Language;

@@ -42,27 +42,6 @@ paper-input {
   width: 0;
   transition: width .2s cubic-bezier(.4,0,.2,1);
 }
-
-/*#searchinput.opened {
-  width: 250px;
-}
-
-@media screen and (max-width: 750px) and (min-width: 440px){
-    #searchinput.opened {
-          width: 150px;
-        }
-}*/
-
-/*@media screen and (max-width: 440px){
-    #searchinput.opened {
-          width: 150px;
-          display:block;
-          background-color: var(--sc-gold-500);
-          position: absolute;
-          margin-top: -16px;
-          margin-left: -32px;
-        }*/
-}
 </style>
           
           <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
@@ -83,18 +62,19 @@ paper-input {
     Polymer({
       is: 'sc-toolbar',
       properties: {
-        inputLanguage: String
+        inputLanguage: String,
+        searchSize: Number
       },
       openSearch: function() {
         this.$$('#searchinput').classList.add('opened');
         this.$$('#searchinput').focus();
         this.$$('#closebutton').style.display='inline-block';
         this.$$('#searchinput').value = '';
-        document.getElementById('toolbartitle').setAttribute('style', "visibility:hidden; width:5px");
+        document.getElementById('toolbartitle').setAttribute('style', "visibility:hidden");
         if (window.innerWidth > 640) {
-            var searchWidth = window.innerWidth-540;
+            var searchWidth = window.innerWidth-this.searchSize;
         } else {
-            var searchWidth = window.innerWidth-340;
+            var searchWidth = window.innerWidth-(this.searchSize-200);
         }
         this.$$('.opened').style.width=searchWidth;
       },
@@ -102,7 +82,9 @@ paper-input {
         this.$$('#searchinput').classList.remove('opened');
         this.$$('#searchinput').removeAttribute('style', "width");
         this.$$('#closebutton').style.display='none';
-        document.getElementById('toolbartitle').removeAttribute('style', "visibility:hidden;");
+        setTimeout(function(){
+            document.getElementById('toolbartitle').removeAttribute('style', "visibility");
+        }, 200);
       }
     });
 
