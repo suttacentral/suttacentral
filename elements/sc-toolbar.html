@@ -43,7 +43,7 @@ paper-input {
   transition: width .2s cubic-bezier(.4,0,.2,1);
 }
 
-#searchinput.opened {
+/*#searchinput.opened {
   width: 250px;
 }
 
@@ -51,9 +51,9 @@ paper-input {
     #searchinput.opened {
           width: 150px;
         }
-}
+}*/
 
-@media screen and (max-width: 440px){
+/*@media screen and (max-width: 440px){
     #searchinput.opened {
           width: 150px;
           display:block;
@@ -61,7 +61,7 @@ paper-input {
           position: absolute;
           margin-top: -16px;
           margin-left: -32px;
-        }
+        }*/
 }
 </style>
           
@@ -91,12 +91,19 @@ paper-input {
         this.$$('#closebutton').style.display='inline-block';
         this.$$('#searchinput').value = '';
         document.getElementById('toolbartitle').setAttribute('style', "visibility:hidden; width:5px");
+        if (window.innerWidth > 640) {
+            var searchWidth = window.innerWidth-540;
+        } else {
+            var searchWidth = window.innerWidth-290;
+        }
+        this.$$('.opened').style.width=searchWidth;
       },
       closeSearch: function() {
         this.$$('#searchinput').classList.remove('opened');
+        this.$$('#searchinput').removeAttribute('style', "width");
         this.$$('#closebutton').style.display='none';
         document.getElementById('toolbartitle').removeAttribute('style', "visibility:hidden;");
-      },
+      }
     });
 
 </script>

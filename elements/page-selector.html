@@ -169,16 +169,24 @@ h2{
 
         <iron-pages id="pages" role="main" selected="{{pages}}" attr-for-selected="name">
           <div name="static">
+            <template is="dom-if" if="{{_checkStatic(route)}}">
                 <sc-page-static category="{{category}}" active="{{staticActive}}" input-language="{{inputLanguage}}"></sc-page-static>
+            </template>
           </div>
           <div name="list">
+            <template is="dom-if" if="{{_checkList(route)}}">
                 <sc-view-suttaplex category="{{category}}" vagga-number="{{_getVaggaNumber(route)}}" active="{{listActive}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
+            </template>
           </div>
           <div name="text">
+            <template is="dom-if" if="{{_checkText(route)}}">
               <sc-page-text sutta-path="{{route.prefix}}" active="{{suttaActive}}" input-language="{{inputLanguage}}"></sc-page-text>
+            </template>
           </div>
           <div name="segmented">
+            <template is="dom-if" if="{{_checkSegmented(route)}}">
               <sc-segmented-text sutta-path="{{route.prefix}}" active="{{suttaActive}}" show-viewer="{{showViewer}}"></sc-segmented-text>
+            </template>
         </iron-pages>
 
       </app-header-layout>
@@ -269,6 +277,18 @@ h2{
           } else {
             return "";
           }
+      },
+      _checkStatic: function(route) {
+        return (route.path === "") ? true : false;
+      },
+      _checkList: function(route) {
+        return (route.path.endsWith("/list")) ? true : false;
+      },
+      _checkText: function(route) {
+        return (!route.path.endsWith("/list") && route.path !== "" && route.path !=="/sujato") ? true : false;
+        },
+      _checkSegmented: function(route) {
+        return (route.path === "/sujato") ? true : false;
       }
     });
 </script>
