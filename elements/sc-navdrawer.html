@@ -135,12 +135,16 @@ paper-tree {
       },
       ready: function() {
         this.addEventListener('languageSelection',this.changeLanguage);
+        this.addEventListener('search', this.searchItem);
         console.log("route: ", this.route);
         console.log("data: ", this.data);
         console.log("tail: ", this.tail);
       },
       changeLanguage: function(event) {
         return this.inputLanguage = event.detail.Language;
+      },
+      searchItem: function(event) {
+        alert("Searching for: "+ event.detail);
       }
 
     });

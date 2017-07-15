@@ -44,6 +44,7 @@
     "iron-image": "PolymerElements/iron-image#^1.2.5",
     "app-layout": "PolymerElements/app-layout#^2.0.0",
     "app-storage": "PolymerElements/app-storage#^2.0.0",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0"
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0"
   }
 }

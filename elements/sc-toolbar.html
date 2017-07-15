@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="menus/more-menu.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
 <dom-module id="sc-toolbar">
 <template>
@@ -43,7 +44,7 @@ paper-input {
   transition: width .2s cubic-bezier(.4,0,.2,1);
 }
 </style>
-          
+    <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
           <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
           <paper-input label="Search" no-label-float id="searchinput"></paper-input>
           <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
@@ -66,17 +67,21 @@ paper-input {
         searchSize: Number
       },
       openSearch: function() {
-        this.$$('#searchinput').classList.add('opened');
-        this.$$('#searchinput').focus();
-        this.$$('#closebutton').style.display='inline-block';
-        this.$$('#searchinput').value = '';
-        document.getElementById('toolbartitle').setAttribute('style', "visibility:hidden");
-        if (window.innerWidth > 640) {
-            var searchWidth = window.innerWidth-this.searchSize;
+        if (this.$$('#searchinput').classList.contains('opened')) {
+          this.searchAction();
         } else {
-            var searchWidth = window.innerWidth-(this.searchSize-200);
-        }
-        this.$$('.opened').style.width=searchWidth;
+            this.$$('#searchinput').classList.add('opened');
+            this.$$('#searchinput').focus();
+            this.$$('#closebutton').style.display='inline-block';
+            this.$$('#searchinput').value = '';
+            document.getElementById('toolbartitle').setAttribute('style', "visibility:hidden");
+            if (window.innerWidth > 640) {
+                var searchWidth = window.innerWidth-this.searchSize;
+            } else {
+                var searchWidth = window.innerWidth-(this.searchSize-200);
+            }
+            this.$$('.opened').style.width=searchWidth;
+          }
       },
       closeSearch: function() {
         this.$$('#searchinput').classList.remove('opened');
@@ -85,6 +90,10 @@ paper-input {
         setTimeout(function(){
             document.getElementById('toolbartitle').removeAttribute('style', "visibility");
         }, 200);
+      },
+      searchAction: function() {
+        this.fire("search", this.$$("#searchinput").value);
+        console.log("searchinput: ", this.$$("#searchinput").value);
       }
     });
 
