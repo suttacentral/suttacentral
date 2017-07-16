@@ -57,7 +57,6 @@ paper-tree {
   height: 100%;
   overflow: auto;
 }
-
 </style>
 <app-location route={{route}}></app-location>
 
@@ -110,17 +109,13 @@ paper-tree {
         '_updateScroll(route)'
       ],
 
-      // attached: function() {
-      //   if (!this.route.path) {
-      //     this.set('route.path', '/dons');
-      //   }
-      // },
       _updateScroll: function() {
         window.scroll(0, 0);
       },
       ready: function() {
         this.addEventListener('languageSelection',this.changeLanguage);
         this.addEventListener('search', this.searchItem);
+        this.addEventListener('toggleDrawer', this._toggleDrawer);
         console.log("route: ", this.route);
         console.log("data: ", this.data);
         console.log("tail: ", this.tail);
@@ -130,6 +125,9 @@ paper-tree {
       },
       searchItem: function(event) {
         alert("Searching for: "+ event.detail);
+      },
+      _toggleDrawer: function(event) {
+        return this.$$('app-drawer').setAttribute("opened",event.detail.togdraw);
       }
 
     });

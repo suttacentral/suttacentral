@@ -16,7 +16,7 @@
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="menus/settings-menu.html">
 
-<dom-module id="page-selector">
+<dom-module id="page-selector" attributes="togdraw">
 <template>
 <style is="custom-style">
 :host {
@@ -120,9 +120,6 @@ h2{
 }
 
 @media screen and (max-width: 640px) {
-/*    #toolbartitle {
-      margin-left:50px;
-    };*/
     paper-dialog {
       left: 0px;
     }
@@ -133,10 +130,8 @@ h2{
     }
 }
 #drawertoggle {
-/*  margin: 12px 16px 16px 16px;*/
   z-index: 1;
   color: white;
-/*  position:absolute;*/
 }
 @media screen and (min-width: 641px) {
     #drawertoggle {
@@ -156,7 +151,7 @@ h2{
       <app-header-layout>
         <app-header id="header" condenses reveals effects="waterfall" slot="header">
                 <app-toolbar id="toolbarheader">
-                  <paper-icon-button icon="menu" drawer-toggle id="drawertoggle"></paper-icon-button>
+                  <paper-icon-button icon="menu" drawer-toggle id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
                   <div main-title id="toolbartitle">{{toolbarTitle}}</div>
                   <sc-toolbar  input-language="{{inputLanguage}}" search-size="{{searchSize}}"></sc-toolbar>
                    <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
@@ -301,6 +296,9 @@ h2{
           } else {
             return "";
           }
+      },
+      _toggleDrawer: function() {
+                this.fire('toggleDrawer',{togdraw:"opened"});
       },
       _computeSearchSize: function(route) {
         return (route.path === "" || route.path.endsWith("/list")) ? 500 : 540;
