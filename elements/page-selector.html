@@ -36,8 +36,9 @@ app-toolbar:nth-of-type(2), app-toolbar:nth-of-type(3){
   z-index: -1;
 }
 
-app-toolbar {
+app-toolbar, sc-toolbar {
    background-color: var(--sc-gold-500);
+   white-space: nowrap;
 }
 
 h1{
@@ -119,7 +120,7 @@ h2{
   z-index:-10;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 840px) {
     paper-dialog {
       left: 0px;
     }
@@ -133,7 +134,7 @@ h2{
   z-index: 1;
   color: white;
 }
-@media screen and (min-width: 641px) {
+@media screen and (min-width: 841px) {
     #drawertoggle {
       display: none;
     }
@@ -151,9 +152,9 @@ h2{
       <app-header-layout>
         <app-header id="header" condenses reveals effects="waterfall" slot="header">
                 <app-toolbar id="toolbarheader">
-                  <paper-icon-button icon="menu" drawer-toggle id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
+                  <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
                   <div main-title id="toolbartitle">{{toolbarTitle}}</div>
-                  <sc-toolbar  input-language="{{inputLanguage}}" search-size="{{searchSize}}"></sc-toolbar>
+                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" search-size="{{searchSize}}"></sc-toolbar>
                    <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
                 </app-toolbar>
           
@@ -271,8 +272,10 @@ h2{
         this.toolbarTitle = '';
         this.viewsDisabled = false;
         var toolbarheader = this.$.toolbarheader;
+        var sctoolbar = this.$.sctoolbar;
         var settings = this.$.settingsbutton;
         toolbarheader.classList.remove('darktoolbar');
+        sctoolbar.classList.remove('darktoolbar');
         Array.from(this.querySelectorAll(".statictoolbar")).forEach(item => item.setAttribute('style', "display:none;"));
         settings.setAttribute('style', "display:none;");
         if (route.path === "") {
@@ -281,6 +284,7 @@ h2{
         } else if (route.path.endsWith("/list")) {
           this.$.pages.selected = "list";
           toolbarheader.classList.add('darktoolbar');
+          sctoolbar.classList.add('darktoolbar');
         } else if (route.path === "/sujato") {
           settings.removeAttribute('style', "display:none;");
           this.$.pages.selected = "segmented";
