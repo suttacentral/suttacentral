@@ -51,8 +51,8 @@ paper-input {
 
           <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button></a>
 
-          <paper-menu-button horizontal-align="right" ignore-select>
-            <paper-icon-button icon="more-vert" class="dropdown-trigger" id="morevertbutton"></paper-icon-button>
+          <paper-menu-button horizontal-align="right" ignore-select id="morevertbutton">
+            <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
             <div class="dropdown-content"></div>
             <paper-menu class="dropdown-content" tabindex="0">
                 <more-menu input-language="{{inputLanguage}}"></more-menu>
@@ -82,7 +82,7 @@ paper-input {
             } else {
                 this.$$('#discoursebutton').style.display="none";
                 this.$$('#morevertbutton').style.display="none";          
-                var searchWidth = window.innerWidth-(this.searchSize-300);
+                var searchWidth = window.innerWidth-(this.searchSize-320);
             }
             if (searchWidth > 360) {searchWidth = 360};
             this.$$('.opened').style.width=searchWidth;
