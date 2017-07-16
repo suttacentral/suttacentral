@@ -120,9 +120,9 @@ h2{
 }
 
 @media screen and (max-width: 640px) {
-    #toolbartitle {
+/*    #toolbartitle {
       margin-left:50px;
-    };
+    };*/
     paper-dialog {
       left: 0px;
     }
@@ -130,6 +130,17 @@ h2{
 @media screen and (max-width: 450px) {
     #toolbartitle {
       font-size:16px;
+    }
+}
+#drawertoggle {
+/*  margin: 12px 16px 16px 16px;*/
+  z-index: 1;
+  color: white;
+/*  position:absolute;*/
+}
+@media screen and (min-width: 641px) {
+    #drawertoggle {
+      display: none;
     }
 }
 </style>
@@ -145,6 +156,7 @@ h2{
       <app-header-layout>
         <app-header id="header" condenses reveals effects="waterfall" slot="header">
                 <app-toolbar id="toolbarheader">
+                  <paper-icon-button icon="menu" drawer-toggle id="drawertoggle"></paper-icon-button>
                   <div main-title id="toolbartitle">{{toolbarTitle}}</div>
                   <sc-toolbar  input-language="{{inputLanguage}}" search-size="{{searchSize}}"></sc-toolbar>
                    <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
@@ -253,6 +265,13 @@ h2{
           return this.showViewer = event.detail.selectedView;
       },
       _changeView: function(route) {
+        document.getElementById('searchinput').classList.remove('opened');
+        document.getElementById('searchinput').removeAttribute('style', "width");
+        document.getElementById('closebutton').style.display='none';
+        document.getElementById('toolbartitle').removeAttribute('style', "visibility");
+        document.getElementById('discoursebutton').removeAttribute('style', "display");
+        document.getElementById('morevertbutton').removeAttribute('style', "display");
+
         this.$.header.resetLayout();
         this.toolbarTitle = '';
         this.viewsDisabled = false;

@@ -49,10 +49,10 @@ paper-input {
           <paper-input label="Search" no-label-float id="searchinput"></paper-input>
           <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
-          <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button icon="communication:forum"></paper-icon-button></a>
+          <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button></a>
 
           <paper-menu-button horizontal-align="right" ignore-select>
-            <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+            <paper-icon-button icon="more-vert" class="dropdown-trigger" id="morevertbutton"></paper-icon-button>
             <div class="dropdown-content"></div>
             <paper-menu class="dropdown-content" tabindex="0">
                 <more-menu input-language="{{inputLanguage}}"></more-menu>
@@ -74,12 +74,17 @@ paper-input {
             this.$$('#searchinput').focus();
             this.$$('#closebutton').style.display='inline-block';
             this.$$('#searchinput').value = '';
-            document.getElementById('toolbartitle').setAttribute('style', "visibility:hidden");
+            if (window.innerWidth < 1040) {document.getElementById('toolbartitle').setAttribute('style', "visibility:hidden")};
             if (window.innerWidth > 640) {
                 var searchWidth = window.innerWidth-this.searchSize;
+            } else  if (window.innerWidth > 480) {
+                var searchWidth = window.innerWidth-(this.searchSize-210);
             } else {
-                var searchWidth = window.innerWidth-(this.searchSize-200);
+                this.$$('#discoursebutton').style.display="none";
+                this.$$('#morevertbutton').style.display="none";          
+                var searchWidth = window.innerWidth-(this.searchSize-300);
             }
+            if (searchWidth > 360) {searchWidth = 360};
             this.$$('.opened').style.width=searchWidth;
           }
       },
@@ -89,11 +94,12 @@ paper-input {
         this.$$('#closebutton').style.display='none';
         setTimeout(function(){
             document.getElementById('toolbartitle').removeAttribute('style', "visibility");
+            document.getElementById('discoursebutton').removeAttribute('style', "display");
+            document.getElementById('morevertbutton').removeAttribute('style', "display");
         }, 200);
       },
       searchAction: function() {
         this.fire("search", this.$$("#searchinput").value);
-        console.log("searchinput: ", this.$$("#searchinput").value);
       }
     });
 

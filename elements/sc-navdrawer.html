@@ -58,18 +58,6 @@ paper-tree {
   overflow: auto;
 }
 
-#drawertoggle {
-  margin: 12px 16px 16px 16px;
-  z-index: 1;
-  color: white;
-  position:absolute;
-}
-@media screen and (min-width: 641px) {
-    #drawertoggle {
-      display: none;
-    }
-}
-
 </style>
 <app-location route={{route}}></app-location>
 
@@ -103,7 +91,6 @@ paper-tree {
           </div>
         </div>
     </app-drawer>
-          <paper-icon-button icon="menu" drawer-toggle id="drawertoggle"></paper-icon-button>
           <page-selector category="{{collectionData.collection}}" route="{{collectionTail}}" input-language="{{inputLanguage}}"></page-selector>
 
   </app-drawer-layout>
@@ -114,22 +101,20 @@ paper-tree {
       is: 'sc-navdrawer',
 
       properties: {
-          selectPanel: String,
           inputLanguage: String,
           route: Object,
           data: Object,
           tail: Object
       },
         observers: [
-        '_updateScroll(route)',
-        'hideToggle(selectPanel)'
+        '_updateScroll(route)'
       ],
 
-      attached: function() {
-        if (!this.route.path) {
-          this.set('route.path', '/home');
-        }
-      },
+      // attached: function() {
+      //   if (!this.route.path) {
+      //     this.set('route.path', '/dons');
+      //   }
+      // },
       _updateScroll: function() {
         window.scroll(0, 0);
       },
