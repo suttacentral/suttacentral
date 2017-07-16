@@ -74,7 +74,7 @@ paper-input {
             this.$$('#searchinput').focus();
             this.$$('#closebutton').style.display='inline-block';
             this.$$('#searchinput').value = '';
-            if (window.innerWidth < 1040) {document.getElementById('toolbartitle').setAttribute('style', "visibility:hidden")};
+            if (window.innerWidth < 1040) {document.getElementById('toolbartitlebox').setAttribute('style', "visibility:hidden")};
             if (window.innerWidth > 840) {
                 var searchWidth = window.innerWidth-this.searchSize;
             } else  if (window.innerWidth > 480) {
@@ -93,7 +93,7 @@ paper-input {
         this.$$('#searchinput').removeAttribute('style', "width");
         this.$$('#closebutton').style.display='none';
         setTimeout(function(){
-            document.getElementById('toolbartitle').removeAttribute('style', "visibility");
+            document.getElementById('toolbartitlebox').removeAttribute('style', "visibility");
             document.getElementById('discoursebutton').removeAttribute('style', "display");
             document.getElementById('morevertbutton').removeAttribute('style', "display");
         }, 200);

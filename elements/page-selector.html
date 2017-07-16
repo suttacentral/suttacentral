@@ -112,12 +112,14 @@ h2{
   @apply(--sc-sans-font);
   margin: 0;
 }
-#toolbartitle {
+#toolbartitlebox {
   width: 1px;
+  z-index:-10;
+}
+#toolbartitle {
   text-transform: capitalize;
   @apply(--sc-sans-font);
   color: white;
-  z-index:-10;
 }
 
 @media screen and (max-width: 840px) {
@@ -153,7 +155,7 @@ h2{
         <app-header id="header" condenses reveals effects="waterfall" slot="header">
                 <app-toolbar id="toolbarheader">
                   <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
-                  <div main-title id="toolbartitle">{{toolbarTitle}}</div>
+                  <div main-title id="toolbartitlebox"><p id="toolbartitle">{{toolbarTitle}}</p></div>
                   <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" search-size="{{searchSize}}"></sc-toolbar>
                    <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
                 </app-toolbar>
@@ -264,7 +266,7 @@ h2{
         document.getElementById('searchinput').classList.remove('opened');
         document.getElementById('searchinput').removeAttribute('style', "width");
         document.getElementById('closebutton').style.display='none';
-        document.getElementById('toolbartitle').removeAttribute('style', "visibility");
+        document.getElementById('toolbartitlebox').removeAttribute('style', "visibility");
         document.getElementById('discoursebutton').removeAttribute('style', "display");
         document.getElementById('morevertbutton').removeAttribute('style', "display");
 
