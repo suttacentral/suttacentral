@@ -84,10 +84,6 @@ h1{
     };
 }
 
-.list-mode .statictoolbar, .text-mode .statictoolbar, .segmented-mode .statictoolbar {
-  display: none;
-}
-
 .list-mode #sctoolbar, .list-mode #toolbarheader {
   background-color: var(--paper-deep-orange-900);
 }
@@ -118,20 +114,22 @@ h1{
 }
 </style>
     <div class="container">
-      <app-header-layout>
+      <app-header-layout id="appheaderstuff">
         <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="{{mainClass}}">
                 <app-toolbar id="toolbarheader">
                   <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
                   <div main-title id="toolbartitlebox"><p id="toolbartitle">{{toolbarTitle}}</p></div>
                   <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{suttaPath}}" meta-area="{{metaArea}}"></sc-toolbar>
                 </app-toolbar>
-          
+
+          <template is="dom-if" if="{{_checkStatic(category)}}">
             <app-toolbar class="statictoolbar">
                   <div class="title" main-title><h1>SuttaCentral</h1></div>
             </app-toolbar>
             <app-toolbar class="statictoolbar">
                   <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
             </app-toolbar>
+            </template>
         </app-header>
 
             <template is="dom-if" if="{{_checkStatic(category)}}">
@@ -147,7 +145,7 @@ h1{
             </template>
 
             <template is="dom-if" if="{{_checkSegmented(category,suttaPath,author)}}">
-              <sc-segmented-text sutta-path="{{category}}" author="{{author}}" show-viewer="{{showViewer}}"></sc-segmented-text>
+              <sc-segmented-text sutta-path="{{category}}" author="{{author}}" show-viewer="{{showViewer}}" input-language="{{inputLanguage}}"></sc-segmented-text>
             </template>
 
       </app-header-layout>
@@ -184,25 +182,10 @@ h1{
           type: Object,
           notify: true
         },
-        staticMode: {
-          type: Boolean,
-          notify: true,
-        },
-        listMode: {
-          type: Boolean,
-          notify: true
-        },
-        textMode: {
-          type: Boolean,
-          notify: true
-        },
-        segmentedMode: {
-          type: Boolean,
-          notify: true
-        },
-        mainClass: {
-          type: String,
-          computed: '_computeClass(staticMode,listMode,textMode,segmentedMode)'
+        mainClass: String,
+        staticPages: {
+          type: Array,
+          value: ["home","dons","people","downloads",""]
         }
       },
       observers: [
@@ -215,18 +198,18 @@ h1{
         this.addEventListener('eventFromTools', this.changeSegmentedView);
       },
       addTextTitles: function(event) {
-        if (this._checkText(this.category,this.suttaPath,this.author)) {
+        if (this.suttaPath && this.author !== "sujato" && (this.staticPages.indexOf(this.category) == -1)) {
           this.toolbarTitle = event.detail.suttatitle;
           this.metaArea = event.detail.suttameta;
         }
       },
       addSuttaplexTitles: function(event) {
-        if (this._checkList(this.category,this.suttaPath)) {
+        if (!this.suttaPath && (this.staticPages.indexOf(this.category) == -1)) {
           this.toolbarTitle = event.detail.divisiontitle;
         }
       },
       addSegmentedTextTitles: function(event) {
-        if (this._checkSegmented(this.category,this.suttaPath,this.author)) {
+        if (this.suttaPath && this.author === "sujato" && (this.staticPages.indexOf(this.category) == -1)) {
           this.toolbarTitle = event.detail.suttasegtitle;
           this.metaArea = event.detail.suttasegmeta;
         }
@@ -236,9 +219,6 @@ h1{
       },
       changeSegmentedView: function(event) {
           return this.showViewer = event.detail.selectedView;
-      },
-      _computeClass: function(staticMode,listMode,textMode,segmentedMode) {
-        return (segmentedMode) ? "segmented-mode" : (listMode) ? "list-mode" : (textMode) ? "text-mode" : "static-mode";
       },
       _changeView: function(category,author,suttaPath) {
         // Reset all toolbar display settings with regards to the search input field
@@ -250,43 +230,39 @@ h1{
         document.getElementById('morevertbutton').removeAttribute('style', "display");
         document.getElementById('discoursedropdown').removeAttribute('style', "display");
         this.$.header.resetLayout();
-        this.toolbarTitle = '';
-        this.staticMode = false;
-        this.listMode = false;
-        this.textMode = false;
-        this.segmentedMode = false;
       },
 
       _toggleDrawer: function() {
                 this.fire('toggleDrawer',{togdraw:"opened"});
       },
       _checkStatic: function(category) {
-        if (category === "" || category === "home" || category === "dons" || category === "people" || category === "downloads"){
-          this.staticMode = true;
-          return true;
+        if (this.staticPages.indexOf(category) > -1){
+          this.mainClass="static-mode";
+          this.toolbarTitle = ''
+          return true;S
         } else {
         return false;
         }
       },
       _checkList: function(category,suttaPath) {
-        if (!suttaPath && !this._checkStatic(category)) {
-          this.listMode = true;
+        if (!suttaPath && (this.staticPages.indexOf(category) == -1)) {
+          this.mainClass="list-mode";
           return true;
         } else {
           return false;
         }
       },
       _checkText: function(category,suttaPath,author) {
-        if (suttaPath && author !== "sujato") {
-            this.textMode = true;
+        if (suttaPath && author !== "sujato" && (this.staticPages.indexOf(category) == -1)) {
+            this.mainClass="text-mode";
             return true;
         } else {        
             return false;
         }
       },
       _checkSegmented: function(category,suttaPath,author) {
-        if (suttaPath && author === "sujato") {
-            this.segmentedMode = true;
+        if (suttaPath && author === "sujato" && (this.staticPages.indexOf(category) == -1)) {
+            this.mainClass="segmented-mode";
             return true;
         } else {        
             return false;
