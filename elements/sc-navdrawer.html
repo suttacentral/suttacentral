@@ -58,12 +58,17 @@ paper-tree {
   overflow: auto;
 }
 </style>
-<app-location route={{route}}></app-location>
+<app-location route={{route}} query-params="{{queryParams}}"></app-location>
 
 <app-route route="{{route}}"
            pattern="/:collection"
            data="{{collectionData}}"
            tail="{{collectionTail}}"></app-route>
+
+<app-route route="{{collectionTail}}"
+           pattern="/:author"
+           data="{{authorData}}"
+           active="{{suttaPath}}"></app-route>
 
 <iron-ajax
       auto
@@ -76,7 +81,7 @@ paper-tree {
     <app-drawer slot="drawer">
         <div id="drawerbox"> 
             <div id="hometitle">
-                  <a data-page="home" href="/home"><div id="wheel">☸</div>&nbsp;SuttaCentral</a>
+                  <a href="/home"><div id="wheel">☸</div>&nbsp;SuttaCentral</a>
             </div>
           <div id="container">
               <paper-tree data='{{navList}}'></paper-tree>
@@ -90,7 +95,7 @@ paper-tree {
           </div>
         </div>
     </app-drawer>
-          <page-selector category="{{collectionData.collection}}" route="{{collectionTail}}" input-language="{{inputLanguage}}"></page-selector>
+          <page-selector sutta-path="{{suttaPath}}" category="{{collectionData.collection}}" author="{{authorData.author}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector>
 
   </app-drawer-layout>
 
@@ -101,9 +106,11 @@ paper-tree {
 
       properties: {
           inputLanguage: String,
-          route: Object,
-          data: Object,
-          tail: Object
+          collectionData: Object,
+          collectionTail: Object,
+          authorData: Object,
+          suttaPath: Boolean,
+          queryParams: Object
       },
         observers: [
         '_updateScroll(route)'
@@ -116,9 +123,6 @@ paper-tree {
         this.addEventListener('languageSelection',this.changeLanguage);
         this.addEventListener('search', this.searchItem);
         this.addEventListener('toggleDrawer', this._toggleDrawer);
-        console.log("route: ", this.route);
-        console.log("data: ", this.data);
-        console.log("tail: ", this.tail);
       },
       changeLanguage: function(event) {
         return this.inputLanguage = event.detail.Language;

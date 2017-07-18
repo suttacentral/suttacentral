@@ -8,13 +8,13 @@
                 "lang": "pi",
                 "children": [{
                     "name": "Chapter on Ethics",
-                    "uid": "dn/v1"
+                    "uid": "dn?vagga=v1"
                     }, {
                     "name": "Chapter With Pāṭika",
-                    "uid": "dn/v2"
+                    "uid": "dn?vagga=v2"
                     }, {
                     "name": "Third Vagga",
-                    "uid": "dn/v3"
+                    "uid": "dn?vagga=v3"
                 }]
             }, {
                 "name": "Dīrghāgama",
@@ -40,22 +40,22 @@
                     "uid": "an1",
                     "children": [{
                         "name": "Cittapariyādāna Vagga",
-                        "uid": "an1/v1"
+                        "uid": "an1?vagga=v1"
                         }, {
                         "name": "Nīvaraṇappahāṇa Vagga",
-                        "uid": "an1/v2"
+                        "uid": "an1?vagga=v2"
                         }, {
                         "name": "Akammanīya Vagga",
-                        "uid": "an1/v3"
+                        "uid": "an1?vagga=v3"
                         }, {
                         "name": "Adanta Vagga",
-                        "uid": "an1/v4"
+                        "uid": "an1?vagga=v4"
                         }, {
                         "name": "Sūka Vagga",
-                        "uid": "an1/v5"
+                        "uid": "an1?vagga=v5"
                         }, {
                         "name": "Pabhassara Vagga",
-                        "uid": "an1/v6"
+                        "uid": "an1?vagga=v6"
                     }]
                     }, {
                     "name": "AN2 Duka Nipāta",

@@ -8,6 +8,10 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="menus/settings-menu.html">
+
 <dom-module id="sc-toolbar">
 <template>
 <style is="custom-style">
@@ -43,13 +47,63 @@ paper-input {
   width: 0;
   transition: width .2s cubic-bezier(.4,0,.2,1);
 }
+#dialog {
+  position:fixed;
+  top: 50px;
+  left: 50px;
+  max-width: 600px;
+}
+#discourse {
+  position:fixed;
+  top: 50px;
+  right: 50px;
+  max-width: 600px;
+}
+@media screen and (max-width: 840px) {
+    #dialog {
+      left: 0px;
+    };
+    #discourse {
+      right: 0px;
+    }
+}
+
+h2{
+  @apply(--paper-font-headline);
+  @apply(--sc-sans-font);
+  margin: 0;
+}
+paper-dialog paper-icon-button {
+  color: var(--disabled-text-color);
+}
+
+.hidebutton {
+  display: none;
+}
+#discourselogo {
+    @apply(--sc-serif-font);
+    color: #015179;
+    font-style: italic;
+}
 </style>
+
     <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
           <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
           <paper-input label="Search" no-label-float id="searchinput"></paper-input>
           <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
-          <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button></a>
+          <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button id="discoursebutton" icon="communication:forum" class$="{{toggleDiscourse}}"></paper-icon-button></a>
+          <paper-icon-button id="discoursedropdown" icon="communication:forum" class$="{{toggleDisplay}}" onclick="discourse.open()"></paper-icon-button>
+
+        <paper-dialog id="discourse">
+          <div class="buttons">
+            <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
+          </div>
+          <h2 id="discourselogo">Discuss & Discover</h2>
+          <paper-dialog-scrollable>
+              Some items in here
+          </paper-dialog-scrollable>
+        </paper-dialog>
 
           <paper-menu-button horizontal-align="right" ignore-select id="morevertbutton">
             <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
@@ -58,13 +112,50 @@ paper-input {
                 <more-menu input-language="{{inputLanguage}}"></more-menu>
             </paper-menu>
           </paper-menu-button>
+          <paper-icon-button id="settingsbutton" class$="{{toggleDisplay}}" icon="settings" onclick="dialog.open()"></paper-icon-button>
+
+        <paper-dialog id="dialog">
+          <div class="buttons">
+            <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
+          </div>
+          <h2>Tools and Information</h2>
+          <paper-dialog-scrollable>
+              <settings-menu meta-area="{{metaArea}}" disable-views="{{viewsDisabled}}"></settings-menu>
+          </paper-dialog-scrollable>
+        </paper-dialog>
+
 </template>
 <script>
     Polymer({
       is: 'sc-toolbar',
       properties: {
         inputLanguage: String,
-        searchSize: Number
+        suttaPath: {
+          type: Boolean,
+          notify: true
+        },
+        viewsDisabled: {
+          type: Boolean,
+          value: false
+        },
+        metaArea: {
+          type: String,
+          notify: true
+        },
+       toggleDisplay: {
+        type: String,
+        computed: '_computeClass(suttaPath)'
+       },
+       toggleDiscourse: {
+        type: String,
+        computed: '_computeDiscourseClass(suttaPath)'        
+       }
+      },
+      _computeClass: function(suttaPath) {
+        return (suttaPath) ? "" : "hidebutton";
+      },
+      _computeDiscourseClass: function(suttaPath) {
+        return (suttaPath) ? "hidebutton" : "";
       },
       openSearch: function() {
         if (this.$$('#searchinput').classList.contains('opened')) {
@@ -74,15 +165,18 @@ paper-input {
             this.$$('#searchinput').focus();
             this.$$('#closebutton').style.display='inline-block';
             this.$$('#searchinput').value = '';
+            var searchSize = 500;
+            if (this.suttaPath) {searchSize = 540};
             if (window.innerWidth < 1040) {document.getElementById('toolbartitlebox').setAttribute('style', "visibility:hidden")};
             if (window.innerWidth > 840) {
-                var searchWidth = window.innerWidth-this.searchSize;
+                var searchWidth = window.innerWidth-searchSize;
             } else  if (window.innerWidth > 480) {
-                var searchWidth = window.innerWidth-(this.searchSize-210);
+                var searchWidth = window.innerWidth-(searchSize-210);
             } else {
                 this.$$('#discoursebutton').style.display="none";
-                this.$$('#morevertbutton').style.display="none";          
-                var searchWidth = window.innerWidth-(this.searchSize-320);
+                this.$$('#discoursedropdown').style.display="none";
+                this.$$('#morevertbutton').style.display="none"; 
+                var searchWidth = window.innerWidth-(searchSize-320);
             }
             if (searchWidth > 360) {searchWidth = 360};
             this.$$('.opened').style.width=searchWidth;
@@ -95,6 +189,7 @@ paper-input {
         setTimeout(function(){
             document.getElementById('toolbartitlebox').removeAttribute('style', "visibility");
             document.getElementById('discoursebutton').removeAttribute('style', "display");
+            document.getElementById('discoursedropdown').removeAttribute('style', "display");
             document.getElementById('morevertbutton').removeAttribute('style', "display");
         }, 200);
       },

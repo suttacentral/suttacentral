@@ -5,16 +5,11 @@
 <link rel="import" href="sc-segmented-text.html">
 <link rel="import" href="sc-toolbar.html">
 
-<link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
- <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="menus/settings-menu.html">
 
 <dom-module id="page-selector" attributes="togdraw">
 <template>
@@ -89,29 +84,14 @@ h1{
     };
 }
 
-.darktoolbar {
+.list-mode .statictoolbar, .text-mode .statictoolbar, .segmented-mode .statictoolbar {
+  display: none;
+}
+
+.list-mode #sctoolbar, .list-mode #toolbarheader {
   background-color: var(--paper-deep-orange-900);
 }
 
-#settingsbutton {
-  color: white;
-}
-
-paper-dialog {
-  position:fixed;
-  top: 50px;
-  left: 250px;
-  max-width: 600px;
-}
-
-paper-dialog paper-icon-button {
-  color: var(--disabled-text-color);
-}
-h2{
-  @apply(--paper-font-headline);
-  @apply(--sc-sans-font);
-  margin: 0;
-}
 #toolbartitlebox {
   width: 1px;
   z-index:-10;
@@ -122,11 +102,6 @@ h2{
   color: white;
 }
 
-@media screen and (max-width: 840px) {
-    paper-dialog {
-      left: 0px;
-    }
-}
 @media screen and (max-width: 450px) {
     #toolbartitle {
       font-size:16px;
@@ -142,22 +117,13 @@ h2{
     }
 }
 </style>
-<app-route route="{{route}}"
-      pattern="/"
-      active="{{staticActive}}"></app-route>
-
-<app-route route="{{route}}"
-      pattern="/list"
-      active="{{listActive}}"></app-route>
-
     <div class="container">
       <app-header-layout>
-        <app-header id="header" condenses reveals effects="waterfall" slot="header">
+        <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="{{mainClass}}">
                 <app-toolbar id="toolbarheader">
                   <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
                   <div main-title id="toolbartitlebox"><p id="toolbartitle">{{toolbarTitle}}</p></div>
-                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" search-size="{{searchSize}}"></sc-toolbar>
-                   <paper-icon-button id="settingsbutton" icon="settings" onclick="dialog.open()"></paper-icon-button>
+                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{suttaPath}}" meta-area="{{metaArea}}"></sc-toolbar>
                 </app-toolbar>
           
             <app-toolbar class="statictoolbar">
@@ -168,37 +134,21 @@ h2{
             </app-toolbar>
         </app-header>
 
-        <paper-dialog id="dialog">
-          <div class="buttons">
-            <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
-          </div>
-          <h2>Tools and Information</h2>
-          <paper-dialog-scrollable>
-              <settings-menu meta-area="{{metaArea}}" disable-views="{{viewsDisabled}}"></settings-menu>
-          </paper-dialog-scrollable>
-        </paper-dialog>
+            <template is="dom-if" if="{{_checkStatic(category)}}">
+                <sc-page-static category="{{category}}" input-language="{{inputLanguage}}"></sc-page-static>
+            </template>
 
-        <iron-pages id="pages" role="main" selected="{{pages}}" attr-for-selected="name">
-          <div name="static">
-            <template is="dom-if" if="{{_checkStatic(route)}}">
-                <sc-page-static category="{{category}}" active="{{staticActive}}" input-language="{{inputLanguage}}"></sc-page-static>
+            <template is="dom-if" if="{{_checkList(category,suttaPath)}}">
+                <sc-view-suttaplex category="{{category}}" vagga-number$="{{_computeVagga(queryParams)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
             </template>
-          </div>
-          <div name="list">
-            <template is="dom-if" if="{{_checkList(route)}}">
-                <sc-view-suttaplex category="{{category}}" vagga-number="{{_getVaggaNumber(route)}}" active="{{listActive}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
+
+            <template is="dom-if" if="{{_checkText(category,suttaPath,author)}}">
+              <sc-page-text sutta-path="{{category}}" author="{{author}}" input-language="{{inputLanguage}}"></sc-page-text>
             </template>
-          </div>
-          <div name="text">
-            <template is="dom-if" if="{{_checkText(route)}}">
-              <sc-page-text sutta-path="{{route.prefix}}" active="{{suttaActive}}" input-language="{{inputLanguage}}"></sc-page-text>
+
+            <template is="dom-if" if="{{_checkSegmented(category,suttaPath,author)}}">
+              <sc-segmented-text sutta-path="{{category}}" author="{{author}}" show-viewer="{{showViewer}}"></sc-segmented-text>
             </template>
-          </div>
-          <div name="segmented">
-            <template is="dom-if" if="{{_checkSegmented(route)}}">
-              <sc-segmented-text sutta-path="{{route.prefix}}" active="{{suttaActive}}" show-viewer="{{showViewer}}"></sc-segmented-text>
-            </template>
-        </iron-pages>
 
       </app-header-layout>
     </div>
@@ -208,32 +158,56 @@ h2{
       is: 'page-selector',
       properties: {
         inputLanguage: String,
-        searchSize: {
-          type: Number,
-          computed: '_computeSearchSize(route)'
-        },
         toolbarTitle: {
           type: String,
           value: ""
-        },
-        viewsDisabled: {
-          type: Boolean,
-          value: false
         },
         metaArea: {
           type: String,
           value: ""
         },
-        route: {
+        showViewer: String,
+        suttaPath: {
+          type: Boolean,
+          notify: true
+        },
+        author: {
           type: String,
+          notify: true
+        },
+        category: {
+          type: String,
+          notify: true,
           observer: '_changeView'
         },
-        pages: {
-          type: String,
-          value: 'static'
+        queryParams: {
+          type: Object,
+          notify: true
         },
-        showViewer: String
+        staticMode: {
+          type: Boolean,
+          notify: true,
+        },
+        listMode: {
+          type: Boolean,
+          notify: true
+        },
+        textMode: {
+          type: Boolean,
+          notify: true
+        },
+        segmentedMode: {
+          type: Boolean,
+          notify: true
+        },
+        mainClass: {
+          type: String,
+          computed: '_computeClass(staticMode,listMode,textMode,segmentedMode)'
+        }
       },
+      observers: [
+        '_changeView(category,author,suttaPath)'
+      ],
       ready: function() {
         this.addEventListener('eventFromTextPage', this.addTextTitles);
         this.addEventListener('eventFromSuttaplexPage', this.addSuttaplexTitles);
@@ -241,85 +215,82 @@ h2{
         this.addEventListener('eventFromTools', this.changeSegmentedView);
       },
       addTextTitles: function(event) {
-        if (this.$.pages.selected === "text") {
+        if (this._checkText(this.category,this.suttaPath,this.author)) {
           this.toolbarTitle = event.detail.suttatitle;
           this.metaArea = event.detail.suttameta;
-          // this.viewsDisabled = true;
         }
       },
       addSuttaplexTitles: function(event) {
-        if (this.$.pages.selected === "list") {
+        if (this._checkList(this.category,this.suttaPath)) {
           this.toolbarTitle = event.detail.divisiontitle;
         }
       },
       addSegmentedTextTitles: function(event) {
-        if (this.$.pages.selected === "segmented") {
+        if (this._checkSegmented(this.category,this.suttaPath,this.author)) {
           this.toolbarTitle = event.detail.suttasegtitle;
           this.metaArea = event.detail.suttasegmeta;
-          this.viewsDisabled = false;
         }
+      },
+      _computeVagga: function(queryParams) {
+        return (queryParams.vagga) ? queryParams.vagga : "";
       },
       changeSegmentedView: function(event) {
           return this.showViewer = event.detail.selectedView;
       },
-      _changeView: function(route) {
+      _computeClass: function(staticMode,listMode,textMode,segmentedMode) {
+        return (segmentedMode) ? "segmented-mode" : (listMode) ? "list-mode" : (textMode) ? "text-mode" : "static-mode";
+      },
+      _changeView: function(category,author,suttaPath) {
+        // Reset all toolbar display settings with regards to the search input field
         document.getElementById('searchinput').classList.remove('opened');
         document.getElementById('searchinput').removeAttribute('style', "width");
         document.getElementById('closebutton').style.display='none';
         document.getElementById('toolbartitlebox').removeAttribute('style', "visibility");
         document.getElementById('discoursebutton').removeAttribute('style', "display");
         document.getElementById('morevertbutton').removeAttribute('style', "display");
-
+        document.getElementById('discoursedropdown').removeAttribute('style', "display");
         this.$.header.resetLayout();
         this.toolbarTitle = '';
-        this.viewsDisabled = false;
-        var toolbarheader = this.$.toolbarheader;
-        var sctoolbar = this.$.sctoolbar;
-        var settings = this.$.settingsbutton;
-        toolbarheader.classList.remove('darktoolbar');
-        sctoolbar.classList.remove('darktoolbar');
-        Array.from(this.querySelectorAll(".statictoolbar")).forEach(item => item.setAttribute('style', "display:none;"));
-        settings.setAttribute('style', "display:none;");
-        if (route.path === "") {
-          this.$.pages.selected = "static";
-          Array.from(this.querySelectorAll(".statictoolbar")).forEach(item => item.removeAttribute('style', "display:none;"));
-        } else if (route.path.endsWith("/list")) {
-          this.$.pages.selected = "list";
-          toolbarheader.classList.add('darktoolbar');
-          sctoolbar.classList.add('darktoolbar');
-        } else if (route.path === "/sujato") {
-          settings.removeAttribute('style', "display:none;");
-          this.$.pages.selected = "segmented";
-        } else {
-          settings.removeAttribute('style', "display:none;");
-          this.$.pages.selected = "text";
-        }
+        this.staticMode = false;
+        this.listMode = false;
+        this.textMode = false;
+        this.segmentedMode = false;
       },
-      _getVaggaNumber: function(route) {
-        if (route.path !== "/list" && route.path.endsWith("/list")) {
-            var vnr = route.path.replace("/list","");
-            return vnr.replace("/","");
-          } else {
-            return "";
-          }
-      },
+
       _toggleDrawer: function() {
                 this.fire('toggleDrawer',{togdraw:"opened"});
       },
-      _computeSearchSize: function(route) {
-        return (route.path === "" || route.path.endsWith("/list")) ? 500 : 540;
+      _checkStatic: function(category) {
+        if (category === "" || category === "home" || category === "dons" || category === "people" || category === "downloads"){
+          this.staticMode = true;
+          return true;
+        } else {
+        return false;
+        }
       },
-      _checkStatic: function(route) {
-        return (route.path === "") ? true : false;
+      _checkList: function(category,suttaPath) {
+        if (!suttaPath && !this._checkStatic(category)) {
+          this.listMode = true;
+          return true;
+        } else {
+          return false;
+        }
       },
-      _checkList: function(route) {
-        return (route.path.endsWith("/list")) ? true : false;
+      _checkText: function(category,suttaPath,author) {
+        if (suttaPath && author !== "sujato") {
+            this.textMode = true;
+            return true;
+        } else {        
+            return false;
+        }
       },
-      _checkText: function(route) {
-        return (!route.path.endsWith("/list") && route.path !== "" && route.path !=="/sujato") ? true : false;
-        },
-      _checkSegmented: function(route) {
-        return (route.path === "/sujato") ? true : false;
+      _checkSegmented: function(category,suttaPath,author) {
+        if (suttaPath && author === "sujato") {
+            this.segmentedMode = true;
+            return true;
+        } else {        
+            return false;
+        }
       }
     });
 </script>

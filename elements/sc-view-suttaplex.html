@@ -101,7 +101,7 @@ main {
         return `../../data/list/${category}.json`;
       },
       _selectVagga: function(vagga,vaggaNumber) {
-        return (vaggaNumber == undefined || vaggaNumber == "" || vaggaNumber == vagga.vagganr) ? true : false;
+        return (vaggaNumber === undefined || vaggaNumber === "" || vaggaNumber === vagga.vagganr) ? true : false;
       },
       _checkFirstVagga: function(vagga,vaggaNumber) {
         return vaggaNumber ? ((vaggaNumber == vagga.vagganr) ? "firstvagga" : "") : "";
