@@ -1,7 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
-<link rel="import" href="sc-toolbar.html">
+
 <link rel="import" href="sc-suttaplex.html">
 <link rel="import" href="addons/sc-node.html">
 
@@ -77,7 +76,10 @@ main {
       is: 'sc-view-suttaplex',
       properties: {
         inputLanguage: String,
-        suttaList: Object,
+        suttaList: {
+          type: Object,
+          notify: true,
+        },
         languageData: {
           type: Object,
           computed: '_computeLanguage(suttaList,inputLanguage)'
@@ -85,6 +87,10 @@ main {
         vaggaNumber: {
           type: String,
           value: ""
+        },
+        category: {
+          type: String,
+          notify: true
         }
       },
       observers: [

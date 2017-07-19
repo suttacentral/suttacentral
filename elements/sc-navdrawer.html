@@ -3,8 +3,12 @@
 <link rel="import" href="paper-tree-sc/paper-tree.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="page-selector.html">
+
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route-converter.html">
+<link rel="import" href="../bower_components/iron-location/iron-location.html">
+<link rel="import" href="../bower_components/iron-location/iron-query-params.html">
 
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
@@ -70,6 +74,20 @@ paper-tree {
            data="{{authorData}}"
            active="{{suttaPath}}"></app-route>
 
+<iron-location path="{{path}}" query="{{query}}"></iron-location>
+<iron-query-params
+    params-string="{{query}}"
+    params-object="{{queryParams}}">
+</iron-query-params>
+<app-route-converter
+    path="{{path}}"
+    query-params="{{queryParams}}"
+    route="{{route}}">
+</app-route-converter>
+<app-route route='{{route}}' pattern='/:page' data='{{data}}'>
+</app-route>
+
+
 <iron-ajax
       auto
       url="../data/menu/discoursetree.json"
@@ -81,7 +99,7 @@ paper-tree {
     <app-drawer slot="drawer">
         <div id="drawerbox"> 
             <div id="hometitle">
-                  <a href="/home"><div id="wheel">☸</div>&nbsp;SuttaCentral</a>
+                  <a href="/"><div id="wheel">☸</div>&nbsp;SuttaCentral</a>
             </div>
           <div id="container">
               <paper-tree data='{{navList}}'></paper-tree>
@@ -105,12 +123,15 @@ paper-tree {
       is: 'sc-navdrawer',
 
       properties: {
+          route: Object,
           inputLanguage: String,
           collectionData: Object,
           collectionTail: Object,
           authorData: Object,
           suttaPath: Boolean,
-          queryParams: Object
+          queryParams: Object,
+          path: String,
+          query: String
       },
         observers: [
         '_updateScroll(route)'
@@ -128,7 +149,9 @@ paper-tree {
         return this.inputLanguage = event.detail.Language;
       },
       searchItem: function(event) {
-        alert("Searching for: "+ event.detail);
+          this.path = "/search";
+          this.query = "query="+event.detail;
+
       },
       _toggleDrawer: function(event) {
         return this.$$('app-drawer').setAttribute("opened",event.detail.togdraw);

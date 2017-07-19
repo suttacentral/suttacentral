@@ -1,0 +1,73 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<dom-module id="sc-page-search">
+<template>
+<style is="custom-style">
+
+</style>
+            <app-toolbar class="statictoolbar">
+                  <div class="title" main-title><h1>Search page</h1></div>
+            </app-toolbar>
+            <app-toolbar class="statictoolbar">
+                  <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
+            </app-toolbar>
+
+<h1>This is a search results page.</h1>
+<p>Some text</p>
+<p>Some text</p>
+<p>Some text</p>
+<p>Some text</p>
+<p>Some text</p>
+<p>Some text</p>
+<p>Some text</p>
+
+<p>Some text</p>
+<!-- <iron-ajax
+      auto
+      url="[[_computeURL(suttaPath)]]"
+      handle-as="text"
+      last-response="{{suttaText}}"></iron-ajax>
+
+  <div class="htmltextcontent" inner-h-t-m-l="{{suttaText}}"></div> -->
+
+</template>
+<script>
+    Polymer({
+      is: 'sc-page-search'
+
+     //  properties: {
+     //    suttaPath: String,
+     //    suttaText: String,
+     //    paragraphTitles: Object
+     //  },
+     //  observers: [
+     //    '_computePars(suttaText,paragraphTitles)',
+     //    'infoToParent(suttaText)'
+     //  ],
+     //  _computeURL: function(category) {
+     //    return `../texts/${category}.html`;
+     //  },
+     //  _computeTitle: function(suttaText) {
+     //    return ((this.$$('.division') !== undefined) && (this.$$('.division') !== null)) ? this.$$('.division').innerText : "";
+     //  },
+     //  _computeAuthor: function(suttaText) {
+     //    return ((this.$$('.author') !== undefined) && (this.$$('.author') !== null)) ? "—"+this.$$('.author').innerText : "";
+     //  },
+     //  _computeMeta: function(suttaText) {
+     //    return ((this.$$('#metaarea') !== undefined) && (this.$$('#metaarea') !== null)) ? this.$$('#metaarea').innerHTML : "";
+     //  },
+     // _computePars: function(inputText,paragraphTitles) {
+     //    for (var key in paragraphTitles) {
+     //            var refs = this.querySelectorAll('.'+key);
+     //            Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
+     //            Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
+     //      }
+     //  },
+     //  infoToParent: function(suttaText) {
+     //    this.fire('eventFromTextPage',{suttatitle:this._computeTitle(suttaText)+this._computeAuthor(suttaText),suttameta:this._computeMeta(suttaText)});
+     //  }
+    });
+</script>
+</dom-module>

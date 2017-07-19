@@ -4,6 +4,7 @@
 <link rel="import" href="sc-page-text.html">
 <link rel="import" href="sc-segmented-text.html">
 <link rel="import" href="sc-toolbar.html">
+<link rel="import" href="sc-page-search.html">
 
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
@@ -22,20 +23,22 @@
 .container {
   position: relative;
 }
-
-app-header {
+app-header-layout #contentContainer {
+  background-color: green;
+}
+/*app-header {
   z-index: 1000;
-  @apply(--shadow-elevation-8dp);
-}
-app-toolbar:nth-of-type(2), app-toolbar:nth-of-type(3){
+}*/
+/*app-toolbar:nth-of-type(2), app-toolbar:nth-of-type(3){
   z-index: -1;
-}
+}*/
+
 
 app-toolbar, sc-toolbar {
    background-color: var(--sc-gold-500);
    white-space: nowrap;
 }
-
+/*
 h1{
   @apply(--sc-serif-font);
   @apply(--sc-mixed-small-caps);
@@ -82,6 +85,14 @@ h1{
       font-size: 1em;
       margin-bottom: 0.5em;
     };
+}*/
+
+/*.list-mode .statictoolbar, .text-mode .statictoolbar, .segmented-mode .statictoolbar {
+  display: none;
+}*/
+
+.list-mode #toolbarheader, .text-mode #toolbarheader, .segmented-mode #toolbarheader {
+    @apply(--shadow-elevation-8dp);
 }
 
 .list-mode #sctoolbar, .list-mode #toolbarheader {
@@ -114,7 +125,7 @@ h1{
 }
 </style>
     <div class="container">
-      <app-header-layout id="appheaderstuff">
+      <app-header-layout>
         <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="{{mainClass}}">
                 <app-toolbar id="toolbarheader">
                   <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
@@ -122,30 +133,32 @@ h1{
                   <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{suttaPath}}" meta-area="{{metaArea}}"></sc-toolbar>
                 </app-toolbar>
 
-          <template is="dom-if" if="{{_checkStatic(category)}}">
-            <app-toolbar class="statictoolbar">
+<!--             <app-toolbar class="statictoolbar">
                   <div class="title" main-title><h1>SuttaCentral</h1></div>
             </app-toolbar>
             <app-toolbar class="statictoolbar">
                   <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
-            </app-toolbar>
-            </template>
+            </app-toolbar> -->
         </app-header>
 
             <template is="dom-if" if="{{_checkStatic(category)}}">
-                <sc-page-static category="{{category}}" input-language="{{inputLanguage}}"></sc-page-static>
+                <sc-page-static category="[[category]]" input-language="{{inputLanguage}}"></sc-page-static>
             </template>
 
             <template is="dom-if" if="{{_checkList(category,suttaPath)}}">
-                <sc-view-suttaplex category="{{category}}" vagga-number$="{{_computeVagga(queryParams)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
+                <sc-view-suttaplex category="[[category]]" vagga-number$="{{_computeVagga(queryParams)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
             </template>
 
             <template is="dom-if" if="{{_checkText(category,suttaPath,author)}}">
-              <sc-page-text sutta-path="{{category}}" author="{{author}}" input-language="{{inputLanguage}}"></sc-page-text>
+              <sc-page-text sutta-path="[[category]]" author="{{author}}" input-language="{{inputLanguage}}"></sc-page-text>
             </template>
 
             <template is="dom-if" if="{{_checkSegmented(category,suttaPath,author)}}">
-              <sc-segmented-text sutta-path="{{category}}" author="{{author}}" show-viewer="{{showViewer}}" input-language="{{inputLanguage}}"></sc-segmented-text>
+              <sc-segmented-text sutta-path="[[category]]" author="{{author}}" show-viewer="{{showViewer}}" input-language="{{inputLanguage}}"></sc-segmented-text>
+            </template>
+
+            <template is="dom-if" if="{{_checkSearch(category)}}">
+              <sc-page-search></sc-page-search>
             </template>
 
       </app-header-layout>
@@ -185,7 +198,7 @@ h1{
         mainClass: String,
         staticPages: {
           type: Array,
-          value: ["home","dons","people","downloads",""]
+          value: ["dons","people","downloads",""]
         }
       },
       observers: [
@@ -239,7 +252,7 @@ h1{
         if (this.staticPages.indexOf(category) > -1){
           this.mainClass="static-mode";
           this.toolbarTitle = ''
-          return true;S
+          return true;
         } else {
         return false;
         }
@@ -264,10 +277,19 @@ h1{
         if (suttaPath && author === "sujato" && (this.staticPages.indexOf(category) == -1)) {
             this.mainClass="segmented-mode";
             return true;
-        } else {        
+        } else {
             return false;
         }
-      }
+      },
+      _checkSearch: function(category) {
+        if (category === "search"){
+          this.mainClass="static-mode";
+          this.toolbarTitle = ''
+          return true;
+        } else {
+        return false;
+        }
+      },
     });
 </script>
 </dom-module>
