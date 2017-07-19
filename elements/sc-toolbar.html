@@ -92,10 +92,11 @@ paper-dialog paper-icon-button {
           <paper-input label="Search" no-label-float id="searchinput"></paper-input>
           <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
-          <a href="https://discourse.suttacentral.net" tabindex="-1"><paper-icon-button id="discoursebutton" icon="communication:forum" class$="{{toggleDiscourse}}"></paper-icon-button></a>
-          <paper-icon-button id="discoursedropdown" icon="communication:forum" class$="{{toggleDisplay}}" onclick="discourse.open()"></paper-icon-button>
-
-        <paper-dialog id="discourse">
+          <a href$="{{discourseLink}}" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button></a>
+<!--           <a href="https://discourse.suttacentral.net" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum" class$="{{toggleDiscourse}}"></paper-icon-button></a> -->
+<!--           <paper-icon-button id="discoursedropdown" icon="communication:forum" class$="{{toggleDisplay}}" onclick="discourse.open()"></paper-icon-button>
+ -->
+<!--         <paper-dialog id="discourse">
           <div class="buttons">
             <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
           </div>
@@ -103,15 +104,8 @@ paper-dialog paper-icon-button {
           <paper-dialog-scrollable>
               Some items in here
           </paper-dialog-scrollable>
-        </paper-dialog>
+        </paper-dialog> -->
 
-          <paper-menu-button horizontal-align="right" ignore-select id="morevertbutton">
-            <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
-            <div class="dropdown-content"></div>
-            <paper-menu class="dropdown-content" tabindex="0">
-                <more-menu input-language="{{inputLanguage}}"></more-menu>
-            </paper-menu>
-          </paper-menu-button>
           <paper-icon-button id="settingsbutton" class$="{{toggleDisplay}}" icon="settings" onclick="dialog.open()"></paper-icon-button>
 
         <paper-dialog id="dialog">
@@ -124,6 +118,14 @@ paper-dialog paper-icon-button {
           </paper-dialog-scrollable>
         </paper-dialog>
 
+          <paper-menu-button horizontal-align="right" ignore-select id="morevertbutton">
+            <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+            <div class="dropdown-content"></div>
+            <paper-menu class="dropdown-content" tabindex="0">
+                <more-menu input-language="{{inputLanguage}}"></more-menu>
+            </paper-menu>
+          </paper-menu-button>
+
 </template>
 <script>
     Polymer({
@@ -134,6 +136,7 @@ paper-dialog paper-icon-button {
           type: Boolean,
           notify: true
         },
+        category: String,
         viewsDisabled: {
           type: Boolean,
           value: false
@@ -149,6 +152,10 @@ paper-dialog paper-icon-button {
        toggleDiscourse: {
         type: String,
         computed: '_computeDiscourseClass(suttaPath)'        
+       },
+       discourseLink: {
+        type: String,
+        computed: '_computeDiscourseLink(suttaPath,category)'
        }
       },
       _computeClass: function(suttaPath) {
@@ -156,6 +163,9 @@ paper-dialog paper-icon-button {
       },
       _computeDiscourseClass: function(suttaPath) {
         return (suttaPath) ? "hidebutton" : "";
+      },
+      _computeDiscourseLink: function(suttaPath,category) {
+        return (suttaPath) ? "https://discourse.suttacentral.net/search?q="+category : "https://discourse.suttacentral.net/";
       },
       openSearch: function() {
         if (this.$$('#searchinput').classList.contains('opened')) {
@@ -166,7 +176,7 @@ paper-dialog paper-icon-button {
             this.$$('#closebutton').style.display='inline-block';
             this.$$('#searchinput').value = '';
             var searchSize = 500;
-            if (this.suttaPath) {searchSize = 540};
+            // if (this.suttaPath) {searchSize = 540};
             if (window.innerWidth < 1040) {document.getElementById('toolbartitlebox').setAttribute('style', "visibility:hidden")};
             if (window.innerWidth > 840) {
                 var searchWidth = window.innerWidth-searchSize;
@@ -174,8 +184,9 @@ paper-dialog paper-icon-button {
                 var searchWidth = window.innerWidth-(searchSize-210);
             } else {
                 this.$$('#discoursebutton').style.display="none";
-                this.$$('#discoursedropdown').style.display="none";
+                // this.$$('#discoursedropdown').style.display="none";
                 this.$$('#morevertbutton').style.display="none"; 
+                this.$$('#settingsbutton').style.display="none";
                 var searchWidth = window.innerWidth-(searchSize-320);
             }
             if (searchWidth > 360) {searchWidth = 360};
@@ -189,8 +200,9 @@ paper-dialog paper-icon-button {
         setTimeout(function(){
             document.getElementById('toolbartitlebox').removeAttribute('style', "visibility");
             document.getElementById('discoursebutton').removeAttribute('style', "display");
-            document.getElementById('discoursedropdown').removeAttribute('style', "display");
+            // document.getElementById('discoursedropdown').removeAttribute('style', "display");
             document.getElementById('morevertbutton').removeAttribute('style', "display");
+            document.getElementById('settingsbutton').removeAttribute('style', "display");
         }, 200);
       },
       searchAction: function() {

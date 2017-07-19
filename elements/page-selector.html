@@ -99,6 +99,10 @@ h1{
   background-color: var(--paper-deep-orange-900);
 }
 
+.search-mode #sctoolbar, .search-mode #toolbarheader {
+  background-color: var(--sc-green-600);
+}
+
 #toolbartitlebox {
   width: 1px;
   z-index:-10;
@@ -130,7 +134,7 @@ h1{
                 <app-toolbar id="toolbarheader">
                   <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
                   <div main-title id="toolbartitlebox"><p id="toolbartitle">{{toolbarTitle}}</p></div>
-                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{suttaPath}}" meta-area="{{metaArea}}"></sc-toolbar>
+                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{suttaPath}}" category="[[category]]" meta-area="{{metaArea}}"></sc-toolbar>
                 </app-toolbar>
 
 <!--             <app-toolbar class="statictoolbar">
@@ -241,7 +245,8 @@ h1{
         document.getElementById('toolbartitlebox').removeAttribute('style', "visibility");
         document.getElementById('discoursebutton').removeAttribute('style', "display");
         document.getElementById('morevertbutton').removeAttribute('style', "display");
-        document.getElementById('discoursedropdown').removeAttribute('style', "display");
+        document.getElementById('settingsbutton').removeAttribute('style', "display");
+        // document.getElementById('discoursedropdown').removeAttribute('style', "display");
         this.$.header.resetLayout();
       },
 
@@ -258,7 +263,7 @@ h1{
         }
       },
       _checkList: function(category,suttaPath) {
-        if (!suttaPath && (this.staticPages.indexOf(category) == -1)) {
+        if (!suttaPath && (this.staticPages.indexOf(category) == -1) && category !== 'search') {
           this.mainClass="list-mode";
           return true;
         } else {
@@ -283,8 +288,8 @@ h1{
       },
       _checkSearch: function(category) {
         if (category === "search"){
-          this.mainClass="static-mode";
-          this.toolbarTitle = ''
+          this.mainClass="search-mode";
+          this.toolbarTitle = 'SuttaCentral — search results'
           return true;
         } else {
         return false;
