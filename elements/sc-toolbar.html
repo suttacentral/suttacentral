@@ -53,19 +53,19 @@ paper-input {
   left: 50px;
   max-width: 600px;
 }
-#discourse {
+/*#discourse {
   position:fixed;
   top: 50px;
   right: 50px;
   max-width: 600px;
-}
+}*/
 @media screen and (max-width: 840px) {
     #dialog {
       left: 0px;
     };
-    #discourse {
+/*    #discourse {
       right: 0px;
-    }
+    }*/
 }
 
 h2{
@@ -80,11 +80,11 @@ paper-dialog paper-icon-button {
 .hidebutton {
   display: none;
 }
-#discourselogo {
+/*#discourselogo {
     @apply(--sc-serif-font);
     color: #015179;
     font-style: italic;
-}
+}*/
 </style>
 
     <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
@@ -176,7 +176,7 @@ paper-dialog paper-icon-button {
             this.$$('#closebutton').style.display='inline-block';
             this.$$('#searchinput').value = '';
             var searchSize = 500;
-            // if (this.suttaPath) {searchSize = 540};
+            if (this.suttaPath) {searchSize = 540};
             if (window.innerWidth < 1040) {document.getElementById('toolbartitlebox').setAttribute('style', "visibility:hidden")};
             if (window.innerWidth > 840) {
                 var searchWidth = window.innerWidth-searchSize;
@@ -187,6 +187,7 @@ paper-dialog paper-icon-button {
                 // this.$$('#discoursedropdown').style.display="none";
                 this.$$('#morevertbutton').style.display="none"; 
                 this.$$('#settingsbutton').style.display="none";
+                if (this.suttaPath) {searchSize = 500};
                 var searchWidth = window.innerWidth-(searchSize-320);
             }
             if (searchWidth > 360) {searchWidth = 360};
