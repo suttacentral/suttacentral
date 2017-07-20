@@ -134,7 +134,7 @@ h1{
                 <app-toolbar id="toolbarheader">
                   <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
                   <div main-title id="toolbartitlebox"><p id="toolbartitle">{{toolbarTitle}}</p></div>
-                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{suttaPath}}" category="[[category]]" meta-area="{{metaArea}}"></sc-toolbar>
+                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{author}}" category="[[category]]" meta-area="{{metaArea}}"></sc-toolbar>
                 </app-toolbar>
 
 <!--             <app-toolbar class="statictoolbar">
@@ -149,20 +149,20 @@ h1{
                 <sc-page-static category="[[category]]" input-language="{{inputLanguage}}"></sc-page-static>
             </template>
 
-            <template is="dom-if" if="{{_checkList(category,suttaPath)}}">
+            <template is="dom-if" if="{{_checkList(category,author)}}">
                 <sc-view-suttaplex category="[[category]]" vagga-number$="{{_computeVagga(queryParams)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
             </template>
 
-            <template is="dom-if" if="{{_checkText(category,suttaPath,author)}}">
+            <template is="dom-if" if="{{_checkText(category,author)}}">
               <sc-page-text sutta-path="[[category]]" author="{{author}}" input-language="{{inputLanguage}}"></sc-page-text>
             </template>
 
-            <template is="dom-if" if="{{_checkSegmented(category,suttaPath,author)}}">
+            <template is="dom-if" if="{{_checkSegmented(category,author)}}">
               <sc-segmented-text sutta-path="[[category]]" author="{{author}}" show-viewer="{{showViewer}}" input-language="{{inputLanguage}}"></sc-segmented-text>
             </template>
 
             <template is="dom-if" if="{{_checkSearch(category)}}">
-              <sc-page-search></sc-page-search>
+              <sc-page-search search-query="{{searchQuery}}"></sc-page-search>
             </template>
 
       </app-header-layout>
@@ -182,14 +182,6 @@ h1{
           value: ""
         },
         showViewer: String,
-        suttaPath: {
-          type: Boolean,
-          notify: true
-        },
-        author: {
-          type: String,
-          notify: true
-        },
         category: {
           type: String,
           notify: true,
@@ -199,14 +191,24 @@ h1{
           type: Object,
           notify: true
         },
+        author: {
+          type: String,
+          notify: true,
+          computed: '_checkAuthor(queryParams)'
+        },
         mainClass: String,
         staticPages: {
           type: Array,
           value: ["dons","people","downloads",""]
+        },
+        searchQuery: {
+          type: String,
+          notify: true,
+          computed: '_checkSearchQuery(queryParams)'
         }
       },
       observers: [
-        '_changeView(category,author,suttaPath)'
+        '_changeView(category,author)'
       ],
       ready: function() {
         this.addEventListener('eventFromTextPage', this.addTextTitles);
@@ -215,29 +217,35 @@ h1{
         this.addEventListener('eventFromTools', this.changeSegmentedView);
       },
       addTextTitles: function(event) {
-        if (this.suttaPath && this.author !== "sujato" && (this.staticPages.indexOf(this.category) == -1)) {
+        if (this.author && this.author !== "sujato" && (this.staticPages.indexOf(this.category) == -1)) {
           this.toolbarTitle = event.detail.suttatitle;
           this.metaArea = event.detail.suttameta;
         }
       },
       addSuttaplexTitles: function(event) {
-        if (!this.suttaPath && (this.staticPages.indexOf(this.category) == -1)) {
+        if (!this.author && (this.staticPages.indexOf(this.category) == -1) && this.category !== 'search') {
           this.toolbarTitle = event.detail.divisiontitle;
         }
       },
       addSegmentedTextTitles: function(event) {
-        if (this.suttaPath && this.author === "sujato" && (this.staticPages.indexOf(this.category) == -1)) {
+        if (this.author && this.author === "sujato" && (this.staticPages.indexOf(this.category) == -1)) {
           this.toolbarTitle = event.detail.suttasegtitle;
           this.metaArea = event.detail.suttasegmeta;
         }
       },
+      _checkAuthor: function(queryParams) {
+        return (queryParams.author) ? queryParams.author : "";
+      },
       _computeVagga: function(queryParams) {
         return (queryParams.vagga) ? queryParams.vagga : "";
+      },
+      _checkSearchQuery: function(queryParams) {
+        return (queryParams.query) ? queryParams.query : "";
       },
       changeSegmentedView: function(event) {
           return this.showViewer = event.detail.selectedView;
       },
-      _changeView: function(category,author,suttaPath) {
+      _changeView: function(category,author) {
         // Reset all toolbar display settings with regards to the search input field
         document.getElementById('searchinput').classList.remove('opened');
         document.getElementById('searchinput').removeAttribute('style', "width");
@@ -262,24 +270,24 @@ h1{
         return false;
         }
       },
-      _checkList: function(category,suttaPath) {
-        if (!suttaPath && (this.staticPages.indexOf(category) == -1) && category !== 'search') {
+      _checkList: function(category,author) {
+        if (!author && (this.staticPages.indexOf(category) == -1) && category !== 'search') {
           this.mainClass="list-mode";
           return true;
         } else {
           return false;
         }
       },
-      _checkText: function(category,suttaPath,author) {
-        if (suttaPath && author !== "sujato" && (this.staticPages.indexOf(category) == -1)) {
+      _checkText: function(category,author) {
+        if (author && author !== "sujato" && (this.staticPages.indexOf(category) == -1)) {
             this.mainClass="text-mode";
             return true;
         } else {        
             return false;
         }
       },
-      _checkSegmented: function(category,suttaPath,author) {
-        if (suttaPath && author === "sujato" && (this.staticPages.indexOf(category) == -1)) {
+      _checkSegmented: function(category,author) {
+        if (author && author === "sujato" && (this.staticPages.indexOf(category) == -1)) {
             this.mainClass="segmented-mode";
             return true;
         } else {

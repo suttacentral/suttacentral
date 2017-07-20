@@ -5,7 +5,6 @@
 <link rel="import" href="page-selector.html">
 
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route-converter.html">
 <link rel="import" href="../bower_components/iron-location/iron-location.html">
 <link rel="import" href="../bower_components/iron-location/iron-query-params.html">
@@ -62,18 +61,6 @@ paper-tree {
   overflow: auto;
 }
 </style>
-<app-location route={{route}} query-params="{{queryParams}}"></app-location>
-
-<app-route route="{{route}}"
-           pattern="/:collection"
-           data="{{collectionData}}"
-           tail="{{collectionTail}}"></app-route>
-
-<app-route route="{{collectionTail}}"
-           pattern="/:author"
-           data="{{authorData}}"
-           active="{{suttaPath}}"></app-route>
-
 <iron-location path="{{path}}" query="{{query}}"></iron-location>
 <iron-query-params
     params-string="{{query}}"
@@ -84,9 +71,20 @@ paper-tree {
     query-params="{{queryParams}}"
     route="{{route}}">
 </app-route-converter>
-<app-route route='{{route}}' pattern='/:page' data='{{data}}'>
-</app-route>
 
+<app-route route="{{route}}"
+           pattern="/:collection"
+           data="{{collectionData}}"></app-route>
+
+<!-- <app-route route="{{route}}"
+           pattern="/:collection"
+           data="{{collectionData}}"
+           tail="{{collectionTail}}"></app-route>
+
+<app-route route="{{collectionTail}}"
+           pattern="/:author"
+           data="{{authorData}}"
+           active="{{suttaPath}}"></app-route> -->
 
 <iron-ajax
       auto
@@ -113,7 +111,8 @@ paper-tree {
           </div>
         </div>
     </app-drawer>
-          <page-selector sutta-path="{{suttaPath}}" category="{{collectionData.collection}}" author="{{authorData.author}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector>
+<!--           <page-selector sutta-path="{{suttaPath}}" category="{{collectionData.collection}}" author="{{authorData.author}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector> -->
+<page-selector category="{{collectionData.collection}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector>
 
   </app-drawer-layout>
 
@@ -126,9 +125,9 @@ paper-tree {
           route: Object,
           inputLanguage: String,
           collectionData: Object,
-          collectionTail: Object,
-          authorData: Object,
-          suttaPath: Boolean,
+          // collectionTail: Object,
+          // authorData: Object,
+          // suttaPath: Boolean,
           queryParams: Object,
           path: String,
           query: String

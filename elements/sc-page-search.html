@@ -7,7 +7,7 @@
 
 </style>
 
-<h1>This is a search results page.</h1>
+<h1>Search results for: {{searchQuery}}</h1>
 <p>Some text</p>
 <p>Some text</p>
 <p>Some text</p>
@@ -28,39 +28,10 @@
 </template>
 <script>
     Polymer({
-      is: 'sc-page-search'
-
-     //  properties: {
-     //    suttaPath: String,
-     //    suttaText: String,
-     //    paragraphTitles: Object
-     //  },
-     //  observers: [
-     //    '_computePars(suttaText,paragraphTitles)',
-     //    'infoToParent(suttaText)'
-     //  ],
-     //  _computeURL: function(category) {
-     //    return `../texts/${category}.html`;
-     //  },
-     //  _computeTitle: function(suttaText) {
-     //    return ((this.$$('.division') !== undefined) && (this.$$('.division') !== null)) ? this.$$('.division').innerText : "";
-     //  },
-     //  _computeAuthor: function(suttaText) {
-     //    return ((this.$$('.author') !== undefined) && (this.$$('.author') !== null)) ? "—"+this.$$('.author').innerText : "";
-     //  },
-     //  _computeMeta: function(suttaText) {
-     //    return ((this.$$('#metaarea') !== undefined) && (this.$$('#metaarea') !== null)) ? this.$$('#metaarea').innerHTML : "";
-     //  },
-     // _computePars: function(inputText,paragraphTitles) {
-     //    for (var key in paragraphTitles) {
-     //            var refs = this.querySelectorAll('.'+key);
-     //            Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
-     //            Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
-     //      }
-     //  },
-     //  infoToParent: function(suttaText) {
-     //    this.fire('eventFromTextPage',{suttatitle:this._computeTitle(suttaText)+this._computeAuthor(suttaText),suttameta:this._computeMeta(suttaText)});
-     //  }
+      is: 'sc-page-search',
+      properties: {
+        searchQuery: String
+      }
     });
 </script>
 </dom-module>
