@@ -6,33 +6,123 @@
 <dom-module id="sc-page-search">
 <template>
 <style is="custom-style">
+.divisioncontent {
+  @apply(--sc-sans-font);
+  padding: 76px 0;
+}
 
+main {
+    max-width:720px;
+    margin:0 auto;
+    color:#212121;
+    line-height: 1.5
+}
+.results-head{
+    display:flex;
+    justify-content:  space-between ;
+    padding-left: 16px;
+    color:var(--disabled-text-color);
+}
+h1{
+    font-size: 34px;
+    font-weight: normal;
+    display: inline-block;
+    margin: 0;
+}
+.result-number{
+    font-weight:normal;
+}
+.result-term{
+    font-weight: bold;
+    color:var(--sc-green-600);
+}
+
+
+    iron-list {
+      padding: 28px 0 16px;
+    }
+
+    .item {
+      @apply(--layout-horizontal);
+      background-color: white;
+      border-bottom: 1px solid #E0E0E0;
+    }
+
+    .item:focus {
+      outline: 0;
+      border-color: var(--sc-green-600);
+    }
+
+    .pad {
+      padding: 0 16px;
+      @apply(--layout-flex);
+      @apply(--layout-vertical);
+    }
+
+h2{
+    font-size: 24px;
+    color:var(--sc-green-600);
+    font-weight: normal;
+    margin: 22px 0 0 0;
+}
+.results-url{
+    color:var(--disabled-text-color);
+    font-size: 14px;
+    margin: 0 0 18px;
+}
+.snippet{
+    font-size: 16px;
+    margin: 0 0 20px 0;
+}
 </style>
 
-<h1>Search results for: {{searchQuery}}</h1>
-<p>Some text</p>
-<p>Some text</p>
-<p>Some text</p>
-<p>Some text</p>
-<p>Some text</p>
-<p>Some text</p>
-<p>Some text</p>
+<iron-ajax 
+    url="../bower_components/iron-list/demo/data/contacts.json" 
+    handle-as="json" l
+    last-response="{{data}}" 
+    auto></iron-ajax>
 
-<p>Some text</p>
-<!-- <iron-ajax
-      auto
-      url="[[_computeURL(suttaPath)]]"
-      handle-as="text"
-      last-response="{{suttaText}}"></iron-ajax>
+<!-- <iron-ajax id="ajax"
+      url="//randomuser.me/api/"
+      params='{"results": 20}'
+      handle-as="json"
+      loading="{{loadingPeople}}"
+      on-response="_didRespond">
+    </iron-ajax> -->
 
-  <div class="htmltextcontent" inner-h-t-m-l="{{suttaText}}"></div> -->
+<div class="divisioncontent">
+    <main>
+        <div class="results-head">
+                    <h1><span class="result-number">{{_calculateNumber(data)}}</span> <span class="result-description">results for</span> <span class="result-term">{{searchQuery}}</span> </h1>
+        </div>
 
+
+      <!-- iron-list using the document scroll -->
+      <iron-list items="[[data]]" as="item" scroll-target="html" first-visible-index=0 last-visible-index=19>
+        <template>
+          <div>
+            <div class="item" tabindex$="[[tabIndex]]">
+              <div class="pad">
+                <div class="primary"><h2>[[item.name]] [[index]]</h2></div>
+                <div class="secondary"><p class="results-url">[[item.shortText]]</p></div>
+                <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.mediumText]]"></p></div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </iron-list>
+</main>
+</div>
 </template>
 <script>
     Polymer({
       is: 'sc-page-search',
       properties: {
         searchQuery: String
+      },
+      _calculateNumber: function(data) {
+        document.getElementById('items').removeAttribute('style', "height");
+        return data.length;
       }
     });
 </script>
