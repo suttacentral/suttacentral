@@ -26,70 +26,11 @@
 app-header-layout #contentContainer {
   background-color: green;
 }
-/*app-header {
-  z-index: 1000;
-}*/
-/*app-toolbar:nth-of-type(2), app-toolbar:nth-of-type(3){
-  z-index: -1;
-}*/
-
 
 app-toolbar, sc-toolbar {
    background-color: var(--sc-gold-500);
    white-space: nowrap;
 }
-/*
-h1{
-  @apply(--sc-serif-font);
-  @apply(--sc-mixed-small-caps);
-  font-size: 2.5em;
-  text-align: left;
-  color: white;
-  padding-top: 0.5em;
-  margin: 0;
-  line-height: 1em;
-  font-weight: normal;
-}
-
-.subtitle {
-  @apply(--sc-sans-font);
-  color: white;
-  font-style: italic;
-  font-size: 1.5em;
-  text-align: left;
-  margin-bottom: .75em;
-  margin-top: 0;
-}
-
-.title {
-  margin-left: 64px;
-}
-
-@media (max-width: 925px) {
-    .subtitle {
-      font-size: 1.2em;
-      margin-bottom: 0.5em;
-    };
-}
-@media (max-width: 800px) {
-    .title {
-      margin-left: initial;
-    };
-}
-@media (max-width: 600px) {
-    h1 {
-      font-size: 2em;
-      padding-top: 0.2em;
-    };
-    .subtitle {
-      font-size: 1em;
-      margin-bottom: 0.5em;
-    };
-}*/
-
-/*.list-mode .statictoolbar, .text-mode .statictoolbar, .segmented-mode .statictoolbar {
-  display: none;
-}*/
 
 .list-mode #toolbarheader, .text-mode #toolbarheader, .segmented-mode #toolbarheader {
     @apply(--shadow-elevation-8dp);
@@ -136,13 +77,6 @@ h1{
                   <div main-title id="toolbartitlebox"><p id="toolbartitle">{{toolbarTitle}}</p></div>
                   <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{author}}" category="[[category]]" meta-area="{{metaArea}}"></sc-toolbar>
                 </app-toolbar>
-
-<!--             <app-toolbar class="statictoolbar">
-                  <div class="title" main-title><h1>SuttaCentral</h1></div>
-            </app-toolbar>
-            <app-toolbar class="statictoolbar">
-                  <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
-            </app-toolbar> -->
         </app-header>
 
             <template is="dom-if" if="{{_checkStatic(category)}}">
@@ -246,15 +180,7 @@ h1{
           return this.showViewer = event.detail.selectedView;
       },
       _changeView: function(category,author) {
-        // Reset all toolbar display settings with regards to the search input field
-        document.getElementById('searchinput').classList.remove('opened');
-        document.getElementById('searchinput').removeAttribute('style', "width");
-        document.getElementById('closebutton').style.display='none';
-        document.getElementById('toolbartitlebox').removeAttribute('style', "visibility");
-        document.getElementById('discoursebutton').removeAttribute('style', "display");
-        document.getElementById('morevertbutton').removeAttribute('style', "display");
-        document.getElementById('settingsbutton').removeAttribute('style', "display");
-        // document.getElementById('discoursedropdown').removeAttribute('style', "display");
+        this.$.sctoolbar.closeSearch();
         this.$.header.resetLayout();
       },
 

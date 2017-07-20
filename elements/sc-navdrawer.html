@@ -76,16 +76,6 @@ paper-tree {
            pattern="/:collection"
            data="{{collectionData}}"></app-route>
 
-<!-- <app-route route="{{route}}"
-           pattern="/:collection"
-           data="{{collectionData}}"
-           tail="{{collectionTail}}"></app-route>
-
-<app-route route="{{collectionTail}}"
-           pattern="/:author"
-           data="{{authorData}}"
-           active="{{suttaPath}}"></app-route> -->
-
 <iron-ajax
       auto
       url="../data/menu/discoursetree.json"
@@ -111,8 +101,7 @@ paper-tree {
           </div>
         </div>
     </app-drawer>
-<!--           <page-selector sutta-path="{{suttaPath}}" category="{{collectionData.collection}}" author="{{authorData.author}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector> -->
-<page-selector category="{{collectionData.collection}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector>
+    <page-selector category="{{collectionData.collection}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector>
 
   </app-drawer-layout>
 
@@ -125,9 +114,6 @@ paper-tree {
           route: Object,
           inputLanguage: String,
           collectionData: Object,
-          // collectionTail: Object,
-          // authorData: Object,
-          // suttaPath: Boolean,
           queryParams: Object,
           path: String,
           query: String

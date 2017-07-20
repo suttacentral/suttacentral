@@ -126,7 +126,6 @@ li {
         _computeIcon: function(change) {
             var open = change && change.base && change.base.open;
             var children = change && change.base && change.base.children;
-            // return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
             return ((open && children && children.length) ? 'expand-less' : children && children.length ? 'expand-more' : '');
         },
         _computeIndent: function(data) {
