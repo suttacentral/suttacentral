@@ -3,10 +3,11 @@
 <link rel="import" href="../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="sc-parallels.html">
+<link rel="import" href="../styles/sc-suttaplex-styles.html">
 
 <dom-module id="sc-view-parallels">
 <template>
-<style  is="custom-style">
+<style  is="custom-style" include="sc-suttaplex-styles">
 .parallels-expanded {
     padding: 16px;
 }
@@ -35,26 +36,6 @@
   @apply(--sc-serif-font);
 }
 
-paper-button{
-  letter-spacing: .02em;
-}
-paper-button a {
-  color: var(--paper-green-a700);
-  text-decoration: none;
-}
-paper-button {
-   --paper-button-ink-color: var(--paper-green-a700);
-}
-
-paper-button.dense {
-  font-size: 14px;
-  padding-bottom:0.6em;
-}
-
-iron-icon,
-paper-icon-button {
-  color: var(--disabled-text-color);
-}
 </style>
 
 <div class="parallels-expanded">

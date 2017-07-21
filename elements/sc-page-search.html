@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="menus/search-menu.html">
 
 <dom-module id="sc-page-search">
 <template>
@@ -18,7 +19,7 @@ main {
 .results-head{
     display:flex;
     justify-content:  space-between ;
-    padding-left: 16px;
+    padding: 0 16px;
     color:var(--secondary-text-color);
 }
 h1{
@@ -26,15 +27,12 @@ h1{
     display: inline-block;
     margin: 0;
 }
-.result-number{
-    
-}
+
 .result-term{
     font-weight: bold;
-    color:var(--sc-green-600);
+    color: var(--sc-green-600);
     @apply(--sc-serif-font);
 }
-
 
     iron-list {
       padding: 28px 0 16px;
@@ -42,30 +40,29 @@ h1{
 
     .item {
       @apply(--layout-horizontal);
-      border-bottom:1px solid var(--paper-grey-300);
+      border-bottom: 1px solid var(--paper-grey-300);
     }
 
     .item:focus {
       outline: 0;
-      background: linear-gradient(to right, rgba(67, 160, 7, 1) 4px, rgba(67, 160, 7, 0) 4px)
+      background: linear-gradient(to right, rgba(67, 160, 7, 1) 4px, rgba(67, 160, 7, 0) 4px);
     }
 
     .pad {
       padding: 0 16px;
       @apply(--layout-flex);
       @apply(--layout-vertical);
-
     }
 
 h2{
     @apply(--paper-font-headline);
-    color:var(--sc-green-600);
+    color: var(--sc-green-600);
     margin: 22px 0 0 0;
 }
 .results-url{
     @apply(--paper-font-body2);
-  color: var(--secondary-text-color);
-  white-space: nowrap;
+    color:var(--secondary-text-color);
+    white-space: nowrap;
     margin: 0 0 16px;
     overflow: hidden;
 }
@@ -73,30 +70,24 @@ h2{
     @apply(--sc-paper-font-body);
     margin: 0 0 20px 0;
 }
+search-menu {
+    margin-top: -20px;
+}
 </style>
 
-<iron-ajax 
+<iron-ajax id="ajax"
     url="../bower_components/iron-list/demo/data/contacts.json" 
-    handle-as="json" l
-    last-response="{{data}}" 
-    auto></iron-ajax>
-
-<!-- <iron-ajax id="ajax"
-      url="//randomuser.me/api/"
-      params='{"results": 20}'
-      handle-as="json"
-      loading="{{loadingPeople}}"
-      on-response="_didRespond">
-    </iron-ajax> -->
+    params='{"results": 20}'
+    handle-as="json"
+    last-response="{{data}}"></iron-ajax>
 
 <div class="divisioncontent">
     <main>
         <div class="results-head">
                     <h1><span class="result-number">{{_calculateNumber(data)}}</span> <span class="result-description">results for</span> <span class="result-term">{{searchQuery}}</span> </h1>
+                    <search-menu></search-menu>
         </div>
 
-
-      <!-- iron-list using the document scroll -->
       <iron-list items="[[data]]" as="item" scroll-target="html" first-visible-index=0 last-visible-index=19>
         <template>
           <div>
@@ -110,6 +101,15 @@ h2{
           </div>
         </template>
       </iron-list>
+
+    <!-- this element will load more data when the user scrolls down and reached the lower threshold -->
+<!--     <iron-scroll-threshold id="scrollTheshold"
+      lower-threshold="500"
+      on-lower-threshold="_loadMoreData"
+      scroll-target="html">
+    </iron-scroll-threshold> -->
+
+
 </main>
 </div>
 </template>
@@ -117,12 +117,27 @@ h2{
     Polymer({
       is: 'sc-page-search',
       properties: {
-        searchQuery: String
+        searchQuery: {
+            type: String,
+            notify: true
+        }
+      },
+      ready: function() {
+        this._callAjax();
       },
       _calculateNumber: function(data) {
         document.getElementById('items').removeAttribute('style', "height");
         return data.length;
-      }
+      },
+      _callAjax: function() {
+        this.$.ajax.generateRequest()
+      },
+      _didRespond: function(e) {
+        var searchResult = e.detail.response.results;
+        console.log(e.detail);
+        // searchResult.forEach(function(person) {
+        //   this.$.list.push('items', person);
+        }
     });
 </script>
 </dom-module>

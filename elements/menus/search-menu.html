@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<!-- This dropdown is normally hidden, and only shows when necessary. The two necessary conditions are:
+
+The results are in more than one category of root texts, translations, and dictionaries, and
+there are more than ten results in total -->
+
+<dom-module id="search-menu">
+<template>
+<style is="custom-style">
+:host {
+  --primary-color: var(--sc-green-600);
+}
+paper-dropdown-menu, paper-listbox {
+    width: 150px;
+}
+
+paper-item {
+    @apply(--sc-sans-font);
+}
+
+</style>
+	<paper-dropdown-menu class="custom" title="Select search scope">
+	  <paper-listbox class="dropdown-content" selected="0">
+	    	<paper-item id="all">All</paper-item>
+                  <paper-item id="root-texts">Root texts</paper-item>
+                  <paper-item id="translations">Translations</paper-item>
+                  <paper-item id="dictionaries">Dictionaries</paper-item>
+	  </paper-listbox>
+	</paper-dropdown-menu>
+</template>
+
+<script>
+    Polymer({
+        is: 'search-menu'
+
+    });
+
+</script>
+</dom-module>

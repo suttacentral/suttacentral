@@ -43,8 +43,7 @@ main {
   padding-top: 0;
 }
 </style>
-<iron-ajax
-      auto
+<iron-ajax id="ajax"
       url="[[_computeURL(category)]]"
       handle-as="json"
       last-response="{{suttaList}}"></iron-ajax>
@@ -91,14 +90,23 @@ main {
         },
         category: {
           type: String,
-          notify: true
-        }
+          notify: true,
+          observer: '_callAjax'
+        },
+        otherPages: {
+          type: Array,
+          value: ["dons","people","downloads","","search"]
+        },
       },
       observers: [
         'infoToParent(suttaList,inputLanguage)'
       ],
       ready: function() {
         this.addEventListener('toggleParallelNote', this.elevateBox);
+      },
+      _callAjax: function() {
+        if (this.category) {var matches = this.category.match(/\d{1,6}/)};
+        return (!matches && (this.otherPages.indexOf(this.category) == -1)) ? this.$.ajax.generateRequest() : "";
       },
       elevateBox: function(event) {
         var sutta = document.getElementById(event.detail.url);

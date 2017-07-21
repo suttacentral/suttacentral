@@ -36,8 +36,7 @@
 }
 
 </style>
-<iron-ajax
-      auto
+<iron-ajax id="ajaxbase"
       url="[[_computeURLBase(suttaPath)]]"
       handle-as="json"
       last-response="{{baseText}}"></iron-ajax>
@@ -52,20 +51,17 @@
       </template>
   </div>
 
-<iron-ajax
-              auto
+<iron-ajax id="ajaxalternate"
               url="[[_computeURLOriginal(suttaPath)]]"
               handle-as="json"
               last-response="{{alternateText}}"></iron-ajax>
 
-<iron-ajax
-      auto
+<iron-ajax id="ajaxsutta"
       url="[[_computeURL(suttaPath)]]"
       handle-as="json"
       last-response="{{suttaText}}"></iron-ajax>
 
-<iron-ajax
-      auto
+<iron-ajax id="ajaxparagraphs"
       url="../data/paragraphtitles.json"
       handle-as="json"
       last-response="{{paragraphTitles}}"></iron-ajax>
@@ -75,10 +71,22 @@
     Polymer({
         is: 'sc-segmented-text',
       properties: {
-        suttaPath: String,
+        suttaPath: {
+          type: String,
+          notify: true,
+          observer: '_callAjax'
+        },
+        author: {
+          type: String,
+          notify: true,
+          observer: '_callAjax'
+        },
         suttaText: Object,
-        paragraphTitles: Object,
         alternateText: Object,
+        paragraphTitles: {
+          type: Object,
+          notify: true
+        },
         showViewer: {
           type: String
         },
@@ -92,6 +100,15 @@
        ' _computeSegments(suttaText,".line")',
        ' _computeSegments(alternateText,".linepi")'
       ],
+      _callAjax: function(){
+        if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
+        if (matches && this.author === "sujato") {
+            this.$.ajaxparagraphs.generateRequest();
+            this.$.ajaxbase.generateRequest();
+            this.$.ajaxalternate.generateRequest();
+            this.$.ajaxsutta.generateRequest();
+        }
+      },
        setView: function(showViewer) {
         this._cleanCode();
         switch (showViewer) {

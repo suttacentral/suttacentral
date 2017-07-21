@@ -50,6 +50,9 @@ app-toolbar, sc-toolbar {
   @apply(--sc-sans-font);
   color: white;
 }
+.search-mode #toolbartitle {
+  text-transform: none;
+}
 
 @media screen and (max-width: 450px) {
     #toolbartitle {
@@ -80,7 +83,7 @@ app-toolbar, sc-toolbar {
                 <sc-page-static category="[[category]]" input-language="{{inputLanguage}}"></sc-page-static>
             </template>
 
-            <template is="dom-if" if="{{_checkList(category,author)}}">
+            <template is="dom-if" if="{{_checkList(category)}}">
                 <sc-view-suttaplex category="[[category]]" vagga-number$="{{_computeVagga(queryParams)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
             </template>
 
@@ -112,6 +115,26 @@ app-toolbar, sc-toolbar {
           type: String,
           value: ""
         },
+        divisionTitle: {
+          type: String,
+          notify: true
+        },
+        suttaTitle: {
+          type: String,
+          notify: true
+        },
+        suttaMeta: {
+          type: String,
+          notify: true
+        },
+        suttaSegTitle: {
+          type: String,
+          notify: true
+        },
+        suttaSegMeta: {
+          type: String,
+          notify: true
+        },
         showViewer: String,
         category: {
           type: String,
@@ -142,26 +165,29 @@ app-toolbar, sc-toolbar {
         '_changeView(category,author)'
       ],
       ready: function() {
-        this.addEventListener('eventFromTextPage', this.addTextTitles);
-        this.addEventListener('eventFromSuttaplexPage', this.addSuttaplexTitles);
-        this.addEventListener('eventFromSegmentedTextPage', this.addSegmentedTextTitles);
+        this.addEventListener('eventFromTextPage', this.addTitles);
+        this.addEventListener('eventFromSuttaplexPage', this.addTitles);
+        this.addEventListener('eventFromSegmentedTextPage', this.addTitles);
         this.addEventListener('eventFromTools', this.changeSegmentedView);
       },
-      addTextTitles: function(event) {
-        if (this.author && this.author !== "sujato" && (this.staticPages.indexOf(this.category) == -1)) {
-          this.toolbarTitle = event.detail.suttatitle;
-          this.metaArea = event.detail.suttameta;
-        }
-      },
-      addSuttaplexTitles: function(event) {
-        if (!this.author && (this.staticPages.indexOf(this.category) == -1) && this.category !== 'search') {
-          this.toolbarTitle = event.detail.divisiontitle;
-        }
-      },
-      addSegmentedTextTitles: function(event) {
-        if (this.author && this.author === "sujato" && (this.staticPages.indexOf(this.category) == -1)) {
-          this.toolbarTitle = event.detail.suttasegtitle;
-          this.metaArea = event.detail.suttasegmeta;
+      addTitles: function(event) {
+        switch (this.mainClass) {
+          case 'list-mode':
+            if (event.detail.divisiontitle) {this.divisionTitle = event.detail.divisiontitle};
+            this.toolbarTitle = this.divisionTitle;
+            break;
+          case 'text-mode':
+            if (event.detail.suttatitle) {this.suttaTitle = event.detail.suttatitle};
+            if (event.detail.suttameta) {this.suttaMeta = event.detail.suttameta};
+            this.toolbarTitle = this.suttaTitle;
+            this.metaArea = this.suttaMeta;
+            break;
+          case 'segmented-mode':
+            if (event.detail.suttasegtitle) {this.suttaSegTitle = event.detail.suttasegtitle};
+            if (event.detail.suttasegmeta) {this.suttaSegMeta = event.detail.suttasegmeta};
+            this.toolbarTitle = this.suttaSegTitle;
+            this.metaArea = this.suttaSegMeta;
+            break;
         }
       },
       _checkAuthor: function(queryParams) {
@@ -193,25 +219,33 @@ app-toolbar, sc-toolbar {
         return false;
         }
       },
-      _checkList: function(category,author) {
-        if (!author && (this.staticPages.indexOf(category) == -1) && category !== 'search') {
+      _checkList: function(category) {
+        if (category) {var matches = category.match(/\d{1,6}/)};
+        if (!matches && (this.staticPages.indexOf(category) == -1) && category !== 'search') {
           this.mainClass="list-mode";
+          this.toolbarTitle = this.divisionTitle;
           return true;
         } else {
           return false;
         }
       },
       _checkText: function(category,author) {
-        if (author && author !== "sujato" && (this.staticPages.indexOf(category) == -1)) {
+        if (category) {var matches = category.match(/\d{1,6}/)};
+        if (matches && author !== "sujato") {
             this.mainClass="text-mode";
+            this.toolbarTitle = this.suttaTitle;
+            this.metaArea = this.suttaMeta;
             return true;
         } else {        
             return false;
         }
       },
       _checkSegmented: function(category,author) {
-        if (author && author === "sujato" && (this.staticPages.indexOf(category) == -1)) {
+        if (category) {var matches = category.match(/\d{1,6}/)};
+        if (matches && author === "sujato") {
             this.mainClass="segmented-mode";
+            this.toolbarTitle = this.suttaSegTitle;
+            this.metaArea = this.suttaSegMeta;
             return true;
         } else {
             return false;

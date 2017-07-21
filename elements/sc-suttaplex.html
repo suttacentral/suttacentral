@@ -16,10 +16,11 @@
 <link rel="import" href="addons/sc-sutta-note.html">
 <link rel="import" href="sc-view-parallels.html">
 <link rel="import" href="menus/more-par-menu.html">
+<link rel="import" href="../styles/sc-suttaplex-styles.html">
 
 <dom-module id="sc-suttaplex" attributes="open url">
 <template>
-<style is="custom-style">
+<style is="custom-style" include="sc-suttaplex-styles">
 .heading {
   cursor: pointer;
 }
@@ -34,11 +35,6 @@ h1, h2, h3 {
   margin: 0;
 }
 
-iron-icon,
-paper-icon-button {
-  color: var(--disabled-text-color);
-}
-
 paper-card.suttaplex {
     border-radius: 0px;
     border-top: 1px solid var(--paper-grey-300);
@@ -49,25 +45,24 @@ paper-card.suttaplex .card-content {
     padding-bottom: 1px;
 }
 
-.suttaplex-heading{
+.suttaplex-heading {
   @apply(--paper-font-headline);
   @apply(--sc-serif-font);
 }
 
-.suttaplex-nerdy-row{
+.suttaplex-nerdy-row {
   @apply(--paper-font-body2);
   color: var(--secondary-text-color);
   white-space: nowrap;
   overflow: hidden;
 }
-.suttaplex-nerdy-row span{
+.suttaplex-nerdy-row span {
   margin-right: 24px;
 }
 
 .suttaplex-nerdy-row span:nth-of-type(1){
   @apply(--sc-all-small-caps);
 }
-
 
 .suttaplex-description{
   @apply(--sc-paper-font-body);
@@ -88,21 +83,6 @@ paper-card.suttaplex .card-actions {
     display: inline-block;
 }
 
-paper-button{
-  letter-spacing: .02em;
-}
-paper-button a {
-  color: var(--paper-green-a700);
-  text-decoration: none;
-}
-paper-button {
-   --paper-button-ink-color: var(--paper-green-a700);
-}
-
-.book iron-icon{
-  --iron-icon-height: 15px;
-  --iron-icon-width: 15px;
-}
 .languagedrop {
   display: inline-block;
   vertical-align:middle;

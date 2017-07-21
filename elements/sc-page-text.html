@@ -6,10 +6,9 @@
 <style is="custom-style">
 
 </style>
-
-<iron-ajax
-      auto
-      url="[[_computeURL(suttaPath)]]"
+<!-- Still to do: add the correct sutta based on the author. Right now it does not check the author in the URL -->
+<iron-ajax id="ajax"
+      url="[[_computeURL(suttaPath,author)]]"
       handle-as="text"
       last-response="{{suttaText}}"></iron-ajax>
 
@@ -27,7 +26,16 @@
       is: 'sc-page-text',
 
       properties: {
-        suttaPath: String,
+        suttaPath: {
+          type: String,
+          notify: true,
+          observer: '_callAjax'
+        },
+        author: {
+          type: String,
+          notify: true,
+          observer: '_callAjax'
+        },
         suttaText: String,
         paragraphTitles: Object
       },
@@ -35,7 +43,11 @@
         '_computePars(suttaText,paragraphTitles)',
         'infoToParent(suttaText)'
       ],
-      _computeURL: function(category) {
+      _callAjax: function() {
+        if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
+        return (matches && this.author !== "sujato") ? this.$.ajax.generateRequest() : "";
+      },
+      _computeURL: function(category,author) {
         return `../texts/${category}.html`;
       },
       _computeTitle: function(suttaText) {

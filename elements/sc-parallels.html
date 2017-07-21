@@ -6,10 +6,11 @@
 <link rel="import" href="menus/language-menu.html">
 <link rel="import" href="addons/sc-sutta-note.html">
 <link rel="import" href="../styles/sc-styles.html">
+<link rel="import" href="../styles/sc-suttaplex-styles.html">
 
 <dom-module id="sc-parallels">
 <template>
-<style  is="custom-style">
+<style  is="custom-style" include="sc-suttaplex-styles">
 .parallels-parallel-title {
   @apply(--paper-font-subhead);
   @apply(--sc-serif-font);
@@ -22,29 +23,7 @@
 .parallels-nerdy-row span{
   margin-right: 24px;
 }
-paper-button{
-  letter-spacing: .02em;
-}
-paper-button a {
-  color: var(--paper-green-a700);
-  text-decoration: none;
-}
-paper-button {
-   --paper-button-ink-color: var(--paper-green-a700);
-}
 
-paper-button.dense {
-  font-size: 14px;
-  padding-bottom:0.6em;
-}
-iron-icon,
-paper-icon-button {
-  color: var(--disabled-text-color);
-}
-.book iron-icon{
-  --iron-icon-height: 15px;
-  --iron-icon-width: 15px;
-}
 .languagedrop {
   display: inline-block;
   vertical-align:middle;
