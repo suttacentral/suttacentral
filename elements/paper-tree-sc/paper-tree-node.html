@@ -6,13 +6,16 @@
 <template>
 <style>
 :host(.selected) > .node-container > .node-row {
-    background-color: var(--paper-grey-200);
+    
+    
+    background: linear-gradient(to right, rgba(223, 153, 10, 1) 4px, rgba(223, 153, 10, 0) 4px)
+
 }
 :host(.selected) > .node-container > .node-row > #actions {
     display: inline-block;
 }
 :host(.selected) > .node-container > .node-row a{
-     color: var(--sc-gold-700);
+     color: var(--sc-gold-500);
 }
 .node-row {
     width: 100%;

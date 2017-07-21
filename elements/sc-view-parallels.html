@@ -36,20 +36,18 @@
 }
 
 paper-button{
-  letter-spacing: .02em
+  letter-spacing: .02em;
 }
-
-paper-button.blue a {
-  color: var(--paper-cyan-500);
+paper-button a {
+  color: var(--paper-green-a700);
   text-decoration: none;
-
 }
-paper-button.blue {
-   --paper-button-ink-color: var(--paper-cyan-500);
+paper-button {
+   --paper-button-ink-color: var(--paper-green-a700);
 }
 
 paper-button.dense {
-  font-size: 15px;
+  font-size: 14px;
   padding-bottom:0.6em;
 }
 
@@ -65,7 +63,7 @@ paper-icon-button {
         <tr class="parallels-row">
             <td class="parallels-root-cell parallels-table-cell" rowspan$="{{_computeRowspan(suttaurl)}}">
               <div class="parallels-root-id root" title="SuttaCentral ID">{{suttaurl.id}}</div>
-              <paper-button flat class="dense blue" title="Go to text in original language"><a href="">{{originalLanguage}}</a></paper-button>
+              <paper-button flat class="dense" title="Go to text in original language"><a href="">{{originalLanguage}}</a></paper-button>
             </td>
             <td class="parallels-relation-cell"><iron-icon icon$="{{_computeFirstParallelIcon(suttaurl)}}" title$="{{_computeFirstParallelTitle(suttaurl)}}"></iron-icon></td>
             <td class="parallels-parallel-cell">

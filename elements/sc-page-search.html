@@ -8,33 +8,31 @@
 <style is="custom-style">
 .divisioncontent {
   @apply(--sc-sans-font);
-  padding: 76px 0;
+  padding: 72px 0;
 }
 
 main {
     max-width:720px;
     margin:0 auto;
-    color:#212121;
-    line-height: 1.5
 }
 .results-head{
     display:flex;
     justify-content:  space-between ;
     padding-left: 16px;
-    color:var(--disabled-text-color);
+    color:var(--secondary-text-color);
 }
 h1{
-    font-size: 34px;
-    font-weight: normal;
+    @apply(--paper-font-display1);
     display: inline-block;
     margin: 0;
 }
 .result-number{
-    font-weight:normal;
+    
 }
 .result-term{
     font-weight: bold;
     color:var(--sc-green-600);
+    @apply(--sc-serif-font);
 }
 
 
@@ -44,34 +42,35 @@ h1{
 
     .item {
       @apply(--layout-horizontal);
-      background-color: white;
-      border-bottom: 1px solid #E0E0E0;
+      border-bottom:1px solid var(--paper-grey-300);
     }
 
     .item:focus {
       outline: 0;
-      border-color: var(--sc-green-600);
+      background: linear-gradient(to right, rgba(67, 160, 7, 1) 4px, rgba(67, 160, 7, 0) 4px)
     }
 
     .pad {
       padding: 0 16px;
       @apply(--layout-flex);
       @apply(--layout-vertical);
+
     }
 
 h2{
-    font-size: 24px;
+    @apply(--paper-font-headline);
     color:var(--sc-green-600);
-    font-weight: normal;
     margin: 22px 0 0 0;
 }
 .results-url{
-    color:var(--disabled-text-color);
-    font-size: 14px;
-    margin: 0 0 18px;
+    @apply(--paper-font-body2);
+  color: var(--secondary-text-color);
+  white-space: nowrap;
+    margin: 0 0 16px;
+    overflow: hidden;
 }
 .snippet{
-    font-size: 16px;
+    @apply(--sc-paper-font-body);
     margin: 0 0 20px 0;
 }
 </style>
