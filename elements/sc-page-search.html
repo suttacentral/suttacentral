@@ -2,6 +2,11 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<link rel="import" href="../bower_components/google-map/google-map.html">
+
 <link rel="import" href="menus/search-menu.html">
 
 <dom-module id="sc-page-search">
@@ -73,42 +78,77 @@ h2{
 search-menu {
     margin-top: -20px;
 }
+.hidesearchbox {
+    display: none;
+}
+paper-spinner-lite {
+    --paper-spinner-color: var(--sc-gold-500);
+    left: 49%;
+}
+a {
+    text-decoration: none;
+    color: initial;
+}
+.map {
+  display: inline-block;
+  margin-top: 16px;
+  width: 100%;
+  height: 400px;
+}
 </style>
 
 <iron-ajax id="ajax"
-    url="../bower_components/iron-list/demo/data/contacts.json" 
-    params='{"results": 20}'
-    handle-as="json"
-    last-response="{{data}}"></iron-ajax>
+          url="../data/search/results2.json"
+          params='{"results": 20}'
+          handle-as="json"
+          loading="{{loadingResults}}"
+          last-response="{{data}}"
+          on-response="_didRespond"></iron-ajax>
 
 <div class="divisioncontent">
     <main>
         <div class="results-head">
                     <h1><span class="result-number">{{_calculateNumber(data)}}</span> <span class="result-description">results for</span> <span class="result-term">{{searchQuery}}</span> </h1>
-                    <search-menu></search-menu>
+                    <search-menu class$="{{searchMenu}}"></search-menu>
         </div>
 
-      <iron-list items="[[data]]" as="item" scroll-target="html" first-visible-index=0 last-visible-index=19>
+      <iron-list id="list" items="[]" as="item" scroll-target="document">
         <template>
           <div>
             <div class="item" tabindex$="[[tabIndex]]">
               <div class="pad">
-                <div class="primary"><h2>[[item.name]] [[index]]</h2></div>
-                <div class="secondary"><p class="results-url">[[item.shortText]]</p></div>
-                <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.mediumText]]"></p></div>
+                <template is="dom-if" if="{{_checkCategory(item.category)}}">
+                        <div class="primary"><h2>[[item.title]]</h2></div>
+                        <div class="secondary"><p class="results-url">[[item.url]]</p></div>
+                        <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.text]]"></p></div>
+                </template>
+
+                <template is="dom-if" if="{{!_checkCategory(item.category)}}">
+                      <a href="[[item.url]]">
+                        <div class="primary"><h2>[[item.title]]</h2></div>
+                        <div class="secondary"><p class="results-url" inner-h-t-m-l="https://suttacentral.net[[item.url]]"></p></div>
+                        <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.text]]"></p></div>
+                      </a>
+                </template>
+
+                <template is="dom-if" if="[[item.map]]">
+                      <google-map class="map" fit-to-marker latitude="27.5195" longitude="82.06297">
+                      </google-map>
+                </template>
               </div>
             </div>
           </div>
         </template>
       </iron-list>
 
-    <!-- this element will load more data when the user scrolls down and reached the lower threshold -->
-<!--     <iron-scroll-threshold id="scrollTheshold"
-      lower-threshold="500"
-      on-lower-threshold="_loadMoreData"
-      scroll-target="html">
-    </iron-scroll-threshold> -->
-
+    <div class="loadingIndicator">
+      <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
+    </div>
+<!-- 
+      <iron-scroll-threshold id="scrollThreshold"
+          lower-threshold="500"
+          on-lower-threshold="_load"
+          scroll-target="document"></iron-scroll-threshold> -->
 
 </main>
 </div>
@@ -120,24 +160,109 @@ search-menu {
         searchQuery: {
             type: String,
             notify: true
+        },
+        inputLanguage: String,
+        searchMenu: {
+            type: String,
+            notify: true,
+            computed: '_computeSearchClass(data)'
+        },
+        data: {
+          type: Array,
+          notify: true
+        },
+        startValue: {
+            type: Number,
+            value: 0
+        },
+        endValue: {
+            type: Number,
+            value: 0
+        },
+        stopValue: {
+          type: Number,
+          notify: true,
+          value: 3
         }
       },
       ready: function() {
-        this._callAjax();
+        this.addEventListener('eventFromSearchMenu', this.changeSearchView);
+        this.$.ajax.generateRequest();
       },
       _calculateNumber: function(data) {
-        document.getElementById('items').removeAttribute('style', "height");
-        return data.length;
+        return (data && data.length > 0) ? data.length: 0;
       },
-      _callAjax: function() {
-        this.$.ajax.generateRequest()
+      _checkCategory: function(category) {
+        return (category === "dictionary") ? true : false;
+      },
+      _computeSearchClass: function(data) {
+        var checkcategories = false;
+        if (data.length > 10) {
+           for (var i=1; i<data.length; i++) {
+                    if (data[i].category !== data[1].category) {
+                        checkcategories = true;
+                        break;
+                   }
+            }
+        }
+        return (checkcategories) ? "" : "hidesearchbox";
+      },
+      changeSearchView: function(event) {
+        var selectedView = "all";
+        switch (event.detail.searchView) {
+          case 0:
+            selectedView = "all";
+            break;
+          case 1:
+            selectedView = "root-text";
+            break;
+          case 2:
+            selectedView = "translation";
+            break;
+          case 3:
+            selectedView = "dictionary";
+            break;
+        }
+        var outputData = this.data;
+        var resultsArray = [];
+        for (var i = 0; i < outputData.length; i++) {
+          if (outputData[i].category === selectedView || selectedView === 'all') {
+              resultsArray.push(outputData[i]);
+          }
+        }
+        this.$.list.items = resultsArray;
       },
       _didRespond: function(e) {
-        var searchResult = e.detail.response.results;
-        console.log(e.detail);
-        // searchResult.forEach(function(person) {
-        //   this.$.list.push('items', person);
-        }
+        var self = this;
+        var results = e.detail.response;
+        results.forEach(function(item) {
+            self.$.list.push('items', item);
+        });
+      }
+
+
+      // _didRespond: function(e) {
+      //   var results = e.detail.response;
+      //   this.stopValue = results.length;
+      //   if (this.endValue < this.stopValue) {
+      //           if (this.endValue === 0) { 
+      //             for (var i = 0; i < 10; i++) {
+      //                  this.$.list.push('items',results[i]);
+      //                  this.endValue += 1;
+      //            }
+      //           } 
+      //         var result = results[this.endValue];
+      //         this.$.list.push('items',result);
+      //         this.endValue += 1;
+      //         this.$.scrollThreshold.clearTriggers();
+      //   }
+      // },
+
+      //   _load: function() {
+      //      if (this.endValue < this.stopValue) {
+      //         this.$.ajax.generateRequest();
+      //     }
+      //   }
     });
 </script>
 </dom-module>

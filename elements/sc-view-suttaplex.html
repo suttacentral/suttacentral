@@ -3,6 +3,7 @@
 
 <link rel="import" href="sc-suttaplex.html">
 <link rel="import" href="addons/sc-node.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <dom-module id="sc-view-suttaplex" attributes="divisiontitle">
 <template>
@@ -42,11 +43,21 @@ main {
 .vagganode.firstvagga, .node+.vagganode {
   padding-top: 0;
 }
+  paper-spinner-lite {
+    --paper-spinner-color: var(--sc-gold-500);
+    left: 49%;
+    top: 10px;
+  }
 </style>
 <iron-ajax id="ajax"
       url="[[_computeURL(category)]]"
       handle-as="json"
+      loading="{{loadingResults}}"
       last-response="{{suttaList}}"></iron-ajax>
+
+    <div class="loadingIndicator">
+      <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
+    </div>
 
 <div class="divisioncontent">
   <main>

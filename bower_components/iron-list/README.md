@@ -17,7 +17,7 @@ thing! https://github.com/PolymerLabs/tedium/issues
 _[Demo and API docs](https://elements.polymer-project.org/elements/iron-list)_
 
 
-##&lt;iron-list&gt;
+## &lt;iron-list&gt;
 
 `iron-list` displays a virtual, 'infinite' list. The template inside
 the iron-list element represents the DOM to create for each list item.
@@ -44,7 +44,6 @@ layout means (e.g. the `flex` or `fit` classes).
 <template is="x-list">
   <style>
     :host {
-      display: block;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -110,16 +109,14 @@ layout means (e.g. the `flex` or `fit` classes).
   </style>
 </head>
 <body>
-  <template is="dom-bind">
-    <app-toolbar>App name</app-toolbar>
-    <iron-list scroll-target="document" items="[[items]]">
-      <template>
-        <div>
-          ...
-        </div>
-      </template>
-    </iron-list>
-  </template>
+  <app-toolbar>App name</app-toolbar>
+  <iron-list scroll-target="document">
+    <template>
+      <div>
+        ...
+      </div>
+    </template>
+  </iron-list>
 </body>
 ```
 
@@ -154,19 +151,17 @@ For example, given the following `data` array:
   {"name": "Mike"}
 ]
 ```
-The following code would render the list (note the name and checked properties are
-bound from the model object provided to the template scope):
+The following code would render the list (note the name property is bound from the model
+object provided to the template scope):
 ```html
-<template is="dom-bind">
-  <iron-ajax url="data.json" last-response="{{data}}" auto></iron-ajax>
-  <iron-list items="[[data]]" as="item">
-    <template>
-      <div>
-        Name: [[item.name]]
-      </div>
-    </template>
-  </iron-list>
-</template>
+<iron-ajax url="data.json" last-response="{{data}}" auto></iron-ajax>
+<iron-list items="[[data]]" as="item">
+  <template>
+    <div>
+      Name: [[item.name]]
+    </div>
+  </template>
+</iron-list>
 ```
 
 ### Grid layout
@@ -180,8 +175,8 @@ per row are determined automatically based on the size of the list viewport.
 
 `iron-list` automatically manages the focus state for the items. It also provides
 a `tabIndex` property within the template scope that can be used for keyboard navigation.
-For example, users can press the up and down keys to move to previous and next
-items in the list:
+For example, users can press the up and down keys, as well as the left and right
+keys (the `grid` attribute is present), to move to focus between items in the list:
 
 ```html
 <iron-list items="[[data]]" as="item">
@@ -218,6 +213,19 @@ after the list became visible again. For example:
 ```js
 document.querySelector('iron-list').fire('iron-resize');
 ```
+
+### Changes in v2
+
+* In v1, `selectItem` accepted an item or the index to the item in the `list.items` array. In v2, `selectItem` only accepts an item in the `list.items` array. As a result, `selectIndex` and `deselectIndex` has been introduced to allow for fast selection of items by index. If you are implementing a `selectAll` method, you should use `selectIndex` instead of `selectItem` because it's faster (O(1) run time).
+* Mutating a selected item in v2 isn't supported anymore due to the removal of `Polymer.Collection` in 2.0, for example:
+```js
+ list.items = [ item1, item2, ... ,itemN];
+ list.selectionEnabled = true;
+ list.selectIndex(0);
+ list.set('items.0', aDifferentItem);
+ // list.selectedItem == item1
+```
+
 ### When should `<iron-list>` be used?
 
 `iron-list` should be used when a page has significantly more DOM nodes than the ones
@@ -225,7 +233,7 @@ visible on the screen. e.g. the page has 500 nodes, but only 20 are visible at a
 This is why we refer to it as a `virtual` list. In this case, a `dom-repeat` will still
 create 500 nodes which could slow down the web app, but `iron-list` will only create 20.
 
-However, having an `iron-list` does not mean that you can load all the data at once.
-Say you have a million records in the database, you want to split the data into pages
-so you can bring in a page at the time. The page could contain 500 items, and iron-list
-will only render 20.
+However, having an `iron-list` does not mean that you should load all the data at once.
+For example, if you have a million records in the database, it is better split the data into pages
+so you can bring in a page at a time. The page could contain 500 items, and iron-list
+might only render 20.

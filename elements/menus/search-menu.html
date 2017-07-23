@@ -8,7 +8,7 @@
 The results are in more than one category of root texts, translations, and dictionaries, and
 there are more than ten results in total -->
 
-<dom-module id="search-menu">
+<dom-module id="search-menu" attributes="searchView">
 <template>
 <style is="custom-style">
 :host {
@@ -24,7 +24,7 @@ paper-item {
 
 </style>
 	<paper-dropdown-menu class="custom" title="Select search scope">
-	  <paper-listbox class="dropdown-content" selected="0">
+	  <paper-listbox class="dropdown-content" selected="{{searchSelected}}">
 	    	<paper-item id="all">All</paper-item>
                   <paper-item id="root-texts">Root texts</paper-item>
                   <paper-item id="translations">Translations</paper-item>
@@ -35,8 +35,17 @@ paper-item {
 
 <script>
     Polymer({
-        is: 'search-menu'
-
+        is: 'search-menu',
+        properties: {
+                searchSelected: {
+                    type: String,
+                    value: "0",
+                    observer: '_searchChanged'
+                }
+        },
+      _searchChanged: function() {
+        this.fire('eventFromSearchMenu',{searchView:this.searchSelected});
+      }
     });
 
 </script>
