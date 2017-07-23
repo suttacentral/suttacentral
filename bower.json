@@ -46,7 +46,6 @@
     "app-storage": "PolymerElements/app-storage#^2.0.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
-    "google-map": "GoogleWebComponents/google-map#^1.2.0",
     "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^2.0.0",
     "paper-spinner": "PolymerElements/paper-spinner#^2.0.0"
   }

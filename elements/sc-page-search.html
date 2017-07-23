@@ -4,8 +4,7 @@
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
-
-<link rel="import" href="../bower_components/google-map/google-map.html">
+ <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link rel="import" href="menus/search-menu.html">
 
@@ -90,10 +89,12 @@ a {
     color: initial;
 }
 .map {
-  display: inline-block;
-  margin-top: 16px;
+  height: 350px;
+  margin-bottom: 20px;
+}
+.map iframe {
+  height: 350px;
   width: 100%;
-  height: 400px;
 }
 </style>
 
@@ -132,8 +133,9 @@ a {
                 </template>
 
                 <template is="dom-if" if="[[item.map]]">
-                      <google-map class="map" fit-to-marker latitude="27.5195" longitude="82.06297">
-                      </google-map>
+                  <div class="map">
+                          <iframe src="https://www.google.com/maps/d/embed?mid=z1fKgOqM_IYc.k-W6AbJIxLu8&z=13&ll=[[item.map]]"></iframe>
+                  </div>
                 </template>
               </div>
             </div>
@@ -239,7 +241,6 @@ a {
             self.$.list.push('items', item);
         });
       }
-
 
       // _didRespond: function(e) {
       //   var results = e.detail.response;
