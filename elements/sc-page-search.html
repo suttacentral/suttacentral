@@ -113,6 +113,7 @@ a {
                     <search-menu class$="{{searchMenu}}"></search-menu>
         </div>
 
+    <iron-scroll-threshold id="scrollThreshold" lower-threshold="0" on-lower-threshold="_load" scroll-target="document">
       <iron-list id="list" items="[]" as="item" scroll-target="document">
         <template>
           <div>
@@ -135,7 +136,7 @@ a {
 
                 <template is="dom-if" if="[[item.map]]">
                   <div class="map">
-                          <iframe src="https://www.google.com/maps/d/embed?mid=z1fKgOqM_IYc.k-W6AbJIxLu8&z=13&ll=[[item.map]]"></iframe>
+                       <iframe src="https://www.google.com/maps/d/embed?mid=z1fKgOqM_IYc.k-W6AbJIxLu8&z=13&ll=[[item.map]]"></iframe>
                   </div>
                 </template>
               </div>
@@ -143,15 +144,11 @@ a {
           </div>
         </template>
       </iron-list>
+    </iron-scroll-threshold>
 
     <div class="loadingIndicator">
       <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
     </div>
-
-      <iron-scroll-threshold id="scrollThreshold"
-          lower-threshold="500"
-          on-lower-threshold="_load"
-          scroll-target="document"></iron-scroll-threshold>
 
 </main>
 </div>
@@ -184,9 +181,19 @@ a {
           notify: true,
           value: []
         },
-        endValue: {
+        itemCount: {
             type: Number,
             value: 0
+        },
+        // Number of items to be loaded on first load
+        firstLoad: {
+          type: Number,
+          value: 20
+        },
+        // Number of items to be loaded each time the scroll threshold is reached
+        loadNumber: {
+          type: Number,
+          value: 5
         }
       },
       observers: [
@@ -251,26 +258,21 @@ a {
       _populateList: function(partArray) {
         this.$.list.items.length = 0;
           if (partArray.length > 0) {
-                    this.endValue = 0;
-                    // Change the value for i < 10 to any other value. This determines how
-                    // many are loaded the first time the list is called.
-                    for (var i = 0; i < 10; i++) {
+                    this.itemCount = 0;
+                    for (var i = 0; i < this.firstLoad; i++) {
                           this.$.list.push('items',partArray[i]);
-                          this.endValue += 1;
+                          this.itemCount += 1;
                     }
                     this.newListCreated = false;
             } 
           this.$.scrollThreshold.clearTriggers();
       },
       _load: function() {
-        // Change the value for endValue > 9 to the value you have set above 
-        // for the amount that is loaded the first time the list is called but MINUS 1.
-        if (this.endValue > 9 && this.endValue <= this.partArray.length) {
-          // Change the value for i < 5 to any other value. This determines how 
-          // many are loaded at any one time and determines the behaviour.
-            for (var i = 0; i < 5; i++) {
-                  this.$.list.push('items',this.partArray[this.endValue]);
-                  this.endValue += 1;
+        console.log(" itemCount= ", this.itemCount);
+        if (this.itemCount > (this.firstLoad-1) && this.itemCount <= this.partArray.length) {
+            for (var i = 0; i < this.loadNumber; i++) {
+                  this.$.list.push('items',this.partArray[this.itemCount]);
+                  this.itemCount += 1;
             }
         }
         this.$.scrollThreshold.clearTriggers();
