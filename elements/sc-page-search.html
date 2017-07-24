@@ -99,7 +99,7 @@ a {
 </style>
 
 <iron-ajax id="ajax"
-          url="../data/search/results2.json"
+          url="../data/search/results.json"
           params='{"results": 20}'
           handle-as="json"
           loading="{{loadingResults}}"
@@ -128,8 +128,9 @@ a {
                       <a href="[[item.url]]">
                         <div class="primary"><h2>[[item.title]]</h2></div>
                         <div class="secondary"><p class="results-url" inner-h-t-m-l="https://suttacentral.net[[item.url]]"></p></div>
-                        <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.text]]"></p></div>
                       </a>
+                        <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.text]]"></p></div>
+
                 </template>
 
                 <template is="dom-if" if="[[item.map]]">
@@ -146,11 +147,11 @@ a {
     <div class="loadingIndicator">
       <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
     </div>
-<!-- 
+
       <iron-scroll-threshold id="scrollThreshold"
           lower-threshold="500"
           on-lower-threshold="_load"
-          scroll-target="document"></iron-scroll-threshold> -->
+          scroll-target="document"></iron-scroll-threshold>
 
 </main>
 </div>
@@ -173,20 +174,24 @@ a {
           type: Array,
           notify: true
         },
-        startValue: {
-            type: Number,
-            value: 0
+        partArray: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        showArray: {
+          type: Array,
+          notify: true,
+          value: []
         },
         endValue: {
             type: Number,
             value: 0
-        },
-        stopValue: {
-          type: Number,
-          notify: true,
-          value: 3
         }
       },
+      observers: [
+            '_populateList(partArray)'
+      ],
       ready: function() {
         this.addEventListener('eventFromSearchMenu', this.changeSearchView);
         this.$.ajax.generateRequest();
@@ -232,38 +237,44 @@ a {
               resultsArray.push(outputData[i]);
           }
         }
-        this.$.list.items = resultsArray;
+        this.partArray = resultsArray;
       },
       _didRespond: function(e) {
         var self = this;
         var results = e.detail.response;
+        resultsArray = [];
         results.forEach(function(item) {
-            self.$.list.push('items', item);
+            resultsArray.push(item);
         });
+        this.partArray = resultsArray;
+      },
+      _populateList: function(partArray) {
+        this.$.list.items.length = 0;
+          if (partArray.length > 0) {
+                    this.endValue = 0;
+                    // Change the value for i < 10 to any other value. This determines how
+                    // many are loaded the first time the list is called.
+                    for (var i = 0; i < 10; i++) {
+                          this.$.list.push('items',partArray[i]);
+                          this.endValue += 1;
+                    }
+                    this.newListCreated = false;
+            } 
+          this.$.scrollThreshold.clearTriggers();
+      },
+      _load: function() {
+        // Change the value for endValue > 9 to the value you have set above 
+        // for the amount that is loaded the first time the list is called but MINUS 1.
+        if (this.endValue > 9 && this.endValue <= this.partArray.length) {
+          // Change the value for i < 5 to any other value. This determines how 
+          // many are loaded at any one time and determines the behaviour.
+            for (var i = 0; i < 5; i++) {
+                  this.$.list.push('items',this.partArray[this.endValue]);
+                  this.endValue += 1;
+            }
+        }
+        this.$.scrollThreshold.clearTriggers();
       }
-
-      // _didRespond: function(e) {
-      //   var results = e.detail.response;
-      //   this.stopValue = results.length;
-      //   if (this.endValue < this.stopValue) {
-      //           if (this.endValue === 0) { 
-      //             for (var i = 0; i < 10; i++) {
-      //                  this.$.list.push('items',results[i]);
-      //                  this.endValue += 1;
-      //            }
-      //           } 
-      //         var result = results[this.endValue];
-      //         this.$.list.push('items',result);
-      //         this.endValue += 1;
-      //         this.$.scrollThreshold.clearTriggers();
-      //   }
-      // },
-
-      //   _load: function() {
-      //      if (this.endValue < this.stopValue) {
-      //         this.$.ajax.generateRequest();
-      //     }
-      //   }
     });
 </script>
 </dom-module>
