@@ -5,7 +5,7 @@
 <link rel="import" href="sc-segmented-text.html">
 <link rel="import" href="sc-toolbar.html">
 <link rel="import" href="sc-page-search.html">
-
+<link rel="import" href="sc-page-dictionary.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
@@ -37,7 +37,7 @@ app-toolbar, sc-toolbar {
   background-color: var(--paper-deep-orange-900);
 }
 
-.search-mode #sctoolbar, .search-mode #toolbarheader {
+.search-mode #sctoolbar, .search-mode #toolbarheader,  .dictionary-mode #sctoolbar, .dictionary-mode #toolbarheader{
   background-color: var(--sc-green-600);
 }
 
@@ -50,7 +50,7 @@ app-toolbar, sc-toolbar {
   @apply(--sc-sans-font);
   color: white;
 }
-.search-mode #toolbartitle {
+.search-mode #toolbartitle, .dictionary-mode #toolbartitle {
   text-transform: none;
 }
 
@@ -97,6 +97,10 @@ app-toolbar, sc-toolbar {
 
             <template is="dom-if" if="{{_checkSearch(category)}}">
               <sc-page-search search-query="{{searchQuery}}" input-language="{{inputLanguage}}"></sc-page-search>
+            </template>
+
+            <template is="dom-if" if="{{_checkDictionary(category)}}">
+              <sc-page-dictionary dictionary-item="{{dictionaryItem}}" input-language="{{inputLanguage}}"></sc-page-dictionary>
             </template>
 
       </app-header-layout>
@@ -159,6 +163,11 @@ app-toolbar, sc-toolbar {
           type: String,
           notify: true,
           computed: '_checkSearchQuery(queryParams)'
+        },
+        dictionaryItem: {
+          type: String,
+          notify: true,
+          computed: '_checkDictionaryItem(queryParams)'
         }
       },
       observers: [
@@ -199,6 +208,9 @@ app-toolbar, sc-toolbar {
       _checkSearchQuery: function(queryParams) {
         return (queryParams.query) ? queryParams.query : "";
       },
+      _checkDictionaryItem: function(queryParams) {
+        return (queryParams.term) ? queryParams.term : "";
+      },    
       changeSegmentedView: function(event) {
           return this.showViewer = event.detail.selectedView;
       },
@@ -260,6 +272,15 @@ app-toolbar, sc-toolbar {
         return false;
         }
       },
+      _checkDictionary: function(category) {
+        if (category === "define"){
+          this.mainClass="dictionary-mode";
+          this.toolbarTitle = 'SuttaCentral — Dictionary results'
+          return true;
+        } else {
+        return false;
+        }
+      }
     });
 </script>
 </dom-module>

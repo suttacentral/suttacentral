@@ -1,0 +1,135 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+
+<dom-module id="sc-page-dictionary">
+<template>
+<style is="custom-style">
+.divisioncontent {
+  @apply(--sc-sans-font);
+}
+
+main {
+    max-width:720px;
+    margin:0 auto;
+}
+.results-head{
+    display:flex;
+    justify-content:  space-between ;
+    padding: 0 16px;
+    color:var(--secondary-text-color);
+}
+h1{
+    @apply(--paper-font-display1);
+    display: inline-block;
+    margin: 0;
+}
+
+.result-term{
+    font-weight: bold;
+    color: var(--sc-green-600);
+    @apply(--sc-serif-font);
+}
+
+a {
+    text-decoration: none;
+    color: initial;
+}
+.map {
+  height: 350px;
+  margin-bottom: 20px;
+}
+.map iframe {
+  height: 350px;
+  width: 100%;
+}
+</style>
+
+<!-- <iron-ajax id="ajax"
+          auto
+          url="../data/dictionary/results.json"
+          handle-as="json"
+          loading="{{loadingResults}}"
+          last-response="{{dictionaryResult}}"></iron-ajax> -->
+
+<div class="divisioncontent">
+    <main>
+        <div class="results-head">
+                    <h1><span class="result-description">Definitions for</span> <span class="result-term">{{dictionaryItem}}</span> </h1>
+        </div>
+
+<div class="entries">
+        <div class="book_entry">
+                <small class="source">Concise Pali English Dictionary</small>
+                <dl id="cped"><dt><dfn>sāvatthī</dfn></dt>
+                <dd><span class="case">feminine</span> name of the metropolis of the Kingdom of Kosala.</dd>
+                </dl>
+        </div>
+        <div class="book_entry">
+                <small class="source">Pali Proper Names</small>
+                <dl class="place" id="sc_dppn"><dt><dfn>Sāvatthī</dfn></dt>
+                <dd>
+                <div class="google-maps">
+                <iframe src="https://www.google.com/maps/d/embed?mid=z1fKgOqM_IYc.k-W6AbJIxLu8&amp;z=13&amp;ll=27.517073,%2082.050619"></iframe>
+                </div><p>The capital city of Kosala in India and one of the six great Indian cities during the lifetime of the Buddha. <span class="ref">DN.ii.147</span> It was six leagues from Sāketa. <span class="ref">Vin.i.253</span> It was on the banks of the Aciravatī.<span class="ref">Vin.i.191</span> <span class="ref">Vin.i.293</span> The road from Rājagaha to Sāvatthī passed through Vesāli, <span class="ref">Vin.ii.159<em>f.</em></span> and the Pārāyanavagga <span class="ref">Snp.1011–1013</span> gives the resting places between the two cities Setavyā, Kapilavatthu, Kusinārā, Pāvā and Bhoganagara. Further on, there was a road running southwards from Sāvatthī through Sāketa to Kosambī. Near the city was the Andhavana. Between Sāketa and Sāvatthī was Toraṇavatthu. <span class="ref">SN.iv.374</span></p><p>The Buddha passed the greater part of his monastic life in Sāvatthī, and the vast bulk of all Suttas are set there.</p><p>His first visit there was at the invitation of Anāthapiṇḍika. The chief patrons of the Buddha in Sāvatthī were Anāthapiṇḍika, Visākhā, Suppavāsā and Pasenadi.</p>
+                </dd>
+                <dd class="info"><span class="location">27.517073, 82.050619</span>
+                <span class="precision">1</span>
+                <span class="type">town</span>
+                </dd></dl>
+        </div>
+</div> 
+
+<div class="related_terms">
+        <h3>Adjacent Terms</h3>
+        <ul class="near_terms" data-prefetch="1">
+                <li><a href="./s%C4%81vajja">sāvajja</a> <em>(blameable)</em></li>
+                <li><a href="./s%C4%81vajjat%C4%81">sāvajjatā</a></li>
+                <li><a href="./s%C4%81va%E1%B9%ADa">sāvaṭa</a></li>
+                <li><a href="./s%C4%81va%E1%B9%AD%E1%B9%ADa">sāvaṭṭa</a></li>
+                <li><a href="./s%C4%81va%E1%B9%87a">sāvaṇa</a></li>
+                <li class="this"><a href="./s%C4%81vatth%C4%AB">sāvatthī</a></li>
+                <li><a href="./s%C4%81vana">sāvana</a></li>
+                <li><a href="./s%C4%81vayam%C4%81na">sāvayamāna</a></li>
+                <li><a href="./s%C4%81vasesa">sāvasesa</a></li>
+                <li><a href="./s%C4%81vi">sāvi</a></li>
+                <li><a href="./s%C4%81vik%C4%81">sāvikā</a></li>
+        </ul>
+        <h3>Similar Spelling</h3>
+        <ul class="fuzzy_terms">
+                <li><a href="./s%C4%81vatth%C4%AB">sāvatthī</a></li>
+                <li><a href="./suvatthi">suvatthi</a> <em>(hail)</em></li>
+                <li><a href="./s%C4%81mattha">sāmattha</a></li>
+                <li><a href="./s%C4%81rath%C4%AB">sārathī</a></li>
+                <li><a href="./s%C4%81vitt%C4%AB">sāvittī</a></li>
+                <li><a href="./patatthi">patatthi</a></li>
+                <li><a href="./sa%E1%B9%83va%E1%B9%AD%E1%B9%ADi">saṃvaṭṭi</a></li>
+                <li><a href="./sa%E1%B9%83vatti">saṃvatti</a></li>
+                <li><a href="./sadattha">sadattha</a></li>
+                <li><a href="./samattha">samattha</a> <em>(able)</em></li>
+        </ul>
+        </div>
+</div>
+
+
+
+</main>
+</div>
+</template>
+<script>
+    Polymer({
+      is: 'sc-page-dictionary',
+      properties: {
+        dictionaryItem: {
+            type: String,
+            notify: true
+        },
+        inputLanguage: String
+      }
+
+    });
+</script>
+</dom-module>

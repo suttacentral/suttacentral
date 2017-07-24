@@ -99,7 +99,7 @@ a {
 </style>
 
 <iron-ajax id="ajax"
-          url="../data/search/results.json"
+          url="../data/search/results2.json"
           params='{"results": 20}'
           handle-as="json"
           loading="{{loadingResults}}"
@@ -120,8 +120,10 @@ a {
             <div class="item" tabindex$="[[tabIndex]]">
               <div class="pad">
                 <template is="dom-if" if="{{_checkCategory(item.category)}}">
+                    <a href="/define?term=[[item.title]]">
                         <div class="primary"><h2>[[item.title]]</h2></div>
                         <div class="secondary"><p class="results-url">[[item.url]]</p></div>
+                    </a>
                         <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.text]]"></p></div>
                 </template>
 
@@ -188,7 +190,7 @@ a {
         // Number of items to be loaded on first load
         firstLoad: {
           type: Number,
-          value: 20
+          value: 10
         },
         // Number of items to be loaded each time the scroll threshold is reached
         loadNumber: {
