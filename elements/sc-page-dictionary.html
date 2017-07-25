@@ -1,15 +1,18 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <dom-module id="sc-page-dictionary">
 <template>
 <style is="custom-style">
-.divisioncontent {
+.divisioncontent, .related_terms {
   @apply(--sc-sans-font);
+  padding: 72px 0;
 }
 
 main {
@@ -17,10 +20,10 @@ main {
     margin:0 auto;
 }
 .results-head{
-    display:flex;
+    display: flex;
     justify-content:  space-between ;
     padding: 0 16px;
-    color:var(--secondary-text-color);
+    color: var(--secondary-text-color);
 }
 h1{
     @apply(--paper-font-display1);
@@ -46,77 +49,133 @@ a {
   height: 350px;
   width: 100%;
 }
+.termsbutton {
+ float: right;
+}
+iron-icon {
+  width: 16px;
+  height: 16px;
+}
+    .related_terms {
+        float: left;
+        text-align: left;
+        margin: 0 1em 48px;
+    }
+    
+    ul {
+        margin: 0;
+        display: block;
+        list-style: none;
+    }
+    
+    .related_terms h3{
+        color: var(--sc-green-600);
+        margin:1em 0 0;
+        font-size: 1em;
+        font-weight: bold;
+    }
+.entries {
+  padding: 0 16px;
+}
+.source {
+    float: right;
+    margin-right: 1em;
+    padding: .2em 0 0 0;
+    color: var(--secondary-text-color);
+}
+.case {
+    color: var(--secondary-text-color);
+    display: block;
+    font-feature-settings: "smcp" 1;
+    letter-spacing: .03em;
+    font-size: .8rem;
+}
+h4 {
+  font-weight: bold;
+  text-transform: lowercase;
+}
+paper-spinner-lite {
+    --paper-spinner-color: var(--sc-gold-500);
+    left: 50%;
+    top: 50px;
+}
 </style>
 
-<!-- <iron-ajax id="ajax"
-          auto
-          url="../data/dictionary/results.json"
-          handle-as="json"
-          loading="{{loadingResults}}"
-          last-response="{{dictionaryResult}}"></iron-ajax> -->
+<iron-ajax auto url="../data/dictionaries/cped.json" handle-as="json" loading="{{loadingResults}}" last-response="{{cpedResult}}"></iron-ajax>
+<iron-ajax auto url="../data/dictionaries/ncped.json" handle-as="json" loading="{{loadingResults}}" last-response="{{ncpedResult}}"></iron-ajax>
+<iron-ajax auto url="../data/dictionaries/dppn.json" handle-as="json" loading="{{loadingResults}}" last-response="{{dppnResult}}"></iron-ajax>
+<iron-ajax auto url="../data/dictionaries/pts.json" handle-as="json" loading="{{loadingResults}}" last-response="{{ptsResult}}"></iron-ajax>
+<iron-ajax auto url="../data/dictionaries/related.json" handle-as="json" loading="{{loadingResults}}" last-response="{{relatedItems}}"></iron-ajax>
+
+    <div class="loadingIndicator">
+      <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
+    </div>
 
 <div class="divisioncontent">
     <main>
         <div class="results-head">
                     <h1><span class="result-description">Definitions for</span> <span class="result-term">{{dictionaryItem}}</span> </h1>
+                    <span class="termsbutton">Related Terms <iron-icon icon="arrow-forward"></iron-icon><paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button></span>
         </div>
 
-<div class="entries">
-        <div class="book_entry">
-                <small class="source">Concise Pali English Dictionary</small>
-                <dl id="cped"><dt><dfn>sāvatthī</dfn></dt>
-                <dd><span class="case">feminine</span> name of the metropolis of the Kingdom of Kosala.</dd>
-                </dl>
-        </div>
-        <div class="book_entry">
-                <small class="source">Pali Proper Names</small>
-                <dl class="place" id="sc_dppn"><dt><dfn>Sāvatthī</dfn></dt>
-                <dd>
-                <div class="google-maps">
-                <iframe src="https://www.google.com/maps/d/embed?mid=z1fKgOqM_IYc.k-W6AbJIxLu8&amp;z=13&amp;ll=27.517073,%2082.050619"></iframe>
-                </div><p>The capital city of Kosala in India and one of the six great Indian cities during the lifetime of the Buddha. <span class="ref">DN.ii.147</span> It was six leagues from Sāketa. <span class="ref">Vin.i.253</span> It was on the banks of the Aciravatī.<span class="ref">Vin.i.191</span> <span class="ref">Vin.i.293</span> The road from Rājagaha to Sāvatthī passed through Vesāli, <span class="ref">Vin.ii.159<em>f.</em></span> and the Pārāyanavagga <span class="ref">Snp.1011–1013</span> gives the resting places between the two cities Setavyā, Kapilavatthu, Kusinārā, Pāvā and Bhoganagara. Further on, there was a road running southwards from Sāvatthī through Sāketa to Kosambī. Near the city was the Andhavana. Between Sāketa and Sāvatthī was Toraṇavatthu. <span class="ref">SN.iv.374</span></p><p>The Buddha passed the greater part of his monastic life in Sāvatthī, and the vast bulk of all Suttas are set there.</p><p>His first visit there was at the invitation of Anāthapiṇḍika. The chief patrons of the Buddha in Sāvatthī were Anāthapiṇḍika, Visākhā, Suppavāsā and Pasenadi.</p>
-                </dd>
-                <dd class="info"><span class="location">27.517073, 82.050619</span>
-                <span class="precision">1</span>
-                <span class="type">town</span>
-                </dd></dl>
-        </div>
-</div> 
+        <div class="entries">
+                <template is="dom-if" if="{{ncpedItem}}">
+                        <div class="book_entry">
+                                <div class="source">New Concise Pali English Dictionary</div>
+                                <h4>[[dictionaryItem]]</h4>
+                                <p class="case">[[ncpedItem.case]]</p>
+                                <div class="ncped_entry" inner-h-t-m-l="[[ncpedItem.text]]"></div>
+                        </div>
+                </template>        
+                <template is="dom-if" if="{{cpedItem}}">
+                        <div class="book_entry">
+                                <div class="source">Concise Pali English Dictionary</div>
+                                <h4>[[dictionaryItem]]</h4>
+                                <p class="case">[[cpedItem.case]]</p>
+                                <p class="cped_entry">[[cpedItem.text]]</p>
+                        </div>
+                </template>
 
-<div class="related_terms">
-        <h3>Adjacent Terms</h3>
-        <ul class="near_terms" data-prefetch="1">
-                <li><a href="./s%C4%81vajja">sāvajja</a> <em>(blameable)</em></li>
-                <li><a href="./s%C4%81vajjat%C4%81">sāvajjatā</a></li>
-                <li><a href="./s%C4%81va%E1%B9%ADa">sāvaṭa</a></li>
-                <li><a href="./s%C4%81va%E1%B9%AD%E1%B9%ADa">sāvaṭṭa</a></li>
-                <li><a href="./s%C4%81va%E1%B9%87a">sāvaṇa</a></li>
-                <li class="this"><a href="./s%C4%81vatth%C4%AB">sāvatthī</a></li>
-                <li><a href="./s%C4%81vana">sāvana</a></li>
-                <li><a href="./s%C4%81vayam%C4%81na">sāvayamāna</a></li>
-                <li><a href="./s%C4%81vasesa">sāvasesa</a></li>
-                <li><a href="./s%C4%81vi">sāvi</a></li>
-                <li><a href="./s%C4%81vik%C4%81">sāvikā</a></li>
-        </ul>
-        <h3>Similar Spelling</h3>
-        <ul class="fuzzy_terms">
-                <li><a href="./s%C4%81vatth%C4%AB">sāvatthī</a></li>
-                <li><a href="./suvatthi">suvatthi</a> <em>(hail)</em></li>
-                <li><a href="./s%C4%81mattha">sāmattha</a></li>
-                <li><a href="./s%C4%81rath%C4%AB">sārathī</a></li>
-                <li><a href="./s%C4%81vitt%C4%AB">sāvittī</a></li>
-                <li><a href="./patatthi">patatthi</a></li>
-                <li><a href="./sa%E1%B9%83va%E1%B9%AD%E1%B9%ADi">saṃvaṭṭi</a></li>
-                <li><a href="./sa%E1%B9%83vatti">saṃvatti</a></li>
-                <li><a href="./sadattha">sadattha</a></li>
-                <li><a href="./samattha">samattha</a> <em>(able)</em></li>
-        </ul>
-        </div>
-</div>
+                <template is="dom-repeat" items="{{_checkDictEntry(dppnResult,dictionaryItem)}}">
+                        <div class="book_entry">
+                                <div class="source">Pali Proper Names</div>
+                                <h4>[[dictionaryItem]]</h4>
+                                <template is="dom-if" if="[[item.map]]">
+                                    <div class="map">
+                                         <iframe src="https://www.google.com/maps/d/embed?mid=z1fKgOqM_IYc.k-W6AbJIxLu8&z=13&ll=[[item.map]]"></iframe>
+                                    </div>
+                                </template>
+                                <div class="dppn_entry" inner-h-t-m-l="[[item.text]]"></div>
+                        </div>
+                </template>
 
+                <template is="dom-repeat" items="{{_checkDictEntry(ptsResult,dictionaryItem)}}">
+                        <div class="book_entry">
+                                <div class="source">PTS Pali English Dictionary</div>
+                                <h4>[[dictionaryItem]]</h4>
+                                <p class="case">[[item.case]]</p>
+                                <div class="pts_entry" inner-h-t-m-l="[[item.text]]"></div>
+                        </div>
+                </template>
+        </div> 
 
-
-</main>
+        <app-drawer id="drawer" align="right" swipe-open>
+                <div class="related_terms">
+                        <h3>Adjacent Terms</h3>
+                        <ul class="near_terms">
+                            <template is="dom-repeat" items="{{relatedItems.adjacent}}">
+                                <li><a href="/define?term=[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
+                            </template>
+                        </ul>
+                        <h3>Similar Spelling</h3>
+                        <ul class="fuzzy_terms">
+                            <template is="dom-repeat" items="{{relatedItems.similar}}">
+                                <li><a href="/define?term=[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
+                            </template>
+                        </ul>
+                </div>
+        </app-drawer>
+    </main>
 </div>
 </template>
 <script>
@@ -127,9 +186,30 @@ a {
             type: String,
             notify: true
         },
-        inputLanguage: String
+        cpedResult: Object,
+        ncpedResult: Object,
+        inputLanguage: String,
+        cpedItem: {
+          type: String,
+          computed: '_checkCpedEntry(cpedResult, dictionaryItem)'
+        },
+        ncpedItem: {
+          type: String,
+          computed: '_checkCpedEntry(ncpedResult, dictionaryItem)'
+        }
+      },
+      _checkCpedEntry: function(dictResult, dictionaryItem) {
+        return dictResult[dictionaryItem.toLowerCase()];
+      },
+      _checkDictEntry: function(dictResult, dictionaryItem) {
+        resultsArray = [];
+        for (var i=0; i < dictResult.length; i++) {
+          if (dictResult[i].term.toLowerCase() === dictionaryItem.toLowerCase()) {
+              resultsArray.push(dictResult[i]);
+          }
+        }
+        return resultsArray;
       }
-
     });
 </script>
 </dom-module>

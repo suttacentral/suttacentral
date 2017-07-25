@@ -82,7 +82,8 @@ search-menu {
 }
 paper-spinner-lite {
     --paper-spinner-color: var(--sc-gold-500);
-    left: 49%;
+    left: 50%;
+    top: 50px;
 }
 a {
     text-decoration: none;
@@ -105,6 +106,10 @@ a {
           loading="{{loadingResults}}"
           last-response="{{data}}"
           on-response="_didRespond"></iron-ajax>
+
+    <div class="loadingIndicator">
+      <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
+    </div>
 
 <div class="divisioncontent">
     <main>
@@ -147,10 +152,6 @@ a {
         </template>
       </iron-list>
     </iron-scroll-threshold>
-
-    <div class="loadingIndicator">
-      <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
-    </div>
 
 </main>
 </div>
@@ -271,7 +272,7 @@ a {
       },
       _load: function() {
         console.log(" itemCount= ", this.itemCount);
-        if (this.itemCount > (this.firstLoad-1) && this.itemCount <= this.partArray.length) {
+        if (this.itemCount > (this.firstLoad-1) && this.itemCount < this.partArray.length) {
             for (var i = 0; i < this.loadNumber; i++) {
                   this.$.list.push('items',this.partArray[this.itemCount]);
                   this.itemCount += 1;
