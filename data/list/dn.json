@@ -17,7 +17,7 @@
         "description": "<p class='node-description'>Los Largos discursos (Dīgha Nikāya, abbreviated DN) is a collection of 34 discourses in the Pali canon (Tipiṭaka) of the Theravāda school. The word “long” refers to the length of the individual discourses, not the collection as a whole, which is in fact the smallest of the five Pali Nikāyas.</p><p class='node-description'>It is one of the fundamental collections of early Buddhist teachings, depicting the Buddha in a lively range of settings. Compared to other collections it contains more extended narratives in diverse literary styles. Many discourses feature interreligious dialogue with brahmins and other non-Buddhists.</p><p class='node-description'>This collection parallels the Dīrghāgama (DA) of the Dharmaguptaka school, which is the first text in the Taishō edition of the Chinese canon. Several uncollected suttas in Chinese and Sanskrit also belong to this collection. Two-thirds of a Dīrghāgama from the Sarvāstivāda school has been found, but only small portions have been published.</p>"
         },
     "vaggas": [{
-        "vagganr": "v1",
+        "vagganr": "vagga1",
         "suttas": ["dn1","dn2","dn3","dn4","dn5","dn6","dn7","dn8","dn9","dn10"],
         "en": {
             "vagganame": "The Chapter Containing the Section on Ethics",
@@ -36,7 +36,7 @@
             "description": "<p class='node-description'>Spanish: The Chapter Containing the Section on Ethics (Sīlakkhandhavagga) is a chapter of 13 discourses. Each of these contains a long passage on the Gradual Training in ethics, meditation, and wisdom. The chapter is named after the first of these sections. The two other known versions of the Dīrghāgama (in Chinese and Sanskrit) also contain a similar chapter.</p>"
             }
         }, {
-        "vagganr": "v2",
+        "vagganr": "vagga2",
         "suttas": ["dn11","dn12","dn13","dn14"],
         "en": {
             "vagganame": "Chapter With Pāṭika",
@@ -55,7 +55,7 @@
             "description": "<p class='node-description'>Spanish: The Chapter Containing the Section on Ethics (Sīlakkhandhavagga) is a chapter of 13 discourses. Each of these contains a long passage on the Gradual Training in ethics, meditation, and wisdom. The chapter is named after the first of these sections. The two other known versions of the Dīrghāgama (in Chinese and Sanskrit) also contain a similar chapter.</p>"
             }
         }, {
-        "vagganr": "v3",
+        "vagganr": "vagga3",
         "suttas": ["dn15"],
         "en": {
             "vagganame": "Third Vagga"

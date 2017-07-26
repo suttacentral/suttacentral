@@ -74,7 +74,16 @@ paper-tree {
 
 <app-route route="{{route}}"
            pattern="/:collection"
-           data="{{collectionData}}"></app-route>
+           data="{{collectionData}}"
+           tail="{{pathDataTail}}">
+        </app-route>
+
+<app-route
+          route="{{pathDataTail}}"
+          pattern="/:subpath"
+          data="{{subPathData}}"
+          active="{{subPathIsActive}}">
+      </app-route>
 
 <iron-ajax
       auto
@@ -101,7 +110,7 @@ paper-tree {
           </div>
         </div>
     </app-drawer>
-    <page-selector category="{{collectionData.collection}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector>
+    <page-selector category="{{collectionData.collection}}" sub-path="{{subPathData.subpath}}" active-path="{{subPathIsActive}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector>
 
   </app-drawer-layout>
 

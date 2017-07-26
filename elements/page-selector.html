@@ -84,7 +84,7 @@ app-toolbar, sc-toolbar {
             </template>
 
             <template is="dom-if" if="{{_checkList(category)}}">
-                <sc-view-suttaplex category="[[category]]" vagga-number$="{{_computeVagga(queryParams)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
+                <sc-view-suttaplex category="[[category]]" vagga-number="{{_computeVagga(subPath,activePath)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
             </template>
 
             <template is="dom-if" if="{{_checkText(category,author)}}">
@@ -111,6 +111,14 @@ app-toolbar, sc-toolbar {
       is: 'page-selector',
       properties: {
         inputLanguage: String,
+        subPath: {
+          type: String,
+          notify: true
+        },
+        activePath: {
+          type: Boolean,
+          notify: true
+        },
         toolbarTitle: {
           type: String,
           value: ""
@@ -152,7 +160,7 @@ app-toolbar, sc-toolbar {
         author: {
           type: String,
           notify: true,
-          computed: '_checkAuthor(queryParams)'
+          computed: '_checkAuthor(subPath,category,activePath)'
         },
         mainClass: String,
         staticPages: {
@@ -167,7 +175,7 @@ app-toolbar, sc-toolbar {
         dictionaryItem: {
           type: String,
           notify: true,
-          computed: '_checkDictionaryItem(queryParams)'
+          computed: '_checkDictionaryItem(subPath,category,activePath)'
         }
       },
       observers: [
@@ -199,17 +207,18 @@ app-toolbar, sc-toolbar {
             break;
         }
       },
-      _checkAuthor: function(queryParams) {
-        return (queryParams.author) ? queryParams.author : "";
+      _checkAuthor: function(subPath,category,activePath) {
+        if (category) {var matches = category.match(/\d{1,6}/)};
+        return (activePath && matches && !subPath.startsWith("vagga")) ? subPath : "";
       },
-      _computeVagga: function(queryParams) {
-        return (queryParams.vagga) ? queryParams.vagga : "";
+      _computeVagga: function(subPath,activePath) {
+        return (activePath && subPath.startsWith("vagga")) ? subPath : "";
       },
       _checkSearchQuery: function(queryParams) {
         return (queryParams.query) ? queryParams.query : "";
       },
-      _checkDictionaryItem: function(queryParams) {
-        return (queryParams.term) ? queryParams.term : "";
+      _checkDictionaryItem: function(subPath,category,activePath) {
+        return (activePath && category === "define") ? subPath : "";
       },    
       changeSegmentedView: function(event) {
           return this.showViewer = event.detail.selectedView;

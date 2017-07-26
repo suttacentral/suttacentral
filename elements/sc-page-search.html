@@ -125,7 +125,7 @@ a {
             <div class="item" tabindex$="[[tabIndex]]">
               <div class="pad">
                 <template is="dom-if" if="{{_checkCategory(item.category)}}">
-                    <a href="/define?term=[[item.title]]">
+                    <a href="/define/[[item.title]]">
                         <div class="primary"><h2>[[item.title]]</h2></div>
                         <div class="secondary"><p class="results-url">[[item.url]]</p></div>
                     </a>
