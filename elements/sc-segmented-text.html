@@ -11,7 +11,7 @@
   @apply(--sc-paper-font-body);
   @apply(--sc-serif-font);
   color: var(--primary-text-color);
-  margin: 6em auto 4em!important;
+  margin: 0 auto 4em!important;
   padding: 0 5%!important;
   max-width: 640px;
   display: block;
@@ -102,7 +102,7 @@
       ],
       _callAjax: function(){
         if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
-        if (matches && this.author === "sujato") {
+        if (matches && this.author && this.author === "sujato") {
             this.$.ajaxparagraphs.generateRequest();
             this.$.ajaxbase.generateRequest();
             this.$.ajaxalternate.generateRequest();

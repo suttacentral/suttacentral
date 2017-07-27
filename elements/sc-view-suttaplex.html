@@ -61,23 +61,35 @@ main {
 
 <div class="divisioncontent">
   <main>
-    <section class="node">
-        <sc-node input-title="{{languageData.name}}" input-text="{{languageData.description}}" style-header="node-top-heading"></sc-node>
-    </section>
 
-    <template is="dom-repeat" items="{{suttaList.vaggas}}" as="vagga">
-      <template is="dom-if" if="{{_selectVagga(vagga,vaggaNumber)}}">
-            <section class$="vagganode {{_checkFirstVagga(vagga,vaggaNumber)}}">
-              <sc-node input-title="{{_computeVagganame(vagga,inputLanguage)}}" input-text="{{_computeVaggadescription(vagga,inputLanguage)}}" style-header="node-secondary-heading"></sc-node>
+        <template is="dom-if" if="{{_checkCategoryRoute(category)}}">
+
+            <section class="node">
+                <sc-node input-title="{{languageData.name}}" input-text="{{languageData.description}}" style-header="node-top-heading"></sc-node>
             </section>
 
-            <template is="dom-repeat" items="{{vagga.suttas}}" as="item">
-              <div class="suttalist" id$="{{item}}">
-                <sc-suttaplex input-url="{{item}}" input-language="{{inputLanguage}}"></sc-suttaplex>
-              </div>
+            <template is="dom-repeat" items="{{suttaList.vaggas}}" as="vagga">
+              <template is="dom-if" if="{{_selectVagga(vagga,vaggaNumber)}}">
+                    <section class$="vagganode {{_checkFirstVagga(vagga,vaggaNumber)}}">
+                      <sc-node input-title="{{_computeVagganame(vagga,inputLanguage)}}" input-text="{{_computeVaggadescription(vagga,inputLanguage)}}" style-header="node-secondary-heading"></sc-node>
+                    </section>
+
+                    <template is="dom-repeat" items="{{vagga.suttas}}" as="item">
+                      <div class="suttalist" id$="{{item}}">
+                        <sc-suttaplex input-url="{{item}}" input-language="{{inputLanguage}}"></sc-suttaplex>
+                      </div>
+                    </template>
+                </template>
             </template>
         </template>
-    </template>
+
+        <template is="dom-if" if="{{!_checkCategoryRoute(category)}}">
+            <template is="dom-if" if="{{!activePath}}">
+                      <div class="suttalist" id="{{category}}">
+                        <sc-suttaplex input-url="{{category}}" toggle-request input-language="{{inputLanguage}}"></sc-suttaplex>
+                      </div>
+            </template>
+        </template>
 
   </main>
 </div>
@@ -91,6 +103,7 @@ main {
           type: Object,
           notify: true,
         },
+        activePath: Boolean,
         languageData: {
           type: Object,
           computed: '_computeLanguage(suttaList,inputLanguage)'
@@ -114,6 +127,10 @@ main {
       ],
       ready: function() {
         this.addEventListener('toggleParallelNote', this.elevateBox);
+      },
+      _checkCategoryRoute: function(category) {
+        if (category) {var matches = category.match(/\d{1,6}/)};
+        return (!matches) ? true : false;
       },
       _callAjax: function() {
         if (this.category) {var matches = this.category.match(/\d{1,6}/)};

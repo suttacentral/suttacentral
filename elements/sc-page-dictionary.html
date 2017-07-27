@@ -103,33 +103,33 @@ paper-spinner-lite {
 
         <div class="entries">
                 <template is="dom-if" if="{{ncpedItem}}">
-                        <div class="book_entry">
+                        <div class="book-entry">
                                 <div class="source">New Concise Pali English Dictionary</div>
-                                <div class="ncped_entry" inner-h-t-m-l="[[ncpedItem.text]]"></div>
+                                <div class="ncped-entry" inner-h-t-m-l="[[ncpedItem.text]]"></div>
                         </div>
                 </template>        
                 <template is="dom-if" if="{{cpedItem}}">
-                        <div class="book_entry">
+                        <div class="book-entry">
                                 <div class="source">Concise Pali English Dictionary</div>
-                                <div class="cped_entry" inner-h-t-m-l="[[cpedItem.text]]"></div>
+                                <div class="cped-entry" inner-h-t-m-l="[[cpedItem.text]]"></div>
                         </div>
                 </template>
                 <template is="dom-if" if="{{dhammikaItem}}">
-                        <div class="book_entry">
+                        <div class="book-entry">
                                 <div class="source">Nature and the Environment in Early Buddhism by S. Dhammika</div>
-                                <div class="dhammika_entry" inner-h-t-m-l="[[dhammikaItem.text]]"></div>
+                                <div class="dhammika-entry" inner-h-t-m-l="[[dhammikaItem.text]]"></div>
                         </div>
                 </template>
                 <template is="dom-if" if="{{dppnItem}}">
-                        <div class="book_entry">
+                        <div class="book-entry">
                                 <div class="source">Pali Proper Names</div>
-                                <div class="dppn_entry" inner-h-t-m-l="[[dppnItem.text]]"></div>
+                                <div class="dppn-entry" inner-h-t-m-l="[[dppnItem.text]]"></div>
                         </div>
                 </template>
                 <template is="dom-if" if="{{ptsItem}}">
-                        <div class="book_entry">
+                        <div class="book-entry">
                                 <div class="source">PTS Pali English Dictionary</div>
-                                <div class="pts_entry" inner-h-t-m-l="[[ptsItem.text]]"></div>
+                                <div class="pts-entry" inner-h-t-m-l="[[ptsItem.text]]"></div>
                         </div>
                 </template>
 
@@ -140,13 +140,13 @@ paper-spinner-lite {
                         <h3>Adjacent Terms</h3>
                         <ul class="near_terms">
                             <template is="dom-repeat" items="{{relatedItems.adjacent}}">
-                                <li><a href="/define/[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
+                                <li><a href="../define/[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
                             </template>
                         </ul>
                         <h3>Similar Spelling</h3>
                         <ul class="fuzzy_terms">
                             <template is="dom-repeat" items="{{relatedItems.similar}}">
-                                <li><a href="/define/[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
+                                <li><a href="../define/[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
                             </template>
                         </ul>
                 </div>

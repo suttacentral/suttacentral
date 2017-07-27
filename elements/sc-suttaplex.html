@@ -120,8 +120,7 @@ paper-menu-button {
 }
 </style>
 
-<iron-ajax
-      auto
+<iron-ajax id="ajax"
       url="[[_computeURL(inputUrl)]]"
       handle-as="json"
       last-response="{{inputData}}"></iron-ajax>
@@ -182,7 +181,7 @@ paper-menu-button {
                   <paper-icon-button class="dropdown-trigger" icon="icons:more-vert"></paper-icon-button>
                   <div class="dropdown-content"></div>
                   <paper-menu class="dropdown-content" tabindex="0">
-                      <more-par-menu></more-par-menu>
+                      <more-par-menu input-url="{{inputUrl}}"></more-par-menu>
                   </paper-menu>
                 </paper-menu-button>
                 <span class="heading" title="View Parallels & References" on-tap="_toggleOpened">
@@ -205,8 +204,11 @@ paper-menu-button {
       is: 'sc-suttaplex',
       properties: {
 
-        inputUrl: String,
-      	inputLanguage: String,
+        inputUrl: {
+          type: String,
+          observer: '_callAjax'
+        },
+        inputLanguage: String,
 
         languageData: {
           type: Object,
@@ -219,7 +221,7 @@ paper-menu-button {
           reflectToAttribute: true,
           notify: true
         },
-
+        toggleRequest: Boolean,
         _toggleIcon: {
           type: String,
           computed: '_computeToggleIcon(opened)'
@@ -228,6 +230,13 @@ paper-menu-button {
           type: String,
           computed: '_computeToggleMoreIcon(opened)'
         }
+      },
+      ready: function() {
+        if (this.toggleRequest) {this._toggleOpened()}
+      },
+      _callAjax: function() {
+        if (this.inputUrl) {var matches = this.inputUrl.match(/\d{1,6}/)};
+        return (matches) ? this.$.ajax.generateRequest() : "";
       },
       _computeToggleIcon: function(opened) {
         return opened ? 'icons:expand-less' : 'icons:expand-more';
@@ -238,6 +247,9 @@ paper-menu-button {
       _toggleOpened: function(e) {
   	this.opened = !this.opened;
   	this.fire('toggle', this);
+      },
+      _checkToggleRequest: function(toggleRequest) {
+        if (toggleRequest) {this._toggleOpened};
       },
       passParams: function() {
         this.fire('toggleParallelNote',{open:this._toggleIcon, url:this.inputUrl});

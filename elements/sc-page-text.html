@@ -45,7 +45,7 @@
       ],
       _callAjax: function() {
         if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
-        return (matches && this.author !== "sujato") ? this.$.ajax.generateRequest() : "";
+        return (matches && this.author && this.author !== "sujato") ? this.$.ajax.generateRequest() : "";
       },
       _computeURL: function(category,author) {
         return `../texts/${category}.html`;

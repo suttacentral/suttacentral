@@ -19,10 +19,13 @@ paper-item iron-icon {
 paper-item {
     @apply(--sc-sans-font);
 }
-
+a {
+  text-decoration: none;
+  color: black;
+}
 </style>
 
-    <paper-item><iron-icon icon="link"></iron-icon> Copy link</paper-item>
+    <paper-item><a href$="/[[inputUrl]]"><iron-icon icon="link"></iron-icon>Parallel Page</a></paper-item>
     <paper-item><iron-icon icon="content-copy"></iron-icon> Copy table</paper-item>
     <paper-item><iron-icon icon="editor:format-quote"></iron-icon> Cite</paper-item>
 
@@ -30,5 +33,8 @@ paper-item {
 <script>
     Polymer({
       is: 'more-par-menu',
+      properties: {
+        inputUrl: String
+      }
     });
 </script>

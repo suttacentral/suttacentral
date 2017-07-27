@@ -84,7 +84,7 @@ app-toolbar, sc-toolbar {
             </template>
 
             <template is="dom-if" if="{{_checkList(category)}}">
-                <sc-view-suttaplex category="[[category]]" vagga-number="{{_computeVagga(subPath,activePath)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
+                <sc-view-suttaplex category="[[category]]" active-path="{{activePath}}" vagga-number="{{_computeVagga(subPath,activePath)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
             </template>
 
             <template is="dom-if" if="{{_checkText(category,author)}}">
@@ -241,8 +241,7 @@ app-toolbar, sc-toolbar {
         }
       },
       _checkList: function(category) {
-        if (category) {var matches = category.match(/\d{1,6}/)};
-        if (!matches && (this.staticPages.indexOf(category) == -1) && category !== 'search' && category !== 'define') {
+        if ((this.staticPages.indexOf(category) == -1) && category !== 'search' && category !== 'define') {
           this.mainClass="list-mode";
           this.toolbarTitle = this.divisionTitle;
           return true;
@@ -252,7 +251,7 @@ app-toolbar, sc-toolbar {
       },
       _checkText: function(category,author) {
         if (category) {var matches = category.match(/\d{1,6}/)};
-        if (matches && author !== "sujato") {
+        if (matches && author && author !== "sujato") {
             this.mainClass="text-mode";
             this.toolbarTitle = this.suttaTitle;
             this.metaArea = this.suttaMeta;
@@ -263,7 +262,7 @@ app-toolbar, sc-toolbar {
       },
       _checkSegmented: function(category,author) {
         if (category) {var matches = category.match(/\d{1,6}/)};
-        if (matches && author === "sujato") {
+        if (matches && author && author === "sujato") {
             this.mainClass="segmented-mode";
             this.toolbarTitle = this.suttaSegTitle;
             this.metaArea = this.suttaSegMeta;
