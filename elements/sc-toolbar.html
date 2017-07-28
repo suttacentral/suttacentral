@@ -136,7 +136,8 @@ paper-dialog paper-icon-button {
       properties: {
         inputLanguage: String,
         suttaPath: {
-          type: Boolean,
+          type: String,
+          value: "",
           notify: true
         },
         category: String,
@@ -162,6 +163,7 @@ paper-dialog paper-icon-button {
        }
       },
       _computeClass: function(suttaPath) {
+        console.log(suttaPath);
         return (suttaPath) ? "" : "hidebutton";
       },
       _computeDiscourseClass: function(suttaPath) {
