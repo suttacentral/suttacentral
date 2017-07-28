@@ -75,7 +75,7 @@ app-toolbar, sc-toolbar {
                 <app-toolbar id="toolbarheader">
                   <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
                   <div main-title id="toolbartitlebox"><p id="toolbartitle">{{toolbarTitle}}</p></div>
-                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{author}}" category="[[category]]" meta-area="{{metaArea}}"></sc-toolbar>
+                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{activePath}}" category="[[category]]" meta-area="{{metaArea}}"></sc-toolbar>
                 </app-toolbar>
         </app-header>
 
@@ -243,6 +243,7 @@ app-toolbar, sc-toolbar {
       _checkList: function(category) {
         if ((this.staticPages.indexOf(category) == -1) && category !== 'search' && category !== 'define') {
           this.mainClass="list-mode";
+          console.log(this.divisionTitle);
           this.toolbarTitle = this.divisionTitle;
           return true;
         } else {
