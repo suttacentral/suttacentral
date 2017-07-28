@@ -39,7 +39,7 @@
 </style>
 
 <div class="parallels-expanded">
-<table class="parallels-table">
+<table class$="parallels-table [[inputUrl]]">
   <template is="dom-repeat" items="{{showParallel}}" as="suttaurl">
         <tr class="parallels-row">
             <td class="parallels-root-cell parallels-table-cell" rowspan$="{{_computeRowspan(suttaurl)}}">
@@ -71,7 +71,8 @@
         properties: {
           showParallel: Array,
           originalLanguage: String,
-          inputLanguage: String
+          inputLanguage: String,
+          inputUrl: String
         },
 
         _computeTitle: function(icon) {

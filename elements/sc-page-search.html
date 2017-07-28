@@ -271,7 +271,7 @@ a {
           this.$.scrollThreshold.clearTriggers();
       },
       _load: function() {
-        console.log(" itemCount= ", this.itemCount);
+        // console.log(" itemCount= ", this.itemCount);
         if (this.itemCount > (this.firstLoad-1) && this.itemCount < this.partArray.length) {
             for (var i = 0; i < this.loadNumber; i++) {
                   this.$.list.push('items',this.partArray[this.itemCount]);

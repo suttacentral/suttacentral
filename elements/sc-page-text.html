@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="addons/sc-text-node.html">
 
 <dom-module id="sc-page-text" attributes="suttatitle suttameta">
 <template>
@@ -17,6 +18,8 @@
       url="../data/paragraphtitles.json"
       handle-as="json"
       last-response="{{paragraphTitles}}"></iron-ajax>
+
+  <sc-text-node category="{{suttaPath}}" input-language="{{inputLanguage}}"></sc-text-node>
 
   <div class="htmltextcontent" inner-h-t-m-l="{{suttaText}}"></div>
 
@@ -37,7 +40,8 @@
           observer: '_callAjax'
         },
         suttaText: String,
-        paragraphTitles: Object
+        paragraphTitles: Object,
+        inputLanguage: String
       },
       observers: [
         '_computePars(suttaText,paragraphTitles)',

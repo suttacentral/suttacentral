@@ -18,6 +18,8 @@
 <link rel="import" href="menus/more-par-menu.html">
 <link rel="import" href="../styles/sc-suttaplex-styles.html">
 
+<link rel="import" href="../img/sc-svg-icons.html">
+
 <dom-module id="sc-suttaplex" attributes="open url">
 <template>
 <style is="custom-style" include="sc-suttaplex-styles">
@@ -140,7 +142,7 @@ paper-menu-button {
               <h3 class="suttaplex-heading" title="SuttaCentral ID">[[inputData.id]]</h3>
             </template>
           </template>
-          <div class="difficulty-icon" inner-h-t-m-l="[[_computeLevel(inputData.level)]]"></div>
+          <div class$="difficulty-icon [[inputData.level]]" title="Recommended for [[inputData.level]] students"><iron-icon icon="[[_computeLevel(inputData.level)]]"></iron-icon></div>
         </div>
 
         <div class="suttaplex-nerdy-row">
@@ -193,7 +195,7 @@ paper-menu-button {
       </div>
       <template is="dom-if" if="{{inputData.parallels}}">
         <iron-collapse id$="collapse{{inputUrl}}" opened="{{opened}}">
-			      <sc-view-parallels show-parallel="{{inputData.parallels}}" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></sc-view-parallels>
+			      <sc-view-parallels show-parallel="{{inputData.parallels}}" input-url="[[inputUrl]]" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></sc-view-parallels>
         </iron-collapse>
       </template>
   </paper-card>
@@ -255,7 +257,7 @@ paper-menu-button {
         this.fire('toggleParallelNote',{open:this._toggleIcon, url:this.inputUrl});
       },
       _computeLevel: function(level) {
-        return level ? "<img src='../../img/"+level+".png' title='Recommended for "+level+" students' style='width:32px;opacity:0.38;'>" : "";
+        return level ? "sc-svg-icons:"+level : "";
       },
       _computeURL: function(sutta) {
           return `../../data/suttas/${sutta}.json`;

@@ -1,0 +1,63 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../sc-suttaplex.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../styles/sc-suttaplex-styles.html">
+
+<dom-module id="sc-text-node">
+<template>
+<style is="custom-style" include="sc-suttaplex-styles">
+.container {
+  margin-bottom: 16px;
+}
+.heading {
+  cursor: pointer;
+  float: right;
+  margin: -64px 16px 0 0;
+}
+
+.suttalist {
+  margin: 0 auto;
+  max-width: 720px;
+  transition: margin-top 0.3s, margin-bottom 0.3s;
+}
+</style>
+<div class="container">
+      <div class="heading" title="View Parallels & References" on-tap="_toggleOpened">
+          <paper-icon-button icon="[[_toggleIcon]]"></paper-icon-button>
+      </div>
+
+      <iron-collapse  id="textinfo" opened="{{opened}}">
+          <div class="suttalist">
+               <sc-suttaplex input-url="{{category}}" toggle-request input-language="{{inputLanguage}}"></sc-suttaplex>
+          </div>
+      </iron-collapse>
+</div>
+</template>
+<script>
+    Polymer({
+        is: 'sc-text-node',
+        properties: {
+            inputLanguage: String,
+            category: String,
+            _toggleIcon: {
+                type: String,
+                computed: '_computeToggleIcon(opened)'
+              },
+            opened: {
+                  type: Boolean,
+                  reflectToAttribute: true,
+                  notify: true
+                }
+        },
+      _toggleOpened: function(e) {
+          this.opened = !this.opened;
+          this.fire('toggle', this);
+        },
+      _computeToggleIcon: function(opened) {
+          return opened ? 'icons:expand-less' : 'icons:expand-more';
+        }
+    });
+</script>
+</dom-module>
