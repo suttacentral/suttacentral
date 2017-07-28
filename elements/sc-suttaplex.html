@@ -175,7 +175,7 @@ paper-menu-button {
             <template is="dom-repeat" items="{{languageData.authors}}" as="author">
                 <paper-button flat title$="Go to a translation by {{author}}"><a href="/[[inputData.url]]/[[author]]">{{author}}</a></paper-button>
             </template>
-            <div class="languagedrop"><language-menu language-choice="{{inputData.languages}}" title-label="Other" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></language-menu></div>
+            <div class="languagedrop"><language-menu language-choice="{{inputData.languages}}" title-label="Other" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}" input-url="[[inputUrl]]"></language-menu></div>
         </div>
         <template is="dom-if" if="{{inputData.parallels}}">
             <div class="card-actions-right">

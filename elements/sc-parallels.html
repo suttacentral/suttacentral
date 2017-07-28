@@ -94,7 +94,7 @@ details p{
   <div class="parallels-actions">
       <paper-button flat class="dense" title="Go to text in original language"><a href="">{{inputData.orlan}}</a></paper-button>
       <template is="dom-if" if="{{inputData.languages}}">
-          <div class="languagedrop"><language-menu language-choice="{{inputData.languages}}" title-label="Translations" input-language="" original-language=""></language-menu></div>
+          <div class="languagedrop"><language-menu language-choice="{{inputData.languages}}" title-label="Translations" input-language="" original-language="" input-url="[[inputUrl]]"></language-menu></div>
       </template>
   </div>
 
