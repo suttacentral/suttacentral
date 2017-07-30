@@ -29,29 +29,34 @@
 		"relations": [{
 			"url": "ea1.35",
 			"id": "EA 1.35",
-			"icon": "swap-horiz"
+			"icon": "swap-horiz",
+			"titlepi": "Original title for EA 1.35"
 		}]
 	}, {
 		"id": "DN 2#15",
 		"relations": [{
 			"url": "ea1.34",
 			"id": "EA 1.34#3",
-			"icon": "swap-horiz"
+			"icon": "swap-horiz",
+			"titlepi": "Original title for EA 1.34#3"
 		}, {
 			"url": "ea1.34",
 			"id": "EA 1.34#15",
-			"icon": "compare-arrows"
+			"icon": "compare-arrows",
+			"titlepi": "Original title for EA 1.34#15"
 		}]
 	}, {
 		"id": "DN 2#43–#45",
 		"relations": [{
 			"url": "ea1.35",
 			"id": "EA 1.35#78–#81",
-			"icon": "editor:format-quote"
+			"icon": "editor:format-quote",
+			"titlepi": "Original title for EA 1.35#78–#81"
 		}, {
 			"url": "ea1.38",
 			"id": "EA 1.38",
-			"icon": "cached"
+			"icon": "cached",
+			"titlepi": "Original title for EA 1.38"
 		}]
 	}]
 }

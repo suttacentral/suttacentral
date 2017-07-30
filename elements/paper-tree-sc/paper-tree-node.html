@@ -142,7 +142,14 @@ li {
          * Returns the parent node. Returns `null` if root.
          */
         getParent: function () {
-            return this.domHost.tagName === 'WOOD-TREE-NODE' ? this.domHost : null;
+            return this.domHost.tagName === 'PAPER-TREE-NODE' ? this.domHost : null;
+        },
+
+        /**
+         * Returns the children tree nodes.
+         */
+        getChildren: function () {
+            return Polymer.dom(this.root).querySelectorAll('paper-tree-node');
         },
 
         /**

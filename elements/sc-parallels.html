@@ -10,7 +10,7 @@
 
 <dom-module id="sc-parallels">
 <template>
-<style  is="custom-style" include="sc-suttaplex-styles">
+<style  is="custom-style" include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
 .parallels-parallel-title {
   @apply(--paper-font-subhead);
   @apply(--sc-serif-font);
@@ -111,7 +111,12 @@ details p{
           languageData: {
               type: Object,
               computed: '_computeLanguage(inputData,inputLanguage)'
-            }
+            },
+          inputData: {
+            type: Object,
+            notify: true,
+            observer: 'infoToParent'
+          }
         },
         _computeURL: function(sutta) {
           return `../../data/suttas/${sutta}.json`;
@@ -126,7 +131,10 @@ details p{
             }
           }
           return lanarray ? lanarray : "";
-        }
+        },
+      infoToParent: function() {
+        this.fire('eventFromParallels',{parid:this.parallelId,partitle:this.inputData.titlepi,volumepage:this.inputData.volpage,biblio:this.inputData.bib});
+      }
     });
 </script>
 </dom-module>

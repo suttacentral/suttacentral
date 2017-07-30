@@ -120,6 +120,9 @@ details p {
 paper-menu-button {
   padding:0;
 }
+.copy-area {
+  display: none;
+}
 </style>
 
 <iron-ajax id="ajax"
@@ -195,10 +198,15 @@ paper-menu-button {
       </div>
       <template is="dom-if" if="{{inputData.parallels}}">
         <iron-collapse id$="collapse{{inputUrl}}" opened="{{opened}}">
-			      <sc-view-parallels show-parallel="{{inputData.parallels}}" input-url="[[inputUrl]]" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></sc-view-parallels>
+	       <sc-view-parallels show-parallel="{{inputData.parallels}}" input-url="[[inputUrl]]" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></sc-view-parallels>
         </iron-collapse>
       </template>
   </paper-card>
+
+<div class="copy-area">
+  <div class$="[[inputUrl]]">{{copyTable}}</div>
+  <div class$="[[inputUrl]]">{{citeData}}</div>
+</div>
 
 </template>
 <script>
@@ -209,6 +217,10 @@ paper-menu-button {
         inputUrl: {
           type: String,
           observer: '_callAjax'
+        },
+        inputData: {
+          type: Object,
+          notify: true
         },
         inputLanguage: String,
 
@@ -231,10 +243,37 @@ paper-menu-button {
         _toggleMoreIcon: {
           type: String,
           computed: '_computeToggleMoreIcon(opened)'
+        },
+        copyTable: {
+            type: String,
+            computed: '_computeCopyTable(inputData)'
+        },
+        parallelsArray: {
+          type: Array,
+          value: [],
+          notify: true
+        },
+        citeData: {
+            type: String,
+            notify: true
+        },
+        parallelNumberArray: {
+          type: Array,
+          value: [],
+          notify: true
         }
       },
       ready: function() {
         if (this.toggleRequest) {this._toggleOpened()}
+        this.addEventListener('eventFromParallels', this._parallelData);
+      },
+      _parallelData: function(e) {
+        var newparallel = e.detail.parid;
+        if (this.parallelNumberArray.indexOf(newparallel) == -1) {
+           this.parallelNumberArray.push(newparallel);
+           this.parallelsArray.push(e.detail);
+        }
+        this._computeCiteData(this.inputData,this.parallelsArray);
       },
       _callAjax: function() {
         if (this.inputUrl) {var matches = this.inputUrl.match(/\d{1,6}/)};
@@ -279,8 +318,59 @@ paper-menu-button {
           parlength = parlength + inputData.parallels[i].relations.length;
         }
         return parlength;
-      }
-
+      },
+       _computeIcon: function(icon){
+          switch (icon) {
+            case 'swap-horiz': return '⮀';
+            case 'compare-arrows': return '≈';
+            case 'editor:format-quote': return '❞';
+            case 'cached': return '🔃';
+          } 
+        },
+      _computeCopyTable: function(inputData) {
+        if (inputData.parallels) {
+                tablefinalplugin = "";
+                for (var x = 0; x < inputData.parallels.length; x++) {
+                    var relationships = inputData.parallels[x].relations;
+                    var tableplugin = "\n<tbody>\n  <tr>\n    <td rowspan='"+relationships.length+"'>"+inputData.parallels[x].id+"</td>";
+                    for (var i = 0; i < relationships.length; i++) {
+                        tableplugin += "\n    <td>"+this._computeIcon(relationships[i].icon)+"</td>\n    <td>"+relationships[i].id+"</td>\n    <td>"+relationships[i].titlepi+"</td>\n  </tr>";
+                        if (i < relationships.length-1) {
+                          tableplugin += "\n  <tr>";
+                        }
+                    }
+                    tablefinalplugin += tableplugin + "\n</tbody>";
+                  }
+                return "<!DOCTYPE html>\n<html>\n<head>\n  <title>"+inputData.id+" "+inputData.titlepi+"</title>\n</head>\n<body>\n<table>\n  <caption>"+inputData.titlepi+"</caption>"+tablefinalplugin+"\n</table>\n</body>\n</html>";
+              }
+      },
+      _computeCiteData: function(inputData,parallelsArray) {
+        if (inputData.parallels) {
+                citefinalplugin = "";
+                var d = new Date();
+                for (var x = 0; x < inputData.parallels.length; x++) {
+                    var relationships = inputData.parallels[x].relations;
+                    var citeplugin = "Parallels for "+inputData.parallels[x].id+" "+inputData.titlepi+" ("+inputData.volpage+"): ";
+                    for (var i = 0; i < relationships.length; i++) {
+                        citeplugin += relationships[i].id;
+                        for (var parobject = 0; parobject < parallelsArray.length; parobject++) {
+                          if (parallelsArray[parobject].parid === relationships[i].id) {
+                            if (parallelsArray[parobject].volumepage) {
+                                citeplugin += " ("+parallelsArray[parobject].volumepage+") ";
+                            }
+                            if (parallelsArray[parobject].biblio) {
+                              citeplugin +=parallelsArray[parobject].biblio;
+                            }
+                          }
+                        }
+                        if (i < relationships.length-1) {citeplugin += "; ";
+                        }
+                    }
+                    citefinalplugin += citeplugin+"\n";
+                  }
+                return this.citeData = citefinalplugin+"Retrieved from https://suttacentral.net/"+inputData.url+" on "+d+".";
+              }
+            }
     });
 </script>
 </dom-module>

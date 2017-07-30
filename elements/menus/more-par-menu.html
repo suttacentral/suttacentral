@@ -22,9 +22,9 @@ paper-item {
 
 </style>
 
-    <paper-item on-tap="_copyLink"><iron-icon icon="link"></iron-icon>Copy link</paper-item>
-    <paper-item on-tap="_copyToClipboard"><iron-icon icon="content-copy"></iron-icon> Copy table</paper-item>
-    <paper-item><iron-icon icon="editor:format-quote"></iron-icon> Cite</paper-item>
+    <paper-item on-tap="_copyLink"><iron-icon icon="link"></iron-icon> Copy link</paper-item>
+    <paper-item on-tap="_copyContent"><iron-icon icon="content-copy"></iron-icon> Copy table</paper-item>
+    <paper-item on-tap="_copyCite"><iron-icon icon="editor:format-quote"></iron-icon> Cite</paper-item>
 
 </template>
 <script>
@@ -33,27 +33,39 @@ paper-item {
       properties: {
         inputUrl: String
       },
-     _copyToClipboard: function() {
-        // From https://github.com/google/material-design-lite/blob/master/docs/_assets/snippets.js
-        var snipRange = document.createRange();
-        var copyTextarea = document.querySelector('.'+this.inputUrl);
-        snipRange.selectNodeContents(copyTextarea);
-        var selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(snipRange);
-        var result = false;
-        try {
-          result = document.execCommand('copy');
-        } catch (err) {
-          // Copy command is not available
-          console.error(err);
-        }
-        selection.removeAllRanges();
-        return result;
+     // _copyToClipboard: function() {
+     //    // From https://github.com/google/material-design-lite/blob/master/docs/_assets/snippets.js
+     //    var snipRange = document.createRange();
+     //    var copyTextarea = document.querySelector('.'+this.inputUrl);
+     //    console.log(copyTextarea);
+     //    snipRange.selectNodeContents(copyTextarea);
+     //    var selection = window.getSelection();
+     //    selection.removeAllRanges();
+     //    selection.addRange(snipRange);
+     //    var result = false;
+     //    try {
+     //      result = document.execCommand('copy');
+     //    } catch (err) {
+     //      // Copy command is not available
+     //      console.error(err);
+     //    }
+     //    selection.removeAllRanges();
+     //    return result;
+     //  },
+     _copyContent: function() {
+        var copyTextarea = document.getElementsByClassName(this.inputUrl)[0];
+        this._copyToClipboard(copyTextarea.textContent);
       },
      _copyLink: function() {
+        this._copyToClipboard("https://suttacentral.net/"+this.inputUrl);
+      },
+     _copyCite: function() {
+        var copyTextarea = document.getElementsByClassName(this.inputUrl)[1];
+        this._copyToClipboard(copyTextarea.textContent);
+      },
+     _copyToClipboard: function(inputText) {
         var textarea = document.createElement("textarea");
-        textarea.textContent = "https://suttacentral.net/"+this.inputUrl;
+        textarea.textContent = inputText;
         textarea.style.position = "fixed";
         document.body.appendChild(textarea);
         textarea.select();
@@ -66,7 +78,8 @@ paper-item {
         } finally {
             document.body.removeChild(textarea);
         }
-      }
+     }
+
     });
 </script>
 
