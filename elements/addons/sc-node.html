@@ -22,7 +22,10 @@ h1, h2, h3 {
   @apply(--paper-font-title);
   font-family: "Skolar Sans PE", sans-serif;
 }
-
+.node-description{
+  @apply(--paper-font-body1);
+  font-family: "Skolar Sans PE", sans-serif;
+}
 </style>
 
 
@@ -34,7 +37,7 @@ h1, h2, h3 {
   </div>
   <template is="dom-if" if="{{inputText}}">
     <iron-collapse id="collapse" opened="{{opened}}">
-      <div inner-h-t-m-l="{{inputText}}"></div> 
+      <div class="node-description" inner-h-t-m-l="{{inputText}}"></div> 
     </iron-collapse>
   </template>
 

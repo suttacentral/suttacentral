@@ -7,7 +7,7 @@
 <link rel="import" href="menus/more-menu.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
-
+<link rel="import" href="../bower_components/paper-badge/paper-badge.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="menus/settings-menu.html">
@@ -40,7 +40,9 @@ paper-input {
     color:white;
   };
 }
-
+paper-badge {
+  --paper-badge-background: var(--paper-green-a700);
+}
 #closebutton {
   display: none;
 }
@@ -85,6 +87,9 @@ paper-dialog paper-icon-button {
 .hidebutton {
   display: none;
 }
+a {
+  text-decoration: none;
+}
 /*#discourselogo {
     @apply(--sc-serif-font);
     color: #015179;
@@ -97,7 +102,8 @@ paper-dialog paper-icon-button {
           <paper-input label="Search" no-label-float id="searchinput"></paper-input>
           <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
-          <a href$="{{discourseLink}}" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button></a>
+          <a href$="{{discourseLink}}" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button><paper-badge class$="{{toggleDisplay}}" label="20" title="This text has 20 references"></paper-badge></a>
+
 <!--           <a href="https://discourse.suttacentral.net" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum" class$="{{toggleDiscourse}}"></paper-icon-button></a> -->
 <!--           <paper-icon-button id="discoursedropdown" icon="communication:forum" class$="{{toggleDisplay}}" onclick="discourse.open()"></paper-icon-button>
  -->
@@ -171,7 +177,7 @@ paper-dialog paper-icon-button {
         return (suttaPath) ? "hidebutton" : "";
       },
       _computeDiscourseLink: function(suttaPath,category) {
-        return (suttaPath) ? "https://discourse.suttacentral.net/search?q="+category : "https://discourse.suttacentral.net/";
+        return (suttaPath) ? 'https://discourse.suttacentral.net/search?q="'+category+' "' : "https://discourse.suttacentral.net/";
       },
       openSearch: function() {
         if (this.$$('#searchinput').classList.contains('opened')) {

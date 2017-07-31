@@ -28,7 +28,7 @@
     "iron-pages": "PolymerElements/iron-pages#^2.0.0",
     "iron-list": "PolymerElements/iron-list#^2.0.5",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0",
-    "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
+    "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
     "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#stacking-context",
     "paper-button": "PolymerElements/paper-button#^1.0.14",
     "paper-card": "PolymerElements/paper-card#^1.1.4",
@@ -47,6 +47,7 @@
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
     "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^2.0.0",
-    "paper-spinner": "PolymerElements/paper-spinner#^2.0.0"
+    "paper-spinner": "PolymerElements/paper-spinner#^2.0.0",
+    "paper-tooltip": "PolymerElements/paper-tooltip#^2.0.0"
   }
 }
