@@ -120,14 +120,21 @@ details p {
 paper-menu-button {
   padding:0;
 }
-
+.notfound {
+  @apply(--paper-font-display1);
+}
 </style>
 
 <iron-ajax id="ajax"
       url="[[_computeURL(inputUrl)]]"
       handle-as="json"
-      last-response="{{inputData}}"></iron-ajax>
+      last-response="{{inputData}}"
+      last-error='{{notFound}}'></iron-ajax>
 
+<template is="dom-if" if="{{notFound}}">
+    <p class="notfound">Sorry, the page your requested does not exist.</p>
+</template>
+<template is="dom-if" if="{{!notFound}}">
   <paper-card class="suttaplex" id="{{inputData.url}}">
       <div class="card-content">
 
@@ -200,7 +207,7 @@ paper-menu-button {
         </iron-collapse>
       </template>
   </paper-card>
-
+</template>
 </template>
 <script>
     Polymer({
@@ -287,13 +294,15 @@ paper-menu-button {
       },
       _computeLanguage: function(inputData,inputLanguage) {
         var lanarray = "";
-        if (inputData.languages){
-          for (var i=0; i<inputData.languages.length; i=i+1) {
-            if (inputData.languages[i].id === inputLanguage) {
-              var lanarray = inputData.languages[i]
+        if (inputData) {
+            if (inputData.languages){
+              for (var i=0; i<inputData.languages.length; i=i+1) {
+                if (inputData.languages[i].id === inputLanguage) {
+                  var lanarray = inputData.languages[i]
+                }
+              }
             }
           }
-        }
         return lanarray ? lanarray : "";
       },
       _parallelsNumber: function(inputData) {

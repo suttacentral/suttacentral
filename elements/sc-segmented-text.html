@@ -34,25 +34,32 @@
 .hidepali {
     display:none;
 }
-
+.notfound {
+  @apply(--paper-font-display1);
+}
 </style>
 <iron-ajax id="ajaxbase"
       url="[[_computeURLBase(suttaPath)]]"
       handle-as="json"
-      last-response="{{baseText}}"></iron-ajax>
+      last-response="{{baseText}}"
+      last-error='{{notFound}}'></iron-ajax>
 
-  <sc-text-node category="{{suttaPath}}" input-language="{{inputLanguage}}"></sc-text-node>
+    <template is="dom-if" if="{{notFound}}">
+        <p class="notfound">Sorry, the page your requested does not exist.</p>
+    </template>
+    <template is="dom-if" if="{{!notFound}}">
+          <sc-text-node category="{{suttaPath}}" input-language="{{inputLanguage}}"></sc-text-node>
 
-  <div class="textcontent">
-      <div class="hgroup" inner-h-t-m-l="<p class='division'>{{suttaText.division}}</p><h1>{{suttaText.title}}</h1>"></div>
-      <template is="dom-repeat" items="{{baseText}}" as="line">
-        <div class="lineblock">
-            <div class="line" inner-h-t-m-l="{{line}}"></div>
-            <div class="linepi hidepali" inner-h-t-m-l="{{line}}"></div>
-        </div>
-      </template>
-  </div>
-
+          <div class="textcontent">
+              <div class="hgroup" inner-h-t-m-l="<p class='division'>{{suttaText.division}}</p><h1>{{suttaText.title}}</h1>"></div>
+              <template is="dom-repeat" items="{{baseText}}" as="line">
+                <div class="lineblock">
+                    <div class="line" inner-h-t-m-l="{{line}}"></div>
+                    <div class="linepi hidepali" inner-h-t-m-l="{{line}}"></div>
+                </div>
+              </template>
+          </div>
+    </template>
 <iron-ajax id="ajaxalternate"
               url="[[_computeURLOriginal(suttaPath)]]"
               handle-as="json"
@@ -61,7 +68,8 @@
 <iron-ajax id="ajaxsutta"
       url="[[_computeURL(suttaPath)]]"
       handle-as="json"
-      last-response="{{suttaText}}"></iron-ajax>
+      last-response="{{suttaText}}"
+      last-error='{{notFound}}'></iron-ajax>
 
 <iron-ajax id="ajaxparagraphs"
       url="../data/paragraphtitles.json"
