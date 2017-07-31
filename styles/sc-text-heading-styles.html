@@ -21,42 +21,31 @@
         }
 
     h1 {
-        margin-bottom: 1.3em;
-        padding-top: 0em;
-        font-size: 34px;
-        line-height: 40px;
+        @apply(--paper-font-display1);
+
     }
 
     h2 {
-        margin: 1.3rem 0 0.75rem 0;
-        font-size:24px;
-        line-height: 32px;
+        @apply(--paper-font-headline);
     }
 
     h3 {
-        margin: 0 0 0.75rem 0;
-        font-size: 20px;
-        line-height: 28px;
+        @apply(--paper-font-title);
     }
 
     h4{
-        margin: 0.85rem 0 0.75rem 0;
-        font-size: 18px;
-        line-height: 28px;
+        @apply(--paper-font-subhead);
+        font-size:18px;
     }
 
     h5{
-        margin: 0 0 0.75rem 0;
-        font-size: 16px;
-        line-height: 24px;
+        @apply(--paper-font-subhead);
     }
 
     h6 {
         text-align:left;
         @apply(--sc-all-small-caps);
-        margin: 0 0 0.25em 0;
-        font-size: 16px;
-        line-height: 24px;
+        @apply(--paper-font-subhead);
     }
 
     .hgroup p {

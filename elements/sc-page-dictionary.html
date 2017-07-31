@@ -22,12 +22,12 @@ main {
 .results-head{
     display: flex;
     justify-content:  space-between ;
-    padding: 0 16px;
+    padding: 0;
 }
 h1{
     @apply(--paper-font-display1);
     display: inline-block;
-    margin: 0;
+    margin: 0 0 0 -2px;
     color: var(--secondary-text-color);
 }
 
@@ -61,7 +61,7 @@ h1{
         font-weight: bold;
     }
 .entries {
-  padding:  16px;
+  padding:  0px;
 
 }
 
@@ -81,9 +81,10 @@ h1{
 
 .source{
     @apply(--paper-font-body1);
-        color: var(--disabled-text-color);
+        color: var(--secondary-text-color);
         margin:8px 0 16px;
         font-weight:bold;
+        @apply(--sc-serif-font);
 }
 
 

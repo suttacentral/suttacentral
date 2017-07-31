@@ -62,11 +62,11 @@ p > * {
     @apply(--sc-sans-font);
     color: var(--secondary-text-color);
     background: var(--paper-grey-50);
-    padding: 1em;
-    border-radius: 3px;
+    padding: 16px;
+    border-radius: 2px;
     border: 1px solid var(--paper-grey-100);
     display: inline-block;
-    margin-bottom: 1em;
+    margin-bottom: 16px;
 }
 .suttainfo p,
 .xu p,
@@ -75,14 +75,25 @@ p > * {
 }
 /* TEXT */
 
+.sutta p{
+    margin: 0 0 12px 0;
+}
+
 .sutta ul {
     list-style-type: none;
-    padding: 0 0 1.5em 0;
-    margin: 0 0 0 3em;
+    padding: 0 0 12px 0;
+    margin: 0 0 0 32px;
+}
+
+.sutta ul li::before{
+    position: absolute;
+    content: "◦";
+    color: var(--disabled-text-color);
+    margin-left: -12px;
 }
 .sutta ol {
-    padding: 0 0 1.5em 0;
-    margin: 0 0 0 3em;
+    padding: 0 0 12px 0;
+    margin: 0 0 0 32px;
 }
 .sutta ol ol {
     padding: 0 0 0 1em;
@@ -95,7 +106,7 @@ p > * {
     margin: 0 auto;
 }
 .indent {
-    padding-left: 1.5em;
+    padding-left: 32px;
 }
 .uddanagatha,
 .vagguddanagatha {
@@ -115,7 +126,7 @@ p > * {
     color: var(--secondary-text-color);
 }
 .uddana {
-    margin-bottom: 2em;
+    margin-bottom: 32px;
     color: var(--secondary-text-color);
 }
 .endbook {
