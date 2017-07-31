@@ -7,8 +7,6 @@
 <dom-module id="more-par-menu">
 <template>
 <style is="custom-style">
-
-
 paper-item iron-icon {
     margin-right: 16px;
     color: var(--disabled-text-color);
@@ -17,7 +15,6 @@ paper-item iron-icon {
 paper-item {
     color:inherit;
 }
-
 </style>
 
     <paper-item on-tap="_copyLink"><iron-icon icon="link"></iron-icon> Copy link</paper-item>
@@ -29,37 +26,26 @@ paper-item {
     Polymer({
       is: 'more-par-menu',
       properties: {
-        inputUrl: String
+        inputUrl: String,
+        inputData: {
+          type: Object,
+          notify: true
+        },
+        parallelsArray: {
+          type: Array,
+          notify: true
+        }
       },
-     // _copyToClipboard: function() {
-     //    // From https://github.com/google/material-design-lite/blob/master/docs/_assets/snippets.js
-     //    var snipRange = document.createRange();
-     //    var copyTextarea = document.querySelector('.'+this.inputUrl);
-     //    console.log(copyTextarea);
-     //    snipRange.selectNodeContents(copyTextarea);
-     //    var selection = window.getSelection();
-     //    selection.removeAllRanges();
-     //    selection.addRange(snipRange);
-     //    var result = false;
-     //    try {
-     //      result = document.execCommand('copy');
-     //    } catch (err) {
-     //      // Copy command is not available
-     //      console.error(err);
-     //    }
-     //    selection.removeAllRanges();
-     //    return result;
-     //  },
      _copyContent: function() {
-        var copyTextarea = document.getElementsByClassName(this.inputUrl)[0];
-        this._copyToClipboard(copyTextarea.textContent);
+        var copyTextarea = this._computeCopyTable(this.inputData,this.parallelsArray);
+        this._copyToClipboard(copyTextarea);
       },
      _copyLink: function() {
         this._copyToClipboard("https://suttacentral.net/"+this.inputUrl);
       },
      _copyCite: function() {
-        var copyTextarea = document.getElementsByClassName(this.inputUrl)[1];
-        this._copyToClipboard(copyTextarea.textContent);
+        var copyTextarea = this._computeCiteData(this.inputData,this.parallelsArray);
+        this._copyToClipboard(copyTextarea);
       },
      _copyToClipboard: function(inputText) {
         var textarea = document.createElement("textarea");
@@ -76,8 +62,65 @@ paper-item {
         } finally {
             document.body.removeChild(textarea);
         }
-     }
-
+     },
+       _computeIcon: function(icon){
+          switch (icon) {
+            case 'swap-horiz': return '⮀';
+            case 'compare-arrows': return '≈';
+            case 'editor:format-quote': return '❞';
+            case 'cached': return '🔃';
+          } 
+        },
+      _computeCopyTable: function(inputData,parallelsArray) {
+        var titlepi = "";
+        if (inputData.parallels) {
+                tablefinalplugin = "";
+                for (var x = 0; x < inputData.parallels.length; x++) {
+                    var relationships = inputData.parallels[x].relations;
+                    var tableplugin = "\n<tbody>\n  <tr>\n    <td rowspan='"+relationships.length+"'>"+inputData.parallels[x].id+"</td>";
+                    for (var i = 0; i < relationships.length; i++) {
+                      for (var parobject = 0; parobject < parallelsArray.length; parobject++) {
+                          if (parallelsArray[parobject].parid === relationships[i].id) {
+                            var titlepi = parallelsArray[parobject].partitle;
+                          }
+                        }
+                        tableplugin += "\n    <td>"+this._computeIcon(relationships[i].icon)+"</td>\n    <td>"+relationships[i].id+"</td>\n    <td>"+titlepi+"</td>\n  </tr>";
+                        if (i < relationships.length-1) {
+                          tableplugin += "\n  <tr>";
+                        }
+                    }
+                    tablefinalplugin += tableplugin + "\n</tbody>";
+                  }
+                return "<!DOCTYPE html>\n<html>\n<head>\n  <title>"+inputData.id+" "+inputData.titlepi+"</title>\n</head>\n<body>\n<table>\n  <caption>"+inputData.titlepi+"</caption>"+tablefinalplugin+"\n</table>\n</body>\n</html>";
+              }
+      },
+      _computeCiteData: function(inputData,parallelsArray) {
+        if (inputData.parallels) {
+                citefinalplugin = "";
+                var d = new Date();
+                for (var x = 0; x < inputData.parallels.length; x++) {
+                    var relationships = inputData.parallels[x].relations;
+                    var citeplugin = "Parallels for "+inputData.parallels[x].id+" "+inputData.titlepi+" ("+inputData.volpage+"): ";
+                    for (var i = 0; i < relationships.length; i++) {
+                        citeplugin += relationships[i].id;
+                        for (var parobject = 0; parobject < parallelsArray.length; parobject++) {
+                          if (parallelsArray[parobject].parid === relationships[i].id) {
+                            if (parallelsArray[parobject].volumepage) {
+                                citeplugin += " ("+parallelsArray[parobject].volumepage+") ";
+                            }
+                            if (parallelsArray[parobject].biblio) {
+                              citeplugin +=parallelsArray[parobject].biblio;
+                            }
+                          }
+                        }
+                        if (i < relationships.length-1) {citeplugin += "; ";
+                        }
+                    }
+                    citefinalplugin += citeplugin+"\n";
+                  }
+                return this.citeData = citefinalplugin+"Retrieved from https://suttacentral.net/"+inputData.url+" on "+d+".";
+              }
+            }
     });
 </script>
 

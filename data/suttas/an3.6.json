@@ -26,26 +26,22 @@
 		"relations": [{
 			"url": "dn1",
 			"id": "DN 1",
-			"icon": "swap-horiz",
-			"titlepi": "Original title for DN 1"
+			"icon": "swap-horiz"
 		}, {
 			"url": "ea1.34",
 			"id": "EA 1.34",
-			"icon": "swap-horiz",
-			"titlepi": "Original title for EA 1.34"
+			"icon": "swap-horiz"
 		}, {
 			"url": "mn65",
 			"id": "MN 65",
-			"icon": "compare-arrows",
-			"titlepi": "Original title for MN 65"
+			"icon": "compare-arrows"
 		}]
 	}, {
 		"id": "AN 3.6#12",
 		"relations": [{
 			"url": "dn1",
 			"id": "DN 1#4",
-			"icon": "swap-horiz",
-			"titlepi": "Original title for DN 1#4"
+			"icon": "swap-horiz"
 		}]
 	}]
 }

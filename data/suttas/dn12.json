@@ -29,44 +29,37 @@
 		"relations": [{
 			"url": "ea1.35",
 			"id": "EA 1.35",
-			"icon": "swap-horiz",
-			"titlepi": "Original title for EA 1.35"
+			"icon": "swap-horiz"
 		}, {
 			"url": "mn123",
 			"id": "MN 123",
-			"icon": "swap-horiz",
-			"titlepi": "Original title for MN 123"
+			"icon": "swap-horiz"
 		}, {
 			"url": "an3.6",
 			"id": "AN 3.6",
-			"icon": "compare-arrows",
-			"titlepi": "Original title for AN 3.6"
+			"icon": "compare-arrows"
 		}]
 	}, {
 		"id": "DN 12#15",
 		"relations": [{
 			"url": "ea1.34",
 			"id": "EA 1.34#3",
-			"icon": "swap-horiz",
-			"titlepi": "Original title for EA 1.34#3"
+			"icon": "swap-horiz"
 		}, {
 			"url": "ea1.34",
 			"id": "EA 1.34#15",
-			"icon": "compare-arrows",
-			"titlepi": "Original title for EA 1.34#15"
+			"icon": "compare-arrows"
 		}]
 	}, {
 		"id": "DN 12#43–#45",
 		"relations": [{
 			"url": "ea1.35",
 			"id": "EA 1.35#78–#81",
-			"icon": "editor:format-quote",
-			"titlepi": "Original title for EA 1.35#78–#81"
+			"icon": "editor:format-quote"
 		}, {
 			"url": "ea1.38",
 			"id": "EA 1.38",
-			"icon": "cached",
-			"titlepi": "Original title for EA 1.38"
+			"icon": "cached"
 		}]
 	}]
 }
