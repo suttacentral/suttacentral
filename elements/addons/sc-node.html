@@ -3,7 +3,6 @@
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 
-
 <dom-module id="sc-node">
 <template>
 <style is="custom-style">
@@ -17,13 +16,13 @@ h1, h2, h3 {
 }
 .node-top-heading {
   @apply(--paper-font-headline);
+  font-family: "Skolar Sans PE", sans-serif;
 }
 .node-secondary-heading {
   @apply(--paper-font-title);
+  font-family: "Skolar Sans PE", sans-serif;
 }
-.node-description{
-  @apply(--paper-font-body1);
-}
+
 </style>
 
 
@@ -45,8 +44,8 @@ h1, h2, h3 {
       is: 'sc-node',
       properties: {
 
-      	inputTitle: String,
-      	inputText: String,
+        inputTitle: String,
+        inputText: String,
         styleHeader: String,
 
 
@@ -67,8 +66,8 @@ h1, h2, h3 {
       },
 
       _toggleOpened: function(e) {
-        	this.opened = !this.opened;
-        	this.fire('toggle', this);
+          this.opened = !this.opened;
+          this.fire('toggle', this);
         }
 
     });
