@@ -23,12 +23,12 @@ main {
     display: flex;
     justify-content:  space-between ;
     padding: 0 16px;
-    color: var(--secondary-text-color);
 }
 h1{
     @apply(--paper-font-display1);
     display: inline-block;
     margin: 0;
+    color: var(--secondary-text-color);
 }
 
 .result-term{
@@ -37,50 +37,68 @@ h1{
     @apply(--sc-serif-font);
 }
 
-a {
-    text-decoration: none;
-    color: initial;
+.termsbutton {
+  color: var(--disabled-text-color);
 }
 
-.termsbutton {
- float: right;
-}
-iron-icon {
-  width: 16px;
-  height: 16px;
-}
     .related-terms {
-        float: left;
         text-align: left;
-        margin: 0 1em 48px;
+        margin: 0px 16px 48px 0px;
     }
     
-    ul {
-        margin: 0;
+   .related-terms ul {
+
+        margin: 8px 0 0 0;
         display: block;
         list-style: none;
+        padding:0;
     }
     
     .related-terms h3{
-        color: var(--sc-green-600);
-        margin-left: 39px;
-        font-size: 1em;
+        @apply(--paper-font-body1);
+        color: var(--secondary-text-color);
+        margin: 24px 0 0 16px;
         font-weight: bold;
     }
 .entries {
-  padding: 0 16px;
+  padding:  16px;
+
 }
-.source {
-    float: right;
-    margin-right: 1em;
-    padding: .2em 0 0 0;
-    color: var(--secondary-text-color);
+
+.related-terms li{
+    @apply(--paper-font-body1);
 }
+.related-terms a {
+    text-decoration: none;
+    color: var(--paper-green-700);
+    padding: 4px 0px 4px 16px;
+    margin: 4px 0;
+    display: inline-block;
+}
+.related-terms em{
+    color:var(--primary-text-color);
+}
+
+.source{
+    @apply(--paper-font-body1);
+        color: var(--disabled-text-color);
+        margin:8px 0 16px;
+        font-weight:bold;
+}
+
+
+
+.book-entry{
+    border-bottom: 1px solid var(--paper-grey-300);
+}
+
 paper-spinner-lite {
     --paper-spinner-color: var(--sc-gold-500);
     left: 50%;
     top: 50px;
 }
+
+
 </style>
 
 <iron-ajax auto url="../data/dictionaries/cped.json" handle-as="json" loading="{{loadingResults}}" last-response="{{cpedResult}}"></iron-ajax>
@@ -98,7 +116,7 @@ paper-spinner-lite {
     <main>
         <div class="results-head">
                     <h1><span class="result-description">Definitions for</span> <span class="result-term">{{dictionaryItem}}</span> </h1>
-                    <span class="termsbutton">Related Terms <iron-icon icon="arrow-forward"></iron-icon><paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button></span>
+                    <span class="termsbutton" title ="Related terms"><paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button></span>
         </div>
 
         <div class="entries">

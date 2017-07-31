@@ -1,35 +1,56 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <style is="custom-style">
+
+dl{
+    margin-top:8px;
+}
+dd{
+  margin:0;
+  @apply(--sc-paper-font-body)
+}
+dd>p{
+  margin-top:0;
+}
+dfn {
+    @apply(--paper-font-headline);
+    font-style:normal;
+}
+
 .ref {
-    color:#737373;
-    background-color:#eee;
+    color:var(--secondary-text-color);
+    background-color:var(--paper-grey-200);
     border-radius:2px;
     padding:4px 8px;
     font-size:14px;
 }
 .case {
+    @apply(--sc-all-small-caps);
     color: var(--secondary-text-color);
     display: block;
-    font-feature-settings: "smcp" 1;
-    letter-spacing: .03em;
-    font-size: .8rem;
+@apply(--paper-font-body2);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.eti{
+  color:var(--secondary-text-color);
+  @apply(--paper-font-body1)
 }
 
-dfn {
-    font-weight: bold;
-    font-style: initial;
-}
 .google-maps {
   margin-top: 16px;
-  height: 350px;
+  height: 480px;
   margin-bottom: 20px;
 }
 .google-maps iframe {
-  height: 350px;
+  height: 480px;
   width: 100%;
+  border:none;
 }
 .info {
     display: none;
+}
+h1, h2, h3, h4, h5, h6{
+  text-align: left
 }
 </style>
