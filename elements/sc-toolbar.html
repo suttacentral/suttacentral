@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/iron-icons/communication-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="menus/more-menu.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
@@ -132,9 +132,9 @@ a {
           <paper-menu-button horizontal-align="right" ignore-select id="morevertbutton">
             <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
             <div class="dropdown-content"></div>
-            <paper-menu class="dropdown-content" tabindex="0">
+            <paper-listbox class="dropdown-content" tabindex="0">
                 <more-menu input-language="{{inputLanguage}}"></more-menu>
-            </paper-menu>
+            </paper-listbox>
           </paper-menu-button>
 
 </template>

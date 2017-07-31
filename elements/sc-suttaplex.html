@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
-<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -183,9 +183,9 @@ paper-menu-button {
                 <paper-menu-button horizontal-align="right" id="[[_toggleMoreIcon]]">
                   <paper-icon-button class="dropdown-trigger" icon="icons:more-vert"></paper-icon-button>
                   <div class="dropdown-content"></div>
-                  <paper-menu class="dropdown-content" tabindex="0">
+                  <paper-listbox class="dropdown-content" tabindex="0">
                       <more-par-menu input-url="{{inputUrl}}" input-data="{{inputData}}" parallels-array="{{parallelsArray}}"></more-par-menu>
-                  </paper-menu>
+                  </paper-listbox>
                 </paper-menu-button>
                 <span class="heading" title="View Parallels & References" on-tap="_toggleOpened">
                   <paper-icon-button icon="[[_toggleIcon]]" on-tap="passParams"></paper-icon-button>
