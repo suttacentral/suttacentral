@@ -18,11 +18,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
-    <script src="../../test-fixture/test-fixture-mocha.js"></script>
 
-    <link rel="import" href="../../test-fixture/test-fixture.html">
     <link rel="import" href="../iron-collapse.html">
-
   </head>
   <body>
 
@@ -99,9 +96,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.equal(collapse.transitioning, false, 'transitioning is false');
         });
 
-        test('enableTransition(false) disables animations', function() {
-          collapse.enableTransition(false);
-          assert.isTrue(collapse.noAnimation, '`noAnimation` is true');
+        test('noAnimation disables animations', function() {
+          collapse.noAnimation = true;
           // trying to animate the size update
           collapse.updateSize('0px', true);
           // Animation immediately disabled.

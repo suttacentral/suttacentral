@@ -3,7 +3,7 @@
   "authors": [
     "The Polymer Authors"
   ],
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Web Components for managing user data in web apps",
   "main": [
     "app-storage-behavior.html",
@@ -28,7 +28,6 @@
     "paper-fab": "polymerelements/paper-fab#1 - 2",
     "paper-input": "polymerelements/paper-input#1 - 2",
     "paper-styles": "polymerelements/paper-styles#1 - 2",
-    "platinum-sw": "polymerelements/platinum-sw#1 - 2",
     "promise-polyfill": "polymerlabs/promise-polyfill#1 - 2",
     "web-component-tester": "^6.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
@@ -48,7 +47,6 @@
         "paper-fab": "polymerelements/paper-fab#^1.0.0",
         "paper-input": "polymerelements/paper-input#^1.0.0",
         "paper-styles": "polymerelements/paper-styles#^1.0.0",
-        "platinum-sw": "polymerelements/platinum-sw#^1.3.0",
         "promise-polyfill": "polymerlabs/promise-polyfill#^1.0.0",
         "web-component-tester": "Polymer/web-component-tester#^4.0.0",
         "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.24"

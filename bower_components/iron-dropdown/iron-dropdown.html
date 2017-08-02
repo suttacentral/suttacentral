@@ -14,12 +14,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../iron-behaviors/iron-control-state.html">
 <link rel="import" href="../iron-overlay-behavior/iron-overlay-behavior.html">
 <link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
-<link rel="import" href="../neon-animation/animations/opaque-animation.html">
 <link rel="import" href="iron-dropdown-scroll-manager.html">
 
 <!--
 `<iron-dropdown>` is a generalized element that is useful when you have
-hidden content (`.dropdown-content`) that is revealed due to some change in
+hidden content (`dropdown-content`) that is revealed due to some change in
 state that should cause it to do so.
 
 Note that this is a low-level element intended to be used as part of other
@@ -29,14 +28,14 @@ Examples of elements that might be implemented using an `iron-dropdown`
 include comboboxes, menubuttons, selects. The list goes on.
 
 The `<iron-dropdown>` element exposes attributes that allow the position
-of the `.dropdown-content` relative to the `.dropdown-trigger` to be
+of the `dropdown-content` relative to the `dropdown-trigger` to be
 configured.
 
     <iron-dropdown horizontal-align="right" vertical-align="top">
-      <div class="dropdown-content">Hello!</div>
+      <div slot="dropdown-content">Hello!</div>
     </iron-dropdown>
 
-In the above example, the `<div>` with class `.dropdown-content` will be
+In the above example, the `<div>` assigned to the `dropdown-content` slot will be
 hidden until the dropdown element has `opened` set to true, or when the `open`
 method is called on the element.
 
@@ -50,17 +49,17 @@ method is called on the element.
         position: fixed;
       }
 
-      #contentWrapper ::content > * {
+      #contentWrapper ::slotted(*) {
         overflow: auto;
       }
 
-      #contentWrapper.animating ::content > * {
+      #contentWrapper.animating ::slotted(*) {
         overflow: hidden;
       }
     </style>
 
     <div id="contentWrapper">
-      <content id="content" select=".dropdown-content"></content>
+      <slot id="content" name="dropdown-content"></slot>
     </div>
   </template>
 
@@ -174,15 +173,13 @@ method is called on the element.
          * The element that is contained by the dropdown, if any.
          */
         get containedElement() {
-          return Polymer.dom(this.$.content).getDistributedNodes()[0];
-        },
-
-        /**
-         * The element that should be focused when the dropdown opens.
-         * @deprecated
-         */
-        get _focusTarget() {
-          return this.focusTarget || this.containedElement;
+          // Polymer 2.x returns slot.assignedNodes which can contain text nodes.
+          var nodes = Polymer.dom(this.$.content).getDistributedNodes();
+          for (var i = 0, l = nodes.length; i < l; i++) {
+            if (nodes[i].nodeType === Node.ELEMENT_NODE) {
+              return nodes[i];
+            }
+          }
         },
 
         ready: function() {
@@ -243,7 +240,6 @@ method is called on the element.
          * Overridden from `IronOverlayBehavior`.
          */
         _renderClosed: function() {
-
           if (!this.noAnimations && this.animationConfig.close) {
             this.$.contentWrapper.classList.add('animating');
             this.playAnimation('close');
@@ -339,7 +335,7 @@ method is called on the element.
         /**
          * Apply focus to focusTarget or containedElement
          */
-        _applyFocus: function () {
+        _applyFocus: function() {
           var focusTarget = this.focusTarget || this.containedElement;
           if (focusTarget && this.opened && !this.noAutoFocus) {
             focusTarget.focus();

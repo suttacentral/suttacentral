@@ -23,18 +23,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="../paper-dialog.html">
   <link rel="import" href="../../paper-button/paper-button.html">
   <link rel="import" href="../../paper-dialog-scrollable/paper-dialog-scrollable.html">
-  <link rel="import" href="../../paper-styles/color.html">
-  <link rel="import" href="../../paper-styles/demo-pages.html">
+  <link rel="import" href="../../neon-animation/web-animations.html">
   <link rel="import" href="../../neon-animation/neon-animations.html">
-  <link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
-  <link rel="import" href="../../paper-menu/paper-menu.html">
+  <link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu-light.html">
+  <link rel="import" href="../../paper-listbox/paper-listbox.html">
   <link rel="import" href="../../paper-item/paper-item.html">
 
 
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
 
-  <style is="custom-style" include="demo-pages-shared-styles">
+  <custom-style><style is="custom-style" include="demo-pages-shared-styles">
     .centered {
       min-width: 500px;
     }
@@ -44,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         max-height: 250px;
       }
     }
-  </style>
+  </style></custom-style>
 
 </head>
 
@@ -111,8 +110,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <paper-dialog id="dropdownDialog">
         <h2>Dialog Title</h2>
-        <paper-dropdown-menu label="Value">
-          <paper-menu class="dropdown-content">
+        <paper-dropdown-menu-light label="Value">
+          <!--
+            support hybrid mode: 
+            paper-dropdown-menu-light 1.x distributes via <content select=".dropdown-content">
+            paper-dropdown-menu-light 2.x distributes via <slot name="dropdown-content">
+          -->
+          <paper-listbox class="dropdown-content" slot="dropdown-content">
             <paper-item>1</paper-item>
             <paper-item>2</paper-item>
             <paper-item>3</paper-item>
@@ -123,8 +127,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-item>8</paper-item>
             <paper-item>9</paper-item>
             <paper-item>10</paper-item>
-          </paper-menu>
-        </paper-dropdown-menu>
+          </paper-listbox>
+        </paper-dropdown-menu-light>
       </paper-dialog>
 
       <paper-dialog id="nested">
@@ -146,12 +150,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <h3>Styling and positioning</h3>
   <demo-snippet>
     <template>
-      <style is="custom-style">
+      <style>
         paper-dialog.colored {
           border: 2px solid;
-          border-color: var(--paper-green-500);
-          background-color: var(--paper-light-green-50);
-          color: var(--paper-green-500);
+          border-color: #4caf50;
+          background-color: #f1f8e9;
+          color: #4caf50;
         }
 
         paper-dialog.size-position {

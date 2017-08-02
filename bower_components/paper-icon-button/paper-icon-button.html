@@ -94,24 +94,24 @@ Custom property | Description | Default
         /* Because of polymer/2558, this style has lower specificity than * */
         box-sizing: border-box !important;
 
-        @apply(--paper-icon-button);
+        @apply --paper-icon-button;
       }
 
       :host #ink {
-        color: var(--paper-icon-button-ink-color, --primary-text-color);
+        color: var(--paper-icon-button-ink-color, var(--primary-text-color));
         opacity: 0.6;
       }
 
       :host([disabled]) {
-        color: var(--paper-icon-button-disabled-text, --disabled-text-color);
+        color: var(--paper-icon-button-disabled-text, var(--disabled-text-color));
         pointer-events: none;
         cursor: auto;
 
-        @apply(--paper-icon-button-disabled);
+        @apply --paper-icon-button-disabled;
       }
 
       :host(:hover) {
-        @apply(--paper-icon-button-hover);
+        @apply --paper-icon-button-hover;
       }
 
       iron-icon {

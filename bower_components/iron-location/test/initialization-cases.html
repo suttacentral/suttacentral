@@ -7,7 +7,6 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-
 <link rel='import' href='../iron-location.html'>
 <link rel='import' href='../../polymer/polymer.html'>
 
@@ -15,7 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   Polymer({
     is: 'default-value',
     properties: {
-      val: {
+      value: {
         type: String,
         notify: true,
         value: 'default-value'
@@ -48,6 +47,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: 'on-ready-default-value'
       }
     },
+
     ready: function() {
       this.val = 'on-ready';
     }
@@ -87,12 +87,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>Polymer({is: 'attached-before', properties: {val: {type: String}}});</script>
 </dom-module>
 
-<dom-module id='ready-before'>
+<dom-module id="ready-before">
   <template>
-    <on-ready val='{{val}}'></on-ready>
-    <iron-location query='{{val}}'></iron-location>
+    <on-ready val="{{val}}"></on-ready>
+    <iron-location query="{{val}}"></iron-location>
   </template>
-  <script>Polymer({is: 'ready-before', properties: {val: {type: String}}});</script>
+  <script>
+    Polymer({
+      is: 'ready-before',
+      properties: {
+        val: String
+      }
+    });
+  </script>
 </dom-module>
 
 <dom-module id='timeout-before'>
@@ -120,12 +127,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>Polymer({is: 'attached-after', properties: {val: {type: String}}});</script>
 </dom-module>
 
-<dom-module id='ready-after'>
+<dom-module id="ready-after">
   <template>
-    <iron-location query='{{val}}'></iron-location>
-    <on-ready val='{{val}}'></on-ready>
+    <iron-location query="{{val}}"></iron-location>
+    <on-ready val="{{val}}"></on-ready>
   </template>
-  <script>Polymer({is: 'ready-after', properties: {val: {type: String}}});</script>
+  <script>
+    Polymer({
+      is: 'ready-after',
+      properties: {
+        val: String
+      }
+    });
+  </script>
 </dom-module>
 
 <dom-module id='timeout-after'>
@@ -135,7 +149,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
   <script>Polymer({is: 'timeout-after', properties: {val: {type: String}}});</script>
 </dom-module>
-
 
 <dom-module id='default-below'>
   <template>
@@ -155,13 +168,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>Polymer({is: 'attached-below', properties: {val: {type: String}}});</script>
 </dom-module>
 
-<dom-module id='ready-below'>
+<dom-module id="ready-below">
   <template>
-    <iron-location query='{{val}}'>
-      <on-ready val='{{val}}'></on-ready>
+    <iron-location query="{{val}}">
+      <on-ready val="{{val}}"></on-ready>
     </iron-location>
   </template>
-  <script>Polymer({is: 'ready-below', properties: {val: {type: String}}});</script>
+  <script>
+    Polymer({
+      is: 'ready-below',
+      properties: {
+        val: String
+      }
+    });
+  </script>
 </dom-module>
 
 <dom-module id='timeout-below'>
@@ -193,14 +213,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>Polymer({is: 'attached-above', properties: {val: {type: String}}});</script>
 </dom-module>
 
-<dom-module id='ready-above'>
+<dom-module id="ready-above">
   <template>
-    <on-ready val='{{val}}'>
-      <iron-location query='{{val}}'>
-      </iron-location>
+    <on-ready val="{{val}}">
+      <iron-location query="{{val}}"></iron-location>
     </on-ready>
   </template>
-  <script>Polymer({is: 'ready-above', properties: {val: {type: String}}});</script>
+  <script>
+    Polymer({
+      is: 'ready-above',
+      properties: {
+        val: String
+      }
+    });
+  </script>
 </dom-module>
 
 <dom-module id='timeout-above'>
@@ -242,13 +268,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </script>
 </dom-module>
 
-<dom-module id='ready-container'>
+<dom-module id="ready-container">
   <template>
-    <iron-location query='{{val}}'></iron-location>
+    <iron-location query="{{val}}"></iron-location>
   </template>
   <script>
     Polymer({
-      is: 'ready-container', properties: {val: {type: String}},
+      is: 'ready-above',
+      properties: {
+        val: String
+      },
       ready: function() {
         this.val = 'ready-container-val';
       }

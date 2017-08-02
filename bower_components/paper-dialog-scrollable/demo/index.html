@@ -26,13 +26,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
 
-  <style is="custom-style" include="demo-pages-shared-styles">
+  <custom-style><style is="custom-style" include="demo-pages-shared-styles">
     demo-snippet {
       --demo-snippet-code: {
         max-height: 300px;
       };
     }
-  </style>
+  </style></custom-style>
 
 </head>
 <body unresolved class="centered">
@@ -42,14 +42,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </h3>
   <demo-snippet class="centered-demo">
     <template>
-      <style is="custom-style">
+      <custom-style><style is="custom-style">
         section {
           width: 100%;
           height: 300px;
-          @apply(--layout-vertical);
+          @apply --layout-vertical;
         }
         section paper-dialog-scrollable {
-          @apply(--layout-flex);
+          @apply --layout-flex;
         }
         .header {
           padding: 8px 24px;
@@ -58,7 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 8px 24px;
           text-align: right;
         }
-      </style>
+      </style></custom-style>
       <section>
         <div class="header">Alice in Wonderland</div>
         <paper-dialog-scrollable>

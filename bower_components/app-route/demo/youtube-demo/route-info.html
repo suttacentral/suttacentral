@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: #fff;
       }
     </style>
-    <span>Route prefix: {{route.prefix}} &middot; Route path: {{route.path}} &middot; Query params: {{_stringifyQueryParams(route.queryParams.*)}}</span>
+    <span>Route prefix: {{route.prefix}} &middot; Route path: {{route.path}} &middot; Query params: {{_stringifyQueryParams(route.__queryParams.*)}}</span>
   </template>
   <script>
     Polymer({
@@ -36,9 +36,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _stringifyQueryParams: function() {
         var params = [];
-        if (this.route && this.route.queryParams) {
-          for (var key in this.route.queryParams) {
-            params.push(key + ' = ' + this.route.queryParams[key]);
+        if (this.route && this.route.__queryParams) {
+          for (var key in this.route.__queryParams) {
+            params.push(key + ' = ' + this.route.__queryParams[key]);
           }
         }
         return params.join(', ');

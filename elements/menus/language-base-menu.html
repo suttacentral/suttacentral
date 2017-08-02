@@ -27,7 +27,7 @@ paper-item {
           last-response="{{languageChoice}}"></iron-ajax>
 
 	<paper-dropdown-menu class="custom" label="Language" title="Select the site in another language">
-	  <paper-listbox class="dropdown-content" selected="{{languageSelectedNr}}">
+	  <paper-listbox slot="dropdown-content" selected="{{languageSelectedNr}}">
 	  <template is="dom-repeat" items="{{languageChoice}}" as="language">
 	    	  <paper-item id$="{{language.id}}">{{language.full}}</paper-item>
 	    </template>
@@ -40,7 +40,10 @@ paper-item {
         is: 'language-base-menu',
 
         properties: {
-          languageChoice: Array,
+          languageChoice: {
+            type: Array,
+            notify: true
+          },
           languageSelectedNr: Number,
           selectedLanguage: {
             type: String,
@@ -49,6 +52,7 @@ paper-item {
           },
           inputLanguage: {
             type: String,
+            value: "en",
             notify: true
           }
     	},
@@ -60,14 +64,14 @@ paper-item {
         if (this.inputLanguage === undefined) {return this.languageSelectedNr = 0;}
       },
       _checkLanguageNr: function(inputLanguage,languageChoice) {
-        if (inputLanguage === undefined) {return this.languageSelectedNr = 0;}
-        else {
-          for (var i = 0 ; i < languageChoice.length ; i++) {
-            if (languageChoice[i].id === inputLanguage) {
-              return this.languageSelectedNr = i;
+          if (inputLanguage === undefined) {return this.languageSelectedNr = 0;}
+          else {
+            for (var i = 0 ; i < languageChoice.length ; i++) {
+              if (languageChoice[i].id === inputLanguage) {
+                return this.languageSelectedNr = i;
+              }
             }
           }
-        }
       },
         _passNewLanguageSelected: function(selectedLanguage) {
           this.fire('languageSelection',{Language:selectedLanguage});

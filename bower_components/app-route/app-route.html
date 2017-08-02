@@ -100,7 +100,7 @@ the `app-route` will update `route.path`. This in-turn will update the
         },
 
         /**
-         * The pattern of slash-separated segments to match `path` against.
+         * The pattern of slash-separated segments to match `route.path` against.
          *
          * For example the pattern "/foo" will match "/foo" or "/foo/bar"
          * but not "/foobar".
@@ -133,7 +133,7 @@ the `app-route` will update `route.path`. This in-turn will update the
         },
 
         /**
-         * The part of `path` NOT consumed by `pattern`.
+         * The part of `route.path` NOT consumed by `pattern`.
          */
         tail: {
           type: Object,
@@ -141,6 +141,10 @@ the `app-route` will update `route.path`. This in-turn will update the
           notify: true
         },
 
+        /**
+         * Whether the current route is active. True if `route.path` matches the
+         * `pattern`, false otherwise.
+         */
         active: {
           type: Boolean,
           notify: true,
@@ -176,11 +180,12 @@ the `app-route` will update `route.path`. This in-turn will update the
 
       /**
        * Deal with the query params object being assigned to wholesale.
-       * @export
        */
       __routeQueryParamsChanged: function(queryParams) {
         if (queryParams && this.tail) {
-          this.set('tail.__queryParams', queryParams);
+          if (this.tail.__queryParams !== queryParams) {
+            this.set('tail.__queryParams', queryParams);
+          }
 
           if (!this.active || this._queryParamsUpdating) {
             return;
@@ -215,18 +220,12 @@ the `app-route` will update `route.path`. This in-turn will update the
         }
       },
 
-      /**
-       * @export
-       */
       __tailQueryParamsChanged: function(queryParams) {
-        if (queryParams && this.route) {
+        if (queryParams && this.route && this.route.__queryParams != queryParams) {
           this.set('route.__queryParams', queryParams);
         }
       },
 
-      /**
-       * @export
-       */
       __queryParamsChanged: function(changes) {
         if (!this.active || this._queryParamsUpdating) {
           return;
@@ -238,19 +237,16 @@ the `app-route` will update `route.path`. This in-turn will update the
       __resetProperties: function() {
         this._setActive(false);
         this._matched = null;
-        //this.tail = { path: null, prefix: null, queryParams: null };
-        //this.data = {};
       },
 
-      /**
-       * @export
-       */
       __tryToMatch: function() {
         if (!this.route) {
           return;
         }
+
         var path = this.route.path;
         var pattern = this.pattern;
+
         if (!pattern) {
           return;
         }
@@ -321,12 +317,17 @@ the `app-route` will update `route.path`. This in-turn will update the
           this._dataInUrl[key] = namedMatches[key];
         }
 
-        this.__setMulti(propertyUpdates);
+        if (this.setProperties) {
+          if (!this.active) {
+            this._setActive(true);
+          }
+          // atomic update
+          this.setProperties(propertyUpdates);
+        } else {
+          this.__setMulti(propertyUpdates);
+        }
       },
 
-      /**
-       * @export
-       */
       __tailPathChanged: function(path) {
         if (!this.active) {
           return;
@@ -342,9 +343,6 @@ the `app-route` will update `route.path`. This in-turn will update the
         this.set('route.path', newPath);
       },
 
-      /**
-       * @export
-       */
       __updatePathOnDataChange: function() {
         if (!this.route || !this.active) {
           return;
@@ -410,7 +408,6 @@ the `app-route` will update `route.path`. This in-turn will update the
           this._pathEffector('tail', this.tail);
           this._notifyChange('tail');
         }
-
       }
     });
   })();

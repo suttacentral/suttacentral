@@ -21,7 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <div on-tap="open">
-      <content select=".dropdown-trigger"></content>
+      <slot name="dropdown-trigger"></slot>
     </div>
     <iron-dropdown id="dropdown"
       vertical-align="[[verticalAlign]]"
@@ -29,7 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       disabled="[[disabled]]"
       open-animation-config="[[openAnimationConfig]]"
       close-animation-config="[[closeAnimationConfig]]">
-      <content select=".dropdown-content"></content>
+      <slot name="dropdown-content" slot="dropdown-content"></slot>
     </iron-dropdown>
   </template>
   <script>

@@ -259,45 +259,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var properties = ['noCancelOnEscKey', 'noCancelOnOutsideClick', 'withBackdrop'];
         properties.forEach(function(property) {
+          suite(property, function() {
 
-          test('modal sets ' + property + ' to true', function() {
-            var dialog = fixture('modal');
-            assert.isTrue(dialog[property], property);
+            test('modal sets ' + property + ' to true', function() {
+              var dialog = fixture('modal');
+              assert.isTrue(dialog[property], property);
+            });
+
+            test('modal toggling keeps current value of ' + property, function() {
+              var dialog = fixture('modal');
+              // Changed to false while modal is true.
+              dialog[property] = false;
+              dialog.modal = false;
+              assert.isFalse(dialog[property], property + ' is false');
+            });
+
+            test('modal toggling keeps previous value of ' + property, function() {
+              var dialog = fixture('basic');
+              // Changed before modal is true.
+              dialog[property] = true;
+              // Toggle twice to trigger observer.
+              dialog.modal = true;
+              dialog.modal = false;
+              assert.isTrue(dialog[property], property + ' is still true');
+            });
+
+            test('default modal does not override ' + property +' (attribute)', function() {
+              // Property is set on ready from attribute.
+              var dialog = fixture('like-modal');
+              assert.isTrue(dialog[property], property + ' is true');
+            });
+
+            test('modal toggling keeps previous value of ' + property + ' (attribute)', function() {
+              // Property is set on ready from attribute.
+              var dialog = fixture('like-modal');
+              // Toggle twice to trigger observer.
+              dialog.modal = true;
+              dialog.modal = false;
+              assert.isTrue(dialog[property], property + ' is still true');
+            });
+
           });
-
-          test('modal toggling keeps current value of ' + property, function() {
-            var dialog = fixture('modal');
-            // Changed to false while modal is true.
-            dialog[property] = false;
-            dialog.modal = false;
-            assert.isFalse(dialog[property], property + ' is false');
-          });
-
-          test('modal toggling keeps previous value of ' + property, function() {
-            var dialog = fixture('basic');
-            // Changed before modal is true.
-            dialog[property] = true;
-            // Toggle twice to trigger observer.
-            dialog.modal = true;
-            dialog.modal = false;
-            assert.isTrue(dialog[property], property + ' is still true');
-          });
-
-          test('default modal does not override ' + property +' (attribute)', function() {
-            // Property is set on ready from attribute.
-            var dialog = fixture('like-modal');
-            assert.isTrue(dialog[property], property + ' is true');
-          });
-
-          test('modal toggling keeps previous value of ' + property + ' (attribute)', function() {
-            // Property is set on ready from attribute.
-            var dialog = fixture('like-modal');
-            // Toggle twice to trigger observer.
-            dialog.modal = true;
-            dialog.modal = false;
-            assert.isTrue(dialog[property], property + ' is still true');
-          });
-
         });
 
         test('clicking outside a modal dialog does not move focus from dialog', function(done) {

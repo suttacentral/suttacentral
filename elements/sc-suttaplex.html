@@ -188,9 +188,9 @@ paper-menu-button {
         <template is="dom-if" if="{{inputData.parallels}}">
             <div class="card-actions-right">
                 <paper-menu-button horizontal-align="right" id="[[_toggleMoreIcon]]">
-                  <paper-icon-button class="dropdown-trigger" icon="icons:more-vert"></paper-icon-button>
-                  <div class="dropdown-content"></div>
-                  <paper-listbox class="dropdown-content" tabindex="0">
+                  <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert"></paper-icon-button>
+                  <div slot="dropdown-content"></div>
+                  <paper-listbox slot="dropdown-content" tabindex="0">
                       <more-par-menu input-url="{{inputUrl}}" input-data="{{inputData}}" parallels-array="{{parallelsArray}}"></more-par-menu>
                   </paper-listbox>
                 </paper-menu-button>

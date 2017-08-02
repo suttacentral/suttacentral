@@ -1,23 +1,7 @@
-
-<!---
-
-This README is automatically generated from the comments in these files:
-paper-dialog-behavior.html
-
-Edit those files, and our readme bot will duplicate them over here!
-Edit this file, and the bot will squash your changes :)
-
-The bot does some handling of markdown. Please file a bug if it does the wrong
-thing! https://github.com/PolymerLabs/tedium/issues
-
--->
-
 [![Build status](https://travis-ci.org/PolymerElements/paper-dialog-behavior.svg?branch=master)](https://travis-ci.org/PolymerElements/paper-dialog-behavior)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/PolymerElements/paper-dialog-behavior)
 
-_[Demo and API docs](https://elements.polymer-project.org/elements/paper-dialog-behavior)_
-
-
-##Polymer.PaperDialogBehavior
+## Polymer.PaperDialogBehavior
 
 Use `Polymer.PaperDialogBehavior` and `paper-dialog-shared-styles.html` to implement a Material Design
 dialog.
@@ -42,6 +26,12 @@ Use the `<h2>` tag for the header and the `buttons` class for the action area. Y
 Use the `dialog-dismiss` and `dialog-confirm` attributes on interactive controls to close the
 dialog. If the user dismisses the dialog with `dialog-confirm`, the `closingReason` will update
 to include `confirmed: true`.
+
+### Changes in 2.0
+- `paper-dialog-shared-styles` styles direct `h2` and `.buttons` children of the dialog because of how [`::slotted` works](https://developers.google.com/web/fundamentals/primers/shadowdom/?hl=en#stylinglightdom)
+(compound selector will select only top level nodes)
+- Removed `paper-dialog-common.css` as it's a duplicate of `paper-dialog-shared-styles.html`.
+Import the shared styles via `<style include="paper-dialog-shared-styles">` ([see example](demo/simple-dialog.html))
 
 ### Accessibility
 

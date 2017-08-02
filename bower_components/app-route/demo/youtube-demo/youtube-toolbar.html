@@ -43,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       #background {
         height: 230px;
         background-image: linear-gradient(#E7291A, #C21616);
-        @apply(--shadow-elevation-2dp);
+        @apply --shadow-elevation-2dp;
         transform-origin: 0 0;
         transition: transform 0.3s;
         transform: scaleY(1);
@@ -169,7 +169,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="play-icon"></div>
     </div>
     <div id="content">
-      <content></content>
+      <slot></slot>
     </div>
     <a id="back" href="../#/search/"><paper-icon-button icon="icons:arrow-back"></paper-icon-button></a>
   </template>

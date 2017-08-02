@@ -19,21 +19,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
+    <link rel="import" href="../../polymer/polymer.html">
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../polymer/polymer.html">
     <link rel="import" href="../iron-image.html">
 
-    <style is="custom-style" include="demo-pages-shared-styles">
-      .example {
-        margin: 4px;
-        flex: 1;
-      }
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+        .example {
+          margin: 4px;
+          flex: 1;
+        }
 
-      code {
-        white-space: nowrap;
-      }
-    </style>
+        code {
+          white-space: nowrap;
+        }
+      </style>
+    </custom-style>
 
     <script>
       function load(id) {
@@ -59,13 +61,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </h3>
       <demo-snippet class="centered-demo">
         <template>
-          <style is="custom-style">
-            #example-sizing-cover {
-              width: 150px;
-              height: 150px;
-              background: #ddd;
-            }
-          </style>
+          <custom-style>
+            <style is="custom-style">
+              #example-sizing-cover {
+                width: 150px;
+                height: 150px;
+                background: #ddd;
+              }
+            </style>
+          <custom-style>
 
           <iron-image sizing="cover" id="example-sizing-cover" alt="The Polymer logo." src="./polymer.svg"></iron-image>
         </template>
@@ -77,13 +81,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </h3>
       <demo-snippet class="centered-demo">
         <template>
-          <style is="custom-style">
-            #example-sizing-contain {
-              width: 150px;
-              height: 150px;
-              background: #ddd;
-            }
-          </style>
+          <custom-style>
+            <style is="custom-style">
+              #example-sizing-contain {
+                width: 150px;
+                height: 150px;
+                background: #ddd;
+              }
+            </style>
+          </custom-style>
 
           <iron-image sizing="contain" id="example-sizing-contain" alt="The Polymer logo." src="./polymer.svg"></iron-image>
         </template>
@@ -95,28 +101,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </h3>
       <demo-snippet class="centered-demo">
         <template>
-          <style is="custom-style">
-            #example-full-width-container {
-              width: 200px;
-              border: 2px solid #444;
-              background: #444;
-            }
+          <custom-style>
+            <style is="custom-style">
+              #example-full-width-container {
+                width: 200px;
+                border: 2px solid #444;
+                background: #444;
+              }
 
-            #example-full-width-container iron-image {
-              background: #ddd;
-            }
+              #example-full-width-container iron-image {
+                background: #ddd;
+              }
 
-            #example-full-width {
-              width: 100%;
-              --iron-image-width: 100%;
-            }
+              #example-full-width {
+                width: 100%;
+                --iron-image-width: 100%;
+              }
 
-            #example-half-width {
-              width: 50%;
-              --iron-image-width: 100%;
-            }
-          </style>
-
+              #example-half-width {
+                width: 50%;
+                --iron-image-width: 100%;
+              }
+            </style>
+          </custom-style>
 
           <div id="example-full-width-container">
             <iron-image id="example-full-width" alt="The Polymer logo." src="./polymer.svg"></iron-image>
@@ -131,28 +138,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </h3>
       <demo-snippet class="centered-demo">
         <template>
-          <style is="custom-style">
-            #example-full-height-container {
-              height: 150px;
-              border: 2px solid #444;
-              background: #444;
-            }
+          <custom-style>
+            <style is="custom-style">
+              #example-full-height-container {
+                height: 150px;
+                border: 2px solid #444;
+                background: #444;
+              }
 
-            #example-full-height-container iron-image{
-              background: #ddd;
-            }
+              #example-full-height-container iron-image{
+                background: #ddd;
+              }
 
-            #example-full-height {
-              height: 100%;
-              --iron-image-height: 100%;
-            }
+              #example-full-height {
+                height: 100%;
+                --iron-image-height: 100%;
+              }
 
-            #example-half-height {
-              height: 50%;
-              --iron-image-height: 100%;
-            }
-          </style>
-
+              #example-half-height {
+                height: 50%;
+                --iron-image-height: 100%;
+              }
+            </style>
+          </custom-style>
 
           <div id="example-full-height-container">
             <iron-image id="example-full-height" alt="The Polymer logo." src="./polymer.svg"></iron-image>
@@ -166,13 +174,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </h3>
       <demo-snippet class="centered-demo">
         <template>
-          <style is="custom-style">
-            .example.without-preload iron-image {
-              width: 150px;
-              height: 150px;
-              background: #ddd;
-            }
-          </style>
+          <custom-style>
+            <style is="custom-style">
+              .example.without-preload iron-image {
+                width: 150px;
+                height: 150px;
+                background: #ddd;
+              }
+            </style>
+          </custom-style>
 
           <div class="example without-preload">
             <button onclick="load('example-without-preload-1')">
@@ -191,16 +201,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </h3>
       <demo-snippet class="centered-demo">
         <template>
-          <style is="custom-style">
-            .example.preload iron-image {
-              width: 150px;
-              height: 150px;
-              background: #ddd;
-              --iron-image-placeholder: {
-                background: #939ed5;
-              };
-            }
-          </style>
+          <custom-style>
+            <style is="custom-style">
+              .example.preload iron-image {
+                width: 150px;
+                height: 150px;
+                background: #ddd;
+                --iron-image-placeholder: {
+                  background: #939ed5;
+                };
+              }
+            </style>
+          </custom-style>
 
           <div class="example preload">
             <button onclick="load('example-preload-1')">
@@ -231,13 +243,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </h3>
       <demo-snippet class="centered-demo">
         <template>
-          <style is="custom-style">
-            .example.preload-image iron-image {
-              width: 150px;
-              height: 150px;
-              background: #ddd;
-            }
-          </style>
+          <custom-style>
+            <style is="custom-style">
+              .example.preload-image iron-image {
+                width: 150px;
+                height: 150px;
+                background: #ddd;
+              }
+            </style>
+          </custom-style>
 
           <div class="example preload-image">
             <button onclick="load('example-preload-image-1')">

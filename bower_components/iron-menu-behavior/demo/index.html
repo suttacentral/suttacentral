@@ -24,38 +24,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="simple-menu.html">
   <link rel="import" href="simple-menubar.html">
 
-  <style is="custom-style">
-    simple-menu,
-    simple-menubar {
-      display: inline-block;
-      width: 100%;
-    }
+  <custom-style>
+    <style is="custom-style">
+      simple-menu,
+      simple-menubar {
+        display: inline-block;
+        width: 100%;
+      }
 
-    simple-menu a {
-      display: block;
-    }
+      simple-menu a {
+        display: block;
+      }
 
-    simple-menubar a,
-    simple-menu a {
-      padding: 15px 20px;
-      color: var(--primary-text-color);
-      text-decoration: none;
-    }
+      simple-menubar a,
+      simple-menu a {
+        padding: 15px 20px;
+        color: var(--primary-text-color);
+        text-decoration: none;
+      }
+      simple-menubar a.iron-selected,
+      simple-menu a.iron-selected {
+        color: white;
+      }
 
-    simple-menu a[disabled],
-    simple-menubar a[disabled] {
-      color: var(--google-grey-300);
-    }
+      simple-menu a[disabled],
+      simple-menubar a[disabled] {
+        color: var(--google-grey-300);
+      }
 
-    .horizontal-section {
-      padding: 0;
-      margin-bottom: 20px;
-    }
+      .horizontal-section {
+        padding: 0;
+        margin-bottom: 20px;
+      }
 
-    .row {
-      height: 120px;
-    }
-  </style>
+      .row {
+        height: 120px;
+      }
+
+      [hidden] {
+        display: none;
+      }
+    </style>
+  </custom-style>
 </head>
 <body unresolved>
 

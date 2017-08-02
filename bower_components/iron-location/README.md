@@ -16,8 +16,10 @@ thing! https://github.com/PolymerLabs/tedium/issues
 
 _[Demo and API docs](https://elements.polymer-project.org/elements/iron-location)_
 
+## Changes in 2.0
+* URL Polyfill no longer a dependency. Small workaround implemented.
 
-##&lt;iron-location&gt;
+## &lt;iron-location&gt;
 
 The `iron-location` element manages binding to and from the current URL.
 

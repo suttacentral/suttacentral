@@ -15,25 +15,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="simple-dialog">
   <template>
     <style include="paper-dialog-shared-styles"></style>
-    <content></content>
+    <slot></slot>
   </template>
 
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'simple-dialog',
+        behaviors: [
+          Polymer.PaperDialogBehavior
+        ]
+      });
+
+    })();
+  </script>
 </dom-module>
-
-<script>
-
-(function() {
-
-  Polymer({
-
-    is: 'simple-dialog',
-
-    behaviors: [
-      Polymer.PaperDialogBehavior
-    ]
-
-  });
-
-})();
-
-</script>

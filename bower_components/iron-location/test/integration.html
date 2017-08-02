@@ -12,7 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <head>
   <title>iron-location</title>
 
-  <script src="../../webcomponentsjs/webcomponents.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <script src="../../web-component-tester/browser.js"></script>
 
   <link rel="import" href="../../polymer/polymer.html">
@@ -94,7 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if (plainTextQuery) {
             expect('').to.be.equal(ironQueryParams.paramsObject[plainTextQuery])
           } else {
-            expect(ironQueryParams.paramsObject[plainTextQuery]).to.be.undefined;          
+            expect(ironQueryParams.paramsObject[plainTextQuery]).to.be.undefined;
           }
         }
       });

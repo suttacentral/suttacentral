@@ -16,11 +16,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <script src="../../web-component-tester/browser.js"></script>
-  <script src="../../test-fixture/test-fixture-mocha.js"></script>
   <script src="../../iron-test-helpers/mock-interactions.js"></script>
 
   <link rel="import" href="../paper-menu-button.html">
-  <link rel="import" href="../../test-fixture/test-fixture.html">
 
 </head>
 <body>
@@ -28,8 +26,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="TrivialMenuButton">
     <template>
       <paper-menu-button no-animations>
-        <span class="dropdown-trigger">trigger</span>
-        <span class="dropdown-content">content</span>
+        <span slot="dropdown-trigger">trigger</span>
+        <span slot="dropdown-content">content</span>
       </paper-menu-button>
     </template>
   </test-fixture>
@@ -37,12 +35,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="TwoMenuButtons">
     <template>
       <paper-menu-button no-animations>
-        <span class="dropdown-trigger">trigger</span>
-        <span class="dropdown-content">content</span>
+        <span slot="dropdown-trigger">trigger</span>
+        <span slot="dropdown-content">content</span>
       </paper-menu-button>
       <paper-menu-button no-animations>
-        <span class="dropdown-trigger">trigger</span>
-        <span class="dropdown-content">content</span>
+        <span slot="dropdown-trigger">trigger</span>
+        <span slot="dropdown-content">content</span>
       </paper-menu-button>
     </template>
   </test-fixture>
@@ -55,8 +53,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       setup(function() {
         menuButton = fixture('TrivialMenuButton');
-        trigger = Polymer.dom(menuButton).querySelector('.dropdown-trigger');
-        content = Polymer.dom(menuButton).querySelector('.dropdown-content');
+        trigger = Polymer.dom(menuButton).querySelector('[slot="dropdown-trigger"]');
+        content = Polymer.dom(menuButton).querySelector('[slot="dropdown-content"]');
       });
 
       test('opens when trigger is clicked', function(done) {
@@ -150,8 +148,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var buttons = fixture('TwoMenuButtons');
         menuButton = buttons[0];
         otherButton = buttons[1];
-        trigger = Polymer.dom(menuButton).querySelector('.dropdown-trigger');
-        otherTrigger = Polymer.dom(otherButton).querySelector('.dropdown-trigger');
+        trigger = Polymer.dom(menuButton).querySelector('[slot="dropdown-trigger"]');
+        otherTrigger = Polymer.dom(otherButton).querySelector('[slot="dropdown-trigger"]');
       });
 
       test('closes current and opens other', function(done) {

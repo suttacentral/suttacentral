@@ -83,9 +83,9 @@ Custom property | Description | Default
       }
 
       .badge {
-        @apply(--layout);
-        @apply(--layout-center-center);
-        @apply(--paper-font-common-base);
+        @apply --layout;
+        @apply --layout-center-center;
+        @apply --paper-font-common-base;
 
         font-weight: normal;
         font-size: 11px;
@@ -94,11 +94,11 @@ Custom property | Description | Default
         margin-bottom: var(--paper-badge-margin-bottom, 0px);
         width: var(--paper-badge-width, 20px);
         height: var(--paper-badge-height, 20px);
-        background-color: var(--paper-badge-background, --accent-color);
+        background-color: var(--paper-badge-background, var(--accent-color));
         opacity: var(--paper-badge-opacity, 1.0);
         color: var(--paper-badge-text-color, white);
 
-        @apply(--paper-badge);
+        @apply --paper-badge;
       }
     </style>
 
@@ -153,11 +153,26 @@ Custom property | Description | Default
         icon: {
           type: String,
           value: ''
+        },
+
+        _boundNotifyResize: {
+          type: Function,
+          value: function() {
+            return this.notifyResize.bind(this);
+          }
+        },
+
+        _boundUpdateTarget: {
+          type: Function,
+          value: function() {
+            return this._updateTarget.bind(this);
+          }
         }
       },
 
       attached: function() {
-        this._updateTarget();
+        // Polymer 2.x does not have this.offsetParent defined by attached
+        requestAnimationFrame(this._boundUpdateTarget);
       },
 
       attributeChanged: function (name) {
@@ -181,7 +196,7 @@ Custom property | Description | Default
 
       _updateTarget: function() {
         this._target = this.target;
-        this.async(this.notifyResize, 1);
+        requestAnimationFrame(this._boundNotifyResize);
       },
 
       _computeIsIconBadge: function(icon) {
@@ -220,11 +235,9 @@ Custom property | Description | Default
        * you've manually done a page re-layout).
        */
       updatePosition: function() {
-        if (!this._target)
+        if (!this._target || !this.offsetParent) {
           return;
-
-        if (!this.offsetParent)
-          return;
+        }
 
         var parentRect = this.offsetParent.getBoundingClientRect();
         var targetRect = this._target.getBoundingClientRect();

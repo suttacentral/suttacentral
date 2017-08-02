@@ -1,23 +1,9 @@
-
-<!---
-
-This README is automatically generated from the comments in these files:
-iron-image.html
-
-Edit those files, and our readme bot will duplicate them over here!
-Edit this file, and the bot will squash your changes :)
-
-The bot does some handling of markdown. Please file a bug if it does the wrong
-thing! https://github.com/PolymerLabs/tedium/issues
-
--->
-
 [![Build status](https://travis-ci.org/PolymerElements/iron-image.svg?branch=master)](https://travis-ci.org/PolymerElements/iron-image)
 
 _[Demo and API docs](https://elements.polymer-project.org/elements/iron-image)_
 
 
-##&lt;iron-image&gt;
+## &lt;iron-image&gt;
 
 `iron-image` is an element for displaying an image that provides useful sizing and
 preloading options not found on the standard `<img>` tag.
@@ -82,5 +68,3 @@ Examples:
 | `--iron-image-placeholder` | Mixin applied to #placeholder | `{}` |
 | `--iron-image-width` | Sets the width of the wrapped image | `auto` |
 | `--iron-image-height` | Sets the height of the wrapped image | `auto` |
-
-

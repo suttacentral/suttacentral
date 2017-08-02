@@ -16,8 +16,13 @@ thing! https://github.com/PolymerLabs/tedium/issues
 
 _[Demo and API docs](https://elements.polymer-project.org/elements/iron-ajax)_
 
+## Changes in 2.0
+* Promise polyfill is now a dev dependency and no longer shipped with `iron-ajax`
+* New features introduced in #265
 
-##&lt;iron-ajax&gt;
+TODO: remove flag in #265 when we can introduce breaking changes
+
+## &lt;iron-ajax&gt;
 
 The `iron-ajax` element exposes network request functionality.
 
@@ -43,7 +48,7 @@ element.
 
 
 
-##&lt;iron-request&gt;
+## &lt;iron-request&gt;
 
 iron-request can be used to perform XMLHttpRequests.
 

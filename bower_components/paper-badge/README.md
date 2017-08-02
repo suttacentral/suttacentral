@@ -16,8 +16,10 @@ thing! https://github.com/PolymerLabs/tedium/issues
 
 _[Demo and API docs](https://elements.polymer-project.org/elements/paper-badge)_
 
+## Changes in 2.0
+* Target updates target in an animation frame rather than 1 ms.
 
-##&lt;paper-badge&gt;
+## &lt;paper-badge&gt;
 
 `<paper-badge>` is a circular text badge that is displayed on the top right
 corner of an element, representing a status or a notification. It will badge

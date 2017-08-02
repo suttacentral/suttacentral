@@ -1,6 +1,6 @@
 [![Build status](https://travis-ci.org/PolymerElements/paper-card.svg?branch=master)](https://travis-ci.org/PolymerElements/paper-card)
 
-##&lt;paper-card&gt;
+## &lt;paper-card&gt;
 
 Material design: [Cards](https://www.google.com/design/spec/components/cards.html)
 
@@ -18,6 +18,7 @@ Material design: [Cards](https://www.google.com/design/spec/components/cards.htm
 <link rel="import" href="../paper-styles/color.html">
 <link rel="import" href="../paper-styles/typography.html">
 <link rel="import" href="paper-card.html">
+<custom-style>
 <style is="custom-style">
   body {
     display: flex;
@@ -27,7 +28,7 @@ Material design: [Cards](https://www.google.com/design/spec/components/cards.htm
   paper-card {
 	max-width: 500px;
   }
-  .cafe-header { @apply(--paper-font-headline); }
+  .cafe-header { @apply --paper-font-headline; }
   .cafe-light { color: var(--paper-grey-600); }
   .cafe-location {
     float: right;
@@ -42,11 +43,13 @@ Material design: [Cards](https://www.google.com/design/spec/components/cards.htm
   }
   iron-icon.star:last-of-type { color: var(--paper-grey-500); }
 </style>
+<custom-style>
 <next-code-block></next-code-block>
 </template>
 </custom-element-demo>
 ```
 -->
+
 ```html
 <paper-card image="demo/donuts.png">
   <div class="card-content">

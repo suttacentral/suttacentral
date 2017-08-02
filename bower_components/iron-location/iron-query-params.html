@@ -6,42 +6,52 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+
+@demo demo/iron-query-params.html
 -->
-
 <link rel="import" href="../polymer/polymer.html">
-
 
 <script>
   'use strict';
 
   Polymer({
     is: 'iron-query-params',
+
     properties: {
       paramsString: {
         type: String,
         notify: true,
         observer: 'paramsStringChanged',
       },
+
       paramsObject: {
         type: Object,
-        notify: true
+        notify: true,
+        value: function() {
+          return {};
+        }
       },
+
       _dontReact: {
         type: Boolean,
         value: false
       }
     },
+
     hostAttributes: {
       hidden: true
     },
+
     observers: [
       'paramsObjectChanged(paramsObject.*)'
     ],
+
     paramsStringChanged: function() {
       this._dontReact = true;
       this.paramsObject = this._decodeParams(this.paramsString);
       this._dontReact = false;
     },
+
     paramsObjectChanged: function() {
       if (this._dontReact) {
         return;
@@ -49,12 +59,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.paramsString = this._encodeParams(this.paramsObject)
           .replace(/%3F/g, '?').replace(/%2F/g, '/').replace(/'/g, '%27');
     },
+
     _encodeParams: function(params) {
       var encodedParams = [];
+
       for (var key in params) {
         var value = params[key];
+
         if (value === '') {
           encodedParams.push(encodeURIComponent(key));
+
         } else if (value) {
           encodedParams.push(
               encodeURIComponent(key) +
@@ -65,13 +79,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       return encodedParams.join('&');
     },
+
     _decodeParams: function(paramString) {
       var params = {};
-
       // Work around a bug in decodeURIComponent where + is not
       // converted to spaces:
       paramString = (paramString || '').replace(/\+/g, '%20');
-
       var paramList = paramString.split('&');
       for (var i = 0; i < paramList.length; i++) {
         var param = paramList[i].split('=');

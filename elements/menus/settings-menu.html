@@ -81,7 +81,7 @@ paper-toggle-button{
 	      <h3>Activate Pali word lookup</h3>
 	      <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this  is an aid only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.</div>
 	      <paper-dropdown-menu label="Lookup">
-	        <paper-listbox class="dropdown-content" selected="{{paliLookupSelected}}">
+	        <paper-listbox slot="dropdown-content" selected="{{paliLookupSelected}}">
                   <template is="dom-repeat" items="{{paliLookupArray}}" as="dictlanguage">
 	               <paper-item>{{dictlanguage.language}}</paper-item>
                   </template>
@@ -96,7 +96,7 @@ paper-toggle-button{
 	      <h3>Activate Chinese word lookup</h3>
 	      <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.</div>
 	      <paper-dropdown-menu label="Lookup">
-	        <paper-listbox class="dropdown-content" selected="{{chineseLookupSelected}}">
+	        <paper-listbox slot="dropdown-content" selected="{{chineseLookupSelected}}">
                   <template is="dom-repeat" items="{{chineseLookupArray}}" as="dictlanguage">
                         <paper-item>{{dictlanguage.language}}</paper-item>
                   </template>
@@ -111,7 +111,7 @@ paper-toggle-button{
 	      <h3>Change the script of the Pali text</h3>
 	      <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
 	      <paper-dropdown-menu label="Script">
-	        <paper-listbox class="dropdown-content" selected="0">
+	        <paper-listbox slot="dropdown-content" selected="0">
 	          <paper-item>Latin</paper-item>
 	          <paper-item>සිංහල</paper-item>
 	          <paper-item>ไทย</paper-item>

@@ -29,7 +29,7 @@ paper-item {
 
 </style>
 	<paper-dropdown-menu class="custom" label="{{titleLabel}}" title="Select a translation in another language">
-	  <paper-listbox class="dropdown-content">
+	  <paper-listbox slot="dropdown-content">
               <template is="dom-if" if="{{originalLanguage}}">
                 <paper-item class="orlang">{{originalLanguage}}</paper-item>
               </template>

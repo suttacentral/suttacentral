@@ -33,64 +33,74 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="../../paper-styles/typography.html">
   <link rel="import" href="../paper-card.html">
 
-  <style is="custom-style" include="demo-pages-shared-styles">
-    demo-snippet {
-      --demo-snippet-demo: {
-        background: var(--paper-grey-200);
-        padding: 8px;
-      };
-      --demo-snippet-code: {
-        max-height: 300px;
-      };
-    }
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      demo-snippet {
+        --demo-snippet-demo: {
+          background: var(--paper-grey-200);
+          padding: 16px;
+        };
+        --demo-snippet-code: {
+          max-height: 300px;
+        }
+      }
 
-    paper-card {
-      width: 100%;
-    }
+      .vertical-section-container {
+        max-width: 400px;
+      }
 
-    .horizontal {
-      @apply(--layout-horizontal);
-    }
+      paper-card {
+        width: 100%;
+      }
 
-    .justified {
-      @apply(--layout-justified);
-    }
+      .horizontal {
+        @apply --layout-horizontal;
+      }
 
-    .amber {
-      background: var(--paper-amber-900);
-    }
+      .flex {
+        @apply --layout-flex;
+      }
 
-    .lime {
-      background: var(--paper-lime-500);
-    }
+      .justified {
+        @apply --layout-justified;
+      }
 
-    .cyan {
-      background: var(--paper-cyan-500);
-    }
+      .amber {
+        background: var(--paper-amber-900);
+      }
 
-    .dark {
-      background: var(--paper-blue-grey-500);
-    }
-    paper-card.dark, paper-card.amber, paper-card.lime, paper-card.cyan {
-      color: white;
-      --paper-card-header-color: white;
-    }
+      .lime {
+        background: var(--paper-lime-500);
+      }
 
-    paper-checkbox {
-      display: block;
-      margin-bottom: 4px;
-      --paper-checkbox-label-color: white;
-      --paper-checkbox-unchecked-color: white;
-    }
+      .cyan {
+        background: var(--paper-cyan-500);
+      }
 
-    paper-icon-button {
-      color: var(--paper-grey-600);
-    }
+      .dark {
+        background: var(--paper-blue-grey-500);
+      }
+      paper-card.dark, paper-card.amber, paper-card.lime, paper-card.cyan {
+        color: white;
+        --paper-card-header-color: white;
+      }
 
-    paper-icon-button.white {
-      color: white !important;
-    }
-  </style>
+      paper-checkbox {
+        display: block;
+        margin-bottom: 4px;
+        --paper-checkbox-label-color: white;
+        --paper-checkbox-unchecked-color: white;
+      }
+
+      paper-icon-button {
+        color: var(--paper-grey-600);
+      }
+
+      paper-icon-button.white {
+        color: white !important;
+      }
+    </style>
+  </custom-style>
 
 </head>
 <body unresolved>
@@ -114,22 +124,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h3>Paper-cards can contain advanced content</h3>
       <demo-snippet>
         <template>
-          <style is="custom-style">
-            .cafe-header { @apply(--paper-font-headline); }
-            .cafe-light { color: var(--paper-grey-600); }
-            .cafe-location {
-              float: right;
-              font-size: 15px;
-              vertical-align: middle;
-            }
-            .cafe-reserve { color: var(--google-blue-500); }
-            iron-icon.star {
-              --iron-icon-width: 16px;
-              --iron-icon-height: 16px;
-              color: var(--paper-amber-500);
-            }
-            iron-icon.star:last-of-type { color: var(--paper-grey-500); }
-          </style>
+          <custom-style>
+            <style is="custom-style">
+              .cafe-header { @apply --paper-font-headline; }
+              .cafe-light { color: var(--paper-grey-600); }
+              .cafe-location {
+                float: right;
+                font-size: 15px;
+                vertical-align: middle;
+              }
+              .cafe-reserve { color: var(--google-blue-500); }
+              iron-icon.star {
+                --iron-icon-width: 16px;
+                --iron-icon-height: 16px;
+                color: var(--paper-amber-500);
+              }
+              iron-icon.star:last-of-type { color: var(--paper-grey-500); }
+            </style>
+          </custom-style>
             <paper-card image="./donuts.png" alt="Donuts">
               <div class="card-content">
                 <div class="cafe-header">Cafe Basilico
@@ -165,39 +177,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h3>Paper-cards can have a horizontal image</h3>
       <demo-snippet>
         <template>
-          <style is="custom-style">
-            paper-card.rate { @apply(--layout-horizontal); }
-            .rate-image {
-              width: 100px;
-              height: 170px;
-              background: url('./donuts.png');
-              background-size: cover;
-            }
-            .rate-content {
-              @apply(--layout-flex);
-              float: left;
-            }
-            .rate-header { @apply(--paper-font-headline); }
-            .rate-name { color: var(--paper-grey-600); margin: 10px 0; }
-            paper-icon-button.rate-icon {
-              --iron-icon-fill-color: white;
-              --iron-icon-stroke-color: var(--paper-grey-600);
-            }
-          </style>
+          <custom-style>
+            <style is="custom-style">
+              .rate-image {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 100px;
+                background: url('./donuts.png');
+                background-size: cover;
+              }
+              .rate-header { @apply --paper-font-headline; }
+              .rate-name { color: var(--paper-grey-600); margin: 10px 0; }
+              paper-icon-button.rate-icon {
+                --iron-icon-fill-color: white;
+                --iron-icon-stroke-color: var(--paper-grey-600);
+              }
+            </style>
+          </custom-style>
           <paper-card class="rate">
-            <div class="rate-content">
-              <div class="card-content">
-                <div class="rate-header">Rate this album</div>
-                <div class="rate-name">Mac Miller</div>
-                <div>Live from space</div>
-              </div>
-              <div class="card-actions">
-                <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-                <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-                <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-                <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-                <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-              </div>
+            <div class="card-content">
+              <div class="rate-header">Rate this album</div>
+              <div class="rate-name">Mac Miller</div>
+              <div>Live from space</div>
+            </div>
+            <div class="card-actions">
+              <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
+              <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
+              <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
+              <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
+              <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
             </div>
             <div class="rate-image"></div>
           </paper-card>
@@ -240,11 +250,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h3>Same layout, different content</h3>
       <demo-snippet>
         <template>
-          <style is="custom-style">
-            paper-card.white {
-              --paper-card-header-color: #fff;
-            }
-          </style>
+          <custom-style>
+            <style is="custom-style">
+              paper-card.white {
+                --paper-card-header-color: #fff;
+              }
+            </style>
+          </custom-style>
           <paper-card heading="Pre-fab homes" image="./house.png" alt="House" class="white" style="margin-bottom:8px;">
             <div class="card-actions">
               <paper-icon-button icon="favorite"></paper-icon-button>
@@ -274,21 +286,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h3>Different layout and content</h3>
       <demo-snippet>
         <template>
-          <style is="custom-style">
-            #notes {
-              @apply(--layout-vertical);
-              @apply(--layout-wrap);
-              height: 344px;
-              width: 384px;
-            }
+          <custom-style>
+            <style is="custom-style">
+              #notes {
+                @apply --layout-vertical;
+                @apply --layout-wrap;
+                height: 344px;
+                width: 384px;
+              }
 
-            #notes > paper-card {
-              box-sizing: border-box;
-              max-width: 184px;
-              margin: 4px;
-              flex: 0 0 auto;
-            }
-          </style>
+              #notes > paper-card {
+                box-sizing: border-box;
+                max-width: 184px;
+                margin: 3px;
+                flex: 0 0 auto;
+              }
+            </style>
+          </custom-style>
           <div id="notes">
             <paper-card heading="Call Jennifer" class="cyan">
               <div class="card-actions">

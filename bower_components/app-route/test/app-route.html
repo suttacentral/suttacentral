@@ -14,12 +14,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../url/url.js"></script>
 
   <link rel="import" href="../../polymer/polymer.html">
   <link rel="import" href="../app-route.html">
   <link rel="import" href="./redirection.html">
 </head>
 <body>
+  <div id='safari-cooldown' hidden>
+    <div>Danger: URL overheating.</div>
+    <div>
+      Safari requires a cooldown period before we call
+      pushState/replaceState any more.
+    </div>
+    <div>Testing will resume after 30 seconds.</div>
+    <div>
+      <a href="https://forums.developer.apple.com/thread/36650">More info</a>
+    </div>
+  </div>
   <test-fixture id="BasicRoute">
     <template>
       <app-route pattern='/user/:username'>
@@ -27,26 +39,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
   </test-fixture>
 
-  <test-fixture id="ChainedRoutes">
-    <template is="dom-template">
+  <dom-module id="chained-routes">
+    <template>
       <app-route
+          id="foo"
           pattern="/foo/:foo"
           route="{{numberOneTopRoute}}"
           data="{{fooData}}"
           tail="{{fooRoute}}">
-      </app-route>
+        </app-route>
 
-      <app-route
-          pattern="/bar/:bar"
-          route="{{fooRoute}}"
-          data="{{barData}}">
-      </app-route>
+        <app-route
+            id="bar"
+            pattern="/bar/:bar"
+            route="{{fooRoute}}"
+            data="{{barData}}">
+        </app-route>
 
-      <app-route
-          pattern="/baz/:baz"
-          route="{{fooRoute}}"
-          data="{{bazData}}">
-      </app-route>
+        <app-route
+            id="baz"
+            pattern="/baz/:baz"
+            route="{{fooRoute}}"
+            data="{{bazData}}">
+        </app-route>
+    </template>
+    <script>
+      window.addEventListener('WebComponentsReady', function() {
+        Polymer({
+          is: 'chained-routes'
+        });
+      });
+    </script>
+  </dom-module>
+
+  <test-fixture id="ChainedRoutes">
+    <template>
+      <chained-routes></chained-routes>
     </template>
   </test-fixture>
 
@@ -59,19 +87,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <script>
   'use strict';
 
+  var cooldownFunction = function() {};
+  if (/^Apple/.test(navigator.vendor)) {
+    cooldownFunction = function(done) {
+      var cooldownPeriod = 30 * 1000;
+      this.timeout(cooldownPeriod + 5000);
+      var cooldownMessage = document.querySelector('#safari-cooldown');
+      cooldownMessage.removeAttribute('hidden');
+      setTimeout(function() {
+        done();
+        cooldownMessage.setAttribute('hidden', 'hidden');
+      }, cooldownPeriod);
+    };
+  }
+
   function fixtureChainedRoutes(route) {
-    var routes = fixture('ChainedRoutes', {
-      numberOneTopRoute: {
-        path: route.path || '',
-        prefix: route.prefix || '',
-        __queryParams: route.__queryParams || {}
-      }
-    });
+    var chainedRoutes = fixture('ChainedRoutes');
+    chainedRoutes.$.foo.route = {
+      path: route.path || '',
+      prefix: route.prefix || '',
+      __queryParams: route.__queryParams || {}
+    };
 
     return {
-      foo: routes[0],
-      bar: routes[1],
-      baz: routes[2]
+      foo: chainedRoutes.$.foo,
+      bar: chainedRoutes.$.bar,
+      baz: chainedRoutes.$.baz
     };
   }
 
@@ -315,6 +356,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     suite('handles reentrent changes to its properties', function() {
       var initialUrl;
+
+      suiteTeardown(cooldownFunction);
+
       setup(function() {
         initialUrl = window.location.href;
       });
@@ -424,7 +468,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         r.addEventListener('data-changed', function() {
           r.set('tail.path', '/bar');
         });
-        r.set('data', {page: 'foo'});
+        r.set('data.page', 'foo');
         expect(window.location.pathname).to.be.equal('/foo/bar');
         expect(r.data).to.be.deep.equal({page: 'foo'});
         expect(r.route.path).to.be.equal('/foo/bar');

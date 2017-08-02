@@ -21,19 +21,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../paper-radio-button/paper-radio-button.html">
     <link rel="import" href="../paper-radio-group.html">
-
-    <style is="custom-style" include="demo-pages-shared-styles">
-      .vertical-section-container {
-        max-width: 500px;
-      }
-
-      label {
-        align-self: center;
-      }
-    </style>
   </head>
-
   <body unresolved>
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+        .vertical-section-container {
+          max-width: 500px;
+        }
+
+        label {
+          align-self: center;
+        }
+      </style>
+    </custom-style>
+
     <div class="vertical-section-container centered">
       <h3>A paper-radio-group allows only one item to be selected</h3>
       <demo-snippet class="centered-demo">
@@ -70,7 +71,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-radio-group>
         </template>
       </demo-snippet>
-
     </div>
   </body>
 </html>

@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
 
   <link rel="import" href="../iron-selector.html">
 
@@ -30,39 +31,77 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </head>
 <body>
 
-  <template is="dom-bind">
-    <iron-selector id="selector" attr-for-selected="name">
-      <template id="t" is="dom-repeat">
-        <div name="[[item.id]]">{{item.name}}</div>
-      </template>
-    </iron-selector>
-  </template>
+  <test-fixture id="scope-polymer2">
+    <template>
+      <div>
+        <dom-bind>
+          <template>
+            <iron-selector attr-for-selected="name">
+              <dom-repeat>
+                <template>
+                  <div name="[[item.id]]">{{item.name}}</div>
+                </template>
+              </dom-repeat>
+            </iron-selector>
+          </template>
+        </dom-bind>
+      </div>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="scope-polymer1">
+    <template>
+      <div>
+        <template is="dom-bind">
+          <iron-selector attr-for-selected="name">
+            <template is="dom-repeat">
+              <div name="[[item.id]]">{{item.name}}</div>
+            </template>
+          </iron-selector>
+        </template>
+      </div>
+    </template>
+  </test-fixture>
 
   <script>
 
     suite('select by a numeric property', function() {
 
-      var scope, s, t;
+      var scope;
+      var selector;
+      var domRepeat;
 
-      setup(function() {
-        scope = document.querySelector('template[is="dom-bind"]');
-        s = scope.$.selector;
-        t = scope.$.t;
-        t.items = [{ id: 0, name:'item0'}, {id: 1, name: 'item1'}, {id: 2, name: 'item2'}];
-      });
+      setup(function(done) {
+        if (Polymer.Element) {
+          scope = fixture('scope-polymer2');
+          selector = scope.querySelector('iron-selector');
+          domRepeat = scope.querySelector('dom-repeat');
+        } else {
+          scope = fixture('scope-polymer1');
+          selector = scope.querySelector('iron-selector');
+          domRepeat = scope.querySelector('template[is=dom-repeat]');
+        }
 
-      teardown(function() {
-        t.items = [];
+        // Wait for the initial iron-items-changed.
+        selector.addEventListener('iron-items-changed', function onIronItemsChanged() {
+          selector.removeEventListener('iron-items-changed', onIronItemsChanged);
+
+          domRepeat.items = [{ id: 0, name:'item0'}, {id: 1, name: 'item1'}, {id: 2, name: 'item2'}];
+          domRepeat.render();
+          selector.forceSynchronousItemUpdate();
+
+          done();
+        });
       });
 
       test('select a value of zero', function() {
-        t.render();
-        s.selected = 1;
-        assert.equal(s.selected, '1');
+        selector.selected = 1;
+        assert.equal(selector.selected, '1');
 
         // select item with a name value of 0
-        s.children[0].dispatchEvent(new CustomEvent('tap', {bubbles: true}));
-        assert.equal(s.selected, 0);
+        debugger;
+        MockInteractions.tap(selector.items[0]);
+        assert.equal(selector.selected, 0);
       });
 
     });

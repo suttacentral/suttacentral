@@ -1,12 +1,12 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/PolymerElements/paper-dropdown-menu)
 [![Build status](https://travis-ci.org/PolymerElements/paper-dropdown-menu.svg?branch=master)](https://travis-ci.org/PolymerElements/paper-dropdown-menu)
 
-##&lt;paper-dropdown-menu&gt;
+## &lt;paper-dropdown-menu&gt;
 
 Material design: [Dropdown menus](https://www.google.com/design/spec/components/buttons.html#buttons-dropdown-buttons)
 
 `paper-dropdown-menu` is similar to a native browser select element.
-`paper-dropdown-menu` works with selectable content. 
+`paper-dropdown-menu` works with selectable content.
 
 <!---
 ```
@@ -34,7 +34,7 @@ Material design: [Dropdown menus](https://www.google.com/design/spec/components/
 -->
 ```html
 <paper-dropdown-menu label="Dinosaurs">
-  <paper-listbox class="dropdown-content" selected="1">
+  <paper-listbox slot="dropdown-content" selected="1">
     <paper-item>allosaurus</paper-item>
     <paper-item>brontosaurus</paper-item>
     <paper-item>carcharodontosaurus</paper-item>
@@ -42,3 +42,6 @@ Material design: [Dropdown menus](https://www.google.com/design/spec/components/
   </paper-listbox>
 </paper-dropdown-menu>
 ```
+
+### Changes in 2.0
+- `paper-menu-button 2.0` depends on `neon-animation 2.0`, which doesn't import the Web Animations polyfill, so you'll have to import it ([see example](demo/index.html))

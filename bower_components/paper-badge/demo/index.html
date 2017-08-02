@@ -27,17 +27,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="../paper-badge.html">
   <link rel="import" href="test-button.html">
 
-  <style is="custom-style" include="demo-pages-shared-styles">
-    .vertical-section-container {
-      max-width: 550px;
-    }
-    paper-icon-button, test-button {
-      padding: 3px;
-      border-radius: 3px;
-      margin-left: 30px;
-      margin-right: 30px;
-    }
-  </style>
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .vertical-section-container {
+        max-width: 550px;
+      }
+
+      paper-icon-button, test-button {
+        padding: 3px;
+        border-radius: 3px;
+        margin-left: 30px;
+        margin-right: 30px;
+      }
+    </style>
+  </custom-style>
 </head>
 <body unresolved>
   <div class="vertical-section-container centered">
@@ -69,18 +72,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-badge icon="social:mood" label="happy"></paper-badge>
         </div>
 
-        <style is="custom-style">
-          .container {
-            display: inline-block;
-            margin-left: 30px;
-            margin-right: 30px;
-          }
-          /* Need to position the badge to look like a text superscript */
-          .container > paper-badge {
-            --paper-badge-margin-left: 20px;
-            --paper-badge-margin-bottom: 0px;
-          }
-        </style>
+        <custom-style>
+          <style is="custom-style">
+            .container {
+              display: inline-block;
+              margin-left: 30px;
+              margin-right: 30px;
+            }
+            /* Need to position the badge to look like a text superscript */
+            .container > paper-badge {
+              --paper-badge-margin-left: 20px;
+              --paper-badge-margin-bottom: 0px;
+            }
+          </style>
+        </custom-style>
       </template>
     </demo-snippet>
 
@@ -97,14 +102,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-badge icon="social:mood" for="icon2" label="happy" class="blue">
         </paper-badge>
 
-        <style is="custom-style">
-          .red {
-            --paper-badge-background: var(--paper-red-300);
-          }
-          .blue {
-            --paper-badge-background: var(--paper-light-blue-300);
-          }
-        </style>
+        <custom-style>
+          <style is="custom-style">
+            .red {
+              --paper-badge-background: var(--paper-red-300);
+            }
+            .blue {
+              --paper-badge-background: var(--paper-light-blue-300);
+            }
+          </style>
+        </custom-style>
       </template>
     </demo-snippet>
   </div>

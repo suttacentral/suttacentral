@@ -53,17 +53,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </test-fixture>
 
     <script>
+      function waitForIronItemsChanged(selector, callback) {
+        selector.addEventListener('iron-items-changed', function onIronItemsChanged() {
+          selector.removeEventListener('iron-items-changed', onIronItemsChanged);
+          callback();
+        })
+      }
+
       suite('defaults', function() {
         var LEFT_ARROW = 37;
         var RIGHT_ARROW = 39;
 
         test('group can have no selection', function (done) {
-          var g = fixture('NoSelection');
-
-          // Needs to be async since the underlying iron-selector uses observeNodes.
-          Polymer.Base.async(function() {
-            expect(g.selected).to.not.be.ok;
-            var items = g.items;
+          var group = fixture('NoSelection');
+          waitForIronItemsChanged(group, function() {
+            expect(group.selected).to.not.be.ok;
+            var items = group.items;
             expect(items.length).to.be.equal(3);
 
             expect(items[0].checked).to.be.equal(false);
@@ -71,26 +76,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             expect(items[2].checked).to.be.equal(false);
 
             done();
-          }, 1);
-
+          });
         });
 
         test('group can have a selection', function (done) {
-          var g = fixture('WithSelection');
-
-          // Needs to be async since the underlying iron-selector uses observeNodes.
-          Polymer.Base.async(function() {
-            expect(g.selected).to.be.ok;
-            var items = g.items;
+          var group = fixture('WithSelection');
+          waitForIronItemsChanged(group, function() {
+            expect(group.selected).to.be.ok;
+            var items = group.items;
             expect(items.length).to.be.equal(3);
 
             expect(items[0].checked).to.be.equal(true);
             expect(items[1].checked).to.be.equal(false);
             expect(items[2].checked).to.be.equal(false);
-            expect(items[0].getAttribute('name')).to.be.equal(g.selected);
+            expect(items[0].getAttribute('name')).to.be.equal(group.selected);
 
             done();
-          }, 1);
+          });
         });
 
         test('right arrow advances the selection', function (done) {

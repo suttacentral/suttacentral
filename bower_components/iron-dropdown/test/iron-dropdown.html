@@ -17,11 +17,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <script src="../../web-component-tester/browser.js"></script>
-  <script src="../../test-fixture/test-fixture-mocha.js"></script>
   <script src="../../iron-test-helpers/mock-interactions.js"></script>
 
   <link rel="import" href="../iron-dropdown.html">
-  <link rel="import" href="../../test-fixture/test-fixture.html">
 
 </head>
 <style>
@@ -44,7 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     left: 40px;
   }
 
-  .dropdown-content {
+  [slot="dropdown-content"] {
     width: 50px;
     height: 50px;
     background-color: orange;
@@ -61,7 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="TrivialDropdown">
     <template>
       <iron-dropdown>
-        <div class="dropdown-content"></div>
+        <div slot="dropdown-content"></div>
       </iron-dropdown>
     </template>
   </test-fixture>
@@ -69,7 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="NonLockingDropdown">
     <template>
       <iron-dropdown allow-outside-scroll>
-        <div class="dropdown-content">I don't lock scroll!</div>
+        <div slot="dropdown-content">I don't lock scroll!</div>
       </iron-dropdown>
     </template>
   </test-fixture>
@@ -78,7 +76,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template>
       <div class="container">
         <iron-dropdown horizontal-align="right" vertical-align="top">
-          <div class="dropdown-content big"></div>
+          <div slot="dropdown-content" class="big"></div>
         </iron-dropdown>
       </div>
     </template>
@@ -89,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template>
       <div class="container positioned">
         <iron-dropdown>
-          <div class="dropdown-content"></div>
+          <div slot="dropdown-content"></div>
         </iron-dropdown>
       </div>
     </template>
@@ -99,7 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template>
       <div class="container positioned">
         <iron-dropdown horizontal-align="right" vertical-align="bottom">
-          <div class="dropdown-content"></div>
+          <div slot="dropdown-content"></div>
         </iron-dropdown>
       </div>
     </template>
@@ -108,7 +106,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="FocusableContentDropdown">
     <template>
       <iron-dropdown>
-        <div class="dropdown-content" tabindex="0">
+        <div slot="dropdown-content" tabindex="0">
           <div class="subcontent" tabindex="0"></div>
         </div>
       </iron-dropdown>
@@ -119,7 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template>
       <div dir="rtl" class="container">
         <iron-dropdown>
-          <div class="dropdown-content"></div>
+          <div slot="dropdown-content"></div>
         </iron-dropdown>
       </div>
     </template>
@@ -129,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template>
       <div dir="rtl" class="container">
         <iron-dropdown horizontal-align="right">
-          <div class="dropdown-content"></div>
+          <div slot="dropdown-content"></div>
         </iron-dropdown>
       </div>
     </template>
@@ -138,7 +136,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="sizingTarget">
     <template>
       <iron-dropdown>
-        <div class="dropdown-content">
+        <div slot="dropdown-content">
           <div class="subcontent"></div>
         </div>
       </iron-dropdown>
@@ -170,7 +168,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // IE 11 doesn't support WheelEvent, use CustomEvent.
       var event = new CustomEvent('wheel', {
         cancelable: true,
-        bubbles: true
+        bubbles: true,
+        composed: true
       });
       event.deltaX = deltaX;
       event.deltaY = deltaY;
@@ -181,7 +180,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     function dispatchScroll(target, scrollLeft, scrollTop) {
       target.scrollLeft = scrollLeft;
       target.scrollTop = scrollTop;
-      target.dispatchEvent(new CustomEvent('scroll', { bubbles:true } ));
+      target.dispatchEvent(new CustomEvent('scroll', {
+        bubbles: true,
+        composed: true
+      }));
     }
 
     suite('<iron-dropdown>', function() {
@@ -191,7 +193,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       suite('basic', function() {
         setup(function() {
           dropdown = fixture('TrivialDropdown');
-          content = Polymer.dom(dropdown).querySelector('.dropdown-content');
+          content = Polymer.dom(dropdown).querySelector('[slot="dropdown-content"]');
         });
 
         test('effectively hides the dropdown content', function() {
@@ -219,7 +221,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suite('when content is focusable', function() {
           setup(function() {
             dropdown = fixture('FocusableContentDropdown');
-            content = Polymer.dom(dropdown).querySelector('.dropdown-content');
+            content = Polymer.dom(dropdown).querySelector('[slot="dropdown-content"]');
           });
           test('focuses the content when opened', function(done) {
             runAfterOpen(dropdown, function() {
@@ -566,7 +568,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       suite('sizing target', function() {
         setup(function() {
           dropdown = fixture('sizingTarget');
-          content = Polymer.dom(dropdown).querySelector('.dropdown-content');
+          content = Polymer.dom(dropdown).querySelector('[slot="dropdown-content"]');
         });
 
         test('sizingTarget is the content element by default', function(done) {

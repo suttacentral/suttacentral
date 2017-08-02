@@ -13,7 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <head>
     <meta charset="utf-8">
     <title></title>
-    <script src="../../webcomponentsjs/webcomponents.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
     <script src="../../test-fixture/test-fixture-mocha.js"></script>
 
@@ -70,8 +70,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return message.type === 'urlQueryResponse';
         })
         var revoke = function() {};
-        var result = new Promise(function(resolve, reject) {
-          revoke = onMessage(iframe, resolve);
+        result.then(function() {
+          return new Promise(function(resolve, reject) {
+            revoke = onMessage(iframe, resolve);
+          });
         });
         result.then(revoke, revoke);
         iframe.contentWindow.postMessage({type: 'urlQuery'}, '*');
@@ -121,7 +123,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return getUrl(iframe).then(function(url) {
               expect(url.search).to.be.eq('');
               iframe.contentWindow.postMessage({type: 'appendBody', tagName: caseName}, '*');
-              return timePasses(10).then(function() {return getUrl(iframe)});
+              return timePasses(60).then(function() {return getUrl(iframe)});
             }).then(function(url) {
               expect(url.search).to.be.eq('');
             });

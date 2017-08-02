@@ -73,8 +73,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         params: {
           type: Object,
           computed: '_computeParams(apiKey, data.id, data.secret)'
-        }
+        },
 
+        route: {
+          type: Object
+        }
       },
       observers: [
         '_clearOldMetadata(route.path)'
