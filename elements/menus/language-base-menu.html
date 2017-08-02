@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../styles/language-styles.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
 <dom-module id="language-base-menu" attributes="Language">
 <template>
@@ -24,7 +25,8 @@ paper-item {
           auto
           url="../../data/languages.json"
           handle-as="json"
-          last-response="{{languageChoice}}"></iron-ajax>
+          last-response="{{languageChoice}}"
+          on-response="_didRespond"></iron-ajax>
 
 	<paper-dropdown-menu class="custom" label="Language" title="Select the site in another language">
 	  <paper-listbox slot="dropdown-content" selected="{{languageSelectedNr}}">
@@ -42,17 +44,17 @@ paper-item {
         properties: {
           languageChoice: {
             type: Array,
-            notify: true
+            notify: true,
+            value: function(){return []}
           },
           languageSelectedNr: Number,
           selectedLanguage: {
             type: String,
-            computed: '_computeNewLanguage(languageSelectedNr,languageChoice)',
+            // computed: '_computeNewLanguage(languageSelectedNr,languageChoice)',
             observer: '_passNewLanguageSelected'
           },
           inputLanguage: {
             type: String,
-            value: "en",
             notify: true
           }
     	},
@@ -62,6 +64,9 @@ paper-item {
 
       ready: function() {
         if (this.inputLanguage === undefined) {return this.languageSelectedNr = 0;}
+      },
+      _didRespond: function(e) {
+        this._computeNewLanguage(this.languageSelectedNr,e.detail.response);
       },
       _checkLanguageNr: function(inputLanguage,languageChoice) {
           if (inputLanguage === undefined) {return this.languageSelectedNr = 0;}
@@ -78,7 +83,11 @@ paper-item {
           this.inputLanguage = this.selectedLanguage;
         },
         _computeNewLanguage: function(languageSelectedNr,languageChoice) {
-           return languageChoice ? languageChoice[languageSelectedNr].id : "en";
+          if (languageChoice) {
+            this.selectedLanguage = languageChoice[languageSelectedNr].id;
+            } else {
+            this.selectedLanguage = "en";
+          }
         }
     });
 

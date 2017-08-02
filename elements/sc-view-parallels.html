@@ -4,7 +4,6 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="sc-parallels.html">
 <link rel="import" href="../styles/sc-suttaplex-styles.html">
-
 <dom-module id="sc-view-parallels">
 <template>
 <style  is="custom-style" include="sc-suttaplex-styles">
@@ -52,10 +51,11 @@ tbody{
             </td>
             <td class="parallels-relation-cell"><iron-icon icon$="{{_computeFirstParallelIcon(suttaurl)}}" title$="{{_computeFirstParallelTitle(suttaurl)}}"></iron-icon></td>
             <td class="parallels-parallel-cell">
-              <sc-parallels parallel-url$="[[_computeFirstParallelUrl(suttaurl)]]" parallel-id$="[[_computeFirstParallelId(suttaurl)]]" input-language="{{inputLanguage}}"></sc-parallels>
+            [[_computeFirstParallelUrl(suttaurl)]]
+              <sc-parallels parallel-url="[[_computeFirstParallelUrl(suttaurl)]]" parallel-id="[[_computeFirstParallelId(suttaurl)]]" input-language="{{inputLanguage}}"></sc-parallels>
             </td>
         </tr>
-        <template is="dom-repeat" items$="{{_computeOtherParallels(suttaurl)}}" as="item">
+        <template is="dom-repeat" items="{{_computeOtherParallels(suttaurl)}}" as="item">
           <tr>
             <td class="parallels-relation-cell"><iron-icon icon="{{item.icon}}" title="{{_computeTitle(item.icon)}}"></iron-icon></td>
             <td class="parallels-parallel-cell">

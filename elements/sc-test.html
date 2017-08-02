@@ -8,7 +8,7 @@
 <link rel="import" href="../styles/sc-styles.html">
 <link rel="import" href="../styles/sc-suttaplex-styles.html">
 
-<dom-module id="sc-parallels">
+<dom-module id="sc-test">
 <template>
 <style  is="custom-style" include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
 .parallels-parallel-title {
@@ -52,11 +52,11 @@ details p{
 }
 
 </style>
-<iron-ajax
-      auto
+<iron-ajax id="ajax"
       url="[[_computeURL(parallelUrl)]]"
       handle-as="json"
-      last-response="{{inputData}}"></iron-ajax>
+      last-response="{{inputData}}"
+      on-response="_didRespond"></iron-ajax>
 
   <template is="dom-if" if="[[languageData.titlelan]]">
         <div class="parallels-parallel-title" title="Translated title">[[languageData.titlelan]]</div>
@@ -102,7 +102,7 @@ details p{
 
 <script>
     Polymer({
-        is: 'sc-parallels',
+        is: 'sc-test',
 
         properties: {
           parallelUrl: String,
@@ -110,17 +110,22 @@ details p{
           inputLanguage: String,
           languageData: {
               type: Object,
-              computed: '_computeLanguage(inputData,inputLanguage)'
+              // computed: '_computeLanguage(inputData,inputLanguage)'
             },
           inputData: {
             type: Object,
             notify: true,
-            observer: 'infoToParent',
-            value: function(){return []}
+            observer: 'infoToParent'
           }
+        },
+        ready: function() {
+          this.$.ajax.generateRequest();
         },
         _computeURL: function(sutta) {
           return `../../data/suttas/${sutta}.json`;
+        },
+        _didRespond: function(e) {
+          this._computeLanguage(e.detail.response,this.inputLanguage)
         },
         _computeLanguage: function(inputData,inputLanguage) {
           var lanarray = "";
@@ -131,7 +136,8 @@ details p{
               }
             }
           }
-          return lanarray ? lanarray : "";
+          if (lanarray) {this.languageData = lanarray}
+          else {this.languageData = ""};
         },
       infoToParent: function() {
         this.fire('eventFromParallels',{parid:this.parallelId,partitle:this.inputData.titlepi,volumepage:this.inputData.volpage,biblio:this.inputData.bib});

@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../styles/language-styles.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
 <dom-module id="language-menu">
 <template>
@@ -36,7 +37,7 @@ paper-item {
 	     <template is="dom-repeat" items="{{languageChoice}}" as="language">
                   <template is="dom-if" if="{{!_otherLanguage(language, inputLanguage)}}">
                       <template is="dom-repeat" items="{{language.authors}}" as="author">
-	    	          <paper-item id$="{{language.id}}"><a href$="/[[inputUrl]]/[[author]]">{{author}}</a></paper-item>
+	    	          <paper-item id="{{language.id}}"><a href="/[[inputUrl]]/[[author]]">{{author}}</a></paper-item>
                       </template>
                   </template>
 	    </template>
@@ -59,8 +60,8 @@ paper-item {
             computed: "_otherLanguage(languageChoice, inputLanguage)"
           }
     	  },
-        _otherLanguage: function(language, inputLanguage) {
-          return (language.id === inputLanguage) ? true : false;
+        _otherLanguage: function(languageChoice, inputLanguage) {
+          return (languageChoice.id === inputLanguage) ? true : false;
           }
     });
 
