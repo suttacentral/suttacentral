@@ -209,10 +209,10 @@ app-toolbar, sc-toolbar {
       },
       _checkAuthor: function(subPath,category,activePath) {
         if (category) {var matches = category.match(/\d{1,6}/)};
-        return (activePath && matches && !subPath.startsWith("vagga")) ? subPath : "";
+        return (subPath && activePath && matches && !subPath.startsWith("vagga")) ? subPath : "";
       },
       _computeVagga: function(subPath,activePath) {
-        return (activePath && subPath.startsWith("vagga")) ? subPath : "";
+        return (subPath && activePath && subPath.startsWith("vagga")) ? subPath : "";
       },
       _checkSearchQuery: function(queryParams) {
         return (queryParams.query) ? queryParams.query : "";

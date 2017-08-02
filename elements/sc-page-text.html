@@ -1,10 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="addons/sc-text-node.html">
+<link rel="import" href="../styles/sc-text-styles.html">
+<link rel="import" href="../styles/sc-text-heading-styles.html">
+<link rel="import" href="../styles/sc-text-paragraph-num-styles.html">
 
 <dom-module id="sc-page-text" attributes="suttatitle suttameta">
 <template>
-<style is="custom-style">
+<style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
 .notfound {
   @apply(--paper-font-display1);
 }

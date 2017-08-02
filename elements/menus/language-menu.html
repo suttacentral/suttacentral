@@ -50,7 +50,10 @@ paper-item {
         is: 'language-menu',
 
         properties: {
-          languageChoice: Array,
+          languageChoice: {
+            type: Array,
+            notify: true
+          },
           titleLabel: String,
           inputLanguage: String,
           originalLanguage: String,
@@ -61,7 +64,7 @@ paper-item {
           }
     	  },
         _otherLanguage: function(languageChoice, inputLanguage) {
-          return (languageChoice.id === inputLanguage) ? true : false;
+          return (languageChoice && languageChoice.id === inputLanguage) ? true : false;
           }
     });
 
