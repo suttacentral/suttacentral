@@ -48,12 +48,12 @@ paper-card.suttaplex .card-content {
 }
 
 .suttaplex-heading {
-  @apply(--paper-font-headline);
-  @apply(--sc-serif-font);
+  @apply --paper-font-headline;
+  @apply --sc-serif-font;
 }
 
 .suttaplex-nerdy-row {
-  @apply(--paper-font-body2);
+  @apply --paper-font-body2;
   color: var(--secondary-text-color);
   white-space: nowrap;
   overflow: hidden;
@@ -63,11 +63,11 @@ paper-card.suttaplex .card-content {
 }
 
 .suttaplex-nerdy-row span:nth-of-type(1){
-  @apply(--sc-all-small-caps);
+  @apply --sc-all-small-caps;
 }
 
 .suttaplex-description{
-  @apply(--sc-paper-font-body);
+  @apply --sc-paper-font-body;
    overflow: hidden;
 }
 
@@ -106,11 +106,11 @@ details {
   display: inline-block;
 }
 details p {
-  @apply(--paper-font-body1);
+  @apply --paper-font-body1;
   position:absolute;
   z-index:200;
   background-color:#fff;
-  @apply(--shadow-elevation-3dp);
+  @apply --shadow-elevation-3dp;
   padding:12px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin: 0 48px 0 0;
@@ -121,7 +121,11 @@ paper-menu-button {
   padding:0;
 }
 .notfound {
-  @apply(--paper-font-display1);
+  @apply --paper-font-display1;
+}
+
+.hide-element {
+  display: none;
 }
 </style>
 
@@ -131,79 +135,63 @@ paper-menu-button {
       last-response="{{inputData}}"
       last-error='{{notFound}}'></iron-ajax>
 
-<template is="dom-if" if="{{notFound}}">
+<template is="dom-if" if="[[notFound]]">
     <p class="notfound">Sorry, the page your requested does not exist.</p>
 </template>
-<template is="dom-if" if="{{!notFound}}">
-  <paper-card class="suttaplex" id="{{inputData.url}}">
+<template is="dom-if" if="[[!notFound]]">
+  <paper-card class="suttaplex" id="[[inputData.url]]">
       <div class="card-content">
 
         <div class="suttaplex-head-container">
-          <template is="dom-if" if="[[languageData.titlelan]]">
-            <h3 class="suttaplex-heading" title="Translated title">{{languageData.titlelan}}</h3>
-          </template>
-          <template is="dom-if" if="[[!languageData.titlelan]]">
-            <template is="dom-if" if="[[inputData.titlepi]]">
-              <h3 class="suttaplex-heading" title="Original title">[[inputData.titlepi]]</h3>
-            </template>
-            <template is="dom-if" if="[[!inputData.titlepi]]">
-              <h3 class="suttaplex-heading" title="SuttaCentral ID">[[inputData.id]]</h3>
-            </template>
-          </template>
+          <h3 class="suttaplex-heading">[[_computeTitle(inputData)]]</h3>
           <div class$="difficulty-icon [[inputData.level]]" title="Recommended for [[inputData.level]] students"><iron-icon icon="[[_computeLevel(inputData.level)]]"></iron-icon></div>
         </div>
 
         <div class="suttaplex-nerdy-row">
-          <template is="dom-if" if="[[inputData.titlepi]]">
-            <span title="Original title">[[inputData.titlepi]]</span>
-          </template>
+            <span title="Original title" class$="[[_computeHide(inputData.titlepi)]]">[[inputData.titlepi]]</span>
           <span title="SuttaCentral ID">[[inputData.id]]</span>
           <template is="dom-if" if="[[inputData.volpage]]">
             <template is="dom-if" if="[[inputData.bib]]">
                 <details><summary>
                 <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
-                <span class="vol-page" title="Volume and page">[[inputData.volpage]]</span></summary><p inner-h-t-m-l="{{inputData.bib}}"></p></details>
+                <span class="vol-page" title="Volume and page">[[inputData.volpage]]</span></summary><p inner-h-t-m-l="[[inputData.bib]]"></p></details>
             </template>
             <template is="dom-if" if="[[!inputData.bib]]">
                 <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
                 <span class="vol-page" title="Volume and page">[[inputData.volpage]]</span>
             </template>
           </template>
-          <template is="dom-if" if="[[inputData.note]]">
-            <sc-sutta-note note-data="{{inputData.note}}"></sc-sutta-note>
-          </template>
+            <sc-sutta-note note-data="[[inputData.note]]" class$="[[_computeHide(inputData.note)]]"></sc-sutta-note>
         </div>
 
-        <template is="dom-if" if="[[languageData.slug]]">
-            <p class="suttaplex-description" title="Description">[[languageData.slug]]</p>
-        </template>
+        <p class$="suttaplex-description [[_computeHide(languageData.slug)]]" title="Description">[[languageData.slug]]</p>
       </div>
       <div class="card-actions">
         <div class="card-actions-left">
-            <template is="dom-repeat" items="{{languageData.authors}}" as="author">
-                <paper-button flat title$="Go to a translation by {{author}}"><a href="/[[inputData.url]]/[[author]]">{{author}}</a></paper-button>
+            <template is="dom-repeat" items="[[languageData.authors]]" as="author">
+                <paper-button flat title$="Go to a translation by [[author]]"><a href="/[[inputData.url]]/[[author]]">[[author]]</a></paper-button>
             </template>
-            <div class="languagedrop"><language-menu language-choice="{{inputData.languages}}" title-label="Other" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}" input-url="[[inputUrl]]"></language-menu></div>
+            <div class="languagedrop"><language-menu language-choice="[[inputData.languages]]" title-label="Other" input-language="[[inputLanguage]]" original-language="[[inputData.orlan]]" input-url="[[inputUrl]]"></language-menu></div>
         </div>
-        <template is="dom-if" if="{{inputData.parallels}}">
+        <template is="dom-if" if="[[inputData.parallels]]">
             <div class="card-actions-right">
                 <paper-menu-button horizontal-align="right" id="[[_toggleMoreIcon]]">
                   <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert"></paper-icon-button>
                   <div slot="dropdown-content"></div>
                   <paper-listbox slot="dropdown-content" tabindex="0">
-                      <more-par-menu input-url="{{inputUrl}}" input-data="{{inputData}}" parallels-array="{{parallelsArray}}"></more-par-menu>
+                      <more-par-menu input-url="[[inputUrl]]" input-data="[[inputData]]" parallels-array="[[parallelsArray]]"></more-par-menu>
                   </paper-listbox>
                 </paper-menu-button>
                 <span class="heading" title="View Parallels & References" on-tap="_toggleOpened">
                   <paper-icon-button icon="[[_toggleIcon]]" on-tap="passParams"></paper-icon-button>
-                  <paper-badge label="{{_parallelsNumber(inputData)}}" title$="This text has {{inputData.parallels}} parallels"></paper-badge>
+                  <paper-badge label="[[_parallelsNumber(inputData)]]" title$="This text has [[inputData.parallels]] parallels"></paper-badge>
                 </span>
             </div>
         </template>
       </div>
-      <template is="dom-if" if="{{inputData.parallels}}">
-        <iron-collapse id$="collapse{{inputUrl}}" opened="{{opened}}">
-	       <sc-view-parallels show-parallel="{{inputData.parallels}}" input-url="[[inputUrl]]" input-language="{{inputLanguage}}" original-language="{{inputData.orlan}}"></sc-view-parallels>
+      <template is="dom-if" if="[[inputData.parallels]]">
+        <iron-collapse id$="collapse[[inputUrl]]" opened="{{opened}}">
+	       <sc-view-parallels show-parallel="[[inputData.parallels]]" input-url="[[inputUrl]]" input-language="[[inputLanguage]]" original-language="[[inputData.orlan]]"></sc-view-parallels>
         </iron-collapse>
       </template>
   </paper-card>
@@ -220,7 +208,8 @@ paper-menu-button {
         },
         inputData: {
           type: Object,
-          notify: true
+          notify: true,
+          value: function(){return {}}
         },
         inputLanguage: String,
 
@@ -269,6 +258,14 @@ paper-menu-button {
       _callAjax: function() {
         if (this.inputUrl) {var matches = this.inputUrl.match(/\d{1,6}/)};
         return (matches) ? this.$.ajax.generateRequest() : "";
+      },
+      _computeTitle: function(inputData) {
+        if (inputData.titlelan) {return inputData.titlelan;
+        } else if (inputData.titlepi) {return inputData.titlepi;
+        } else {return inputData.id;}
+      },
+      _computeHide: function(checkText) {
+        return (!checkText) ? "hide-element": "";
       },
       _computeToggleIcon: function(opened) {
         return opened ? 'icons:expand-less' : 'icons:expand-more';

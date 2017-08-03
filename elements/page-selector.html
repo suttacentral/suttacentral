@@ -30,7 +30,7 @@ app-toolbar, sc-toolbar {
 }
 
 .list-mode #toolbarheader, .text-mode #toolbarheader, .segmented-mode #toolbarheader {
-    @apply(--shadow-elevation-8dp);
+    @apply --shadow-elevation-8dp;
 }
 
 .list-mode #sctoolbar, .list-mode #toolbarheader {
@@ -47,7 +47,7 @@ app-toolbar, sc-toolbar {
 }
 #toolbartitle {
   text-transform: capitalize;
-  @apply(--sc-sans-font);
+  @apply --sc-sans-font;
   color: white;
 }
 .search-mode #toolbartitle, .dictionary-mode #toolbartitle {
@@ -71,36 +71,36 @@ app-toolbar, sc-toolbar {
 </style>
     <div class="container">
       <app-header-layout>
-        <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="{{mainClass}}">
+        <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="[[mainClass]]">
                 <app-toolbar id="toolbarheader">
                   <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
-                  <div main-title id="toolbartitlebox"><p id="toolbartitle">{{toolbarTitle}}</p></div>
-                  <sc-toolbar id="sctoolbar" input-language="{{inputLanguage}}" sutta-path="{{author}}" category="[[category]]" meta-area="{{metaArea}}"></sc-toolbar>
+                  <div main-title id="toolbartitlebox"><p id="toolbartitle">[[toolbarTitle]]</p></div>
+                  <sc-toolbar id="sctoolbar" input-language="[[inputLanguage]]" sutta-path="[[author]]" category="[[category]]" meta-area="[[metaArea]]"></sc-toolbar>
                 </app-toolbar>
         </app-header>
 
-            <template is="dom-if" if="{{_checkStatic(category)}}">
-                <sc-page-static category="[[category]]" input-language="{{inputLanguage}}"></sc-page-static>
+            <template is="dom-if" if="[[_checkStatic(category)]]">
+                <sc-page-static category="[[category]]" input-language="[[inputLanguage]]"></sc-page-static>
             </template>
 
-            <template is="dom-if" if="{{_checkList(category)}}">
-                <sc-view-suttaplex category="[[category]]" active-path="{{activePath}}" vagga-number="{{_computeVagga(subPath,activePath)}}" input-language="{{inputLanguage}}"></sc-view-suttaplex>
+            <template is="dom-if" if="[[_checkList(category)]]">
+                <sc-view-suttaplex category="[[category]]" active-path="[[activePath]]" vagga-number="[[_computeVagga(subPath,activePath)]]" input-language="[[inputLanguage]]"></sc-view-suttaplex>
             </template>
 
-            <template is="dom-if" if="{{_checkText(category,author)}}">
-              <sc-page-text sutta-path="[[category]]" author="{{author}}" input-language="{{inputLanguage}}"></sc-page-text>
+            <template is="dom-if" if="[[_checkText(category,author)]]">
+              <sc-page-text sutta-path="[[category]]" author="[[author]]" input-language="[[inputLanguage]]"></sc-page-text>
             </template>
 
-            <template is="dom-if" if="{{_checkSegmented(category,author)}}">
-              <sc-segmented-text sutta-path="[[category]]" author="{{author}}" show-viewer="{{showViewer}}" input-language="{{inputLanguage}}"></sc-segmented-text>
+            <template is="dom-if" if="[[_checkSegmented(category,author)]]">
+              <sc-segmented-text sutta-path="[[category]]" author="[[author]]" show-viewer="[[showViewer]]" input-language="[[inputLanguage]]"></sc-segmented-text>
             </template>
 
-            <template is="dom-if" if="{{_checkSearch(category)}}">
-              <sc-page-search search-query="{{searchQuery}}" input-language="{{inputLanguage}}"></sc-page-search>
+            <template is="dom-if" if="[[_checkSearch(category)]]">
+              <sc-page-search search-query="[[searchQuery]]" input-language="[[inputLanguage]]"></sc-page-search>
             </template>
 
-            <template is="dom-if" if="{{_checkDictionary(category)}}">
-              <sc-page-dictionary dictionary-item="{{dictionaryItem}}" input-language="{{inputLanguage}}"></sc-page-dictionary>
+            <template is="dom-if" if="[[_checkDictionary(category)]]">
+              <sc-page-dictionary dictionary-item="[[dictionaryItem]]" input-language="[[inputLanguage]]"></sc-page-dictionary>
             </template>
 
       </app-header-layout>

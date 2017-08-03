@@ -36,13 +36,13 @@ iron-icon, paper-icon-button{
   margin-top:36px;
 }
 h3{
-  @apply(--paper-font-title);
-  @apply(--sc-sans-font);
+  @apply --paper-font-title;
+  @apply --sc-sans-font;
 }
 .nerdy-row{
-  @apply(--sc-paper-font-body);
+  @apply --sc-paper-font-body;
   color: var(--secondary-text-color);
-  @apply(--sc-sans-font);
+  @apply --sc-sans-font;
 }
 paper-item iron-icon {
     margin-right: 4px;
@@ -59,7 +59,6 @@ paper-toggle-button{
     }
 }
 </style>
-{{enableViews}}
   <div class="paper-dialogue-container">
       <div class="dialogue-section">
       	<h3>View textual information</h3>
@@ -83,12 +82,12 @@ paper-toggle-button{
 	      <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this  is an aid only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.</div>
 	      <paper-dropdown-menu label="Lookup">
 	        <paper-listbox slot="dropdown-content" selected="{{paliLookupSelected}}">
-                  <template is="dom-repeat" items="{{paliLookupArray}}" as="dictlanguage">
-	               <paper-item>{{dictlanguage.language}}</paper-item>
+                  <template is="dom-repeat" items="[[paliLookupArray]]" as="dictlanguage">
+	               <paper-item>[[dictlanguage.language]]</paper-item>
                   </template>
 	        </paper-listbox>
 	      </paper-dropdown-menu>
-              <template is="dom-if" if="{{_dictionaryLookup(paliLookupSelected)}}">
+              <template is="dom-if" if="[[_dictionaryLookup(paliLookupSelected)]]">
                   <sc-dictionary-lookup input-dictionary="[[_getDictionary(paliLookupArray,paliLookupSelected)]]"></sc-dictionary-lookup>
               </template>
       </div>
@@ -98,12 +97,12 @@ paper-toggle-button{
 	      <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.</div>
 	      <paper-dropdown-menu label="Lookup">
 	        <paper-listbox slot="dropdown-content" selected="{{chineseLookupSelected}}">
-                  <template is="dom-repeat" items="{{chineseLookupArray}}" as="dictlanguage">
-                        <paper-item>{{dictlanguage.language}}</paper-item>
+                  <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
+                        <paper-item>[[dictlanguage.language]]</paper-item>
                   </template>
 	        </paper-listbox>
 	      </paper-dropdown-menu>
-              <template is="dom-if" if="{{_dictionaryLookup(chineseLookupSelected)}}">
+              <template is="dom-if" if="[[_dictionaryLookup(chineseLookupSelected)]]">
                   <sc-dictionary-lookup input-dictionary="[[_getDictionary(chineseLookupArray,chineseLookupSelected)]]"></sc-dictionary-lookup>
               </template>
       </div>
@@ -132,7 +131,7 @@ paper-toggle-button{
 
       <div class="dialogue-section">
 	      <h3>Publication details</h3>
-	      <div inner-h-t-m-l="{{metaArea}}"></div>
+	      <div inner-h-t-m-l="[[metaArea]]"></div>
       </div>
     </div>
 

@@ -1,20 +1,20 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-
-<style is="custom-style">
+<dom-module id="sc-dict-styles">
+<template>
+<style>
 
 dl{
     margin-top:8px;
 }
 dd{
   margin:0;
-  @apply(--sc-paper-font-body);
-  @apply(--sc-serif-font);
+  @apply --sc-paper-font-body;
+  @apply --sc-serif-font;
 }
 dd>p{
   margin-top:0;
 }
 dfn {
-    @apply(--paper-font-headline);
+    @apply --paper-font-headline;
     font-style:normal;
     text-transform:lowercase;
     color: var(--sc-green-600);
@@ -25,11 +25,11 @@ dfn {
 }
 
 .case {
-    @apply(--sc-all-small-caps);
+    @apply --sc-all-small-caps;
     color: var(--secondary-text-color);
-    @apply(--sc-sans-font);
+    @apply --sc-sans-font;
     display: block;
-@apply(--paper-font-body2);
+@apply --paper-font-body2;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -40,16 +40,16 @@ dd .ref {
     border-radius:2px;
     padding:4px 8px;
     font-size:14px;
-    @apply(--sc-sans-font);
+    @apply --sc-sans-font;
 }
 
 dd .author{
-  @apply(--sc-mixed-small-caps)
+  @apply --sc-mixed-small-caps
 }
 
 dd .eti{
   color:var(--secondary-text-color);
-  @apply(--paper-font-body1)
+  @apply --paper-font-body1
 }
 
 dd .term {
@@ -63,14 +63,14 @@ dd .abbr{
   border-radius:2px;
     padding:4px 8px;
     font-size:14px;
-    @apply(--sc-sans-font);
+    @apply --sc-sans-font;
 }
 
 dd .inline-li{
   font-weight: bold;
   color:var(--secondary-text-color);
   padding: 0 0.5em;
-  @apply(--sc-sans-font);
+  @apply --sc-sans-font;
 }
 
 dd .square{
@@ -143,7 +143,7 @@ dd li::before {
     position: absolute;
     text-align: right;
     margin-left: -32px;
-    @apply(--sc-sans-font);
+    @apply --sc-sans-font;
     color:var(--secondary-text-color);
 }
 
@@ -185,3 +185,5 @@ dd a:visited{
   background: linear-gradient(to top, rgba(102, 187, 106, 0) 1px, rgba(102, 187, 106, 1) 1px, rgba(102, 187, 106, 1) 3px, rgba(102, 187, 106, 0) 3px)
 }
 </style>
+</template>
+</dom-module>

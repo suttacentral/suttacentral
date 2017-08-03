@@ -15,29 +15,29 @@ h1, h2, h3 {
     align-items: baseline;
 }
 .node-top-heading {
-  @apply(--paper-font-headline);
+  @apply --paper-font-headline;
   font-family: "Skolar Sans PE", sans-serif;
 }
 .node-secondary-heading {
-  @apply(--paper-font-title);
+  @apply --paper-font-title;
   font-family: "Skolar Sans PE", sans-serif;
 }
 .node-description{
-  @apply(--paper-font-body1);
+  @apply --paper-font-body1;
   font-family: "Skolar Sans PE", sans-serif;
 }
 </style>
 
 
   <div class="node-head-container">
-      <h1 class$="{{styleHeader}}">{{inputTitle}}</h1>
-      <template is="dom-if" if="{{inputText}}">
+      <h1 class$="[[styleHeader]]">[[inputTitle]]</h1>
+      <template is="dom-if" if="[[inputText]]">
           <paper-icon-button icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
       </template>
   </div>
-  <template is="dom-if" if="{{inputText}}">
+  <template is="dom-if" if="[[inputText]]">
     <iron-collapse id="collapse" opened="{{opened}}">
-      <div class="node-description" inner-h-t-m-l="{{inputText}}"></div> 
+      <div class="node-description" inner-h-t-m-l="[[inputText]]"></div> 
     </iron-collapse>
   </template>
 

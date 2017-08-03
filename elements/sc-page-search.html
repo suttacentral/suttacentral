@@ -12,7 +12,7 @@
 <template>
 <style is="custom-style">
 .divisioncontent {
-  @apply(--sc-sans-font);
+  @apply --sc-sans-font;
   padding: 72px 0;
 }
 
@@ -27,7 +27,7 @@ main {
     color:var(--secondary-text-color);
 }
 h1{
-    @apply(--paper-font-display1);
+    @apply --paper-font-display1;
     display: inline-block;
     margin: 0;
 }
@@ -35,7 +35,7 @@ h1{
 .result-term{
     font-weight: bold;
     color: var(--sc-green-600);
-    @apply(--sc-serif-font);
+    @apply --sc-serif-font;
 }
 
     iron-list {
@@ -43,7 +43,7 @@ h1{
     }
 
     .item {
-      @apply(--layout-horizontal);
+      @apply --layout-horizontal;
       border-bottom: 1px solid var(--paper-grey-300);
     }
 
@@ -54,24 +54,24 @@ h1{
 
     .pad {
       padding: 0 16px;
-      @apply(--layout-flex);
-      @apply(--layout-vertical);
+      @apply --layout-flex;
+      @apply --layout-vertical;
     }
 
 h2{
-    @apply(--paper-font-headline);
+    @apply --paper-font-headline;
     color: var(--sc-green-600);
     margin: 22px 0 0 0;
 }
 .results-url{
-    @apply(--paper-font-body2);
+    @apply --paper-font-body2;
     color:var(--secondary-text-color);
     white-space: nowrap;
     margin: 0 0 16px;
     overflow: hidden;
 }
 .snippet{
-    @apply(--sc-paper-font-body);
+    @apply --sc-paper-font-body;
     margin: 0 0 20px 0;
 }
 search-menu {
@@ -115,8 +115,8 @@ a {
 <div class="divisioncontent">
     <main>
         <div class="results-head">
-                    <h1><span class="result-number">{{_calculateNumber(data)}}</span> <span class="result-description">results for</span> <span class="result-term">{{searchQuery}}</span> </h1>
-                    <search-menu class$="{{searchMenu}}"></search-menu>
+                    <h1><span class="result-number">[[_calculateNumber(data)]]</span> <span class="result-description">results for</span> <span class="result-term">[[searchQuery]]</span> </h1>
+                    <search-menu class$="[[searchMenu]]"></search-menu>
         </div>
 
     <iron-scroll-threshold id="scrollThreshold" lower-threshold="0" on-lower-threshold="_load" scroll-target="document">
@@ -125,7 +125,7 @@ a {
           <div>
             <div class="item" tabindex$="[[tabIndex]]">
               <div class="pad">
-                <template is="dom-if" if="{{_checkCategory(item.category)}}">
+                <template is="dom-if" if="[[_checkCategory(item.category)]]">
                     <a href="/define/[[item.title]]">
                         <div class="primary"><h2>[[item.title]]</h2></div>
                         <div class="secondary"><p class="results-url">[[item.url]]</p></div>
@@ -133,7 +133,7 @@ a {
                         <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.text]]"></p></div>
                 </template>
 
-                <template is="dom-if" if="{{!_checkCategory(item.category)}}">
+                <template is="dom-if" if="[[!_checkCategory(item.category)]]">
                       <a href="[[item.url]]">
                         <div class="primary"><h2>[[item.title]]</h2></div>
                         <div class="secondary"><p class="results-url" inner-h-t-m-l="https://suttacentral.net[[item.url]]"></p></div>

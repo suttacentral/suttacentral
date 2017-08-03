@@ -9,7 +9,7 @@
 <template>
 <style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
 .notfound {
-  @apply(--paper-font-display1);
+  @apply --paper-font-display1;
 }
 </style>
 <!-- Still to do: add the correct sutta based on the author. Right now it does not check the author in the URL -->
@@ -25,12 +25,12 @@
       handle-as="json"
       last-response="{{paragraphTitles}}"></iron-ajax>
 
-    <template is="dom-if" if="{{notFound}}">
+    <template is="dom-if" if="[[notFound]]">
         <p class="notfound">Sorry, the page your requested does not exist.</p>
     </template>
-    <template is="dom-if" if="{{!notFound}}">
-      <sc-text-node category="{{suttaPath}}" input-language="{{inputLanguage}}"></sc-text-node>
-      <div class="htmltextcontent" inner-h-t-m-l="{{suttaText}}"></div>
+    <template is="dom-if" if="[[!notFound]]">
+      <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
+      <div class="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
     </template>
 </template>
 <script>

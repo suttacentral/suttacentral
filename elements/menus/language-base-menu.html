@@ -16,7 +16,7 @@ paper-dropdown-menu, paper-listbox {
 }
 
 paper-item {
-    @apply(--sc-sans-font);
+    @apply --sc-sans-font;
     text-transform: capitalize;
 }
 
@@ -30,8 +30,8 @@ paper-item {
 
 	<paper-dropdown-menu class="custom" label="Language" title="Select the site in another language">
 	  <paper-listbox slot="dropdown-content" selected="{{languageSelectedNr}}">
-	  <template is="dom-repeat" items="{{languageChoice}}" as="language">
-	    	  <paper-item id$="{{language.id}}">{{language.full}}</paper-item>
+	  <template is="dom-repeat" items="[[languageChoice]]" as="language">
+	    	  <paper-item id$="[[language.id]]">[[language.full]]</paper-item>
 	    </template>
 	  </paper-listbox>
 	</paper-dropdown-menu>

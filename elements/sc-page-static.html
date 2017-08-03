@@ -15,13 +15,13 @@ app-toolbar {
 }
 
 #lasttoolbar {
-  @apply(--shadow-elevation-8dp);
+  @apply --shadow-elevation-8dp;
   z-index: -1;
 }
 
 h1{
-  @apply(--sc-serif-font);
-  @apply(--sc-mixed-small-caps);
+  @apply --sc-serif-font;
+  @apply --sc-mixed-small-caps;
   font-size: 2.5em;
   text-align: left;
   color: white;
@@ -32,7 +32,7 @@ h1{
 }
 
 .subtitle {
-  @apply(--sc-sans-font);
+  @apply --sc-sans-font;
   color: white;
   font-style: italic;
   font-size: 1.5em;
@@ -75,7 +75,7 @@ h1{
                   <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
             </app-toolbar>
 
-        <iron-pages id="pages" role="main" selected="{{pages}}" attr-for-selected="name">
+        <iron-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
           <div name="home">
                 <home-page></home-page>
           </div>

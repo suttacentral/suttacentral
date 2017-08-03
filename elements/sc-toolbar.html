@@ -76,8 +76,8 @@ paper-dialog {
 }
 
 h2{
-  @apply(--paper-font-headline);
-  @apply(--sc-sans-font);
+  @apply --paper-font-headline;
+  @apply --sc-sans-font;
   margin: 0;
 }
 paper-dialog paper-icon-button {
@@ -91,7 +91,7 @@ a {
   text-decoration: none;
 }
 /*#discourselogo {
-    @apply(--sc-serif-font);
+    @apply --sc-serif-font;
     color: #015179;
     font-style: italic;
 }*/
@@ -102,10 +102,10 @@ a {
           <paper-input label="Search" no-label-float id="searchinput"></paper-input>
           <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
-          <a href$="{{discourseLink}}" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button><paper-badge class$="{{toggleDisplay}}" label="20" title="This text has 20 references"></paper-badge></a>
+          <a href$="[[discourseLink]]" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button><paper-badge class$="[[toggleDisplay]]" label="20" title="This text has 20 references"></paper-badge></a>
 
-<!--           <a href="https://discourse.suttacentral.net" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum" class$="{{toggleDiscourse}}"></paper-icon-button></a> -->
-<!--           <paper-icon-button id="discoursedropdown" icon="communication:forum" class$="{{toggleDisplay}}" onclick="discourse.open()"></paper-icon-button>
+<!--           <a href="https://discourse.suttacentral.net" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum" class$="[[toggleDiscourse]]"></paper-icon-button></a> -->
+<!--           <paper-icon-button id="discoursedropdown" icon="communication:forum" class$="[[toggleDisplay]]" onclick="discourse.open()"></paper-icon-button>
  -->
 <!--         <paper-dialog id="discourse">
           <div class="buttons">
@@ -117,7 +117,7 @@ a {
           </paper-dialog-scrollable>
         </paper-dialog> -->
 
-          <paper-icon-button id="settingsbutton" class$="{{toggleDisplay}}" icon="settings" onclick="dialog.open()"></paper-icon-button>
+          <paper-icon-button id="settingsbutton" class$="[[toggleDisplay]]" icon="settings" onclick="dialog.open()"></paper-icon-button>
 
         <paper-dialog id="dialog">
           <div class="buttons">
@@ -125,7 +125,7 @@ a {
           </div>
           <h2>Tools and Information</h2>
           <paper-dialog-scrollable>
-              <settings-menu meta-area="{{metaArea}}" disable-views="{{viewsDisabled}}"></settings-menu>
+              <settings-menu meta-area="[[metaArea]]" disable-views="[[viewsDisabled]]"></settings-menu>
           </paper-dialog-scrollable>
         </paper-dialog>
 
@@ -133,7 +133,7 @@ a {
             <paper-icon-button icon="more-vert" slot="dropdown-trigger"></paper-icon-button>
             <div slot="dropdown-content"></div>
             <paper-listbox slot="dropdown-content" tabindex="0">
-                <more-menu input-language="{{inputLanguage}}"></more-menu>
+                <more-menu input-language="[[inputLanguage]]"></more-menu>
             </paper-listbox>
           </paper-menu-button>
 

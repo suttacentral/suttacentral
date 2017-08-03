@@ -31,8 +31,8 @@
 }
 
 .parallels-root-id {
-  @apply(--paper-font-subhead);
-  @apply(--sc-serif-font);
+  @apply --paper-font-subhead;
+  @apply --sc-serif-font;
 }
 
 tbody{
@@ -42,24 +42,23 @@ tbody{
 </style>
 <div class="parallels-expanded">
 <table class="parallels-table">
-  <template is="dom-repeat" items="{{showParallel}}" as="suttaurl">
+  <template is="dom-repeat" items="[[showParallel]]" as="suttaurl">
       <tbody>
         <tr class="parallels-row">
-            <td class="parallels-root-cell parallels-table-cell" rowspan$="{{_computeRowspan(suttaurl)}}">
-              <div class="parallels-root-id root" title="SuttaCentral ID">{{suttaurl.id}}</div>
-              <paper-button flat class="dense" title="Go to text in original language"><a href="">{{originalLanguage}}</a></paper-button>
+            <td class="parallels-root-cell parallels-table-cell" rowspan$="[[_computeRowspan(suttaurl)]]">
+              <div class="parallels-root-id root" title="SuttaCentral ID">[[suttaurl.id]]</div>
+              <paper-button flat class="dense" title="Go to text in original language"><a href="">[[originalLanguage]]</a></paper-button>
             </td>
-            <td class="parallels-relation-cell"><iron-icon icon$="{{_computeFirstParallelIcon(suttaurl)}}" title$="{{_computeFirstParallelTitle(suttaurl)}}"></iron-icon></td>
+            <td class="parallels-relation-cell"><iron-icon icon$="[[_computeFirstParallelIcon(suttaurl)]]" title$="[[_computeFirstParallelTitle(suttaurl)]]"></iron-icon></td>
             <td class="parallels-parallel-cell">
-            [[_computeFirstParallelUrl(suttaurl)]]
-              <sc-parallels parallel-url="[[_computeFirstParallelUrl(suttaurl)]]" parallel-id="[[_computeFirstParallelId(suttaurl)]]" input-language="{{inputLanguage}}"></sc-parallels>
+              <sc-parallels parallel-url="[[_computeFirstParallelUrl(suttaurl)]]" parallel-id="[[_computeFirstParallelId(suttaurl)]]" input-language="[[inputLanguage]]"></sc-parallels>
             </td>
         </tr>
-        <template is="dom-repeat" items="{{_computeOtherParallels(suttaurl)}}" as="item">
+        <template is="dom-repeat" items="[[_computeOtherParallels(suttaurl)]]" as="item">
           <tr>
-            <td class="parallels-relation-cell"><iron-icon icon="{{item.icon}}" title="{{_computeTitle(item.icon)}}"></iron-icon></td>
+            <td class="parallels-relation-cell"><iron-icon icon="[[item.icon]]" title="[[_computeTitle(item.icon)]]"></iron-icon></td>
             <td class="parallels-parallel-cell">
-              <sc-parallels parallel-url="{{item.url}}" parallel-id="{{item.id}}" input-language="{{inputLanguage}}"></sc-parallels>
+              <sc-parallels parallel-url="[[item.url]]" parallel-id="[[item.id]]" input-language="[[inputLanguage]]"></sc-parallels>
             </td>
           </tr>
         </template> 

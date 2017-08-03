@@ -20,7 +20,7 @@
   background-color: grey;
 }
 paper-tree {
-  @apply(--sc-sans-font);
+  @apply --sc-sans-font;
 }
 
 #container {
@@ -32,12 +32,12 @@ paper-tree {
   font-size: 45px;
   display: inline-block;
   vertical-align: middle;
-  @apply(--sc-serif-font);
+  @apply --sc-serif-font;
 }
 
 #hometitle {
-  @apply(--sc-serif-font);
-  @apply(--sc-mixed-small-caps);
+  @apply --sc-serif-font;
+  @apply --sc-mixed-small-caps;
   font-size: 24px;
   font-weight: normal;
   color: var(--paper-indigo-500);
@@ -55,7 +55,7 @@ paper-tree {
   text-decoration: none;
 }
 #drawerbox {
-  @apply(--shadow-elevation-16dp);
+  @apply --shadow-elevation-16dp;
   overflow: auto;
   height: 100%;
   overflow: auto;
@@ -110,7 +110,7 @@ paper-tree {
           </div>
         </div>
     </app-drawer>
-    <page-selector category="{{collectionData.collection}}" sub-path="{{subPathData.subpath}}" active-path="{{subPathIsActive}}" input-language="{{inputLanguage}}" query-params="{{queryParams}}"></page-selector>
+    <page-selector category="[[collectionData.collection]]" sub-path="[[subPathData.subpath]]" active-path="[[subPathIsActive]]" input-language="[[inputLanguage]]" query-params="[[queryParams]]"></page-selector>
 
   </app-drawer-layout>
 

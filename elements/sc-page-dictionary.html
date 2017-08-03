@@ -7,11 +7,13 @@
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../styles/sc-dict-styles.html">
+
 <dom-module id="sc-page-dictionary">
 <template>
-<style is="custom-style">
+<style is="custom-style" include="sc-dict-styles">
 .divisioncontent, .related-terms {
-  @apply(--sc-sans-font);
+  @apply --sc-sans-font;
   padding: 72px 0;
 }
 
@@ -25,7 +27,7 @@ main {
     padding: 0;
 }
 h1{
-    @apply(--paper-font-display1);
+    @apply --paper-font-display1;
     display: inline-block;
     margin: 0 0 0 -2px;
     color: var(--secondary-text-color);
@@ -34,7 +36,7 @@ h1{
 .result-term{
     font-weight: bold;
     color: var(--sc-green-600);
-    @apply(--sc-serif-font);
+    @apply --sc-serif-font;
 }
 
 .termsbutton {
@@ -55,7 +57,7 @@ h1{
     }
     
     .related-terms h3{
-        @apply(--paper-font-body1);
+        @apply --paper-font-body1;
         color: var(--secondary-text-color);
         margin: 24px 0 0 16px;
         font-weight: bold;
@@ -66,7 +68,7 @@ h1{
 }
 
 .related-terms li{
-    @apply(--paper-font-body1);
+    @apply --paper-font-body1;
 }
 .related-terms a {
     text-decoration: none;
@@ -80,11 +82,11 @@ h1{
 }
 
 .source{
-    @apply(--paper-font-body1);
+    @apply --paper-font-body1;
         color: var(--secondary-text-color);
         margin:8px 0 16px;
         font-weight:bold;
-        @apply(--sc-serif-font);
+        @apply --sc-serif-font;
 }
 
 
@@ -116,36 +118,36 @@ paper-spinner-lite {
 <div class="divisioncontent">
     <main>
         <div class="results-head">
-                    <h1><span class="result-description">Definitions for</span> <span class="result-term">{{dictionaryItem}}</span> </h1>
+                    <h1><span class="result-description">Definitions for</span> <span class="result-term">[[dictionaryItem]]</span> </h1>
                     <span class="termsbutton" title ="Related terms"><paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button></span>
         </div>
 
         <div class="entries">
-                <template is="dom-if" if="{{ncpedItem}}">
+                <template is="dom-if" if="[[ncpedItem]]">
                         <div class="book-entry">
                                 <div class="source">New Concise Pali English Dictionary</div>
                                 <div class="ncped-entry" inner-h-t-m-l="[[ncpedItem.text]]"></div>
                         </div>
                 </template>        
-                <template is="dom-if" if="{{cpedItem}}">
+                <template is="dom-if" if="[[cpedItem]]">
                         <div class="book-entry">
                                 <div class="source">Concise Pali English Dictionary</div>
                                 <div class="cped-entry" inner-h-t-m-l="[[cpedItem.text]]"></div>
                         </div>
                 </template>
-                <template is="dom-if" if="{{dhammikaItem}}">
+                <template is="dom-if" if="[[dhammikaItem]]">
                         <div class="book-entry">
                                 <div class="source">Nature and the Environment in Early Buddhism by S. Dhammika</div>
                                 <div class="dhammika-entry" inner-h-t-m-l="[[dhammikaItem.text]]"></div>
                         </div>
                 </template>
-                <template is="dom-if" if="{{dppnItem}}">
+                <template is="dom-if" if="[[dppnItem]]">
                         <div class="book-entry">
                                 <div class="source">Pali Proper Names</div>
                                 <div class="dppn-entry" inner-h-t-m-l="[[dppnItem.text]]"></div>
                         </div>
                 </template>
-                <template is="dom-if" if="{{ptsItem}}">
+                <template is="dom-if" if="[[ptsItem]]">
                         <div class="book-entry">
                                 <div class="source">PTS Pali English Dictionary</div>
                                 <div class="pts-entry" inner-h-t-m-l="[[ptsItem.text]]"></div>
@@ -158,13 +160,13 @@ paper-spinner-lite {
                 <div class="related-terms">
                         <h3>Adjacent Terms</h3>
                         <ul class="near-terms">
-                            <template is="dom-repeat" items="{{relatedItems.adjacent}}">
+                            <template is="dom-repeat" items="[[relatedItems.adjacent]]">
                                 <li><a href="/define/[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
                             </template>
                         </ul>
                         <h3>Similar Spelling</h3>
                         <ul class="fuzzy-terms">
-                            <template is="dom-repeat" items="{{relatedItems.similar}}">
+                            <template is="dom-repeat" items="[[relatedItems.similar]]">
                                 <li><a href="/define/[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
                             </template>
                         </ul>
@@ -181,11 +183,31 @@ paper-spinner-lite {
             type: String,
             notify: true
         },
-        cpedResult: Object,
-        ncpedResult: Object,
-        dhammikaResult: Object,
-        dppnResult: Object,
-        ptsResult: Object,
+        cpedResult: {
+            type: Object,
+              notify: true,
+              value: function(){return {}}
+        },
+        ncpedResult: {
+            type: Object,
+              notify: true,
+              value: function(){return {}}
+        },
+        dhammikaResult: {
+            type: Object,
+              notify: true,
+              value: function(){return {}}
+        },
+        dppnResult: {
+            type: Object,
+              notify: true,
+              value: function(){return {}}
+        },
+        ptsResult: {
+            type: Object,
+              notify: true,
+              value: function(){return {}}
+        },
         inputLanguage: String,
         cpedItem: {
           type: String,

@@ -12,11 +12,11 @@
 <template>
 <style  is="custom-style" include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
 .parallels-parallel-title {
-  @apply(--paper-font-subhead);
-  @apply(--sc-serif-font);
+  @apply --paper-font-subhead;
+  @apply --sc-serif-font;
 }
 .parallels-nerdy-row{
-  @apply(--paper-font-body2);
+  @apply --paper-font-body2;
   color: var(--secondary-text-color);
   white-space: nowrap;
 }
@@ -40,17 +40,19 @@ details {
   display: inline-block;
 }
 details p{
-  @apply(--paper-font-body1);
+  @apply --paper-font-body1;
   position:absolute;
   z-index:200;
   background-color:#fff;
-  @apply(--shadow-elevation-3dp);
+  @apply --shadow-elevation-3dp;
   padding:12px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin: 0 48px 0 0;
   white-space: normal;
 }
-
+.hide-element {
+  display: none;
+}
 </style>
 <iron-ajax
       auto
@@ -58,44 +60,27 @@ details p{
       handle-as="json"
       last-response="{{inputData}}"></iron-ajax>
 
-  <template is="dom-if" if="[[languageData.titlelan]]">
-        <div class="parallels-parallel-title" title="Translated title">[[languageData.titlelan]]</div>
-  </template>
-  <template is="dom-if" if="[[!languageData.titlelan]]">
-    <template is="dom-if" if="[[inputData.titlepi]]">
-        <div class="parallels-parallel-title" title="Original title">[[inputData.titlepi]]</div>
-    </template>
-    <template is="dom-if" if="[[!inputData.titlepi]]">
-        <div class="parallels-parallel-title" title="SuttaCentral ID">[[parallelId]]</div>
-    </template>
-  </template>
-
+      <div class="parallels-parallel-title">[[_computeTitle(languageData,inputData,parallelId)]]</div>
   <div class="parallels-nerdy-row">
-    <template is="dom-if" if="[[inputData.titlepi]]">
-      <span title="Original title">[[inputData.titlepi]]</span>
-    </template>
+    <span title="Original title" class$="[[_computeHide(inputData.titlepi)]]">[[inputData.titlepi]]</span>
     <span title="SuttaCentral ID">[[parallelId]]</span>
     <template is="dom-if" if="[[inputData.volpage]]">
       <template is="dom-if" if="[[inputData.bib]]">
           <details><summary>
           <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
-          <span class="vol-page" title="Volume and page number">[[inputData.volpage]]</span></summary><p inner-h-t-m-l="{{inputData.bib}}"></p></details>
+          <span class="vol-page" title="Volume and page number">[[inputData.volpage]]</span></summary><p inner-h-t-m-l="[[inputData.bib]]"></p></details>
       </template>
       <template is="dom-if" if="[[!inputData.bib]]">
           <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
           <span class="vol-page" title="Volume and page number">[[inputData.volpage]]</span>
       </template>
     </template>
-    <template is="dom-if" if="[[inputData.note]]">
-      <sc-sutta-note note-data="{{inputData.note}}"></sc-sutta-note>
-    </template>
+      <sc-sutta-note note-data="[[inputData.note]]" class$="[[_computeHide(inputData.note)]]"></sc-sutta-note>
   </div>
 
   <div class="parallels-actions">
-      <paper-button flat class="dense" title="Go to text in original language"><a href="">{{inputData.orlan}}</a></paper-button>
-      <template is="dom-if" if="{{inputData.languages}}">
-          <div class="languagedrop"><language-menu language-choice="{{inputData.languages}}" title-label="Translations" input-language="" original-language="" input-url="[[parallelUrl]]"></language-menu></div>
-      </template>
+      <paper-button flat class="dense" title="Go to text in original language"><a href="">[[inputData.orlan]]</a></paper-button>
+      <div class$="languagedrop [[_computeHide(inputData.languages)]]"><language-menu language-choice="[[inputData.languages]]" title-label="Translations" input-language="" original-language="" input-url="[[parallelUrl]]"></language-menu></div>
   </div>
 
 </template>
@@ -133,6 +118,14 @@ details p{
           }
           return lanarray ? lanarray : "";
         },
+      _computeTitle: function(languageData,inputData,parallelId) {
+        if (languageData.titlelan) {return languageData.titlelan;
+        } else if (inputData.titlepi) {return inputData.titlepi;
+        } else {return parallelId;}
+      },
+      _computeHide: function(checkText) {
+        return (!checkText) ? "hide-element": "";
+      },
       infoToParent: function() {
         this.fire('eventFromParallels',{parid:this.parallelId,partitle:this.inputData.titlepi,volumepage:this.inputData.volpage,biblio:this.inputData.bib});
       }

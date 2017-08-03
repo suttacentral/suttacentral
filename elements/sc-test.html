@@ -12,11 +12,11 @@
 <template>
 <style  is="custom-style" include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
 .parallels-parallel-title {
-  @apply(--paper-font-subhead);
-  @apply(--sc-serif-font);
+  @apply --paper-font-subhead;
+  @apply --sc-serif-font;
 }
 .parallels-nerdy-row{
-  @apply(--paper-font-body2);
+  @apply --paper-font-body2;
   color: var(--secondary-text-color);
   white-space: nowrap;
 }
@@ -40,11 +40,11 @@ details {
   display: inline-block;
 }
 details p{
-  @apply(--paper-font-body1);
+  @apply --paper-font-body1;
   position:absolute;
   z-index:200;
   background-color:#fff;
-  @apply(--shadow-elevation-3dp);
+  @apply --shadow-elevation-3dp;
   padding:12px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin: 0 48px 0 0;

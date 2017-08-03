@@ -8,8 +8,8 @@
 <template>
 <style is="custom-style">
 .textcontent {
-  @apply(--sc-paper-font-body);
-  @apply(--sc-serif-font);
+  @apply --sc-paper-font-body;
+  @apply --sc-serif-font;
   color: var(--primary-text-color);
   margin: 0 auto 4em!important;
   padding: 0 5%!important;
@@ -23,7 +23,7 @@
   vertical-align: top;
 }
 .linepi {
-  @apply(--sc-sans-font);
+  @apply --sc-sans-font;
 }
 
 .sidebyside >div {
@@ -35,7 +35,7 @@
     display:none;
 }
 .notfound {
-  @apply(--paper-font-display1);
+  @apply --paper-font-display1;
 }
 </style>
 <iron-ajax id="ajaxbase"
@@ -44,18 +44,18 @@
       last-response="{{baseText}}"
       last-error='{{notFound}}'></iron-ajax>
 
-    <template is="dom-if" if="{{notFound}}">
+    <template is="dom-if" if="[[notFound]]">
         <p class="notfound">Sorry, the page your requested does not exist.</p>
     </template>
-    <template is="dom-if" if="{{!notFound}}">
-          <sc-text-node category="{{suttaPath}}" input-language="{{inputLanguage}}"></sc-text-node>
+    <template is="dom-if" if="[[!notFound]]">
+          <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
 
           <div class="textcontent">
-              <div class="hgroup" inner-h-t-m-l="<p class='division'>{{suttaText.division}}</p><h1>{{suttaText.title}}</h1>"></div>
-              <template is="dom-repeat" items="{{baseText}}" as="line">
+              <div class="hgroup" inner-h-t-m-l="<p class='division'>[[suttaText.division]]</p><h1>[[suttaText.title]]</h1>"></div>
+              <template is="dom-repeat" items="[[baseText]]" as="line">
                 <div class="lineblock">
-                    <div class="line" inner-h-t-m-l="{{line}}"></div>
-                    <div class="linepi hidepali" inner-h-t-m-l="{{line}}"></div>
+                    <div class="line" inner-h-t-m-l="[[line]]"></div>
+                    <div class="linepi hidepali" inner-h-t-m-l="[[line]]"></div>
                 </div>
               </template>
           </div>

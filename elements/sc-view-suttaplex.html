@@ -27,7 +27,7 @@ main {
   margin-left: 64px;
 }
 .suttalist.expandeditem {
-  @apply(--shadow-elevation-8dp);
+  @apply --shadow-elevation-8dp;
   margin-top:20px;
   margin-bottom: 20px;
 }
@@ -49,7 +49,7 @@ main {
     top: 50px;
   }
 .notfound {
-  @apply(--paper-font-display1);
+  @apply --paper-font-display1;
 }
 </style>
 <iron-ajax id="ajax"
@@ -62,7 +62,7 @@ main {
     <div class="loadingIndicator">
       <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
     </div>
-    <template is="dom-if" if="{{notFound}}">
+    <template is="dom-if" if="[[notFound]]">
         <p class="notfound">Sorry, the page your requested does not exist.</p>
     </template>
     
@@ -70,22 +70,22 @@ main {
         <div class="divisioncontent">
           <main>
 
-        <template is="dom-if" if="{{!notFound}}">
-                <template is="dom-if" if="{{_checkCategoryRoute(category)}}">
+        <template is="dom-if" if="[[!notFound]]">
+                <template is="dom-if" if="[[_checkCategoryRoute(category)]]">
 
                     <section class="node">
-                        <sc-node input-title="{{languageData.name}}" input-text="{{languageData.description}}" style-header="node-top-heading"></sc-node>
+                        <sc-node input-title="[[languageData.name]]" input-text="[[languageData.description]]" style-header="node-top-heading"></sc-node>
                     </section>
 
-                    <template is="dom-repeat" items="{{suttaList.vaggas}}" as="vagga">
-                      <template is="dom-if" if="{{_selectVagga(vagga,vaggaNumber)}}">
-                            <section class$="vagganode {{_checkFirstVagga(vagga,vaggaNumber)}}">
-                              <sc-node input-title="{{_computeVagganame(vagga,inputLanguage)}}" input-text="{{_computeVaggadescription(vagga,inputLanguage)}}" style-header="node-secondary-heading"></sc-node>
+                    <template is="dom-repeat" items="[[suttaList.vaggas]]" as="vagga">
+                      <template is="dom-if" if="[[_selectVagga(vagga,vaggaNumber)]]">
+                            <section class$="vagganode [[_checkFirstVagga(vagga,vaggaNumber)]]">
+                              <sc-node input-title="[[_computeVagganame(vagga,inputLanguage)]]" input-text="[[_computeVaggadescription(vagga,inputLanguage)]]" style-header="node-secondary-heading"></sc-node>
                             </section>
 
-                            <template is="dom-repeat" items="{{vagga.suttas}}" as="item">
-                              <div class="suttalist" id$="{{item}}">
-                                <sc-suttaplex input-url="{{item}}" input-language="{{inputLanguage}}"></sc-suttaplex>
+                            <template is="dom-repeat" items="[[vagga.suttas]]" as="item">
+                              <div class="suttalist" id$="[[item]]">
+                                <sc-suttaplex input-url="[[item]]" input-language="[[inputLanguage]]"></sc-suttaplex>
                               </div>
                             </template>
                         </template>
@@ -93,10 +93,10 @@ main {
                 </template>
         </template>
 
-                <template is="dom-if" if="{{!_checkCategoryRoute(category)}}">
-                    <template is="dom-if" if="{{!activePath}}">
-                              <div class="suttalist" id="{{category}}">
-                                <sc-suttaplex input-url="{{category}}" toggle-request input-language="{{inputLanguage}}"></sc-suttaplex>
+                <template is="dom-if" if="[[!_checkCategoryRoute(category)]]">
+                    <template is="dom-if" if="[[!activePath]]">
+                              <div class="suttalist" id="[[category]]">
+                                <sc-suttaplex input-url="[[category]]" toggle-request input-language="[[inputLanguage]]"></sc-suttaplex>
                               </div>
                     </template>
                 </template>

@@ -27,17 +27,17 @@ paper-item {
 .orlang {
   color: var(--paper-green-a700);
 }
-
+.hide-element {
+  display: none;
+}
 </style>
-	<paper-dropdown-menu class="custom" label="{{titleLabel}}" title="Select a translation in another language">
+	<paper-dropdown-menu class="custom" label="[[titleLabel]]" title="Select a translation in another language">
 	  <paper-listbox slot="dropdown-content">
-              <template is="dom-if" if="{{originalLanguage}}">
-                <paper-item class="orlang">{{originalLanguage}}</paper-item>
-              </template>
-	     <template is="dom-repeat" items="{{languageChoice}}" as="language">
-                  <template is="dom-if" if="{{!_otherLanguage(language, inputLanguage)}}">
-                      <template is="dom-repeat" items="{{language.authors}}" as="author">
-	    	          <paper-item id="{{language.id}}"><a href="/[[inputUrl]]/[[author]]">{{author}}</a></paper-item>
+                <paper-item class$="orlang [[originalLanguage]]">[[originalLanguage]]</paper-item>
+	     <template is="dom-repeat" items="[[languageChoice]]" as="language">
+                  <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
+                      <template is="dom-repeat" items="[[language.authors]]" as="author">
+	    	          <paper-item id="[[language.id]]"><a href="/[[inputUrl]]/[[author]]">[[author]]</a></paper-item>
                       </template>
                   </template>
 	    </template>
@@ -65,7 +65,10 @@ paper-item {
     	  },
         _otherLanguage: function(languageChoice, inputLanguage) {
           return (languageChoice && languageChoice.id === inputLanguage) ? true : false;
-          }
+          },
+      _computeHide: function(checkText) {
+        return (!checkText) ? "hide-element": "";
+      }
     });
 
 </script>
