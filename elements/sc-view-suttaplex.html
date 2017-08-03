@@ -26,8 +26,8 @@ main {
 .title {
   margin-left: 64px;
 }
-.suttalist.expandeditem {
-  @apply --shadow-elevation-8dp;
+.expandeditem {
+  @apply (--shadow-elevation-8dp);
   margin-top:20px;
   margin-bottom: 20px;
 }
@@ -153,7 +153,7 @@ main {
         return (!matches && (this.otherPages.indexOf(this.category) == -1)) ? this.$.ajax.generateRequest() : "";
       },
       elevateBox: function(event) {
-        var sutta = document.getElementById(event.detail.url);
+        var sutta = this.shadowRoot.getElementById(event.detail.url);
         return (event.detail.open === "icons:expand-more") ? sutta.classList.add('expandeditem') : sutta.classList.remove('expandeditem');
       },
       _computeURL: function(category) {

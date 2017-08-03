@@ -189,7 +189,9 @@ a {
             this.$$('#searchinput').value = '';
             var searchSize = 500;
             if (this.suttaPath) {searchSize = 540};
-            if (window.innerWidth < 1040) {document.getElementById('toolbartitlebox').setAttribute('style', "visibility:hidden")};
+            if (window.innerWidth < 1040) {
+              Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").setAttribute('style', "visibility:hidden")
+            };
             if (window.innerWidth > 840) {
                 var searchWidth = window.innerWidth-searchSize;
             } else  if (window.innerWidth > 480) {
@@ -211,13 +213,11 @@ a {
             this.$$('#searchinput').classList.remove('opened');
             this.$$('#searchinput').removeAttribute('style', "width");
             this.$$('#closebutton').style.display='none';
-            setTimeout(function(){
-                document.getElementById('toolbartitlebox').removeAttribute('style', "visibility");
-                document.getElementById('discoursebutton').removeAttribute('style', "display");
-                // document.getElementById('discoursedropdown').removeAttribute('style', "display");
-                document.getElementById('morevertbutton').removeAttribute('style', "display");
-                document.getElementById('settingsbutton').removeAttribute('style', "display");
-            }, 200);
+              Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").removeAttribute('style', "display");
+              this.$$('#discoursebutton').removeAttribute('style', "display");
+              // this.$$('#discoursedropdown').removeAttribute('style', "display");
+              this.$$('#morevertbutton').removeAttribute('style', "display");
+              this.$$('#settingsbutton').removeAttribute('style', "display");
           }
       },
       searchAction: function() {
