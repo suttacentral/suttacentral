@@ -30,7 +30,7 @@
     </template>
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
-      <div class="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
+      <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
     </template>
 </template>
 <script>
@@ -48,10 +48,23 @@
           notify: true,
           observer: '_callAjax'
         },
-        suttaText: String,
-        paragraphTitles: Object,
+        suttaText: {
+          type: String,
+          notify: true,
+          value: function(){return ""}
+        },
+        paragraphTitles: {
+            type: Object,
+            notify: true,
+            value: function(){return {}}
+        },
         inputLanguage: String,
-        notFound: Object
+        notFound: Object,
+        showParagraphs: {
+          type: Boolean,
+          notify: true,
+          observer: '_addParagraphs'
+        }
       },
       observers: [
         '_computePars(suttaText,paragraphTitles)',
@@ -64,24 +77,31 @@
       _computeURL: function(category,author) {
         return `../texts/${category}.html`;
       },
+      _addParagraphs: function(showParagraphs) {
+        var infotext = this.$$('#htmltextcontent');
+        return (showParagraphs === false) ? infotext.classList.remove('infomode') : infotext.classList.add('infomode');
+      },
       _computeTitle: function(suttaText) {
-        return ((this.$$('.division') !== undefined) && (this.$$('.division') !== null)) ? this.$$('.division').innerText : "";
+        var matches = suttaText.match(/class="division">(.*?)</);
+        return matches ? matches[1] : "";
       },
       _computeAuthor: function(suttaText) {
-        return ((this.$$('.author') !== undefined) && (this.$$('.author') !== null)) ? "—"+this.$$('.author').innerText : "";
+        var matches = suttaText.match(/author="(.*?)"/);
+        return matches ? matches[1] : "";
       },
       _computeMeta: function(suttaText) {
-        return ((this.$$('#metaarea') !== undefined) && (this.$$('#metaarea') !== null)) ? this.$$('#metaarea').innerHTML : "";
+        var matches = suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+        return matches ? matches[1] : "";
       },
      _computePars: function(inputText,paragraphTitles) {
         for (var key in paragraphTitles) {
-                var refs = this.querySelectorAll('.'+key);
+                var refs = this.shadowRoot.querySelectorAll('.'+key);
                 Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
                 Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
-          }
+        }
       },
       infoToParent: function(suttaText) {
-        this.fire('eventFromTextPage',{suttatitle:this._computeTitle(suttaText)+this._computeAuthor(suttaText),suttameta:this._computeMeta(suttaText)});
+        this.fire('eventFromTextPage',{suttatitle:this._computeTitle(suttaText)+"—"+this._computeAuthor(suttaText),suttameta:this._computeMeta(suttaText)});
       }
     });
 </script>

@@ -119,7 +119,7 @@ paper-spinner-lite {
     <main>
         <div class="results-head">
                     <h1><span class="result-description">Definitions for</span> <span class="result-term">[[dictionaryItem]]</span> </h1>
-                    <span class="termsbutton" title ="Related terms"><paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button></span>
+                    <span class="termsbutton" title ="Related terms"><paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button></span>
         </div>
 
         <div class="entries">
@@ -236,6 +236,9 @@ paper-spinner-lite {
         } else if (dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)]) {
             return dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)];
         }
+      },
+      _toggleDrawer: function() {
+        this.$.drawer.toggle();
       }
     });
 </script>

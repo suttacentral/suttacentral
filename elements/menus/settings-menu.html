@@ -11,7 +11,7 @@
 <link rel="import" href="../addons/sc-dictionary-lookup.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
-<dom-module id="settings-menu" attributes="selectedView">
+<dom-module id="settings-menu" attributes="selectedView textInfo">
 <template>
 <style is="custom-style">
 :host{
@@ -193,8 +193,7 @@ paper-toggle-button{
                 }
       },
       _getReferences: function(textualInfoEnabled) {
-        var infotext = document.querySelector('body');
-        return (textualInfoEnabled === false) ? infotext.classList.remove('infomode') : infotext.classList.add('infomode');
+        this.fire('changeTextInfo',{textInfo:textualInfoEnabled});
       },
       _radioGroupChanged: function() {
         this.fire('eventFromTools',{selectedView:this.radioSelected});

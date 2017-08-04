@@ -95,8 +95,12 @@ a {
     color: #015179;
     font-style: italic;
 }*/
-</style>
 
+.search-open #discoursebutton, .search-open > #morevertbutton, .search-open > #settingsbutton {
+  display: none;
+}
+</style>
+<div id="toolsmenu">
     <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
           <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
           <paper-input label="Search" no-label-float id="searchinput"></paper-input>
@@ -117,7 +121,7 @@ a {
           </paper-dialog-scrollable>
         </paper-dialog> -->
 
-          <paper-icon-button id="settingsbutton" class$="[[toggleDisplay]]" icon="settings" onclick="dialog.open()"></paper-icon-button>
+          <paper-icon-button id="settingsbutton" class$="[[toggleDisplay]]" icon="settings" on-click="openDialog"></paper-icon-button>
 
         <paper-dialog id="dialog">
           <div class="buttons">
@@ -136,7 +140,7 @@ a {
                 <more-menu input-language="[[inputLanguage]]"></more-menu>
             </paper-listbox>
           </paper-menu-button>
-
+</div>
 </template>
 <script>
     Polymer({
@@ -197,10 +201,7 @@ a {
             } else  if (window.innerWidth > 480) {
                 var searchWidth = window.innerWidth-(searchSize-210);
             } else {
-                this.$$('#discoursebutton').style.display="none";
-                // this.$$('#discoursedropdown').style.display="none";
-                this.$$('#morevertbutton').style.display="none"; 
-                this.$$('#settingsbutton').style.display="none";
+                this.$$("#toolsmenu").classList.add("search-open");
                 if (this.suttaPath) {searchSize = 500};
                 var searchWidth = window.innerWidth-(searchSize-320);
             }
@@ -213,15 +214,15 @@ a {
             this.$$('#searchinput').classList.remove('opened');
             this.$$('#searchinput').removeAttribute('style', "width");
             this.$$('#closebutton').style.display='none';
-              Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").removeAttribute('style', "display");
-              this.$$('#discoursebutton').removeAttribute('style', "display");
-              // this.$$('#discoursedropdown').removeAttribute('style', "display");
-              this.$$('#morevertbutton').removeAttribute('style', "display");
-              this.$$('#settingsbutton').removeAttribute('style', "display");
+            this.$$("#toolsmenu").classList.remove("search-open");
+            Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").removeAttribute('style', "display");
           }
       },
       searchAction: function() {
         this.fire("search", this.$$("#searchinput").value);
+      },
+      openDialog: function() {
+        this.$.dialog.open();
       }
     });
 
