@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../styles/language-styles.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <dom-module id="language-base-menu" attributes="Language">
 <template>
@@ -34,7 +35,10 @@ paper-item {
 	    	  <paper-item id$="[[language.id]]">[[language.full]]</paper-item>
 	    </template>
 	  </paper-listbox>
+           <app-localstorage-document key="languageSelectedNr" data="{{languageSelectedNr}}"></app-localstorage-document>
 	</paper-dropdown-menu>
+
+
 </template>
 
 <script>
@@ -47,7 +51,10 @@ paper-item {
             notify: true,
             value: function(){return []}
           },
-          languageSelectedNr: Number,
+          languageSelectedNr: {
+            type: Number,
+            notify: true
+          },
           selectedLanguage: {
             type: String,
             // computed: '_computeNewLanguage(languageSelectedNr,languageChoice)',
@@ -63,7 +70,7 @@ paper-item {
       ],
 
       ready: function() {
-        if (this.inputLanguage === undefined) {return this.languageSelectedNr = 0;}
+        // if (this.inputLanguage === undefined) {return this.languageSelectedNr = 0;}
       },
       _didRespond: function(e) {
         this._computeNewLanguage(this.languageSelectedNr,e.detail.response);
