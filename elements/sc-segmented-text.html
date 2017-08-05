@@ -208,7 +208,7 @@ paper-tooltip {
               Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.add('linebyline'));
               break;
           case "popup":
-              Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds='#htmltextcontent'>" + this.suttaOriginalText[item.id] + "</paper-tooltip>" + item.innerHTML);
+              Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds>" + this.suttaOriginalText[item.id] + "</paper-tooltip>" + item.innerHTML);
               break;
             }
         },
