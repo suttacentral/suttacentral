@@ -20,10 +20,11 @@
 }
 .sidebyside {
   display: inline-block;
-  width: 48%;
+  width: 47%;
   padding: 0 5px;
   vertical-align: text-top;
 }
+
 .hidepali {
     display:none;
 }
@@ -48,10 +49,10 @@ paper-tooltip {
       url="[[_computeURL(suttaPath,author)]]"
       handle-as="text"
       last-response="{{suttaText}}"
-      last-error='{{notFound}}'></iron-ajax>
+      last-error='{{notFound}}'
+      on-response="_loadedHTML"></iron-ajax>
 
-<iron-ajax
-      auto
+<iron-ajax id="ajaxParagraphs"
       url="../data/paragraphtitles.json"
       handle-as="json"
       last-response="{{paragraphTitles}}"></iron-ajax>
@@ -131,23 +132,29 @@ paper-tooltip {
         if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
         if (matches && this.author && this.author === "sujato") {
          this.$.ajax.generateRequest();
-         this.$.ajaxTranslated.generateRequest();
-         this.$.ajaxOriginal.generateRequest();
        }
       },
       _computeURL: function(category,author) {
-        return `../data/segmented_texts/markup/mn/${category}.html`;
+        var pathname = category.replace(/\d{1,5}/,"");
+        return `../data/segmented_texts/markup/${pathname}/${category}.html`;
       },
       _computeTranslatedURL: function(category,author) {
-        return `../data/segmented_texts/en/sujato/mn/${category}.json`;
+        var pathname = category.replace(/\d{1,5}/,"");
+        return `../data/segmented_texts/en/sujato/${pathname}/${category}.json`;
       },
       _computeOriginalURL: function(category,author) {
-        return `../data/segmented_texts/pi/mn/${category}.json`;
+        var pathname = category.replace(/\d{1,5}/,"");
+        return `../data/segmented_texts/pi/${pathname}/${category}.json`;
+      },
+      _loadedHTML: function(e) {
+        this.$.ajaxTranslated.generateRequest();
+        this.$.ajaxOriginal.generateRequest();
+        this.$.ajaxParagraphs.generateRequest();
       },
       _addTranslatedText: function(e) {
         outputText = e.detail.response;
         for (var key in outputText) {
-          if (key.startsWith("mn")) {
+          if (!key.startsWith("_")) {
                 subkey = key.replace(/:/,"\\\:");
                 subkey = subkey.replace(/\./,"\\\.");
                 var segment = this.shadowRoot.querySelector('#'+subkey);
@@ -159,7 +166,7 @@ paper-tooltip {
       _addOriginalText: function(e) {
         outputText = e.detail.response;
         for (var key in outputText) {
-          if (key.startsWith("mn")) {
+          if (!key.startsWith("_")) {
                 subkey = key.replace(/:/,"\\\:");
                 subkey = subkey.replace(/\./,"\\\.");
                 var segment = this.shadowRoot.querySelector('#'+subkey);
@@ -177,7 +184,7 @@ paper-tooltip {
         return (infotext && !showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
       },
       _computeTitle: function(suttaText) {
-        return suttaText["mn1:1.1"];
+        return suttaText[this.suttaPath+":1.1"];
       },
       _computeAuthor: function(suttaTranslatedText) {
         return "Bhikkhu Sujato";
