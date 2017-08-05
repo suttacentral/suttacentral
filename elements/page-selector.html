@@ -92,7 +92,7 @@ app-toolbar, sc-toolbar {
             </template>
 
             <template is="dom-if" if="[[_checkSegmented(category,author)]]">
-              <sc-segmented-text sutta-path="[[category]]" author="[[author]]" show-viewer="[[showViewer]]" input-language="[[inputLanguage]]"></sc-segmented-text>
+              <sc-segmented-text sutta-path="[[category]]" author="[[author]]" show-viewer="[[showViewer]]" input-language="[[inputLanguage]]" show-paragraphs="[[showParagraphs]]"></sc-segmented-text>
             </template>
 
             <template is="dom-if" if="[[_checkSearch(category)]]">

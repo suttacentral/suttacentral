@@ -78,8 +78,8 @@
         return `../texts/${category}.html`;
       },
       _addParagraphs: function(showParagraphs) {
-        var infotext = this.$$('#htmltextcontent');
-        return (showParagraphs === false) ? infotext.classList.remove('infomode') : infotext.classList.add('infomode');
+        var infotext = this.shadowRoot.querySelector('#htmltextcontent');
+        return (!showParagraphs) ? infotext.classList.remove('infomode') : infotext.classList.add('infomode');
       },
       _computeTitle: function(suttaText) {
         var matches = suttaText.match(/class="division">(.*?)</);
