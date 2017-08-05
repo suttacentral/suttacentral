@@ -79,7 +79,7 @@
       },
       _addParagraphs: function(showParagraphs) {
         var infotext = this.shadowRoot.querySelector('#htmltextcontent');
-        return (!showParagraphs) ? infotext.classList.remove('infomode') : infotext.classList.add('infomode');
+        return (infotext && !showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
       },
       _computeTitle: function(suttaText) {
         var matches = suttaText.match(/class="division">(.*?)</);

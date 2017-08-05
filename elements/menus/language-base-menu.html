@@ -53,47 +53,24 @@ paper-item {
           },
           languageSelectedNr: {
             type: Number,
-            notify: true
-          },
-          selectedLanguage: {
-            type: String,
-            // computed: '_computeNewLanguage(languageSelectedNr,languageChoice)',
-            observer: '_passNewLanguageSelected'
-          },
-          inputLanguage: {
-            type: String,
+            value: 0,
             notify: true
           }
     	},
       observers: [
-            '_checkLanguageNr(inputLanguage,languageChoice)'
+          '_computeNewLanguage(languageSelectedNr,languageChoice)'
       ],
-
-      ready: function() {
-        // if (this.inputLanguage === undefined) {return this.languageSelectedNr = 0;}
-      },
       _didRespond: function(e) {
         this._computeNewLanguage(this.languageSelectedNr,e.detail.response);
       },
-      _checkLanguageNr: function(inputLanguage,languageChoice) {
-          if (inputLanguage === undefined) {return this.languageSelectedNr = 0;}
-          else {
-            for (var i = 0 ; i < languageChoice.length ; i++) {
-              if (languageChoice[i].id === inputLanguage) {
-                return this.languageSelectedNr = i;
-              }
-            }
-          }
-      },
         _passNewLanguageSelected: function(selectedLanguage) {
           this.fire('languageSelection',{Language:selectedLanguage});
-          this.inputLanguage = this.selectedLanguage;
         },
         _computeNewLanguage: function(languageSelectedNr,languageChoice) {
-          if (languageChoice) {
-            this.selectedLanguage = languageChoice[languageSelectedNr].id;
+          if (languageChoice[languageSelectedNr]) {
+            this._passNewLanguageSelected(languageChoice[languageSelectedNr].id);
             } else {
-            this.selectedLanguage = "en";
+            this._passNewLanguageSelected("en");
           }
         }
     });
