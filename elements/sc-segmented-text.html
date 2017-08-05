@@ -136,15 +136,15 @@ paper-tooltip {
       },
       _computeURL: function(category,author) {
         var pathname = category.replace(/\d{1,5}/,"");
-        return `../data/segmented_texts/markup/${pathname}/${category}.html`;
+        return `../texts/markup/${pathname}/${category}.html`;
       },
       _computeTranslatedURL: function(category,author) {
         var pathname = category.replace(/\d{1,5}/,"");
-        return `../data/segmented_texts/en/sujato/${pathname}/${category}.json`;
+        return `../texts/en/sujato/${pathname}/${category}.json`;
       },
       _computeOriginalURL: function(category,author) {
         var pathname = category.replace(/\d{1,5}/,"");
-        return `../data/segmented_texts/pi/${pathname}/${category}.json`;
+        return `../texts/pi/${pathname}/${category}.json`;
       },
       _loadedHTML: function(e) {
         this.$.ajaxTranslated.generateRequest();
