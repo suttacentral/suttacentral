@@ -147,7 +147,10 @@ app-toolbar, sc-toolbar {
           type: String,
           notify: true
         },
-        showViewer: String,
+        showViewer: {
+          type: String,
+          notify: true
+        },
         showParagraphs: Boolean,
         category: {
           type: String,
@@ -222,8 +225,8 @@ app-toolbar, sc-toolbar {
       _checkDictionaryItem: function(subPath,category,activePath) {
         return (activePath && category === "define") ? subPath : "";
       },    
-      changeSegmentedView: function(event) {
-          return this.showViewer = event.detail.selectedView;
+      changeSegmentedView: function(e) {
+          return this.showViewer = e.detail.selectedView;
       },
       _changeTextInfo: function(e) {
         return this.showParagraphs = e.detail.textInfo;

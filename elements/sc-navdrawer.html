@@ -121,7 +121,10 @@ paper-tree {
 
       properties: {
           route: Object,
-          inputLanguage: String,
+          inputLanguage: {
+            type: String,
+            notify: true
+          },
           collectionData: Object,
           queryParams: Object,
           path: String,

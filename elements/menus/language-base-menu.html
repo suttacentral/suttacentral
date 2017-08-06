@@ -6,6 +6,10 @@
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
+<!-- This is the base language menu that determines the language of all pages. 
+Dropdown inside the toolbar more-vert-menu.
+The last chosen language is remembered through app-localstorage -->
+
 <dom-module id="language-base-menu" attributes="Language">
 <template>
 <style is="custom-style" include="language-styles">
@@ -38,7 +42,6 @@ paper-item {
            <app-localstorage-document key="languageSelectedNr" data="{{languageSelectedNr}}"></app-localstorage-document>
 	</paper-dropdown-menu>
 
-
 </template>
 
 <script>
@@ -61,12 +64,15 @@ paper-item {
           '_computeNewLanguage(languageSelectedNr,languageChoice)'
       ],
       _didRespond: function(e) {
+        // When array with language options is loaded, it will compute the equivalent language code.
         this._computeNewLanguage(this.languageSelectedNr,e.detail.response);
       },
         _passNewLanguageSelected: function(selectedLanguage) {
+          // Pass chosen language code on to main page sc-navdrawer.html
           this.fire('languageSelection',{Language:selectedLanguage});
         },
         _computeNewLanguage: function(languageSelectedNr,languageChoice) {
+          // Will compute the equivalent language code to the chosen language.
           if (languageChoice[languageSelectedNr]) {
             this._passNewLanguageSelected(languageChoice[languageSelectedNr].id);
             } else {

@@ -14,16 +14,17 @@
 </style>
 <!-- Still to do: add the correct sutta based on the author. Right now it does not check the author in the URL -->
 <iron-ajax id="ajax"
-      url="[[_computeURL(suttaPath,author)]]"
+      url="[[_computeURL(inputLanguage,suttaPath,author)]]"
       handle-as="text"
       last-response="{{suttaText}}"
+      on-response="_loadedHTML"
       last-error='{{notFound}}'></iron-ajax>
 
-<iron-ajax
-      auto
+<iron-ajax id="ajaxParagraphs"
       url="../data/paragraphtitles.json"
       handle-as="json"
-      last-response="{{paragraphTitles}}"></iron-ajax>
+      last-response="{{paragraphTitles}}"
+      on-response="_computePars"></iron-ajax>
 
     <template is="dom-if" if="[[notFound]]">
         <p class="notfound">Sorry, the page your requested does not exist.</p>
@@ -40,23 +41,16 @@
       properties: {
         suttaPath: {
           type: String,
-          notify: true,
-          observer: '_callAjax'
+          notify: true
         },
         author: {
           type: String,
-          notify: true,
-          observer: '_callAjax'
+          notify: true
         },
         suttaText: {
           type: String,
           notify: true,
           value: function(){return ""}
-        },
-        paragraphTitles: {
-            type: Object,
-            notify: true,
-            value: function(){return {}}
         },
         inputLanguage: String,
         notFound: Object,
@@ -67,19 +61,23 @@
         }
       },
       observers: [
-        '_computePars(suttaText,paragraphTitles)',
+        '_callAjax(suttaPath,author)',
         'infoToParent(suttaText)'
       ],
       _callAjax: function() {
         if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
         return (matches && this.author && this.author !== "sujato") ? this.$.ajax.generateRequest() : "";
       },
-      _computeURL: function(category,author) {
-        return `../texts/${category}.html`;
+      _computeURL: function(inputLanguage,category,author) {
+        if (!inputLanguage) {inputLanguage = "en";}
+        return `../data/texts/${inputLanguage}/${author}/${category}.html`;
       },
-      _addParagraphs: function(showParagraphs) {
+      _loadedHTML: function(e) {
+        this.$.ajaxParagraphs.generateRequest();
+      },
+      _addParagraphs: function() {
         var infotext = this.shadowRoot.querySelector('#htmltextcontent');
-        return (infotext && !showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
+        return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
       },
       _computeTitle: function(suttaText) {
         var matches = suttaText.match(/class="division">(.*?)</);
@@ -93,12 +91,14 @@
         var matches = suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
         return matches ? matches[1] : "";
       },
-     _computePars: function(inputText,paragraphTitles) {
+     _computePars: function(e) {
+      var paragraphTitles = e.detail.response;
         for (var key in paragraphTitles) {
                 var refs = this.shadowRoot.querySelectorAll('.'+key);
                 Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
                 Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
         }
+        if (this.showParagraphs) {this._addParagraphs()};
       },
       infoToParent: function(suttaText) {
         this.fire('eventFromTextPage',{suttatitle:this._computeTitle(suttaText)+"—"+this._computeAuthor(suttaText),suttameta:this._computeMeta(suttaText)});

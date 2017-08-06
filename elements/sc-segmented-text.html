@@ -12,9 +12,6 @@
 .notfound {
   @apply --paper-font-display1;
 }
-.expand-area {
-  max-width: 60em;
-}
 .original-text {
   @apply --sc-sans-font;
 }
@@ -55,7 +52,8 @@ paper-tooltip {
 <iron-ajax id="ajaxParagraphs"
       url="../data/paragraphtitles.json"
       handle-as="json"
-      last-response="{{paragraphTitles}}"></iron-ajax>
+      last-response="{{paragraphTitles}}"
+      on-response="_computePars"></iron-ajax>
 
     <template is="dom-if" if="[[notFound]]">
         <p class="notfound">Sorry, the page your requested does not exist.</p>
@@ -106,11 +104,6 @@ paper-tooltip {
           notify: true,
           value: function(){return {}}
         },
-        paragraphTitles: {
-            type: Object,
-            notify: true,
-            value: function(){return {}}
-        },
         inputLanguage: String,
         notFound: Object,
         showParagraphs: {
@@ -118,33 +111,65 @@ paper-tooltip {
           notify: true,
           observer: '_addParagraphs'
         },
+        htmlLoaded: {
+          type: Boolean,
+          notify: true
+        },
         showViewer: {
           type: String,
           observer: 'setView'
         },
       },
       observers: [
-        '_computePars(suttaTranslatedText,paragraphTitles)',
         'infoToParent(suttaTranslatedText)',
-        '_callAjax(suttaPath,author)'
+        '_callAjax(suttaPath,author)',
       ],
       _callAjax: function() {
+        this.htmlLoaded = false;
         if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
         if (matches && this.author && this.author === "sujato") {
          this.$.ajax.generateRequest();
        }
       },
       _computeURL: function(category,author) {
-        var pathname = category.replace(/\d{1,5}/,"");
-        return `../texts/markup/${pathname}/${category}.html`;
+        if (category.startsWith("dn") || category.startsWith("mn")) {
+                var pathname = category.replace(/\d{1,5}/,"");
+                return `../data/texts/markup/${pathname}/${category}.html`;
+        } else if (category.startsWith("an") || category.startsWith("sn")) {
+          // Polymer problem here with loading anything with a dot in the path. Bug report filed.
+                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
+                console.log(pathname);
+                var subpathname = category.split(".",1)[0];
+                console.log(subpathname);
+                category.replace(/\./,"\\\.");
+                return `../data/texts/markup/${pathname}/${subpathname}/${category}.html`;
+        }
       },
       _computeTranslatedURL: function(category,author) {
-        var pathname = category.replace(/\d{1,5}/,"");
-        return `../texts/en/sujato/${pathname}/${category}.json`;
+        if (category.startsWith("dn") || category.startsWith("mn")) {
+            var pathname = category.replace(/\d{1,5}/,"");
+            return `../data/texts/en/sujato/${pathname}/${category}.json`;
+        } else if (category.startsWith("an") || category.startsWith("sn")) {
+          // Polymer problem here with loading anything with a dot in the path. Bug report filed.
+                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
+                console.log(pathname);
+                var subpathname = category.split(".",1)[0];
+                console.log(subpathname);
+                return `../data/texts/en/sujato/${pathname}/${subpathname}/${category}.html`;
+        }
       },
       _computeOriginalURL: function(category,author) {
-        var pathname = category.replace(/\d{1,5}/,"");
-        return `../texts/pi/${pathname}/${category}.json`;
+        if (category.startsWith("dn") || category.startsWith("mn")) {
+            var pathname = category.replace(/\d{1,5}/,"");
+            return `../data/texts/pi/${pathname}/${category}.json`;
+        } else if (category.startsWith("an") || category.startsWith("sn")) {
+          // Polymer problem here with loading anything with a dot in the path. Bug report filed.
+                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
+                console.log(pathname);
+                var subpathname = category.split(".",1)[0];
+                console.log(subpathname);
+                return `../data/texts/pi/${pathname}/${subpathname}/${category}.html`;
+        }
       },
       _loadedHTML: function(e) {
         this.$.ajaxTranslated.generateRequest();
@@ -178,10 +203,12 @@ paper-tooltip {
                 segment.parentNode.insertBefore(newSegment, segment.nextSibling);
           }
         }
+        this.htmlLoaded = true;
+        if (this.showViewer) {this.setView(this.showViewer)};
       },
-      _addParagraphs: function(showParagraphs) {
+      _addParagraphs: function() {
         var infotext = this.shadowRoot.querySelector('#htmltextcontent');
-        return (infotext && !showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
+        return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
       },
       _computeTitle: function(suttaText) {
         return suttaText[this.suttaPath+":1.1"];
@@ -192,35 +219,39 @@ paper-tooltip {
       _computeMeta: function(suttaText) {
         return "There is no Meta Area defined for Bhante Sujato's texts yet.";
       },
-     _computePars: function(inputText,paragraphTitles) {
+     _computePars: function(e) {
+      var paragraphTitles = e.detail.response;
         for (var key in paragraphTitles) {
                 var refs = this.shadowRoot.querySelectorAll('.'+key);
                 Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
                 Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
         }
+        if (this.showParagraphs) {this._addParagraphs()};
       },
       infoToParent: function(suttaTranslatedText) {
         this.fire('eventFromSegmentedTextPage',{suttasegtitle:this._computeTitle(suttaTranslatedText)+"—"+this._computeAuthor(suttaTranslatedText),suttasegmeta:this._computeMeta(suttaTranslatedText)});
       },
-      setView: function(showViewer) {
-        this._cleanCode();
-        switch (showViewer) {
-          case "sidebyside":
-              this.$$('#htmltextcontent').classList.add('expand-area');
-              Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => item.classList.remove('hidepali'));
-              Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.add('sidebyside'));
-              break;
-          case "linebyline":
-              Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => item.classList.remove('hidepali'));
-              Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.add('linebyline'));
-              break;
-          case "popup":
-              Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds>" + this.suttaOriginalText[item.id] + "</paper-tooltip>" + item.innerHTML);
-              break;
-            }
+      setView: function(textinput) {
+        if (this.htmlLoaded) {
+                this._cleanCode();
+                switch (this.showViewer) {
+                  case "sidebyside":
+                      this.$$('section').classList.add('expand-area');
+                      Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => item.classList.remove('hidepali'));
+                      Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.add('sidebyside'));
+                      break;
+                  case "linebyline":
+                      Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => item.classList.remove('hidepali'));
+                      Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.add('linebyline'));
+                      break;
+                  case "popup":
+                      Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds>" + this.suttaOriginalText[item.id] + "</paper-tooltip>" + item.innerHTML);
+                      break;
+                    }
+                  }
         },
         _cleanCode: function() {
-              this.$$('#htmltextcontent').classList.remove('expand-area');
+              this.$$('section').classList.remove('expand-area');
               Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => item.classList.add('hidepali'));
               Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.remove('sidebyside'));
               Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.remove('linebyline'));
