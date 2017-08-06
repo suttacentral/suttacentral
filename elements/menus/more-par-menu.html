@@ -5,6 +5,8 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
+<!-- Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard. -->
+
 <dom-module id="more-par-menu">
 <template>
 <style is="custom-style">
@@ -38,17 +40,21 @@ paper-item {
         }
       },
      _copyContent: function() {
+      // copy the parallels-table in html-string
         var copyTextarea = this._computeCopyTable(this.inputData,this.parallelsArray);
         this._copyToClipboard(copyTextarea);
       },
      _copyLink: function() {
+      // Copy the link to the suttaplex page
         this._copyToClipboard("https://suttacentral.net/"+this.inputUrl);
       },
      _copyCite: function() {
+      //  copy cite-information about parallels and bibliography.
         var copyTextarea = this._computeCiteData(this.inputData,this.parallelsArray);
         this._copyToClipboard(copyTextarea);
       },
      _copyToClipboard: function(inputText) {
+      // copies inputtext to the clipboard by creating and selecting a dummy element.
         var textarea = document.createElement("textarea");
         textarea.textContent = inputText;
         textarea.style.position = "fixed";
@@ -65,6 +71,7 @@ paper-item {
         }
      },
        _computeIcon: function(icon){
+        // icons to be used instead of iron icons in the base html-string copy function
           switch (icon) {
             case 'swap-horiz': return '⮀';
             case 'compare-arrows': return '≈';
@@ -73,6 +80,7 @@ paper-item {
           } 
         },
       _computeCopyTable: function(inputData,parallelsArray) {
+        // creates a parallels-table in html-string
         var titlepi = "";
         if (inputData.parallels) {
                 tablefinalplugin = "";
@@ -96,6 +104,7 @@ paper-item {
               }
       },
       _computeCiteData: function(inputData,parallelsArray) {
+        // creates cite data for parallels with parallels-list and bibliographical information
         if (inputData.parallels) {
                 citefinalplugin = "";
                 var d = new Date();

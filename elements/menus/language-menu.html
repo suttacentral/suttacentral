@@ -5,6 +5,8 @@
 <link rel="import" href="../../styles/language-styles.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
+<!-- Language-menu used in the suttaplex card for denoting which translations exist of this particular text -->
+
 <dom-module id="language-menu">
 <template>
 <style is="custom-style" include="language-styles">
@@ -33,10 +35,12 @@ paper-item {
 </style>
 	<paper-dropdown-menu class="custom" label="[[titleLabel]]" title="Select a translation in another language">
 	  <paper-listbox slot="dropdown-content">
-                <paper-item class$="orlang [[originalLanguage]]">[[originalLanguage]]</paper-item>
+              <!-- List the original language first if not already listed-->
+              <paper-item class$="orlang [[_computeHide(originalLanguage)]]"><a href="/[[inputUrl]]/[[originalLanguage]]">[[originalLanguage]]</a></paper-item>
 	     <template is="dom-repeat" items="[[languageChoice]]" as="language">
                   <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
                       <template is="dom-repeat" items="[[language.authors]]" as="author">
+                      <!-- List all the authors and languages if they exist and does not list the ones that are from the input language-->
 	    	          <paper-item id="[[language.id]]"><a href="/[[inputUrl]]/[[author]]">[[author]]</a></paper-item>
                       </template>
                   </template>
@@ -50,6 +54,7 @@ paper-item {
         is: 'language-menu',
 
         properties: {
+          // input of language-author array
           languageChoice: {
             type: Array,
             notify: true
@@ -64,11 +69,12 @@ paper-item {
           }
     	  },
         _otherLanguage: function(languageChoice, inputLanguage) {
+          // does not list items that are from the inputLanguage because those are listed elsewhere.
           return (languageChoice && languageChoice.id === inputLanguage) ? true : false;
           },
-      _computeHide: function(checkText) {
-        return (!checkText) ? "hide-element": "";
-      }
+          _computeHide: function(checkText) {
+              return (!checkText) ? "hide-element": checkText;
+          }
     });
 
 </script>

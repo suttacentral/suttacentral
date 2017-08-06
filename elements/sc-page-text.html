@@ -69,6 +69,9 @@
         return (matches && this.author && this.author !== "sujato") ? this.$.ajax.generateRequest() : "";
       },
       _computeURL: function(inputLanguage,category,author) {
+        // This is a bit of a hack. The inputlanguage should not be the one to choose because you can 
+        // choose another language than the inputlanguage. Best to check with the relevant Sutta
+        // which is loaded in the sc-text-node, what authors and languages there are and use that.
         if (!inputLanguage) {inputLanguage = "en";}
         return `../data/texts/${inputLanguage}/${author}/${category}.html`;
       },

@@ -93,6 +93,7 @@ paper-toggle-button{
 	               <paper-item>[[dictlanguage.language]]</paper-item>
                   </template>
 	        </paper-listbox>
+                <app-localstorage-document key="paliLookupSelected" data="{{paliLookupSelected}}"></app-localstorage-document>
 	      </paper-dropdown-menu>
               <template is="dom-if" if="[[_dictionaryLookup(paliLookupSelected)]]">
                   <sc-dictionary-lookup input-dictionary="[[_getDictionary(paliLookupArray,paliLookupSelected)]]"></sc-dictionary-lookup>
@@ -108,6 +109,7 @@ paper-toggle-button{
                         <paper-item>[[dictlanguage.language]]</paper-item>
                   </template>
 	        </paper-listbox>
+                 <app-localstorage-document key="chineseLookupSelected" data="{{chineseLookupSelected}}"></app-localstorage-document>
 	      </paper-dropdown-menu>
               <template is="dom-if" if="[[_dictionaryLookup(chineseLookupSelected)]]">
                   <sc-dictionary-lookup input-dictionary="[[_getDictionary(chineseLookupArray,chineseLookupSelected)]]"></sc-dictionary-lookup>
@@ -125,6 +127,8 @@ paper-toggle-button{
 	          <paper-item>नागरी</paper-item>
 	        </paper-listbox>
 	      </paper-dropdown-menu>
+<!--                <app-localstorage-document key="" data="{{}}"></app-localstorage-document>
+ -->
       </div>
 
       <div class="dialogue-section">

@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
-<!-- This dropdown is normally hidden, and only shows when necessary. The two necessary conditions are:
+<!-- This dropdown for the search pages is normally hidden, and only shows when necessary. The two necessary conditions are:
 
 The results are in more than one category of root texts, translations, and dictionaries, and
 there are more than ten results in total -->
@@ -45,6 +45,7 @@ paper-item {
                 }
         },
       _searchChanged: function() {
+        // Fires resulting choice to search page, where it is converted to a selection of the relevant items.
         this.fire('eventFromSearchMenu',{searchView:this.searchSelected});
       }
     });
