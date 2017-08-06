@@ -137,11 +137,9 @@ paper-tooltip {
                 return `../data/texts/markup/${pathname}/${category}.html`;
         } else if (category.startsWith("an") || category.startsWith("sn")) {
           // Polymer problem here with loading anything with a dot in the path. Bug report filed.
-                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
-                console.log(pathname);
-                var subpathname = category.split(".",1)[0];
-                console.log(subpathname);
-                category.replace(/\./,"\\\.");
+                var pathname = category.replace(/[\d{1,5}\-\:]/g,"");
+                var subpathname = category.split(":",1)[0];
+                category = category.replace(":",".");
                 return `../data/texts/markup/${pathname}/${subpathname}/${category}.html`;
         }
       },
@@ -151,11 +149,10 @@ paper-tooltip {
             return `../data/texts/en/sujato/${pathname}/${category}.json`;
         } else if (category.startsWith("an") || category.startsWith("sn")) {
           // Polymer problem here with loading anything with a dot in the path. Bug report filed.
-                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
-                console.log(pathname);
-                var subpathname = category.split(".",1)[0];
-                console.log(subpathname);
-                return `../data/texts/en/sujato/${pathname}/${subpathname}/${category}.html`;
+                var pathname = category.replace(/[\d{1,5}\-\:]/g,"");
+                var subpathname = category.split(":",1)[0];
+                category = category.replace(":",".");
+                return `../data/texts/en/sujato/${pathname}/${subpathname}/${category}.json`;
         }
       },
       _computeOriginalURL: function(category,author) {
@@ -164,11 +161,10 @@ paper-tooltip {
             return `../data/texts/pi/${pathname}/${category}.json`;
         } else if (category.startsWith("an") || category.startsWith("sn")) {
           // Polymer problem here with loading anything with a dot in the path. Bug report filed.
-                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
-                console.log(pathname);
-                var subpathname = category.split(".",1)[0];
-                console.log(subpathname);
-                return `../data/texts/pi/${pathname}/${subpathname}/${category}.html`;
+                var pathname = category.replace(/[\d{1,5}\-\:]/g,"");
+                var subpathname = category.split(":",1)[0];
+                category = category.replace(":",".");
+                return `../data/texts/pi/${pathname}/${subpathname}/${category}.json`;
         }
       },
       _loadedHTML: function(e) {
@@ -180,8 +176,8 @@ paper-tooltip {
         outputText = e.detail.response;
         for (var key in outputText) {
           if (!key.startsWith("_")) {
-                subkey = key.replace(/:/,"\\\:");
-                subkey = subkey.replace(/\./,"\\\.");
+                subkey = key.replace(/:/g,"\\\:");
+                subkey = subkey.replace(/\./g,"\\\.");
                 var segment = this.shadowRoot.querySelector('#'+subkey);
                 segment.innerHTML = outputText[key]+" ";
                 segment.classList.add("translated-text");
@@ -192,8 +188,8 @@ paper-tooltip {
         outputText = e.detail.response;
         for (var key in outputText) {
           if (!key.startsWith("_")) {
-                subkey = key.replace(/:/,"\\\:");
-                subkey = subkey.replace(/\./,"\\\.");
+                subkey = key.replace(/:/g,"\\\:");
+                subkey = subkey.replace(/\./g,"\\\.");
                 var segment = this.shadowRoot.querySelector('#'+subkey);
                 var newSegment = document.createElement('sc-segment');
                 newSegment.id = "pi"+key;
