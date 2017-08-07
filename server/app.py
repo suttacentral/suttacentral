@@ -98,11 +98,12 @@ def generic(path):
         return send_file(root_path / path)
     except Exception as e:
         pass
-        
-    if debug:
-        
-        return f'<p>{path} : {path.parts} : {request.args}<p>But no page was found at this address</p>'
-    abort(404)
+    
+    return home()
+    #if debug:
+    #    
+    #    return f'<p>{path} : {path.parts} : {request.args}<p>But no page was found at this address</p>'
+    #abort(404)
     
     
 def get_secret_key():
