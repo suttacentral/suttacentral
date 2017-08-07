@@ -99,11 +99,12 @@ def generic(path):
     except Exception as e:
         pass
     
-    return home()
-    #if debug:
-    #    
-    #    return f'<p>{path} : {path.parts} : {request.args}<p>But no page was found at this address</p>'
-    #abort(404)
+    if path.suffix not in {'.json', '.html'}:
+        return home()
+    
+    if debug:
+        return f'<p>{path} : {path.parts} : {request.args}<p>But no page was found at this address</p>'
+    abort(404)
     
     
 def get_secret_key():
