@@ -133,11 +133,8 @@ paper-toggle-button{
 
       <div class="dialogue-section">
       	<h3>Remember what I have selected on this page</h3>
-      	<paper-toggle-button noink></paper-toggle-button>
-      </div>
-
-      <div class="dialogue-section">
-      	<h3>View parallels and references for this sutta <paper-icon-button icon="open-in-new"></paper-icon-button></h3>
+      	<paper-toggle-button noink active="{{rememberSettings}}"></paper-toggle-button>
+        <app-localstorage-document key="rememberSettings" data="{{rememberSettings}}"></app-localstorage-document>
       </div>
 
       <div class="dialogue-section">
@@ -212,6 +209,12 @@ paper-toggle-button{
                   type: Boolean,
                   value: false,
                   observer: "_getReferences"
+                },
+                // Boolean that remembers settings on this page.
+                rememberSettings: {
+                  type: Boolean,
+                  value: true,
+                  observer: "_rememberSettings"
                 }
       },
       _getReferences: function(textualInfoEnabled) {
@@ -221,6 +224,9 @@ paper-toggle-button{
       _radioGroupChanged: function() {
         // Fires the choice of which view for the segmented text pages is selected to page-selector.html.
         this.fire('eventFromTools',{selectedView:this.radioSelected});
+      },
+      _rememberSettings: function(rememberSettings) {
+        console.log(rememberSettings);
       },
       _dictionaryLookup: function(valueSelected) {
         // needs more work

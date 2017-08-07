@@ -259,7 +259,7 @@ app-toolbar, sc-toolbar {
       },
       _checkText: function(category,author) {
         if (category) {var matches = category.match(/\d{1,6}/)};
-        if (matches && author && author !== "sujato") {
+        if (matches && author && author !== "sujato" && author !== "pali") {
             this.mainClass="text-mode";
             this.toolbarTitle = this.suttaTitle;
             this.metaArea = this.suttaMeta;
@@ -270,7 +270,7 @@ app-toolbar, sc-toolbar {
       },
       _checkSegmented: function(category,author) {
         if (category) {var matches = category.match(/\d{1,6}/)};
-        if (matches && author && author === "sujato") {
+        if (matches && author && (author === "sujato" || author === "pali")) {
             this.mainClass="segmented-mode";
             this.toolbarTitle = this.suttaSegTitle;
             this.metaArea = this.suttaSegMeta;

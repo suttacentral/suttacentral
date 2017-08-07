@@ -66,7 +66,7 @@
       ],
       _callAjax: function() {
         if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
-        return (matches && this.author && this.author !== "sujato") ? this.$.ajax.generateRequest() : "";
+        return (matches && this.author && this.author !== "sujato" && this.author !== "pali") ? this.$.ajax.generateRequest() : "";
       },
       _computeURL: function(inputLanguage,category,author) {
         // This is a bit of a hack. The inputlanguage should not be the one to choose because you can 

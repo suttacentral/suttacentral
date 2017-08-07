@@ -110,7 +110,7 @@ paper-tree {
           </div>
         </div>
     </app-drawer>
-    <page-selector category="[[collectionData.collection]]" sub-path="[[subPathData.subpath]]" active-path="[[subPathIsActive]]" input-language="[[inputLanguage]]" query-params="[[queryParams]]"></page-selector>
+    <page-selector category="[[category]]" sub-path="[[subPathData.subpath]]" active-path="[[subPathIsActive]]" input-language="[[inputLanguage]]" query-params="[[queryParams]]"></page-selector>
 
   </app-drawer-layout>
 
@@ -125,7 +125,15 @@ paper-tree {
             type: String,
             notify: true
           },
-          collectionData: Object,
+          collectionData: {
+            type: Object,
+            notify: true,
+            observer: '_calculateCategory'
+          },
+          category: {
+            type: String,
+            notify: true
+          },
           queryParams: Object,
           path: String,
           query: String
@@ -141,6 +149,12 @@ paper-tree {
         this.addEventListener('languageSelection',this.changeLanguage);
         this.addEventListener('search', this.searchItem);
         this.addEventListener('toggleDrawer', this._toggleDrawer);
+      },
+      _calculateCategory: function(collectionData) {
+        // Polymer problem here with loading anything with a dot in the path. Bug report filed. 
+        // So when using "polymer serve" to start development server, you have to use a colon
+        // instead of a dot. But with python server/app.py you can use the correct path name.
+        this.category = collectionData.collection.replace(":",".");
       },
       changeLanguage: function(event) {
         return this.inputLanguage = event.detail.Language;

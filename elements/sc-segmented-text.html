@@ -14,19 +14,35 @@
 }
 .original-text {
   @apply --sc-sans-font;
+  display: none;
 }
-.sidebyside {
+
+.sidebyside section {
+    padding: 0 7% 32px 1%!important;
+}
+.sidebyside .translated-text {
   display: inline-block;
   width: 47%;
-  padding: 0 5px;
+  padding-right: 5px;
   vertical-align: text-top;
 }
 
-.hidepali {
-    display:none;
+.sidebyside .original-text {
+  display: inline-block;
+  width: 47%;
+  padding-left: 5px;
+  vertical-align: text-top;
 }
-.linebyline {
+
+.linebyline .translated-text, .linebyline .original-text {
   display: block;
+}
+.showpali .translated-text {
+  display: none;
+}
+.showpali .original-text {
+  display: inline;
+  @apply --sc-serif-font;
 }
 paper-tooltip {
   --paper-tooltip-opacity: 0.98;
@@ -127,7 +143,7 @@ paper-tooltip {
       _callAjax: function() {
         this.htmlLoaded = false;
         if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
-        if (matches && this.author && this.author === "sujato") {
+        if (matches && this.author && (this.author === "sujato" || this.author === "pali")) {
          this.$.ajax.generateRequest();
        }
       },
@@ -136,23 +152,20 @@ paper-tooltip {
                 var pathname = category.replace(/\d{1,5}/,"");
                 return `../data/texts/markup/${pathname}/${category}.html`;
         } else if (category.startsWith("an") || category.startsWith("sn")) {
-          // Polymer problem here with loading anything with a dot in the path. Bug report filed.
-                var pathname = category.replace(/[\d{1,5}\-\:]/g,"");
-                var subpathname = category.split(":",1)[0];
-                category = category.replace(":",".");
+                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
+                var subpathname = category.split(".",1)[0];
                 return `../data/texts/markup/${pathname}/${subpathname}/${category}.html`;
         }
       },
       _computeTranslatedURL: function(category,author) {
+        var authorroute = "en/sujato";
         if (category.startsWith("dn") || category.startsWith("mn")) {
             var pathname = category.replace(/\d{1,5}/,"");
-            return `../data/texts/en/sujato/${pathname}/${category}.json`;
+            return `../data/texts/${authorroute}/${pathname}/${category}.json`;
         } else if (category.startsWith("an") || category.startsWith("sn")) {
-          // Polymer problem here with loading anything with a dot in the path. Bug report filed.
-                var pathname = category.replace(/[\d{1,5}\-\:]/g,"");
-                var subpathname = category.split(":",1)[0];
-                category = category.replace(":",".");
-                return `../data/texts/en/sujato/${pathname}/${subpathname}/${category}.json`;
+                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
+                var subpathname = category.split(".",1)[0];
+                return `../data/texts/${authorroute}/${pathname}/${subpathname}/${category}.json`;
         }
       },
       _computeOriginalURL: function(category,author) {
@@ -160,10 +173,8 @@ paper-tooltip {
             var pathname = category.replace(/\d{1,5}/,"");
             return `../data/texts/pi/${pathname}/${category}.json`;
         } else if (category.startsWith("an") || category.startsWith("sn")) {
-          // Polymer problem here with loading anything with a dot in the path. Bug report filed.
-                var pathname = category.replace(/[\d{1,5}\-\:]/g,"");
-                var subpathname = category.split(":",1)[0];
-                category = category.replace(":",".");
+                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
+                var subpathname = category.split(".",1)[0];
                 return `../data/texts/pi/${pathname}/${subpathname}/${category}.json`;
         }
       },
@@ -185,20 +196,22 @@ paper-tooltip {
         }
       },
       _addOriginalText: function(e) {
-        outputText = e.detail.response;
-        for (var key in outputText) {
-          if (!key.startsWith("_")) {
-                subkey = key.replace(/:/g,"\\\:");
-                subkey = subkey.replace(/\./g,"\\\.");
-                var segment = this.shadowRoot.querySelector('#'+subkey);
-                var newSegment = document.createElement('sc-segment');
-                newSegment.id = "pi"+key;
-                newSegment.classList.add("original-text");
-                newSegment.classList.add("hidepali");
-                newSegment.innerHTML = outputText[key]+" ";
-                segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+        if (!this.$$('.original-text')) {
+                outputText = e.detail.response;
+                for (var key in outputText) {
+                  if (!key.startsWith("_")) {
+                        subkey = key.replace(/:/g,"\\\:");
+                        subkey = subkey.replace(/\./g,"\\\.");
+                        var segment = this.shadowRoot.querySelector('#'+subkey);
+                        var newSegment = document.createElement('sc-segment');
+                        newSegment.id = "pi"+key;
+                        newSegment.classList.add("original-text");
+                        newSegment.classList.add("hidepali");
+                        newSegment.innerHTML = outputText[key]+" ";
+                        segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+                  }
+                }
           }
-        }
         this.htmlLoaded = true;
         if (this.showViewer) {this.setView(this.showViewer)};
       },
@@ -210,10 +223,10 @@ paper-tooltip {
         return suttaText[this.suttaPath+":1.1"];
       },
       _computeAuthor: function(suttaTranslatedText) {
-        return "Bhikkhu Sujato";
+        return (this.author === "sujato") ? "—Bhikkhu Sujato" : "";
       },
       _computeMeta: function(suttaText) {
-        return "There is no Meta Area defined for Bhante Sujato's texts yet.";
+        return (this.author === "sujato") ? "There is no Meta Area defined for Bhante Sujato's texts yet." : "<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by <span class='editor'>Blake Walshe</span> and <span class='editor'>Bhikkhu Sujato</span>.</p>";
       },
      _computePars: function(e) {
       var paragraphTitles = e.detail.response;
@@ -225,32 +238,32 @@ paper-tooltip {
         if (this.showParagraphs) {this._addParagraphs()};
       },
       infoToParent: function(suttaTranslatedText) {
-        this.fire('eventFromSegmentedTextPage',{suttasegtitle:this._computeTitle(suttaTranslatedText)+"—"+this._computeAuthor(suttaTranslatedText),suttasegmeta:this._computeMeta(suttaTranslatedText)});
+        this.fire('eventFromSegmentedTextPage',{suttasegtitle:this._computeTitle(suttaTranslatedText)+this._computeAuthor(suttaTranslatedText),suttasegmeta:this._computeMeta(suttaTranslatedText)});
       },
-      setView: function(textinput) {
+      setView: function(showViewer) {
         if (this.htmlLoaded) {
                 this._cleanCode();
-                switch (this.showViewer) {
-                  case "sidebyside":
-                      this.$$('section').classList.add('expand-area');
-                      Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => item.classList.remove('hidepali'));
-                      Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.add('sidebyside'));
-                      break;
-                  case "linebyline":
-                      Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => item.classList.remove('hidepali'));
-                      Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.add('linebyline'));
-                      break;
-                  case "popup":
-                      Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds>" + this.suttaOriginalText[item.id] + "</paper-tooltip>" + item.innerHTML);
-                      break;
-                    }
-                  }
+                if (this.author !== "pali") {
+                                switch (showViewer) {
+                                  case "sidebyside":
+                                      this.$$('#htmltextcontent').classList.add('sidebyside');
+                                      break;
+                                  case "linebyline":
+                                      this.$$('#htmltextcontent').classList.add('linebyline');
+                                      break;
+                                  case "popup":
+                                      Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds>" + this.suttaOriginalText[item.id] + "</paper-tooltip>" + item.innerHTML);
+                                      break;
+                                    }
+                } else {
+                  this.$$('#htmltextcontent').classList.add('showpali');
+                }
+              }
         },
         _cleanCode: function() {
-              this.$$('section').classList.remove('expand-area');
-              Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => item.classList.add('hidepali'));
-              Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.remove('sidebyside'));
-              Array.from(this.shadowRoot.querySelectorAll("sc-segment")).forEach(item => item.classList.remove('linebyline'));
+              this.$$('#htmltextcontent').classList.remove('sidebyside');
+              this.$$('#htmltextcontent').classList.remove('linebyline');
+              this.$$('#htmltextcontent').classList.remove('showpali');
               Array.from(this.shadowRoot.querySelectorAll("paper-tooltip")).forEach(item => item.parentNode.removeChild(item));
         }
     });
