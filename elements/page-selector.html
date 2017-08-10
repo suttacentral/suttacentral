@@ -92,7 +92,7 @@ app-toolbar, sc-toolbar {
             </template>
 
             <template is="dom-if" if="[[_checkSegmented(category,author)]]">
-              <sc-segmented-text sutta-path="[[category]]" author="[[author]]" show-viewer="[[showViewer]]" input-language="[[inputLanguage]]" show-paragraphs="[[showParagraphs]]"></sc-segmented-text>
+              <sc-segmented-text sutta-path="[[category]]" author="[[author]]" show-viewer="[[showViewer]]" pali-script="[[paliScript]]" input-language="[[inputLanguage]]" show-paragraphs="[[showParagraphs]]"></sc-segmented-text>
             </template>
 
             <template is="dom-if" if="[[_checkSearch(category)]]">
@@ -151,6 +151,10 @@ app-toolbar, sc-toolbar {
           type: String,
           notify: true
         },
+        paliScript: {
+          type: Number,
+          notify: true
+        },
         showParagraphs: Boolean,
         category: {
           type: String,
@@ -191,6 +195,7 @@ app-toolbar, sc-toolbar {
         this.addEventListener('eventFromSegmentedTextPage', this.addTitles);
         this.addEventListener('eventFromTools', this.changeSegmentedView);
         this.addEventListener('changeTextInfo', this._changeTextInfo);
+        this.addEventListener('changeScript', this._changeScript);
       },
       addTitles: function(event) {
         switch (this.mainClass) {
@@ -235,7 +240,9 @@ app-toolbar, sc-toolbar {
         this.$.sctoolbar.closeSearch();
         this.$.header.resetLayout();
       },
-
+      _changeScript: function(e) {
+          return this.paliScript = e.detail.scriptchoice;
+      },
       _toggleDrawer: function() {
                 this.fire('toggleDrawer',{togdraw:"opened"});
       },

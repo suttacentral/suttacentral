@@ -29010,7 +29010,13 @@
         "text": "<dl id='cumbaṭa'><dt><dfn>cumbaṭa</dfn></dt><dd><p><span class='case'>neuter</span> a coil, a ring; a circular roll of cloth (used as a stand for a vessel, esp. when carried on the head)</p></dd></dl>"
     },
     "culla": {
-        "text": "<dl id='culla'><dt><dfn>culla</dfn></dt><dd><p><span class='case'>mfn.</span> a fireplace; a hearth.</p></dd></dl>"
+        "text": "<dl id='culla'><dt><dfn>culla</dfn><sup>1</sup></dt><dd><p><span class='case'>mfn.</span> small, minor, lesser.</p></dd><dt><dfn>culla</dfn><sup>2</sup></dt><dd><p><span class='case'>masculine</span> a fireplace; a hearth.</p></dd></dl>"
+    },
+    "cūla": {
+        "text": "<dl id='cūla'><dt><dfn>cūla</dfn></dt><dd><p><span class='case'>mfn.</span> small, minor, lesser.</p></dd></dl>"
+    },
+    "cūḷa": {
+        "text": "<dl id='cūḷa'><dt><dfn>cūḷa</dfn></dt><dd><p><span class='case'>mfn.</span> small, minor, lesser.</p></dd></dl>"
     },
     "cullasīla": {
         "text": "<dl id='cullasīla'><dt><dfn>cullasīla</dfn></dt><dd><p><span class='case'>neuter</span> the lesser (rules) of moral behavior.</p></dd></dl>"
@@ -31629,7 +31635,7 @@
         "text": "<dl id='tata'><dt data-main-entry='tanoti'><dfn>tata</dfn></dt><dd><p><span class='case'>pp mfn.</span> extended; spread out; spread out.</p></dd></dl>"
     },
     "tatiya": {
-        "text": "<dl id='tatiya'><dt><dfn>tatiya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> the third; the third kind of.</p></dd></dl>"
+        "text": "<dl id='tatiya'><dt><dfn>tatiya</dfn></dt><dd><p><span class='case'>mfn.</span> the third; the third kind of.</p></dd></dl>"
     },
     "tatiyaṃ": {
         "text": "<dl id='tatiyaṃ'><dt><dfn>tatiyaṃ</dfn></dt><dd><p><span class='case'>adverb</span> for the third time.</p></dd></dl>"
@@ -31647,7 +31653,7 @@
         "text": "<dl id='tato'><dt><dfn>tato</dfn></dt><dd><p><span class='case'>indeclinable</span></p><ol type='1' class='decimal'><li>from that place; from there; thence.</li><li>from that; than that; than that…</li><li>there upon, then; from that, consequently.</li><li>(repeated): from that and that place; here and there; from all sides.</li><li>as correlative of yato.</li></ol></dd></dl>"
     },
     "tatoja": {
-        "text": "<dl id='tatoja'><dt><dfn>tatoja</dfn></dt><dd><p><span class='case'>masculine & neuter</span> born from that.</p></dd></dl>"
+        "text": "<dl id='tatoja'><dt><dfn>tatoja</dfn></dt><dd><p><span class='case'>mfn.</span> born from that.</p></dd></dl>"
     },
     "tato nidānaṃ": {
         "text": "<dl id='tato nidānaṃ'><dt><dfn>tato nidānaṃ</dfn></dt><dd><p><span class='case'>indeclinable</span> because of that.</p></dd></dl>"
@@ -31656,7 +31662,7 @@
         "text": "<dl id='tato nimittaṃ'><dt><dfn>tato nimittaṃ</dfn></dt><dd><p><span class='case'>indeclinable</span> because of that.</p></dd></dl>"
     },
     "tatophabutika": {
-        "text": "<dl id='tatophabutika'><dt><dfn>tatophabutika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> beginning from that (one)</p></dd></dl>"
+        "text": "<dl id='tatophabutika'><dt><dfn>tatophabutika</dfn></dt><dd><p><span class='case'>mfn.</span> beginning from that (one)</p></dd></dl>"
     },
     "tatta": {
         "text": "<dl id='tatta'><dt data-main-entry='tapati'><dfn>tatta</dfn></dt><dd><p><span class='case'>pp mfn. of tapati</span> heated; hot; made red hot; molten (see <i><a href='/define/tapati'>tapati</a></i>)</p></dd></dl>"
@@ -31668,34 +31674,34 @@
         "text": "<dl id='tattha'><dt><dfn>tattha</dfn></dt><dd><p><span class='case'>adverb</span></p><ol type='1' class='decimal'><li>there, in that place.</li><li>there, to that place.</li><li>as loc. of ta(d): in that; in regard to that; in that case; on that occasion.</li><li>as correlative to yattha.</li><li>(repeated): in that and that place, here and there; on this and that.</li></ol></dd></dl>"
     },
     "tatthajātaka": {
-        "text": "<dl id='tatthajātaka'><dt><dfn>tatthajātaka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> growing there; having its origin there.</p></dd></dl>"
+        "text": "<dl id='tatthajātaka'><dt><dfn>tatthajātaka</dfn></dt><dd><p><span class='case'>mfn.</span> growing there; having its origin there.</p></dd></dl>"
     },
     "tatthaparinibbāyin": {
-        "text": "<dl id='tatthaparinibbāyin'><dt><dfn>tatthaparinibbāyi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who realizes nibbāna there, in that state.</p></dd></dl>"
+        "text": "<dl id='tatthaparinibbāyin'><dt><dfn>tatthaparinibbāyi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> who realizes nibbāna there, in that state.</p></dd></dl>"
     },
     "tatthaparinibbāyi": {
-        "text": "<dl id='tatthaparinibbāyi'><dt><dfn>tatthaparinibbāyi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who realizes nibbāna there, in that state.</p></dd></dl>"
+        "text": "<dl id='tatthaparinibbāyi'><dt><dfn>tatthaparinibbāyi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> who realizes nibbāna there, in that state.</p></dd></dl>"
     },
     "tatra": {
         "text": "<dl id='tatra'><dt><dfn>tatra</dfn></dt><dd><p><span class='case'>adverb</span></p><ol type='1' class='decimal'><li>there; in that place; to that place.</li><li>as loc. of ta(d): in that; in those; in regard to that; in that case; on that occasion.</li><li>(repeated): in that and that place, here and there; on this and that.</li></ol></dd></dl>"
     },
     "tatraṭṭha": {
-        "text": "<dl id='tatraṭṭha'><dt><dfn>tatraṭṭha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> being there; belonging to that place.</p></dd></dl>"
+        "text": "<dl id='tatraṭṭha'><dt><dfn>tatraṭṭha</dfn></dt><dd><p><span class='case'>mfn.</span> being there; belonging to that place.</p></dd></dl>"
     },
     "tatratatrābhinandana": {
         "text": "<dl id='tatratatrābhinandana'><dt><dfn>tatratatrābhinandana</dfn></dt><dd><p><span class='case'>n., ~a., feminine</span> pleasure in this and that; delight here and there.</p></dd></dl>"
     },
     "tatratatrābhinandin": {
-        "text": "<dl id='tatratatrābhinandin'><dt><dfn>tatratatrābhinandi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> finding pleasure in this and that; taking delight here and there.</p></dd></dl>"
+        "text": "<dl id='tatratatrābhinandin'><dt><dfn>tatratatrābhinandi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> finding pleasure in this and that; taking delight here and there.</p></dd></dl>"
     },
     "tatratatrābhinandi": {
-        "text": "<dl id='tatratatrābhinandi'><dt><dfn>tatratatrābhinandi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> finding pleasure in this and that; taking delight here and there.</p></dd></dl>"
+        "text": "<dl id='tatratatrābhinandi'><dt><dfn>tatratatrābhinandi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> finding pleasure in this and that; taking delight here and there.</p></dd></dl>"
     },
     "tatrupayaññu": {
-        "text": "<dl id='tatrupayaññu'><dt><dfn>tatrupayaññu</dfn></dt><dd><p><span class='case'>masculine & neuter</span> knowing the appropriate means for that.</p></dd></dl>"
+        "text": "<dl id='tatrupayaññu'><dt><dfn>tatrupayaññu</dfn></dt><dd><p><span class='case'>mfn.</span> knowing the appropriate means for that.</p></dd></dl>"
     },
     "tatrūpāya": {
-        "text": "<dl id='tatrūpāya'><dt><dfn>tatrūpāya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> being the appropriate means for that.</p></dd></dl>"
+        "text": "<dl id='tatrūpāya'><dt><dfn>tatrūpāya</dfn></dt><dd><p><span class='case'>mfn.</span> being the appropriate means for that.</p></dd></dl>"
     },
     "tatha": {
         "text": "<dl id='tatha'><dt><dfn>tatha</dfn></dt><dd><p><span class='case'>mfn. & neuter</span></p><ol type='1' class='decimal'><li>true; real.</li><li>the truth.</li></ol></dd></dl>"
@@ -31707,13 +31713,13 @@
         "text": "<dl id='tathātā'><dt><dfn>tathātā</dfn></dt><dd><p><span class='case'>feminine</span> the state of being so; the true state of things.</p></dd></dl>"
     },
     "tathātta": {
-        "text": "<dl id='tathātta'><dt><dfn>tathātta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> being of such a character.</p></dd></dl>"
+        "text": "<dl id='tathātta'><dt><dfn>tathātta</dfn></dt><dd><p><span class='case'>mfn.</span> being of such a character.</p></dd></dl>"
     },
     "tathāgata": {
         "text": "<dl id='tathāgata'><dt><dfn>tathāgata</dfn></dt><dd><p><span class='case'>masculine</span></p><ol type='1' class='decimal'><li>one who has gone so; the awakened one; used<ol type='i' class='lower-roman'><li>by Gotama (a) of Buddhas generally, including himself; (b) specifically of himself.</li><li>by others (a) of Buddhas generally, including Gotama; (b) of Gotama specifically.</li></ol></li><li>a designation of an arahat.</li><li>a creature; a sentient being.</li></ol></dd></dl>"
     },
     "tathāgataka": {
-        "text": "<dl id='tathāgataka'><dt><dfn>tathāgataka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (one) who goes in that way; goes accordingly.</p></dd></dl>"
+        "text": "<dl id='tathāgataka'><dt><dfn>tathāgataka</dfn></dt><dd><p><span class='case'>mfn.</span> (one) who goes in that way; goes accordingly.</p></dd></dl>"
     },
     "tathāgatānisevita": {
         "text": "<dl id='tathāgatānisevita'><dt><dfn>tathāgatānisevita</dfn></dt><dd><p><span class='case'>(mf)n.</span> (a place rubbed by) the frequenting of the tathāgata, a trace of the tathāgata.</p></dd></dl>"
@@ -31725,10 +31731,10 @@
         "text": "<dl id='tathārūpa'><dt><dfn>tathārūpa</dfn></dt><dd><p><span class='case'>mf(~ā ~ī)n.</span> such …; like this or that; such a kind; following a defining phrase; followed by <i>yathārūpa</i>, <i>yathā</i> or another relative pronoun.</p></dd></dl>"
     },
     "tathāvādin": {
-        "text": "<dl id='tathāvādin'><dt><dfn>tathāvādi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> speaking so, like that.</p></dd></dl>"
+        "text": "<dl id='tathāvādin'><dt><dfn>tathāvādi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> speaking so, like that.</p></dd></dl>"
     },
     "tathāvādi": {
-        "text": "<dl id='tathāvādi'><dt><dfn>tathāvādi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> speaking so, like that.</p></dd></dl>"
+        "text": "<dl id='tathāvādi'><dt><dfn>tathāvādi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> speaking so, like that.</p></dd></dl>"
     },
     "tathāvidha": {
         "text": "<dl id='tathāvidha'><dt><dfn>tathāvidha</dfn></dt><dd><p><span class='case'>mfn. & m.f.</span> of such a kind; (being) like that; such a a person.</p></dd></dl>"
@@ -31740,7 +31746,7 @@
         "text": "<dl id='tathiva'><dt><dfn>tathiva</dfn></dt><dd><p><span class='case'>mfn.</span> true.</p></dd></dl>"
     },
     "tathūpama": {
-        "text": "<dl id='tathūpama'><dt><dfn>tathūpama</dfn></dt><dd><p><span class='case'>masculine & neuter</span> similar to that; like that.</p></dd></dl>"
+        "text": "<dl id='tathūpama'><dt><dfn>tathūpama</dfn></dt><dd><p><span class='case'>mfn.</span> similar to that; like that.</p></dd></dl>"
     },
     "tathūpamaṃ": {
         "text": "<dl id='tathūpamaṃ'><dt><dfn>tathūpamaṃ</dfn></dt><dd><p><span class='case'>adverb</span> like that; in a similar way.</p></dd></dl>"
@@ -31803,22 +31809,22 @@
         "text": "<dl id='taddiguṇa'><dt><dfn>taddiguṇa</dfn></dt><dd><p><span class='case'>mfn.</span> twice that, double that (see <i><a href='/define/ta(d)'>ta(d)</a></i>)</p></dd></dl>"
     },
     "tanu": {
-        "text": "<dl id='tanu'><dt><dfn>tanu</dfn></dt><dd><p><span class='case'>masculine & neuter</span></p><ol type='1' class='decimal'><li>thin; slender; attenuated, diminished; fine delicate; small.</li><li>the body.</li></ol></dd></dl>"
+        "text": "<dl id='tanu'><dt><dfn>tanu</dfn></dt><dd><p><span class='case'>mfn.</span></p><ol type='1' class='decimal'><li>thin; slender; attenuated, diminished; fine delicate; small.</li><li>the body.</li></ol></dd></dl>"
     },
     "tanuka": {
-        "text": "<dl id='tanuka'><dt><dfn>tanuka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> thin; small; insignificant; diminished; few.</p></dd></dl>"
+        "text": "<dl id='tanuka'><dt><dfn>tanuka</dfn></dt><dd><p><span class='case'>mfn.</span> thin; small; insignificant; diminished; few.</p></dd></dl>"
     },
     "tanukaṃ": {
         "text": "<dl id='tanukaṃ'><dt><dfn>tanukaṃ</dfn></dt><dd><p><span class='case'>adverb</span> a little.</p></dd></dl>"
     },
     "tanutara": {
-        "text": "<dl id='tanutara'><dt><dfn>tanutara</dfn></dt><dd><p><span class='case'>masculine & neuter</span> fewer.</p></dd></dl>"
+        "text": "<dl id='tanutara'><dt><dfn>tanutara</dfn></dt><dd><p><span class='case'>mfn.</span> fewer.</p></dd></dl>"
     },
     "tanutta": {
         "text": "<dl id='tanutta'><dt><dfn>tanutta</dfn></dt><dd><p><span class='case'>n., abstr.</span> thinness; diminution; reduction.</p></dd></dl>"
     },
     "tanuya": {
-        "text": "<dl id='tanuya'><dt><dfn>tanuya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> little; few.</p></dd></dl>"
+        "text": "<dl id='tanuya'><dt><dfn>tanuya</dfn></dt><dd><p><span class='case'>mfn.</span> little; few.</p></dd></dl>"
     },
     "tandiṭṭhika": {
         "text": "<dl id='tandiṭṭhika'><dt><dfn>tandiṭṭhika</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/taṃdiṭṭhika'>taṃdiṭṭhika</a></i>)</p></dd></dl>"
@@ -31839,13 +31845,13 @@
         "text": "<dl id='tantākulakajāta'><dt><dfn>tantākulakajāta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> entangled like a ball of string.</p></dd></dl>"
     },
     "tantāvuta": {
-        "text": "<dl id='tantāvuta'><dt><dfn>tantāvuta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> woven (on the loom)</p></dd></dl>"
+        "text": "<dl id='tantāvuta'><dt><dfn>tantāvuta</dfn></dt><dd><p><span class='case'>mfn.</span> woven (on the loom)</p></dd></dl>"
     },
     "tanti": {
         "text": "<dl id='tanti'><dt><dfn>tanti</dfn></dt><dd><p><span class='case'>feminine</span> a tendon; a string.</p></dd></dl>"
     },
     "tantibaddha": {
-        "text": "<dl id='tantibaddha'><dt><dfn>tantibaddha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> tied.</p></dd></dl>"
+        "text": "<dl id='tantibaddha'><dt><dfn>tantibaddha</dfn></dt><dd><p><span class='case'>mfn.</span> tied.</p></dd></dl>"
     },
     "tantissara": {
         "text": "<dl id='tantissara'><dt><dfn>tantissara</dfn></dt><dd><p><span class='case'>masculine</span> the sound or music of strings.</p></dd></dl>"
@@ -31872,7 +31878,7 @@
         "text": "<dl id='tapañña'><dt><dfn>tapañña</dfn></dt><dd><p><span class='case'>neuter</span> (see <i><a href='/define/tapanīya'>tapanīya</a></i>)</p></dd></dl>"
     },
     "tapanīya": {
-        "text": "<dl id='tapanīya'><dt><dfn>tapanīya</dfn><sup>1</sup></dt><dd><p><span class='case'>masculine & neuter</span> connected with, causing, pain or distress.</p></dd><dt><dfn>tapanīya</dfn><sup>2</sup></dt><dd><p><span class='case'>neuter</span> gold purified by fire.</p></dd></dl>"
+        "text": "<dl id='tapanīya'><dt><dfn>tapanīya</dfn><sup>1</sup></dt><dd><p><span class='case'>mfn.</span> connected with, causing, pain or distress.</p></dd><dt><dfn>tapanīya</dfn><sup>2</sup></dt><dd><p><span class='case'>neuter</span> gold purified by fire.</p></dd></dl>"
     },
     "tapaneyya": {
         "text": "<dl id='tapaneyya'><dt><dfn>tapaneyya</dfn></dt><dd><p><span class='case'>neuter</span> (see <i><a href='/define/tapanīya'>tapanīya</a></i>)</p></dd></dl>"
@@ -32013,7 +32019,7 @@
         "text": "<dl id='taruṇaka'><dt><dfn>taruṇaka</dfn></dt><dd><p><span class='case'>mf(-ikā)n.</span> young; tender.</p></dd></dl>"
     },
     "taruṇavuta": {
-        "text": "<dl id='taruṇavuta'><dt><dfn>taruṇavuta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> surrounded by young men.</p></dd></dl>"
+        "text": "<dl id='taruṇavuta'><dt><dfn>taruṇavuta</dfn></dt><dd><p><span class='case'>mfn.</span> surrounded by young men.</p></dd></dl>"
     },
     "taruṇī": {
         "text": "<dl id='taruṇī'><dt><dfn>taruṇī</dfn></dt><dd><p><span class='case'>feminine</span> a young woman; maiden.</p></dd></dl>"
@@ -32034,7 +32040,7 @@
         "text": "<dl id='taḷāka'><dt><dfn>taḷāka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> a pond, a pool; a tank, a reservoir.</p></dd></dl>"
     },
     "tasa": {
-        "text": "<dl id='tasa'><dt><dfn>tasa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> trembling, frightened; moving; living.</p></dd></dl>"
+        "text": "<dl id='tasa'><dt><dfn>tasa</dfn></dt><dd><p><span class='case'>mfn.</span> trembling, frightened; moving; living.</p></dd></dl>"
     },
     "tasati": {
         "text": "<dl id='tasati'><dt data-main-entry='tasati'><dfn>tasati</dfn><sup>1</sup></dt><dd><p><span class='case'>pr. 3 sg.</span> is thirsty; craves for.</p></dd><dt><dfn>tasati</dfn><sup>2</sup></dt><dd><p><span class='case'>pr. 3 sg.</span> trembles, shakes; is afraid.</p></dd></dl>"
@@ -32064,7 +32070,7 @@
         "text": "<dl id='tassapāpiyasakākamma'><dt><dfn>tassapāpiyasakākamma</dfn></dt><dd><p><span class='case'>neuter</span> a formal act of the <i>saṅgha</i> authorizing censure.</p></dd></dl>"
     },
     "tassapāpiyasakākammakata": {
-        "text": "<dl id='tassapāpiyasakākammakata'><dt><dfn>tassapāpiyasakākammakata</dfn></dt><dd><p><span class='case'>masculine & neuter</span> dealt with a <i>tassapāpiyasakā</i> formal act of the <i>saṅgha</i>.</p></dd></dl>"
+        "text": "<dl id='tassapāpiyasakākammakata'><dt><dfn>tassapāpiyasakākammakata</dfn></dt><dd><p><span class='case'>mfn.</span> dealt with a <i>tassapāpiyasakā</i> formal act of the <i>saṅgha</i>.</p></dd></dl>"
     },
     "tahaṃ": {
         "text": "<dl id='tahaṃ'><dt><dfn>tahaṃ</dfn></dt><dd><p><span class='case'>demonstr. adv.</span> there; (equivalent to loc. of <i>ta(d)</i>) in that; in regard to him or it or that; repeated: here and there; in this place and that; at this and that (see <i><a href='/define/tahiṃ'>tahiṃ</a></i>)</p></dd></dl>"
@@ -33069,7 +33075,7 @@
         "text": "<dl id='tūlinī'><dt><dfn>tūlinī</dfn></dt><dd><p><span class='case'>(m)f(n).</span> like cotton.</p></dd></dl>"
     },
     "tekaṭula": {
-        "text": "<dl id='tekaṭula'><dt><dfn>tekaṭula</dfn></dt><dd><p><span class='case'>masculine & neuter</span> made of three pungent substances.</p></dd></dl>"
+        "text": "<dl id='tekaṭula'><dt><dfn>tekaṭula</dfn></dt><dd><p><span class='case'>mfn.</span> made of three pungent substances.</p></dd></dl>"
     },
     "tekiccha": {
         "text": "<dl id='tekiccha'><dt><dfn>tekiccha</dfn></dt><dd><p><span class='case'>masculine</span> a doctor.</p></dd></dl>"
@@ -33111,10 +33117,10 @@
         "text": "<dl id='teja'><dt><dfn>teja(s)</dfn></dt><dd><p><span class='case'>masculine & neuter</span></p><ol type='1' class='decimal'><li>(sg. nom. <i>tejo</i>; acc. <i>tejo</i>, <i>tejaṃ</i>; instr. <i>tejasā</i>, <i>tejena</i>; gen. <i>tejaso</i>, <i>tejassa</i>; loc. <i>tejasmiṃ</i>; pl. nom. <i>tejā</i>; iic <i>tejo-</i>, <i>teja-</i>)</li><li>fire, flame, heat.</li><li>fiery energy; fierceness; spiritual or moral power; authority.</li></ol></dd></dl>"
     },
     "tejagaharaka": {
-        "text": "<dl id='tejagaharaka'><dt><dfn>tejagaharaka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who scorns or disparages (the element of fire)</p></dd></dl>"
+        "text": "<dl id='tejagaharaka'><dt><dfn>tejagaharaka</dfn></dt><dd><p><span class='case'>mfn.</span> who scorns or disparages (the element of fire)</p></dd></dl>"
     },
     "tejajiggicchaka": {
-        "text": "<dl id='tejajiggicchaka'><dt><dfn>tejajiggicchaka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who spurns or despises (the element of) fire.</p></dd></dl>"
+        "text": "<dl id='tejajiggicchaka'><dt><dfn>tejajiggicchaka</dfn></dt><dd><p><span class='case'>mfn.</span> who spurns or despises (the element of) fire.</p></dd></dl>"
     },
     "tejadhātu": {
         "text": "<dl id='tejadhātu'><dt><dfn>tejadhātu</dfn></dt><dd><p><span class='case'>feminine</span> the element of fire.</p></dd></dl>"
@@ -33129,16 +33135,16 @@
         "text": "<dl id='tejasi'><dt><dfn>tejasi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/tejassi(n)'>tejassi(n)</a></i>)</p></dd></dl>"
     },
     "tejassin": {
-        "text": "<dl id='tejassin'><dt><dfn>tejassi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> full of fiery power or energy.</p></dd></dl>"
+        "text": "<dl id='tejassin'><dt><dfn>tejassi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> full of fiery power or energy.</p></dd></dl>"
     },
     "tejassi": {
-        "text": "<dl id='tejassi'><dt><dfn>tejassi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> full of fiery power or energy.</p></dd></dl>"
+        "text": "<dl id='tejassi'><dt><dfn>tejassi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> full of fiery power or energy.</p></dd></dl>"
     },
     "tejin": {
-        "text": "<dl id='tejin'><dt><dfn>teji(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> fiery; brilliant (from teja(s))</p></dd></dl>"
+        "text": "<dl id='tejin'><dt><dfn>teji(n)</dfn></dt><dd><p><span class='case'>mfn.</span> fiery; brilliant (from teja(s))</p></dd></dl>"
     },
     "teji": {
-        "text": "<dl id='teji'><dt><dfn>teji(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> fiery; brilliant (from teja(s))</p></dd></dl>"
+        "text": "<dl id='teji'><dt><dfn>teji(n)</dfn></dt><dd><p><span class='case'>mfn.</span> fiery; brilliant (from teja(s))</p></dd></dl>"
     },
     "tejokasiṇa": {
         "text": "<dl id='tejokasiṇa'><dt><dfn>tejokasiṇa</dfn></dt><dd><p><span class='case'>neuter</span> meditation based on fire; the meditation object fire; (the jhana) which is or is brought about by meditation based on fire.</p></dd></dl>"
@@ -33192,7 +33198,7 @@
         "text": "<dl id='terasama'><dt><dfn>terasama</dfn></dt><dd><p><span class='case'>mf(~ā ~ī)n.</span> the 13th.</p></dd></dl>"
     },
     "terovassika": {
-        "text": "<dl id='terovassika'><dt><dfn>terovassika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> more than a year old; (according to commentary: rained on for a long time)</p></dd></dl>"
+        "text": "<dl id='terovassika'><dt><dfn>terovassika</dfn></dt><dd><p><span class='case'>mfn.</span> more than a year old; (according to commentary: rained on for a long time)</p></dd></dl>"
     },
     "tela": {
         "text": "<dl id='tela'><dt><dfn>tela</dfn></dt><dd><p><span class='case'>neuter</span> sesame oil; oil in general.</p></dd></dl>"
@@ -33207,13 +33213,13 @@
         "text": "<dl id='teḷasa'><dt><dfn>teḷasa</dfn></dt><dd><p><span class='case'>num., mfn. of terasa</span> (see <i><a href='/define/terasa'>terasa</a></i>)</p></dd></dl>"
     },
     "tevācika": {
-        "text": "<dl id='tevācika'><dt><dfn>tevācika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> using or involving three utterances or proclamations.</p></dd></dl>"
+        "text": "<dl id='tevācika'><dt><dfn>tevācika</dfn></dt><dd><p><span class='case'>mfn.</span> using or involving three utterances or proclamations.</p></dd></dl>"
     },
     "tevijja": {
-        "text": "<dl id='tevijja'><dt><dfn>tevijja</dfn></dt><dd><p><span class='case'>masculine & neuter</span> knowing the three Vedas; possessed of the three knowledges.</p></dd></dl>"
+        "text": "<dl id='tevijja'><dt><dfn>tevijja</dfn></dt><dd><p><span class='case'>mfn.</span> knowing the three Vedas; possessed of the three knowledges.</p></dd></dl>"
     },
     "tevijjaka": {
-        "text": "<dl id='tevijjaka'><dt><dfn>tevijjaka</dfn><sup>1</sup></dt><dd><p><span class='case'>masculine & neuter</span> who knows the three Vedas.</p></dd><dt><dfn>tevijjaka</dfn><sup>2</sup></dt><dd><p><span class='case'>masculine & neuter</span> connected with the three Vedas; belonging to those who know the three Vedas.</p></dd></dl>"
+        "text": "<dl id='tevijjaka'><dt><dfn>tevijjaka</dfn><sup>1</sup></dt><dd><p><span class='case'>mfn.</span> who knows the three Vedas.</p></dd><dt><dfn>tevijjaka</dfn><sup>2</sup></dt><dd><p><span class='case'>mfn.</span> connected with the three Vedas; belonging to those who know the three Vedas.</p></dd></dl>"
     },
     "tevijjiriṇa": {
         "text": "<dl id='tevijjiriṇa'><dt><dfn>tevijjiriṇa</dfn></dt><dd><p><span class='case'>neuter</span> (see <i><a href='/define/tevijjīriṇa'>tevijjīriṇa</a></i>)</p></dd></dl>"
@@ -33228,7 +33234,7 @@
         "text": "<dl id='tevīsati'><dt><dfn>tevīsati</dfn></dt><dd><p><span class='case'>num.</span> twenty three.</p></dd></dl>"
     },
     "tevīsatima": {
-        "text": "<dl id='tevīsatima'><dt><dfn>tevīsatima</dfn></dt><dd><p><span class='case'>masculine & neuter</span> the 23rd.</p></dd></dl>"
+        "text": "<dl id='tevīsatima'><dt><dfn>tevīsatima</dfn></dt><dd><p><span class='case'>mfn.</span> the 23rd.</p></dd></dl>"
     },
     "tesaṭṭhi": {
         "text": "<dl id='tesaṭṭhi'><dt><dfn>tesaṭṭhi</dfn></dt><dd><p><span class='case'>num.</span> sixty three.</p></dd></dl>"
@@ -33393,7 +33399,7 @@
         "text": "<dl id='thala'><dt><dfn>thala</dfn></dt><dd><p><span class='case'>neuter</span> dry land; firm ground; high ground; a plateau.</p></dd></dl>"
     },
     "thalaṭṭha": {
-        "text": "<dl id='thalaṭṭha'><dt><dfn>thalaṭṭha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> being or living on dry land; being on high ground.</p></dd></dl>"
+        "text": "<dl id='thalaṭṭha'><dt><dfn>thalaṭṭha</dfn></dt><dd><p><span class='case'>mfn.</span> being or living on dry land; being on high ground.</p></dd></dl>"
     },
     "thavati": {
         "text": "<dl id='thavati'><dt><dfn>thavati</dfn></dt><dd><p><span class='case'>pr. 3 sg.</span> praises.</p></dd></dl>"
@@ -33414,13 +33420,13 @@
         "text": "<dl id='thāma'><dt><dfn>thāma</dfn></dt><dd><p><span class='case'>masculine</span> strength, power; ability; firmness.</p></dd></dl>"
     },
     "thāmagata": {
-        "text": "<dl id='thāmagata'><dt><dfn>thāmagata</dfn></dt><dd><p><span class='case'>masculine & neuter</span> grown strong; become fixed.</p></dd></dl>"
+        "text": "<dl id='thāmagata'><dt><dfn>thāmagata</dfn></dt><dd><p><span class='case'>mfn.</span> grown strong; become fixed.</p></dd></dl>"
     },
     "thāmavat": {
-        "text": "<dl id='thāmavat'><dt><dfn>thāmava(t)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> strong; firm.</p></dd></dl>"
+        "text": "<dl id='thāmavat'><dt><dfn>thāmava(t)</dfn></dt><dd><p><span class='case'>mfn.</span> strong; firm.</p></dd></dl>"
     },
     "thāmava": {
-        "text": "<dl id='thāmava'><dt><dfn>thāmava(t)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> strong; firm.</p></dd></dl>"
+        "text": "<dl id='thāmava'><dt><dfn>thāmava(t)</dfn></dt><dd><p><span class='case'>mfn.</span> strong; firm.</p></dd></dl>"
     },
     "thālaka": {
         "text": "<dl id='thālaka'><dt><dfn>thālaka</dfn></dt><dd><p><span class='case'>neuter</span> a bowl or dish.</p></dd></dl>"
@@ -33762,13 +33768,13 @@
         "text": "<dl id='daṇḍakamma'><dt><dfn>daṇḍakamma</dfn></dt><dd><p><span class='case'>neuter</span> a punishment; a penance; reparation.</p></dd></dl>"
     },
     "daṇḍaparāyana": {
-        "text": "<dl id='daṇḍaparāyana'><dt><dfn>daṇḍaparāyana</dfn></dt><dd><p><span class='case'>masculine & neuter</span> dependent on a stick.</p></dd></dl>"
+        "text": "<dl id='daṇḍaparāyana'><dt><dfn>daṇḍaparāyana</dfn></dt><dd><p><span class='case'>mfn.</span> dependent on a stick.</p></dd></dl>"
     },
     "daṇḍaparissāvana": {
         "text": "<dl id='daṇḍaparissāvana'><dt><dfn>daṇḍaparissāvana</dfn></dt><dd><p><span class='case'>neuter</span> a kind of sieve or filter (made on a wooden framework)</p></dd></dl>"
     },
     "daṇḍapāṇī": {
-        "text": "<dl id='daṇḍapāṇī'><dt><dfn>daṇḍapāṇī</dfn></dt><dd><p><span class='case'>masculine & neuter</span> with a staff in one’s hand.</p></dd></dl>"
+        "text": "<dl id='daṇḍapāṇī'><dt><dfn>daṇḍapāṇī</dfn></dt><dd><p><span class='case'>mfn.</span> with a staff in one’s hand.</p></dd></dl>"
     },
     "daṇḍamāṇavaka": {
         "text": "<dl id='daṇḍamāṇavaka'><dt><dfn>daṇḍamāṇavaka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (see <i><a href='/define/daṇḍamānavaka'>daṇḍamānavaka</a></i>)</p></dd></dl>"
@@ -33795,7 +33801,7 @@
         "text": "<dl id='daṇḍapesuṃ'><dt><dfn>daṇḍapesuṃ</dfn></dt><dd><p><span class='case'>aor. 3 pl.</span> were fined.</p></dd></dl>"
     },
     "daṇḍita": {
-        "text": "<dl id='daṇḍita'><dt><dfn>daṇḍita</dfn></dt><dd><p><span class='case'>masculine & neuter</span> punished; fined.</p></dd></dl>"
+        "text": "<dl id='daṇḍita'><dt><dfn>daṇḍita</dfn></dt><dd><p><span class='case'>mfn.</span> punished; fined.</p></dd></dl>"
     },
     "datta": {
         "text": "<dl id='datta'><dt data-main-entry='dadāti'><dfn>datta</dfn></dt><dd><p><span class='case'>pp mfn.</span> mad; foolish; wild; arrogant.</p></dd></dl>"
@@ -33813,7 +33819,7 @@
         "text": "<dl id='dattu'><dt><dfn>dattu</dfn></dt><dd><p><span class='case'>pp mfn.</span> (see <i><a href='/define/datta'>datta</a></i>)</p></dd></dl>"
     },
     "dattupaññata": {
-        "text": "<dl id='dattupaññata'><dt><dfn>dattupaññata</dfn></dt><dd><p><span class='case'>masculine & neuter</span> declared by fools.</p></dd></dl>"
+        "text": "<dl id='dattupaññata'><dt><dfn>dattupaññata</dfn></dt><dd><p><span class='case'>mfn.</span> declared by fools.</p></dd></dl>"
     },
     "dattha": {
         "text": "<dl id='dattha'><dt><dfn>dattha</dfn></dt><dd><p><span class='case'>2 pl. of dassati</span> (see <i><a href='/define/dassati'>dassati</a></i>)</p></dd></dl>"
@@ -33900,7 +33906,7 @@
         "text": "<dl id='dadhimaṇḍaka'><dt><dfn>dadhimaṇḍaka</dfn></dt><dd><p><span class='case'>neuter</span> whey.</p></dd></dl>"
     },
     "danta": {
-        "text": "<dl id='danta'><dt data-main-entry='dameti'><dfn>danta</dfn><sup>1</sup></dt><dd><p><span class='case'>masculine</span></p><ol type='1' class='decimal'><li>tooth (of humans and animals) esp. elephant tusks; ivory.</li><li>elephant’s tusks; ivory.</li><li>the tooth of a comb (?)</li></ol></dd><dt><dfn>danta</dfn><sup>2</sup></dt><dd><p><span class='case'>masculine & neuter</span> tamed, subdued; controlled; restrained.</p></dd></dl>"
+        "text": "<dl id='danta'><dt data-main-entry='dameti'><dfn>danta</dfn><sup>1</sup></dt><dd><p><span class='case'>masculine</span></p><ol type='1' class='decimal'><li>tooth (of humans and animals) esp. elephant tusks; ivory.</li><li>elephant’s tusks; ivory.</li><li>the tooth of a comb (?)</li></ol></dd><dt><dfn>danta</dfn><sup>2</sup></dt><dd><p><span class='case'>mfn.</span> tamed, subdued; controlled; restrained.</p></dd></dl>"
     },
     "dantakaṭṭha": {
         "text": "<dl id='dantakaṭṭha'><dt><dfn>dantakaṭṭha</dfn></dt><dd><p><span class='case'>neuter</span> a tooth stick (used to clean the teeth)</p></dd></dl>"
@@ -33921,7 +33927,7 @@
         "text": "<dl id='dantabhūmi'><dt><dfn>dantabhūmi</dfn></dt><dd><p><span class='case'>feminine</span> the condition of one who is tamed.</p></dd></dl>"
     },
     "dantavaṇṇaka": {
-        "text": "<dl id='dantavaṇṇaka'><dt><dfn>dantavaṇṇaka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> ivory colored.</p></dd></dl>"
+        "text": "<dl id='dantavaṇṇaka'><dt><dfn>dantavaṇṇaka</dfn></dt><dd><p><span class='case'>mfn.</span> ivory colored.</p></dd></dl>"
     },
     "dantavatā": {
         "text": "<dl id='dantavatā'><dt><dfn>dantavatā</dfn></dt><dd><p><span class='case'>feminine</span> the being (like) one who is tamed?</p></dd></dl>"
@@ -33939,7 +33945,7 @@
         "text": "<dl id='dantūllehakam'><dt><dfn>dantūllehakam</dfn></dt><dd><p><span class='case'>indeclinable</span> tearing up with their teeth.</p></dd></dl>"
     },
     "dandha": {
-        "text": "<dl id='dandha'><dt><dfn>dandha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> slow; silly; stupid; sluggish.</p></dd></dl>"
+        "text": "<dl id='dandha'><dt><dfn>dandha</dfn></dt><dd><p><span class='case'>mfn.</span> slow; silly; stupid; sluggish.</p></dd></dl>"
     },
     "dandhaṃ": {
         "text": "<dl id='dandhaṃ'><dt><dfn>dandhaṃ</dfn></dt><dd><p><span class='case'>adverb</span> slowly; sluggishly.</p></dd></dl>"
@@ -33951,7 +33957,7 @@
         "text": "<dl id='dandhayati'><dt><dfn>dandhayati</dfn></dt><dd><p><span class='case'>pr. 3 sg.</span> (see <i><a href='/define/dandhati'>dandhati</a></i>)</p></dd></dl>"
     },
     "dandhābbhiñña": {
-        "text": "<dl id='dandhābbhiñña'><dt><dfn>dandhābbhiñña</dfn></dt><dd><p><span class='case'>masculine & neuter</span> of slow understanding; characterized by slow intuition.</p></dd></dl>"
+        "text": "<dl id='dandhābbhiñña'><dt><dfn>dandhābbhiñña</dfn></dt><dd><p><span class='case'>mfn.</span> of slow understanding; characterized by slow intuition.</p></dd></dl>"
     },
     "dandheti": {
         "text": "<dl id='dandheti'><dt><dfn>dandheti</dfn></dt><dd><p><span class='case'>pr. 3 sg.</span> (see <i><a href='/define/dandhati'>dandhati</a></i>)</p></dd></dl>"
@@ -34044,7 +34050,7 @@
         "text": "<dl id='dayā'><dt><dfn>dayā</dfn></dt><dd><p><span class='case'>feminine</span> sympathy; compassion; kindness (towards, usually loc.)</p></dd></dl>"
     },
     "dayāpanna": {
-        "text": "<dl id='dayāpanna'><dt><dfn>dayāpanna</dfn></dt><dd><p><span class='case'>masculine & neuter</span> full of compassion and kindness.</p></dd></dl>"
+        "text": "<dl id='dayāpanna'><dt><dfn>dayāpanna</dfn></dt><dd><p><span class='case'>mfn.</span> full of compassion and kindness.</p></dd></dl>"
     },
     "dayita": {
         "text": "<dl id='dayita'><dt data-main-entry='dayati'><dfn>dayita</dfn></dt><dd><p><span class='case'>pp mfn.</span> cherished; dear.</p></dd></dl>"
@@ -34068,7 +34074,7 @@
         "text": "<dl id='dalidda'><dt><dfn>dalidda</dfn></dt><dd><p><span class='case'>mf(~ā ~ī)n. & m.f.</span> poor; needy; a poor person.</p></dd></dl>"
     },
     "daliddaka": {
-        "text": "<dl id='daliddaka'><dt><dfn>daliddaka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> poor.</p></dd></dl>"
+        "text": "<dl id='daliddaka'><dt><dfn>daliddaka</dfn></dt><dd><p><span class='case'>mfn.</span> poor.</p></dd></dl>"
     },
     "daḷidda": {
         "text": "<dl id='daḷidda'><dt><dfn>daḷidda</dfn></dt><dd><p><span class='case'>mf(~ā ~ī)n. & m.f.</span> (see <i><a href='/define/dalidda'>dalidda</a></i>)</p></dd></dl>"
@@ -34149,7 +34155,7 @@
         "text": "<dl id='dasabalāni'><dt><dfn>dasabalāni</dfn></dt><dd><p><span class='case'>neuter plural</span> (see <i><a href='/define/dasabala'>dasabala</a></i>)</p></dd></dl>"
     },
     "dasama": {
-        "text": "<dl id='dasama'><dt><dfn>dasama</dfn></dt><dd><p><span class='case'>masculine & neuter</span> the tenth.</p></dd></dl>"
+        "text": "<dl id='dasama'><dt><dfn>dasama</dfn></dt><dd><p><span class='case'>mfn.</span> the tenth.</p></dd></dl>"
     },
     "dasamūlaka": {
         "text": "<dl id='dasamūlaka'><dt><dfn>dasamūlaka</dfn></dt><dd><p><span class='case'>(mf)n.</span> (what is) based on ten items; (a statement or exposition) concerned with ten items.</p></dd></dl>"
@@ -34158,28 +34164,28 @@
         "text": "<dl id='dasavagga'><dt><dfn>dasavagga</dfn></dt><dd><p><span class='case'>masculine & mfn.</span> a group of ten; consisting of a group of ten.</p></dd></dl>"
     },
     "dasavaggika": {
-        "text": "<dl id='dasavaggika'><dt><dfn>dasavaggika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> forming a group of ten.</p></dd></dl>"
+        "text": "<dl id='dasavaggika'><dt><dfn>dasavaggika</dfn></dt><dd><p><span class='case'>mfn.</span> forming a group of ten.</p></dd></dl>"
     },
     "dasavassa": {
-        "text": "<dl id='dasavassa'><dt><dfn>dasavassa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> of ten years’ standing; one who has been ordained for ten years.</p></dd></dl>"
+        "text": "<dl id='dasavassa'><dt><dfn>dasavassa</dfn></dt><dd><p><span class='case'>mfn.</span> of ten years’ standing; one who has been ordained for ten years.</p></dd></dl>"
     },
     "dasavassāyuka": {
-        "text": "<dl id='dasavassāyuka'><dt><dfn>dasavassāyuka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> having a life span of ten years.</p></dd></dl>"
+        "text": "<dl id='dasavassāyuka'><dt><dfn>dasavassāyuka</dfn></dt><dd><p><span class='case'>mfn.</span> having a life span of ten years.</p></dd></dl>"
     },
     "dasavassuddesika": {
-        "text": "<dl id='dasavassuddesika'><dt><dfn>dasavassuddesika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> about ten years old.</p></dd></dl>"
+        "text": "<dl id='dasavassuddesika'><dt><dfn>dasavassuddesika</dfn></dt><dd><p><span class='case'>mfn.</span> about ten years old.</p></dd></dl>"
     },
     "dasavāsa": {
-        "text": "<dl id='dasavāsa'><dt><dfn>dasavāsa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> following the ten ways of living.</p></dd></dl>"
+        "text": "<dl id='dasavāsa'><dt><dfn>dasavāsa</dfn></dt><dd><p><span class='case'>mfn.</span> following the ten ways of living.</p></dd></dl>"
     },
     "dasasata": {
         "text": "<dl id='dasasata'><dt><dfn>dasasata</dfn></dt><dd><p><span class='case'>num. & mfn.</span> (numbering) one thousand.</p></dd></dl>"
     },
     "dasasatakkhatuṃ": {
-        "text": "<dl id='dasasatakkhatuṃ'><dt><dfn>dasasatakkhatuṃ</dfn></dt><dd><p><span class='case'>masculine & neuter</span> a thousand times.</p></dd></dl>"
+        "text": "<dl id='dasasatakkhatuṃ'><dt><dfn>dasasatakkhatuṃ</dfn></dt><dd><p><span class='case'>mfn.</span> a thousand times.</p></dd></dl>"
     },
     "dasasahassī": {
-        "text": "<dl id='dasasahassī'><dt><dfn>dasasahassī</dfn></dt><dd><p><span class='case'>masculine & neuter</span> consisting of 10, 000 (cakkavāḷas)</p></dd></dl>"
+        "text": "<dl id='dasasahassī'><dt><dfn>dasasahassī</dfn></dt><dd><p><span class='case'>mfn.</span> consisting of 10, 000 (cakkavāḷas)</p></dd></dl>"
     },
     "dasasikkhāpadika": {
         "text": "<dl id='dasasikkhāpadika'><dt><dfn>dasasikkhāpadika</dfn></dt><dd><p><span class='case'>m(fn).</span> (one) who follows, observes, the ten sikkhāpadas.</p></dd></dl>"
@@ -34191,7 +34197,7 @@
         "text": "<dl id='dasahā'><dt><dfn>dasahā</dfn></dt><dd><p><span class='case'>adverb</span> within ten days.</p></dd></dl>"
     },
     "dasahāpaṭicchanna": {
-        "text": "<dl id='dasahāpaṭicchanna'><dt><dfn>dasahāpaṭicchanna</dfn></dt><dd><p><span class='case'>masculine & neuter</span> concealed for ten days.</p></dd></dl>"
+        "text": "<dl id='dasahāpaṭicchanna'><dt><dfn>dasahāpaṭicchanna</dfn></dt><dd><p><span class='case'>mfn.</span> concealed for ten days.</p></dd></dl>"
     },
     "dasā": {
         "text": "<dl id='dasā'><dt><dfn>dasā</dfn></dt><dd><p><span class='case'>feminine</span> the loose end of a cloth; an edge or border.</p></dd></dl>"
@@ -34215,7 +34221,7 @@
         "text": "<dl id='dassana'><dt><dfn>dassana</dfn></dt><dd><p><span class='case'>n., masculine</span></p><ol type='1' class='decimal'><li>(n.) seeing; looking; sight (of); eyesight.</li><li>(m.) insight; proper perception; understanding.</li></ol></dd></dl>"
     },
     "dassanakāma": {
-        "text": "<dl id='dassanakāma'><dt><dfn>dassanakāma</dfn></dt><dd><p><span class='case'>masculine & neuter</span> wanting to see (acc. or gen.)</p></dd></dl>"
+        "text": "<dl id='dassanakāma'><dt><dfn>dassanakāma</dfn></dt><dd><p><span class='case'>mfn.</span> wanting to see (acc. or gen.)</p></dd></dl>"
     },
     "dassananuttariya": {
         "text": "<dl id='dassananuttariya'><dt><dfn>dassananuttariya</dfn></dt><dd><p><span class='case'>neuter</span> (see <i><a href='/define/dassanānuttariya'>dassanānuttariya</a></i>)</p></dd></dl>"
@@ -34224,13 +34230,13 @@
         "text": "<dl id='dassanānuttariya'><dt><dfn>dassanānuttariya</dfn></dt><dd><p><span class='case'>neuter</span> excellence of seeing or insight.</p></dd></dl>"
     },
     "dassanīya": {
-        "text": "<dl id='dassanīya'><dt><dfn>dassanīya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> to be seen; worth seeing; beautiful.</p></dd></dl>"
+        "text": "<dl id='dassanīya'><dt><dfn>dassanīya</dfn></dt><dd><p><span class='case'>mfn.</span> to be seen; worth seeing; beautiful.</p></dd></dl>"
     },
     "dassanīyatara": {
         "text": "<dl id='dassanīyatara'><dt><dfn>dassanīyatara</dfn></dt><dd><p><span class='case'>mfn., compar.</span> more beautiful.</p></dd></dl>"
     },
     "dassaneyya": {
-        "text": "<dl id='dassaneyya'><dt><dfn>dassaneyya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (see <i><a href='/define/dassanīya'>dassanīya</a></i>)</p></dd></dl>"
+        "text": "<dl id='dassaneyya'><dt><dfn>dassaneyya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dassanīya'>dassanīya</a></i>)</p></dd></dl>"
     },
     "dassayat": {
         "text": "<dl id='dassayat'><dt><dfn>dassaya(t)</dfn></dt><dd><p><span class='case'>part. pr. mfn. of dasseti</span> (see <i><a href='/define/dasseti'>dasseti</a></i>)</p></dd></dl>"
@@ -34251,10 +34257,10 @@
         "text": "<dl id='dassāmi'><dt><dfn>dassāmi</dfn></dt><dd><p><span class='case'>1 sg. of dassati</span> (see <i><a href='/define/dassati'>dassati</a></i>)</p></dd></dl>"
     },
     "dassāvin": {
-        "text": "<dl id='dassāvin'><dt><dfn>dassāvi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who has seen; who goes to see, attends; seeing.</p></dd></dl>"
+        "text": "<dl id='dassāvin'><dt><dfn>dassāvi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> who has seen; who goes to see, attends; seeing.</p></dd></dl>"
     },
     "dassāvi": {
-        "text": "<dl id='dassāvi'><dt><dfn>dassāvi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who has seen; who goes to see, attends; seeing.</p></dd></dl>"
+        "text": "<dl id='dassāvi'><dt><dfn>dassāvi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> who has seen; who goes to see, attends; seeing.</p></dd></dl>"
     },
     "dassita": {
         "text": "<dl id='dassita'><dt data-main-entry='dadāti'><dfn>dassita</dfn></dt><dd><p><span class='case'>pp mfn.</span> shown; exhibited.</p></dd></dl>"
@@ -34263,10 +34269,10 @@
         "text": "<dl id='dassitar'><dt><dfn>dassita(r)</dfn></dt><dd><p><span class='case'>masculine</span> (see <i><a href='/define/dasseta(r)'>dasseta(r)</a></i>)</p></dd></dl>"
     },
     "dassin": {
-        "text": "<dl id='dassin'><dt><dfn>dassi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> seeing; understanding.</p></dd></dl>"
+        "text": "<dl id='dassin'><dt><dfn>dassi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> seeing; understanding.</p></dd></dl>"
     },
     "dassi": {
-        "text": "<dl id='dassi'><dt><dfn>dassi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> seeing; understanding.</p></dd></dl>"
+        "text": "<dl id='dassi'><dt><dfn>dassi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> seeing; understanding.</p></dd></dl>"
     },
     "dassukhīla": {
         "text": "<dl id='dassukhīla'><dt><dfn>dassukhīla</dfn></dt><dd><p><span class='case'>masculine & neuter</span> brigandage.</p></dd></dl>"
@@ -34335,13 +34341,13 @@
         "text": "<dl id='dāṭha'><dt><dfn>dāṭha</dfn></dt><dd><p><span class='case'>masculine</span> (see <i><a href='/define/dāṭhā'>dāṭhā</a></i>)</p></dd></dl>"
     },
     "dāṭhabala": {
-        "text": "<dl id='dāṭhabala'><dt><dfn>dāṭhabala</dfn></dt><dd><p><span class='case'>masculine & neuter</span> strong-toothed; whose strength is his teeth.</p></dd></dl>"
+        "text": "<dl id='dāṭhabala'><dt><dfn>dāṭhabala</dfn></dt><dd><p><span class='case'>mfn.</span> strong-toothed; whose strength is his teeth.</p></dd></dl>"
     },
     "dāṭhābaln": {
-        "text": "<dl id='dāṭhābaln'><dt><dfn>dāṭhābal(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (see <i><a href='/define/dāṭhabala'>dāṭhabala</a></i>)</p></dd></dl>"
+        "text": "<dl id='dāṭhābaln'><dt><dfn>dāṭhābal(n)</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dāṭhabala'>dāṭhabala</a></i>)</p></dd></dl>"
     },
     "dāṭhābal": {
-        "text": "<dl id='dāṭhābal'><dt><dfn>dāṭhābal(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (see <i><a href='/define/dāṭhabala'>dāṭhabala</a></i>)</p></dd></dl>"
+        "text": "<dl id='dāṭhābal'><dt><dfn>dāṭhābal(n)</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dāṭhabala'>dāṭhabala</a></i>)</p></dd></dl>"
     },
     "dāṭhā": {
         "text": "<dl id='dāṭhā'><dt><dfn>dāṭhā</dfn></dt><dd><p><span class='case'>feminine</span> a fang; the canine tooth.</p></dd></dl>"
@@ -34350,10 +34356,10 @@
         "text": "<dl id='dāṭhikā'><dt><dfn>dāṭhikā</dfn></dt><dd><p><span class='case'>feminine</span> whiskers; mustache.</p></dd></dl>"
     },
     "dāṭhin": {
-        "text": "<dl id='dāṭhin'><dt><dfn>dāṭhi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> having large teeth or fangs; having tusks.</p></dd></dl>"
+        "text": "<dl id='dāṭhin'><dt><dfn>dāṭhi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> having large teeth or fangs; having tusks.</p></dd></dl>"
     },
     "dāṭhi": {
-        "text": "<dl id='dāṭhi'><dt><dfn>dāṭhi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> having large teeth or fangs; having tusks.</p></dd></dl>"
+        "text": "<dl id='dāṭhi'><dt><dfn>dāṭhi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> having large teeth or fangs; having tusks.</p></dd></dl>"
     },
     "dāḍima": {
         "text": "<dl id='dāḍima'><dt><dfn>dāḍima</dfn></dt><dd><p><span class='case'>masculine</span> the pomegranate tree; saf: punica granatum l.</p></dd></dl>"
@@ -34533,7 +34539,7 @@
         "text": "<dl id='diṭṭha'><dt data-main-entry='passati'><dfn>diṭṭha</dfn></dt><dd><p><span class='case'>pp mfn.</span></p><ol type='1' class='decimal'><li>(pass.) seen; recognized; being seen; visible; what is seen.</li><li>(n.) seeing; sight; perception.</li></ol></dd></dl>"
     },
     "diṭṭhadhamma": {
-        "text": "<dl id='diṭṭhadhamma'><dt><dfn>diṭṭhadhamma</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who has seen the dhamma.</p></dd></dl>"
+        "text": "<dl id='diṭṭhadhamma'><dt><dfn>diṭṭhadhamma</dfn></dt><dd><p><span class='case'>mfn.</span> who has seen the dhamma.</p></dd></dl>"
     },
     "diṭṭhadhammanibbāna": {
         "text": "<dl id='diṭṭhadhammanibbāna'><dt><dfn>diṭṭhadhammanibbāna</dfn></dt><dd><p><span class='case'>neuter</span> nibbāna in this life.</p></dd></dl>"
@@ -34542,13 +34548,13 @@
         "text": "<dl id='diṭṭhadhammasukha'><dt><dfn>diṭṭhadhammasukha</dfn></dt><dd><p><span class='case'>neuter</span> happiness in this life.</p></dd></dl>"
     },
     "diṭṭhadhammābhinibbuta": {
-        "text": "<dl id='diṭṭhadhammābhinibbuta'><dt><dfn>diṭṭhadhammābhinibbuta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> calmed in this life (or: who has seen the dhamma and is calmed?)</p></dd></dl>"
+        "text": "<dl id='diṭṭhadhammābhinibbuta'><dt><dfn>diṭṭhadhammābhinibbuta</dfn></dt><dd><p><span class='case'>mfn.</span> calmed in this life (or: who has seen the dhamma and is calmed?)</p></dd></dl>"
     },
     "diṭṭhadhammika": {
-        "text": "<dl id='diṭṭhadhammika'><dt><dfn>diṭṭhadhammika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> belonging to this world; belonging to this life.</p></dd></dl>"
+        "text": "<dl id='diṭṭhadhammika'><dt><dfn>diṭṭhadhammika</dfn></dt><dd><p><span class='case'>mfn.</span> belonging to this world; belonging to this life.</p></dd></dl>"
     },
     "diṭṭhapubba": {
-        "text": "<dl id='diṭṭhapubba'><dt><dfn>diṭṭhapubba</dfn></dt><dd><p><span class='case'>masculine & neuter</span> seen before; previously seen.</p></dd></dl>"
+        "text": "<dl id='diṭṭhapubba'><dt><dfn>diṭṭhapubba</dfn></dt><dd><p><span class='case'>mfn.</span> seen before; previously seen.</p></dd></dl>"
     },
     "diṭṭhā": {
         "text": "<dl id='diṭṭhā'><dt><dfn>diṭṭhā</dfn></dt><dd><p><span class='case'>indeclinable</span> thank heavens! what luck!</p></dd></dl>"
@@ -34578,7 +34584,7 @@
         "text": "<dl id='diṭṭhipatta'><dt><dfn>diṭṭhipatta</dfn></dt><dd><p><span class='case'>m(fn).</span> (one) who has achieved insight; who has achieved (nibbana) through insight.</p></dd></dl>"
     },
     "diṭṭhiyā": {
-        "text": "<dl id='diṭṭhiyā'><dt><dfn>diṭṭhiyā</dfn></dt><dd><p><span class='case'>masculine & neuter</span> following views.</p></dd></dl>"
+        "text": "<dl id='diṭṭhiyā'><dt><dfn>diṭṭhiyā</dfn></dt><dd><p><span class='case'>mfn.</span> following views.</p></dd></dl>"
     },
     "diṭṭhiyāyaka": {
         "text": "<dl id='diṭṭhiyāyaka'><dt><dfn>diṭṭhiyāyaka</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/diṭṭhiyā'>diṭṭhiyā</a></i>)</p></dd></dl>"
@@ -34605,7 +34611,7 @@
         "text": "<dl id='diddha'><dt><dfn>diddha</dfn></dt><dd><p><span class='case'>masculine</span> smeared; poisoned.</p></dd></dl>"
     },
     "diddhagata": {
-        "text": "<dl id='diddhagata'><dt><dfn>diddhagata</dfn></dt><dd><p><span class='case'>masculine & neuter</span> poisoned?; (smeared with poison?)</p></dd></dl>"
+        "text": "<dl id='diddhagata'><dt><dfn>diddhagata</dfn></dt><dd><p><span class='case'>mfn.</span> poisoned?; (smeared with poison?)</p></dd></dl>"
     },
     "diddhagada": {
         "text": "<dl id='diddhagada'><dt><dfn>diddhagada</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/diddhagata'>diddhagata</a></i>)</p></dd></dl>"
@@ -34617,16 +34623,16 @@
         "text": "<dl id='dinna'><dt data-main-entry='dadāti'><dfn>dinna</dfn></dt><dd><p><span class='case'>pp mfn. & neuter</span></p><ol type='1' class='decimal'><li>(mfn.) given; applied, what is given.</li><li>(n.) giving; the being given.</li></ol></dd></dl>"
     },
     "dinnapāṭikaṅkhin": {
-        "text": "<dl id='dinnapāṭikaṅkhin'><dt><dfn>dinnapāṭikaṅkhi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> wishing for only what is given.</p></dd></dl>"
+        "text": "<dl id='dinnapāṭikaṅkhin'><dt><dfn>dinnapāṭikaṅkhi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> wishing for only what is given.</p></dd></dl>"
     },
     "dinnapāṭikaṅkhi": {
-        "text": "<dl id='dinnapāṭikaṅkhi'><dt><dfn>dinnapāṭikaṅkhi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> wishing for only what is given.</p></dd></dl>"
+        "text": "<dl id='dinnapāṭikaṅkhi'><dt><dfn>dinnapāṭikaṅkhi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> wishing for only what is given.</p></dd></dl>"
     },
     "dinnādāyīn": {
-        "text": "<dl id='dinnādāyīn'><dt><dfn>dinnādāyī(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> taking (only) what is given.</p></dd></dl>"
+        "text": "<dl id='dinnādāyīn'><dt><dfn>dinnādāyī(n)</dfn></dt><dd><p><span class='case'>mfn.</span> taking (only) what is given.</p></dd></dl>"
     },
     "dinnādāyī": {
-        "text": "<dl id='dinnādāyī'><dt><dfn>dinnādāyī(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> taking (only) what is given.</p></dd></dl>"
+        "text": "<dl id='dinnādāyī'><dt><dfn>dinnādāyī(n)</dfn></dt><dd><p><span class='case'>mfn.</span> taking (only) what is given.</p></dd></dl>"
     },
     "dipada": {
         "text": "<dl id='dipada'><dt><dfn>dipada</dfn></dt><dd><p><span class='case'>m(fn).</span> (see <i><a href='/define/dvipada'>dvipada</a></i>)</p></dd></dl>"
@@ -34638,10 +34644,10 @@
         "text": "<dl id='dippati'><dt data-main-entry='dippati'><dfn>dippati</dfn><sup>1</sup></dt><dd><p><span class='case'>pr. 3 sg.</span> shines, blazes; is manifest; appears clearly.</p></dd><dt><dfn>dippati</dfn><sup>2</sup></dt><dd><p><span class='case'>pass pr. 3 sg. of dīpeti</span> (see <i><a href='/define/dīpeti'>dīpeti</a></i>)</p></dd></dl>"
     },
     "dibba": {
-        "text": "<dl id='dibba'><dt><dfn>dibba</dfn></dt><dd><p><span class='case'>masculine & neuter</span> divine; heavenly; belonging to gods; supernatural; magical, marvelous.</p></dd></dl>"
+        "text": "<dl id='dibba'><dt><dfn>dibba</dfn></dt><dd><p><span class='case'>mfn.</span> divine; heavenly; belonging to gods; supernatural; magical, marvelous.</p></dd></dl>"
     },
     "dibbaṃ cakkhu": {
-        "text": "<dl id='dibbaṃ cakkhu'><dt><dfn>dibbaṃ cakkhu</dfn></dt><dd><p><span class='case'>masculine & neuter</span> the divine eye; supernatural sight.</p></dd></dl>"
+        "text": "<dl id='dibbaṃ cakkhu'><dt><dfn>dibbaṃ cakkhu</dfn></dt><dd><p><span class='case'>mfn.</span> the divine eye; supernatural sight.</p></dd></dl>"
     },
     "dibbacakkhu": {
         "text": "<dl id='dibbacakkhu'><dt><dfn>dibbacakkhu</dfn></dt><dd><p><span class='case'>neuter</span> the divine eye; supernatural sight.</p></dd></dl>"
@@ -34659,10 +34665,10 @@
         "text": "<dl id='dibbasotadhātu'><dt><dfn>dibbasotadhātu</dfn></dt><dd><p><span class='case'>feminine</span> supernatural hearing.</p></dd></dl>"
     },
     "dibbā sotadhātu": {
-        "text": "<dl id='dibbā sotadhātu'><dt><dfn>dibbā sotadhātu</dfn></dt><dd><p><span class='case'>masculine & neuter</span> godlike or supernatural hearing.</p></dd></dl>"
+        "text": "<dl id='dibbā sotadhātu'><dt><dfn>dibbā sotadhātu</dfn></dt><dd><p><span class='case'>mfn.</span> godlike or supernatural hearing.</p></dd></dl>"
     },
     "dibya": {
-        "text": "<dl id='dibya'><dt><dfn>dibya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (see <i><a href='/define/dibba'>dibba</a></i>)</p></dd></dl>"
+        "text": "<dl id='dibya'><dt><dfn>dibya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dibba'>dibba</a></i>)</p></dd></dl>"
     },
     "diyaḍḍha": {
         "text": "<dl id='diyaḍḍha'><dt><dfn>diyaḍḍha</dfn></dt><dd><p><span class='case'>mfn.</span> one and a half (see <i><a href='/define/dvi'>dvi</a></i>)</p></dd></dl>"
@@ -34707,19 +34713,19 @@
         "text": "<dl id='divāsoppa'><dt><dfn>divāsoppa</dfn></dt><dd><p><span class='case'>neuter</span> sleeping in the daytime.</p></dd></dl>"
     },
     "diviya": {
-        "text": "<dl id='diviya'><dt><dfn>diviya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> divine; heavenly; belonging to gods; supernatural; magical, marvelous (see <i><a href='/define/dibba'>dibba</a></i>)</p></dd></dl>"
+        "text": "<dl id='diviya'><dt><dfn>diviya</dfn></dt><dd><p><span class='case'>mfn.</span> divine; heavenly; belonging to gods; supernatural; magical, marvelous (see <i><a href='/define/dibba'>dibba</a></i>)</p></dd></dl>"
     },
     "divya": {
-        "text": "<dl id='divya'><dt><dfn>divya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (see <i><a href='/define/dibba'>dibba</a></i>)</p></dd></dl>"
+        "text": "<dl id='divya'><dt><dfn>divya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dibba'>dibba</a></i>)</p></dd></dl>"
     },
     "disa": {
         "text": "<dl id='disa'><dt><dfn>disa</dfn></dt><dd><p><span class='case'>masculine</span> an enemy.</p></dd></dl>"
     },
     "disaṅgata": {
-        "text": "<dl id='disaṅgata'><dt><dfn>disaṅgata</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who has gone elsewhere, to another place.</p></dd></dl>"
+        "text": "<dl id='disaṅgata'><dt><dfn>disaṅgata</dfn></dt><dd><p><span class='case'>mfn.</span> who has gone elsewhere, to another place.</p></dd></dl>"
     },
     "disaṅgamika": {
-        "text": "<dl id='disaṅgamika'><dt><dfn>disaṅgamika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> intending to go elsewhere, to go to another place.</p></dd></dl>"
+        "text": "<dl id='disaṅgamika'><dt><dfn>disaṅgamika</dfn></dt><dd><p><span class='case'>mfn.</span> intending to go elsewhere, to go to another place.</p></dd></dl>"
     },
     "disaṅgamiya": {
         "text": "<dl id='disaṅgamiya'><dt><dfn>disaṅgamiya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/disaṅgamika'>disaṅgamika</a></i>)</p></dd></dl>"
@@ -34761,13 +34767,13 @@
         "text": "<dl id='dissamāna'><dt data-main-entry='dakkhati'><dfn>dissamāna</dfn></dt><dd><p><span class='case'>part. pr. mfn. of dissati</span> (see <i><a href='/define/dissati'>dissati</a></i>)</p></dd></dl>"
     },
     "dīgha": {
-        "text": "<dl id='dīgha'><dt><dfn>dīgha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> long (in space or time)</p></dd></dl>"
+        "text": "<dl id='dīgha'><dt><dfn>dīgha</dfn></dt><dd><p><span class='case'>mfn.</span> long (in space or time)</p></dd></dl>"
     },
     "dīghaṃ": {
         "text": "<dl id='dīghaṃ'><dt><dfn>dīghaṃ</dfn></dt><dd><p><span class='case'>acc. adv.</span> long.</p></dd></dl>"
     },
     "dīghaṅguli": {
-        "text": "<dl id='dīghaṅguli'><dt><dfn>dīghaṅguli</dfn></dt><dd><p><span class='case'>masculine & neuter</span> having long fingers (one of the 32 characteristics of a mahapurisa)</p></dd></dl>"
+        "text": "<dl id='dīghaṅguli'><dt><dfn>dīghaṅguli</dfn></dt><dd><p><span class='case'>mfn.</span> having long fingers (one of the 32 characteristics of a mahapurisa)</p></dd></dl>"
     },
     "dīghato": {
         "text": "<dl id='dīghato'><dt><dfn>dīghato</dfn></dt><dd><p>in length; lengthways.</p></dd></dl>"
@@ -34797,19 +34803,19 @@
         "text": "<dl id='dīghaso'><dt><dfn>dīghaso</dfn></dt><dd><p>(see <i><a href='/define/dīghato'>dīghato</a></i>)</p></dd></dl>"
     },
     "dīghānusayita": {
-        "text": "<dl id='dīghānusayita'><dt><dfn>dīghānusayita</dfn></dt><dd><p><span class='case'>masculine & neuter</span> persistent for a long time.</p></dd></dl>"
+        "text": "<dl id='dīghānusayita'><dt><dfn>dīghānusayita</dfn></dt><dd><p><span class='case'>mfn.</span> persistent for a long time.</p></dd></dl>"
     },
     "dīghānusayin": {
-        "text": "<dl id='dīghānusayin'><dt><dfn>dīghānusayi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> persistent for a long time.</p></dd></dl>"
+        "text": "<dl id='dīghānusayin'><dt><dfn>dīghānusayi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> persistent for a long time.</p></dd></dl>"
     },
     "dīghānusayi": {
-        "text": "<dl id='dīghānusayi'><dt><dfn>dīghānusayi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> persistent for a long time.</p></dd></dl>"
+        "text": "<dl id='dīghānusayi'><dt><dfn>dīghānusayi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> persistent for a long time.</p></dd></dl>"
     },
     "dīghāyuka": {
         "text": "<dl id='dīghāyuka'><dt><dfn>dīghāyuka</dfn></dt><dd><p><span class='case'>mf( ~ī)n.</span> long lived.</p></dd></dl>"
     },
     "dīnamana": {
-        "text": "<dl id='dīnamana'><dt><dfn>dīnamana</dfn></dt><dd><p><span class='case'>masculine & neuter</span> distressed in mind; dejected.</p></dd></dl>"
+        "text": "<dl id='dīnamana'><dt><dfn>dīnamana</dfn></dt><dd><p><span class='case'>mfn.</span> distressed in mind; dejected.</p></dd></dl>"
     },
     "dīpa": {
         "text": "<dl id='dīpa'><dt><dfn>dīpa</dfn><sup>1</sup></dt><dd><p><span class='case'>masculine</span> a lamp, a light.</p></dd><dt><dfn>dīpa</dfn><sup>2</sup></dt><dd><p><span class='case'>masculine neuter</span></p><ol type='1' class='decimal'><li>an island; a shelter, a place of refuge.</li><li>a division of the terrestrial world, one of the four continents.</li><li>the island of Sri Laṅkā.</li></ol></dd></dl>"
@@ -34854,7 +34860,7 @@
         "text": "<dl id='dukkara'><dt><dfn>dukkara</dfn></dt><dd><p><span class='case'>mfn. & neuter</span> (what is) hard to do; difficult to perform or practice; (it is) hard, a difficult thing.</p></dd></dl>"
     },
     "dukkarakārikā": {
-        "text": "<dl id='dukkarakārikā'><dt><dfn>dukkarakārikā</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who does what is hard to do.</p></dd></dl>"
+        "text": "<dl id='dukkarakārikā'><dt><dfn>dukkarakārikā</dfn></dt><dd><p><span class='case'>mfn.</span> who does what is hard to do.</p></dd></dl>"
     },
     "dukkaratara": {
         "text": "<dl id='dukkaratara'><dt><dfn>dukkaratara</dfn></dt><dd><p><span class='case'>mfn., compar.</span> harder to do; more difficult.</p></dd></dl>"
@@ -34956,7 +34962,7 @@
         "text": "<dl id='dugga'><dt><dfn>dugga</dfn></dt><dd><p><span class='case'>mfn. & neuter</span></p><ol type='1' class='decimal'><li>(mfn.) hard to travel; difficult of access; impassable.</li><li>(n.) a place difficult of access or passage; difficult, rough country.</li></ol></dd></dl>"
     },
     "duggata": {
-        "text": "<dl id='duggata'><dt><dfn>duggata</dfn></dt><dd><p><span class='case'>masculine & neuter</span> having a wretched (re) -birth; poor, unfortunate, ill-fated.</p></dd></dl>"
+        "text": "<dl id='duggata'><dt><dfn>duggata</dfn></dt><dd><p><span class='case'>mfn.</span> having a wretched (re) -birth; poor, unfortunate, ill-fated.</p></dd></dl>"
     },
     "duggati": {
         "text": "<dl id='duggati'><dt><dfn>duggati</dfn></dt><dd><p><span class='case'>feminine</span> a wretched (re) -birth or state of existence; an ill destiny; misfortune, poverty.</p></dd></dl>"
@@ -34965,10 +34971,10 @@
         "text": "<dl id='duggatigamana'><dt><dfn>duggatigamana</dfn></dt><dd><p><span class='case'>mfn. & neuter</span> going to a wretched existence.</p></dd></dl>"
     },
     "duggatigāminn": {
-        "text": "<dl id='duggatigāminn'><dt><dfn>duggatigāmin(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> leading to a wretched existence.</p></dd></dl>"
+        "text": "<dl id='duggatigāminn'><dt><dfn>duggatigāmin(n)</dfn></dt><dd><p><span class='case'>mfn.</span> leading to a wretched existence.</p></dd></dl>"
     },
     "duggatigāmin": {
-        "text": "<dl id='duggatigāmin'><dt><dfn>duggatigāmin(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> leading to a wretched existence.</p></dd></dl>"
+        "text": "<dl id='duggatigāmin'><dt><dfn>duggatigāmin(n)</dfn></dt><dd><p><span class='case'>mfn.</span> leading to a wretched existence.</p></dd></dl>"
     },
     "duggaha": {
         "text": "<dl id='duggaha'><dt><dfn>duggaha</dfn></dt><dd><p><span class='case'>masculine</span> taking hold of wrongly; a bad seizing (see <i><a href='/define/gaha'>gaha</a></i>)</p></dd></dl>"
@@ -34983,7 +34989,7 @@
         "text": "<dl id='duguṇa'><dt><dfn>du(g)guṇa</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dviguṇa'>dviguṇa</a></i>)</p></dd></dl>"
     },
     "duccaja": {
-        "text": "<dl id='duccaja'><dt><dfn>duccaja</dfn></dt><dd><p><span class='case'>masculine & neuter</span> difficult to give up; hard to give away.</p></dd></dl>"
+        "text": "<dl id='duccaja'><dt><dfn>duccaja</dfn></dt><dd><p><span class='case'>mfn.</span> difficult to give up; hard to give away.</p></dd></dl>"
     },
     "duccajja": {
         "text": "<dl id='duccajja'><dt><dfn>duccajja</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/duccaja'>duccaja</a></i>)</p></dd></dl>"
@@ -35001,7 +35007,7 @@
         "text": "<dl id='duccintitacinti'><dt><dfn>duccintitacinti(n)</dfn></dt><dd><p><span class='case'>mfn.</span> thinking bad or foolish thoughts (see <i><a href='/define/cintita'>cintita</a></i>)</p></dd></dl>"
     },
     "duccola": {
-        "text": "<dl id='duccola'><dt><dfn>duccola</dfn></dt><dd><p><span class='case'>masculine & neuter</span> wearing poor clothes; wearing a robe made from poor cloth.</p></dd></dl>"
+        "text": "<dl id='duccola'><dt><dfn>duccola</dfn></dt><dd><p><span class='case'>mfn.</span> wearing poor clothes; wearing a robe made from poor cloth.</p></dd></dl>"
     },
     "duccoḷa": {
         "text": "<dl id='duccoḷa'><dt><dfn>duccoḷa</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/duccola'>duccola</a></i>)</p></dd></dl>"
@@ -35010,19 +35016,19 @@
         "text": "<dl id='dujjaya'><dt><dfn>dujjaya</dfn></dt><dd><p><span class='case'>mfn.</span> hard to conquer; hard to win (see <i><a href='/define/jaya'>jaya</a></i>)</p></dd></dl>"
     },
     "dujjaha": {
-        "text": "<dl id='dujjaha'><dt><dfn>dujjaha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> hard to give up.</p></dd></dl>"
+        "text": "<dl id='dujjaha'><dt><dfn>dujjaha</dfn></dt><dd><p><span class='case'>mfn.</span> hard to give up.</p></dd></dl>"
     },
     "dujjāta": {
         "text": "<dl id='dujjāta'><dt><dfn>dujjāta</dfn></dt><dd><p><span class='case'>mfn.</span> of ignoble birth; ignoble (see <i><a href='/define/jāta'>jāta</a></i>)</p></dd></dl>"
     },
     "dujjāna": {
-        "text": "<dl id='dujjāna'><dt><dfn>dujjāna</dfn></dt><dd><p><span class='case'>masculine & neuter</span> difficult to know; hard to understand.</p></dd></dl>"
+        "text": "<dl id='dujjāna'><dt><dfn>dujjāna</dfn></dt><dd><p><span class='case'>mfn.</span> difficult to know; hard to understand.</p></dd></dl>"
     },
     "dujjivīta": {
         "text": "<dl id='dujjivīta'><dt><dfn>dujjivīta</dfn></dt><dd><p><span class='case'>neuter</span> a hard life; a miserable life; an evil life.</p></dd></dl>"
     },
     "dujivha": {
-        "text": "<dl id='dujivha'><dt><dfn>dujivha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (see <i><a href='/define/dvijivha'>dvijivha</a></i>)</p></dd></dl>"
+        "text": "<dl id='dujivha'><dt><dfn>dujivha</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dvijivha'>dvijivha</a></i>)</p></dd></dl>"
     },
     "dujjivha": {
         "text": "<dl id='dujjivha'><dt><dfn>dujjivha</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dvijivha'>dvijivha</a></i>)</p></dd></dl>"
@@ -35091,7 +35097,7 @@
         "text": "<dl id='dudikkha'><dt><dfn>dudikkha</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/duddikkha'>duddikkha</a></i>)</p></dd></dl>"
     },
     "duddada": {
-        "text": "<dl id='duddada'><dt><dfn>duddada</dfn></dt><dd><p><span class='case'>masculine & neuter</span> hard to give.</p></dd></dl>"
+        "text": "<dl id='duddada'><dt><dfn>duddada</dfn></dt><dd><p><span class='case'>mfn.</span> hard to give.</p></dd></dl>"
     },
     "duddama": {
         "text": "<dl id='duddama'><dt><dfn>duddama</dfn></dt><dd><p><span class='case'>mfn.</span> difficult to manage or tame (see <i><a href='/define/dama'>dama</a></i>)</p></dd></dl>"
@@ -35100,19 +35106,19 @@
         "text": "<dl id='duddamaya'><dt><dfn>duddamaya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/duddamiya'>duddamiya</a></i>)</p></dd></dl>"
     },
     "duddamiya": {
-        "text": "<dl id='duddamiya'><dt><dfn>duddamiya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> hard to tame or manage.</p></dd></dl>"
+        "text": "<dl id='duddamiya'><dt><dfn>duddamiya</dfn></dt><dd><p><span class='case'>mfn.</span> hard to tame or manage.</p></dd></dl>"
     },
     "duddasa": {
-        "text": "<dl id='duddasa'><dt><dfn>duddasa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> difficult to see; hard to understand.</p></dd></dl>"
+        "text": "<dl id='duddasa'><dt><dfn>duddasa</dfn></dt><dd><p><span class='case'>mfn.</span> difficult to see; hard to understand.</p></dd></dl>"
     },
     "duddasika": {
-        "text": "<dl id='duddasika'><dt><dfn>duddasika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> disagreeable to the sight; of unpleasing appearance, ugly.</p></dd></dl>"
+        "text": "<dl id='duddasika'><dt><dfn>duddasika</dfn></dt><dd><p><span class='case'>mfn.</span> disagreeable to the sight; of unpleasing appearance, ugly.</p></dd></dl>"
     },
     "duddassika": {
         "text": "<dl id='duddassika'><dt><dfn>duddassika</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/duddasika'>duddasika</a></i>)</p></dd></dl>"
     },
     "duddikkha": {
-        "text": "<dl id='duddikkha'><dt><dfn>duddikkha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> hard to look at.</p></dd></dl>"
+        "text": "<dl id='duddikkha'><dt><dfn>duddikkha</dfn></dt><dd><p><span class='case'>mfn.</span> hard to look at.</p></dd></dl>"
     },
     "duddiṭṭha": {
         "text": "<dl id='duddiṭṭha'><dt><dfn>duddiṭṭha</dfn></dt><dd><p><span class='case'>mfn. & neuter</span> not seen properly, ill-examined; a bad sight.</p></dd></dl>"
@@ -35121,13 +35127,13 @@
         "text": "<dl id='duddiṭṭharūpa'><dt><dfn>duddiṭṭharūpa</dfn></dt><dd><p><span class='case'>neuter</span> an extremely bad sight.</p></dd></dl>"
     },
     "duddiṭṭhi": {
-        "text": "<dl id='duddiṭṭhi'><dt><dfn>duddiṭṭhi</dfn></dt><dd><p><span class='case'>masculine & neuter</span> whose views are bad or false.</p></dd></dl>"
+        "text": "<dl id='duddiṭṭhi'><dt><dfn>duddiṭṭhi</dfn></dt><dd><p><span class='case'>mfn.</span> whose views are bad or false.</p></dd></dl>"
     },
     "duddiṭṭhin": {
         "text": "<dl id='duddiṭṭhin'><dt><dfn>duddiṭṭhi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/duddiṭṭhi'>duddiṭṭhi</a></i>)</p></dd></dl>"
     },
     "duddhakhīra": {
-        "text": "<dl id='duddhakhīra'><dt><dfn>duddhakhīra</dfn></dt><dd><p><span class='case'>masculine & neuter</span> with the milking done, who has milk (from the cow)</p></dd></dl>"
+        "text": "<dl id='duddhakhīra'><dt><dfn>duddhakhīra</dfn></dt><dd><p><span class='case'>mfn.</span> with the milking done, who has milk (from the cow)</p></dd></dl>"
     },
     "dunnaya": {
         "text": "<dl id='dunnaya'><dt><dfn>dunnaya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> hard to infer or interpret.</p></dd></dl>"
@@ -35214,7 +35220,7 @@
         "text": "<dl id='duppasaha'><dt><dfn>duppasaha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> hard to overcome; irresistible.</p></dd></dl>"
     },
     "dubbalaka": {
-        "text": "<dl id='dubbalaka'><dt><dfn>dubbalaka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (one) who is week, of little strength.</p></dd></dl>"
+        "text": "<dl id='dubbalaka'><dt><dfn>dubbalaka</dfn></dt><dd><p><span class='case'>mfn.</span> (one) who is week, of little strength.</p></dd></dl>"
     },
     "dubbalīkarana": {
         "text": "<dl id='dubbalīkarana'><dt><dfn>dubbalīkarana</dfn></dt><dd><p><span class='case'>mf( ~ā, ī)n., n</span></p><ol type='1' class='decimal'><li>(mfn.) weakening.</li><li>(n.f.) the weakening (of)</li></ol></dd></dl>"
@@ -35229,19 +35235,19 @@
         "text": "<dl id='dubbiññapaya'><dt><dfn>dubbiññapaya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/duviññapaya'>duviññapaya</a></i>)</p></dd></dl>"
     },
     "dubbinodaya": {
-        "text": "<dl id='dubbinodaya'><dt><dfn>dubbinodaya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> hard to drive away or dispel.</p></dd></dl>"
+        "text": "<dl id='dubbinodaya'><dt><dfn>dubbinodaya</dfn></dt><dd><p><span class='case'>mfn.</span> hard to drive away or dispel.</p></dd></dl>"
     },
     "dubbisodha": {
-        "text": "<dl id='dubbisodha'><dt><dfn>dubbisodha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> hard to clean.</p></dd></dl>"
+        "text": "<dl id='dubbisodha'><dt><dfn>dubbisodha</dfn></dt><dd><p><span class='case'>mfn.</span> hard to clean.</p></dd></dl>"
     },
     "dubbuṭṭhika": {
         "text": "<dl id='dubbuṭṭhika'><dt><dfn>dubbuṭṭhika</dfn></dt><dd><p><span class='case'>feminine</span> lack of rain; drought.</p></dd></dl>"
     },
     "dubbuddhin": {
-        "text": "<dl id='dubbuddhin'><dt><dfn>dubbuddhi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> foolish; ignorant.</p></dd></dl>"
+        "text": "<dl id='dubbuddhin'><dt><dfn>dubbuddhi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> foolish; ignorant.</p></dd></dl>"
     },
     "dubbuddhi": {
-        "text": "<dl id='dubbuddhi'><dt><dfn>dubbuddhi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> foolish; ignorant.</p></dd></dl>"
+        "text": "<dl id='dubbuddhi'><dt><dfn>dubbuddhi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> foolish; ignorant.</p></dd></dl>"
     },
     "dubbha": {
         "text": "<dl id='dubbha'><dt><dfn>dubbha</dfn></dt><dd><p><span class='case'>mfn. & neuter</span> injuring, hurting, deceiving.</p></dd></dl>"
@@ -35250,13 +35256,13 @@
         "text": "<dl id='dubbhati'><dt data-main-entry='dubbhati'><dfn>dubbhati</dfn></dt><dd><p><span class='case'>pr. 3 sg.</span> injures; hurts (+acc., gen., or loc.); deceives betrays.</p></dd></dl>"
     },
     "dubbhida": {
-        "text": "<dl id='dubbhida'><dt><dfn>dubbhida</dfn></dt><dd><p><span class='case'>masculine & neuter</span> difficult to be broken or torn asunder.</p></dd></dl>"
+        "text": "<dl id='dubbhida'><dt><dfn>dubbhida</dfn></dt><dd><p><span class='case'>mfn.</span> difficult to be broken or torn asunder.</p></dd></dl>"
     },
     "dubhatomukha": {
         "text": "<dl id='dubhatomukha'><dt><dfn>dubhatomukha</dfn></dt><dd><p><span class='case'>indeclinable</span> with an opening on both sides.</p></dd></dl>"
     },
     "dubhaya": {
-        "text": "<dl id='dubhaya'><dt><dfn>dubhaya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> of both kinds.</p></dd></dl>"
+        "text": "<dl id='dubhaya'><dt><dfn>dubhaya</dfn></dt><dd><p><span class='case'>mfn.</span> of both kinds.</p></dd></dl>"
     },
     "dubhayaṃ": {
         "text": "<dl id='dubhayaṃ'><dt><dfn>dubhayaṃ</dfn></dt><dd><p><span class='case'>acc.</span> as well (?)</p></dd></dl>"
@@ -35409,7 +35415,7 @@
         "text": "<dl id='duhāpeti'><dt><dfn>duhāpeti</dfn></dt><dd><p><span class='case'>caus. of duhati</span> (see <i><a href='/define/duhati'>duhati</a></i>)</p></dd></dl>"
     },
     "duhitika": {
-        "text": "<dl id='duhitika'><dt><dfn>duhitika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> in a poor condition; stricken by hunger; where food is scarce; where survival is difficult.</p></dd></dl>"
+        "text": "<dl id='duhitika'><dt><dfn>duhitika</dfn></dt><dd><p><span class='case'>mfn.</span> in a poor condition; stricken by hunger; where food is scarce; where survival is difficult.</p></dd></dl>"
     },
     "dūta": {
         "text": "<dl id='dūta'><dt><dfn>dūta</dfn></dt><dd><p><span class='case'>masculine</span> a messenger; envoy; a proxy.</p></dd></dl>"
@@ -35493,7 +35499,7 @@
         "text": "<dl id='dūhati'><dt><dfn>dūhati</dfn></dt><dd><p><span class='case'>pr. 3 sg.</span> (see <i><a href='/define/duhati'>duhati</a></i>)</p></dd></dl>"
     },
     "dūhara": {
-        "text": "<dl id='dūhara'><dt><dfn>dūhara</dfn></dt><dd><p><span class='case'>masculine & neuter</span> hard to be taken away.</p></dd></dl>"
+        "text": "<dl id='dūhara'><dt><dfn>dūhara</dfn></dt><dd><p><span class='case'>mfn.</span> hard to be taken away.</p></dd></dl>"
     },
     "deḍḍubha": {
         "text": "<dl id='deḍḍubha'><dt><dfn>deḍḍubha</dfn></dt><dd><p><span class='case'>masculine</span> a water snake; a kind of lizard.</p></dd></dl>"
@@ -35541,10 +35547,10 @@
         "text": "<dl id='devakāya'><dt><dfn>devakāya</dfn></dt><dd><p><span class='case'>masculine</span> a deva world or sphere; a collective body of devas.</p></dd></dl>"
     },
     "devagaharaka": {
-        "text": "<dl id='devagaharaka'><dt><dfn>devagaharaka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who disparages the devas.</p></dd></dl>"
+        "text": "<dl id='devagaharaka'><dt><dfn>devagaharaka</dfn></dt><dd><p><span class='case'>mfn.</span> who disparages the devas.</p></dd></dl>"
     },
     "devajigucchaka": {
-        "text": "<dl id='devajigucchaka'><dt><dfn>devajigucchaka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who dislikes or disapproves of the gods.</p></dd></dl>"
+        "text": "<dl id='devajigucchaka'><dt><dfn>devajigucchaka</dfn></dt><dd><p><span class='case'>mfn.</span> who dislikes or disapproves of the gods.</p></dd></dl>"
     },
     "devatā": {
         "text": "<dl id='devatā'><dt><dfn>devatā</dfn></dt><dd><p><span class='case'>feminine</span> a deity; a god (male or female; often identified with the (various groups of) devas, but more often a god or spirit living on earth close to men, in trees, rivers, buildings etc)</p></dd></dl>"
@@ -35583,7 +35589,7 @@
         "text": "<dl id='devaputta'><dt><dfn>devaputta</dfn></dt><dd><p><span class='case'>masculine</span> a male deva.</p></dd></dl>"
     },
     "devayāniya": {
-        "text": "<dl id='devayāniya'><dt><dfn>devayāniya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> leading to the devas.</p></dd></dl>"
+        "text": "<dl id='devayāniya'><dt><dfn>devayāniya</dfn></dt><dd><p><span class='case'>mfn.</span> leading to the devas.</p></dd></dl>"
     },
     "devarāja": {
         "text": "<dl id='devarāja'><dt><dfn>devarāja</dfn></dt><dd><p><span class='case'>masculine</span> a king of the gods (usually Sakka/lnda)</p></dd></dl>"
@@ -35595,7 +35601,7 @@
         "text": "<dl id='devaloka'><dt><dfn>devaloka</dfn></dt><dd><p><span class='case'>masculine</span> the world of the gods; a sphere of the gods.</p></dd></dl>"
     },
     "devalokagamanīya": {
-        "text": "<dl id='devalokagamanīya'><dt><dfn>devalokagamanīya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> leading to the world of the devas.</p></dd></dl>"
+        "text": "<dl id='devalokagamanīya'><dt><dfn>devalokagamanīya</dfn></dt><dd><p><span class='case'>mfn.</span> leading to the world of the devas.</p></dd></dl>"
     },
     "devalokagāminiya": {
         "text": "<dl id='devalokagāminiya'><dt><dfn>devalokagāminiya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/devalokagamanīya'>devalokagamanīya</a></i>)</p></dd></dl>"
@@ -35619,10 +35625,10 @@
         "text": "<dl id='desanā'><dt><dfn>desanā</dfn></dt><dd><p><span class='case'>feminine</span></p><ol type='1' class='decimal'><li>instruction; exposition; discourse.</li><li>assigning.</li></ol></dd></dl>"
     },
     "desanāgāmin": {
-        "text": "<dl id='desanāgāmin'><dt><dfn>desanāgāmi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> requiring, expiated by, confession or acknowledgment.</p></dd></dl>"
+        "text": "<dl id='desanāgāmin'><dt><dfn>desanāgāmi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> requiring, expiated by, confession or acknowledgment.</p></dd></dl>"
     },
     "desanāgāmi": {
-        "text": "<dl id='desanāgāmi'><dt><dfn>desanāgāmi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> requiring, expiated by, confession or acknowledgment.</p></dd></dl>"
+        "text": "<dl id='desanāgāmi'><dt><dfn>desanāgāmi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> requiring, expiated by, confession or acknowledgment.</p></dd></dl>"
     },
     "desayat": {
         "text": "<dl id='desayat'><dt><dfn>desaya(t)</dfn></dt><dd><p><span class='case'>part. pr. mfn. of deseti</span> (see <i><a href='/define/deseti'>deseti</a></i>)</p></dd></dl>"
@@ -35655,7 +35661,7 @@
         "text": "<dl id='desita'><dt data-main-entry='deseti'><dfn>desita</dfn></dt><dd><p><span class='case'>pp mfn.</span> taught, expounded; pointed out; specified, assigned; told, confessed.</p></dd></dl>"
     },
     "desitavatthuka": {
-        "text": "<dl id='desitavatthuka'><dt><dfn>desitavatthuka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> on a site pointed out or specified.</p></dd></dl>"
+        "text": "<dl id='desitavatthuka'><dt><dfn>desitavatthuka</dfn></dt><dd><p><span class='case'>mfn.</span> on a site pointed out or specified.</p></dd></dl>"
     },
     "desituṃ": {
         "text": "<dl id='desituṃ'><dt><dfn>desituṃ</dfn></dt><dd><p><span class='case'>inf.</span> (see <i><a href='/define/desetuṃ'>desetuṃ</a></i>)</p></dd></dl>"
@@ -35706,7 +35712,7 @@
         "text": "<dl id='desesuṃ'><dt><dfn>desesuṃ</dfn></dt><dd><p><span class='case'>3 pl. of deseti</span> (see <i><a href='/define/deseti'>deseti</a></i>)</p></dd></dl>"
     },
     "dessa": {
-        "text": "<dl id='dessa'><dt><dfn>dessa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> to be hated; hateful.</p></dd></dl>"
+        "text": "<dl id='dessa'><dt><dfn>dessa</dfn></dt><dd><p><span class='case'>mfn.</span> to be hated; hateful.</p></dd></dl>"
     },
     "dessiya": {
         "text": "<dl id='dessiya'><dt><dfn>dessiya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dessa'>dessa</a></i>)</p></dd></dl>"
@@ -35730,10 +35736,10 @@
         "text": "<dl id='domanassa'><dt><dfn>domanassa</dfn></dt><dd><p><span class='case'>neuter & mfn.</span> (mental) distress, dejection, unhappiness; ill-humor.</p></dd></dl>"
     },
     "domanassaṭṭhāniya": {
-        "text": "<dl id='domanassaṭṭhāniya'><dt><dfn>domanassaṭṭhāniya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> being a cause of dejection.</p></dd></dl>"
+        "text": "<dl id='domanassaṭṭhāniya'><dt><dfn>domanassaṭṭhāniya</dfn></dt><dd><p><span class='case'>mfn.</span> being a cause of dejection.</p></dd></dl>"
     },
     "domanassavedaniya": {
-        "text": "<dl id='domanassavedaniya'><dt><dfn>domanassavedaniya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> entailing feelings of dejection.</p></dd></dl>"
+        "text": "<dl id='domanassavedaniya'><dt><dfn>domanassavedaniya</dfn></dt><dd><p><span class='case'>mfn.</span> entailing feelings of dejection.</p></dd></dl>"
     },
     "domanassindriya": {
         "text": "<dl id='domanassindriya'><dt><dfn>domanassindriya</dfn></dt><dd><p><span class='case'>neuter</span> the sensation faculty of dejection; unhappiness.</p></dd></dl>"
@@ -35763,31 +35769,31 @@
         "text": "<dl id='dosagati'><dt><dfn>dosagati</dfn></dt><dd><p><span class='case'>feminine</span> a wrong course of behavior because of ill-will.</p></dd></dl>"
     },
     "dosagaru": {
-        "text": "<dl id='dosagaru'><dt><dfn>dosagaru</dfn></dt><dd><p><span class='case'>masculine & neuter</span> obedient to ill-will.</p></dd></dl>"
+        "text": "<dl id='dosagaru'><dt><dfn>dosagaru</dfn></dt><dd><p><span class='case'>mfn.</span> obedient to ill-will.</p></dd></dl>"
     },
     "dosagāmin": {
-        "text": "<dl id='dosagāmin'><dt><dfn>dosagāmi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> influenced by ill-will or hostility.</p></dd></dl>"
+        "text": "<dl id='dosagāmin'><dt><dfn>dosagāmi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> influenced by ill-will or hostility.</p></dd></dl>"
     },
     "dosagāmi": {
-        "text": "<dl id='dosagāmi'><dt><dfn>dosagāmi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> influenced by ill-will or hostility.</p></dd></dl>"
+        "text": "<dl id='dosagāmi'><dt><dfn>dosagāmi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> influenced by ill-will or hostility.</p></dd></dl>"
     },
     "dosaggi": {
         "text": "<dl id='dosaggi'><dt><dfn>dosaggi</dfn></dt><dd><p><span class='case'>masculine</span> the fire of ill-will.</p></dd></dl>"
     },
     "dosanīya": {
-        "text": "<dl id='dosanīya'><dt><dfn>dosanīya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> producing ill-will or hostility; causing anger.</p></dd></dl>"
+        "text": "<dl id='dosanīya'><dt><dfn>dosanīya</dfn></dt><dd><p><span class='case'>mfn.</span> producing ill-will or hostility; causing anger.</p></dd></dl>"
     },
     "dosaneyya": {
         "text": "<dl id='dosaneyya'><dt><dfn>dosaneyya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dosanīya'>dosanīya</a></i>)</p></dd></dl>"
     },
     "dosantara": {
-        "text": "<dl id='dosantara'><dt><dfn>dosantara</dfn></dt><dd><p><span class='case'>masculine & neuter</span> inwardly hostile; activated by ill-will.</p></dd></dl>"
+        "text": "<dl id='dosantara'><dt><dfn>dosantara</dfn></dt><dd><p><span class='case'>mfn.</span> inwardly hostile; activated by ill-will.</p></dd></dl>"
     },
     "dosapakata": {
         "text": "<dl id='dosapakata'><dt><dfn>dosapakata</dfn></dt><dd><p><span class='case'>mfn</span> produced, influenced by ill-will.</p></dd></dl>"
     },
     "dosahetuka": {
-        "text": "<dl id='dosahetuka'><dt><dfn>dosahetuka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> caused by ill-will.</p></dd></dl>"
+        "text": "<dl id='dosahetuka'><dt><dfn>dosahetuka</dfn></dt><dd><p><span class='case'>mfn.</span> caused by ill-will.</p></dd></dl>"
     },
     "dosinapuṇṇamāsī": {
         "text": "<dl id='dosinapuṇṇamāsī'><dt><dfn>dosinapuṇṇamāsī</dfn></dt><dd><p><span class='case'>feminine</span> (see <i><a href='/define/dosināpunnamāsī'>dosināpunnamāsī</a></i>)</p></dd></dl>"
@@ -36135,10 +36141,10 @@
         "text": "<dl id='dhaṃsayati'><dt><dfn>dhaṃsayati</dfn></dt><dd><p><span class='case'>caus. pr. 3 sg.</span> (see <i><a href='/define/dhaṃseti'>dhaṃseti</a></i>)</p></dd></dl>"
     },
     "dhaṃsin": {
-        "text": "<dl id='dhaṃsin'><dt><dfn>dhaṃsi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> bold, insolent; offensive.</p></dd></dl>"
+        "text": "<dl id='dhaṃsin'><dt><dfn>dhaṃsi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> bold, insolent; offensive.</p></dd></dl>"
     },
     "dhaṃsi": {
-        "text": "<dl id='dhaṃsi'><dt><dfn>dhaṃsi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> bold, insolent; offensive.</p></dd></dl>"
+        "text": "<dl id='dhaṃsi'><dt><dfn>dhaṃsi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> bold, insolent; offensive.</p></dd></dl>"
     },
     "dhaṃseti": {
         "text": "<dl id='dhaṃseti'><dt><dfn>dhaṃseti</dfn><sup>1</sup></dt><dd><p><span class='case'>caus. pr. 3 sg. of dhamsati</span> dares to attack; offends (see <i><a href='/define/dhamsati'>dhamsati</a></i>)</p></dd><dt><dfn>dhaṃseti</dfn><sup>2</sup></dt><dd><p><span class='case'>caus. pr. 3 sg. of dhamsati</span> makes fall; deprives of; destroys; scatters, disperses (see <i><a href='/define/dhamsati'>dhamsati</a></i>)</p></dd></dl>"
@@ -36147,7 +36153,7 @@
         "text": "<dl id='dhaṅka'><dt><dfn>dhaṅka</dfn></dt><dd><p><span class='case'>masculine</span> a crow.</p></dd></dl>"
     },
     "dhaṅkarūpa": {
-        "text": "<dl id='dhaṅkarūpa'><dt><dfn>dhaṅkarūpa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> with the appearance of a crow.</p></dd></dl>"
+        "text": "<dl id='dhaṅkarūpa'><dt><dfn>dhaṅkarūpa</dfn></dt><dd><p><span class='case'>mfn.</span> with the appearance of a crow.</p></dd></dl>"
     },
     "dhaja": {
         "text": "<dl id='dhaja'><dt><dfn>dhaja</dfn></dt><dd><p><span class='case'>masculine & neuter</span> a standard, a flag, a banner; a badge, a mark, emblem or characteristic sign.</p></dd></dl>"
@@ -36156,13 +36162,13 @@
         "text": "<dl id='dhajabaddha'><dt><dfn>dhajabaddha</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dhajabandha'>dhajabandha</a></i>)</p></dd></dl>"
     },
     "dhajabandha": {
-        "text": "<dl id='dhajabandha'><dt><dfn>dhajabandha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> marked; notorious (?)</p></dd></dl>"
+        "text": "<dl id='dhajabandha'><dt><dfn>dhajabandha</dfn></dt><dd><p><span class='case'>mfn.</span> marked; notorious (?)</p></dd></dl>"
     },
     "dhajālu": {
-        "text": "<dl id='dhajālu'><dt><dfn>dhajālu</dfn></dt><dd><p><span class='case'>masculine & neuter</span> adorned with flags.</p></dd></dl>"
+        "text": "<dl id='dhajālu'><dt><dfn>dhajālu</dfn></dt><dd><p><span class='case'>mfn.</span> adorned with flags.</p></dd></dl>"
     },
     "dhajāhaṭa": {
-        "text": "<dl id='dhajāhaṭa'><dt><dfn>dhajāhaṭa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (a wife) taken as captive during a war.</p></dd></dl>"
+        "text": "<dl id='dhajāhaṭa'><dt><dfn>dhajāhaṭa</dfn></dt><dd><p><span class='case'>mfn.</span> (a wife) taken as captive during a war.</p></dd></dl>"
     },
     "dhajin": {
         "text": "<dl id='dhajin'><dt><dfn>dhaji(n)</dfn></dt><dd><p><span class='case'>~inī, feminine</span> bearing standards, an army.</p></dd></dl>"
@@ -36189,7 +36195,7 @@
         "text": "<dl id='dhana'><dt><dfn>dhana</dfn></dt><dd><p><span class='case'>neuter</span> wealth, riches, money, treasure.</p></dd></dl>"
     },
     "dhanakkīta": {
-        "text": "<dl id='dhanakkīta'><dt><dfn>dhanakkīta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> purchased.</p></dd></dl>"
+        "text": "<dl id='dhanakkīta'><dt><dfn>dhanakkīta</dfn></dt><dd><p><span class='case'>mfn.</span> purchased.</p></dd></dl>"
     },
     "dhanajāni": {
         "text": "<dl id='dhanajāni'><dt><dfn>dhanajāni</dfn></dt><dd><p><span class='case'>feminine</span> loss of wealth; a fine.</p></dd></dl>"
@@ -36201,13 +36207,13 @@
         "text": "<dl id='dhanadhāniya'><dt><dfn>dhanadhāniya</dfn></dt><dd><p><span class='case'>neuter</span> money and grain.</p></dd></dl>"
     },
     "dhanavat": {
-        "text": "<dl id='dhanavat'><dt><dfn>dhanava(t)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> wealthy, rich.</p></dd></dl>"
+        "text": "<dl id='dhanavat'><dt><dfn>dhanava(t)</dfn></dt><dd><p><span class='case'>mfn.</span> wealthy, rich.</p></dd></dl>"
     },
     "dhanava": {
-        "text": "<dl id='dhanava'><dt><dfn>dhanava(t)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> wealthy, rich.</p></dd></dl>"
+        "text": "<dl id='dhanava'><dt><dfn>dhanava(t)</dfn></dt><dd><p><span class='case'>mfn.</span> wealthy, rich.</p></dd></dl>"
     },
     "dhanahāraka": {
-        "text": "<dl id='dhanahāraka'><dt><dfn>dhanahāraka</dfn></dt><dd><p><span class='case'>masculine & neuter</span> taking money; going to take money.</p></dd></dl>"
+        "text": "<dl id='dhanahāraka'><dt><dfn>dhanahāraka</dfn></dt><dd><p><span class='case'>mfn.</span> taking money; going to take money.</p></dd></dl>"
     },
     "dhanāyati": {
         "text": "<dl id='dhanāyati'><dt data-main-entry='dhanāyati'><dfn>dhanāyati</dfn></dt><dd><p><span class='case'>pr. 3 sg.</span> desires, wishes for.</p></dd></dl>"
@@ -36246,10 +36252,10 @@
         "text": "<dl id='dhamanisaṇṭhita'><dt><dfn>dhamanisaṇṭhita</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dhamanisantha'>dhamanisantha</a></i>)</p></dd></dl>"
     },
     "dhamanisantha": {
-        "text": "<dl id='dhamanisantha'><dt><dfn>dhamanisantha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> covered, spread with veins; with prominent veins, i.e. emaciated.</p></dd></dl>"
+        "text": "<dl id='dhamanisantha'><dt><dfn>dhamanisantha</dfn></dt><dd><p><span class='case'>mfn.</span> covered, spread with veins; with prominent veins, i.e. emaciated.</p></dd></dl>"
     },
     "dhamanisanthatagatta": {
-        "text": "<dl id='dhamanisanthatagatta'><dt><dfn>dhamanisanthatagatta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> with limbs covered with prominent veins.</p></dd></dl>"
+        "text": "<dl id='dhamanisanthatagatta'><dt><dfn>dhamanisanthatagatta</dfn></dt><dd><p><span class='case'>mfn.</span> with limbs covered with prominent veins.</p></dd></dl>"
     },
     "dhamamāna": {
         "text": "<dl id='dhamamāna'><dt><dfn>dhamamāna</dfn></dt><dd><p><span class='case'>part. pr. mfn. of dhamati</span> (see <i><a href='/define/dhamati'>dhamati</a></i>)</p></dd></dl>"
@@ -36279,28 +36285,28 @@
         "text": "<dl id='dhammakaraka'><dt><dfn>dhammakaraka</dfn></dt><dd><p><span class='case'>masculine</span> a water-vessel.</p></dd></dl>"
     },
     "dhammakāya": {
-        "text": "<dl id='dhammakāya'><dt><dfn>dhammakāya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (one) who has a body which is dhamma.</p></dd></dl>"
+        "text": "<dl id='dhammakāya'><dt><dfn>dhammakāya</dfn></dt><dd><p><span class='case'>mfn.</span> (one) who has a body which is dhamma.</p></dd></dl>"
     },
     "dhammketu": {
-        "text": "<dl id='dhammketu'><dt><dfn>dhammketu</dfn></dt><dd><p><span class='case'>masculine & neuter</span> with dhamma as one’s banner.</p></dd></dl>"
+        "text": "<dl id='dhammketu'><dt><dfn>dhammketu</dfn></dt><dd><p><span class='case'>mfn.</span> with dhamma as one’s banner.</p></dd></dl>"
     },
     "dhammakkhandha": {
         "text": "<dl id='dhammakkhandha'><dt><dfn>dhammakkhandha</dfn></dt><dd><p><span class='case'>masculine</span> a group of dhammas (as good practices and attainments)</p></dd></dl>"
     },
     "dhammagarahin": {
-        "text": "<dl id='dhammagarahin'><dt><dfn>dhammagarahi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> blaming, finding fault with, dhamma.</p></dd></dl>"
+        "text": "<dl id='dhammagarahin'><dt><dfn>dhammagarahi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> blaming, finding fault with, dhamma.</p></dd></dl>"
     },
     "dhammagarahi": {
-        "text": "<dl id='dhammagarahi'><dt><dfn>dhammagarahi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> blaming, finding fault with, dhamma.</p></dd></dl>"
+        "text": "<dl id='dhammagarahi'><dt><dfn>dhammagarahi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> blaming, finding fault with, dhamma.</p></dd></dl>"
     },
     "dhammagaru": {
-        "text": "<dl id='dhammagaru'><dt><dfn>dhammagaru</dfn></dt><dd><p><span class='case'>masculine & neuter</span> respectful, obedient to, dhamma.</p></dd></dl>"
+        "text": "<dl id='dhammagaru'><dt><dfn>dhammagaru</dfn></dt><dd><p><span class='case'>mfn.</span> respectful, obedient to, dhamma.</p></dd></dl>"
     },
     "dhammagārava": {
         "text": "<dl id='dhammagārava'><dt><dfn>dhammagārava</dfn></dt><dd><p><span class='case'>neuter & mfn.</span></p><ol type='1' class='decimal'><li>(n.) respect for dhamma.</li><li>(mfn.) respectful, obedient to, dhamma.</li></ol></dd></dl>"
     },
     "dhammagutta": {
-        "text": "<dl id='dhammagutta'><dt><dfn>dhammagutta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> protected by the dhamma; who protects the dhamma.</p></dd></dl>"
+        "text": "<dl id='dhammagutta'><dt><dfn>dhammagutta</dfn></dt><dd><p><span class='case'>mfn.</span> protected by the dhamma; who protects the dhamma.</p></dd></dl>"
     },
     "dhammacakka": {
         "text": "<dl id='dhammacakka'><dt><dfn>dhammacakka</dfn></dt><dd><p><span class='case'>neuter</span></p><ol type='1' class='decimal'><li>the wheel or discuss of dhamma’s authority (esp. as initiated by the Buddha’s first teaching); the sway of dhamma.</li><li>a wheel that is dhamma.</li></ol></dd></dl>"
@@ -36315,10 +36321,10 @@
         "text": "<dl id='dhammacariyā'><dt><dfn>dhammacariyā</dfn></dt><dd><p><span class='case'>feminine</span> right action, virtuous behavior.</p></dd></dl>"
     },
     "dhammacārin": {
-        "text": "<dl id='dhammacārin'><dt><dfn>dhammacāri(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> acting, behaving, rightly.</p></dd></dl>"
+        "text": "<dl id='dhammacārin'><dt><dfn>dhammacāri(n)</dfn></dt><dd><p><span class='case'>mfn.</span> acting, behaving, rightly.</p></dd></dl>"
     },
     "dhammacāri": {
-        "text": "<dl id='dhammacāri'><dt><dfn>dhammacāri(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> acting, behaving, rightly.</p></dd></dl>"
+        "text": "<dl id='dhammacāri'><dt><dfn>dhammacāri(n)</dfn></dt><dd><p><span class='case'>mfn.</span> acting, behaving, rightly.</p></dd></dl>"
     },
     "dhammacintanā": {
         "text": "<dl id='dhammacintanā'><dt><dfn>dhammacintanā</dfn></dt><dd><p><span class='case'>feminine</span> reflection on, examination of, dhamma.</p></dd></dl>"
@@ -36336,16 +36342,16 @@
         "text": "<dl id='dhammacodaka'><dt><dfn>dhammacodaka</dfn></dt><dd><p><span class='case'>mfn. & masculine</span> (a bhikkhu) who accuses (someone) of an offense properly, by the rules.</p></dd></dl>"
     },
     "dhammajīvin": {
-        "text": "<dl id='dhammajīvin'><dt><dfn>dhammajīvi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> living doing what is right; honest and dutiful.</p></dd></dl>"
+        "text": "<dl id='dhammajīvin'><dt><dfn>dhammajīvi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> living doing what is right; honest and dutiful.</p></dd></dl>"
     },
     "dhammajīvi": {
-        "text": "<dl id='dhammajīvi'><dt><dfn>dhammajīvi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> living doing what is right; honest and dutiful.</p></dd></dl>"
+        "text": "<dl id='dhammajīvi'><dt><dfn>dhammajīvi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> living doing what is right; honest and dutiful.</p></dd></dl>"
     },
     "dhammaññū": {
-        "text": "<dl id='dhammaññū'><dt><dfn>dhammaññū</dfn></dt><dd><p><span class='case'>masculine & neuter</span> knowing the dhamma; knowing what is right.</p></dd></dl>"
+        "text": "<dl id='dhammaññū'><dt><dfn>dhammaññū</dfn></dt><dd><p><span class='case'>mfn.</span> knowing the dhamma; knowing what is right.</p></dd></dl>"
     },
     "dhammaṭṭha": {
-        "text": "<dl id='dhammaṭṭha'><dt><dfn>dhammaṭṭha</dfn></dt><dd><p><span class='case'>masculine & neuter</span></p><ol type='1' class='decimal'><li>(one) who abides by what is right or is the rule; just; rightly based; firm in dhamma.</li><li>(one) who abides in justice; a judge; an adjudicator.</li></ol></dd></dl>"
+        "text": "<dl id='dhammaṭṭha'><dt><dfn>dhammaṭṭha</dfn></dt><dd><p><span class='case'>mfn.</span></p><ol type='1' class='decimal'><li>(one) who abides by what is right or is the rule; just; rightly based; firm in dhamma.</li><li>(one) who abides in justice; a judge; an adjudicator.</li></ol></dd></dl>"
     },
     "dhammatā": {
         "text": "<dl id='dhammatā'><dt><dfn>dhammatā</dfn></dt><dd><p><span class='case'>feminine abstr.</span></p><ol type='1' class='decimal'><li>normal custom, habit; what is to be expected; the usual way.</li><li>the real nature of things; how things are.</li></ol></dd></dl>"
@@ -36363,22 +36369,22 @@
         "text": "<dl id='dhammathera'><dt><dfn>dhamma(t)thera</dfn></dt><dd><p><span class='case'>masculine</span> an elder in <i>dhamma</i>, one venerable because of his qualities.</p></dd></dl>"
     },
     "dhammadīpa": {
-        "text": "<dl id='dhammadīpa'><dt><dfn>dhammadīpa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> with <i>dhamma</i> as an island, a refuge; relying on <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammadīpa'><dt><dfn>dhammadīpa</dfn></dt><dd><p><span class='case'>mfn.</span> with <i>dhamma</i> as an island, a refuge; relying on <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammadesanā": {
         "text": "<dl id='dhammadesanā'><dt><dfn>dhammadesanā</dfn></dt><dd><p><span class='case'>f., ~a, neuter</span> teaching, exposition of, <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammadessin": {
-        "text": "<dl id='dhammadessin'><dt><dfn>dhammadessi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who hates, is hostile to, <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammadessin'><dt><dfn>dhammadessi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> who hates, is hostile to, <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammadessi": {
-        "text": "<dl id='dhammadessi'><dt><dfn>dhammadessi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who hates, is hostile to, <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammadessi'><dt><dfn>dhammadessi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> who hates, is hostile to, <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammaddasa": {
-        "text": "<dl id='dhammaddasa'><dt><dfn>dhamma(d)dasa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> seeing, understanding, <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammaddasa'><dt><dfn>dhamma(d)dasa</dfn></dt><dd><p><span class='case'>mfn.</span> seeing, understanding, <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammadasa": {
-        "text": "<dl id='dhammadasa'><dt><dfn>dhamma(d)dasa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> seeing, understanding, <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammadasa'><dt><dfn>dhamma(d)dasa</dfn></dt><dd><p><span class='case'>mfn.</span> seeing, understanding, <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammadhara": {
         "text": "<dl id='dhammadhara'><dt><dfn>dhammadhara</dfn></dt><dd><p><span class='case'>mfn. & masculine</span> (one) versed in dhamma; (one) who holds firm to <i>dhamma</i>.</p></dd></dl>"
@@ -36387,7 +36393,7 @@
         "text": "<dl id='dhammadhātu'><dt><dfn>dhammadhātu</dfn></dt><dd><p><span class='case'>feminine</span></p><ol type='1' class='decimal'><li>the element, the sphere, the range, of <i>dhamma</i> and/or <i>dhammas</i>, i.e. the whole world of experience.</li><li>the constituent element that is mental concepts or mental states.</li></ol></dd></dl>"
     },
     "dhammadhipa": {
-        "text": "<dl id='dhammadhipa'><dt><dfn>dhammadhipa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> with <i>dhamma</i> as master; guided by <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammadhipa'><dt><dfn>dhammadhipa</dfn></dt><dd><p><span class='case'>mfn.</span> with <i>dhamma</i> as master; guided by <i>dhamma</i>.</p></dd></dl>"
     },
     "dhamman": {
         "text": "<dl id='dhamman'><dt><dfn>dhamma(n)</dfn></dt><dd><p><span class='case'>neuter</span> dry soil; a shore.</p></dd></dl>"
@@ -36399,22 +36405,22 @@
         "text": "<dl id='dhammanisanti'><dt><dfn>dhammanisanti</dfn></dt><dd><p><span class='case'>feminine & mfn.</span> attending carefully to <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammanupassin": {
-        "text": "<dl id='dhammanupassin'><dt><dfn>dhammanupassi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> observing, considering, <i>dhammas</i>.</p></dd></dl>"
+        "text": "<dl id='dhammanupassin'><dt><dfn>dhammanupassi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> observing, considering, <i>dhammas</i>.</p></dd></dl>"
     },
     "dhammanupassi": {
-        "text": "<dl id='dhammanupassi'><dt><dfn>dhammanupassi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> observing, considering, <i>dhammas</i>.</p></dd></dl>"
+        "text": "<dl id='dhammanupassi'><dt><dfn>dhammanupassi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> observing, considering, <i>dhammas</i>.</p></dd></dl>"
     },
     "dhammānuvattin": {
-        "text": "<dl id='dhammānuvattin'><dt><dfn>dhammānuvatti(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> acting in conformity with <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammānuvattin'><dt><dfn>dhammānuvatti(n)</dfn></dt><dd><p><span class='case'>mfn.</span> acting in conformity with <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammānuvatti": {
-        "text": "<dl id='dhammānuvatti'><dt><dfn>dhammānuvatti(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> acting in conformity with <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammānuvatti'><dt><dfn>dhammānuvatti(n)</dfn></dt><dd><p><span class='case'>mfn.</span> acting in conformity with <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammanusārin": {
-        "text": "<dl id='dhammanusārin'><dt><dfn>dhammanusāri(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who follows <i>dhamma</i>; who develops understanding.</p></dd></dl>"
+        "text": "<dl id='dhammanusārin'><dt><dfn>dhammanusāri(n)</dfn></dt><dd><p><span class='case'>mfn.</span> who follows <i>dhamma</i>; who develops understanding.</p></dd></dl>"
     },
     "dhammanusāri": {
-        "text": "<dl id='dhammanusāri'><dt><dfn>dhammanusāri(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who follows <i>dhamma</i>; who develops understanding.</p></dd></dl>"
+        "text": "<dl id='dhammanusāri'><dt><dfn>dhammanusāri(n)</dfn></dt><dd><p><span class='case'>mfn.</span> who follows <i>dhamma</i>; who develops understanding.</p></dd></dl>"
     },
     "dhammanussati": {
         "text": "<dl id='dhammanussati'><dt><dfn>dhammanussati</dfn></dt><dd><p><span class='case'>feminine</span> calling <i>dhamma</i> to mind.</p></dd></dl>"
@@ -36426,7 +36432,7 @@
         "text": "<dl id='dhammapaṭirūpaka'><dt><dfn>dhammapaṭirūpaka</dfn></dt><dd><p><span class='case'>neuter</span> a false representation of the teachings or the rule.</p></dd></dl>"
     },
     "dhammapaṭisaṃyutta": {
-        "text": "<dl id='dhammapaṭisaṃyutta'><dt><dfn>dhammapaṭisaṃyutta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> connected with <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammapaṭisaṃyutta'><dt><dfn>dhammapaṭisaṃyutta</dfn></dt><dd><p><span class='case'>mfn.</span> connected with <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammapaṭisambhidā": {
         "text": "<dl id='dhammapaṭisambhidā'><dt><dfn>dhammapaṭisambhidā</dfn></dt><dd><p><span class='case'>f., ~a, neuter</span> analytic knowledge of <i>dhamma</i> or <i>dhammas</i>; understanding of causes.</p></dd></dl>"
@@ -36441,7 +36447,7 @@
         "text": "<dl id='dhammapariyāya'><dt><dfn>dhammapariyāya</dfn></dt><dd><p><span class='case'>masculine</span> a method of teaching <i>dhamma</i>; an exposition of <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammapīti": {
-        "text": "<dl id='dhammapīti'><dt><dfn>dhammapīti</dfn></dt><dd><p><span class='case'>masculine & neuter</span></p><ol type='1' class='decimal'><li>drinking the dhamma (according to commentaries)</li><li>having joy in the <i>dhamma</i> (?)</li></ol></dd></dl>"
+        "text": "<dl id='dhammapīti'><dt><dfn>dhammapīti</dfn></dt><dd><p><span class='case'>mfn.</span></p><ol type='1' class='decimal'><li>drinking the dhamma (according to commentaries)</li><li>having joy in the <i>dhamma</i> (?)</li></ol></dd></dl>"
     },
     "dhammabhisamaya": {
         "text": "<dl id='dhammabhisamaya'><dt><dfn>dhammabhisamaya</dfn></dt><dd><p><span class='case'>masculine</span> right understanding of <i>dhamma</i>.</p></dd></dl>"
@@ -36462,10 +36468,10 @@
         "text": "<dl id='dhammayoga'><dt><dfn>dhammayoga</dfn></dt><dd><p><span class='case'>mf(n).</span> applying oneself to the <i>dhamma</i>, to the teachings.</p></dd></dl>"
     },
     "dhammavādin": {
-        "text": "<dl id='dhammavādin'><dt><dfn>dhammavādi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> speaking what is <i>dhamma</i>, what is in accordance with the teaching or the rule; declaring <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammavādin'><dt><dfn>dhammavādi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> speaking what is <i>dhamma</i>, what is in accordance with the teaching or the rule; declaring <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammavādi": {
-        "text": "<dl id='dhammavādi'><dt><dfn>dhammavādi(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> speaking what is <i>dhamma</i>, what is in accordance with the teaching or the rule; declaring <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammavādi'><dt><dfn>dhammavādi(n)</dfn></dt><dd><p><span class='case'>mfn.</span> speaking what is <i>dhamma</i>, what is in accordance with the teaching or the rule; declaring <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammavicaya": {
         "text": "<dl id='dhammavicaya'><dt><dfn>dhammavicaya</dfn></dt><dd><p><span class='case'>masculine</span> discrimination of <i>dhammas</i>; discernment of <i>dhamma</i> (one of the seven <i>bojjhaṅgas</i>)</p></dd></dl>"
@@ -36474,7 +36480,7 @@
         "text": "<dl id='dhammaveda'><dt><dfn>dhammaveda</dfn></dt><dd><p><span class='case'>masculine</span> knowledge or joy in the teaching.</p></dd></dl>"
     },
     "dhammasaṅgaha": {
-        "text": "<dl id='dhammasaṅgaha'><dt><dfn>dhammasaṅgaha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> favoring, kind treatment, with <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammasaṅgaha'><dt><dfn>dhammasaṅgaha</dfn></dt><dd><p><span class='case'>mfn.</span> favoring, kind treatment, with <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammasandosa": {
         "text": "<dl id='dhammasandosa'><dt><dfn>dhammasandosa</dfn></dt><dd><p><span class='case'>masculine</span> defilement of, damage to, <i>dhamma</i>.</p></dd></dl>"
@@ -36483,10 +36489,10 @@
         "text": "<dl id='dhammasamuppāda'><dt><dfn>dhammasamuppāda</dfn></dt><dd><p><span class='case'>masculine</span> an arising of <i>dhammas</i>; an event, a matter.</p></dd></dl>"
     },
     "dhammasārin": {
-        "text": "<dl id='dhammasārin'><dt><dfn>dhammasāri(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> following <i>dhamma</i> (?); impelling <i>dhamma</i> (?)</p></dd></dl>"
+        "text": "<dl id='dhammasārin'><dt><dfn>dhammasāri(n)</dfn></dt><dd><p><span class='case'>mfn.</span> following <i>dhamma</i> (?); impelling <i>dhamma</i> (?)</p></dd></dl>"
     },
     "dhammasāri": {
-        "text": "<dl id='dhammasāri'><dt><dfn>dhammasāri(n)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> following <i>dhamma</i> (?); impelling <i>dhamma</i> (?)</p></dd></dl>"
+        "text": "<dl id='dhammasāri'><dt><dfn>dhammasāri(n)</dfn></dt><dd><p><span class='case'>mfn.</span> following <i>dhamma</i> (?); impelling <i>dhamma</i> (?)</p></dd></dl>"
     },
     "dhammādāsa": {
         "text": "<dl id='dhammādāsa'><dt><dfn>dhammādāsa</dfn></dt><dd><p><span class='case'>masculine</span> the mirror of the <i>dhamma</i>.</p></dd></dl>"
@@ -36498,16 +36504,16 @@
         "text": "<dl id='dhammāyatana'><dt><dfn>dhammāyatana</dfn></dt><dd><p><span class='case'>neuter</span> the object that is a mental construct.</p></dd></dl>"
     },
     "dhammārāma": {
-        "text": "<dl id='dhammārāma'><dt><dfn>dhammārāma</dfn></dt><dd><p><span class='case'>masculine & neuter</span> delighting in the mental constructs; delighting in <i>dhamma</i>.</p></dd></dl>"
+        "text": "<dl id='dhammārāma'><dt><dfn>dhammārāma</dfn></dt><dd><p><span class='case'>mfn.</span> delighting in the mental constructs; delighting in <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammika": {
-        "text": "<dl id='dhammika'><dt><dfn>dhammika</dfn></dt><dd><p><span class='case'>masculine & neuter</span></p><ol type='1' class='decimal'><li>in conformity with the rule or regulation.</li><li>righteous, just; acting rightly.</li><li>lawful, legitimate; in conformity with what is right.</li><li>right; justice.</li></ol></dd></dl>"
+        "text": "<dl id='dhammika'><dt><dfn>dhammika</dfn></dt><dd><p><span class='case'>mfn.</span></p><ol type='1' class='decimal'><li>in conformity with the rule or regulation.</li><li>righteous, just; acting rightly.</li><li>lawful, legitimate; in conformity with what is right.</li><li>right; justice.</li></ol></dd></dl>"
     },
     "dhammiya": {
         "text": "<dl id='dhammiya'><dt><dfn>dhammiya</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dhammika'>dhammika</a></i>)</p></dd></dl>"
     },
     "dhammiyamāna": {
-        "text": "<dl id='dhammiyamāna'><dt><dfn>dhammiyamāna</dfn></dt><dd><p><span class='case'>masculine & neuter</span> acting in accordance with <i>dhamma</i>, with the rule.</p></dd></dl>"
+        "text": "<dl id='dhammiyamāna'><dt><dfn>dhammiyamāna</dfn></dt><dd><p><span class='case'>mfn.</span> acting in accordance with <i>dhamma</i>, with the rule.</p></dd></dl>"
     },
     "dhammī": {
         "text": "<dl id='dhammī'><dt><dfn>dhammī</dfn></dt><dd><p><span class='case'>(m)f(n).</span> connected with <i>dhamma</i>.</p></dd></dl>"
@@ -36516,10 +36522,10 @@
         "text": "<dl id='dhammīkathā'><dt><dfn>dhammīkathā</dfn></dt><dd><p><span class='case'>feminine</span> talk connected with <i>dhamma</i>.</p></dd></dl>"
     },
     "dhammūpasaṃhita": {
-        "text": "<dl id='dhammūpasaṃhita'><dt><dfn>dhammūpasaṃhita</dfn></dt><dd><p><span class='case'>masculine & neuter</span></p><ol type='1' class='decimal'><li>connected with the <i>dhamma</i>.</li><li>connected with mental constructs.</li></ol></dd></dl>"
+        "text": "<dl id='dhammūpasaṃhita'><dt><dfn>dhammūpasaṃhita</dfn></dt><dd><p><span class='case'>mfn.</span></p><ol type='1' class='decimal'><li>connected with the <i>dhamma</i>.</li><li>connected with mental constructs.</li></ol></dd></dl>"
     },
     "dhammūpahāra": {
-        "text": "<dl id='dhammūpahāra'><dt><dfn>dhammūpahāra</dfn></dt><dd><p><span class='case'>masculine & neuter</span> the presenting of ideas, images, or of the teachings.</p></dd></dl>"
+        "text": "<dl id='dhammūpahāra'><dt><dfn>dhammūpahāra</dfn></dt><dd><p><span class='case'>mfn.</span> the presenting of ideas, images, or of the teachings.</p></dd></dl>"
     },
     "dhammena": {
         "text": "<dl id='dhammena'><dt><dfn>dhammena</dfn></dt><dd><p><span class='case'>instr. adv.</span></p><ol type='1' class='decimal'><li>in accordance with the teaching, the rule; properly.</li><li>according to what is right; justly, with justice.</li><li>rightly, with justification.</li></ol></dd></dl>"
@@ -36540,7 +36546,7 @@
         "text": "<dl id='dhava'><dt><dfn>dhava</dfn></dt><dd><p><span class='case'>masculine</span> a type of tree (grislea tomentosa or anogeissus latifolia)</p></dd></dl>"
     },
     "dhāta": {
-        "text": "<dl id='dhāta'><dt><dfn>dhāta</dfn></dt><dd><p><span class='case'>masculine & neuter</span> satisfied; replete.</p></dd></dl>"
+        "text": "<dl id='dhāta'><dt><dfn>dhāta</dfn></dt><dd><p><span class='case'>mfn.</span> satisfied; replete.</p></dd></dl>"
     },
     "dhāti": {
         "text": "<dl id='dhāti'><dt><dfn>dhāti</dfn></dt><dd><p><span class='case'>feminine</span> (see <i><a href='/define/dhātī'>dhātī</a></i>)</p></dd></dl>"
@@ -36558,7 +36564,7 @@
         "text": "<dl id='dhāniya'><dt><dfn>dhāniya</dfn></dt><dd><p><span class='case'>neuter</span> grain; corn.</p></dd></dl>"
     },
     "dhārakajātika": {
-        "text": "<dl id='dhārakajātika'><dt><dfn>dhārakajātika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> naturally remembering; good at remembering.</p></dd></dl>"
+        "text": "<dl id='dhārakajātika'><dt><dfn>dhārakajātika</dfn></dt><dd><p><span class='case'>mfn.</span> naturally remembering; good at remembering.</p></dd></dl>"
     },
     "dhāraṇīyā": {
         "text": "<dl id='dhāraṇīyā'><dt><dfn>dhāraṇīyā</dfn></dt><dd><p><span class='case'>fpp mfn.</span> (see <i><a href='/define/dhāreti'>dhāreti</a></i>)</p></dd></dl>"
@@ -36639,10 +36645,10 @@
         "text": "<dl id='dhiti'><dt><dfn>dhiti</dfn></dt><dd><p><span class='case'>feminine</span> holding; firmness; constant; steadfast energy; resolution.</p></dd></dl>"
     },
     "dhitimat": {
-        "text": "<dl id='dhitimat'><dt><dfn>dhitima(t)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (sg./pl. nom. <i>~ma</i>, <i>~manto</i>), steadfast, firm, resolute.</p></dd></dl>"
+        "text": "<dl id='dhitimat'><dt><dfn>dhitima(t)</dfn></dt><dd><p><span class='case'>mfn.</span> (sg./pl. nom. <i>~ma</i>, <i>~manto</i>), steadfast, firm, resolute.</p></dd></dl>"
     },
     "dhitima": {
-        "text": "<dl id='dhitima'><dt><dfn>dhitima(t)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (sg./pl. nom. <i>~ma</i>, <i>~manto</i>), steadfast, firm, resolute.</p></dd></dl>"
+        "text": "<dl id='dhitima'><dt><dfn>dhitima(t)</dfn></dt><dd><p><span class='case'>mfn.</span> (sg./pl. nom. <i>~ma</i>, <i>~manto</i>), steadfast, firm, resolute.</p></dd></dl>"
     },
     "dhitimanta": {
         "text": "<dl id='dhitimanta'><dt><dfn>dhitimanta</dfn></dt><dd><p><span class='case'>mfn.</span> (see <i><a href='/define/dhitima(t)'>dhitima(t)</a></i>)</p></dd></dl>"
@@ -36681,13 +36687,13 @@
         "text": "<dl id='dhutaṅga'><dt><dfn>dhutaṅga</dfn></dt><dd><p><span class='case'>neuter</span> one of 13 special ascetic practices (undertaken voluntarily, not enjoined upon the <i>saṅgha</i>)</p></dd></dl>"
     },
     "dhutaṅgakilesa": {
-        "text": "<dl id='dhutaṅgakilesa'><dt><dfn>dhutaṅgakilesa</dfn></dt><dd><p><span class='case'>masculine & neuter</span> who has shaken off, destroyed the defilements.</p></dd></dl>"
+        "text": "<dl id='dhutaṅgakilesa'><dt><dfn>dhutaṅgakilesa</dfn></dt><dd><p><span class='case'>mfn.</span> who has shaken off, destroyed the defilements.</p></dd></dl>"
     },
     "dhutaṅgaguṇa": {
         "text": "<dl id='dhutaṅgaguṇa'><dt><dfn>dhutaṅgaguṇa</dfn></dt><dd><p><span class='case'>masculine</span> an ascetic practice.</p></dd></dl>"
     },
     "dhutaṇgavāda": {
-        "text": "<dl id='dhutaṇgavāda'><dt><dfn>dhutaṇgavāda</dfn></dt><dd><p><span class='case'>masculine & neuter</span> speaking of, preaching <i>dhutaṅgas</i>; instructing in ascetic practices.</p></dd></dl>"
+        "text": "<dl id='dhutaṇgavāda'><dt><dfn>dhutaṇgavāda</dfn></dt><dd><p><span class='case'>mfn.</span> speaking of, preaching <i>dhutaṅgas</i>; instructing in ascetic practices.</p></dd></dl>"
     },
     "dhutta": {
         "text": "<dl id='dhutta'><dt><dfn>dhutta</dfn></dt><dd><p><span class='case'>masculine</span> a gambler; a bad character; a cheat, a scoundrel, a rake.</p></dd></dl>"
@@ -36723,16 +36729,16 @@
         "text": "<dl id='dhuradhoreyya'><dt><dfn>dhuradhoreyya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> (see <i><a href='/define/dhuradhorayha'>dhuradhorayha</a></i>)</p></dd></dl>"
     },
     "dhuravat": {
-        "text": "<dl id='dhuravat'><dt><dfn>dhurava(t)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> carrying one’s burden, undertaking responsibility.</p></dd></dl>"
+        "text": "<dl id='dhuravat'><dt><dfn>dhurava(t)</dfn></dt><dd><p><span class='case'>mfn.</span> carrying one’s burden, undertaking responsibility.</p></dd></dl>"
     },
     "dhurava": {
-        "text": "<dl id='dhurava'><dt><dfn>dhurava(t)</dfn></dt><dd><p><span class='case'>masculine & neuter</span> carrying one’s burden, undertaking responsibility.</p></dd></dl>"
+        "text": "<dl id='dhurava'><dt><dfn>dhurava(t)</dfn></dt><dd><p><span class='case'>mfn.</span> carrying one’s burden, undertaking responsibility.</p></dd></dl>"
     },
     "dhurasamādhi": {
         "text": "<dl id='dhurasamādhi'><dt><dfn>dhurasamādhi</dfn></dt><dd><p><span class='case'>masculine</span> proper alignment, evenness of the yoke.</p></dd></dl>"
     },
     "dhurassaha": {
-        "text": "<dl id='dhurassaha'><dt><dfn>dhurassaha</dfn></dt><dd><p><span class='case'>masculine & neuter</span> bearing the pole or yoke.</p></dd></dl>"
+        "text": "<dl id='dhurassaha'><dt><dfn>dhurassaha</dfn></dt><dd><p><span class='case'>mfn.</span> bearing the pole or yoke.</p></dd></dl>"
     },
     "dhuva": {
         "text": "<dl id='dhuva'><dt><dfn>dhuva</dfn></dt><dd><p><span class='case'>mfn. & neuter</span></p><ol type='1' class='decimal'><li>(mfn.) fixed, firm; constant, lasting; permanent; certain, sure.</li><li>(n.) what is firm or constant and lasting; firmness, constancy, certainty; esp. for nibbāna.</li></ol></dd></dl>"
@@ -36747,13 +36753,13 @@
         "text": "<dl id='dhuvacoḷā'><dt><dfn>dhuvacoḷā</dfn></dt><dd><p><span class='case'>(m)f(n).</span> (see <i><a href='/define/dhuvacolā'>dhuvacolā</a></i>)</p></dd></dl>"
     },
     "dhuvaṭṭhāniya": {
-        "text": "<dl id='dhuvaṭṭhāniya'><dt><dfn>dhuvaṭṭhāniya</dfn></dt><dd><p><span class='case'>masculine & neuter</span> belonging to a fixed place.</p></dd></dl>"
+        "text": "<dl id='dhuvaṭṭhāniya'><dt><dfn>dhuvaṭṭhāniya</dfn></dt><dd><p><span class='case'>mfn.</span> belonging to a fixed place.</p></dd></dl>"
     },
     "dhuvabhatta": {
         "text": "<dl id='dhuvabhatta'><dt><dfn>dhuvabhatta</dfn></dt><dd><p><span class='case'>neuter</span> regular food; a guaranteed meal (for a particular person (?)</p></dd></dl>"
     },
     "dhuvabhattika": {
-        "text": "<dl id='dhuvabhattika'><dt><dfn>dhuvabhattika</dfn></dt><dd><p><span class='case'>masculine & neuter</span> having a regular supply of meals.</p></dd></dl>"
+        "text": "<dl id='dhuvabhattika'><dt><dfn>dhuvabhattika</dfn></dt><dd><p><span class='case'>mfn.</span> having a regular supply of meals.</p></dd></dl>"
     },
     "dhuvayāgu": {
         "text": "<dl id='dhuvayāgu'><dt><dfn>dhuvayāgu</dfn></dt><dd><p><span class='case'>feminine</span> a regular gift of rice gruel.</p></dd></dl>"
@@ -36813,7 +36819,7 @@
         "text": "<dl id='dhotapādaka'><dt><dfn>dhotapādaka</dfn></dt><dd><p><span class='case'>neuter & mfn.</span></p><ol type='1' class='decimal'><li>(n.) something to step on after washing one’s feet.</li><li>(mfn.) with washed feet; requiring clean feet.</li></ol></dd></dl>"
     },
     "dhona": {
-        "text": "<dl id='dhona'><dt><dfn>dhona</dfn></dt><dd><p><span class='case'>masculine & neuter</span> purified, pure.</p></dd></dl>"
+        "text": "<dl id='dhona'><dt><dfn>dhona</dfn></dt><dd><p><span class='case'>mfn.</span> purified, pure.</p></dd></dl>"
     },
     "dhorayha": {
         "text": "<dl id='dhorayha'><dt><dfn>dhorayha</dfn></dt><dd><p><span class='case'>m(fn).</span> (one) who is fit to be harnessed to the pole; who is fit to bear a burden; a draft animal.</p></dd></dl>"
@@ -36822,7 +36828,7 @@
         "text": "<dl id='dhorayhavatā'><dt><dfn>dhorayhavatā</dfn></dt><dd><p><span class='case'>feminine</span> the being (like) one who is fit to bear a burden (?)</p></dd></dl>"
     },
     "dhorayhasīla": {
-        "text": "<dl id='dhorayhasīla'><dt><dfn>dhorayhasīla</dfn></dt><dd><p><span class='case'>masculine & neuter</span> accustomed to bear burdens, to take on duties.</p></dd></dl>"
+        "text": "<dl id='dhorayhasīla'><dt><dfn>dhorayhasīla</dfn></dt><dd><p><span class='case'>mfn.</span> accustomed to bear burdens, to take on duties.</p></dd></dl>"
     },
     "dhoreyya": {
         "text": "<dl id='dhoreyya'><dt><dfn>dhoreyya</dfn></dt><dd><p><span class='case'>m(fn).</span> (see <i><a href='/define/dhorayha'>dhorayha</a></i>)</p></dd></dl>"

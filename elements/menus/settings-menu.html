@@ -16,7 +16,7 @@
 It has setting for textual-details (paragraph numbers), type of view for segmented pages (showing pali next to translated text), 
 lookup tools and publication details -->
 
-<dom-module id="settings-menu" attributes="selectedView textInfo">
+<dom-module id="settings-menu" attributes="selectedView textInfo scriptchoice">
 <template>
 <style is="custom-style">
 :host{
@@ -69,7 +69,7 @@ paper-toggle-button{
       	<h3>View textual information</h3>
       	<div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
       	<paper-toggle-button noink active="{{textualInfoEnabled}}"></paper-toggle-button>
-        <app-localstorage-document key="textualInfoEnabled" data="{{textualInfoEnabled}}"></app-localstorage-document>
+        <app-localstorage-document key="textualInfoEnabled" data="{{textualInfoEnabled}}" session-only="{{sessionOnly}}"></app-localstorage-document>
       </div>
 
       <div class="dialogue-section">
@@ -81,7 +81,7 @@ paper-toggle-button{
                     	<paper-radio-button name="linebyline"><iron-icon icon="view-headline" ></iron-icon> Line by line</paper-radio-button>
                     	<paper-radio-button name="popup"><iron-icon icon="editor:insert-comment"></iron-icon> Pop-up</paper-radio-button>
                 </paper-radio-group>
-                <app-localstorage-document key="radioSelected" data="{{radioSelected}}"></app-localstorage-document>
+                <app-localstorage-document key="radioSelected" data="{{radioSelected}}" session-only="{{sessionOnly}}"></app-localstorage-document>
       </div>
 
       <div class="dialogue-section">
@@ -93,7 +93,7 @@ paper-toggle-button{
 	               <paper-item>[[dictlanguage.language]]</paper-item>
                   </template>
 	        </paper-listbox>
-                <app-localstorage-document key="paliLookupSelected" data="{{paliLookupSelected}}"></app-localstorage-document>
+                <app-localstorage-document key="paliLookupSelected" data="{{paliLookupSelected}}" session-only="{{sessionOnly}}"></app-localstorage-document>
 	      </paper-dropdown-menu>
               <template is="dom-if" if="[[_dictionaryLookup(paliLookupSelected)]]">
                   <sc-dictionary-lookup input-dictionary="[[_getDictionary(paliLookupArray,paliLookupSelected)]]"></sc-dictionary-lookup>
@@ -109,7 +109,7 @@ paper-toggle-button{
                         <paper-item>[[dictlanguage.language]]</paper-item>
                   </template>
 	        </paper-listbox>
-                 <app-localstorage-document key="chineseLookupSelected" data="{{chineseLookupSelected}}"></app-localstorage-document>
+                 <app-localstorage-document key="chineseLookupSelected" data="{{chineseLookupSelected}}" session-only="{{sessionOnly}}"></app-localstorage-document>
 	      </paper-dropdown-menu>
               <template is="dom-if" if="[[_dictionaryLookup(chineseLookupSelected)]]">
                   <sc-dictionary-lookup input-dictionary="[[_getDictionary(chineseLookupArray,chineseLookupSelected)]]"></sc-dictionary-lookup>
@@ -120,20 +120,18 @@ paper-toggle-button{
 	      <h3>Change the script of the Pali text</h3>
 	      <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
 	      <paper-dropdown-menu label="Script">
-	        <paper-listbox slot="dropdown-content" selected="0">
-	          <paper-item>Latin</paper-item>
-	          <paper-item>සිංහල</paper-item>
-	          <paper-item>ไทย</paper-item>
-	          <paper-item>नागरी</paper-item>
+	        <paper-listbox slot="dropdown-content" selected="{{paliScriptSelected}}">
+                  <template is="dom-repeat" items="[[paliScriptChooser]]" as="script">
+                        <paper-item>[[script.language]]</paper-item>
+                  </template>
 	        </paper-listbox>
+                 <app-localstorage-document key="paliScriptSelected" data="{{paliScriptSelected}}" session-only="{{sessionOnly}}"></app-localstorage-document>
 	      </paper-dropdown-menu>
-<!--                <app-localstorage-document key="" data="{{}}"></app-localstorage-document>
- -->
       </div>
 
       <div class="dialogue-section">
       	<h3>Remember what I have selected on this page</h3>
-      	<paper-toggle-button noink active="{{rememberSettings}}"></paper-toggle-button>
+      	<paper-toggle-button noink checked active="{{rememberSettings}}"></paper-toggle-button>
         <app-localstorage-document key="rememberSettings" data="{{rememberSettings}}"></app-localstorage-document>
       </div>
 
@@ -203,6 +201,36 @@ paper-toggle-button{
                     type: Number,
                     value: 0,
                 },
+                // possible values for the script chooser for pali.
+                paliScriptChooser: {
+                  type: Array,
+                  value: [{
+                                "script": "latin",
+                                "language": "Latin"
+                              },
+                              {
+                                "script": "sinhala",
+                                "language": "සිංහල"
+                              },
+                              {
+                                "script": "devanagari",
+                                "language": "नागरी"
+                              },
+                              {
+                                "script": "thai",
+                                "language": "ไทย"
+                              },
+                              {
+                                "script": "myanmar",
+                                "language": "မြန်မာဘာသာ"
+                              }]
+                },
+                // pali script selected number.
+                 paliScriptSelected: {
+                    type: Number,
+                    value: 0,
+                    observer: "_changeScript"
+                },
                 // Boolean that says wether or not paragraph numbers should be 
                 // displayed on text pages.
                 textualInfoEnabled: {
@@ -215,6 +243,11 @@ paper-toggle-button{
                   type: Boolean,
                   value: true,
                   observer: "_rememberSettings"
+                },
+                sessionOnly: {
+                  type: Boolean,
+                  value: false,
+                  notify: true
                 }
       },
       _getReferences: function(textualInfoEnabled) {
@@ -226,7 +259,11 @@ paper-toggle-button{
         this.fire('eventFromTools',{selectedView:this.radioSelected});
       },
       _rememberSettings: function(rememberSettings) {
-        console.log(rememberSettings);
+        // sets the attribute sessionOnly on the app-localstorage so whatever the user chooses after
+        // setting this attribute will not be stored but settings before setting this attribute will be maintained.
+        if (!rememberSettings) {
+          this.sessionOnly=true;
+        }
       },
       _dictionaryLookup: function(valueSelected) {
         // needs more work
@@ -245,6 +282,10 @@ paper-toggle-button{
             refs[i].setAttribute("disabled",true);
            }
         }
+      },
+      _changeScript: function() {
+        // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
+        this.fire('changeScript',{scriptchoice:this.paliScriptSelected});
       }
     });
 </script>
