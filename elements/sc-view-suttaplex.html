@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
-<link rel="import" href="sc-suttaplex.html">
+<link rel="import" href="suttaplex/sc-suttaplex.html">
 <link rel="import" href="addons/sc-node.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 
@@ -140,13 +140,7 @@ main {
       },
       _checkCategoryRoute: function(category) {
         if (category) {var matches = category.match(/\d{1,6}/)};
-        if (!matches) {return true;}
-        else {
-                // var test = document.getElementById("dn/vagga2");
-                // if (test) {console.log(test);}
-                // test.select();
-                return false;
-              }
+        return (!matches) ? true : false; 
       },
       _callAjax: function() {
         if (this.category) {var matches = this.category.match(/\d{1,6}/)};
@@ -160,7 +154,7 @@ main {
         return `../../data/list/${category}.json`;
       },
       _selectVagga: function(vagga,vaggaNumber) {
-        return (vaggaNumber === undefined || vaggaNumber === "" || vaggaNumber === vagga.vagganr) ? true : false;
+        return (!vaggaNumber || vaggaNumber === vagga.vagganr) ? true : false;
       },
       _checkFirstVagga: function(vagga,vaggaNumber) {
         return vaggaNumber ? ((vaggaNumber == vagga.vagganr) ? "firstvagga" : "") : "";

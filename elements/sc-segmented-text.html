@@ -44,6 +44,7 @@
   display: inline;
   @apply --sc-serif-font;
 }
+
 paper-tooltip {
   --paper-tooltip-opacity: 0.98;
   --paper-tooltip-background: var(--paper-grey-700);
@@ -210,7 +211,7 @@ paper-tooltip {
                         var segment = this.shadowRoot.querySelector('#'+subkey);
                         var newSegment = document.createElement('sc-segment');
                         newSegment.id = key;
-                        newSegment.classList.add("original-text", "hidepali");
+                        newSegment.classList.add("original-text");
                         newSegment.innerHTML = outputText[key]+" ";
                         segment.parentNode.insertBefore(newSegment, segment.nextSibling);
                   }

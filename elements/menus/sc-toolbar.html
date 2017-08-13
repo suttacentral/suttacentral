@@ -1,16 +1,19 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/iron-icons/communication-icons.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="menus/more-menu.html">
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
-<link rel="import" href="../bower_components/paper-badge/paper-badge.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="menus/settings-menu.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="more-menu.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="settings-menu.html">
+
+<!-- Base toolbar that appear on the top right in the header of every page. Not all items are shown on all pages
+This toolbar is called from the page-selector. -->
 
 <dom-module id="sc-toolbar">
 <template>
@@ -101,13 +104,16 @@ a {
 }
 </style>
 <div id="toolsmenu">
+    <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
     <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
           <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
           <paper-input label="Search" no-label-float id="searchinput"></paper-input>
           <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
+          <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
           <a href$="[[discourseLink]]" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button><paper-badge class$="[[toggleDisplay]]" label="20" title="This text has 20 references"></paper-badge></a>
 
+<!-- The below code I left in in case it is needed for the old Discourse box -->
 <!--           <a href="https://discourse.suttacentral.net" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum" class$="[[toggleDiscourse]]"></paper-icon-button></a> -->
 <!--           <paper-icon-button id="discoursedropdown" icon="communication:forum" class$="[[toggleDisplay]]" onclick="discourse.open()"></paper-icon-button>
  -->
@@ -121,6 +127,7 @@ a {
           </paper-dialog-scrollable>
         </paper-dialog> -->
 
+          <!-- Settings-menu inside a dialog-box only appears on text-pages -->
           <paper-icon-button id="settingsbutton" class$="[[toggleDisplay]]" icon="settings" on-click="openDialog"></paper-icon-button>
 
         <paper-dialog id="dialog">
@@ -133,6 +140,7 @@ a {
           </paper-dialog-scrollable>
         </paper-dialog>
 
+          <!-- Menu for more options like language and other static pages -->
           <paper-menu-button horizontal-align="right" ignore-select id="morevertbutton">
             <paper-icon-button icon="more-vert" slot="dropdown-trigger"></paper-icon-button>
             <div slot="dropdown-content"></div>
@@ -147,43 +155,65 @@ a {
       is: 'sc-toolbar',
       properties: {
         inputLanguage: String,
+
+        // If suttaPath exists, it means that there is an author and that this is a text-page with 
+        // different elements showing.
         suttaPath: {
           type: String,
           value: "",
           notify: true
         },
         category: String,
+
+        // Currently not used option to disable certain views if they are not applicable on certain text pages.
         viewsDisabled: {
           type: Boolean,
           value: false
         },
+
+        // Value of the meta data of the text-pages that is passed onto the settings-menu dialog
         metaArea: {
           type: String,
           notify: true
         },
+
+       // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
+       // This should only be visible on text-pages.
        toggleDisplay: {
         type: String,
         computed: '_computeClass(suttaPath)'
        },
+
+       // Currently not used option for the old dialog-popup for discourse search results on text-pages.
        toggleDiscourse: {
         type: String,
         computed: '_computeDiscourseClass(suttaPath)'        
        },
+
+       // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
+       // for that specific text.
        discourseLink: {
         type: String,
         computed: '_computeDiscourseLink(suttaPath,category)'
        }
       },
       _computeClass: function(suttaPath) {
+       // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
+       // This should only be visible on text-pages.
         return (suttaPath) ? "" : "hidebutton";
       },
       _computeDiscourseClass: function(suttaPath) {
+        // Currently not used option for the old dialog-popup for discourse search results on text-pages.
         return (suttaPath) ? "hidebutton" : "";
       },
       _computeDiscourseLink: function(suttaPath,category) {
+       // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
+       // for that specific text.
         return (suttaPath) ? 'https://discourse.suttacentral.net/search?q="'+category+' "' : "https://discourse.suttacentral.net/";
       },
       openSearch: function() {
+        // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
+        // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
         if (this.$$('#searchinput').classList.contains('opened')) {
           this.searchAction();
         } else {
@@ -210,6 +240,7 @@ a {
           }
       },
       closeSearch: function() {
+        // Closes the searchbox and resets original values.
         if (this.$$('#searchinput').classList.contains('opened')) {
             this.$$('#searchinput').classList.remove('opened');
             this.$$('#searchinput').removeAttribute('style', "width");
@@ -219,9 +250,11 @@ a {
           }
       },
       searchAction: function() {
+        // Fires the value of the search to the searchpages.
         this.fire("search", this.$$("#searchinput").value);
       },
       openDialog: function() {
+        // Opens the paper-dialog box of the settings-menu.
         this.$.dialog.open();
       }
     });
