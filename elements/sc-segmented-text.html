@@ -190,6 +190,8 @@ paper-tooltip {
         this.$.ajaxParagraphs.generateRequest();
       },
       _addTranslatedText: function(e) {
+        var segments = this.shadowRoot.querySelectorAll('sc-segment');
+        Array.from(segments).forEach(item => item.classList.add('translated-text'));
         outputText = e.detail.response;
         for (var key in outputText) {
           if (!key.startsWith("_")) {
@@ -197,7 +199,6 @@ paper-tooltip {
                 subkey = subkey.replace(/\./g,"\\\.");
                 var segment = this.shadowRoot.querySelector('#'+subkey);
                 segment.innerHTML = outputText[key]+" ";
-                segment.classList.add("translated-text");
           }
         }
       },
