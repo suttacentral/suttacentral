@@ -1,3 +1,22 @@
+<!-- The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**), parses the route through `app-route` and feeds all information through to the **page-selector.html**.
+
+**app-drawer**
+The `app-drawer` is populated with data from ../data/menu/discoursetree.json. This is just mockup data and not the real data.
+
+Issues that need to be fixed:
+    - The paper-tree menu needs to be populated with real data. An overview of what it should become you can find here: https://discourse.suttacentral.net/t/overall-text-hierarchy-for-sc-next/6101
+    - The paper-tree menu needs to open at the relevant place when a url is given (right now it only opens when you go through the menu but not when somebody f.i. types /dn1/bodhi as a url)
+    - The paper-tree menus for Vinaya / Abhidhamma have to be made also.
+
+**iron-location** and **app-rout**
+These parse the url given but at the moment only deal with the following url:
+    - search pages: `/search?query=searchterm`
+    - url with one or two terms i.e. `/`, `/dons`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc. but not with more than 2 terms.
+
+Issues that need to be fixed:
+    - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1` but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and the **sc-view-suttaplex.html**. -->
+
+
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="paper-tree-sc/paper-tree.html">
@@ -146,8 +165,13 @@ paper-tree {
         window.scroll(0, 0);
       },
       ready: function() {
-        this.addEventListener('languageSelection',this.changeLanguage);
+        // languageSelection listens to input from the language dropdown menu on the top right.
+        this.addEventListener('languageSelection',this.changeLanguage); 
+
+        // search listens to input from the search bar (i.e. a search-term) and feeds this to the iron-location
         this.addEventListener('search', this.searchItem);
+        
+        // toggleDrawer is triggered when the menu button in the toolbar is pressed when the app-drawer is not visible.
         this.addEventListener('toggleDrawer', this._toggleDrawer);
       },
       _calculateCategory: function(collectionData) {
@@ -157,14 +181,17 @@ paper-tree {
         this.category = collectionData.collection.replace(":",".");
       },
       changeLanguage: function(event) {
+        // sets the inputLanguage for all pages
         return this.inputLanguage = event.detail.Language;
       },
       searchItem: function(event) {
+        // sets the path for a searchterm to /search?query=searchterm
           this.path = "/search";
           this.query = "query="+event.detail;
 
       },
       _toggleDrawer: function(event) {
+        // opens the app-drawer when it is not visible.
         return this.$$('app-drawer').setAttribute("opened",event.detail.togdraw);
       }
 
