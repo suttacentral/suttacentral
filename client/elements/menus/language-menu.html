@@ -1,0 +1,81 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../styles/language-styles.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+
+<!-- Language-menu used in the suttaplex card for denoting which translations exist of this particular text -->
+
+<dom-module id="language-menu">
+<template>
+<style is="custom-style" include="language-styles">
+:host {
+  --primary-color: var(--paper-green-a700);
+}
+paper-dropdown-menu, paper-listbox {
+    width: 200px;
+    --paper-input-container-input: {
+      text-transform: capitalize;
+  };
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+paper-item {
+    text-transform: capitalize;
+}
+.orlang {
+  color: var(--paper-green-a700);
+}
+.hide-element {
+  display: none;
+}
+</style>
+	<paper-dropdown-menu class="custom" label="[[titleLabel]]" title="Select a translation in another language">
+	  <paper-listbox slot="dropdown-content">
+              <!-- List the original language first if not already listed-->
+              <paper-item class$="orlang [[_computeHide(originalLanguage)]]"><a href="/[[inputUrl]]/[[originalLanguage]]">[[originalLanguage]]</a></paper-item>
+	     <template is="dom-repeat" items="[[languageChoice]]" as="language">
+                  <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
+                      <template is="dom-repeat" items="[[language.authors]]" as="author">
+                      <!-- List all the authors and languages if they exist and does not list the ones that are from the input language-->
+	    	          <paper-item id="[[language.id]]"><a href="/[[inputUrl]]/[[author]]">[[author]]</a></paper-item>
+                      </template>
+                  </template>
+	    </template>
+	  </paper-listbox>
+	</paper-dropdown-menu>
+</template>
+
+<script>
+    Polymer({
+        is: 'language-menu',
+
+        properties: {
+          // input of language-author array
+          languageChoice: {
+            type: Array,
+            notify: true
+          },
+          titleLabel: String,
+          inputLanguage: String,
+          originalLanguage: String,
+          inputUrl: String,
+          newLanguage: {
+            type: String,
+            computed: "_otherLanguage(languageChoice, inputLanguage)"
+          }
+    	  },
+        _otherLanguage: function(languageChoice, inputLanguage) {
+          // does not list items that are from the inputLanguage because those are listed elsewhere.
+          return (languageChoice && languageChoice.id === inputLanguage) ? true : false;
+          },
+          _computeHide: function(checkText) {
+              return (!checkText) ? "hide-element": checkText;
+          }
+    });
+
+</script>
+</dom-module>

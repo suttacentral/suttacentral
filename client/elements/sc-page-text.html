@@ -1,0 +1,111 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="addons/sc-text-node.html">
+<link rel="import" href="../styles/sc-text-styles.html">
+<link rel="import" href="../styles/sc-text-heading-styles.html">
+<link rel="import" href="../styles/sc-text-paragraph-num-styles.html">
+
+<dom-module id="sc-page-text" attributes="suttatitle suttameta">
+<template>
+<style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
+.notfound {
+  @apply --paper-font-display1;
+}
+</style>
+<!-- Still to do: add the correct sutta based on the author. Right now it does not check the author in the URL -->
+<iron-ajax id="ajax"
+      url="[[_computeURL(inputLanguage,suttaPath,author)]]"
+      handle-as="text"
+      last-response="{{suttaText}}"
+      on-response="_loadedHTML"
+      last-error='{{notFound}}'></iron-ajax>
+
+<iron-ajax id="ajaxParagraphs"
+      url="../data/paragraphtitles.json"
+      handle-as="json"
+      last-response="{{paragraphTitles}}"
+      on-response="_computePars"></iron-ajax>
+
+    <template is="dom-if" if="[[notFound]]">
+        <p class="notfound">Sorry, the page your requested does not exist.</p>
+    </template>
+    <template is="dom-if" if="[[!notFound]]">
+      <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
+      <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
+    </template>
+</template>
+<script>
+    Polymer({
+      is: 'sc-page-text',
+
+      properties: {
+        suttaPath: {
+          type: String,
+          notify: true
+        },
+        author: {
+          type: String,
+          notify: true
+        },
+        suttaText: {
+          type: String,
+          notify: true,
+          value: function(){return ""}
+        },
+        inputLanguage: String,
+        notFound: Object,
+        showParagraphs: {
+          type: Boolean,
+          notify: true,
+          observer: '_addParagraphs'
+        }
+      },
+      observers: [
+        '_callAjax(suttaPath,author)',
+        'infoToParent(suttaText)'
+      ],
+      _callAjax: function() {
+        if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
+        return (matches && this.author && this.author !== "sujato" && this.author !== "pali") ? this.$.ajax.generateRequest() : "";
+      },
+      _computeURL: function(inputLanguage,category,author) {
+        // This is a bit of a hack. The inputlanguage should not be the one to choose because you can 
+        // choose another language than the inputlanguage. Best to check with the relevant Sutta
+        // which is loaded in the sc-text-node, what authors and languages there are and use that.
+        if (!inputLanguage) {inputLanguage = "en";}
+        return `../data/texts/${inputLanguage}/${author}/${category}.html`;
+      },
+      _loadedHTML: function(e) {
+        this.$.ajaxParagraphs.generateRequest();
+      },
+      _addParagraphs: function() {
+        var infotext = this.shadowRoot.querySelector('#htmltextcontent');
+        return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
+      },
+      _computeTitle: function(suttaText) {
+        var matches = suttaText.match(/class="division">(.*?)</);
+        return matches ? matches[1] : "";
+      },
+      _computeAuthor: function(suttaText) {
+        var matches = suttaText.match(/author="(.*?)"/);
+        return matches ? matches[1] : "";
+      },
+      _computeMeta: function(suttaText) {
+        var matches = suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+        return matches ? matches[1] : "";
+      },
+     _computePars: function(e) {
+      var paragraphTitles = e.detail.response;
+        for (var key in paragraphTitles) {
+                var refs = this.shadowRoot.querySelectorAll('.'+key);
+                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
+                Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
+        }
+        if (this.showParagraphs) {this._addParagraphs()};
+      },
+      infoToParent: function(suttaText) {
+        this.fire('eventFromTextPage',{suttatitle:this._computeTitle(suttaText)+"—"+this._computeAuthor(suttaText),suttameta:this._computeMeta(suttaText)});
+      }
+    });
+</script>
+</dom-module>

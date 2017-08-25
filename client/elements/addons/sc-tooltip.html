@@ -1,0 +1,331 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
+
+<!-- SC-tooltip is an adapted version of Polymer's paper-tooltip in Polymer 1.x
+Not upgraded to Polymer 2.x because paper-tooltip seems to work again under P2. -->
+
+<dom-module id="sc-tooltip">
+<template>
+<style is="custom-style">
+:host {
+        display: table;
+        position: absolute;
+        outline: none;
+        z-index: 1002;
+        max-width: 320px;
+        left:0;
+      }
+#tooltip {
+        display: block;
+        outline: none;
+        @apply --sc-sans-font;
+        @apply --shadow-elevation-6dp;
+        font-size: 12px;
+        line-height: 16px;
+        padding: 8px 16px;
+        border-radius: 2px;
+        text-shadow:0px 0px #ffffff;
+        background-color: var(--sc-tooltip-background, --paper-grey-700);
+        opacity: 0.98;
+        color: var(--sc-tooltip-text-color, white);
+        white-space: normal;
+        @apply --sc-tooltip;
+      }
+.hidden {
+        display: none !important;
+      }
+</style>
+<div id="tooltip" class="hidden">
+    <slot></slot>
+</div>
+</template>
+<script>
+    Polymer({
+        is: 'sc-tooltip',
+      hostAttributes: {
+        role: 'tooltip',
+        tabindex: -1
+      },
+
+      behaviors: [
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
+      properties: {
+        /**
+         * The id of the element that the tooltip is anchored to. This element
+         * must be a sibling of the tooltip.
+         */
+        for: {
+          type: String,
+          observer: '_findTarget'
+        },
+
+        /**
+         * Set this to true if you want to manually control when the tooltip
+         * is shown or hidden.
+         */
+        manualMode: {
+          type: Boolean,
+          value: false,
+          observer: '_manualModeChanged'
+        },
+
+        /**
+         * Positions the tooltip to the top, right, bottom, left of its content.
+         */
+        position: {
+          type: String,
+          value: 'bottom'
+        },
+        /**
+         * If set, no parts of the tooltip will ever be shown offscreen.
+         * Set value has to be the class or id name of the element host element.
+         * Important: only works when parent is set to :host {position: relative}
+         */
+        fitToVisibleBounds: String,
+
+        /**
+         * The spacing between the top of the tooltip and the element it is
+         * anchored to.
+         */
+        offset: {
+          type: Number,
+          value: 14
+        },
+
+        /**
+         * The delay that will be applied before the `entry` animation is
+         * played when showing the tooltip.
+         */
+        animationDelay: {
+          type: Number,
+          value: 150
+        },
+
+        /**
+         * The entry and exit animations that will be played when showing and
+         * hiding the tooltip. If you want to override this, you must ensure
+         * that your animationConfig has the exact format below.
+         */
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              'entry': [{
+                name: 'fade-in-animation',
+                node: this,
+                timing: {delay: 0}
+              }],
+              'exit': [{
+                name: 'fade-out-animation',
+                node: this
+              }]
+            }
+          }
+        },
+
+        _showing: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      listeners: {
+        'neon-animation-finish': '_onAnimationFinish',
+      },
+
+      /**
+       * Returns the target element that this tooltip is anchored to. It is
+       * either the element given by the `for` attribute, or the immediate parent
+       * of the tooltip.
+       */
+      get target () {
+        var parentNode = Polymer.dom(this).parentNode;
+        // If the parentNode is a document fragment, then we need to use the host.
+        var ownerRoot = Polymer.dom(this).getOwnerRoot();
+
+        var target;
+        if (this.for) {
+          target = Polymer.dom(ownerRoot).querySelector('#' + this.for);
+        } else {
+          target = parentNode.nodeType == Node.DOCUMENT_FRAGMENT_NODE ?
+              ownerRoot.host : parentNode;
+        }
+        return target;
+      },
+
+      attached: function() {
+        this._findTarget();
+      },
+
+      detached: function() {
+        if (!this.manualMode)
+          this._removeListeners();
+      },
+
+      show: function() {
+        // If the tooltip is already showing, there's nothing to do.
+        if (this._showing)
+          return;
+
+        if (Polymer.dom(this).textContent.trim() === '')
+          return;
+
+
+        this.cancelAnimation();
+        this._showing = true;
+        this.toggleClass('hidden', false, this.$.tooltip);
+        this.updatePosition();
+
+        this.animationConfig.entry[0].timing = this.animationConfig.entry[0].timing || {};
+        this.animationConfig.entry[0].timing.delay = this.animationDelay;
+        this._animationPlaying = true;
+        this.playAnimation('entry');
+      },
+
+      hide: function() {
+        // If the tooltip is already hidden, there's nothing to do.
+        if (!this._showing) {
+          return;
+        }
+
+        // If the entry animation is still playing, don't try to play the exit
+        // animation since this will reset the opacity to 1. Just end the animation.
+        if (this._animationPlaying) {
+          this.cancelAnimation();
+          this._showing = false;
+          this._onAnimationFinish();
+          return;
+        }
+
+        this._showing = false;
+        this._animationPlaying = true;
+        this.playAnimation('exit');
+      },
+
+      updatePosition: function() {
+        if (!this._target || !this.offsetParent)
+          return;
+
+        var offset = this.offset;
+
+        var parentRect = this.offsetParent.getBoundingClientRect();
+        var targetRect = this._target.getBoundingClientRect();
+        var thisRect = this.getBoundingClientRect();
+        var horizontalCenterOffset = (targetRect.width - thisRect.width) / 2;
+        var verticalCenterOffset = (targetRect.height - thisRect.height) / 2;
+
+        var targetLeft = targetRect.left - parentRect.left;
+        var targetTop = targetRect.top - parentRect.top;
+
+        var tooltipLeft, tooltipTop;
+
+        switch (this.position) {
+          case 'top':
+            tooltipLeft = targetLeft + horizontalCenterOffset;
+            tooltipTop = targetTop - thisRect.height - offset;
+            break;
+          case 'bottom':
+            tooltipLeft = targetLeft + horizontalCenterOffset;
+            tooltipTop = targetTop + targetRect.height + offset;
+            break;
+          case 'left':
+            tooltipLeft = targetLeft - thisRect.width - offset;
+            tooltipTop = targetTop + verticalCenterOffset;
+            break;
+          case 'right':
+            tooltipLeft = targetLeft + targetRect.width + offset;
+            tooltipTop = targetTop + verticalCenterOffset;
+            break;
+        }
+
+        if (this.fitToVisibleBounds) {
+          var viewPort = document.querySelector(this.fitToVisibleBounds).getBoundingClientRect();
+          // Calculate segment mid-point
+          if (targetRect.width >= viewPort.width*0.8) {
+            var midPointOffset = (viewPort.left + viewPort.width/2) - (thisRect.left + thisRect.width/2);
+            if (midPointOffset != 0) {
+              this.style.left = midPointOffset + "px";
+            }
+            this.style.right= "auto";
+          } else {
+
+                // Clip the left/right side.
+                if (thisRect.right > viewPort.right) {
+                  var differenceright = viewPort.right - thisRect.right;
+                  this.style.right = '16px';
+                  this.style.left = differenceright + "px";
+                }
+
+                if (thisRect.left < viewPort.left) {
+                  var differenceleft = thisRect.left - viewPort.left;
+                  this.style.right = differenceleft + "px";
+                  this.style.left = '16px';
+                }
+          }
+
+          // Clip the top/bottom side.
+          if (tooltipTop + thisRect.height > window.innerHeight) {
+            this.style.bottom = '0px';
+            this.style.top = 'auto';
+          } else {
+            this.style.top = Math.max(0, tooltipTop) + 'px';
+            this.style.bottom = 'auto';
+          }
+        } else {
+          this.style.left = tooltipLeft + 'px';
+          this.style.top = tooltipTop + 'px';
+        }
+      },
+
+      _addListeners: function() {
+        if (this._target) {
+          this.listen(this._target, 'mouseenter', 'show');
+          this.listen(this._target, 'focus', 'show');
+          this.listen(this._target, 'mouseleave', 'hide');
+          this.listen(this._target, 'blur', 'hide');
+          this.listen(this._target, 'tap', 'hide');
+        }
+        this.listen(this, 'mouseenter', 'hide');
+      },
+
+      _findTarget: function() {
+        if (!this.manualMode)
+          this._removeListeners();
+
+        this._target = this.target;
+
+        if (!this.manualMode)
+          this._addListeners();
+      },
+
+      _manualModeChanged: function() {
+        if (this.manualMode)
+          this._removeListeners();
+        else
+          this._addListeners();
+      },
+
+      _onAnimationFinish: function() {
+        this._animationPlaying = false;
+        if (!this._showing) {
+          this.toggleClass('hidden', true, this.$.tooltip);
+        }
+      },
+
+      _removeListeners: function() {
+        if (this._target) {
+          this.unlisten(this._target, 'mouseenter', 'show');
+          this.unlisten(this._target, 'focus', 'show');
+          this.unlisten(this._target, 'mouseleave', 'hide');
+          this.unlisten(this._target, 'blur', 'hide');
+          this.unlisten(this._target, 'tap', 'hide');
+        }
+        this.unlisten(this, 'mouseenter', 'hide');
+      }
+    });
+</script>
+</dom-module>
