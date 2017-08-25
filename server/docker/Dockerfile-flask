@@ -1,0 +1,5 @@
+FROM python:3.6.2
+RUN mkdir -p /opt/sc/sockets
+RUN mkdir -p /opt/sc/sc-flask
+WORKDIR /opt/sc/sc-flask
+COPY . .

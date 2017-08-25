@@ -1,0 +1,65 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<!-- This element just pulls in a random epigraph from a json file and displays it but is currently not used. -->
+
+<dom-module id="sc-epigraph">
+<template>
+<style is="custom-style">
+.epigraph {
+  margin: 0 5% 4em;
+  border: 1px solid var(--paper-grey-200);
+  padding:16px 32px;
+  border-radius: 2px;
+  @apply --shadow-elevation-2dp
+}
+
+.epigraph-text {
+  font-style: italic;
+  @apply --sc-paper-font-body;
+  @apply --sc-serif-font;
+}
+
+.epigraph-reference {
+  margin-bottom: .5em;
+  margin-top: -1em;
+  @apply --sc-all-small-caps;
+  font-style: normal;
+}
+</style>
+
+    <iron-ajax
+          auto
+          url="../../data/epigraphs.json"
+          handle-as="json"
+          last-response="{{epigraphs}}"></iron-ajax>
+
+    <div class="epigraph">
+      <div class="epigraph-text">
+        <p inner-h-t-m-l="[[selected.content]]"></p>
+        <p class="epigraph-reference">[[selected.uid]]</p>
+      </div>
+    </div>
+</template>
+<script>
+    Polymer({
+        is: 'sc-epigraph',
+        properties: {
+            epigraphs: {
+              type: Array,
+              notify: true,
+              value: function(){return []}
+            },
+            selected:  {
+              type: Array,
+              computed: 'selectEpigraph(epigraphs)'
+            } 
+
+        },
+        selectEpigraph: function(epigraphs) {
+          var epi = Math.floor((Math.random() * epigraphs.length));
+          return epigraphs[epi]
+        }
+    });
+</script>
+</dom-module>
