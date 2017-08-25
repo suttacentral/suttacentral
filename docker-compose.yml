@@ -1,0 +1,67 @@
+version: '2'
+
+services:
+
+  sc-flask:
+    build:
+      context: ./server/
+      dockerfile: docker/Dockerfile-flask
+    container_name: 'sc-flask'
+    labels:
+      application: 'sc-flask'
+    environment:
+      - FLASK_APP=server/app.py
+    volumes:
+      - socket-volume:/opt/sc/sockets
+    expose:
+      - '5000'
+    depends_on:
+      - sc-arangodb
+
+  sc-arangodb:
+    image: arangodb/arangodb
+    container_name: 'sc-arangodb'
+    labels:
+      application: 'sc-arangodb'
+    environment:
+      - ARANGO_ROOT_PASSWORD=test
+    expose:
+      - '8529'
+    volumes:
+      - db-data-volume:/var/lib/arangodb3
+
+  sc-nginx:
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile-nginx
+    container_name: 'sc-nginx'
+    labels:
+      application: 'sc-nginx'
+    volumes:
+      - nginx-data-volume:/opt/sc/logs/nginx
+      - socket-volume:/opt/sc/sockets
+    ports:
+      - '80:80'
+    depends_on:
+      - sc-flask
+    command: bash entry-point.sh
+
+  sc-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.2
+    container_name: elasticsearch
+    labels:
+      application: 'sc-elasticsearch'
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    mem_limit: 1g
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+
+volumes:
+  db-data-volume:
+  nginx-data-volume:
+  socket-volume:
+  elasticsearch-data:
