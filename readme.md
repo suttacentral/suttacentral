@@ -1,7 +1,11 @@
 The following is and overview of the SC-Next elements and the work that still needs to be done on them.
+
 Next to the below issues, the CSS has to be changed in places by Bhante Sujato.
+
 Fonts will also need to be installed.
+
 I have not been very consistent with the "notify: true" and with the function names starting with or without a "_" so this needs to be cleaned up.
+
 The main issues for the backend would involve the suttaplex-card and -view, which is discussed under the relevant section below.
 
 # sc-navdrawer.html
@@ -100,6 +104,7 @@ It loads a (mockup) file from `../data/list`which lists the relevant Nikaya's na
 The various translations in the json file are shown when another site-language is chosen.
 
 For more info: https://discourse.suttacentral.net/t/suttaplex-list-pages/4762
+
 When a range of suttaplex cards is displayed, it also displays the title and vaggas, etc. with some text in an expander above.
 This will need to be discussed further with Sujato with regards to the new structure he wants in the navigation-drawer.
 For instance `/dn` would result in a list of all suttaplex-cards for the DN, sorted per vagga with relevant vagga titles and explanatory texts in expanders, `/dn/vagga1` would result in a list of just the first vagga, while `/dn1` would result in just one opened suttaplex-card for that specific sutta.
