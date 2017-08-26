@@ -250,7 +250,7 @@ app-toolbar, sc-toolbar {
         // find the author name in the route: The additional check for "activePath" is needed because otherwise the
         // different views for different vaggas vs. the full view of all the vaggas is not always taken.
         // Note that this will have to be changed for longer and more complex routes.
-        return (subPath && activePath && !subPath.startsWith("vagga")) ? subPath : "";
+        return (category !== "define" && subPath && activePath && !subPath.startsWith("vagga")) ? subPath : "";
       },
       _computeVagga: function(subPath,activePath) {
         // find the vagga name in the route. The additional check for "activePath" is needed because otherwise the

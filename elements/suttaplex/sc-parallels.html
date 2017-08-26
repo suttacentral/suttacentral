@@ -1,3 +1,5 @@
+<!-- This elements loads additional info for each relevant parallel sutta, which is loaded from `../data/suttas` and then used in sc-view-parallels.html . It is in effect a minature version of the suttaplex-card-->
+
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
@@ -93,6 +95,8 @@ details p{
           parallelUrl: String,
           parallelId: String,
           inputLanguage: String,
+
+          // Array with the relevant language data for the parallel-sutta i.e. title, slug, etc. in the chosen site language.
           languageData: {
               type: Object,
               computed: '_computeLanguage(inputData,inputLanguage)'
@@ -105,9 +109,11 @@ details p{
           }
         },
         _computeURL: function(sutta) {
+          // returns the url of the correct parallel-sutta to be loaded.
           return `../../data/suttas/${sutta}.json`;
         },
         _computeLanguage: function(inputData,inputLanguage) {
+          // creates an array with the relevant language data for the parallel-sutta i.e. title, slug, etc. in the chosen site language.
           var lanarray = "";
           if (inputData.languages){
             for (var i=0; i<inputData.languages.length; i++) {
@@ -119,14 +125,17 @@ details p{
           return lanarray ? lanarray : "";
         },
       _computeTitle: function(languageData,inputData,parallelId) {
+        // returns the relevant header, either the title in the translated language, otherwise in pali or otherwise just the ID.
         if (languageData.titlelan) {return languageData.titlelan;
         } else if (inputData.titlepi) {return inputData.titlepi;
         } else {return parallelId;}
       },
       _computeHide: function(checkText) {
+        // general function to hide or display various elements.
         return (!checkText) ? "hide-element": "";
       },
       infoToParent: function() {
+        // sends info regarding id, title, etc. back to sc-suttaplex.html for use in the more-par menu copy function.
         this.fire('eventFromParallels',{parid:this.parallelId,partitle:this.inputData.titlepi,volumepage:this.inputData.volpage,biblio:this.inputData.bib});
       }
     });

@@ -14,6 +14,9 @@
 
 <!-- Base toolbar that appear on the top right in the header of every page. Not all items are shown on all pages
 This toolbar is called from the page-selector. -->
+<!-- Issues:
+    - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows the number 20 but it should show the correct search results instead.
+    - The paper badge has the annoying habbit of occasionally disappearing for no apparent reason. -->
 
 <dom-module id="sc-toolbar">
 <template>
@@ -63,19 +66,11 @@ paper-dialog {
   left: 50px;
   max-width: 600px;
 }
-/*#discourse {
-  position:fixed;
-  top: 50px;
-  right: 50px;
-  max-width: 600px;
-}*/
+
 @media screen and (max-width: 840px) {
     #dialog {
       left: 0px;
     };
-/*    #discourse {
-      right: 0px;
-    }*/
 }
 
 h2{
@@ -93,11 +88,6 @@ paper-dialog paper-icon-button {
 a {
   text-decoration: none;
 }
-/*#discourselogo {
-    @apply --sc-serif-font;
-    color: #015179;
-    font-style: italic;
-}*/
 
 .search-open #discoursebutton, .search-open > #morevertbutton, .search-open > #settingsbutton {
   display: none;
@@ -112,20 +102,6 @@ a {
 
           <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
           <a href$="[[discourseLink]]" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button><paper-badge class$="[[toggleDisplay]]" label="20" title="This text has 20 references"></paper-badge></a>
-
-<!-- The below code I left in in case it is needed for the old Discourse box -->
-<!--           <a href="https://discourse.suttacentral.net" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum" class$="[[toggleDiscourse]]"></paper-icon-button></a> -->
-<!--           <paper-icon-button id="discoursedropdown" icon="communication:forum" class$="[[toggleDisplay]]" onclick="discourse.open()"></paper-icon-button>
- -->
-<!--         <paper-dialog id="discourse">
-          <div class="buttons">
-            <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
-          </div>
-          <h2 id="discourselogo">Discuss & Discover</h2>
-          <paper-dialog-scrollable>
-              Some items in here
-          </paper-dialog-scrollable>
-        </paper-dialog> -->
 
           <!-- Settings-menu inside a dialog-box only appears on text-pages -->
           <paper-icon-button id="settingsbutton" class$="[[toggleDisplay]]" icon="settings" on-click="openDialog"></paper-icon-button>
