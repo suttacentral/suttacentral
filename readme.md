@@ -11,32 +11,32 @@ Is the first element that is called and it loads the navigation-drawer (`app-dra
 The `app-drawer` is populated with data from ../data/menu/discoursetree.json. This is just mockup data and not the real data.
 
 Issues that need to be fixed:
-    - The paper-tree menu needs to be populated with real data. An overview of what it should become you can find here: https://discourse.suttacentral.net/t/overall-text-hierarchy-for-sc-next/6101
-    - The paper-tree menu needs to open at the relevant place when a url is given (right now it only opens when you go through the menu but not when somebody f.i. types /dn1/bodhi as a url)
-    - The paper-tree menus for Vinaya / Abhidhamma have to be made also.
+  - The paper-tree menu needs to be populated with real data. An overview of what it should become you can find here: https://discourse.suttacentral.net/t/overall-text-hierarchy-for-sc-next/6101
+  - The paper-tree menu needs to open at the relevant place when a url is given (right now it only opens when you go through the menu but not when somebody f.i. types /dn1/bodhi as a url)
+  - The paper-tree menus for Vinaya / Abhidhamma have to be made also.
 
 ## iron-location and app-rout
 These parse the url given but at the moment only deal with the following url:
-    - search pages: `/search?query=searchterm`
-    - url with one or two terms i.e. `/`, `/dons`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc. but not with more than 2 terms.
+  - search pages: `/search?query=searchterm`
+  - url with one or two terms i.e. `/`, `/dons`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc. but not with more than 2 terms.
 
 Issues that need to be fixed:
-    - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1` but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and the **sc-view-suttaplex.html**.
+  - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1` but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and the **sc-view-suttaplex.html**.
 
 
 # page-selector.html
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page, the header will have a different appearance and different items in the toolbar.
 
 The page-selector also parses the input-data and loads one of 6 possible page-views depending on the input given:
-    - static pages: **sc-page-static.html**
-    - search page: **sc-page-search.html**
-    - dictionary page: **sc-page-dictionary.html**
-    - normal html text pages: **sc-page-text.html**
-    - segmented text pages from pootle output: **sc-segmented-text.html**
-    - suttaplex list: **sc-view-suttaplex.html**
+  - static pages: **sc-page-static.html**
+  - search page: **sc-page-search.html**
+  - dictionary page: **sc-page-dictionary.html**
+  - normal html text pages: **sc-page-text.html**
+  - segmented text pages from pootle output: **sc-segmented-text.html**
+  - suttaplex list: **sc-view-suttaplex.html**
 
 Issues that need to be fixed:
-    - Right now it is only possible to parse routes with only 2 terms. It should be possible to parse longer routes (see description under **sc-navdrawer.html**). This is probably only important for the suttaplex list so if a longer route exists, it might be sufficient to just forward that to **sc-view-suttaplex.html** and parse it there further.
+  - Right now it is only possible to parse routes with only 2 terms. It should be possible to parse longer routes (see description under **sc-navdrawer.html**). This is probably only important for the suttaplex list so if a longer route exists, it might be sufficient to just forward that to **sc-view-suttaplex.html** and parse it there further.
 
 
 # sc-page-static.html
@@ -58,8 +58,8 @@ The dictionary results page shows the results found in all dictionaries of a spe
 Related items are in a drawer on the right, which can be opened from a menu-item at the top-right. 
 
 Issues that need to be fixed:
-    - Bhante Sujato to fix the pts-dictionary and Ayya Vimala to jsonify it.
-    - The related items are now loaded straight from a mockup file in `../data/dictionaries/related.json`. This will have to be changed to relevant terms. Check on the live SC site how adjacent and similar terms are calculated and create a function to do this.
+  - Bhante Sujato to fix the pts-dictionary and Ayya Vimala to jsonify it.
+  - The related items are now loaded straight from a mockup file in `../data/dictionaries/related.json`. This will have to be changed to relevant terms. Check on the live SC site how adjacent and similar terms are calculated and create a function to do this.
 
 
 # sc-page-text.html
@@ -72,7 +72,7 @@ Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidd
 Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
 
 Issues that need to be fixed:
-    - Other language suttas need to be loaded and displayed correctly as well depending on how this will work with the backend.
+  - Other language suttas need to be loaded and displayed correctly as well depending on how this will work with the backend.
 
 
 # sc-segmented-text.html
@@ -88,9 +88,9 @@ The type of script used for the pali can be chosen.
 Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
 
 Issues that need to be fixed:
-    - Right now it only works for the segmented translations by Sujato and for the pali thereof and only for the files I have for that with is all AN, SN, MN1-123. DN is not yet in there so the DN file that is shown in the menu under DN1 is actually MN1 just to try things out but will need to be replaced.
-    - The pali lookup tool does not yet work. See remarks below under `settings-menu.html`.
-    - Only sujato is recognised as an author so that might have to change. It also only works for the pali right now if a translated file for Sujato exists too.
+  - Right now it only works for the segmented translations by Sujato and for the pali thereof and only for the files I have for that with is all AN, SN, MN1-123. DN is not yet in there so the DN file that is shown in the menu under DN1 is actually MN1 just to try things out but will need to be replaced.
+  - The pali lookup tool does not yet work. See remarks below under `settings-menu.html`.
+  - Only sujato is recognised as an author so that might have to change. It also only works for the pali right now if a translated file for Sujato exists too.
 
 
 # sc-view-suttaplex.html
@@ -105,11 +105,10 @@ This will need to be discussed further with Sujato with regards to the new struc
 For instance `/dn` would result in a list of all suttaplex-cards for the DN, sorted per vagga with relevant vagga titles and explanatory texts in expanders, `/dn/vagga1` would result in a list of just the first vagga, while `/dn1` would result in just one opened suttaplex-card for that specific sutta.
 
 Issues that need to be fixed:
-    - This system now works for the DN and MN but for more complex texts like the AN and SN it will not work yet. It is also not entirely clear to me how Sujato wants to do this. For instance, in the old system we had `/sn`and `/sn1` as lists but now Sujato would like it to be different and have something like `/sn`, `sn/vagga1`, `/sn/vagga1/samyutta1`, `/sn/vagga1/samyutta1/pannasa1`and `/sn/vagga1/samyutta1/pannasa1/vagga1`all as various possible list-choices with the relevant headers and explanatory texts (which do not yet exist but the system in this suttaplex element can work without that i.e. if no explanatory text exists, it simply does not display the expander either).
-    So the would mean the `/sn1` no longer exists as a choice but for instance `/sn1.1` will show the one opened suttaplex-card for that specific sutta.
-    - This element can now only distinguish between vaggas and individual suttas and defines the latter as anything with a number in it, so that is rather limited and will have to change once the new structure is clear.
-    - I have been toying with the idea to merge the two lists i.e. the list imported here that is used for the suttaplex-view and the list that is imported for the paper-tree in the navigation-drawer. Both list overlapping information so that might be an idea.
-    - Instead of a `dom-repeat` of the suttaplex-cards in the array, it might be better to use an `iron-list` because for some of these there are thousands of cards so it might become too slow otherwise.
+  - This system now works for the DN and MN but for more complex texts like the AN and SN it will not work yet. It is also not entirely clear to me how Sujato wants to do this. For instance, in the old system we had `/sn`and `/sn1` as lists but now Sujato would like it to be different and have something like `/sn`, `sn/vagga1`, `/sn/vagga1/samyutta1`, `/sn/vagga1/samyutta1/pannasa1`and `/sn/vagga1/samyutta1/pannasa1/vagga1`all as various possible list-choices with the relevant headers and explanatory texts (which do not yet exist but the system in this suttaplex element can work without that i.e. if no explanatory text exists, it simply does not display the expander either). So the would mean the `/sn1` no longer exists as a choice but for instance `/sn1.1` will show the one opened suttaplex-card for that specific sutta.
+  - This element can now only distinguish between vaggas and individual suttas and defines the latter as anything with a number in it, so that is rather limited and will have to change once the new structure is clear.
+  - I have been toying with the idea to merge the two lists i.e. the list imported here that is used for the suttaplex-view and the list that is imported for the paper-tree in the navigation-drawer. Both list overlapping information so that might be an idea.
+  - Instead of a `dom-repeat` of the suttaplex-cards in the array, it might be better to use an `iron-list` because for some of these there are thousands of cards so it might become too slow otherwise.
 
 ## suttaplex-card (`/suttaplex`)
 The suttaplex-card consists of 3 elements. **sc-suttaplex.html**, **sc-view-parallels.html** and **sc-parallels.html**.
@@ -126,10 +125,10 @@ Other elements should be self-explanatory. Just some issues that need to be fixe
 
 ## menus/sc-toolbar.html
 Issues:
-    - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows the number 20 but it should show the correct search results instead.
-    - The paper badge has the annoying habbit of occasionally disappearing for no apparent reason.
+  - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows the number 20 but it should show the correct search results instead.
+  - The paper badge has the annoying habbit of occasionally disappearing for no apparent reason.
 
 ## menus/settings-menu.html and addons/sc-dictionary-lookup.html
 Issues: 
     -The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English. A mockup dictionary is in `data/dictionaries/pi2en.json` but this is not the latest version, only for testing. The matching should be fuzzy so no direct word-to-word lookup.
-    - The repository with the basic code for this tool is https://github.com/blake-sc/palilookup but is broken.
+  - The repository with the basic code for this tool is https://github.com/blake-sc/palilookup but is broken.
