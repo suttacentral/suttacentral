@@ -16,7 +16,7 @@
 This toolbar is called from the page-selector. -->
 <!-- Issues:
     - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows the number 20 but it should show the correct search results instead.
-    - The paper badge has the annoying habbit of occasionally disappearing for no apparent reason. -->
+    - The paper badge has the annoying habbit of occasionally disappearing for no apparent reason. It seems that it calculates the position too far to the right so as to go off the screen. `this.$$('paper-badge').updatePosition();` does not seem to work to rectify this. It seems to also show this behavior here: https://github.com/PolymerElements/paper-badge/pull/12 and briefly show in the correct position but then disappear to the right.-->
 
 <dom-module id="sc-toolbar">
 <template>
@@ -101,7 +101,8 @@ a {
           <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
           <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
-          <a href$="[[discourseLink]]" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button><paper-badge class$="[[toggleDisplay]]" label="20" title="This text has 20 references"></paper-badge></a>
+          <a href$="[[discourseLink]]" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button></a>
+          <paper-badge class$="[[toggleDisplay]]" for="discoursebutton" label="20" title="This text has 20 references"></paper-badge>
 
           <!-- Settings-menu inside a dialog-box only appears on text-pages -->
           <paper-icon-button id="settingsbutton" class$="[[toggleDisplay]]" icon="settings" on-click="openDialog"></paper-icon-button>
@@ -160,12 +161,6 @@ a {
         computed: '_computeClass(suttaPath)'
        },
 
-       // Currently not used option for the old dialog-popup for discourse search results on text-pages.
-       toggleDiscourse: {
-        type: String,
-        computed: '_computeDiscourseClass(suttaPath)'        
-       },
-
        // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
        // for that specific text.
        discourseLink: {
@@ -174,13 +169,10 @@ a {
        }
       },
       _computeClass: function(suttaPath) {
-       // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
-       // This should only be visible on text-pages.
+        // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
+        // Also determines visibility of settings-menu.
+        // These should only be visible on text-pages.
         return (suttaPath) ? "" : "hidebutton";
-      },
-      _computeDiscourseClass: function(suttaPath) {
-        // Currently not used option for the old dialog-popup for discourse search results on text-pages.
-        return (suttaPath) ? "hidebutton" : "";
       },
       _computeDiscourseLink: function(suttaPath,category) {
        // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
