@@ -7,3 +7,5 @@ data/segmented_texts
 *.sqlite3
 .idea
 .cache
+client/data/
+/data

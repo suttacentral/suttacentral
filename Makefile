@@ -68,11 +68,11 @@ rm-all-volumes: rm-db-volume rm-elasticsearch-volume rm-nginx-volume rm-socket-v
 
 
 #clean docker containers
-clean-arangodb: stop-arangodb rm-arangodb rm-db-volume
-clean-flask: stop-flask rm-flask rm-socket-volume
-clean-nginx: stop-nginx rm-nginx rm-nginx-volume
-clean-elasticsearch: stop-elasticsearch rm-elasticsearch rm-elasticsearch-volume
-clean-all: clean-arangodb clean-flask clean-nginx clean-elasticsearch
+clean-arangodb: stop-arangodb rm-arangodb
+clean-flask: stop-flask rm-flask
+clean-nginx: stop-nginx rm-nginx
+clean-elasticsearch: stop-elasticsearch rm-elasticsearch
+clean-all: clean-arangodb clean-flask clean-nginx clean-elasticsearch rm-all-volumes
 
 #Open shell in container
 shell-arangodb:
@@ -103,3 +103,6 @@ reload-nginx:
 reload-uwsgi:
 	@docker exec sc-flask uwsgi --reload /tmp/uwsgi.pid
 
+# Tests.
+test:
+	@docker exec sc-flask pytest server/

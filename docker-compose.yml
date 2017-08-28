@@ -23,8 +23,6 @@ services:
     container_name: 'sc-arangodb'
     labels:
       application: 'sc-arangodb'
-    environment:
-      - ARANGO_ROOT_PASSWORD=test
     expose:
       - '8529'
     volumes:
