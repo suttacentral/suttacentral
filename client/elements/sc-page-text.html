@@ -1,3 +1,14 @@
+<!-- This element loads the plain html pages which are at the moment defined as all pages that have an author which is not "sujato" or "pali". It only loads English pages at the moment. Files are loaded from the mockup directory in `../data/texts/en/bodhi`. The paragraph numbers are loaded from `../data/paragraphtitles.json`(this file is complete and correct).
+
+The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-node.html`).
+
+Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested.
+
+Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
+
+Issues that need to be fixed:
+    - Other language suttas need to be loaded and displayed correctly as well depending on how this will work with the backend. -->
+
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="addons/sc-text-node.html">
@@ -12,9 +23,8 @@
   @apply --paper-font-display1;
 }
 </style>
-<!-- Still to do: add the correct sutta based on the author. Right now it does not check the author in the URL -->
 <iron-ajax id="ajax"
-      url="[[_computeURL(inputLanguage,suttaPath,author)]]"
+      url="[[_computeURL(suttaPath,author)]]"
       handle-as="text"
       last-response="{{suttaText}}"
       on-response="_loadedHTML"
@@ -54,6 +64,9 @@
         },
         inputLanguage: String,
         notFound: Object,
+
+        // If true, shows the paragraph numbers on the right of the text.
+        // Data is passed on from the toolbar-settings-menu.
         showParagraphs: {
           type: Boolean,
           notify: true,
@@ -65,36 +78,41 @@
         'infoToParent(suttaText)'
       ],
       _callAjax: function() {
-        if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
-        return (matches && this.author && this.author !== "sujato" && this.author !== "pali") ? this.$.ajax.generateRequest() : "";
+        // Calls the correct sutta text file. Because Polymer tends to load automatic ajax functions first from where they
+        // called before parsing the route to the correct page, the additional checks are needed and might have to be
+        // adjusted when more authors are added for the segmented text pages.
+        return (this.author && this.author !== "sujato" && this.author !== "pali") ? this.$.ajax.generateRequest() : "";
       },
-      _computeURL: function(inputLanguage,category,author) {
-        // This is a bit of a hack. The inputlanguage should not be the one to choose because you can 
-        // choose another language than the inputlanguage. Best to check with the relevant Sutta
-        // which is loaded in the sc-text-node, what authors and languages there are and use that.
-        if (!inputLanguage) {inputLanguage = "en";}
-        return `../data/texts/${inputLanguage}/${author}/${category}.html`;
+      _computeURL: function(category,author) {
+        // At the moment only texts by Bhikkhu Bodhi in English are selected so this still has to be developed further. 
+        return `../data/texts/en/${author}/${category}.html`;
       },
       _loadedHTML: function(e) {
+        // After the text file is loaded, it calls the file that contains the paragraph numbers.
         this.$.ajaxParagraphs.generateRequest();
       },
       _addParagraphs: function() {
+        // adds a class to the main container to either show or hide paragraph numbers.
         var infotext = this.shadowRoot.querySelector('#htmltextcontent');
         return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
       },
       _computeTitle: function(suttaText) {
+        // returns the division-text title from the loaded sutta text
         var matches = suttaText.match(/class="division">(.*?)</);
         return matches ? matches[1] : "";
       },
       _computeAuthor: function(suttaText) {
+        // returns the full author information from the loaded sutta text
         var matches = suttaText.match(/author="(.*?)"/);
         return matches ? matches[1] : "";
       },
       _computeMeta: function(suttaText) {
+        // returns the meta-data from the loaded sutta text
         var matches = suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
         return matches ? matches[1] : "";
       },
      _computePars: function(e) {
+      // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
       var paragraphTitles = e.detail.response;
         for (var key in paragraphTitles) {
                 var refs = this.shadowRoot.querySelectorAll('.'+key);
@@ -104,6 +122,7 @@
         if (this.showParagraphs) {this._addParagraphs()};
       },
       infoToParent: function(suttaText) {
+        // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
         this.fire('eventFromTextPage',{suttatitle:this._computeTitle(suttaText)+"—"+this._computeAuthor(suttaText),suttameta:this._computeMeta(suttaText)});
       }
     });

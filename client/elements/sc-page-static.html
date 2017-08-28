@@ -1,3 +1,5 @@
+<!-- For the static pages an additional larger toolbar is added and depending on the route it chooses one of 4 different elements through `iron-pages` that are filed in the `/static` folder. The texts are just mockup and Bhante Sujato needs to re-write them. -->
+
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="static/home-page.html">
@@ -105,6 +107,7 @@ h1{
         }
       },
       _changeView: function(category) {
+        // chooses one of four static pages/elements from the '/static'-folder.
         switch (category) {
         case '':
           this.$.pages.selected = "home";

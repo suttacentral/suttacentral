@@ -1,3 +1,19 @@
+<!-- This element loads the segmented text pages that are created in Pootle, which are at the moment defined as all pages that have an author which is "sujato" or "pali". This only works with texts translated by Sujato at the moment but will in the long run have to extend also to pali text pages where there is no translation available.
+
+This elements first loads the html markup file from `../data/texts/markup`, then the translation by Sujato from `../data/texts/en/sujato` and the pali from `../data/texts/pi` as well as the file that contains the paragraph numbers from `../data/paragraphtitles.json`. 
+
+The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-node.html`).
+
+Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested. Via this menu, also the type of view (none, side-by-side, line-by-line or popup) can be chosen to display the english and pali in relation to each other.
+The type of script used for the pali can be chosen.
+
+Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
+
+Issues that need to be fixed:
+    - Right now it only works for the segmented translations by Sujato and for the pali thereof and only for the files I have for that with is all AN, SN, MN1-123. DN is not yet in there so the DN file that is shown in the menu under DN1 is actually MN1 just to try things out but will need to be replaced.
+    - The pali lookup tool does not yet work. See remarks under `settings-menu.html`.
+    - Only sujato is recognised as an author so that might have to change. It also only works for the pali right now if a translated file for Sujato exists too. -->
+
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="addons/sc-text-node.html">
@@ -123,19 +139,28 @@ paper-tooltip {
         },
         inputLanguage: String,
         notFound: Object,
+
+        // If true, shows the paragraph numbers on the right of the text.
+        // Data is passed on from the toolbar-settings-menu.
         showParagraphs: {
           type: Boolean,
           notify: true,
           observer: '_addParagraphs'
         },
+
+        // checks if the html markup is fully loaded before other functions can start
         htmlLoaded: {
           type: Boolean,
           notify: true
         },
+
+        // View for segmented text selected in the toolbar-settings-menu.
         showViewer: {
           type: String,
           observer: 'setView'
         },
+
+        // Choice of script to use for the pali. Default is Latin.
         paliScript: {
           type: Number,
           notify: true,
@@ -147,13 +172,14 @@ paper-tooltip {
         '_callAjax(suttaPath,author)',
       ],
       _callAjax: function() {
+        // starts loading the html markup files from '../data/texts/markup'
         this.htmlLoaded = false;
-        if (this.suttaPath) {var matches = this.suttaPath.match(/\d{1,6}/)};
-        if (matches && this.author && (this.author === "sujato" || this.author === "pali")) {
+        if (this.author && (this.author === "sujato" || this.author === "pali")) {
          this.$.ajax.generateRequest();
        }
       },
       _computeURL: function(category,author) {
+        // finds the correct markup file to load.
         if (category.startsWith("dn") || category.startsWith("mn")) {
                 var pathname = category.replace(/\d{1,5}/,"");
                 return `../data/texts/markup/${pathname}/${category}.html`;
@@ -164,6 +190,8 @@ paper-tooltip {
         }
       },
       _computeTranslatedURL: function(category,author) {
+        // finds the correct translated json file to load. Only works for "sujato" as author
+        // so this might have to change when more translators use pootle.
         var authorroute = "en/sujato";
         if (category.startsWith("dn") || category.startsWith("mn")) {
             var pathname = category.replace(/\d{1,5}/,"");
@@ -175,6 +203,7 @@ paper-tooltip {
         }
       },
       _computeOriginalURL: function(category,author) {
+        // finds the correct pali json file to load.
         if (category.startsWith("dn") || category.startsWith("mn")) {
             var pathname = category.replace(/\d{1,5}/,"");
             return `../data/texts/pi/${pathname}/${category}.json`;
@@ -185,11 +214,14 @@ paper-tooltip {
         }
       },
       _loadedHTML: function(e) {
+        // when the base html markup are loaded, the json files for the translated text, 
+        // the pali text and the paragraph numbers are loaded.
         this.$.ajaxTranslated.generateRequest();
         this.$.ajaxOriginal.generateRequest();
         this.$.ajaxParagraphs.generateRequest();
       },
       _addTranslatedText: function(e) {
+        // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
         var segments = this.shadowRoot.querySelectorAll('sc-segment');
         Array.from(segments).forEach(item => item.classList.add('translated-text'));
         outputText = e.detail.response;
@@ -203,6 +235,8 @@ paper-tooltip {
         }
       },
       _addOriginalText: function(e) {
+        // creates a second 'sc-element' behind every 'sc-element' in the base markup and
+        // polulates that with the corresponding pali text segment.
         if (!this.$$('.original-text')) {
                 outputText = e.detail.response;
                 for (var key in outputText) {
@@ -220,23 +254,31 @@ paper-tooltip {
           }
         this.htmlLoaded = true;
         this.$$('#htmltextcontent').classList.add('latin-script');
+
+        // checks settings from the settings-menu and changes the view accordingly.
         this.setView(this.showViewer);
         if (this.paliScript) {this.changeScript(this.paliScript)};
       },
       _addParagraphs: function() {
+        // adds a class to the main container to either show or hide paragraph numbers.
         var infotext = this.shadowRoot.querySelector('#htmltextcontent');
         return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
       },
       _computeTitle: function(suttaText) {
+        // returns the correct title from the first segment in the translated json file.
         return suttaText[this.suttaPath+":1.1"];
       },
       _computeAuthor: function(suttaTranslatedText) {
+        // returns the full author details (only Sujato at the moment)
         return (this.author === "sujato") ? "—Bhikkhu Sujato" : "";
       },
       _computeMeta: function(suttaText) {
+        // returns the meta data. This is still a mockup because we have no meta data for Sujato and it goes from the premise that 
+        // if the author is not sujato, it must be pali.
         return (this.author === "sujato") ? "There is no Meta Area defined for Bhante Sujato's texts yet." : "<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by <span class='editor'>Blake Walshe</span> and <span class='editor'>Bhikkhu Sujato</span>.</p>";
       },
      _computePars: function(e) {
+      // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
       var paragraphTitles = e.detail.response;
         for (var key in paragraphTitles) {
                 var refs = this.shadowRoot.querySelectorAll('.'+key);
@@ -246,9 +288,13 @@ paper-tooltip {
         if (this.showParagraphs) {this._addParagraphs()};
       },
       infoToParent: function(suttaTranslatedText) {
+        // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
         this.fire('eventFromSegmentedTextPage',{suttasegtitle:this._computeTitle(suttaTranslatedText)+this._computeAuthor(suttaTranslatedText),suttasegmeta:this._computeMeta(suttaTranslatedText)});
       },
       setView: function(showViewer) {
+        // if the base html and the pali texts have been fully loaded, the setting from the 
+        // settings-menu for the relevant view is implemented by adding relevant class 
+        // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
         if (this.htmlLoaded) {
                 this._cleanCode();
                 if (this.author !== "pali") {
@@ -266,15 +312,18 @@ paper-tooltip {
                                       break;
                                     }
                 } else {
+                  // if the author is "pali", only the pali is shown and not the translated text.
                   this.$$('#htmltextcontent').classList.add('showpali');
                 }
               }
         },
         _cleanCode: function() {
+          // reset all classes and remove tooltips.
               this.$$('#htmltextcontent').classList.remove('sidebyside', 'linebyline', 'showpali');
               Array.from(this.shadowRoot.querySelectorAll("paper-tooltip")).forEach(item => item.parentNode.removeChild(item));
         },
         changeScript: function(paliScript) {
+          // if the base html and pali text are fully loaded, implements the correct script for the pali text either in tooltips or in segments.
             if (this.htmlLoaded) {
                   var segments = this.shadowRoot.querySelectorAll('.original-text');
                   var tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
@@ -308,7 +357,9 @@ paper-tooltip {
                         }
                       }
         },
-        //Minified because these are lengthy functions.
+        //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.
+        // Note that they also remove all html coding first so this might have to be changed.
+        // Fonts will also need to be implemented because it uses local fonts now.
         toSinhala: function(l) {
                 l = l.replace(/<.*?>/g, "");
                 l = l.toLowerCase() + " ";

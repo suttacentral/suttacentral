@@ -1,3 +1,20 @@
+<!-- This element displays a range of suttaplex cards or just one, depending on the route chosen. 
+It loads a (mockup) file from `../data/list`which lists the relevant Nikaya's name in pali, in various translations and the descriptions in various translations. It also lists which vaggas are part of this (with translated names and descriptions) and which suttas are part of which vagga.
+
+The various translations in the json file are shown when another site-language is chosen.
+
+For more info: https://discourse.suttacentral.net/t/suttaplex-list-pages/4762
+When a range of suttaplex cards is displayed, it also displays the title and vaggas, etc. with some text in an expander above.
+This will need to be discussed further with Sujato with regards to the new structure he wants in the navigation-drawer.
+For instance `/dn` would result in a list of all suttaplex-cards for the DN, sorted per vagga with relevant vagga titles and explanatory texts in expanders, `/dn/vagga1` would result in a list of just the first vagga, while `/dn1` would result in just one opened suttaplex-card for that specific sutta.
+
+Issues that need to be fixed:
+    - This system now works for the DN and MN but for more complex texts like the AN and SN it will not work yet. It is also not entirely clear to me how Sujato wants to do this. For instance, in the old system we had `/sn`and `/sn1` as lists but now Sujato would like it to be different and have something like `/sn`, `sn/vagga1`, `/sn/vagga1/samyutta1`, `/sn/vagga1/samyutta1/pannasa1`and `/sn/vagga1/samyutta1/pannasa1/vagga1`all as various possible list-choices with the relevant headers and explanatory texts (which do not yet exist but the system in this suttaplex element can work without that i.e. if no explanatory text exists, it simply does not display the expander either).
+    So the would mean the `/sn1` no longer exists as a choice but for instance `/sn1.1` will show the one opened suttaplex-card for that specific sutta.
+    - This element can now only distinguish between vaggas and individual suttas and defines the latter as anything with a number in it, so that is rather limited and will have to change once the new structure is clear.
+    - I have been toying with the idea to merge the two lists i.e. the list imported here that is used for the suttaplex-view and the list that is imported for the paper-tree in the navigation-drawer. Both list overlapping information so that might be an idea. 
+    - Instead of a dom-repeat of the suttaplex-cards in the array, it might be better to use an iron-list because for some of these there are thousands of cards so it might become too slow otherwise.-->
+
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
@@ -71,6 +88,7 @@ main {
           <main>
 
         <template is="dom-if" if="[[!notFound]]">
+                <!-- Shows a list of suttaplex-cards with relavant headers depending on the chosen vagga or all vaggas. -->
                 <template is="dom-if" if="[[_checkCategoryRoute(category)]]">
 
                     <section class="node">
@@ -93,6 +111,7 @@ main {
                 </template>
         </template>
 
+              <!-- Shows an open suttaplex-card if only one sutta is requested but without specifying an author (i.e. routes like '/dn1') -->
                 <template is="dom-if" if="[[!_checkCategoryRoute(category)]]">
                     <template is="dom-if" if="[[!activePath]]">
                               <div class="suttalist" id="[[category]]">
@@ -114,19 +133,27 @@ main {
           notify: true,
         },
         activePath: Boolean,
+
+        // Object with relevant language data in the loaded data depending on the chosen site language.
         languageData: {
           type: Object,
           computed: '_computeLanguage(suttaList,inputLanguage)'
         },
+
+        // if route contains a vagga, the relevant number is passed.
         vaggaNumber: {
           type: String,
           value: ""
         },
+
+        // route information
         category: {
           type: String,
           notify: true,
           observer: '_callAjax'
         },
+
+        // array of pages that are not suttaplex or suttas.
         otherPages: {
           type: Array,
           value: ["dons","people","downloads","","search","define"]
@@ -136,39 +163,54 @@ main {
         'infoToParent(suttaList,inputLanguage)'
       ],
       ready: function() {
+        // event listener that gets information from the suttaplex-card if it is opened.
         this.addEventListener('toggleParallelNote', this.elevateBox);
       },
       _checkCategoryRoute: function(category) {
+        // Right now this checks if the route url has a number and if so, concludes that this must be a sutta and 
+        // not a division so it wants to display only the suttaplex card for that sutta. This is not correct and needs 
+        // better criteria to decide if something is a sutta or a list of various suttas.
         if (category) {var matches = category.match(/\d{1,6}/)};
         return (!matches) ? true : false; 
       },
       _callAjax: function() {
+        // Same as above, it checks if the route url has a number and if so concludes it must be a sutta. This will
+        // need to change and have better criteria for checking if something is a sutta or a list.
         if (this.category) {var matches = this.category.match(/\d{1,6}/)};
         return (!matches && (this.otherPages.indexOf(this.category) == -1)) ? this.$.ajax.generateRequest() : "";
       },
       elevateBox: function(event) {
+        // when a suttaplex card is opened, this one is lifted out of the list and given a new class.
         var sutta = this.$$('#'+event.detail.url);
         return (event.detail.open === "icons:expand-more") ? sutta.classList.add('expandeditem') : sutta.classList.remove('expandeditem');
       },
       _computeURL: function(category) {
+        // returns url for the suttaplex data
         return `../../data/list/${category}.json`;
       },
       _selectVagga: function(vagga,vaggaNumber) {
+        // returns true if there either is no vaggaNumber (i.e. all vaggas are to be shown) or
+        // if the vaggaNumber is equal to the vagganumber that is current in the dom-repeat (i.e. THIS vagga is to be shown).
         return (!vaggaNumber || vaggaNumber === vagga.vagganr) ? true : false;
       },
       _checkFirstVagga: function(vagga,vaggaNumber) {
+        // returns relevant classname if the vagga is the first one to be displayed (different spacing to the top from other vaggas)
         return vaggaNumber ? ((vaggaNumber == vagga.vagganr) ? "firstvagga" : "") : "";
       },
       _computeLanguage: function(suttaList,inputLanguage) {
+        // returns the relevant language data in the loaded data depending on the chosen site language.
         return suttaList ? suttaList[inputLanguage] : "";
       },
       _computeVagganame: function(vagga,inputLanguage) {
+        // returns the relevant vagganame in the chosen site language.
         return vagga[inputLanguage].vagganame;
       },
       _computeVaggadescription: function(vagga,inputLanguage) {
+        // returns the relevant vagga text description in the chosen site language.
         return vagga[inputLanguage].description;
       },
       infoToParent: function(suttaList,inputLanguage) {
+        // When the datafile has been fully loaded, fires the relevant data for toolbar-title back to page-selector.
         if (suttaList) {
         this.fire('eventFromSuttaplexPage',{divisiontitle:this._computeLanguage(suttaList,inputLanguage)['name']+"—"+suttaList['namepi']});
         }

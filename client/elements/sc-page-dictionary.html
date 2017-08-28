@@ -1,3 +1,11 @@
+<!-- The dictionary results page shows the results found in all dictionaries of a specific word. The route `/define/dictionaryterm`shows which terms is searched for. All dictionaries are ready and in `../data/dictionaries` accept the pts-dictionary, which is still being edited by Bhante Sujato.
+
+Related items are in a drawer on the right, which can be opened from a menu-item at the top-right. 
+
+Issues that need to be fixed:
+    - Bhante Sujato to fix the pts-dictionary and Ayya Vimala to jsonify it.
+    - The related items are now loaded straight from a mockup file in `../data/dictionaries/related.json`. This will have to be changed to relevant terms. Check on the live SC site how adjacent and similar terms are calculated and create a function to do this. -->
+
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
@@ -89,8 +97,6 @@ h1{
         @apply --sc-serif-font;
 }
 
-
-
 .book-entry{
     border-bottom: 1px solid var(--paper-grey-300);
 }
@@ -100,8 +106,6 @@ paper-spinner-lite {
     left: 50%;
     top: 50px;
 }
-
-
 </style>
 
 <iron-ajax auto url="../data/dictionaries/cped.json" handle-as="json" loading="{{loadingResults}}" last-response="{{cpedResult}}"></iron-ajax>
@@ -156,6 +160,7 @@ paper-spinner-lite {
 
         </div> 
 
+<!-- The below is complete mockup. The real related and similar terms to be displayed will have to be calculated -->
         <app-drawer id="drawer" align="right" swipe-open>
                 <div class="related-terms">
                         <h3>Adjacent Terms</h3>
@@ -209,6 +214,8 @@ paper-spinner-lite {
               value: function(){return {}}
         },
         inputLanguage: String,
+
+        // checks if item is found in any of the 5 dictionaries
         cpedItem: {
           type: String,
           computed: '_checkDictionaryEntry(cpedResult, dictionaryItem)'
@@ -231,6 +238,7 @@ paper-spinner-lite {
         }
       },
       _checkDictionaryEntry: function(dictResult, dictionaryItem) {
+        // checks if item is found in this specific dictionary and returns the result.
         if (dictResult[dictionaryItem.toLowerCase()]) {
             return dictResult[dictionaryItem.toLowerCase()];
         } else if (dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)]) {
@@ -238,6 +246,7 @@ paper-spinner-lite {
         }
       },
       _toggleDrawer: function() {
+        // toggles the drawer on the right to show the related/similar items.
         this.$.drawer.toggle();
       }
     });

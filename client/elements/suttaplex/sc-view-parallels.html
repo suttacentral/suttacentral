@@ -1,3 +1,6 @@
+<!-- This is the outline of the parallels-table which is used in sc-suttaplex.html.
+This parallels-table is further populated with the additional info for each relevant parallel sutta, which is loaded from `../data/suttas` in **sc-parallels.html**. -->
+
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
@@ -80,6 +83,7 @@ tbody{
           inputUrl: String
         },
         _computeTitle: function(icon) {
+          // returns the correct title for each icon that denotes a parallel.
           switch (icon) {
             case 'swap-horiz': return 'Full Parallel';
             case 'compare-arrows': return 'Resembling Parallel';
@@ -88,21 +92,27 @@ tbody{
           }   
         },
         _computeRowspan: function(suttaurl){
+          // returns the rowspan needed for each parallel.
           return suttaurl.relations.length;
         },
         _computeFirstParallelIcon: function(suttaurl){
+          // returns the icon for the first parallel.
           return suttaurl.relations[0].icon;
         },
         _computeFirstParallelTitle: function(suttaurl){
+          // returns the title for the first parallel.
           return this._computeTitle(suttaurl.relations[0].icon);
         },
         _computeFirstParallelUrl: function(suttaurl){
+          // returns the url for the first parallel.
           return suttaurl.relations[0].url;
         },
         _computeFirstParallelId: function(suttaurl){
+          // returns the ID for the first parallel.
           return suttaurl.relations[0].id;
         },
         _computeOtherParallels: function(suttaurl){
+          // returns an array with the data for all other parallels than the first.
           var parallelarray = [];
           for (var i=1; i<suttaurl.relations.length; i++) {
             parallelarray[i-1] = suttaurl.relations[i];
