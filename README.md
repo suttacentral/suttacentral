@@ -1,4 +1,5 @@
 # SuttaCentral server and client repositry
+[![Build Status](https://travis-ci.org/suttacentral/next-sc.svg?branch=development)](https://travis-ci.org/suttacentral/next-sc)
 
 ## Running the project
 0. Install [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/)
