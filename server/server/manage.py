@@ -15,6 +15,9 @@ def migrate():
 
 @manager.command
 def list_routes():
+    """
+    Lists all avaiable routes/URLs.
+    """
     import urllib
     output = []
     for rule in app.url_map.iter_rules():
