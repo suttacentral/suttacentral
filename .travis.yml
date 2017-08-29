@@ -1,0 +1,46 @@
+sudo: required
+language: python
+python:
+  - "3.6"
+services:
+  - docker
+
+branches:
+  except:
+    - master
+    - nextontwo
+
+env:
+  # You may want to update this to whatever the latest version is, or keep it
+  # the same as your local machines. However, I have only tested it with 1.8.0+.
+  # There should be a time in the future when this is not necessary - it is
+  # explained in more detail below.
+  - DOCKER_COMPOSE_VERSION=1.15.0
+
+before_install:
+  # update is required to update the repositories to see the new packages for
+  # Docker.
+  - sudo apt-get update
+
+  # Update Docker to the newest version
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+
+  # Download the docker-compose specified in DOCKER_COMPOSE_VERSION env variable.
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+  # Setup your application stack. You may need to tweak these commands if you
+  # doing out-of-the-ordinary docker-compose builds.
+  - make build-all
+  - make prepare-tests
+  - bash wait_for_flask.sh
+
+  # You will want this for logging. If one of your containers does not build for
+  # whatever reason it's best to report that now before your tests start
+  # otherwise it can be really tricky to debug why tests are failing sometimes.
+  - docker ps
+
+script:
+  - make test

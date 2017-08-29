@@ -1,1 +1,12 @@
 version: '2'
+
+services:
+
+  sc-flask:
+    env_file:
+      - server/.dev.env
+    command: bash docker/entrypoint.test.sh
+
+  sc-arangodb:
+    env_file:
+      - ./server/.dev.env

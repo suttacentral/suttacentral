@@ -69,7 +69,7 @@ rm-db-volume:
 rm-elasticsearch-volume:
 	-@docker volume rm nextsc_elasticsearch-data
 rm-nginx-volume:
-	-@dokcer volume rm nextsc_nginx-data-volume
+	-@docker volume rm nextsc_nginx-data-volume
 rm-socket-volume:
 	-@docker volume rm nextsc_socket-volume
 rm-all-volumes: rm-db-volume rm-elasticsearch-volume rm-nginx-volume rm-socket-volume
@@ -96,7 +96,7 @@ shell-swagger:
 
 #Logs
 logs:
-	@docker-compose logs
+	@docker-compose logs -f
 logs-flask:
 	@docker logs -f sc-flask
 logs-arangodb:
@@ -124,4 +124,9 @@ test-full:
 # Run tests
 test:
 	@docker exec sc-flask pytest server/
+# Starts containers so that we are ready to run tests in them.
+prepare-tests:
+	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+	@echo "waiting for all services to fully start"
+	@bash wait_for_flask.sh
 

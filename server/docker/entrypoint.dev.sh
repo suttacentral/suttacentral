@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-pip install -r requirements.txt
 cd server
-echo "Waiting 10 seconds to make sure db is up and running"
-sleep 10
+echo "Waiting for arango to start"
+python wait_for_arango.py
 python manage.py migrate
 cd ..
+touch /tmp/.done.info
 uwsgi --ini uwsgi.ini
