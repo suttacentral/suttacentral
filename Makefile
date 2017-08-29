@@ -9,6 +9,7 @@ build-all:
 	@make build-arangodb
 	@make build-nginx
 	@make build-elasticsearch
+	@make build-swagger
 rebuild-all: clean-all build-all
 
 build-flask:
@@ -19,6 +20,8 @@ build-nginx:
 	@docker-compose build sc-nginx
 build-elasticsearch:
 	@docker-compose build sc-elasticsearch
+build-swagger:
+	@docker-compose build sc-swagger
 
 run-dev:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
@@ -31,6 +34,7 @@ CONTS-ARANGO=$(shell docker ps -a -q -f "name=sc-arangodb")
 CONTS-FLASK=$(shell docker ps -a -q -f "name=sc-flask")
 CONTS-NGINX=$(shell docker ps -a -q -f "name=sc-nginx")
 CONTS-ELASTICSEARCH=$(shell docker ps -a -q -f "name=sc-elasticsearch")
+CONTS-SWAGGER=$(shell docker ps -a -q -f "name=sc-swagger")
 
 #stop docker containers
 stop-arangodb:
@@ -41,6 +45,8 @@ stop-nginx:
 	-@docker stop $(CONTS-NGINX)
 stop-elasticsearch:
 	-@docker stop $(CONTS-ELASTICSEARCH)
+stop-swagger:
+	-@docker stop $(CONTS-SWAGGER)
 stop:
 	@docker-compose stop
 
@@ -53,6 +59,8 @@ rm-nginx:
 	-@docker rm $(CONTS-NGINX)
 rm-elasticsearch:
 	-@docker rm $(CONTS-ELASTICSEARCH)
+rm-swagger:
+	-@docker rm $(CONTS-SWAGGER)
 rm: rm-arangodb rm-flask rm-nginx rm-elasticsearch
 
 # Remove volumes
@@ -83,6 +91,8 @@ shell-nginx:
 	@docker exec -it sc-nginx bash
 shell-elasticsearch:
 	@docker exec -it sc-elasticsearch bash
+shell-swagger:
+	@docker exec -it sc-swagger
 
 #Logs
 logs:
@@ -95,6 +105,8 @@ logs-nginx:
 	@docker logs -f sc-nginx
 logs-elasticsearch:
 	@docker logs -f sc-elasticsearch
+logs-swagger:
+	@docker logs -f sc-swagger
 
 # reloads
 # Only in dev mode local changes will be used after the reload
@@ -104,5 +116,12 @@ reload-uwsgi:
 	@docker exec sc-flask uwsgi --reload /tmp/uwsgi.pid
 
 # Tests.
+# Starts containers, run tests, stop containers
+test-full:
+	@make run-dev-no-logs
+	@make test
+	@make stop
+# Run tests
 test:
 	@docker exec sc-flask pytest server/
+

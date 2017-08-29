@@ -2,22 +2,26 @@ version: '2'
 
 services:
 
-    sc-flask:
-      command: bash docker/entrypoint.dev.sh
-      env_file:
-        - server/.dev.env
-      volumes:
-        - ./server/:/opt/sc/sc-flask
-      ports:
-        - '5000:5000'
+  sc-flask:
+    command: bash docker/entrypoint.dev.sh
+    env_file:
+      - server/.dev.env
+    volumes:
+      - ./server/:/opt/sc/sc-flask
+    ports:
+      - '5000:5000'
 
-    sc-nginx:
-      volumes:
-        - ./client/:/opt/sc/static
-        - ./nginx/conf.d:/etc/nginx/conf.d
+  sc-nginx:
+    volumes:
+      - ./client/:/opt/sc/static
+      - ./nginx/conf.d:/etc/nginx/conf.d
 
-    sc-arangodb:
-      env_file:
-        - ./server/.dev.env
-      ports:
-        - '8529:8529'
+  sc-arangodb:
+    env_file:
+      - ./server/.dev.env
+    ports:
+      - '8529:8529'
+
+  sc-swagger:
+    ports:
+      - '8080:8080'

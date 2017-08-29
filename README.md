@@ -9,6 +9,13 @@
 5. run `make build-all` in order to build all images
 6. run `make run-dev` to start our services in the development mode.
 
+## Docs
+API documentation is avaiable at `/api/docs`.
+
+Swagger documentation is generated from doc strings in api methods. The docstring should use 
+[OpenAPI specification 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object) yaml format. 
+This yaml docstring will be interpreted as OpenAPI's Operation Object. 
+
 ## Docker modes
 There are different modes avaiable for our project. All of them can be run with command `make run-<env name>`
 
