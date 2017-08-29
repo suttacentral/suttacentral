@@ -1,10 +1,1 @@
 version: '2'
-
-services:
-
-    sc-flask:
-      command: bash docker/entrypoint.test.sh
-      volumes:
-        - ./server/:/opt/sc/sc-flask
-      ports:
-        - '5000:5000'
