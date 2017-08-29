@@ -3,6 +3,9 @@ from common.arangodb import get_db
 
 
 class HelloWorld(Resource):
+    """
+    Sample API endpoint.
+    """
     def get(self, name):
         """
           Send greeting
@@ -21,7 +24,6 @@ class HelloWorld(Resource):
                   hello:
                     type: string
                     description: Our greeting
-                    default: Hello World!
         """
         db = get_db()
 
