@@ -1,8 +1,11 @@
 import decorator
 from arango import ArangoClient
+import pytest
 
 from common.utils import remove_test_db
-from migrations._runner import run_migrations
+from migrations.runner import run_migrations
+from migrations.exceptions import MigrationException
+from migrations.base import Migration as BaseMigration
 
 
 def empty_arango(func):
@@ -35,4 +38,6 @@ def test_migration(app, arango: ArangoClient):
 
 
 class TestBaseMigrationClass:
-    pass
+    def test_cant_run_without_migration_id_set(self):
+        with pytest.raises(MigrationException):
+            BaseMigration()

@@ -2,22 +2,24 @@ import os
 from pathlib import Path
 import importlib
 from inspect import getmembers, isclass
-from ._base import Migration
+from .base import Migration
 from common.arangodb import get_db, get_client
 from arango.exceptions import CollectionCreateError, DatabaseCreateError
 from app import app
+
+MIGRATIONS_FOLDER = 'migrations'
 
 
 def run_migrations():
     """
     Run all migrations that hasn't been ran yet,
-    that are not in the databse in collection set in ._base.Migration class.
+    that are not in the database in collection set in ._base.Migration class.
     """
     _ensure_sutta_db_exists()
     _ensure_migration_collection_exists()
 
-    file_dir = Path(os.path.dirname(os.path.abspath(__file__)))
-    # get all .py files in this dir that do not start with '_'.
+    file_dir = Path(os.path.dirname(os.path.abspath(__file__))) / MIGRATIONS_FOLDER
+    # get all .py in migrations dir
     migration_files = sorted(file_dir.glob('[!_]*.py'), key=_get_file_id)
     for file in migration_files:
         _run_migration(file)
@@ -34,10 +36,8 @@ def _import_migration_class(file_path: Path):
     """
     # Remove .py extension from file name
     module_name = file_path.name.rstrip(file_path.suffix)
-    # get package name eg. server.migrations
-    package_name = '.'.join(__name__.split('.')[:-1])
     # Import migration file/module
-    migrations = importlib.import_module(f'.{module_name}', package_name)
+    migrations = importlib.import_module(f'migrations.{MIGRATIONS_FOLDER}.{module_name}')
     # Get class that inherits from Migration class
     migration_classes = getmembers(migrations,
                                    lambda cls: isclass(cls) and issubclass(cls, Migration))

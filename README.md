@@ -29,17 +29,13 @@ In addition `Uwsgi+Flask` expose port `5000` on local host, arangodb port `8529`
 ## Makefile
 There is a Makefile with following commands:
 * `prepare-host` - Set `vm.max_map_count` to `262144` because otherwise EalsticSearch won't work
-* `build-all` - Run all build commands:
-    * `build-flask` - Builds flask's conatiner.
-    * `build-arangodb` - Builds arangoDB's conatiner.
-    * `build-nginx` - Builds nginx's conatiner.
-    * `build-elasticsearch` - Builds ElasticSearch's conatiner.
 * `rebuild-all` - Remove all containers and volumes and rebuilds them.
 * `build-all` - Build all containers:
     * `build-flask`
     * `build-arangodb`
     * `build-nginx`
     * `build-elasticsearch`
+    * `build-swagger`
 * `run-dev` - Run containers in development mode
 * `run-dev-no-logs` - Run containers in development mode without output to the console
 * `stop` - Stops all contianers:
@@ -47,11 +43,13 @@ There is a Makefile with following commands:
     * `stop-flask`
     * `stop-nginx`
     * `stop-elasticsearch`
+    * `stop-swagger`
 * `rm` - Remove all containers:
     * `rm-arangodb`
     * `rm-flask`
     * `rm-nginx`
     * `rm-elasticsearch`
+    * `rm-swagger`
 * `rm-all-volumes` - Remove all volumes:
     * `rm-db-volume`
     * `rm-elasticsearch-volume`
@@ -62,15 +60,18 @@ There is a Makefile with following commands:
     * `clean-flask`
     * `clean-nignx`
     * `clean-elasticsearch`
+    * `clean-swagger`
 * `shell-arangodb` - Opens Bash shell in arangodb container
 * `shell-flask` - Opens Bash shell in flask container
 * `shell-nginx` - Opens Bash shell in nginx container
 * `shell-elasticsearch` - Opens Bash shell in elasticsearch container
+* `shell-swagger`
 * `logs` - Output all logs to the terminal.:
     * `logs-flask`
     * `logs-arangodb`
     * `logs-nginx`
     * `logs-elasticsearch`
+    * `logs-swagger`
 * `reload-nginx` - Reloads nginx
 * `reload-uwsgi` - Reloads uWSGI+Flask
 
@@ -100,10 +101,10 @@ Flask is hidden behind uWSGI. uWsgi communicate with nignx with unix socket. The
 
 ### Creating db migrations
 In order to create database migration in out app you have to follow those simple steps:
-1. in `server/server/migrations` folder create file with name `<migration_name>_<id of the last migration + 1>.py`
+1. in `server/server/migrations/migrations` folder create file with name `<migration_name>_<id of the last migration + 1>.py`
 2. Add this line at the top of the file: `from ._base import Migration`
 3. Create class that inherits from `Migration` class
-4. Set `migration_id` class atribute to match the file name
+4. Set `migration_id` class attribute to match the file name
 5. create some tasks. Each task should be separate method accepting only `self` as a parameter.
 6. Set tasks = `['first_task', 'second_task', ...]` in class attributes.
 7. You are good to go just remember to never change the 'migration_id'
@@ -112,7 +113,7 @@ otherwise your migrations might fail.
 For example:
 ```python
 from common.arangodb import get_db
-from ._base import Migration
+from .base import Migration
 
 
 class InitialMigration(Migration):

@@ -2,14 +2,15 @@ from datetime import datetime
 import logging
 
 from common.arangodb import get_db
+from migrations.exceptions import MigrationException
 
 
 class Migration:
     """
     Base class for migration. In order to create new migration follow those steps:
-        1. Create file named <name>_<id of the last migration +1>.py
+        1. Create file named <name>_<id of the last migration +1>.py in migrations folder.
         2. Add this line at the top of the file:
-            'from ._base import Migration'
+            'from migrations.base import Migration'
         3. Create class that inherits from Migration class
         4. Set migration_id class atribute to match the file name
         5. create some tasks. Each task should be separate method
@@ -27,9 +28,9 @@ class Migration:
         Migration base class. Run all methods that starts with.
         """
         if self.migration_id is None:
-            raise Exception('Every migrations has to have `migration_id`')
+            raise MigrationException('Every migrations has to have `migration_id`')
         if self.tasks is None:
-            raise Exception('Every migrations has to have `tasks` list')
+            raise MigrationException('Every migrations has to have `tasks` list')
 
     def run(self):
         """

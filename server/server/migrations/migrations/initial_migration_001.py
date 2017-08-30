@@ -1,5 +1,5 @@
 from common.arangodb import get_db
-from ._base import Migration
+from migrations.base import Migration
 
 
 class InitialMigration(Migration):
