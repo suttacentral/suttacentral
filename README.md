@@ -113,7 +113,7 @@ otherwise your migrations might fail.
 For example:
 ```python
 from common.arangodb import get_db
-from .base import Migration
+from migrations.base import Migration
 
 
 class InitialMigration(Migration):

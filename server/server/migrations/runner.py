@@ -63,8 +63,7 @@ def _ensure_migration_collection_exists():
     """
     db = get_db()
     try:
-        migrations = db.create_collection(Migration.migrations_collection, user_keys=True)
-        migrations.add_hash_index(['name'], unique=True)
+        db.create_collection(Migration.migrations_collection, user_keys=True)
     except CollectionCreateError as e:
         if '[ERR 1207] duplicate name' not in str(e):
             raise e

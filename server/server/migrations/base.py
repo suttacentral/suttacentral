@@ -12,7 +12,7 @@ class Migration:
         2. Add this line at the top of the file:
             'from migrations.base import Migration'
         3. Create class that inherits from Migration class
-        4. Set migration_id class atribute to match the file name
+        4. Set migration_id class attribute to match the file name
         5. create some tasks. Each task should be separate method
          accepting only 'self' as a parameter.
         6. Set tasks = ['first_task', 'second_task', ...] in class attributes.

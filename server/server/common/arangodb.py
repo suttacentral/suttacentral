@@ -7,7 +7,7 @@ from arango.database import Database
 from flask import current_app, g
 
 
-class ArangoDB(object):
+class ArangoDB:
     def __init__(self, app=None):
         self.app = app
 
@@ -23,7 +23,7 @@ class ArangoDB(object):
         """
         client = self._get_client_from_g_or_none()
         if client is None:
-            client = g._databse_client = self.connect()
+            client = g._database_client = self.connect()
         return client
 
     @property
@@ -35,9 +35,9 @@ class ArangoDB(object):
         db = self._get_db_from_g_or_none()
         if db is None:
             if isinstance(current_app.config['ARANGO_DB'], dict):
-                db = g._databse = self.client.db(**current_app.config['ARANGO_DB'])
+                db = g._database = self.client.db(**current_app.config['ARANGO_DB'])
             else:
-                db = g._databse = self.client.db(name=current_app.config['ARANGO_DB'])
+                db = g._database = self.client.db(name=current_app.config['ARANGO_DB'])
         return db
 
     @staticmethod
@@ -52,12 +52,12 @@ class ArangoDB(object):
         """
         Returns db object if present in g object otherwise returns None
         """
-        return getattr(g, '_databse_client', None)
+        return getattr(g, '_database_client', None)
 
 
 def get_client() -> ArangoClient:
     """
-    Returns client obejct for current db session and creats one if not presenet.
+    Returns client object for current db session and creates one if not present.
     """
     client = ArangoDB._get_client_from_g_or_none()
     if client is None:
