@@ -3,7 +3,7 @@ from ._base import Migration
 
 
 class InitialMigration(Migration):
-    migration_id = 'inital_migration_001'
+    migration_id = 'initial_migration_001'
     tasks = ['create_collections']
 
     def create_collections(self):

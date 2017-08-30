@@ -11,7 +11,7 @@
 6. run `make run-dev` to start our services in the development mode.
 
 ## Docs
-API documentation is avaiable at `/api/docs`.
+API documentation is available at `/api/docs`.
 
 Swagger documentation is generated from doc strings in api methods. The docstring should use 
 [OpenAPI specification 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object) yaml format. 
@@ -116,7 +116,7 @@ from ._base import Migration
 
 
 class InitialMigration(Migration):
-    migration_id = 'inital_migration_001'
+    migration_id = 'initial_migration_001'
     tasks = ['create_collections']
 
     def create_collections(self):
@@ -132,6 +132,11 @@ class InitialMigration(Migration):
             to_collections=['suttas']
         )
 ```
+
+## Flask manage tasks
+1. `python manage.py migrate` - Run migrations
+2. `python manage.py list_routes` - Lists all available routes/URLs.
+
 
 # Client
 

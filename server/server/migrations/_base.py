@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 
 from common.arangodb import get_db
 
@@ -36,7 +37,7 @@ class Migration:
         """
         db = get_db()
         if not db.collection(self.migrations_collection).has(self.migration_id):
-            print(f'  * Running {self.migration_id}')
+            logging.info(f'  * Running {self.migration_id}')
             for task in self.tasks:
                 getattr(self, task)()
             self.end_migrations()

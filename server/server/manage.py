@@ -16,7 +16,7 @@ def migrate():
 @manager.command
 def list_routes():
     """
-    Lists all avaiable routes/URLs.
+    Lists all available routes/URLs.
     """
     import urllib
     output = []

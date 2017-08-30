@@ -1,7 +1,4 @@
 sudo: required
-language: python
-python:
-  - "3.6"
 services:
   - docker
 
@@ -31,8 +28,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
-  # Setup your application stack. You may need to tweak these commands if you
-  # doing out-of-the-ordinary docker-compose builds.
+  # Build and start your containers.
   - make build-all
   - make prepare-tests
   - bash wait_for_flask.sh
@@ -43,4 +39,5 @@ before_install:
   - docker ps
 
 script:
+  # Run our tests
   - make test

@@ -72,5 +72,5 @@ swagger_template = {
         "http",
         "https"
     ],
-    "operationId": "getmyData"
+    "operationId": "GetData"
 }

@@ -9,6 +9,8 @@ services:
     container_name: 'sc-flask'
     labels:
       application: 'sc-flask'
+    env_file:
+      - server/env/.base.env
     environment:
       - FLASK_APP=server/app.py
     volumes:
@@ -21,6 +23,8 @@ services:
   sc-arangodb:
     image: arangodb/arangodb
     container_name: 'sc-arangodb'
+    env_file:
+      - server/env/.base.env
     labels:
       application: 'sc-arangodb'
     expose:

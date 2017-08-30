@@ -44,7 +44,6 @@ def _import_migration_class(file_path: Path):
     # filter out base class from results and get class object
     migration_class = [migration_cls for migration_cls in migration_classes if
                        migration_cls[0] != 'Migration'][0][1]
-    print(migration_class)
     return migration_class
 
 
