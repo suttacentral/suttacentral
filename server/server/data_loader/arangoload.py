@@ -333,6 +333,13 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
 
 
 def run(force=False):
+    """Runs data load.
+
+    It will take data from nextdata repository and populate the database with it.
+
+    Args:
+        force: Whether or not force clean db setup.
+    """
     conn = ArangoClient(**current_app.config.get('ARANGO_CLIENT'))
 
     data_dir = current_app.config.get('BASE_DIR') / 'nextdata'
