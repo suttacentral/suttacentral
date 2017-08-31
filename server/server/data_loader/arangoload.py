@@ -10,8 +10,7 @@ from flask import current_app
 from . import textdata
 
 
-def setup_database(conn):
-    db_name = current_app.config.get('ARANGO_DB')
+def setup_database(conn, db_name):
     if db_name in conn.databases():
         conn.delete_database(db_name)
 
@@ -24,7 +23,7 @@ def setup_database(conn):
         ('sect', False),
         ('root', False),
         ('root_edges', True),
-        ('relationships', True),
+        ('relationship', True),
         ('html_text', False),
         ('unicode_points', False),
         ('mtimes', False),
@@ -103,7 +102,7 @@ def process_root_files(docs, edges, mapping, root_files):
             mapping[path] = entry
 
             uid = path.parts[-1]
-            if unique_counter[uid] > 1:
+            if unique_counter[uid] > 1 or uid.startswith('vagga'):
                 # uid is the end of path, unless it is non-unique in which case
                 # combine with the second to last part of path
                 uid = '-'.join(entry['_path'].split('/')[-2:])
@@ -245,11 +244,18 @@ def print_once(msg, antispam):
     antispam.add(msg)
 
 
-def generate_parallel_edges(data_dir, db):
-    # generate parallel edges
+def generate_relationship_edges(change_tracker, relationship_dir, db):
+    relationship_files = list(relationship_dir.glob('*.json'))
+    
+    if not change_tracker.any_file_has_changed(relationship_files):
+        return
+
     print('Generating Parallels')
-    with (data_dir / 'relationships' / 'parallels.json').open('r', encoding='utf8') as f:
-        parallels_data = json.load(f)
+    relationship_data = []
+    for relationship_file in relationship_files:
+        with relationship_file.open('r', encoding='utf8') as f:
+            relationship_data.extend(json.load(f))
+    
     all_uids = set(db.aql.execute('''
     FOR doc IN root
         SORT doc.num
@@ -257,14 +263,16 @@ def generate_parallel_edges(data_dir, db):
     '''))
     antispam = set()
     ll_edges = []
-    for entry in parallels_data:
+    for entry in relationship_data:
         remarks = entry.pop('remarks', None)
         assert len(entry) == 1
         for r_type, uids in entry.items():
             pass
         full = [uid for uid in uids if not uid.startswith('~')]
         partial = [uid for uid in uids if uid.startswith('~')]
-
+        
+        # TODO: directionality has to be taken into account
+        # for some relationship kinds
         for from_uid in full:
             true_from_uids = get_true_uids(from_uid, all_uids)
             if not true_from_uids:
@@ -290,8 +298,8 @@ def generate_parallel_edges(data_dir, db):
                                 'type': r_type,
                                 'partial': is_partial,
                             })
-    db['relationships'].truncate()
-    db['relationships'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
+    db['relationship'].truncate()
+    db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
 
 
 def load_html_texts(change_tracker, data_dir, db, html_dir):
@@ -312,20 +320,26 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
                                  force=False)
 
 
-def run():
+def run(force=False):
     conn = ArangoClient(**current_app.config.get('ARANGO_CLIENT'))
 
     data_dir = current_app.config.get('BASE_DIR') / 'nextdata'
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
-
-    db = setup_database(conn)
+    relationship_dir = data_dir / 'relationship'
+    
+    
+    db_name = current_app.config.get('ARANGO_DB')
+    if force or db_name not in conn.databases():
+        db = setup_database(conn, db_name)
+    else:
+        db = conn.database(db_name)
 
     change_tracker = ChangeTracker(data_dir, db)
 
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
-    generate_parallel_edges(data_dir, db)
+    generate_relationship_edges(change_tracker, relationship_dir, db)
 
     load_html_texts(change_tracker, data_dir, db, html_dir)
 

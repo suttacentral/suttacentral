@@ -10,3 +10,4 @@ Flask-Cors==3.0.3
 decorator==4.1.2
 regex==2017.7.28
 lxml==3.8.0
+cssselect==1.0.1
