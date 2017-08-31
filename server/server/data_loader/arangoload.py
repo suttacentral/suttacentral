@@ -220,11 +220,18 @@ def print_once(msg, antispam):
     antispam.add(msg)
 
 
-def generate_parallel_edges(data_dir, db):
-    # generate parallel edges
+def generate_relationship_edges(change_tracker, relationship_dir, db):
+    relationship_files = list(relationship_dir.glob('*.json'))
+    
+    if not change_tracker.any_file_has_changed(relationship_files):
+        return
+
     print('Generating Parallels')
-    with (data_dir / 'relationship' / 'parallels.json').open('r', encoding='utf8') as f:
-        parallels_data = json.load(f)
+    relationship_data = []
+    for relationship_file in relationship_files:
+        with relationship_file.open('r', encoding='utf8') as f:
+            relationship_data.extend(json.load(f))
+    
     all_uids = set(db.aql.execute('''
     FOR doc IN root
         SORT doc.num
@@ -232,14 +239,16 @@ def generate_parallel_edges(data_dir, db):
     '''))
     antispam = set()
     ll_edges = []
-    for entry in parallels_data:
+    for entry in relationship_data:
         remarks = entry.pop('remarks', None)
         assert len(entry) == 1
         for r_type, uids in entry.items():
             pass
         full = [uid for uid in uids if not uid.startswith('~')]
         partial = [uid for uid in uids if uid.startswith('~')]
-
+        
+        # TODO: directionality has to be taken into account
+        # for some relationship kinds
         for from_uid in full:
             true_from_uids = get_true_uids(from_uid, all_uids)
             if not true_from_uids:
@@ -293,14 +302,16 @@ def run():
     data_dir = current_app.config.get('BASE_DIR') / 'nextdata'
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
-
+    relationship_dir = data_dir / 'relationship'
+    
+    
     db = setup_database(conn)
 
     change_tracker = ChangeTracker(data_dir, db)
 
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
-    generate_parallel_edges(data_dir, db)
+    generate_relationship_edges(change_tracker, relationship_dir, db)
 
     load_html_texts(change_tracker, data_dir, db, html_dir)
 
