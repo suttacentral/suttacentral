@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 
 class Config:
@@ -17,6 +18,8 @@ class Config:
         'password': os.getenv('ARANGO_ROOT_PASSWORD', None)
 
     }
+
+    BASE_DIR = Path('../')
 
 
 class DevelopmentConfig(Config):

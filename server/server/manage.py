@@ -33,5 +33,12 @@ def list_routes():
     for line in sorted(output):
         print(line)
 
+
+@manager.command
+def load_data():
+    from data_loader.arangoload import run
+    run()
+
+
 if __name__ == '__main__':
     manager.run()

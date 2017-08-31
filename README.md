@@ -10,6 +10,13 @@
 5. run `make build-all` in order to build all images
 6. run `make run-dev` to start our services in the development mode.
 
+## Loading the data
+In order to load the data to the db:
+0. If you don't have the data folder yet
+ * run `cd server && git clone git@github.com:suttacentral/nextdata.git`
+ * Rebuild sc-flasks container `make rebuild-flask`
+1. ensure server is up and run `make load_data`
+
 ## Docs
 API documentation is available at `/api/docs`.
 
@@ -18,7 +25,7 @@ Swagger documentation is generated from doc strings in api methods. The docstrin
 This yaml docstring will be interpreted as OpenAPI's Operation Object. 
 
 ## Docker modes
-There are different modes avaiable for our project. All of them can be run with command `make run-<env name>`
+There are different modes available for our project. All of them can be run with command `make run-<env name>`
 
 
 #### Development
@@ -28,14 +35,19 @@ In addition `Uwsgi+Flask` expose port `5000` on local host, arangodb port `8529`
 
 ## Makefile
 There is a Makefile with following commands:
-* `prepare-host` - Set `vm.max_map_count` to `262144` because otherwise EalsticSearch won't work
-* `rebuild-all` - Remove all containers and volumes and rebuilds them.
+* `prepare-host` - Set `vm.max_map_count` to `262144` because otherwise ElasticSearch won't work
 * `build-all` - Build all containers:
     * `build-flask`
     * `build-arangodb`
     * `build-nginx`
     * `build-elasticsearch`
     * `build-swagger`
+* `rebuild-all` - Remove all containers and volumes and rebuilds them.
+    * `rebuild-flask`
+    * `rebuild-arangodb`
+    * `rebuild-nginx`
+    * `rebuild-elasticsearch`
+    * `rebuild-swagger`
 * `run-dev` - Run containers in development mode
 * `run-dev-no-logs` - Run containers in development mode without output to the console
 * `stop` - Stops all contianers:
@@ -74,6 +86,7 @@ There is a Makefile with following commands:
     * `logs-swagger`
 * `reload-nginx` - Reloads nginx
 * `reload-uwsgi` - Reloads uWSGI+Flask
+* `load_data` - Loads data from `server/nextdata` folder to the db
 
 
 ## Working with ArangoDB

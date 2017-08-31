@@ -9,3 +9,4 @@ data/segmented_texts
 .cache
 client/data/
 /data
+/server/nextdata/

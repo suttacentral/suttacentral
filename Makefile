@@ -10,8 +10,6 @@ build-all:
 	@make build-nginx
 	@make build-elasticsearch
 	@make build-swagger
-rebuild-all: clean-all build-all
-
 build-flask:
 	@docker-compose build sc-flask
 build-arangodb:
@@ -22,6 +20,13 @@ build-elasticsearch:
 	@docker-compose build sc-elasticsearch
 build-swagger:
 	@docker-compose build sc-swagger
+
+rebuild-all: clean-all build-all
+rebuild-flask: clean-flask build-flask
+rebuild-arangodb: clean-arangodb build-arangodb
+rebuild-nginx: clean-nginx build-nginx
+rebuild-elasticsearch: clean-elasitcsearch build-elasticsearch
+rebuild-swagger: clean-swagger build-swagger
 
 run-dev:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
@@ -123,10 +128,14 @@ test-full:
 	@make stop
 # Run tests
 test:
-	@docker exec sc-flask pytest server/
+	@docker exec -t sc-flask pytest server/
 # Starts containers so that we are ready to run tests in them.
 prepare-tests:
 	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	@echo "waiting for all services to fully start"
 	@bash wait_for_flask.sh
+
+
+load_data:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
 
