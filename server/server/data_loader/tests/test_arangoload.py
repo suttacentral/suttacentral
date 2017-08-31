@@ -15,7 +15,7 @@ def test_setup_db_no_db(app: Flask, arango: ArangoClient):
     Checks if database is properly created
     """
     db_name = app.config.get('ARANGO_DB')
-    arangoload.setup_database(arango)
+    arangoload.setup_database(arango, db_name)
     assert db_name in arango.databases()
 
 
