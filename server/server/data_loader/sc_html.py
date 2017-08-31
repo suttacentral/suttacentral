@@ -263,7 +263,7 @@ class HtHtmlElementMixin:
                 if e}
 
     def __bool__(self):
-        """ Objects are always truthy, as in future lxml
+        """ Objects are always truth, as in future lxml
 
         Use 'len' to discover if contains children.
         """

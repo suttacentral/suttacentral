@@ -1,6 +1,7 @@
 import json
 import pathlib
 from collections import Counter
+from typing import Set, List
 
 import regex
 from arango import ArangoClient
@@ -174,7 +175,31 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
         db['root_edges'].import_bulk(edges)
 
 
-def get_true_uids(uid, all_uids):
+def get_true_uids(uid: str, all_uids: Set[str]) -> List[str]:
+    """Extract list of indexes out of our range notation.
+
+    It also makes sure that all the extracted UIDs exists in list of all available UIDs q.
+
+    Args:
+        uid: Uids range we want to expand eg. sn12-14
+        all_uids: All available UIDs
+
+    Returns:
+        List od all valid UIDs in given range.
+
+    Examples:
+        >>> get_true_uids('sn12-14', {'sn12', 'sn13', 'sn14', 'fh12.33'})
+        >>> ['sn12', 'sn13', 'sn14']
+
+        >>> get_true_uids('fh12.33-12.34', {'fh12.33', 'fh12.34', 'ss222'})
+        >>> ['fh12.33', 'fh12.34']
+
+        >>> get_true_uids('sn19.19-sn19.21', {'sn19.19', 'sn19.20', 'agh54'})
+        >>> ['sn19.19', 'sn19.20']
+
+        >>> get_true_uids('dhsk12-dhsk13', {'dhsk12', 'dhsk13'})
+        >>> ['dhsk12', 'dhsk13']
+    """
     uids = []
     seen = set()
     uid = uid.lstrip('~').split('#')[0]
