@@ -35,9 +35,9 @@ def list_routes():
 
 
 @manager.command
-def load_data():
+def load_data(force=False):
     from data_loader.arangoload import run
-    run()
+    run(force)
 
 
 if __name__ == '__main__':

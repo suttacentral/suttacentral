@@ -9,8 +9,7 @@ from flask import current_app
 from . import textdata
 
 
-def setup_database(conn):
-    db_name = current_app.config.get('ARANGO_DB')
+def setup_database(conn, db_name):
     if db_name in conn.databases():
         conn.delete_database(db_name)
 
@@ -296,7 +295,7 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
                                  force=False)
 
 
-def run():
+def run(force=False):
     conn = ArangoClient(**current_app.config.get('ARANGO_CLIENT'))
 
     data_dir = current_app.config.get('BASE_DIR') / 'nextdata'
@@ -305,7 +304,11 @@ def run():
     relationship_dir = data_dir / 'relationship'
     
     
-    db = setup_database(conn)
+    db_name = current_app.config.get('ARANGO_DB')
+    if force or db_name not in conn.databases():
+        db = setup_database(conn, db_name)
+    else:
+        db = conn.database(db_name)
 
     change_tracker = ChangeTracker(data_dir, db)
 
