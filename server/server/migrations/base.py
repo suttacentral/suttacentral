@@ -1,5 +1,5 @@
-from datetime import datetime
 import logging
+from datetime import datetime
 
 from common.arangodb import get_db
 from migrations.exceptions import MigrationException

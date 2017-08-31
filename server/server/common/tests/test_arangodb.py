@@ -1,10 +1,9 @@
 import pytest
-
-from common.utils import app_context
-from common import arangodb
-
 from arango import ArangoClient
 from arango.database import Database
+
+from common import arangodb
+from common.utils import app_context
 
 
 @app_context

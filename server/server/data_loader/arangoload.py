@@ -1,11 +1,10 @@
 import json
-import regex
 import pathlib
-
 from collections import Counter
 
-from flask import current_app
+import regex
 from arango import ArangoClient
+from flask import current_app
 
 from . import textdata
 

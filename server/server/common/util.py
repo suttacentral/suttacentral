@@ -1,24 +1,24 @@
 import errno
 import fcntl
+import hashlib
+import itertools
 import os
 import pathlib
+import pickle
 import textwrap
 import time
-import regex
-import hashlib
-import pickle
-
-from pathlib import Path
 from collections import deque
-import itertools
 from contextlib import contextmanager
 from datetime import datetime
+from pathlib import Path
+from typing import Callable, Optional, Union
 
-from typing import Union, Callable, Optional
+import regex
+
+import settings.config as config
 
 HASH = hashlib._hashlib.HASH
 
-import settings.config as config
 
 
 @contextmanager

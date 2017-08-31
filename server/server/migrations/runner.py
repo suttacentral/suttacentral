@@ -1,11 +1,14 @@
-import os
-from pathlib import Path
 import importlib
+import os
 from inspect import getmembers, isclass
-from .base import Migration
-from common.arangodb import get_db, get_client
+from pathlib import Path
+
 from arango.exceptions import CollectionCreateError, DatabaseCreateError
+
 from app import app
+from common.arangodb import get_client, get_db
+
+from .base import Migration
 
 MIGRATIONS_FOLDER = 'migrations'
 

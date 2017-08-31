@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from migrations import runner, base
+from common.arangodb import get_client, get_db
 from common.utils import app_context, empty_arango
-from common.arangodb import get_db, get_client
+from migrations import base, runner
 
 
 @app_context

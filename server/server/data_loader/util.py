@@ -1,5 +1,6 @@
-import regex
 import itertools
+
+import regex
 
 
 def numericsortkey(string, _split=regex.compile(r'(\d+)').split):

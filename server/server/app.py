@@ -1,14 +1,13 @@
 import os
 from typing import Tuple
 
-from flask import Flask, Blueprint
-from flask_restful import Api
 from flasgger import Swagger
+from flask import Blueprint, Flask
 from flask_cors import CORS
+from flask_restful import Api
 
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
-
 from suttas.views import HelloWorld
 
 

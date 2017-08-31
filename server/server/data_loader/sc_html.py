@@ -10,11 +10,13 @@ which now returns the html code of the element.
 
 """
 
-import lxml.html as _html
-from lxml.html import defs
-import lxml.etree as _etree
-import regex
 import itertools
+
+import lxml.etree as _etree
+import lxml.html as _html
+import regex
+from lxml.html import defs
+
 
 defs.html5_tags = frozenset({'section', 'article', 'hgroup'})
 
@@ -107,7 +109,7 @@ class HtHtmlElementMixin:
         """
 
         other.extend(self)
-        other.text = self.text;
+        other.text = self.text
         self.text = None
         self.append(other)
 

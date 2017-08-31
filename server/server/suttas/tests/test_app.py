@@ -1,4 +1,4 @@
-from app import api, HelloWorld
+from app import HelloWorld, api
 
 
 def test_hello(client):

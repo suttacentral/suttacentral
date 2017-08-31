@@ -1,8 +1,9 @@
+import os
+import time
+
 from arango import ArangoClient
 from arango.exceptions import DatabaseListError
-import os
 from requests.exceptions import ConnectionError
-import time
 
 
 def connect():

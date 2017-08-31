@@ -10,4 +10,3 @@ class InitialMigration(Migration):
         Just a sample task.
         """
         pass
-

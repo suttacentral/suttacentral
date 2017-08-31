@@ -1,9 +1,9 @@
 import json
-import regex
 import logging
 
-from . import util
-from . import sc_html
+import regex
+
+from . import sc_html, util
 
 logger = logging.getLogger(__name__)
 

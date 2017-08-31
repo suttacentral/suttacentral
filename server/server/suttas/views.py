@@ -1,4 +1,5 @@
 from flask_restful import Resource
+
 from common.arangodb import get_db
 
 

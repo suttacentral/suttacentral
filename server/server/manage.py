@@ -1,6 +1,6 @@
-from app import app
 from flask_script import Manager
 
+from app import app
 from migrations.runner import run_migrations
 
 manager = Manager(app)
