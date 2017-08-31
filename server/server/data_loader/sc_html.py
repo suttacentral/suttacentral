@@ -5,7 +5,7 @@ Makes lxml.html easier to use in the python3 ecosystem and also
 correctly handles text/tail transformations for some common
 manipulations.
 
-The only HtmlElement method which is overidden by this module is __str__,
+The only HtmlElement method which is overridden by this module is __str__,
 which now returns the html code of the element.
 
 """
@@ -13,7 +13,7 @@ which now returns the html code of the element.
 import lxml.html as _html
 from lxml.html import defs
 import lxml.etree as _etree
-import regex as _regex
+import regex
 import itertools
 
 defs.html5_tags = frozenset({'section', 'article', 'hgroup'})
@@ -30,7 +30,7 @@ class CssSelectorFailed(Exception):
 
 
 class HtHtmlElementMixin:
-    """ Adds methods primarly to aid with proper handling of text/tail.
+    """ Adds methods primarily to aid with proper handling of text/tail.
 
     Also adds some convenience methods.
 
@@ -92,7 +92,7 @@ class HtHtmlElementMixin:
         """
 
         self.addprevious(other)
-        other.tail = self.tail;
+        other.tail = self.tail
         self.tail = None
         other.append(self)
 
@@ -164,7 +164,7 @@ class HtHtmlElementMixin:
     def convert_bad_tags(self):
         """ Convert invalid html tags into div/span class="tag"
 
-        Uses a simple heurestic to decide whether it should be a span
+        Uses a simple heuristic to decide whether it should be a span
         or div, an element which contains block level elements will
         be a div, otherwise it will be span.
 
@@ -219,11 +219,11 @@ class HtHtmlElementMixin:
         """ Return a string with prettified whitespace """
         string = _html.tostring(self, pretty_print=True, **kwargs).decode()
         extra_tags = ('article', 'section', 'hgroup')
-        string = _regex.sub(r'(<(?:{})[^>]*>)'.format('|'.join(extra_tags)), r'\n\1\n', string)
-        string = _regex.sub(r'(</(?:{})>)'.format('|'.join(extra_tags)), r'\n\1\n', string)
+        string = regex.sub(r'(<(?:{})[^>]*>)'.format('|'.join(extra_tags)), r'\n\1\n', string)
+        string = regex.sub(r'(</(?:{})>)'.format('|'.join(extra_tags)), r'\n\1\n', string)
         string = string.replace('<br>', '<br>\n')
         string = string.replace('\n\n', '\n')
-        string = _regex.sub(r'\n +', '\n', string)
+        string = regex.sub(r'\n +', '\n', string)
         return string
 
     @property
@@ -342,7 +342,7 @@ def parse(filename, encoding='utf8'):
         elif b'\x00<' in start:
             parser = get_parser("UTF-16BE")
         else:
-            m = _regex.search(r'charset=(["\']?)([\w-]+)\1', start)
+            m = regex.search(r'charset=(["\']?)([\w-]+)\1', start)
             parser = get_parser(m[2])
     else:
         parser = get_parser(None)
