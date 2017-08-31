@@ -1,7 +1,7 @@
 import json
 import pathlib
 from collections import Counter
-from typing import Set, List
+from typing import Set, List, Any
 
 import regex
 from arango import ArangoClient
@@ -237,7 +237,19 @@ def get_true_uids(uid: str, all_uids: Set[str]) -> List[str]:
     return uids
 
 
-def print_once(msg, antispam):
+def print_once(msg: Any, antispam: Set):
+    """Print msg if it is not in antispam.
+
+    Args:
+        msg:  Massage we want to print
+        antispam: Set of messages we've already printed.
+
+    Examples:
+        >>> print_once('test', {'something else'})
+        >>> test
+        >>> print_once('test', {'test', 'something else'})
+        >>>
+    """
     if msg in antispam:
         return
     print(msg)
@@ -327,8 +339,7 @@ def run(force=False):
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
-    
-    
+
     db_name = current_app.config.get('ARANGO_DB')
     if force or db_name not in conn.databases():
         db = setup_database(conn, db_name)
