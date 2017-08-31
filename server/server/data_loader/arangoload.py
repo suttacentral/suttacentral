@@ -23,7 +23,7 @@ def setup_database(conn):
         ('sect', False),
         ('root', False),
         ('root_edges', True),
-        ('relationships', True),
+        ('relationship', True),
         ('html_text', False),
         ('unicode_points', False),
         ('mtimes', False),
@@ -102,7 +102,7 @@ def process_root_files(docs, edges, mapping, root_files):
             mapping[path] = entry
 
             uid = path.parts[-1]
-            if unique_counter[uid] > 1:
+            if unique_counter[uid] > 1 or uid.startswith('vagga'):
                 # uid is the end of path, unless it is non-unique in which case
                 # combine with the second to last part of path
                 uid = '-'.join(entry['_path'].split('/')[-2:])
@@ -223,7 +223,7 @@ def print_once(msg, antispam):
 def generate_parallel_edges(data_dir, db):
     # generate parallel edges
     print('Generating Parallels')
-    with (data_dir / 'relationships' / 'parallels.json').open('r', encoding='utf8') as f:
+    with (data_dir / 'relationship' / 'parallels.json').open('r', encoding='utf8') as f:
         parallels_data = json.load(f)
     all_uids = set(db.aql.execute('''
     FOR doc IN root
@@ -265,8 +265,8 @@ def generate_parallel_edges(data_dir, db):
                                 'type': r_type,
                                 'partial': is_partial,
                             })
-    db['relationships'].truncate()
-    db['relationships'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
+    db['relationship'].truncate()
+    db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
 
 
 def load_html_texts(change_tracker, data_dir, db, html_dir):
