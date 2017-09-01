@@ -36,6 +36,11 @@ def list_routes():
 
 @manager.command
 def load_data(force=False):
+    """
+    Loads data from the data repo to database.
+    Args:
+        force: Whether or not force clean db setup.
+    """
     from data_loader.arangoload import run
     run(force)
 

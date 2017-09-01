@@ -121,20 +121,14 @@ reload-uwsgi:
 	@docker exec sc-flask uwsgi --reload /tmp/uwsgi.pid
 
 # Tests.
-# Starts containers, run tests, stop containers
-test-full:
-	@make run-dev-no-logs
-	@make test
-	@make stop
-# Run tests
-test:
-	@docker exec -t sc-flask pytest server/
 # Starts containers so that we are ready to run tests in them.
 prepare-tests:
 	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	@echo "waiting for all services to fully start"
 	@bash wait_for_flask.sh
-
+# Run tests
+test:
+	@docker exec -t sc-flask pytest server/
 
 load_data:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"

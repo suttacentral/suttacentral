@@ -15,7 +15,7 @@ MIGRATIONS_FOLDER = 'migrations'
 
 def run_migrations():
     """
-    Run all migrations that hasn't been ran yet,
+    Runs all migrations that hasn't been ran yet,
     that are not in the database in collection set in ._base.Migration class.
     """
     _ensure_sutta_db_exists()
@@ -34,8 +34,13 @@ def _run_migration(file_path: Path):
 
 
 def _import_migration_class(file_path: Path):
-    """
-    :return: Class object of Migrate subclass
+    """Imports subclass of Migration class from given file
+
+    Args:
+        file_path: Path to file from which we want to import.
+
+    Returns:
+         Class object of Migrate subclass
     """
     # Remove .py extension from file name
     module_name = file_path.name.rstrip(file_path.suffix)
@@ -51,10 +56,17 @@ def _import_migration_class(file_path: Path):
 
 
 def _get_file_id(file_name: Path) -> int:
-    """
-    Extract and returns file id. eg:
-    >>>_get_file_id(Path('initial_migration_0001.py'))
-    >>> 1
+    """Extract file id from file path
+
+    Args:
+        file_name: Path to the file from which we want to get the id
+
+    Returns:
+        File's id
+
+    Examples:
+        >>>_get_file_id(Path('initial_migration_0001.py'))
+        >>> 1
     """
     name = file_name.name.rstrip(file_name.suffix)
     return int(name.split('_')[-1])

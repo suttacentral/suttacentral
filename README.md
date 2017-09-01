@@ -86,6 +86,8 @@ There is a Makefile with following commands:
     * `logs-swagger`
 * `reload-nginx` - Reloads nginx
 * `reload-uwsgi` - Reloads uWSGI+Flask
+* `prepare-tests` - Starts containers in test mode and wait for start-ups to finnish
+* `test` - Run tests inside containers.
 * `load_data` - Loads data from `server/nextdata` folder to the db
 
 

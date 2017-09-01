@@ -1,8 +1,12 @@
 import json
+import logging
 import pathlib
+from pathlib import Path
 from collections import Counter
+from typing import Set, List, Any
 
 import regex
+from git import Repo, InvalidGitRepositoryError
 from arango import ArangoClient
 from flask import current_app
 
@@ -90,6 +94,47 @@ class ChangeTracker:
              self.changed_or_new.items()], on_duplicate="replace")
 
 
+def update_data(repo: Repo):
+    """Updates given git repo.
+
+    Args:
+        repo: Git data repo.
+    """
+    logging.info(f'Updating repo in {repo.working_dir}')
+    repo.remotes.origin.pull()
+
+
+def get_data(data_dir: Path) -> Repo:
+    """Clones git data repo to data_dir
+
+    Args:
+        data_dir: Path to data dir.
+
+    Returns:
+        Cloned repo.
+    """
+    repo_addr = current_app.config.get('DATA_REPO')
+    logging.info(f'Cloning the repo: {repo_addr}')
+    return Repo.clone_from(repo_addr, data_dir)
+
+
+def collect_data(data_dir: Path):
+    """Ensure data is in data dir and update it if needed and if it's git repo.
+
+    Args:
+        data_dir: Path to data directory.
+    """
+    if not data_dir.exists():
+        get_data(data_dir)
+    else:
+        try:
+            repo = Repo(data_dir)
+        except InvalidGitRepositoryError:
+            pass
+        else:
+            update_data(repo)
+
+
 def process_root_files(docs, edges, mapping, root_files):
     for root_file in root_files:
         with root_file.open('r', encoding='utf8') as f:
@@ -173,7 +218,31 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
         db['root_edges'].import_bulk(edges)
 
 
-def get_true_uids(uid, all_uids):
+def get_true_uids(uid: str, all_uids: Set[str]) -> List[str]:
+    """Extract list of indexes out of our range notation.
+
+    It also makes sure that all the extracted UIDs exists in list of all available UIDs q.
+
+    Args:
+        uid: Uids range we want to expand eg. sn12-14
+        all_uids: All available UIDs
+
+    Returns:
+        List od all valid UIDs in given range.
+
+    Examples:
+        >>> get_true_uids('sn12-14', {'sn12', 'sn13', 'sn14', 'fh12.33'})
+        >>> ['sn12', 'sn13', 'sn14']
+
+        >>> get_true_uids('fh12.33-12.34', {'fh12.33', 'fh12.34', 'ss222'})
+        >>> ['fh12.33', 'fh12.34']
+
+        >>> get_true_uids('sn19.19-sn19.21', {'sn19.19', 'sn19.20', 'agh54'})
+        >>> ['sn19.19', 'sn19.20']
+
+        >>> get_true_uids('dhsk12-dhsk13', {'dhsk12', 'dhsk13'})
+        >>> ['dhsk12', 'dhsk13']
+    """
     uids = []
     seen = set()
     uid = uid.lstrip('~').split('#')[0]
@@ -212,7 +281,19 @@ def get_true_uids(uid, all_uids):
     return uids
 
 
-def print_once(msg, antispam):
+def print_once(msg: Any, antispam: Set):
+    """Print msg if it is not in antispam.
+
+    Args:
+        msg:  Massage we want to print
+        antispam: Set of messages we've already printed.
+
+    Examples:
+        >>> print_once('test', {'something else'})
+        >>> test
+        >>> print_once('test', {'test', 'something else'})
+        >>>
+    """
     if msg in antispam:
         return
     print(msg)
@@ -296,19 +377,27 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
 
 
 def run(force=False):
+    """Runs data load.
+
+    It will take data from nextdata repository and populate the database with it.
+
+    Args:
+        force: Whether or not force clean db setup.
+    """
     conn = ArangoClient(**current_app.config.get('ARANGO_CLIENT'))
 
     data_dir = current_app.config.get('BASE_DIR') / 'nextdata'
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
-    
-    
+
     db_name = current_app.config.get('ARANGO_DB')
     if force or db_name not in conn.databases():
         db = setup_database(conn, db_name)
     else:
         db = conn.database(db_name)
+
+    collect_data(data_dir)
 
     change_tracker = ChangeTracker(data_dir, db)
 
