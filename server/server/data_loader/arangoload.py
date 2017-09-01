@@ -11,6 +11,7 @@ from arango import ArangoClient
 from flask import current_app
 
 from . import textdata
+from . import po
 
 
 def setup_database(conn, db_name):
@@ -74,13 +75,13 @@ class ChangeTracker:
         print(f'{len(changed_or_new)} files to be processed')
         print(f'{len(deleted)} files to be deleted')
 
-    def file_has_changed(self, path):
+    def is_file_new_or_changed(self, path):
         if str(path.relative_to(self.base_dir)) in self.changed_or_new:
             return True
         return False
 
-    def any_file_has_changed(self, files):
-        return any(self.file_has_changed(file) for file in files)
+    def is_any_file_new_or_changed(self, files):
+        return any(self.is_file_new_or_changed(file) for file in files)
 
     def update_mtimes(self):
         # Update mtimes in arangodb
@@ -199,7 +200,7 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     mapping = {}
     root_files = sorted((structure_dir / 'division').glob('**/*.json'))
     category_files = sorted(structure_dir.glob('*.json'))
-    if change_tracker.any_file_has_changed(root_files + category_files):
+    if change_tracker.is_any_file_new_or_changed(root_files + category_files):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
         process_root_files(docs, edges, mapping, root_files)
@@ -303,7 +304,7 @@ def print_once(msg: Any, antispam: Set):
 def generate_relationship_edges(change_tracker, relationship_dir, db):
     relationship_files = list(relationship_dir.glob('*.json'))
     
-    if not change_tracker.any_file_has_changed(relationship_files):
+    if not change_tracker.is_any_file_new_or_changed(relationship_files):
         return
 
     print('Generating Parallels')
@@ -375,7 +376,6 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
                                  files_to_process=change_tracker.changed_or_new,
                                  force=False)
 
-
 def run(force=False):
     """Runs data load.
 
@@ -390,6 +390,7 @@ def run(force=False):
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
+    po_dir = data_dir / 'po_text'
 
     db_name = current_app.config.get('ARANGO_DB')
     if force or db_name not in conn.databases():
@@ -406,5 +407,7 @@ def run(force=False):
     generate_relationship_edges(change_tracker, relationship_dir, db)
 
     load_html_texts(change_tracker, data_dir, db, html_dir)
+    
+    po.load_po_texts(change_tracker, po_dir, db)
 
     change_tracker.update_mtimes()
