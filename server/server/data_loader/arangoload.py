@@ -1,9 +1,12 @@
 import json
+import logging
 import pathlib
+from pathlib import Path
 from collections import Counter
 from typing import Set, List, Any
 
 import regex
+from git import Repo, InvalidGitRepositoryError
 from arango import ArangoClient
 from flask import current_app
 
@@ -89,6 +92,47 @@ class ChangeTracker:
         self.db['mtimes'].import_bulk(
             [{'path': k, 'mtime': v, '_key': k.replace('/', '_')} for k, v in
              self.changed_or_new.items()], on_duplicate="replace")
+
+
+def update_data(repo: Repo):
+    """Updates given git repo.
+
+    Args:
+        repo: Git data repo.
+    """
+    logging.info(f'Updating repo in {repo.working_dir}')
+    repo.remotes.origin.pull()
+
+
+def get_data(data_dir: Path) -> Repo:
+    """Clones git data repo to data_dir
+
+    Args:
+        data_dir: Path to data dir.
+
+    Returns:
+        Cloned repo.
+    """
+    repo_addr = current_app.config.get('DATA_REPO')
+    logging.info(f'Cloning the repo: {repo_addr}')
+    return Repo.clone_from(repo_addr, data_dir)
+
+
+def collect_data(data_dir: Path):
+    """Ensure data is in data dir and update it if needed and if it's git repo.
+
+    Args:
+        data_dir: Path to data directory.
+    """
+    if not data_dir.exists():
+        get_data(data_dir)
+    else:
+        try:
+            repo = Repo(data_dir)
+        except InvalidGitRepositoryError:
+            pass
+        else:
+            update_data(repo)
 
 
 def process_root_files(docs, edges, mapping, root_files):
@@ -352,6 +396,8 @@ def run(force=False):
         db = setup_database(conn, db_name)
     else:
         db = conn.database(db_name)
+
+    collect_data(data_dir)
 
     change_tracker = ChangeTracker(data_dir, db)
 
