@@ -17,7 +17,6 @@ def remove_test_db():
 def app_context(func: Callable):
     """
     Run function in flask's app context.
-
     """
     def wrapper(func: Callable, *args, **kwargs):
         with my_app.app_context():

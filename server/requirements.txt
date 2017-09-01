@@ -12,4 +12,5 @@ regex==2017.7.28
 lxml==3.8.0
 cssselect==1.0.1
 GitPython==2.1.5
+Sphinx==1.6.3
 polib==1.0.8

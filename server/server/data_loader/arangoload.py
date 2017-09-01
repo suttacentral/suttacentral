@@ -102,6 +102,9 @@ def update_data(repo: Repo):
         repo: Git data repo.
     """
     logging.info(f'Updating repo in {repo.working_dir}')
+    if 'origin' not in [r.name for r in repo.remotes]:
+        repo.create_remote('origin', current_app.config.get('DATA_REPO'))
+    repo.remotes.origin.fetch('+refs/heads/*:refs/remotes/origin/*')
     repo.remotes.origin.pull()
 
 
