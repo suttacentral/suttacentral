@@ -49,7 +49,9 @@ services:
     command: bash entry-point.sh
 
   sc-elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.2
+    build:
+      context: ./elasticsearch/
+      dockerfile: Dockerfile-elasticsearch
     container_name: 'sc-elasticsearch'
     labels:
       application: 'sc-elasticsearch'
