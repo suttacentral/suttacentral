@@ -1,4 +1,4 @@
-Flask==0.12.1
+Flask==0.12.2
 Flask-RESTful==0.3.6
 uWSGI==2.0.15
 Flask-Script==2.0.5
@@ -13,4 +13,5 @@ lxml==3.8.0
 cssselect==1.0.1
 GitPython==2.1.5
 Sphinx==1.6.3
+Faker==0.8.1
 polib==1.0.8
