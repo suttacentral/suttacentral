@@ -95,7 +95,7 @@ class ChangeTracker:
              self.changed_or_new.items()], on_duplicate="replace")
 
 
-def update_data(repo: Repo):
+def update_data(repo: Repo, repo_name: str):
     """Updates given git repo.
 
     Args:
@@ -103,40 +103,39 @@ def update_data(repo: Repo):
     """
     logging.info(f'Updating repo in {repo.working_dir}')
     if 'origin' not in [r.name for r in repo.remotes]:
-        repo.create_remote('origin', current_app.config.get('DATA_REPO'))
+        repo.create_remote('origin', repo_addr)
     repo.remotes.origin.fetch('+refs/heads/*:refs/remotes/origin/*')
     repo.remotes.origin.pull()
 
 
-def get_data(data_dir: Path) -> Repo:
-    """Clones git data repo to data_dir
+def get_data(repo_dir: Path, repo_addr: str) -> Repo:
+    """Clones git data repo to repo_dir
 
     Args:
-        data_dir: Path to data dir.
+        repo_dir: Path to data dir.
 
     Returns:
         Cloned repo.
     """
-    repo_addr = current_app.config.get('DATA_REPO')
     logging.info(f'Cloning the repo: {repo_addr}')
-    return Repo.clone_from(repo_addr, data_dir)
+    return Repo.clone_from(repo_addr, repo_dir)
 
 
-def collect_data(data_dir: Path):
+def collect_data(repo_dir: Path, repo_addr: str):
     """Ensure data is in data dir and update it if needed and if it's git repo.
 
     Args:
-        data_dir: Path to data directory.
+        repo_dir: Path to data directory.
     """
-    if not data_dir.exists():
-        get_data(data_dir)
+    if not repo_dir.exists():
+        get_data(repo_dir, repo_addr)
     else:
         try:
-            repo = Repo(data_dir)
+            repo = Repo(repo_dir)
         except InvalidGitRepositoryError:
             pass
         else:
-            update_data(repo)
+            update_data(repo, repo_addr)
 
 
 def process_root_files(docs, edges, mapping, root_files):
@@ -401,7 +400,8 @@ def run(force=False):
     else:
         db = conn.database(db_name)
 
-    collect_data(data_dir)
+    collect_data(data_dir, current_app.config.get('DATA_REPO'))
+    collect_data(po_dir, current_app.config.get('PO_REPO'))
 
     change_tracker = ChangeTracker(data_dir, db)
 
