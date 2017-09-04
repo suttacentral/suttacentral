@@ -29,6 +29,8 @@ def setup_database(conn, db_name):
         ('root_edges', True),
         ('relationship', True),
         ('html_text', False),
+        ('po_markup', False),
+        ('po_strings', False),
         ('unicode_points', False),
         ('mtimes', False),
     ]
@@ -409,8 +411,8 @@ def run(force=False):
 
     generate_relationship_edges(change_tracker, relationship_dir, db)
 
-    load_html_texts(change_tracker, data_dir, db, html_dir)
-    
     po.load_po_texts(change_tracker, po_dir, db)
+
+    load_html_texts(change_tracker, data_dir, db, html_dir)
 
     change_tracker.update_mtimes()

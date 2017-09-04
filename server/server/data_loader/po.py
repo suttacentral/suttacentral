@@ -1,14 +1,16 @@
 import json
 import regex
+import logging
 import subprocess
 from collections import OrderedDict
 
+
 import polib
 
-from .util import humansortkey
+from .util import humansortkey, iter_sub_dirs
 
 def remove_leading_zeros(string):
-    return re.sub(r'([A-Za-z])0+', r'\1', string)
+    return regex.sub(r'([A-Za-z])0+', r'\1', string)
 
 def clean_html(string):
     out = regex.sub(r'<html>.*<body>', r'', string, flags=regex.DOTALL).replace('\n', ' ')
@@ -17,6 +19,19 @@ def clean_html(string):
     out = out.replace('</blockquote>', '</p>\n')
     return out
     
+
+def load_info(po_file):
+    """Info files contain metadata about the project"""
+    po = polib.pofile(po_file)
+    
+    data = {entry.msgid: entry.msgstr for entry in po}
+    
+    return {
+        "author": data['translation_author_uid'],
+        "author_blurb": data['translation_author_blurb'],
+        "root_author": data['root_author_uid'],
+        "root_author_blurb": data['root_author_blurb'],
+    }
 
 def extract_strings_from_po_file(po_file):
     markup = []
@@ -36,67 +51,148 @@ def extract_strings_from_po_file(po_file):
             
     markup = clean_html(''.join(markup))
     
-    yield {
-        "uid": po_file.stem,
+    return {
         "markup": markup,
         "msgids": msgids,
         "msgstrs": msgstrs
     }
+    
+def process_dir(change_tracker, po_dir, info):
+    """Process po files in folder
+    
+    Note that this function operates recursively, a file called "info.po"
+    will apply data to all files in the same folder, or in subfolders,
+    but not of course parent or sibling folders.
+    
+    """
+    
+    info_file = next(po_dir.glob('info.po'), None)
+
+    # don't modify passed object
+    info = info.copy()
+    
+    if info_file:
+        local_info = load_info(info_file)
+        info.update(local_info)
+    
+    po_files = (f for f in po_dir.glob('*.po') if f.stem != 'info')
+    for po_file in po_files:
+        if change_tracker and not change_tracker.is_file_new_or_changed(po_file):
+            continue
+            
+        data = extract_strings_from_po_file(po_file)
+        uid = remove_leading_zeros(po_file.stem)
+        
+        # This doc is for root strings
+        yield {
+            "uid": uid,
+            "markup_uid": uid,
+            "lang": info['root_lang'],
+            "author": info['root_author'],
+            "author_blurb": {
+                info['tr_lang']: info['root_author_blurb']
+                # Note there might be blurbs in other languages
+                # also root language blurb probably wont exist
+                # because that would be i.e. in pali!
+            },
+            "strings": data['msgids']
+        }
+        
+        # This doc is for the translated strings
+        yield {
+            "uid": uid,
+            "markup_uid": uid,
+            "lang": info['tr_lang'],
+            "author": info['author'],
+            "author_blurb": {
+                info['tr_lang']: info['author_blurb']
+            },
+            "strings": data['msgstrs']
+        }
+        
+        # this doc is for the markup
+        yield {
+            "uid": uid,
+            "markup": data['markup']
+        }
+    
+    for sub_folder in po_dir.glob('*/'):
+        yield from process_dir(change_tracker, sub_folder, info=info)
+
 
 def load_po_texts(change_tracker, po_dir, db):
+    """ Load strings and markup from po files into database
+    
+    each strings entry looks like this:
+
+    {
+        "path": "en/dn2/sujato",
+        "lang": "en",
+        "uid": "dn2",
+        "author": "sujato",
+        "author_blurb": {
+            "en": "Awesome translation by Sujato"
+        },
+        "markup" "dn2",
+        "strings": [...]
+    }
+    
+    while a markup entry looks like this:
+    
+    {
+        "uid": "dn2",
+        "markup": "..."
+    }
+    """
+
     print('Loading PO texts')
+    import time
+    start=time.time()
     
-    # Handle deleted po files
-    for po_file in change_tracker.deleted:
-        if po_file.suffix != '.po':
-            continue
-        author_uid, tr_language, root_language = po_file.relative_to(po_dir).parts[:3]
-        uid = po_file.stem
+    # It's a little hard to properly manage deleted po files,
+    # as it happens deletion is really rare: so if a deletion 
+    # does occur we just nuke and rebuild.
+    
+    deleted_po = [f for f in change_tracker.deleted if f.suffix == '.po']
+    if deleted_po:
+        change_tracker = None
+        db['po_markup'].truncate()
+        db['po_strings'].truncate()
+    
+    # an example path to a po file might be:
+    # /dn/en/dn01 or /an/en/an01/an01.001.po
+    
+    # We expect the project dir name to be the division name
+    for division_dir in iter_sub_dirs(po_dir):
+        root_lang = db['root'][division_dir.stem]['language']
         
-        self.db.aql.execute('''
-            FOR entry IN po_text
-                FILTER entry.uid == @uid
-                FILTER entry.tr_language == @tr_language
-                FILTER entry.root_language == @root_language
-                FILTER entry.author == @author_uid
-                REMOVE entry FROM po_text
-            ''', bind_vars={
-                    "author_uid": author_uid,
-                    "tr_language": tr_language,
-                    "root_language": root_language,
-                    "uid": uid
-                }
-            )
-    
-    # Add new or changed po files
-    for author_dir in po_dir.iterdir():
-        if not author_dir.is_dir():
+        if not root_lang:
+            logging.error(f'Division {division_dir.stem} not recognized')
             continue
         
-        for tr_language_dir in author_dir.iterdir():
-            if not tr_language_dir.is_dir():
-                continue
-        
-            for root_language_dir in tr_language_dir.iterdir():
-                if not root_language_dir.is_dir():
-                    continue
-                
-                params = {
-                    "author_uid": author_dir.stem,
-                    "tr_language": tr_language_dir.stem,
-                    "root_language": root_language_dir.stem,
-                }
-                
-                po_data = []
-                
-                po_files = sorted(source_dir.glob('**/*.po'), key=humansortkey)
-                
-                for po_file in po_files:
-                    if not change_tracker.is_file_new_or_changed(po_file):
-                        continue
-                    doc = extract_strings_from_po_file(po_file)
-                    doc.update(params)
-                    po_data.append(doc)
-                
-                self.db['po_text'].import_bulk(po_data, on_duplicate="replace")
+        for tr_lang_dir in iter_sub_dirs(division_dir):
+            tr_lang = tr_lang_dir.stem
+
+            docs = process_dir(
+                    change_tracker,
+                    tr_lang_dir, 
+                    info={
+                        'tr_lang': tr_lang,
+                        'root_lang': root_lang
+                    })
+            
+            for i, doc in enumerate(docs):
+                if 'markup' in doc:
+                    doc['_key'] = f"{doc['uid']}_markup"
+                    db.collection('po_markup').insert(doc)
+                else:
+                    doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author"]}'
+                    db.collection('po_strings').insert(doc)
+
+    
+    print(f'Loading took {time.time()-start} seconds')
+                    
+                    
+
+            
                 
