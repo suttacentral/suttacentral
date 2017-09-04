@@ -8,7 +8,7 @@ from flask import Flask
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(myPath)
 
-from .app import app as my_app  # isort:skip
+from app import app as my_app  # isort:skip
 from common.arangodb import get_client  # isort:skip
 from common.utils import remove_test_db  # isort:skip
 from migrations.runner import run_migrations  # isort:skip

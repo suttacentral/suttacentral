@@ -3,6 +3,7 @@ from typing import Callable
 
 from app import app as my_app
 from common.arangodb import get_client
+from common.models import Language, ModelList
 from migrations.runner import run_migrations
 
 
@@ -42,3 +43,13 @@ def empty_arango(func: Callable):
         return output
 
     return decorator.decorator(remove_existing_database, func)
+
+
+def generate_languages(amount=5):
+    languages = ModelList()
+
+    for _ in range(amount):
+        language = Language.generate()
+        languages.append(language)
+
+    return languages

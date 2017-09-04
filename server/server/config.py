@@ -8,9 +8,15 @@ class Config:
     TESTING = False
     CSRF_ENABLED = True
     SECRET = os.getenv('SECRET')
+    ENVIRONMENT = os.getenv('ENVIRONMENT')
 
     # ARANGO
-    ARANGO_DB = os.getenv('ARANGO_DB_NAME')
+    ARANGO_BASE_DB = ARANGO_DB = os.getenv('ARANGO_BASE_DB_NAME')
+    try:
+        ARANGO_DB = os.environ['ARANGO_DB_NAME']
+    except KeyError:
+        pass
+
     ARANGO_CLIENT = {
         'host': os.getenv('ARANGO_HOST'),
         'port': int(os.getenv('ARANGO_PORT')),

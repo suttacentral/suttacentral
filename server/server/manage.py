@@ -35,7 +35,7 @@ def list_routes():
 
 
 @manager.command
-def load_data(force=False):
+def load_data(force=True):
     """
     Loads data from the data repo to database.
     Args:
