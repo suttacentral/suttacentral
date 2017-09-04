@@ -9,6 +9,7 @@
 4. run `make prepare-host` in order to make some small adjustment on the host machine so that we can run elasticsearch
 5. run `make build-all` in order to build all images
 6. run `make run-dev` to start our services in the development mode.
+7. in order to load the data run `make load_data`. It might take a while.
 
 ## Loading the data
 In order to load the data to the db:
@@ -50,7 +51,7 @@ There is a Makefile with following commands:
     * `rebuild-swagger`
 * `run-dev` - Run containers in development mode
 * `run-dev-no-logs` - Run containers in development mode without output to the console
-* `stop` - Stops all contianers:
+* `stop` - Stops all containers:
     * `stop-arangodb`
     * `stop-flask`
     * `stop-nginx`
