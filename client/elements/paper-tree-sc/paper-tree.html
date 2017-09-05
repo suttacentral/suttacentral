@@ -3,11 +3,11 @@
 
 <dom-module id="paper-tree">
 
-    <template>
-        <div>
-            <paper-tree-node id="root" data="[[data]]"></paper-tree-node>
-        </div>
-    </template>
+  <template>
+    <div>
+      <paper-tree-node id="root" data="[[data]]"></paper-tree-node>
+    </div>
+  </template>
 
 </dom-module>
 
@@ -54,7 +54,7 @@
         /**
          * Called whenever the data is changed to notify the lower nodes.
          */
-        _dataChanged: function()  {
+        _dataChanged: function() {
             this.$.root.data = this.data;
         },
 
@@ -64,7 +64,7 @@
          * @param {object} e An event object.
          */
         _selectNode: function(e) {
-            if(this.selected) {
+            if (this.selected) {
                 this.toggleClass("selected", false, this.selected);
             }
 

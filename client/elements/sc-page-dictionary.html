@@ -1,254 +1,286 @@
-<!-- The dictionary results page shows the results found in all dictionaries of a specific word. The route `/define/dictionaryterm`shows which terms is searched for. All dictionaries are ready and in `../data/dictionaries` accept the pts-dictionary, which is still being edited by Bhante Sujato.
-
-Related items are in a drawer on the right, which can be opened from a menu-item at the top-right. 
-
-Issues that need to be fixed:
-    - Bhante Sujato to fix the pts-dictionary and Ayya Vimala to jsonify it.
-    - The related items are now loaded straight from a mockup file in `../data/dictionaries/related.json`. This will have to be changed to relevant terms. Check on the live SC site how adjacent and similar terms are calculated and create a function to do this. -->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
+
 <link rel="import" href="../styles/sc-dict-styles.html">
 
+<!--
+The dictionary results page shows the results found in all dictionaries of a specific word.
+The route `/define/dictionaryterm`shows which terms is searched for. All dictionaries are ready and
+in `../data/dictionaries` accept the pts-dictionary, which is still being edited by Bhante Sujato.
+
+Related items are in a drawer on the right, which can be opened from a menu-item at the top-right.
+
+Issues that need to be fixed:
+    - Bhante Sujato to fix the pts-dictionary and Ayya Vimala to jsonify it.
+    - The related items are now loaded straight from a mockup file in `../data/dictionaries/related.json`.
+    This will have to be changed to relevant terms. Check on the live SC site how adjacent and similar terms
+    are calculated and create a function to do this.
+-->
 <dom-module id="sc-page-dictionary">
-<template>
-<style is="custom-style" include="sc-dict-styles">
-.divisioncontent, .related-terms {
-  @apply --sc-sans-font;
-  padding: 72px 0;
-}
+  <template>
+    <style is="custom-style" include="sc-dict-styles">
+      .divisioncontent, .related-terms {
+        @apply --sc-sans-font;
+        padding: 72px 0;
+      }
 
-main {
-    max-width:720px;
-    margin:0 auto;
-}
-.results-head{
-    display: flex;
-    justify-content:  space-between ;
-    padding: 0;
-}
-h1{
-    @apply --paper-font-display1;
-    display: inline-block;
-    margin: 0 0 0 -2px;
-    color: var(--secondary-text-color);
-}
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
 
-.result-term{
-    font-weight: bold;
-    color: var(--sc-green-600);
-    @apply --sc-serif-font;
-}
+      .results-head {
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+      }
 
-.termsbutton {
-  color: var(--disabled-text-color);
-}
+      h1 {
+        @apply --paper-font-display1;
+        display: inline-block;
+        margin: 0 0 0 -2px;
+        color: var(--secondary-text-color);
+      }
 
-    .related-terms {
+      .result-term {
+        font-weight: bold;
+        color: var(--sc-green-600);
+        @apply --sc-serif-font;
+      }
+
+      .termsbutton {
+        color: var(--disabled-text-color);
+      }
+
+      .related-terms {
         text-align: left;
         margin: 0px 16px 48px 0px;
-    }
-    
-   .related-terms ul {
+      }
+
+      .related-terms ul {
 
         margin: 8px 0 0 0;
         display: block;
         list-style: none;
-        padding:0;
-    }
-    
-    .related-terms h3{
+        padding: 0;
+      }
+
+      .related-terms h3 {
         @apply --paper-font-body1;
         color: var(--secondary-text-color);
         margin: 24px 0 0 16px;
         font-weight: bold;
-    }
-.entries {
-  padding:  0px;
+      }
 
-}
+      .entries {
+        padding: 0px;
 
-.related-terms li{
-    @apply --paper-font-body1;
-}
-.related-terms a {
-    text-decoration: none;
-    color: var(--paper-green-700);
-    padding: 4px 0px 4px 16px;
-    margin: 4px 0;
-    display: inline-block;
-}
-.related-terms em{
-    color:var(--primary-text-color);
-}
+      }
 
-.source{
-    @apply --paper-font-body1;
+      .related-terms li {
+        @apply --paper-font-body1;
+      }
+
+      .related-terms a {
+        text-decoration: none;
+        color: var(--paper-green-700);
+        padding: 4px 0px 4px 16px;
+        margin: 4px 0;
+        display: inline-block;
+      }
+
+      .related-terms em {
+        color: var(--primary-text-color);
+      }
+
+      .source {
+        @apply --paper-font-body1;
         color: var(--secondary-text-color);
-        margin:8px 0 16px;
-        font-weight:bold;
+        margin: 8px 0 16px;
+        font-weight: bold;
         @apply --sc-serif-font;
-}
+      }
 
-.book-entry{
-    border-bottom: 1px solid var(--paper-grey-300);
-}
+      .book-entry {
+        border-bottom: 1px solid var(--paper-grey-300);
+      }
 
-paper-spinner-lite {
-    --paper-spinner-color: var(--sc-gold-500);
-    left: 50%;
-    top: 50px;
-}
-</style>
+      paper-spinner-lite {
+        --paper-spinner-color: var(--sc-gold-500);
+        left: 50%;
+        top: 50px;
+      }
+    </style>
 
-<iron-ajax auto url="../data/dictionaries/cped.json" handle-as="json" loading="{{loadingResults}}" last-response="{{cpedResult}}"></iron-ajax>
-<iron-ajax auto url="../data/dictionaries/dhammika.json" handle-as="json" loading="{{loadingResults}}" last-response="{{dhammikaResult}}"></iron-ajax>
-<iron-ajax auto url="../data/dictionaries/ncped.json" handle-as="json" loading="{{loadingResults}}" last-response="{{ncpedResult}}"></iron-ajax>
-<iron-ajax auto url="../data/dictionaries/dppn.json" handle-as="json" loading="{{loadingResults}}" last-response="{{dppnResult}}"></iron-ajax>
-<iron-ajax auto url="../data/dictionaries/pts.json" handle-as="json" loading="{{loadingResults}}" last-response="{{ptsResult}}"></iron-ajax>
-<iron-ajax auto url="../data/dictionaries/related.json" handle-as="json" loading="{{loadingResults}}" last-response="{{relatedItems}}"></iron-ajax>
+    <iron-ajax auto url="../data/dictionaries/cped.json" handle-as="json" loading="{{loadingResults}}"
+               last-response="{{cpedResult}}"></iron-ajax>
+    <iron-ajax auto url="../data/dictionaries/dhammika.json" handle-as="json" loading="{{loadingResults}}"
+               last-response="{{dhammikaResult}}"></iron-ajax>
+    <iron-ajax auto url="../data/dictionaries/ncped.json" handle-as="json" loading="{{loadingResults}}"
+               last-response="{{ncpedResult}}"></iron-ajax>
+    <iron-ajax auto url="../data/dictionaries/dppn.json" handle-as="json" loading="{{loadingResults}}"
+               last-response="{{dppnResult}}"></iron-ajax>
+    <iron-ajax auto url="../data/dictionaries/pts.json" handle-as="json" loading="{{loadingResults}}"
+               last-response="{{ptsResult}}"></iron-ajax>
+    <iron-ajax auto url="../data/dictionaries/related.json" handle-as="json" loading="{{loadingResults}}"
+               last-response="{{relatedItems}}"></iron-ajax>
 
     <div class="loadingIndicator">
       <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
     </div>
 
-<div class="divisioncontent">
-    <main>
+    <div class="divisioncontent">
+      <main>
         <div class="results-head">
-                    <h1><span class="result-description">Definitions for</span> <span class="result-term">[[dictionaryItem]]</span> </h1>
-                    <span class="termsbutton" title ="Related terms"><paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button></span>
+          <h1><span class="result-description">Definitions for</span> <span
+              class="result-term">[[dictionaryItem]]</span></h1>
+          <span class="termsbutton" title="Related terms"><paper-icon-button icon="menu"
+                                                                             on-click="_toggleDrawer"></paper-icon-button></span>
         </div>
 
         <div class="entries">
-                <template is="dom-if" if="[[ncpedItem]]">
-                        <div class="book-entry">
-                                <div class="source">New Concise Pali English Dictionary</div>
-                                <div class="ncped-entry" inner-h-t-m-l="[[ncpedItem.text]]"></div>
-                        </div>
-                </template>        
-                <template is="dom-if" if="[[cpedItem]]">
-                        <div class="book-entry">
-                                <div class="source">Concise Pali English Dictionary</div>
-                                <div class="cped-entry" inner-h-t-m-l="[[cpedItem.text]]"></div>
-                        </div>
-                </template>
-                <template is="dom-if" if="[[dhammikaItem]]">
-                        <div class="book-entry">
-                                <div class="source">Nature and the Environment in Early Buddhism by S. Dhammika</div>
-                                <div class="dhammika-entry" inner-h-t-m-l="[[dhammikaItem.text]]"></div>
-                        </div>
-                </template>
-                <template is="dom-if" if="[[dppnItem]]">
-                        <div class="book-entry">
-                                <div class="source">Pali Proper Names</div>
-                                <div class="dppn-entry" inner-h-t-m-l="[[dppnItem.text]]"></div>
-                        </div>
-                </template>
-                <template is="dom-if" if="[[ptsItem]]">
-                        <div class="book-entry">
-                                <div class="source">PTS Pali English Dictionary</div>
-                                <div class="pts-entry" inner-h-t-m-l="[[ptsItem.text]]"></div>
-                        </div>
-                </template>
+          <template is="dom-if" if="[[ncpedItem]]">
+            <div class="book-entry">
+              <div class="source">New Concise Pali English Dictionary</div>
+              <div class="ncped-entry" inner-h-t-m-l="[[ncpedItem.text]]"></div>
+            </div>
+          </template>
+          <template is="dom-if" if="[[cpedItem]]">
+            <div class="book-entry">
+              <div class="source">Concise Pali English Dictionary</div>
+              <div class="cped-entry" inner-h-t-m-l="[[cpedItem.text]]"></div>
+            </div>
+          </template>
+          <template is="dom-if" if="[[dhammikaItem]]">
+            <div class="book-entry">
+              <div class="source">Nature and the Environment in Early Buddhism by S. Dhammika</div>
+              <div class="dhammika-entry" inner-h-t-m-l="[[dhammikaItem.text]]"></div>
+            </div>
+          </template>
+          <template is="dom-if" if="[[dppnItem]]">
+            <div class="book-entry">
+              <div class="source">Pali Proper Names</div>
+              <div class="dppn-entry" inner-h-t-m-l="[[dppnItem.text]]"></div>
+            </div>
+          </template>
+          <template is="dom-if" if="[[ptsItem]]">
+            <div class="book-entry">
+              <div class="source">PTS Pali English Dictionary</div>
+              <div class="pts-entry" inner-h-t-m-l="[[ptsItem.text]]"></div>
+            </div>
+          </template>
 
-        </div> 
+        </div>
 
-<!-- The below is complete mockup. The real related and similar terms to be displayed will have to be calculated -->
+        <!-- The below is complete mockup. The real related and similar terms to be displayed will have to be calculated -->
         <app-drawer id="drawer" align="right" swipe-open>
-                <div class="related-terms">
-                        <h3>Adjacent Terms</h3>
-                        <ul class="near-terms">
-                            <template is="dom-repeat" items="[[relatedItems.adjacent]]">
-                                <li><a href="/define/[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
-                            </template>
-                        </ul>
-                        <h3>Similar Spelling</h3>
-                        <ul class="fuzzy-terms">
-                            <template is="dom-repeat" items="[[relatedItems.similar]]">
-                                <li><a href="/define/[[item.word]]">[[item.word]]</a> <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template></li>
-                            </template>
-                        </ul>
-                </div>
+          <div class="related-terms">
+            <h3>Adjacent Terms</h3>
+            <ul class="near-terms">
+              <template is="dom-repeat" items="[[relatedItems.adjacent]]">
+                <li><a href="/define/[[item.word]]">[[item.word]]</a>
+                  <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
+                </li>
+              </template>
+            </ul>
+            <h3>Similar Spelling</h3>
+            <ul class="fuzzy-terms">
+              <template is="dom-repeat" items="[[relatedItems.similar]]">
+                <li><a href="/define/[[item.word]]">[[item.word]]</a>
+                  <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
+                </li>
+              </template>
+            </ul>
+          </div>
         </app-drawer>
-    </main>
-</div>
-</template>
-<script>
-    Polymer({
-      is: 'sc-page-dictionary',
-      properties: {
-        dictionaryItem: {
-            type: String,
-            notify: true
-        },
-        cpedResult: {
-            type: Object,
-              notify: true,
-              value: function(){return {}}
-        },
-        ncpedResult: {
-            type: Object,
-              notify: true,
-              value: function(){return {}}
-        },
-        dhammikaResult: {
-            type: Object,
-              notify: true,
-              value: function(){return {}}
-        },
-        dppnResult: {
-            type: Object,
-              notify: true,
-              value: function(){return {}}
-        },
-        ptsResult: {
-            type: Object,
-              notify: true,
-              value: function(){return {}}
-        },
-        inputLanguage: String,
+      </main>
+    </div>
+  </template>
+  <script>
+      Polymer({
+          is: 'sc-page-dictionary',
+          properties: {
+              dictionaryItem: {
+                  type: String,
+                  notify: true
+              },
+              cpedResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              ncpedResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              dhammikaResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              dppnResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              ptsResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              inputLanguage: String,
 
-        // checks if item is found in any of the 5 dictionaries
-        cpedItem: {
-          type: String,
-          computed: '_checkDictionaryEntry(cpedResult, dictionaryItem)'
-        },
-        ncpedItem: {
-          type: String,
-          computed: '_checkDictionaryEntry(ncpedResult, dictionaryItem)'
-        },
-        dhammikaItem: {
-          type: String,
-          computed: '_checkDictionaryEntry(dhammikaResult, dictionaryItem)'
-        },
-        ptsItem: {
-          type: String,
-          computed: '_checkDictionaryEntry(ptsResult, dictionaryItem)'
-        },
-        dppnItem: {
-          type: String,
-          computed: '_checkDictionaryEntry(dppnResult, dictionaryItem)'
-        }
-      },
-      _checkDictionaryEntry: function(dictResult, dictionaryItem) {
-        // checks if item is found in this specific dictionary and returns the result.
-        if (dictResult[dictionaryItem.toLowerCase()]) {
-            return dictResult[dictionaryItem.toLowerCase()];
-        } else if (dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)]) {
-            return dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)];
-        }
-      },
-      _toggleDrawer: function() {
-        // toggles the drawer on the right to show the related/similar items.
-        this.$.drawer.toggle();
-      }
-    });
-</script>
+              // checks if item is found in any of the 5 dictionaries
+              cpedItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(cpedResult, dictionaryItem)'
+              },
+              ncpedItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(ncpedResult, dictionaryItem)'
+              },
+              dhammikaItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(dhammikaResult, dictionaryItem)'
+              },
+              ptsItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(ptsResult, dictionaryItem)'
+              },
+              dppnItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(dppnResult, dictionaryItem)'
+              }
+          },
+          _checkDictionaryEntry: function(dictResult, dictionaryItem) {
+              // checks if item is found in this specific dictionary and returns the result.
+              if (dictResult[dictionaryItem.toLowerCase()]) {
+                  return dictResult[dictionaryItem.toLowerCase()];
+              } else if (dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)]) {
+                  return dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)];
+              }
+          },
+          _toggleDrawer: function() {
+              // toggles the drawer on the right to show the related/similar items.
+              this.$.drawer.toggle();
+          }
+      });
+  </script>
 </dom-module>

@@ -5,66 +5,68 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../styles/sc-suttaplex-styles.html">
 
-<!-- Pulls in one relevant suttaplex-card inside a collapse-item to display on top of each sutta text. -->
-
+<!--
+Pulls in one relevant suttaplex-card inside a collapse-item to display on top of each sutta text.
+-->
 <dom-module id="sc-text-node">
-<template>
-<style is="custom-style" include="sc-suttaplex-styles">
-.container {
-    margin: 0 auto;
-    padding: 32px 5% 0!important;
-    max-width: 640px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-.heading {
-  cursor: pointer;
-  margin-right:16px;
-}
+  <template>
+    <style is="custom-style" include="sc-suttaplex-styles">
+      .container {
+        margin: 0 auto;
+        padding: 32px 5% 0 !important;
+        max-width: 640px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
 
-.suttalist {
-  margin: 0 auto;
-  max-width: 720px;
-  transition: margin-top 0.3s, margin-bottom 0.3s;
-  margin-bottom: 64px;
-}
-</style>
-<div class="container">
+      .heading {
+        cursor: pointer;
+        margin-right: 16px;
+      }
+
+      .suttalist {
+        margin: 0 auto;
+        max-width: 720px;
+        transition: margin-top 0.3s, margin-bottom 0.3s;
+        margin-bottom: 64px;
+      }
+    </style>
+    <div class="container">
       <div class="heading" title="View Parallels & References" on-tap="_toggleOpened">
-          <paper-icon-button icon="[[_toggleIcon]]"></paper-icon-button>
+        <paper-icon-button icon="[[_toggleIcon]]"></paper-icon-button>
       </div>
 
-      <iron-collapse  id="textinfo" opened="{{opened}}">
-          <div class="suttalist">
-               <sc-suttaplex input-url="[[category]]" toggle-request input-language="[[inputLanguage]]"></sc-suttaplex>
-          </div>
+      <iron-collapse id="textinfo" opened="{{opened}}">
+        <div class="suttalist">
+          <sc-suttaplex input-url="[[category]]" toggle-request input-language="[[inputLanguage]]"></sc-suttaplex>
+        </div>
       </iron-collapse>
-</div>
-</template>
-<script>
-    Polymer({
-        is: 'sc-text-node',
-        properties: {
-            inputLanguage: String,
-            category: String,
-            _toggleIcon: {
-                type: String,
-                computed: '_computeToggleIcon(opened)'
+    </div>
+  </template>
+  <script>
+      Polymer({
+          is: 'sc-text-node',
+          properties: {
+              inputLanguage: String,
+              category: String,
+              _toggleIcon: {
+                  type: String,
+                  computed: '_computeToggleIcon(opened)'
               },
-            opened: {
+              opened: {
                   type: Boolean,
                   reflectToAttribute: true,
                   notify: true
-                }
-        },
-      _toggleOpened: function(e) {
-          this.opened = !this.opened;
-          this.fire('toggle', this);
-        },
-      _computeToggleIcon: function(opened) {
-          return opened ? 'icons:expand-less' : 'icons:expand-more';
-        }
-    });
-</script>
+              }
+          },
+          _toggleOpened: function(e) {
+              this.opened = !this.opened;
+              this.fire('toggle', this);
+          },
+          _computeToggleIcon: function(opened) {
+              return opened ? 'icons:expand-less' : 'icons:expand-more';
+          }
+      });
+  </script>
 </dom-module>

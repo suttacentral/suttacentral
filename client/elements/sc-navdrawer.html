@@ -1,200 +1,211 @@
-<!-- The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**), parses the route through `app-route` and feeds all information through to the **page-selector.html**.
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-route/app-route-converter.html">
+<link rel="import" href="../bower_components/iron-location/iron-location.html">
+<link rel="import" href="../bower_components/iron-location/iron-query-params.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+
+<link rel="import" href="paper-tree-sc/paper-tree.html">
+<link rel="import" href="page-selector.html">
+
+<!--
+The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates
+this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**), parses the route
+through `app-route` and feeds all information through to the **page-selector.html**.
 
 **app-drawer**
-The `app-drawer` is populated with data from ../data/menu/discoursetree.json. This is just mockup data and not the real data.
+The `app-drawer` is populated with data from ../data/menu/discoursetree.json.
+This is just mockup data and not the real data.
 
 Issues that need to be fixed:
-    - The paper-tree menu needs to be populated with real data. An overview of what it should become you can find here: https://discourse.suttacentral.net/t/overall-text-hierarchy-for-sc-next/6101
-    - The paper-tree menu needs to open at the relevant place when a url is given (right now it only opens when you go through the menu but not when somebody f.i. types /dn1/bodhi as a url)
+    - The paper-tree menu needs to be populated with real data. An overview of what it should become you can find here:
+     https://discourse.suttacentral.net/t/overall-text-hierarchy-for-sc-next/6101
+    - The paper-tree menu needs to open at the relevant place when a url is given (right now it only opens when you go
+     through the menu but not when somebody f.i. types /dn1/bodhi as a url)
     - The paper-tree menus for Vinaya / Abhidhamma have to be made also.
 
 **iron-location** and **app-rout**
 These parse the url given but at the moment only deal with the following url:
     - search pages: `/search?query=searchterm`
-    - url with one or two terms i.e. `/`, `/dons`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc. but not with more than 2 terms.
+    - url with one or two terms i.e. `/`, `/dons`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc.
+     but not with more than 2 terms.
 
 Issues that need to be fixed:
-    - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1` but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and the **sc-view-suttaplex.html**. -->
-
-
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="paper-tree-sc/paper-tree.html">
-
-<link rel="import" href="page-selector.html">
-
-<link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/app-route/app-route-converter.html">
-<link rel="import" href="../bower_components/iron-location/iron-location.html">
-<link rel="import" href="../bower_components/iron-location/iron-query-params.html">
-
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-
+    - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new
+    menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1`
+     but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and
+     the **sc-view-suttaplex.html**.
+-->
 <dom-module id="sc-navdrawer">
-<template>
-<style is="custom-style">
-: host {
-  background-color: grey;
-}
-paper-tree {
-  @apply --sc-sans-font;
-}
+  <template>
+    <style is="custom-style">
+      : host {
+        background-color: grey;
+      }
 
-#container {
-  padding-top:1em;
-}
+      paper-tree {
+        @apply --sc-sans-font;
+      }
 
-#wheel {
-  color: white;
-  font-size: 45px;
-  display: inline-block;
-  vertical-align: middle;
-  @apply --sc-serif-font;
-}
+      #container {
+        padding-top: 1em;
+      }
 
-#hometitle {
-  @apply --sc-serif-font;
-  @apply --sc-mixed-small-caps;
-  font-size: 24px;
-  font-weight: normal;
-  color: var(--paper-indigo-500);
-  background-color: var(--paper-amber-400);
-  border-bottom: 4px solid var(--paper-deep-orange-900);
-  margin: 0;
-  padding:  0 0 0 16px;
-  white-space: nowrap;
-  height:60px;
-  line-height: 1.4;
-}
+      #wheel {
+        color: white;
+        font-size: 45px;
+        display: inline-block;
+        vertical-align: middle;
+        @apply --sc-serif-font;
+      }
 
-#hometitle a {
-  color: var(--paper-indigo-500);
-  text-decoration: none;
-}
-#drawerbox {
-  @apply --shadow-elevation-16dp;
-  overflow: auto;
-  height: 100%;
-  overflow: auto;
-}
-</style>
-<iron-location path="{{path}}" query="{{query}}"></iron-location>
-<iron-query-params
-    params-string="{{query}}"
-    params-object="{{queryParams}}">
-</iron-query-params>
-<app-route-converter
-    path="{{path}}"
-    query-params="{{queryParams}}"
-    route="{{route}}">
-</app-route-converter>
+      #hometitle {
+        @apply --sc-serif-font;
+        @apply --sc-mixed-small-caps;
+        font-size: 24px;
+        font-weight: normal;
+        color: var(--paper-indigo-500);
+        background-color: var(--paper-amber-400);
+        border-bottom: 4px solid var(--paper-deep-orange-900);
+        margin: 0;
+        padding: 0 0 0 16px;
+        white-space: nowrap;
+        height: 60px;
+        line-height: 1.4;
+      }
 
-<app-route route="{{route}}"
-           pattern="/:collection"
-           data="{{collectionData}}"
-           tail="{{pathDataTail}}">
-        </app-route>
+      #hometitle a {
+        color: var(--paper-indigo-500);
+        text-decoration: none;
+      }
 
-<app-route
-          route="{{pathDataTail}}"
-          pattern="/:subpath"
-          data="{{subPathData}}"
-          active="{{subPathIsActive}}">
-      </app-route>
+      #drawerbox {
+        @apply --shadow-elevation-16dp;
+        overflow: auto;
+        height: 100%;
+        overflow: auto;
+      }
+    </style>
+    <iron-location path="{{path}}" query="{{query}}"></iron-location>
+    <iron-query-params
+        params-string="{{query}}"
+        params-object="{{queryParams}}">
+    </iron-query-params>
+    <app-route-converter
+        path="{{path}}"
+        query-params="{{queryParams}}"
+        route="{{route}}">
+    </app-route-converter>
 
-<iron-ajax
-      auto
-      url="../data/menu/discoursetree.json"
-      handle-as="json"
-      last-response="{{navList}}"></iron-ajax>
+    <app-route route="{{route}}"
+               pattern="/:collection"
+               data="{{collectionData}}"
+               tail="{{pathDataTail}}">
+    </app-route>
 
-  <app-drawer-layout fullbleed responsive-width="840px">
+    <app-route
+        route="{{pathDataTail}}"
+        pattern="/:subpath"
+        data="{{subPathData}}"
+        active="{{subPathIsActive}}">
+    </app-route>
 
-    <app-drawer slot="drawer">
-        <div id="drawerbox"> 
-            <div id="hometitle">
-                  <a href="/"><div id="wheel">☸</div>&nbsp;SuttaCentral</a>
-            </div>
+    <iron-ajax
+        auto
+        url="../data/menu/discoursetree.json"
+        handle-as="json"
+        last-response="{{navList}}"></iron-ajax>
+
+    <app-drawer-layout fullbleed responsive-width="840px">
+
+      <app-drawer slot="drawer">
+        <div id="drawerbox">
+          <div id="hometitle">
+            <a href="/">
+              <div id="wheel">☸</div>&nbsp;SuttaCentral</a>
+          </div>
           <div id="container">
-              <paper-tree data='{{navList}}'></paper-tree>
-              <paper-tree data='{
+            <paper-tree data='{{navList}}'></paper-tree>
+            <paper-tree data='{
                   "name": "<b>Monastic Code</b>"
               }'></paper-tree>
-              <paper-tree data='{
+            <paper-tree data='{
                   "name": "<b>Abhidhamma</b>"
               }'></paper-tree>
 
           </div>
         </div>
-    </app-drawer>
-    <page-selector category="[[category]]" sub-path="[[subPathData.subpath]]" active-path="[[subPathIsActive]]" input-language="[[inputLanguage]]" query-params="[[queryParams]]"></page-selector>
+      </app-drawer>
+      <page-selector category="[[category]]" sub-path="[[subPathData.subpath]]" active-path="[[subPathIsActive]]"
+                     input-language="[[inputLanguage]]" query-params="[[queryParams]]"></page-selector>
 
-  </app-drawer-layout>
+    </app-drawer-layout>
 
-</template>
-<script>
-    Polymer({
-      is: 'sc-navdrawer',
+  </template>
+  <script>
+      Polymer({
+          is: 'sc-navdrawer',
 
-      properties: {
-          route: Object,
-          inputLanguage: {
-            type: String,
-            notify: true
+          properties: {
+              route: Object,
+              inputLanguage: {
+                  type: String,
+                  notify: true
+              },
+              collectionData: {
+                  type: Object,
+                  notify: true,
+                  observer: '_calculateCategory'
+              },
+              category: {
+                  type: String,
+                  notify: true
+              },
+              queryParams: Object,
+              path: String,
+              query: String
           },
-          collectionData: {
-            type: Object,
-            notify: true,
-            observer: '_calculateCategory'
+          observers: [
+              '_updateScroll(route)'
+          ],
+
+          _updateScroll: function() {
+              window.scroll(0, 0);
           },
-          category: {
-            type: String,
-            notify: true
+          ready: function() {
+              // languageSelection listens to input from the language dropdown menu on the top right.
+              this.addEventListener('languageSelection', this.changeLanguage);
+
+              // search listens to input from the search bar (i.e. a search-term) and feeds this to the iron-location
+              this.addEventListener('search', this.searchItem);
+
+              // toggleDrawer is triggered when the menu button in the toolbar is pressed when the app-drawer is not visible.
+              this.addEventListener('toggleDrawer', this._toggleDrawer);
           },
-          queryParams: Object,
-          path: String,
-          query: String
-      },
-        observers: [
-        '_updateScroll(route)'
-      ],
+          _calculateCategory: function(collectionData) {
+              // Polymer problem here with loading anything with a dot in the path. Bug report filed.
+              // So when using "polymer serve" to start development server, you have to use a colon
+              // instead of a dot. But with python server/app.py you can use the correct path name.
+              this.category = collectionData.collection.replace(":", ".");
+          },
+          changeLanguage: function(event) {
+              // sets the inputLanguage for all pages
+              return this.inputLanguage = event.detail.Language;
+          },
+          searchItem: function(event) {
+              // sets the path for a searchterm to /search?query=searchterm
+              this.path = "/search";
+              this.query = "query=" + event.detail;
 
-      _updateScroll: function() {
-        window.scroll(0, 0);
-      },
-      ready: function() {
-        // languageSelection listens to input from the language dropdown menu on the top right.
-        this.addEventListener('languageSelection',this.changeLanguage); 
+          },
+          _toggleDrawer: function(event) {
+              // opens the app-drawer when it is not visible.
+              return this.$$('app-drawer').setAttribute("opened", event.detail.togdraw);
+          }
 
-        // search listens to input from the search bar (i.e. a search-term) and feeds this to the iron-location
-        this.addEventListener('search', this.searchItem);
-        
-        // toggleDrawer is triggered when the menu button in the toolbar is pressed when the app-drawer is not visible.
-        this.addEventListener('toggleDrawer', this._toggleDrawer);
-      },
-      _calculateCategory: function(collectionData) {
-        // Polymer problem here with loading anything with a dot in the path. Bug report filed. 
-        // So when using "polymer serve" to start development server, you have to use a colon
-        // instead of a dot. But with python server/app.py you can use the correct path name.
-        this.category = collectionData.collection.replace(":",".");
-      },
-      changeLanguage: function(event) {
-        // sets the inputLanguage for all pages
-        return this.inputLanguage = event.detail.Language;
-      },
-      searchItem: function(event) {
-        // sets the path for a searchterm to /search?query=searchterm
-          this.path = "/search";
-          this.query = "query="+event.detail;
-
-      },
-      _toggleDrawer: function(event) {
-        // opens the app-drawer when it is not visible.
-        return this.$$('app-drawer').setAttribute("opened",event.detail.togdraw);
-      }
-
-    });
-</script>
+      });
+  </script>
 </dom-module>

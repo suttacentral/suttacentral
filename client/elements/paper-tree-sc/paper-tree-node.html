@@ -4,84 +4,97 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <dom-module id="paper-tree-node">
-<template>
-<style>
-:host(.selected) > .node-container > .node-row {
-    background: linear-gradient(to right, rgba(223, 153, 10, 1) 4px, rgba(223, 153, 10, 0) 4px);
-}
-:host(.selected) > .node-container > .node-row > #actions {
-    display: inline-block;
-}
-:host(.selected) > .node-container > .node-row a{
-     color: var(--sc-gold-500);
-}
-.node-row {
-    width: 100%;
-    white-space: nowrap;
-    @apply --paper-font-body2;
-    position: relative;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-.node-row a{
-    text-transform: none;
-    letter-spacing: 0em;
-     text-decoration: none;
-    color: var(--paper-green-500);
-    cursor: pointer;
-}
-paper-icon-button {
-    color: var(--disabled-text-color);
-    cursor: pointer;
-    float: right;
-}
-.data-lang {
-    padding-left: 12px;
-    color: var(--secondary-text-color);
-    font-size: 12px;
-    font-weight: normal;
-}
-.data-name {
-    padding: 4px 0px 4px 16px;
-    margin: 4px 0;
-    display: inline-block;
-    width: 70%;
-}
-.indent {
-    padding-left: 32px;
-}
-ul {
-    margin: 0;
-    padding-left: 0px;
-}
-li {
-    list-style-type: none;
-}
+  <template>
+    <style>
+      :host(.selected) > .node-container > .node-row {
+        background: linear-gradient(to right, rgba(223, 153, 10, 1) 4px, rgba(223, 153, 10, 0) 4px);
+      }
+
+      :host(.selected) > .node-container > .node-row > #actions {
+        display: inline-block;
+      }
+
+      :host(.selected) > .node-container > .node-row a {
+        color: var(--sc-gold-500);
+      }
+
+      .node-row {
+        width: 100%;
+        white-space: nowrap;
+        @apply --paper-font-body2;
+        position: relative;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .node-row a {
+        text-transform: none;
+        letter-spacing: 0;
+        text-decoration: none;
+        color: var(--paper-green-500);
+        cursor: pointer;
+      }
+
+      paper-icon-button {
+        color: var(--disabled-text-color);
+        cursor: pointer;
+        float: right;
+      }
+
+      .data-lang {
+        padding-left: 12px;
+        color: var(--secondary-text-color);
+        font-size: 12px;
+        font-weight: normal;
+      }
+
+      .data-name {
+        padding: 4px 0 4px 16px;
+        margin: 4px 0;
+        display: inline-block;
+        width: 70%;
+      }
+
+      .indent {
+        padding-left: 32px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 0;
+      }
+
+      li {
+        list-style-type: none;
+      }
     </style>
 
 
-        <div class="node-container">
-            <div class="node-row">
-                <paper-icon-button icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></paper-icon-button>
-                <template is="dom-if" if="{{data.uid}}">
-                    <a href$="/{{data.uid}}"><span class="node-name" on-tap="select"><span class$="data-name {{_computeIndent(data)}}">{{data.name}}<span class="data-lang">{{data.lang}}</span></span></span></a>
-                </template>
-                <template is="dom-if" if="{{!data.uid}}">
-                    <span class="node-name" on-tap="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span class="data-lang">{{data.lang}}</span></span></span>
-                </template>
+    <div class="node-container">
+      <div class="node-row">
+        <paper-icon-button icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></paper-icon-button>
+        <template is="dom-if" if="{{data.uid}}">
+          <a href$="/{{data.uid}}"><span class="node-name" on-tap="select"><span
+              class$="data-name {{_computeIndent(data)}}">{{data.name}}<span
+              class="data-lang">{{data.lang}}</span></span></span></a>
+        </template>
+        <template is="dom-if" if="{{!data.uid}}">
+          <span class="node-name" on-tap="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span
+              class="data-lang">{{data.lang}}</span></span></span>
+        </template>
 
-            </div>
-            <iron-collapse id="collapse" opened="{{opened}}">
-            <ul class$={{!data.open}}>
-                <template is="dom-repeat" items="{{data.children}}">
-                    <li>
-                        <paper-tree-node id="{{item.uid}}" data="{{item}}" actions="{{actions}}"></paper-tree-node>
-                    </li>
-                </template>
-            </ul>
-            </iron-collapse>
-        </div>
-    </template>
+      </div>
+      <iron-collapse id="collapse" opened="{{opened}}">
+        <ul class$={{!data.open}}>
+          <template is="dom-repeat" items="{{data.children}}">
+            <li>
+              <paper-tree-node id="{{item.uid}}" data="{{item}}" actions="{{actions}}"></paper-tree-node>
+            </li>
+          </template>
+        </ul>
+      </iron-collapse>
+    </div>
+  </template>
 
 </dom-module>
 
@@ -141,14 +154,14 @@ li {
         /**
          * Returns the parent node. Returns `null` if root.
          */
-        getParent: function () {
+        getParent: function() {
             return this.domHost.tagName === 'PAPER-TREE-NODE' ? this.domHost : null;
         },
 
         /**
          * Returns the children tree nodes.
          */
-        getChildren: function () {
+        getChildren: function() {
             return Polymer.dom(this.root).querySelectorAll('paper-tree-node');
         },
 

@@ -1,15 +1,18 @@
-<!-- This elements loads additional info for each relevant parallel sutta, which is loaded from `../data/suttas` and then used in sc-view-parallels.html . It is in effect a minature version of the suttaplex-card-->
-
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
 <link rel="import" href="../menus/language-menu.html">
 <link rel="import" href="../addons/sc-sutta-note.html">
 <link rel="import" href="../../styles/sc-styles.html">
 <link rel="import" href="../../styles/sc-suttaplex-styles.html">
 
+<!--
+This element loads additional info for each relevant parallel sutta, which is loaded from `../data/suttas`
+and then used in sc-view-parallels.html . It is in effect a minature version of the suttaplex-card
+-->
 <dom-module id="sc-parallels">
 <template>
 <style  is="custom-style" include="sc-suttaplex-styles" attributes="partitle volumepage biblio">

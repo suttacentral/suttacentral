@@ -1,5 +1,3 @@
-<!-- For the static pages an additional larger toolbar is added and depending on the route it chooses one of 4 different elements through `iron-pages` that are filed in the `/static` folder. The texts are just mockup and Bhante Sujato needs to re-write them. -->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="static/home-page.html">
@@ -8,121 +6,137 @@
 <link rel="import" href="static/people-page.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+
+<!--
+For the static pages an additional larger toolbar is added and depending on the route it chooses one of 4
+different elements through `iron-pages` that are filed in the `/static` folder. The texts are just mockup and
+Bhante Sujato needs to re-write them.
+-->
 <dom-module id="sc-page-static">
-<template>
-<style is="custom-style">
-app-toolbar {
-   background-color: var(--sc-gold-500);
-   white-space: nowrap;
-}
+  <template>
+    <style is="custom-style">
+      app-toolbar {
+        background-color: var(--sc-gold-500);
+        white-space: nowrap;
+      }
 
-#lasttoolbar {
-  @apply --shadow-elevation-8dp;
-  z-index: -1;
-}
+      #lasttoolbar {
+        @apply --shadow-elevation-8dp;
+        z-index: -1;
+      }
 
-h1{
-  @apply --sc-serif-font;
-  @apply --sc-mixed-small-caps;
-  font-size: 2.5em;
-  text-align: left;
-  color: white;
-  padding-top: 0.5em;
-  margin: 0;
-  line-height: 1em;
-  font-weight: normal;
-}
+      h1 {
+        @apply --sc-serif-font;
+        @apply --sc-mixed-small-caps;
+        font-size: 2.5em;
+        text-align: left;
+        color: white;
+        padding-top: 0.5em;
+        margin: 0;
+        line-height: 1em;
+        font-weight: normal;
+      }
 
-.subtitle {
-  @apply --sc-sans-font;
-  color: white;
-  font-style: italic;
-  font-size: 1.5em;
-  text-align: left;
-  margin-bottom: .75em;
-  margin-top: 0;
-}
+      .subtitle {
+        @apply --sc-sans-font;
+        color: white;
+        font-style: italic;
+        font-size: 1.5em;
+        text-align: left;
+        margin-bottom: .75em;
+        margin-top: 0;
+      }
 
-.title {
-  margin-left: 64px;
-}
+      .title {
+        margin-left: 64px;
+      }
 
-@media (max-width: 925px) {
-    .subtitle {
-      font-size: 1.2em;
-      margin-bottom: 0.5em;
-    };
-}
-@media (max-width: 800px) {
-    .title {
-      margin-left: initial;
-    };
-}
-@media (max-width: 600px) {
-    h1 {
-      font-size: 2em;
-      padding-top: 0.2em;
-    };
-    .subtitle {
-      font-size: 1em;
-      margin-bottom: 0.5em;
-    };
-}
-
-</style>
-            <app-toolbar>
-                  <div class="title" main-title><h1>SuttaCentral</h1></div>
-            </app-toolbar>
-            <app-toolbar id="lasttoolbar">
-                  <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
-            </app-toolbar>
-
-        <iron-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
-          <div name="home">
-                <home-page></home-page>
-          </div>
-          <div name="dons">
-                <dons-page></dons-page>
-          </div>
-          <div name="downloads">
-              <downloads-page></downloads-page>
-          </div>
-          <div name="people">
-              <people-page></people-page>
-        </iron-pages>
-
-</template>
-<script>
-    Polymer({
-      is: 'sc-page-static',
-      properties: {
-        inputLanguage: String,
-        category: {
-          type: String,
-          observer: '_changeView'
-        },
-        pages: {
-          type: String,
-          value: 'home'
+      @media (max-width: 925px) {
+        .subtitle {
+          font-size: 1.2em;
+          margin-bottom: 0.5em;
         }
-      },
-      _changeView: function(category) {
-        // chooses one of four static pages/elements from the '/static'-folder.
-        switch (category) {
-        case '':
-          this.$.pages.selected = "home";
-          break;
-        case 'dons':
-          this.$.pages.selected = "dons";
-          break;
-        case 'downloads':
-          this.$.pages.selected = "downloads";
-          break;
-        case 'people':
-          this.$.pages.selected = "people";
-          break;
+
+      ;
+      }
+
+      @media (max-width: 800px) {
+        .title {
+          margin-left: initial;
         }
-      },
-    });
-</script>
+
+      ;
+      }
+
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 2em;
+          padding-top: 0.2em;
+        }
+
+      ;
+        .subtitle {
+          font-size: 1em;
+          margin-bottom: 0.5em;
+        }
+
+      ;
+      }
+
+    </style>
+    <app-toolbar>
+      <div class="title" main-title><h1>SuttaCentral</h1></div>
+    </app-toolbar>
+    <app-toolbar id="lasttoolbar">
+      <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
+    </app-toolbar>
+
+    <iron-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
+      <div name="home">
+        <home-page></home-page>
+      </div>
+      <div name="dons">
+        <dons-page></dons-page>
+      </div>
+      <div name="downloads">
+        <downloads-page></downloads-page>
+      </div>
+      <div name="people">
+        <people-page></people-page>
+    </iron-pages>
+
+  </template>
+  <script>
+      Polymer({
+          is: 'sc-page-static',
+          properties: {
+              inputLanguage: String,
+              category: {
+                  type: String,
+                  observer: '_changeView'
+              },
+              pages: {
+                  type: String,
+                  value: 'home'
+              }
+          },
+          _changeView: function(category) {
+              // chooses one of four static pages/elements from the '/static'-folder.
+              switch (category) {
+                  case '':
+                      this.$.pages.selected = "home";
+                      break;
+                  case 'dons':
+                      this.$.pages.selected = "dons";
+                      break;
+                  case 'downloads':
+                      this.$.pages.selected = "downloads";
+                      break;
+                  case 'people':
+                      this.$.pages.selected = "people";
+                      break;
+              }
+          },
+      });
+  </script>
 </dom-module>

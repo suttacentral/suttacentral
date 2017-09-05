@@ -2,44 +2,47 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 
-<!-- Basic note for each sutta if they exist with a paper-tooltip. 
-Used in the Suttaplex.-->
-
+<!--
+Basic note for each sutta if they exist with a paper-tooltip.
+Used in the Suttaplex.
+-->
 <dom-module id="sc-sutta-note">
-<template>
-<style is="custom-style">
-.note{
-  cursor: help;
-}
-.note iron-icon{
-  --iron-icon-height: 20px;
-  --iron-icon-width: 20px;
-}
-paper-tooltip {
-  --paper-tooltip-opacity: 0.98;
-  --paper-tooltip-background: var(--paper-grey-700);
-  --paper-tooltip: {
-        @apply --sc-sans-font;
-        @apply --shadow-elevation-6dp;
-        font-size: 12px;
-        line-height: 16px;
-        padding: 8px 16px;
-        text-shadow:0px 0px #ffffff;
-        white-space: normal;
-  };
-}
-</style>
+  <template>
+    <style is="custom-style">
+      .note {
+        cursor: help;
+      }
+
+      .note iron-icon {
+        --iron-icon-height: 20px;
+        --iron-icon-width: 20px;
+      }
+
+      paper-tooltip {
+        --paper-tooltip-opacity: 0.98;
+        --paper-tooltip-background: var(--paper-grey-700);
+        --paper-tooltip: {
+          @apply --sc-sans-font;
+          @apply --shadow-elevation-6dp;
+          font-size: 12px;
+          line-height: 16px;
+          padding: 8px 16px;
+          text-shadow: 0px 0px #ffffff;
+          white-space: normal;
+        };
+      }
+    </style>
     <span class="note">
       <iron-icon icon="info-outline" id="note1"></iron-icon>
       <paper-tooltip for="note1">[[noteData]]</paper-tooltip>
     </span>
-</template>
-<script>
-    Polymer({
-        is: 'sc-sutta-note',
-        properties: {
-            noteData: String
-        }
-    });
-</script>
+  </template>
+  <script>
+      Polymer({
+          is: 'sc-sutta-note',
+          properties: {
+              noteData: String
+          }
+      });
+  </script>
 </dom-module>

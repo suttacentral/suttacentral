@@ -1,330 +1,365 @@
-<!-- This element loads the segmented text pages that are created in Pootle, which are at the moment defined as all pages that have an author which is "sujato" or "pali". This only works with texts translated by Sujato at the moment but will in the long run have to extend also to pali text pages where there is no translation available.
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 
-This elements first loads the html markup file from `../data/texts/markup`, then the translation by Sujato from `../data/texts/en/sujato` and the pali from `../data/texts/pi` as well as the file that contains the paragraph numbers from `../data/paragraphtitles.json`. 
+<link rel="import" href="../styles/sc-text-styles.html">
+<link rel="import" href="../styles/sc-text-heading-styles.html">
+<link rel="import" href="../styles/sc-text-paragraph-num-styles.html">
+<link rel="import" href="addons/sc-text-node.html">
+
+<!--
+This element loads the segmented text pages that are created in Pootle, which are at the moment defined as
+all pages that have an author which is "sujato" or "pali". This only works with texts translated by Sujato at
+the moment but will in the long run have to extend also to pali text pages where there is no translation available.
+
+This elements first loads the html markup file from `../data/texts/markup`, then the translation by Sujato
+from `../data/texts/en/sujato` and the pali from `../data/texts/pi` as well as the file that contains the paragraph
+numbers from `../data/paragraphtitles.json`.
 
 The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-node.html`).
 
-Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested. Via this menu, also the type of view (none, side-by-side, line-by-line or popup) can be chosen to display the english and pali in relation to each other.
+Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested. Via this menu,
+also the type of view (none, side-by-side, line-by-line or popup) can be chosen to display the english and pali
+in relation to each other.
 The type of script used for the pali can be chosen.
 
 Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
 
 Issues that need to be fixed:
-    - Right now it only works for the segmented translations by Sujato and for the pali thereof and only for the files I have for that with is all AN, SN, MN1-123. DN is not yet in there so the DN file that is shown in the menu under DN1 is actually MN1 just to try things out but will need to be replaced.
+    - Right now it only works for the segmented translations by Sujato and for the pali thereof and only for
+    the files I have for that with is all AN, SN, MN1-123. DN is not yet in there so the DN file that is shown in
+    the menu under DN1 is actually MN1 just to try things out but will need to be replaced.
     - The pali lookup tool does not yet work. See remarks under `settings-menu.html`.
-    - Only sujato is recognised as an author so that might have to change. It also only works for the pali right now if a translated file for Sujato exists too. -->
-
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="addons/sc-text-node.html">
-<link rel="import" href="../styles/sc-text-styles.html">
-<link rel="import" href="../styles/sc-text-heading-styles.html">
-<link rel="import" href="../styles/sc-text-paragraph-num-styles.html">
-<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
-
+    - Only sujato is recognised as an author so that might have to change. It also only works for the pali right now
+    if a translated file for Sujato exists too.
+-->
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
-<template>
-<style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-.notfound {
-  @apply --paper-font-display1;
-}
-.original-text {
-  @apply --sc-sans-font;
-  display: none;
-}
+  <template>
+    <style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
+      .notfound {
+        @apply --paper-font-display1;
+      }
 
-.sidebyside section {
-    padding: 0 7% 32px 1%!important;
-}
-.sidebyside .translated-text {
-  display: inline-block;
-  width: 47%;
-  padding-right: 5px;
-  vertical-align: text-top;
-}
-
-.sidebyside .original-text {
-  display: inline-block;
-  width: 47%;
-  padding-left: 5px;
-  vertical-align: text-top;
-}
-
-.linebyline .translated-text, .linebyline .original-text {
-  display: block;
-}
-.showpali .translated-text {
-  display: none;
-}
-.showpali .original-text {
-  display: inline;
-  @apply --sc-serif-font;
-}
-
-paper-tooltip {
-  --paper-tooltip-opacity: 0.98;
-  --paper-tooltip-background: var(--paper-grey-700);
-  --paper-tooltip: {
+      .original-text {
         @apply --sc-sans-font;
-        @apply --shadow-elevation-6dp;
-        font-size: 12px;
-        line-height: 16px;
-        padding: 8px 16px;
-        text-shadow:0px 0px #ffffff;
-        white-space: normal;
-  };
-}
-</style>
-<iron-ajax id="ajax"
-      url="[[_computeURL(suttaPath,author)]]"
-      handle-as="text"
-      last-response="{{suttaText}}"
-      last-error='{{notFound}}'
-      on-response="_loadedHTML"></iron-ajax>
+        display: none;
+      }
 
-<iron-ajax id="ajaxParagraphs"
-      url="../data/paragraphtitles.json"
-      handle-as="json"
-      last-response="{{paragraphTitles}}"
-      on-response="_computePars"></iron-ajax>
+      .sidebyside section {
+        padding: 0 7% 32px 1% !important;
+      }
+
+      .sidebyside .translated-text {
+        display: inline-block;
+        width: 47%;
+        padding-right: 5px;
+        vertical-align: text-top;
+      }
+
+      .sidebyside .original-text {
+        display: inline-block;
+        width: 47%;
+        padding-left: 5px;
+        vertical-align: text-top;
+      }
+
+      .linebyline .translated-text, .linebyline .original-text {
+        display: block;
+      }
+
+      .showpali .translated-text {
+        display: none;
+      }
+
+      .showpali .original-text {
+        display: inline;
+        @apply --sc-serif-font;
+      }
+
+      paper-tooltip {
+        --paper-tooltip-opacity: 0.98;
+        --paper-tooltip-background: var(--paper-grey-700);
+        --paper-tooltip: {
+          @apply --sc-sans-font;
+          @apply --shadow-elevation-6dp;
+          font-size: 12px;
+          line-height: 16px;
+          padding: 8px 16px;
+          text-shadow: 0px 0px #ffffff;
+          white-space: normal;
+        };
+      }
+    </style>
+    <iron-ajax id="ajax"
+               url="[[_computeURL(suttaPath,author)]]"
+               handle-as="text"
+               last-response="{{suttaText}}"
+               last-error='{{notFound}}'
+               on-response="_loadedHTML"></iron-ajax>
+
+    <iron-ajax id="ajaxParagraphs"
+               url="../data/paragraphtitles.json"
+               handle-as="json"
+               last-response="{{paragraphTitles}}"
+               on-response="_computePars"></iron-ajax>
 
     <template is="dom-if" if="[[notFound]]">
-        <p class="notfound">Sorry, the page your requested does not exist.</p>
+      <p class="notfound">Sorry, the page your requested does not exist.</p>
     </template>
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
       <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
     </template>
 
-<iron-ajax id="ajaxTranslated"
-      url="[[_computeTranslatedURL(suttaPath,author)]]"
-      handle-as="json"
-      last-response="{{suttaTranslatedText}}"
-      on-response="_addTranslatedText"></iron-ajax>
+    <iron-ajax id="ajaxTranslated"
+               url="[[_computeTranslatedURL(suttaPath,author)]]"
+               handle-as="json"
+               last-response="{{suttaTranslatedText}}"
+               on-response="_addTranslatedText"></iron-ajax>
 
-<iron-ajax id="ajaxOriginal"
-      url="[[_computeOriginalURL(suttaPath,author)]]"
-      handle-as="json"
-      last-response="{{suttaOriginalText}}"
-      on-response="_addOriginalText"></iron-ajax>
+    <iron-ajax id="ajaxOriginal"
+               url="[[_computeOriginalURL(suttaPath,author)]]"
+               handle-as="json"
+               last-response="{{suttaOriginalText}}"
+               on-response="_addOriginalText"></iron-ajax>
 
-</template>
-<script>
-    Polymer({
-      is: 'sc-segmented-text',
+  </template>
+  <script>
+      Polymer({
+          is: 'sc-segmented-text',
 
-      properties: {
-        suttaPath: {
-          type: String,
-          notify: true
-        },
-        author: {
-          type: String,
-          notify: true
-        },
-        suttaText: {
-          type: String,
-          notify: true,
-          value: function(){return ""}
-        },
-        suttaTranslatedText: {
-          type: Object,
-          notify: true,
-          value: function(){return {}}
-        },
-        suttaOriginalText: {
-          type: Object,
-          notify: true,
-          value: function(){return {}}
-        },
-        inputLanguage: String,
-        notFound: Object,
-
-        // If true, shows the paragraph numbers on the right of the text.
-        // Data is passed on from the toolbar-settings-menu.
-        showParagraphs: {
-          type: Boolean,
-          notify: true,
-          observer: '_addParagraphs'
-        },
-
-        // checks if the html markup is fully loaded before other functions can start
-        htmlLoaded: {
-          type: Boolean,
-          notify: true
-        },
-
-        // View for segmented text selected in the toolbar-settings-menu.
-        showViewer: {
-          type: String,
-          observer: 'setView'
-        },
-
-        // Choice of script to use for the pali. Default is Latin.
-        paliScript: {
-          type: Number,
-          notify: true,
-          observer: 'changeScript'
-        }
-      },
-      observers: [
-        'infoToParent(suttaTranslatedText)',
-        '_callAjax(suttaPath,author)',
-      ],
-      _callAjax: function() {
-        // starts loading the html markup files from '../data/texts/markup'
-        this.htmlLoaded = false;
-        if (this.author && (this.author === "sujato" || this.author === "pali")) {
-         this.$.ajax.generateRequest();
-       }
-      },
-      _computeURL: function(category,author) {
-        // finds the correct markup file to load.
-        if (category.startsWith("dn") || category.startsWith("mn")) {
-                var pathname = category.replace(/\d{1,5}/,"");
-                return `../data/texts/markup/${pathname}/${category}.html`;
-        } else if (category.startsWith("an") || category.startsWith("sn")) {
-                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
-                var subpathname = category.split(".",1)[0];
-                return `../data/texts/markup/${pathname}/${subpathname}/${category}.html`;
-        }
-      },
-      _computeTranslatedURL: function(category,author) {
-        // finds the correct translated json file to load. Only works for "sujato" as author
-        // so this might have to change when more translators use pootle.
-        var authorroute = "en/sujato";
-        if (category.startsWith("dn") || category.startsWith("mn")) {
-            var pathname = category.replace(/\d{1,5}/,"");
-            return `../data/texts/${authorroute}/${pathname}/${category}.json`;
-        } else if (category.startsWith("an") || category.startsWith("sn")) {
-                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
-                var subpathname = category.split(".",1)[0];
-                return `../data/texts/${authorroute}/${pathname}/${subpathname}/${category}.json`;
-        }
-      },
-      _computeOriginalURL: function(category,author) {
-        // finds the correct pali json file to load.
-        if (category.startsWith("dn") || category.startsWith("mn")) {
-            var pathname = category.replace(/\d{1,5}/,"");
-            return `../data/texts/pi/${pathname}/${category}.json`;
-        } else if (category.startsWith("an") || category.startsWith("sn")) {
-                var pathname = category.replace(/[\d{1,5}\-\.]/g,"");
-                var subpathname = category.split(".",1)[0];
-                return `../data/texts/pi/${pathname}/${subpathname}/${category}.json`;
-        }
-      },
-      _loadedHTML: function(e) {
-        // when the base html markup are loaded, the json files for the translated text, 
-        // the pali text and the paragraph numbers are loaded.
-        this.$.ajaxTranslated.generateRequest();
-        this.$.ajaxOriginal.generateRequest();
-        this.$.ajaxParagraphs.generateRequest();
-      },
-      _addTranslatedText: function(e) {
-        // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-        var segments = this.shadowRoot.querySelectorAll('sc-segment');
-        Array.from(segments).forEach(item => item.classList.add('translated-text'));
-        outputText = e.detail.response;
-        for (var key in outputText) {
-          if (!key.startsWith("_")) {
-                subkey = key.replace(/:/g,"\\\:");
-                subkey = subkey.replace(/\./g,"\\\.");
-                var segment = this.shadowRoot.querySelector('#'+subkey);
-                segment.innerHTML = outputText[key]+" ";
-          }
-        }
-      },
-      _addOriginalText: function(e) {
-        // creates a second 'sc-element' behind every 'sc-element' in the base markup and
-        // polulates that with the corresponding pali text segment.
-        if (!this.$$('.original-text')) {
-                outputText = e.detail.response;
-                for (var key in outputText) {
-                  if (!key.startsWith("_")) {
-                        subkey = key.replace(/:/g,"\\\:");
-                        subkey = subkey.replace(/\./g,"\\\.");
-                        var segment = this.shadowRoot.querySelector('#'+subkey);
-                        var newSegment = document.createElement('sc-segment');
-                        newSegment.id = key;
-                        newSegment.classList.add("original-text");
-                        newSegment.innerHTML = outputText[key]+" ";
-                        segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+          properties: {
+              suttaPath: {
+                  type: String,
+                  notify: true
+              },
+              author: {
+                  type: String,
+                  notify: true
+              },
+              suttaText: {
+                  type: String,
+                  notify: true,
+                  value: function() {
+                      return ""
                   }
-                }
-          }
-        this.htmlLoaded = true;
-        this.$$('#htmltextcontent').classList.add('latin-script');
+              },
+              suttaTranslatedText: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              suttaOriginalText: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              inputLanguage: String,
+              notFound: Object,
 
-        // checks settings from the settings-menu and changes the view accordingly.
-        this.setView(this.showViewer);
-        if (this.paliScript) {this.changeScript(this.paliScript)};
-      },
-      _addParagraphs: function() {
-        // adds a class to the main container to either show or hide paragraph numbers.
-        var infotext = this.shadowRoot.querySelector('#htmltextcontent');
-        return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
-      },
-      _computeTitle: function(suttaText) {
-        // returns the correct title from the first segment in the translated json file.
-        return suttaText[this.suttaPath+":1.1"];
-      },
-      _computeAuthor: function(suttaTranslatedText) {
-        // returns the full author details (only Sujato at the moment)
-        return (this.author === "sujato") ? "—Bhikkhu Sujato" : "";
-      },
-      _computeMeta: function(suttaText) {
-        // returns the meta data. This is still a mockup because we have no meta data for Sujato and it goes from the premise that 
-        // if the author is not sujato, it must be pali.
-        return (this.author === "sujato") ? "There is no Meta Area defined for Bhante Sujato's texts yet." : "<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by <span class='editor'>Blake Walshe</span> and <span class='editor'>Bhikkhu Sujato</span>.</p>";
-      },
-     _computePars: function(e) {
-      // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
-      var paragraphTitles = e.detail.response;
-        for (var key in paragraphTitles) {
-                var refs = this.shadowRoot.querySelectorAll('.'+key);
-                Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key,""));
-                Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
-        }
-        if (this.showParagraphs) {this._addParagraphs()};
-      },
-      infoToParent: function(suttaTranslatedText) {
-        // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
-        this.fire('eventFromSegmentedTextPage',{suttasegtitle:this._computeTitle(suttaTranslatedText)+this._computeAuthor(suttaTranslatedText),suttasegmeta:this._computeMeta(suttaTranslatedText)});
-      },
-      setView: function(showViewer) {
-        // if the base html and the pali texts have been fully loaded, the setting from the 
-        // settings-menu for the relevant view is implemented by adding relevant class 
-        // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
-        if (this.htmlLoaded) {
-                this._cleanCode();
-                if (this.author !== "pali") {
-                                switch (showViewer) {
-                                  case "sidebyside":
-                                      this.$$('#htmltextcontent').classList.add('sidebyside');
-                                      break;
-                                  case "linebyline":
-                                      this.$$('#htmltextcontent').classList.add('linebyline');
-                                      break;
-                                  case "popup":
-                                      Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds id="+item.id+"></paper-tooltip>" + item.innerHTML);
-                                      if (!this.paliScript) {this.changeScript(0)}
-                                      else {this.changeScript(this.paliScript)};
-                                      break;
-                                    }
-                } else {
-                  // if the author is "pali", only the pali is shown and not the translated text.
-                  this.$$('#htmltextcontent').classList.add('showpali');
-                }
+              // If true, shows the paragraph numbers on the right of the text.
+              // Data is passed on from the toolbar-settings-menu.
+              showParagraphs: {
+                  type: Boolean,
+                  notify: true,
+                  observer: '_addParagraphs'
+              },
+
+              // checks if the html markup is fully loaded before other functions can start
+              htmlLoaded: {
+                  type: Boolean,
+                  notify: true
+              },
+
+              // View for segmented text selected in the toolbar-settings-menu.
+              showViewer: {
+                  type: String,
+                  observer: 'setView'
+              },
+
+              // Choice of script to use for the pali. Default is Latin.
+              paliScript: {
+                  type: Number,
+                  notify: true,
+                  observer: 'changeScript'
               }
-        },
-        _cleanCode: function() {
-          // reset all classes and remove tooltips.
+          },
+          observers: [
+              'infoToParent(suttaTranslatedText)',
+              '_callAjax(suttaPath,author)',
+          ],
+          _callAjax: function() {
+              // starts loading the html markup files from '../data/texts/markup'
+              this.htmlLoaded = false;
+              if (this.author && (this.author === "sujato" || this.author === "pali")) {
+                  this.$.ajax.generateRequest();
+              }
+          },
+          _computeURL: function(category, author) {
+              // finds the correct markup file to load.
+              if (category.startsWith("dn") || category.startsWith("mn")) {
+                  var pathname = category.replace(/\d{1,5}/, "");
+                  return `../data/texts/markup/${pathname}/${category}.html`;
+              } else if (category.startsWith("an") || category.startsWith("sn")) {
+                  var pathname = category.replace(/[\d{1,5}\-\.]/g, "");
+                  var subpathname = category.split(".", 1)[0];
+                  return `../data/texts/markup/${pathname}/${subpathname}/${category}.html`;
+              }
+          },
+          _computeTranslatedURL: function(category, author) {
+              // finds the correct translated json file to load. Only works for "sujato" as author
+              // so this might have to change when more translators use pootle.
+              var authorroute = "en/sujato";
+              if (category.startsWith("dn") || category.startsWith("mn")) {
+                  var pathname = category.replace(/\d{1,5}/, "");
+                  return `../data/texts/${authorroute}/${pathname}/${category}.json`;
+              } else if (category.startsWith("an") || category.startsWith("sn")) {
+                  var pathname = category.replace(/[\d{1,5}\-\.]/g, "");
+                  var subpathname = category.split(".", 1)[0];
+                  return `../data/texts/${authorroute}/${pathname}/${subpathname}/${category}.json`;
+              }
+          },
+          _computeOriginalURL: function(category, author) {
+              // finds the correct pali json file to load.
+              if (category.startsWith("dn") || category.startsWith("mn")) {
+                  var pathname = category.replace(/\d{1,5}/, "");
+                  return `../data/texts/pi/${pathname}/${category}.json`;
+              } else if (category.startsWith("an") || category.startsWith("sn")) {
+                  var pathname = category.replace(/[\d{1,5}\-\.]/g, "");
+                  var subpathname = category.split(".", 1)[0];
+                  return `../data/texts/pi/${pathname}/${subpathname}/${category}.json`;
+              }
+          },
+          _loadedHTML: function(e) {
+              // when the base html markup are loaded, the json files for the translated text,
+              // the pali text and the paragraph numbers are loaded.
+              this.$.ajaxTranslated.generateRequest();
+              this.$.ajaxOriginal.generateRequest();
+              this.$.ajaxParagraphs.generateRequest();
+          },
+          _addTranslatedText: function(e) {
+              // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
+              var segments = this.shadowRoot.querySelectorAll('sc-segment');
+              Array.from(segments).forEach(item => item.classList.add('translated-text'));
+              outputText = e.detail.response;
+              for (var key in outputText) {
+                  if (!key.startsWith("_")) {
+                      subkey = key.replace(/:/g, "\\\:");
+                      subkey = subkey.replace(/\./g, "\\\.");
+                      var segment = this.shadowRoot.querySelector('#' + subkey);
+                      segment.innerHTML = outputText[key] + " ";
+                  }
+              }
+          },
+          _addOriginalText: function(e) {
+              // creates a second 'sc-element' behind every 'sc-element' in the base markup and
+              // polulates that with the corresponding pali text segment.
+              if (!this.$$('.original-text')) {
+                  outputText = e.detail.response;
+                  for (var key in outputText) {
+                      if (!key.startsWith("_")) {
+                          subkey = key.replace(/:/g, "\\\:");
+                          subkey = subkey.replace(/\./g, "\\\.");
+                          var segment = this.shadowRoot.querySelector('#' + subkey);
+                          var newSegment = document.createElement('sc-segment');
+                          newSegment.id = key;
+                          newSegment.classList.add("original-text");
+                          newSegment.innerHTML = outputText[key] + " ";
+                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+                      }
+                  }
+              }
+              this.htmlLoaded = true;
+              this.$$('#htmltextcontent').classList.add('latin-script');
+
+              // checks settings from the settings-menu and changes the view accordingly.
+              this.setView(this.showViewer);
+              if (this.paliScript) {
+                  this.changeScript(this.paliScript)
+              }
+              ;
+          },
+          _addParagraphs: function() {
+              // adds a class to the main container to either show or hide paragraph numbers.
+              var infotext = this.shadowRoot.querySelector('#htmltextcontent');
+              return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
+          },
+          _computeTitle: function(suttaText) {
+              // returns the correct title from the first segment in the translated json file.
+              return suttaText[this.suttaPath + ":1.1"];
+          },
+          _computeAuthor: function(suttaTranslatedText) {
+              // returns the full author details (only Sujato at the moment)
+              return (this.author === "sujato") ? "—Bhikkhu Sujato" : "";
+          },
+          _computeMeta: function(suttaText) {
+              // returns the meta data. This is still a mockup because we have no meta data for Sujato and it goes from the premise that
+              // if the author is not sujato, it must be pali.
+              return (this.author === "sujato") ? "There is no Meta Area defined for Bhante Sujato's texts yet." : "<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by <span class='editor'>Blake Walshe</span> and <span class='editor'>Bhikkhu Sujato</span>.</p>";
+          },
+          _computePars: function(e) {
+              // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
+              var paragraphTitles = e.detail.response;
+              for (var key in paragraphTitles) {
+                  var refs = this.shadowRoot.querySelectorAll('.' + key);
+                  Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key, ""));
+                  Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
+              }
+              if (this.showParagraphs) {
+                  this._addParagraphs()
+              }
+              ;
+          },
+          infoToParent: function(suttaTranslatedText) {
+              // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
+              this.fire('eventFromSegmentedTextPage', {
+                  suttasegtitle: this._computeTitle(suttaTranslatedText) + this._computeAuthor(suttaTranslatedText),
+                  suttasegmeta: this._computeMeta(suttaTranslatedText)
+              });
+          },
+          setView: function(showViewer) {
+              // if the base html and the pali texts have been fully loaded, the setting from the
+              // settings-menu for the relevant view is implemented by adding relevant class
+              // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
+              if (this.htmlLoaded) {
+                  this._cleanCode();
+                  if (this.author !== "pali") {
+                      switch (showViewer) {
+                          case "sidebyside":
+                              this.$$('#htmltextcontent').classList.add('sidebyside');
+                              break;
+                          case "linebyline":
+                              this.$$('#htmltextcontent').classList.add('linebyline');
+                              break;
+                          case "popup":
+                              Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds id=" + item.id + "></paper-tooltip>" + item.innerHTML);
+                              if (!this.paliScript) {
+                                  this.changeScript(0)
+                              }
+                              else {
+                                  this.changeScript(this.paliScript)
+                              }
+                              ;
+                              break;
+                      }
+                  } else {
+                      // if the author is "pali", only the pali is shown and not the translated text.
+                      this.$$('#htmltextcontent').classList.add('showpali');
+                  }
+              }
+          },
+          _cleanCode: function() {
+              // reset all classes and remove tooltips.
               this.$$('#htmltextcontent').classList.remove('sidebyside', 'linebyline', 'showpali');
               Array.from(this.shadowRoot.querySelectorAll("paper-tooltip")).forEach(item => item.parentNode.removeChild(item));
-        },
-        changeScript: function(paliScript) {
-          // if the base html and pali text are fully loaded, implements the correct script for the pali text either in tooltips or in segments.
-            if (this.htmlLoaded) {
+          },
+          changeScript: function(paliScript) {
+              // if the base html and pali text are fully loaded, implements the correct script for the pali text either in tooltips or in segments.
+              if (this.htmlLoaded) {
                   var segments = this.shadowRoot.querySelectorAll('.original-text');
                   var tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
                   this.$$('#htmltextcontent').classList.remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
@@ -354,68 +389,558 @@ paper-tooltip {
                           Array.from(segments).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           break;
-                        }
+                  }
+              }
+          },
+          //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.
+          // Note that they also remove all html coding first so this might have to be changed.
+          // Fonts will also need to be implemented because it uses local fonts now.
+          toSinhala: function(l) {
+              l = l.replace(/<.*?>/g, "");
+              l = l.toLowerCase() + " ";
+              var m = {a: "අ", "ā": "ආ", i: "ඉ", "ī": "ඊ", u: "උ", "ū": "ඌ", e: "එ", o: "ඔ"};
+              var b = {
+                  "ā": "ා",
+                  i: "ි",
+                  "ī": "ී",
+                  u: "ු",
+                  "ū": "ූ",
+                  e: "ෙ",
+                  o: "ො",
+                  "ṃ": "ං",
+                  k: "ක",
+                  g: "ග",
+                  "ṅ": "ඞ",
+                  c: "ච",
+                  j: "ජ",
+                  "ñ": "ඤ",
+                  "ṭ": "ට",
+                  "ḍ": "ඩ",
+                  "ṇ": "ණ",
+                  t: "ත",
+                  d: "ද",
+                  n: "න",
+                  p: "ප",
+                  b: "බ",
+                  m: "ම",
+                  y: "ය",
+                  r: "ර",
+                  l: "ල",
+                  "ḷ": "ළ",
+                  v: "ව",
+                  s: "ස",
+                  h: "හ"
+              };
+              var j = {
+                  kh: "ඛ",
+                  gh: "ඝ",
+                  ch: "ඡ",
+                  jh: "ඣ",
+                  "ṭh": "ඨ",
+                  "ḍh": "ඪ",
+                  th: "ථ",
+                  dh: "ධ",
+                  ph: "ඵ",
+                  bh: "භ",
+                  "jñ": "ඥ",
+                  "ṇḍ": "ඬ",
+                  nd: "ඳ",
+                  mb: "ඹ",
+                  rg: "ඟ"
+              };
+              var a = {
+                  k: "ක",
+                  g: "ග",
+                  "ṅ": "ඞ",
+                  c: "ච",
+                  j: "ජ",
+                  "ñ": "ඤ",
+                  "ṭ": "ට",
+                  "ḍ": "ඩ",
+                  "ṇ": "ණ",
+                  t: "ත",
+                  d: "ද",
+                  n: "න",
+                  p: "ප",
+                  b: "බ",
+                  m: "ම",
+                  y: "ය",
+                  r: "ර",
+                  l: "ල",
+                  "ḷ": "ළ",
+                  v: "ව",
+                  s: "ස",
+                  h: "හ"
+              };
+              var k, g, f, e, d;
+              var c = "";
+              var h = 0;
+              while (h < l.length) {
+                  k = l.charAt(h - 2);
+                  g = l.charAt(h - 1);
+                  f = l.charAt(h);
+                  e = l.charAt(h + 1);
+                  d = l.charAt(h + 2);
+                  if (m[f]) {
+                      if (h == 0 || g == "a") {
+                          c += m[f]
+                      } else {
+                          if (f != "a") {
+                              c += b[f]
+                          }
                       }
-        },
-        //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.
-        // Note that they also remove all html coding first so this might have to be changed.
-        // Fonts will also need to be implemented because it uses local fonts now.
-        toSinhala: function(l) {
-                l = l.replace(/<.*?>/g, "");
-                l = l.toLowerCase() + " ";
-                var m={a:"අ","ā":"ආ",i:"ඉ","ī":"ඊ",u:"උ","ū":"ඌ",e:"එ",o:"ඔ"};
-                var b={"ā":"ා",i:"ි","ī":"ී",u:"ු","ū":"ූ",e:"ෙ",o:"ො","ṃ":"ං",k:"ක",g:"ග","ṅ":"ඞ",c:"ච",j:"ජ","ñ":"ඤ","ṭ":"ට","ḍ":"ඩ","ṇ":"ණ",t:"ත",d:"ද",n:"න",p:"ප",b:"බ",m:"ම",y:"ය",r:"ර",l:"ල","ḷ":"ළ",v:"ව",s:"ස",h:"හ"};
-                var j={kh:"ඛ",gh:"ඝ",ch:"ඡ",jh:"ඣ","ṭh":"ඨ","ḍh":"ඪ",th:"ථ",dh:"ධ",ph:"ඵ",bh:"භ","jñ":"ඥ","ṇḍ":"ඬ",nd:"ඳ",mb:"ඹ",rg:"ඟ"};
-                var a={k:"ක",g:"ග","ṅ":"ඞ",c:"ච",j:"ජ","ñ":"ඤ","ṭ":"ට","ḍ":"ඩ","ṇ":"ණ",t:"ත",d:"ද",n:"න",p:"ප",b:"බ",m:"ම",y:"ය",r:"ර",l:"ල","ḷ":"ළ",v:"ව",s:"ස",h:"හ"};
-                var k,g,f,e,d;var c="";var h=0;while(h<l.length){k=l.charAt(h-2);g=l.charAt(h-1);
-                f=l.charAt(h);e=l.charAt(h+1);d=l.charAt(h+2);if(m[f]){if(h==0||g=="a"){c+=m[f]}else{if(f!="a"){c+=b[f]
-                }}h++}else{if(j[f+e]){c+=j[f+e];h+=2;if(a[d]){c+="්"}}else{if(b[f]&&f!="a"){c+=b[f];
-                h++;if(a[e]&&f!="ṃ"){c+="්"}}else{if(!b[f]){if(a[g]||(g=="h"&&a[k])){c+="්"}c+=f;
-                h++;if(m[e]){c+=m[e];h++}}else{h++}}}}}if(a[f]){c+="්"}c=c.replace(/ඤ්ජ/g,"ඦ");c=c.replace(/ණ්ඩ/g,"ඬ");
-                c=c.replace(/න්ද/g,"ඳ");c=c.replace(/ම්බ/g,"ඹ");c=c.replace(/්ර/g,"්ර");c=c.replace(/\`+/g,'"');
-                return c.slice(0, -1)
+                      h++
+                  } else {
+                      if (j[f + e]) {
+                          c += j[f + e];
+                          h += 2;
+                          if (a[d]) {
+                              c += "්"
+                          }
+                      } else {
+                          if (b[f] && f != "a") {
+                              c += b[f];
+                              h++;
+                              if (a[e] && f != "ṃ") {
+                                  c += "්"
+                              }
+                          } else {
+                              if (!b[f]) {
+                                  if (a[g] || (g == "h" && a[k])) {
+                                      c += "්"
+                                  }
+                                  c += f;
+                                  h++;
+                                  if (m[e]) {
+                                      c += m[e];
+                                      h++
+                                  }
+                              } else {
+                                  h++
+                              }
+                          }
+                      }
+                  }
+              }
+              if (a[f]) {
+                  c += "්"
+              }
+              c = c.replace(/ඤ්ජ/g, "ඦ");
+              c = c.replace(/ණ්ඩ/g, "ඬ");
+              c = c.replace(/න්ද/g, "ඳ");
+              c = c.replace(/ම්බ/g, "ඹ");
+              c = c.replace(/්ර/g, "්ර");
+              c = c.replace(/\`+/g, '"');
+              return c.slice(0, -1)
           },
           toMyanmar: function(k) {
-                k = k.replace(/<.*?>/g, "");
-                k=k.toLowerCase() + " ";var m={a:"အ",i:"ဣ",u:"ဥ","ā":"အာ","ī":"ဤ","ū":"ဦ",e:"ဧ",o:"ဩ"};
-                var l={i:"ိ","ī":"ီ",u:"ု","ū":"ူ",e:"ေ","ṃ":"ံ",k:"က",kh:"ခ",g:"ဂ",gh:"ဃ","ṅ":"င",c:"စ",ch:"ဆ",j:"ဇ",jh:"ဈ","ñ":"ဉ","ṭ":"ဋ","ṭh":"ဌ","ḍ":"ဍ","ḍh":"ဎ","ṇ":"ဏ",t:"တ",th:"ထ",d:"ဒ",dh:"ဓ",n:"န",p:"ပ",ph:"ဖ",b:"ဗ",bh:"ဘ",m:"မ",y:"ယ",r:"ရ",l:"လ","ḷ":"ဠ",v:"ဝ",s:"သ",h:"ဟ"};
-                var a={k:"က",g:"ဂ","ṅ":"င",c:"စ",j:"ဇ","ñ":"ဉ","ṭ":"ဋ","ḍ":"ဍ","ṇ":"ဏ",t:"တ",d:"ဒ",n:"န",p:"ပ",b:"ဗ",m:"မ",y:"ယ",r:"ရ",l:"လ","ḷ":"ဠ",v:"ဝ",s:"သ",h:"ဟ"};
-                var n={kh:"1",g:"1",d:"1",dh:"1",p:"1",v:"1"};var j,f,e,d,c;var b="";var g=0;k=k.replace(/\&quot;/g,"`");
-                var h=false;while(g<k.length){j=k.charAt(g-2);f=k.charAt(g-1);e=k.charAt(g);d=k.charAt(g+1);
-                c=k.charAt(g+2);if(m[e]){if(g==0||f=="a"){b+=m[e]}else{if(e=="ā"){if(n[h]){b+="ါ"
-                }else{b+="ာ"}}else{if(e=="o"){if(n[h]){b+="ေါ"}else{b+="ော"}}else{if(e!="a"){b+=l[e]
-                }}}}g++;h=false}else{if(l[e+d]&&d=="h"){b+=l[e+d];if(c!="y"&&!h){h=e+d}if(a[c]){b+="္"
-                }g+=2}else{if(l[e]&&e!="a"){b+=l[e];g++;if(d!="y"&&!h){h=e}if(a[d]&&e!="ṃ"){b+="္"
-                }}else{if(!l[e]){b+=e;g++;if(m[d]){if(m[d+c]){b+=m[d+c];g+=2}else{b+=m[d];g++}}h=false
-                }else{h=false;g++}}}}}b=b.replace(/ဉ္ဉ/g,"ည");b=b.replace(/္ယ/g,"ျ");b=b.replace(/္ရ/g,"ြ");
-                b=b.replace(/္ဝ/g,"ွ");b=b.replace(/္ဟ/g,"ှ");b=b.replace(/သ္သ/g,"ဿ");b=b.replace(/င္/g,"င်္");
-                return b.slice(0, -1)
+              k = k.replace(/<.*?>/g, "");
+              k = k.toLowerCase() + " ";
+              var m = {a: "အ", i: "ဣ", u: "ဥ", "ā": "အာ", "ī": "ဤ", "ū": "ဦ", e: "ဧ", o: "ဩ"};
+              var l = {
+                  i: "ိ",
+                  "ī": "ီ",
+                  u: "ု",
+                  "ū": "ူ",
+                  e: "ေ",
+                  "ṃ": "ံ",
+                  k: "က",
+                  kh: "ခ",
+                  g: "ဂ",
+                  gh: "ဃ",
+                  "ṅ": "င",
+                  c: "စ",
+                  ch: "ဆ",
+                  j: "ဇ",
+                  jh: "ဈ",
+                  "ñ": "ဉ",
+                  "ṭ": "ဋ",
+                  "ṭh": "ဌ",
+                  "ḍ": "ဍ",
+                  "ḍh": "ဎ",
+                  "ṇ": "ဏ",
+                  t: "တ",
+                  th: "ထ",
+                  d: "ဒ",
+                  dh: "ဓ",
+                  n: "န",
+                  p: "ပ",
+                  ph: "ဖ",
+                  b: "ဗ",
+                  bh: "ဘ",
+                  m: "မ",
+                  y: "ယ",
+                  r: "ရ",
+                  l: "လ",
+                  "ḷ": "ဠ",
+                  v: "ဝ",
+                  s: "သ",
+                  h: "ဟ"
+              };
+              var a = {
+                  k: "က",
+                  g: "ဂ",
+                  "ṅ": "င",
+                  c: "စ",
+                  j: "ဇ",
+                  "ñ": "ဉ",
+                  "ṭ": "ဋ",
+                  "ḍ": "ဍ",
+                  "ṇ": "ဏ",
+                  t: "တ",
+                  d: "ဒ",
+                  n: "န",
+                  p: "ပ",
+                  b: "ဗ",
+                  m: "မ",
+                  y: "ယ",
+                  r: "ရ",
+                  l: "လ",
+                  "ḷ": "ဠ",
+                  v: "ဝ",
+                  s: "သ",
+                  h: "ဟ"
+              };
+              var n = {kh: "1", g: "1", d: "1", dh: "1", p: "1", v: "1"};
+              var j, f, e, d, c;
+              var b = "";
+              var g = 0;
+              k = k.replace(/\&quot;/g, "`");
+              var h = false;
+              while (g < k.length) {
+                  j = k.charAt(g - 2);
+                  f = k.charAt(g - 1);
+                  e = k.charAt(g);
+                  d = k.charAt(g + 1);
+                  c = k.charAt(g + 2);
+                  if (m[e]) {
+                      if (g == 0 || f == "a") {
+                          b += m[e]
+                      } else {
+                          if (e == "ā") {
+                              if (n[h]) {
+                                  b += "ါ"
+                              } else {
+                                  b += "ာ"
+                              }
+                          } else {
+                              if (e == "o") {
+                                  if (n[h]) {
+                                      b += "ေါ"
+                                  } else {
+                                      b += "ော"
+                                  }
+                              } else {
+                                  if (e != "a") {
+                                      b += l[e]
+                                  }
+                              }
+                          }
+                      }
+                      g++;
+                      h = false
+                  } else {
+                      if (l[e + d] && d == "h") {
+                          b += l[e + d];
+                          if (c != "y" && !h) {
+                              h = e + d
+                          }
+                          if (a[c]) {
+                              b += "္"
+                          }
+                          g += 2
+                      } else {
+                          if (l[e] && e != "a") {
+                              b += l[e];
+                              g++;
+                              if (d != "y" && !h) {
+                                  h = e
+                              }
+                              if (a[d] && e != "ṃ") {
+                                  b += "္"
+                              }
+                          } else {
+                              if (!l[e]) {
+                                  b += e;
+                                  g++;
+                                  if (m[d]) {
+                                      if (m[d + c]) {
+                                          b += m[d + c];
+                                          g += 2
+                                      } else {
+                                          b += m[d];
+                                          g++
+                                      }
+                                  }
+                                  h = false
+                              } else {
+                                  h = false;
+                                  g++
+                              }
+                          }
+                      }
+                  }
+              }
+              b = b.replace(/ဉ္ဉ/g, "ည");
+              b = b.replace(/္ယ/g, "ျ");
+              b = b.replace(/္ရ/g, "ြ");
+              b = b.replace(/္ဝ/g, "ွ");
+              b = b.replace(/္ဟ/g, "ှ");
+              b = b.replace(/သ္သ/g, "ဿ");
+              b = b.replace(/င္/g, "င်္");
+              return b.slice(0, -1)
           },
           toDevar: function(l) {
-                l = l.replace(/<.*?>/g, "");
-                l=l.toLowerCase() + " ";var m={a:" अ",i:" इ",u:" उ","ā":" आ","ī":" ई","ū":" ऊ",e:" ए",o:" ओ"};
-                var n={"ā":"ा",i:"ि","ī":"ी",u:"ु","ū":"ू",e:"े",o:"ो","ṃ":"ं",k:"क",kh:"ख",g:"ग",gh:"घ","ṅ":"ङ",c:"च",ch:"छ",j:"ज",jh:"झ","ñ":"ञ","ṭ":"ट","ṭh":"ठ","ḍ":"ड","ḍh":"ढ","ṇ":"ण",t:"त",th:"थ",d:"द",dh:"ध",n:"न",p:"प",ph:"फ",b:"ब",bh:"भ",m:"म",y:"य",r:"र",l:"ल","ḷ":"ळ",v:"व",s:"स",h:"ह"};
-                var k,h,g,f,e,d,b;var c="";var a=0;var j=0;l=l.replace(/\&quot;/g,"`");while(j<l.length){k=l.charAt(j-2);
-                h=l.charAt(j-1);g=l.charAt(j);f=l.charAt(j+1);e=l.charAt(j+2);d=l.charAt(j+3);b=l.charAt(j+4);
-                if(j==0&&m[g]){c+=m[g];j+=1}else{if(f=="h"&&n[g+f]){c+=n[g+f];if(e&&!m[e]&&f!="ṃ"){c+="्"
-                }j+=2}else{if(n[g]){c+=n[g];if(f&&!m[f]&&!m[g]&&g!="ṃ"){c+="्"}j++}else{if(g!="a"){if(a[h]||(h=="h"&&a[k])){c+="्"
-                }c+=g;j++;if(m[f]){c+=m[f];j++}}else{j++}}}}}if(a[g]){c+="्"}c=c.replace(/\`+/g,'"');
-                return c.slice(0, -1)
+              l = l.replace(/<.*?>/g, "");
+              l = l.toLowerCase() + " ";
+              var m = {a: " अ", i: " इ", u: " उ", "ā": " आ", "ī": " ई", "ū": " ऊ", e: " ए", o: " ओ"};
+              var n = {
+                  "ā": "ा",
+                  i: "ि",
+                  "ī": "ी",
+                  u: "ु",
+                  "ū": "ू",
+                  e: "े",
+                  o: "ो",
+                  "ṃ": "ं",
+                  k: "क",
+                  kh: "ख",
+                  g: "ग",
+                  gh: "घ",
+                  "ṅ": "ङ",
+                  c: "च",
+                  ch: "छ",
+                  j: "ज",
+                  jh: "झ",
+                  "ñ": "ञ",
+                  "ṭ": "ट",
+                  "ṭh": "ठ",
+                  "ḍ": "ड",
+                  "ḍh": "ढ",
+                  "ṇ": "ण",
+                  t: "त",
+                  th: "थ",
+                  d: "द",
+                  dh: "ध",
+                  n: "न",
+                  p: "प",
+                  ph: "फ",
+                  b: "ब",
+                  bh: "भ",
+                  m: "म",
+                  y: "य",
+                  r: "र",
+                  l: "ल",
+                  "ḷ": "ळ",
+                  v: "व",
+                  s: "स",
+                  h: "ह"
+              };
+              var k, h, g, f, e, d, b;
+              var c = "";
+              var a = 0;
+              var j = 0;
+              l = l.replace(/\&quot;/g, "`");
+              while (j < l.length) {
+                  k = l.charAt(j - 2);
+                  h = l.charAt(j - 1);
+                  g = l.charAt(j);
+                  f = l.charAt(j + 1);
+                  e = l.charAt(j + 2);
+                  d = l.charAt(j + 3);
+                  b = l.charAt(j + 4);
+                  if (j == 0 && m[g]) {
+                      c += m[g];
+                      j += 1
+                  } else {
+                      if (f == "h" && n[g + f]) {
+                          c += n[g + f];
+                          if (e && !m[e] && f != "ṃ") {
+                              c += "्"
+                          }
+                          j += 2
+                      } else {
+                          if (n[g]) {
+                              c += n[g];
+                              if (f && !m[f] && !m[g] && g != "ṃ") {
+                                  c += "्"
+                              }
+                              j++
+                          } else {
+                              if (g != "a") {
+                                  if (a[h] || (h == "h" && a[k])) {
+                                      c += "्"
+                                  }
+                                  c += g;
+                                  j++;
+                                  if (m[f]) {
+                                      c += m[f];
+                                      j++
+                                  }
+                              } else {
+                                  j++
+                              }
+                          }
+                      }
+                  }
+              }
+              if (a[g]) {
+                  c += "्"
+              }
+              c = c.replace(/\`+/g, '"');
+              return c.slice(0, -1)
           },
           toThai: function(m) {
-                m = m.replace(/<.*?>/g, "");
-                m=m.toLowerCase() + " ";var n={a:"1","ā":"1",i:"1","ī":"1","iṃ":"1",u:"1","ū":"1",e:"2",o:"2"};
-                var j={a:"อ","ā":"า",i:"ิ","ī":"ี","iṃ":"ึ",u:"ุ","ū":"ู",e:"เ",o:"โ","ṃ":"ํ",k:"ก",kh:"ข",g:"ค",gh:"ฆ","ṅ":"ง",c:"จ",ch:"ฉ",j:"ช",jh:"ฌ","ñ":"","ṭ":"ฏ","ṭh":"","ḍ":"ฑ","ḍh":"ฒ","ṇ":"ณ",t:"ต",th:"ถ",d:"ท",dh:"ธ",n:"น",p:"ป",ph:"ผ",b:"พ",bh:"ภ",m:"ม",y:"ย",r:"ร",l:"ล","ḷ":"ฬ",v:"ว",s:"ส",h:"ห"};
-                var a={k:"1",g:"1","ṅ":"1",c:"1",j:"1","ñ":"1","ṭ":"1","ḍ":"1","ṇ":"1",t:"1",d:"1",n:"1",p:"1",b:"1",m:"1",y:"1",r:"1",l:"1","ḷ":"1",v:"1",s:"1",h:"1"};
-                var l,h,g,f,e,d,b;var c="";var k=0;m=m.replace(/\&quot;/g,"`");while(k<m.length){l=m.charAt(k-2);
-                h=m.charAt(k-1);g=m.charAt(k);f=m.charAt(k+1);e=m.charAt(k+2);d=m.charAt(k+3);b=m.charAt(k+4);
-                if(n[g]){if(g=="o"||g=="e"){c+=j[g]+j.a;k++}else{if(k==0){c+=j.a}if(g=="i"&&f=="ṃ"){c+=j[g+f];
-                k++}else{if(g!="a"){c+=j[g]}}k++}}else{if(j[g+f]&&f=="h"){if(e=="o"||e=="e"){c+=j[e];
-                k++}c+=j[g+f];if(a[e]){c+="ฺ"}k=k+2}else{if(j[g]&&g!="a"){if(f=="o"||f=="e"){c+=j[f];
-                k++}c+=j[g];if(a[f]&&g!="ṃ"){c+="ฺ"}k++}else{if(!j[g]){c+=g;if(a[h]||(h=="h"&&a[l])){c+="ฺ"
-                }k++;if(f=="o"||f=="e"){c+=j[f];k++}if(n[f]){c+=j.a}}else{k++}}}}}if(a[g]){c+="ฺ"
-                }c=c.replace(/\`+/g,'"');return c.slice(0, -1);
+              m = m.replace(/<.*?>/g, "");
+              m = m.toLowerCase() + " ";
+              var n = {a: "1", "ā": "1", i: "1", "ī": "1", "iṃ": "1", u: "1", "ū": "1", e: "2", o: "2"};
+              var j = {
+                  a: "อ",
+                  "ā": "า",
+                  i: "ิ",
+                  "ī": "ี",
+                  "iṃ": "ึ",
+                  u: "ุ",
+                  "ū": "ู",
+                  e: "เ",
+                  o: "โ",
+                  "ṃ": "ํ",
+                  k: "ก",
+                  kh: "ข",
+                  g: "ค",
+                  gh: "ฆ",
+                  "ṅ": "ง",
+                  c: "จ",
+                  ch: "ฉ",
+                  j: "ช",
+                  jh: "ฌ",
+                  "ñ": "",
+                  "ṭ": "ฏ",
+                  "ṭh": "",
+                  "ḍ": "ฑ",
+                  "ḍh": "ฒ",
+                  "ṇ": "ณ",
+                  t: "ต",
+                  th: "ถ",
+                  d: "ท",
+                  dh: "ธ",
+                  n: "น",
+                  p: "ป",
+                  ph: "ผ",
+                  b: "พ",
+                  bh: "ภ",
+                  m: "ม",
+                  y: "ย",
+                  r: "ร",
+                  l: "ล",
+                  "ḷ": "ฬ",
+                  v: "ว",
+                  s: "ส",
+                  h: "ห"
+              };
+              var a = {
+                  k: "1",
+                  g: "1",
+                  "ṅ": "1",
+                  c: "1",
+                  j: "1",
+                  "ñ": "1",
+                  "ṭ": "1",
+                  "ḍ": "1",
+                  "ṇ": "1",
+                  t: "1",
+                  d: "1",
+                  n: "1",
+                  p: "1",
+                  b: "1",
+                  m: "1",
+                  y: "1",
+                  r: "1",
+                  l: "1",
+                  "ḷ": "1",
+                  v: "1",
+                  s: "1",
+                  h: "1"
+              };
+              var l, h, g, f, e, d, b;
+              var c = "";
+              var k = 0;
+              m = m.replace(/\&quot;/g, "`");
+              while (k < m.length) {
+                  l = m.charAt(k - 2);
+                  h = m.charAt(k - 1);
+                  g = m.charAt(k);
+                  f = m.charAt(k + 1);
+                  e = m.charAt(k + 2);
+                  d = m.charAt(k + 3);
+                  b = m.charAt(k + 4);
+                  if (n[g]) {
+                      if (g == "o" || g == "e") {
+                          c += j[g] + j.a;
+                          k++
+                      } else {
+                          if (k == 0) {
+                              c += j.a
+                          }
+                          if (g == "i" && f == "ṃ") {
+                              c += j[g + f];
+                              k++
+                          } else {
+                              if (g != "a") {
+                                  c += j[g]
+                              }
+                          }
+                          k++
+                      }
+                  } else {
+                      if (j[g + f] && f == "h") {
+                          if (e == "o" || e == "e") {
+                              c += j[e];
+                              k++
+                          }
+                          c += j[g + f];
+                          if (a[e]) {
+                              c += "ฺ"
+                          }
+                          k = k + 2
+                      } else {
+                          if (j[g] && g != "a") {
+                              if (f == "o" || f == "e") {
+                                  c += j[f];
+                                  k++
+                              }
+                              c += j[g];
+                              if (a[f] && g != "ṃ") {
+                                  c += "ฺ"
+                              }
+                              k++
+                          } else {
+                              if (!j[g]) {
+                                  c += g;
+                                  if (a[h] || (h == "h" && a[l])) {
+                                      c += "ฺ"
+                                  }
+                                  k++;
+                                  if (f == "o" || f == "e") {
+                                      c += j[f];
+                                      k++
+                                  }
+                                  if (n[f]) {
+                                      c += j.a
+                                  }
+                              } else {
+                                  k++
+                              }
+                          }
+                      }
+                  }
+              }
+              if (a[g]) {
+                  c += "ฺ"
+              }
+              c = c.replace(/\`+/g, '"');
+              return c.slice(0, -1);
           }
-    });
-</script>
+      });
+  </script>
 </dom-module>

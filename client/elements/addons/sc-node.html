@@ -3,79 +3,75 @@
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 
-<!-- Basic collapse item that is used in the Suttaplex to display descriptions of the main divisions and vaggas. -->
-
-
+<!--
+Basic collapse item that is used in the Suttaplex to display descriptions of the main divisions and vaggas.
+-->
 <dom-module id="sc-node">
-<template>
-<style is="custom-style">
-h1, h2, h3 {
-  margin: 0;
-}
-.node-head-container{
-    display:flex;
-    justify-content: space-between;
-    align-items: baseline;
-}
-.node-top-heading {
-  @apply --paper-font-headline;
-  @apply --sc-sans-font;
-}
-.node-secondary-heading {
-  @apply --paper-font-title;
-  @apply --sc-sans-font;
-}
-.node-description{
-  @apply --paper-font-body1;
-  @apply --sc-sans-font;
-}
-</style>
+  <template>
+    <style is="custom-style">
+      h1, h2, h3 {
+        margin: 0;
+      }
 
+      .node-head-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
 
-  <div class="node-head-container">
+      .node-top-heading {
+        @apply --paper-font-headline;
+        @apply --sc-sans-font;
+      }
+
+      .node-secondary-heading {
+        @apply --paper-font-title;
+        @apply --sc-sans-font;
+      }
+
+      .node-description {
+        @apply --paper-font-body1;
+        @apply --sc-sans-font;
+      }
+    </style>
+
+    <div class="node-head-container">
       <h1 class$="[[styleHeader]]">[[inputTitle]]</h1>
       <template is="dom-if" if="[[inputText]]">
-          <paper-icon-button icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
+        <paper-icon-button icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
       </template>
-  </div>
-  <template is="dom-if" if="[[inputText]]">
-    <iron-collapse id="collapse" opened="{{opened}}">
-      <div class="node-description" inner-h-t-m-l="[[inputText]]"></div> 
-    </iron-collapse>
+    </div>
+    <template is="dom-if" if="[[inputText]]">
+      <iron-collapse id="collapse" opened="{{opened}}">
+        <div class="node-description" inner-h-t-m-l="[[inputText]]"></div>
+      </iron-collapse>
+    </template>
+
   </template>
-
-</template>
-<script>
-    Polymer({
-      is: 'sc-node',
-      properties: {
-
-        inputTitle: String,
-        inputText: String,
-        styleHeader: String,
-
-
-        opened: {
-          type: Boolean,
-          reflectToAttribute: true,
-          notify: true
-        },
-
-        _toggleIcon: {
-          type: String,
-          computed: '_computeToggleIcon(opened)'
-        }
-      },
-
-      _computeToggleIcon: function(opened) {
-        return opened ? 'icons:expand-less' : 'icons:expand-more';
-      },
-
-      _toggleOpened: function(e) {
-          this.opened = !this.opened;
-          this.fire('toggle', this);
-        }
-
-    });
-</script>
+  <script>
+      Polymer({
+          is: 'sc-node',
+          properties: {
+              inputTitle: String,
+              inputText: String,
+              styleHeader: String,
+              opened: {
+                  type: Boolean,
+                  reflectToAttribute: true,
+                  notify: true
+              },
+              _toggleIcon: {
+                  type: String,
+                  computed: '_computeToggleIcon(opened)'
+              }
+          },
+          _computeToggleIcon: function(opened) {
+              return opened ? 'icons:expand-less' : 'icons:expand-more';
+          },
+          _toggleOpened: function(e) {
+              this.opened = !this.opened;
+              this.fire('toggle', this);
+          }
+      });
+  </script>
 </dom-module>

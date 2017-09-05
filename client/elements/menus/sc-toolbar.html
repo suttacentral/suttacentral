@@ -4,228 +4,260 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="more-menu.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
+<link rel="import" href="more-menu.html">
 <link rel="import" href="settings-menu.html">
 
-<!-- Base toolbar that appear on the top right in the header of every page. Not all items are shown on all pages
-This toolbar is called from the page-selector. -->
-<!-- Issues:
-    - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows the number 20 but it should show the correct search results instead.
-    - The paper badge has the annoying habbit of occasionally disappearing for no apparent reason. It seems that it calculates the position too far to the right so as to go off the screen. `this.$$('paper-badge').updatePosition();` does not seem to work to rectify this. It seems to also show this behavior here: https://github.com/PolymerElements/paper-badge/pull/12 and briefly show in the correct position but then disappear to the right.-->
-
+<!--
+Base toolbar that appear on the top right in the header of every page. Not all items are shown on all pages
+This toolbar is called from the page-selector.
+-->
+<!--
+Issues:
+  - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows
+    the number 20 but it should show the correct search results instead.
+  - The paper badge has the annoying habbit of occasionally disappearing for no apparent reason.
+    It seems that it calculates the position too far to the right so as to go off the screen.
+    `this.$$('paper-badge').updatePosition();` does not seem to work to rectify this. It seems to also
+    show this behavior here: https://github.com/PolymerElements/paper-badge/pull/12 and briefly show in
+    the correct position but then disappear to the right.
+-->
 <dom-module id="sc-toolbar">
-<template>
-<style is="custom-style">
-paper-icon-button {
-  color: white;
-}
-
-paper-menu-button {
-  --paper-menu-button-dropdown: {
-    max-width: 100%;
-    };
-}
-paper-input {
-  display:inline-block;
-  vertical-align: text-bottom;
-  --paper-input-container: {
-    padding: 0;
-  };
-  --paper-input-container-color: white;
-  --paper-input-container-focus-color: white;
-  --paper-input-container-label: {
-    color:white;
-    opacity: 0.6;
-  };
-  --paper-input-container-input: {
-    color:white;
-  };
-}
-paper-badge {
-  --paper-badge-background: var(--paper-green-a700);
-}
-#closebutton {
-  display: none;
-}
-
-#searchinput {
-  width: 0;
-  transition: width .2s cubic-bezier(.4,0,.2,1);
-}
-paper-dialog {
-  white-space: initial;
-}
-#dialog {
-  position:fixed;
-  top: 50px;
-  left: 50px;
-  max-width: 600px;
-}
-
-@media screen and (max-width: 840px) {
-    #dialog {
-      left: 0px;
-    };
-}
-
-h2{
-  @apply --paper-font-headline;
-  @apply --sc-sans-font;
-  margin: 0;
-}
-paper-dialog paper-icon-button {
-  color: var(--disabled-text-color);
-}
-
-.hidebutton {
-  display: none;
-}
-a {
-  text-decoration: none;
-}
-
-.search-open #discoursebutton, .search-open > #morevertbutton, .search-open > #settingsbutton {
-  display: none;
-}
-</style>
-<div id="toolsmenu">
-    <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
-    <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
-          <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
-          <paper-input label="Search" no-label-float id="searchinput"></paper-input>
-          <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
-
-          <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
-          <a href$="[[discourseLink]]" tabindex="-1" target="_blank"><paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button></a>
-          <paper-badge class$="[[toggleDisplay]]" for="discoursebutton" label="20" title="This text has 20 references"></paper-badge>
-
-          <!-- Settings-menu inside a dialog-box only appears on text-pages -->
-          <paper-icon-button id="settingsbutton" class$="[[toggleDisplay]]" icon="settings" on-click="openDialog"></paper-icon-button>
-
-        <paper-dialog id="dialog">
-          <div class="buttons">
-            <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
-          </div>
-          <h2>Tools and Information</h2>
-          <paper-dialog-scrollable>
-              <settings-menu meta-area="[[metaArea]]" disable-views="[[viewsDisabled]]"></settings-menu>
-          </paper-dialog-scrollable>
-        </paper-dialog>
-
-          <!-- Menu for more options like language and other static pages -->
-          <paper-menu-button horizontal-align="right" ignore-select id="morevertbutton">
-            <paper-icon-button icon="more-vert" slot="dropdown-trigger"></paper-icon-button>
-            <div slot="dropdown-content"></div>
-            <paper-listbox slot="dropdown-content" tabindex="0">
-                <more-menu input-language="[[inputLanguage]]"></more-menu>
-            </paper-listbox>
-          </paper-menu-button>
-</div>
-</template>
-<script>
-    Polymer({
-      is: 'sc-toolbar',
-      properties: {
-        inputLanguage: String,
-
-        // If suttaPath exists, it means that there is an author and that this is a text-page with 
-        // different elements showing.
-        suttaPath: {
-          type: String,
-          value: "",
-          notify: true
-        },
-        category: String,
-
-        // Currently not used option to disable certain views if they are not applicable on certain text pages.
-        viewsDisabled: {
-          type: Boolean,
-          value: false
-        },
-
-        // Value of the meta data of the text-pages that is passed onto the settings-menu dialog
-        metaArea: {
-          type: String,
-          notify: true
-        },
-
-       // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
-       // This should only be visible on text-pages.
-       toggleDisplay: {
-        type: String,
-        computed: '_computeClass(suttaPath)'
-       },
-
-       // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
-       // for that specific text.
-       discourseLink: {
-        type: String,
-        computed: '_computeDiscourseLink(suttaPath,category)'
-       }
-      },
-      _computeClass: function(suttaPath) {
-        // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
-        // Also determines visibility of settings-menu.
-        // These should only be visible on text-pages.
-        return (suttaPath) ? "" : "hidebutton";
-      },
-      _computeDiscourseLink: function(suttaPath,category) {
-       // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
-       // for that specific text.
-        return (suttaPath) ? 'https://discourse.suttacentral.net/search?q="'+category+' "' : "https://discourse.suttacentral.net/";
-      },
-      openSearch: function() {
-        // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
-        // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
-        if (this.$$('#searchinput').classList.contains('opened')) {
-          this.searchAction();
-        } else {
-            this.$$('#searchinput').classList.add('opened');
-            this.$$('#searchinput').focus();
-            this.$$('#closebutton').style.display='inline-block';
-            this.$$('#searchinput').value = '';
-            var searchSize = 500;
-            if (this.suttaPath) {searchSize = 540};
-            if (window.innerWidth < 1040) {
-              Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").setAttribute('style', "visibility:hidden")
-            };
-            if (window.innerWidth > 840) {
-                var searchWidth = window.innerWidth-searchSize;
-            } else  if (window.innerWidth > 480) {
-                var searchWidth = window.innerWidth-(searchSize-210);
-            } else {
-                this.$$("#toolsmenu").classList.add("search-open");
-                if (this.suttaPath) {searchSize = 500};
-                var searchWidth = window.innerWidth-(searchSize-320);
-            }
-            if (searchWidth > 360) {searchWidth = 360};
-            this.$$('.opened').style.width=searchWidth;
-          }
-      },
-      closeSearch: function() {
-        // Closes the searchbox and resets original values.
-        if (this.$$('#searchinput').classList.contains('opened')) {
-            this.$$('#searchinput').classList.remove('opened');
-            this.$$('#searchinput').removeAttribute('style', "width");
-            this.$$('#closebutton').style.display='none';
-            this.$$("#toolsmenu").classList.remove("search-open");
-            Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").removeAttribute('style', "display");
-          }
-      },
-      searchAction: function() {
-        // Fires the value of the search to the searchpages.
-        this.fire("search", this.$$("#searchinput").value);
-      },
-      openDialog: function() {
-        // Opens the paper-dialog box of the settings-menu.
-        this.$.dialog.open();
+  <template>
+    <style is="custom-style">
+      paper-icon-button {
+        color: white;
       }
-    });
 
-</script>
+      paper-menu-button {
+        --paper-menu-button-dropdown: {
+          max-width: 100%;
+        };
+      }
+
+      paper-input {
+        display: inline-block;
+        vertical-align: text-bottom;
+        --paper-input-container: {
+          padding: 0;
+        };
+        --paper-input-container-color: white;
+        --paper-input-container-focus-color: white;
+        --paper-input-container-label: {
+          color: white;
+          opacity: 0.6;
+        };
+        --paper-input-container-input: {
+          color: white;
+        };
+      }
+
+      paper-badge {
+        --paper-badge-background: var(--paper-green-a700);
+      }
+
+      #closebutton {
+        display: none;
+      }
+
+      #searchinput {
+        width: 0;
+        transition: width .2s cubic-bezier(.4, 0, .2, 1);
+      }
+
+      paper-dialog {
+        white-space: initial;
+      }
+
+      #dialog {
+        position: fixed;
+        top: 50px;
+        left: 50px;
+        max-width: 600px;
+      }
+
+      @media screen and (max-width: 840px) {
+        #dialog {
+          left: 0px;
+        }
+
+      ;
+      }
+
+      h2 {
+        @apply --paper-font-headline;
+        @apply --sc-sans-font;
+        margin: 0;
+      }
+
+      paper-dialog paper-icon-button {
+        color: var(--disabled-text-color);
+      }
+
+      .hidebutton {
+        display: none;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .search-open #discoursebutton, .search-open > #morevertbutton, .search-open > #settingsbutton {
+        display: none;
+      }
+    </style>
+    <div id="toolsmenu">
+      <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
+      <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
+      <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
+      <paper-input label="Search" no-label-float id="searchinput"></paper-input>
+      <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
+
+      <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
+      <a href$="[[discourseLink]]" tabindex="-1" target="_blank">
+        <paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button>
+      </a>
+      <paper-badge class$="[[toggleDisplay]]" for="discoursebutton" label="20"
+                   title="This text has 20 references"></paper-badge>
+
+      <!-- Settings-menu inside a dialog-box only appears on text-pages -->
+      <paper-icon-button id="settingsbutton" class$="[[toggleDisplay]]" icon="settings"
+                         on-click="openDialog"></paper-icon-button>
+
+      <paper-dialog id="dialog">
+        <div class="buttons">
+          <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
+        </div>
+        <h2>Tools and Information</h2>
+        <paper-dialog-scrollable>
+          <settings-menu meta-area="[[metaArea]]" disable-views="[[viewsDisabled]]"></settings-menu>
+        </paper-dialog-scrollable>
+      </paper-dialog>
+
+      <!-- Menu for more options like language and other static pages -->
+      <paper-menu-button horizontal-align="right" ignore-select id="morevertbutton">
+        <paper-icon-button icon="more-vert" slot="dropdown-trigger"></paper-icon-button>
+        <div slot="dropdown-content"></div>
+        <paper-listbox slot="dropdown-content" tabindex="0">
+          <more-menu input-language="[[inputLanguage]]"></more-menu>
+        </paper-listbox>
+      </paper-menu-button>
+    </div>
+  </template>
+  <script>
+      Polymer({
+          is: 'sc-toolbar',
+          properties: {
+              inputLanguage: String,
+
+              // If suttaPath exists, it means that there is an author and that this is a text-page with
+              // different elements showing.
+              suttaPath: {
+                  type: String,
+                  value: "",
+                  notify: true
+              },
+              category: String,
+
+              // Currently not used option to disable certain views if they are not applicable on certain text pages.
+              viewsDisabled: {
+                  type: Boolean,
+                  value: false
+              },
+
+              // Value of the meta data of the text-pages that is passed onto the settings-menu dialog
+              metaArea: {
+                  type: String,
+                  notify: true
+              },
+
+              // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
+              // This should only be visible on text-pages.
+              toggleDisplay: {
+                  type: String,
+                  computed: '_computeClass(suttaPath)'
+              },
+
+              // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
+              // for that specific text.
+              discourseLink: {
+                  type: String,
+                  computed: '_computeDiscourseLink(suttaPath,category)'
+              }
+          },
+          _computeClass: function(suttaPath) {
+              // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
+              // Also determines visibility of settings-menu.
+              // These should only be visible on text-pages.
+              return (suttaPath) ? "" : "hidebutton";
+          },
+          _computeDiscourseLink: function(suttaPath, category) {
+              // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
+              // for that specific text.
+              return (suttaPath) ? 'https://discourse.suttacentral.net/search?q="' + category + ' "' : "https://discourse.suttacentral.net/";
+          },
+          openSearch: function() {
+              // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
+              // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
+              if (this.$$('#searchinput').classList.contains('opened')) {
+                  this.searchAction();
+              } else {
+                  this.$$('#searchinput').classList.add('opened');
+                  this.$$('#searchinput').focus();
+                  this.$$('#closebutton').style.display = 'inline-block';
+                  this.$$('#searchinput').value = '';
+                  var searchSize = 500;
+                  if (this.suttaPath) {
+                      searchSize = 540
+                  }
+                  ;
+                  if (window.innerWidth < 1040) {
+                      Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").setAttribute('style', "visibility:hidden")
+                  }
+                  ;
+                  if (window.innerWidth > 840) {
+                      var searchWidth = window.innerWidth - searchSize;
+                  } else if (window.innerWidth > 480) {
+                      var searchWidth = window.innerWidth - (searchSize - 210);
+                  } else {
+                      this.$$("#toolsmenu").classList.add("search-open");
+                      if (this.suttaPath) {
+                          searchSize = 500
+                      }
+                      ;
+                      var searchWidth = window.innerWidth - (searchSize - 320);
+                  }
+                  if (searchWidth > 360) {
+                      searchWidth = 360
+                  }
+                  ;
+                  this.$$('.opened').style.width = searchWidth;
+              }
+          },
+          closeSearch: function() {
+              // Closes the searchbox and resets original values.
+              if (this.$$('#searchinput').classList.contains('opened')) {
+                  this.$$('#searchinput').classList.remove('opened');
+                  this.$$('#searchinput').removeAttribute('style', "width");
+                  this.$$('#closebutton').style.display = 'none';
+                  this.$$("#toolsmenu").classList.remove("search-open");
+                  Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").removeAttribute('style', "display");
+              }
+          },
+          searchAction: function() {
+              // Fires the value of the search to the searchpages.
+              this.fire("search", this.$$("#searchinput").value);
+          },
+          openDialog: function() {
+              // Opens the paper-dialog box of the settings-menu.
+              this.$.dialog.open();
+          }
+      });
+
+  </script>
 </dom-module>
