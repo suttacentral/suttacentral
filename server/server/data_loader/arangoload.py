@@ -31,6 +31,7 @@ def setup_database(conn, db_name):
         ('html_text', False),
         ('po_markup', False),
         ('po_strings', False),
+        ('uid_expansion', False),
         ('unicode_points', False),
         ('mtimes', False),
     ]
@@ -380,6 +381,20 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
                                  files_to_process=change_tracker.changed_or_new,
                                  force=False)
 
+def load_json_file(db, change_tracker, json_file):
+    if not change_tracker.is_file_new_or_changed(json_file):
+        return
+    collection_name = json_file.stem
+    
+    with json_file.open() as f:
+        data = json.load(f)
+    
+    if 'uid' in data[0]:
+        for d in data:
+            d['_key'] = d['uid']
+        db[collection_name].truncate()
+        db[collection_name].import_bulk(data)
+
 def run(force=False):
     """Runs data load.
 
@@ -394,6 +409,7 @@ def run(force=False):
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
+    misc_dir = data_dir / 'misc'
     po_dir = data_dir / 'po_text'
 
     db_name = current_app.config.get('ARANGO_DB')
@@ -404,8 +420,11 @@ def run(force=False):
 
     collect_data(data_dir, current_app.config.get('DATA_REPO'))
     collect_data(po_dir, current_app.config.get('PO_REPO'))
+    
 
     change_tracker = ChangeTracker(data_dir, db)
+    
+    load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
 
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
