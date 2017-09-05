@@ -14,3 +14,6 @@ cssselect==1.0.1
 GitPython==2.1.5
 Sphinx==1.6.3
 Faker==0.8.1
+langid==1.1.6
+colorama==0.3.7
+elasticsearch==5.4.0

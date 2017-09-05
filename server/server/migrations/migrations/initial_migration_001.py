@@ -1,18 +1,10 @@
 from migrations.base import Migration
-from common.arangodb import get_client, get_db
-from flask import current_app
+from common.arangodb import get_db
 
 
 class InitialMigration(Migration):
     migration_id = 'initial_migration_001'
-    tasks = ['create_db', 'create_collections']
-
-    def create_db(self):
-        conn = get_client()
-        db_name = current_app.config.get('ARANGO_DB')
-
-        if db_name not in conn.databases():
-            conn.create_database(db_name)
+    tasks = ['create_collections']
 
     def create_collections(self):
         db = get_db()

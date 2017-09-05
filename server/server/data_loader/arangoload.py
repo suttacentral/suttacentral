@@ -100,7 +100,7 @@ def update_data(repo: Repo):
     Args:
         repo: Git data repo.
     """
-    logging.info(f'Updating repo in {repo.working_dir}')
+    print(f'Updating repo in {repo.working_dir}')
     if 'origin' not in [r.name for r in repo.remotes]:
         repo.create_remote('origin', current_app.config.get('DATA_REPO'))
     repo.remotes.origin.fetch('+refs/heads/*:refs/remotes/origin/*')
@@ -117,7 +117,7 @@ def get_data(data_dir: Path) -> Repo:
         Cloned repo.
     """
     repo_addr = current_app.config.get('DATA_REPO')
-    logging.info(f'Cloning the repo: {repo_addr}')
+    print(f'Cloning the repo: {repo_addr}')
     return Repo.clone_from(repo_addr, data_dir)
 
 

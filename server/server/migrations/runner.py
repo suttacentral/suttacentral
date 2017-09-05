@@ -3,7 +3,7 @@ import os
 from inspect import getmembers, isclass
 from pathlib import Path
 
-from arango.exceptions import CollectionCreateError, DatabaseCreateError
+from arango.exceptions import CollectionCreateError
 
 from app import app
 from common.arangodb import get_client, get_db
@@ -88,10 +88,8 @@ def _ensure_sutta_db_exists():
     """
     Creates db if it does not exists yet.
     """
-    client = get_client()
+    conn = get_client()
     db_name = app.config.get('ARANGO_DB')
-    try:
-        client.create_database(db_name)
-    except DatabaseCreateError as e:
-        if '[ERR 1207] duplicate name' not in str(e):
-            raise e
+
+    if db_name not in conn.databases():
+        conn.create_database(db_name)

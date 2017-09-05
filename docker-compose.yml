@@ -57,7 +57,7 @@ services:
       application: 'sc-elasticsearch'
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    mem_limit: 1g
+    mem_limit: 2g
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
     ports:
