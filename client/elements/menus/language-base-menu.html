@@ -2,9 +2,10 @@
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../styles/language-styles.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+
+<link rel="import" href="../../styles/language-styles.html">
 
 <!-- This is the base language menu that determines the language of all pages. 
 Dropdown inside the toolbar more-vert-menu.
@@ -21,8 +22,8 @@ paper-dropdown-menu, paper-listbox {
 }
 
 paper-item {
-    @apply --sc-sans-font;
-    text-transform: capitalize;
+  @apply(--sc-sans-font);
+  text-transform: capitalize;
 }
 
 </style>
@@ -35,9 +36,11 @@ paper-item {
 
 	<paper-dropdown-menu class="custom" label="Language" title="Select the site in another language">
 	  <paper-listbox slot="dropdown-content" selected="{{languageSelectedNr}}">
-	  <template is="dom-repeat" items="[[languageChoice]]" as="language">
-	    	  <paper-item id$="[[language.uid]]">[[language.name]]</paper-item>
-	    </template>
+      <template is="dom-repeat" items="[[languageChoice]]" as="language">
+        <paper-item id='[[language.uid]]'>
+          <paper-item-body>[[language.name]]</paper-item-body>
+        </paper-item>
+      </template>
 	  </paper-listbox>
            <app-localstorage-document key="languageSelectedNr" data="{{languageSelectedNr}}"></app-localstorage-document>
 	</paper-dropdown-menu>
