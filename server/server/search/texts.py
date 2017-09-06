@@ -3,11 +3,12 @@ import regex
 import logging
 import lxml.html
 from elasticsearch.helpers import scan
-import search
 from search import uid_expansion
-from search.util import unique, numericsortkey
+from search.util import unique
 
 from search.indexer import ElasticIndexer
+from common.arangodb import get_db
+from common.queries import TEXTS_BY_LANG
 
 logger = logging.getLogger('search.texts')
 
@@ -19,9 +20,9 @@ class TextIndexer(ElasticIndexer):
     htmlparser = lxml.html.HTMLParser(encoding='utf8')
     numstriprex = regex.compile(r'(?=\S*\d)\S+')
 
-    def __init__(self, config_name, lang_dir):
-        self.lang_dir = lang_dir
-        super().__init__(config_name)
+    def __init__(self, lang):
+        self.lang = lang
+        super().__init__(lang)
 
     def fix_text(self, string):
         """ Removes repeated whitespace and numbers.
@@ -97,17 +98,21 @@ class TextIndexer(ElasticIndexer):
                 boost = boost * 0.4
         return boost
 
-    def yield_docs_from_dir(self, lang_dir, size, to_add=None, to_delete=None):
-        lang_uid = lang_dir.stem
-        files = sorted(lang_dir.glob('**/*.html'), key=lambda s: numericsortkey(s.stem))
+    def yield_docs_from_dir(self, lang, size, to_add=None, to_delete=None):
+        db = get_db()
+        html_texts = db.aql.execute(
+            TEXTS_BY_LANG,
+            bind_vars={'lang': lang}
+        )
+
         chunk = []
         chunk_size = 0
         if to_delete:
             yield ({"_op_type": "delete", "_id": uid}
                    for uid in to_delete)
 
-        for i, file in enumerate(files):
-            uid = file.stem
+        for i, text in enumerate(html_texts):
+            uid = text['uid']
             if uid not in to_add and uid not in to_delete:
                 continue
             try:
@@ -115,9 +120,9 @@ class TextIndexer(ElasticIndexer):
                     '_id': uid,
                 }
                 if uid in to_add:
-                    with file.open('rb') as f:
-                        htmlbytes = f.read()
-                    chunk_size += len(htmlbytes) + 512
+
+                    html_bytes = bytes(text['text'])
+                    chunk_size += len(html_bytes) + 512
                     subdivision = division = None
 
                     parts = file.relative_to(lang_dir).parent.parts
@@ -127,15 +132,10 @@ class TextIndexer(ElasticIndexer):
                             root_lang = parts[0]
                             parts = parts[1:]
                         else:
-                            root_lang = lang_uid
+                            root_lang = lang
 
                     else:
                         root_lang = None
-
-                    if len(parts) > 0:
-                        pitaka = parts[0]
-                    else:
-                        pitaka = None
 
                     subdivision = None
                     if len(parts) > 1:
@@ -151,15 +151,15 @@ class TextIndexer(ElasticIndexer):
                         'uid': uid,
                         'division': division,
                         'subdivision': subdivision,
-                        'lang': lang_uid,
+                        'lang': lang,
                         'root_lang': root_lang,
-                        'is_root': lang_uid == root_lang,
-                        'mtime': int(file.stat().st_mtime)
+                        'is_root': lang == root_lang,
+                        'mtime': int(text['mtime'])
                     })
 
-                    action.update(self.extract_fields_from_html(htmlbytes))
+                    action.update(self.extract_fields_from_html(html_bytes))
             except (ValueError, IndexError) as e:
-                logger.exception('{!s}'.format(file))
+                logger.exception(f'{text["uid"]}, {e}')
 
             chunk.append(action)
             if chunk_size > size:
@@ -209,23 +209,25 @@ class TextIndexer(ElasticIndexer):
         logger.info(
             "For index {} ({}), {} files already indexed, {} files to be added, {} files to be deleted".format(
                 self.index_name, self.index_alias, len(stored_mtimes), len(to_add), len(to_delete)))
-        chunks = self.yield_docs_from_dir(self.lang_dir, size=500000, to_add=to_add,
+        chunks = self.yield_docs_from_dir(self.lang, size=500000, to_add=to_add,
                                           to_delete=to_delete)
         self.process_chunks(chunks)
 
 
 def update(force=False):
     def sort_key(d):
-        if d.stem == 'en':
+        if d == 'en':
             return 0
-        if d.stem == 'pi':
+        if d == 'pi':
             return 1
         return 10
 
-    lang_dirs = sorted(sorted(search.text_dir.glob('*')), key=sort_key)
+    db = get_db()
+    languages = sorted(db.aql.execute('FOR l IN language RETURN l.uid'), key=sort_key)
+    print(languages)
 
-    for lang_dir in lang_dirs:
-        print(lang_dir)
-        if lang_dir.is_dir():
-            indexer = TextIndexer(lang_dir.stem, lang_dir)
-            indexer.update()
+    # lang_dirs = sorted(sorted(search.text_dir.glob('*')), key=sort_key)
+
+    for lang in languages:
+        indexer = TextIndexer(lang)
+        indexer.update()
