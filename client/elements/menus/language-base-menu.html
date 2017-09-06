@@ -5,84 +5,97 @@
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
-<link rel="import" href="../../styles/language-styles.html">
-
-<!-- This is the base language menu that determines the language of all pages. 
-Dropdown inside the toolbar more-vert-menu.
-The last chosen language is remembered through app-localstorage -->
-
+<!--
+This is the base language menu that determines the language of all pages. Dropdown inside the toolbar more-vert-menu.
+The last chosen language is remembered through app-localstorage.
+-->
 <dom-module id="language-base-menu" attributes="Language">
-<template>
-<style is="custom-style" include="language-styles">
-:host {
-  --primary-color: var(--sc-gold-500);
-}
-paper-dropdown-menu, paper-listbox {
-    width: 200px;
-}
+  <template>
 
-paper-item {
-  @apply --sc-sans-font;
-  text-transform: capitalize;
-}
+    <style is="custom-style" include="language-styles">
+      :host {
+        --primary-color: var(--sc-gold-500);
+      }
 
-</style>
+      paper-dropdown-menu, paper-listbox {
+        width: 200px;
+      }
+
+      paper-item {
+        @apply --sc-sans-font;
+        text-transform: capitalize;
+      }
+
+      .iso-code {
+        color: var(--secondary-text-color);
+        @apply --paper-font-caption;
+        @apply --sc-sans-font;
+        position: absolute;
+        right: 20px;
+        text-transform: none;
+      }
+
+    </style>
+
     <iron-ajax
-          auto
-          url='api/languages'
-          handle-as="json"
-          last-response="{{languageChoice}}"
-          on-response="_didRespond"></iron-ajax>
+        auto
+        url='api/languages'
+        handle-as="json"
+        last-response="{{languageChoice}}"
+        on-response="computeNewLanguage"></iron-ajax>
 
-	<paper-dropdown-menu class="custom" label="Language" title="Select the site in another language">
-	  <paper-listbox slot="dropdown-content" selected="{{languageSelectedNr}}">
-      <template is="dom-repeat" items="[[languageChoice]]" as="language">
-        <paper-item id='[[language.uid]]'>
-          <paper-item-body>[[language.name]]</paper-item-body>
-        </paper-item>
-      </template>
-	  </paper-listbox>
-           <app-localstorage-document key="languageSelectedNr" data="{{languageSelectedNr}}"></app-localstorage-document>
-	</paper-dropdown-menu>
+    <paper-dropdown-menu class="custom" label="Language" title="Select the site in another language">
+      <paper-listbox slot="dropdown-content" selected="{{languageSelectedNr}}">
+        <template is="dom-repeat" items="{{languageChoice}}" as="language">
+          <paper-item id='[[language.uid]]' data-name='[[language.iso_code]]'>
+            <paper-item-body>[[language.name]]</paper-item-body>
+            <div class="iso-code">[[language.iso_code]]</div>
+          </paper-item>
+        </template>
+      </paper-listbox>
+      <app-localstorage-document key="languageSelectedNr" data="{{languageSelectedNr}}"></app-localstorage-document>
+    </paper-dropdown-menu>
 
-</template>
+  </template>
 
-<script>
-    Polymer({
-        is: 'language-base-menu',
-
-        properties: {
-          languageChoice: {
-            type: Array,
-            notify: true,
-            value: function(){return []}
-          },
-          languageSelectedNr: {
-            type: Number,
-            value: 0,
-            notify: true
+  <script>
+      class LanguageBaseMenu extends Polymer.Element {
+          static get is() {
+              return 'language-base-menu'
           }
-    	},
-      observers: [
-          '_computeNewLanguage(languageSelectedNr,languageChoice)'
-      ],
-      _didRespond: function(e) {
-        // When array with language options is loaded, it will compute the equivalent language code.
-        this._computeNewLanguage(this.languageSelectedNr,e.detail.response);
-      },
-        _passNewLanguageSelected: function(selectedLanguage) {
-          // Pass chosen language code on to main page sc-navdrawer.html
-          this.fire('languageSelection',{Language:selectedLanguage});
-        },
-        _computeNewLanguage: function(languageSelectedNr,languageChoice) {
+
+          static get properties() {
+              return {
+                  languages: {
+                      type: Array,
+                      notify: true,
+                      value: () => []
+                  },
+                  selectedLanguageNr: {
+                      type: Number,
+                      value: 0,
+                      notify: true,
+                      observer: '_languageChanged'
+                  }
+              };
+          }
+
           // Will compute the equivalent language code to the chosen language.
-          if (languageChoice[languageSelectedNr]) {
-            this._passNewLanguageSelected(languageChoice[languageSelectedNr].id);
-            } else {
-            this._passNewLanguageSelected("en");
+          computeNewLanguage(e) {
+              const languageChoice = e.detail.response;
+              if (languageChoice[this.selectedLanguageNr]) {
+                  this.passNewLanguageSelected(languageChoice[this.selectedLanguageNr].id);
+              } else {
+                  this.passNewLanguageSelected("en");
+              }
           }
-        }
-    });
 
-</script>
+          // Pass chosen language code on to main page sc-navdrawer.html
+          passNewLanguageSelected(selectedLanguage) {
+              this.dispatchEvent(new Event('languageSelection', {Language: selectedLanguage}));
+          }
+      }
+
+      customElements.define(LanguageBaseMenu.is, LanguageBaseMenu);
+  </script>
 </dom-module>
