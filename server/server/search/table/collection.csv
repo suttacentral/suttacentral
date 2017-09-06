@@ -1,0 +1,27 @@
+uid,language,sect_uid,pitaka_uid,name,abbrev_name
+pi-su,pi,,su,Pāli Suttas,P S
+lzh-su,lzh,,su,Chinese Sūtras,C S
+skt-su,skt,,su,Sanskrit Texts,Skt S
+bo-su,bo,,su,Tibetan Texts,Tib
+pr-su,pr,,su,Prākrit Sutras, Pr S
+gr-su,gr,,su,Gāndhārī Sutras, Gr S
+oth-su,oth,,su,Other Texts,Other
+pi-tv-vi,pi,tv,vi,Pāli Theravāda Vinaya,P ? V
+lzh-mg-vi,lzh,mg,vi,Chinese Mahāsaṅghika Vinaya,C ? V
+lzh-mi-vi,lzh,mi,vi,Chinese Mahīśāsaka Vinaya,C ? V
+lzh-dg-vi,lzh,dg,vi,Chinese Dharmaguptaka Vinaya,C ? V
+lzh-sarv-vi,lzh,sarv,vi,Chinese Sarvāstivāda Vinaya,C ? V
+lzh-mu-vi,lzh,mu,vi,Chinese Mūlasarvāstivāda Vinaya,C ? V
+lzh-oth-vi,lzh,other,vi,Other Chinese Vinaya,Other C V
+skt-mg-vi,skt,mg,vi,Sanskrit Mahāsaṅghika Vinaya,Skt ? V
+skt-lo-vi,skt,lo,vi,Sanskrit Lokuttaravāda Vinaya,Skt ? V
+skt-sarv-vi,skt,sarv,vi,Sanskrit Sarvāstivāda Vinaya,Skt ? V
+skt-mu-vi,skt,mu,vi,Sanskrit Mūlasarvāstivāda Vinaya,Skt ? V
+skt-oth-vi,skt,other,vi,Other Sanskrit Vinaya,
+bo-mu-vi,bo,mu,vi,Tibetan Mūlasarvāstivāda Vinaya,Tib ? V
+gr-vi,gr,,vi,Vinaya Fragments, Gr ? V
+gr-dg-vi,gr,dg,vi,Gandhari Dharmaguptaka Vinaya, Gr Dg Vi
+pi-tv-ab,pi,tv,ab,Pāli Theravāda Abhidhamma,P ? A
+lzh-sarv-ab,lzh,sarv,ab,Chinese Sarvāstivāda Abhidharma,C ? A
+lzh-dg-ab,lzh,dg,ab,Chinese Dharmaguptaka Abhidharma,C ? A
+skt-sarv-ab,skt,sarv,ab,Sanskrit Sarvāstivāda Abhidharma,Skt ? A

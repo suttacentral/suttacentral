@@ -1,0 +1,48 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "russian_stop": {
+                    "type":             "stop",
+                    "stopwords":    "_russian_" 
+                },
+                "russian_keywords": {
+                    "type":             "keyword_marker",
+                    "keywords":     [] 
+                },
+                "russian_stemmer": {
+                    "type":             "stemmer",
+                    "language":     "russian"
+                }
+            },
+            "analyzer": {
+                "ru": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "russian_stop",
+                        "russian_keywords",
+                        "russian_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "ru"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

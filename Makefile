@@ -132,4 +132,6 @@ test:
 
 load_data:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
+index_elasticsearch:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"
 

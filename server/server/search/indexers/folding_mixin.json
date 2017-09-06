@@ -1,0 +1,32 @@
+{
+    "index": {
+        "mappings": {
+            "text": {
+                "properties": {
+                    "content": {
+                        "fields": {
+                            "folded": {
+                                "type": "text",
+                                "term_vector": "with_positions_offsets",
+                                "analyzer": "folding_analyzer"
+                            }
+                        }
+                    }
+                }
+            },
+            "definition": {
+                "properties": {
+                    "content": {
+                        "fields": {
+                            "folded": {
+                                "type": "text",
+                                "term_vector": "with_positions_offsets",
+                                "analyzer": "folding_analyzer"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

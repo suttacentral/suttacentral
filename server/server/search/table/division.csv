@@ -1,0 +1,157 @@
+uid,collection_uid,name,alt_name,acronym,subdiv_ind,menu_gwn_ind
+dn,pi-su,Dīgha Nikāya,,DN,,
+mn,pi-su,Majjhima Nikāya,,MN,,
+sn,pi-su,Saṃyutta Nikāya,,SN,1,
+an,pi-su,Aṅguttara Nikāya,,AN,1,
+kn,pi-su,Khuddaka Nikāya,,KN,1,
+da,lzh-su,Dīrghāgama,,DA [T 1],,
+da-ot,lzh-su,Other Dīrgha Sūtras,,T 2–25,,
+ma,lzh-su,Madhyamāgama,,MA [T 26],,
+ma-ot,lzh-su,Other Madhyama Sūtras,,T 27–98,,
+sa,lzh-su,Saṃyuktāgama (1st),,SA [T 99],1,
+sa-2,lzh-su,Saṃyuktāgama (2nd),,SA2 [T 100],,
+sa-3,lzh-su,Saṃyuktāgama (3rd),,SA3 [T 101],,
+sa-ot,lzh-su,Other Saṃyukta Sūtras,,T 102–124,,
+ea,lzh-su,Ekottarikāgama (1st),,EA [T 125],1,
+ea-2,lzh-su,Ekottarikāgama (2nd),,EA2 [T 150A],,
+ea-ot,lzh-su,Other Ekottarika Sūtras,,"T 126–149, 150B, 151",,
+#oa,lzh-su,Other Āgama Sūtras,,T,1,
+lzh-ja,lzh-su,Jātaka,,T 152–219,,
+lzh-dhp,lzh-su,Dharmapada,,,,
+lzh-nbs,lzh-su,Nāgasena Bhikṣu Sūtra,,T 1670b,,
+lzh-ssnp,lzh-su,Sūtrasannipāta,,T 499–802,,
+lzh-paritta,lzh-su,Paritta,,T 1245 T1362,,
+lzh-svk,lzh-su,Sūtravyākaraṇa,,T 1507–T1521,,
+arv,skt-su,Arthaviniścaya,,Arv,,
+avs,skt-su,Avadānaśataka,,Avs,,
+divy,skt-su,Divyāvadāna,,Divy,,
+lal,skt-su,Lalitavistara,,Lal,,
+uv,skt-su,Udānavarga,,UV,,
+mkv,skt-su,Mahākarmavibhaṅga,,Mkv,,
+sht,skt-su,SHT fragments,,SHT,,
+sf,skt-su,Other Fragments,,SF,,
+dq,bo-su,Derge / Peking editions,,D / Q,,
+up,bo-su,Upāyikā,Abhidharma­kośa­ṭīk­opāyikā,Up,,
+tc,bo-su,Critical editions,,Tib ed,,
+kf,oth-su,Khotanese fragments,,Khot frgm,,
+uf,oth-su,Uighur fragments,,Uigh frgm,,
+pdhp,pr-su,Patna Dharmapada,,P-Dhp,,
+pf,pr-su,Prākrit fragments,,Prak frgm,,
+gdhp,gr-su,Gāndhārī Dharmapada,,G-Dhp,,
+gf,gr-su,Gāndhārī fragments,,Gandh frgm,,
+,,,,,,
+# Vinaya Divisions,,,,,,
+pi-tv-bu-vb,pi-tv-vi,Bhikkhu Vibhaṅga,,,,1
+pi-tv-bi-vb,pi-tv-vi,Bhikkhunī Vibhaṅga,,,,1
+pi-tv-kd,pi-tv-vi,Khandhaka,,,,1
+pi-tv-pvr,pi-tv-vi,Parivāra,,,,1
+pi-tv-pvr-bu,pi-tv-vi,(Bhikkhu Parivāra),,,,1
+pi-tv-pvr-bi,pi-tv-vi,(Bhikkhunī Parivāra),,,,
+pi-tv-bu-pm,pi-tv-vi,Bhikkhu Pātimokkha,,,,
+pi-tv-bi-pm,pi-tv-vi,Bhikkhunī Pātimokkha,,,,
+lzh-mg-bu-vb,lzh-mg-vi,Bhikkhu Vibhaṅga,,,,1
+lzh-mg-bu-pn,lzh-mg-vi,Bhikkhu Pakiṇṇaka,,,,1
+lzh-mg-bu-pn-kd,lzh-mg-vi,(Khandhaka),,,,1
+lzh-mg-asc,lzh-mg-vi,Abhisamācārika,,,,1
+lzh-mg-bi-vb,lzh-mg-vi,Bhikkhunī Vibhaṅga,,,,1
+lzh-mg-bi-pn,lzh-mg-vi,Bhikkhunī Pakiṇṇaka,,,,
+lzh-mg-bu-pm,lzh-mg-vi,Bhikkhu Pātimokkha,,,,
+lzh-mg-bi-pm,lzh-mg-vi,Bhikkhunī Pātimokkha,,,,
+sariputrapariprccha,lzh-mg-vi,Śāriputraparipṛcchā,,,,
+lzh-mi-bu-vb,lzh-mi-vi,Bhikkhu Vibhaṅga,,,,1
+lzh-mi-bi-vb,lzh-mi-vi,Bhikkhunī Vibhaṅga,,,,1
+lzh-mi-kd,lzh-mi-vi,Khandhaka,,,,1
+lzh-mi-vs,lzh-mi-vi,Saṁyutta,,,,
+lzh-mi-bu-pm,lzh-mi-vi,Bhikkhu Pātimokkha,,,,
+lzh-mi-bi-pm,lzh-mi-vi,Bhikkhunī Pātimokkha,,,,
+lzh-mi-bu-kammavaca,lzh-mi-vi,Bhikkhu Kammavācā,,,,1
+lzh-dg-bu-vb,lzh-dg-vi,Bhikkhu Vibhaṅga,,,,1
+lzh-dg-bi-vb,lzh-dg-vi,Bhikkhunī Vibhaṅga,,,,1
+lzh-dg-kd,lzh-dg-vi,Khandhaka,,,,1
+lzh-dg-vs,lzh-dg-vi,Saṁyutta,,,,1
+lzh-dg-ve,lzh-dg-vi,Ekottara,,,,
+lzh-dg-bu-pm,lzh-dg-vi,Bhikkhu Pātimokkha (1st),,,,
+lzh-dg-bu-pm-2,lzh-dg-vi,Bhikkhu Pātimokkha (2nd),,,,
+lzh-dg-bi-pm,lzh-dg-vi,Bhikkhunī Pātimokkha,,,,
+lzh-dg-bu-kammavaca,lzh-dg-vi,Bhikkhu Kammavācā (1st),,,,
+lzh-dg-bu-kammavaca-2,lzh-dg-vi,Bhikkhu Kammavācā (2nd),,,,
+lzh-dg-bi-kammavaca,lzh-dg-vi,Bhikkhunī Kammavācā,,,,
+lzh-sarv-bu-vb,lzh-sarv-vi,Bhikkhu Vibhaṅga,,,,1
+lzh-sarv-kd,lzh-sarv-vi,Khandhaka,,,,1
+lzh-sarv-bi-vb,lzh-sarv-vi,Bhikkhunī Vibhaṅga,,,,1
+lzh-sarv-ve,lzh-sarv-vi,Ekottara,,,,1
+lzh-sarv-upali,lzh-sarv-vi,Upāliparipucchā,,,,1
+lzh-sarv-ba,lzh-sarv-vi,Bhikkhu Ajjhāya,,,,
+lzh-sarv-bu-pm,lzh-sarv-vi,Bhikkhu Pātimokkha (1st),,,,
+lzh-sarv-bu-pm-2,lzh-sarv-vi,Bhikkhu Pātimokkha (2nd),,,,
+lzh-sarv-bi-pm,lzh-sarv-vi,Bhikkhunī Pātimokkha,,,,
+lzh-sarv-bi-pm-dh,lzh-sarv-vi,Bhikkhunī Pātimokkha (Dunhaung),,,,
+lzh-sarv-bu-kammavaca,lzh-sarv-vi,Bhikkhu Kammavācā (1st),,,,
+lzh-sarv-bu-kammavaca-2,lzh-sarv-vi,Bhikkhu Kammavācā (2nd),,,,
+lzh-sarv-matika,lzh-sarv-vi,Mātikā,,,,
+lzh-mu-bu-vb,lzh-mu-vi,Bhikkhu Vibhaṅga,,,,1
+lzh-mu-bi-vb,lzh-mu-vi,Bhikkhunī Vibhaṅga,,,,1
+lzh-mu-kd,lzh-mu-vi,Khandhaka,,,,1
+lzh-mu-khuddakavatthu,lzh-mu-vi,Khuddakavatthu,,,,
+lzh-mu-bu-pm,lzh-mu-vi,Bhikkhu Pātimokkha,,,,
+lzh-mu-bi-pm,lzh-mu-vi,Bhikkhunī Pātimokkha,,,,
+lzh-mu-bu-kammavaca,lzh-mu-vi,Bhikkhu Kammavācā,,,,
+ot,lzh-mu-vi,Other,,,,
+lzh-ka-bu-pm,lzh-oth-vi,Kāśyapīya Bhikkhu Pātimokkha,,,,
+lzh-upali-bu,lzh-oth-vi, Upāliparipṛcchā (T1466),,,,
+sammitiya-sastra,lzh-oth-vi,Saṁmitīya Śāstra,,,,
+pariprccha,lzh-oth-vi,Upāliparipṛcchā,,,,
+other-matika,lzh-oth-vi,Mātikā,,,,
+gr-dg-bu-pm,gr-dg-vi,Bhikkhu Pātimokkha,,,,
+gr-pm-bf13,gr-vi,Bhikkhu Pātimokkha,,,,
+skt-mg-bu-pm,skt-mg-vi,Bhikkhu Pātimokkha,,,,
+skt-lo-bi-nidana,skt-lo-vi,Nidāna,,,,1
+skt-lo-bi-vb,skt-lo-vi,Bhikkhunī Vibhaṅga,,,,1
+skt-lo-bi-pn,skt-lo-vi,Bhikkhunī Pakiṇṇaka,,,,1
+skt-lo-bu-pn,skt-lo-vi,Bhikkhu Pakiṇṇaka,,,,
+skt-lo-bu-pm,skt-lo-vi,Bhikkhu Pātimokkha,,,,
+skt-lo-asc,skt-lo-vi,Abhisamācārika,,,,
+skt-lo-mvu,skt-lo-vi,Mahāvastu,,,,
+skt-sarv-bu-pm-tf11,skt-sarv-vi,Bhikkhu Pātimokkha (Turfan 11),,,,
+skt-sarv-bu-pm-finot,skt-sarv-vi,Bhikkhu Pātimokkha (Finot),,,,
+skt-sarv-bi-vb,skt-sarv-vi,Bhikkhunī Vibhaṅga,,,,
+skt-sarv-bi-pm,skt-sarv-vi,Bhikkhunī Pātimokka,,,,
+skt-sarv-bu-kammavaca,skt-sarv-vi,Bhikkhu Kammavācā,,,,
+skt-sarv-bi-kammavaca,skt-sarv-vi,Bhikkhunī Kammavācā,,,,
+skt-mu-kd,skt-mu-vi,Khandhaka,,,,
+skt-mu-bu-pm-gbm3,skt-mu-vi,Bhikkhu Pātimokkha (Gilgit 3),,,,
+skt-mu-bu-pm-gbm2,skt-mu-vi,Bhikkhu Pātimokkha (Gilgit 2),,,,
+skt-mu-bu-kammavaca,skt-mu-vi,Bhikkhu Kammavācā,,,,
+skt-mu-mpt-bu-pm,skt-mu-vi,Mahāvyutpatti,,,,1
+skt-bu-pm-qizil,skt-oth-vi,Bhikkhu Pātimokkha (Qizil),,,,1
+bo-mu-kd,bo-mu-vi,Khandhaka,,,,1
+bo-mu-bu-pm,bo-mu-vi,Bhikkhu Pātimokkha,,,,1
+bo-mu-bu-vb,bo-mu-vi,Bhikkhu Vibhaṅga,,,,1
+bo-mu-bi-pm,bo-mu-vi,Bhikkhunī Pātimokkha,,,,1
+bo-mu-bi-vb,bo-mu-vi,Bhikkhunī Vibhaṅga,,,,1
+bo-mu-khuddakavatthu,bo-mu-vi,Khuddakavatthu,,,,1
+bo-mu-uttaragantha,bo-mu-vi,Uttaragantha (1st),,,,1
+bo-mu-uttaragantha-2,bo-mu-vi,Uttaragantha (2nd),,,,
+bo-mu-bu-kammavaca,bo-mu-vi,Bhikkhu Kammavācā,,,,
+#Misc Vinaya,,,,,,
+lzh-sarv-vi-misc,lzh-sarv-vi,Miscellaneous,,,,1
+,,,,,,
+# Abhidhamma Divisions,,,,,,
+ds,pi-tv-ab,Dhammasaṅgaṇī,,,,
+vb,pi-tv-ab,Vibhaṅga,,,,
+dt,pi-tv-ab,Dhātukathā,,,,
+pp,pi-tv-ab,Puggalapaññatti,,,,
+kv,pi-tv-ab,Kathāvatthu,,,,
+ya,pi-tv-ab,Yamaka,,,,
+patthana,pi-tv-ab,Paṭṭhāna,,,,
+sangitiparyaya,lzh-sarv-ab,Saṅgītiparyāya,,,,
+lzh-dharmaskandha,lzh-sarv-ab,Dharmaskandha,,,,
+prajnaptisastra,lzh-sarv-ab,Prajnaptiśāstra,,,,
+dhatukaya,lzh-sarv-ab,Dhātukāya,,,,
+vijnanakaya,lzh-sarv-ab,Vijnānakāya,,,,
+prakaranapada,lzh-sarv-ab,Prakaraṇapada,,,,
+jnanaprasthana,lzh-sarv-ab,Jnānaprasthāna,,,,
+mahavibhasasastra,lzh-sarv-ab,Mahāvibhāṣā Śāstra,,,,
+sariputrabhidharma,lzh-dg-ab,Śāripūtrābhidharma,,,,
+dhsk,skt-sarv-ab,Dharmaskandha,,,,
+skt-jnanaprasthana,skt-sarv-ab,Jnānaprasthāna,,,,

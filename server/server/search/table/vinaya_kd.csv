@@ -1,0 +1,101 @@
+A,B,C,D,E,F,G,H,I,J
+uid,skt-mu-kd,bo-mu-kd,lzh-mu-kd,lzh-sarv-kd,lzh-dg-kd,lzh-mi-kd,lzh-mg-bu-pn-kd,pi-tv-kd,skt-lo-asc
+collection,Sanskrit Mūlasarvāstivāda,Tibetan Mūlasarvāstivāda,Chinese Mūlasarvāstivāda,Sarvāstivāda,Dharmaguptaka,Mahīśāsaka,Mahāsaṅghika,Theravāda,Sanskrit Lokuttaravāda
+Pabbajja,skt-mu-kd1*,bo-mu-kd1*,lzh-mu-kd1*,lzh-sarv-kd1*,lzh-dg-kd1*,lzh-mi-kd1*,lzh-mg-bu-pn-kd1*,pi-tv-kd1*,skt-lo-mvu73*
+Pabbajja,skt-mu-kd1*,bo-mu-kd1*,lzh-mu-kd1*,lzh-sarv-kd1*,lzh-dg-kd1*,lzh-mi-kd1*,lzh-mg-bu-pn-kd15*,pi-tv-kd1*,skt-lo-mvu91*
+Uposatha,skt-mu-kd2,bo-mu-kd2,lzh-mu-kd2,lzh-sarv-kd2,lzh-dg-kd2,lzh-mi-kd2,lzh-mg-bu-pn-kd7*,pi-tv-kd2,
+Vassa,skt-mu-kd4,bo-mu-kd4,lzh-mu-kd4,lzh-sarv-kd4,lzh-dg-kd3,lzh-mi-kd3,lzh-mg-bu-pn-kd8*,pi-tv-kd3,
+Pavāraṇā,skt-mu-kd3,bo-mu-kd3,lzh-mu-kd3,lzh-sarv-kd3,lzh-dg-kd4,lzh-mi-kd4,lzh-mg-bu-pn-kd9*,pi-tv-kd4,
+Camma,skt-mu-kd5,bo-mu-kd5,lzh-mu-kd5,lzh-sarv-kd5,lzh-dg-kd5,lzh-mi-kd6,-,pi-tv-kd5,
+Bhesajja,skt-mu-kd6*,bo-mu-kd6*,lzh-mu-kd6*,lzh-sarv-kd6*,lzh-dg-kd7*,lzh-mi-kd7,lzh-mg-bu-pn-kd14*,pi-tv-kd6*,
+Cīvara,skt-mu-kd7,bo-mu-kd7,lzh-mu-kd7,lzh-sarv-kd7,lzh-dg-kd6,lzh-mi-kd5,lzh-mg-bu-pn-kd11*,pi-tv-kd8,
+Kaṭhina,skt-mu-kd8,bo-mu-kd8,lzh-mu-kd8,lzh-sarv-kd8,lzh-dg-kd8,lzh-mi-kd8,lzh-mg-bu-pn-kd10*,pi-tv-kd7,
+Kosambaka,skt-mu-kd9,bo-mu-kd9,lzh-mu-kd9,lzh-sarv-kd9,lzh-dg-kd9,lzh-mi-kd10b,-,pi-tv-kd10,
+Campeyya,skt-mu-kd10,bo-mu-kd10,lzh-mu-kd10,lzh-sarv-kd10,lzh-dg-kd10,lzh-mi-kd10c,lzh-mg-bu-pn-kd2*,pi-tv-kd9,
+Paṇḍulohitaka,skt-mu-kd11,bo-mu-kd11,lzh-mu-kd11,lzh-sarv-kd11,lzh-dg-kd11,lzh-mi-kd10d,lzh-mg-bu-pn-kd3*,pi-tv-kd11,
+Samuccaya,skt-mu-kd12,bo-mu-kd12,lzh-mu-kd12,lzh-sarv-kd12a,lzh-dg-kd12,lzh-mi-kd10a,lzh-mg-bu-pn-kd4*,pi-tv-kd13,
+Parivāsa,skt-mu-kd13,bo-mu-kd13,lzh-mu-kd13,lzh-sarv-kd12b,lzh-dg-kd13,lzh-mi-kd16,lzh-mg-bu-pn-kd4*,pi-tv-kd12,
+Uposathaṭṭhāpana,skt-mu-kd14,bo-mu-kd14,lzh-mu-kd14,lzh-sarv-kd13,lzh-dg-kd14,lzh-mi-kd15,-,pi-tv-kd19,
+Samatha,skt-mu-kd16,bo-mu-kd16,lzh-mu-kd16,lzh-sarv-kd15,lzh-dg-kd16,lzh-mi-kd9,-,pi-tv-kd14,
+Saṅghabheda,skt-mu-kd17,bo-mu-kd17,lzh-mu-kd17,lzh-sarv-kd16,lzh-dg-kd15,lzh-mi-kd11,-,pi-tv-kd17,skt-lo-mvu83*
+Sayanāsana,skt-mu-kd15,bo-mu-kd15,lzh-mu-kd15,lzh-sarv-kd14,lzh-dg-kd19,lzh-mi-kd12,lzh-mg-bu-pn-kd6*,pi-tv-kd16,
+Vatta,skt-mu-kd18c,bo-mu-kd18c,lzh-mu-kd18c,lzh-sarv-kd17c,lzh-dg-kd18,lzh-mi-kd14,-,pi-tv-kd18,
+Khuddaka,skt-mu-kd18a,bo-mu-kd18a,lzh-mu-kd18a,lzh-sarv-kd17a,lzh-dg-kd20,lzh-mi-kd13,lzh-mg-bu-pn-kd17*,pi-tv-kd15,
+Bhikkhunī,skt-mu-kd18b,bo-mu-kd18b,lzh-mu-kd18b,lzh-sarv-kd17b,lzh-dg-kd17,lzh-mi-kd17,lzh-mg-bu-pn-kd18*,pi-tv-kd20,
+Pañcasata,,,lzh-mu-kd19,lzh-sarv-kd18,lzh-dg-kd21,lzh-mi-kd18,lzh-mg-bu-pn-kd19*,pi-tv-kd21,
+Sattasata,,,lzh-mu-kd20,lzh-sarv-kd19,lzh-dg-kd22,lzh-mi-kd19,lzh-mg-bu-pn-kd20*,pi-tv-kd22,
+Saṁyutta,,,,,lzh-dg-vs1,lzh-mi-vs1,,,
+Ekottara,,,,,lzh-dg-ve1,,,,
+Upāliparipucchā,,,,,,,,,
+Bhikkhu Adhyāya,,,,,,,,,
+Saṅghathera,,,,,,,lzh-mg-asc1,,skt-lo-asc1
+Sayanāsana,,,,,,,lzh-mg-asc2,,skt-lo-asc2
+Kaṭhina,,,,,,,lzh-mg-asc3,,skt-lo-asc3
+Āgantuka,,,,,,,lzh-mg-asc4,,skt-lo-asc4
+Āraññaka,,,,,,,lzh-mg-asc5,,skt-lo-asc5
+Nevāsika,,,,,,,lzh-mg-asc6,,skt-lo-asc6
+Padīpa,,,,,,,lzh-mg-asc7,,skt-lo-asc7
+Upasampadā,,,,,,,lzh-mg-bu-pn1,,skt-lo-bu-pn1
+Ukkhepanīya,,,,,,,lzh-mg-bu-pn2,,skt-lo-bu-pn2
+Codanā,,,,,,,lzh-mg-bu-pn3,,skt-lo-bu-pn3
+Uposatha,,,,,,,lzh-mg-bu-pn4,,skt-lo-bu-pn4
+Gilāna,,,,,,,lzh-mg-bu-pn5,,skt-lo-bu-pn5
+Kamma,,,,,,,lzh-mg-bu-pn6,,skt-lo-bu-pn6
+Garuka,,,,,,,lzh-mg-bu-pn7,,skt-lo-bu-pn7
+Lasuṇa,,,,,,,lzh-mg-bu-pn8,,skt-lo-bu-pn8
+Udissa,,,,,,,lzh-mg-bu-pn9,,skt-lo-bu-pn9
+Sattha,,,,,,,lzh-mg-bu-pn10,,skt-lo-bu-pn10
+Khepana,,,,,,,lzh-mg-bu-pn11,,skt-lo-bu-pn11
+Satta,,,,,,,lzh-mg-bu-pn12,,skt-lo-bu-pn12
+Samatha,,,,,,,lzh-mg-bu-pn13,,skt-lo-bu-pn13
+Thūpa,,,,,,,lzh-mg-bu-pn14,,skt-lo-bu-pn14
+Niṣadya,,,,,,,lzh-mg-bi-pn1,,skt-lo-bi-pn1
+Kaṭhina,,,,,,,lzh-mg-bi-pn2,,skt-lo-bi-pn2
+Veṭhaka,,,,,,,lzh-mg-bi-pn3,,skt-lo-bi-pn3
+Śroṇibhaṇḍaka,,,,,,,lzh-mg-bi-pn4,,skt-lo-bi-pn4
+Gṛhiṇibhaṇḍaka,,,,,,,lzh-mg-bi-pn5,,skt-lo-bi-pn5
+Gṛhiṇī-alaṁkāra,,,,,,,lzh-mg-bi-pn6,,skt-lo-bi-pn6
+Veśyā,,,,,,,lzh-mg-bi-pn7,,skt-lo-bi-pn7
+Ārāmikinī,,,,,,,lzh-mg-bi-pn8,,skt-lo-bi-pn8
+Saṁkakṣikā,,,,,,,lzh-mg-bi-pn9,,skt-lo-bi-pn9
+Udakaśāṭikā,,,,,,,lzh-mg-bi-pn10,,skt-lo-bi-pn10
+Tala-ghāta,,,,,,,lzh-mg-bi-pn11,,skt-lo-bi-pn11
+Jatu-maṭṭhaka,,,,,,,lzh-mg-bi-pn12,,skt-lo-bi-pn12
+Dhovanā,,,,,,,lzh-mg-bi-pn13*,,skt-lo-bi-pn13
+Praveśanā,,,,,,,lzh-mg-bi-pn13*,,skt-lo-bi-pn14
+Ānicolaka,,,,,,,lzh-mg-bi-pn14,,skt-lo-bi-pn15
+Strī-tīrtha,,,,,,,lzh-mg-bi-pn15,,skt-lo-bi-pn16
+Puruṣa-tīrtha,,,,,,,lzh-mg-bi-pn16,,skt-lo-bi-pn17
+Rajaka-tīrtha,,,,,,,lzh-mg-bi-pn17,,skt-lo-bi-pn18
+Udaka-dhārā,,,,,,,lzh-mg-bi-pn18,,skt-lo-bi-pn19
+Udaka-srota,,,,,,,lzh-mg-bi-pn19,,skt-lo-bi-pn20
+Vikṛti,,,,,,,lzh-mg-bi-pn20,,skt-lo-bi-pn21
+Karma,,,,,,,lzh-mg-bi-pn21,,skt-lo-bi-pn22
+Kauśeya,,,,,,,lzh-mg-bi-pn22,,skt-lo-bi-pn23
+Gaṇḍa-praticchādana,,,,,,,lzh-mg-bi-pn23,,skt-lo-bi-pn24
+Strī-alaṁkāra,,,,,,,lzh-mg-bi-pn24,,skt-lo-bi-pn25
+Utpala-vāpaka,,,,,,,lzh-mg-bi-pn25,,skt-lo-bi-pn26
+Sumanā-vāpanā,,,,,,,lzh-mg-bi-pn26,,skt-lo-bi-pn27
+Utpala-granthikā,,,,,,,lzh-mg-bi-pn27*,,skt-lo-bi-pn28
+Sumanā-granthikā,,,,,,,lzh-mg-bi-pn27*,,skt-lo-bi-pn29
+Kartanā,,,,,,,lzh-mg-bi-pn28,,skt-lo-bi-pn30
+Ācāra-vikopanā,,,,,,,lzh-mg-bi-pn29,,skt-lo-bi-pn31
+Pātra-praticchādanā,,,,,,,lzh-mg-bi-pn30,,skt-lo-bi-pn32
+Ratna,,,,,,,lzh-mg-bi-pn31,,skt-lo-bi-pn49
+Varca-kuṭi,,,,,,,lzh-mg-bi-pn32,,skt-lo-bi-pn33
+Jentāka,,,,,,,lzh-mg-bi-pn33,,skt-lo-bi-pn34
+Āraṇyaka,,,,,,,lzh-mg-bi-pn34,,skt-lo-bi-pn35
+Bhikṣūṇām āstāro,,,,,,,lzh-mg-bi-pn35*,,skt-lo-bi-pn36
+Bhikṣuṇīnāṁ āstāro,,,,,,,lzh-mg-bi-pn35*,,skt-lo-bi-pn37
+Bhikṣūṇām uddhāro,,,,,,,lzh-mg-bi-pn35*,,skt-lo-bi-pn38
+Bhikṣuṇīnām uddhāro,,,,,,,lzh-mg-bi-pn35*,,skt-lo-bi-pn39
+Bhikṣūṇām abhihāro,,,,,,,lzh-mg-bi-pn35*,,skt-lo-bi-pn40
+Bhikṣuṇīnām abhihāro,,,,,,,lzh-mg-bi-pn35*,,skt-lo-bi-pn41
+Bhikṣūṇām āmiṣaṁ,,,,,,,lzh-mg-bi-pn36*,,skt-lo-bi-pn42
+Bhikṣuṇīnām āmiṣaṁ,,,,,,,lzh-mg-bi-pn36*,,skt-lo-bi-pn43
+Labhyaṁ bhikṣusya bhikṣuṇīya,,,,,,,lzh-mg-bi-pn36*,,skt-lo-bi-pn44
+Labhyaṁ bhikṣuṇīye bhikṣūṇā,,,,,,,lzh-mg-bi-pn36*,,skt-lo-bi-pn45
+Abhikṣu-karaṇāni,,,,,,,lzh-mg-bi-pn37,,skt-lo-bi-pn46
+Abhikṣuṇī-karaṇāni,,,,,,,lzh-mg-bi-pn38,,skt-lo-bi-pn47
+Atirikta-karma,,,,,,,lzh-mg-bi-pn39,,skt-lo-bi-pn48
+Yathā-vṛddhikāya,,,,,,,lzh-mg-bi-pn40,,skt-lo-bi-pn50

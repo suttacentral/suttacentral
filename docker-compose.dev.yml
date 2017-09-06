@@ -25,3 +25,8 @@ services:
   sc-swagger:
     ports:
       - '8080:8080'
+
+  sc-elasticsearch:
+    ports:
+    - '9200:9200'
+    - '9300:9300'

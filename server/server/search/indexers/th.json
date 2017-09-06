@@ -1,0 +1,37 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "thai_stop": {
+                    "type":         "stop",
+                    "stopwords":    "_thai_"
+                }
+            },
+            "analyzer": {
+                "th": {
+                    "tokenizer":    "thai",
+                    "filter": [
+                        "lowercase",
+                        "thai_stop"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "th"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

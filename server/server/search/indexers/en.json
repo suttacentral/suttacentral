@@ -1,0 +1,65 @@
+{
+    "inherits": ["default"],
+    "index": {
+        "settings": {
+            "analysis": {
+                "filter": {
+                    "english_stop": {
+                        "type": "stop",
+                        "stopwords": "_english_"
+                    },
+                    "english_possessive_stemmer": {
+                        "type": "stemmer",
+                        "language": "possessive_english"
+                    },
+                    "english_stemmer": {
+                        "type": "stemmer",
+                        "language": "english"
+                    }
+                },
+                "analyzer": {
+                    "en": {
+                        "tokenizer": "standard",
+                        "char_filter": ["denumber"],
+                        "filter": [
+                            "english_possessive_stemmer",
+                            "lowercase",
+                            "sanskrit_pali_synonym",
+                            "english_stop",
+                            "english_stemmer",
+                            "icu_folding"
+                        ]
+                    }
+                }
+            }
+        },
+        "mappings": {
+            "text": {
+                "properties": {
+                    "content": {
+                        "fields": {
+                            "stemmed": {
+                                "type": "text",
+                                "term_vector": "with_positions_offsets",
+                                "analyzer": "en"
+                            }
+                        }
+                    }
+                }
+            },
+            "definition": {
+                "properties": {
+                    "content": {
+                        "fields": {
+                            "stemmed": {
+                                "type": "text",
+                                "term_vector": "with_positions_offsets",
+                                "analyzer": "en"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -45,5 +45,11 @@ def load_data(force=False):
     run(force)
 
 
+@manager.command
+def index_elasticsearch():
+    from search.texts import update
+    update()
+
+
 if __name__ == '__main__':
     manager.run()

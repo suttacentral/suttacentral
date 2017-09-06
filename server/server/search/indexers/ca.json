@@ -1,0 +1,53 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "catalan_elision": {
+                    "type":       "elision",
+                    "articles": [ "d", "l", "m", "n", "s", "t"]
+                },
+                "catalan_stop": {
+                  "type":       "stop",
+                  "stopwords":  "_catalan_" 
+                },
+                "catalan_keywords": {
+                  "type":       "keyword_marker",
+                  "keywords":   [] 
+                },
+                "catalan_stemmer": {
+                  "type":       "stemmer",
+                  "language":   "catalan"
+                }
+            },
+            "analyzer": {
+                "ca": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "catalan_elision",
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "catalan_stop",
+                        "catalan_keywords",
+                        "catalan_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "ca"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

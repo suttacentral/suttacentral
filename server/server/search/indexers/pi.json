@@ -1,0 +1,63 @@
+{
+    "inherits": ["default"],
+    "index": {
+        "settings": {
+            "analysis": {
+                "char_filter": {
+                    "sanskrit_to_pali": {
+                        "type": "mapping",
+                        "mappings": ["rv=>bb", "rm=>mm"]
+                    },
+                    "vy_normalize": {
+                        "type": "pattern_replace",
+                        "pattern": "(?i)\\b(a?)by",
+                        "replacement": "$1vy"
+                     },
+                    "m_normalize": {
+                        "type": "pattern_replace",
+                        "pattern": "(?i)[ṅṁ]|n(?=[”’])",
+                        "replacement": "ṃ"
+                    }
+                },
+                "filter": {
+                    "pali_stemmer": {
+                        "type": "pattern_replace",
+                        "pattern":"(?<=...)(ayitvāna|issatha|eyyanti|essaṃsu|antānaṃ|essatha|issaṃsu|eyyātha|arebhi|ayiṃsu|āpetvā|ayitvā|eyyāma|antesu|ārānaṃ|eyyati|etvāna|eyyasi|issāma|arānaṃ|eyyāmi|eyyāsi|essāma|itvāna|antehi|essaṃ|asmiṃ|annaṃ|arehi|innaṃ|eyyuṃ|antaṃ|issaṃ|ittha|eyyaṃ|unnaṃ|tvāna|anti|onti|inaṃ|issā|ontu|iṃsu|amhi|āraṃ|asmā|asuṃ|ituṃ|āyaṃ|antu|ānaṃ|itvā|asiṃ|īnaṃ|anto|ante|uyaṃ|otha|atha|ibhi|iyaṃ|issa|ūbhi|essa|entu|ūnaṃ|etvā|ataṃ|imha|ūyaṃ|antā|assa|ībhi|enti|araṃ|imhā|amhā|ābhi|ebhi|etha|essā|vāna|eyya|tuṃ|otu|īhi|asā|āya|īsu|ūhi|uyo|uno|etā|āma|ena|aso|ūyā|ino|ehi|inī|oto|āsi|omi|ārā|otā|ati|inā|avo|asi|ari|iya|āsu|arā|ihi|āni|atā|āmi|oma|ūni|eti|āhi|āyo|ave|ito|iyā|īni|ahi|āti|eto|esu|ato|uyā|ohi|atu|iyo|osi|tvā|unā|etu|aro|ayo|ūsu|ema|emi|oti|esi|āro|aṃ|iṃ|uṃ|a|o|ā|ū|ī|e|u|i)$",
+                        "replacement":"a"
+                    },
+                    "pali_stop": {
+                        "type": "stop",
+                        "stopwords": ["kho", "ca"]
+                    }
+                },
+                "analyzer": {
+                    "pi": {
+                        "tokenizer": "standard",
+                        "char_filter": ["denumber", "sanskrit_to_pali", "vy_normalize", "m_normalize"],
+                        "filter": [
+                            "lowercase",
+                            "pali_stop",
+                            "pali_stemmer",
+                            "icu_folding"
+                        ]
+                    }
+                }
+            }
+        },
+        "mappings": {
+            "text": {
+                "properties": {
+                    "content": {
+                        "fields": {
+                            "stemmed": {
+                                "type": "text",
+                                "term_vector": "with_positions_offsets",
+                                "analyzer": "pi"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "portuguese_stop": {
+                    "type":             "stop",
+                    "stopwords":    "_portuguese_" 
+                },
+                "portuguese_keywords": {
+                    "type":             "keyword_marker",
+                    "keywords":     [] 
+                },
+                "portuguese_stemmer": {
+                    "type":             "stemmer",
+                    "language":     "light_portuguese"
+                }
+            },
+            "analyzer": {
+                "pt": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "portuguese_stop",
+                        "portuguese_keywords",
+                        "portuguese_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "pt"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

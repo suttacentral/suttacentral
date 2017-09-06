@@ -1,0 +1,48 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "indonesian_stop": {
+                    "type":         "stop",
+                    "stopwords":    "_indonesian_" 
+                },
+                "indonesian_keywords": {
+                    "type":         "keyword_marker",
+                    "keywords":     [] 
+                },
+                "indonesian_stemmer": {
+                    "type":         "stemmer",
+                    "language":     "indonesian"
+                }
+            },
+            "analyzer": {
+                "id": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "indonesian_stop",
+                        "indonesian_keywords",
+                        "indonesian_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "id"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
