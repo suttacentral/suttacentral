@@ -17,3 +17,4 @@ Faker==0.8.1
 langid==1.1.6
 colorama==0.3.7
 elasticsearch==5.4.0
+polib==1.0.8

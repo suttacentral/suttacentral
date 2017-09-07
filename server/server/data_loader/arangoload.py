@@ -10,6 +10,7 @@ from arango import ArangoClient
 from flask import current_app
 
 from . import textdata
+from . import po
 
 
 def setup_database(conn, db_name):
@@ -27,6 +28,9 @@ def setup_database(conn, db_name):
         ('root_edges', True),
         ('relationship', True),
         ('html_text', False),
+        ('po_markup', False),
+        ('po_strings', False),
+        ('uid_expansion', False),
         ('unicode_points', False),
         ('mtimes', False),
     ]
@@ -73,13 +77,13 @@ class ChangeTracker:
         print(f'{len(changed_or_new)} files to be processed')
         print(f'{len(deleted)} files to be deleted')
 
-    def file_has_changed(self, path):
+    def is_file_new_or_changed(self, path):
         if str(path.relative_to(self.base_dir)) in self.changed_or_new:
             return True
         return False
 
-    def any_file_has_changed(self, files):
-        return any(self.file_has_changed(file) for file in files)
+    def is_any_file_new_or_changed(self, files):
+        return any(self.is_file_new_or_changed(file) for file in files)
 
     def update_mtimes(self):
         # Update mtimes in arangodb
@@ -93,7 +97,7 @@ class ChangeTracker:
              self.changed_or_new.items()], on_duplicate="replace")
 
 
-def update_data(repo: Repo):
+def update_data(repo: Repo, repo_name: str):
     """Updates given git repo.
 
     Args:
@@ -101,40 +105,40 @@ def update_data(repo: Repo):
     """
     print(f'Updating repo in {repo.working_dir}')
     if 'origin' not in [r.name for r in repo.remotes]:
-        repo.create_remote('origin', current_app.config.get('DATA_REPO'))
+        repo.create_remote('origin', repo_addr)
     repo.remotes.origin.fetch('+refs/heads/*:refs/remotes/origin/*')
     repo.remotes.origin.pull()
 
 
-def get_data(data_dir: Path) -> Repo:
-    """Clones git data repo to data_dir
+def get_data(repo_dir: Path, repo_addr: str) -> Repo:
+    """Clones git data repo to repo_dir
 
     Args:
-        data_dir: Path to data dir.
+        repo_dir: Path to data dir.
 
     Returns:
         Cloned repo.
     """
     repo_addr = current_app.config.get('DATA_REPO')
-    print(f'Cloning the repo: {repo_addr}')
-    return Repo.clone_from(repo_addr, data_dir)
+    logging.info(f'Cloning the repo: {repo_addr}')
+    return Repo.clone_from(repo_addr, repo_dir)
 
 
-def collect_data(data_dir: Path):
+def collect_data(repo_dir: Path, repo_addr: str):
     """Ensure data is in data dir and update it if needed and if it's git repo.
 
     Args:
-        data_dir: Path to data directory.
+        repo_dir: Path to data directory.
     """
-    if not data_dir.exists():
-        get_data(data_dir)
+    if not repo_dir.exists():
+        get_data(repo_dir, repo_addr)
     else:
         try:
-            repo = Repo(data_dir)
+            repo = Repo(repo_dir)
         except InvalidGitRepositoryError:
             pass
         else:
-            update_data(repo)
+            update_data(repo, repo_addr)
 
 
 def process_root_languages(structure_dir):
@@ -224,7 +228,7 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
 
     root_languages = process_root_languages(structure_dir)
 
-    if change_tracker.any_file_has_changed(root_files + category_files):
+    if change_tracker.is_any_file_new_or_changed(root_files + category_files):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
         process_root_files(docs, edges, mapping, root_files, root_languages)
@@ -328,7 +332,7 @@ def print_once(msg: Any, antispam: Set):
 def generate_relationship_edges(change_tracker, relationship_dir, db):
     relationship_files = list(relationship_dir.glob('*.json'))
     
-    if not change_tracker.any_file_has_changed(relationship_files):
+    if not change_tracker.is_any_file_new_or_changed(relationship_files):
         return
 
     print('Generating Parallels')
@@ -400,6 +404,19 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
                                  files_to_process=change_tracker.changed_or_new,
                                  force=False)
 
+def load_json_file(db, change_tracker, json_file):
+    if not change_tracker.is_file_new_or_changed(json_file):
+        return
+    collection_name = json_file.stem
+    
+    with json_file.open() as f:
+        data = json.load(f)
+    
+    if 'uid' in data[0]:
+        for d in data:
+            d['_key'] = d['uid']
+        db[collection_name].truncate()
+        db[collection_name].import_bulk(data)
 
 def run(force=False):
     """Runs data load.
@@ -415,6 +432,8 @@ def run(force=False):
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
+    misc_dir = data_dir / 'misc'
+    po_dir = data_dir / 'po_text'
 
     db_name = current_app.config.get('ARANGO_DB')
     if force or db_name not in conn.databases():
@@ -422,13 +441,19 @@ def run(force=False):
     else:
         db = conn.database(db_name)
 
-    collect_data(data_dir)
+    collect_data(data_dir, current_app.config.get('DATA_REPO'))
+    collect_data(po_dir, current_app.config.get('PO_REPO'))
+    
 
     change_tracker = ChangeTracker(data_dir, db)
+    
+    load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
 
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
     generate_relationship_edges(change_tracker, relationship_dir, db)
+
+    po.load_po_texts(change_tracker, po_dir, db)
 
     load_html_texts(change_tracker, data_dir, db, html_dir)
 

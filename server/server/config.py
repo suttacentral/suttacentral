@@ -27,6 +27,7 @@ class Config:
 
     BASE_DIR = Path('../')
     DATA_REPO = 'https://github.com/suttacentral/nextdata.git'
+    PO_REPO = 'https://github.com/suttacentral/po_text.git'
 
 
 class DevelopmentConfig(Config):

@@ -97,3 +97,11 @@ def unique(iterable, key=None):
             if k not in seen:
                 seen_add(k)
                 yield element
+
+def iter_sub_dirs(path):
+    for subdir in path.iterdir():
+        if not subdir.is_dir():
+            continue
+        if subdir.stem.startswith('.'):
+            continue
+        yield subdir

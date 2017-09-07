@@ -1,4 +1,4 @@
-# SuttaCentral server and client repositry
+# SuttaCentral server and client repositry!
 [![Build Status](https://travis-ci.org/suttacentral/next-sc.svg?branch=development)](https://travis-ci.org/suttacentral/next-sc)
 
 ## Running the project
