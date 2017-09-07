@@ -97,7 +97,10 @@ class Search(Resource):
         """
         limit = request.args.get('limit', 10)
         offset = request.args.get('offset', 0)
-        query = request.args.get('query')
+        query = request.args.get('query', None)
+
+        if query is None:
+            return json.dumps({'error': '\'query\' param is required'}), 422
 
         try:
             results = query_search.search(query, limit=limit, offset=offset)

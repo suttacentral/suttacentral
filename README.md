@@ -10,6 +10,7 @@
 5. run `make build-all` in order to build all images
 6. run `make run-dev` to start our services in the development mode.
 7. in order to load the data run `make load_data`. It might take a while.
+8. To index data in elasticsearch run `make index_elasticsearch`
 
 ## Loading the data
 In order to load the data to the db:

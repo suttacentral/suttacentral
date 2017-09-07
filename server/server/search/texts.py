@@ -3,12 +3,11 @@ import regex
 import logging
 import lxml.html
 from elasticsearch.helpers import scan
-from search import uid_expansion
 from search.util import unique
 
 from search.indexer import ElasticIndexer
 from common.arangodb import get_db
-from common.queries import TEXTS_BY_LANG
+from common.queries import TEXTS_BY_LANG, CURRENT_MTIMES
 
 logger = logging.getLogger('search.texts')
 
@@ -121,36 +120,13 @@ class TextIndexer(ElasticIndexer):
                 }
                 if uid in to_add:
 
-                    html_bytes = bytes(text['text'])
+                    html_bytes = bytes(text['text'], encoding='utf-8')
                     chunk_size += len(html_bytes) + 512
-                    subdivision = division = None
 
-                    parts = file.relative_to(lang_dir).parent.parts
-
-                    if len(parts) > 0:
-                        if parts[0] in uid_expansion.languages:
-                            root_lang = parts[0]
-                            parts = parts[1:]
-                        else:
-                            root_lang = lang
-
-                    else:
-                        root_lang = None
-
-                    subdivision = None
-                    if len(parts) > 1:
-                        division = parts[1]
-                        if len(parts) > 2:
-                            subdivision = parts[2]
-                        else:
-                            subdivision = uid
-                    else:
-                        division = uid
+                    root_lang = text['root_lang']
 
                     action.update({
                         'uid': uid,
-                        'division': division,
-                        'subdivision': subdivision,
                         'lang': lang,
                         'root_lang': root_lang,
                         'is_root': lang == root_lang,
@@ -158,10 +134,10 @@ class TextIndexer(ElasticIndexer):
                     })
 
                     action.update(self.extract_fields_from_html(html_bytes))
+                    chunk.append(action)
             except (ValueError, IndexError) as e:
                 logger.exception(f'{text["uid"]}, {e}')
 
-            chunk.append(action)
             if chunk_size > size:
                 yield chunk
                 chunk = []
@@ -188,8 +164,7 @@ class TextIndexer(ElasticIndexer):
                 logger.error('could not find default config')
                 raise
 
-    def update_data(self):
-        lang_uid = self.lang_dir.stem
+    def update_data(self, force=False):
         stored_mtimes = {hit["_id"]: hit["_source"]["mtime"] for hit in scan(self.es,
                                                                              index=self.index_name,
                                                                              doc_type="text",
@@ -197,8 +172,10 @@ class TextIndexer(ElasticIndexer):
                                                                                  "mtime"],
                                                                              query=None,
                                                                              size=500)}
-        current_mtimes = {file.stem: int(file.stat().st_mtime) for file in
-                          self.lang_dir.glob('**/*.html')}
+        current_mtimes = get_db().aql.execute(CURRENT_MTIMES,
+                                              bind_vars={'lang': self.lang})
+        current_mtimes = {hit['uid']: hit['mtime'] for hit in current_mtimes}
+
         to_delete = set(stored_mtimes).difference(current_mtimes)
         to_add = current_mtimes.copy()
         for uid, mtime in stored_mtimes.items():
