@@ -246,7 +246,7 @@ than ten results in total, a dropdown selection menu appears at the top.
           changeSearchView: function(event) {
               // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
               // "translations" or "dictionaries"
-              var selectedView = "all";
+              let selectedView = "all";
               switch (event.detail.searchView) {
                   case 0:
                       selectedView = "all";
@@ -261,9 +261,9 @@ than ten results in total, a dropdown selection menu appears at the top.
                       selectedView = "dictionary";
                       break;
               }
-              var outputData = this.data;
-              var resultsArray = [];
-              for (var i = 0; i < outputData.length; i++) {
+              const outputData = this.data;
+              const resultsArray = [];
+              for (let i = 0; i < outputData.length; i++) {
                   if (outputData[i].category === selectedView || selectedView === 'all') {
                       resultsArray.push(outputData[i]);
                   }
@@ -273,8 +273,8 @@ than ten results in total, a dropdown selection menu appears at the top.
           },
           _didRespond: function(e) {
               // After results have been loaded into memory, pushes items to an array.
-              var self = this;
-              var results = e.detail.response;
+              const self = this;
+              const results = e.detail.response;
               resultsArray = [];
               results.forEach(function(item) {
                   resultsArray.push(item);
@@ -287,7 +287,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.$.list.items.length = 0;
               if (partArray.length > 0) {
                   this.itemCount = 0;
-                  for (var i = 0; i < this.firstLoad; i++) {
+                  for (let i = 0; i < this.firstLoad; i++) {
                       this.$.list.push('items', partArray[i]);
                       this.itemCount += 1;
                   }
@@ -299,7 +299,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               // Determines how the iron-scroll-threshold pushes the items to the iron-list
               // depending on the number of items to be loaded and on previously set parameters.
               if (this.itemCount > (this.firstLoad - 1) && this.itemCount < this.partArray.length) {
-                  for (var i = 0; i < this.loadNumber; i++) {
+                  for (let i = 0; i < this.loadNumber; i++) {
                       this.$.list.push('items', this.partArray[this.itemCount]);
                       this.itemCount += 1;
                   }

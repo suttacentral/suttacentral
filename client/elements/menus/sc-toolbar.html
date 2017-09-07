@@ -16,8 +16,7 @@
 <!--
 Base toolbar that appear on the top right in the header of every page. Not all items are shown on all pages
 This toolbar is called from the page-selector.
--->
-<!--
+-----
 Issues:
   - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows
     the number 20 but it should show the correct search results instead.
@@ -83,10 +82,8 @@ Issues:
 
       @media screen and (max-width: 840px) {
         #dialog {
-          left: 0px;
+          left: 0;
         }
-
-      ;
       }
 
       h2 {
@@ -111,6 +108,7 @@ Issues:
         display: none;
       }
     </style>
+
     <div id="toolsmenu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
       <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
@@ -149,6 +147,7 @@ Issues:
       </paper-menu-button>
     </div>
   </template>
+
   <script>
       Polymer({
           is: 'sc-toolbar',
@@ -203,6 +202,7 @@ Issues:
           },
           openSearch: function() {
               // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
+              let searchWidth;
               // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
               if (this.$$('#searchinput').classList.contains('opened')) {
                   this.searchAction();
@@ -211,31 +211,28 @@ Issues:
                   this.$$('#searchinput').focus();
                   this.$$('#closebutton').style.display = 'inline-block';
                   this.$$('#searchinput').value = '';
-                  var searchSize = 500;
+                  let searchSize = 500;
                   if (this.suttaPath) {
                       searchSize = 540
                   }
-                  ;
                   if (window.innerWidth < 1040) {
-                      Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").setAttribute('style', "visibility:hidden")
+                      Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox")
+                          .setAttribute('style', "visibility:hidden")
                   }
-                  ;
                   if (window.innerWidth > 840) {
-                      var searchWidth = window.innerWidth - searchSize;
+                      searchWidth = window.innerWidth - searchSize;
                   } else if (window.innerWidth > 480) {
-                      var searchWidth = window.innerWidth - (searchSize - 210);
+                      searchWidth = window.innerWidth - (searchSize - 210);
                   } else {
                       this.$$("#toolsmenu").classList.add("search-open");
                       if (this.suttaPath) {
                           searchSize = 500
                       }
-                      ;
-                      var searchWidth = window.innerWidth - (searchSize - 320);
+                      searchWidth = window.innerWidth - (searchSize - 320);
                   }
                   if (searchWidth > 360) {
                       searchWidth = 360
                   }
-                  ;
                   this.$$('.opened').style.width = searchWidth;
               }
           },
@@ -246,7 +243,8 @@ Issues:
                   this.$$('#searchinput').removeAttribute('style', "width");
                   this.$$('#closebutton').style.display = 'none';
                   this.$$("#toolsmenu").classList.remove("search-open");
-                  Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox").removeAttribute('style', "display");
+                  Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox")
+                      .removeAttribute('style', "display");
               }
           },
           searchAction: function() {

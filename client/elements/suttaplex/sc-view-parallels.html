@@ -83,7 +83,7 @@ which is loaded from `../data/suttas` in **sc-parallels.html**.
           </template>
           </tbody>
         </template>
-        <table>
+      </table>
     </div>
 
   </template>
@@ -133,8 +133,8 @@ which is loaded from `../data/suttas` in **sc-parallels.html**.
           },
           _computeOtherParallels: function(suttaurl) {
               // returns an array with the data for all other parallels than the first.
-              var parallelarray = [];
-              for (var i = 1; i < suttaurl.relations.length; i++) {
+              const parallelarray = [];
+              for (let i = 1; i < suttaurl.relations.length; i++) {
                   parallelarray[i - 1] = suttaurl.relations[i];
               }
               return parallelarray;

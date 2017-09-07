@@ -42,7 +42,7 @@ Issues that need to be fixed:
 <dom-module id="sc-navdrawer">
   <template>
     <style is="custom-style">
-      : host {
+      :host {
         background-color: grey;
       }
 
@@ -86,9 +86,9 @@ Issues that need to be fixed:
         @apply --shadow-elevation-16dp;
         overflow: auto;
         height: 100%;
-        overflow: auto;
       }
     </style>
+
     <iron-location path="{{path}}" query="{{query}}"></iron-location>
     <iron-query-params
         params-string="{{query}}"
@@ -143,8 +143,8 @@ Issues that need to be fixed:
                      input-language="[[inputLanguage]]" query-params="[[queryParams]]"></page-selector>
 
     </app-drawer-layout>
-
   </template>
+
   <script>
       Polymer({
           is: 'sc-navdrawer',

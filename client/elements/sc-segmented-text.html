@@ -90,6 +90,7 @@ Issues that need to be fixed:
         };
       }
     </style>
+
     <iron-ajax id="ajax"
                url="[[_computeURL(suttaPath,author)]]"
                handle-as="text"
@@ -106,6 +107,7 @@ Issues that need to be fixed:
     <template is="dom-if" if="[[notFound]]">
       <p class="notfound">Sorry, the page your requested does not exist.</p>
     </template>
+
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
       <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
@@ -124,6 +126,7 @@ Issues that need to be fixed:
                on-response="_addOriginalText"></iron-ajax>
 
   </template>
+
   <script>
       Polymer({
           is: 'sc-segmented-text',
@@ -199,38 +202,41 @@ Issues that need to be fixed:
                   this.$.ajax.generateRequest();
               }
           },
+          // finds the correct markup file to load.
           _computeURL: function(category, author) {
-              // finds the correct markup file to load.
+              let pathname;
               if (category.startsWith("dn") || category.startsWith("mn")) {
-                  var pathname = category.replace(/\d{1,5}/, "");
+                  pathname = category.replace(/\d{1,5}/, "");
                   return `../data/texts/markup/${pathname}/${category}.html`;
               } else if (category.startsWith("an") || category.startsWith("sn")) {
-                  var pathname = category.replace(/[\d{1,5}\-\.]/g, "");
-                  var subpathname = category.split(".", 1)[0];
+                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
+                  const subpathname = category.split(".", 1)[0];
                   return `../data/texts/markup/${pathname}/${subpathname}/${category}.html`;
               }
           },
+          // finds the correct translated json file to load. Only works for "sujato" as author
           _computeTranslatedURL: function(category, author) {
-              // finds the correct translated json file to load. Only works for "sujato" as author
+              let pathname;
               // so this might have to change when more translators use pootle.
-              var authorroute = "en/sujato";
+              const authorRoute = "en/sujato";
               if (category.startsWith("dn") || category.startsWith("mn")) {
-                  var pathname = category.replace(/\d{1,5}/, "");
-                  return `../data/texts/${authorroute}/${pathname}/${category}.json`;
+                  pathname = category.replace(/\d{1,5}/, "");
+                  return `../data/texts/${authorRoute}/${pathname}/${category}.json`;
               } else if (category.startsWith("an") || category.startsWith("sn")) {
-                  var pathname = category.replace(/[\d{1,5}\-\.]/g, "");
-                  var subpathname = category.split(".", 1)[0];
-                  return `../data/texts/${authorroute}/${pathname}/${subpathname}/${category}.json`;
+                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
+                  const subpathname = category.split(".", 1)[0];
+                  return `../data/texts/${authorRoute}/${pathname}/${subpathname}/${category}.json`;
               }
           },
+          // finds the correct pali json file to load.
           _computeOriginalURL: function(category, author) {
-              // finds the correct pali json file to load.
+              let pathname;
               if (category.startsWith("dn") || category.startsWith("mn")) {
-                  var pathname = category.replace(/\d{1,5}/, "");
+                  pathname = category.replace(/\d{1,5}/, "");
                   return `../data/texts/pi/${pathname}/${category}.json`;
               } else if (category.startsWith("an") || category.startsWith("sn")) {
-                  var pathname = category.replace(/[\d{1,5}\-\.]/g, "");
-                  var subpathname = category.split(".", 1)[0];
+                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
+                  const subpathname = category.split(".", 1)[0];
                   return `../data/texts/pi/${pathname}/${subpathname}/${category}.json`;
               }
           },
@@ -243,14 +249,14 @@ Issues that need to be fixed:
           },
           _addTranslatedText: function(e) {
               // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-              var segments = this.shadowRoot.querySelectorAll('sc-segment');
+              const segments = this.shadowRoot.querySelectorAll('sc-segment');
               Array.from(segments).forEach(item => item.classList.add('translated-text'));
               outputText = e.detail.response;
-              for (var key in outputText) {
+              for (let key in outputText) {
                   if (!key.startsWith("_")) {
                       subkey = key.replace(/:/g, "\\\:");
                       subkey = subkey.replace(/\./g, "\\\.");
-                      var segment = this.shadowRoot.querySelector('#' + subkey);
+                      const segment = this.shadowRoot.querySelector('#' + subkey);
                       segment.innerHTML = outputText[key] + " ";
                   }
               }
@@ -260,12 +266,12 @@ Issues that need to be fixed:
               // polulates that with the corresponding pali text segment.
               if (!this.$$('.original-text')) {
                   outputText = e.detail.response;
-                  for (var key in outputText) {
+                  for (let key in outputText) {
                       if (!key.startsWith("_")) {
                           subkey = key.replace(/:/g, "\\\:");
                           subkey = subkey.replace(/\./g, "\\\.");
-                          var segment = this.shadowRoot.querySelector('#' + subkey);
-                          var newSegment = document.createElement('sc-segment');
+                          const segment = this.shadowRoot.querySelector('#' + subkey);
+                          const newSegment = document.createElement('sc-segment');
                           newSegment.id = key;
                           newSegment.classList.add("original-text");
                           newSegment.innerHTML = outputText[key] + " ";
@@ -281,50 +287,48 @@ Issues that need to be fixed:
               if (this.paliScript) {
                   this.changeScript(this.paliScript)
               }
-              ;
           },
+          // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs: function() {
-              // adds a class to the main container to either show or hide paragraph numbers.
-              var infotext = this.shadowRoot.querySelector('#htmltextcontent');
+              const infotext = this.shadowRoot.querySelector('#htmltextcontent');
               return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
           },
+          // returns the correct title from the first segment in the translated json file.
           _computeTitle: function(suttaText) {
-              // returns the correct title from the first segment in the translated json file.
               return suttaText[this.suttaPath + ":1.1"];
           },
+          // returns the full author details (only Sujato at the moment)
           _computeAuthor: function(suttaTranslatedText) {
-              // returns the full author details (only Sujato at the moment)
               return (this.author === "sujato") ? "—Bhikkhu Sujato" : "";
           },
+          // returns the meta data. This is still a mockup because we have no meta data for Sujato and it goes from the premise that
+          // if the author is not sujato, it must be pali.
           _computeMeta: function(suttaText) {
-              // returns the meta data. This is still a mockup because we have no meta data for Sujato and it goes from the premise that
-              // if the author is not sujato, it must be pali.
               return (this.author === "sujato") ? "There is no Meta Area defined for Bhante Sujato's texts yet." : "<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by <span class='editor'>Blake Walshe</span> and <span class='editor'>Bhikkhu Sujato</span>.</p>";
           },
+          // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computePars: function(e) {
-              // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
-              var paragraphTitles = e.detail.response;
-              for (var key in paragraphTitles) {
-                  var refs = this.shadowRoot.querySelectorAll('.' + key);
+              const paragraphTitles = e.detail.response;
+              for (let key in paragraphTitles) {
+                  const refs = this.shadowRoot.querySelectorAll('.' + key);
                   Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key, ""));
                   Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
               }
               if (this.showParagraphs) {
                   this._addParagraphs()
               }
-              ;
           },
+          // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
           infoToParent: function(suttaTranslatedText) {
-              // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
               this.fire('eventFromSegmentedTextPage', {
                   suttasegtitle: this._computeTitle(suttaTranslatedText) + this._computeAuthor(suttaTranslatedText),
                   suttasegmeta: this._computeMeta(suttaTranslatedText)
               });
           },
+          // if the base html and the pali texts have been fully loaded, the setting from the
+          // settings-menu for the relevant view is implemented by adding relevant class
+          // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
           setView: function(showViewer) {
-              // if the base html and the pali texts have been fully loaded, the setting from the
-              // settings-menu for the relevant view is implemented by adding relevant class
-              // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
               if (this.htmlLoaded) {
                   this._cleanCode();
                   if (this.author !== "pali") {
@@ -343,7 +347,6 @@ Issues that need to be fixed:
                               else {
                                   this.changeScript(this.paliScript)
                               }
-                              ;
                               break;
                       }
                   } else {
@@ -352,17 +355,20 @@ Issues that need to be fixed:
                   }
               }
           },
+          // reset all classes and remove tooltips.
           _cleanCode: function() {
-              // reset all classes and remove tooltips.
               this.$$('#htmltextcontent').classList.remove('sidebyside', 'linebyline', 'showpali');
-              Array.from(this.shadowRoot.querySelectorAll("paper-tooltip")).forEach(item => item.parentNode.removeChild(item));
+              Array.from(this.shadowRoot.querySelectorAll("paper-tooltip"))
+                  .forEach(item => item.parentNode.removeChild(item));
           },
+          // if the base html and pali text are fully loaded, implements the correct script for the pali text
+          // either in tooltips or in segments.
           changeScript: function(paliScript) {
-              // if the base html and pali text are fully loaded, implements the correct script for the pali text either in tooltips or in segments.
               if (this.htmlLoaded) {
-                  var segments = this.shadowRoot.querySelectorAll('.original-text');
-                  var tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-                  this.$$('#htmltextcontent').classList.remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
+                  const segments = this.shadowRoot.querySelectorAll('.original-text');
+                  const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
+                  this.$$('#htmltextcontent').classList
+                      .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
                   Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + " ");
                   Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
                   switch (paliScript) {
@@ -398,8 +404,8 @@ Issues that need to be fixed:
           toSinhala: function(l) {
               l = l.replace(/<.*?>/g, "");
               l = l.toLowerCase() + " ";
-              var m = {a: "අ", "ā": "ආ", i: "ඉ", "ī": "ඊ", u: "උ", "ū": "ඌ", e: "එ", o: "ඔ"};
-              var b = {
+              const m = {a: "අ", "ā": "ආ", i: "ඉ", "ī": "ඊ", u: "උ", "ū": "ඌ", e: "එ", o: "ඔ"};
+              const b = {
                   "ā": "ා",
                   i: "ි",
                   "ī": "ී",
@@ -431,7 +437,7 @@ Issues that need to be fixed:
                   s: "ස",
                   h: "හ"
               };
-              var j = {
+              const j = {
                   kh: "ඛ",
                   gh: "ඝ",
                   ch: "ඡ",
@@ -448,7 +454,7 @@ Issues that need to be fixed:
                   mb: "ඹ",
                   rg: "ඟ"
               };
-              var a = {
+              const a = {
                   k: "ක",
                   g: "ග",
                   "ṅ": "ඞ",
@@ -472,9 +478,9 @@ Issues that need to be fixed:
                   s: "ස",
                   h: "හ"
               };
-              var k, g, f, e, d;
-              var c = "";
-              var h = 0;
+              let k, g, f, e, d;
+              let c = "";
+              let h = 0;
               while (h < l.length) {
                   k = l.charAt(h - 2);
                   g = l.charAt(h - 1);
@@ -482,10 +488,10 @@ Issues that need to be fixed:
                   e = l.charAt(h + 1);
                   d = l.charAt(h + 2);
                   if (m[f]) {
-                      if (h == 0 || g == "a") {
+                      if (h === 0 || g === "a") {
                           c += m[f]
                       } else {
-                          if (f != "a") {
+                          if (f !== "a") {
                               c += b[f]
                           }
                       }
@@ -498,15 +504,15 @@ Issues that need to be fixed:
                               c += "්"
                           }
                       } else {
-                          if (b[f] && f != "a") {
+                          if (b[f] && f !== "a") {
                               c += b[f];
                               h++;
-                              if (a[e] && f != "ṃ") {
+                              if (a[e] && f !== "ṃ") {
                                   c += "්"
                               }
                           } else {
                               if (!b[f]) {
-                                  if (a[g] || (g == "h" && a[k])) {
+                                  if (a[g] || (g === "h" && a[k])) {
                                       c += "්"
                                   }
                                   c += f;
@@ -536,8 +542,8 @@ Issues that need to be fixed:
           toMyanmar: function(k) {
               k = k.replace(/<.*?>/g, "");
               k = k.toLowerCase() + " ";
-              var m = {a: "အ", i: "ဣ", u: "ဥ", "ā": "အာ", "ī": "ဤ", "ū": "ဦ", e: "ဧ", o: "ဩ"};
-              var l = {
+              const m = {a: "အ", i: "ဣ", u: "ဥ", "ā": "အာ", "ī": "ဤ", "ū": "ဦ", e: "ဧ", o: "ဩ"};
+              const l = {
                   i: "ိ",
                   "ī": "ီ",
                   u: "ု",
@@ -577,7 +583,7 @@ Issues that need to be fixed:
                   s: "သ",
                   h: "ဟ"
               };
-              var a = {
+              const a = {
                   k: "က",
                   g: "ဂ",
                   "ṅ": "င",
@@ -601,12 +607,12 @@ Issues that need to be fixed:
                   s: "သ",
                   h: "ဟ"
               };
-              var n = {kh: "1", g: "1", d: "1", dh: "1", p: "1", v: "1"};
-              var j, f, e, d, c;
-              var b = "";
-              var g = 0;
+              const n = {kh: "1", g: "1", d: "1", dh: "1", p: "1", v: "1"};
+              let j, f, e, d, c;
+              let b = "";
+              let g = 0;
               k = k.replace(/\&quot;/g, "`");
-              var h = false;
+              let h = false;
               while (g < k.length) {
                   j = k.charAt(g - 2);
                   f = k.charAt(g - 1);
@@ -614,24 +620,24 @@ Issues that need to be fixed:
                   d = k.charAt(g + 1);
                   c = k.charAt(g + 2);
                   if (m[e]) {
-                      if (g == 0 || f == "a") {
+                      if (g === 0 || f === "a") {
                           b += m[e]
                       } else {
-                          if (e == "ā") {
+                          if (e === "ā") {
                               if (n[h]) {
                                   b += "ါ"
                               } else {
                                   b += "ာ"
                               }
                           } else {
-                              if (e == "o") {
+                              if (e === "o") {
                                   if (n[h]) {
                                       b += "ေါ"
                                   } else {
                                       b += "ော"
                                   }
                               } else {
-                                  if (e != "a") {
+                                  if (e !== "a") {
                                       b += l[e]
                                   }
                               }
@@ -640,9 +646,9 @@ Issues that need to be fixed:
                       g++;
                       h = false
                   } else {
-                      if (l[e + d] && d == "h") {
+                      if (l[e + d] && d === "h") {
                           b += l[e + d];
-                          if (c != "y" && !h) {
+                          if (c !== "y" && !h) {
                               h = e + d
                           }
                           if (a[c]) {
@@ -650,13 +656,13 @@ Issues that need to be fixed:
                           }
                           g += 2
                       } else {
-                          if (l[e] && e != "a") {
+                          if (l[e] && e !== "a") {
                               b += l[e];
                               g++;
-                              if (d != "y" && !h) {
+                              if (d !== "y" && !h) {
                                   h = e
                               }
-                              if (a[d] && e != "ṃ") {
+                              if (a[d] && e !== "ṃ") {
                                   b += "္"
                               }
                           } else {
@@ -693,8 +699,8 @@ Issues that need to be fixed:
           toDevar: function(l) {
               l = l.replace(/<.*?>/g, "");
               l = l.toLowerCase() + " ";
-              var m = {a: " अ", i: " इ", u: " उ", "ā": " आ", "ī": " ई", "ū": " ऊ", e: " ए", o: " ओ"};
-              var n = {
+              const m = {a: " अ", i: " इ", u: " उ", "ā": " आ", "ī": " ई", "ū": " ऊ", e: " ए", o: " ओ"};
+              let n = {
                   "ā": "ा",
                   i: "ि",
                   "ī": "ी",
@@ -736,10 +742,10 @@ Issues that need to be fixed:
                   s: "स",
                   h: "ह"
               };
-              var k, h, g, f, e, d, b;
-              var c = "";
-              var a = 0;
-              var j = 0;
+              let k, h, g, f, e, d, b;
+              let c = "";
+              let a = 0;
+              let j = 0;
               l = l.replace(/\&quot;/g, "`");
               while (j < l.length) {
                   k = l.charAt(j - 2);
@@ -749,26 +755,26 @@ Issues that need to be fixed:
                   e = l.charAt(j + 2);
                   d = l.charAt(j + 3);
                   b = l.charAt(j + 4);
-                  if (j == 0 && m[g]) {
+                  if (j === 0 && m[g]) {
                       c += m[g];
                       j += 1
                   } else {
-                      if (f == "h" && n[g + f]) {
+                      if (f === "h" && n[g + f]) {
                           c += n[g + f];
-                          if (e && !m[e] && f != "ṃ") {
+                          if (e && !m[e] && f !== "ṃ") {
                               c += "्"
                           }
                           j += 2
                       } else {
                           if (n[g]) {
                               c += n[g];
-                              if (f && !m[f] && !m[g] && g != "ṃ") {
+                              if (f && !m[f] && !m[g] && g !== "ṃ") {
                                   c += "्"
                               }
                               j++
                           } else {
-                              if (g != "a") {
-                                  if (a[h] || (h == "h" && a[k])) {
+                              if (g !== "a") {
+                                  if (a[h] || (h === "h" && a[k])) {
                                       c += "्"
                                   }
                                   c += g;
@@ -793,8 +799,8 @@ Issues that need to be fixed:
           toThai: function(m) {
               m = m.replace(/<.*?>/g, "");
               m = m.toLowerCase() + " ";
-              var n = {a: "1", "ā": "1", i: "1", "ī": "1", "iṃ": "1", u: "1", "ū": "1", e: "2", o: "2"};
-              var j = {
+              const n = {a: "1", "ā": "1", i: "1", "ī": "1", "iṃ": "1", u: "1", "ū": "1", e: "2", o: "2"};
+              const j = {
                   a: "อ",
                   "ā": "า",
                   i: "ิ",
@@ -838,7 +844,7 @@ Issues that need to be fixed:
                   s: "ส",
                   h: "ห"
               };
-              var a = {
+              const a = {
                   k: "1",
                   g: "1",
                   "ṅ": "1",
@@ -862,9 +868,9 @@ Issues that need to be fixed:
                   s: "1",
                   h: "1"
               };
-              var l, h, g, f, e, d, b;
-              var c = "";
-              var k = 0;
+              let l, h, g, f, e, d, b;
+              let c = "";
+              let k = 0;
               m = m.replace(/\&quot;/g, "`");
               while (k < m.length) {
                   l = m.charAt(k - 2);
@@ -875,26 +881,26 @@ Issues that need to be fixed:
                   d = m.charAt(k + 3);
                   b = m.charAt(k + 4);
                   if (n[g]) {
-                      if (g == "o" || g == "e") {
+                      if (g === "o" || g === "e") {
                           c += j[g] + j.a;
                           k++
                       } else {
-                          if (k == 0) {
+                          if (k === 0) {
                               c += j.a
                           }
-                          if (g == "i" && f == "ṃ") {
+                          if (g === "i" && f === "ṃ") {
                               c += j[g + f];
                               k++
                           } else {
-                              if (g != "a") {
+                              if (g !== "a") {
                                   c += j[g]
                               }
                           }
                           k++
                       }
                   } else {
-                      if (j[g + f] && f == "h") {
-                          if (e == "o" || e == "e") {
+                      if (j[g + f] && f === "h") {
+                          if (e === "o" || e === "e") {
                               c += j[e];
                               k++
                           }
@@ -904,24 +910,24 @@ Issues that need to be fixed:
                           }
                           k = k + 2
                       } else {
-                          if (j[g] && g != "a") {
-                              if (f == "o" || f == "e") {
+                          if (j[g] && g !== "a") {
+                              if (f === "o" || f === "e") {
                                   c += j[f];
                                   k++
                               }
                               c += j[g];
-                              if (a[f] && g != "ṃ") {
+                              if (a[f] && g !== "ṃ") {
                                   c += "ฺ"
                               }
                               k++
                           } else {
                               if (!j[g]) {
                                   c += g;
-                                  if (a[h] || (h == "h" && a[l])) {
+                                  if (a[h] || (h === "h" && a[l])) {
                                       c += "ฺ"
                                   }
                                   k++;
-                                  if (f == "o" || f == "e") {
+                                  if (f === "o" || f === "e") {
                                       c += j[f];
                                       k++
                                   }

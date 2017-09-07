@@ -22,6 +22,7 @@ used on the homepage in static view.
         box-shadow: 0 5px 10px #CCC;
       }
     </style>
+
     <iron-image style="width:640px; height:360px;z-index:-1;" class$="{{mode}}" sizing="contain" src$="{{imgSrc}}"
                 title="{{imgTitle}}"></iron-image>
   </template>
@@ -54,15 +55,15 @@ used on the homepage in static view.
               }
           },
           _pickRandomProperty: function(obj) {
-              var result;
-              var count = 0;
-              for (var prop in obj)
+              let result;
+              let count = 0;
+              for (let prop in obj)
                   if (Math.random() < 1 / ++count)
                       result = prop;
               return result;
           },
           ready: function() {
-              var randomPos = this._pickRandomProperty(this.imagesList);
+              let randomPos = this._pickRandomProperty(this.imagesList);
               this.imgSrc = this.imagesList[randomPos].path;
               this.imgTitle = this.imagesList[randomPos].title;
 

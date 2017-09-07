@@ -15,8 +15,8 @@ The route `/define/dictionaryterm`shows which terms is searched for. All diction
 in `../data/dictionaries` accept the pts-dictionary, which is still being edited by Bhante Sujato.
 
 Related items are in a drawer on the right, which can be opened from a menu-item at the top-right.
-
-Issues that need to be fixed:
+------
+Issues:
     - Bhante Sujato to fix the pts-dictionary and Ayya Vimala to jsonify it.
     - The related items are now loaded straight from a mockup file in `../data/dictionaries/related.json`.
     This will have to be changed to relevant terms. Check on the live SC site how adjacent and similar terms
@@ -60,7 +60,7 @@ Issues that need to be fixed:
 
       .related-terms {
         text-align: left;
-        margin: 0px 16px 48px 0px;
+        margin: 0 16px 48px 0;
       }
 
       .related-terms ul {
@@ -79,7 +79,7 @@ Issues that need to be fixed:
       }
 
       .entries {
-        padding: 0px;
+        padding: 0;
 
       }
 
@@ -141,9 +141,7 @@ Issues that need to be fixed:
           <h1><span class="result-description">Definitions for</span> <span
               class="result-term">[[dictionaryItem]]</span></h1>
           <span class="termsbutton" title="Related terms"><paper-icon-button icon="menu"
-                                                                             on-click="_toggleDrawer"></paper-icon-button></span>
         </div>
-
         <div class="entries">
           <template is="dom-if" if="[[ncpedItem]]">
             <div class="book-entry">
@@ -175,10 +173,9 @@ Issues that need to be fixed:
               <div class="pts-entry" inner-h-t-m-l="[[ptsItem.text]]"></div>
             </div>
           </template>
-
         </div>
 
-        <!-- The below is complete mockup. The real related and similar terms to be displayed will have to be calculated -->
+        <!--The below is complete mockup. The real related and similar terms to be displayed will have to be calculated-->
         <app-drawer id="drawer" align="right" swipe-open>
           <div class="related-terms">
             <h3>Adjacent Terms</h3>
@@ -202,6 +199,7 @@ Issues that need to be fixed:
       </main>
     </div>
   </template>
+
   <script>
       Polymer({
           is: 'sc-page-dictionary',

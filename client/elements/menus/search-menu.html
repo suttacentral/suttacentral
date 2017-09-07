@@ -25,8 +25,8 @@ The two necessary conditions are:
       paper-item {
         @apply --sc-sans-font;
       }
-
     </style>
+
     <paper-dropdown-menu class="custom" title="Select search scope">
       <paper-listbox slot="dropdown-content" selected="{{searchSelected}}">
         <paper-item id="all">All</paper-item>
@@ -52,6 +52,5 @@ The two necessary conditions are:
               this.fire('eventFromSearchMenu', {searchView: this.searchSelected});
           }
       });
-
   </script>
 </dom-module>

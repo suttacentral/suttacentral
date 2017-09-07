@@ -1,10 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
+<link rel="import" href="addons/sc-text-node.html">
 <link rel="import" href="../styles/sc-text-styles.html">
 <link rel="import" href="../styles/sc-text-heading-styles.html">
 <link rel="import" href="../styles/sc-text-paragraph-num-styles.html">
-<link rel="import" href="addons/sc-text-node.html">
 
 <!--
 This element loads the plain html pages which are at the moment defined as all pages that have an author
@@ -18,7 +18,7 @@ Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidd
 
 Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
 
-Issues that need to be fixed:
+Issues:
     - Other language suttas need to be loaded and displayed correctly as well depending on how this will work
     with the backend.
 -->
@@ -101,36 +101,35 @@ Issues that need to be fixed:
           },
           _addParagraphs: function() {
               // adds a class to the main container to either show or hide paragraph numbers.
-              var infotext = this.shadowRoot.querySelector('#htmltextcontent');
+              const infotext = this.shadowRoot.querySelector('#htmltextcontent');
               return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
           },
           _computeTitle: function(suttaText) {
               // returns the division-text title from the loaded sutta text
-              var matches = suttaText.match(/class="division">(.*?)</);
+              const matches = suttaText.match(/class="division">(.*?)</);
               return matches ? matches[1] : "";
           },
           _computeAuthor: function(suttaText) {
               // returns the full author information from the loaded sutta text
-              var matches = suttaText.match(/author="(.*?)"/);
+              const matches = suttaText.match(/author="(.*?)"/);
               return matches ? matches[1] : "";
           },
           _computeMeta: function(suttaText) {
               // returns the meta-data from the loaded sutta text
-              var matches = suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              const matches = suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
               return matches ? matches[1] : "";
           },
           _computePars: function(e) {
               // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
-              var paragraphTitles = e.detail.response;
-              for (var key in paragraphTitles) {
-                  var refs = this.shadowRoot.querySelectorAll('.' + key);
+              const paragraphTitles = e.detail.response;
+              for (let key in paragraphTitles) {
+                  const refs = this.shadowRoot.querySelectorAll('.' + key);
                   Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key, ""));
                   Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
               }
               if (this.showParagraphs) {
                   this._addParagraphs()
               }
-              ;
           },
           infoToParent: function(suttaText) {
               // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.

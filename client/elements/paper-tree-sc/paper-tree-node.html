@@ -96,84 +96,81 @@
     </div>
   </template>
 
+  <script>
+      Polymer({
+          is: 'paper-tree-node',
+
+          properties: {
+
+              /**
+               * Data hold by this node (contains the children).
+               *
+               * Specific data:
+               *
+               * - `data.name`: string representing the node name.
+               * - `data.icon`: string telling which icon to use (default to 'folder' icon).
+               * - `data.open`: boolean telling whether the node is expanded or not.
+               * - `data.children` array containing the children of the node.
+               */
+              data: {
+                  type: Object,
+                  value: function() {
+                      return null;
+                  }
+              },
+          },
+
+          /**
+           * The `select` event is fired whenever `select()` is called on the node.
+           *
+           * @event select
+           */
+
+          /**
+           * Returns the necessary classes.
+           *
+           * @param {object} change An object containing the property that changed and its value.
+           * @return {string} The class name indicating whether the node is open or closed
+           */
+          _computeIcon: function(change) {
+              const open = change && change.base && change.base.open;
+              const children = change && change.base && change.base.children;
+              return ((open && children && children.length) ? 'expand-less' : children && children.length ? 'expand-more' : '');
+          },
+          _computeIndent: function(data) {
+              return (data.children || data.lang) ? "" : "indent";
+          },
+          /**
+           * Highlights node as the selected node.
+           */
+          select: function() {
+              this.fire("select", this);
+          },
+
+          /**
+           * Returns the parent node. Returns `null` if root.
+           */
+          getParent: function() {
+              return this.domHost.tagName === 'PAPER-TREE-NODE' ? this.domHost : null;
+          },
+
+          /**
+           * Returns the children tree nodes.
+           */
+          getChildren: function() {
+              return Polymer.dom(this.root).querySelectorAll('paper-tree-node');
+          },
+
+          /**
+           * Display/Hide the children nodes.
+           */
+          toggleChildren: function(e) {
+              this.opened = !this.opened;
+              this.fire('toggle', this);
+              this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
+          }
+
+      });
+
+  </script>
 </dom-module>
-
-<script>
-
-    Polymer({
-
-        is: 'paper-tree-node',
-
-        properties: {
-
-            /**
-             * Data hold by this node (contains the children).
-             *
-             * Specific data:
-             *
-             * - `data.name`: string representing the node name.
-             * - `data.icon`: string telling which icon to use (default to 'folder' icon).
-             * - `data.open`: boolean telling whether the node is expanded or not.
-             * - `data.children` array containing the children of the node.
-             */
-            data: {
-                type: Object,
-                value: function() {
-                    return null;
-                }
-            },
-        },
-
-        /**
-         * The `select` event is fired whenever `select()` is called on the node.
-         *
-         * @event select
-         */
-
-        /**
-         * Returns the necessary classes.
-         *
-         * @param {object} change An object containing the property that changed and its value.
-         * @return {string} The class name indicating whether the node is open or closed
-         */
-        _computeIcon: function(change) {
-            var open = change && change.base && change.base.open;
-            var children = change && change.base && change.base.children;
-            return ((open && children && children.length) ? 'expand-less' : children && children.length ? 'expand-more' : '');
-        },
-        _computeIndent: function(data) {
-            return (data.children || data.lang) ? "" : "indent";
-        },
-        /**
-         * Highlights node as the selected node.
-         */
-        select: function() {
-            this.fire("select", this);
-        },
-
-        /**
-         * Returns the parent node. Returns `null` if root.
-         */
-        getParent: function() {
-            return this.domHost.tagName === 'PAPER-TREE-NODE' ? this.domHost : null;
-        },
-
-        /**
-         * Returns the children tree nodes.
-         */
-        getChildren: function() {
-            return Polymer.dom(this.root).querySelectorAll('paper-tree-node');
-        },
-
-        /**
-         * Display/Hide the children nodes.
-         */
-        toggleChildren: function(e) {
-            this.opened = !this.opened;
-            this.fire('toggle', this);
-            this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
-        }
-
-    });
-
-</script>

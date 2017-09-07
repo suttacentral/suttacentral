@@ -16,8 +16,7 @@
 <!--
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
 type of view for segmented pages (showing pali next to translated text), lookup tools and publication details .
--->
-<!--
+-----
 Issues:
   - The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English.
   A mockup dictionary is in `data/dictionaries/pi2en.json` but this is not the latest version, only for testing.
@@ -307,7 +306,7 @@ Issues:
           },
           _dictionaryLookup: function(valueSelected) {
               // needs more work
-              return (valueSelected > 0) ? true : false;
+              return (valueSelected > 0);
           },
           _getDictionary: function(valueArray, valueSelected) {
               // needs more work
@@ -317,8 +316,8 @@ Issues:
               // function not used at the moment. The idea was to be able to disable the choice of various
               // views on normal text pages because they are only available on segmented text pages.
               if (disableViews === true) {
-                  var refs = this.querySelectorAll("paper-radio-button");
-                  for (var i = 0; i < refs.length; i++) {
+                  const refs = this.querySelectorAll("paper-radio-button");
+                  for (let i = 0; i < refs.length; i++) {
                       refs[i].setAttribute("disabled", true);
                   }
               }
@@ -329,3 +328,4 @@ Issues:
           }
       });
   </script>
+</dom-module>

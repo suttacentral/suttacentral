@@ -49,7 +49,7 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
       }
 
       paper-card.suttaplex {
-        border-radius: 0px;
+        border-radius: 0;
         border-top: 1px solid var(--paper-grey-300);
         display: block;
       }
@@ -85,7 +85,7 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
       }
 
       paper-card.suttaplex .card-actions {
-        padding: 0px 16px 8px;
+        padding: 0 16px 8px;
         display: flex;
         justify-content: space-between;
         align-items: baseline;
@@ -195,7 +195,8 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
         <div class="card-actions">
           <div class="card-actions-left">
             <template is="dom-repeat" items="[[languageData.authors]]" as="author">
-              <paper-button flat title$="Go to a translation by [[author]]"><a href="/[[inputData.url]]/[[author]]">[[author]]</a>
+              <paper-button flat title$="Go to a translation by [[author]]">
+                <a href="/[[inputData.url]]/[[author]]">[[author]]</a>
               </paper-button>
             </template>
             <div class="languagedrop">
@@ -234,6 +235,7 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
       </paper-card>
     </template>
   </template>
+
   <script>
       Polymer({
           is: 'sc-suttaplex',
@@ -288,8 +290,8 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
                   notify: true
               }
           },
+          // checks if the suttaplex card should be opened by default.
           ready: function() {
-              // checks if the suttaplex card should be opened by default.
               if (this.toggleRequest) {
                   this._toggleOpened()
               }
@@ -297,20 +299,20 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
               // gets data for each parallel for use in the more-par menu copy function.
               this.addEventListener('eventFromParallels', this._parallelData);
           },
+          // populates array of parallels for this sutta for use in the more-par menu copy function.
           _parallelData: function(e) {
-              // populates array of parallels for this sutta for use in the more-par menu copy function.
-              var newparallel = e.detail.parid;
+              const newparallel = e.detail.parid;
               if (this.parallelNumberArray.indexOf(newparallel) === -1) {
                   this.parallelNumberArray.push(newparallel);
                   this.parallelsArray.push(e.detail);
               }
           },
+          // loads the data for the relevant sutta.
           _callAjax: function() {
-              // loads the data for the relevant sutta.
               return (this.inputUrl) ? this.$.ajax.generateRequest() : "";
           },
+          // returns the relevant card-header, either the title in the translated language, otherwise in pali or otherwise just the ID.
           _computeTitle: function(inputData) {
-              // returns the relevant card-header, either the title in the translated language, otherwise in pali or otherwise just the ID.
               if (inputData.titlelan) {
                   return inputData.titlelan;
               } else if (inputData.titlepi) {
@@ -319,61 +321,61 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
                   return inputData.id;
               }
           },
+          // general function to hide or display various elements.
           _computeHide: function(checkText) {
-              // general function to hide or display various elements.
               return (!checkText) ? "hide-element" : "";
           },
+          // returns the relevant icon for the expander
           _computeToggleIcon: function(opened) {
-              // returns the relevant icon for the expander
               return opened ? 'icons:expand-less' : 'icons:expand-more';
           },
+          // shows the more-par menu when the expander is opened.
           _computeToggleMoreIcon: function(opened) {
-              // shows the more-par menu when the expander is opened.
               return opened ? '' : 'moremenu';
           },
+          // toggle the expander
           _toggleOpened: function(e) {
-              // toggle the expander
               this.opened = !this.opened;
               this.fire('toggle', this);
           },
+          // check if the expander should be open or closed.
+          // on sutta-pages (i.e. /dn1 or /dn1/bodhi) it is open by default,
+          // on suttaplex-list pages (i.e. /dn or /dn/vagga1) it is closed by default.
           _checkToggleRequest: function(toggleRequest) {
-              // check if the expander should be open or closed.
-              // on sutta-pages (i.e. /dn1 or /dn1/bodhi) it is open by default,
-              // on suttaplex-list pages (i.e. /dn or /dn/vagga1) it is closed by default.
               if (toggleRequest) {
-                  this._toggleOpened
+                  this._toggleOpened()
               }
           },
+          // lets the suttaplex-list know which suttaplex-card is open.
           passParams: function() {
-              // lets the suttaplex-list know which suttaplex-card is open.
               this.fire('toggleParallelNote', {open: this._toggleIcon, url: this.inputUrl});
           },
+          // adds the 'tree'-icons to denote difficulty level if any.
           _computeLevel: function(level) {
-              // adds the 'tree'-icons to denote difficulty level if any.
               return level ? "sc-svg-icons:" + level : "";
           },
+          // returns the url for the relevant sutta to display information for.
           _computeURL: function(sutta) {
-              // returns the url for the relevant sutta to display information for.
               return `../../data/suttas/${sutta}.json`;
           },
+          // creates an array with the relevant language data for the sutta i.e. title, slug, etc. in the chosen site language.
           _computeLanguage: function(inputData, inputLanguage) {
-              // creates an array with the relevant language data for the sutta i.e. title, slug, etc. in the chosen site language.
-              var lanarray = "";
+              let lanarray = "";
               if (inputData) {
                   if (inputData.languages) {
-                      for (var i = 0; i < inputData.languages.length; i = i + 1) {
+                      for (let i = 0; i < inputData.languages.length; i = i + 1) {
                           if (inputData.languages[i].id === inputLanguage) {
-                              var lanarray = inputData.languages[i]
+                              lanarray = inputData.languages[i];
                           }
                       }
                   }
               }
               return lanarray ? lanarray : "";
           },
+          // returns the number of parallels to show in the paper-badge on the expander.
           _parallelsNumber: function(inputData) {
-              // returns the number of parallels to show in the paper-badge on the expander.
-              var parlength = 0;
-              for (var i = 0; i < inputData.parallels.length; i = i + 1) {
+              let parlength = 0;
+              for (let i = 0; i < inputData.parallels.length; i = i + 1) {
                   parlength = parlength + inputData.parallels[i].relations.length;
               }
               return parlength;

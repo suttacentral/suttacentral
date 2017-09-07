@@ -28,7 +28,7 @@ Not upgraded to Polymer 2.x because paper-tooltip seems to work again under P2.
         line-height: 16px;
         padding: 8px 16px;
         border-radius: 2px;
-        text-shadow: 0px 0px #ffffff;
+        text-shadow: 0 0 #ffffff;
         background-color: var(--sc-tooltip-background, --paper-grey-700);
         opacity: 0.98;
         color: var(--sc-tooltip-text-color, white);
@@ -40,10 +40,12 @@ Not upgraded to Polymer 2.x because paper-tooltip seems to work again under P2.
         display: none !important;
       }
     </style>
+
     <div id="tooltip" class="hidden">
       <slot></slot>
     </div>
   </template>
+
   <script>
       Polymer({
           is: 'sc-tooltip',
@@ -146,11 +148,11 @@ Not upgraded to Polymer 2.x because paper-tooltip seems to work again under P2.
            * of the tooltip.
            */
           get target() {
-              var parentNode = Polymer.dom(this).parentNode;
+              const parentNode = Polymer.dom(this).parentNode;
               // If the parentNode is a document fragment, then we need to use the host.
-              var ownerRoot = Polymer.dom(this).getOwnerRoot();
+              const ownerRoot = Polymer.dom(this).getOwnerRoot();
 
-              var target;
+              let target;
               if (this.for) {
                   target = Polymer.dom(ownerRoot).querySelector('#' + this.for);
               } else {
@@ -213,18 +215,18 @@ Not upgraded to Polymer 2.x because paper-tooltip seems to work again under P2.
               if (!this._target || !this.offsetParent)
                   return;
 
-              var offset = this.offset;
+              const offset = this.offset;
 
-              var parentRect = this.offsetParent.getBoundingClientRect();
-              var targetRect = this._target.getBoundingClientRect();
-              var thisRect = this.getBoundingClientRect();
-              var horizontalCenterOffset = (targetRect.width - thisRect.width) / 2;
-              var verticalCenterOffset = (targetRect.height - thisRect.height) / 2;
+              const parentRect = this.offsetParent.getBoundingClientRect();
+              const targetRect = this._target.getBoundingClientRect();
+              const thisRect = this.getBoundingClientRect();
+              const horizontalCenterOffset = (targetRect.width - thisRect.width) / 2;
+              const verticalCenterOffset = (targetRect.height - thisRect.height) / 2;
 
-              var targetLeft = targetRect.left - parentRect.left;
-              var targetTop = targetRect.top - parentRect.top;
+              const targetLeft = targetRect.left - parentRect.left;
+              const targetTop = targetRect.top - parentRect.top;
 
-              var tooltipLeft, tooltipTop;
+              let tooltipLeft, tooltipTop;
 
               switch (this.position) {
                   case 'top':
@@ -246,11 +248,11 @@ Not upgraded to Polymer 2.x because paper-tooltip seems to work again under P2.
               }
 
               if (this.fitToVisibleBounds) {
-                  var viewPort = document.querySelector(this.fitToVisibleBounds).getBoundingClientRect();
+                  const viewPort = document.querySelector(this.fitToVisibleBounds).getBoundingClientRect();
                   // Calculate segment mid-point
                   if (targetRect.width >= viewPort.width * 0.8) {
-                      var midPointOffset = (viewPort.left + viewPort.width / 2) - (thisRect.left + thisRect.width / 2);
-                      if (midPointOffset != 0) {
+                      const midPointOffset = (viewPort.left + viewPort.width / 2) - (thisRect.left + thisRect.width / 2);
+                      if (midPointOffset !== 0) {
                           this.style.left = midPointOffset + "px";
                       }
                       this.style.right = "auto";
@@ -258,13 +260,13 @@ Not upgraded to Polymer 2.x because paper-tooltip seems to work again under P2.
 
                       // Clip the left/right side.
                       if (thisRect.right > viewPort.right) {
-                          var differenceright = viewPort.right - thisRect.right;
+                          const differenceright = viewPort.right - thisRect.right;
                           this.style.right = '16px';
                           this.style.left = differenceright + "px";
                       }
 
                       if (thisRect.left < viewPort.left) {
-                          var differenceleft = thisRect.left - viewPort.left;
+                          const differenceleft = thisRect.left - viewPort.left;
                           this.style.right = differenceleft + "px";
                           this.style.left = '16px';
                       }

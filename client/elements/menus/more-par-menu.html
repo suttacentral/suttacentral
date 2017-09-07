@@ -33,8 +33,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       <iron-icon icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>
-
   </template>
+
   <script>
       Polymer({
           is: 'more-par-menu',
@@ -51,7 +51,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           },
           _copyContent: function() {
               // copy the parallels-table in html-string
-              var copyTextarea = this._computeCopyTable(this.inputData, this.parallelsArray);
+              const copyTextarea = this._computeCopyTable(this.inputData, this.parallelsArray);
               this._copyToClipboard(copyTextarea);
           },
           _copyLink: function() {
@@ -60,17 +60,16 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           },
           _copyCite: function() {
               //  copy cite-information about parallels and bibliography.
-              var copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
+              const copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
               this._copyToClipboard(copyTextarea);
           },
           _copyToClipboard: function(inputText) {
               // copies inputtext to the clipboard by creating and selecting a dummy element.
-              var textarea = document.createElement("textarea");
+              const textarea = document.createElement("textarea");
               textarea.textContent = inputText;
               textarea.style.position = "fixed";
               document.body.appendChild(textarea);
               textarea.select();
-              var result = false;
               try {
                   return document.execCommand("copy");
               } catch (err) {
@@ -95,16 +94,16 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           },
           _computeCopyTable: function(inputData, parallelsArray) {
               // creates a parallels-table in html-string
-              var titlepi = "";
+              let titlepi = "";
               if (inputData.parallels) {
                   tablefinalplugin = "";
-                  for (var x = 0; x < inputData.parallels.length; x++) {
-                      var relationships = inputData.parallels[x].relations;
-                      var tableplugin = "\n<tbody>\n  <tr>\n    <td rowspan='" + relationships.length + "'>" + inputData.parallels[x].id + "</td>";
-                      for (var i = 0; i < relationships.length; i++) {
-                          for (var parobject = 0; parobject < parallelsArray.length; parobject++) {
+                  for (let x = 0; x < inputData.parallels.length; x++) {
+                      const relationships = inputData.parallels[x].relations;
+                      let tableplugin = "\n<tbody>\n  <tr>\n    <td rowspan='" + relationships.length + "'>" + inputData.parallels[x].id + "</td>";
+                      for (let i = 0; i < relationships.length; i++) {
+                          for (let parobject = 0; parobject < parallelsArray.length; parobject++) {
                               if (parallelsArray[parobject].parid === relationships[i].id) {
-                                  var titlepi = parallelsArray[parobject].partitle;
+                                  titlepi = parallelsArray[parobject].partitle;
                               }
                           }
                           tableplugin += "\n    <td>" + this._computeIcon(relationships[i].icon) + "</td>\n    <td>" + relationships[i].id + "</td>\n    <td>" + titlepi + "</td>\n  </tr>";
@@ -121,13 +120,13 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               // creates cite data for parallels with parallels-list and bibliographical information
               if (inputData.parallels) {
                   citefinalplugin = "";
-                  var d = new Date();
-                  for (var x = 0; x < inputData.parallels.length; x++) {
-                      var relationships = inputData.parallels[x].relations;
-                      var citeplugin = "Parallels for " + inputData.parallels[x].id + " " + inputData.titlepi + " (" + inputData.volpage + "): ";
-                      for (var i = 0; i < relationships.length; i++) {
+                  const d = new Date();
+                  for (let x = 0; x < inputData.parallels.length; x++) {
+                      const relationships = inputData.parallels[x].relations;
+                      let citeplugin = "Parallels for " + inputData.parallels[x].id + " " + inputData.titlepi + " (" + inputData.volpage + "): ";
+                      for (let i = 0; i < relationships.length; i++) {
                           citeplugin += relationships[i].id;
-                          for (var parobject = 0; parobject < parallelsArray.length; parobject++) {
+                          for (let parobject = 0; parobject < parallelsArray.length; parobject++) {
                               if (parallelsArray[parobject].parid === relationships[i].id) {
                                   if (parallelsArray[parobject].volumepage) {
                                       citeplugin += " (" + parallelsArray[parobject].volumepage + ") ";
@@ -148,4 +147,4 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
       });
   </script>
-
+</dom-module>
