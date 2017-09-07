@@ -127,12 +127,12 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
                   }
               }
           },
+          // returns the url of the correct parallel-sutta to be loaded.
           _computeURL: function(sutta) {
-              // returns the url of the correct parallel-sutta to be loaded.
               return `../../data/suttas/${sutta}.json`;
           },
+          // creates an array with the relevant language data for the parallel-sutta i.e. title, slug, etc. in the chosen site language.
           _computeLanguage: function(inputData, inputLanguage) {
-              // creates an array with the relevant language data for the parallel-sutta i.e. title, slug, etc. in the chosen site language.
               let lanarray = "";
               if (inputData.languages) {
                   for (let i = 0; i < inputData.languages.length; i++) {
@@ -143,8 +143,8 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
               }
               return lanarray ? lanarray : "";
           },
+          // returns the relevant header, either the title in the translated language, otherwise in pali or otherwise just the ID.
           _computeTitle: function(languageData, inputData, parallelId) {
-              // returns the relevant header, either the title in the translated language, otherwise in pali or otherwise just the ID.
               if (languageData.titlelan) {
                   return languageData.titlelan;
               } else if (inputData.titlepi) {
@@ -153,12 +153,12 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
                   return parallelId;
               }
           },
+          // general function to hide or display various elements.
           _computeHide: function(checkText) {
-              // general function to hide or display various elements.
               return (!checkText) ? "hide-element" : "";
           },
+          // sends info regarding id, title, etc. back to sc-suttaplex.html for use in the more-par menu copy function.
           infoToParent: function() {
-              // sends info regarding id, title, etc. back to sc-suttaplex.html for use in the more-par menu copy function.
               this.fire('eventFromParallels', {
                   parid: this.parallelId,
                   partitle: this.inputData.titlepi,

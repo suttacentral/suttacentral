@@ -267,16 +267,16 @@ Issues:
                   computed: '_checkDictionaryEntry(dppnResult, dictionaryItem)'
               }
           },
+          // checks if item is found in this specific dictionary and returns the result.
           _checkDictionaryEntry: function(dictResult, dictionaryItem) {
-              // checks if item is found in this specific dictionary and returns the result.
               if (dictResult[dictionaryItem.toLowerCase()]) {
                   return dictResult[dictionaryItem.toLowerCase()];
               } else if (dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)]) {
                   return dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)];
               }
           },
+          // toggles the drawer on the right to show the related/similar items.
           _toggleDrawer: function() {
-              // toggles the drawer on the right to show the related/similar items.
               this.$.drawer.toggle();
           }
       });

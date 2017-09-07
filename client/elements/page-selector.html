@@ -241,25 +241,22 @@ Issues that need to be fixed:
               // Only applies to segmented text pages where pali is shown.
               this.addEventListener('changeScript', this._changeScript);
           },
+          // changes the title in the toolbar and meta area in the settings-menu dialog-box depending on the chosen view
           addTitles: function(event) {
-              // changes the title in the toolbar and meta area in the settings-menu dialog-box depending on the chosen view
               switch (this.mainClass) {
                   case 'list-mode':
                       if (event.detail.divisiontitle) {
                           this.divisionTitle = event.detail.divisiontitle
                       }
-                      ;
                       this.toolbarTitle = this.divisionTitle;
                       break;
                   case 'text-mode':
                       if (event.detail.suttatitle) {
                           this.suttaTitle = event.detail.suttatitle
                       }
-                      ;
                       if (event.detail.suttameta) {
                           this.suttaMeta = event.detail.suttameta
                       }
-                      ;
                       this.toolbarTitle = this.suttaTitle;
                       this.metaArea = this.suttaMeta;
                       break;
@@ -267,73 +264,71 @@ Issues that need to be fixed:
                       if (event.detail.suttasegtitle) {
                           this.suttaSegTitle = event.detail.suttasegtitle
                       }
-                      ;
                       if (event.detail.suttasegmeta) {
                           this.suttaSegMeta = event.detail.suttasegmeta
                       }
-                      ;
                       this.toolbarTitle = this.suttaSegTitle;
                       this.metaArea = this.suttaSegMeta;
                       break;
               }
           },
+          // find the author name in the route: The additional check for "activePath" is needed because otherwise the
+          // different views for different vaggas vs. the full view of all the vaggas is not always taken.
+          // Note that this will have to be changed for longer and more complex routes.
           _checkAuthor: function(subPath, category, activePath) {
-              // find the author name in the route: The additional check for "activePath" is needed because otherwise the
-              // different views for different vaggas vs. the full view of all the vaggas is not always taken.
-              // Note that this will have to be changed for longer and more complex routes.
               return (category !== "define" && subPath && activePath && !subPath.startsWith("vagga")) ? subPath : "";
           },
+          // find the vagga name in the route. The additional check for "activePath" is needed because otherwise the
+          // different views for different vaggas vs. the full view of all the vaggas is not always taken.
+          // Note that this will have to be changed for longer and more complex routes.
           _computeVagga: function(subPath, activePath) {
-              // find the vagga name in the route. The additional check for "activePath" is needed because otherwise the
-              // different views for different vaggas vs. the full view of all the vaggas is not always taken.
-              // Note that this will have to be changed for longer and more complex routes.
               return (subPath && activePath && subPath.startsWith("vagga")) ? subPath : "";
           },
+          // if there are query parameters given, then pass this info to the search page.
           _checkSearchQuery: function(queryParams) {
-              // if there are query parameters given, then pass this info to the search page.
               return (queryParams.query) ? queryParams.query : "";
           },
+          // if the first term of the route = "define", pass the second term as dictionary-search-term to the dictionary page.
           _checkDictionaryItem: function(subPath, category, activePath) {
-              // if the first term of the route = "define", pass the second term as dictionary-search-term to the dictionary page.
               return (activePath && category === "define") ? subPath : "";
           },
+          // set the view-mode for the segmented text pages to the chosen value.
           changeSegmentedView: function(e) {
-              // set the view-mode for the segmented text pages to the chosen value.
               return this.showViewer = e.detail.selectedView;
           },
+          // set the textual info-mode for the text pages to the chosen value.
           _changeTextInfo: function(e) {
-              // set the textual info-mode for the text pages to the chosen value.
               return this.showParagraphs = e.detail.textInfo;
           },
+          // set the script type for pali pages in segmented text pages.
           _changeScript: function(e) {
-              // set the script type for pali pages in segmented text pages.
               return this.paliScript = e.detail.scriptchoice;
           },
+          // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
           _changeView: function(category, author) {
-              // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
               this.$.sctoolbar.closeSearch();
               this.$.header.resetLayout();
           },
+          // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
           _toggleDrawer: function() {
-              // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
               this.fire('toggleDrawer', {togdraw: "opened"});
           },
+          // checks if a page is a static page by checking the first term in the route against the staticPages-array
+          // and sets the toolbar title and css class accordingly.
           _checkStatic: function(category) {
-              // checks if a page is a static page by checking the first term in the route against the staticPages-array
-              // and sets the toolbar title and css class accordingly.
               if (this.staticPages.indexOf(category) > -1) {
                   this.mainClass = "static-mode";
-                  this.toolbarTitle = ''
+                  this.toolbarTitle = '';
                   return true;
               } else {
                   return false;
               }
           },
+          // checks if a route is not part of any of the other classes of pages (static,search,dictionary or text)
+          // and sets the toolbar title, meta area and css class accordingly.
           _checkList: function(category) {
-              // checks if a route is not part of any of the other classes of pages (static,search,dictionary or text)
-              // and sets the toolbar title, meta area and css class accordingly.
-              var author = this._checkAuthor(this.subPath, category, this.activePath);
-              if (author === "" && (this.staticPages.indexOf(category) == -1) && category !== 'search' && category !== 'define') {
+              const author = this._checkAuthor(this.subPath, category, this.activePath);
+              if (author === "" && (this.staticPages.indexOf(category) === -1) && category !== 'search' && category !== 'define') {
                   this.mainClass = "list-mode";
                   this.toolbarTitle = this.divisionTitle;
                   return true;
@@ -341,11 +336,11 @@ Issues that need to be fixed:
                   return false;
               }
           },
+          // checks if a page is a html-text page by checking if there is an author and if the author is not equal to "sujato" or "pali"
+          // and sets the toolbar title, meta area and css class accordingly.
+          // Note that this might have to change if other authors will also be used for segmented texts.
           _checkText: function(category) {
-              // checks if a page is a html-text page by checking if there is an author and if the author is not equal to "sujato" or "pali"
-              // and sets the toolbar title, meta area and css class accordingly.
-              // Note that this might have to change if other authors will also be used for segmented texts.
-              var author = this._checkAuthor(this.subPath, category, this.activePath);
+              const author = this._checkAuthor(this.subPath, category, this.activePath);
               if (author && author !== "sujato" && author !== "pali") {
                   this.mainClass = "text-mode";
                   this.toolbarTitle = this.suttaTitle;
@@ -355,11 +350,11 @@ Issues that need to be fixed:
                   return false;
               }
           },
+          // checks if a page is a segmented-text page by checking if there is an author and if the author is equal to "sujato" or "pali"
+          // and sets the toolbar title, meta area and css class accordingly.
+          // Note that this might have to change if other authors will also be used for segmented texts.
           _checkSegmented: function(category) {
-              // checks if a page is a segmented-text page by checking if there is an author and if the author is equal to "sujato" or "pali"
-              // and sets the toolbar title, meta area and css class accordingly.
-              // Note that this might have to change if other authors will also be used for segmented texts.
-              var author = this._checkAuthor(this.subPath, category, this.activePath);
+              const author = this._checkAuthor(this.subPath, category, this.activePath);
               if (author && (author === "sujato" || author === "pali")) {
                   this.mainClass = "segmented-mode";
                   this.toolbarTitle = this.suttaSegTitle;
@@ -369,23 +364,23 @@ Issues that need to be fixed:
                   return false;
               }
           },
+          // checks if a page is a search page by checking the first term in the route = "search"
+          // and sets the toolbar title and css class accordingly.
           _checkSearch: function(category) {
-              // checks if a page is a search page by checking the first term in the route = "search"
-              // and sets the toolbar title and css class accordingly.
               if (category === "search") {
                   this.mainClass = "search-mode";
-                  this.toolbarTitle = 'SuttaCentral — search results'
+                  this.toolbarTitle = 'SuttaCentral — search results';
                   return true;
               } else {
                   return false;
               }
           },
+          // checks if a page is a dictionary page by checking the first term in the route = "define"
+          // and sets the toolbar title and css class accordingly.
           _checkDictionary: function(category) {
-              // checks if a page is a dictionary page by checking the first term in the route = "define"
-              // and sets the toolbar title and css class accordingly.
               if (category === "define") {
                   this.mainClass = "dictionary-mode";
-                  this.toolbarTitle = 'SuttaCentral — Dictionary results'
+                  this.toolbarTitle = 'SuttaCentral — Dictionary results';
                   return true;
               } else {
                   return false;

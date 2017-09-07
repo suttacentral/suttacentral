@@ -185,24 +185,24 @@ Issues that need to be fixed:
               // toggleDrawer is triggered when the menu button in the toolbar is pressed when the app-drawer is not visible.
               this.addEventListener('toggleDrawer', this._toggleDrawer);
           },
+          // Polymer problem here with loading anything with a dot in the path. Bug report filed.
+          // So when using "polymer serve" to start development server, you have to use a colon
+          // instead of a dot. But with python server/app.py you can use the correct path name.
           _calculateCategory: function(collectionData) {
-              // Polymer problem here with loading anything with a dot in the path. Bug report filed.
-              // So when using "polymer serve" to start development server, you have to use a colon
-              // instead of a dot. But with python server/app.py you can use the correct path name.
               this.category = collectionData.collection.replace(":", ".");
           },
+          // sets the inputLanguage for all pages
           changeLanguage: function(event) {
-              // sets the inputLanguage for all pages
               return this.inputLanguage = event.detail.Language;
           },
+          // sets the path for a searchterm to /search?query=searchterm
           searchItem: function(event) {
-              // sets the path for a searchterm to /search?query=searchterm
               this.path = "/search";
               this.query = "query=" + event.detail;
 
           },
+          // opens the app-drawer when it is not visible.
           _toggleDrawer: function(event) {
-              // opens the app-drawer when it is not visible.
               return this.$$('app-drawer').setAttribute("opened", event.detail.togdraw);
           }
 

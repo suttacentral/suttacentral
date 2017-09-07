@@ -189,61 +189,61 @@ Issues that need to be fixed:
           observers: [
               'infoToParent(suttaList,inputLanguage)'
           ],
+          // event listener that gets information from the suttaplex-card if it is opened.
           ready: function() {
-              // event listener that gets information from the suttaplex-card if it is opened.
               this.addEventListener('toggleParallelNote', this.elevateBox);
           },
+          // Right now this checks if the route url has a number and if so, concludes that this must be a sutta and
+          // not a division so it wants to display only the suttaplex card for that sutta. This is not correct and needs
+          // better criteria to decide if something is a sutta or a list of various suttas.
           _checkCategoryRoute: function(category) {
-              // Right now this checks if the route url has a number and if so, concludes that this must be a sutta and
-              // not a division so it wants to display only the suttaplex card for that sutta. This is not correct and needs
               let matches;
-              // better criteria to decide if something is a sutta or a list of various suttas.
               if (category) {
                   matches = category.match(/\d{1,6}/);
               }
               return (!matches);
           },
+          // Same as above, it checks if the route url has a number and if so concludes it must be a sutta. This will
+          // need to change and have better criteria for checking if something is a sutta or a list.
           _callAjax: function() {
-              // Same as above, it checks if the route url has a number and if so concludes it must be a sutta. This will
               let matches;
-              // need to change and have better criteria for checking if something is a sutta or a list.
               if (this.category) {
                   matches = this.category.match(/\d{1,6}/);
               }
               return (!matches && (this.otherPages.indexOf(this.category) === -1)) ? this.$.ajax.generateRequest() : "";
           },
+          // when a suttaplex card is opened, this one is lifted out of the list and given a new class.
           elevateBox: function(event) {
-              // when a suttaplex card is opened, this one is lifted out of the list and given a new class.
               const sutta = this.$$('#' + event.detail.url);
               return (event.detail.open === "icons:expand-more") ? sutta.classList.add('expandeditem') : sutta.classList.remove('expandeditem');
           },
+          // returns url for the suttaplex data
           _computeURL: function(category) {
-              // returns url for the suttaplex data
               return `../../data/list/${category}.json`;
           },
+          // returns true if there either is no vaggaNumber (i.e. all vaggas are to be shown) or
+          // if the vaggaNumber is equal to the vagganumber that is current in the dom-repeat (i.e. THIS vagga is to be shown).
           _selectVagga: function(vagga, vaggaNumber) {
-              // returns true if there either is no vaggaNumber (i.e. all vaggas are to be shown) or
-              // if the vaggaNumber is equal to the vagganumber that is current in the dom-repeat (i.e. THIS vagga is to be shown).
               return (!vaggaNumber || vaggaNumber === vagga.vagganr);
           },
+          // returns relevant classname if the vagga is the first one to be displayed (different spacing to the top from other vaggas)
           _checkFirstVagga: function(vagga, vaggaNumber) {
-              // returns relevant classname if the vagga is the first one to be displayed (different spacing to the top from other vaggas)
               return vaggaNumber ? ((vaggaNumber === vagga.vagganr) ? "firstvagga" : "") : "";
           },
+          // returns the relevant language data in the loaded data depending on the chosen site language.
           _computeLanguage: function(suttaList, inputLanguage) {
-              // returns the relevant language data in the loaded data depending on the chosen site language.
               return suttaList ? suttaList[inputLanguage] : "";
           },
+          // returns the relevant vagganame in the chosen site language.
           _computeVagganame: function(vagga, inputLanguage) {
-              // returns the relevant vagganame in the chosen site language.
               return vagga[inputLanguage].vagganame;
           },
+          // returns the relevant vagga text description in the chosen site language.
           _computeVaggadescription: function(vagga, inputLanguage) {
-              // returns the relevant vagga text description in the chosen site language.
               return vagga[inputLanguage].description;
           },
+          // When the datafile has been fully loaded, fires the relevant data for toolbar-title back to page-selector.
           infoToParent: function(suttaList, inputLanguage) {
-              // When the datafile has been fully loaded, fires the relevant data for toolbar-title back to page-selector.
               if (suttaList) {
                   this.fire('eventFromSuttaplexPage', {
                       divisiontitle: this._computeLanguage(suttaList, inputLanguage)['name'] + "—" + suttaList['namepi']

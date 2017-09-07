@@ -156,7 +156,7 @@ Not upgraded to Polymer 2.x because paper-tooltip seems to work again under P2.
               if (this.for) {
                   target = Polymer.dom(ownerRoot).querySelector('#' + this.for);
               } else {
-                  target = parentNode.nodeType == Node.DOCUMENT_FRAGMENT_NODE ?
+                  target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ?
                       ownerRoot.host : parentNode;
               }
               return target;

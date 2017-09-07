@@ -111,28 +111,28 @@ which is loaded from `../data/suttas` in **sc-parallels.html**.
                       return 'Retelling';
               }
           },
+          // returns the rowspan needed for each parallel.
           _computeRowspan: function(suttaurl) {
-              // returns the rowspan needed for each parallel.
               return suttaurl.relations.length;
           },
+          // returns the icon for the first parallel.
           _computeFirstParallelIcon: function(suttaurl) {
-              // returns the icon for the first parallel.
               return suttaurl.relations[0].icon;
           },
+          // returns the title for the first parallel.
           _computeFirstParallelTitle: function(suttaurl) {
-              // returns the title for the first parallel.
               return this._computeTitle(suttaurl.relations[0].icon);
           },
+          // returns the url for the first parallel.
           _computeFirstParallelUrl: function(suttaurl) {
-              // returns the url for the first parallel.
               return suttaurl.relations[0].url;
           },
+          // returns the ID for the first parallel.
           _computeFirstParallelId: function(suttaurl) {
-              // returns the ID for the first parallel.
               return suttaurl.relations[0].id;
           },
+          // returns an array with the data for all other parallels than the first.
           _computeOtherParallels: function(suttaurl) {
-              // returns an array with the data for all other parallels than the first.
               const parallelarray = [];
               for (let i = 1; i < suttaurl.relations.length; i++) {
                   parallelarray[i - 1] = suttaurl.relations[i];

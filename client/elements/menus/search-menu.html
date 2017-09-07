@@ -47,8 +47,8 @@ The two necessary conditions are:
                   observer: '_searchChanged'
               }
           },
+          // Fires resulting choice to search page, where it is converted to a selection of the relevant items.
           _searchChanged: function() {
-              // Fires resulting choice to search page, where it is converted to a selection of the relevant items.
               this.fire('eventFromSearchMenu', {searchView: this.searchSelected});
           }
       });

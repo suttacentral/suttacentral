@@ -85,42 +85,42 @@ Issues:
               '_callAjax(suttaPath,author)',
               'infoToParent(suttaText)'
           ],
+          // Calls the correct sutta text file. Because Polymer tends to load automatic ajax functions first from where they
+          // called before parsing the route to the correct page, the additional checks are needed and might have to be
+          // adjusted when more authors are added for the segmented text pages.
           _callAjax: function() {
-              // Calls the correct sutta text file. Because Polymer tends to load automatic ajax functions first from where they
-              // called before parsing the route to the correct page, the additional checks are needed and might have to be
-              // adjusted when more authors are added for the segmented text pages.
               return (this.author && this.author !== "sujato" && this.author !== "pali") ? this.$.ajax.generateRequest() : "";
           },
+          // At the moment only texts by Bhikkhu Bodhi in English are selected so this still has to be developed further.
           _computeURL: function(category, author) {
-              // At the moment only texts by Bhikkhu Bodhi in English are selected so this still has to be developed further.
               return `../data/texts/en/${author}/${category}.html`;
           },
+          // After the text file is loaded, it calls the file that contains the paragraph numbers.
           _loadedHTML: function(e) {
-              // After the text file is loaded, it calls the file that contains the paragraph numbers.
               this.$.ajaxParagraphs.generateRequest();
           },
+          // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs: function() {
-              // adds a class to the main container to either show or hide paragraph numbers.
               const infotext = this.shadowRoot.querySelector('#htmltextcontent');
               return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
           },
+          // returns the division-text title from the loaded sutta text
           _computeTitle: function(suttaText) {
-              // returns the division-text title from the loaded sutta text
               const matches = suttaText.match(/class="division">(.*?)</);
               return matches ? matches[1] : "";
           },
+          // returns the full author information from the loaded sutta text
           _computeAuthor: function(suttaText) {
-              // returns the full author information from the loaded sutta text
               const matches = suttaText.match(/author="(.*?)"/);
               return matches ? matches[1] : "";
           },
+          // returns the meta-data from the loaded sutta text
           _computeMeta: function(suttaText) {
-              // returns the meta-data from the loaded sutta text
               const matches = suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
               return matches ? matches[1] : "";
           },
+          // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computePars: function(e) {
-              // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
               const paragraphTitles = e.detail.response;
               for (let key in paragraphTitles) {
                   const refs = this.shadowRoot.querySelectorAll('.' + key);
@@ -131,8 +131,8 @@ Issues:
                   this._addParagraphs()
               }
           },
+          // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
           infoToParent: function(suttaText) {
-              // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
               this.fire('eventFromTextPage', {
                   suttatitle: this._computeTitle(suttaText) + "—" + this._computeAuthor(suttaText),
                   suttameta: this._computeMeta(suttaText)

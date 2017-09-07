@@ -16,7 +16,7 @@
 <!--
 Base toolbar that appear on the top right in the header of every page. Not all items are shown on all pages
 This toolbar is called from the page-selector.
------
+
 Issues:
   - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows
     the number 20 but it should show the correct search results instead.
@@ -189,21 +189,21 @@ Issues:
                   computed: '_computeDiscourseLink(suttaPath,category)'
               }
           },
+          // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
+          // Also determines visibility of settings-menu.
+          // These should only be visible on text-pages.
           _computeClass: function(suttaPath) {
-              // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
-              // Also determines visibility of settings-menu.
-              // These should only be visible on text-pages.
               return (suttaPath) ? "" : "hidebutton";
           },
+          // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
+          // for that specific text.
           _computeDiscourseLink: function(suttaPath, category) {
-              // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
-              // for that specific text.
               return (suttaPath) ? 'https://discourse.suttacentral.net/search?q="' + category + ' "' : "https://discourse.suttacentral.net/";
           },
+          // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
+          // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
           openSearch: function() {
-              // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
               let searchWidth;
-              // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
               if (this.$$('#searchinput').classList.contains('opened')) {
                   this.searchAction();
               } else {
@@ -236,8 +236,8 @@ Issues:
                   this.$$('.opened').style.width = searchWidth;
               }
           },
+          // Closes the searchbox and resets original values.
           closeSearch: function() {
-              // Closes the searchbox and resets original values.
               if (this.$$('#searchinput').classList.contains('opened')) {
                   this.$$('#searchinput').classList.remove('opened');
                   this.$$('#searchinput').removeAttribute('style', "width");

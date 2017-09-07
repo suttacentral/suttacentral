@@ -49,22 +49,22 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   notify: true
               }
           },
+          // copy the parallels-table in html-string
           _copyContent: function() {
-              // copy the parallels-table in html-string
               const copyTextarea = this._computeCopyTable(this.inputData, this.parallelsArray);
               this._copyToClipboard(copyTextarea);
           },
+          // Copy the link to the suttaplex page
           _copyLink: function() {
-              // Copy the link to the suttaplex page
               this._copyToClipboard("https://suttacentral.net/" + this.inputUrl);
           },
+          //  copy cite-information about parallels and bibliography.
           _copyCite: function() {
-              //  copy cite-information about parallels and bibliography.
               const copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
               this._copyToClipboard(copyTextarea);
           },
+          // copies inputtext to the clipboard by creating and selecting a dummy element.
           _copyToClipboard: function(inputText) {
-              // copies inputtext to the clipboard by creating and selecting a dummy element.
               const textarea = document.createElement("textarea");
               textarea.textContent = inputText;
               textarea.style.position = "fixed";
@@ -79,8 +79,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   document.body.removeChild(textarea);
               }
           },
+          // icons to be used instead of iron icons in the base html-string copy function
           _computeIcon: function(icon) {
-              // icons to be used instead of iron icons in the base html-string copy function
               switch (icon) {
                   case 'swap-horiz':
                       return '⮀';
@@ -92,8 +92,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                       return '🔃';
               }
           },
+          // creates a parallels-table in html-string
           _computeCopyTable: function(inputData, parallelsArray) {
-              // creates a parallels-table in html-string
               let titlepi = "";
               if (inputData.parallels) {
                   tablefinalplugin = "";
@@ -116,8 +116,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   return "<!DOCTYPE html>\n<html>\n<head>\n  <title>" + inputData.id + " " + inputData.titlepi + "</title>\n</head>\n<body>\n<table>\n  <caption>" + inputData.titlepi + "</caption>" + tablefinalplugin + "\n</table>\n</body>\n</html>";
               }
           },
+          // creates cite data for parallels with parallels-list and bibliographical information
           _computeCiteData: function(inputData, parallelsArray) {
-              // creates cite data for parallels with parallels-list and bibliographical information
               if (inputData.parallels) {
                   citefinalplugin = "";
                   const d = new Date();

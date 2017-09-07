@@ -60,7 +60,7 @@ This element just pulls in a random epigraph from a json file and displays it bu
 
           },
           selectEpigraph: function(epigraphs) {
-              var epi = Math.floor((Math.random() * epigraphs.length));
+              let epi = Math.floor((Math.random() * epigraphs.length));
               return epigraphs[epi]
           }
       });
