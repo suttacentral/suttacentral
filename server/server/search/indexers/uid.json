@@ -1,0 +1,33 @@
+{
+    "index": {
+        "settings": {
+            "analysis": {
+                "filter": {
+                    "uid_2shingle": {
+                        "type": "shingle",
+                        "token_separator": ""
+                    },
+                    "division": {
+                        "type": "pattern_capture",
+                        "preserve_original": false,
+                        "patterns": ["^([a-z]+(?:-[1-9])?)"]
+                    }
+                },
+                "analyzer": {
+                    "uid_globbing": {
+                        "tokenizer": "standard",
+                        "filter": ["lowercase", "uid_2shingle"]
+                    },
+                    "uid_standard": {
+                        "tokenizer": "keyword",
+                        "filter": "lowercase"
+                    },
+                    "uid_prefix": {
+                        "tokenizer": "keyword",
+                        "filter": "division"
+                    }
+                }
+            }
+        }
+    }
+}

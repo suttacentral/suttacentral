@@ -1,0 +1,44 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "german_stop": {
+                    "type":             "stop",
+                    "stopwords":    "_german_" 
+                },
+                "german_stemmer": {
+                    "type":             "stemmer",
+                    "language":     "light_german"
+                }
+            },
+            "analyzer": {
+                "de": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "german_stop",
+                        "german_normalization",
+                        "german_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "de"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

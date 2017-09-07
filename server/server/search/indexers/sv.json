@@ -1,0 +1,48 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "swedish_stop": {
+                    "type":             "stop",
+                    "stopwords":    "_swedish_" 
+                },
+                "swedish_keywords": {
+                    "type":             "keyword_marker",
+                    "keywords":     [] 
+                },
+                "swedish_stemmer": {
+                    "type":             "stemmer",
+                    "language":     "swedish"
+                }
+            },
+            "analyzer": {
+                "sv": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "swedish_stop",
+                        "swedish_keywords",
+                        "swedish_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "sv"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,76 @@
+{
+    "inherits": ["acro_to_name_and_uid_auto", "coded_name_auto", "meta", "uid",
+        "folding_analyzers"],
+    "index": {
+        "settings": {
+            "number_of_shards": 1,
+            "number_of_replicas": 0,
+            "analysis": {
+                "char_filter": {
+                    "denumber": {
+                        "type": "pattern_replace",
+                        "pattern": "[0-9][0-9.-]*",
+                        "replacement": " "
+                    }
+                },
+                "analyzer": {
+                    "coded_analyzer": {
+                        "tokenizer": "icu_tokenizer",
+                        "char_filter": "coded_name_char_filter",
+                        "filter": ["lowercase"]
+                    }
+                }
+            }
+        },
+        "mappings": {
+            "sutta": {
+                "properties": {
+                    "uid": {
+                        "type": "text",
+                        "analyzer": "uid_standard",
+                        "search_analyzer": "uid_globbing",
+                        "fields": {
+                            "division": {
+                                "type": "text",
+                                "analyzer": "uid_prefix",
+                                "search_analyzer": "standard"
+                            }
+                        }
+                    },
+                    "volpage": {
+                        "type": "text",
+                        "analyzer": "uid_standard"
+                    },
+                    "volpage_extra": {
+                        "type": "text",
+                        "analyzer": "uid_standard"
+                    },
+                    "lang": {
+                        "type": "text",
+                        "index": "not_analyzed"
+                    },
+                    "name": {
+                        "type": "text",
+                        "fields": {
+                            "plain": {
+                                "type": "text",
+                                "analyzer": "folding_analyzer",
+                                "search_analyzer": "folding_shingle_analyzer"
+                            },
+                            "coded": {
+                                "type": "text",
+                                "analyzer": "coded_analyzer"
+                            }
+                        }
+                    },
+                    "boost": {
+                        "type": "float"
+                    },
+                    "ordering": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        }
+    }
+}

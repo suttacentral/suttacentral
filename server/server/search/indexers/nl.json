@@ -1,0 +1,58 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "dutch_stop": {
+                    "type":             "stop",
+                    "stopwords":    "_dutch_" 
+                },
+                "dutch_keywords": {
+                    "type":             "keyword_marker",
+                    "keywords":     [] 
+                },
+                "dutch_stemmer": {
+                    "type":             "stemmer",
+                    "language":     "dutch"
+                },
+                "dutch_override": {
+                    "type":             "stemmer_override",
+                    "rules": [
+                        "fiets=>fiets",
+                        "bromfiets=>bromfiets",
+                        "ei=>eier",
+                        "kind=>kinder"
+                    ]
+                }
+            },
+            "analyzer": {
+                "nl": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "dutch_stop",
+                        "dutch_keywords",
+                        "dutch_override",
+                        "dutch_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "nl"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

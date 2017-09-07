@@ -1,0 +1,14 @@
+{
+    "index": {
+        "mappings": {
+            "meta": {
+                "properties": {
+                    "mtimes": {
+                        "type": "object",
+                        "enabled": false
+                    }
+                }
+            }
+        }
+    }
+}

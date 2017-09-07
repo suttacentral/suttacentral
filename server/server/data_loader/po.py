@@ -1,13 +1,13 @@
 import json
-import regex
 import logging
 import subprocess
 from collections import OrderedDict
 
-
 import polib
+import regex
 
 from .util import humansortkey, iter_sub_dirs
+
 
 def remove_leading_zeros(string):
     return regex.sub(r'([A-Za-z])0+', r'\1', string)
@@ -191,8 +191,3 @@ def load_po_texts(change_tracker, po_dir, db):
 
     
     print(f'Loading took {time.time()-start} seconds')
-                    
-                    
-
-            
-                

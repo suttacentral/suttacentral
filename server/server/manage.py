@@ -35,7 +35,7 @@ def list_routes():
 
 
 @manager.command
-def load_data(force=True):
+def load_data(force=False):
     """
     Loads data from the data repo to database.
     Args:
@@ -43,6 +43,12 @@ def load_data(force=True):
     """
     from data_loader.arangoload import run
     run(force)
+
+
+@manager.command
+def index_elasticsearch():
+    from search.texts import update
+    update()
 
 
 if __name__ == '__main__':

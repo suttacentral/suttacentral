@@ -1,7 +1,9 @@
+from random import randint
 from typing import Dict, Union
+
 from arango.exceptions import CollectionLoadError
 from faker import Faker
-from random import randint
+
 from common.arangodb import get_db
 
 

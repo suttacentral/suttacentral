@@ -1,0 +1,116 @@
+{
+    "inherits": ["default_settings", "meta", "acro_to_name_and_uid_auto", "uid", "folding_analyzers"],
+    "index": {
+        "mappings": {
+            "text": {
+                "properties": {
+                    "uid": {
+                        "type": "keyword",
+                        "index": "not_analyzed"
+                    },
+                    "path": {
+                        "type": "keyword",
+                        "index": "not_analyzed"
+                    },
+                    "lang": {
+                        "type": "keyword",
+                        "index": "not_analyzed"
+                    },
+                    "root_lang": {
+                        "type": "text",
+                        "analyzer": "uid_standard"
+                    },
+                    "is_root": {
+                        "type": "boolean",
+                        "index": "not_analyzed"
+                    },
+                    "heading": {
+                        "properties": {
+                             "division": {
+                                "type": "keyword"
+                             },
+                             "subhead": {
+                                "type": "keyword"
+                             },
+                             "title": {
+                                "type": "text",
+                                "fields": {
+                                    "plain": {
+                                        "type": "text",
+                                        "analyzer": "folding_analyzer"
+                                    },
+                                    "shingle": {
+                                        "type": "text",
+                                        "analyzer": "folding_analyzer",
+                                        "search_analyzer": "folding_shingle_analyzer"
+                                    }
+                                }
+                             }
+                        }
+                   },
+                    "author": {
+                        "type": "text",
+                        "analyzer": "folding_analyzer"
+                    },
+                    "content": {
+                        "type": "text",
+                        "term_vector": "with_positions_offsets",
+                        "analyzer": "minimal"
+                    },
+                    "boost": {
+                        "type": "float"
+                    },
+                    "mtime": {
+                        "type": "integer",
+                        "index": "not_analyzed"
+                    }
+                }
+            },
+            "definition": {
+                "properties": {
+                    "content": {
+                        "type": "text",
+                        "term_vector": "with_positions_offsets",
+                        "analyzer": "minimal"
+                    },
+                    "entries": {
+                        "type": "nested",
+                        "properties": {
+                            "priority": {
+                                "type": "integer"
+                            },
+                            "source": {
+                                "type": "keyword",
+                                "index": "not_analyzed"
+                            },
+                            "html_content": {
+                                "type": "text",
+                                "index": "no"
+                            }
+                        }
+                    },
+                    "term": {
+                        "type": "keyword",
+                        "index": "not_analyzed",
+                        "fields": {
+                            "folded": {                            
+                                "type": "text",
+                                "analyzer": "folding_analyzer"
+                            }
+                        }
+                    },
+                    "gloss": {
+                        "type": "text",
+                        "index": "not_analyzed"
+                    },
+                    "number": {
+                        "type": "integer"
+                    },
+                    "boost": {
+                        "type": "float"
+                    }
+                }
+            }
+        }
+    }
+}

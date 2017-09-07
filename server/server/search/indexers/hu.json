@@ -1,0 +1,43 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "hungarian_stop": {
+                    "type":             "stop",
+                    "stopwords":    "_hungarian_" 
+                },
+                "hungarian_stemmer": {
+                    "type":             "stemmer",
+                    "language":     "hungarian"
+                }
+            },
+            "analyzer": {
+                "hu": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "hungarian_stop",
+                        "hungarian_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "hu"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

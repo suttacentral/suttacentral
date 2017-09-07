@@ -1,0 +1,36 @@
+{
+    "index": {
+        "settings": {
+            "analysis": {
+                "filter": {
+                    "compounder": {
+                        "type": "shingle",
+                        "token_seperator": " ",
+                        "min_shingle_size": 2,
+                        "max_shingle_size": 2,
+                        "output_unigrams": true
+                    },
+                    "despacer": {
+                        "type": "pattern_replace",
+                        "pattern": " ",
+                        "replacement": ""
+                    }
+                },
+                "analyzer": {
+                    "folding_analyzer": {
+                        "tokenizer": "icu_tokenizer",
+                        "char_filter": ["denumber"],
+                        "filter": ["icu_folding"]
+                    },
+                    "folding_shingle_analyzer": {
+                        "tokenizer": "icu_tokenizer",
+                        "char_filter": ["denumber"],
+                        "filter": ["icu_folding",
+                                    "compounder",
+                                    "despacer"]
+                    }
+                }
+            }
+        }
+    }
+}

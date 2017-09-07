@@ -1,17 +1,15 @@
 import json
-import logging
 import pathlib
-from pathlib import Path
 from collections import Counter
-from typing import Set, List, Any
+from pathlib import Path
+from typing import Any, List, Set
 
 import regex
-from git import Repo, InvalidGitRepositoryError
 from arango import ArangoClient
 from flask import current_app
+from git import InvalidGitRepositoryError, Repo
 
-from . import textdata
-from . import po
+from . import po, textdata
 
 
 def setup_database(conn, db_name):
@@ -104,7 +102,7 @@ def update_data(repo: Repo, repo_name: str):
     Args:
         repo: Git data repo.
     """
-    logging.info(f'Updating repo in {repo.working_dir}')
+    print(f'Updating repo in {repo.working_dir}')
     if 'origin' not in [r.name for r in repo.remotes]:
         repo.create_remote('origin', repo_addr)
     repo.remotes.origin.fetch('+refs/heads/*:refs/remotes/origin/*')
@@ -120,6 +118,7 @@ def get_data(repo_dir: Path, repo_addr: str) -> Repo:
     Returns:
         Cloned repo.
     """
+    repo_addr = current_app.config.get('DATA_REPO')
     logging.info(f'Cloning the repo: {repo_addr}')
     return Repo.clone_from(repo_addr, repo_dir)
 
@@ -141,7 +140,20 @@ def collect_data(repo_dir: Path, repo_addr: str):
             update_data(repo, repo_addr)
 
 
-def process_root_files(docs, edges, mapping, root_files):
+def process_root_languages(structure_dir):
+    file = structure_dir / 'language.json'
+    with file.open('r', encoding='utf-8') as f:
+        languages = json.load(f)
+    data = {}
+    for lang in languages:
+        uid = lang['uid']
+        if 'contains' in lang:
+            data.update({sutta_id: uid for sutta_id in lang['contains']})
+    return data
+
+
+def process_root_files(docs, edges, mapping, root_files, root_languages):
+    reg = regex.compile(r'^\D+')
     for root_file in root_files:
         with root_file.open('r', encoding='utf8') as f:
             entries = json.load(f)
@@ -159,6 +171,13 @@ def process_root_files(docs, edges, mapping, root_files):
 
             entry['_key'] = uid
             entry['uid'] = uid
+            base_uid = reg.match(uid)[0]
+            while base_uid:
+                try:
+                    entry['root_lang'] = root_languages[base_uid]
+                    break
+                except KeyError:
+                    base_uid = '-'.join(base_uid.split('-')[:-1])
 
             del entry['_path']
             entry['num'] = i  # number is used for ordering, it is not otherwise meaningful
@@ -205,10 +224,13 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     mapping = {}
     root_files = sorted((structure_dir / 'division').glob('**/*.json'))
     category_files = sorted(structure_dir.glob('*.json'))
+
+    root_languages = process_root_languages(structure_dir)
+
     if change_tracker.is_any_file_new_or_changed(root_files + category_files):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
-        process_root_files(docs, edges, mapping, root_files)
+        process_root_files(docs, edges, mapping, root_files, root_languages)
 
         process_category_files(category_files, db, edges, mapping)
 

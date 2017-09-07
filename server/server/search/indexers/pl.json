@@ -1,0 +1,32 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "pl": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "polish_stem"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "pl"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

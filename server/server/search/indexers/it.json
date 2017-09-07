@@ -1,0 +1,58 @@
+{
+    "inherits": ["default"],
+    "settings": {
+        "analysis": {
+            "filter": {
+                "italian_elision": {
+                    "type":         "elision",
+                    "articles": [
+                        "c", "l", "all", "dall", "dell",
+                        "nell", "sull", "coll", "pell",
+                        "gl", "agl", "dagl", "degl", "negl",
+                        "sugl", "un", "m", "t", "s", "v", "d"
+                    ]
+                },
+                "italian_stop": {
+                  "type":       "stop",
+                  "stopwords":  "_italian_" 
+                },
+                "italian_keywords": {
+                  "type":       "keyword_marker",
+                  "keywords":   [] 
+                },
+                "italian_stemmer": {
+                  "type":       "stemmer",
+                  "language":   "light_italian"
+                }
+            },
+            "analyzer": {
+                "it": {
+                    "tokenizer":    "standard",
+                    "filter": [
+                        "italian_elision",
+                        "lowercase",
+                        "sanskrit_pali_synonym",
+                        "italian_stop",
+                        "italian_keywords",
+                        "italian_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "text": {
+            "properties": {
+                "content": {
+                    "fields": {
+                        "stemmed": {
+                            "type": "text",
+                            "term_vector": "with_positions_offsets",
+                            "analyzer": "it"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

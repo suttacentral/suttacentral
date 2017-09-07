@@ -1,5 +1,6 @@
-import decorator
 from typing import Callable
+
+import decorator
 
 from app import app as my_app
 from common.arangodb import get_client
