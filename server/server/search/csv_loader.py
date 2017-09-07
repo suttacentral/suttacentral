@@ -1,7 +1,7 @@
 import csv
 import logging
-
 from collections import namedtuple
+
 import search
 
 logger = logging.getLogger(__name__)

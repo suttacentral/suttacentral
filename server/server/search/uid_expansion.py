@@ -1,4 +1,5 @@
 import regex
+
 from search import csv_loader
 
 # Load uid to acro map

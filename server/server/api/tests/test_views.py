@@ -1,5 +1,5 @@
-from app import api
 from api.views import Languages
+from app import api
 from common.utils import generate_languages
 
 

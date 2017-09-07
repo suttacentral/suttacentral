@@ -24,7 +24,7 @@ logging.getLogger('elasticsearch.trace').setLevel('ERROR')
 
 
 def update_indexes():
-    import search.texts
+    import search.texts  # Yes, it has to be here
 
     search.texts.update()
 
@@ -49,8 +49,7 @@ def set_constants():
     tmp_dir = base_dir / 'tmp'
     webassets_manifest_path = db_dir / 'webassets' / 'manifest'
     webassets_cache_dir = db_dir / 'webassets' / 'cache'
-    indexer_dir = base_dir\
-                  / 'indexers'
+    indexer_dir = base_dir / 'indexers'
 
     text_image_source_dir = base_dir / 'text_images'
     text_image_symlink_dir = static_dir / 'text_images'

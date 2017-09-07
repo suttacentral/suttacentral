@@ -1,15 +1,17 @@
-import json
 import hashlib
-import logging
 import itertools
-import elasticsearch
-from elasticsearch.helpers import bulk
+import json
+import logging
+import os
 from math import log
+
+import elasticsearch
+from elasticsearch.exceptions import NotFoundError, RequestError
+from elasticsearch.helpers import bulk
+
 import search
 from search import uid_expansion
 from search.util import recursive_merge
-
-import os
 
 logger = logging.getLogger(__name__)
 logger.setLevel('DEBUG')
@@ -17,7 +19,6 @@ logger.setLevel('DEBUG')
 es = elasticsearch.Elasticsearch([f'{os.getenv("ES_HOST")}:{os.getenv("ES_PORT")}'],
                                  http_auth=('elastic', 'changeme'))
 
-from elasticsearch.exceptions import NotFoundError, RequestError
 
 
 def is_available():

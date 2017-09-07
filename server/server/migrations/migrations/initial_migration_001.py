@@ -1,5 +1,5 @@
-from migrations.base import Migration
 from common.arangodb import get_db
+from migrations.base import Migration
 
 
 class InitialMigration(Migration):
@@ -31,4 +31,3 @@ class InitialMigration(Migration):
         db['html_text'].add_hash_index(fields=["author_uid"], unique=False)
         db['html_text'].add_hash_index(fields=["lang"], unique=False)
         db['root'].add_hash_index(fields=["uid"], unique=False)
-

@@ -1,10 +1,9 @@
-import time
-import regex
 import hashlib
-
-from collections import deque
 import itertools
+import time
+from collections import deque
 
+import regex
 
 HASH = hashlib._hashlib.HASH
 

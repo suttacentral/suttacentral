@@ -1,16 +1,15 @@
 import json
 import pathlib
-from pathlib import Path
 from collections import Counter
-from typing import Set, List, Any
+from pathlib import Path
+from typing import Any, List, Set
 
 import regex
-from git import Repo, InvalidGitRepositoryError
 from arango import ArangoClient
 from flask import current_app
+from git import InvalidGitRepositoryError, Repo
 
-from . import textdata
-from . import po
+from . import po, textdata
 
 
 def setup_database(conn, db_name):

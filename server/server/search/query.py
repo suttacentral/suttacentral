@@ -1,13 +1,13 @@
 import json
-import regex
 import logging
 from inspect import currentframe, getargvalues
 
-from search import es
+import regex
+
+from search import es, util
 
 logger = logging.getLogger(__name__)
 
-from search import util
 
 
 def text_search(query, lang=None, **kwargs):

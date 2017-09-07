@@ -1,13 +1,14 @@
-import time
-import regex
 import logging
-import lxml.html
-from elasticsearch.helpers import scan
-from search.util import unique
+import time
 
-from search.indexer import ElasticIndexer
+import lxml.html
+import regex
+from elasticsearch.helpers import scan
+
 from common.arangodb import get_db
-from common.queries import TEXTS_BY_LANG, CURRENT_MTIMES
+from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG
+from search.indexer import ElasticIndexer
+from search.util import unique
 
 logger = logging.getLogger('search.texts')
 

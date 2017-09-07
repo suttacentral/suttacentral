@@ -1,9 +1,9 @@
 import json
 
 from elasticsearch import ConnectionError
-
-from flask_restful import Resource
 from flask import request
+from flask_restful import Resource
+
 from search import query as query_search
 
 
