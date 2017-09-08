@@ -1,12 +1,10 @@
-import json
 import logging
-import subprocess
-from collections import OrderedDict
 
 import polib
 import regex
+from arango.exceptions import DocumentInsertError
 
-from .util import humansortkey, iter_sub_dirs
+from .util import iter_sub_dirs
 
 
 def remove_leading_zeros(string):
@@ -189,5 +187,4 @@ def load_po_texts(change_tracker, po_dir, db):
                     doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author"]}'
                     db.collection('po_strings').insert(doc)
 
-    
     print(f'Loading took {time.time()-start} seconds')

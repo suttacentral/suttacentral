@@ -1,4 +1,5 @@
 import json
+import logging
 import pathlib
 from collections import Counter
 from pathlib import Path
@@ -13,6 +14,7 @@ from . import po, textdata
 
 
 def setup_database(conn, db_name):
+    print('running set up')
     if db_name in conn.databases():
         conn.delete_database(db_name)
 
@@ -96,13 +98,14 @@ class ChangeTracker:
              self.changed_or_new.items()], on_duplicate="replace")
 
 
-def update_data(repo: Repo, repo_name: str):
+def update_data(repo: Repo, repo_addr: str):
     """Updates given git repo.
 
     Args:
         repo: Git data repo.
+        repo_addr: url address of the repo
     """
-    print(f'Updating repo in {repo.working_dir}')
+    logging.info(f'Updating repo in {repo.working_dir}')
     if 'origin' not in [r.name for r in repo.remotes]:
         repo.create_remote('origin', repo_addr)
     repo.remotes.origin.fetch('+refs/heads/*:refs/remotes/origin/*')
@@ -114,11 +117,11 @@ def get_data(repo_dir: Path, repo_addr: str) -> Repo:
 
     Args:
         repo_dir: Path to data dir.
+        repo_addr: repo url.
 
     Returns:
         Cloned repo.
     """
-    repo_addr = current_app.config.get('DATA_REPO')
     logging.info(f'Cloning the repo: {repo_addr}')
     return Repo.clone_from(repo_addr, repo_dir)
 
@@ -206,13 +209,27 @@ def process_category_files(category_files, db, edges, mapping):
             entry['type'] = edge_type
             entry['_key'] = entry['uid']
             entry['num'] = i
+
             if 'contains' in entry:
                 for uid in entry['contains']:
                     child = mapping.get(pathlib.PurePath(uid))
                     child[entry['type']] = entry['uid']
-                    edges.append({'_from': f'{category_name}/{entry["_key"]}',
-                                  '_to': f'root/{child["_key"]}', 'type': edge_type})
+                    edges.append({
+                        '_from': f'{category_name}/{entry["_key"]}',
+                        '_to': f'root/{child["_key"]}',
+                        'type': edge_type
+                    })
                 del entry['contains']
+
+            if edge_type == 'pitaka':
+                for group in entry['grouping']:
+                    edges.append({
+                        '_from': f'pitaka/{entry["_key"]}',
+                        '_to': f'grouping/{group}',
+                        'type': edge_type
+                    })
+                del entry['grouping']
+
             category_docs.append(entry)
         collection.truncate()
         collection.import_bulk(category_docs)
@@ -403,6 +420,7 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
                                  files_to_process=change_tracker.changed_or_new,
                                  force=False)
 
+
 def load_json_file(db, change_tracker, json_file):
     if not change_tracker.is_file_new_or_changed(json_file):
         return
@@ -416,6 +434,7 @@ def load_json_file(db, change_tracker, json_file):
             d['_key'] = d['uid']
         db[collection_name].truncate()
         db[collection_name].import_bulk(data)
+
 
 def run(force=False):
     """Runs data load.
@@ -442,7 +461,6 @@ def run(force=False):
 
     collect_data(data_dir, current_app.config.get('DATA_REPO'))
     collect_data(po_dir, current_app.config.get('PO_REPO'))
-    
 
     change_tracker = ChangeTracker(data_dir, db)
     

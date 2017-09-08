@@ -53,6 +53,7 @@ There is a Makefile with following commands:
     * `rebuild-swagger`
 * `run-dev` - Run containers in development mode
 * `run-dev-no-logs` - Run containers in development mode without output to the console
+* `migrate` - Run migrations in flask container
 * `stop` - Stops all containers:
     * `stop-arangodb`
     * `stop-flask`

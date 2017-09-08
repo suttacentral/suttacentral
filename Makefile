@@ -34,6 +34,9 @@ run-dev:
 run-dev-no-logs:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
+migrate:
+	@docker exec -t sc-flask python server/manage.py migrate
+
 # Containers and images ids
 CONTS-ARANGO=$(shell docker ps -a -q -f "name=sc-arangodb")
 CONTS-FLASK=$(shell docker ps -a -q -f "name=sc-flask")
@@ -130,8 +133,13 @@ prepare-tests:
 test:
 	@docker exec -t sc-flask pytest server/
 
-load_data:
+load-data:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
+
+load-data-force:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data --force=True"
+
 index_elasticsearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"
+
 
