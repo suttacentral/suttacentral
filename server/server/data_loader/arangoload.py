@@ -12,43 +12,6 @@ from git import InvalidGitRepositoryError, Repo
 
 from . import po, textdata
 
-
-def setup_database(conn, db_name):
-    print('running set up')
-    if db_name in conn.databases():
-        conn.delete_database(db_name)
-
-    db = conn.create_database(db_name)
-
-    collections = [
-        ('grouping', False),
-        ('language', False),
-        ('pitaka', False),
-        ('sect', False),
-        ('root', False),
-        ('root_edges', True),
-        ('relationship', True),
-        ('html_text', False),
-        ('po_markup', False),
-        ('po_strings', False),
-        ('uid_expansion', False),
-        ('unicode_points', False),
-        ('mtimes', False),
-    ]
-
-    for name, edge in collections:
-        db.create_collection(name=name, edge=edge)
-
-    # create indexes
-
-    db['html_text'].add_hash_index(fields=["uid"], unique=False)
-    db['html_text'].add_hash_index(fields=["author_uid"], unique=False)
-    db['html_text'].add_hash_index(fields=["lang"], unique=False)
-    db['root'].add_hash_index(fields=["uid"], unique=False)
-
-    return db
-
-
 class ChangeTracker:
     def __init__(self, base_dir, db):
         self.base_dir = base_dir
@@ -454,10 +417,7 @@ def run(force=False):
     po_dir = data_dir / 'po_text'
 
     db_name = current_app.config.get('ARANGO_DB')
-    if force or db_name not in conn.databases():
-        db = setup_database(conn, db_name)
-    else:
-        db = conn.database(db_name)
+    db = conn.database(db_name)
 
     collect_data(data_dir, current_app.config.get('DATA_REPO'))
     collect_data(po_dir, current_app.config.get('PO_REPO'))
