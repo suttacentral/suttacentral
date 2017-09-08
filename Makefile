@@ -33,6 +33,8 @@ run-dev:
 
 run-dev-no-logs:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+migrate:
+	@docker exec -t sc-flask python server/manage.py migrate
 
 # Containers and images ids
 CONTS-ARANGO=$(shell docker ps -a -q -f "name=sc-arangodb")
