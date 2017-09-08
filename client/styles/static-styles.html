@@ -1,50 +1,54 @@
 <dom-module id="static-styles">
-<template>
-<style>
+  <template>
+    <style>
 
-#page-wrap {
-  @apply --sc-paper-font-body;
-  @apply --sc-sans-font;
-  min-height: 100%;
-  height: auto!important;
-  margin: 0 auto -240px;
-  min-width: 320px;
-}
+      #page-wrap {
+        @apply --sc-paper-font-body;
+        @apply --sc-sans-font;
+        min-height: 100%;
+        height: auto !important;
+        margin: 0 auto -240px;
+        min-width: 320px;
+      }
 
-main {
-  margin-top: 3em;
-  margin-bottom:3em;
-}
-section {
-  margin: 6em auto 0!important;
-  padding: 0 5%!important;
-  max-width: 40em;
-  display: block; 
-}
-h1 {
-  @apply --paper-font-display1;
-  color: var(--secondary-text-color);
-}
-h2 {
-  color: var(--secondary-text-color);
-}
-a {
-    color: inherit;
-    text-decoration: none;
-    background: linear-gradient(to top, rgba(223, 153, 10, 0) 1.5px, rgba(223, 153, 10, 1) 1.5px, rgba(223, 153, 10, 1) 2.5px, rgba(223, 153, 10, 0) 2.5px)
-}
+      main {
+        margin-top: 3em;
+        margin-bottom: 3em;
+      }
 
-a:hover {
-    background: linear-gradient(to top, rgba(223, 153, 10, 0) 1px, rgba(223, 153, 10, 1) 1px, rgba(223, 153, 10, 1) 3px, rgba(223, 153, 10, 0) 3px)
-}
+      section {
+        margin: 6em auto 0 !important;
+        padding: 0 5% !important;
+        max-width: 40em;
+        display: block;
+      }
 
-a:active{
-  background-color:var(--paper-amber-300)
-}
+      h1 {
+        @apply --paper-font-display1;
+        color: var(--secondary-text-color);
+      }
 
-a:visited{
-  background: linear-gradient(to top, rgba(161, 136, 127, 0) 1px, rgba(161, 136, 127, 1) 1px, rgba(161, 136, 127, 1) 3px, rgba(161, 136, 127, 0) 3px)
-}
-</style>
-</template>
+      h2 {
+        color: var(--secondary-text-color);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        background: linear-gradient(to top, rgba(223, 153, 10, 0) 1.5px, rgba(223, 153, 10, 1) 1.5px, rgba(223, 153, 10, 1) 2.5px, rgba(223, 153, 10, 0) 2.5px)
+      }
+
+      a:hover {
+        background: linear-gradient(to top, rgba(223, 153, 10, 0) 1px, rgba(223, 153, 10, 1) 1px, rgba(223, 153, 10, 1) 3px, rgba(223, 153, 10, 0) 3px)
+      }
+
+      a:active {
+        background-color: var(--paper-amber-300)
+      }
+
+      a:visited {
+        background: linear-gradient(to top, rgba(161, 136, 127, 0) 1px, rgba(161, 136, 127, 1) 1px, rgba(161, 136, 127, 1) 3px, rgba(161, 136, 127, 0) 3px)
+      }
+    </style>
+  </template>
 </dom-module>

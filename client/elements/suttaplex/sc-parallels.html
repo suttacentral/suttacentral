@@ -1,143 +1,171 @@
-<!-- This elements loads additional info for each relevant parallel sutta, which is loaded from `../data/suttas` and then used in sc-view-parallels.html . It is in effect a minature version of the suttaplex-card-->
-
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
 <link rel="import" href="../menus/language-menu.html">
 <link rel="import" href="../addons/sc-sutta-note.html">
 <link rel="import" href="../../styles/sc-styles.html">
 <link rel="import" href="../../styles/sc-suttaplex-styles.html">
 
+<!--
+This element loads additional info for each relevant parallel sutta, which is loaded from `../data/suttas`
+and then used in sc-view-parallels.html . It is in effect a minature version of the suttaplex-card
+-->
 <dom-module id="sc-parallels">
-<template>
-<style  is="custom-style" include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
-.parallels-parallel-title {
-  @apply --paper-font-subhead;
-  @apply --sc-serif-font;
-}
-.parallels-nerdy-row{
-  @apply --paper-font-body2;
-  color: var(--secondary-text-color);
-  white-space: nowrap;
-}
-.parallels-nerdy-row span{
-  margin-right: 24px;
-}
+  <template>
+    <style is="custom-style" include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
+      .parallels-parallel-title {
+        @apply --paper-font-subhead;
+        @apply --sc-serif-font;
+      }
 
-.languagedrop {
-  display: inline-block;
-  vertical-align:middle;
-  margin:-16px 4px 0;
-  padding: 0 8px;
-}
-.parallels-actions {
-  margin-top:8px;
-}
-summary::-webkit-details-marker{
-  color:var(--paper-grey-300);
-}
-details {
-  display: inline-block;
-}
-details p{
-  @apply --paper-font-body1;
-  position:absolute;
-  z-index:200;
-  background-color:#fff;
-  @apply --shadow-elevation-3dp;
-  padding:12px;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-  margin: 0 48px 0 0;
-  white-space: normal;
-}
-.hide-element {
-  display: none;
-}
-</style>
-<iron-ajax
-      auto
-      url="[[_computeURL(parallelUrl)]]"
-      handle-as="json"
-      last-response="{{inputData}}"></iron-ajax>
+      .parallels-nerdy-row {
+        @apply --paper-font-body2;
+        color: var(--secondary-text-color);
+        white-space: nowrap;
+      }
 
-      <div class="parallels-parallel-title">[[_computeTitle(languageData,inputData,parallelId)]]</div>
-  <div class="parallels-nerdy-row">
-    <span title="Original title" class$="[[_computeHide(inputData.titlepi)]]">[[inputData.titlepi]]</span>
-    <span title="SuttaCentral ID">[[parallelId]]</span>
-    <template is="dom-if" if="[[inputData.volpage]]">
-      <template is="dom-if" if="[[inputData.bib]]">
-          <details><summary>
-          <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
-          <span class="vol-page" title="Volume and page number">[[inputData.volpage]]</span></summary><p inner-h-t-m-l="[[inputData.bib]]"></p></details>
-      </template>
-      <template is="dom-if" if="[[!inputData.bib]]">
+      .parallels-nerdy-row span {
+        margin-right: 24px;
+      }
+
+      .languagedrop {
+        display: inline-block;
+        vertical-align: middle;
+        margin: -16px 4px 0;
+        padding: 0 8px;
+      }
+
+      .parallels-actions {
+        margin-top: 8px;
+      }
+
+      summary::-webkit-details-marker {
+        color: var(--paper-grey-300);
+      }
+
+      details {
+        display: inline-block;
+      }
+
+      details p {
+        @apply --paper-font-body1;
+        position: absolute;
+        z-index: 200;
+        background-color: #fff;
+        @apply --shadow-elevation-3dp;
+        padding: 12px;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        margin: 0 48px 0 0;
+        white-space: normal;
+      }
+
+      .hide-element {
+        display: none;
+      }
+    </style>
+
+    <iron-ajax
+        auto
+        url="[[_computeURL(parallelUrl)]]"
+        handle-as="json"
+        last-response="{{inputData}}"></iron-ajax>
+
+    <div class="parallels-parallel-title">[[_computeTitle(languageData,inputData,parallelId)]]</div>
+    <div class="parallels-nerdy-row">
+      <span title="Original title" class$="[[_computeHide(inputData.titlepi)]]">[[inputData.titlepi]]</span>
+      <span title="SuttaCentral ID">[[parallelId]]</span>
+      <template is="dom-if" if="[[inputData.volpage]]">
+        <template is="dom-if" if="[[inputData.bib]]">
+          <details>
+            <summary>
+              <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
+              <span class="vol-page" title="Volume and page number">[[inputData.volpage]]</span></summary>
+            <p inner-h-t-m-l="[[inputData.bib]]"></p></details>
+        </template>
+        <template is="dom-if" if="[[!inputData.bib]]">
           <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
           <span class="vol-page" title="Volume and page number">[[inputData.volpage]]</span>
+        </template>
       </template>
-    </template>
       <sc-sutta-note note-data="[[inputData.note]]" class$="[[_computeHide(inputData.note)]]"></sc-sutta-note>
-  </div>
+    </div>
 
-  <div class="parallels-actions">
-      <paper-button flat class="dense" title="Go to text in original language"><a href="">[[inputData.orlan]]</a></paper-button>
-      <div class$="languagedrop [[_computeHide(inputData.languages)]]"><language-menu language-choice="[[inputData.languages]]" title-label="Translations" input-language="" original-language="" input-url="[[parallelUrl]]"></language-menu></div>
-  </div>
+    <div class="parallels-actions">
+      <paper-button flat class="dense" title="Go to text in original language"><a href="">[[inputData.orlan]]</a>
+      </paper-button>
+      <div class$="languagedrop [[_computeHide(inputData.languages)]]">
+        <language-menu language-choice="[[inputData.languages]]" title-label="Translations" input-language=""
+                       original-language="" input-url="[[parallelUrl]]"></language-menu>
+      </div>
+    </div>
 
-</template>
+  </template>
 
-<script>
-    Polymer({
-        is: 'sc-parallels',
+  <script>
+      Polymer({
+          is: 'sc-parallels',
 
-        properties: {
-          parallelUrl: String,
-          parallelId: String,
-          inputLanguage: String,
+          properties: {
+              parallelUrl: String,
+              parallelId: String,
+              inputLanguage: String,
 
-          // Array with the relevant language data for the parallel-sutta i.e. title, slug, etc. in the chosen site language.
-          languageData: {
-              type: Object,
-              computed: '_computeLanguage(inputData,inputLanguage)'
-            },
-          inputData: {
-            type: Object,
-            notify: true,
-            observer: 'infoToParent',
-            value: function(){return []}
-          }
-        },
-        _computeURL: function(sutta) {
-          // returns the url of the correct parallel-sutta to be loaded.
-          return `../../data/suttas/${sutta}.json`;
-        },
-        _computeLanguage: function(inputData,inputLanguage) {
-          // creates an array with the relevant language data for the parallel-sutta i.e. title, slug, etc. in the chosen site language.
-          var lanarray = "";
-          if (inputData.languages){
-            for (var i=0; i<inputData.languages.length; i++) {
-              if (inputData.languages[i].id === inputLanguage) {
-                var lanarray = inputData.languages[i]
+              // Array with the relevant language data for the parallel-sutta i.e. title, slug, etc. in the chosen site language.
+              languageData: {
+                  type: Object,
+                  computed: '_computeLanguage(inputData,inputLanguage)'
+              },
+              inputData: {
+                  type: Object,
+                  notify: true,
+                  observer: 'infoToParent',
+                  value: function() {
+                      return []
+                  }
               }
-            }
+          },
+          // returns the url of the correct parallel-sutta to be loaded.
+          _computeURL: function(sutta) {
+              return `../../data/suttas/${sutta}.json`;
+          },
+          // creates an array with the relevant language data for the parallel-sutta i.e. title, slug, etc. in the chosen site language.
+          _computeLanguage: function(inputData, inputLanguage) {
+              let lanarray = "";
+              if (inputData.languages) {
+                  for (let i = 0; i < inputData.languages.length; i++) {
+                      if (inputData.languages[i].id === inputLanguage) {
+                          lanarray = inputData.languages[i];
+                      }
+                  }
+              }
+              return lanarray ? lanarray : "";
+          },
+          // returns the relevant header, either the title in the translated language, otherwise in pali or otherwise just the ID.
+          _computeTitle: function(languageData, inputData, parallelId) {
+              if (languageData.titlelan) {
+                  return languageData.titlelan;
+              } else if (inputData.titlepi) {
+                  return inputData.titlepi;
+              } else {
+                  return parallelId;
+              }
+          },
+          // general function to hide or display various elements.
+          _computeHide: function(checkText) {
+              return (!checkText) ? "hide-element" : "";
+          },
+          // sends info regarding id, title, etc. back to sc-suttaplex.html for use in the more-par menu copy function.
+          infoToParent: function() {
+              this.fire('eventFromParallels', {
+                  parid: this.parallelId,
+                  partitle: this.inputData.titlepi,
+                  volumepage: this.inputData.volpage,
+                  biblio: this.inputData.bib
+              });
           }
-          return lanarray ? lanarray : "";
-        },
-      _computeTitle: function(languageData,inputData,parallelId) {
-        // returns the relevant header, either the title in the translated language, otherwise in pali or otherwise just the ID.
-        if (languageData.titlelan) {return languageData.titlelan;
-        } else if (inputData.titlepi) {return inputData.titlepi;
-        } else {return parallelId;}
-      },
-      _computeHide: function(checkText) {
-        // general function to hide or display various elements.
-        return (!checkText) ? "hide-element": "";
-      },
-      infoToParent: function() {
-        // sends info regarding id, title, etc. back to sc-suttaplex.html for use in the more-par menu copy function.
-        this.fire('eventFromParallels',{parid:this.parallelId,partitle:this.inputData.titlepi,volumepage:this.inputData.volpage,biblio:this.inputData.bib});
-      }
-    });
-</script>
+      });
+  </script>
 </dom-module>

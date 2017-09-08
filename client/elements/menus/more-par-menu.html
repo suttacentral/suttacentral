@@ -5,132 +5,146 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
-<!-- Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard. -->
-
+<!--
+Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
+-->
 <dom-module id="more-par-menu">
-<template>
-<style is="custom-style">
-paper-item iron-icon {
-    margin-right: 16px;
-    color: var(--disabled-text-color);
-}
+  <template>
+    <style is="custom-style">
+      paper-item iron-icon {
+        margin-right: 16px;
+        color: var(--disabled-text-color);
+      }
 
-paper-item {
-    color:inherit;
-}
-</style>
+      paper-item {
+        color: inherit;
+      }
+    </style>
 
-    <paper-item on-tap="_copyLink"><iron-icon icon="link"></iron-icon> Copy link</paper-item>
-    <paper-item on-tap="_copyContent"><iron-icon icon="content-copy"></iron-icon> Copy table</paper-item>
-    <paper-item on-tap="_copyCite"><iron-icon icon="editor:format-quote"></iron-icon> Cite</paper-item>
+    <paper-item on-tap="_copyLink">
+      <iron-icon icon="link"></iron-icon>
+      Copy link
+    </paper-item>
+    <paper-item on-tap="_copyContent">
+      <iron-icon icon="content-copy"></iron-icon>
+      Copy table
+    </paper-item>
+    <paper-item on-tap="_copyCite">
+      <iron-icon icon="editor:format-quote"></iron-icon>
+      Cite
+    </paper-item>
+  </template>
 
-</template>
-<script>
-    Polymer({
-      is: 'more-par-menu',
-      properties: {
-        inputUrl: String,
-        inputData: {
-          type: Object,
-          notify: true
-        },
-        parallelsArray: {
-          type: Array,
-          notify: true
-        }
-      },
-     _copyContent: function() {
-      // copy the parallels-table in html-string
-        var copyTextarea = this._computeCopyTable(this.inputData,this.parallelsArray);
-        this._copyToClipboard(copyTextarea);
-      },
-     _copyLink: function() {
-      // Copy the link to the suttaplex page
-        this._copyToClipboard("https://suttacentral.net/"+this.inputUrl);
-      },
-     _copyCite: function() {
-      //  copy cite-information about parallels and bibliography.
-        var copyTextarea = this._computeCiteData(this.inputData,this.parallelsArray);
-        this._copyToClipboard(copyTextarea);
-      },
-     _copyToClipboard: function(inputText) {
-      // copies inputtext to the clipboard by creating and selecting a dummy element.
-        var textarea = document.createElement("textarea");
-        textarea.textContent = inputText;
-        textarea.style.position = "fixed";
-        document.body.appendChild(textarea);
-        textarea.select();
-        var result = false;
-        try {
-            return document.execCommand("copy");
-        } catch (err) {
-            console.error(err);
-            return false;
-        } finally {
-            document.body.removeChild(textarea);
-        }
-     },
-       _computeIcon: function(icon){
-        // icons to be used instead of iron icons in the base html-string copy function
-          switch (icon) {
-            case 'swap-horiz': return '⮀';
-            case 'compare-arrows': return '≈';
-            case 'editor:format-quote': return '❞';
-            case 'cached': return '🔃';
-          } 
-        },
-      _computeCopyTable: function(inputData,parallelsArray) {
-        // creates a parallels-table in html-string
-        var titlepi = "";
-        if (inputData.parallels) {
-                tablefinalplugin = "";
-                for (var x = 0; x < inputData.parallels.length; x++) {
-                    var relationships = inputData.parallels[x].relations;
-                    var tableplugin = "\n<tbody>\n  <tr>\n    <td rowspan='"+relationships.length+"'>"+inputData.parallels[x].id+"</td>";
-                    for (var i = 0; i < relationships.length; i++) {
-                      for (var parobject = 0; parobject < parallelsArray.length; parobject++) {
-                          if (parallelsArray[parobject].parid === relationships[i].id) {
-                            var titlepi = parallelsArray[parobject].partitle;
-                          }
-                        }
-                        tableplugin += "\n    <td>"+this._computeIcon(relationships[i].icon)+"</td>\n    <td>"+relationships[i].id+"</td>\n    <td>"+titlepi+"</td>\n  </tr>";
-                        if (i < relationships.length-1) {
-                          tableplugin += "\n  <tr>";
-                        }
-                    }
-                    tablefinalplugin += tableplugin + "\n</tbody>";
-                  }
-                return "<!DOCTYPE html>\n<html>\n<head>\n  <title>"+inputData.id+" "+inputData.titlepi+"</title>\n</head>\n<body>\n<table>\n  <caption>"+inputData.titlepi+"</caption>"+tablefinalplugin+"\n</table>\n</body>\n</html>";
+  <script>
+      Polymer({
+          is: 'more-par-menu',
+          properties: {
+              inputUrl: String,
+              inputData: {
+                  type: Object,
+                  notify: true
+              },
+              parallelsArray: {
+                  type: Array,
+                  notify: true
               }
-      },
-      _computeCiteData: function(inputData,parallelsArray) {
-        // creates cite data for parallels with parallels-list and bibliographical information
-        if (inputData.parallels) {
-                citefinalplugin = "";
-                var d = new Date();
-                for (var x = 0; x < inputData.parallels.length; x++) {
-                    var relationships = inputData.parallels[x].relations;
-                    var citeplugin = "Parallels for "+inputData.parallels[x].id+" "+inputData.titlepi+" ("+inputData.volpage+"): ";
-                    for (var i = 0; i < relationships.length; i++) {
-                        citeplugin += relationships[i].id;
-                        for (var parobject = 0; parobject < parallelsArray.length; parobject++) {
-                          if (parallelsArray[parobject].parid === relationships[i].id) {
-                            if (parallelsArray[parobject].volumepage) {
-                                citeplugin += " ("+parallelsArray[parobject].volumepage+") ";
-                            }
-                            if (parallelsArray[parobject].biblio) {
-                              citeplugin +=parallelsArray[parobject].biblio;
-                            }
-                          }
-                        }
-                        if (i < relationships.length-1) {citeplugin += "; ";
-                        }
-                    }
-                    citefinalplugin += citeplugin+"\n";
-                  }
-                return this.citeData = citefinalplugin+"Retrieved from https://suttacentral.net/"+inputData.url+" on "+d+".";
+          },
+          // copy the parallels-table in html-string
+          _copyContent: function() {
+              const copyTextarea = this._computeCopyTable(this.inputData, this.parallelsArray);
+              this._copyToClipboard(copyTextarea);
+          },
+          // Copy the link to the suttaplex page
+          _copyLink: function() {
+              this._copyToClipboard("https://suttacentral.net/" + this.inputUrl);
+          },
+          //  copy cite-information about parallels and bibliography.
+          _copyCite: function() {
+              const copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
+              this._copyToClipboard(copyTextarea);
+          },
+          // copies inputtext to the clipboard by creating and selecting a dummy element.
+          _copyToClipboard: function(inputText) {
+              const textarea = document.createElement("textarea");
+              textarea.textContent = inputText;
+              textarea.style.position = "fixed";
+              document.body.appendChild(textarea);
+              textarea.select();
+              try {
+                  return document.execCommand("copy");
+              } catch (err) {
+                  console.error(err);
+                  return false;
+              } finally {
+                  document.body.removeChild(textarea);
               }
-            }
-    });
-</script>
-
+          },
+          // icons to be used instead of iron icons in the base html-string copy function
+          _computeIcon: function(icon) {
+              switch (icon) {
+                  case 'swap-horiz':
+                      return '⮀';
+                  case 'compare-arrows':
+                      return '≈';
+                  case 'editor:format-quote':
+                      return '❞';
+                  case 'cached':
+                      return '🔃';
+              }
+          },
+          // creates a parallels-table in html-string
+          _computeCopyTable: function(inputData, parallelsArray) {
+              let titlepi = "";
+              if (inputData.parallels) {
+                  tablefinalplugin = "";
+                  for (let x = 0; x < inputData.parallels.length; x++) {
+                      const relationships = inputData.parallels[x].relations;
+                      let tableplugin = "\n<tbody>\n  <tr>\n    <td rowspan='" + relationships.length + "'>" + inputData.parallels[x].id + "</td>";
+                      for (let i = 0; i < relationships.length; i++) {
+                          for (let parobject = 0; parobject < parallelsArray.length; parobject++) {
+                              if (parallelsArray[parobject].parid === relationships[i].id) {
+                                  titlepi = parallelsArray[parobject].partitle;
+                              }
+                          }
+                          tableplugin += "\n    <td>" + this._computeIcon(relationships[i].icon) + "</td>\n    <td>" + relationships[i].id + "</td>\n    <td>" + titlepi + "</td>\n  </tr>";
+                          if (i < relationships.length - 1) {
+                              tableplugin += "\n  <tr>";
+                          }
+                      }
+                      tablefinalplugin += tableplugin + "\n</tbody>";
+                  }
+                  return "<!DOCTYPE html>\n<html>\n<head>\n  <title>" + inputData.id + " " + inputData.titlepi + "</title>\n</head>\n<body>\n<table>\n  <caption>" + inputData.titlepi + "</caption>" + tablefinalplugin + "\n</table>\n</body>\n</html>";
+              }
+          },
+          // creates cite data for parallels with parallels-list and bibliographical information
+          _computeCiteData: function(inputData, parallelsArray) {
+              if (inputData.parallels) {
+                  citefinalplugin = "";
+                  const d = new Date();
+                  for (let x = 0; x < inputData.parallels.length; x++) {
+                      const relationships = inputData.parallels[x].relations;
+                      let citeplugin = "Parallels for " + inputData.parallels[x].id + " " + inputData.titlepi + " (" + inputData.volpage + "): ";
+                      for (let i = 0; i < relationships.length; i++) {
+                          citeplugin += relationships[i].id;
+                          for (let parobject = 0; parobject < parallelsArray.length; parobject++) {
+                              if (parallelsArray[parobject].parid === relationships[i].id) {
+                                  if (parallelsArray[parobject].volumepage) {
+                                      citeplugin += " (" + parallelsArray[parobject].volumepage + ") ";
+                                  }
+                                  if (parallelsArray[parobject].biblio) {
+                                      citeplugin += parallelsArray[parobject].biblio;
+                                  }
+                              }
+                          }
+                          if (i < relationships.length - 1) {
+                              citeplugin += "; ";
+                          }
+                      }
+                      citefinalplugin += citeplugin + "\n";
+                  }
+                  return this.citeData = citefinalplugin + "Retrieved from https://suttacentral.net/" + inputData.url + " on " + d + ".";
+              }
+          }
+      });
+  </script>
+</dom-module>

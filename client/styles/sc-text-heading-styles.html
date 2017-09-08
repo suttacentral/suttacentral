@@ -1,112 +1,110 @@
 <dom-module id="sc-text-heading-styles">
-<template>
-<style>
-
-
-    .sutta h1, .sutta h2, .sutta h3, .sutta h4, .sutta h5, .sutta h6, .hgroup p, .subheading {
+  <template>
+    <style>
+      .sutta h1, .sutta h2, .sutta h3, .sutta h4, .sutta h5, .sutta h6, .hgroup p, .subheading {
         text-align: center;
         font-weight: normal;
         font-style: normal;
-    }
+      }
 
-       h1, h1 a,h2, h2 a, h3, h3 a, h4, h4 a, h5, h5 a, h6, h6 a, .hgroup p, .hgroup p a {
+      h1, h1 a, h2, h2 a, h3, h3 a, h4, h4 a, h5, h5 a, h6, h6 a, .hgroup p, .hgroup p a {
         color: var(--secondary-text-color);
-    }
+      }
 
-    /* This is the defaults for texts using a skolar font */
+      /* This is the defaults for texts using a skolar font */
 
-        .sutta h1, .sutta h2, .sutta h3, .sutta h4, .sutta h5, .sutta h6 {
-            @apply --sc-mixed-small-caps;
-            @apply --sc-serif-font;
-            white-space: initial;
-        }
+      .sutta h1, .sutta h2, .sutta h3, .sutta h4, .sutta h5, .sutta h6 {
+        @apply --sc-mixed-small-caps;
+        @apply --sc-serif-font;
+        white-space: initial;
+      }
 
-    h1 {
+      h1 {
         @apply --paper-font-display1;
 
-    }
+      }
 
-    h2 {
+      h2 {
         @apply --paper-font-headline;
-    }
+      }
 
-    h3 {
+      h3 {
         @apply --paper-font-title;
-    }
+      }
 
-    h4{
+      h4 {
         @apply --paper-font-subhead;
-        font-size:18px;
-    }
+        font-size: 18px;
+      }
 
-    h5{
+      h5 {
         @apply --paper-font-subhead;
-    }
+      }
 
-    h6 {
-        text-align:left;
+      h6 {
+        text-align: left;
         @apply --sc-all-small-caps;
         @apply --paper-font-subhead;
-    }
+      }
 
-    .hgroup p {
+      .hgroup p {
         @apply --sc-all-small-caps;
         @apply --sc-sans-font;
-            margin: 0;
-            padding:0;
-            font-size: 16px;
-        }
-        p + h1 {
-            margin-top: 12px
-        }
-        .hgroup     p.subheading{
-                 @apply --sc-serif-font;
-                 font-size: 18px;
-                 font-style: italic;
-                 margin:-20px 0 44px 0;
-                 text-transform: none;
-                 letter-spacing: none;
-                 font-feature-settings: normal
-             }
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+      }
 
+      p + h1 {
+        margin-top: 12px
+      }
 
+      .hgroup p.subheading {
+        @apply --sc-serif-font;
+        font-size: 18px;
+        font-style: italic;
+        margin: -20px 0 44px 0;
+        text-transform: none;
+        letter-spacing: none;
+        font-feature-settings: normal
+      }
 
-    /*bilingual headings*/
-    .mirror {
-        display:table;
+      /*bilingual headings*/
+      .mirror {
+        display: table;
         margin-left: auto;
         margin-right: auto;
-        margin-bottom:4.6em;
-        }
-        .mirror > * {
-            display:table-row;
-        }
+        margin-bottom: 4.6em;
+      }
 
+      .mirror > * {
+        display: table-row;
+      }
 
-    .mirror-left {
-        text-align:right;
-        display:table-cell;
+      .mirror-left {
+        text-align: right;
+        display: table-cell;
         padding-right: 16px;
         border-right: 1px solid var(--dark-divider-opacity);
         width: 50%;
-    }
+      }
 
-    .mirror-right {
-        text-align:left;
-        display:table-cell;
+      .mirror-right {
+        text-align: left;
+        display: table-cell;
         padding-left: 16px;
-    }
+      }
 
-    .mirror-middle {
-        text-align:right;
-        position:absolute;
-        margin-top:0.2em;
-    }
+      .mirror-middle {
+        text-align: right;
+        position: absolute;
+        margin-top: 0.2em;
+      }
 
-    h1.mirror-row {
-        line-height:1.2
-    }
+      h1.mirror-row {
+        line-height: 1.2
+      }
 
-</style>
-</template>
+    </style>
+  </template>
 </dom-module>
