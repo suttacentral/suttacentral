@@ -146,66 +146,73 @@ Issues that need to be fixed:
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-navdrawer',
+      class SCNavdrawer extends Polymer.Element {
+          static get is() { return 'sc-navdrawer' }
 
-          properties: {
-              route: Object,
-              inputLanguage: {
-                  type: String,
-                  notify: true
-              },
-              collectionData: {
-                  type: Object,
-                  notify: true,
-                  observer: '_calculateCategory'
-              },
-              category: {
-                  type: String,
-                  notify: true
-              },
-              queryParams: Object,
-              path: String,
-              query: String
-          },
-          observers: [
-              '_updateScroll(route)'
-          ],
+          static get properties() {
+              return {
+                  route: Object,
+                  inputLanguage: {
+                      type: String,
+                      notify: true
+                  },
+                  collectionData: {
+                      type: Object,
+                      notify: true,
+                      observer: '_calculateCategory'
+                  },
+                  category: {
+                      type: String,
+                      notify: true
+                  },
+                  queryParams: Object,
+                  path: String,
+                  query: String
+              }
+          }
 
-          _updateScroll: function() {
+          static get observers() {
+              return ['_updateScroll(route)']
+          }
+
+          ready() {
+              super.ready();
+              // listens to input from the language dropdown menu on the top right
+              this.addEventListener('languageSelection', (e) =>  this.changeLanguage(e));
+              // listens to input from the search bar (i.e. a search-term) and feeds this to the iron-location
+              this.addEventListener('search', (e) => this.initiateSearch(e));
+              // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
+              this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
+          }
+
+          _updateScroll() {
               window.scroll(0, 0);
-          },
-          ready: function() {
-              // languageSelection listens to input from the language dropdown menu on the top right.
-              this.addEventListener('languageSelection', this.changeLanguage);
+          }
 
-              // search listens to input from the search bar (i.e. a search-term) and feeds this to the iron-location
-              this.addEventListener('search', this.searchItem);
-
-              // toggleDrawer is triggered when the menu button in the toolbar is pressed when the app-drawer is not visible.
-              this.addEventListener('toggleDrawer', this._toggleDrawer);
-          },
           // Polymer problem here with loading anything with a dot in the path. Bug report filed.
           // So when using "polymer serve" to start development server, you have to use a colon
           // instead of a dot. But with python server/app.py you can use the correct path name.
-          _calculateCategory: function(collectionData) {
+          _calculateCategory(collectionData) {
               this.category = collectionData.collection.replace(":", ".");
-          },
-          // sets the inputLanguage for all pages
-          changeLanguage: function(event) {
-              return this.inputLanguage = event.detail.Language;
-          },
-          // sets the path for a searchterm to /search?query=searchterm
-          searchItem: function(event) {
-              this.path = "/search";
-              this.query = "query=" + event.detail;
-
-          },
-          // opens the app-drawer when it is not visible.
-          _toggleDrawer: function(event) {
-              return this.$$('app-drawer').setAttribute("opened", event.detail.togdraw);
           }
 
-      });
+          // sets the inputLanguage for all pages
+          changeLanguage(event) {
+              return this.inputLanguage = event.detail.Language;
+          }
+
+          initiateSearch(event) {
+              console.log(event);
+              this.path = "/search";
+              this.query = "query=" + event.detail;
+          }
+
+          // opens the app-drawer when it is not visible.
+          _toggleDrawer(event) {
+              return this.shadowRoot.querySelector('app-drawer').setAttribute("opened", event.detail.togdraw);
+          }
+      }
+
+      customElements.define(SCNavdrawer.is, SCNavdrawer);
   </script>
 </dom-module>

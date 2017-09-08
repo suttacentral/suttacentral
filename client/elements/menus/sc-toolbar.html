@@ -149,7 +149,7 @@ Issues:
   </template>
 
   <script>
-      class ScToolbar extends Polymer.Element {
+      class SCToolbar extends Polymer.Element {
           static get is() {
               return 'sc-toolbar'
           }
@@ -258,17 +258,18 @@ Issues:
               }
           }
 
+          // Fires the value of the search to the searchpages.
           searchAction() {
-              // Fires the value of the search to the searchpages.
-              this.fire("search", this.shadowRoot.querySelector("#searchinput").value);
+              const searchQuery = this.shadowRoot.querySelector("#searchinput").value;
+              this.dispatchEvent(new CustomEvent('search', { detail: searchQuery, composed: true}));
           }
 
+          // Opens the paper-dialog box of the settings-menu.
           openDialog() {
-              // Opens the paper-dialog box of the settings-menu.
               this.$.dialog.open();
           }
       }
 
-      customElements.define(ScToolbar.is, ScToolbar);
+      customElements.define(SCToolbar.is, SCToolbar);
   </script>
 </dom-module>
