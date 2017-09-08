@@ -54,7 +54,7 @@ class ChangeTracker:
         if self.deleted:
             self.db.aql.execute('''FOR entry IN mtimes 
                                 FILTER entry.path IN @to_remove 
-                                REMOVE entry''', bind_vars={'to_remove': list(self.deleted)})
+                                REMOVE entry IN mtimes''', bind_vars={'to_remove': list(self.deleted)})
 
         self.db['mtimes'].import_bulk(
             [{'path': k, 'mtime': v, '_key': k.replace('/', '_')} for k, v in
