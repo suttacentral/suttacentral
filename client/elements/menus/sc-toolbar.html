@@ -22,7 +22,7 @@ Issues:
     the number 20 but it should show the correct search results instead.
   - The paper badge has the annoying habbit of occasionally disappearing for no apparent reason.
     It seems that it calculates the position too far to the right so as to go off the screen.
-    `this.$$('paper-badge').updatePosition();` does not seem to work to rectify this. It seems to also
+    `this.shadowRoot.querySelector('paper-badge').updatePosition();` does not seem to work to rectify this. It seems to also
     show this behavior here: https://github.com/PolymerElements/paper-badge/pull/12 and briefly show in
     the correct position but then disappear to the right.
 -->
@@ -149,68 +149,77 @@ Issues:
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-toolbar',
-          properties: {
-              inputLanguage: String,
+      class ScToolbar extends Polymer.Element {
+          static get is() {
+              return 'sc-toolbar'
+          }
 
-              // If suttaPath exists, it means that there is an author and that this is a text-page with
-              // different elements showing.
-              suttaPath: {
-                  type: String,
-                  value: "",
-                  notify: true
-              },
-              category: String,
+          static get properties() {
+              return {
+                  inputLanguage: String,
 
-              // Currently not used option to disable certain views if they are not applicable on certain text pages.
-              viewsDisabled: {
-                  type: Boolean,
-                  value: false
-              },
+                  // If suttaPath exists, it means that there is an author and that this is a text-page with
+                  // different elements showing.
+                  suttaPath: {
+                      type: String,
+                      value: "",
+                      notify: true
+                  },
+                  category: String,
 
-              // Value of the meta data of the text-pages that is passed onto the settings-menu dialog
-              metaArea: {
-                  type: String,
-                  notify: true
-              },
+                  // Currently not used option to disable certain views if they are not applicable on certain text pages.
+                  viewsDisabled: {
+                      type: Boolean,
+                      value: false
+                  },
 
-              // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
-              // This should only be visible on text-pages.
-              toggleDisplay: {
-                  type: String,
-                  computed: '_computeClass(suttaPath)'
-              },
+                  // Value of the meta data of the text-pages that is passed onto the settings-menu dialog
+                  metaArea: {
+                      type: String,
+                      notify: true
+                  },
 
-              // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
-              // for that specific text.
-              discourseLink: {
-                  type: String,
-                  computed: '_computeDiscourseLink(suttaPath,category)'
+                  // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
+                  // This should only be visible on text-pages.
+                  toggleDisplay: {
+                      type: String,
+                      computed: '_computeClass(suttaPath)'
+                  },
+
+                  // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
+                  // for that specific text.
+                  discourseLink: {
+                      type: String,
+                      computed: '_computeDiscourseLink(suttaPath,category)'
+                  }
               }
-          },
+          }
+
           // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
           // Also determines visibility of settings-menu.
           // These should only be visible on text-pages.
-          _computeClass: function(suttaPath) {
+          _computeClass(suttaPath) {
               return (suttaPath) ? "" : "hidebutton";
-          },
+          }
+
           // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
           // for that specific text.
-          _computeDiscourseLink: function(suttaPath, category) {
-              return (suttaPath) ? 'https://discourse.suttacentral.net/search?q="' + category + ' "' : "https://discourse.suttacentral.net/";
-          },
+          _computeDiscourseLink(suttaPath, category) {
+              return (suttaPath) ? 'https://discourse.suttacentral.net/search?q="'
+                  + category + ' "' : "https://discourse.suttacentral.net/";
+          }
+
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
           // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
-          openSearch: function() {
+          openSearch() {
               let searchWidth;
-              if (this.$$('#searchinput').classList.contains('opened')) {
+              if (this.shadowRoot.querySelector('#searchinput').classList.contains('opened')) {
                   this.searchAction();
               } else {
-                  this.$$('#searchinput').classList.add('opened');
-                  this.$$('#searchinput').focus();
-                  this.$$('#closebutton').style.display = 'inline-block';
-                  this.$$('#searchinput').value = '';
+                  this.shadowRoot.querySelector('#searchinput').classList.add('opened');
+                  this.shadowRoot.querySelector('#searchinput').focus();
+                  this.shadowRoot.querySelector('#closebutton').style.display = 'inline-block';
+                  this.shadowRoot.querySelector('#searchinput').value = '';
                   let searchSize = 500;
                   if (this.suttaPath) {
                       searchSize = 540
@@ -224,7 +233,7 @@ Issues:
                   } else if (window.innerWidth > 480) {
                       searchWidth = window.innerWidth - (searchSize - 210);
                   } else {
-                      this.$$("#toolsmenu").classList.add("search-open");
+                      this.shadowRoot.querySelector("#toolsmenu").classList.add("search-open");
                       if (this.suttaPath) {
                           searchSize = 500
                       }
@@ -233,29 +242,33 @@ Issues:
                   if (searchWidth > 360) {
                       searchWidth = 360
                   }
-                  this.$$('.opened').style.width = searchWidth;
+                  this.shadowRoot.querySelector('.opened').style.width = searchWidth;
               }
-          },
+          }
+
           // Closes the searchbox and resets original values.
-          closeSearch: function() {
-              if (this.$$('#searchinput').classList.contains('opened')) {
-                  this.$$('#searchinput').classList.remove('opened');
-                  this.$$('#searchinput').removeAttribute('style', "width");
-                  this.$$('#closebutton').style.display = 'none';
-                  this.$$("#toolsmenu").classList.remove("search-open");
+          closeSearch() {
+              if (this.shadowRoot.querySelector('#searchinput').classList.contains('opened')) {
+                  this.shadowRoot.querySelector('#searchinput').classList.remove('opened');
+                  this.shadowRoot.querySelector('#searchinput').removeAttribute('style', "width");
+                  this.shadowRoot.querySelector('#closebutton').style.display = 'none';
+                  this.shadowRoot.querySelector("#toolsmenu").classList.remove("search-open");
                   Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox")
                       .removeAttribute('style', "display");
               }
-          },
-          searchAction: function() {
+          }
+
+          searchAction() {
               // Fires the value of the search to the searchpages.
-              this.fire("search", this.$$("#searchinput").value);
-          },
-          openDialog: function() {
+              this.fire("search", this.shadowRoot.querySelector("#searchinput").value);
+          }
+
+          openDialog() {
               // Opens the paper-dialog box of the settings-menu.
               this.$.dialog.open();
           }
-      });
+      }
 
+      customElements.define(ScToolbar.is, ScToolbar);
   </script>
 </dom-module>
