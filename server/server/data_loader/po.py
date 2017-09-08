@@ -149,7 +149,7 @@ def load_po_texts(change_tracker, po_dir, db):
     # as it happens deletion is really rare: so if a deletion 
     # does occur we just nuke and rebuild.
     
-    deleted_po = [f for f in change_tracker.deleted if f.suffix == '.po']
+    deleted_po = [f for f in change_tracker.deleted if f.endswith('.po')]
     if deleted_po:
         change_tracker = None
         db['po_markup'].truncate()
