@@ -185,9 +185,6 @@ def load_po_texts(change_tracker, po_dir, db):
                     db.collection('po_markup').insert(doc)
                 else:
                     doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author"]}'
-                    try:
-                        db.collection('po_strings').insert(doc)
-                    except DocumentInsertError as e:
-                        logging.error(e)
+                    db.collection('po_strings').insert(doc)
 
     print(f'Loading took {time.time()-start} seconds')
