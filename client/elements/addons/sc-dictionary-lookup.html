@@ -1,33 +1,41 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
-<!-- This element is not yet operational but meant for the pali to language lookup tool. -->
-<!-- The lookup code on the current SuttaCentral is really messy. Also, there is a superior version of the lookup tool which is used on pootle, I've just never got around to implementing it on suttacentral.net, internally it works quite differently using IndexedDB and a WebWorker and stuff. It's also allowed to pull in a lot more data (something like 10mb) from the PTS dictionary and other dictionaries. We really should implement that superior version into next-sc, it does need some stuff like multi-language friendliness so it's not quite a dropin. Also the rapid pace of javascript world evolution has thoroughly broken the build script. The repository is https://github.com/blake-sc/palilookup but as I said it's broken atm. -->
-
+<!--
+This element is not yet operational but meant for the pali to language lookup tool.
+The lookup code on the current SuttaCentral is really messy. Also, there is a superior version of
+the lookup tool which is used on pootle, I've just never got around to implementing it on suttacentral.net,
+internally it works quite differently using IndexedDB and a WebWorker and stuff. It's also allowed to
+pull in a lot more data (something like 10mb) from the PTS dictionary and other dictionaries. We really should
+implement that superior version into next-sc, it does need some stuff like multi-language friendliness so it's not
+quite a dropin. Also the rapid pace of javascript world evolution has thoroughly broken the build script.
+The repository is https://github.com/blake-sc/palilookup but as I said it's broken atm.
+-->
 <dom-module id="sc-dictionary-lookup">
-<template>
-<iron-ajax
-      auto
-      url="[[_computeInputDict(inputDictionary)]]"
-      handle-as="json"
-      last-response="{{lookupDict}}"></iron-ajax>
-</template>
-<script>
-    Polymer({
-      is: 'sc-dictionary-lookup',
-      properties: {
-        suttaInput: String,
-        inputDictionary: String
-      },
-      _computeInputDict: function(inputDictionary){
-        if (inputDictionary !== "none") {
-            console.log("inputDictionary loaded:" + inputDictionary);
-            return `../../data/dictionaries/${inputDictionary}.json`;
+  <template>
+    <iron-ajax
+        auto
+        url="[[_computeInputDict(inputDictionary)]]"
+        handle-as="json"
+        last-response="{{lookupDict}}"></iron-ajax>
+  </template>
+  <script>
+      Polymer({
+          is: 'sc-dictionary-lookup',
+          properties: {
+              suttaInput: String,
+              inputDictionary: String
+          },
+          _computeInputDict: function(inputDictionary) {
+              if (inputDictionary !== "none") {
+                  console.log("inputDictionary loaded:" + inputDictionary);
+                  return `../../data/dictionaries/${inputDictionary}.json`;
+              }
+          },
+          _wordMeaning: function(lookupDict, word) {
+              return lookupDict[word];
           }
-        },
-        _wordMeaning: function(lookupDict,word) {
-          return lookupDict[word];
-        }
 
-});
-</script>
+      });
+  </script>
+</dom-module>

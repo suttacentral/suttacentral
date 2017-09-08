@@ -1,189 +1,211 @@
 <dom-module id="sc-dict-styles">
-<template>
-<style>
+  <template>
+    <style>
 
-dl{
-    margin-top:8px;
-}
-dd{
-  margin:0;
-  @apply --sc-paper-font-body;
-  @apply --sc-serif-font;
-}
-dd>p{
-  margin-top:0;
-}
-dfn {
-    @apply --paper-font-headline;
-    font-style:normal;
-    text-transform:lowercase;
-    color: var(--sc-green-600);
-}
+      dl {
+        margin-top: 8px;
+      }
 
-.dppn-entry dfn{
-  text-transform:capitalize;
-}
+      dd {
+        margin: 0;
+        @apply --sc-paper-font-body;
+        @apply --sc-serif-font;
+      }
 
-.case {
-    @apply --sc-all-small-caps;
-    color: var(--secondary-text-color);
-    @apply --sc-sans-font;
-    display: block;
-@apply --paper-font-body2;
-  white-space: nowrap;
-  overflow: hidden;
-}
+      dd > p {
+        margin-top: 0;
+      }
 
-dd .ref {
-    color:var(--secondary-text-color);
-    background-color:var(--paper-grey-200);
-    border-radius:2px;
-    padding:4px 8px;
-    font-size:14px;
-    @apply --sc-sans-font;
-}
+      dfn {
+        @apply --paper-font-headline;
+        font-style: normal;
+        text-transform: lowercase;
+        color: var(--sc-green-600);
+      }
 
-dd .author{
-  @apply --sc-mixed-small-caps
-}
+      .dppn-entry dfn {
+        text-transform: capitalize;
+      }
 
-dd .eti{
-  color:var(--secondary-text-color);
-  @apply --paper-font-body1
-}
+      .case {
+        @apply --sc-all-small-caps;
+        color: var(--secondary-text-color);
+        @apply --sc-sans-font;
+        display: block;
+        @apply --paper-font-body2;
+        white-space: nowrap;
+        overflow: hidden;
+      }
 
-dd .term {
+      dd .ref {
+        color: var(--secondary-text-color);
+        background-color: var(--paper-grey-200);
+        border-radius: 2px;
+        padding: 4px 8px;
+        font-size: 14px;
+        @apply --sc-sans-font;
+      }
+
+      dd .author {
+        @apply --sc-mixed-small-caps
+      }
+
+      dd .eti {
+        color: var(--secondary-text-color);
+        @apply --paper-font-body1
+      }
+
+      dd .term {
         font-weight: normal;
-    }
+      }
 
-dd .abbr{
-  color:white;
-  font-weight:bold;
-  background-color:var(--paper-grey-700);
-  border-radius:2px;
-    padding:4px 8px;
-    font-size:14px;
-    @apply --sc-sans-font;
-}
+      dd .abbr {
+        color: white;
+        font-weight: bold;
+        background-color: var(--paper-grey-700);
+        border-radius: 2px;
+        padding: 4px 8px;
+        font-size: 14px;
+        @apply --sc-sans-font;
+      }
 
-dd .inline-li{
-  font-weight: bold;
-  color:var(--secondary-text-color);
-  padding: 0 0.5em;
-  @apply --sc-sans-font;
-}
+      dd .inline-li {
+        font-weight: bold;
+        color: var(--secondary-text-color);
+        padding: 0 0.5em;
+        @apply --sc-sans-font;
+      }
 
-dd .square{
-  color: var(--disabled-text-color);
-}
+      dd .square {
+        color: var(--disabled-text-color);
+      }
 
-dd ol{
-  list-style-type: none;
-    counter-reset: step-counter;
-    margin: 0 0 0 32px;
-    padding:0;
+      dd ol {
+        list-style-type: none;
+        counter-reset: step-counter;
+        margin: 0 0 0 32px;
+        padding: 0;
 
-}
+      }
 
-dd ol ul {
-    counter-reset: step-counter;
-}
+      dd ol ul {
+        counter-reset: step-counter;
+      }
 
-.little {
-    list-style-type: decimal;
-}
-.little li {
-    margin: 0 0 0 0
-}
-dd ul {
-    list-style-type: disc;
-    margin: 0 0 8px 24px!important
-}
-dd ol + ul.compounds {
-    margin-top: 24px!important;
-    list-style-type: none;
-}
-dd ol li {
-    counter-increment: step-counter;
-    margin: 4px 0 0 0;
+      .little {
+        list-style-type: decimal;
+      }
 
-}
-    .compounds {
-    margin-left: 24px!important
-}
-dd ol + li {
-    counter-increment: step-counter!important;
-}
-.lower-latin>li::before {
-    content: counter(step-counter, lower-latin);
-}
-.upper-latin>li::before {
-    content: counter(step-counter, upper-latin);
-}
-.decimal>li::before {
-    content: counter(step-counter, decimal);
-}
-.upper-roman>li::before {
-    content: counter(step-counter, upper-roman);
-}
-    .lower-roman>li::before {
-    content: counter(step-counter, lower-roman);
-}
-.lower-greek>li::before {
-    content: counter(step-counter, lower-greek);
-}
-.compounds>li::before {
-    content: "◦";
-    color: var(--disabled-text-color);
-    margin-left: -12px;
-  
-}
-dd li::before {
-    font-weight: bold;
-    position: absolute;
-    text-align: right;
-    margin-left: -32px;
-    @apply --sc-sans-font;
-    color:var(--secondary-text-color);
-}
+      .little li {
+        margin: 0 0 0 0
+      }
 
-.google-maps {
-  margin-top: 16px;
-  height: 480px;
-  margin-bottom: 20px;
-}
-.google-maps iframe {
-  height: 480px;
-  width: 100%;
-  border:none;
-}
-.info {
-    display: none;
-}
-h1, h2, h3, h4, h5, h6{
-  text-align: left;
-  font-weight:normal;
-}
-dd a {
-    text-decoration:  none;
-}
-dd a {
-    color: inherit;
-    text-decoration: none;
-    background: linear-gradient(to top, rgba(0,230,118, 0) 1.5px, rgba(0,230,118, 1) 1.5px, rgba(0,230,118, 1) 2.5px, rgba(0,230,118, 0) 2.5px)
-}
+      dd ul {
+        list-style-type: disc;
+        margin: 0 0 8px 24px !important
+      }
 
-dd a:hover {
-    background: linear-gradient(to top, rgba(0,230,118, 0) 1px, rgba(0,230,118, 1) 1px, rgba(0,230,118, 1) 3px, rgba(0,230,118, 0) 3px)
-}
+      dd ol + ul.compounds {
+        margin-top: 24px !important;
+        list-style-type: none;
+      }
 
-dd a:active{
-  background-color:var(--paper-green-300)
-}
+      dd ol li {
+        counter-increment: step-counter;
+        margin: 4px 0 0 0;
 
-dd a:visited{
-  background: linear-gradient(to top, rgba(102, 187, 106, 0) 1px, rgba(102, 187, 106, 1) 1px, rgba(102, 187, 106, 1) 3px, rgba(102, 187, 106, 0) 3px)
-}
-</style>
-</template>
+      }
+
+      .compounds {
+        margin-left: 24px !important
+      }
+
+      dd ol + li {
+        counter-increment: step-counter !important;
+      }
+
+      .lower-latin > li::before {
+        content: counter(step-counter, lower-latin);
+      }
+
+      .upper-latin > li::before {
+        content: counter(step-counter, upper-latin);
+      }
+
+      .decimal > li::before {
+        content: counter(step-counter, decimal);
+      }
+
+      .upper-roman > li::before {
+        content: counter(step-counter, upper-roman);
+      }
+
+      .lower-roman > li::before {
+        content: counter(step-counter, lower-roman);
+      }
+
+      .lower-greek > li::before {
+        content: counter(step-counter, lower-greek);
+      }
+
+      .compounds > li::before {
+        content: "◦";
+        color: var(--disabled-text-color);
+        margin-left: -12px;
+
+      }
+
+      dd li::before {
+        font-weight: bold;
+        position: absolute;
+        text-align: right;
+        margin-left: -32px;
+        @apply --sc-sans-font;
+        color: var(--secondary-text-color);
+      }
+
+      .google-maps {
+        margin-top: 16px;
+        height: 480px;
+        margin-bottom: 20px;
+      }
+
+      .google-maps iframe {
+        height: 480px;
+        width: 100%;
+        border: none;
+      }
+
+      .info {
+        display: none;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        text-align: left;
+        font-weight: normal;
+      }
+
+      dd a {
+        text-decoration: none;
+      }
+
+      dd a {
+        color: inherit;
+        text-decoration: none;
+        background: linear-gradient(to top, rgba(0, 230, 118, 0) 1.5px, rgba(0, 230, 118, 1) 1.5px, rgba(0, 230, 118, 1) 2.5px, rgba(0, 230, 118, 0) 2.5px)
+      }
+
+      dd a:hover {
+        background: linear-gradient(to top, rgba(0, 230, 118, 0) 1px, rgba(0, 230, 118, 1) 1px, rgba(0, 230, 118, 1) 3px, rgba(0, 230, 118, 0) 3px)
+      }
+
+      dd a:active {
+        background-color: var(--paper-green-300)
+      }
+
+      dd a:visited {
+        background: linear-gradient(to top, rgba(102, 187, 106, 0) 1px, rgba(102, 187, 106, 1) 1px, rgba(102, 187, 106, 1) 3px, rgba(102, 187, 106, 0) 3px)
+      }
+    </style>
+  </template>
 </dom-module>

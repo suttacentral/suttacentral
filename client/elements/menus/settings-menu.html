@@ -8,287 +8,324 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
-<link rel="import" href="../addons/sc-dictionary-lookup.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
-<!-- Settings menu appears in the toolbar on text pages only. 
-It has setting for textual-details (paragraph numbers), type of view for segmented pages (showing pali next to translated text), 
-lookup tools and publication details -->
-<!-- Issues: 
-    -The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English. A mockup dictionary is in `data/dictionaries/pi2en.json` but this is not the latest version, only for testing. The matching should be fuzzy so no direct word-to-word lookup.
-    - The repository with the basic code for this tool is https://github.com/blake-sc/palilookup but is broken. -->
+<link rel="import" href="../addons/sc-dictionary-lookup.html">
 
+<!--
+Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
+type of view for segmented pages (showing pali next to translated text), lookup tools and publication details .
+
+Issues:
+  - The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English.
+  A mockup dictionary is in `data/dictionaries/pi2en.json` but this is not the latest version, only for testing.
+  The matching should be fuzzy so no direct word-to-word lookup.
+  - The repository with the basic code for this tool is https://github.com/blake-sc/palilookup but is broken.
+-->
 <dom-module id="settings-menu" attributes="selectedView textInfo scriptchoice">
-<template>
-<style is="custom-style">
-:host{
-    --primary-color: var(--sc-gold-500);
-    --accent-color: var(--paper-green-a700);
-  }
-.paper-dialogue-container {
-	max-width:40em;
-}
+  <template>
+    <style is="custom-style">
+      :host {
+        --primary-color: var(--sc-gold-500);
+        --accent-color: var(--paper-green-a700);
+      }
 
-h1,h2,h3 {
-    margin: 0
-}
-iron-icon, paper-icon-button{
-  color: var(--disabled-text-color);
-}
-#settingsbutton {
-  color: white;
-}
+      .paper-dialogue-container {
+        max-width: 40em;
+      }
 
-.dialogue-section{
-  margin-top:36px;
-}
-h3{
-  @apply --paper-font-title;
-  @apply --sc-sans-font;
-}
-.nerdy-row{
-  @apply --sc-paper-font-body;
-  color: var(--secondary-text-color);
-  @apply --sc-sans-font;
-}
-paper-item iron-icon {
-    margin-right: 4px;
-}
-paper-dropdown-menu, paper-listbox {
-    width: 200px;
-}
-paper-toggle-button{
-  margin-top:8px;
-}
-@media screen and (max-width: 769px) {
-    #sides {
-        display:none;
-    }
-}
-</style>
-  <div class="paper-dialogue-container">
+      h1, h2, h3 {
+        margin: 0
+      }
+
+      iron-icon, paper-icon-button {
+        color: var(--disabled-text-color);
+      }
+
+      #settingsbutton {
+        color: white;
+      }
+
+      .dialogue-section {
+        margin-top: 36px;
+      }
+
+      h3 {
+        @apply --paper-font-title;
+        @apply --sc-sans-font;
+      }
+
+      .nerdy-row {
+        @apply --sc-paper-font-body;
+        color: var(--secondary-text-color);
+        @apply --sc-sans-font;
+      }
+
+      paper-item iron-icon {
+        margin-right: 4px;
+      }
+
+      paper-dropdown-menu, paper-listbox {
+        width: 200px;
+      }
+
+      paper-toggle-button {
+        margin-top: 8px;
+      }
+
+      @media screen and (max-width: 769px) {
+        #sides {
+          display: none;
+        }
+      }
+    </style>
+    <div class="paper-dialogue-container">
       <div class="dialogue-section">
-      	<h3>View textual information</h3>
-      	<div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-      	<paper-toggle-button noink active="{{textualInfoEnabled}}"></paper-toggle-button>
-        <app-localstorage-document key="textualInfoEnabled" data="{{textualInfoEnabled}}" session-only="{{sessionOnly}}"></app-localstorage-document>
+        <h3>View textual information</h3>
+        <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
+        <paper-toggle-button noink active="{{textualInfoEnabled}}"></paper-toggle-button>
+        <app-localstorage-document key="textualInfoEnabled" data="{{textualInfoEnabled}}"
+                                   session-only="{{sessionOnly}}"></app-localstorage-document>
       </div>
 
       <div class="dialogue-section">
-      	<h3>View original text with translation</h3>
-      	<div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.</div>
-                <paper-radio-group selected="{{radioSelected}}">
-                   	<paper-radio-button name="none">None</paper-radio-button>
-                    	<paper-radio-button id="sides" name="sidebyside"><iron-icon icon="view-column"></iron-icon> Side by side</paper-radio-button>
-                    	<paper-radio-button name="linebyline"><iron-icon icon="view-headline" ></iron-icon> Line by line</paper-radio-button>
-                    	<paper-radio-button name="popup"><iron-icon icon="editor:insert-comment"></iron-icon> Pop-up</paper-radio-button>
-                </paper-radio-group>
-                <app-localstorage-document key="radioSelected" data="{{radioSelected}}" session-only="{{sessionOnly}}"></app-localstorage-document>
+        <h3>View original text with translation</h3>
+        <div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.
+        </div>
+        <paper-radio-group selected="{{radioSelected}}">
+          <paper-radio-button name="none">None</paper-radio-button>
+          <paper-radio-button id="sides" name="sidebyside">
+            <iron-icon icon="view-column"></iron-icon>
+            Side by side
+          </paper-radio-button>
+          <paper-radio-button name="linebyline">
+            <iron-icon icon="view-headline"></iron-icon>
+            Line by line
+          </paper-radio-button>
+          <paper-radio-button name="popup">
+            <iron-icon icon="editor:insert-comment"></iron-icon>
+            Pop-up
+          </paper-radio-button>
+        </paper-radio-group>
+        <app-localstorage-document key="radioSelected" data="{{radioSelected}}"
+                                   session-only="{{sessionOnly}}"></app-localstorage-document>
       </div>
 
       <div class="dialogue-section">
-	      <h3>Activate Pali word lookup</h3>
-	      <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this  is an aid only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.</div>
-	      <paper-dropdown-menu label="Lookup">
-	        <paper-listbox slot="dropdown-content" selected="{{paliLookupSelected}}">
-                  <template is="dom-repeat" items="[[paliLookupArray]]" as="dictlanguage">
-	               <paper-item>[[dictlanguage.language]]</paper-item>
-                  </template>
-	        </paper-listbox>
-                <app-localstorage-document key="paliLookupSelected" data="{{paliLookupSelected}}" session-only="{{sessionOnly}}"></app-localstorage-document>
-	      </paper-dropdown-menu>
-              <template is="dom-if" if="[[_dictionaryLookup(paliLookupSelected)]]">
-                  <sc-dictionary-lookup input-dictionary="[[_getDictionary(paliLookupArray,paliLookupSelected)]]"></sc-dictionary-lookup>
-              </template>
+        <h3>Activate Pali word lookup</h3>
+        <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid
+          only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.
+        </div>
+        <paper-dropdown-menu label="Lookup">
+          <paper-listbox slot="dropdown-content" selected="{{paliLookupSelected}}">
+            <template is="dom-repeat" items="[[paliLookupArray]]" as="dictlanguage">
+              <paper-item>[[dictlanguage.language]]</paper-item>
+            </template>
+          </paper-listbox>
+          <app-localstorage-document key="paliLookupSelected" data="{{paliLookupSelected}}"
+                                     session-only="{{sessionOnly}}"></app-localstorage-document>
+        </paper-dropdown-menu>
+        <template is="dom-if" if="[[_dictionaryLookup(paliLookupSelected)]]">
+          <sc-dictionary-lookup
+              input-dictionary="[[_getDictionary(paliLookupArray,paliLookupSelected)]]"></sc-dictionary-lookup>
+        </template>
       </div>
 
       <div class="dialogue-section">
-	      <h3>Activate Chinese word lookup</h3>
-	      <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.</div>
-	      <paper-dropdown-menu label="Lookup">
-	        <paper-listbox slot="dropdown-content" selected="{{chineseLookupSelected}}">
-                  <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
-                        <paper-item>[[dictlanguage.language]]</paper-item>
-                  </template>
-	        </paper-listbox>
-                 <app-localstorage-document key="chineseLookupSelected" data="{{chineseLookupSelected}}" session-only="{{sessionOnly}}"></app-localstorage-document>
-	      </paper-dropdown-menu>
-              <template is="dom-if" if="[[_dictionaryLookup(chineseLookupSelected)]]">
-                  <sc-dictionary-lookup input-dictionary="[[_getDictionary(chineseLookupArray,chineseLookupSelected)]]"></sc-dictionary-lookup>
-              </template>
+        <h3>Activate Chinese word lookup</h3>
+        <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital
+          Dictionary of Buddhism.
+        </div>
+        <paper-dropdown-menu label="Lookup">
+          <paper-listbox slot="dropdown-content" selected="{{chineseLookupSelected}}">
+            <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
+              <paper-item>[[dictlanguage.language]]</paper-item>
+            </template>
+          </paper-listbox>
+          <app-localstorage-document key="chineseLookupSelected" data="{{chineseLookupSelected}}"
+                                     session-only="{{sessionOnly}}"></app-localstorage-document>
+        </paper-dropdown-menu>
+        <template is="dom-if" if="[[_dictionaryLookup(chineseLookupSelected)]]">
+          <sc-dictionary-lookup
+              input-dictionary="[[_getDictionary(chineseLookupArray,chineseLookupSelected)]]"></sc-dictionary-lookup>
+        </template>
       </div>
 
       <div class="dialogue-section">
-	      <h3>Change the script of the Pali text</h3>
-	      <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
-	      <paper-dropdown-menu label="Script">
-	        <paper-listbox slot="dropdown-content" selected="{{paliScriptSelected}}">
-                  <template is="dom-repeat" items="[[paliScriptChooser]]" as="script">
-                        <paper-item>[[script.language]]</paper-item>
-                  </template>
-	        </paper-listbox>
-                 <app-localstorage-document key="paliScriptSelected" data="{{paliScriptSelected}}" session-only="{{sessionOnly}}"></app-localstorage-document>
-	      </paper-dropdown-menu>
+        <h3>Change the script of the Pali text</h3>
+        <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
+        <paper-dropdown-menu label="Script">
+          <paper-listbox slot="dropdown-content" selected="{{paliScriptSelected}}">
+            <template is="dom-repeat" items="[[paliScriptChooser]]" as="script">
+              <paper-item>[[script.language]]</paper-item>
+            </template>
+          </paper-listbox>
+          <app-localstorage-document key="paliScriptSelected" data="{{paliScriptSelected}}"
+                                     session-only="{{sessionOnly}}"></app-localstorage-document>
+        </paper-dropdown-menu>
       </div>
 
       <div class="dialogue-section">
-      	<h3>Remember what I have selected on this page</h3>
-      	<paper-toggle-button noink checked active="{{rememberSettings}}"></paper-toggle-button>
+        <h3>Remember what I have selected on this page</h3>
+        <paper-toggle-button noink checked active="{{rememberSettings}}"></paper-toggle-button>
         <app-localstorage-document key="rememberSettings" data="{{rememberSettings}}"></app-localstorage-document>
       </div>
 
       <div class="dialogue-section">
-	      <h3>Publication details</h3>
-	      <div inner-h-t-m-l="[[metaArea]]"></div>
+        <h3>Publication details</h3>
+        <div inner-h-t-m-l="[[metaArea]]"></div>
       </div>
     </div>
 
-</template>
-<script>
-    Polymer({
-      is: 'settings-menu',
-      properties: {
-                metaArea: Object,
+  </template>
+  <script>
+      Polymer({
+          is: 'settings-menu',
+          properties: {
+              metaArea: Object,
 
-                // function disableViews not used at the moment. The idea was to be able to disable the choice of various 
-                // views on normal text pages because they are only available on segmented text pages.
-                disableViews:  {
+              // function disableViews not used at the moment. The idea was to be able to disable the choice of various
+              // views on normal text pages because they are only available on segmented text pages.
+              disableViews: {
                   type: Boolean,
                   notify: true,
-                  value: function(){return []},
+                  value: function() {
+                      return []
+                  },
                   observer: "_disableRadioGroup"
-                },
+              },
 
-                // Selected type of view for segmented-text pages.
-                radioSelected: {
-                    type: String,
-                    value: "none",
-                    observer: '_radioGroupChanged'
-                },
-                // possible values for the pali to language lookup.
-                paliLookupArray: {
+              // Selected type of view for segmented-text pages.
+              radioSelected: {
+                  type: String,
+                  value: "none",
+                  observer: '_radioGroupChanged'
+              },
+              // possible values for the pali to language lookup.
+              paliLookupArray: {
                   type: Array,
                   value: [{
-                                "dict": "none",
-                                "language": "None"
-                              },
-                              {
-                                "dict": "pi2en",
-                                "language": "Pali → English"
-                              },
-                              {
-                                "dict": "pi2es",
-                                "language": "Pali → Spanish"
-                              }]
-                },
-                // pali to language lookup selected number.
-                 paliLookupSelected: {
-                    type: Number,
-                    value: 0,
-                },
-                // possible values for the chinese to language lookup.
-                chineseLookupArray: {
+                      "dict": "none",
+                      "language": "None"
+                  },
+                      {
+                          "dict": "pi2en",
+                          "language": "Pali → English"
+                      },
+                      {
+                          "dict": "pi2es",
+                          "language": "Pali → Spanish"
+                      }]
+              },
+              // pali to language lookup selected number.
+              paliLookupSelected: {
+                  type: Number,
+                  value: 0,
+              },
+              // possible values for the chinese to language lookup.
+              chineseLookupArray: {
                   type: Array,
                   value: [{
-                                "dict": "none",
-                                "language": "None"
-                              },
-                              {
-                                "dict": "lzh2en",
-                                "language": "Chinese → English"
-                              }]
-                },
-                // chinese to language lookup selected number.
-                 chineseLookupSelected: {
-                    type: Number,
-                    value: 0,
-                },
-                // possible values for the script chooser for pali.
-                paliScriptChooser: {
+                      "dict": "none",
+                      "language": "None"
+                  },
+                      {
+                          "dict": "lzh2en",
+                          "language": "Chinese → English"
+                      }]
+              },
+              // chinese to language lookup selected number.
+              chineseLookupSelected: {
+                  type: Number,
+                  value: 0,
+              },
+              // possible values for the script chooser for pali.
+              paliScriptChooser: {
                   type: Array,
                   value: [{
-                                "script": "latin",
-                                "language": "Latin"
-                              },
-                              {
-                                "script": "sinhala",
-                                "language": "සිංහල"
-                              },
-                              {
-                                "script": "devanagari",
-                                "language": "नागरी"
-                              },
-                              {
-                                "script": "thai",
-                                "language": "ไทย"
-                              },
-                              {
-                                "script": "myanmar",
-                                "language": "မြန်မာဘာသာ"
-                              }]
-                },
-                // pali script selected number.
-                 paliScriptSelected: {
-                    type: Number,
-                    value: 0,
-                    observer: "_changeScript"
-                },
-                // Boolean that says wether or not paragraph numbers should be 
-                // displayed on text pages.
-                textualInfoEnabled: {
+                      "script": "latin",
+                      "language": "Latin"
+                  },
+                      {
+                          "script": "sinhala",
+                          "language": "සිංහල"
+                      },
+                      {
+                          "script": "devanagari",
+                          "language": "नागरी"
+                      },
+                      {
+                          "script": "thai",
+                          "language": "ไทย"
+                      },
+                      {
+                          "script": "myanmar",
+                          "language": "မြန်မာဘာသာ"
+                      }]
+              },
+              // pali script selected number.
+              paliScriptSelected: {
+                  type: Number,
+                  value: 0,
+                  observer: "_changeScript"
+              },
+              // Boolean that says wether or not paragraph numbers should be
+              // displayed on text pages.
+              textualInfoEnabled: {
                   type: Boolean,
                   value: false,
                   observer: "_getReferences"
-                },
-                // Boolean that remembers settings on this page.
-                rememberSettings: {
+              },
+              // Boolean that remembers settings on this page.
+              rememberSettings: {
                   type: Boolean,
                   value: true,
                   observer: "_rememberSettings"
-                },
-                sessionOnly: {
+              },
+              sessionOnly: {
                   type: Boolean,
                   value: false,
                   notify: true
-                }
-      },
-      _getReferences: function(textualInfoEnabled) {
-        // Fires the choice of textualInfoEnabled to page-selector.html and from there to the text pages.
-        this.fire('changeTextInfo',{textInfo:textualInfoEnabled});
-      },
-      _radioGroupChanged: function() {
-        // Fires the choice of which view for the segmented text pages is selected to page-selector.html.
-        this.fire('eventFromTools',{selectedView:this.radioSelected});
-      },
-      _rememberSettings: function(rememberSettings) {
-        // sets the attribute sessionOnly on the app-localstorage so whatever the user chooses after
-        // setting this attribute will not be stored but settings before setting this attribute will be maintained.
-        if (!rememberSettings) {
-          this.sessionOnly=true;
-        }
-      },
-      _dictionaryLookup: function(valueSelected) {
-        // needs more work
-        return (valueSelected > 0) ? true : false;
-      },
-      _getDictionary: function(valueArray,valueSelected) {
-        // needs more work
-        return valueArray[valueSelected].dict;
-      },
-      _disableRadioGroup: function(disableViews) {
-        // function not used at the moment. The idea was to be able to disable the choice of various 
-        // views on normal text pages because they are only available on segmented text pages.
-        if (disableViews === true) {
-          var refs = this.querySelectorAll("paper-radio-button");
-           for (var i=0; i<refs.length; i++) {
-            refs[i].setAttribute("disabled",true);
-           }
-        }
-      },
-      _changeScript: function() {
-        // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
-        this.fire('changeScript',{scriptchoice:this.paliScriptSelected});
-      }
-    });
-</script>
+              }
+          },
+          _getReferences: function(textualInfoEnabled) {
+              // Fires the choice of textualInfoEnabled to page-selector.html and from there to the text pages.
+              this.fire('changeTextInfo', {textInfo: textualInfoEnabled});
+          },
+          _radioGroupChanged: function() {
+              // Fires the choice of which view for the segmented text pages is selected to page-selector.html.
+              this.fire('eventFromTools', {selectedView: this.radioSelected});
+          },
+          _rememberSettings: function(rememberSettings) {
+              // sets the attribute sessionOnly on the app-localstorage so whatever the user chooses after
+              // setting this attribute will not be stored but settings before setting this attribute will be maintained.
+              if (!rememberSettings) {
+                  this.sessionOnly = true;
+              }
+          },
+          _dictionaryLookup: function(valueSelected) {
+              // needs more work
+              return (valueSelected > 0);
+          },
+          _getDictionary: function(valueArray, valueSelected) {
+              // needs more work
+              return valueArray[valueSelected].dict;
+          },
+          _disableRadioGroup: function(disableViews) {
+              // function not used at the moment. The idea was to be able to disable the choice of various
+              // views on normal text pages because they are only available on segmented text pages.
+              if (disableViews === true) {
+                  const refs = this.querySelectorAll("paper-radio-button");
+                  for (let i = 0; i < refs.length; i++) {
+                      refs[i].setAttribute("disabled", true);
+                  }
+              }
+          },
+          _changeScript: function() {
+              // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
+              this.fire('changeScript', {scriptchoice: this.paliScriptSelected});
+          }
+      });
+  </script>
+</dom-module>

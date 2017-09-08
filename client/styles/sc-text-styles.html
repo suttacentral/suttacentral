@@ -1,367 +1,421 @@
 <dom-module id="sc-text-styles">
-<template>
-<style>
+  <template>
+    <style>
 
-.sutta{
-  @apply --sc-serif-font;
-  @apply --sc-paper-font-body;
-}
+      .sutta {
+        @apply --sc-serif-font;
+        @apply --sc-paper-font-body;
+      }
 
-#htmltextcontent section {
-  margin: 0 auto!important;
-  padding: 0 10% 32px;
-  max-width: 40em;
-  display: block;
-}
+      #htmltextcontent section {
+        margin: 0 auto !important;
+        padding: 0 10% 32px;
+        max-width: 40em;
+        display: block;
+      }
 
-#htmltextcontent aside {
-  display:none;
-}
+      #htmltextcontent aside {
+        display: none;
+      }
 
-a {
-    text-decoration:  none;
-}
-p a {
-    color: inherit;
-    text-decoration: none;
-    background: linear-gradient(to top, rgba(223, 153, 10, 0) 1.5px, rgba(223, 153, 10, 1) 1.5px, rgba(223, 153, 10, 1) 2.5px, rgba(223, 153, 10, 0) 2.5px)
-}
+      a {
+        text-decoration: none;
+      }
 
-p a:hover {
-    background: linear-gradient(to top, rgba(223, 153, 10, 0) 1px, rgba(223, 153, 10, 1) 1px, rgba(223, 153, 10, 1) 3px, rgba(223, 153, 10, 0) 3px)
-}
+      p a {
+        color: inherit;
+        text-decoration: none;
+        background: linear-gradient(to top, rgba(223, 153, 10, 0) 1.5px, rgba(223, 153, 10, 1) 1.5px, rgba(223, 153, 10, 1) 2.5px, rgba(223, 153, 10, 0) 2.5px)
+      }
 
-p a:active{
-  background-color:var(--paper-amber-300)
-}
+      p a:hover {
+        background: linear-gradient(to top, rgba(223, 153, 10, 0) 1px, rgba(223, 153, 10, 1) 1px, rgba(223, 153, 10, 1) 3px, rgba(223, 153, 10, 0) 3px)
+      }
 
-p a:visited{
-  background: linear-gradient(to top, rgba(161, 136, 127, 0) 1px, rgba(161, 136, 127, 1) 1px, rgba(161, 136, 127, 1) 3px, rgba(161, 136, 127, 0) 3px)
-}
-/* This rule prevents a problem with quote hanger */
+      p a:active {
+        background-color: var(--paper-amber-300)
+      }
 
-p > * {
-    text-indent: initial;
-}
-/* These rules always apply */
+      p a:visited {
+        background: linear-gradient(to top, rgba(161, 136, 127, 0) 1px, rgba(161, 136, 127, 1) 1px, rgba(161, 136, 127, 1) 3px, rgba(161, 136, 127, 0) 3px)
+      }
 
-.evam {
-    @apply --sc-mixed-small-caps;
-}
-.infomode .term,
-.infomode .gloss {
-    color: color: var(--paper-green-500);
-}
-.term {
-    font-weight: bold;
-}
-.suttainfo,
-.xu,
-.w {
-    @apply --paper-font-body1;
-    @apply --sc-sans-font;
-    color: var(--secondary-text-color);
-    background: var(--paper-grey-50);
-    padding: 16px;
-    border-radius: 2px;
-    border: 1px solid var(--paper-grey-100);
-    display: inline-block;
-    margin-bottom: 16px;
-}
-.suttainfo p,
-.xu p,
-.w p {
-    margin-bottom: 0;
-}
-/* TEXT */
+      /* This rule prevents a problem with quote hanger */
 
-.sutta p{
-    margin: 0 0 12px 0;
-}
+      p > * {
+        text-indent: initial;
+      }
 
-.sutta ul {
-    list-style-type: none;
-    padding: 0 0 12px 0;
-    margin: 0 0 0 32px;
-}
+      /* These rules always apply */
 
-.sutta ul li::before{
-    position: absolute;
-    content: "◦";
-    color: var(--disabled-text-color);
-    margin-left: -12px;
-}
-.sutta ol {
-    padding: 0 0 12px 0;
-    margin: 0 0 0 32px;
-}
-.sutta ol ol {
-    padding: 0 0 0 1em;
-    margin: 0 0 0 0;
-}
-.gatha {
-    font-size: inherit;
-    display: table;
-    width: auto;
-    margin: 0 auto;
-}
-.indent {
-    padding-left: 32px;
-}
-.uddanagatha,
-.vagguddanagatha {
-    font-style: italic;
-    display: table;
-    width: auto;
-    margin: 0 auto;
-    color: var(--secondary-text-color);
-}
-.endsutta,
-.endvagga,
-.endsection,
-.end,
-.endsubsection {
-    font-style: italic;
-    text-align: center;
-    color: var(--secondary-text-color);
-}
-.uddana {
-    margin-bottom: 32px;
-    color: var(--secondary-text-color);
-}
-.endbook {
-    text-align: center;
-    color: var(--secondary-text-color);
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-/*This is used for names in the dictionaries. They're marked with <i> to represented a foreign labguage, but should be displayed upright.*/
+      .evam {
+        @apply --sc-mixed-small-caps;
+      }
 
-.name {
-    font-style: normal
-}
-.tri {
-    display: inline;
-}
-h1 .t-note {
-    display: none
-}
-.tlineheadnote {
-    color: var(--paper-red-500);
-}
-.surplus {
-    display: none;
-    color: var(--paper-indigo-500);
-}
-.infomode .surplus {
-    display: inline;
-}
-/*For Mahaparinirvana text, marks apparently random phrases that are marked in bold in GRETIL.
+      .infomode .term,
+      .infomode .gloss {
+        color: color: var(--paper-green-500);
+      }
 
-TITLE: Surplus text.
-*/
+      .term {
+        font-weight: bold;
+      }
 
-.supplied .infomode {
-    color: var(--paper-cyan-500)
-}
-/*In almost all Sanskrit texts, there is reconstruction by the editor. These are marked <span class="supplied"></span>. In CSS this should by default display normally, and optionally, use color
+      .suttainfo,
+      .xu,
+      .w {
+        @apply --paper-font-body1;
+        @apply --sc-sans-font;
+        color: var(--secondary-text-color);
+        background: var(--paper-grey-50);
+        padding: 16px;
+        border-radius: 2px;
+        border: 1px solid var(--paper-grey-100);
+        display: inline-block;
+        margin-bottom: 16px;
+      }
 
+      .suttainfo p,
+      .xu p,
+      .w p {
+        margin-bottom: 0;
+      }
 
-TITLE: Text hypothetically reconstructed by the editor or translator.
-*/
+      /* TEXT */
 
-.supplied2 .infomode {
-    color: var(--paper-cyan-500);
-}
-/*In some cases there are two forms of supplied text, usually differentiated in the original by () and []. This difference is retained by using supplied2 for the []. Actually these should be marked more clearly to differentiate them, but this will differ according to the various publications, which I don't have. So for now let them behave as for .supplied, except use
+      .sutta p {
+        margin: 0 0 12px 0;
+      }
 
-TITLE: Text hypothetically reconstructed by the editor or translator.
-*/
+      .sutta ul {
+        list-style-type: none;
+        padding: 0 0 12px 0;
+        margin: 0 0 0 32px;
+      }
 
-#text:lang(gr) .add,
-#text:lang(pi) .add,
-#text:lang(skt) .add,
-#text:lang(bo) .add,
-#text:lang(lzh) .add,
-#text:lang(pr) .add,
-#text:lang(en) .add,
-.infomode .add {
-    display: inline;
-    color: var(--secondary-text-color);
-    @apply --sc-sans-font;
-}
-p .author {
-    @apply --sc-all-small-caps;
-}
+      .sutta ul li::before {
+        position: absolute;
+        content: "◦";
+        color: var(--disabled-text-color);
+        margin-left: -12px;
+      }
 
-/*There are some editorial additions marked <span class="add"></span>. Previously these were hidden by default, but they are now visible by default.
+      .sutta ol {
+        padding: 0 0 12px 0;
+        margin: 0 0 0 32px;
+      }
 
-TITLE: Text added by the editor or translator for clarification.
-*/
+      .sutta ol ol {
+        padding: 0 0 0 1em;
+        margin: 0 0 0 0;
+      }
 
-.pe {
-    font-style: italic;
-}
-.pe .infomode {
-    color: var(--paper-cyan-500);
-}
-.metre {
-    display: none;
-}
-.metre .infomode {
-    color: var(--paper-orange-500);
-    display: block;
-    position: absolute;
-    margin-top: -0.5rem;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-}
-.expanded {
-    display: inline
-}
-.expanded .infomode {
-    color: var(--paper-grey-300);
-}
-.suppliedmetre {
-    color: var(--secondary-text-color);
-}
-/*This is for cases where the editor has "filled in the blanks" (hence "supplied") with metrical notation (hence "metre").
+      .gatha {
+        font-size: inherit;
+        display: table;
+        width: auto;
+        margin: 0 auto;
+      }
 
-TITLE: Metre reconstructed by the editor.
-*/
+      .indent {
+        padding-left: 32px;
+      }
 
-.gap {
-    color: var(--paper-green-300)
-}
-/*For marking gaps in the text, which are filled in with + or the like.  In IB Horner's translation, deliberate gaps were marked by the translator with an *. Accidental omissions are marked with +.
+      .uddanagatha,
+      .vagguddanagatha {
+        font-style: italic;
+        display: table;
+        width: auto;
+        margin: 0 auto;
+        color: var(--secondary-text-color);
+      }
 
-TITLE: Gap in the manuscript.
-*/
+      .endsutta,
+      .endvagga,
+      .endsection,
+      .end,
+      .endsubsection {
+        font-style: italic;
+        text-align: center;
+        color: var(--secondary-text-color);
+      }
 
-.choice .corr {
-    display: none;
-}
-.infomode .choice .corr {
-    @apply --sc-sans-font;
-    display: inline-block;
-    position: absolute;
-    background: var(paper-red-300);
-    padding: 0.5em;
-    border-radius: 3px;
-    margin-top: -2.5em;
-    margin-left: -0.5em;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border: 1px solid var(paper-grey-100);
-    box-shadow: 6px 4px 10px rgba(136, 136, 136, 0.3);
-}
-.infomode .choice:hover .corr {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-/*A corrected reading that has been adopted in the text (usually by the latest editor mentioned in the meta). Hide by default.
+      .uddana {
+        margin-bottom: 32px;
+        color: var(--secondary-text-color);
+      }
+
+      .endbook {
+        text-align: center;
+        color: var(--secondary-text-color);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      /*This is used for names in the dictionaries. They're marked with <i> to represented a foreign labguage, but should be displayed upright.*/
+
+      .name {
+        font-style: normal
+      }
+
+      .tri {
+        display: inline;
+      }
+
+      h1 .t-note {
+        display: none
+      }
+
+      .tlineheadnote {
+        color: var(--paper-red-500);
+      }
+
+      .surplus {
+        display: none;
+        color: var(--paper-indigo-500);
+      }
+
+      .infomode .surplus {
+        display: inline;
+      }
+
+      /*For Mahaparinirvana text, marks apparently random phrases that are marked in bold in GRETIL.
+
+      TITLE: Surplus text.
+      */
+
+      .supplied .infomode {
+        color: var(--paper-cyan-500)
+      }
+
+      /*In almost all Sanskrit texts, there is reconstruction by the editor. These are marked <span class="supplied"></span>. In CSS this should by default display normally, and optionally, use color
 
 
-TITLE: Reading corrected by the editor.
-*/
+      TITLE: Text hypothetically reconstructed by the editor or translator.
+      */
 
-.sic .infomode {
-    color: var(paper-red-500);
-}
-/*
-TITLE: Apparently incorrect reading determined by the editor.
-*/
+      .supplied2 .infomode {
+        color: var(--paper-cyan-500);
+      }
 
-.lem .infomode {
-    color: var(paper-brown-500);
-}
-/*The adopted main reading in a text. Display normally.
+      /*In some cases there are two forms of supplied text, usually differentiated in the original by () and []. This difference is retained by using supplied2 for the []. Actually these should be marked more clearly to differentiate them, but this will differ according to the various publications, which I don't have. So for now let them behave as for .supplied, except use
+
+      TITLE: Text hypothetically reconstructed by the editor or translator.
+      */
+
+      #text:lang(gr) .add,
+      #text:lang(pi) .add,
+      #text:lang(skt) .add,
+      #text:lang(bo) .add,
+      #text:lang(lzh) .add,
+      #text:lang(pr) .add,
+      #text:lang(en) .add,
+      .infomode .add {
+        display: inline;
+        color: var(--secondary-text-color);
+        @apply --sc-sans-font;
+      }
+
+      p .author {
+        @apply --sc-all-small-caps;
+      }
+
+      /*There are some editorial additions marked <span class="add"></span>. Previously these were hidden by default, but they are now visible by default.
+
+      TITLE: Text added by the editor or translator for clarification.
+      */
+
+      .pe {
+        font-style: italic;
+      }
+
+      .pe .infomode {
+        color: var(--paper-cyan-500);
+      }
+
+      .metre {
+        display: none;
+      }
+
+      .metre .infomode {
+        color: var(--paper-orange-500);
+        display: block;
+        position: absolute;
+        margin-top: -0.5rem;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+      }
+
+      .expanded {
+        display: inline
+      }
+
+      .expanded .infomode {
+        color: var(--paper-grey-300);
+      }
+
+      .suppliedmetre {
+        color: var(--secondary-text-color);
+      }
+
+      /*This is for cases where the editor has "filled in the blanks" (hence "supplied") with metrical notation (hence "metre").
+
+      TITLE: Metre reconstructed by the editor.
+      */
+
+      .gap {
+        color: var(--paper-green-300)
+      }
+
+      /*For marking gaps in the text, which are filled in with + or the like.  In IB Horner's translation, deliberate gaps were marked by the translator with an *. Accidental omissions are marked with +.
+
+      TITLE: Gap in the manuscript.
+      */
+
+      .choice .corr {
+        display: none;
+      }
+
+      .infomode .choice .corr {
+        @apply --sc-sans-font;
+        display: inline-block;
+        position: absolute;
+        background: var(paper-red-300);
+        padding: 0.5em;
+        border-radius: 3px;
+        margin-top: -2.5em;
+        margin-left: -0.5em;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border: 1px solid var(paper-grey-100);
+        box-shadow: 6px 4px 10px rgba(136, 136, 136, 0.3);
+      }
+
+      .infomode .choice:hover .corr {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+      }
+
+      /*A corrected reading that has been adopted in the text (usually by the latest editor mentioned in the meta). Hide by default.
+
+
+      TITLE: Reading corrected by the editor.
+      */
+
+      .sic .infomode {
+        color: var(paper-red-500);
+      }
+
+      /*
+      TITLE: Apparently incorrect reading determined by the editor.
+      */
+
+      .lem .infomode {
+        color: var(paper-brown-500);
+      }
+
+      /*The adopted main reading in a text. Display normally.
 
 
 
-TITLE: Accepted reading in this text.
-*/
+      TITLE: Accepted reading in this text.
+      */
 
-.rdg {}
-/*A variant reading. Use the same color as for "var" above. In fact, these var should be merged under rdg (which is the TEI terminology.) THIS IS BROKEN
+      .rdg {
+      }
 
-TITLE: Variant reading.
-*/
+      /*A variant reading. Use the same color as for "var" above. In fact, these var should be merged under rdg (which is the TEI terminology.) THIS IS BROKEN
 
-cite.book {
-    font-style: italic;
-}
-/*A book title.*/
+      TITLE: Variant reading.
+      */
 
-cite.article {
-    font-style: normal
-}
-/*An article title.*/
+      cite.book {
+        font-style: italic;
+      }
 
-.gatha-number {
-    @apply --sc-sans-font;
-    color: var(--secondary-text-color);
-    font-size: 14px
-}
-/*As it says.*/
+      /*A book title.*/
 
-.del {
-    display: none
-}
-.del .infomode {
-    color: var(--paper-red-500);
-    display: inline
-}
-/*(deletion) contains a letter, word, or passage deleted, marked as deleted, or otherwise indicated as superfluous or spurious in the copy text by an author, scribe, annotator, or corrector.
+      cite.article {
+        font-style: normal
+      }
 
-TITLE: Text deleted by the editor as superfluous.
-*/
+      /*An article title.*/
 
-.unclear {
-    color: var(--secondary-text-color);
-}
-/*Text marked as uncertain, usually with a "?", in the transcribed text.
+      .gatha-number {
+        @apply --sc-sans-font;
+        color: var(--secondary-text-color);
+        font-size: 14px
+      }
 
-TITLE: Unclear reading.
-*/
+      /*As it says.*/
 
-.namo {
-    text-align: center;
-}
-.namo {
-    font-style: italic;
-}
-/*dedication at the start of texts*/
+      .del {
+        display: none
+      }
 
-.scribe {
-    font-style: italic;
-    text-align: right
-}
-/*note in the text recording who copied the text*/
+      .del .infomode {
+        color: var(--paper-red-500);
+        display: inline
+      }
 
-hr {
-    width: 33%;
-    color: var(--dark-divider-opacity);
-    margin: 1.45rem auto
-}
-.rule {
-    font-weight: bold
-}
-/*text in vibhanga, etc., of the rule itself.*/
-/*CBETA tags
+      /*(deletion) contains a letter, word, or passage deleted, marked as deleted, or otherwise indicated as superfluous or spurious in the copy text by an author, scribe, annotator, or corrector.
 
-Generally, eliminate inline styles, and retain semantic markup. Transform all classes inherited from CBETA by prefixing with t-. This is to avoid clashing with SC classes, and also to clarify the source of the markup.. NEED TO CHANGE PREVIOUS HANDLING OF CBETA TAGS*/
+      TITLE: Text deleted by the editor as superfluous.
+      */
 
-.t-note {}
-/*= .note in CBETA text. Changed to avoid confusion with SC's .note. Indicates usually bracketed note or comment in the text. No need to indicate.*/
+      .unclear {
+        color: var(--secondary-text-color);
+      }
 
-.t-gaiji {
-    color: var(--paper-cyan-500)
-}
+      /*Text marked as uncertain, usually with a "?", in the transcribed text.
 
-</style>
-</template>
+      TITLE: Unclear reading.
+      */
+
+      .namo {
+        text-align: center;
+      }
+
+      .namo {
+        font-style: italic;
+      }
+
+      /*dedication at the start of texts*/
+
+      .scribe {
+        font-style: italic;
+        text-align: right
+      }
+
+      /*note in the text recording who copied the text*/
+
+      hr {
+        width: 33%;
+        color: var(--dark-divider-opacity);
+        margin: 1.45rem auto
+      }
+
+      .rule {
+        font-weight: bold
+      }
+
+      /*text in vibhanga, etc., of the rule itself.*/
+      /*CBETA tags
+
+      Generally, eliminate inline styles, and retain semantic markup. Transform all classes inherited from CBETA by prefixing with t-. This is to avoid clashing with SC classes, and also to clarify the source of the markup.. NEED TO CHANGE PREVIOUS HANDLING OF CBETA TAGS*/
+
+      .t-note {
+      }
+
+      /*= .note in CBETA text. Changed to avoid confusion with SC's .note. Indicates usually bracketed note or comment in the text. No need to indicate.*/
+
+      .t-gaiji {
+        color: var(--paper-cyan-500)
+      }
+
+    </style>
+  </template>
 </dom-module>
