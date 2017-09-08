@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-route/app-route-converter.html">
+<link rel="import" href="../bower_components/iron-location/iron-location.html">
 <link rel="import" href="../bower_components/iron-location/iron-query-params.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
@@ -89,12 +90,10 @@ Issues that need to be fixed:
     </style>
 
     <iron-location path="{{path}}" query="{{query}}"></iron-location>
-
     <iron-query-params
         params-string="{{query}}"
         params-object="{{queryParams}}">
     </iron-query-params>
-
     <app-route-converter
         path="{{path}}"
         query-params="{{queryParams}}"
@@ -202,14 +201,15 @@ Issues that need to be fixed:
               return this.inputLanguage = event.detail.Language;
           }
 
+          initiateSearch(event) {
+              console.log(event);
+              this.path = "/search";
+              this.query = "query=" + event.detail;
+          }
+
           // opens the app-drawer when it is not visible.
           _toggleDrawer(event) {
               return this.shadowRoot.querySelector('app-drawer').setAttribute("opened", event.detail.togdraw);
-          }
-
-          initiateSearch(event) {
-              this.path = "/search";
-              this.query = `query=${event.detail}`;
           }
       }
 
