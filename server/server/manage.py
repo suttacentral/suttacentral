@@ -34,7 +34,7 @@ def list_routes():
         print(line)
 
 
-@manager.command
+@manager.option('-f', '--force', dest='force', default=False)
 def load_data(force=False):
     """
     Loads data from the data repo to database.

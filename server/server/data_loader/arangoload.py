@@ -14,6 +14,7 @@ from . import po, textdata
 
 
 def setup_database(conn, db_name):
+    print('running set up')
     if db_name in conn.databases():
         conn.delete_database(db_name)
 
@@ -208,13 +209,27 @@ def process_category_files(category_files, db, edges, mapping):
             entry['type'] = edge_type
             entry['_key'] = entry['uid']
             entry['num'] = i
+
             if 'contains' in entry:
                 for uid in entry['contains']:
                     child = mapping.get(pathlib.PurePath(uid))
                     child[entry['type']] = entry['uid']
-                    edges.append({'_from': f'{category_name}/{entry["_key"]}',
-                                  '_to': f'root/{child["_key"]}', 'type': edge_type})
+                    edges.append({
+                        '_from': f'{category_name}/{entry["_key"]}',
+                        '_to': f'root/{child["_key"]}',
+                        'type': edge_type
+                    })
                 del entry['contains']
+
+            if edge_type == 'pitaka':
+                for group in entry['grouping']:
+                    edges.append({
+                        '_from': f'pitaka/{entry["_key"]}',
+                        '_to': f'grouping/{group}',
+                        'type': edge_type
+                    })
+                del entry['grouping']
+
             category_docs.append(entry)
         collection.truncate()
         collection.import_bulk(category_docs)
@@ -404,6 +419,7 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
             tim.process_lang_dir(lang_dir=lang_dir, data_dir=data_dir,
                                  files_to_process=change_tracker.changed_or_new,
                                  force=False)
+
 
 def load_json_file(db, change_tracker, json_file):
     if not change_tracker.is_file_new_or_changed(json_file):
