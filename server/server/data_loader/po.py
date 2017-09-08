@@ -144,8 +144,6 @@ def load_po_texts(change_tracker, po_dir, db):
     """
 
     print('Loading PO texts')
-    import time
-    start=time.time()
     
     # It's a little hard to properly manage deleted po files,
     # as it happens deletion is really rare: so if a deletion 
@@ -186,5 +184,3 @@ def load_po_texts(change_tracker, po_dir, db):
                 else:
                     doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author"]}'
                     db.collection('po_strings').insert(doc)
-
-    print(f'Loading took {time.time()-start} seconds')
