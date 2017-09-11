@@ -15,3 +15,18 @@ FOR text IN html_text
     FILTER text.lang == @lang
     RETURN {uid: text.uid, mtime: text.mtime}
 '''
+
+
+MENU = '''
+FOR pit IN pitaka
+    SORT pit.num
+    FOR vv, ee, pp IN OUTBOUND pit `root_edges`
+        FILTER ee._to LIKE 'grouping/%'
+        FOR v, e, p IN 0..5 OUTBOUND vv `root_edges`
+            FILTER e.type != 'text'
+            RETURN {
+                from: IS_NULL(e._from) ? {uid: ee._from, name: pit.name} : e._from,
+                name: v.name,
+                id: v._id
+            }
+'''
