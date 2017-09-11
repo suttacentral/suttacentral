@@ -1,10 +1,10 @@
-from typing import Callable
+from typing import Callable, List
 
 import decorator
 
 from app import app as my_app
 from common.arangodb import get_client
-from common.models import Language, ModelList
+from common.models import Language, ModelList, Root, RootEdges
 from migrations.runner import run_migrations
 
 
@@ -54,3 +54,17 @@ def generate_languages(amount=5):
         languages.append(language)
 
     return languages
+
+
+def generate_roots(amount=5) -> ModelList:
+    roots = ModelList()
+
+    for _ in range(amount):
+        root = Root.generate()
+        roots.append(root)
+
+    return roots
+
+
+def generate_root_edges(roots: List[Root]) -> ModelList:
+    return RootEdges.generate(roots)

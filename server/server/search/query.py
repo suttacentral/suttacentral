@@ -131,7 +131,7 @@ def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
                 if es.cluster.health(index, timeout='100ms')['status'] in {'green', 'yellow'}:
                     available.append(index)
             except Exception as e:
-                logger.error(
+                logger.debug(
                     'An exception occured while checking cluster health for index: {}'.format(
                         index))
                 logger.exception(index)
