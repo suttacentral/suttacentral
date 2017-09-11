@@ -1,6 +1,7 @@
 from flask_script import Manager
 
 from app import app
+from common import arangodb
 from migrations.runner import run_migrations
 
 manager = Manager(app)
@@ -34,15 +35,18 @@ def list_routes():
         print(line)
 
 
-@manager.option('-f', '--force', dest='force', default=False)
-def load_data(force=False):
+@manager.command
+def load_data():
     """
     Loads data from the data repo to database.
-    Args:
-        force: Whether or not force clean db setup.
     """
     from data_loader.arangoload import run
-    run(force)
+    run()
+
+
+@manager.command
+def delete_db():
+    arangodb.delete_db(arangodb.get_db())
 
 
 @manager.command
