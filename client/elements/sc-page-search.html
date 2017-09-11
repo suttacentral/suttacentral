@@ -12,9 +12,6 @@
 
 <!--
 The search page opens when a search string is typed into the search-input-box in the toolbar.
-At the moment it only opens one of 3 possible mockup files ../data/search/results.json, results2.json and
-results3.json. The main difference is the length of each to test various properties of the page.
-This has to be replaced by the real search results from Elasticsearch but gives an input-format for the json files.
 
 The loading is done within an iron-scroll-threshold in case there are very large numbers of results.
 
@@ -150,10 +147,11 @@ than ten results in total, a dropdown selection menu appears at the top.
               <div>
                 <div class="item" tabindex$="[[tabIndex]]">
                   <div class="pad">
-                    <a href="[[_addLink(item.category, item._source.heading.title, item.url)]]">
+                    <a href="[[_addLink(item)]]">
                       <div class="primary"><h2>[[item._source.heading.title]]</h2></div>
-                      <div class="secondary"><p class="results-url"
-                                                inner-h-t-m-l="[[_addSuttaLink(item.category, item.url)]]"></p></div>
+                      <div class="secondary">
+                        <p class="results-url" inner-h-t-m-l="[[item._source.heading.division]]"></p>
+                      </div>
                     </a>
                     <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.highlight.content]]"></p></div>
                   </div>
@@ -182,7 +180,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                   searchMenu: {
                       type: String,
                       notify: true,
-                      computed: '_computeSearchClass(data)'
+                      computed: 'setFilterMenuVisibility(data)'
                   },
                   data: {
                       type: Array,
@@ -221,7 +219,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           constructor() {
               super();
-              this.searchLimit = 20;
+              this.itemCountLimit = 20;
           }
 
           ready() {
@@ -230,7 +228,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               // "translations" or "dictionaries" and changes the partArray accordingly.
               this.addEventListener('eventFromSearchMenu', this.changeSearchView);
 
-              this.searchParams = {limit: this.searchLimit, query: this.searchQuery};
+              this.searchParams = {limit: this.itemCountLimit, query: this.searchQuery};
 
               // Calls the input results when page is loaded
               this.$.ajax.generateRequest();
@@ -242,38 +240,29 @@ than ten results in total, a dropdown selection menu appears at the top.
           }
 
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
-          _addLink(category, title, url) {
-              return (category === "dictionary") ? "/define/" + title : url;
+          _addLink(item) {
+              return (item.category === "dictionary") ? ("/define/" + item._source.heading.title) : item.url;
           }
 
-          // if the item is a dictionary-item, the url is used, otherwise the full url is displayed.
-          _addSuttaLink(category, url) {
-              return (category === "dictionary") ? url : "https://suttacentral.net" + url;
-          }
-
-          // computes the class for the search-menu. If the number of results is less than 10 or there is only 1 category of results
-          // the search menu is not displayed.
-          _computeSearchClass(data) {
-              let shouldDisplaySearchMenu = false;
-              if (data.length > 10) {
-                  for (let i = 1; i < data.length; i++) {
-                      if (data[i].category !== data[1].category) {
-                          shouldDisplaySearchMenu = true;
-                          break;
+          // If the number of results is less than 10 or there is only 1 category of results, the search filtering
+          // menu is not displayed.
+          setFilterMenuVisibility(data) {
+              const hits = data.hits.hits;
+              if (hits && hits.length > 10) {
+                  for (let i = 1; i < hits.length; i++) {
+                      if (hits[i].category !== hits[0].category) {
+                          return "";
                       }
                   }
               }
-              return (shouldDisplaySearchMenu) ? "" : "hidesearchbox";
+              return "hidesearchbox";
           }
 
           // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
           // "translations" or "dictionaries"
           changeSearchView(event) {
-              let selectedView = "all";
+              let selectedView;
               switch (event.detail.searchView) {
-                  case 0:
-                      selectedView = "all";
-                      break;
                   case 1:
                       selectedView = "root-text";
                       break;
@@ -283,27 +272,20 @@ than ten results in total, a dropdown selection menu appears at the top.
                   case 3:
                       selectedView = "dictionary";
                       break;
+                  default:
+                      selectedView = "all";
               }
-              const outputData = this.data;
-              const resultsArray = [];
-              for (let i = 0; i < outputData.length; i++) {
-                  if (outputData[i].category === selectedView || selectedView === 'all') {
-                      resultsArray.push(outputData[i]);
-                  }
-              }
-              // partArray is changed to just the items that were choses and _populateList is called.
-              this.partArray = resultsArray;
+              // partArray is changed to the items that were chosen and _populateList is called.
+              this.partArray = this.data.hits.hits.filter((searchResult) => {
+                  return searchResult.category === selectedView || selectedView === 'all';
+              });
           }
 
           // After results have been loaded into memory, pushes items to an array.
           _didRespond(e) {
               const results = e.detail.response;
-              const resultsArray = [];
-              results.hits.hits.forEach(function(item) {
-                  resultsArray.push(item);
-              });
               // After first load, the partArray is equal to all the items in the search results and _populateList is called.
-              this.partArray = resultsArray;
+              this.partArray = JSON.parse(JSON.stringify(results.hits.hits));
           }
 
           // The items to be displayed are added to the iron-list and counts the numbers in the list.
