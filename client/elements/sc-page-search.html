@@ -123,11 +123,6 @@ than ten results in total, a dropdown selection menu appears at the top.
       }
     </style>
 
-    <iron-location
-        path="{{ path }}"
-        query="{{ query }}">
-    </iron-location>
-
     <iron-ajax id="ajax"
                url="api/search"
                params='{{searchParams}}'
@@ -155,12 +150,12 @@ than ten results in total, a dropdown selection menu appears at the top.
               <div>
                 <div class="item" tabindex$="[[tabIndex]]">
                   <div class="pad">
-                    <a href="[[_addLink(item.category,item.title,item.url)]]">
-                      <div class="primary"><h2>[[item.title]]</h2></div>
+                    <a href="[[_addLink(item.category, item.title,item.url)]]">
+                      <div class="primary"><h2>[[item._source.heading.title]]</h2></div>
                       <div class="secondary"><p class="results-url"
-                                                inner-h-t-m-l="[[_addSuttaLink(item.category,item.url)]]"></p></div>
+                                                inner-h-t-m-l="[[_addSuttaLink(item.category, item.url)]]"></p></div>
                     </a>
-                    <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.text]]"></p></div>
+                    <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.highlight.content]]"></p></div>
                   </div>
                 </div>
               </div>
@@ -235,7 +230,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               // "translations" or "dictionaries" and changes the partArray accordingly.
               this.addEventListener('eventFromSearchMenu', this.changeSearchView);
 
-              this.searchParams = { limit: this.searchLimit, query: this.searchQuery };
+              this.searchParams = {limit: this.searchLimit, query: this.searchQuery};
 
               // Calls the input results when page is loaded
               this.$.ajax.generateRequest();
@@ -247,7 +242,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // Determines the number of search results that have been found.
           _calculateNumber(data) {
-              return (data && data.length > 0) ? data.length : 0;
+              return data ? data.hits.total : 0;
           }
 
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
