@@ -402,7 +402,7 @@ def load_json_file(db, change_tracker, json_file):
         db[collection_name].import_bulk(data)
 
 
-def run(force=False):
+def run():
     """Runs data load.
 
     It will take data from nextdata repository and populate the database with it.

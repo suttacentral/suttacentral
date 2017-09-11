@@ -136,8 +136,8 @@ test:
 load-data:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
 
-load-data-force:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data --force=True"
+delete-database:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py delete_db"
 
 index-elasticsearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"

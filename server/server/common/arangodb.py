@@ -73,3 +73,7 @@ def get_db() -> Database:
     if db is None:
         db = ArangoDB(current_app).db
     return db
+
+
+def delete_db(db: Database):
+    get_client().delete_database(db.name)
