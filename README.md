@@ -11,14 +11,14 @@
 4. run `make prepare-host` in order to make some small adjustment on the host machine so that we can run elasticsearch
 5. run `make build-all` in order to build all images
 6. run `make run-dev` to start our services in the development mode.
-7. in order to load the data run `make load_data`. It might take a while.
 
 ## 1.2 Loading the data
 In order to load the data to the db:
 0. If you don't have the data folder yet
  * run `cd server && git clone git@github.com:suttacentral/nextdata.git`
  * Rebuild sc-flasks container `make rebuild-flask`
-1. ensure server is up and run `make load_data`
+1. ensure server is up and run `make load-data`
+2. To index elasticsearch run `make index-elasticsearch`
 
 ## 1.3 Docs
 API documentation is available at `/api/docs`.
@@ -92,7 +92,9 @@ There is a Makefile with following commands:
 * `reload-uwsgi` - Reloads uWSGI+Flask
 * `prepare-tests` - Starts containers in test mode and wait for start-ups to finnish
 * `test` - Run tests inside containers.
-* `load_data` - Loads data from `server/nextdata` folder to the db
+* `load-data` - Loads data from `server/nextdata` folder to the db
+* `load-data-force` - Force fresh load of data
+* `index-elasticsearch` - Index elasticsearch with data from the db
 
 
 ## 1.6 Working with ArangoDB
@@ -157,6 +159,22 @@ class InitialMigration(Migration):
 1. `python manage.py migrate` - Run migrations
 2. `python manage.py list_routes` - Lists all available routes/URLs.
 
+## 1.10 Style guidelines
+* Follow [PEP8](https://www.python.org/dev/peps/pep-0008/) for Python code
+
+* Try to keep line width under 120 characters
+
+* Test files should be placed in `tests` dir in directory where tested file is.
+
+* Use [Type Hints](https://www.python.org/dev/peps/pep-0484/) whenever possible.
+
+* In views methods (get, post, etc.) Use YAML [OpenAPI 2.0 object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object) format in docstrings
+
+* For the rest of docstrings use [google style docstring](http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)
+
+* Code for the API endpoints should be places in `api` folder, except of the `search` endpoint.
+
+* Names, variables, docstring, comments, etc. should be written in english.
 
 # 2. Client
 
