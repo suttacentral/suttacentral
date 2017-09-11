@@ -118,6 +118,13 @@ def process_dir(change_tracker, po_dir, info):
         yield from process_dir(change_tracker, sub_folder, info=info)
 
 
+def insert_or_update(collection, doc):
+    try:
+        collection.insert(doc)
+    except DocumentInsertError as e:
+        collection.update(doc)
+
+
 def load_po_texts(change_tracker, po_dir, db):
     """ Load strings and markup from po files into database
     
@@ -180,7 +187,10 @@ def load_po_texts(change_tracker, po_dir, db):
             for i, doc in enumerate(docs):
                 if 'markup' in doc:
                     doc['_key'] = f"{doc['uid']}_markup"
-                    db.collection('po_markup').insert(doc)
+                    collection = db.collection('po_markup')
+                    insert_or_update(collection, doc)
+
                 else:
                     doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author"]}'
-                    db.collection('po_strings').insert(doc)
+                    collection = db.collection('po_strings')
+                    insert_or_update(collection, doc)

@@ -12,6 +12,7 @@ from git import InvalidGitRepositoryError, Repo
 
 from . import po, textdata
 
+
 class ChangeTracker:
     def __init__(self, base_dir, db):
         self.base_dir = base_dir
@@ -152,9 +153,11 @@ def process_root_files(docs, edges, mapping, root_files, root_languages):
 
             # find the parent
             parent = mapping.get(path.parent)
+            edge_type = entry.get('type', 'text')
             if parent:
                 edges.append({'_from': 'root/' + parent['_key'], '_to': 'root/' + entry['_key'],
-                              'type': 'child'})
+                              'type': edge_type})
+
 
 
 def process_category_files(category_files, db, edges, mapping):
