@@ -150,7 +150,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               <div>
                 <div class="item" tabindex$="[[tabIndex]]">
                   <div class="pad">
-                    <a href="[[_addLink(item.category, item.title,item.url)]]">
+                    <a href="[[_addLink(item.category, item._source.heading.title, item.url)]]">
                       <div class="primary"><h2>[[item._source.heading.title]]</h2></div>
                       <div class="secondary"><p class="results-url"
                                                 inner-h-t-m-l="[[_addSuttaLink(item.category, item.url)]]"></p></div>
@@ -236,10 +236,6 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.$.ajax.generateRequest();
           }
 
-          onQueryChange(event) {
-              console.dir(event);
-          }
-
           // Determines the number of search results that have been found.
           _calculateNumber(data) {
               return data ? data.hits.total : 0;
@@ -258,16 +254,16 @@ than ten results in total, a dropdown selection menu appears at the top.
           // computes the class for the search-menu. If the number of results is less than 10 or there is only 1 category of results
           // the search menu is not displayed.
           _computeSearchClass(data) {
-              let checkcategories = false;
+              let shouldDisplaySearchMenu = false;
               if (data.length > 10) {
                   for (let i = 1; i < data.length; i++) {
                       if (data[i].category !== data[1].category) {
-                          checkcategories = true;
+                          shouldDisplaySearchMenu = true;
                           break;
                       }
                   }
               }
-              return (checkcategories) ? "" : "hidesearchbox";
+              return (shouldDisplaySearchMenu) ? "" : "hidesearchbox";
           }
 
           // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
@@ -301,7 +297,6 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // After results have been loaded into memory, pushes items to an array.
           _didRespond(e) {
-              const self = this;
               const results = e.detail.response;
               const resultsArray = [];
               results.hits.hits.forEach(function(item) {
@@ -320,7 +315,6 @@ than ten results in total, a dropdown selection menu appears at the top.
                       this.$.list.push('items', partArray[i]);
                       this.itemCount += 1;
                   }
-                  this.newListCreated = false;
               }
               this.$.scrollThreshold.clearTriggers();
           }
