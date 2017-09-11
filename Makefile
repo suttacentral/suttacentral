@@ -139,7 +139,7 @@ load-data:
 load-data-force:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data --force=True"
 
-index_elasticsearch:
+index-elasticsearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"
 
 
