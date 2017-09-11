@@ -164,7 +164,7 @@ class InitialMigration(Migration):
 
 * Try to keep line width under 120 characters
 
-* Test files should be placed in `tests` dir in directory where tested file is.
+* Use [formatted string literals](https://www.python.org/dev/peps/pep-0498/) for string formatting.
 
 * Use [Type Hints](https://www.python.org/dev/peps/pep-0484/) whenever possible.
 
@@ -175,6 +175,8 @@ class InitialMigration(Migration):
 * Code for the API endpoints should be places in `api` folder, except of the `search` endpoint.
 
 * Names, variables, docstring, comments, etc. should be written in english.
+
+* Test files should be placed in `tests` dir in directory where tested file is.
 
 # 2. Client
 
