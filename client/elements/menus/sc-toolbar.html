@@ -212,7 +212,6 @@ Issues:
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
           // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
           openSearch() {
-              let searchWidth;
               if (this.shadowRoot.querySelector('#searchinput').classList.contains('opened')) {
                   this.searchAction();
               } else {
@@ -228,6 +227,7 @@ Issues:
                       Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox")
                           .setAttribute('style', "visibility:hidden")
                   }
+                  let searchWidth;
                   if (window.innerWidth > 840) {
                       searchWidth = window.innerWidth - searchSize;
                   } else if (window.innerWidth > 480) {
