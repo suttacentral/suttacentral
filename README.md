@@ -13,12 +13,8 @@
 6. run `make run-dev` to start our services in the development mode.
 
 ## 1.2 Loading the data
-In order to load the data to the db:
-0. If you don't have the data folder yet
- * run `cd server && git clone git@github.com:suttacentral/nextdata.git`
- * Rebuild sc-flasks container `make rebuild-flask`
-1. ensure server is up and run `make load-data`
-2. To index elasticsearch run `make index-elasticsearch`
+0. ensure server is up and run `make load-data`
+1. To index elasticsearch run `make index-elasticsearch`
 
 ## 1.3 Docs
 API documentation is available at `/api/docs`.
