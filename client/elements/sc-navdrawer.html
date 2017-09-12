@@ -7,7 +7,6 @@
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 
-<link rel="import" href="paper-tree-sc/paper-tree.html">
 <link rel="import" href="page-selector.html">
 
 <!--
@@ -116,7 +115,7 @@ Issues that need to be fixed:
 
     <iron-ajax
         auto
-        url="../data/menu/discoursetree.json"
+        url="api/menu"
         handle-as="json"
         last-response="{{navList}}"></iron-ajax>
 
@@ -129,14 +128,9 @@ Issues that need to be fixed:
               <div id="wheel">☸</div>&nbsp;SuttaCentral</a>
           </div>
           <div id="container">
-            <paper-tree data='{{navList}}'></paper-tree>
-            <paper-tree data='{
-                  "name": "<b>Monastic Code</b>"
-              }'></paper-tree>
-            <paper-tree data='{
-                  "name": "<b>Abhidhamma</b>"
-              }'></paper-tree>
-
+            <template is="dom-repeat" items="{{navList}}">
+              <paper-tree data='{{item}}'></paper-tree>
+            </template>
           </div>
         </div>
       </app-drawer>
