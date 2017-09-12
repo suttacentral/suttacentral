@@ -61,7 +61,7 @@ class Menu(Resource):
                         type: string
                     uid:
                         type: string
-                    next:
+                    children:
                         type: array
                         items:
                             type: MenuItem
@@ -69,16 +69,18 @@ class Menu(Resource):
         db = get_db()
         results = db.aql.execute(MENU)
 
-        data = {}
+        data = []
+        root_uids = []
         edges = {}
 
         for x in results:
             if isinstance(x['from'], dict):
                 uid = x['from']['uid']
 
-                if uid not in data:
+                if uid not in root_uids:
                     vertex = self._vertex(x['from']['name'], uid)
-                    data[uid] = vertex
+                    data.append(vertex)
+                    root_uids.append(uid)
                     edges[uid] = vertex
 
                 x['from'] = x['from']['uid']
@@ -88,7 +90,7 @@ class Menu(Resource):
             name = x['name']
 
             vertex = self._vertex(name, _id)
-            edges[_from]['next'].append(vertex)
+            edges[_from]['children'].append(vertex)
             edges[_id] = vertex
 
         return data, 200
@@ -97,4 +99,4 @@ class Menu(Resource):
     def _vertex(name, uid) -> dict:
         return {'name': name,
                 'uid': uid,
-                'next': []}
+                'children': []}

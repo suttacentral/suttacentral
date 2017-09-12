@@ -21,4 +21,5 @@ def test_menu(client):
     data = res.json
 
     assert res.status_code == 200
-    assert isinstance(data, dict)
+    assert isinstance(data, list)
+    assert all([isinstance(x, dict) for x in data])
