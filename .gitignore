@@ -10,3 +10,4 @@ data/segmented_texts
 client/data/
 /data
 /server/nextdata/
+.DS_Store
