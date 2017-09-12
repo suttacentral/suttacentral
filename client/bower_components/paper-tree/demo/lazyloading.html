@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../paper-tree.html" />
+</head>
+<body>
+
+<template id="t" is="dom-bind">
+    <style is="custom-style">
+        @keyframes blinker {
+          50% { opacity: 0; }
+        }
+
+        #tree {
+            --paper-tree-toggle-theme: {
+                animation: blinker 1s linear infinite;
+                content: '⧖';
+                margin-left: -21px;
+            };
+        }
+    </style>
+    <h2>Lazy loading paper-tree demo</h2>
+    <p>
+        Here we use the 'toggle' event to lazy load grandchildren.<br>
+        We've added some delay so you can see the effect of the loading icon.
+    </p>
+    <paper-tree id="tree" on-toggle="onToggle" data='{"name": "Loading..."}'></paper-tree>
+    <script>
+
+    var template = document.querySelector('#t'),
+        tree = template.$.tree;
+
+    // Update the root data after 1 second delay
+    window.setTimeout(function() {
+        tree.data = { name:'Cronos' };
+        // Fetching root children ...
+        template.fetchChildren(tree.$.root);
+    }, 1000);
+
+
+    template.onToggle = function(event) {
+        var target = event.detail;
+
+        if (!target.loaded) {
+            target.loaded = true;
+            target.getChildren().forEach(function(child){
+                // Fetching children ...
+                this.fetchChildren(child);
+            }, this);
+        }
+    },
+
+    template.setLoadingState = function(node, enabled) {
+
+        if (enabled) {
+            node.customStyle['--paper-tree-toggle-theme'] = 'animation: blinker 1s linear infinite; content: \'⧖\'; margin-left: -21px;';
+        } else {
+            node.customStyle['--paper-tree-toggle-theme'] = ';';
+        }
+
+        node.updateStyles();
+    },
+
+    template.fetchChildren = function(node) {
+
+        // Set loading styles
+        this.setLoadingState(node, true);
+
+        // Update the children after a random delay
+        window.setTimeout(function() {
+
+            node.set('data.children', [
+                {name: 'Zeus'},
+                {name: 'Apollo'},
+                {name: 'Athena'},
+                {name: 'Poseidon'}
+            ]);
+
+            // Reset loading styles
+            this.setLoadingState(node, false);
+
+        }.bind(this), Math.floor(Math.random() * 2000));
+    }
+</script>
+</template>
+
+
+</body>
+</html>

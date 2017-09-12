@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../paper-tree.html" />
+</head>
+<body>
+<template is="dom-bind">
+    <h3>GOT Tree: {{selected.data.name}}</h3>
+    <paper-tree selected="{{selected}}"></paper-tree>
+    <script>
+        document.querySelector('paper-tree').data = {
+            "name": "GOT",
+            "icon": "theaters",
+            "open": true,
+            "children": [
+                {
+                    "name": "Starks",
+                    "icon": "turned-in"
+                }, {
+                    "name": "Lannisters",
+                    "icon": "turned-in"
+                }, {
+                    "name": "Targaryens",
+                    "icon": "turned-in"
+                }, {
+                    "name": "Baratheons",
+                    "icon": "turned-in",
+                }
+            ]
+        };
+    </script>
+</template>
+
+<template is="dom-bind">
+    <h3>Media Tree</h3>
+    <paper-tree data='{
+    "name": "Media Center",
+    "icon": "weekend",
+    "open": true,
+    "children": [{
+        "name": "Movies"
+    }, {
+        "name": "TV Shows",
+        "children": [{
+            "name": "Breaking Bad",
+            "icon": "theaters"
+        }, {
+            "name": "Game of Thrones",
+            "icon": "theaters"
+        }]
+    }]}'
+    actions='[{
+        "label": "Play",
+        "event": "play"
+    }]'>
+    </paper-tree>
+</template>
+</body>
+</html>

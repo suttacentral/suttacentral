@@ -1,0 +1,89 @@
+<!doctype html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <!-- Import the element to test -->
+    <link rel="import" href="../paper-tree-node.html">
+</head>
+<body>
+
+<!-- You can use the document as a place to set up your fixtures. -->
+<paper-tree-node></paper-tree-node>
+
+<script>
+var node = document.querySelector('paper-tree-node');
+
+suite('<paper-tree-node>', function() {
+
+    test('defines the default "data" property to `null`', function() {
+        assert.equal(node.data, null);
+    });
+
+    test('properly computes its classes', function() {
+        // Some defaults tests
+        var answer = node._computeClass();
+        assert.equal(answer, 'node-preicon ');
+
+        answer = node._computeClass({});
+        assert.equal(answer, 'node-preicon ');
+
+        // Ask for expanded with no children
+        answer = node._computeClass({base: {open: true}});
+        assert.equal(answer, 'node-preicon ');
+
+        // Ask for expanded with empty children
+        answer = node._computeClass({base: {open: true, children:[]}});
+        assert.equal(answer, 'node-preicon ');
+
+        // Ask for collapsed with children
+        answer = node._computeClass({base: {open: false, children:[0]}});
+        assert.equal(answer, 'node-preicon collapsed');
+
+        // Ask for expanded with children
+        answer = node._computeClass({base: {open: true, children:[0]}});
+        assert.equal(answer, 'node-preicon expanded');
+    });
+
+    test('properly computes its icon', function() {
+        var answer = node._computeIcon('');
+        assert.equal(answer, 'folder');
+
+        answer = node._computeIcon('folder');
+        assert.equal(answer, 'folder');
+    });
+
+    test('ables to toggle its children', function() {
+        node.data = {
+            children: [],
+            open: false
+        };
+
+        // No children, open state is always false.
+        node.toggleChildren();
+        assert.equal(node.data.open, false);
+
+        // Same thing.
+        node.data.open = true;
+        node.toggleChildren();
+        assert.equal(node.data.open, false);
+
+        // With children, open state is toggled properly.
+        node.data.children = [1];
+        node.toggleChildren();
+        assert.equal(node.data.open, true);
+
+        node.toggleChildren();
+        assert.equal(node.data.open, false);
+    });
+
+});
+</script>
+
+</body>
+</html>
