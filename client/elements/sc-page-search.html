@@ -91,7 +91,7 @@ than ten results in total, a dropdown selection menu appears at the top.
         margin-top: -20px;
       }
 
-      .hidesearchbox {
+      .nodisplay {
         display: none;
       }
 
@@ -120,11 +120,11 @@ than ten results in total, a dropdown selection menu appears at the top.
 
     <iron-ajax id="ajax"
                url="api/search"
-               params='{{searchParams}}'
+               params='[[searchParams]]'
                handle-as="json"
                loading="{{loadingResults}}"
-               last-response="{{data}}"
-               on-response="_didRespond"></iron-ajax>
+               last-response="{{responseData}}"
+               on-response="didRespond"></iron-ajax>
 
     <div class="loadingIndicator">
       <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
@@ -133,30 +133,30 @@ than ten results in total, a dropdown selection menu appears at the top.
     <div class="divisioncontent">
       <main>
         <div class="results-head">
-          <h1><span class="result-number">[[_calculateNumber(data)]]</span> <span
+          <h1><span class="result-number">[[calculateNumber(responseData)]]</span> <span
               class="result-description">results for</span> <span class="result-term">[[searchQuery]]</span></h1>
-          <search-menu class$="[[searchMenu]]"></search-menu>
+          <search-menu class$="[[currentFilter]]"></search-menu>
         </div>
 
-        <iron-scroll-threshold id="scrollThreshold" lower-threshold="0" on-lower-threshold="_load"
-                               scroll-target="document">
-          <iron-list id="list" items="[]" as="item" scroll-target="document">
-            <template>
-              <div>
-                <div class="item" tabindex$="[[tabIndex]]">
-                  <div class="pad">
-                    <a href="[[_addLink(item)]]">
-                      <div class="primary"><h2>[[item._source.heading.title]]</h2></div>
-                      <div class="secondary">
-                        <p class="results-url" inner-h-t-m-l="[[item._source.heading.division]]"></p>
-                      </div>
-                    </a>
-                    <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.highlight.content]]"></p></div>
-                  </div>
+        <iron-list id="searchResultList" items="[]" as="item" scroll-target="document">
+          <template>
+            <div>
+              <div class="item" tabindex$="[[tabIndex]]">
+                <div class="pad">
+                  <a href="[[addLink(item)]]">
+                    <div class="primary"><h2>[[item._source.heading.title]]</h2></div>
+                    <div class="secondary">
+                      <p class="results-url" inner-h-t-m-l="[[item._source.heading.division]]"></p>
+                    </div>
+                  </a>
+                  <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.highlight.content]]"></p></div>
                 </div>
               </div>
-            </template>
-          </iron-list>
+            </div>
+          </template>
+        </iron-list>
+
+        <iron-scroll-threshold id="scrollThreshold" on-lower-threshold="loadMoreData" scroll-target="document">
         </iron-scroll-threshold>
 
       </main>
@@ -175,21 +175,16 @@ than ten results in total, a dropdown selection menu appears at the top.
                       notify: true
                   },
                   inputLanguage: String,
-                  searchMenu: {
+                  currentFilter: {
                       type: String,
                       notify: true,
-                      computed: 'setFilterMenuVisibility(data)'
+                      computed: 'setFilterMenuVisibility(responseData)'
                   },
-                  data: {
+                  responseData: {
                       type: Array,
                       notify: true
                   },
-                  partArray: {
-                      type: Array,
-                      notify: true,
-                      value: []
-                  },
-                  showArray: {
+                  loadedSearchResults: {
                       type: Array,
                       notify: true,
                       value: []
@@ -198,47 +193,46 @@ than ten results in total, a dropdown selection menu appears at the top.
                       type: Number,
                       value: 0
                   },
-                  // Number of items to be loaded on first load
-                  firstLoad: {
-                      type: Number,
-                      value: 10
-                  },
                   // Number of items to be loaded each time the scroll threshold is reached
                   loadNumber: {
                       type: Number,
-                      value: 5
+                      value: 20
+                  },
+                  pageNumber: {
+                      type: Number,
+                      value: 0
                   }
               }
           }
 
           static get observers() {
-              return ['_populateList(partArray)'];
+              return ['populateList(loadedSearchResults)'];
           }
 
           constructor() {
               super();
-              this.itemCountLimit = 20;
+              this.loadedSearchResults = [];
           }
 
           ready() {
               super.ready();
               // listens to the search555-menu and changes the items to be displayed accordingly to "all", "root texts",
-              // "translations" or "dictionaries" and changes the partArray accordingly.
+              // "translations" or "dictionaries" and changes the loadedSearchResults array accordingly.
               this.addEventListener('eventFromSearchMenu', this.changeSearchView);
 
-              this.searchParams = {limit: this.itemCountLimit, query: this.searchQuery};
+              this.searchParams = {limit: this.loadNumber, offset: this.pageNumber, query: this.searchQuery};
 
               // Calls the input results when page is loaded
-              this.$.ajax.generateRequest();
+              this.shadowRoot.querySelector('#ajax').generateRequest();
           }
 
           // Determines the number of search results that have been found.
-          _calculateNumber(data) {
+          calculateNumber(data) {
               return data ? data.hits.total : 0;
           }
 
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
-          _addLink(item) {
+          addLink(item) {
               return (item.category === "dictionary") ? ("/define/" + item._source.heading.title) : item.url;
           }
 
@@ -253,7 +247,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                       }
                   }
               }
-              return "hidesearchbox";
+              return "nodisplay";
           }
 
           // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
@@ -273,42 +267,54 @@ than ten results in total, a dropdown selection menu appears at the top.
                   default:
                       selectedView = "all";
               }
-              // partArray is changed to the items that were chosen and _populateList is called.
-              this.partArray = this.data.hits.hits.filter((searchResult) => {
+              this.loadedSearchResults = this.responseData.hits.hits.filter((searchResult) => {
                   return searchResult.category === selectedView || selectedView === 'all';
               });
           }
 
           // After results have been loaded into memory, pushes items to an array.
-          _didRespond(e) {
+          didRespond(e) {
+              console.log('didrespond');
               const results = e.detail.response;
-              // After first load, the partArray is equal to all the items in the search results and _populateList is called.
-              this.partArray = JSON.parse(JSON.stringify(results.hits.hits));
+              // After first load, the loadedSearchResults is equal to all the items in the search results and populateList is called.
+              this.loadedSearchResults = results.hits.hits;
           }
 
           // The items to be displayed are added to the iron-list and counts the numbers in the list.
-          _populateList(partArray) {
-              this.$.list.items.length = 0;
-              if (partArray.length > 0) {
+          populateList() {
+              console.log('populatelist');
+              const searchResultList = this.shadowRoot.querySelector('#searchResultlist');
+              searchResultList.items.length = 0;
+              if (this.loadedSearchResults.length > 0) {
                   this.itemCount = 0;
-                  for (let i = 0; i < this.firstLoad; i++) {
-                      this.$.list.push('items', partArray[i]);
+                  for (let i = 0; i < this.loadNumber; i++) {
+                      searchResultList.push('items', this.loadedSearchResults[i]);
                       this.itemCount += 1;
                   }
               }
-              this.$.scrollThreshold.clearTriggers();
+              this.shadowRoot.querySelector('#scrollThreshold').clearTriggers();
           }
 
           // Determines how the iron-scroll-threshold pushes the items to the iron-list
           // depending on the number of items to be loaded and on previously set parameters.
-          _load() {
-              if (this.itemCount > (this.firstLoad - 1) && this.itemCount < this.partArray.length) {
-                  for (let i = 0; i < this.loadNumber; i++) {
-                      this.$.list.push('items', this.partArray[this.itemCount]);
-                      this.itemCount += 1;
-                  }
-              }
-              this.$.scrollThreshold.clearTriggers();
+          async loadMoreData() {
+              console.log('loadMoreData');
+              this.pageNumber++;
+              this.searchParams = {limit: this.loadNumber, offset: this.pageNumber, query: this.searchQuery};
+              console.log("loading page nr " + this.pageNumber);
+
+              await this.shadowRoot.querySelector('#ajax').generateRequest();
+
+              this.shadowRoot.querySelector('#searchResultList').push('items', this.responseData.hits.hits);
+              this.shadowRoot.querySelector('#scrollThreshold').clearTriggers();
+
+//              if (this.itemCount > (this.loadNumber - 1) && this.itemCount < this.loadedSearchResults.length) {
+//                  for (let i = 0; i < this.loadNumber; i++) {
+//                      this.shadowRoot.querySelector('#searchResultlist').push('items', this.loadedSearchResults[this.itemCount]);
+//                      this.itemCount += 1;
+//                  }
+//              }
+//              this.shadowRoot.querySelector('#scrollThreshold').clearTriggers();
           }
       }
 
