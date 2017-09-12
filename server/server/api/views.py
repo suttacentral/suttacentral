@@ -90,7 +90,12 @@ class Menu(Resource):
             name = x['name']
 
             vertex = self._vertex(name, _id)
-            edges[_from]['children'].append(vertex)
+
+            try:
+                edges[_from]['children'].append(vertex)
+            except KeyError:
+                edges[_from]['children'] = [vertex]
+
             edges[_id] = vertex
 
         return data, 200
@@ -98,5 +103,4 @@ class Menu(Resource):
     @staticmethod
     def _vertex(name, uid) -> dict:
         return {'name': name,
-                'uid': uid,
-                'children': []}
+                'uid': uid}
