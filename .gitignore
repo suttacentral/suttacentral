@@ -1,6 +1,5 @@
 *~
 __pycache__
-*.pyc
 .python-version
 data/segmented_texts
 .vscode
