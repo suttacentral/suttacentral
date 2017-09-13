@@ -145,7 +145,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                                scroll-target="document">
 
           <iron-list id="search_result_list" items="[]" as="item" scroll-target="document">
-            <template style="height: 100%; width: 100%">
+            <template>
               <div class="item" tabindex$="[[tabIndex]]">
                 <div class="pad">
                   <a href="[[addLink(item)]]">
@@ -202,7 +202,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                       value: 0
                   },
                   // Number of items to be loaded each time the scroll threshold is reached
-                  itemsPerLoad: {
+                  resultsPerLoad: {
                       type: Number,
                       value: 20
                   },
@@ -231,7 +231,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.addEventListener('eventFromSearchMenu', this.changeSearchView);
 
               this.searchParams = {
-                  limit: this.itemsPerLoad,
+                  limit: this.resultsPerLoad,
                   query: this.searchQuery
               };
 
@@ -300,7 +300,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (this.lastSearchResults.length === 0) {
                   return;
               }
-              for (let i = 0; i < this.itemsPerLoad; i++) {
+              for (let i = 0; i < this.resultsPerLoad; i++) {
                   if (!this.lastSearchResults[i]) {
                       return;
                   }
@@ -321,14 +321,14 @@ than ten results in total, a dropdown selection menu appears at the top.
               }
               this.pageNumber++;
               this.searchParams = {
-                  limit: this.itemsPerLoad,
-                  offset: (this.pageNumber * this.itemsPerLoad),
+                  limit: this.resultsPerLoad,
+                  offset: (this.pageNumber * this.resultsPerLoad),
                   query: this.searchQuery
               };
               this.shadowRoot.querySelector('#ajax').generateRequest();
           }
 
-          // This has some relatively expensive DOM manipulation, but at the moment is necessary because of this bug:
+          // This has some relatively expensive DOM querying, but at the moment is necessary because of this bug:
           // https://github.com/PolymerElements/iron-list/issues/290.
           shouldLoadMoreData() {
               if (this.searchListNode.children.item(1)) {
@@ -336,7 +336,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                   this.searchResultElemHeight = this.searchListNode.children.item(1).clientHeight;
               }
               // the threshold is set to fire when 2 elements are still not in view.
-              const scrollThreshold = this.pageNumber * (this.itemsPerLoad - 2) * this.searchResultElemHeight;
+              const scrollThreshold = this.pageNumber * (this.resultsPerLoad - 2) * this.searchResultElemHeight;
               return document.body.scrollTop > scrollThreshold;
           }
 
