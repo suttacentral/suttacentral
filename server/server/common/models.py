@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, random
 from typing import Dict, List, Union
 
 from arango.exceptions import CollectionLoadError
@@ -437,6 +437,62 @@ class PoString(Model):
             'author': self.author,
             'author_blurb': self.author_blurb,
             'strings': self.strings
+        }
+        self._add_data(data)
+
+        return data
+
+
+class Relationship(Model):
+    collection = 'relationship'
+    edge = True
+
+    def __init__(self, _from, _to, from_, partial, to, _type, *args, **kwargs):
+        self._from = _from
+        self._to = _to
+        self.from_part = from_
+        self.partial = partial
+        self.to = to
+        self.type = _type
+        super().__init__(*args, **kwargs)
+
+    def __str__(self):
+        return f'from: {self._from}, to: {self._to}'
+
+    @classmethod
+    def generate(cls, roots: List[Root]) -> 'ModelList':
+        """ Generate Relationships objects for given list of roots.
+
+        Returns:
+            Generated objects.
+        """
+        edges = ModelList()
+        _from = roots.pop(0)._id
+        for root in roots:
+            if random() > 0.5:
+                from_ = f'{_from}#{randint(1,15)}'
+                to = f'{root._id}#{randint(1,15)}'
+            else:
+                from_ = _from
+                to = root._id
+            partial = bool(round(random()))
+            edge = cls(_from, root._id, from_, partial, to, 'parallel')
+            edges.append(edge)
+        return edges
+
+    @property
+    def document(self) -> Dict[str, Union[str, int]]:
+        """
+        Returns:
+            Arango document representation
+        """
+        data = {
+            'from': self.from_part,
+            'partial': self.partial,
+            'to': self.to,
+            'type': self.type,
+            '_from': self._from,
+            '_to': self._to
         }
         self._add_data(data)
 

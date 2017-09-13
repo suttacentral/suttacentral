@@ -199,6 +199,15 @@ def process_category_files(category_files, db, edges, mapping):
         collection.truncate()
         collection.import_bulk(category_docs)
 
+    # add root language uid to everything.
+    db.aql.execute('''
+    FOR lang IN language
+        FOR sutta IN 1..10 OUTBOUND lang root_edges
+            UPDATE sutta WITH {
+                "lang": lang.uid
+            } IN root
+    ''')
+
 
 def add_root_docs_and_edges(change_tracker, db, structure_dir):
     docs = []
