@@ -184,17 +184,18 @@ than ten results in total, a dropdown selection menu appears at the top.
                       type: Array,
                       notify: true
                   },
-                  loadedSearchResults: {
+                  lastSearchResults: {
                       type: Array,
                       notify: true,
-                      value: []
+                      value: [],
+                      observer: 'populateList'
                   },
-                  itemCount: {
+                  resultCount: {
                       type: Number,
                       value: 0
                   },
                   // Number of items to be loaded each time the scroll threshold is reached
-                  loadNumber: {
+                  itemsPerLoad: {
                       type: Number,
                       value: 20
                   },
@@ -205,22 +206,21 @@ than ten results in total, a dropdown selection menu appears at the top.
               }
           }
 
-          static get observers() {
-              return ['populateList(loadedSearchResults)'];
-          }
-
           constructor() {
               super();
-              this.loadedSearchResults = [];
+              this.lastSearchResults = [];
           }
 
           ready() {
               super.ready();
               // listens to the search555-menu and changes the items to be displayed accordingly to "all", "root texts",
-              // "translations" or "dictionaries" and changes the loadedSearchResults array accordingly.
+              // "translations" or "dictionaries" and changes the lastSearchResults array accordingly.
               this.addEventListener('eventFromSearchMenu', this.changeSearchView);
 
-              this.searchParams = {limit: this.loadNumber, offset: this.pageNumber, query: this.searchQuery};
+              this.searchParams = {
+                  limit: this.itemsPerLoad,
+                  query: this.searchQuery
+              };
 
               // Calls the input results when page is loaded
               this.shadowRoot.querySelector('#ajax').generateRequest();
@@ -267,7 +267,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                   default:
                       selectedView = "all";
               }
-              this.loadedSearchResults = this.responseData.hits.hits.filter((searchResult) => {
+              this.lastSearchResults = this.responseData.hits.hits.filter((searchResult) => {
                   return searchResult.category === selectedView || selectedView === 'all';
               });
           }
@@ -276,45 +276,44 @@ than ten results in total, a dropdown selection menu appears at the top.
           didRespond(e) {
               console.log('didrespond');
               const results = e.detail.response;
-              // After first load, the loadedSearchResults is equal to all the items in the search results and populateList is called.
-              this.loadedSearchResults = results.hits.hits;
+              // After first load, the lastSearchResults is equal to all the items in the
+              // search results and populateList is called.
+              this.lastSearchResults = results.hits.hits;
+              this.resultCount = results.hits.total;
           }
 
           // The items to be displayed are added to the iron-list and counts the numbers in the list.
           populateList() {
               console.log('populatelist');
               const searchResultList = this.shadowRoot.querySelector('#searchResultlist');
-              searchResultList.items.length = 0;
-              if (this.loadedSearchResults.length > 0) {
-                  this.itemCount = 0;
-                  for (let i = 0; i < this.loadNumber; i++) {
-                      searchResultList.push('items', this.loadedSearchResults[i]);
-                      this.itemCount += 1;
+              console.dir(this.lastSearchResults);
+              if (this.lastSearchResults.length > 0) {
+                  for (let i = 0; i < this.itemsPerLoad; i++) {
+                      if (this.lastSearchResults[i]) {
+                          searchResultList.push('items', this.lastSearchResults[i]);
+                      }
                   }
               }
+              console.dir(searchResultList.items);
               this.shadowRoot.querySelector('#scrollThreshold').clearTriggers();
           }
 
           // Determines how the iron-scroll-threshold pushes the items to the iron-list
           // depending on the number of items to be loaded and on previously set parameters.
-          async loadMoreData() {
-              console.log('loadMoreData');
+          loadMoreData() {
+              // Don't load once all items have been loaded.
+              if (this.shadowRoot.querySelector('#searchResultlist').items.length >= this.resultCount) {
+                  return;
+              }
               this.pageNumber++;
-              this.searchParams = {limit: this.loadNumber, offset: this.pageNumber, query: this.searchQuery};
+              this.searchParams = {
+                  limit: this.itemsPerLoad,
+                  offset: (this.pageNumber * this.itemsPerLoad),
+                  query: this.searchQuery
+              };
               console.log("loading page nr " + this.pageNumber);
 
-              await this.shadowRoot.querySelector('#ajax').generateRequest();
-
-              this.shadowRoot.querySelector('#searchResultList').push('items', this.responseData.hits.hits);
-              this.shadowRoot.querySelector('#scrollThreshold').clearTriggers();
-
-//              if (this.itemCount > (this.loadNumber - 1) && this.itemCount < this.loadedSearchResults.length) {
-//                  for (let i = 0; i < this.loadNumber; i++) {
-//                      this.shadowRoot.querySelector('#searchResultlist').push('items', this.loadedSearchResults[this.itemCount]);
-//                      this.itemCount += 1;
-//                  }
-//              }
-//              this.shadowRoot.querySelector('#scrollThreshold').clearTriggers();
+              this.shadowRoot.querySelector('#ajax').generateRequest();
           }
       }
 
