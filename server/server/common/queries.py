@@ -38,27 +38,46 @@ SUTTAPLEX_LIST = '''
 FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
     LET legacy_translations = (
         FILTER e.type == 'text'
-        LET path = CONCAT(@language, '/', v.uid)
         FOR text IN html_text
-            FILTER text.path == path
-            RETURN {
-                title: text.name,
+            FILTER text.uid == v.uid
+            LET res = {
+                lang: text.lang,
                 author: text.author,
                 id: text._key
-            }
+                }
+            RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res
         )
     LET po_translations = (
         FOR text IN po_strings
-            FILTER text.uid == v.uid AND text.lang == @language
-            RETURN {
+            FILTER text.uid == v.uid
+            LET res = {
+                lang: text.lang,
                 author: text.author,
-                title: text.strings[1][1],  // Temporary hack, we have to wait for Blake to finnish data manipulation.
                 id: text._key
             }
+            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finnish data manipulation.
+            RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
     )
+    
+    LET blurb = (
+        FOR blurb IN blurbs
+            FILTER blurb.uid == v.uid
+            LIMIT 1
+            RETURN blurb.blurb
+            
+    )[0]
+    
+    LET difficulty = (
+        FOR difficulty IN difficulties
+            FILTER difficulty.uid == v.uid
+            LIMIT 1
+            RETURN difficulty.difficulty
+    )[0]
         
     RETURN {
         uid: v.uid,
+        blurb: blurb,
+        difficulty: difficulty,
         original_title: v.name,
         type: e.type,
         from: e._from,
