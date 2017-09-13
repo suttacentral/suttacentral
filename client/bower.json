@@ -24,7 +24,7 @@
     "iron-icons": "PolymerElements/iron-icons#^2.0.1",
     "paper-spinner": "PolymerElements/paper-spinner#^2.0.0",
     "iron-list": "PolymerElements/iron-list#^2.0.8",
-    "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^2.0.0",
+    "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^2.0.8",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "iron-pages": "PolymerElements/iron-pages#^2.0.0",
     "paper-menu-button": "PolymerElements/paper-menu-button#^2.0.0",

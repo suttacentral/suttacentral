@@ -130,33 +130,40 @@ than ten results in total, a dropdown selection menu appears at the top.
       <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
     </div>
 
-    <div class="divisioncontent">
+    <div id="search_result_container" class="divisioncontent">
       <main>
         <div class="results-head">
-          <h1><span class="result-number">[[calculateNumber(responseData)]]</span> <span
-              class="result-description">results for</span> <span class="result-term">[[searchQuery]]</span></h1>
+          <h1>
+            <span class="result-number">[[calculateNumber(responseData)]]</span>
+            <span class="result-description">results for</span>
+            <span class="result-term">[[searchQuery]]</span>
+          </h1>
           <search-menu class$="[[currentFilter]]"></search-menu>
         </div>
 
-        <iron-list id="searchResultList" items="[]" as="item" scroll-target="document">
-          <template>
-            <div>
+        <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="loadMoreData"
+                               scroll-target="document">
+
+          <iron-list id="search_result_list" items="[]" as="item" scroll-target="document">
+            <template>
               <div class="item" tabindex$="[[tabIndex]]">
                 <div class="pad">
                   <a href="[[addLink(item)]]">
-                    <div class="primary"><h2>[[item._source.heading.title]]</h2></div>
+                    <div class="primary">
+                      <h2>[[item._source.heading.title]]</h2>
+                    </div>
                     <div class="secondary">
                       <p class="results-url" inner-h-t-m-l="[[item._source.heading.division]]"></p>
                     </div>
                   </a>
-                  <div class="secondary"><p class="snippet" inner-h-t-m-l="[[item.highlight.content]]"></p></div>
+                  <div class="secondary">
+                    <p class="snippet" inner-h-t-m-l="[[item.highlight.content]]"></p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </template>
-        </iron-list>
+            </template>
+          </iron-list>
 
-        <iron-scroll-threshold id="scrollThreshold" on-lower-threshold="loadMoreData" scroll-target="document">
         </iron-scroll-threshold>
 
       </main>
@@ -274,7 +281,6 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // After results have been loaded into memory, pushes items to an array.
           didRespond(e) {
-              console.log('didrespond');
               const results = e.detail.response;
               // After first load, the lastSearchResults is equal to all the items in the
               // search results and populateList is called.
@@ -284,9 +290,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // The items to be displayed are added to the iron-list and counts the numbers in the list.
           populateList() {
-              console.log('populatelist');
-              const searchResultList = this.shadowRoot.querySelector('#searchResultlist');
-              console.dir(this.lastSearchResults);
+              const searchResultList = this.shadowRoot.querySelector('#search_result_list');
               if (this.lastSearchResults.length > 0) {
                   for (let i = 0; i < this.itemsPerLoad; i++) {
                       if (this.lastSearchResults[i]) {
@@ -294,15 +298,15 @@ than ten results in total, a dropdown selection menu appears at the top.
                       }
                   }
               }
-              console.dir(searchResultList.items);
-              this.shadowRoot.querySelector('#scrollThreshold').clearTriggers();
           }
 
           // Determines how the iron-scroll-threshold pushes the items to the iron-list
           // depending on the number of items to be loaded and on previously set parameters.
           loadMoreData() {
               // Don't load once all items have been loaded.
-              if (this.shadowRoot.querySelector('#searchResultlist').items.length >= this.resultCount) {
+              if (this.shadowRoot.querySelector('#search_result_list').items.length >= this.resultCount) {
+                  console.log('not loading');
+                  this.clearScrollTriggers();
                   return;
               }
               this.pageNumber++;
@@ -312,8 +316,12 @@ than ten results in total, a dropdown selection menu appears at the top.
                   query: this.searchQuery
               };
               console.log("loading page nr " + this.pageNumber);
-
               this.shadowRoot.querySelector('#ajax').generateRequest();
+              this.clearScrollTriggers();
+          }
+
+          clearScrollTriggers() {
+              this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
           }
       }
 
