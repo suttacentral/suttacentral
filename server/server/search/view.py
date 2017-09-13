@@ -105,10 +105,9 @@ class Search(Resource):
         try:
             results = query_search.search(query, limit=limit, offset=offset)
 
-            # Insert dummy urls and categories (to be changed when discussed with client
+            # Insert dummy urls (to be changed when discussed with client)
             for entry in results['hits']['hits']:
                 entry['url'] = '/dn1/sujato'
-                entry['category'] = 'translation'
 
             return results
         except ConnectionError:
