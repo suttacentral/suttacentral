@@ -109,6 +109,58 @@ class Menu(Resource):
 
 class SuttaplexList(Resource):
     def get(self, uid):
+        """
+        Send suttaplex for given uid
+        ---
+        parameters:
+           - in: path
+             name: uid
+             type: string
+             required: true
+        responses:
+            200:
+                description: Suttaplex list
+                schema:
+                    id: suttaplex-list
+                    type: array
+                    items:
+                        $ref: '#/definitions/Suttaplex'
+        definitions:
+            Suttaplex:
+                type: object
+                properties:
+                    uid:
+                        type: string
+                    blurb:
+                        type: string
+                    difficulty:
+                        required: false
+                        type: number
+                    original_title:
+                        type: string
+                    type:
+                        type: string
+                    translations:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Translation'
+                    children:
+                        required: false
+                        type: array
+                        items:
+                            type: object
+            Translation:
+                type: object
+                properties:
+                    author:
+                        type: string
+                    id:
+                        type: string
+                    lang:
+                        type: string
+                    title:
+                        type: string
+        """
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
         uid = uid.replace('/', '-').strip('-')
         uid = f'root/{uid}'
