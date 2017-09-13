@@ -130,7 +130,7 @@ than ten results in total, a dropdown selection menu appears at the top.
       <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
     </div>
 
-    <div id="search_result_container" class="divisioncontent">
+    <div class="divisioncontent">
       <main>
         <div class="results-head">
           <h1>
@@ -145,7 +145,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                                scroll-target="document">
 
           <iron-list id="search_result_list" items="[]" as="item" scroll-target="document">
-            <template>
+            <template style="height: 100%; width: 100%">
               <div class="item" tabindex$="[[tabIndex]]">
                 <div class="pad">
                   <a href="[[addLink(item)]]">
@@ -209,6 +209,12 @@ than ten results in total, a dropdown selection menu appears at the top.
                   pageNumber: {
                       type: Number,
                       value: 0
+                  },
+                  // Height of one search result element, needed for endless scroll calculations.
+                  // Default is 210 for desktops, but it's recalculated in shouldLoadMoreData()
+                  searchResultElemHeight: {
+                      type: Number,
+                      value: 210
                   }
               }
           }
@@ -220,8 +226,8 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           ready() {
               super.ready();
-              // listens to the search555-menu and changes the items to be displayed accordingly to "all", "root texts",
-              // "translations" or "dictionaries" and changes the lastSearchResults array accordingly.
+              this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
+
               this.addEventListener('eventFromSearchMenu', this.changeSearchView);
 
               this.searchParams = {
@@ -290,23 +296,27 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // The items to be displayed are added to the iron-list and counts the numbers in the list.
           populateList() {
-              const searchResultList = this.shadowRoot.querySelector('#search_result_list');
-              if (this.lastSearchResults.length > 0) {
-                  for (let i = 0; i < this.itemsPerLoad; i++) {
-                      if (this.lastSearchResults[i]) {
-                          searchResultList.push('items', this.lastSearchResults[i]);
-                      }
+              const searchResultList = this.searchListNode;
+              if (this.lastSearchResults.length === 0) {
+                  return;
+              }
+              for (let i = 0; i < this.itemsPerLoad; i++) {
+                  if (!this.lastSearchResults[i]) {
+                      return;
                   }
+                  searchResultList.push('items', this.lastSearchResults[i]);
               }
           }
 
           // Determines how the iron-scroll-threshold pushes the items to the iron-list
           // depending on the number of items to be loaded and on previously set parameters.
           loadMoreData() {
+              this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
+              if (!this.shouldLoadMoreData()) {
+                  return;
+              }
               // Don't load once all items have been loaded.
-              if (this.shadowRoot.querySelector('#search_result_list').items.length >= this.resultCount) {
-                  console.log('not loading');
-                  this.clearScrollTriggers();
+              if (this.searchListNode.items.length >= this.resultCount) {
                   return;
               }
               this.pageNumber++;
@@ -315,14 +325,21 @@ than ten results in total, a dropdown selection menu appears at the top.
                   offset: (this.pageNumber * this.itemsPerLoad),
                   query: this.searchQuery
               };
-              console.log("loading page nr " + this.pageNumber);
               this.shadowRoot.querySelector('#ajax').generateRequest();
-              this.clearScrollTriggers();
           }
 
-          clearScrollTriggers() {
-              this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
+          // This has some relatively expensive DOM manipulation, but at the moment is necessary because of this bug:
+          // https://github.com/PolymerElements/iron-list/issues/290.
+          shouldLoadMoreData() {
+              if (this.searchListNode.children.item(1)) {
+                  // update height of a single search result element (can differ by user device)
+                  this.searchResultElemHeight = this.searchListNode.children.item(1).clientHeight;
+              }
+              // the threshold is set to fire when 2 elements are still not in view.
+              const scrollThreshold = this.pageNumber * (this.itemsPerLoad - 2) * this.searchResultElemHeight;
+              return document.body.scrollTop > scrollThreshold;
           }
+
       }
 
       customElements.define(SCPageSearch.is, SCPageSearch);
