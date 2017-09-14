@@ -3,6 +3,7 @@ prepare-host:
 	@echo "In order to do that I'm going to ask you for your sudo password"
 	sudo sysctl -w vm.max_map_count=262144
 	sudo bash -c 'echo "vm.max_map_count=262144" >> /etc/sysctl.conf'
+	@echo "\033[1;32mSuccess!"
 
 build-all:
 	@make build-flask
