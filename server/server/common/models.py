@@ -23,6 +23,15 @@ class Model:
     def document(self):
         raise NotImplementedError
 
+    def _add_data(self, data):
+        if self._rev and '_rev' not in data:
+            data['_rev'] = self._rev
+        if self._id and '_id' not in data:
+            data['_id'] = self._id
+        if self._key and '_key' not in data:
+            data['_key'] = self._key
+        return data
+
     def save(self):
         """Saves document to the db.
         """
@@ -38,6 +47,18 @@ class Model:
         self._id = result['_id']
 
         return self
+
+
+class ModelList(list):
+    """
+    Extend standard list implementation with save method for bulk data importing to db.
+    """
+    def save(self):
+        collection = self[0].collection
+        db = get_db()
+        collection = db.collection(collection)
+
+        return collection.import_bulk([m.document for m in self])
 
 
 class Language(Model):
@@ -87,10 +108,7 @@ class Language(Model):
             'num': self.num,
             '_key': self._key,
         }
-        if self._rev:
-            data['_rev'] = self._rev
-        if self._id:
-            data['_id'] = self._id
+        self._add_data(data)
 
         return data
 
@@ -117,7 +135,7 @@ class Root(Model):
             Generated object.
         """
         fake = Faker()
-        uid = f'{fake.language_code()}{randint(1, 100)}.{randint(1, 50)}'
+        uid = generate_uid()
         name = fake.first_name()
         root_lang = fake.language_code()
         num = randint(1, 100)
@@ -137,8 +155,7 @@ class Root(Model):
             '_id': self._id,
             '_key': self._key,
         }
-        if self._rev:
-            data['_rev'] = self._rev
+        self._add_data(data)
 
         return data
 
@@ -188,23 +205,244 @@ class RootEdges(Model):
             '_from': self._from,
             '_to': self._to
         }
-        if self._rev:
-            data['_rev'] = self._rev
-        if self._id:
-            data['_id'] = self._id
-        if self._key:
-            data['_key'] = self._key
+        self._add_data(data)
 
         return data
 
 
-class ModelList(list):
-    """
-    Extend standard list implementation with save method for bulk data importing to db.
-    """
-    def save(self):
-        collection = self[0].collection
-        db = get_db()
-        collection = db.collection(collection)
+class Blurb(Model):
+    collection = 'blurbs'
 
-        return collection.import_bulk([m.document for m in self])
+    def __init__(self, blurb, lang, uid, *args, **kwargs):
+        self.blurb = blurb
+        self.uid = uid
+        self.lang = lang
+        super().__init__(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return f'{self.uid}: {self.lang}'
+
+    @classmethod
+    def generate(cls) -> 'Blurb':
+        """ Generate Blurb object.
+
+        Returns:
+            Generated object.
+        """
+        fake = Faker()
+        blurb = fake.paragraph(nb_sentences=3, variable_nb_sentences=True, ext_word_list=None)
+        lang = fake.language_code()
+        uid = generate_uid()
+        return cls(blurb, lang, uid)
+
+    @property
+    def document(self) -> Dict[str, Union[str, int]]:
+        """
+        Returns:
+            Arango document representation
+        """
+        data = {
+            'blurb': self.blurb,
+            'uid': self.uid,
+            'lang': self.lang
+        }
+        self._add_data(data)
+
+        return data
+
+
+class Difficulty(Model):
+    collection = 'difficulties'
+
+    def __init__(self, difficulty, uid, *args, **kwargs):
+        self.difficulty = difficulty
+        self.uid = uid
+        super().__init__(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return f'{self.uid}: {self.difficulty}'
+
+    @classmethod
+    def generate(cls) -> 'Difficulty':
+        """ Generate Difficulty object.
+
+        Returns:
+            Generated object.
+        """
+        fake = Faker()
+        difficulty = randint(1, 3)
+        uid = generate_uid()
+        return cls(difficulty, uid)
+
+    @property
+    def document(self) -> Dict[str, Union[str, int]]:
+        """
+        Returns:
+            Arango document representation
+        """
+        data = {
+            'difficulty': self.difficulty,
+            'uid': self.uid,
+        }
+        self._add_data(data)
+
+        return data
+
+
+class HtmlText(Model):
+    collection = 'html_text'
+
+    def __init__(self, uid, lang, name, author, volpage, prev_uid, next_uid, mtime, text, *args, **kwargs):
+        self.uid = uid
+        self.lang = lang
+        self.name = name
+        self.author = author
+        self.volpage = volpage
+        self.prev_uid = prev_uid
+        self.next_uid = next_uid
+        self.mtime = mtime
+        self.text = text
+        self.path = f'{self.lang}/{self.uid}'
+        super().__init__(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return f'{self.uid}: {self.lang}: {self.name}'
+
+    @classmethod
+    def generate(cls) -> 'HtmlText':
+        """ Generate HtmlText object.
+
+        Returns:
+            Generated object.
+        """
+        fake = Faker()
+        uid = generate_uid()
+        lang = fake.language_code()
+        name = fake.first_name()
+        author = fake.last_name()
+        volpage = fake.license_plate()
+        prev_uid = generate_uid()
+        next_uid = generate_uid()
+        mtime = randint(1e4, 1e6) / 100
+        text = fake.text(max_nb_chars=2000, ext_word_list=None)
+        return cls(uid, lang, name, author, volpage, prev_uid, next_uid, mtime, text)
+
+    @property
+    def document(self) -> Dict[str, Union[str, int]]:
+        """
+        Returns:
+            Arango document representation
+        """
+        data = {
+            'uid': self.uid,
+            'lang': self.lang,
+            'name': self.name,
+            'author': self.author,
+            'volpage': self.volpage,
+            'prev_uid': self.prev_uid,
+            'next_uid': self.next_uid,
+            'mtime': self.mtime,
+            'text': self.text
+        }
+        self._add_data(data)
+
+        return data
+
+
+class PoMarkup(Model):
+    collection = 'po_markup'
+
+    def __init__(self, uid, markup, *args, **kwargs):
+        self.markup = markup
+        self.uid = uid
+        _key = f'{uid}_markup'
+        _id = f'{self.collection}/{_key}'
+        super().__init__(*args, _id=_id, _key=_key, **kwargs)
+
+    def __str__(self) -> str:
+        return self._id
+
+    @classmethod
+    def generate(cls) -> 'PoMarkup':
+        """ Generate Blurb object.
+
+        Returns:
+            Generated object.
+        """
+        fake = Faker()
+        markup = fake.paragraph(nb_sentences=3, variable_nb_sentences=True, ext_word_list=None)
+        uid = generate_uid()
+        return cls(uid, markup)
+
+    @property
+    def document(self) -> Dict[str, Union[str, int]]:
+        """
+        Returns:
+            Arango document representation
+        """
+        data = {
+            'uid': self.uid,
+            'markup': self.markup
+        }
+        self._add_data(data)
+
+        return data
+
+
+class PoString(Model):
+    collection = 'po_strings'
+
+    def __init__(self, uid, markup_uid, lang, author, author_blurb, strings, *args, **kwargs):
+        self.uid = uid
+        self.markup_uid = markup_uid
+        self.lang = lang
+        self.author = author
+        self.author_blurb = author_blurb
+        self.strings = strings
+        _key = f'{lang}_{uid}_{author}'
+        _id = f'{self.collection}/{_key}'
+        super().__init__(*args, _id=_id, _key=_key, **kwargs)
+
+    def __str__(self) -> str:
+        return f'{self.uid}: {self.author}'
+
+    @classmethod
+    def generate(cls) -> 'PoString':
+        """ Generate Blurb object.
+
+        Returns:
+            Generated object.
+        """
+        fake = Faker()
+
+        uid = generate_uid()
+        markup_uid = generate_uid()
+        lang = fake.language_code()
+        author = fake.language_code()
+        author_blurb = fake.last_name()
+        strings = fake.paragraphs(nb=3, ext_word_list=None)
+
+        return cls(uid, markup_uid, lang, author, author_blurb, strings)
+
+    @property
+    def document(self) -> Dict[str, Union[str, int]]:
+        """
+        Returns:
+            Arango document representation
+        """
+        data = {
+            'uid': self.uid,
+            'markup_uid': self.markup_uid,
+            'lang': self.lang,
+            'author': self.author,
+            'author_blurb': self.author_blurb,
+            'strings': self.strings
+        }
+        self._add_data(data)
+
+        return data
+
+
+def generate_uid():
+    fake = Faker()
+    return f'{fake.language_code()}{randint(1, 100)}.{randint(1, 50)}'
