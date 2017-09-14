@@ -39,6 +39,7 @@
         color: var(--disabled-text-color);
         cursor: pointer;
         float: right;
+        margin-right: 6px;
       }
 
       .data-lang {
@@ -101,7 +102,9 @@
         <ul class$={{!data.open}}>
           <template is="dom-if" if="{{data.open}}">
             <template is="dom-repeat" items="{{data.children}}">
-              <paper-tree-node id="{{item.uid}}" data="{{item}}"></paper-tree-node>
+              <li>
+                <paper-tree-node id="{{item.uid}}" data="{{item}}"></paper-tree-node>
+              </li>
             </template>
           </template>
         </ul>
@@ -159,7 +162,7 @@
            * Highlights node as the selected node.
            */
           select() {
-              this.fire("select", this);
+              this.dispatchEvent(new CustomEvent("select", {detail: this}));
           }
 
           /**
@@ -173,7 +176,7 @@
            * Returns the children tree nodes.
            */
           getChildren() {
-              return Polymer.dom(this.root).querySelectorAll('paper-tree-node');
+              return this.shadowRoot.querySelectorAll('paper-tree-node');
           }
 
           /**
@@ -185,6 +188,12 @@
               this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
           }
 
+          /**
+           * Checks if the element should be a link.
+           *
+           * @param uid the uid of the menu item, typically looks like this: "root/su1"
+           * @returns {boolean} Whether the node should be clickable and should lead to a text / suttaplex list
+           */
           _computeClickable(uid) {
               return uid.split("\/")[0] === "root";
           }
