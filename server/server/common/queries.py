@@ -22,6 +22,7 @@ MENU = f'''
 FOR pit IN pitaka
     SORT pit.num
     FOR group, group_edge, group_path IN OUTBOUND pit `root_edges`
+        SORT group.num
         FILTER group_edge._to LIKE 'grouping/%'
         FOR v, e, p IN 0..{_MAX_NESTING_LEVEL} OUTBOUND group `root_edges`
             FILTER e.type != 'text'
