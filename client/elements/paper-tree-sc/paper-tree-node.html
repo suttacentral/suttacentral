@@ -76,7 +76,7 @@
           <paper-icon-button icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></paper-icon-button>
         </template>
 
-        <template is="dom-if" if="{{data.uid}}">
+        <template is="dom-if" if="{{_computeClickable(data.uid)}}">
           <a href$="/{{data.uid}}">
             <span class="node-name" on-tap="select">
               <span class$="data-name {{_computeIndent(data)}}">{{data.name}}
@@ -86,7 +86,7 @@
           </a>
         </template>
 
-        <template is="dom-if" if="{{!data.uid}}">
+        <template is="dom-if" if="{{!_computeClickable(data.uid)}}">
           <span class="node-name" on-tap="select">
             <span class="data-name" inner-h-t-m-l="{{data.name}}">
               <span class="data-lang">{{data.lang}}
@@ -183,6 +183,10 @@
               this.opened = !this.opened;
               this.dispatchEvent(new CustomEvent('toggle', {detail: this}));
               this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
+          }
+
+          _computeClickable(uid) {
+              return uid.split("\/")[0] === "root";
           }
       }
 
