@@ -50,6 +50,7 @@ FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
             // Add volpage info if it exists.
             RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res
         )
+
     LET po_translations = (
         FOR text IN po_strings
             FILTER text.uid == v.uid
@@ -75,7 +76,6 @@ FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
             FILTER HAS(text, "volpage")
             RETURN text.volpage
     )
-    
     
     LET difficulty = (
         FOR difficulty IN difficulties
@@ -113,6 +113,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             // Add volpage info if it exists.
             RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res
         )
+
     LET po_translations = (
         FOR text IN po_strings
             FILTER text.uid == target.uid
@@ -125,13 +126,11 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
     )
     
-    
     LET volpages = (
         FOR text IN legacy_translations
             FILTER HAS(text, "volpage")
             RETURN text.volpage
     )
-    
         
     RETURN {
         from: e.from,
