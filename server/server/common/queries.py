@@ -58,7 +58,7 @@ FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
                 author: text.author,
                 id: text._key
             }
-            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finnish data manipulation.
+            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
             RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
     )
     
@@ -75,7 +75,6 @@ FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
             FILTER HAS(text, "volpage")
             RETURN text.volpage
     )
-    
     
     LET difficulty = (
         FOR difficulty IN difficulties
