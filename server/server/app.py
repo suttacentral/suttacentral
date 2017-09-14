@@ -22,7 +22,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Languages, '/languages')
     api.add_resource(Search, '/search')
     api.add_resource(Menu, '/menu')
-    api.add_resource(SuttaplexList, '/suttaplex-list/<path:uid>')
+    api.add_resource(SuttaplexList, '/suttaplex/<path:uid>')
     api.add_resource(Parallels, '/parallels/<path:uid>')
 
     app.register_blueprint(api_bp)
