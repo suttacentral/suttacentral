@@ -31,3 +31,66 @@ FOR pit IN pitaka
                 id: v._id
             }}
 '''
+
+
+# Takes 2 bind_vars: `language` and `uid` of root element
+SUTTAPLEX_LIST = '''
+FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
+    LET legacy_translations = (
+        FILTER e.type == 'text'
+        FOR text IN html_text
+            FILTER text.uid == v.uid
+            LET res = {
+                lang: text.lang,
+                author: text.author,
+                id: text._key
+                }
+            // Add title if it is in desired language
+            LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
+            // Add volpage info if it exists.
+            RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res
+        )
+    LET po_translations = (
+        FOR text IN po_strings
+            FILTER text.uid == v.uid
+            LET res = {
+                lang: text.lang,
+                author: text.author,
+                id: text._key
+            }
+            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
+            RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
+    )
+    
+    LET blurb = (
+        FOR blurb IN blurbs
+            FILTER blurb.uid == v.uid
+            LIMIT 1
+            RETURN blurb.blurb
+            
+    )[0]
+    
+    LET volpages = (
+        FOR text IN legacy_translations
+            FILTER HAS(text, "volpage")
+            RETURN text.volpage
+    )
+    
+    LET difficulty = (
+        FOR difficulty IN difficulties
+            FILTER difficulty.uid == v.uid
+            LIMIT 1
+            RETURN difficulty.difficulty
+    )[0]
+        
+    RETURN {
+        volpages: volpages,
+        uid: v.uid,
+        blurb: blurb,
+        difficulty: difficulty,
+        original_title: v.name,
+        type: e.type,
+        from: e._from,
+        translations: FLATTEN([po_translations, legacy_translations])
+    } 
+'''
