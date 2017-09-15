@@ -77,6 +77,10 @@
         font-weight: 900;
         font-size: 1.1em;
       }
+
+      .full-height {
+        height: 100vh;
+      }
     </style>
 
     <div class="node-container">
@@ -109,8 +113,18 @@
 
       <iron-collapse id="collapse" opened="{{opened}}">
         <template is="dom-if" if="{{data.open}}">
-          <template is="dom-repeat" items="{{data.children}}">
-            <paper-tree-node id="{{item.uid}}" data="{{item}}"></paper-tree-node>
+          <ul>
+            <template is="dom-repeat" items="{{data.children}}">
+              <li>
+                <paper-tree-node id="{{item.uid}}" data="{{item}}"></paper-tree-node>
+              </li>
+            </template>
+          </ul>
+        </template>
+        <!--Dummy element that enables rolldown animation with iron-collapse -->
+        <template is="dom-if" if="{{!data.open}}">
+          <template is="dom-if" if="{{data.children}}">
+            <div class="full-height"></div>
           </template>
         </template>
       </iron-collapse>
@@ -193,9 +207,8 @@
            * Display/Hide the children nodes.
            */
           toggleChildren() {
-//              this.shadowRoot.querySelector('#collapse').toggle();
               this.opened = !this.opened;
-              this.dispatchEvent(new CustomEvent('toggle', {detail: this, bubbles: true, composed: true}));
+              this.dispatchEvent(new CustomEvent('toggle', {detail: this}));
               this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
           }
 
