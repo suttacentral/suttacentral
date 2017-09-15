@@ -60,6 +60,10 @@
         padding-left: 32px;
       }
 
+      .small-indent {
+        padding-left: 4px;
+      }
+
       ul {
         margin: 0;
         padding-left: 0;
@@ -83,7 +87,7 @@
       }
     </style>
 
-    <div class="node-container">
+    <div class="node-container" class$="{{_computeSmallIndent()}}">
       <div class="node-row">
 
         <template is="dom-if" if="{{data.children}}">
@@ -113,13 +117,9 @@
 
       <iron-collapse id="collapse" opened="{{opened}}">
         <template is="dom-if" if="{{data.open}}">
-          <ul>
-            <template is="dom-repeat" items="{{data.children}}">
-              <li>
-                <paper-tree-node id="{{item.uid}}" data="{{item}}"></paper-tree-node>
-              </li>
-            </template>
-          </ul>
+          <template is="dom-repeat" items="{{data.children}}">
+            <paper-tree-node indented id="{{item.uid}}" data="{{item}}"></paper-tree-node>
+          </template>
         </template>
         <!--Dummy element that enables rolldown animation with iron-collapse -->
         <template is="dom-if" if="{{!data.open}}">
@@ -158,6 +158,10 @@
                       value: function() {
                           return null;
                       }
+                  },
+                  indented: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -176,6 +180,24 @@
 
           _computeIndent(data) {
               return (data.children || data.lang) ? "" : "indent";
+          }
+
+          _computeSmallIndent() {
+              return this.indented ? "small-indent" : "";
+          }
+
+          /**
+           * Checks if the element should be a link.
+           *
+           * @param uid the uid of the menu item, typically looks like this: "root/su1"
+           * @returns {boolean} Whether the node should be clickable and should lead to a text / suttaplex list
+           */
+          _computeClickable(uid) {
+              return uid.split("\/")[0] === "root";
+          }
+
+          _computeFontWeight(uid) {
+              return uid.split("\/")[0] === "grouping" ? "light-font" : "thick-font";
           }
 
           /**
@@ -212,19 +234,6 @@
               this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
           }
 
-          /**
-           * Checks if the element should be a link.
-           *
-           * @param uid the uid of the menu item, typically looks like this: "root/su1"
-           * @returns {boolean} Whether the node should be clickable and should lead to a text / suttaplex list
-           */
-          _computeClickable(uid) {
-              return uid.split("\/")[0] === "root";
-          }
-
-          _computeFontWeight(uid) {
-              return uid.split("\/")[0] === "grouping" ? "light-font" : "thick-font";
-          }
       }
 
       customElements.define(PaperTreeNodeSC.is, PaperTreeNodeSC);
