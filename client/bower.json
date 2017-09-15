@@ -46,7 +46,6 @@
     "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#^2.0.0",
     "iron-image": "PolymerElements/iron-image#^2.1.2",
     "paper-tooltip": "PolymerElements/paper-tooltip#^2.0.0",
-    "paper-tree": "PolymerElements/paper-tree#^1.0.3",
     "web-animations-js": "web-animations/web-animations-js#^2.3.1",
     "neon-animation": "PolymerElements/neon-animation#^2.0.1",
     "polymer": "Polymer/polymer#^2.0.0",
