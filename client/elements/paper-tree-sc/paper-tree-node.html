@@ -68,6 +68,15 @@
       li {
         list-style-type: none;
       }
+
+      .light-font {
+        font-weight: 400;
+      }
+
+      .thick-font {
+        font-weight: 900;
+        font-size: 1.1em;
+      }
     </style>
 
     <div class="node-container">
@@ -79,7 +88,7 @@
 
         <template is="dom-if" if="{{_computeClickable(data.uid)}}">
           <a href$="/{{data.uid}}">
-            <span class="node-name" on-tap="select">
+            <span class="node-name" on-tap="_select">
               <span class$="data-name {{_computeIndent(data)}}">{{data.name}}
                 <span class="data-lang">{{data.lang}}</span>
               </span>
@@ -88,8 +97,8 @@
         </template>
 
         <template is="dom-if" if="{{!_computeClickable(data.uid)}}">
-          <span class="node-name" on-tap="select">
-            <span class="data-name" inner-h-t-m-l="{{data.name}}">
+          <span class="node-name" on-tap="_select">
+            <span class$="data-name {{_computeFontWeight(data.uid)}}" inner-h-t-m-l="{{data.name}}">
               <span class="data-lang">{{data.lang}}
               </span>
             </span>
@@ -99,15 +108,11 @@
       </div>
 
       <iron-collapse id="collapse" opened="{{opened}}">
-        <ul class$={{!data.open}}>
-          <template is="dom-if" if="{{data.open}}">
-            <template is="dom-repeat" items="{{data.children}}">
-              <li>
-                <paper-tree-node id="{{item.uid}}" data="{{item}}"></paper-tree-node>
-              </li>
-            </template>
+        <template is="dom-if" if="{{data.open}}">
+          <template is="dom-repeat" items="{{data.children}}">
+            <paper-tree-node id="{{item.uid}}" data="{{item}}"></paper-tree-node>
           </template>
-        </ul>
+        </template>
       </iron-collapse>
 
     </div>
@@ -135,6 +140,7 @@
               return {
                   data: {
                       type: Object,
+                      notify: true,
                       value: function() {
                           return null;
                       }
@@ -161,14 +167,17 @@
           /**
            * Highlights node as the selected node.
            */
-          select() {
-              this.dispatchEvent(new CustomEvent("select", {detail: this}));
+          _select() {
+              console.log('_select');
+              this.dispatchEvent(new CustomEvent("select", {detail: this, composed: true, bubbles: true}));
+              this.toggleChildren();
           }
 
           /**
            * Returns the parent node. Returns `null` if root.
            */
           getParent() {
+              console.log('get Parent');
               return this.domHost.tagName === 'PAPER-TREE-NODE' ? this.domHost : null;
           }
 
@@ -176,15 +185,17 @@
            * Returns the children tree nodes.
            */
           getChildren() {
+              console.log('get children');
               return this.shadowRoot.querySelectorAll('paper-tree-node');
           }
 
           /**
            * Display/Hide the children nodes.
            */
-          toggleChildren(e) {
+          toggleChildren() {
+//              this.shadowRoot.querySelector('#collapse').toggle();
               this.opened = !this.opened;
-              this.dispatchEvent(new CustomEvent('toggle', {detail: this}));
+              this.dispatchEvent(new CustomEvent('toggle', {detail: this, bubbles: true, composed: true}));
               this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
           }
 
@@ -196,6 +207,10 @@
            */
           _computeClickable(uid) {
               return uid.split("\/")[0] === "root";
+          }
+
+          _computeFontWeight(uid) {
+              return uid.split("\/")[0] === "grouping" ? "light-font" : "thick-font";
           }
       }
 
