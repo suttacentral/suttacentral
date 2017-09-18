@@ -204,7 +204,6 @@
            * Highlights node as the selected node.
            */
           _select() {
-              console.log('_select');
               this.dispatchEvent(new CustomEvent("select", {detail: this, composed: true, bubbles: true}));
               this.toggleChildren();
           }
@@ -213,7 +212,6 @@
            * Returns the parent node. Returns `null` if root.
            */
           getParent() {
-              console.log('get Parent');
               return this.domHost.tagName === 'PAPER-TREE-NODE' ? this.domHost : null;
           }
 
@@ -221,7 +219,6 @@
            * Returns the children tree nodes.
            */
           getChildren() {
-              console.log('get children');
               return this.shadowRoot.querySelectorAll('paper-tree-node');
           }
 
