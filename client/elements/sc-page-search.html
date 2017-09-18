@@ -181,15 +181,16 @@ than ten results in total, a dropdown selection menu appears at the top.
                   responseData: Array,
                   lastSearchResults: {
                       type: Array,
-                      notify: true,
-                      value: []
+                      value: [],
+                      observer: '_populateList'
                   },
                   allSearchResults: {
                       type: Array,
                       value: []
                   },
                   visibleSearchResults: {
-
+                      type: Array,
+                      value: []
                   },
                   resultCount: {
                       type: Number,
@@ -206,20 +207,13 @@ than ten results in total, a dropdown selection menu appears at the top.
                   },
                   currentFilter: {
                       type: String,
-                      value: 'all',
-                      observer: '_filterAllItems'
+                      value: 'all'
                   },
-                  // Approximate height of one search result element, needed for endless scroll calculations.
-                  // Default is 210 (typical desktop item height), but it's recalculated in _shouldLoadMoreData().
                   searchResultElemHeight: {
                       type: Number,
-                      value: 210
+                      value: 170
                   }
               }
-          }
-
-          static get observers() {
-              return ['_populateList(lastSearchResults, responseData)']
           }
 
           ready() {
@@ -252,6 +246,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                       selectedView = "all";
               }
               this.currentFilter = selectedView;
+              this.set('visibleSearchResults', this._getFilteredItems(this.allSearchResults));
           }
 
           // After results have been loaded into memory, pushes items to an array.
@@ -263,20 +258,17 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.set('resultCount', results.hits.total);
           }
 
-          // returns elements that fit in the current filter
-          _getFilteredItems(elements) {
-              return this.allSearchResults.filter((item) => {
+          // Returns elements that fit in the current filter
+          _getFilteredItems(items) {
+              return items.filter((item) => {
                   return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all';
               });
-          }
-
-          _filterAllItems() {
-              this.set('visibleSearchResults', this._getFilteredItems(this.allSearchResults));
           }
 
           // Saves the fetched search results to be displayed in the iron-list.
           _populateList() {
               const items = this.lastSearchResults;
+              console.dir(items);
               if (items.length === 0) { return; }
               for (let i = 0; i < items.length; i++) {
                   if (!items[i]) { return; }
@@ -308,15 +300,10 @@ than ten results in total, a dropdown selection menu appears at the top.
           // This has some relatively expensive DOM querying, but at the moment is necessary because of this bug:
           // https://github.com/PolymerElements/iron-list/issues/290.
           _shouldLoadMoreData() {
-              if (!this.searchListNode) {
-                  return;
-              }
-              if (this.searchListNode.children.item(1)) {
-                  // update height of a single search result element (can differ by user device)
-                  this.searchResultElemHeight = this.searchListNode.children.item(1).clientHeight;
-              }
-              // the threshold is set to fire when 2 elements are still not in view.
-              const scrollThreshold = this.currentPage * (this.resultsPerLoad - 2) * this.searchResultElemHeight;
+              // the threshold is set to fire when 8 elements are still not in view.
+              const scrollThreshold = (this.visibleSearchResults.length - 5) * this.searchResultElemHeight;
+              console.log('threshold: ' + scrollThreshold);
+              console.log('scroll: ' + document.body.scrollTop);
               return document.body.scrollTop > scrollThreshold;
           }
 
@@ -335,7 +322,9 @@ than ten results in total, a dropdown selection menu appears at the top.
           }
 
           _calculateItemCategory(item) {
-              // TODO add 'dictionary' category
+              if (item.category === 'dictionary') {
+                  return item.category;
+              }
               if (item._source.is_root) {
                   return "root-text"
               }
