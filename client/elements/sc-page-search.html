@@ -124,7 +124,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                handle-as="json"
                loading="{{loadingResults}}"
                last-response="{{responseData}}"
-               on-response="didRespond"></iron-ajax>
+               on-response="_didRespond"></iron-ajax>
 
     <div class="loadingIndicator">
       <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
@@ -134,21 +134,21 @@ than ten results in total, a dropdown selection menu appears at the top.
       <main>
         <div class="results-head">
           <h1>
-            <span class="result-number">[[calculateNumber(responseData)]]</span>
+            <span class="result-number">[[_calculateNumber(responseData)]]</span>
             <span class="result-description">results for</span>
             <span class="result-term">[[searchQuery]]</span>
           </h1>
-          <search-menu class$="[[currentFilter]]"></search-menu>
+          <search-menu id="filter_menu"></search-menu>
         </div>
 
-        <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="loadMoreData"
+        <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="_loadMoreData"
                                scroll-target="document">
 
-          <iron-list id="search_result_list" items="[]" as="item" scroll-target="document">
+          <iron-list id="search_result_list" items="[[visibleSearchResults]]" as="item" scroll-target="document">
             <template>
               <div class="item" tabindex$="[[tabIndex]]">
                 <div class="pad">
-                  <a href="[[addLink(item)]]">
+                  <a href="[[_calculateLink(item)]]">
                     <div class="primary">
                       <h2>[[item._source.heading.title]]</h2>
                     </div>
@@ -177,25 +177,19 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           static get properties() {
               return {
-                  searchQuery: {
-                      type: String,
-                      notify: true
-                  },
-                  inputLanguage: String,
-                  currentFilter: {
-                      type: String,
-                      notify: true,
-                      computed: 'setFilterMenuVisibility(responseData)'
-                  },
-                  responseData: {
-                      type: Array,
-                      notify: true
-                  },
+                  searchQuery: String,
+                  responseData: Array,
                   lastSearchResults: {
                       type: Array,
                       notify: true,
-                      value: [],
-                      observer: 'populateList'
+                      value: []
+                  },
+                  allSearchResults: {
+                      type: Array,
+                      value: []
+                  },
+                  visibleSearchResults: {
+
                   },
                   resultCount: {
                       type: Number,
@@ -206,12 +200,16 @@ than ten results in total, a dropdown selection menu appears at the top.
                       type: Number,
                       value: 20
                   },
-                  pageNumber: {
+                  currentPage: {
                       type: Number,
                       value: 0
                   },
-                  // Height of one search result element, needed for endless scroll calculations.
-                  // Default is 210 for desktops, but it's recalculated in shouldLoadMoreData()
+                  currentFilter: {
+                      type: String,
+                      value: 'all'
+                  },
+                  // Approximate height of one search result element, needed for endless scroll calculations.
+                  // Default is 210 (typical desktop item height), but it's recalculated in _shouldLoadMoreData().
                   searchResultElemHeight: {
                       type: Number,
                       value: 210
@@ -219,53 +217,25 @@ than ten results in total, a dropdown selection menu appears at the top.
               }
           }
 
-          constructor() {
-              super();
-              this.lastSearchResults = [];
+          static get observers() {
+              return ['_populateList(lastSearchResults, responseData)']
           }
 
           ready() {
               super.ready();
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
-
-              this.addEventListener('eventFromSearchMenu', this.changeSearchView);
-
+              this.addEventListener('eventFromSearchMenu', this._calculateCurrentFilter);
               this.searchParams = {
                   limit: this.resultsPerLoad,
                   query: this.searchQuery
               };
-
               // Calls the input results when page is loaded
               this.shadowRoot.querySelector('#ajax').generateRequest();
           }
 
-          // Determines the number of search results that have been found.
-          calculateNumber(data) {
-              return data ? data.hits.total : 0;
-          }
-
-          // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
-          addLink(item) {
-              return (item.category === "dictionary") ? ("/define/" + item._source.heading.title) : item.url;
-          }
-
-          // If the number of results is less than 10 or there is only 1 category of results, the search filtering
-          // menu is not displayed.
-          setFilterMenuVisibility(data) {
-              const hits = data.hits.hits;
-              if (hits && hits.length > 10) {
-                  for (let i = 1; i < hits.length; i++) {
-                      if (hits[i].category !== hits[0].category) {
-                          return "";
-                      }
-                  }
-              }
-              return "nodisplay";
-          }
-
           // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
           // "translations" or "dictionaries"
-          changeSearchView(event) {
+          _calculateCurrentFilter(event) {
               let selectedView;
               switch (event.detail.searchView) {
                   case 1:
@@ -280,64 +250,107 @@ than ten results in total, a dropdown selection menu appears at the top.
                   default:
                       selectedView = "all";
               }
-              this.lastSearchResults = this.responseData.hits.hits.filter((searchResult) => {
-                  return searchResult.category === selectedView || selectedView === 'all';
-              });
+              this.currentFilter = selectedView;
+              this._filterItems();
           }
 
           // After results have been loaded into memory, pushes items to an array.
-          didRespond(e) {
+          // After first load, the lastSearchResults is equal to all the items in the
+          // search results and _populateList is called.
+          _didRespond(e) {
               const results = e.detail.response;
-              // After first load, the lastSearchResults is equal to all the items in the
-              // search results and populateList is called.
-              this.lastSearchResults = results.hits.hits;
-              this.resultCount = results.hits.total;
+              this.set('lastSearchResults', results.hits.hits);
+              this.set('resultCount', results.hits.total);
+          }
+
+          // Sets the visible items to elements that fit in the current filter
+          _filterItems() {
+              this.set('visibleSearchResults', this.allSearchResults.filter((item) => {
+                  return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all';
+              }));
           }
 
           // The items to be displayed are added to the iron-list and counts the numbers in the list.
-          populateList() {
-              const searchResultList = this.searchListNode;
+          _populateList() {
               if (this.lastSearchResults.length === 0) {
                   return;
               }
-              for (let i = 0; i < this.resultsPerLoad; i++) {
+              for (let i = 0; i < this.lastSearchResults.length; i++) {
                   if (!this.lastSearchResults[i]) {
                       return;
                   }
-                  searchResultList.push('items', this.lastSearchResults[i]);
+                  this.push('allSearchResults', this.lastSearchResults[i]);
               }
+              this._filterItems();
           }
 
           // Determines how the iron-scroll-threshold pushes the items to the iron-list
           // depending on the number of items to be loaded and on previously set parameters.
-          loadMoreData() {
+          _loadMoreData() {
               this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
-              if (!this.shouldLoadMoreData()) {
+              if (!this._shouldLoadMoreData()) {
                   return;
               }
               // Don't load once all items have been loaded.
               if (this.searchListNode.items.length >= this.resultCount) {
                   return;
               }
-              this.pageNumber++;
+              this.currentPage++;
               this.searchParams = {
                   limit: this.resultsPerLoad,
-                  offset: (this.pageNumber * this.resultsPerLoad),
+                  offset: (this.currentPage * this.resultsPerLoad),
                   query: this.searchQuery
               };
               this.shadowRoot.querySelector('#ajax').generateRequest();
           }
 
+          // Checks if the user scrolled past the required threshold to load more search results.
           // This has some relatively expensive DOM querying, but at the moment is necessary because of this bug:
           // https://github.com/PolymerElements/iron-list/issues/290.
-          shouldLoadMoreData() {
+          _shouldLoadMoreData() {
+              if (!this.searchListNode) {
+                  return;
+              }
               if (this.searchListNode.children.item(1)) {
                   // update height of a single search result element (can differ by user device)
                   this.searchResultElemHeight = this.searchListNode.children.item(1).clientHeight;
+                  console.log(this.searchResultElemHeight);
               }
               // the threshold is set to fire when 2 elements are still not in view.
-              const scrollThreshold = this.pageNumber * (this.resultsPerLoad - 2) * this.searchResultElemHeight;
+              const scrollThreshold = this.currentPage * (this.resultsPerLoad - 2) * this.searchResultElemHeight;
               return document.body.scrollTop > scrollThreshold;
+          }
+
+          // If the number of results is less than 10 or there is only 1 category of results, the search filtering
+          // menu is not displayed.
+          _calculateFilterMenuVisibility() {
+              const items = this.allSearchResults;
+              if (items.length > 10) {
+                  for (let i = 1; i < items.length; i++) {
+                      if (this._calculateItemCategory(items[i]) !== this._calculateItemCategory(items[0])) {
+                          return "";
+                      }
+                  }
+              }
+              return "nodisplay";
+          }
+
+          _calculateItemCategory(item) {
+              // TODO add 'dictionary' category
+              if (item._source.is_root) {
+                  return "root-text"
+              }
+              else return "translation";
+          }
+
+          // Determines the number of search results that have been found.
+          _calculateNumber(data) {
+              return data ? data.hits.total : 0;
+          }
+
+          // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
+          _calculateLink(item) {
+              return (item.category === "dictionary") ? ("/define/" + item._source.heading.title) : item.url;
           }
 
       }
