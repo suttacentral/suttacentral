@@ -206,7 +206,8 @@ than ten results in total, a dropdown selection menu appears at the top.
                   },
                   currentFilter: {
                       type: String,
-                      value: 'all'
+                      value: 'all',
+                      observer: '_filterAllItems'
                   },
                   // Approximate height of one search result element, needed for endless scroll calculations.
                   // Default is 210 (typical desktop item height), but it's recalculated in _shouldLoadMoreData().
@@ -251,7 +252,6 @@ than ten results in total, a dropdown selection menu appears at the top.
                       selectedView = "all";
               }
               this.currentFilter = selectedView;
-              this._filterItems();
           }
 
           // After results have been loaded into memory, pushes items to an array.
@@ -263,38 +263,38 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.set('resultCount', results.hits.total);
           }
 
-          // Sets the visible items to elements that fit in the current filter
-          _filterItems() {
-              this.set('visibleSearchResults', this.allSearchResults.filter((item) => {
+          // returns elements that fit in the current filter
+          _getFilteredItems(elements) {
+              return this.allSearchResults.filter((item) => {
                   return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all';
-              }));
+              });
           }
 
-          // The items to be displayed are added to the iron-list and counts the numbers in the list.
+          _filterAllItems() {
+              this.set('visibleSearchResults', this._getFilteredItems(this.allSearchResults));
+          }
+
+          // Saves the fetched search results to be displayed in the iron-list.
           _populateList() {
-              if (this.lastSearchResults.length === 0) {
-                  return;
-              }
-              for (let i = 0; i < this.lastSearchResults.length; i++) {
-                  if (!this.lastSearchResults[i]) {
-                      return;
+              const items = this.lastSearchResults;
+              if (items.length === 0) { return; }
+              for (let i = 0; i < items.length; i++) {
+                  if (!items[i]) { return; }
+                  this.push('allSearchResults', items[i]);
+                  // If the filter fits, add to visible items
+                  if (this._calculateItemCategory(items[i]) === this.currentFilter || this.currentFilter === 'all') {
+                      this.push('visibleSearchResults', items[i]);
                   }
-                  this.push('allSearchResults', this.lastSearchResults[i]);
               }
-              this._filterItems();
           }
 
           // Determines how the iron-scroll-threshold pushes the items to the iron-list
           // depending on the number of items to be loaded and on previously set parameters.
           _loadMoreData() {
               this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
-              if (!this._shouldLoadMoreData()) {
-                  return;
-              }
+              if (!this._shouldLoadMoreData()) { return; }
               // Don't load once all items have been loaded.
-              if (this.searchListNode.items.length >= this.resultCount) {
-                  return;
-              }
+              if (this.searchListNode.items.length >= this.resultCount) { return; }
               this.currentPage++;
               this.searchParams = {
                   limit: this.resultsPerLoad,
@@ -314,7 +314,6 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (this.searchListNode.children.item(1)) {
                   // update height of a single search result element (can differ by user device)
                   this.searchResultElemHeight = this.searchListNode.children.item(1).clientHeight;
-                  console.log(this.searchResultElemHeight);
               }
               // the threshold is set to fire when 2 elements are still not in view.
               const scrollThreshold = this.currentPage * (this.resultsPerLoad - 2) * this.searchResultElemHeight;
