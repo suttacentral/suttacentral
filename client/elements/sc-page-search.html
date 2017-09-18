@@ -6,7 +6,7 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 
-<link rel="import" href="menus/search-menu.html">
+<link rel="import" href="menus/search-filter-menu.html">
 
 <!--
 The search page opens when a search string is typed into the search-input-box in the toolbar.
@@ -87,7 +87,7 @@ than ten results in total, a dropdown selection menu appears at the top.
         margin: 0 0 20px 0;
       }
 
-      search-menu {
+      sc-search-filter-menu {
         margin-top: -20px;
       }
 
@@ -138,7 +138,7 @@ than ten results in total, a dropdown selection menu appears at the top.
             <span class="result-description">results for</span>
             <span class="result-term">[[searchQuery]]</span>
           </h1>
-          <search-menu id="filter_menu"></search-menu>
+          <sc-search-filter-menu id="filter_menu"></sc-search-filter-menu>
         </div>
 
         <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="_loadMoreData"
@@ -219,7 +219,7 @@ than ten results in total, a dropdown selection menu appears at the top.
           ready() {
               super.ready();
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
-              this.addEventListener('eventFromSearchMenu', this._calculateCurrentFilter);
+              this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
               this.searchParams = {
                   limit: this.resultsPerLoad,
                   query: this.searchQuery
@@ -268,7 +268,6 @@ than ten results in total, a dropdown selection menu appears at the top.
           // Saves the fetched search results to be displayed in the iron-list.
           _populateList() {
               const items = this.lastSearchResults;
-              console.dir(items);
               if (items.length === 0) { return; }
               for (let i = 0; i < items.length; i++) {
                   if (!items[i]) { return; }
@@ -303,8 +302,6 @@ than ten results in total, a dropdown selection menu appears at the top.
           _shouldLoadMoreData() {
               // the threshold is set to fire when 8 elements are still not in view.
               const scrollThreshold = (this.visibleSearchResults.length - 5) * this.searchResultElemHeight;
-              console.log('threshold: ' + scrollThreshold);
-              console.log('scroll: ' + document.body.scrollTop);
               return document.body.scrollTop > scrollThreshold;
           }
 
@@ -316,11 +313,12 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (items.length > 10) {
                   for (let i = 1; i < items.length; i++) {
                       if (this._calculateItemCategory(items[i]) !== this._calculateItemCategory(items[0])) {
-                          filterMenu.toggleClass('nodisplay', false);
+                          filterMenu.classList.remove('nodisplay');
+                          return;
                       }
                   }
               }
-              filterMenu.toggleClass('nodisplay', true);
+              filterMenu.classList.add('nodisplay');
           }
 
           _calculateItemCategory(item) {
