@@ -46,7 +46,6 @@ services:
       - '80:80'
     depends_on:
       - sc-flask
-    command: bash entry-point.sh
 
   sc-elasticsearch:
     build:
