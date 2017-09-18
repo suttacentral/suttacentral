@@ -159,7 +159,6 @@ def process_root_files(docs, edges, mapping, root_files, root_languages):
                               'type': edge_type})
 
 
-
 def process_category_files(category_files, db, edges, mapping):
     for category_file in category_files:
         category_name = category_file.stem
@@ -199,6 +198,15 @@ def process_category_files(category_files, db, edges, mapping):
             category_docs.append(entry)
         collection.truncate()
         collection.import_bulk(category_docs)
+
+    # add root language uid to everything.
+    db.aql.execute('''
+    FOR lang IN language
+        FOR sutta IN 1..10 OUTBOUND lang root_edges
+            UPDATE sutta WITH {
+                "lang": lang.uid
+            } IN root
+    ''')
 
 
 def add_root_docs_and_edges(change_tracker, db, structure_dir):
@@ -313,7 +321,7 @@ def print_once(msg: Any, antispam: Set):
 
 def generate_relationship_edges(change_tracker, relationship_dir, db):
     relationship_files = list(relationship_dir.glob('*.json'))
-    
+
     if not change_tracker.is_any_file_new_or_changed(relationship_files):
         return
 
@@ -322,7 +330,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
     for relationship_file in relationship_files:
         with relationship_file.open('r', encoding='utf8') as f:
             relationship_data.extend(json.load(f))
-    
+
     all_uids = set(db.aql.execute('''
     FOR doc IN root
         SORT doc.num
@@ -337,7 +345,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
             pass
         full = [uid for uid in uids if not uid.startswith('~')]
         partial = [uid for uid in uids if uid.startswith('~')]
-        
+
         # TODO: directionality has to be taken into account
         # for some relationship kinds
         for from_uid in full:
@@ -391,15 +399,45 @@ def load_json_file(db, change_tracker, json_file):
     if not change_tracker.is_file_new_or_changed(json_file):
         return
     collection_name = json_file.stem
-    
+
     with json_file.open() as f:
         data = json.load(f)
-    
+
     if 'uid' in data[0]:
         for d in data:
             d['_key'] = d['uid']
         db[collection_name].truncate()
         db[collection_name].import_bulk(data)
+
+
+def process_blurbs(db, additional_info_dir):
+    print('Loading blurbs')
+    file = (additional_info_dir / 'blurbs.json')
+    collection_name = 'blurbs'
+
+    with file.open('r', encoding='utf-8') as f:
+        blurb_info = json.load(f)
+
+    docs = [{'uid': uid, 'lang': lang, 'blurb': blurb}
+            for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in suttas.items()]
+
+    db.collection(collection_name).truncate()
+    db.collection('blurbs').import_bulk(docs)
+
+
+def process_difficulty(db, additional_info_dir):
+    print('Loading difficulties')
+    file = (additional_info_dir / 'difficulties.json')
+    collection_name = 'difficulties'
+
+    with file.open('r', encoding='utf-8') as f:
+        difficulty_info = json.load(f)
+
+    docs = [{'uid': uid, 'difficulty': lvl}
+            for x in difficulty_info.values() for uid, lvl in x.items()]
+
+    db.collection(collection_name).truncate()
+    db.collection('difficulties').import_bulk(docs)
 
 
 def run():
@@ -418,6 +456,7 @@ def run():
     relationship_dir = data_dir / 'relationship'
     misc_dir = data_dir / 'misc'
     po_dir = data_dir / 'po_text'
+    additional_info_dir = data_dir / 'additional-info'
 
     db_name = current_app.config.get('ARANGO_DB')
     db = conn.database(db_name)
@@ -426,7 +465,7 @@ def run():
     collect_data(po_dir, current_app.config.get('PO_REPO'))
 
     change_tracker = ChangeTracker(data_dir, db)
-    
+
     load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
 
     add_root_docs_and_edges(change_tracker, db, structure_dir)
@@ -436,5 +475,9 @@ def run():
     po.load_po_texts(change_tracker, po_dir, db)
 
     load_html_texts(change_tracker, data_dir, db, html_dir)
+
+    process_blurbs(db, additional_info_dir)
+
+    process_difficulty(db, additional_info_dir)
 
     change_tracker.update_mtimes()

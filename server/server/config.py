@@ -29,6 +29,8 @@ class Config:
     DATA_REPO = 'https://github.com/suttacentral/nextdata.git'
     PO_REPO = 'https://github.com/suttacentral/po_text.git'
 
+    DEFAULT_LANGUAGE = 'en'
+
 
 class DevelopmentConfig(Config):
     """Configuration for Development"""

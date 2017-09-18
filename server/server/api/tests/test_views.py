@@ -1,19 +1,19 @@
-from api.views import Languages, Menu
+from api.views import Languages, Menu, SuttaplexList, Parallels
 from app import api
-from common.utils import generate_languages, generate_root_edges, generate_roots
+from common import utils
 
 
 def test_languages(client):
-    languages = generate_languages()
+    languages = utils.generate_languages()
     languages.save()
     res = client.get(api.url_for(Languages))
     assert res.status_code == 200
 
 
 def test_menu(client):
-    roots = generate_roots(amount=10)
+    roots = utils.generate_roots(amount=10)
     roots.save()
-    edges = generate_root_edges(roots)
+    edges = utils.generate_root_edges(roots)
     edges.save()
 
     res = client.get(api.url_for(Menu))
@@ -23,3 +23,34 @@ def test_menu(client):
     assert res.status_code == 200
     assert isinstance(data, list)
     assert all([isinstance(x, dict) for x in data])
+
+
+def test_suttaplex_list(client):
+    utils.generate_html_text().save()
+    utils.generate_blurb().save()
+    utils.generate_po_markup().save()
+    utils.generate_po_string().save()
+    utils.generate_difficulty().save()
+    roots = utils.generate_roots()
+    roots.save()
+    utils.generate_root_edges(roots).save()
+
+    res = client.get(api.url_for(SuttaplexList, uid=roots[0].uid))
+
+    assert res.status_code == 200
+
+
+def test_parallels_view(client):
+    utils.generate_html_text().save()
+    utils.generate_po_markup().save()
+    utils.generate_po_string().save()
+    roots = utils.generate_roots()
+    roots.save()
+
+    uid = roots[0].uid
+
+    utils.generate_relationships(roots).save()
+
+    res = client.get(api.url_for(Parallels, uid=uid))
+
+    assert res.status_code == 200
