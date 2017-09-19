@@ -134,7 +134,7 @@ than ten results in total, a dropdown selection menu appears at the top.
       <main>
         <div class="results-head">
           <h1>
-            <span class="result-number">[[_calculateNumber(responseData)]]</span>
+            <span class="result-number">[[_calculateResultCount(responseData)]]</span>
             <span class="result-description">results for</span>
             <span class="result-term">[[searchQuery]]</span>
           </h1>
@@ -258,13 +258,6 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.set('resultCount', results.hits.total);
           }
 
-          // Returns elements that fit in the current filter
-          _getFilteredItems(items) {
-              return items.filter((item) => {
-                  return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all';
-              });
-          }
-
           // Saves the fetched search results to be displayed in the iron-list.
           _populateList() {
               const items = this.lastSearchResults;
@@ -273,7 +266,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                   if (!items[i]) { return; }
                   this.push('allSearchResults', items[i]);
                   // If the filter fits, add to visible items
-                  if (this._calculateItemCategory(items[i]) === this.currentFilter || this.currentFilter === 'all') {
+                  if (this._belongsToFilterScope(items[i])) {
                       this.push('visibleSearchResults', items[i]);
                   }
               }
@@ -294,6 +287,17 @@ than ten results in total, a dropdown selection menu appears at the top.
                   query: this.searchQuery
               };
               this.shadowRoot.querySelector('#ajax').generateRequest();
+          }
+          
+          // Returns elements that fit in the current filter
+          _getFilteredItems(items) {
+              return items.filter((item) => {
+                  return this._belongsToFilterScope(item);
+              });
+          }
+          
+          _belongsToFilterScope(item) {
+              return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all'
           }
 
           // Checks if the user scrolled past the required threshold to load more search results.
@@ -332,7 +336,7 @@ than ten results in total, a dropdown selection menu appears at the top.
           }
 
           // Determines the number of search results that have been found.
-          _calculateNumber(data) {
+          _calculateResultCount(data) {
               return data ? data.hits.total : 0;
           }
 
