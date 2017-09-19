@@ -5,7 +5,7 @@ from pathlib import Path
 
 from arango.exceptions import CollectionCreateError
 
-from app import app
+from flask import current_app
 from common.arangodb import get_client, get_db
 
 from .base import Migration
@@ -89,7 +89,7 @@ def _ensure_sutta_db_exists():
     Creates db if it does not exists yet.
     """
     conn = get_client()
-    db_name = app.config.get('ARANGO_DB')
+    db_name = current_app.config.get('ARANGO_DB')
 
     if db_name not in conn.databases():
         conn.create_database(db_name)

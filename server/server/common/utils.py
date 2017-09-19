@@ -1,8 +1,9 @@
-from typing import Callable, List
+import re
+from typing import Callable, List, Dict
 
 import decorator
 
-from app import app as my_app
+from flask import current_app
 from common.arangodb import get_client
 from common import models
 from migrations.runner import run_migrations
@@ -12,8 +13,8 @@ def remove_test_db():
     """
     Delete the test db.
     """
-    with my_app.app_context():
-        get_client().delete_database(my_app.config.get('ARANGO_DB'), ignore_missing=True)
+    with current_app.app_context():
+        get_client().delete_database(current_app.config.get('ARANGO_DB'), ignore_missing=True)
 
 
 def app_context(func: Callable):
@@ -21,7 +22,7 @@ def app_context(func: Callable):
     Run function in flask's app context.
     """
     def wrapper(func: Callable, *args, **kwargs):
-        with my_app.app_context():
+        with current_app.app_context():
             return func(*args, **kwargs)
     return decorator.decorator(wrapper, func)
 
@@ -90,3 +91,70 @@ def generate_difficulty(amount=5) -> models.ModelList:
 
 def generate_relationships(roots: List[models.Root]) -> models.ModelList:
     return models.Relationship.generate(roots)
+
+
+def uid_sort_key(string, reg=re.compile(r'\d+')):
+    """ Properly sorts UIDs
+    Examples:
+        >>> sorted(['dn1.1', 'dn1', 'dn2', 'dn1.2'], key=uid_sort_key)
+        ['dn1', 'dn1.1', 'dn1.2', 'dn2']
+    """
+    # With split, every second element will be the one in the capturing group.
+    return [int(x) for x in reg.findall(string)]
+
+
+def recursive_sort(data: List[Dict], sort_by: str, children='children', key: Callable=lambda x: x) -> List[Dict]:
+    """Sorts data in tree structure recursively and inplace.
+
+    Args:
+        data: Data to be sorted. List of dicts...
+        sort_by: By which key in the dictionary it should be sorted.
+        children: Key with children list.
+        key: Function to use as a sort key.
+
+    Returns:
+        data
+    """
+    def r_sort(data: List[Dict]):
+        data.sort(key=lambda x: key(x[sort_by]))
+
+        for entry in data:
+            if children in entry:
+                r_sort(entry[children])
+    r_sort(data)
+
+    return data
+
+
+def flat_tree(data: List[Dict], children='children') -> List[Dict]:
+    """ Flattens the data. Nesting level is practically unlimited.
+
+    Args:
+        data: Tree data structure as Lists of dicts.
+        children: Key in dicts where children are.
+
+    Returns:
+        Flatten representation of the tree.
+    Examples:
+        >>> data = [{
+        >>>     'uid': 12,
+        >>>     'children': [{
+        >>>             'uid': 11
+        >>>             'children': [...]
+        >>>             },
+        >>>             {'uid': 5}]
+        >>>
+        >>> }]
+        >>> flat_tree(data)
+        >>> [{'uid': 12}, {'uid': 5}, {'uid': 11}, ...]
+    """
+    results = []
+
+    def f_tree(data: List[Dict]):
+        for entry in data:
+            children_list = entry.pop(children, [])
+            results.append(entry)
+            f_tree(children_list)
+
+    f_tree(data)
+    return results

@@ -36,7 +36,7 @@ FOR pit IN pitaka
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
-FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
+FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
     LET legacy_translations = (
         FILTER e.type == 'text'
         FOR text IN html_text
@@ -91,7 +91,8 @@ FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
         blurb: blurb,
         difficulty: difficulty,
         original_title: v.name,
-        type: e.type,
+        root_lang: v.root_lang,
+        type: e.type ? e.type : 'grouping',
         from: e._from,
         translations: FLATTEN([po_translations, legacy_translations])
     }
