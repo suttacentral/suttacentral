@@ -177,7 +177,11 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           static get properties() {
               return {
-                  searchQuery: String,
+                  searchQuery: {
+                      type: String,
+                      value: '',
+                      observer: '_startNewSearch'
+                  },
                   responseData: Array,
                   lastSearchResults: {
                       type: Array,
@@ -220,12 +224,18 @@ than ten results in total, a dropdown selection menu appears at the top.
               super.ready();
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
               this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
+          }
+
+          _startNewSearch() {
+              this.splice('allSearchResults', 0, this.allSearchResults.length);
+              this.splice('visibleSearchResults', 0, this.visibleSearchResults.length);
+              this.set('currentPage', 0);
+              this.set('currentFilter', 'all');
               this.searchParams = {
                   limit: this.resultsPerLoad,
                   query: this.searchQuery
               };
-              // Calls the input results when page is loaded
-              this.shadowRoot.querySelector('#ajax').generateRequest();
+              this._generateRequest();
           }
 
           // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
@@ -246,7 +256,9 @@ than ten results in total, a dropdown selection menu appears at the top.
                       selectedView = "all";
               }
               this.currentFilter = selectedView;
-              this.set('visibleSearchResults', this._getFilteredItems(this.allSearchResults));
+              this.set('visibleSearchResults', this.allSearchResults.filter((item) => {
+                  return this._belongsToFilterScope(item);
+              }));
           }
 
           // After results have been loaded into memory, pushes items to an array.
@@ -286,22 +298,15 @@ than ten results in total, a dropdown selection menu appears at the top.
                   offset: (this.currentPage * this.resultsPerLoad),
                   query: this.searchQuery
               };
-              this.shadowRoot.querySelector('#ajax').generateRequest();
+              this._generateRequest();
           }
-          
-          // Returns elements that fit in the current filter
-          _getFilteredItems(items) {
-              return items.filter((item) => {
-                  return this._belongsToFilterScope(item);
-              });
-          }
-          
+
           _belongsToFilterScope(item) {
               return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all'
           }
 
           // Checks if the user scrolled past the required threshold to load more search results.
-          // This has some relatively expensive DOM querying, but at the moment is necessary because of this bug:
+          // This has some slightly expensive DOM querying, but at the moment is necessary because of this bug:
           // https://github.com/PolymerElements/iron-list/issues/290.
           _shouldLoadMoreData() {
               // the threshold is set to fire when 8 elements are still not in view.
@@ -333,6 +338,12 @@ than ten results in total, a dropdown selection menu appears at the top.
                   return "root-text"
               }
               else return "translation";
+          }
+
+          // Calls the input results when page is loaded
+          _generateRequest() {
+              if (!this.searchParams) { return; }
+              this.shadowRoot.querySelector('#ajax').generateRequest();
           }
 
           // Determines the number of search results that have been found.

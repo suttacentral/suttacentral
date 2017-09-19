@@ -17,9 +17,6 @@ through `app-route` and feeds all information through to the **page-selector.htm
 
 **app-drawer**
 
-Issues that need to be fixed:
-    - The paper-tree menus for Vinaya / Abhidhamma have to be made also.
-
 **iron-location** and **app-rout**
 These parse the url given but at the moment only deal with the following url:
     - search pages: `/search?query=searchterm`
@@ -129,6 +126,7 @@ Issues that need to be fixed:
           </div>
         </div>
       </app-drawer>
+
       <page-selector category="[[category]]" sub-path="[[subPathData.subpath]]" active-path="[[subPathIsActive]]"
                      input-language="[[inputLanguage]]" query-params="[[queryParams]]"></page-selector>
 
@@ -137,7 +135,9 @@ Issues that need to be fixed:
 
   <script>
       class SCNavdrawer extends Polymer.Element {
-          static get is() { return 'sc-navdrawer' }
+          static get is() {
+              return 'sc-navdrawer'
+          }
 
           static get properties() {
               return {
@@ -168,7 +168,7 @@ Issues that need to be fixed:
           ready() {
               super.ready();
               // listens to input from the language dropdown menu on the top right
-              this.addEventListener('languageSelection', (e) =>  this.changeLanguage(e));
+              this.addEventListener('languageSelection', (e) => this.changeLanguage(e));
               // listens to input from the search bar (i.e. a search-term) and feeds this to the iron-location
               this.addEventListener('search', (e) => this.initiateSearch(e));
               // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
@@ -197,8 +197,8 @@ Issues that need to be fixed:
           }
 
           initiateSearch(event) {
-              this.path = "/search";
-              this.query = `query=${event.detail}`;
+              this.set('path', "/search");
+              this.set('query', `query=${event.detail}`);
           }
       }
 
