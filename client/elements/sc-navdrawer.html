@@ -16,14 +16,8 @@ this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper
 through `app-route` and feeds all information through to the **page-selector.html**.
 
 **app-drawer**
-The `app-drawer` is populated with data from ../data/menu/discoursetree.json.
-This is just mockup data and not the real data.
 
 Issues that need to be fixed:
-    - The paper-tree menu needs to be populated with real data. An overview of what it should become you can find here:
-     https://discourse.suttacentral.net/t/overall-text-hierarchy-for-sc-next/6101
-    - The paper-tree menu needs to open at the relevant place when a url is given (right now it only opens when you go
-     through the menu but not when somebody f.i. types /dn1/bodhi as a url)
     - The paper-tree menus for Vinaya / Abhidhamma have to be made also.
 
 **iron-location** and **app-rout**
@@ -116,7 +110,7 @@ Issues that need to be fixed:
 
     <iron-ajax
         auto
-        url="../data/menu/discoursetree.json"
+        url="api/menu"
         handle-as="json"
         last-response="{{navList}}"></iron-ajax>
 
@@ -129,14 +123,9 @@ Issues that need to be fixed:
               <div id="wheel">☸</div>&nbsp;SuttaCentral</a>
           </div>
           <div id="container">
-            <paper-tree data='{{navList}}'></paper-tree>
-            <paper-tree data='{
-                  "name": "<b>Monastic Code</b>"
-              }'></paper-tree>
-            <paper-tree data='{
-                  "name": "<b>Abhidhamma</b>"
-              }'></paper-tree>
-
+            <template is="dom-repeat" items="{{navList}}">
+              <paper-tree data='{{item}}'></paper-tree>
+            </template>
           </div>
         </div>
       </app-drawer>
