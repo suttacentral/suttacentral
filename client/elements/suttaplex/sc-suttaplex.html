@@ -20,16 +20,7 @@
 <link rel="import" href="sc-view-parallels.html">
 
 <!--
-The suttaplex-card consists of 3 elements. **sc-suttaplex.html**, **sc-view-parallels.html** and **sc-parallels.html**.
-
-The **sc-suttaplex.html** loads a file for the relevant sutta from `../data/suttas`. Each sutta has it's own file here
-but this might have to be structured better. This is the actual outline of the card, including various titles and info
-in the relevant chosen site-language if it exists.
-This element then also loads the **sc-view-parallels.html**, which is the outline of the parallels-table.
-This parallels-table is further populated with the additional info for each relevant parallel sutta, which is loaded
-from `../data/suttas` in **sc-parallels.html**.
-
-If a card in the list is opened, this info is fired back to the `sc-view-suttaplex.html`.
+  Suttaplex card
 -->
 <dom-module id="sc-suttaplex" attributes="open url">
   <template>
@@ -62,21 +53,19 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
       .suttaplex-heading {
         @apply --paper-font-headline;
         @apply --sc-serif-font;
+        font-family: "Roboto";
       }
 
       .suttaplex-nerdy-row {
         @apply --paper-font-body2;
         color: var(--secondary-text-color);
+        font-weight: normal;
         white-space: nowrap;
         overflow: hidden;
       }
 
       .suttaplex-nerdy-row span {
         margin-right: 24px;
-      }
-
-      .suttaplex-nerdy-row span:nth-of-type(1) {
-        @apply --sc-all-small-caps;
       }
 
       .suttaplex-description {
@@ -148,238 +137,125 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
       }
     </style>
 
-    <iron-ajax id="ajax"
-               url="[[_computeURL(inputUrl)]]"
-               handle-as="json"
-               last-response="{{inputData}}"
-               last-error='{{notFound}}'></iron-ajax>
+    <paper-card class="suttaplex" id="[[item.uid]]">
+      <div class="card-content">
 
-    <template is="dom-if" if="[[notFound]]">
-      <p class="notfound">Sorry, the page your requested does not exist.</p>
-    </template>
-
-    <template is="dom-if" if="[[!notFound]]">
-      <paper-card class="suttaplex" id="[[inputData.url]]">
-        <div class="card-content">
-
-          <div class="suttaplex-head-container">
-            <h3 class="suttaplex-heading">[[_computeTitle(inputData)]]</h3>
-            <div class$="difficulty-icon [[inputData.level]]" title="Recommended for [[inputData.level]] students">
-              <iron-icon icon="[[_computeLevel(inputData.level)]]"></iron-icon>
-            </div>
+        <div class="suttaplex-head-container">
+          <h3 class="suttaplex-heading">[[item.original_title]]</h3>
+          <div class$="difficulty-icon [[item.difficulty.name]]" 
+               title="Recommended for [[item.difficulty.name]] students">
+            <iron-icon icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
           </div>
-
-          <div class="suttaplex-nerdy-row">
-            <span title="Original title" class$="[[_computeHide(inputData.titlepi)]]">[[inputData.titlepi]]</span>
-            <span title="SuttaCentral ID">[[inputData.id]]</span>
-            <template is="dom-if" if="[[inputData.volpage]]">
-              <template is="dom-if" if="[[inputData.bib]]">
-                <details>
-                  <summary>
-                    <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
-                    <span class="vol-page" title="Volume and page">[[inputData.volpage]]</span></summary>
-                  <p inner-h-t-m-l="[[inputData.bib]]"></p></details>
-              </template>
-              <template is="dom-if" if="[[!inputData.bib]]">
-                <span class="book" style="margin:0"><iron-icon icon="book"></iron-icon></span>
-                <span class="vol-page" title="Volume and page">[[inputData.volpage]]</span>
-              </template>
-            </template>
-            <sc-sutta-note note-data="[[inputData.note]]" class$="[[_computeHide(inputData.note)]]"></sc-sutta-note>
-          </div>
-
-          <p class$="suttaplex-description [[_computeHide(languageData.slug)]]" title="Description">
-            [[languageData.slug]]</p>
         </div>
 
-        <div class="card-actions">
-          <div class="card-actions-left">
-            <template is="dom-repeat" items="[[languageData.authors]]" as="author">
-              <paper-button flat title$="Go to a translation by [[author]]">
-                <a href="/[[inputData.url]]/[[author]]">[[author]]</a>
+        <div class="suttaplex-nerdy-row">
+          <span title="Original title" class$="[[_computeHide(item.original_title)]]">[[item.original_title]]</span>
+          <span title="SuttaCentral ID">[[_toUpper(item.uid)]]</span>
+          <template is="dom-if" if="[[item.volpages]]">
+            <span class="book" style="margin: 0"><iron-icon icon="book"></iron-icon></span>
+            <span class="vol-page" title="Volume and page">[[item.volpages]]</span>
+          </template>
+        </div>
+
+        <p class$="suttaplex-description [[_computeHide(item.blurb)]]" title="Description">
+          [[item.blurb]]</p>
+      </div>
+
+      <div class="card-actions">
+        <div class="card-actions-left">
+          <template is="dom-repeat" items="[[item.translations]]" as="translation">
+            <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
+              <paper-button flat title$="Go to a translation by [[translation.author]]">
+                <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]">[[translation.author]]</a>
               </paper-button>
             </template>
-            <div class="languagedrop">
-              <language-menu language-choice="[[inputData.languages]]" title-label="Other"
-                             input-language="[[inputLanguage]]" original-language="[[inputData.orlan]]"
-                             input-url="[[inputUrl]]"></language-menu>
-            </div>
-          </div>
-
-          <template is="dom-if" if="[[inputData.parallels]]">
-            <div class="card-actions-right">
-              <paper-menu-button horizontal-align="right" id="[[_toggleMoreIcon]]">
-                <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert"></paper-icon-button>
-                <div slot="dropdown-content"></div>
-                <paper-listbox slot="dropdown-content" tabindex="0">
-                  <more-par-menu input-url="[[inputUrl]]" input-data="[[inputData]]"
-                                 parallels-array="[[parallelsArray]]"></more-par-menu>
-                </paper-listbox>
-              </paper-menu-button>
-              <span class="heading" title="View Parallels & References" on-tap="_toggleOpened">
-                  <paper-icon-button icon="[[_toggleIcon]]" on-tap="passParams"></paper-icon-button>
-                  <paper-badge label="[[_parallelsNumber(inputData)]]"
-                               title$="This text has [[inputData.parallels]] parallels"></paper-badge>
-                </span>
-            </div>
           </template>
-
+          <div class="languagedrop">
+            <language-menu language-choice="[[item.translation]]" title-label="Other"
+                           input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
+                           input-url="[[_computeApiUrlEndpoint(item.uid, translation.author)]]"></language-menu>
+          </div>
         </div>
-        <template is="dom-if" if="[[inputData.parallels]]">
-          <iron-collapse id$="collapse[[inputUrl]]" opened="{{opened}}">
-            <sc-view-parallels show-parallel="[[inputData.parallels]]" input-url="[[inputUrl]]"
-                               input-language="[[inputLanguage]]"
-                               original-language="[[inputData.orlan]]"></sc-view-parallels>
-          </iron-collapse>
-        </template>
-      </paper-card>
-    </template>
+      </div>
+
+    </paper-card>
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-suttaplex',
-          properties: {
-
-              inputUrl: {
-                  type: String,
-                  observer: '_callAjax'
-              },
-              inputData: {
-                  type: Object,
-                  notify: true,
-                  value: function() {
-                      return {}
-                  }
-              },
-              inputLanguage: String,
-
-              // array with the relevant language data for the sutta i.e. title, slug, etc. in the chosen site language.
-              languageData: {
-                  type: Object,
-                  computed: '_computeLanguage(inputData,inputLanguage)'
-              },
-
-              opened: {
-                  type: Boolean,
-                  reflectToAttribute: true,
-                  notify: true
-              },
-
-              // If true, the suttaplex card should be open.
-              toggleRequest: Boolean,
-
-              _toggleIcon: {
-                  type: String,
-                  computed: '_computeToggleIcon(opened)'
-              },
-              _toggleMoreIcon: {
-                  type: String,
-                  computed: '_computeToggleMoreIcon(opened)'
-              },
-
-              // below arrays are for use in the more-par menu copy function.
-              parallelsArray: {
-                  type: Array,
-                  value: [],
-                  notify: true
-              },
-              parallelNumberArray: {
-                  type: Array,
-                  value: [],
-                  notify: true
-              }
-          },
-          // checks if the suttaplex card should be opened by default.
-          ready: function() {
-              if (this.toggleRequest) {
-                  this._toggleOpened()
-              }
-
-              // gets data for each parallel for use in the more-par menu copy function.
-              this.addEventListener('eventFromParallels', this._parallelData);
-          },
-          // populates array of parallels for this sutta for use in the more-par menu copy function.
-          _parallelData: function(e) {
-              const newparallel = e.detail.parid;
-              if (this.parallelNumberArray.indexOf(newparallel) === -1) {
-                  this.parallelNumberArray.push(newparallel);
-                  this.parallelsArray.push(e.detail);
-              }
-          },
-          // loads the data for the relevant sutta.
-          _callAjax: function() {
-              return (this.inputUrl) ? this.$.ajax.generateRequest() : "";
-          },
-          // returns the relevant card-header, either the title in the translated language, otherwise in pali or otherwise just the ID.
-          _computeTitle: function(inputData) {
-              if (inputData.titlelan) {
-                  return inputData.titlelan;
-              } else if (inputData.titlepi) {
-                  return inputData.titlepi;
-              } else {
-                  return inputData.id;
-              }
-          },
-          // general function to hide or display various elements.
-          _computeHide: function(checkText) {
-              return (!checkText) ? "hide-element" : "";
-          },
-          // returns the relevant icon for the expander
-          _computeToggleIcon: function(opened) {
-              return opened ? 'icons:expand-less' : 'icons:expand-more';
-          },
-          // shows the more-par menu when the expander is opened.
-          _computeToggleMoreIcon: function(opened) {
-              return opened ? '' : 'moremenu';
-          },
-          // toggle the expander
-          _toggleOpened: function(e) {
-              this.opened = !this.opened;
-              this.fire('toggle', this);
-          },
-          // check if the expander should be open or closed.
-          // on sutta-pages (i.e. /dn1 or /dn1/bodhi) it is open by default,
-          // on suttaplex-list pages (i.e. /dn or /dn/vagga1) it is closed by default.
-          _checkToggleRequest: function(toggleRequest) {
-              if (toggleRequest) {
-                  this._toggleOpened()
-              }
-          },
-          // lets the suttaplex-list know which suttaplex-card is open.
-          passParams: function() {
-              this.fire('toggleParallelNote', {open: this._toggleIcon, url: this.inputUrl});
-          },
-          // adds the 'tree'-icons to denote difficulty level if any.
-          _computeLevel: function(level) {
-              return level ? "sc-svg-icons:" + level : "";
-          },
-          // returns the url for the relevant sutta to display information for.
-          _computeURL: function(sutta) {
-              return `../../data/suttas/${sutta}.json`;
-          },
-          // creates an array with the relevant language data for the sutta i.e. title, slug, etc. in the chosen site language.
-          _computeLanguage: function(inputData, inputLanguage) {
-              let lanarray = "";
-              if (inputData) {
-                  if (inputData.languages) {
-                      for (let i = 0; i < inputData.languages.length; i = i + 1) {
-                          if (inputData.languages[i].id === inputLanguage) {
-                              lanarray = inputData.languages[i];
-                          }
-                      }
-                  }
-              }
-              return lanarray ? lanarray : "";
-          },
-          // returns the number of parallels to show in the paper-badge on the expander.
-          _parallelsNumber: function(inputData) {
-              let parlength = 0;
-              for (let i = 0; i < inputData.parallels.length; i = i + 1) {
-                  parlength = parlength + inputData.parallels[i].relations.length;
-              }
-              return parlength;
+      class Suttaplex extends Polymer.Element {
+          static get is() {
+              return 'sc-suttaplex'
           }
-      });
+
+          static get properties() {
+              return {
+                  opened: {
+                      type: Boolean,
+                      reflectToAttribute: true,
+                      notify: true
+                  },
+                  _toggleIcon: {
+                      type: String,
+                      computed: '_computeToggleIcon(opened)'
+                  },
+                  _toggleMoreIcon: {
+                      type: String,
+                      computed: '_computeToggleMoreIcon(opened)'
+                  },
+                  inputLanguage: {
+                      type: String,
+                      value: 'en' // Temporary hardcoded
+                  },
+                  level: String
+              }
+          }
+
+          // checks if the suttaplex card should be opened by default.
+          ready() {
+              super.ready();
+              this._toggleOpened()
+          }
+
+          // general function to hide or display various elements.
+          _computeHide(checkText) {
+              return (!checkText) ? "hide-element" : "";
+          }
+
+          // returns the relevant icon for the expander
+          _computeToggleIcon(opened) {
+              return opened ? 'icons:expand-less' : 'icons:expand-more';
+          }
+
+          // shows the more-par menu when the expander is opened.
+          _computeToggleMoreIcon(opened) {
+              return opened ? '' : 'moremenu';
+          }
+
+          // toggle the expander
+          _toggleOpened(e) {
+              this.opened = !this.opened;
+          }
+
+          // adds the 'tree'-icons to denote difficulty level if any.
+          _computeLevel(level) {
+              return level ? "sc-svg-icons:" + level : "";
+          }
+
+          // Computes API endpoint URL for given tranlation
+          _computeApiUrlEndpoint(uid, author) {
+              return `/sutta/${uid}/?author=${author}`
+          }
+
+          _isChosenLang(lang) {
+            return lang === this.inputLanguage
+          }
+
+          _toUpper(text){
+            console.log(text);
+            return text.toUpperCase()
+          }
+      }
+
+      customElements.define(Suttaplex.is, Suttaplex)
   </script>
 </dom-module>
