@@ -11,7 +11,7 @@ The two necessary conditions are:
 - The results are in more than one category of root texts, translations, and dictionaries
 - there are more than ten results in total
 -->
-<dom-module id="search-menu" attributes="searchView">
+<dom-module id="sc-search-filter-menu" attributes="searchView">
   <template>
     <style is="custom-style">
       :host {
@@ -32,25 +32,38 @@ The two necessary conditions are:
         <paper-item id="all">All</paper-item>
         <paper-item id="root-texts">Root texts</paper-item>
         <paper-item id="translations">Translations</paper-item>
-        <paper-item id="dictionaries">Dictionaries</paper-item>
+        <!-- TODO add dictionaries category -->
+        <!--<paper-item id="dictionaries">Dictionaries</paper-item>-->
       </paper-listbox>
     </paper-dropdown-menu>
+
   </template>
 
   <script>
-      Polymer({
-          is: 'search-menu',
-          properties: {
-              searchSelected: {
-                  type: String,
-                  value: "0",
-                  observer: '_searchChanged'
-              }
-          },
-          // Fires resulting choice to search page, where it is converted to a selection of the relevant items.
-          _searchChanged: function() {
-              this.fire('eventFromSearchMenu', {searchView: this.searchSelected});
+      class SCSearchFilterMenu extends Polymer.Element {
+          static get is() {
+              return 'sc-search-filter-menu';
           }
-      });
+
+          static get properties() {
+              return {
+                  searchSelected: {
+                      type: String,
+                      value: "0",
+                      observer: '_searchChanged'
+                  }
+              }
+          }
+
+          // Fires resulting choice to search page, where it is converted to a selection of the relevant items.
+          _searchChanged() {
+              this.dispatchEvent(new CustomEvent('search-filter-changed', {
+                  detail: {searchView: this.searchSelected},
+                  composed: true
+              }));
+          }
+      }
+
+      customElements.define(SCSearchFilterMenu.is, SCSearchFilterMenu);
   </script>
 </dom-module>

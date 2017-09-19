@@ -6,7 +6,7 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 
-<link rel="import" href="menus/search-menu.html">
+<link rel="import" href="menus/search-filter-menu.html">
 
 <!--
 The search page opens when a search string is typed into the search-input-box in the toolbar.
@@ -87,7 +87,7 @@ than ten results in total, a dropdown selection menu appears at the top.
         margin: 0 0 20px 0;
       }
 
-      search-menu {
+      sc-search-filter-menu {
         margin-top: -20px;
       }
 
@@ -124,7 +124,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                handle-as="json"
                loading="{{loadingResults}}"
                last-response="{{responseData}}"
-               on-response="didRespond"></iron-ajax>
+               on-response="_didRespond"></iron-ajax>
 
     <div class="loadingIndicator">
       <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
@@ -134,21 +134,21 @@ than ten results in total, a dropdown selection menu appears at the top.
       <main>
         <div class="results-head">
           <h1>
-            <span class="result-number">[[calculateNumber(responseData)]]</span>
+            <span class="result-number">[[_calculateResultCount(responseData)]]</span>
             <span class="result-description">results for</span>
             <span class="result-term">[[searchQuery]]</span>
           </h1>
-          <search-menu class$="[[currentFilter]]"></search-menu>
+          <sc-search-filter-menu id="filter_menu"></sc-search-filter-menu>
         </div>
 
-        <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="loadMoreData"
+        <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="_loadMoreData"
                                scroll-target="document">
 
-          <iron-list id="search_result_list" items="[]" as="item" scroll-target="document">
+          <iron-list id="search_result_list" items="[[visibleSearchResults]]" as="item" scroll-target="document">
             <template>
               <div class="item" tabindex$="[[tabIndex]]">
                 <div class="pad">
-                  <a href="[[addLink(item)]]">
+                  <a href="[[_calculateLink(item)]]">
                     <div class="primary">
                       <h2>[[item._source.heading.title]]</h2>
                     </div>
@@ -177,25 +177,20 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           static get properties() {
               return {
-                  searchQuery: {
-                      type: String,
-                      notify: true
-                  },
-                  inputLanguage: String,
-                  currentFilter: {
-                      type: String,
-                      notify: true,
-                      computed: 'setFilterMenuVisibility(responseData)'
-                  },
-                  responseData: {
-                      type: Array,
-                      notify: true
-                  },
+                  searchQuery: String,
+                  responseData: Array,
                   lastSearchResults: {
                       type: Array,
-                      notify: true,
                       value: [],
-                      observer: 'populateList'
+                      observer: '_populateList'
+                  },
+                  allSearchResults: {
+                      type: Array,
+                      value: []
+                  },
+                  visibleSearchResults: {
+                      type: Array,
+                      value: []
                   },
                   resultCount: {
                       type: Number,
@@ -206,66 +201,36 @@ than ten results in total, a dropdown selection menu appears at the top.
                       type: Number,
                       value: 20
                   },
-                  pageNumber: {
+                  currentPage: {
                       type: Number,
                       value: 0
                   },
-                  // Height of one search result element, needed for endless scroll calculations.
-                  // Default is 210 for desktops, but it's recalculated in shouldLoadMoreData()
+                  currentFilter: {
+                      type: String,
+                      value: 'all'
+                  },
                   searchResultElemHeight: {
                       type: Number,
-                      value: 210
+                      value: 170
                   }
               }
-          }
-
-          constructor() {
-              super();
-              this.lastSearchResults = [];
           }
 
           ready() {
               super.ready();
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
-
-              this.addEventListener('eventFromSearchMenu', this.changeSearchView);
-
+              this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
               this.searchParams = {
                   limit: this.resultsPerLoad,
                   query: this.searchQuery
               };
-
               // Calls the input results when page is loaded
               this.shadowRoot.querySelector('#ajax').generateRequest();
           }
 
-          // Determines the number of search results that have been found.
-          calculateNumber(data) {
-              return data ? data.hits.total : 0;
-          }
-
-          // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
-          addLink(item) {
-              return (item.category === "dictionary") ? ("/define/" + item._source.heading.title) : item.url;
-          }
-
-          // If the number of results is less than 10 or there is only 1 category of results, the search filtering
-          // menu is not displayed.
-          setFilterMenuVisibility(data) {
-              const hits = data.hits.hits;
-              if (hits && hits.length > 10) {
-                  for (let i = 1; i < hits.length; i++) {
-                      if (hits[i].category !== hits[0].category) {
-                          return "";
-                      }
-                  }
-              }
-              return "nodisplay";
-          }
-
           // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
           // "translations" or "dictionaries"
-          changeSearchView(event) {
+          _calculateCurrentFilter(event) {
               let selectedView;
               switch (event.detail.searchView) {
                   case 1:
@@ -280,64 +245,104 @@ than ten results in total, a dropdown selection menu appears at the top.
                   default:
                       selectedView = "all";
               }
-              this.lastSearchResults = this.responseData.hits.hits.filter((searchResult) => {
-                  return searchResult.category === selectedView || selectedView === 'all';
-              });
+              this.currentFilter = selectedView;
+              this.set('visibleSearchResults', this._getFilteredItems(this.allSearchResults));
           }
 
           // After results have been loaded into memory, pushes items to an array.
-          didRespond(e) {
+          // After first load, the lastSearchResults is equal to all the items in the
+          // search results and _populateList is called.
+          _didRespond(e) {
               const results = e.detail.response;
-              // After first load, the lastSearchResults is equal to all the items in the
-              // search results and populateList is called.
-              this.lastSearchResults = results.hits.hits;
-              this.resultCount = results.hits.total;
+              this.set('lastSearchResults', results.hits.hits);
+              this.set('resultCount', results.hits.total);
           }
 
-          // The items to be displayed are added to the iron-list and counts the numbers in the list.
-          populateList() {
-              const searchResultList = this.searchListNode;
-              if (this.lastSearchResults.length === 0) {
-                  return;
-              }
-              for (let i = 0; i < this.resultsPerLoad; i++) {
-                  if (!this.lastSearchResults[i]) {
-                      return;
+          // Saves the fetched search results to be displayed in the iron-list.
+          _populateList() {
+              const items = this.lastSearchResults;
+              if (items.length === 0) { return; }
+              for (let i = 0; i < items.length; i++) {
+                  if (!items[i]) { return; }
+                  this.push('allSearchResults', items[i]);
+                  // If the filter fits, add to visible items
+                  if (this._belongsToFilterScope(items[i])) {
+                      this.push('visibleSearchResults', items[i]);
                   }
-                  searchResultList.push('items', this.lastSearchResults[i]);
               }
+              this._setFilterMenuVisibility();
           }
 
           // Determines how the iron-scroll-threshold pushes the items to the iron-list
           // depending on the number of items to be loaded and on previously set parameters.
-          loadMoreData() {
+          _loadMoreData() {
               this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
-              if (!this.shouldLoadMoreData()) {
-                  return;
-              }
+              if (!this._shouldLoadMoreData()) { return; }
               // Don't load once all items have been loaded.
-              if (this.searchListNode.items.length >= this.resultCount) {
-                  return;
-              }
-              this.pageNumber++;
+              if (this.searchListNode.items.length >= this.resultCount) { return; }
+              this.currentPage++;
               this.searchParams = {
                   limit: this.resultsPerLoad,
-                  offset: (this.pageNumber * this.resultsPerLoad),
+                  offset: (this.currentPage * this.resultsPerLoad),
                   query: this.searchQuery
               };
               this.shadowRoot.querySelector('#ajax').generateRequest();
           }
+          
+          // Returns elements that fit in the current filter
+          _getFilteredItems(items) {
+              return items.filter((item) => {
+                  return this._belongsToFilterScope(item);
+              });
+          }
+          
+          _belongsToFilterScope(item) {
+              return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all'
+          }
 
+          // Checks if the user scrolled past the required threshold to load more search results.
           // This has some relatively expensive DOM querying, but at the moment is necessary because of this bug:
           // https://github.com/PolymerElements/iron-list/issues/290.
-          shouldLoadMoreData() {
-              if (this.searchListNode.children.item(1)) {
-                  // update height of a single search result element (can differ by user device)
-                  this.searchResultElemHeight = this.searchListNode.children.item(1).clientHeight;
-              }
-              // the threshold is set to fire when 2 elements are still not in view.
-              const scrollThreshold = this.pageNumber * (this.resultsPerLoad - 2) * this.searchResultElemHeight;
+          _shouldLoadMoreData() {
+              // the threshold is set to fire when 8 elements are still not in view.
+              const scrollThreshold = (this.visibleSearchResults.length - 5) * this.searchResultElemHeight;
               return document.body.scrollTop > scrollThreshold;
+          }
+
+          // If the number of results is less than 10 or there is only 1 category of results, the search filtering
+          // menu is not displayed.
+          _setFilterMenuVisibility() {
+              const filterMenu = this.shadowRoot.querySelector('#filter_menu');
+              const items = this.allSearchResults;
+              if (items.length > 10) {
+                  for (let i = 1; i < items.length; i++) {
+                      if (this._calculateItemCategory(items[i]) !== this._calculateItemCategory(items[0])) {
+                          filterMenu.classList.remove('nodisplay');
+                          return;
+                      }
+                  }
+              }
+              filterMenu.classList.add('nodisplay');
+          }
+
+          _calculateItemCategory(item) {
+              if (item.category === 'dictionary') {
+                  return item.category;
+              }
+              if (item._source.is_root) {
+                  return "root-text"
+              }
+              else return "translation";
+          }
+
+          // Determines the number of search results that have been found.
+          _calculateResultCount(data) {
+              return data ? data.hits.total : 0;
+          }
+
+          // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
+          _calculateLink(item) {
+              return (item.category === "dictionary") ? ("/define/" + item._source.heading.title) : item.url;
           }
 
       }
