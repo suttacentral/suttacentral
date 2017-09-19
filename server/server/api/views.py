@@ -1,10 +1,11 @@
+from collections import defaultdict
+
 from flask import request, current_app
 from flask_restful import Resource
 
 from common.arangodb import get_db
-from common.utils import recursive_sort, uid_sort_key, flat_tree
 from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS
-from collections import defaultdict
+from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort
 
 
 class Languages(Resource):
@@ -191,6 +192,7 @@ class SuttaplexList(Resource):
                 data.append(result)
             _id = f'root/{result["uid"]}'
             edges[_id] = result
+            result['translations'] = sorted(result['translations'], key=language_sort(result['root_lang']))
 
             if parent:
                 try:

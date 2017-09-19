@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="suttaplex/sc-title.html">
@@ -57,6 +58,14 @@
       .notfound {
         @apply --paper-font-display1;
       }
+
+      :host {
+        display: block;
+      }
+  
+      iron-list {
+        height: 100vh; /* don't use % values unless the parent element is sized. */
+      }
     </style>
 
     <iron-ajax
@@ -73,22 +82,24 @@
         <paper-spinner-lite active="{{loadingResultsv}}"></paper-spinner-lite>
       </div>
 
-      <template is="dom-repeat" items="{{responseData}}">
+      <iron-list items="{{responseData}}" scroll-target="document" id="suttaplex-iron">
+        <template>
+          <div>
+            <template is="dom-if" if="{{_isSuttaplex(item)}}">
+              <sc-suttaplex item="[[item]]">
+              </sc-suttaplex>
+            </template>
 
-        <template is="dom-if" if="{{_isSuttaplex(item)}}">
-          <sc-suttaplex item="[[item]]">
-          </sc-suttaplex>
+            <template is="dom-if" if="{{!_isSuttaplex(item)}}">
+              <section class$="[[_calcualteClass(item.type)]]">
+                <sc-title input-title="[[item.original_title]]" input-text="[[item.blurb]]"
+                  input-type="[[item.type]]">
+                </sc-title>
+              </section>
+            </template>
+          </div>
         </template>
-
-        <template is="dom-if" if="{{!_isSuttaplex(item)}}">
-          <section class$="[[_calcualteClass(item.type)]]">
-            <sc-title input-title="[[item.original_title]]" input-text="[[item.blurb]]"
-               input-type="[[item.type]]">
-            </sc-title>
-          </section>
-        </template>
-
-      </template>
+      </iron-list>
 
   </template>
   </div>
@@ -118,13 +129,20 @@
                   },
               }
           }
+          ready() {
+            super.ready();
+          }
 
           // Compute API endpoint url
           _getApiUrl(category) {
+              if (category.startsWith('root/')){
+                category = category.replace('root/', '')
+              }
               return `api/suttaplex/${category}`
           }
 
           _isSuttaplex(item) {
+              // this.shadowRoot.querySelector('#suttaplex-iron').fire('iron-resize', bubble=true);
               return item.type === 'text'
           }
 
@@ -132,7 +150,6 @@
             return itemType === 'grouping' ? 'node' : 'vagganode'
           }
       }
-
       customElements.define(ScViewSuttaplex.is, ScViewSuttaplex)
   </script>
 </dom-module>

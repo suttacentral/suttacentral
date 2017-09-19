@@ -53,7 +53,6 @@
       .suttaplex-heading {
         @apply --paper-font-headline;
         @apply --sc-serif-font;
-        font-family: "Roboto";
       }
 
       .suttaplex-nerdy-row {
@@ -165,18 +164,26 @@
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
-              <paper-button flat title$="Go to a translation by [[translation.author]]">
+              <paper-button flat title$="Go  to a translation by [[translation.author]]">
                 <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]">[[translation.author]]</a>
               </paper-button>
             </template>
           </template>
           <div class="languagedrop">
-            <language-menu language-choice="[[item.translation]]" title-label="Other"
+            <language-menu language-choice="[[item.translations]]" title-label="Other"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
                            input-url="[[_computeApiUrlEndpoint(item.uid, translation.author)]]"></language-menu>
           </div>
         </div>
+
+        <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened"></paper-icon-button>
       </div>
+
+      <template is="dom-if" if="[[parallelsOpened]]">
+        <iron-collapse no-animation id="collapse" opened="{{parallelsOpened}}">
+            <sc-view-parallels item-uid="[[item.uid]]"></sc-view-parallels>
+        </iron-collapse>
+      </template>
 
     </paper-card>
   </template>
@@ -189,6 +196,14 @@
 
           static get properties() {
               return {
+                  toggleIcon: {
+                      type: String,
+                      computed: '_computeToggleIcon(parallelsOpened)'
+                  },
+                  parallelsOpened: {
+                      type: Boolean,
+                      value: false
+                  },
                   opened: {
                       type: Boolean,
                       reflectToAttribute: true,
@@ -210,30 +225,19 @@
               }
           }
 
-          // checks if the suttaplex card should be opened by default.
-          ready() {
-              super.ready();
-              this._toggleOpened()
-          }
-
           // general function to hide or display various elements.
           _computeHide(checkText) {
               return (!checkText) ? "hide-element" : "";
           }
 
           // returns the relevant icon for the expander
-          _computeToggleIcon(opened) {
-              return opened ? 'icons:expand-less' : 'icons:expand-more';
+          _computeToggleIcon(parallelsOpened) {
+              return parallelsOpened ? 'icons:expand-less' : 'icons:expand-more';
           }
 
           // shows the more-par menu when the expander is opened.
           _computeToggleMoreIcon(opened) {
               return opened ? '' : 'moremenu';
-          }
-
-          // toggle the expander
-          _toggleOpened(e) {
-              this.opened = !this.opened;
           }
 
           // adds the 'tree'-icons to denote difficulty level if any.
@@ -245,14 +249,18 @@
           _computeApiUrlEndpoint(uid, author) {
               return `/sutta/${uid}/?author=${author}`
           }
-
+          
           _isChosenLang(lang) {
             return lang === this.inputLanguage
           }
 
           _toUpper(text){
-            console.log(text);
             return text.toUpperCase()
+          }
+
+          _toggleParallelsOpened() {
+            this.parallelsOpened = !this.parallelsOpened;
+            this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
           }
       }
 

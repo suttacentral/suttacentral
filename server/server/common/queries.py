@@ -55,6 +55,7 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
     LET po_translations = (
         FOR text IN po_strings
             FILTER text.uid == v.uid
+            SORT text.lang
             LET res = {
                 lang: text.lang,
                 author: text.author,

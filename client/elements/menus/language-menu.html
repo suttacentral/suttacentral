@@ -34,54 +34,119 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         color: var(--paper-green-a700);
       }
 
+      .orlang:hover {
+        cursor: pointer;
+        color: var(--paper-green-700)
+      }
+
       .hide-element {
         display: none;
       }
-    </style>
 
-    <paper-dropdown-menu class="custom" label="[[titleLabel]]" title="Select a translation in another language">
+      .iso-code {
+        color: var(--secondary-text-color);
+        @apply --paper-font-caption;
+        @apply --sc-sans-font;
+        position: absolute;
+        right: 15px;
+        margin-top: -34px;
+        margin-left: 10px;
+        text-transform: none;
+        pointer-events: none;
+      }
+
+      .language-choice-box:hover {
+        background-color: var(--paper-grey-200);
+        cursor: pointer;
+      }
+
+      .separator {
+        border: 0;
+        height: 0;
+        margin: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+    </style>
+    <paper-dropdown-menu vertical-align="top" class="custom" label="[[titleLabel]]" title="Select a translation in another language">
       <paper-listbox slot="dropdown-content">
-        <!-- List the original language first if not already listed-->
-        <paper-item class$="orlang [[_computeHide(originalLanguage)]]"><a href="/[[inputUrl]]/[[originalLanguage]]">[[originalLanguage]]</a>
+        <paper-item class$="orlang [[_computeHide(originalLanguage)]]" title="Original language">
+          <a href="/[[inputUrl]]/[[originalLanguage]]">[[originalLanguage]]</a>
         </paper-item>
         <template is="dom-repeat" items="[[languageChoice]]" as="language">
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
-            <template is="dom-repeat" items="[[language.authors]]" as="author">
-              <!-- List all the authors and languages if they exist and does not list the ones that are from the input language-->
-              <paper-item id="[[language.id]]"><a href="/[[inputUrl]]/[[author]]">[[author]]</a></paper-item>
-            </template>
+            <section class="language-choice-box">
+              <paper-item id='[[language.id]]' title="[[_languageTitle(language)]]">
+                <paper-item-body>
+                  <a href="/[[language.id]]/?author=[[language.author]]">[[_computeAuthorForList(language.author)]]</a>
+                </paper-item-body>
+              </paper-item>
+            </section>
+            <div class="iso-code">[[language.lang]]</div>
+            <hr class="separator">
           </template>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+
   </template>
 
   <script>
-      Polymer({
-          is: 'language-menu',
+      class SCLanguageMenu extends Polymer.Element {
+          static get is() {
+              return 'language-menu'
+          }
 
-          properties: {
+          static get properties() {
               // input of language-author array
-              languageChoice: {
-                  type: Array,
-                  notify: true
-              },
-              titleLabel: String,
-              inputLanguage: String,
-              originalLanguage: String,
-              inputUrl: String,
-              newLanguage: {
-                  type: String,
-                  computed: "_otherLanguage(languageChoice, inputLanguage)"
+              return {
+                  languageChoice: {
+                      type: Array,
+                      notify: true
+                  },
+                  titleLabel: String,
+                  inputLanguage: String,
+                  originalLanguage: String,
+                  inputUrl: String,
+                  newLanguage: {
+                      type: String,
+                      computed: "_otherLanguage(languageChoice, inputLanguage)"
+                  }
               }
-          },
-          _otherLanguage: function(languageChoice, inputLanguage) {
+          }
+
+          _otherLanguage(languageChoice, inputLanguage) {
               // does not list items that are from the inputLanguage because those are listed elsewhere.
-              return !!(languageChoice && languageChoice.id === inputLanguage);
-          },
-          _computeHide: function(checkText) {
+              return !!(languageChoice && languageChoice.lang === inputLanguage);
+          }
+
+          _computeHide(checkText) {
               return (!checkText) ? "hide-element" : checkText;
           }
-      });
+          
+          // If author name is too long it looks really bad in paper-item so just cut it.
+          shortenAuthor(author){
+              if (author.length > 16) {
+                  return `${author.substring(0, 15)}...`
+              } else {
+                  return author
+              }
+          }
+
+          computeAuthor(author) {
+              return author ? author : "Anonym"
+          }
+
+          _computeAuthorForList(author) {
+            return this.shortenAuthor(this.computeAuthor(author))
+          }
+
+          _languageTitle(language) {
+            return `Select '${language.lang}' translation by ${this.computeAuthor(language.author)}`
+          }
+      }
+
+      customElements.define(SCLanguageMenu.is, SCLanguageMenu)
   </script>
 </dom-module>
