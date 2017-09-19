@@ -5,87 +5,90 @@
 
 <dom-module id="paper-tree-node">
   <template>
-    <style>
-      :host(.selected) > .node-container > .node-row {
-        background: linear-gradient(to right, rgba(223, 153, 10, 1) 4px, rgba(223, 153, 10, 0) 4px);
-      }
+    <custom-style>
+      <style>
+        :host(.selected) > .node-container > .node-row {
+          background: linear-gradient(to right, rgba(223, 153, 10, 1) 4px, rgba(223, 153, 10, 0) 4px);
+        }
 
-      :host(.selected) > .node-container > .node-row > #actions {
-        display: inline-block;
-      }
+        :host(.selected) > .node-container > .node-row > #actions {
+          display: inline-block;
+        }
 
-      :host(.selected) > .node-container > .node-row a {
-        color: var(--sc-gold-500);
-      }
+        :host(.selected) > .node-container > .node-row a {
+          color: var(--sc-gold-500);
+        }
 
-      .node-row {
-        width: 100%;
-        white-space: nowrap;
-        @apply --paper-font-body2;
-        position: relative;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
+        .node-row {
+          width: 100%;
+          white-space: nowrap;
+          @apply --paper-font-body2;
+          position: relative;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+        }
 
-      .node-row a {
-        text-transform: none;
-        letter-spacing: 0;
-        text-decoration: none;
-        color: var(--paper-green-500);
-        cursor: pointer;
-      }
+        .node-row a {
+          text-transform: none;
+          letter-spacing: 0;
+          text-decoration: none;
+          color: var(--paper-green-500);
+          cursor: pointer;
+        }
 
-      paper-icon-button {
-        color: var(--disabled-text-color);
-        cursor: pointer;
-        float: right;
-        margin-right: 6px;
-      }
+        paper-icon-button {
+          color: var(--disabled-text-color);
+          cursor: pointer;
+          float: right;
+          margin-right: 6px;
+        }
 
-      .data-lang {
-        padding-left: 12px;
-        color: var(--secondary-text-color);
-        font-size: 12px;
-        font-weight: normal;
-      }
+        .data-lang {
+          padding-left: 12px;
+          color: var(--secondary-text-color);
+          font-size: 12px;
+          font-weight: normal;
+        }
 
-      .data-name {
-        padding: 4px 0 4px 16px;
-        margin: 4px 0;
-        display: inline-block;
-        width: 70%;
-      }
+        .data-name {
+          padding: 4px 0 4px 16px;
+          margin: 4px 0;
+          display: inline-block;
+          width: 70%;
+        }
 
-      .indent {
-        padding-left: 32px;
-      }
+        .indent {
+          padding-left: 32px;
+        }
 
-      .small-indent {
-        padding-left: 8px;
-      }
+        .small-indent {
+          padding-left: 8px;
+        }
 
-      ul {
-        margin: 0;
-        padding-left: 0;
-      }
+        ul {
+          margin: 0;
+          padding-left: 0;
+        }
 
-      li {
-        list-style-type: none;
-      }
+        li {
+          list-style-type: none;
+        }
 
-      .light-font {
-        font-weight: 400;
-      }
+        .light-font {
+          font-weight: 400;
+        }
 
-      .thick-font {
-        font-weight: 900;
-        font-size: 1.1em;
-      }
+        .thick-font {
+          font-weight: 900;
+          font-size: 1.1em;
+        }
 
-      .full-height {
-        height: 100vh;
-      }
-    </style>
+        .full-height {
+          height: 100vh;
+        }
+      </style>
+    </custom-style>
+
 
     <div class="node-container" class$="{{_computeSmallIndent()}}">
       <div class="node-row">
@@ -95,7 +98,7 @@
         </template>
 
         <template is="dom-if" if="{{_computeClickable(data.uid)}}">
-          <a href$="/{{data.uid}}">
+          <a href$="{{_computeLink(data.uid)}}">
             <span class="node-name" on-tap="_select">
               <span class$="data-name {{_computeIndent(data)}}">{{data.name}}
                 <span class="data-lang">{{data.lang}}</span>
@@ -201,11 +204,15 @@
               return uid.split("\/")[0] === "grouping" ? "light-font" : "thick-font";
           }
 
+          _computeLink(uid) {
+              return uid.substring(uid.indexOf("\/"), uid.length);
+          }
+
           /**
            * Highlights node as the selected node.
            */
           _select() {
-              this.dispatchEvent(new CustomEvent("select", {detail: this, composed: true, bubbles: true}));
+              this.dispatchEvent(new CustomEvent("select", { detail: this, composed: true, bubbles: true }));
               this.toggleChildren();
           }
 
@@ -228,7 +235,7 @@
            */
           toggleChildren() {
               this.opened = !this.opened;
-              this.dispatchEvent(new CustomEvent('toggle', {detail: this}));
+              this.dispatchEvent(new CustomEvent('toggle', { detail: this }));
               this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
           }
 
