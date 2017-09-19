@@ -14,7 +14,7 @@ services:
   sc-nginx:
     volumes:
       - ./client/:/opt/sc/static
-      - ./nginx/conf.d:/etc/nginx/conf.d
+    command: bash entry-point.dev.sh
 
   sc-arangodb:
     env_file:
@@ -30,3 +30,17 @@ services:
     ports:
     - '9200:9200'
     - '9300:9300'
+
+  sc-livereload:
+    build:
+      context: ./client/
+      dockerfile: Dockerfile-livereload
+    command: npm run dev
+    container_name: 'sc-livereload'
+    labels:
+      application: 'sc-livereload'
+    volumes:
+      - ./client/:/opt/sc/static
+    ports:
+      - '3000:3000'
+      - '3001:3001'

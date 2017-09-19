@@ -1,6 +1,5 @@
 *~
 __pycache__
-*.pyc
 .python-version
 data/segmented_texts
 .vscode
@@ -10,3 +9,4 @@ data/segmented_texts
 client/data/
 /data
 /server/nextdata/
+.DS_Store
