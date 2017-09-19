@@ -39,6 +39,7 @@
         color: var(--disabled-text-color);
         cursor: pointer;
         float: right;
+        margin-right: 6px;
       }
 
       .data-lang {
@@ -59,6 +60,10 @@
         padding-left: 32px;
       }
 
+      .small-indent {
+        padding-left: 4px;
+      }
+
       ul {
         margin: 0;
         padding-left: 0;
@@ -67,43 +72,76 @@
       li {
         list-style-type: none;
       }
+
+      .light-font {
+        font-weight: 400;
+      }
+
+      .thick-font {
+        font-weight: 900;
+        font-size: 1.1em;
+      }
+
+      .full-height {
+        height: 100vh;
+      }
     </style>
 
-
-    <div class="node-container">
+    <div class="node-container" class$="{{_computeSmallIndent()}}">
       <div class="node-row">
-        <paper-icon-button icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></paper-icon-button>
-        <template is="dom-if" if="{{data.uid}}">
-          <a href$="/{{data.uid}}"><span class="node-name" on-tap="select"><span
-              class$="data-name {{_computeIndent(data)}}">{{data.name}}<span
-              class="data-lang">{{data.lang}}</span></span></span></a>
+
+        <template is="dom-if" if="{{data.children}}">
+          <paper-icon-button icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></paper-icon-button>
         </template>
-        <template is="dom-if" if="{{!data.uid}}">
-          <span class="node-name" on-tap="select"><span class="data-name" inner-h-t-m-l="{{data.name}}"><span
-              class="data-lang">{{data.lang}}</span></span></span>
+
+        <template is="dom-if" if="{{_computeClickable(data.uid)}}">
+          <a href$="/{{data.uid}}">
+            <span class="node-name" on-tap="_select">
+              <span class$="data-name {{_computeIndent(data)}}">{{data.name}}
+                <span class="data-lang">{{data.lang}}</span>
+              </span>
+            </span>
+          </a>
+        </template>
+
+        <template is="dom-if" if="{{!_computeClickable(data.uid)}}">
+          <span class="node-name" on-tap="_select">
+            <span class$="data-name {{_computeFontWeight(data.uid)}}" inner-h-t-m-l="{{data.name}}">
+              <span class="data-lang">{{data.lang}}
+              </span>
+            </span>
+          </span>
         </template>
 
       </div>
+
       <iron-collapse id="collapse" opened="{{opened}}">
-        <ul class$={{!data.open}}>
+        <template is="dom-if" if="{{data.open}}">
           <template is="dom-repeat" items="{{data.children}}">
-            <li>
-              <paper-tree-node id="{{item.uid}}" data="{{item}}" actions="{{actions}}"></paper-tree-node>
-            </li>
+            <paper-tree-node indented id="{{item.uid}}" data="{{item}}"></paper-tree-node>
           </template>
-        </ul>
+        </template>
+        <!--Dummy element that enables rolldown animation with iron-collapse -->
+        <template is="dom-if" if="{{!data.open}}">
+          <template is="dom-if" if="{{data.children}}">
+            <div class="full-height"></div>
+          </template>
+        </template>
       </iron-collapse>
+
     </div>
   </template>
 
   <script>
-      Polymer({
-          is: 'paper-tree-node',
+      class PaperTreeNodeSC extends Polymer.Element {
+          static get is() {
+              return 'paper-tree-node';
+          }
 
-          properties: {
+          static get properties() {
 
               /**
-               * Data hold by this node (contains the children).
+               * Data held by this node (contains the children).
                *
                * Specific data:
                *
@@ -112,19 +150,21 @@
                * - `data.open`: boolean telling whether the node is expanded or not.
                * - `data.children` array containing the children of the node.
                */
-              data: {
-                  type: Object,
-                  value: function() {
-                      return null;
-                  }
-              },
-          },
 
-          /**
-           * The `select` event is fired whenever `select()` is called on the node.
-           *
-           * @event select
-           */
+              return {
+                  data: {
+                      type: Object,
+                      notify: true,
+                      value: function() {
+                          return null;
+                      }
+                  },
+                  indented: {
+                      type: Boolean,
+                      value: false
+                  }
+              }
+          }
 
           /**
            * Returns the necessary classes.
@@ -132,45 +172,67 @@
            * @param {object} change An object containing the property that changed and its value.
            * @return {string} The class name indicating whether the node is open or closed
            */
-          _computeIcon: function(change) {
+          _computeIcon(change) {
               const open = change && change.base && change.base.open;
               const children = change && change.base && change.base.children;
               return ((open && children && children.length) ? 'expand-less' : children && children.length ? 'expand-more' : '');
-          },
-          _computeIndent: function(data) {
+          }
+
+          _computeIndent(data) {
               return (data.children || data.lang) ? "" : "indent";
-          },
+          }
+
+          _computeSmallIndent() {
+              return this.indented ? "small-indent" : "";
+          }
+
+          /**
+           * Checks if the element should be a link.
+           *
+           * @param uid the uid of the menu item, typically looks like this: "root/su1"
+           * @returns {boolean} Whether the node should be clickable and should lead to a text / suttaplex list
+           */
+          _computeClickable(uid) {
+              return uid.split("\/")[0] === "root";
+          }
+
+          _computeFontWeight(uid) {
+              return uid.split("\/")[0] === "grouping" ? "light-font" : "thick-font";
+          }
+
           /**
            * Highlights node as the selected node.
            */
-          select: function() {
-              this.fire("select", this);
-          },
+          _select() {
+              this.dispatchEvent(new CustomEvent("select", {detail: this, composed: true, bubbles: true}));
+              this.toggleChildren();
+          }
 
           /**
            * Returns the parent node. Returns `null` if root.
            */
-          getParent: function() {
+          getParent() {
               return this.domHost.tagName === 'PAPER-TREE-NODE' ? this.domHost : null;
-          },
+          }
 
           /**
            * Returns the children tree nodes.
            */
-          getChildren: function() {
-              return Polymer.dom(this.root).querySelectorAll('paper-tree-node');
-          },
+          getChildren() {
+              return this.shadowRoot.querySelectorAll('paper-tree-node');
+          }
 
           /**
            * Display/Hide the children nodes.
            */
-          toggleChildren: function(e) {
+          toggleChildren() {
               this.opened = !this.opened;
-              this.fire('toggle', this);
+              this.dispatchEvent(new CustomEvent('toggle', {detail: this}));
               this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
           }
 
-      });
+      }
 
+      customElements.define(PaperTreeNodeSC.is, PaperTreeNodeSC);
   </script>
 </dom-module>
