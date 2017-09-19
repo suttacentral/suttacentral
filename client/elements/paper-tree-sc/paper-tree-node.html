@@ -61,7 +61,7 @@
       }
 
       .small-indent {
-        padding-left: 4px;
+        padding-left: 8px;
       }
 
       ul {
@@ -179,7 +179,8 @@
           }
 
           _computeIndent(data) {
-              return (data.children || data.lang) ? "" : "indent";
+              // TODO figure out the indentation here
+//              return (data.children || data.lang) ? "" : "indent";
           }
 
           _computeSmallIndent() {

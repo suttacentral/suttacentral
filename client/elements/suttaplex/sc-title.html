@@ -38,7 +38,7 @@
 
     <div class="node-head-container">
       <h1 class$=".no-margin [[_calculateTitleClass(inputType)]]">[[inputTitle]]</h1>
-      <div>   
+      <div>
         <template is="dom-if" if="[[inputText]]">
           <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
         </template>
@@ -91,7 +91,7 @@
           }
 
           _calculateTitleClass(inputType) {
-              return inputType == 'grouping' ? 'node-top-heading' : 'node-secondary-heading';
+              return inputType === 'grouping' ? 'node-top-heading' : 'node-secondary-heading';
           }
 
           _splitText(text){
