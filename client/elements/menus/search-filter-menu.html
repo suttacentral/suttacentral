@@ -59,7 +59,8 @@ The two necessary conditions are:
           _searchChanged() {
               this.dispatchEvent(new CustomEvent('search-filter-changed', {
                   detail: {searchView: this.searchSelected},
-                  composed: true
+                  composed: true,
+                  bubbles: true
               }));
           }
       }
