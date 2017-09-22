@@ -94,9 +94,8 @@
               return inputType === 'grouping' ? 'node-top-heading' : 'node-secondary-heading';
           }
 
-          _splitText(text) {
-              if (!text) return [];
-              return `<p>${text.split("\n").join("</p><p>")}</p>`;
+          _splitText(text){
+            return `<p>${text.split("\n").join("</p><p>")}</p>`;
           }
 
       }
