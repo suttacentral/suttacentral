@@ -146,7 +146,7 @@ delete-database:
 index-elasticsearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"
 
-preview-env:
+run-preview-env:
 	@git pull
 	@make rebuild-all
 	@make run-dev-no-logs
