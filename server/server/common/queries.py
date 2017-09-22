@@ -1,4 +1,5 @@
 LANGUAGES = '''FOR l in language
+                SORT l.name
                 RETURN {"_rev": l._rev, "uid": l.uid, "name": l.name, "iso_code": l.iso_code}'''
 
 TEXTS_BY_LANG = '''
@@ -36,7 +37,7 @@ FOR pit IN pitaka
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
-FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
+FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
     LET legacy_translations = (
         FILTER e.type == 'text'
         FOR text IN html_text
@@ -55,6 +56,7 @@ FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
     LET po_translations = (
         FOR text IN po_strings
             FILTER text.uid == v.uid
+            SORT text.lang
             LET res = {
                 lang: text.lang,
                 author: text.author,
@@ -91,7 +93,8 @@ FOR v, e, p IN 1..6 OUTBOUND @uid `root_edges` OPTIONS {bfs: true}
         blurb: blurb,
         difficulty: difficulty,
         original_title: v.name,
-        type: e.type,
+        root_lang: v.root_lang,
+        type: e.type ? e.type : 'grouping',
         from: e._from,
         translations: FLATTEN([po_translations, legacy_translations])
     }
