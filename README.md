@@ -91,6 +91,7 @@ There is a Makefile with following commands:
 * `load-data` - Loads data from `server/nextdata` folder to the db
 * `load-data-force` - Force fresh load of data
 * `index-elasticsearch` - Index elasticsearch with data from the db
+* `preview-env` - Starts the most recent environment.
 
 
 ## 1.6 Working with ArangoDB
