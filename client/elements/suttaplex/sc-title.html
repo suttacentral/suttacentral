@@ -1,0 +1,105 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<dom-module id="sc-title">
+  <template>
+    <style>
+      .no-margin {
+        margin: 0;
+      }
+
+      .node-head-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+
+      .node-top-heading {
+        @apply --paper-font-headline;
+        @apply --sc-sans-font;
+        display: flex;
+        justify-content: space-between;
+        border-top: 0;
+      }
+
+      .node-secondary-heading {
+        @apply --paper-font-title;
+        @apply --sc-sans-font;
+      }
+
+      .node-description {
+        @apply --paper-font-body1;
+        @apply --sc-sans-font;
+      }
+
+    </style>
+
+    <div class="node-head-container">
+      <h1 class$=".no-margin [[_calculateTitleClass(inputType)]]">[[inputTitle]]</h1>
+      <div>   
+        <template is="dom-if" if="[[inputText]]">
+          <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
+        </template>
+      </div>
+      
+    </div>
+
+    <template is="dom-if" if="[[inputText]]">
+      <iron-collapse no-animation id="collapse" opened="{{opened}}">
+        <div class="node-description" inner-h-t-m-l="[[inputTextToHtml]]"></div>
+      </iron-collapse>
+    </template>
+
+  </template>
+
+  <script>
+      class SCTitle extends Polymer.Element {
+          static get is() {
+              return 'sc-title';
+          }
+
+          static get properties() {
+              return {
+                inputTitle: String,
+                inputText: String,
+                inputType: String,
+                opened: {
+                  type: Boolean,
+                  value: false,
+                  notify: true
+                },
+                toggleIcon: {
+                  type: String,
+                  computed: '_computeToggleIcon(opened)'
+                },
+                inputTextToHtml: {
+                  type: Array,
+                  computed: '_splitText(inputText)'
+                }
+              }
+          }
+
+          _computeToggleIcon() {
+            return this.opened ? 'icons:expand-less' : 'icons:expand-more';
+          }
+          
+          _toggleOpened(e) {
+              this.opened = !this.opened;
+              this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
+          }
+
+          _calculateTitleClass(inputType) {
+              return inputType == 'grouping' ? 'node-top-heading' : 'node-secondary-heading';
+          }
+
+          _splitText(text){
+            return `<p>${text.split("\n").join("</p><p>")}</p>`;
+          }
+
+      }
+      customElements.define(SCTitle.is, SCTitle);
+  </script>
+</dom-module>
+

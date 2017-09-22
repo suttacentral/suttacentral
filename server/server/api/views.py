@@ -1,9 +1,11 @@
+from collections import defaultdict
+
 from flask import request, current_app
 from flask_restful import Resource
 
 from common.arangodb import get_db
 from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS
-from collections import defaultdict
+from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort
 
 
 class Languages(Resource):
@@ -111,7 +113,12 @@ class Menu(Resource):
 class SuttaplexList(Resource):
     def get(self, uid):
         """
-        Send suttaplex for given uid
+        Send suttaplex for given uid. It is represented in flat list structure where order matters.
+        [vagga, vagga, text, text] represents:
+        vagga
+            vagga
+                text
+                text
         ---
         parameters:
            - in: path
@@ -145,11 +152,6 @@ class SuttaplexList(Resource):
                         type: array
                         items:
                             $ref: '#/definitions/Translation'
-                    children:
-                        required: false
-                        type: array
-                        items:
-                            type: object
             Translation:
                 type: object
                 properties:
@@ -170,23 +172,37 @@ class SuttaplexList(Resource):
         results = db.aql.execute(SUTTAPLEX_LIST,
                                  bind_vars={'language': language, 'uid': uid})
 
+        difficulties = {
+            3: 'advanced',
+            2: 'intermediate',
+            1: 'beginner'
+        }
+
         data = []
         edges = {}
         for result in results:
             _from = result.pop('from')
+            if result['difficulty']:
+                result['difficulty'] = {'name': difficulties[result['difficulty']],
+                                        'level': result['difficulty']}
             parent = None
             try:
                 parent = edges[_from]
             except KeyError:
-                _id = f'root/{result["uid"]}'
-                edges[_id] = result
                 data.append(result)
+            _id = f'root/{result["uid"]}'
+            edges[_id] = result
+            result['translations'] = sorted(result['translations'], key=language_sort(result['root_lang']))
 
             if parent:
                 try:
                     parent['children'].append(result)
                 except KeyError:
                     parent['children'] = [result]
+
+        recursive_sort(data, 'uid', key=uid_sort_key)  # Sorts data inplace
+
+        data = flat_tree(data)
 
         return data, 200
 
