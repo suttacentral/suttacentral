@@ -21,8 +21,10 @@ def app_context(func: Callable):
     """
     Run function in flask's app context.
     """
+    from app import app  # It needs to be here
+
     def wrapper(func: Callable, *args, **kwargs):
-        with current_app.app_context():
+        with app.app_context():
             return func(*args, **kwargs)
     return decorator.decorator(wrapper, func)
 
@@ -33,7 +35,8 @@ def empty_arango(func: Callable):
     """
     def remove_existing_database(func: Callable, *args, **kwargs):
 
-        remove_test_db()
+        with current_app.app_context():
+            remove_test_db()
 
         try:
             output = func(*args, **kwargs)

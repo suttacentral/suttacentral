@@ -10,7 +10,7 @@ sys.path.append(myPath)
 
 from app import app as my_app  # isort:skip
 from common.arangodb import get_client  # isort:skip
-from common.utils import remove_test_db  # isort:skip
+from common.utils import remove_test_db, app_context  # isort:skip
 from migrations.runner import run_migrations  # isort:skip
 
 
@@ -33,7 +33,7 @@ def migration(request):
     """
     Runs migrations before all tests and delete database at the end.
     """
-    remove_test_db()
     with my_app.app_context():
+        remove_test_db()
         run_migrations()
-    request.addfinalizer(remove_test_db)
+        request.addfinalizer(app_context(remove_test_db))
