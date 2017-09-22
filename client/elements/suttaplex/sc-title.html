@@ -19,6 +19,9 @@
       .node-top-heading {
         @apply --paper-font-headline;
         @apply --sc-sans-font;
+        display: flex;
+        justify-content: space-between;
+        border-top: 0
       }
 
       .node-secondary-heading {
@@ -35,10 +38,11 @@
 
     <div class="node-head-container">
       <h1 class$="[[_calculateTitleClass(inputType)]]">[[inputTitle]]</h1>
-
-      <template is="dom-if" if="[[inputText]]">
-        <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
-      </template>
+      <div>   
+        <template is="dom-if" if="[[inputText]]">
+          <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
+        </template>
+      </div>
       
     </div>
 
