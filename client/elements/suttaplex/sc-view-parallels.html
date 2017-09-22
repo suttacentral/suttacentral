@@ -13,49 +13,49 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 -->
 <dom-module id="sc-view-parallels">
   <template>
-      <style include="sc-suttaplex-styles">
-        .parallels-expanded {
-          padding: 16px;
-        }
+    <style include="sc-suttaplex-styles">
+      .parallels-expanded {
+        padding: 16px;
+      }
 
-        .parallels-table {
-          border-collapse: separate;
-          border-spacing: 8px 8px;
-          margin: 0 auto;
-          width: 80%;
-        }
+      .parallels-table {
+        border-collapse: separate;
+        border-spacing: 8px 8px;
+        margin: 0 auto;
+        width: 80%;
+      }
 
-        .parallels-root-cell,
-        .parallels-parallel-cell {
-          border: 1px solid rgba(0, 0, 0, 0.12);
-          border-radius: 2px;
-          padding: 8px 12px 2px;
-        }
+      .parallels-root-cell,
+      .parallels-parallel-cell {
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 2px;
+        padding: 8px 12px 2px;
+      }
 
-        .parallels-parallel-cell {
-          width: 100%;
-        }
+      .parallels-parallel-cell {
+        width: 100%;
+      }
 
-        .parallels-root-cell {
-          text-align: center;
-        }
+      .parallels-root-cell {
+        text-align: center;
+      }
 
-        .parallels-root-id {
-          text-transform: uppercase;
-          @apply --paper-font-subhead;
-          @apply --sc-serif-font;
-        }
+      .parallels-root-id {
+        text-transform: uppercase;
+        @apply --paper-font-subhead;
+        @apply --sc-serif-font;
+      }
 
-        .paper-spinner {
-          --paper-spinner-color: var(--sc-gold-500);
-          left: 50%;
-        }
+      .paper-spinner {
+        --paper-spinner-color: var(--sc-gold-500);
+        left: 50%;
+      }
 
-        .parallels-table-body {
-          display: block;
-          margin-bottom: 8px;
-        }
-      </style>
+      .parallels-table-body {
+        display: block;
+        margin-bottom: 8px;
+      }
+    </style>
 
     <iron-ajax id="ajax"
                url="[[_getAPIEndpoint(itemUid)]]"
@@ -78,7 +78,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
             <td class="parallels-root-cell parallels-table-cell" rowspan$="[[_getRowspan(rootId)]]">
               <div class="parallels-root-id root" title="SuttaCentral ID">[[rootId]]</div>
               <paper-button flat class="dense" title="Go to text in original language">
-                <a href="">[[_getOriginalLanguage(rootId)]]</a>
+                <a href="">[[_computeFullLangName(rootLang)]]</a>
               </paper-button>
             </td>
             <td class="parallels-relation-cell">
@@ -124,6 +124,16 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                   loadingResults: {
                       type: Boolean,
                       notify: true
+                  },
+                  rootLang: String,
+                  rootLangMappings: {
+                      type: Object,
+                      value: {
+                          'pi': 'Pali',
+                          'lzh': 'Chinese',
+                          'skt': 'Sanskrit',
+                          'bo': 'Tibetan'
+                      }
                   }
               }
           }
@@ -140,10 +150,6 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
           _resizeParentList() {
               this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true, composed: true }));
-          }
-
-          _getOriginalLanguage(rootId) {
-              return "PALI";
           }
 
           _getRelations(rootId) {
@@ -214,6 +220,11 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 //                      return 'Resembling Parallel';
               }
           }
+
+          _computeFullLangName(isoCode) {
+              return this.rootLangMappings[isoCode];
+          }
+
       }
 
       customElements.define(SCParallels.is, SCParallels);

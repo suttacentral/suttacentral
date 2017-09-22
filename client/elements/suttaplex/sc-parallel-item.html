@@ -30,7 +30,6 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
         display: inline-block;
         vertical-align: middle;
         margin: -16px 4px 0;
-        padding: 0 8px;
       }
 
       .parallel-biblio-info {
@@ -116,9 +115,11 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
     </div>
 
     <div class="margin-top-md justify-content-space-between">
-      <paper-button flat class="dense" title="Go to text in original language">
-        <a href="">[[parallelItem.root_lang]]</a>
-      </paper-button>
+      <template is="dom-if" if="[[parallelItem.root_lang]]">
+        <paper-button flat class="dense" title="Go to text in original language">
+          <a href="">[[_computeFullLangName(parallelItem.root_lang)]]</a>
+        </paper-button>
+      </template>
       <template is="dom-if" if="{{_translationsAvailable()}}">
         <div class="language-dropdown">
           <language-menu language-choice="[[parallelItem.translations]]" title-label="Translations" input-language=""
@@ -138,7 +139,16 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
           static get properties() {
               return {
                   // The parallel item to be displayed
-                  parallelItem: Object
+                  parallelItem: Object,
+                  rootLangMappings: {
+                      type: Object,
+                      value: {
+                          'pi': 'Pali',
+                          'lzh': 'Chinese',
+                          'skt': 'Sanskrit',
+                          'bo': 'Tibetan'
+                      }
+                  }
               }
           }
 
@@ -172,6 +182,10 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
           _volpagesAvailable() {
               return this.parallelItem.volpages.length > 0;
+          }
+
+          _computeFullLangName(isoCode) {
+              return this.rootLangMappings[isoCode];
           }
       }
 
