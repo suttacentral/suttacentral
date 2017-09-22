@@ -261,7 +261,7 @@ Issues:
           // Fires the value of the search to the searchpages.
           searchAction() {
               const searchQuery = this.shadowRoot.querySelector("#searchinput").value;
-              this.dispatchEvent(new CustomEvent('search', { detail: searchQuery, composed: true }));
+              this.dispatchEvent(new CustomEvent('search', { detail: searchQuery, composed: true, bubbles: true }));
           }
 
           // Opens the paper-dialog box of the settings-menu.
