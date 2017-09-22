@@ -11,7 +11,7 @@
 
 <dom-module id="sc-view-suttaplex" attributes="divisionTitle">
   <template>
-    <style is="custom-style">
+    <style>
       .divisioncontent {
         color: var(--primary-text-color);
         padding: 0;
@@ -43,12 +43,12 @@
         color: var(--secondary-text-color);
       }
 
-      .vagganode {
+      .vagga-node {
         padding: 0 16px 16px;
         color: var(--secondary-text-color);
       }
 
-      .vagganode.firstvagga, .node + .vagganode {
+      .vagga-node.firstvagga, .node + .vagga-node {
         padding-top: 0;
       }
 
@@ -56,10 +56,6 @@
         --paper-spinner-color: var(--sc-gold-500);
         left: 50%;
         top: 50px;
-      }
-
-      .notfound {
-        @apply --paper-font-display1;
       }
 
       :host {
@@ -76,21 +72,19 @@
             url="[[_getApiUrl(category)]]"
             handle-as="json"
             loading="{{ loadingResults }}"
-            last-response="{{ responseData }}"
-            last-error='{{ notFound }}'></iron-ajax>
+            last-response="{{ responseData }}"></iron-ajax>
 
     <div id="suttaplex-conent" class="divisioncontent main">
 
-      <div class="loadingIndicator">
-        <paper-spinner-lite active="{{loadingResultsv}}"></paper-spinner-lite>
+      <div class="loading-indicator">
+        <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
       </div>
 
       <iron-list items="{{responseData}}" scroll-target="document" id="suttaplex-iron">
         <template>
           <div>
-            <template is="dom-if" if="{{_isSuttaplex(item) }}">
-              <sc-suttaplex item="[[item]]">
-              </sc-suttaplex>
+            <template is="dom-if" if="{{_isSuttaplex(item)}}">
+              <sc-suttaplex item="[[item]]"></sc-suttaplex>
             </template>
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
@@ -110,7 +104,7 @@
   <script>
       class ScViewSuttaplex extends Polymer.Element {
           static get is() {
-              return 'sc-view-suttaplex'
+              return 'sc-view-suttaplex';
           }
 
           static get properties() {
@@ -135,20 +129,20 @@
           // Compute API endpoint url
           _getApiUrl(category) {
               if (category.startsWith('root/')) {
-                  category = category.replace('root/', '')
+                  category = category.replace('root/', '');
               }
-              return `api/suttaplex/${category}`
+              return `api/suttaplex/${category}`;
           }
 
           _isSuttaplex(item) {
-              return item.type === 'text'
+              return item.type === 'text';
           }
 
           _calcualteClass(itemType) {
-              return itemType === 'grouping' ? 'node' : 'vagganode'
+              return itemType === 'grouping' ? 'node' : 'vagga-node';
           }
       }
-      customElements.define(ScViewSuttaplex.is, ScViewSuttaplex)
+      customElements.define(ScViewSuttaplex.is, ScViewSuttaplex);
   </script>
 </dom-module>
 

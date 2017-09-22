@@ -5,8 +5,8 @@
 
 <dom-module id="sc-title">
   <template>
-    <style is="custom-style">
-      h1, h2, h3 {
+    <style>
+      .no-margin {
         margin: 0;
       }
 
@@ -21,7 +21,7 @@
         @apply --sc-sans-font;
         display: flex;
         justify-content: space-between;
-        border-top: 0
+        border-top: 0;
       }
 
       .node-secondary-heading {
@@ -37,7 +37,7 @@
     </style>
 
     <div class="node-head-container">
-      <h1 class$="[[_calculateTitleClass(inputType)]]">[[inputTitle]]</h1>
+      <h1 class$=".no-margin [[_calculateTitleClass(inputType)]]">[[inputTitle]]</h1>
       <div>   
         <template is="dom-if" if="[[inputText]]">
           <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
@@ -57,7 +57,7 @@
   <script>
       class SCTitle extends Polymer.Element {
           static get is() {
-              return 'sc-title'
+              return 'sc-title';
           }
 
           static get properties() {
@@ -91,7 +91,7 @@
           }
 
           _calculateTitleClass(inputType) {
-              return inputType == 'grouping' ? 'node-top-heading' : 'node-secondary-heading'
+              return inputType == 'grouping' ? 'node-top-heading' : 'node-secondary-heading';
           }
 
           _splitText(text){
@@ -99,7 +99,7 @@
           }
 
       }
-      customElements.define(SCTitle.is, SCTitle)
+      customElements.define(SCTitle.is, SCTitle);
   </script>
 </dom-module>
 

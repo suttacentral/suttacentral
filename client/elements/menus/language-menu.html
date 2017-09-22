@@ -9,7 +9,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 -->
 <dom-module id="language-menu">
   <template>
-    <style is="custom-style">
+    <style>
       :host {
         --primary-color: var(--paper-green-a700);
       }
@@ -30,11 +30,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         text-transform: capitalize;
       }
 
-      .orlang {
+      .root-lang {
         color: var(--paper-green-a700);
       }
 
-      .orlang:hover {
+      .root-lang:hover {
         cursor: pointer;
         color: var(--paper-green-700)
       }
@@ -69,11 +69,12 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
     </style>
+
     <paper-dropdown-menu vertical-align="top" class="custom" label="[[titleLabel]]"
                          title="Select a translation in another language" id="paper-dropdown-menu"
                          dynamic-align=true>
       <paper-listbox slot="dropdown-content">
-        <paper-item class$="orlang [[_computeHide(originalLanguage)]]" title="Original language">
+        <paper-item class$="root-lang [[_computeHide(originalLanguage)]]" title="Original language">
           <a href="/[[inputUrl]]/[[originalLanguage]]">[[originalLanguage]]</a>
         </paper-item>
         <template is="dom-repeat" items="[[languageChoice]]" as="language">
@@ -97,11 +98,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
   <script>
       class SCLanguageMenu extends Polymer.Element {
           static get is() {
-              return 'language-menu'
+              return 'language-menu';
           }
 
           static get properties() {
-              // input of language-author array
               return {
                   languageChoice: {
                       type: Array,
@@ -118,17 +118,17 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               }
           }
 
+          // does not list items that are from the inputLanguage because those are listed elsewhere.
           _otherLanguage(languageChoice, inputLanguage) {
-              // does not list items that are from the inputLanguage because those are listed elsewhere.
               return !!(languageChoice && languageChoice.lang === inputLanguage);
           }
 
           _computeHide(checkText) {
-              return (!checkText) ? "hide-element" : checkText;
+              return checkText ? checkText : "hide-element";
           }
 
           // If author name is too long it looks really bad in paper-item so just cut it.
-          shortenAuthor(author) {
+          _shortenAuthor(author) {
               if (author.length > 16) {
                   return `${author.substring(0, 15)}...`
               } else {
@@ -141,7 +141,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _computeAuthorForList(author) {
-              return this.shortenAuthor(this.computeAuthor(author))
+              return this._shortenAuthor(this.computeAuthor(author))
           }
 
           _languageTitle(language) {
