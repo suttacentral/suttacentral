@@ -69,13 +69,16 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
     </style>
-    <paper-dropdown-menu vertical-align="top" class="custom" label="[[titleLabel]]" title="Select a translation in another language">
+    <paper-dropdown-menu vertical-align="top" class="custom" label="[[titleLabel]]"
+                         title="Select a translation in another language" id="paper-dropdown-menu"
+                         dynamic-align=true>
       <paper-listbox slot="dropdown-content">
         <paper-item class$="orlang [[_computeHide(originalLanguage)]]" title="Original language">
           <a href="/[[inputUrl]]/[[originalLanguage]]">[[originalLanguage]]</a>
         </paper-item>
         <template is="dom-repeat" items="[[languageChoice]]" as="language">
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
+            <hr class="separator">
             <section class="language-choice-box">
               <paper-item id='[[language.id]]' title="[[_languageTitle(language)]]">
                 <paper-item-body>
@@ -84,7 +87,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               </paper-item>
             </section>
             <div class="iso-code">[[language.lang]]</div>
-            <hr class="separator">
           </template>
         </template>
       </paper-listbox>
@@ -124,9 +126,9 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           _computeHide(checkText) {
               return (!checkText) ? "hide-element" : checkText;
           }
-          
+
           // If author name is too long it looks really bad in paper-item so just cut it.
-          shortenAuthor(author){
+          shortenAuthor(author) {
               if (author.length > 16) {
                   return `${author.substring(0, 15)}...`
               } else {
@@ -139,11 +141,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _computeAuthorForList(author) {
-            return this.shortenAuthor(this.computeAuthor(author))
+              return this.shortenAuthor(this.computeAuthor(author))
           }
 
           _languageTitle(language) {
-            return `Select '${language.lang}' translation by ${this.computeAuthor(language.author)}`
+              return `Select '${language.lang}' translation by ${this.computeAuthor(language.author)}`
           }
       }
 

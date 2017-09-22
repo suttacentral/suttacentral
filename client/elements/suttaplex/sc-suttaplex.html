@@ -141,7 +141,7 @@
 
         <div class="suttaplex-head-container">
           <h3 class="suttaplex-heading">[[item.original_title]]</h3>
-          <div class$="difficulty-icon [[item.difficulty.name]]" 
+          <div class$="difficulty-icon [[item.difficulty.name]]"
                title="Recommended for [[item.difficulty.name]] students">
             <iron-icon icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
           </div>
@@ -170,9 +170,10 @@
             </template>
           </template>
           <div class="languagedrop">
-            <language-menu language-choice="[[item.translations]]" title-label="Other"
+            <language-menu language-choice="[[item.translations]]" title-label="More translations"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
-                           input-url="[[_computeApiUrlEndpoint(item.uid, translation.author)]]"></language-menu>
+                           input-url="item.uid" id="languageMenu" on-paper-dropdown-close="_changeItemZIndex"
+                           on-paper-dropdown-open="_changeItemZIndex">
           </div>
         </div>
 
@@ -181,7 +182,7 @@
 
       <template is="dom-if" if="[[parallelsOpened]]">
         <iron-collapse no-animation id="collapse" opened="{{parallelsOpened}}">
-            <sc-view-parallels item-uid="[[item.uid]]"></sc-view-parallels>
+          <sc-view-parallels item-uid="[[item.uid]]"></sc-view-parallels>
         </iron-collapse>
       </template>
 
@@ -225,6 +226,15 @@
               }
           }
 
+          _changeItemZIndex(e) {
+              let node = this.parentNode;
+              if (e.type.endsWith('open')) {
+                  node.style['z-index'] = 100;
+              } else {
+                  node.style['z-index'] = null;
+              }
+          }
+
           // general function to hide or display various elements.
           _computeHide(checkText) {
               return (!checkText) ? "hide-element" : "";
@@ -249,18 +259,18 @@
           _computeApiUrlEndpoint(uid, author) {
               return `/sutta/${uid}/?author=${author}`
           }
-          
+
           _isChosenLang(lang) {
-            return lang === this.inputLanguage
+              return lang === this.inputLanguage
           }
 
-          _toUpper(text){
-            return text.toUpperCase()
+          _toUpper(text) {
+              return text.toUpperCase()
           }
 
           _toggleParallelsOpened() {
-            this.parallelsOpened = !this.parallelsOpened;
-            this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
+              this.parallelsOpened = !this.parallelsOpened;
+              this.dispatchEvent(new CustomEvent('iron-resize', {composed: true, bubbles: true}));
           }
       }
 

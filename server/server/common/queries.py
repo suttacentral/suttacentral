@@ -1,4 +1,5 @@
 LANGUAGES = '''FOR l in language
+                SORT l.name
                 RETURN {"_rev": l._rev, "uid": l.uid, "name": l.name, "iso_code": l.iso_code}'''
 
 TEXTS_BY_LANG = '''
