@@ -17,33 +17,38 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         --primary-color: var(--paper-green-a700);
       }
 
-      paper-dropdown-menu, paper-listbox {
-        width: 200px;
+      .language-menu-listbox, .language-menu-dropdown {
         --paper-input-container-input: {
           text-transform: capitalize;
         };
       }
 
-      a {
+      .language-menu-listbox {
+        width: 200px;
+      }
+
+      .language-menu-dropdown {
+        width: var(--language-menu-dropdown-width, 200px);
+      }
+
+      .language-menu-url {
         text-decoration: none;
         color: inherit;
       }
 
-      paper-item {
+      .language-menu-item {
         text-transform: capitalize;
       }
 
-      .root-lang {
+      .root-lang-menu-item {
         color: var(--paper-green-a700);
+        display: flex;
+        justify-content: space-between;
       }
 
-      .root-lang:hover {
+      .root-lang-menu-item:hover {
         cursor: pointer;
         color: var(--paper-green-700)
-      }
-
-      .d-none {
-        display: none;
       }
 
       .iso-code {
@@ -71,24 +76,31 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         border-bottom: 1px solid rgba(255, 255, 255, 0.3);
       }
 
+      .d-none {
+        display: none;
+      }
+
     </style>
 
-    <paper-dropdown-menu vertical-align="top" class="custom" label="[[titleLabel]]"
+    <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
                          title="Select a language" id="paper-dropdown-menu" dynamic-align=true>
-      <paper-listbox slot="dropdown-content">
+      <paper-listbox class="language-menu-listbox" slot="dropdown-content">
 
-        <iron-icon icon="sc-svg-icons:root"></iron-icon>
-
-        <paper-item class$="root-lang [[_computeHide(originalLanguage)]]" title="Original language">
-          <a href="/[[inputUrl]]/[[originalLanguage]]">[[originalLanguage]]</a>
-        </paper-item>
+        <template is="dom-if" if="[[originalLanguage]]">
+          <paper-item class="root-lang-menu-item language-menu-item" title="Original language">
+            <a class="language-menu-url" href="/[[inputUrl]]/[[originalLanguage]]">hey [[originalLanguage]]</a>
+            <iron-icon icon="sc-svg-icons:root"></iron-icon>
+          </paper-item>
+        </template>
 
         <template is="dom-repeat" items="[[languageChoice]]" as="language">
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
             <section class="language-choice-box">
-              <paper-item id='[[language.id]]' title="[[_languageTitle(language)]]">
+              <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
                 <paper-item-body>
-                  <a href="/[[language.id]]/?author=[[language.author]]">[[_computeAuthorForList(language.author)]]</a>
+                  <a class="language-menu-url" href="/[[language.id]]/?author=[[language.author]]">
+                    [[_computeAuthorForList(language.author)]]
+                  </a>
                 </paper-item-body>
               </paper-item>
             </section>
@@ -154,6 +166,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           _languageTitle(language) {
               return `Select '${language.lang}' translation by ${this._computeAuthor(language.author)}`
           }
+
+          _computeFullLangName(isoCode) {
+              return this.rootLangMappings[isoCode];
+          }
+
       }
 
       customElements.define(SCLanguageMenu.is, SCLanguageMenu)

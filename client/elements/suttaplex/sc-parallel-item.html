@@ -15,15 +15,24 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 <dom-module id="sc-parallel-item">
   <template>
     <style include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
+      :host {
+        --language-menu-dropdown-width: 120px;
+      }
+
+      .parallel-item-main-info-container {
+        width: 100%;
+        max-width: 250px;
+        margin-right: 16px;
+      }
+
       .parallel-item-title {
         @apply --paper-font-subhead;
         @apply --sc-serif-font;
+        word-wrap: break-word;
       }
 
-      .parallel-item-nerdy-row {
-        @apply --paper-font-body2;
-        color: var(--secondary-text-color);
-        white-space: nowrap;
+      .parallel-item-id {
+        max-width: 90px;
       }
 
       .parallel-item-biblio-info {
@@ -45,11 +54,8 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
       .parallel-item-details {
         @apply --paper-font-body2;
         color: var(--secondary-text-color);
-        white-space: nowrap;
-      }
-
-      .parallel-item-language-dropdown-container {
-        min-width: 30%;
+        white-space: normal;
+        word-wrap: break-word;
       }
 
       .parallel-item-language-dropdown {
@@ -60,10 +66,6 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
       .d-block {
         display: inline-block;
-      }
-
-      .d-none {
-        display: none;
       }
 
       .margin-top-md {
@@ -82,18 +84,29 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
         text-transform: uppercase;
       }
 
-      .justify-content-space-between {
+      .d-flex {
         display: flex;
+      }
+
+      .justify-content-space-between {
         justify-content: space-between;
       }
+
+      .align-items-center {
+        align-items: center;
+      }
+
     </style>
 
-    <div class="parallel-item">
+    <div class="parallel-item d-flex justify-content-space-between">
 
       <div class="parallel-item-main-info-container">
         <div class="parallel-item-title">[[_computeTitle()]]</div>
-        <div class="parallel-item-details justify-content-space-between">
-          <span class="uppercase" title="SuttaCentral ID">[[parallelItem.uid]]</span>
+
+        <div class="parallel-item-details d-flex justify-content-space-between">
+          <div class="parallel-item-id">
+            <div class="uppercase" title="SuttaCentral ID">[[parallelItem.uid]]</div>
+          </div>
 
           <div class="parallel-item-volpages-container">
             <template is="dom-if" if="[[_volpagesAvailable()]]">
@@ -119,25 +132,22 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
             </template>
           </div>
 
+          <div class="parallel-item-note">
+            <template is="dom-if" if="parallelItem.note">
+              <sc-sutta-note note-data="[[parallelItem.note]]"></sc-sutta-note>
+            </template>
+          </div>
         </div>
-        <sc-sutta-note note-data="[[parallelItem.note]]" class$="[[_computeHide(parallelItem.note)]]"></sc-sutta-note>
       </div>
 
-      <div class="parallel-item-language-dropdown-container">
-
+      <div class="parallel-item-language-dropdown d-flex align-items-center">
+        <language-menu language-choice="[[_combineRootWithTranslations()]]"
+                       title-label="[[_computeLanguageDropdownTitle()]]"
+                       original-language="[[parallelItem.root_lang]]"
+                       input-language=""
+                       input-url="[[_computeParallelUrl()]]"></language-menu>
       </div>
-
     </div>
-
-    <div class="parallel-item-language-dropdown">
-
-      <language-menu language-choice="[[_combineRootWithTranslations()]]"
-                     title-label="[[_computeLanguageDropdownTitle]]"
-                     original-language="[[parallelItem.root_lang]]"
-                     input-language=""
-                     input-url="[[_computeParallelUrl()]]"></language-menu>
-    </div>
-
   </template>
 
   <script>
@@ -165,6 +175,7 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
           // returns the relevant header, either the title in the translated language,
           // otherwise in pali or otherwise just the ID.
           _computeTitle() {
+              console.log(this.parallelItem.note);
               if (this.parallelItem.original_title) {
                   return this.parallelItem.original_title;
               }
@@ -179,12 +190,6 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
           _getFirstVolpage() {
               return this.parallelItem.volpages[0];
           }
-
-          // general function to hide or display various elements.
-          _computeHide(visible) {
-              return visible ? '' : 'd-none';
-          }
-
 
           // If the root lang is known, push it at the beginning of the translations array
           _combineRootWithTranslations() {
@@ -210,6 +215,13 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
           _computeFullLangName(isoCode) {
               return this.rootLangMappings[isoCode];
+          }
+
+          _computeLanguageDropdownTitle() {
+              if (this.parallelItem.root_lang) {
+                  return this._computeFullLangName(this.parallelItem.root_lang);
+              }
+              return 'Translations';
           }
       }
 
