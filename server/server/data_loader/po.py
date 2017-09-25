@@ -203,7 +203,7 @@ def load_po_texts(change_tracker, po_dir, db):
 
 
 def generate_html(markup: str, translation: List[List[str]]) -> str:
-    """ Takes HTML markup and insert translated string between sc-seg tags with id matching text uid.
+    """ Takes HTML markup and inserts translated string between sc-seg tags with id matching text uid.
     '<sc-seg id="[uid]"></sc-seg>'
 
     Args:
