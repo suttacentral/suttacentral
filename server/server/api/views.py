@@ -4,7 +4,7 @@ from flask import request, current_app
 from flask_restful import Resource
 
 from common.arangodb import get_db
-from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS
+from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, SUTTA_VIEW
 from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort
 
 
@@ -273,3 +273,63 @@ class Parallels(Resource):
             data[_from].append(result)
 
         return data, 200
+
+
+class Sutta(Resource):
+    def get(self, uid, lang):
+        """
+        Send Complete information set for sutta-view for given uid.
+        ---
+        parameters:
+           - in: path
+             name: uid
+             type: string
+             required: true
+        responses:
+            200:
+                description: Complete information set for sutta-view
+                schema:
+                    id: suttaplex
+                    type: object
+                    properties:
+                        root_text:
+                            type: object
+                            properties:
+                                uid:
+                                    type: string
+                                lang:
+                                    type: string
+                                is_root:
+                                    type: boolean
+                                title:
+                                    type: string
+                                author:
+                                    type: string
+                                author_uid:
+                                    type: string
+                                text:
+                                    type: string
+                        translation:
+                            type: object
+                            properties:
+                                uid:
+                                    type: string
+                                lang:
+                                    type: string
+                                title:
+                                    type: string
+                                author:
+                                    type: string
+                                text:
+                                    type: string
+                        suttaplex:
+                            $ref: '#/definitions/Suttaplex'
+
+        """
+        author = request.args.get('author', 'root')
+
+        db = get_db()
+
+        results = db.aql.execute(SUTTA_VIEW,
+                                 bind_vars={'uid': uid, 'language': lang, 'author': author})
+        return results.next(), 200

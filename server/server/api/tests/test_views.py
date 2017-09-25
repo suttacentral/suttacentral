@@ -1,4 +1,4 @@
-from api.views import Languages, Menu, SuttaplexList, Parallels
+from api.views import Languages, Menu, SuttaplexList, Parallels, Sutta
 from app import api
 from common import utils
 
@@ -52,5 +52,20 @@ def test_parallels_view(client):
     utils.generate_relationships(roots).save()
 
     res = client.get(api.url_for(Parallels, uid=uid))
+
+    assert res.status_code == 200
+
+
+def test_sutta_view(client):
+    utils.generate_html_text().save()
+    utils.generate_blurb().save()
+    utils.generate_po_markup().save()
+    utils.generate_po_string().save()
+    utils.generate_difficulty().save()
+    roots = utils.generate_roots()
+    roots.save()
+    utils.generate_root_edges(roots).save()
+
+    res = client.get(api.url_for(Sutta, uid=roots[0].uid, lang='en'))
 
     assert res.status_code == 200

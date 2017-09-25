@@ -152,3 +152,99 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
         partial: e.partial
     }
 '''
+
+# Takes 3 bind_vars: `language`, `uid` and `author`
+SUTTA_VIEW = '''
+LET root_text = DOCUMENT(CONCAT('root/', @uid))
+
+LET legacy_translations = (
+    FOR text IN html_text
+        FILTER text.uid == @uid
+        LET res = {
+            lang: text.lang,
+            author: text.author,
+            id: text._key
+            }
+        // Add title if it is in desired language
+        LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
+        // Add volpage info if it exists.
+        RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res
+    )
+
+LET po_translations = (
+    FOR text IN po_strings
+        FILTER text.uid == @uid
+        SORT text.lang
+        LET res = {
+            lang: text.lang,
+            author: text.author,
+            id: text._key
+        }
+        //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finnish data manipulation.
+        RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
+)
+
+LET blurb = (
+    FOR blurb IN blurbs
+        FILTER blurb.uid == @uid
+        LIMIT 1
+        RETURN blurb.blurb
+        
+)[0]
+
+LET volpages = (
+    FOR text IN legacy_translations
+        FILTER HAS(text, "volpage")
+        RETURN text.volpage
+)
+
+LET difficulty = (
+    FOR difficulty IN difficulties
+        FILTER difficulty.uid == @uid
+        LIMIT 1
+        RETURN difficulty.difficulty
+)[0]
+
+LET translated_text = (
+    FOR html IN po_htmls
+        FILTER html.uid == @uid AND html.lang == @language AND LOWER(html.author) == @author
+        LIMIT 1
+        RETURN {
+            uid: html.uid,
+            lang: html.lang,
+            author: html.author,
+            text: html.html,
+            title: html.strings[1][1]
+        }
+)[0]
+
+LET legacy_html = (
+    FOR html IN html_text
+        FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author) == @author) OR html.lang == root_text.root_lang)
+        
+        RETURN {
+            uid: html.uid,
+            lang: html.lang,
+            is_root: html.lang == root_text.root_lang,
+            title: html.name,
+            author: html.author,
+            author_uid: html.author_uid,
+            text: html.text
+            
+        }
+)
+    
+RETURN {
+    root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
+    translation: translated_text ? translated_text : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
+    suttaplex: {
+        volpages: volpages,
+        uid: @uid,
+        blurb: blurb,
+        difficulty: difficulty,
+        original_title: root_text.name,
+        root_lang: root_text.root_lang,
+        translations: FLATTEN([po_translations, legacy_translations])
+    }
+}
+'''
