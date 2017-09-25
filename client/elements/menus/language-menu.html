@@ -3,6 +3,9 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="../../img/sc-svg-icons.html">
 
 <!--
 Language-menu used in the suttaplex card for denoting which translations exist of this particular text
@@ -39,7 +42,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         color: var(--paper-green-700)
       }
 
-      .hide-element {
+      .d-none {
         display: none;
       }
 
@@ -71,15 +74,17 @@ Language-menu used in the suttaplex card for denoting which translations exist o
     </style>
 
     <paper-dropdown-menu vertical-align="top" class="custom" label="[[titleLabel]]"
-                         title="Select a translation in another language" id="paper-dropdown-menu"
-                         dynamic-align=true>
+                         title="Select a language" id="paper-dropdown-menu" dynamic-align=true>
       <paper-listbox slot="dropdown-content">
+
+        <iron-icon icon="sc-svg-icons:root"></iron-icon>
+
         <paper-item class$="root-lang [[_computeHide(originalLanguage)]]" title="Original language">
           <a href="/[[inputUrl]]/[[originalLanguage]]">[[originalLanguage]]</a>
         </paper-item>
+
         <template is="dom-repeat" items="[[languageChoice]]" as="language">
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
-            <hr class="separator">
             <section class="language-choice-box">
               <paper-item id='[[language.id]]' title="[[_languageTitle(language)]]">
                 <paper-item-body>
@@ -90,6 +95,8 @@ Language-menu used in the suttaplex card for denoting which translations exist o
             <div class="iso-code">[[language.lang]]</div>
           </template>
         </template>
+        <iron-icon icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
+
       </paper-listbox>
     </paper-dropdown-menu>
 
@@ -113,7 +120,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   inputUrl: String,
                   newLanguage: {
                       type: String,
-                      computed: "_otherLanguage(languageChoice, inputLanguage)"
+                      computed: '_otherLanguage(languageChoice, inputLanguage)'
                   }
               }
           }
@@ -124,7 +131,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _computeHide(checkText) {
-              return checkText ? checkText : "hide-element";
+              return checkText ? checkText : 'd-none';
           }
 
           // If author name is too long it looks really bad in paper-item so just cut it.
@@ -137,7 +144,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _computeAuthor(author) {
-              return author ? author : "Anonym"
+              return author ? author : 'Anonym'
           }
 
           _computeAuthorForList(author) {

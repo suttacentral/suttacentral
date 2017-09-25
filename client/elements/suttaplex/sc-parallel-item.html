@@ -129,87 +129,90 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
     </div>
 
-
     <div class="parallel-item-language-dropdown">
-      <language-menu language-choice="[[_combineRootWithTranslations()]]" title-label="Translations" input-language=""
-                     original-language="" input-url="[[_getItemUrl()]]"></language-menu>
+
+      <language-menu language-choice="[[_combineRootWithTranslations()]]"
+                     title-label="[[_computeLanguageDropdownTitle]]"
+                     original-language="[[parallelItem.root_lang]]"
+                     input-language=""
+                     input-url="[[_computeParallelUrl()]]"></language-menu>
     </div>
 
   </template>
 
   <script>
-    class SCParallelItem extends Polymer.Element {
-      static get is() {
-        return 'sc-parallel-item';
-      }
-
-      static get properties() {
-        return {
-          // The parallel item to be displayed
-          parallelItem: Object,
-          rootLangMappings: {
-            type: Object,
-            value: {
-              'pi': 'Pali',
-              'lzh': 'Chinese',
-              'skt': 'Sanskrit',
-              'bo': 'Tibetan'
-            }
+      class SCParallelItem extends Polymer.Element {
+          static get is() {
+              return 'sc-parallel-item';
           }
-        }
+
+          static get properties() {
+              return {
+                  // The parallel item to be displayed
+                  parallelItem: Object,
+                  rootLangMappings: {
+                      type: Object,
+                      value: {
+                          'pi': 'Pali',
+                          'lzh': 'Chinese',
+                          'skt': 'Sanskrit',
+                          'bo': 'Tibetan'
+                      }
+                  }
+              }
+          }
+
+          // returns the relevant header, either the title in the translated language,
+          // otherwise in pali or otherwise just the ID.
+          _computeTitle() {
+              if (this.parallelItem.original_title) {
+                  return this.parallelItem.original_title;
+              }
+              else return this.parallelItem.uid;
+          }
+
+          // returns the URL for the parallel with the given index
+          _computeParallelUrl() {
+              return `suttas/${this.parallelItem.to.uid}`;
+          }
+
+          _getFirstVolpage() {
+              return this.parallelItem.volpages[0];
+          }
+
+          // general function to hide or display various elements.
+          _computeHide(visible) {
+              return visible ? '' : 'd-none';
+          }
+
+
+          // If the root lang is known, push it at the beginning of the translations array
+          _combineRootWithTranslations() {
+              if (this.parallelItem.root_lang) {
+                  const rootItem = {
+                      id: this.parallelItem.uid,
+                      lang: this.parallelItem.root_lang,
+                      fullLangName: this._computeFullLangName(this.parallelItem.root_lang),
+                      isRoot: true
+                  };
+                  this.parallelItem.translations.unshift(rootItem);
+              }
+              return this.parallelItem.translations;
+          }
+
+          _translationsAvailable() {
+              return this.parallelItem.translations.length > 0;
+          }
+
+          _volpagesAvailable() {
+              return this.parallelItem.volpages.length > 0;
+          }
+
+          _computeFullLangName(isoCode) {
+              return this.rootLangMappings[isoCode];
+          }
       }
 
-      // returns the relevant header, either the title in the translated language,
-      // otherwise in pali or otherwise just the ID.
-      _computeTitle() {
-        if (this.parallelItem.original_title) {
-          return this.parallelItem.original_title;
-        }
-        else return this.parallelItem.uid;
-      }
-
-      // returns the URL for the parallel with the given index
-      _computeParallelUrl() {
-        return `suttas/${this.parallelItem.to.uid}`;
-      }
-
-      _getFirstVolpage() {
-        return this.parallelItem.volpages[0];
-      }
-
-      // general function to hide or display various elements.
-      _computeHide(visible) {
-        return visible ? '' : 'd-none';
-      }
-
-
-      // If the root lang is known, push it at the beginning of the translations array
-      _combineRootWithTranslations() {
-        if (this.parallelItem.root_lang) {
-          const rootItem = {
-            author: this._computeFullLangName(this.parallelItem.root_lang),
-            id: this.parallelItem.uid,
-            lang: this.parallelItem.root_lang,
-            isRoot: true
-          };
-          this.parallelItem.translations.unshift(rootItem);
-        }
-        return this.parallelItem.translations;
-      }
-
-      _translationsAvailable() {
-        return this.parallelItem.translations.length > 0;
-      }
-
-      _volpagesAvailable() {
-        return this.parallelItem.volpages.length > 0;
-      }
-
-      _computeFullLangName(isoCode) {
-        return this.rootLangMappings[isoCode];
-      }
-    }
-
-    customElements.define(SCParallelItem.is, SCParallelItem);
+      customElements.define(SCParallelItem.is, SCParallelItem);
   </script>
 </dom-module>
