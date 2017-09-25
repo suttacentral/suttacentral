@@ -1,0 +1,194 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../menus/language-menu.html">
+<link rel="import" href="../addons/sc-sutta-note.html">
+<link rel="import" href="../../styles/sc-styles.html">
+<link rel="import" href="../../styles/sc-suttaplex-styles.html">
+
+<!--
+This element loads additional info for each relevant parallel sutta, which is loaded from `../data/suttas`
+and then used in sc-view-parallels.html . It is in effect a minature version of the suttaplex-card
+-->
+<dom-module id="sc-parallel-item">
+  <template>
+    <style include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
+      .parallels-parallel-title {
+        @apply --paper-font-subhead;
+        @apply --sc-serif-font;
+      }
+
+      .parallels-nerdy-row {
+        @apply --paper-font-body2;
+        color: var(--secondary-text-color);
+        white-space: nowrap;
+      }
+
+      .language-dropdown {
+        display: inline-block;
+        vertical-align: middle;
+        margin: -16px 4px 0;
+      }
+
+      .parallel-biblio-info {
+        @apply --paper-font-body1;
+        position: absolute;
+        z-index: 200;
+        background-color: #fff;
+        @apply --shadow-elevation-3dp;
+        padding: 12px;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        margin: 0 48px 0 0;
+        white-space: normal;
+      }
+
+      .parallel-biblio-summary::-webkit-details-marker {
+        color: var(--paper-grey-300);
+      }
+
+      .d-block {
+        display: inline-block;
+      }
+
+      .d-none {
+        display: none;
+      }
+
+      .margin-top-md {
+        margin-top: 8px;
+      }
+
+      .margin-right-lg {
+        margin-right: 24px;
+      }
+
+      .no-margin {
+        margin: 0;
+      }
+
+      .uppercase {
+        text-transform: uppercase;
+      }
+
+      .justify-content-space-between {
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+
+    <div class="parallels-parallel-title">[[_computeTitle()]]</div>
+
+    <div class="parallels-nerdy-row justify-content-space-between">
+      <span title="Original title"
+            class$="[[_computeHide(parallelItem.original_title)]]">[[_computeTitle()]]</span>
+      <span class="uppercase" title="SuttaCentral ID">[[parallelItem.uid]]</span>
+
+      <div>
+        <template is="dom-if" if="[[_volpagesAvailable()]]">
+          <div>
+            <template is="dom-if" if="{{parallelItem.bib}}">
+              <details class="d-block">
+                <summary class="parallel-biblio-summary">
+              <span class="book no-margin">
+                <iron-icon icon="book"></iron-icon>
+              </span>
+                  <span class="vol-page" title="Volume and page number">[[_getFirstVolpage()]]</span>
+                </summary>
+                <p class="parallel-biblio-info" inner-h-t-m-l="[[parallelItem.bib]]"></p>
+              </details>
+            </template>
+            <template is="dom-if" if="{{!parallelItem.bib}}">
+              <div>
+            <span class="book no-margin">
+              <iron-icon icon="book"></iron-icon>
+            </span>
+                <span class="vol-page" title="Volume and page number">[[_getFirstVolpage()]]</span>
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
+      <sc-sutta-note note-data="[[parallelItem.note]]" class$="[[_computeHide(parallelItem.note)]]"></sc-sutta-note>
+
+    </div>
+
+    <div class="margin-top-md justify-content-space-between">
+      <template is="dom-if" if="[[parallelItem.root_lang]]">
+        <paper-button flat class="dense" title="Go to text in original language">
+          <a href="">[[_computeFullLangName(parallelItem.root_lang)]]</a>
+        </paper-button>
+      </template>
+      <template is="dom-if" if="{{_translationsAvailable()}}">
+        <div class="language-dropdown">
+          <language-menu language-choice="[[parallelItem.translations]]" title-label="Translations" input-language=""
+                         original-language="" input-url="[[_getItemUrl()]]"></language-menu>
+        </div>
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+      class SCParallelItem extends Polymer.Element {
+          static get is() {
+              return 'sc-parallel-item';
+          }
+
+          static get properties() {
+              return {
+                  // The parallel item to be displayed
+                  parallelItem: Object,
+                  rootLangMappings: {
+                      type: Object,
+                      value: {
+                          'pi': 'Pali',
+                          'lzh': 'Chinese',
+                          'skt': 'Sanskrit',
+                          'bo': 'Tibetan'
+                      }
+                  }
+              }
+          }
+
+          // returns the relevant header, either the title in the translated language,
+          // otherwise in pali or otherwise just the ID.
+          _computeTitle() {
+              // TODO internationalization: return title in preferred language
+              if (this.parallelItem.original_title) {
+                  return this.parallelItem.original_title;
+              }
+              else return this.parallelItem.uid;
+          }
+
+          // returns the URL for the parallel with the given index
+          _computeParallelUrl() {
+              return `suttas/${this.parallelItem.to.uid}`;
+          }
+
+          _getFirstVolpage() {
+              return this.parallelItem.volpages[0];
+          }
+
+          // general function to hide or display various elements.
+          _computeHide(visible) {
+              return visible ? "" : "d-none";
+          }
+
+          _translationsAvailable() {
+              return this.parallelItem.translations.length > 0;
+          }
+
+          _volpagesAvailable() {
+              return this.parallelItem.volpages.length > 0;
+          }
+
+          _computeFullLangName(isoCode) {
+              return this.rootLangMappings[isoCode];
+          }
+      }
+
+      customElements.define(SCParallelItem.is, SCParallelItem);
+  </script>
+</dom-module>

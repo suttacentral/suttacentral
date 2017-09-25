@@ -141,11 +141,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _computeAuthorForList(author) {
-              return this._shortenAuthor(this.computeAuthor(author))
+              return this._shortenAuthor(this._computeAuthor(author))
           }
 
           _languageTitle(language) {
-              return `Select '${language.lang}' translation by ${this.computeAuthor(language.author)}`
+              return `Select '${language.lang}' translation by ${this._computeAuthor(language.author)}`
           }
       }
 
