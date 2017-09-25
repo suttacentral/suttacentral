@@ -44,8 +44,6 @@ def extract_strings_from_po_file(po_file):
     po = polib.pofile(po_file)
 
     for entry in po:
-        ctx = entry.msgctxt
-
         markup.append(entry.comment + f'<sc-seg id="{entry.msgctxt}"></sc-seg>')
         if entry.msgid:
             msgids.append((entry.msgctxt, entry.msgid))
@@ -205,6 +203,22 @@ def load_po_texts(change_tracker, po_dir, db):
 
 
 def generate_html(markup: str, translation: List[List[str]]) -> str:
+    """ Takes HTML markup and insert translated string between sc-seg tags with id matching text uid.
+    '<sc-seg id="[uid]"></sc-seg>'
+
+    Args:
+        markup: Html Pootle markup
+        translation: List of pairs, [uid, string]
+
+    Returns:
+        HTML generated from markup and string list
+
+    Examples:
+        >>> markup = '<p class="division"><sc-seg id="dn28:1.1"></sc-seg></p>'
+        >>> translation = [['dn28:1.1', 'translated text']]
+        >>> generate_html(markup, translation)
+        '<p class="division"><sc-seg id="dn28:1.1">translated text</sc-seg></p>'
+    """
     translator = {string[0]: string[1] for string in translation}
 
     pattern = re.compile('|'.join(re.escape(f'{key}">') for key in translator.keys()))
