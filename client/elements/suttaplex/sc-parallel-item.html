@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="../menus/language-menu.html">
@@ -16,23 +17,18 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
   <template>
     <style include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
       :host {
-        --language-menu-dropdown-width: 120px;
+        --language-menu-dropdown-width: 150px;
       }
 
       .parallel-item-main-info-container {
         width: 100%;
-        max-width: 250px;
-        margin-right: 16px;
+        max-width: 180px;
       }
 
       .parallel-item-title {
         @apply --paper-font-subhead;
         @apply --sc-serif-font;
         word-wrap: break-word;
-      }
-
-      .parallel-item-id {
-        max-width: 90px;
       }
 
       .parallel-item-biblio-info {
@@ -45,10 +41,6 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         margin: 0 48px 0 0;
         white-space: normal;
-      }
-
-      .parallel-item-volpages-container {
-        max-width: 90px;
       }
 
       .parallel-item-biblio-summary::-webkit-details-marker {
@@ -65,7 +57,8 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
       .parallel-item-language-dropdown {
         display: inline-block;
         vertical-align: middle;
-        margin: -16px 4px 0;
+        justify-content: center;
+        margin-top: -16px;
       }
 
       .d-block {
@@ -76,9 +69,13 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
         margin: 0;
       }
 
-      .vertical-margin-sm {
+      .vertical-margin-xs {
         margin-top: 4px;
         margin-bottom: 4px;
+      }
+
+      .right-margin-md {
+        margin-right: 16px;
       }
 
       .uppercase {
@@ -87,6 +84,10 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
       .d-flex {
         display: flex;
+      }
+
+      .flex-1 {
+        flex: 1;
       }
 
       .justify-content-space-between {
@@ -99,17 +100,19 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
     </style>
 
-    <div class="parallel-item d-flex justify-content-space-between">
+    <iron-media-query query="(min-width:576px)" query-matches="{{wideLayout}}"></iron-media-query>
 
-      <div class="parallel-item-main-info-container">
-        <div class="parallel-item-title vertical-margin-sm">[[_computeTitle()]]</div>
+    <div class="parallel-item d-flex justify-content-space-between" style="flex-wrap: wrap">
 
-        <div class="parallel-item-details d-flex justify-content-space-between align-items-center vertical-margin-sm">
-          <div class="parallel-item-id">
+      <div class$="parallel-item-main-info-container {{mainInfoContainerClasses}}">
+        <div class="parallel-item-title vertical-margin-xs">[[_computeTitle()]]</div>
+
+        <div class="parallel-item-details d-flex justify-content-space-between align-items-center vertical-margin-xs">
+          <div class="parallel-item-id flex-1">
             <div class="uppercase" title="SuttaCentral ID">[[parallelItem.uid]]</div>
           </div>
 
-          <div class="parallel-item-volpages-container">
+          <div class="parallel-item-volpages-container flex-1">
             <template is="dom-if" if="[[_volpagesAvailable()]]">
               <div>
                 <template is="dom-if" if="{{parallelItem.bib}}">
@@ -134,20 +137,23 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
           </div>
 
           <div class="parallel-item-note">
-            <template is="dom-if" if="parallelItem.note">
+            <template is="dom-if" if="[[parallelItem.note]]">
               <sc-sutta-note note-data="[[parallelItem.note]]"></sc-sutta-note>
             </template>
           </div>
         </div>
       </div>
 
-      <div class="parallel-item-language-dropdown d-flex align-items-center">
-        <language-menu language-choice="[[_combineRootWithTranslations()]]"
-                       title-label="[[_computeLanguageDropdownTitle()]]"
-                       original-language="[[parallelItem.root_lang]]"
-                       input-language=""
-                       input-url="[[_computeParallelUrl()]]"></language-menu>
-      </div>
+      <template is="dom-if" if="[[_shouldShowLanguageDropdown()]]">
+        <div class="parallel-item-language-dropdown d-flex align-items-center flex-1">
+          <language-menu language-choice="[[parallelItem.translations]]"
+                         title-label="[[_computeLanguageDropdownTitle()]]"
+                         original-language="[[parallelItem.root_lang]]"
+                         input-language=""
+                         input-url="[[_computeParallelUrl()]]"></language-menu>
+        </div>
+      </template>
+
     </div>
   </template>
 
@@ -169,14 +175,31 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
                           'skt': 'Sanskrit',
                           'bo': 'Tibetan'
                       }
+                  },
+                  // Responsive layout variables that contain css classes.
+                  // These are changed when iron-media-query detects a layout width change.
+                  mainInfoContainerClasses: {
+                      type: String,
+                      value: ''
                   }
               }
+          }
+
+          ready() {
+              super.ready();
+              window.addEventListener('wide-layout-changed', this._screenWidthChanged);
+          }
+
+          _screenWidthChanged() {
+              console.log('widht changed');
+              if (this.wideLayout) {
+                  this.mainInfoContainerClasses = 'right-margin-md';
+              } else this.mainInfoContainerClasses = '';
           }
 
           // returns the relevant header, either the title in the translated language,
           // otherwise in pali or otherwise just the ID.
           _computeTitle() {
-              console.log(this.parallelItem.note);
               if (this.parallelItem.original_title) {
                   return this.parallelItem.original_title;
               }
@@ -185,29 +208,11 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
           // returns the URL for the parallel with the given index
           _computeParallelUrl() {
-              return `suttas/${this.parallelItem.to.uid}`;
+              return `suttas/${this.parallelItem.uid}`;
           }
 
           _getFirstVolpage() {
               return this.parallelItem.volpages[0];
-          }
-
-          // If the root lang is known, push it at the beginning of the translations array
-          _combineRootWithTranslations() {
-              if (this.parallelItem.root_lang) {
-                  const rootItem = {
-                      id: this.parallelItem.uid,
-                      lang: this.parallelItem.root_lang,
-                      fullLangName: this._computeFullLangName(this.parallelItem.root_lang),
-                      isRoot: true
-                  };
-                  this.parallelItem.translations.unshift(rootItem);
-              }
-              return this.parallelItem.translations;
-          }
-
-          _translationsAvailable() {
-              return this.parallelItem.translations.length > 0;
           }
 
           _volpagesAvailable() {
@@ -224,6 +229,11 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
               }
               return 'Translations';
           }
+
+          _shouldShowLanguageDropdown() {
+              return this.parallelItem.translations.length > 0 || this.parallelItem.root_lang;
+          }
+
       }
 
       customElements.define(SCParallelItem.is, SCParallelItem);

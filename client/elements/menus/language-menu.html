@@ -23,12 +23,14 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         };
       }
 
-      .language-menu-listbox {
-        width: 200px;
-      }
-
+      /* The button element */
       .language-menu-dropdown {
         width: var(--language-menu-dropdown-width, 200px);
+      }
+
+      /* The actual list*/
+      .language-menu-listbox {
+        width: 200px;
       }
 
       .language-menu-url {
@@ -76,6 +78,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         border-bottom: 1px solid rgba(255, 255, 255, 0.3);
       }
 
+      .language-menu-root-icon {
+        color: var(--paper-grey-500);
+        margin-right: -6px;
+      }
+
       .d-none {
         display: none;
       }
@@ -88,8 +95,9 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
         <template is="dom-if" if="[[originalLanguage]]">
           <paper-item class="root-lang-menu-item language-menu-item" title="Original language">
-            <a class="language-menu-url" href="/[[inputUrl]]/[[originalLanguage]]">hey [[originalLanguage]]</a>
-            <iron-icon icon="sc-svg-icons:root"></iron-icon>
+            <a class="language-menu-url" href="/[[inputUrl]]/[[originalLanguage]]">
+              [[_computeFullLanguageName(originalLanguage)]]</a>
+            <iron-icon class="language-menu-root-icon" icon="sc-svg-icons:root"></iron-icon>
           </paper-item>
         </template>
 
@@ -98,7 +106,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
             <section class="language-choice-box">
               <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
                 <paper-item-body>
-                  <a class="language-menu-url" href="/[[language.id]]/?author=[[language.author]]">
+                  <a class="language-menu-url" href="/suttas/[[language.id]]?author=[[language.author]]">
                     [[_computeAuthorForList(language.author)]]
                   </a>
                 </paper-item-body>
@@ -133,6 +141,15 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   newLanguage: {
                       type: String,
                       computed: '_otherLanguage(languageChoice, inputLanguage)'
+                  },
+                  rootLangMappings: {
+                      type: Object,
+                      value: {
+                          'pi': 'Pali',
+                          'lzh': 'Chinese',
+                          'skt': 'Sanskrit',
+                          'bo': 'Tibetan'
+                      }
                   }
               }
           }
@@ -167,7 +184,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               return `Select '${language.lang}' translation by ${this._computeAuthor(language.author)}`
           }
 
-          _computeFullLangName(isoCode) {
+          _computeFullLanguageName(isoCode) {
               return this.rootLangMappings[isoCode];
           }
 

@@ -241,7 +241,7 @@
 
           // general function to hide or display various elements.
           _computeHide(checkText) {
-              return (!checkText) ? "hide-element" : "";
+              return (!checkText) ? 'hide-element' : '';
           }
 
           // returns the relevant icon for the expander
@@ -256,25 +256,25 @@
 
           // adds the 'tree'-icons to denote difficulty level if any.
           _computeLevel(level) {
-              return level ? "sc-svg-icons:" + level : "";
+              return level ? 'sc-svg-icons:' + level : '';
           }
 
           // Computes API endpoint URL for given tranlation
           _computeApiUrlEndpoint(uid, author) {
-              return `/sutta/${uid}/?author=${author}`
+              return `/sutta/${uid}/?author=${author}`;
           }
 
           _isChosenLang(lang) {
-              return lang === this.inputLanguage
+              return lang === this.inputLanguage;
           }
 
           _toUpper(text) {
-              return text.toUpperCase()
+              return text.toUpperCase();
           }
 
           _toggleParallelsOpened() {
               this.parallelsOpened = !this.parallelsOpened;
-              this.dispatchEvent(new CustomEvent('iron-resize', {composed: true, bubbles: true}));
+              this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
           }
       }
 
