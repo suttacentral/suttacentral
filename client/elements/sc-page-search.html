@@ -325,6 +325,11 @@ than ten results in total, a dropdown selection menu appears at the top.
               return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all'
           }
 
+          // Formats the search result description snippet
+          _calculateSnippetContent(description) {
+            return description.toString().split(';').join('...').split('\n').join('<br>');
+          }
+
           // Calls the input results when page is loaded
           _generateRequest() {
               if (!this.searchParams) {
