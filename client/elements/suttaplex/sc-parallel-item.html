@@ -1,7 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
-<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="../menus/language-menu.html">
@@ -102,7 +101,7 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
     <div class="parallel-item d-flex justify-content-space-between" style="flex-wrap: wrap">
 
-      <div class$="parallel-item-main-info-container {{mainInfoContainerClasses}}">
+      <div class="parallel-item-main-info-container">
         <div class="parallel-item-title vertical-margin-xs">[[_computeTitle()]]</div>
 
         <div class="parallel-item-details d-flex justify-content-space-between align-items-center vertical-margin-xs">
@@ -174,12 +173,6 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
                           'bo': 'Tibetan',
                           'pr': 'Prakrit'
                       }
-                  },
-                  // Responsive layout variables that contain css classes.
-                  // These are changed when iron-media-query detects a layout width change.
-                  mainInfoContainerClasses: {
-                      type: String,
-                      value: ''
                   }
               }
           }
