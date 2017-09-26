@@ -164,7 +164,8 @@ than ten results in total, a dropdown selection menu appears at the top.
                     </div>
                   </a>
                   <div class="secondary">
-                    <p class="search-result-snippet" inner-h-t-m-l="{{_calculateSnippetContent(item.highlight.content)}}"></p>
+                    <p class="search-result-snippet"
+                       inner-h-t-m-l="{{_calculateSnippetContent(item.highlight.content)}}"></p>
                   </div>
                 </div>
               </div>
@@ -223,7 +224,8 @@ than ten results in total, a dropdown selection menu appears at the top.
                   searchResultElemHeight: {
                       type: Number,
                       value: 170
-                  }
+                  },
+                  totalLoadedResults: Number
               }
           }
 
@@ -253,6 +255,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                   if (!items[i]) {
                       return;
                   }
+                  this.totalLoadedResults++;
                   this.push('allSearchResults', items[i]);
                   // If the filter fits, add to visible items
                   if (this._belongsToFilterScope(items[i])) {
@@ -269,10 +272,23 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (!this._shouldLoadMoreData()) {
                   return;
               }
-              // Don't load once all items have been loaded.
+              // Don't load once all items have already been loaded.
               if (this.searchListNode.items.length >= this.resultCount) {
                   return;
               }
+              this._loadNextPage();
+          }
+
+          // Checks if the user scrolled past the required threshold to load more search results.
+          // This has some slightly expensive DOM querying, but at the moment is necessary because of this bug:
+          // https://github.com/PolymerElements/iron-list/issues/290.
+          _shouldLoadMoreData() {
+              // the threshold is set to fire when 8 elements are still not in view.
+              const scrollThreshold = (this.visibleSearchResults.length - 5) * this.searchResultElemHeight;
+              return document.body.scrollTop > scrollThreshold;
+          }
+
+          _loadNextPage() {
               this.currentPage++;
               this.searchParams = {
                   limit: this.resultsPerLoad,
@@ -288,20 +304,12 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.splice('allSearchResults', 0, this.allSearchResults.length);
               this.set('currentPage', 0);
               this.set('currentFilter', 'all');
+              this.set('totalLoadedResults', 0);
               this.searchParams = {
                   limit: this.resultsPerLoad,
                   query: this.searchQuery
               };
               this._generateRequest();
-          }
-
-          // Checks if the user scrolled past the required threshold to load more search results.
-          // This has some slightly expensive DOM querying, but at the moment is necessary because of this bug:
-          // https://github.com/PolymerElements/iron-list/issues/290.
-          _shouldLoadMoreData() {
-              // the threshold is set to fire when 8 elements are still not in view.
-              const scrollThreshold = (this.visibleSearchResults.length - 5) * this.searchResultElemHeight;
-              return document.body.scrollTop > scrollThreshold;
           }
 
           // If the number of results is less than 10 or there is only 1 category of results, the search filtering
@@ -322,17 +330,20 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // Checks if the item's category fits in the current filter.
           _belongsToFilterScope(item) {
-              return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all'
+              return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all';
           }
 
           // Formats the search result description snippet
           _calculateSnippetContent(description) {
-            return description.toString().split(';').join('...').split('\n').join('<br>');
+              return description.toString().split(';').join('...').split('\n').join('<br>');
           }
 
           // Calls the input results when page is loaded
           _generateRequest() {
               if (!this.searchParams) {
+                  return;
+              }
+              if (this._areAllItemsLoaded()) {
                   return;
               }
               this.shadowRoot.querySelector('#ajax').generateRequest();
@@ -344,21 +355,40 @@ than ten results in total, a dropdown selection menu appears at the top.
               let selectedView;
               switch (event.detail.searchView) {
                   case 1:
-                      selectedView = "root-text";
+                      selectedView = 'root-text';
                       break;
                   case 2:
-                      selectedView = "translation";
+                      selectedView = 'translation';
                       break;
                   case 3:
-                      selectedView = "dictionary";
+                      selectedView = 'dictionary';
                       break;
                   default:
-                      selectedView = "all";
+                      selectedView = 'all';
               }
               this.currentFilter = selectedView;
+              this._filterSearchResults();
+              // Run every 0.5 seconds
+              setInterval(() => { this._loadMoreIfMinimumNotReached() }, 500);
+          }
+
+          // The endless scroll is dependant on a scroll event, but if there are not enough items on the
+          // screen (less than ~6) items on a search result page, it won't trigger loading more, hence this function:
+          _loadMoreIfMinimumNotReached() {
+              if (this.visibleSearchResults.length < 6 && !this._areAllItemsLoaded()) {
+                  this._loadNextPage();
+                  this._filterSearchResults();
+              }
+          }
+
+          _filterSearchResults() {
               this.set('visibleSearchResults', this.allSearchResults.filter((item) => {
                   return this._belongsToFilterScope(item);
               }));
+          }
+
+          _areAllItemsLoaded() {
+              return this.totalLoadedResults !== 0 && this.totalLoadedResults === this.resultCount;
           }
 
           _calculateItemCategory(item) {
@@ -366,9 +396,9 @@ than ten results in total, a dropdown selection menu appears at the top.
                   return item.category;
               }
               if (item._source.is_root) {
-                  return "root-text"
+                  return 'root-text'
               }
-              else return "translation";
+              else return 'translation';
           }
 
           // Determines the number of search results that have been found.
@@ -378,7 +408,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
           _calculateLink(item) {
-              return (item.category === "dictionary") ? ("/define/" + item._source.heading.title) : item.url;
+              return (item.category === 'dictionary') ? ('/define/' + item._source.heading.title) : item.url;
           }
       }
 
