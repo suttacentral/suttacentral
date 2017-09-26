@@ -277,6 +277,34 @@ class Parallels(Resource):
 
 class Dictionaries(Resource):
     def get(self):
+        """
+        Send parallel information for given sutta.
+        ---
+        parameters:
+           - in: path
+             name: from
+             type: string
+             required: true
+           - in: path
+             name: to
+             type: string
+        responses:
+            200:
+                schema:
+                    id: dictionary
+                    type: object
+                    properties:
+                        from:
+                            type: string
+                        to:
+                            type: string
+                        dictionary:
+                            type: array
+                            items:
+                                type: array
+                                items:
+                                    type: string
+        """
         to_lang = request.args.get('to', current_app.config.get('DEFAULT_LANGUAGE'))
         from_lang = request.args.get('from', None)
 
