@@ -8,9 +8,10 @@ from typing import Any, List, Set
 import regex
 from arango import ArangoClient
 from flask import current_app
+from tqdm import tqdm
 from git import InvalidGitRepositoryError, Repo
 
-from . import po, textdata
+from . import po, textdata, dictionaries
 
 
 class ChangeTracker:
@@ -338,7 +339,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
     '''))
     antispam = set()
     ll_edges = []
-    for entry in relationship_data:
+    for entry in tqdm(relationship_data):
         remarks = entry.pop('remarks', None)
         assert len(entry) == 1
         for r_type, uids in entry.items():
@@ -387,7 +388,7 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
         )''').next()
     authors = {}  # to do
     with textdata.ArangoTextInfoModel(db=db) as tim:
-        for lang_dir in html_dir.glob('*'):
+        for lang_dir in tqdm(html_dir.glob('*')):
             if not lang_dir.is_dir:
                 continue
             tim.process_lang_dir(lang_dir=lang_dir, data_dir=data_dir,
@@ -419,7 +420,7 @@ def process_blurbs(db, additional_info_dir):
         blurb_info = json.load(f)
 
     docs = [{'uid': uid, 'lang': lang, 'blurb': blurb}
-            for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in suttas.items()]
+            for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in tqdm(suttas.items())]
 
     db.collection(collection_name).truncate()
     db.collection('blurbs').import_bulk(docs)
@@ -434,7 +435,7 @@ def process_difficulty(db, additional_info_dir):
         difficulty_info = json.load(f)
 
     docs = [{'uid': uid, 'difficulty': lvl}
-            for x in difficulty_info.values() for uid, lvl in x.items()]
+            for x in difficulty_info.values() for uid, lvl in tqdm(x.items())]
 
     db.collection(collection_name).truncate()
     db.collection('difficulties').import_bulk(docs)
@@ -457,6 +458,7 @@ def run():
     misc_dir = data_dir / 'misc'
     po_dir = data_dir / 'po_text'
     additional_info_dir = data_dir / 'additional-info'
+    dictionaries_dir = data_dir / 'dictionaries'
 
     db_name = current_app.config.get('ARANGO_DB')
     db = conn.database(db_name)
@@ -479,5 +481,7 @@ def run():
     process_blurbs(db, additional_info_dir)
 
     process_difficulty(db, additional_info_dir)
+
+    dictionaries.load_dictionaries(db, dictionaries_dir)
 
     change_tracker.update_mtimes()
