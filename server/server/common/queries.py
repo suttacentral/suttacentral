@@ -86,6 +86,15 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
             LIMIT 1
             RETURN difficulty.difficulty
     )[0]
+    
+    LET translations = FLATTEN([po_translations, legacy_translations])
+    
+    LET translated_titles = (
+        FOR translation IN translations
+            FILTER translation.lang == @language AND HAS(translation, 'title')
+            LIMIT 1
+            RETURN translation.title
+    )[0]
         
     RETURN {
         volpages: volpages,
@@ -96,7 +105,8 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
         root_lang: v.root_lang,
         type: e.type ? e.type : 'grouping',
         from: e._from,
-        translations: FLATTEN([po_translations, legacy_translations])
+        translated_title: translated_titles,
+        translations: translations
     }
 '''
 
