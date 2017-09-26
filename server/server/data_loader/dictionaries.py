@@ -6,7 +6,6 @@ from tqdm import tqdm
 def load_dictionaries(db, dictionaries_dir):
     print('Loading dictionaries')
     dictionaries = dictionaries_dir.glob('*.json')
-    print(dictionaries)
 
     dictionaries_collection = db['dictionaries']
     docs = []
