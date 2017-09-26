@@ -62,7 +62,7 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
                 author: text.author,
                 id: text._key
             }
-            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finnish data manipulation.
+            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
             RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
     )
     
@@ -126,7 +126,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
                 author: text.author,
                 id: text._key
             }
-            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finnish data manipulation.
+            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
             RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
     )
     
@@ -180,7 +180,7 @@ LET po_translations = (
             author: text.author,
             id: text._key
         }
-        //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finnish data manipulation.
+        //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
         RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
 )
 

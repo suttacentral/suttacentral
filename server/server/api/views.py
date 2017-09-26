@@ -282,14 +282,13 @@ class Sutta(Resource):
         ---
         parameters:
            - in: path
-             name: uid
+             name: author
              type: string
-             required: true
         responses:
             200:
                 description: Complete information set for sutta-view
                 schema:
-                    id: suttaplex
+                    id: sutta
                     type: object
                     properties:
                         root_text:
