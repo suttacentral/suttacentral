@@ -157,10 +157,10 @@ than ten results in total, a dropdown selection menu appears at the top.
                 <div class="padded-container">
                   <a class="search-result-link" href="[[_calculateLink(item)]]">
                     <div class="primary">
-                      <h2 class="search-result-title">[[item._source.heading.title]]</h2>
+                      <h2 class="search-result-title">[[_calculateTitle(item)]]</h2>
                     </div>
                     <div class="secondary">
-                      <p class="search-result-url" inner-h-t-m-l="[[item._source.heading.division]]"></p>
+                      <p class="search-result-url" inner-h-t-m-l="[[_calculateDivision(item)]]"></p>
                     </div>
                   </a>
                   <div class="secondary">
@@ -340,10 +340,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // Calls the input results when page is loaded
           _generateRequest() {
-              if (!this.searchParams) {
-                  return;
-              }
-              if (this._areAllItemsLoaded()) {
+              if (!this.searchParams || this._areAllItemsLoaded()) {
                   return;
               }
               this.shadowRoot.querySelector('#ajax').generateRequest();
@@ -404,6 +401,16 @@ than ten results in total, a dropdown selection menu appears at the top.
           // Determines the number of search results that have been found.
           _calculateResultCount(data) {
               return data ? data.hits.total : 0;
+          }
+
+          // If there is no title in the database, the division is the title
+          _calculateTitle(item) {
+              return item._source.heading.title ? item._source.heading.title : item._source.heading.division;
+          }
+
+          // If there is a title, the division is the subtitle
+          _calculateDivision(item) {
+              return item._source.heading.title ? item._source.heading.division : '';
           }
 
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
