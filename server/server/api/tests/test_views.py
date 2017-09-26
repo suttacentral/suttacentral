@@ -1,4 +1,4 @@
-from api.views import Languages, Menu, SuttaplexList, Parallels
+from api.views import Languages, Menu, SuttaplexList, Parallels, Dictionaries
 from app import api
 from common import utils
 
@@ -52,5 +52,24 @@ def test_parallels_view(client):
     utils.generate_relationships(roots).save()
 
     res = client.get(api.url_for(Parallels, uid=uid))
+
+    assert res.status_code == 200
+
+
+def test_dictionaries_no_query(client):
+    res = client.get(api.url_for(Dictionaries))
+
+    assert res.status_code == 422
+
+
+def test_dictionaries(client):
+
+    utils.generate_dict(_from='pi', to='en')
+
+    data = {
+        'from': 'pi',
+        'to': 'en'
+    }
+    res = client.get(api.url_for(Dictionaries, **data))
 
     assert res.status_code == 200

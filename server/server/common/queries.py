@@ -152,3 +152,15 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
         partial: e.partial
     }
 '''
+
+# Takes 2 bind_vars: `from` and `to`.
+DICTIONARIES = '''
+FOR dict IN dictionaries
+    FILTER dict.from == @from AND dict.to == @to
+    LIMIT 1
+    RETURN {
+        from: dict.from,
+        to: dict.to,
+        dictionary: dict.dictionary
+    }
+'''
