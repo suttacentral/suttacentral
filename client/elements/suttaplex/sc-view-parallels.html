@@ -20,7 +20,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
       .parallels-table {
         border-collapse: separate;
-        border-spacing: 8px 8px;
+        border-spacing: 0 8px;
         margin: 0 auto;
         width: 80%;
       }
@@ -30,6 +30,14 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
         border: 1px solid rgba(0, 0, 0, 0.12);
         border-radius: 2px;
         padding: 8px 12px 2px;
+      }
+
+      .paper-lift {
+        transition: all 0.3s ease;
+      }
+
+      .paper-lift:hover {
+        box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.3);
       }
 
       .parallels-parallel-cell {
@@ -75,8 +83,10 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           <tbody class="parallels-table-body">
 
           <tr class="parallels-row">
-            <td class="parallels-root-cell parallels-table-cell" rowspan$="[[_getRowspan(rootId)]]">
-              <div class="parallels-root-id root" title="SuttaCentral ID">[[rootId]]</div>
+            <td class="parallels-root-cell parallels-table-cell paper-lift" rowspan$="[[_getRowspan(rootId)]]">
+              <div class="parallels-root-id root" title="SuttaCentral ID">
+                [[rootId]]
+              </div>
               <paper-button flat class="dense" title="Go to text in original language">
                 <a href="">[[_computeFullLangName(rootLang)]]</a>
               </paper-button>
@@ -85,7 +95,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               <iron-icon icon$="[[_getFirstParallelIcon(rootId)]]"
                          title$="[[_getFirstParallelIconTitle(rootId)]]"></iron-icon>
             </td>
-            <td class="parallels-parallel-cell">
+            <td class="parallels-parallel-cell paper-lift">
               <sc-parallel-item parallel-item="[[_getFirstParallelItem(rootId)]]"></sc-parallel-item>
             </td>
           </tr>
@@ -95,7 +105,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               <td class="parallels-relation-cell">
                 <iron-icon icon="[[_getParallelIcon(item)]]" title="[[_computeIconTitle(item)]]"></iron-icon>
               </td>
-              <td class="parallels-parallel-cell">
+              <td class="parallels-parallel-cell paper-lift">
                 <sc-parallel-item parallel-item="[[item]]"></sc-parallel-item>
               </td>
             </tr>
@@ -132,7 +142,8 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                           'pi': 'Pali',
                           'lzh': 'Chinese',
                           'skt': 'Sanskrit',
-                          'bo': 'Tibetan'
+                          'bo': 'Tibetan',
+                          'pr': 'Prakrit'
                       }
                   }
               }
@@ -140,8 +151,12 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
           ready() {
               super.ready();
-              this.shadowRoot.querySelector('#ajax').generateRequest();
               this.addEventListener('loading-results-changed', this._resizeParentList)
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.shadowRoot.querySelector('#ajax').generateRequest();
           }
 
           _didRespond() {
@@ -216,8 +231,8 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                   case 'retells':
                       return 'Retelling';
                   // TODO figure out whether resembling parallels exist in the DB at all
-//                  case 'compare-arrows':
-//                      return 'Resembling Parallel';
+                  //  case 'compare-arrows':
+                  //    return 'Resembling Parallel';
               }
           }
 
