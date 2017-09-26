@@ -111,7 +111,7 @@
 
       </div>
 
-      <iron-collapse id="collapse" opened="{{opened}}">
+      <iron-collapse id="collapse" opened="{{data.open}}">
         <template is="dom-if" if="{{data.open}}">
           <template is="dom-repeat" items="{{data.children}}">
             <paper-tree-node indented id="{{item.uid}}" data="{{item}}"></paper-tree-node>

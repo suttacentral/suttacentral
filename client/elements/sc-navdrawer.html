@@ -124,8 +124,8 @@ Issues that need to be fixed:
         url="api/menu"
         handle-as="json"
         loading="{{loading}}"
+        error="{{error}}"
         last-response="{{navList}}"
-        on-response="_parseNavList"
     ></iron-ajax>
 
     <app-drawer-layout fullbleed responsive-width="840px">
@@ -141,6 +141,10 @@ Issues that need to be fixed:
               <div class="loadingIndicator">
                 <paper-spinner-lite class="paper-spinner" active="{{loading}}"></paper-spinner-lite>
               </div>
+            </template>
+
+            <template is="dom-if" if="{{error}}">
+              <h2>Couldn't load the menu.</h2>
             </template>
 
             <template is="dom-repeat" items="{{navList}}">
@@ -184,6 +188,10 @@ Issues that need to be fixed:
                   wideScreen: {
                       type: Boolean,
                       observer: '_screenWidthChanged'
+                  },
+                  navList: {
+                      type: Array,
+                      observer: '_parseNavList'
                   }
               }
           }
@@ -207,10 +215,6 @@ Issues that need to be fixed:
               console.dir();
           }
 
-          _parseNavList() {
-              console.log(this.navList);
-          }
-
           // Set the width of the nav drawer
           _screenWidthChanged() {
               const hostAttributes = this.$.container.__dataHost.attributes;
@@ -220,6 +224,14 @@ Issues that need to be fixed:
               else if (hostAttributes.getNamedItem('is-wide')) {
                   hostAttributes.removeNamedItem('is-wide')
               }
+          }
+
+          // Open the first two tiers of the sidebar menu
+          _parseNavList() {
+              this.navList[0].open = true;
+              this.navList[0].children.forEach((item) => {
+                  item.open = true;
+              })
           }
 
           _updateScroll() {
