@@ -4,7 +4,7 @@ from typing import Callable, List, Dict
 import decorator
 
 from flask import current_app
-from common.arangodb import get_client
+from common.arangodb import get_client, get_db
 from common import models
 from migrations.runner import run_migrations
 
@@ -94,6 +94,15 @@ def generate_difficulty(amount=5) -> models.ModelList:
 
 def generate_relationships(roots: List[models.Root]) -> models.ModelList:
     return models.Relationship.generate(roots)
+
+
+def generate_dict(_from, to):
+    db = get_db()
+    db['dictionaries'].insert({
+        'from': _from,
+        'to': to,
+        'dictionary': []
+    })
 
 
 def uid_sort_key(string, reg=re.compile(r'\d+')):

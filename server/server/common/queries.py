@@ -153,6 +153,18 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
     }
 '''
 
+# Takes 2 bind_vars: `from` and `to`.
+DICTIONARIES = '''
+FOR dict IN dictionaries
+    FILTER dict.from == @from AND dict.to == @to
+    LIMIT 1
+    RETURN {
+        from: dict.from,
+        to: dict.to,
+        dictionary: dict.dictionary
+    }
+'''
+
 # Takes 3 bind_vars: `language`, `uid` and `author`
 SUTTA_VIEW = '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
