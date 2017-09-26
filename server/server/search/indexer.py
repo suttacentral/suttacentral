@@ -140,7 +140,6 @@ class ElasticIndexer:
             msg = 'Failure to create index "{}" from config "{}"'.format(self.index_alias,
                                                                          self.config_name)
             msg += '\n' + json.dumps(e.info, indent=2)
-            raise IndexCreationFailure(msg) from e
 
     def update_aliases(self):
         try:
