@@ -39,7 +39,7 @@ Issues that need to be fixed:
       }
 
       :host([is-wide]) {
-        --app-drawer-width: 480px;
+        --app-drawer-width: 360px;
       }
 
       paper-tree {
@@ -197,7 +197,8 @@ Issues that need to be fixed:
               const hostAttributes = this.$.container.__dataHost.attributes;
               if (this.wideScreen) {
                   hostAttributes.setNamedItem(document.createAttribute('is-wide'))
-              } else {
+              }
+              else if (hostAttributes.getNamedItem('is-wide')) {
                   hostAttributes.removeNamedItem('is-wide')
               }
           }
