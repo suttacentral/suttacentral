@@ -83,6 +83,12 @@ Issues that need to be fixed:
         overflow: auto;
         height: 100%;
       }
+
+      .paper-spinner {
+        --paper-spinner-color: var(--sc-gold-500);
+        left: 50%;
+      }
+
     </style>
 
     <iron-media-query query="(min-width: 992px)" query-matches="{{wideScreen}}"></iron-media-query>
@@ -117,7 +123,10 @@ Issues that need to be fixed:
         auto
         url="api/menu"
         handle-as="json"
-        last-response="{{navList}}"></iron-ajax>
+        loading="{{loading}}"
+        last-response="{{navList}}"
+        on-response="_parseNavList"
+    ></iron-ajax>
 
     <app-drawer-layout fullbleed responsive-width="840px">
 
@@ -128,6 +137,12 @@ Issues that need to be fixed:
               <div id="wheel">☸</div>&nbsp;SuttaCentral</a>
           </div>
           <div id="container">
+            <template is="dom-if" if="{{loading}}">
+              <div class="loadingIndicator">
+                <paper-spinner-lite class="paper-spinner" active="{{loading}}"></paper-spinner-lite>
+              </div>
+            </template>
+
             <template is="dom-repeat" items="{{navList}}">
               <paper-tree data='{{item}}'></paper-tree>
             </template>
@@ -190,6 +205,10 @@ Issues that need to be fixed:
           connectedCallback() {
               super.connectedCallback();
               console.dir();
+          }
+
+          _parseNavList() {
+              console.log(this.navList);
           }
 
           // Set the width of the nav drawer
