@@ -18,112 +18,110 @@ than ten results in total, a dropdown selection menu appears at the top.
 -->
 <dom-module id="sc-page-search">
   <template>
-    <custom-style>
-      <style>
+    <style>
 
-        #search_result_list {
-          padding: 28px 0 16px;
-        }
+      #search_result_list {
+        padding: 28px 0 16px;
+      }
 
-        .search-results-container {
-          @apply --sc-sans-font;
-          padding: 72px 0;
-        }
+      .search-results-container {
+        @apply --sc-sans-font;
+        padding: 72px 0;
+      }
 
-        .search-results-main {
-          max-width: 720px;
-          margin: 0 auto;
-        }
+      .search-results-main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
 
-        .search-result-head {
-          display: flex;
-          justify-content: space-between;
-          padding: 0 16px;
-          color: var(--secondary-text-color);
-        }
+      .search-result-head {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 16px;
+        color: var(--secondary-text-color);
+      }
 
-        .search-result-header {
-          @apply --paper-font-display1;
-          display: inline-block;
-          margin: 0;
-        }
+      .search-result-header {
+        @apply --paper-font-display1;
+        display: inline-block;
+        margin: 0;
+      }
 
-        .search-result-term {
-          font-weight: bold;
-          color: var(--sc-green-600);
-          @apply --sc-serif-font;
-        }
+      .search-result-term {
+        font-weight: bold;
+        color: var(--sc-green-600);
+        @apply --sc-serif-font;
+      }
 
-        .search-result-item {
-          @apply --layout-horizontal;
-          border-bottom: 1px solid var(--paper-grey-300);
-        }
+      .search-result-item {
+        @apply --layout-horizontal;
+        border-bottom: 1px solid var(--paper-grey-300);
+      }
 
-        .search-result-item:focus {
-          outline: 0;
-          background: linear-gradient(to right, rgba(67, 160, 7, 1) 4px, rgba(67, 160, 7, 0) 4px);
-        }
+      .search-result-item:focus {
+        outline: 0;
+        background: linear-gradient(to right, rgba(67, 160, 7, 1) 4px, rgba(67, 160, 7, 0) 4px);
+      }
 
-        .padded-container {
-          padding: 0 16px;
-          @apply --layout-flex;
-          @apply --layout-vertical;
-        }
+      .padded-container {
+        padding: 0 16px;
+        @apply --layout-flex;
+        @apply --layout-vertical;
+      }
 
-        .search-result-title {
-          @apply --paper-font-headline;
-          color: var(--sc-green-600);
-          margin: 22px 0 0 0;
-        }
+      .search-result-title {
+        @apply --paper-font-headline;
+        color: var(--sc-green-600);
+        margin: 22px 0 0 0;
+      }
 
-        .search-result-url {
-          @apply --paper-font-body2;
-          color: var(--secondary-text-color);
-          white-space: nowrap;
-          margin: 0 0 16px;
-          overflow: hidden;
-        }
+      .search-result-url {
+        @apply --paper-font-body2;
+        color: var(--secondary-text-color);
+        white-space: nowrap;
+        margin: 0 0 16px;
+        overflow: hidden;
+      }
 
-        .search-result-snippet {
-          @apply --sc-paper-font-body;
-          margin: 0 0 20px 0;
-        }
+      .search-result-snippet {
+        @apply --sc-paper-font-body;
+        margin: 0 0 20px 0;
+      }
 
-        .search-result-filter-menu {
-          margin-top: -20px;
-        }
+      .search-result-filter-menu {
+        margin-top: -20px;
+      }
 
-        .search-result-link {
-          text-decoration: none;
-          color: initial;
-        }
+      .search-result-link {
+        text-decoration: none;
+        color: initial;
+      }
 
-        .paper-spinner {
-          --paper-spinner-color: var(--sc-gold-500);
-          left: 50%;
-          top: 50px;
-        }
+      .paper-spinner {
+        --paper-spinner-color: var(--sc-gold-500);
+        left: 50%;
+        top: 50px;
+      }
 
-        .google-maps {
-          height: 480px;
-          margin-bottom: 20px;
-        }
+      .google-maps {
+        height: 480px;
+        margin-bottom: 20px;
+      }
 
-        .google-maps iframe {
-          height: 480px;
-          width: 100%;
-          border: none;
-        }
+      .google-maps iframe {
+        height: 480px;
+        width: 100%;
+        border: none;
+      }
 
-        .d-none {
-          display: none;
-        }
+      .d-none {
+        display: none;
+      }
 
-        [hidden] {
-          display: none !important;
-        }
-      </style>
-    </custom-style>
+      [hidden] {
+        display: none !important;
+      }
+    </style>
 
     <iron-ajax id="ajax"
                url="api/search"
@@ -145,7 +143,9 @@ than ten results in total, a dropdown selection menu appears at the top.
             <span class="search-result-description">results for</span>
             <span class="search-result-term">[[searchQuery]]</span>
           </h1>
-          <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
+          <sc-search-filter-menu search-selected={{resetFilter}}
+                                 class="search-result-filter-menu"
+                                 id="filter_menu"></sc-search-filter-menu>
         </div>
 
         <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="_loadMoreData"
@@ -190,7 +190,6 @@ than ten results in total, a dropdown selection menu appears at the top.
                       value: '',
                       observer: '_startNewSearch'
                   },
-                  responseData: Array,
                   lastSearchResults: {
                       type: Array,
                       value: [],
@@ -305,6 +304,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.set('currentPage', 0);
               this.set('currentFilter', 'all');
               this.set('totalLoadedResults', 0);
+              this.shadowRoot.querySelector('#filter_menu').resetFilter();
               this.searchParams = {
                   limit: this.resultsPerLoad,
                   query: this.searchQuery
