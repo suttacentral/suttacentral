@@ -18,112 +18,110 @@ than ten results in total, a dropdown selection menu appears at the top.
 -->
 <dom-module id="sc-page-search">
   <template>
-    <custom-style>
-      <style>
+    <style>
 
-        #search_result_list {
-          padding: 28px 0 16px;
-        }
+      #search_result_list {
+        padding: 28px 0 16px;
+      }
 
-        .search-results-container {
-          @apply --sc-sans-font;
-          padding: 72px 0;
-        }
+      .search-results-container {
+        @apply --sc-sans-font;
+        padding: 72px 0;
+      }
 
-        .search-results-main {
-          max-width: 720px;
-          margin: 0 auto;
-        }
+      .search-results-main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
 
-        .search-result-head {
-          display: flex;
-          justify-content: space-between;
-          padding: 0 16px;
-          color: var(--secondary-text-color);
-        }
+      .search-result-head {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 16px;
+        color: var(--secondary-text-color);
+      }
 
-        .search-result-header {
-          @apply --paper-font-display1;
-          display: inline-block;
-          margin: 0;
-        }
+      .search-result-header {
+        @apply --paper-font-display1;
+        display: inline-block;
+        margin: 0;
+      }
 
-        .search-result-term {
-          font-weight: bold;
-          color: var(--sc-green-600);
-          @apply --sc-serif-font;
-        }
+      .search-result-term {
+        font-weight: bold;
+        color: var(--sc-green-600);
+        @apply --sc-serif-font;
+      }
 
-        .search-result-item {
-          @apply --layout-horizontal;
-          border-bottom: 1px solid var(--paper-grey-300);
-        }
+      .search-result-item {
+        @apply --layout-horizontal;
+        border-bottom: 1px solid var(--paper-grey-300);
+      }
 
-        .search-result-item:focus {
-          outline: 0;
-          background: linear-gradient(to right, rgba(67, 160, 7, 1) 4px, rgba(67, 160, 7, 0) 4px);
-        }
+      .search-result-item:focus {
+        outline: 0;
+        background: linear-gradient(to right, rgba(67, 160, 7, 1) 4px, rgba(67, 160, 7, 0) 4px);
+      }
 
-        .padded-container {
-          padding: 0 16px;
-          @apply --layout-flex;
-          @apply --layout-vertical;
-        }
+      .padded-container {
+        padding: 0 16px;
+        @apply --layout-flex;
+        @apply --layout-vertical;
+      }
 
-        .search-result-title {
-          @apply --paper-font-headline;
-          color: var(--sc-green-600);
-          margin: 22px 0 0 0;
-        }
+      .search-result-title {
+        @apply --paper-font-headline;
+        color: var(--sc-green-600);
+        margin: 22px 0 0 0;
+      }
 
-        .search-result-url {
-          @apply --paper-font-body2;
-          color: var(--secondary-text-color);
-          white-space: nowrap;
-          margin: 0 0 16px;
-          overflow: hidden;
-        }
+      .search-result-url {
+        @apply --paper-font-body2;
+        color: var(--secondary-text-color);
+        white-space: nowrap;
+        margin: 0 0 16px;
+        overflow: hidden;
+      }
 
-        .search-result-snippet {
-          @apply --sc-paper-font-body;
-          margin: 0 0 20px 0;
-        }
+      .search-result-snippet {
+        @apply --sc-paper-font-body;
+        margin: 0 0 20px 0;
+      }
 
-        .search-result-filter-menu {
-          margin-top: -20px;
-        }
+      .search-result-filter-menu {
+        margin-top: -20px;
+      }
 
-        .search-result-link {
-          text-decoration: none;
-          color: initial;
-        }
+      .search-result-link {
+        text-decoration: none;
+        color: initial;
+      }
 
-        .paper-spinner {
-          --paper-spinner-color: var(--sc-gold-500);
-          left: 50%;
-          top: 50px;
-        }
+      .paper-spinner {
+        --paper-spinner-color: var(--sc-gold-500);
+        left: 50%;
+        top: 50px;
+      }
 
-        .google-maps {
-          height: 480px;
-          margin-bottom: 20px;
-        }
+      .google-maps {
+        height: 480px;
+        margin-bottom: 20px;
+      }
 
-        .google-maps iframe {
-          height: 480px;
-          width: 100%;
-          border: none;
-        }
+      .google-maps iframe {
+        height: 480px;
+        width: 100%;
+        border: none;
+      }
 
-        .d-none {
-          display: none;
-        }
+      .d-none {
+        display: none;
+      }
 
-        [hidden] {
-          display: none !important;
-        }
-      </style>
-    </custom-style>
+      [hidden] {
+        display: none !important;
+      }
+    </style>
 
     <iron-ajax id="ajax"
                url="api/search"
@@ -145,7 +143,9 @@ than ten results in total, a dropdown selection menu appears at the top.
             <span class="search-result-description">results for</span>
             <span class="search-result-term">[[searchQuery]]</span>
           </h1>
-          <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
+          <sc-search-filter-menu search-selected={{resetFilter}}
+                                 class="search-result-filter-menu"
+                                 id="filter_menu"></sc-search-filter-menu>
         </div>
 
         <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="_loadMoreData"
@@ -157,14 +157,15 @@ than ten results in total, a dropdown selection menu appears at the top.
                 <div class="padded-container">
                   <a class="search-result-link" href="[[_calculateLink(item)]]">
                     <div class="primary">
-                      <h2 class="search-result-title">[[item._source.heading.title]]</h2>
+                      <h2 class="search-result-title">[[_calculateTitle(item)]]</h2>
                     </div>
                     <div class="secondary">
-                      <p class="search-result-url" inner-h-t-m-l="[[item._source.heading.division]]"></p>
+                      <p class="search-result-url" inner-h-t-m-l="[[_calculateDivision(item)]]"></p>
                     </div>
                   </a>
                   <div class="secondary">
-                    <p class="search-result-snippet" inner-h-t-m-l="{{_calculateSnippetContent(item.highlight.content)}}"></p>
+                    <p class="search-result-snippet"
+                       inner-h-t-m-l="{{_calculateSnippetContent(item.highlight.content)}}"></p>
                   </div>
                 </div>
               </div>
@@ -189,7 +190,6 @@ than ten results in total, a dropdown selection menu appears at the top.
                       value: '',
                       observer: '_startNewSearch'
                   },
-                  responseData: Array,
                   lastSearchResults: {
                       type: Array,
                       value: [],
@@ -223,7 +223,8 @@ than ten results in total, a dropdown selection menu appears at the top.
                   searchResultElemHeight: {
                       type: Number,
                       value: 170
-                  }
+                  },
+                  totalLoadedResults: Number
               }
           }
 
@@ -253,6 +254,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                   if (!items[i]) {
                       return;
                   }
+                  this.totalLoadedResults++;
                   this.push('allSearchResults', items[i]);
                   // If the filter fits, add to visible items
                   if (this._belongsToFilterScope(items[i])) {
@@ -269,10 +271,23 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (!this._shouldLoadMoreData()) {
                   return;
               }
-              // Don't load once all items have been loaded.
+              // Don't load once all items have already been loaded.
               if (this.searchListNode.items.length >= this.resultCount) {
                   return;
               }
+              this._loadNextPage();
+          }
+
+          // Checks if the user scrolled past the required threshold to load more search results.
+          // This has some slightly expensive DOM querying, but at the moment is necessary because of this bug:
+          // https://github.com/PolymerElements/iron-list/issues/290.
+          _shouldLoadMoreData() {
+              // the threshold is set to fire when 8 elements are still not in view.
+              const scrollThreshold = (this.visibleSearchResults.length - 5) * this.searchResultElemHeight;
+              return document.body.scrollTop > scrollThreshold;
+          }
+
+          _loadNextPage() {
               this.currentPage++;
               this.searchParams = {
                   limit: this.resultsPerLoad,
@@ -288,20 +303,13 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.splice('allSearchResults', 0, this.allSearchResults.length);
               this.set('currentPage', 0);
               this.set('currentFilter', 'all');
+              this.set('totalLoadedResults', 0);
+              this.shadowRoot.querySelector('#filter_menu').resetFilter();
               this.searchParams = {
                   limit: this.resultsPerLoad,
                   query: this.searchQuery
               };
               this._generateRequest();
-          }
-
-          // Checks if the user scrolled past the required threshold to load more search results.
-          // This has some slightly expensive DOM querying, but at the moment is necessary because of this bug:
-          // https://github.com/PolymerElements/iron-list/issues/290.
-          _shouldLoadMoreData() {
-              // the threshold is set to fire when 8 elements are still not in view.
-              const scrollThreshold = (this.visibleSearchResults.length - 5) * this.searchResultElemHeight;
-              return document.body.scrollTop > scrollThreshold;
           }
 
           // If the number of results is less than 10 or there is only 1 category of results, the search filtering
@@ -322,17 +330,17 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // Checks if the item's category fits in the current filter.
           _belongsToFilterScope(item) {
-              return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all'
+              return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all';
           }
 
           // Formats the search result description snippet
           _calculateSnippetContent(description) {
-            return description.toString().split(';').join('...').split('\n').join('<br>');
+              return description.toString().split(';').join('...').split('\n').join('<br>');
           }
 
           // Calls the input results when page is loaded
           _generateRequest() {
-              if (!this.searchParams) {
+              if (!this.searchParams || this._areAllItemsLoaded()) {
                   return;
               }
               this.shadowRoot.querySelector('#ajax').generateRequest();
@@ -344,21 +352,40 @@ than ten results in total, a dropdown selection menu appears at the top.
               let selectedView;
               switch (event.detail.searchView) {
                   case 1:
-                      selectedView = "root-text";
+                      selectedView = 'root-text';
                       break;
                   case 2:
-                      selectedView = "translation";
+                      selectedView = 'translation';
                       break;
                   case 3:
-                      selectedView = "dictionary";
+                      selectedView = 'dictionary';
                       break;
                   default:
-                      selectedView = "all";
+                      selectedView = 'all';
               }
               this.currentFilter = selectedView;
+              this._filterSearchResults();
+              // Run every 0.5 seconds
+              setInterval(() => { this._loadMoreIfMinimumNotReached() }, 500);
+          }
+
+          // The endless scroll is dependant on a scroll event, but if there are not enough items on the
+          // screen (less than ~6) items on a search result page, it won't trigger loading more, hence this function:
+          _loadMoreIfMinimumNotReached() {
+              if (this.visibleSearchResults.length < 6 && !this._areAllItemsLoaded()) {
+                  this._loadNextPage();
+                  this._filterSearchResults();
+              }
+          }
+
+          _filterSearchResults() {
               this.set('visibleSearchResults', this.allSearchResults.filter((item) => {
                   return this._belongsToFilterScope(item);
               }));
+          }
+
+          _areAllItemsLoaded() {
+              return this.totalLoadedResults !== 0 && this.totalLoadedResults === this.resultCount;
           }
 
           _calculateItemCategory(item) {
@@ -366,9 +393,9 @@ than ten results in total, a dropdown selection menu appears at the top.
                   return item.category;
               }
               if (item._source.is_root) {
-                  return "root-text"
+                  return 'root-text'
               }
-              else return "translation";
+              else return 'translation';
           }
 
           // Determines the number of search results that have been found.
@@ -376,9 +403,19 @@ than ten results in total, a dropdown selection menu appears at the top.
               return data ? data.hits.total : 0;
           }
 
+          // If there is no title in the database, the division is the title
+          _calculateTitle(item) {
+              return item._source.heading.title ? item._source.heading.title : item._source.heading.division;
+          }
+
+          // If there is a title, the division is the subtitle
+          _calculateDivision(item) {
+              return item._source.heading.title ? item._source.heading.division : '';
+          }
+
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
           _calculateLink(item) {
-              return (item.category === "dictionary") ? ("/define/" + item._source.heading.title) : item.url;
+              return (item.category === 'dictionary') ? ('/define/' + item._source.heading.title) : item.url;
           }
       }
 

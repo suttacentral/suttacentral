@@ -63,6 +63,10 @@ The two necessary conditions are:
                   bubbles: true
               }));
           }
+
+          resetFilter() {
+              this.searchSelected = 0;
+          }
       }
 
       customElements.define(SCSearchFilterMenu.is, SCSearchFilterMenu);
