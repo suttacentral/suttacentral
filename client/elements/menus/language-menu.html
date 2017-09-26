@@ -3,6 +3,9 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="../../img/sc-svg-icons.html">
 
 <!--
 Language-menu used in the suttaplex card for denoting which translations exist of this particular text
@@ -14,33 +17,40 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         --primary-color: var(--paper-green-a700);
       }
 
-      paper-dropdown-menu, paper-listbox {
-        width: 200px;
+      .language-menu-listbox, .language-menu-dropdown {
         --paper-input-container-input: {
           text-transform: capitalize;
         };
       }
 
-      a {
+      /* The button element */
+      .language-menu-dropdown {
+        width: var(--language-menu-dropdown-width, 200px);
+      }
+
+      /* The actual list*/
+      .language-menu-listbox {
+        width: 200px;
+      }
+
+      .language-menu-url {
         text-decoration: none;
         color: inherit;
       }
 
-      paper-item {
+      .language-menu-item {
         text-transform: capitalize;
       }
 
-      .root-lang {
+      .root-lang-menu-item {
         color: var(--paper-green-a700);
+        display: flex;
+        justify-content: space-between;
       }
 
-      .root-lang:hover {
+      .root-lang-menu-item:hover {
         cursor: pointer;
         color: var(--paper-green-700)
-      }
-
-      .hide-element {
-        display: none;
       }
 
       .iso-code {
@@ -68,28 +78,45 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         border-bottom: 1px solid rgba(255, 255, 255, 0.3);
       }
 
+      .language-menu-root-icon {
+        color: var(--paper-grey-500);
+        margin-right: -6px;
+      }
+
+      .d-none {
+        display: none;
+      }
+
     </style>
 
-    <paper-dropdown-menu vertical-align="top" class="custom" label="[[titleLabel]]"
-                         title="Select a translation in another language" id="paper-dropdown-menu"
-                         dynamic-align=true>
-      <paper-listbox slot="dropdown-content">
-        <paper-item class$="root-lang [[_computeHide(originalLanguage)]]" title="Original language">
-          <a href="/[[inputUrl]]/[[originalLanguage]]">[[originalLanguage]]</a>
-        </paper-item>
+    <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
+                         title="Select a language" id="paper-dropdown-menu" dynamic-align=true>
+      <paper-listbox class="language-menu-listbox" slot="dropdown-content">
+
+        <template is="dom-if" if="[[originalLanguage]]">
+          <paper-item class="root-lang-menu-item language-menu-item" title="Original language">
+            <a class="language-menu-url" href="/[[inputUrl]]/[[originalLanguage]]">
+              [[_computeFullLanguageName(originalLanguage)]]</a>
+            <iron-icon class="language-menu-root-icon" icon="sc-svg-icons:root"></iron-icon>
+          </paper-item>
+        </template>
+
         <template is="dom-repeat" items="[[languageChoice]]" as="language">
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
-            <hr class="separator">
             <section class="language-choice-box">
-              <paper-item id='[[language.id]]' title="[[_languageTitle(language)]]">
+              <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
                 <paper-item-body>
-                  <a href="/[[language.id]]/?author=[[language.author]]">[[_computeAuthorForList(language.author)]]</a>
+                  <a class="language-menu-url" href="/suttas/[[language.id]]?author=[[language.author]]">
+                    [[_computeAuthorForList(language.author)]]
+                  </a>
                 </paper-item-body>
               </paper-item>
             </section>
             <div class="iso-code">[[language.lang]]</div>
           </template>
         </template>
+        <iron-icon icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
+
       </paper-listbox>
     </paper-dropdown-menu>
 
@@ -113,7 +140,17 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   inputUrl: String,
                   newLanguage: {
                       type: String,
-                      computed: "_otherLanguage(languageChoice, inputLanguage)"
+                      computed: '_otherLanguage(languageChoice, inputLanguage)'
+                  },
+                  rootLangMappings: {
+                      type: Object,
+                      value: {
+                          'pi': 'Pali',
+                          'lzh': 'Chinese',
+                          'skt': 'Sanskrit',
+                          'bo': 'Tibetan',
+                          'pr': 'Prakrit'
+                      }
                   }
               }
           }
@@ -124,7 +161,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _computeHide(checkText) {
-              return checkText ? checkText : "hide-element";
+              return checkText ? checkText : 'd-none';
           }
 
           // If author name is too long it looks really bad in paper-item so just cut it.
@@ -137,7 +174,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _computeAuthor(author) {
-              return author ? author : "Anonym"
+              return author ? author : 'Anonym'
           }
 
           _computeAuthorForList(author) {
@@ -147,6 +184,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           _languageTitle(language) {
               return `Select '${language.lang}' translation by ${this._computeAuthor(language.author)}`
           }
+
+          _computeFullLanguageName(isoCode) {
+              return this.rootLangMappings[isoCode];
+          }
+
       }
 
       customElements.define(SCLanguageMenu.is, SCLanguageMenu)
