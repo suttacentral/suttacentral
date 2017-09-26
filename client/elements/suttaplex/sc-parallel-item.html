@@ -191,10 +191,7 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
           // returns the relevant header, either the title in the translated language,
           // otherwise in pali or otherwise just the ID.
           _computeTitle() {
-              if (this.parallelItem.original_title) {
-                  return this.parallelItem.original_title;
-              }
-              else return this.parallelItem.uid;
+              return this.parallelItem.original_title ? this.parallelItem.original_title : this.parallelItem.uid;
           }
 
           _computeRootIdVisibility() {
