@@ -100,15 +100,13 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
     </style>
 
-    <iron-media-query query="(min-width:576px)" query-matches="{{wideLayout}}"></iron-media-query>
-
     <div class="parallel-item d-flex justify-content-space-between" style="flex-wrap: wrap">
 
       <div class$="parallel-item-main-info-container {{mainInfoContainerClasses}}">
         <div class="parallel-item-title vertical-margin-xs">[[_computeTitle()]]</div>
 
         <div class="parallel-item-details d-flex justify-content-space-between align-items-center vertical-margin-xs">
-          <div class="parallel-item-id flex-1">
+          <div class$="parallel-item-id flex-1 [[_computeRootIdVisibility()]]">
             <div class="uppercase" title="SuttaCentral ID">[[parallelItem.uid]]</div>
           </div>
 
@@ -173,7 +171,8 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
                           'pi': 'Pali',
                           'lzh': 'Chinese',
                           'skt': 'Sanskrit',
-                          'bo': 'Tibetan'
+                          'bo': 'Tibetan',
+                          'pr': 'Prakrit'
                       }
                   },
                   // Responsive layout variables that contain css classes.
@@ -187,14 +186,6 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
           ready() {
               super.ready();
-              window.addEventListener('wide-layout-changed', this._screenWidthChanged);
-          }
-
-          _screenWidthChanged() {
-              console.log('widht changed');
-              if (this.wideLayout) {
-                  this.mainInfoContainerClasses = 'right-margin-md';
-              } else this.mainInfoContainerClasses = '';
           }
 
           // returns the relevant header, either the title in the translated language,
@@ -204,6 +195,10 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
                   return this.parallelItem.original_title;
               }
               else return this.parallelItem.uid;
+          }
+
+          _computeRootIdVisibility() {
+              return this.parallelItem.original_title ? '' : 'd-none';
           }
 
           // returns the URL for the parallel with the given index
@@ -227,7 +222,9 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
               if (this.parallelItem.root_lang) {
                   return this._computeFullLangName(this.parallelItem.root_lang);
               }
-              return 'Translations';
+              else {
+                  return 'Translations';
+              }
           }
 
           _shouldShowLanguageDropdown() {
