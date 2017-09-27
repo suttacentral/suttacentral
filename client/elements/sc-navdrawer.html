@@ -46,7 +46,7 @@ Issues that need to be fixed:
 
       #wheel {
         color: white;
-        font-size: 45px;
+        font-size: calc(45px * var(--sc-skolar-font-scale));
         display: inline-block;
         vertical-align: middle;
         @apply --sc-serif-font;
@@ -55,7 +55,7 @@ Issues that need to be fixed:
       #hometitle {
         @apply --sc-serif-font;
         @apply --sc-mixed-small-caps;
-        font-size: 24px;
+        font-size: calc(24px * var(--sc-skolar-font-scale));
         font-weight: normal;
         color: var(--paper-indigo-500);
         background-color: var(--paper-amber-400);
