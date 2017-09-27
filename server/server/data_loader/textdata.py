@@ -49,7 +49,7 @@ class TextInfoModel:
     def is_bold(self, lang, element):
         if element.tag in {'b', 'strong'}:
             return True
-        if lang in {'lzh', 'lzh', 'ko', 'jp', 'tw'}:
+        if lang in {'lzh', 'ko', 'jp', 'tw'}:
             if element.tag in {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}:
                 return True
         return False

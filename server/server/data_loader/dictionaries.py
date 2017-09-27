@@ -20,5 +20,5 @@ def load_dictionaries(db, dictionaries_dir):
                     'dictionary': json.load(f)
                 })
             except ValueError:
-                pass
+                print(f'unknown dictionary name format {dictionary.stem}')
     dictionaries_collection.import_bulk(docs)
