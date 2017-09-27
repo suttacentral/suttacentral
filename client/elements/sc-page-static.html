@@ -28,7 +28,7 @@ Bhante Sujato needs to re-write them.
       h1 {
         @apply --sc-serif-font;
         @apply --sc-mixed-small-caps;
-        font-size: 2.5em;
+        @apply --sc-skolar-font-size-static-main-title;
         text-align: left;
         color: white;
         padding-top: 0.5em;
@@ -39,9 +39,9 @@ Bhante Sujato needs to re-write them.
 
       .subtitle {
         @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-static-subtitle;
         color: white;
         font-style: italic;
-        font-size: 1.5em;
         text-align: left;
         margin-bottom: .75em;
         margin-top: 0;
@@ -53,7 +53,7 @@ Bhante Sujato needs to re-write them.
 
       @media (max-width: 925px) {
         .subtitle {
-          font-size: 1.2em;
+          @apply --sc-skolar-font-size-xl;
           margin-bottom: 0.5em;
         }
       }
@@ -66,11 +66,11 @@ Bhante Sujato needs to re-write them.
 
       @media (max-width: 600px) {
         h1 {
-          font-size: 2em;
+          @apply --sc-skolar-font-size-xxl;
           padding-top: 0.2em;
         }
         .subtitle {
-          font-size: 1em;
+          @apply --sc-skolar-font-size-md;
           margin-bottom: 0.5em;
         }
       }
