@@ -79,10 +79,10 @@ def test_dictionaries_no_query(client):
 
 def test_dictionaries(client):
 
-    utils.generate_dict(_from='pi', to='en')
+    utils.generate_dict(_from='pli', to='en')
 
     data = {
-        'from': 'pi',
+        'from': 'pli',
         'to': 'en'
     }
     res = client.get(api.url_for(Dictionaries, **data))

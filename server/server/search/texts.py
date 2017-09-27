@@ -197,7 +197,7 @@ def update(force=False):
     def sort_key(d):
         if d == 'en':
             return 0
-        if d == 'pi':
+        if d == 'pli':
             return 1
         return 10
 
