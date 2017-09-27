@@ -1,4 +1,4 @@
-from api.views import Languages, Menu, SuttaplexList, Parallels, Sutta
+from api.views import Languages, Menu, SuttaplexList, Parallels, Dictionaries, Sutta
 from app import api
 from common import utils
 
@@ -67,5 +67,24 @@ def test_sutta_view(client):
     utils.generate_root_edges(roots).save()
 
     res = client.get(api.url_for(Sutta, uid=roots[0].uid, lang='en'))
+
+    assert res.status_code == 200
+
+
+def test_dictionaries_no_query(client):
+    res = client.get(api.url_for(Dictionaries))
+
+    assert res.status_code == 422
+
+
+def test_dictionaries(client):
+
+    utils.generate_dict(_from='pli', to='en')
+
+    data = {
+        'from': 'pli',
+        'to': 'en'
+    }
+    res = client.get(api.url_for(Dictionaries, **data))
 
     assert res.status_code == 200

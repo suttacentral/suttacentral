@@ -49,7 +49,7 @@ class TextInfoModel:
     def is_bold(self, lang, element):
         if element.tag in {'b', 'strong'}:
             return True
-        if lang in {'zh', 'lzh', 'ko', 'jp', 'tw'}:
+        if lang in {'lzh', 'ko', 'jp', 'tw'}:
             if element.tag in {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}:
                 return True
         return False
@@ -69,7 +69,7 @@ class TextInfoModel:
         # So we use a getter, and delete it when we are done.
 
         self._ppn = None
-        if lang_dir.stem == 'pi':
+        if lang_dir.stem == 'pli':
             self._ppn = PaliPageNumbinator(data_dir=data_dir)
 
             # It should be noted SuttaCentral does not use bolditalic
@@ -221,7 +221,7 @@ class TextInfoModel:
             return ''
 
     def _get_volpage(self, element, lang_uid, uid):
-        if lang_uid == 'zh':
+        if lang_uid == 'lzh':
             e = element.next_in_order()
             while e is not None:
                 if e.tag == 'a' and e.select_one('.t, .t-linehead'):
@@ -230,7 +230,7 @@ class TextInfoModel:
             else:
                 return
             return 'T {}'.format(e.attrib['id'])
-        elif lang_uid == 'pi':
+        elif lang_uid == 'pli':
             ppn = self._ppn
             e = element.next_in_order()
             while e:

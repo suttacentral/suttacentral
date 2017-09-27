@@ -4,6 +4,7 @@ import time
 import lxml.html
 import regex
 from elasticsearch.helpers import scan
+from tqdm import tqdm
 
 from common.arangodb import get_db
 from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG
@@ -196,16 +197,15 @@ def update(force=False):
     def sort_key(d):
         if d == 'en':
             return 0
-        if d == 'pi':
+        if d == 'pli':
             return 1
         return 10
 
     db = get_db()
     languages = sorted(db.aql.execute('FOR l IN language RETURN l.uid'), key=sort_key)
-    print(languages)
 
     # lang_dirs = sorted(sorted(search.text_dir.glob('*')), key=sort_key)
 
-    for lang in languages:
+    for lang in tqdm(languages):
         indexer = TextIndexer(lang)
         indexer.update()

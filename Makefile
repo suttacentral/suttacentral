@@ -125,7 +125,7 @@ reload-uwsgi:
 	@docker exec sc-flask uwsgi --reload /tmp/uwsgi.pid
 install-requirements:
 	@docker exec sc-flask pip install -r requirements.txt
-	@make reaload-uwsgi
+	@make reload-uwsgi
 
 # Tests.
 # Starts containers so that we are ready to run tests in them.

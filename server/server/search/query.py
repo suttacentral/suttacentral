@@ -98,7 +98,7 @@ def make_text_search_query(query, lang, root_lang=None, author=None, uid=None, s
     }
 
 
-lang_bias = {'en': 1.4, 'pi': 1.2}
+lang_bias = {'en': 1.4, 'pli': 1.2}
 
 
 def rank_language(string):
@@ -152,7 +152,7 @@ def search(query: str, highlight=True, offset=0, limit=10,
         indexes.append(lang)
 
     if not indexes:
-        indexes = ['en', 'pi', 'suttas', 'en-dict']
+        indexes = ['en', 'pli', 'suttas', 'en-dict']
 
     index_string = ','.join(get_available_indexes(indexes))
 

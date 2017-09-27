@@ -4,7 +4,7 @@ from flask import request, current_app
 from flask_restful import Resource
 
 from common.arangodb import get_db
-from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, SUTTA_VIEW
+from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW
 from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort
 
 
@@ -273,6 +273,53 @@ class Parallels(Resource):
             data[_from].append(result)
 
         return data, 200
+
+
+class Dictionaries(Resource):
+    def get(self):
+        """
+        Send parallel information for given sutta.
+        ---
+        parameters:
+           - in: path
+             name: from
+             type: string
+             required: true
+           - in: path
+             name: to
+             type: string
+        responses:
+            200:
+                schema:
+                    id: dictionary
+                    type: object
+                    properties:
+                        from:
+                            type: string
+                        to:
+                            type: string
+                        dictionary:
+                            type: array
+                            items:
+                                type: array
+                                items:
+                                    type: string
+        """
+        to_lang = request.args.get('to', current_app.config.get('DEFAULT_LANGUAGE'))
+        from_lang = request.args.get('from', None)
+
+        if from_lang is None:
+            return 'from not specified', 422
+
+        db = get_db()
+
+        result = db.aql.execute(DICTIONARIES,
+                                bind_vars={'from': from_lang, 'to': to_lang})
+
+        try:
+            return result.next(), 200
+        except StopIteration:
+            return 'Dictionary not found', 404
 
 
 class Sutta(Resource):
