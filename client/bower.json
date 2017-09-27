@@ -13,6 +13,7 @@
     "bower_components"
   ],
   "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
     "iron-ajax": "PolymerElements/iron-ajax#^2.0.2",
     "app-layout": "PolymerElements/app-layout#^2.0.1",
     "app-route": "PolymerElements/app-route#^2.0.1",
@@ -48,7 +49,6 @@
     "paper-tooltip": "PolymerElements/paper-tooltip#^2.0.0",
     "web-animations-js": "web-animations/web-animations-js#^2.3.1",
     "neon-animation": "PolymerElements/neon-animation#^2.0.1",
-    "polymer": "Polymer/polymer#^2.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   },
   "devDependencies": {
