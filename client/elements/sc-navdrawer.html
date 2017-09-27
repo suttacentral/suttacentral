@@ -35,22 +35,22 @@ Issues that need to be fixed:
     <style>
       :host {
         background-color: grey;
-        --app-drawer-width: 240px;
+        --app-drawer-width: 300px;
       }
 
       :host([is-wide]) {
         --app-drawer-width: 360px;
       }
 
-      paper-tree {
+      .sc-paper-tree {
         @apply --sc-sans-font;
       }
 
-      #container {
+      .nav-list-container {
         padding-top: 1em;
       }
 
-      #wheel {
+      .nav-wheel-icon {
         color: white;
         font-size: 45px;
         display: inline-block;
@@ -58,7 +58,7 @@ Issues that need to be fixed:
         @apply --sc-serif-font;
       }
 
-      #hometitle {
+      .nav-home-title {
         @apply --sc-serif-font;
         @apply --sc-mixed-small-caps;
         font-size: 24px;
@@ -73,12 +73,12 @@ Issues that need to be fixed:
         line-height: 1.4;
       }
 
-      #hometitle a {
+      .nav-home-link {
         color: var(--paper-indigo-500);
         text-decoration: none;
       }
 
-      #drawerbox {
+      .nav-drawer-box {
         @apply --shadow-elevation-16dp;
         overflow: auto;
         height: 100%;
@@ -131,14 +131,14 @@ Issues that need to be fixed:
     <app-drawer-layout fullbleed responsive-width="840px">
 
       <app-drawer slot="drawer">
-        <div id="drawerbox">
-          <div id="hometitle">
-            <a href="/">
-              <div id="wheel">☸</div>&nbsp;SuttaCentral</a>
+        <div id="drawerbox" class="nav-drawer-box">
+          <div id="hometitle" class="nav-home-title">
+            <a class="nav-home-link" href="/">
+              <div id="wheel" class="nav-wheel-icon">☸</div>&nbsp;SuttaCentral</a>
           </div>
-          <div id="container">
+          <div id="container" class="nav-list-container">
             <template is="dom-if" if="{{loading}}">
-              <div class="loadingIndicator">
+              <div class="loading-indicator">
                 <paper-spinner-lite class="paper-spinner" active="{{loading}}"></paper-spinner-lite>
               </div>
             </template>
@@ -148,7 +148,7 @@ Issues that need to be fixed:
             </template>
 
             <template is="dom-repeat" items="{{navList}}">
-              <paper-tree data='{{item}}'></paper-tree>
+              <paper-tree class="sc-paper-tree" data='{{item}}' is-wide="{{wideScreen}}"></paper-tree>
             </template>
           </div>
         </div>
@@ -210,11 +210,6 @@ Issues that need to be fixed:
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              console.dir();
-          }
-
           // Set the width of the nav drawer
           _screenWidthChanged() {
               const hostAttributes = this.$.container.__dataHost.attributes;
@@ -226,12 +221,18 @@ Issues that need to be fixed:
               }
           }
 
-          // Open the first two tiers of the sidebar menu
+          // Open the first two tiers of the sidebar menu and add icons
           _parseNavList() {
               this.navList[0].open = true;
+              if (!this.navList[0].children) { return; }
               this.navList[0].children.forEach((item) => {
                   item.open = true;
-              })
+                  item.icon = 'trending-flat';
+                  if (!item.children) { return; }
+                  item.children.forEach((subItem) => {
+                      subItem.icon = 'turned-in';
+                  })
+              });
           }
 
           _updateScroll() {
