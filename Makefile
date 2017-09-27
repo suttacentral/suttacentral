@@ -136,7 +136,7 @@ prepare-tests:
 # Run tests
 test:
 	@docker exec -t sc-flask pytest server/
-	@docker exec -t sc-nginx bash -c "cd opt/sc/static && polymer lint"
+	@docker exec -t sc-nginx bash -c "cd /opt/sc/static && polymer lint"
 
 load-data:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
