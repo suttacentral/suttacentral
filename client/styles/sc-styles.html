@@ -26,6 +26,10 @@
         font-size: calc(12px * var(--sc-skolar-font-scale));
       };
 
+      --sc-skolar-font-size-s: {
+        font-size: calc(14px * var(--sc-skolar-font-scale));
+      };
+
       --sc-skolar-font-size-md: {
         font-size: calc(16px * var(--sc-skolar-font-scale));
       };
@@ -50,19 +54,6 @@
         font-size: calc(24px * var(--sc-skolar-font-scale));
       };
 
-      --paper-font-subhead: {
-        @apply --sc-serif-font;
-        @apply --sc-skolar-font-size-md;
-      };
-
-      --paper-font-caption: {
-        @apply --sc-skolar-font-size-xs;
-      };
-
-      --paper-font-display1: {
-        @apply --sc-skolar-font-size-h1-md;
-      };
-
       --sc-paper-font-body: {
         @apply --paper-font-common-base;
         @apply --sc-skolar-font-size-md;
@@ -85,6 +76,30 @@
 
       --paper-font-common-base: {
 
+      };
+
+      --paper-font-subhead: {
+        @apply --sc-serif-font;
+        @apply --sc-skolar-font-size-md;
+      };
+
+      --paper-font-caption: {
+        @apply --sc-skolar-font-size-xs;
+      };
+
+      --paper-font-display1: {
+        @apply --sc-skolar-font-size-h1-md;
+        @apply --paper-font-common-base;
+        font-weight: 400;
+        letter-spacing: -.01em;
+        line-height: 40px;
+      };
+
+      --paper-font-body2: {
+        @apply --paper-font-common-base;
+        @apply --sc-skolar-font-size-s;
+        font-weight: 500;
+        line-height: 24px;
       };
 
     }

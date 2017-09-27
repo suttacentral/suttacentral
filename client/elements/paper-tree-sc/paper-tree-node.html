@@ -19,9 +19,9 @@
       }
 
       .node-row {
+        @apply --paper-font-body2;
         width: 100%;
         white-space: nowrap;
-        @apply --paper-font-body2;
         position: relative;
         text-transform: uppercase;
         letter-spacing: 0.04em;
@@ -43,9 +43,9 @@
       }
 
       .data-lang {
+        @apply --sc-skolar-font-size-xs;
         padding-left: 12px;
         color: var(--secondary-text-color);
-        font-size: 12px;
         font-weight: normal;
       }
 
@@ -75,7 +75,7 @@
 
       .thick-font {
         font-weight: 700;
-        font-size: 1.1em;
+        font-size: calc(1.1em * var(--sc-skolar-font-scale));
       }
 
       .full-height {
