@@ -12,7 +12,7 @@ services:
   sc-nginx:
     volumes:
       - ./client/:/opt/sc/static
-    command: bash entry-point.prod.sh
+    command: bash entry-point.test.sh
 
   sc-arangodb:
     env_file:
