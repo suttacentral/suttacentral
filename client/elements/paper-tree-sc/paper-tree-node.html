@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -19,15 +20,16 @@
       }
 
       .node-row {
+        @apply --paper-font-body2;
+        @apply --sc-sans-font;
         width: 100%;
         white-space: nowrap;
-        @apply --paper-font-body2;
         position: relative;
         text-transform: uppercase;
         letter-spacing: 0.04em;
       }
 
-      .node-row a {
+      .paper-tree-link {
         text-transform: none;
         letter-spacing: 0;
         text-decoration: none;
@@ -35,17 +37,21 @@
         cursor: pointer;
       }
 
-      paper-icon-button {
+      .paper-tree-toggle-button {
         color: var(--disabled-text-color);
         cursor: pointer;
         float: right;
         margin-right: 6px;
       }
 
+      .paper-tree-icon {
+        margin-left: 4px;
+      }
+
       .data-lang {
+        @apply --sc-skolar-font-size-xs;
         padding-left: 12px;
         color: var(--secondary-text-color);
-        font-size: 12px;
         font-weight: normal;
       }
 
@@ -60,22 +66,13 @@
         padding-left: 8px;
       }
 
-      ul {
-        margin: 0;
-        padding-left: 0;
-      }
-
-      li {
-        list-style-type: none;
-      }
-
       .light-font {
         font-weight: 400;
       }
 
       .thick-font {
         font-weight: 700;
-        font-size: 1.1em;
+        font-size: calc(1.1em * var(--sc-skolar-font-scale));
       }
 
       .full-height {
@@ -83,15 +80,19 @@
       }
     </style>
 
-    <div class="node-container" class$="{{_computeSmallIndent()}}">
+    <div class="node-container">
       <div class="node-row">
 
+        <template is="dom-if" if="{{data.icon}}">
+          <iron-icon class="paper-tree-icon" icon="[[data.icon]]"></iron-icon>
+        </template>
+
         <template is="dom-if" if="{{data.children}}">
-          <paper-icon-button icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></paper-icon-button>
+          <paper-icon-button class="paper-tree-toggle-button" icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></paper-icon-button>
         </template>
 
         <template is="dom-if" if="{{_computeClickable(data.uid)}}">
-          <a href$="{{_computeLink(data.uid)}}">
+          <a class="paper-tree-link" href$="{{_computeLink(data.uid)}}">
             <span class="node-name">
               <span class="data-name">{{data.name}}
                 <span class="data-lang">{{data.lang}}</span>
@@ -111,10 +112,10 @@
 
       </div>
 
-      <iron-collapse id="collapse" opened="{{opened}}">
+      <iron-collapse id="collapse" opened="{{data.open}}">
         <template is="dom-if" if="{{data.open}}">
           <template is="dom-repeat" items="{{data.children}}">
-            <paper-tree-node indented id="{{item.uid}}" data="{{item}}"></paper-tree-node>
+            <paper-tree-node id="{{item.uid}}" data="{{item}}" is-wide="{{isWide}}"></paper-tree-node>
           </template>
         </template>
         <!--Dummy element that enables rolldown animation with iron-collapse -->
@@ -158,6 +159,10 @@
                   indented: {
                       type: Boolean,
                       value: false
+                  },
+                  isWide: {
+                      type: Boolean,
+                      observer: '_screenWidthChanged'
                   }
               }
           }
@@ -175,7 +180,7 @@
           }
 
           _computeSmallIndent() {
-              return this.indented ? "small-indent" : "";
+              return this.indented ? 'small-indent' : '';
           }
 
           /**
@@ -185,22 +190,22 @@
            * @returns {boolean} Whether the node should be clickable and should lead to a text / suttaplex list
            */
           _computeClickable(uid) {
-              return uid.split("\/")[0] === "root";
+              return uid.split('\/')[0] === 'root';
           }
 
           _computeFontWeight(uid) {
-              return uid.split("\/")[0] === "grouping" ? "light-font" : "thick-font";
+              return uid.split('\/')[0] === 'grouping' ? 'light-font' : 'thick-font';
           }
 
           _computeLink(uid) {
-              return uid.substring(uid.indexOf("\/"), uid.length);
+              return uid.substring(uid.indexOf('\/'), uid.length);
           }
 
           /**
            * Highlights node as the selected node.
            */
           _select() {
-              this.dispatchEvent(new CustomEvent("select", { detail: this, composed: true, bubbles: true }));
+              this.dispatchEvent(new CustomEvent('select', { detail: this, composed: true, bubbles: true }));
               this.toggleChildren();
           }
 
@@ -219,12 +224,19 @@
           }
 
           /**
+           * Reacts to the screen width change and sets the indentation accordingly (no indent on small screens)
+           */
+          _screenWidthChanged() {
+              this.shadowRoot.querySelector('.node-container').classList.toggle('small-indent', !!this.isWide);
+          }
+
+          /**
            * Display/Hide the children nodes.
            */
           toggleChildren() {
               this.opened = !this.opened;
               this.dispatchEvent(new CustomEvent('toggle', { detail: this }));
-              this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
+              this.set('data.open', !this.data.open && this.data.children && this.data.children.length);
           }
 
       }

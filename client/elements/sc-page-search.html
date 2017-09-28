@@ -43,6 +43,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
       .search-result-header {
         @apply --paper-font-display1;
+        @apply --sc-sans-font;
         display: inline-block;
         margin: 0;
       }
@@ -71,12 +72,14 @@ than ten results in total, a dropdown selection menu appears at the top.
 
       .search-result-title {
         @apply --paper-font-headline;
+        @apply --sc-sans-font;
         color: var(--sc-green-600);
         margin: 22px 0 0 0;
       }
 
-      .search-result-url {
+      .search-result-division {
         @apply --paper-font-body2;
+        @apply --sc-sans-font;
         color: var(--secondary-text-color);
         white-space: nowrap;
         margin: 0 0 16px;
@@ -160,7 +163,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                       <h2 class="search-result-title">[[_calculateTitle(item)]]</h2>
                     </div>
                     <div class="secondary">
-                      <p class="search-result-url" inner-h-t-m-l="[[_calculateDivision(item)]]"></p>
+                      <p class="search-result-division" inner-h-t-m-l="[[_calculateDivision(item)]]"></p>
                     </div>
                   </a>
                   <div class="secondary">
