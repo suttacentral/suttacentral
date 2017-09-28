@@ -80,7 +80,7 @@
         <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
       </div>
 
-      <iron-list items="{{responseData}}" scroll-target="document" id="suttaplex-iron">
+      <iron-list items="{{responseData}}" as="item" scroll-target="document" id="suttaplex-iron">
         <template>
           <div>
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
@@ -88,7 +88,7 @@
             </template>
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
-              <section class$="[[_calcualteClass(item.type)]]">
+              <section class$="[[_calculateClass(item.type)]]">
                 <sc-title input-title="[[item.original_title]]" input-text="[[item.blurb]]"
                           input-type="[[item.type]]">
                 </sc-title>
@@ -122,7 +122,8 @@
                   titleFontSize: {
                       type: Number,
                       value: 44
-                  }
+                  },
+                  category: String
               }
           }
 
@@ -138,7 +139,7 @@
               return item.type === 'text';
           }
 
-          _calcualteClass(itemType) {
+          _calculateClass(itemType) {
               return itemType === 'grouping' ? 'node' : 'vagga-node';
           }
       }
