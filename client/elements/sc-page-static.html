@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="static/home-page.html">
-<link rel="import" href="static/dons-page.html">
+<link rel="import" href="static/donations-page.html">
 <link rel="import" href="static/downloads-page.html">
 <link rel="import" href="static/people-page.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
@@ -87,8 +87,8 @@ Bhante Sujato needs to re-write them.
       <div name="home">
         <home-page></home-page>
       </div>
-      <div name="dons">
-        <dons-page></dons-page>
+      <div name="donations">
+        <sc-donations-page></sc-donations-page>
       </div>
       <div name="downloads">
         <downloads-page></downloads-page>
@@ -119,8 +119,8 @@ Bhante Sujato needs to re-write them.
                   case '':
                       this.$.pages.selected = "home";
                       break;
-                  case 'dons':
-                      this.$.pages.selected = "dons";
+                  case 'donations':
+                      this.$.pages.selected = "donations";
                       break;
                   case 'downloads':
                       this.$.pages.selected = "downloads";
