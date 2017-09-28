@@ -5,7 +5,9 @@
 <dom-module id="dons-page">
   <template>
     <style is="custom-style" include="static-styles">
-
+      .account-details-table {
+        @apply(--sc-skolar-font-size-md);
+      }
     </style>
 
     <div id="page-wrap">
@@ -25,7 +27,7 @@
           <p>SuttaCentral Development Trust Account is with Adelaide Bendigo community sector banking, which has ethical
             and environmentally-friendly investment policies.</p>
 
-          <table>
+          <table class="account-details-table">
             <tr>
               <td>Account name</td>
               <td><strong>SuttaCentral Development Trust</strong></td>

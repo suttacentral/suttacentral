@@ -5,8 +5,6 @@
 
 <link rel="import" href="../menus/language-menu.html">
 <link rel="import" href="../addons/sc-sutta-note.html">
-<link rel="import" href="../../styles/sc-styles.html">
-<link rel="import" href="../../styles/sc-suttaplex-styles.html">
 
 <!--
 This element loads additional info for each relevant parallel sutta, which is loaded from `../data/suttas`
@@ -32,10 +30,10 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
       .parallel-item-biblio-info {
         @apply --paper-font-body1;
+        @apply --shadow-elevation-3dp;
         position: absolute;
         z-index: 200;
         background-color: #fff;
-        @apply --shadow-elevation-3dp;
         padding: 12px;
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         margin: 0 48px 0 0;
