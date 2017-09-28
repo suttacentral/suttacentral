@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-route/app-route-converter.html">
 <link rel="import" href="../bower_components/iron-location/iron-query-params.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
@@ -31,20 +32,25 @@ Issues that need to be fixed:
 -->
 <dom-module id="sc-navdrawer">
   <template>
-    <style is="custom-style">
+    <style>
       :host {
         background-color: grey;
+        --app-drawer-width: 300px;
       }
 
-      paper-tree {
+      :host([is-wide]) {
+        --app-drawer-width: 360px;
+      }
+
+      .sc-paper-tree {
         @apply --sc-sans-font;
       }
 
-      #container {
+      .nav-list-container {
         padding-top: 1em;
       }
 
-      #wheel {
+      .nav-wheel-icon {
         color: white;
         font-size: calc(45px * var(--sc-skolar-font-scale));
         display: inline-block;
@@ -52,7 +58,7 @@ Issues that need to be fixed:
         @apply --sc-serif-font;
       }
 
-      #hometitle {
+      .nav-home-title {
         @apply --sc-serif-font;
         @apply --sc-mixed-small-caps;
         font-size: calc(24px * var(--sc-skolar-font-scale));
@@ -67,17 +73,25 @@ Issues that need to be fixed:
         line-height: 1.4;
       }
 
-      #hometitle a {
+      .nav-home-link {
         color: var(--paper-indigo-500);
         text-decoration: none;
       }
 
-      #drawerbox {
+      .nav-drawer-box {
         @apply --shadow-elevation-16dp;
         overflow: auto;
         height: 100%;
       }
+
+      .paper-spinner {
+        --paper-spinner-color: var(--sc-gold-500);
+        left: 50%;
+      }
+
     </style>
+
+    <iron-media-query query="(min-width: 992px)" query-matches="{{wideScreen}}"></iron-media-query>
 
     <iron-location path="{{path}}" query="{{query}}"></iron-location>
 
@@ -109,19 +123,32 @@ Issues that need to be fixed:
         auto
         url="api/menu"
         handle-as="json"
-        last-response="{{navList}}"></iron-ajax>
+        loading="{{loading}}"
+        error="{{error}}"
+        last-response="{{navList}}"
+    ></iron-ajax>
 
     <app-drawer-layout fullbleed responsive-width="840px">
 
       <app-drawer slot="drawer">
-        <div id="drawerbox">
-          <div id="hometitle">
-            <a href="/">
-              <div id="wheel">☸</div>&nbsp;SuttaCentral</a>
+        <div id="drawerbox" class="nav-drawer-box">
+          <div id="hometitle" class="nav-home-title">
+            <a class="nav-home-link" href="/">
+              <div id="wheel" class="nav-wheel-icon">☸</div>&nbsp;SuttaCentral</a>
           </div>
-          <div id="container">
+          <div id="container" class="nav-list-container">
+            <template is="dom-if" if="{{loading}}">
+              <div class="loading-indicator">
+                <paper-spinner-lite class="paper-spinner" active="{{loading}}"></paper-spinner-lite>
+              </div>
+            </template>
+
+            <template is="dom-if" if="{{error}}">
+              <h2>Couldn't load the menu.</h2>
+            </template>
+
             <template is="dom-repeat" items="{{navList}}">
-              <paper-tree data='{{item}}'></paper-tree>
+              <paper-tree class="sc-paper-tree" data='{{item}}' is-wide="{{wideScreen}}"></paper-tree>
             </template>
           </div>
         </div>
@@ -157,7 +184,15 @@ Issues that need to be fixed:
                   },
                   queryParams: Object,
                   path: String,
-                  query: String
+                  query: String,
+                  wideScreen: {
+                      type: Boolean,
+                      observer: '_screenWidthChanged'
+                  },
+                  navList: {
+                      type: Array,
+                      observer: '_parseNavList'
+                  }
               }
           }
 
@@ -175,6 +210,31 @@ Issues that need to be fixed:
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
           }
 
+          // Set the width of the nav drawer
+          _screenWidthChanged() {
+              const hostAttributes = this.$.container.__dataHost.attributes;
+              if (this.wideScreen) {
+                  hostAttributes.setNamedItem(document.createAttribute('is-wide'));
+              }
+              else if (hostAttributes.getNamedItem('is-wide')) {
+                  hostAttributes.removeNamedItem('is-wide');
+              }
+          }
+
+          // Open the first two tiers of the sidebar menu and add icons
+          _parseNavList() {
+              this.navList[0].open = true;
+              if (!this.navList[0].children) { return; }
+              this.navList[0].children.forEach((item) => {
+                  item.open = true;
+                  item.icon = 'trending-flat';
+                  if (!item.children) { return; }
+                  item.children.forEach((subItem) => {
+                      subItem.icon = 'turned-in';
+                  })
+              });
+          }
+
           _updateScroll() {
               window.scroll(0, 0);
           }
@@ -183,7 +243,7 @@ Issues that need to be fixed:
           // So when using "polymer serve" to start development server, you have to use a colon
           // instead of a dot. But with python server/app.py you can use the correct path name.
           _calculateCategory(collectionData) {
-              this.category = collectionData.collection.replace(":", ".");
+              this.category = collectionData.collection.replace(':', '.');
           }
 
           // sets the inputLanguage for all pages
@@ -193,11 +253,11 @@ Issues that need to be fixed:
 
           // opens the app-drawer when it is not visible.
           _toggleDrawer(event) {
-              return this.shadowRoot.querySelector('app-drawer').setAttribute("opened", event.detail.togdraw);
+              return this.shadowRoot.querySelector('app-drawer').setAttribute('opened', event.detail.togdraw);
           }
 
           initiateSearch(event) {
-              this.set('path', "/search");
+              this.set('path', '/search');
               this.set('query', `query=${event.detail}`);
           }
       }
