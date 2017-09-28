@@ -64,7 +64,7 @@ Issues:
         display: none;
       }
 
-      #search_input {
+      #searchInput {
         width: 0;
         transition: width .2s cubic-bezier(.4, 0, .2, 1);
       }
@@ -111,9 +111,9 @@ Issues:
 
     <div id="toolsmenu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
-      <iron-a11y-keys target="{{search_input}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
+      <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
       <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
-      <paper-input label="Search" no-label-float id="search_input"></paper-input>
+      <paper-input label="Search" no-label-float id="searchInput"></paper-input>
       <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
@@ -191,7 +191,10 @@ Issues:
                   discourseLink: {
                       type: String,
                       computed: '_computeDiscourseLink(suttaPath,category)'
-                  }
+                  },
+
+                  // The input on the search box
+                  searchInput: String
               }
           }
 
@@ -212,13 +215,13 @@ Issues:
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
           // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
           openSearch() {
-              if (this.shadowRoot.querySelector('#search_input').classList.contains('opened')) {
+              if (this.shadowRoot.querySelector('#searchInput').classList.contains('opened')) {
                   this.searchAction();
               } else {
-                  this.shadowRoot.querySelector('#search_input').classList.add('opened');
-                  this.shadowRoot.querySelector('#search_input').focus();
+                  this.shadowRoot.querySelector('#searchInput').classList.add('opened');
+                  this.shadowRoot.querySelector('#searchInput').focus();
                   this.shadowRoot.querySelector('#closebutton').style.display = 'inline-block';
-                  this.shadowRoot.querySelector('#search_input').value = '';
+                  this.shadowRoot.querySelector('#searchInput').value = '';
                   let searchSize = 500;
                   if (this.suttaPath) {
                       searchSize = 540
@@ -248,9 +251,9 @@ Issues:
 
           // Closes the searchbox and resets original values.
           closeSearch() {
-              if (this.shadowRoot.querySelector('#search_input').classList.contains('opened')) {
-                  this.shadowRoot.querySelector('#search_input').classList.remove('opened');
-                  this.shadowRoot.querySelector('#search_input').removeAttribute('style', "width");
+              if (this.shadowRoot.querySelector('#searchInput').classList.contains('opened')) {
+                  this.shadowRoot.querySelector('#searchInput').classList.remove('opened');
+                  this.shadowRoot.querySelector('#searchInput').removeAttribute('style', "width");
                   this.shadowRoot.querySelector('#closebutton').style.display = 'none';
                   this.shadowRoot.querySelector("#toolsmenu").classList.remove("search-open");
                   Polymer.dom(this.root.host.offsetParent).querySelector("#toolbartitlebox")
@@ -260,7 +263,7 @@ Issues:
 
           // Fires the value of the search to the searchpages.
           searchAction() {
-              const searchQuery = this.shadowRoot.querySelector("#search_input").value;
+              const searchQuery = this.shadowRoot.querySelector("#searchInput").value;
               this.dispatchEvent(new CustomEvent('search', { detail: searchQuery, composed: true, bubbles: true }));
           }
 

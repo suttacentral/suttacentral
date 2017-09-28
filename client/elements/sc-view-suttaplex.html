@@ -12,7 +12,7 @@
 <dom-module id="sc-view-suttaplex" attributes="divisionTitle">
   <template>
     <style>
-      .divisioncontent {
+      .division-content {
         color: var(--primary-text-color);
         padding: 0;
       }
@@ -74,7 +74,7 @@
             loading="{{ loadingResults }}"
             last-response="{{ responseData }}"></iron-ajax>
 
-    <div id="suttaplex-conent" class="divisioncontent main">
+    <div class="division-content main">
 
       <div class="loading-indicator">
         <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
@@ -123,7 +123,8 @@
                       type: Number,
                       value: 44
                   },
-                  category: String
+                  category: String,
+                  item: Object
               }
           }
 
