@@ -214,10 +214,10 @@ Issues that need to be fixed:
           _screenWidthChanged() {
               const hostAttributes = this.$.container.__dataHost.attributes;
               if (this.wideScreen) {
-                  hostAttributes.setNamedItem(document.createAttribute('is-wide'))
+                  hostAttributes.setNamedItem(document.createAttribute('is-wide'));
               }
               else if (hostAttributes.getNamedItem('is-wide')) {
-                  hostAttributes.removeNamedItem('is-wide')
+                  hostAttributes.removeNamedItem('is-wide');
               }
           }
 
