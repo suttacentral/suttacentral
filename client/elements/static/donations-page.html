@@ -14,7 +14,15 @@
         font-weight: bold;
       }
 
-      #donations-button {
+      .donate-link {
+          background: none;
+      }
+
+      .donate-link:hover {
+          background: none;
+      }
+
+      .donations-button {
         display: flex;
         justify-content: center;
       }
@@ -29,8 +37,10 @@
             <p>Your donation is greatly appreciated. It will support the ongoing development of SuttaCentral so
               we can continue bring the Buddha’s word to people all around the world.</p>
 
-            <div id="donations-button">
-                <paper-button raised class="donate-button" on-tap="_goToDonation">DONATE</paper-button>
+            <div class="donations-button">
+                <a href="/donate-now" class="donate-link">
+                  <paper-button raised class="donate-button">DONATE</paper-button>
+                </a>
             </div>
 
             <h2>What does SuttaCentral spend money on?</h2>
@@ -101,13 +111,6 @@
       class SCDonationsPage extends Polymer.Element {
           static get is() {
               return 'sc-donations-page';
-          }
-
-          _goToDonation(el) {
-              console.log(el);
-            el.target.addEventListener('transitionend', function(e) {
-                location.href = '/donate-now';
-            });
           }
       }
 

@@ -3,7 +3,13 @@
   <meta charset="UTF-8">
   <title>SuttaCentral</title>
   <link rel="icon" href="img/favicon.ico">
-  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script>
+      window.customElements = window.customElements || {};
+      window.customElements.forcePolyfill = true;
+      window.ShadyDOM = {force: true};
+    </script>
+  <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+  <!-- <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script> -->
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">

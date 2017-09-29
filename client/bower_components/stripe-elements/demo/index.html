@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>stripe-elements demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../paper-input/paper-input.html">
+    <link rel="import" href="../../show-json/show-json.html">
+    <link rel="import" href="../stripe-elements.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic stripe-elements demo</h3>
+      <demo-snippet>
+
+        <template is="dom-bind">
+          <custom-style>
+            <style is="custom-style">
+              stripe-elements {
+                --stripe-elements-base-color: var(--paper-grey-700);
+                --stripe-elements-base-text-transform: uppercase;
+                --stripe-elements-base-font-family: 'Georgia';
+                --stripe-elements-base-font-style: italic;
+                --stripe-elements-element: {
+                  background: #c0fefe;
+                }
+              }
+            </style>
+          </custom-style>
+          <paper-input label="Stripe Publishable Key" value="{{key}}"></paper-input>
+          <stripe-elements publishable-key="[[key]]" token="{{token}}"></stripe-elements>
+          <show-json hide-copy-button json="[[token]]"></show-json>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "stripe-elements",
+  "authors": [
+    "Benny Powers <benny.p@elasticmedia.io>"
+  ],
+  "license": "MIT",
+  "description": "Polymer wrapper for Stripe.js v3 Elements",
+  "main": "stripe-elements.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "paper-toast": "PolymerElements/paper-toast#^2.0.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "paper-input": "PolymerElements/paper-input#^2.0.0",
+    "show-json": "ryanburns23/show-json#^1.0.1"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  }
+}

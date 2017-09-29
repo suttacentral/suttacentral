@@ -92,7 +92,7 @@ Bhante Sujato needs to re-write them.
         <sc-donations-page></sc-donations-page>
       </div>
       <div name="donate-now">
-        <sc-donate-now></sc-donate-now>
+        <sc-donate-now-page></sc-donate-now-page>
       </div>
       <div name="downloads">
         <downloads-page></downloads-page>
@@ -132,6 +132,9 @@ Bhante Sujato needs to re-write them.
                   case 'people':
                       this.$.pages.selected = "people";
                       break;
+                  case 'donate-now':
+                      this.$.pages.selected = "donate-now";
+                      break
               }
           },
       });
