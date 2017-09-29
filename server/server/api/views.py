@@ -4,7 +4,7 @@ from flask import request, current_app
 from flask_restful import Resource
 
 from common.arangodb import get_db
-from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW
+from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW, CURRENCIES
 from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort
 
 
@@ -379,3 +379,33 @@ class Sutta(Resource):
         results = db.aql.execute(SUTTA_VIEW,
                                  bind_vars={'uid': uid, 'language': lang, 'author': author})
         return results.next(), 200
+
+
+class Currencies(Resource):
+    def get(self):
+        """
+        Send list of available currencies.
+        ---
+        responses:
+            200:
+                schema:
+                    id: currencies
+                    type: array
+                    item:
+                        $ref '#/definitions/currency'
+        definitions:
+            currency:
+                type: object
+                properties:
+                    american_express:
+                        type: bool
+                    name:
+                        type: string
+                    symbol:
+                        type: string
+        """
+        db = get_db()
+
+        data = list(db.aql.execute(CURRENCIES))
+
+        return data, 200
