@@ -25,7 +25,7 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
       .parallel-item-title {
         @apply --paper-font-subhead;
         @apply --sc-serif-font;
-        word-wrap: break-word;
+        word-wrap: normal;
       }
 
       .parallel-item-biblio-info {
@@ -49,6 +49,7 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
         color: var(--secondary-text-color);
         white-space: normal;
         word-wrap: break-word;
+        flex-wrap: wrap;
       }
 
       .parallel-item-language-dropdown {
@@ -103,11 +104,11 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
         <div class="parallel-item-title vertical-margin-xs">[[_computeTitle()]]</div>
 
         <div class="parallel-item-details d-flex justify-content-space-between align-items-center vertical-margin-xs">
-          <div class$="parallel-item-id flex-1 [[_computeRootIdVisibility()]]">
+          <div class$="parallel-item-id [[_computeRootIdVisibility()]]">
             <div class="uppercase" title="SuttaCentral ID">[[parallelItem.uid]]</div>
           </div>
 
-          <div class="parallel-item-volpages-container flex-1">
+          <div class="parallel-item-volpages-container">
             <template is="dom-if" if="[[_volpagesAvailable()]]">
               <div>
                 <template is="dom-if" if="{{parallelItem.bib}}">
@@ -174,10 +175,6 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
                       }
                   }
               }
-          }
-
-          ready() {
-              super.ready();
           }
 
           // returns the relevant header, either the title in the translated language,
