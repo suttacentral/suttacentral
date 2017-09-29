@@ -4,7 +4,6 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="../../img/sc-svg-icons.html">
 
@@ -29,9 +28,13 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         width: var(--language-menu-dropdown-width, 200px);
       }
 
+      .language-menu-dropdown:focus {
+        outline: none;
+      }
+
       /* The actual list*/
       .language-menu-listbox {
-        width: 200px;
+        width: 220px;
       }
 
       .language-menu-url {
@@ -98,7 +101,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           <paper-item class="root-lang-menu-item language-menu-item" title="Original language">
             <a class="language-menu-url" href="/[[inputUrl]]/[[originalLanguage]]">
               [[_computeFullLanguageName(originalLanguage)]]</a>
-            <iron-icon class="language-menu-root-icon" icon="sc-svg-icons:root"></iron-icon>
           </paper-item>
         </template>
 
