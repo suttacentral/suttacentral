@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../bower_components/web-component-tester/browser.js"></script>
+  <script src="../bower_components/test-fixture/test-fixture-mocha.js"></script>
+
+  <!--Import the element to test -->
+  <link rel="import" href="../elements/sc-navdrawer.html">
+
+</head>
+
+<body>
+<test-fixture id="basic">
+  <template>
+    <sc-navdrawer></sc-navdrawer>
+  </template>
+</test-fixture>
+
+<script>
+    suite('navdrawer-tests', () => {
+        let navdrawer;
+
+        setup(() => {
+            navdrawer = fixture('basic');
+        });
+
+        test('Should display title', (done) => {
+            flush(() => {
+                let title = navdrawer.shadowRoot.querySelector('.nav-home-title-text');
+                assert.equal(title.innerHTML, '&nbsp;SuttaCentral');
+                done();
+            })
+        });
+
+    })
+
+</script>
+
+</body>
+</html>
