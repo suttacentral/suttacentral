@@ -9,6 +9,11 @@ services:
       - server/env/.test.env
     command: bash docker/entrypoint.test.sh
 
+  sc-nginx:
+    volumes:
+      - ./client/:/opt/sc/static
+    command: bash entry-point.test.sh
+
   sc-arangodb:
     env_file:
       - server/env/.test.env

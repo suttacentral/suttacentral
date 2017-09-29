@@ -146,9 +146,7 @@ than ten results in total, a dropdown selection menu appears at the top.
             <span class="search-result-description">results for</span>
             <span class="search-result-term">[[searchQuery]]</span>
           </h1>
-          <sc-search-filter-menu search-selected={{resetFilter}}
-                                 class="search-result-filter-menu"
-                                 id="filter_menu"></sc-search-filter-menu>
+          <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
         </div>
 
         <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="_loadMoreData"
@@ -188,10 +186,15 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           static get properties() {
               return {
+                  // The query to search for
                   searchQuery: {
                       type: String,
                       value: '',
                       observer: '_startNewSearch'
+                  },
+                  // The actual query parameters of the search
+                  searchParams: {
+
                   },
                   lastSearchResults: {
                       type: Array,

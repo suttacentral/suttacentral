@@ -107,9 +107,7 @@ Issues that need to be fixed:
         </template>
 
         <template is="dom-if" if="[[_checkList(category)]]">
-          <sc-view-suttaplex category="[[category]]" active-path="[[activePath]]"
-                             vagga-number="[[_computeVagga(subPath,activePath)]]"
-                             input-language="[[inputLanguage]]"></sc-view-suttaplex>
+          <sc-view-suttaplex category="[[category]]"></sc-view-suttaplex>
         </template>
 
         <template is="dom-if" if="[[_checkText(category)]]">
@@ -124,7 +122,7 @@ Issues that need to be fixed:
         </template>
 
         <template is="dom-if" if="[[_checkSearch(category)]]">
-          <sc-page-search search-query="[[searchQuery]]" input-language="[[inputLanguage]]"></sc-page-search>
+          <sc-page-search search-query="[[searchQuery]]"></sc-page-search>
         </template>
 
         <template is="dom-if" if="[[_checkDictionary(category)]]">
