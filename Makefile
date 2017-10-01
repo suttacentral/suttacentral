@@ -22,7 +22,7 @@ build-elasticsearch:
 	@docker-compose build sc-elasticsearch
 build-swagger:
 	@docker-compose build sc-swagger
-build-swagger:
+build-frontend-tester:
 	@docker-compose build sc-frontend-tester
 
 rebuild-all: clean-all build-all
@@ -76,7 +76,7 @@ rm-elasticsearch:
 	-@docker rm $(CONTS-ELASTICSEARCH)
 rm-swagger:
 	-@docker rm $(CONTS-SWAGGER)
-rm-swagger:
+rm-frontend-tester:
 	-@docker rm $(CONTS-FRONTEND_TESTER)
 rm: rm-arangodb rm-flask rm-nginx rm-elasticsearch rm-frontend-tester
 
