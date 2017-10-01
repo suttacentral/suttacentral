@@ -11,6 +11,7 @@ build-all:
 	@make build-nginx
 	@make build-elasticsearch
 	@make build-swagger
+	@make build-frontend-tester
 build-flask:
 	@docker-compose build sc-flask
 build-arangodb:
@@ -21,6 +22,8 @@ build-elasticsearch:
 	@docker-compose build sc-elasticsearch
 build-swagger:
 	@docker-compose build sc-swagger
+build-swagger:
+	@docker-compose build sc-frontend-tester
 
 rebuild-all: clean-all build-all
 rebuild-flask: clean-flask build-flask
@@ -44,6 +47,7 @@ CONTS-FLASK=$(shell docker ps -a -q -f "name=sc-flask")
 CONTS-NGINX=$(shell docker ps -a -q -f "name=sc-nginx")
 CONTS-ELASTICSEARCH=$(shell docker ps -a -q -f "name=sc-elasticsearch")
 CONTS-SWAGGER=$(shell docker ps -a -q -f "name=sc-swagger")
+CONTS-FRONTEND_TESTER=$(shell docker ps -a -q -f "name=sc-frontend-tester")
 
 #stop docker containers
 stop-arangodb:
@@ -56,6 +60,8 @@ stop-elasticsearch:
 	-@docker stop $(CONTS-ELASTICSEARCH)
 stop-swagger:
 	-@docker stop $(CONTS-SWAGGER)
+stop-frontend-tester:
+	-@docker stop $(CONTS-FRONTEND_TESTER)
 stop:
 	@docker-compose stop
 
@@ -70,7 +76,9 @@ rm-elasticsearch:
 	-@docker rm $(CONTS-ELASTICSEARCH)
 rm-swagger:
 	-@docker rm $(CONTS-SWAGGER)
-rm: rm-arangodb rm-flask rm-nginx rm-elasticsearch
+rm-swagger:
+	-@docker rm $(CONTS-FRONTEND_TESTER)
+rm: rm-arangodb rm-flask rm-nginx rm-elasticsearch rm-frontend-tester
 
 # Remove volumes
 rm-db-volume:
@@ -89,7 +97,7 @@ clean-arangodb: stop-arangodb rm-arangodb
 clean-flask: stop-flask rm-flask
 clean-nginx: stop-nginx rm-nginx
 clean-elasticsearch: stop-elasticsearch rm-elasticsearch
-clean-all: clean-arangodb clean-flask clean-nginx clean-elasticsearch rm-all-volumes
+clean-all: clean-arangodb clean-flask clean-nginx clean-elasticsearch clean rm-all-volumes
 
 #Open shell in container
 shell-arangodb:
@@ -102,6 +110,8 @@ shell-elasticsearch:
 	@docker exec -it sc-elasticsearch bash
 shell-swagger:
 	@docker exec -it sc-swagger
+shell-frontend-tester:
+	@docker exec -it sc-frontend-tester bash
 
 #Logs
 logs:
@@ -116,6 +126,8 @@ logs-elasticsearch:
 	@docker logs -f sc-elasticsearch
 logs-swagger:
 	@docker logs -f sc-swagger
+logs-frontend-tester:
+	@docker logs -f sc-frontend-tester
 
 # reloads
 # Only in dev mode local changes will be used after the reload
