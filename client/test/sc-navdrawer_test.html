@@ -15,26 +15,42 @@
 </head>
 
 <body>
+
 <test-fixture id="basic">
   <template>
     <sc-navdrawer></sc-navdrawer>
   </template>
 </test-fixture>
 
+<test-fixture id="with-list">
+  <template>
+    <sc-navdrawer nav-list='[{ "name": "Sutta", "lang": "pi", "open": true}]'></sc-navdrawer>
+  </template>
+</test-fixture>
+
 <script>
-    suite('navdrawer-tests', () => {
-        let navdrawer;
+    suite('<sc-navdrawer>', () => {
+        let basic;
+        let withList;
 
         setup(() => {
-            navdrawer = fixture('basic');
+            basic = fixture('basic');
+            withList = fixture('with-list');
         });
 
-        test('Should display title', (done) => {
+        test('Should display title', () => {
             flush(() => {
-                let title = navdrawer.shadowRoot.querySelector('.nav-home-title-text');
+                let title = basic.shadowRoot.querySelector('.nav-home-title-text');
                 assert.equal(title.innerHTML, '&nbsp;SuttaCentral');
-                done();
-            })
+            });
+        });
+
+        test('Should display menu', () => {
+            flush(() => {
+                let treeNodes = withList.shadowRoot.querySelector('paper-tree')
+                    .shadowRoot.querySelectorAll('paper-tree-node');
+                assert.equal(treeNodes.length, 1, 'There is exactly one menu item');
+            });
         });
     });
 </script>
