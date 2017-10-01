@@ -44,3 +44,9 @@ services:
     ports:
       - '3000:3000'
       - '3001:3001'
+
+  sc-frontend-tester:
+    entrypoint: tail -f /dev/null
+    working_dir: /opt/sc/frontend
+    volumes:
+      - ./client/:/opt/sc/frontend
