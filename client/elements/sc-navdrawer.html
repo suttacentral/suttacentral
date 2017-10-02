@@ -135,10 +135,12 @@ Issues that need to be fixed:
     <app-drawer-layout fullbleed responsive-width="840px">
 
       <app-drawer slot="drawer">
-        <div id="drawerbox" class="nav-drawer-box">
-          <div id="hometitle" class="nav-home-title">
+        <div class="nav-drawer-box">
+          <div class="nav-home-title">
             <a class="nav-home-link" href="/">
-              <div id="wheel" class="nav-wheel-icon">☸</div>&nbsp;SuttaCentral</a>
+              <div class="nav-wheel-icon">☸</div>
+              <span class="nav-home-title-text">&nbsp;SuttaCentral</span>
+            </a>
           </div>
           <div id="container" class="nav-list-container">
             <template is="dom-if" if="{{loading}}">
@@ -152,7 +154,7 @@ Issues that need to be fixed:
             </template>
 
             <template is="dom-repeat" items="{{navList}}">
-              <paper-tree class="sc-paper-tree" data='{{item}}' is-wide="{{wideScreen}}"></paper-tree>
+              <paper-tree class="sc-paper-tree" data='{{item}}' is-wide="[[wideScreen]]"></paper-tree>
             </template>
           </div>
         </div>
