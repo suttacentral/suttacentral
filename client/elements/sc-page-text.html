@@ -24,7 +24,7 @@ Issues:
 -->
 <dom-module id="sc-page-text" attributes="suttatitle suttameta">
   <template>
-    <style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
+    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
       .not-found {
         @apply --paper-font-display1;
       }
@@ -36,11 +36,11 @@ Issues:
                on-response="_loadedHTML"
                last-error='{{notFound}}'></iron-ajax>
 
-    <iron-ajax id="ajaxParagraphs"
-               url="../data/paragraphtitles.json"
-               handle-as="json"
-               last-response="{{paragraphTitles}}"
-               on-response="_computePars"></iron-ajax>
+    <!--<iron-ajax id="ajaxParagraphs"-->
+    <!--url="../data/paragraphtitles.json"-->
+    <!--handle-as="json"-->
+    <!--last-response="{{paragraphTitles}}"-->
+    <!--on-response="_computePars"></iron-ajax>-->
 
     <template is="dom-if" if="[[notFound]]">
       <p class="not-found">Sorry, the page you requested does not exist.</p>
@@ -48,7 +48,7 @@ Issues:
 
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
-      <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
+      <div id="htmltextcontent" inner-h-t-m-l="hey"></div>
     </template>
   </template>
   <script>
@@ -68,9 +68,7 @@ Issues:
                   suttaText: {
                       type: String,
                       notify: true,
-                      value: function() {
-                          return ''
-                      }
+                      value: ''
                   },
                   inputLanguage: String,
                   notFound: Object,
@@ -113,7 +111,7 @@ Issues:
 
           // After the text file is loaded, it calls the file that contains the paragraph numbers.
           _loadedHTML(e) {
-              this.$.ajaxParagraphs.generateRequest();
+              //              this.$.ajaxParagraphs.generateRequest();
           }
 
           // adds a class to the main container to either show or hide paragraph numbers.

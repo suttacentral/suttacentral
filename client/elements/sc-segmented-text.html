@@ -76,7 +76,7 @@ Issues that need to be fixed:
         @apply --sc-serif-font;
       }
 
-      paper-tooltip {
+      .text-tooltip {
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--paper-grey-700);
         --paper-tooltip: {
@@ -110,7 +110,7 @@ Issues that need to be fixed:
 
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
-      <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
+      <div id="htmltextcontent" inner-h-t-m-l="hey"></div>
     </template>
 
     <iron-ajax id="ajaxTranslated"
@@ -146,23 +146,18 @@ Issues that need to be fixed:
                   suttaText: {
                       type: String,
                       notify: true,
-                      value: function() {
-                          return ""
-                      }
+                      value: '',
+                      observer: 'suttaTextChanged'
                   },
                   suttaTranslatedText: {
                       type: Object,
                       notify: true,
-                      value: function() {
-                          return {}
-                      }
+                      value: () => { {} }
                   },
                   suttaOriginalText: {
                       type: Object,
                       notify: true,
-                      value: function() {
-                          return {}
-                      }
+                      value: () => { {} }
                   },
                   inputLanguage: String,
                   notFound: Object,
@@ -208,6 +203,10 @@ Issues that need to be fixed:
               console.log('in segmented text');
           }
 
+          suttaTextChanged() {
+              console.log(this.suttaText);
+          }
+
           _callAjax() {
               // starts loading the html markup files from '../data/texts/markup'
               this.htmlLoaded = false;
@@ -221,11 +220,11 @@ Issues that need to be fixed:
               let pathname;
               if (category.startsWith("dn") || category.startsWith("mn")) {
                   pathname = category.replace(/\d{1,5}/, "");
-                  return `api/suttas/${pathname}/${category}`;
+                  return `http://localhost/api/suttas/${pathname}/${category}`;
               } else if (category.startsWith("an") || category.startsWith("sn")) {
                   pathname = category.replace(/[\d{1,5}\-\.]/g, "");
                   const subpathname = category.split(".", 1)[0];
-                  return `api/suttas/${pathname}/${subpathname}/${category}`;
+                  return `http://localhost/api/suttas/${pathname}/${subpathname}/${category}`;
               }
           }
 
@@ -236,11 +235,11 @@ Issues that need to be fixed:
               const authorRoute = "en/sujato";
               if (category.startsWith("dn") || category.startsWith("mn")) {
                   pathname = category.replace(/\d{1,5}/, "");
-                  return `api/suttas/${authorRoute}/${pathname}/${category}`;
+                  return `http://localhost/api/suttas/${authorRoute}/${pathname}/${category}`;
               } else if (category.startsWith("an") || category.startsWith("sn")) {
                   pathname = category.replace(/[\d{1,5}\-\.]/g, "");
                   const subpathname = category.split(".", 1)[0];
-                  return `api/suttas/${authorRoute}/${pathname}/${subpathname}/${category}`;
+                  return `http://localhost/api/suttas/${authorRoute}/${pathname}/${subpathname}/${category}`;
               }
           }
 
@@ -249,11 +248,11 @@ Issues that need to be fixed:
               let pathname;
               if (category.startsWith("dn") || category.startsWith("mn")) {
                   pathname = category.replace(/\d{1,5}/, "");
-                  return `api/suttas/${pathname}/${category}`;
+                  return `http://localhost/api/suttas/${pathname}/${category}`;
               } else if (category.startsWith("an") || category.startsWith("sn")) {
                   pathname = category.replace(/[\d{1,5}\-\.]/g, "");
                   const subpathname = category.split(".", 1)[0];
-                  return `api/suttas/${pathname}/${subpathname}/${category}`;
+                  return `http://localhost/api/suttas/${pathname}/${subpathname}/${category}`;
               }
           }
 
@@ -269,10 +268,10 @@ Issues that need to be fixed:
               // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
               const segments = this.shadowRoot.querySelectorAll('sc-segment');
               Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              outputText = e.detail.response;
+              const outputText = e.detail.response;
               for (let key in outputText) {
                   if (!key.startsWith("_")) {
-                      subkey = key.replace(/:/g, "\\\:");
+                      let subkey = key.replace(/:/g, "\\\:");
                       subkey = subkey.replace(/\./g, "\\\.");
                       const segment = this.shadowRoot.querySelector('#' + subkey);
                       segment.innerHTML = outputText[key] + " ";
@@ -284,10 +283,10 @@ Issues that need to be fixed:
               // creates a second 'sc-element' behind every 'sc-element' in the base markup and
               // polulates that with the corresponding pali text segment.
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  outputText = e.detail.response;
+                  const outputText = e.detail.response;
                   for (let key in outputText) {
                       if (!key.startsWith("_")) {
-                          subkey = key.replace(/:/g, "\\\:");
+                          let subkey = key.replace(/:/g, "\\\:");
                           subkey = subkey.replace(/\./g, "\\\.");
                           const segment = this.shadowRoot.querySelector('#' + subkey);
                           const newSegment = document.createElement('sc-segment');
@@ -368,7 +367,8 @@ Issues that need to be fixed:
                               this.shadowRoot.querySelector('#htmltextcontent').classList.add('linebyline');
                               break;
                           case "popup":
-                              Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds id=" + item.id + "></paper-tooltip>" + item.innerHTML);
+                              Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML =
+                                  "<paper-tooltip class='text-tooltip' fit-to-visible-bounds id=" + item.id + "></paper-tooltip>" + item.innerHTML);
                               if (!this.paliScript) {
                                   this.changeScript(0)
                               }
