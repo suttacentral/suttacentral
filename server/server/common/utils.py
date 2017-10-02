@@ -3,28 +3,31 @@ from typing import Callable, List, Dict
 
 import decorator
 
-from flask import current_app
 from common.arangodb import get_client, get_db
 from common import models
 from migrations.runner import run_migrations
+
+
+def current_app():
+    from app import app_factory
+    api, app = app_factory()
+    return app
 
 
 def remove_test_db():
     """
     Delete the test db.
     """
-    with current_app.app_context():
-        get_client().delete_database(current_app.config.get('ARANGO_DB'), ignore_missing=True)
+    get_client().delete_database(current_app().config.get('ARANGO_DB'), ignore_missing=True)
 
 
 def app_context(func: Callable):
     """
     Run function in flask's app context.
     """
-    from app import app  # It needs to be here
 
     def wrapper(func: Callable, *args, **kwargs):
-        with app.app_context():
+        with current_app().app_context():
             return func(*args, **kwargs)
     return decorator.decorator(wrapper, func)
 
@@ -34,8 +37,7 @@ def empty_arango(func: Callable):
     Decorator that removes arango test database before running the test and re-create it after.
     """
     def remove_existing_database(func: Callable, *args, **kwargs):
-
-        with current_app.app_context():
+        with current_app().app_context():
             remove_test_db()
 
         try:
