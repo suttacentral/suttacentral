@@ -39,7 +39,6 @@ def test_ensure_migration_collection_exists():
     db.collection(collection)
 
 
-@app_context
 @empty_arango
 def test_ensure_db_exists(app):
     client = get_client()
