@@ -11,6 +11,8 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
 
 <link rel="import" href="../styles/static-styles.html">
 
@@ -53,6 +55,12 @@
         color: #000000;
       }
 
+      .legal-information {
+        margin-top: 3em;
+        opacity: .38;
+        color: #000000;
+      }
+
       .card-details {
         margin-top: 1.5em;
       }
@@ -63,7 +71,7 @@
         margin-top: 1.5em;
       }
 
-      .submit-button {
+      .submit-button:enabled {
         background: var(--sc-gold-300);
         color: white;
         font-weight: bold;
@@ -80,7 +88,8 @@
     <div id="page-wrap">
       <main>
         <section>
-          <form>
+          <iron-form class="payment-iron-form">
+          <form class="payment-form">
             <div class="flex-row">
               <paper-dropdown-menu class="form-prefix currency-dropdown data-input" title="Select currency"
                                    dynamic-align label="currency" always-float-label>
@@ -98,7 +107,7 @@
 
               <paper-input label="Amount" class="data-input" type="number" min="1" step=".01"
                            auto-validate pattern="^[+]?(\d+[.]?\d{0,2})$"
-                           error-message="Invalid value"></paper-input>
+                           error-message="Invalid value" required></paper-input>
             </div>
 
             <p class="explanation">You can make a one-time donation or a monthly donation.</p>
@@ -122,22 +131,22 @@
               <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
             </paper-input>
 
-            <paper-textarea label="Message (optional)" class="data-input">
+            <paper-textarea label="Message (optional)" class="data-input" rows=2 placeholder="Your message here">
             </paper-textarea>
 
-
             <div class="flex-row submit">
-              <paper-button type="submit" class="submit-button">
+              <paper-button on-tap="_makeDonation" class="submit-button" disabled>
                 PAY WITH CARD
               </paper-button>
             </div>
           </form>
-          <div class="legal information">
-              SuttaCentral does not handle or store your credit card details. 
-              All credit card transactions are handled securely by Stripe.
+        </iron-form>
               
-              The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards,
-               and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable.
+          <div class="legal-information">
+              <iron-icon icon="icons:info-outline"></iron-icon><p>SuttaCentral does not handle or store your credit card details. 
+              All credit card transactions are handled securely by <a href="https://stripe.com" target="blank">Stripe</a>.</p>
+              <p>The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards,
+               and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable.</p>
           </div>
         </section>
       </main>
@@ -175,10 +184,10 @@
               super.ready();
               let stripe_div = this.shadowRoot.querySelector('.card-element');
 
-              let card = this.stripe_elements.create('card');
-              card.mount(stripe_div);
+              this.card = this.stripe_elements.create('card');
+              this.card.mount(stripe_div);
 
-              card.addEventListener('change', ({error}) => {
+              this.card.addEventListener('change', ({error}) => {
 
                   if (error) {
                       console.log(error);
@@ -189,17 +198,36 @@
               let monthly = this.shadowRoot.querySelector('.monthly-donation');
 
               oneTimeDonation.addEventListener('click', (e) => {
-                  monthly.checked = !oneTimeDonation.checked;
+                  oneTimeDonation.checked = true;
+                  monthly.checked = false;
               });
 
               monthly.addEventListener('click', (e) => {
-                  oneTimeDonation.checked = !monthly.checked;
+                  oneTimeDonation.checked = false;
+                  monthly.checked = true;
               });
+              
+              let formSubmit = this.shadowRoot.querySelector(".submit-button");
+              let form = this.shadowRoot.querySelector(".payment-iron-form");
+              console.log(form);
+              form.addEventListener("change", (event) => {
+                  console.log(form.validate());
+                  formSubmit.disabled = !form.validate();
+              })
           }
 
           _handleResponse() {
               this.currencies = this.responseData.currencies;
               this.default_currency_index = this.responseData.default_currency_index;
+          }
+
+          _makeDonation(e) {
+            let form = this.shadowRoot.querySelector('.payment-form')
+            debugger;
+            console.log(e);
+            // stripe.createToken(card).then((result) => {
+            //     console.log(result);
+            // });
           }
       }
 
