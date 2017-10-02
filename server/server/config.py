@@ -41,6 +41,7 @@ class TestingConfig(Config):
     """Configuration for Testing"""
     TESTING = True
     DEBUG = True
+    ARANGO_DB = os.getenv('ARANGO_BASE_DB_NAME') + '_tests'
 
 
 class ProductionConfig(Config):
