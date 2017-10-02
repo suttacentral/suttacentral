@@ -161,8 +161,12 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
           static get properties() {
               return {
+
                   // The parallel item to be displayed
-                  parallelItem: Object,
+                  parallelItem: {
+                      type: Object
+                  },
+
                   rootLangMappings: {
                       type: Object,
                       value: {

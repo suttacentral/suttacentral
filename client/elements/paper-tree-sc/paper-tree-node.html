@@ -112,16 +112,17 @@
 
       </div>
 
-      <iron-collapse id="collapse" opened="{{data.open}}">
+      <iron-collapse opened="{{data.open}}">
         <template is="dom-if" if="{{data.open}}">
           <template is="dom-repeat" items="{{data.children}}">
-            <paper-tree-node id="{{item.uid}}" data="{{item}}" is-wide="{{isWide}}"></paper-tree-node>
+            <paper-tree-node data="{{item}}" is-wide="[[isWide]]"></paper-tree-node>
           </template>
         </template>
-        <!--Dummy element that enables rolldown animation with iron-collapse -->
+
+        <!--Dummy element that enables rolldown animation with iron-collapse-->
         <template is="dom-if" if="{{!data.open}}">
           <template is="dom-if" if="{{data.children}}">
-            <div class="full-height"></div>
+            <div class="full-height" style="background-color: blue;"></div>
           </template>
         </template>
       </iron-collapse>
