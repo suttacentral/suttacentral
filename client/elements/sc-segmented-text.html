@@ -85,7 +85,7 @@ Issues that need to be fixed:
           font-size: 12px;
           line-height: 16px;
           padding: 8px 16px;
-          text-shadow: 0px 0px #ffffff;
+          text-shadow: 0 0 #ffffff;
           white-space: normal;
         };
       }
@@ -105,7 +105,7 @@ Issues that need to be fixed:
                on-response="_computePars"></iron-ajax>
 
     <template is="dom-if" if="[[notFound]]">
-      <p class="notfound">Sorry, the page your requested does not exist.</p>
+      <p class="notfound">Sorry, the page you requested does not exist.</p>
     </template>
 
     <template is="dom-if" if="[[!notFound]]">

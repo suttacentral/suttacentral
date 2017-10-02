@@ -174,7 +174,7 @@
           <div class="languagedrop">
             <language-menu language-choice="[[item.translations]]" title-label="More translations"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
-                           input-url="[[item.uid]]" id="languageMenu" on-paper-dropdown-close="_changeItemZIndex"
+                           input-url="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndex"
                            on-paper-dropdown-open="_changeItemZIndex"></language-menu>
           </div>
         </div>
@@ -267,9 +267,9 @@
               return level ? 'sc-svg-icons:' + level : '';
           }
 
-          // Computes API endpoint URL for given tranlation
+          // Computes API endpoint URL for given translation
           _computeApiUrlEndpoint(uid, author) {
-              return `/sutta/${uid}/?author=${author}`;
+              return `${uid}/${author}`;
           }
 
           _isChosenLang(lang) {
