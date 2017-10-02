@@ -155,9 +155,12 @@ Issues:
 
           // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
           infoToParent(suttaText) {
-              this.fire('eventFromTextPage', {
-                  suttatitle: this._computeTitle(suttaText) + '—' + this._computeAuthor(suttaText),
-                  suttameta: this._computeMeta(suttaText)
+              this.dispatchEvent(new CustomEvent('eventFromTextPage'), {
+                  detail: {
+                      suttatitle: this._computeTitle(suttaText) + '—' + this._computeAuthor(suttaText),
+                      suttameta: this._computeMeta(suttaText)
+                  },
+                  bubbles: true, composed: true
               });
           }
       }

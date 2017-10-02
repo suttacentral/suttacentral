@@ -345,7 +345,7 @@ Issues that need to be fixed:
 
           // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
           infoToParent(suttaTranslatedText) {
-              dispatchEvent(new CustomEvent('eventFromSegmentedTextPage', {
+              this.dispatchEvent(new CustomEvent('eventFromSegmentedTextPage', {
                   detail: {
                       suttasegtitle: this._computeTitle(suttaTranslatedText) + this._computeAuthor(suttaTranslatedText),
                       suttasegmeta: this._computeMeta(suttaTranslatedText)
