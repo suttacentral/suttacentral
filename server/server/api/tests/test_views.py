@@ -66,7 +66,7 @@ def test_sutta_view(client):
     roots.save()
     utils.generate_root_edges(roots).save()
 
-    res = client.get(api.url_for(Sutta, uid=roots[0].uid, lang='en'))
+    res = client.get(api.url_for(Sutta, uid=roots[0].uid, author='sujato', lang='en'))
 
     assert res.status_code == 200
 
