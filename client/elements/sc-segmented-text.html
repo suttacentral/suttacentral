@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 
 <link rel="import" href="../styles/sc-text-styles.html">
@@ -90,6 +91,8 @@ Issues that need to be fixed:
         };
       }
     </style>
+    
+    <iron-meta id="meta"></iron-meta>
 
     <iron-ajax id="ajax"
                url="[[_computeURL(suttaPath,author)]]"
@@ -214,17 +217,21 @@ Issues that need to be fixed:
                   this.$.ajax.generateRequest();
               }
           }
+          
+          _getBaseUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/api/suttas`;
+          }
 
           // finds the correct markup file to load.
           _computeURL(category, author) {
               let pathname;
               if (category.startsWith("dn") || category.startsWith("mn")) {
                   pathname = category.replace(/\d{1,5}/, "");
-                  return `http://localhost/api/suttas/${pathname}/${category}`;
+                  return `${this._getBaseUrl()}/${pathname}/${category}`;
               } else if (category.startsWith("an") || category.startsWith("sn")) {
                   pathname = category.replace(/[\d{1,5}\-\.]/g, "");
                   const subpathname = category.split(".", 1)[0];
-                  return `http://localhost/api/suttas/${pathname}/${subpathname}/${category}`;
+                  return `${this._getBaseUrl()}/${pathname}/${subpathname}/${category}`;
               }
           }
 
@@ -235,11 +242,11 @@ Issues that need to be fixed:
               const authorRoute = "en/sujato";
               if (category.startsWith("dn") || category.startsWith("mn")) {
                   pathname = category.replace(/\d{1,5}/, "");
-                  return `http://localhost/api/suttas/${authorRoute}/${pathname}/${category}`;
+                  return `${this._getBaseUrl()}/${authorRoute}/${pathname}/${category}`;
               } else if (category.startsWith("an") || category.startsWith("sn")) {
                   pathname = category.replace(/[\d{1,5}\-\.]/g, "");
                   const subpathname = category.split(".", 1)[0];
-                  return `http://localhost/api/suttas/${authorRoute}/${pathname}/${subpathname}/${category}`;
+                  return `${this._getBaseUrl()}/${authorRoute}/${pathname}/${subpathname}/${category}`;
               }
           }
 
@@ -248,11 +255,11 @@ Issues that need to be fixed:
               let pathname;
               if (category.startsWith("dn") || category.startsWith("mn")) {
                   pathname = category.replace(/\d{1,5}/, "");
-                  return `http://localhost/api/suttas/${pathname}/${category}`;
+                  return `${this._getBaseUrl()}/${pathname}/${category}`;
               } else if (category.startsWith("an") || category.startsWith("sn")) {
                   pathname = category.replace(/[\d{1,5}\-\.]/g, "");
                   const subpathname = category.split(".", 1)[0];
-                  return `http://localhost/api/suttas/${pathname}/${subpathname}/${category}`;
+                  return `${this._getBaseUrl()}/${pathname}/${subpathname}/${category}`;
               }
           }
 
