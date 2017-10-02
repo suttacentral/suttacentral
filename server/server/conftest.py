@@ -8,7 +8,7 @@ from flask import Flask
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(myPath)
 
-from app import app as my_app  # isort:skip
+from app import app_factory  # isort:skip
 from common.arangodb import get_client  # isort:skip
 from common.utils import remove_test_db, app_context  # isort:skip
 from migrations.runner import run_migrations  # isort:skip
@@ -16,16 +16,28 @@ from migrations.runner import run_migrations  # isort:skip
 
 @pytest.fixture
 def app() -> Flask:
-    return my_app
+    api, app = app_factory()
+    return app
 
 
 @pytest.fixture
-def arango() -> ArangoClient:
+def arango(app) -> ArangoClient:
     """
     :return: Arango client
     """
-    with my_app.app_context():
+    with app.app_context():
         return get_client()
+
+
+@pytest.fixture(scope='session', autouse=True)
+def database_test():
+    """
+    Change db name to the test db
+    """
+    env_name = os.getenv('ENVIRONMENT')
+    os.environ['ENVIRONMENT'] = 'testing'
+    yield 1
+    os.environ['ENVIRONMENT'] = env_name
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -33,7 +45,9 @@ def migration(request):
     """
     Runs migrations before all tests and delete database at the end.
     """
-    with my_app.app_context():
+    api, app = app_factory()
+
+    with app.app_context():
         remove_test_db()
         run_migrations()
         request.addfinalizer(app_context(remove_test_db))
