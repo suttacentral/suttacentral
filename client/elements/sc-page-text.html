@@ -25,7 +25,7 @@ Issues:
 <dom-module id="sc-page-text" attributes="suttatitle suttameta">
   <template>
     <style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-      .notfound {
+      .not-found {
         @apply --paper-font-display1;
       }
     </style>
@@ -43,7 +43,7 @@ Issues:
                on-response="_computePars"></iron-ajax>
 
     <template is="dom-if" if="[[notFound]]">
-      <p class="notfound">Sorry, the page you requested does not exist.</p>
+      <p class="not-found">Sorry, the page you requested does not exist.</p>
     </template>
 
     <template is="dom-if" if="[[!notFound]]">
