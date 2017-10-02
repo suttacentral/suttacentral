@@ -3,10 +3,14 @@
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 
 <link rel="import" href="../styles/static-styles.html">
 
@@ -20,91 +24,185 @@
       .form-prefix {
         margin-right: 0.5em;
       }
+
+      .data-input {
+        --paper-input-container-focus-color: var(--sc-gold-300);
+      }
+
+      .currency-dropdown {
+        width: 6em;
+      }
+
+      .currency-menu-listbox {
+        width: 6em;
+      }
+
+      .currency-menu-item:hover {
+        background-color: var(--paper-grey-200);
+        cursor: pointer;
+      }
+
+      .frequency-checkbox {
+        margin-right: 1em;
+        --paper-checkbox-checked-color: var(--sc-gold-300);
+      }
+
+      .explanation {
+        margin-bottom: 0;
+        opacity: .38;
+        color: #000000;
+      }
+
+      .card-details {
+        margin-top: 1.5em;
+      }
+
+      .submit {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 1.5em;
+      }
+
+      .submit-button {
+        background: var(--sc-gold-300);
+        color: white;
+        font-weight: bold;
+      }
+
     </style>
     <iron-ajax
-        auto
-        url="/api/currencies"
-        handle-as="json"
-        last-response="{{ currencies }}"></iron-ajax>
+            auto
+            url="/api/currencies"
+            handle-as="json"
+            last-response="{{ responseData }}"
+            on-response="_handleResponse"></iron-ajax>
 
     <div id="page-wrap">
       <main>
         <section>
           <form>
+            <div class="flex-row">
+              <paper-dropdown-menu class="form-prefix currency-dropdown data-input" title="Select currency"
+                                   dynamic-align label="currency" always-float-label>
+                <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
+                               selected="[[default_currency_index]]">
+                  <template is="dom-repeat" items="{{ currencies }}">
+                    <paper-item class="currency-menu-item" title="[[item.name]]">
+                      <paper-item-body>
+                        [[item.symbol]]
+                      </paper-item-body>
+                    </paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
 
-            <paper-input label="Name">
+              <paper-input label="Amount" class="data-input" type="number" min="1" step=".01"
+                           auto-validate pattern="^[+]?(\d+[.]?\d{0,2})$"
+                           error-message="Invalid value"></paper-input>
+            </div>
+
+            <p class="explanation">You can make a one-time donation or a monthly donation.</p>
+            <div class="flex-row">
+              <paper-checkbox class="frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
+              <paper-checkbox class="frequency-checkbox monthly-donation">Monthly</paper-checkbox>
+            </div>
+
+            <div class="card-details">
+              <label>
+                <div class="card-element"></div>
+              </label>
+            </div>
+
+            <paper-input label="Name (optional)" class="data-input">
               <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
             </paper-input>
 
-            <paper-input label="Email">
+            <paper-input label="Email (optional)" class="data-input" auto-validate pattern="^\S+@\S+\.\S+$"
+                         error-message="Invalid email">
               <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
             </paper-input>
 
-            <paper-input label="Message">
-              <iron-icon icon="communication:message" slot="prefix" class="form-prefix"></iron-icon>
-            </paper-input>
+            <paper-textarea label="Message (optional)" class="data-input">
+            </paper-textarea>
 
-            <div class="flex-row">
-                <paper-dropdown-menu slot="prefix" class="form-prefix">
-                    <template is="dom-repeat" items="{{currencies}}">
-                      <paper-item>[[item.symbol]]</paper-item>
-                    </template>
-                  </paper-dropdown-menu>
-                  <paper-input label="Amount" type="number">
-                  </paper-input>
+
+            <div class="flex-row submit">
+              <paper-button type="submit" class="submit-button">
+                PAY WITH CARD
+              </paper-button>
             </div>
-
-            <label>Card
-              <div class="card-element"></div>
-            </label>
-
-        </form>
+          </form>
+          <div class="legal information">
+              SuttaCentral does not handle or store your credit card details. 
+              All credit card transactions are handled securely by Stripe.
+              
+              The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards,
+               and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable.
+          </div>
         </section>
       </main>
     </div>
   </template>
 
   <script>
-    class SCDonateNow extends Polymer.Element {
-      static get is() {
-          return 'sc-donate-now-page';
-      }
-
-      static get properties() {
-        
-        currencies: {
-          type: Array
-          observer: 'currenciesOb'
-        }
-
-      }
-
-      constructor() {
-        super();
-        this.stripe = Stripe('pk_test_vFqwBPDW08c5AKXMGLKaeJaB');
-        this.stripe_elements = this.stripe.elements();
-      }
-
-      ready() {
-        super.ready();
-        let stripe_div = this.shadowRoot.querySelector('.card-element');
-
-        let card = this.stripe_elements.create('card');
-        card.mount(stripe_div);
-
-        card.addEventListener('change', ({
-          error
-        }) => {
-          if (error) {
-            console.log(error);
+      class SCDonateNow extends Polymer.Element {
+          static get is() {
+              return 'sc-donate-now-page';
           }
-        })
+
+          static get properties() {
+              return {
+                  responseData: {
+                      type: Object
+                  },
+                  currencies: {
+                      type: Array
+                  },
+                  default_currency_index: {
+                      type: Number
+                  },
+
+              }
+          }
+
+          constructor() {
+              super();
+              this.stripe = Stripe('pk_test_vFqwBPDW08c5AKXMGLKaeJaB');
+              this.stripe_elements = this.stripe.elements();
+          }
+
+          ready() {
+              super.ready();
+              let stripe_div = this.shadowRoot.querySelector('.card-element');
+
+              let card = this.stripe_elements.create('card');
+              card.mount(stripe_div);
+
+              card.addEventListener('change', ({error}) => {
+
+                  if (error) {
+                      console.log(error);
+                  }
+              })
+
+              let oneTimeDonation = this.shadowRoot.querySelector('.one-time-donation');
+              let monthly = this.shadowRoot.querySelector('.monthly-donation');
+
+              oneTimeDonation.addEventListener('click', (e) => {
+                  monthly.checked = !oneTimeDonation.checked;
+              });
+
+              monthly.addEventListener('click', (e) => {
+                  oneTimeDonation.checked = !monthly.checked;
+              });
+          }
+
+          _handleResponse() {
+              this.currencies = this.responseData.currencies;
+              this.default_currency_index = this.responseData.default_currency_index;
+          }
       }
 
-      currenciesOb(e) {
-        console.log(e);
-      }
-    }
-    customElements.define(SCDonateNow.is, SCDonateNow);
+      customElements.define(SCDonateNow.is, SCDonateNow);
   </script>
 </dom-module>

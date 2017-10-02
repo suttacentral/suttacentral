@@ -406,6 +406,21 @@ class Currencies(Resource):
         """
         db = get_db()
 
-        data = list(db.aql.execute(CURRENCIES))
+        data = db.aql.execute(CURRENCIES)
 
-        return data, 200
+        currencies = []
+        default_currency_index: int = None
+
+        DEFAULT_CURRENCY = 'USD'
+
+        for i, x in enumerate(data):
+            currencies.append(x)
+            if x['symbol'] == DEFAULT_CURRENCY:
+                default_currency_index = i
+
+        response_data = {
+            'default_currency_index': default_currency_index,
+            'currencies': currencies
+        }
+
+        return response_data, 200
