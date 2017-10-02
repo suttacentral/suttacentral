@@ -203,6 +203,11 @@ Issues that need to be fixed:
               ]
           }
 
+          ready() {
+              super.ready();
+              console.log('in segmented text');
+          }
+
           _callAjax() {
               // starts loading the html markup files from '../data/texts/markup'
               this.htmlLoaded = false;
