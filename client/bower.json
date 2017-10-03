@@ -48,7 +48,7 @@
     "iron-image": "PolymerElements/iron-image#^2.1.2",
     "paper-tooltip": "PolymerElements/paper-tooltip#^2.0.0",
     "web-animations-js": "web-animations/web-animations-js#^2.3.1",
-    "neon-animation": "PolymerElements/neon-animation#^2.0.1",
+    "neon-animation": "^2.0.1",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
     "iron-media-query": "^2.0.0",
     "iron-meta": "^2.0.2"
