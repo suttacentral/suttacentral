@@ -127,7 +127,7 @@ Issues that need to be fixed:
 
     <iron-ajax
         auto
-        url="api/menu"
+        url="[[_getMenuUrl()]]"
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
@@ -267,6 +267,10 @@ Issues that need to be fixed:
           initiateSearch(event) {
               this.set('path', '/search');
               this.set('query', `query=${event.detail}`);
+          }
+
+          _getMenuUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/api/menu`;
           }
       }
 
