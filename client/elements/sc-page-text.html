@@ -51,7 +51,7 @@ Issues:
     </template>
 
     <template is="dom-if" if="[[!notFound]]">
-      <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
+      <sc-text-node category="[[suttaPath]]" suttaplex-item="[[suttaplex]]"></sc-text-node>
       <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
     </template>
   </template>
@@ -69,9 +69,7 @@ Issues:
                   },
                   suttaText: {
                       type: String,
-                      value: '',
-                      observer: 'suttaTextChanged'
-
+                      value: ''
                   },
                   inputLanguage: String,
                   notFound: Object,
@@ -83,7 +81,10 @@ Issues:
                       observer: '_addParagraphs'
                   },
                   paragraphTitles: Object,
-                  lastResponse: String
+                  lastResponse: {
+                      type: String
+                  },
+                  suttaplex: Object
               }
           }
 
@@ -99,10 +100,6 @@ Issues:
               console.log('in regular sutta text');
           }
 
-          suttaTextChanged() {
-              console.log(this.suttaText);
-          }
-
           // Calls the correct sutta text file. Because Polymer tends to load automatic ajax functions first from where they
           // called before parsing the route to the correct page, the additional checks are needed and might have to be
           // adjusted when more authors are added for the segmented text pages.
@@ -115,11 +112,11 @@ Issues:
               return `${this.$.meta.byKey('API_ROOT')}/suttas/${suttaUid}/${author}`;
           }
 
-          // After the text file is loaded, it calls the file that contains the paragraph numbers.
-          _onResponse(e) {
+          _onResponse() {
               this.lastResponse = JSON.parse(this.lastResponse);
-              console.log('_onResponse');
+              console.log(this.lastResponse);
               this.suttaText = this.lastResponse.root_text.text;
+              this.suttaplex = this.lastResponse.suttaplex;
               //              this.$.ajaxParagraphs.generateRequest();
           }
 

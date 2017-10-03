@@ -40,7 +40,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
       <iron-collapse opened="{{opened}}">
         <div class="sutta-list">
-          <sc-suttaplex input-language="[[inputLanguage]]"></sc-suttaplex>
+          <sc-suttaplex item="[[suttaplexItem]]"></sc-suttaplex>
         </div>
       </iron-collapse>
     </div>
@@ -54,8 +54,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
           static get properties() {
               return {
-                  inputLanguage: String,
-                  category: String,
+                  suttaplexItem: Object,
                   _toggleIcon: {
                       type: String,
                       computed: '_computeToggleIcon(opened)'
