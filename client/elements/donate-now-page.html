@@ -77,26 +77,99 @@
         font-weight: bold;
       }
 
-      .StripeElement {
-        background-color: white;
-        padding: 8px 12px;
-        border-radius: 4px;
-        width: 100%;
-        @apply --stripe-elements-element;
-      }
-      .StripeElement--focus {
-        box-shadow: 0 1px 3px 0 #0078F0;
-        @apply --stripe-elements-element-focus;
-      }
-      .StripeElement--invalid {
-        border-color: #fa755a;
-        @apply --stripe-elements-element-invalid;
-      }
-      .StripeElement--webkit-autofill {
-        background-color: #fefde5 !important;
-        @apply --stripe-elements-element-webkit-autofill;
+      .card-details {
+        font-size: 19px;
+        padding: 0;
+        margin: 0;
       }
 
+      .card-label {
+        height: 35px;
+        position: relative;
+        color: #000000;
+        display: block;
+        margin-top: 30px;
+        margin-bottom: 10px;
+      }
+
+      .card-first-span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        font-weight: 300;
+        line-height: 32px;
+        color: #737373;
+        border-bottom: 1px solid #586A82;
+        transition: border-bottom-color 200ms ease-in-out;
+        cursor: text;
+        pointer-events: none;
+      }
+
+      .card-second-span {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform-origin: 0% 50%;
+        transition: transform 200ms ease-in-out;
+        cursor: text;
+      }
+
+      label .field.is-focused + span span,
+      label .field:not(.is-empty) + span span {
+        transform: scale(0.70) translateY(-36px);
+        cursor: default;
+        color: var(--sc-gold-300);
+        opacity: 1;
+      }
+
+      label .field.is-focused + span {
+        border-bottom: 2px solid var(--sc-gold-300);
+      }
+
+      .field {
+        background: transparent;
+        font-weight: 300;
+        border: 0;
+        color: white;
+        outline: none;
+        cursor: text;
+        display: block;
+        width: 100%;
+        line-height: 32px;
+        padding-bottom: 3px;
+        transition: opacity 200ms ease-in-out;
+      }
+
+      .field::-webkit-input-placeholder { color: #000000; }
+      .field::-moz-placeholder { color: #000000; }
+
+      /* IE doesn't show placeholders when empty+focused */
+      .field:-ms-input-placeholder { color: #000000; }
+
+      .success, .error {
+        display: none;
+        font-size: 15px;
+      }
+
+      .success.visible, .error.visible {
+        display: inline;
+      }
+
+      .error {
+        color: #E4584C;
+      }
+
+      .success {
+        color: var(--sc-gold-300);
+      }
+
+      .success .token {
+        font-weight: 500;
+        font-size: 15px;
+      }
     </style>
     <iron-ajax
             auto
@@ -137,8 +210,9 @@
             </div>
 
             <div class="card-details">
-              <label>
-                <div class="card-element"></div>
+              <label class="card-label">
+                <div id="card-element" class="field is-empty"></div>
+                <span class="card-first-span"><span class="card-second-span">Credit or debit card</span></span>
               </label>
             </div>
 
@@ -202,20 +276,20 @@
 
           ready() {
               super.ready();
-              let stripe_div = this.shadowRoot.querySelector('.card-element');
+              let stripe_div = this.shadowRoot.querySelector('#card-element');
 
               this.card = this.stripe_elements.create('card', {
                 iconStyle: 'solid',
                 style: {
                   base: {
-                    iconColor: '#8898AA',
+                    iconColor: '#000000',
                     lineHeight: '36px',
                     fontWeight: 300,
                     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
                     fontSize: '19px',
-
+              
                     '::placeholder': {
-                      color: '#8898AA',
+                      color: '##737373',
                     },
                   },
                   invalid: {
