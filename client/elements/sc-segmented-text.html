@@ -1,12 +1,14 @@
-<link rel="import" href="./../bower_components/polymer/polymer.html">
-<link rel="import" href="./../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="./../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="./../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="/../bower_components/polymer/polymer.html">
+<link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="/../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="/../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
-<link rel="import" href="./../styles/sc-text-styles.html">
-<link rel="import" href="./../styles/sc-text-heading-styles.html">
-<link rel="import" href="./../styles/sc-text-paragraph-num-styles.html">
-<link rel="import" href="addons/sc-text-node.html">
+<link rel="import" href="/../elements/addons/sc-text-node.html">
+<link rel="import" href="/../styles/sc-text-styles.html">
+<link rel="import" href="/../styles/sc-text-heading-styles.html">
+<link rel="import" href="/../styles/sc-text-paragraph-num-styles.html">
 
 <!--
 This element loads the segmented text pages that are created in Pootle, which are at the moment defined as
@@ -114,6 +116,16 @@ Issues that need to be fixed:
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node suttaplex-item="[[suttaplex]]"></sc-text-node>
       <div id="html_text_content" inner-h-t-m-l="[[suttaRootText]]"></div>
+      <paper-dialog class="toolbar-dialog" id="dialog">
+        <div class="buttons">
+          <paper-icon-button icon="close" class="white-icon" dialog-confirm autofocus></paper-icon-button>
+        </div>
+        <h2>Tools and Information</h2>
+        <paper-dialog-scrollable>
+          <settings-menu meta-area="[[metaArea]]" disable-views="[[viewsDisabled]]"></settings-menu>
+        </paper-dialog-scrollable>
+      </paper-dialog>
+
     </template>
 
   </template>
@@ -408,6 +420,11 @@ Issues that need to be fixed:
                           break;
                   }
               }
+          }
+
+          // Opens the paper-dialog box of the settings-menu.
+          openDialog() {
+              this.$.dialog.open();
           }
 
           //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.

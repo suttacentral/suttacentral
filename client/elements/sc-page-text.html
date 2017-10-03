@@ -1,11 +1,13 @@
 <link rel="import" href="/../bower_components/polymer/polymer.html">
 <link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="/../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
-<link rel="import" href="addons/sc-text-node.html">
-<link rel="import" href="../styles/sc-text-styles.html">
-<link rel="import" href="../styles/sc-text-heading-styles.html">
-<link rel="import" href="../styles/sc-text-paragraph-num-styles.html">
+<link rel="import" href="/../elements/addons/sc-text-node.html">
+<link rel="import" href="/../styles/sc-text-styles.html">
+<link rel="import" href="/../styles/sc-text-heading-styles.html">
+<link rel="import" href="/../styles/sc-text-paragraph-num-styles.html">
 
 <!--
 The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-node.html`).
@@ -41,9 +43,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node category="[[suttaPath]]" suttaplex-item="[[suttaplex]]"></sc-text-node>
-      <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
+      <div id="html_text_content" inner-h-t-m-l="[[suttaText]]"></div>
+
+
     </template>
   </template>
+
   <script>
       class SCPageText extends Polymer.Element {
           static get is() { return 'sc-page-text' }
@@ -84,6 +89,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               ]
           }
 
+          ready() {
+              super.ready();
+              console.log('in normal text');
+          }
+
+
           // Calls the correct sutta text file. Because Polymer tends to load automatic ajax functions first from where they
           // called before parsing the route to the correct page, the additional checks are needed and might have to be
           // adjusted when more authors are added for the segmented text pages.
@@ -104,7 +115,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs() {
-              const infotext = this.shadowRoot.querySelector('#htmltextcontent');
+              const infotext = this.shadowRoot.querySelector('#html_text_content');
               return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
           }
 
@@ -149,6 +160,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   bubbles: true, composed: true
               });
           }
+
+          // Opens the paper-dialog box of the settings-menu.
+          openDialog() {
+              this.$.dialog.open();
+          }
+
       }
 
       customElements.define(SCPageText.is, SCPageText);
