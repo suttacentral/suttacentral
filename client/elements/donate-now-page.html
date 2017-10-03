@@ -71,10 +71,30 @@
         margin-top: 1.5em;
       }
 
-      .submit-button:enabled {
+      .submit-button {
         background: var(--sc-gold-300);
         color: white;
         font-weight: bold;
+      }
+
+      .StripeElement {
+        background-color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        width: 100%;
+        @apply --stripe-elements-element;
+      }
+      .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #0078F0;
+        @apply --stripe-elements-element-focus;
+      }
+      .StripeElement--invalid {
+        border-color: #fa755a;
+        @apply --stripe-elements-element-invalid;
+      }
+      .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+        @apply --stripe-elements-element-webkit-autofill;
       }
 
     </style>
@@ -131,11 +151,11 @@
               <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
             </paper-input>
 
-            <paper-textarea label="Message (optional)" class="data-input" rows=2 placeholder="Your message here">
+            <paper-textarea label="Message (optional)" class="data-input" rows=2>
             </paper-textarea>
 
             <div class="flex-row submit">
-              <paper-button on-tap="_makeDonation" class="submit-button" disabled>
+              <paper-button on-tap="_makeDonation" class="submit-button">
                 PAY WITH CARD
               </paper-button>
             </div>
@@ -184,7 +204,30 @@
               super.ready();
               let stripe_div = this.shadowRoot.querySelector('.card-element');
 
-              this.card = this.stripe_elements.create('card');
+              this.card = this.stripe_elements.create('card', {
+                iconStyle: 'solid',
+                style: {
+                  base: {
+                    iconColor: '#8898AA',
+                    lineHeight: '36px',
+                    fontWeight: 300,
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSize: '19px',
+
+                    '::placeholder': {
+                      color: '#8898AA',
+                    },
+                  },
+                  invalid: {
+                    iconColor: '#e85746',
+                    color: '#e85746',
+                  }
+                },
+                classes: {
+                  focus: 'is-focused',
+                  empty: 'is-empty',
+                },
+              });
               this.card.mount(stripe_div);
 
               this.card.addEventListener('change', ({error}) => {
@@ -205,15 +248,7 @@
               monthly.addEventListener('click', (e) => {
                   oneTimeDonation.checked = false;
                   monthly.checked = true;
-              });
-              
-              let formSubmit = this.shadowRoot.querySelector(".submit-button");
-              let form = this.shadowRoot.querySelector(".payment-iron-form");
-              console.log(form);
-              form.addEventListener("change", (event) => {
-                  console.log(form.validate());
-                  formSubmit.disabled = !form.validate();
-              })
+              });            
           }
 
           _handleResponse() {
@@ -222,12 +257,14 @@
           }
 
           _makeDonation(e) {
-            let form = this.shadowRoot.querySelector('.payment-form')
-            debugger;
+            let form = this.shadowRoot.querySelector('.payment-iron-form')
+            if(!form.validate()){
+              return;
+            }
             console.log(e);
-            // stripe.createToken(card).then((result) => {
-            //     console.log(result);
-            // });
+            this.stripe.createToken(this.card).then((result) => {
+                console.log(result);
+            });
           }
       }
 

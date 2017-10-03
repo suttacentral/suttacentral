@@ -51,7 +51,8 @@
     "neon-animation": "PolymerElements/neon-animation#^2.0.1",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
     "iron-media-query": "^2.0.0",
-    "iron-form": "^2.0.1"
+    "iron-form": "^2.0.1",
+    "paper-checkbox": "^2.0.1"
   },
   "devDependencies": {
     "web-component-tester": "^6.2.0"
