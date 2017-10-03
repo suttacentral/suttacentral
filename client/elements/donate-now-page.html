@@ -117,12 +117,14 @@
         cursor: text;
       }
 
-      label .field.is-focused + span span,
       label .field:not(.is-empty) + span span {
         transform: scale(0.70) translateY(-36px);
         cursor: default;
-        color: var(--sc-gold-300);
         opacity: 1;
+      }
+
+      label .field.is-focused + span span {
+        color: var(--sc-gold-300);
       }
 
       label .field.is-focused + span {
@@ -160,6 +162,10 @@
 
       .error {
         color: #E4584C;
+      }
+
+      .error-bar {
+        border-bottom: 2px solid  #E4584C;
       }
 
       .success {
@@ -212,7 +218,7 @@
             <div class="card-details">
               <label class="card-label">
                 <div id="card-element" class="field is-empty"></div>
-                <span class="card-first-span"><span class="card-second-span">Credit or debit card</span></span>
+                <span class="card-first-span"><span class="card-second-span">Card number</span></span>
               </label>
             </div>
 
@@ -304,10 +310,16 @@
               });
               this.card.mount(stripe_div);
 
-              this.card.addEventListener('change', ({error}) => {
+              let cardFirstSpan = this.shadowRoot.querySelector('.card-first-span');
+              let cardSecondSpan = this.shadowRoot.querySelector('.card-second-span');     
 
+              this.card.addEventListener('change', ({error}) => {
                   if (error) {
-                      console.log(error);
+                    cardFirstSpan.classList.add('error-bar');
+                    cardSecondSpan.style['color'] = '#E4584C';
+                  } else {
+                    cardFirstSpan.classList.remove('error-bar')
+                    cardSecondSpan.style['color'] = '';
                   }
               })
 
@@ -322,7 +334,7 @@
               monthly.addEventListener('click', (e) => {
                   oneTimeDonation.checked = false;
                   monthly.checked = true;
-              });            
+              });
           }
 
           _handleResponse() {
@@ -335,9 +347,8 @@
             if(!form.validate()){
               return;
             }
-            console.log(e);
             this.stripe.createToken(this.card).then((result) => {
-                console.log(result);
+                
             });
           }
       }
