@@ -26,11 +26,10 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
         margin-right: 16px;
       }
 
-      .suttalist {
-        margin: 0 auto;
+      .sutta-list {
         max-width: 720px;
         transition: margin-top 0.3s, margin-bottom 0.3s;
-        margin-bottom: 64px;
+        margin: 0 auto 64px;
       }
     </style>
 
@@ -39,38 +38,46 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
         <paper-icon-button icon="[[_toggleIcon]]"></paper-icon-button>
       </div>
 
-      <iron-collapse id="textinfo" opened="{{opened}}">
-        <div class="suttalist">
-          <sc-suttaplex toggle-request input-language="[[inputLanguage]]"></sc-suttaplex>
+      <iron-collapse opened="{{opened}}">
+        <div class="sutta-list">
+          <sc-suttaplex input-language="[[inputLanguage]]"></sc-suttaplex>
         </div>
       </iron-collapse>
     </div>
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-text-node',
-          properties: {
-              inputLanguage: String,
-              category: String,
-              _toggleIcon: {
-                  type: String,
-                  computed: '_computeToggleIcon(opened)'
-              },
-              opened: {
-                  type: Boolean,
-                  reflectToAttribute: true,
-                  notify: true
-              }
-          },
-          _toggleOpened: function(e) {
-              this.opened = !this.opened;
-              this.fire('toggle', this);
-          },
-          _computeToggleIcon: function(opened) {
-              return opened ? 'icons:expand-less' : 'icons:expand-more';
+      class SCTextNode extends Polymer.Element {
+          static get is() {
+              return 'sc-text-node';
           }
-      });
+
+          static get properties() {
+              return {
+                  inputLanguage: String,
+                  category: String,
+                  _toggleIcon: {
+                      type: String,
+                      computed: '_computeToggleIcon(opened)'
+                  },
+                  opened: {
+                      type: Boolean,
+                      reflectToAttribute: true
+                  }
+              }
+          }
+
+          _toggleOpened() {
+              this.opened = !this.opened;
+              this.dispatchEvent(new CustomEvent('toggle', { detail: this, bubbles: true, composed: true }));
+          }
+
+          _computeToggleIcon() {
+              return this.opened ? 'icons:expand-less' : 'icons:expand-more';
+          }
+      }
+
+      customElements.define(SCTextNode.is, SCTextNode);
   </script>
 
 </dom-module>

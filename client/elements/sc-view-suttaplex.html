@@ -68,11 +68,11 @@
     </style>
 
     <iron-ajax
-            auto
-            url="[[_getApiUrl(category)]]"
-            handle-as="json"
-            loading="{{ loadingResults }}"
-            last-response="{{ responseData }}"></iron-ajax>
+        auto
+        url="[[_getApiUrl(category)]]"
+        handle-as="json"
+        loading="{{ loadingResults }}"
+        last-response="{{ responseData }}"></iron-ajax>
 
     <div class="division-content main">
 
@@ -114,7 +114,7 @@
                       value: true
                   },
                   responseData: {
-                      type: Array,
+                      type: Array
                   },
                   NotFound: {
                       type: Object
@@ -144,6 +144,7 @@
               return itemType === 'grouping' ? 'node' : 'vagga-node';
           }
       }
+
       customElements.define(ScViewSuttaplex.is, ScViewSuttaplex);
   </script>
 </dom-module>
