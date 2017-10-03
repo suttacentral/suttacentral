@@ -1,11 +1,11 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="/../bower_components/polymer/polymer.html">
+<link rel="import" href="/../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="/../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/../bower_components/paper-item/paper-item.html">
+<link rel="import" href="/../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="/../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <!--
 This is the base language menu that determines the language of all pages. Dropdown inside the toolbar more-vert-menu.
@@ -41,9 +41,11 @@ The last chosen language is remembered through app-localstorage.
       }
     </style>
 
+    <iron-meta id="meta"></iron-meta>
+
     <iron-ajax
         auto
-        url='api/languages'
+        url='[[_getLanguagesUrl()]]'
         handle-as="json"
         last-response="{{allLanguages}}"
         on-response="computeNewLanguage"></iron-ajax>
@@ -100,6 +102,10 @@ The last chosen language is remembered through app-localstorage.
           // Pass chosen language code on to main page sc-navdrawer.html
           passNewLanguageSelected(selectedLanguage) {
               this.dispatchEvent(new Event('languageSelection', {Language: selectedLanguage}));
+          }
+          
+          _getLanguagesUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/api/languages`;
           }
       }
       customElements.define(LanguageBaseMenu.is, LanguageBaseMenu);

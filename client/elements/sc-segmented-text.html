@@ -1,11 +1,11 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="./../bower_components/polymer/polymer.html">
+<link rel="import" href="./../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="./../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="./../bower_components/paper-tooltip/paper-tooltip.html">
 
-<link rel="import" href="../styles/sc-text-styles.html">
-<link rel="import" href="../styles/sc-text-heading-styles.html">
-<link rel="import" href="../styles/sc-text-paragraph-num-styles.html">
+<link rel="import" href="./../styles/sc-text-styles.html">
+<link rel="import" href="./../styles/sc-text-heading-styles.html">
+<link rel="import" href="./../styles/sc-text-paragraph-num-styles.html">
 <link rel="import" href="addons/sc-text-node.html">
 
 <!--
@@ -91,7 +91,7 @@ Issues that need to be fixed:
         };
       }
     </style>
-    
+
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax id="ajax"
@@ -217,51 +217,63 @@ Issues that need to be fixed:
                   this.$.ajax.generateRequest();
               }
           }
-          
+
           _getBaseUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/api/suttas`;
           }
 
-          // finds the correct markup file to load.
-          _computeURL(category, author) {
-              let pathname;
-              if (category.startsWith("dn") || category.startsWith("mn")) {
-                  pathname = category.replace(/\d{1,5}/, "");
-                  return `${this._getBaseUrl()}/${pathname}/${category}`;
-              } else if (category.startsWith("an") || category.startsWith("sn")) {
-                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
-                  const subpathname = category.split(".", 1)[0];
-                  return `${this._getBaseUrl()}/${pathname}/${subpathname}/${category}`;
-              }
+          _computeUrl(category, author) {
+            console.log('_computeUrl(): ' + category + ' ' + author);
           }
 
-          // finds the correct translated json file to load. Only works for "sujato" as author
           _computeTranslatedURL(category, author) {
-              let pathname;
-              // so this might have to change when more translators use pootle.
-              const authorRoute = "en/sujato";
-              if (category.startsWith("dn") || category.startsWith("mn")) {
-                  pathname = category.replace(/\d{1,5}/, "");
-                  return `${this._getBaseUrl()}/${authorRoute}/${pathname}/${category}`;
-              } else if (category.startsWith("an") || category.startsWith("sn")) {
-                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
-                  const subpathname = category.split(".", 1)[0];
-                  return `${this._getBaseUrl()}/${authorRoute}/${pathname}/${subpathname}/${category}`;
-              }
+              console.log('_computeTranslatedUrl(): ' + category + ' ' + author);
           }
 
-          // finds the correct pali json file to load.
           _computeOriginalURL(category, author) {
-              let pathname;
-              if (category.startsWith("dn") || category.startsWith("mn")) {
-                  pathname = category.replace(/\d{1,5}/, "");
-                  return `${this._getBaseUrl()}/${pathname}/${category}`;
-              } else if (category.startsWith("an") || category.startsWith("sn")) {
-                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
-                  const subpathname = category.split(".", 1)[0];
-                  return `${this._getBaseUrl()}/${pathname}/${subpathname}/${category}`;
-              }
+              console.log('_computeOriginalUrl(): ' + category + ' ' + author);
           }
+
+//          // finds the correct markup file to load.
+//          _computeURL(category, author) {
+//              let pathname;
+//              if (category.startsWith("dn") || category.startsWith("mn")) {
+//                  pathname = category.replace(/\d{1,5}/, "");
+//                  return `${this._getBaseUrl()}/${pathname}/${category}`;
+//              } else if (category.startsWith("an") || category.startsWith("sn")) {
+//                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
+//                  const subpathname = category.split(".", 1)[0];
+//                  return `${this._getBaseUrl()}/${pathname}/${subpathname}/${category}`;
+//              }
+//          }
+//
+//          // finds the correct translated json file to load. Only works for "sujato" as author
+//          _computeTranslatedURL(category, author) {
+//              let pathname;
+//              // so this might have to change when more translators use pootle.
+//              const authorRoute = "en/sujato";
+//              if (category.startsWith("dn") || category.startsWith("mn")) {
+//                  pathname = category.replace(/\d{1,5}/, "");
+//                  return `${this._getBaseUrl()}/${authorRoute}/${pathname}/${category}`;
+//              } else if (category.startsWith("an") || category.startsWith("sn")) {
+//                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
+//                  const subpathname = category.split(".", 1)[0];
+//                  return `${this._getBaseUrl()}/${authorRoute}/${pathname}/${subpathname}/${category}`;
+//              }
+//          }
+//
+//          // finds the correct pali json file to load.
+//          _computeOriginalURL(category, author) {
+//              let pathname;
+//              if (category.startsWith("dn") || category.startsWith("mn")) {
+//                  pathname = category.replace(/\d{1,5}/, "");
+//                  return `${this._getBaseUrl()}/${pathname}/${category}`;
+//              } else if (category.startsWith("an") || category.startsWith("sn")) {
+//                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
+//                  const subpathname = category.split(".", 1)[0];
+//                  return `${this._getBaseUrl()}/${pathname}/${subpathname}/${category}`;
+//              }
+//          }
 
           _loadedHTML(e) {
               // when the base html markup are loaded, the json files for the translated text,
