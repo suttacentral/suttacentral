@@ -1,13 +1,14 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
-<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/../bower_components/polymer/polymer.html">
+<link rel="import" href="/../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="/../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="/../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="/../bower_components/paper-button/paper-button.html">
+<link rel="import" href="/../bower_components/paper-icon-button/paper-icon-button.html">
 
-<link rel="import" href="../../styles/sc-suttaplex-styles.html">
-<link rel="import" href="sc-parallel-item.html">
+<link rel="import" href="/../styles/sc-suttaplex-styles.html">
+<link rel="import" href="/../elements/suttaplex/sc-parallel-item.html">
 
 <!--
 This is the outline of the parallels-table which is used in sc-suttaplex.html.
@@ -55,6 +56,8 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
         margin-bottom: 8px;
       }
     </style>
+
+    <iron-meta id="meta"></iron-meta>
 
     <iron-ajax id="ajax"
                url="[[_getAPIEndpoint(itemUid)]]"
@@ -201,7 +204,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           }
 
           _getAPIEndpoint(itemUrl) {
-              return `api/parallels/${itemUrl}`;
+              return `${this.$.meta.byKey('API_ROOT')}/parallels/${itemUrl}`;
           }
 
           _computeIconForType(type) {
