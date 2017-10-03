@@ -145,12 +145,18 @@ Issues that need to be fixed:
                   suttaTranslatedText: {
                       type: Object,
                       notify: true,
-                      value: () => { { } }
+                      value: () => {
+                          {
+                          }
+                      }
                   },
                   suttaOriginalText: {
                       type: Object,
                       notify: true,
-                      value: () => { { } }
+                      value: () => {
+                          {
+                          }
+                      }
                   },
                   inputLanguage: String,
                   notFound: Object,
@@ -180,6 +186,14 @@ Issues that need to be fixed:
                       type: Number,
                       notify: true,
                       observer: 'changeScript'
+                  },
+                  suttaplex: {
+                      type: Object,
+                      value: () => { return {}; }
+                  },
+                  lastResponse: {
+                      type: Object,
+                      value: () => { return {}; }
                   }
               }
           }

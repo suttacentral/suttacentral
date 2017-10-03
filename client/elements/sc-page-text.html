@@ -42,7 +42,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
     </template>
 
     <template is="dom-if" if="[[!notFound]]">
-      <sc-text-node category="[[suttaPath]]" suttaplex-item="[[suttaplex]]"></sc-text-node>
+      <sc-text-node suttaplex-item="[[suttaplex]]"></sc-text-node>
       <div id="html_text_content" inner-h-t-m-l="[[suttaText]]"></div>
     </template>
   </template>
@@ -73,7 +73,14 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       observer: '_addParagraphs'
                   },
                   paragraphTitles: Object,
-                  suttaplex: Object
+                  suttaplex: {
+                      type: Object,
+                      value: () => { return {}; }
+                  },
+                  lastResponse: {
+                      type: Object,
+                      value: () => { return {}; }
+                  }
               }
           }
 

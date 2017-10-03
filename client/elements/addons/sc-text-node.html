@@ -1,7 +1,9 @@
 <link rel="import" href="/../bower_components/polymer/polymer.html">
-<link rel="import" href="/../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="/../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="/../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="/../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="/../bower_components/neon-animation/animations/fade-in-animation.html">
 <link rel="import" href="/../bower_components/neon-animation/animations/fade-out-animation.html">
@@ -81,7 +83,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       </div>
       <h2>Tools and Information</h2>
       <paper-dialog-scrollable>
-        <settings-menu meta-area="[[metaArea]]" disable-views="[[viewsDisabled]]"></settings-menu>
+        <settings-menu meta-area="[[metaArea]]"></settings-menu>
       </paper-dialog-scrollable>
     </paper-dialog>
 
@@ -103,7 +105,11 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
                   opened: {
                       type: Boolean,
                       reflectToAttribute: true
+                  },
+                  metaArea: {
+                      type: String
                   }
+
               }
           }
 
