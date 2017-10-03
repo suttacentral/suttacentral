@@ -250,7 +250,7 @@ Issues:
               }
           }
 
-          // Fires the value of the search to the searchpages.
+          // Fires the value of the search to the search pages.
           searchAction() {
               const searchQuery = this.shadowRoot.querySelector("#searchInput").value;
               this.dispatchEvent(new CustomEvent('search', { detail: searchQuery, composed: true, bubbles: true }));

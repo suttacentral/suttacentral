@@ -61,10 +61,10 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   author: {
                       type: String
                   },
-                  suttaText: {
-                      type: String,
-                      value: ''
-                  },
+//                  suttaText: {
+//                      type: String,
+//                      value: ''
+//                  },
                   inputLanguage: String,
                   notFound: Object,
 
@@ -75,17 +75,13 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       observer: '_addParagraphs'
                   },
                   paragraphTitles: Object,
-                  lastResponse: {
-                      type: String
-                  },
                   suttaplex: Object
               }
           }
 
           static get observers() {
               return [
-                  '_callAjax(suttaPath,author)',
-                  'infoToParent(suttaText)'
+                  '_callAjax(suttaPath,author)'
               ]
           }
 
@@ -107,9 +103,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _onResponse() {
-              this.lastResponse = JSON.parse(this.lastResponse);
+              if (typeof(this.lastResponse) !== 'object') {
+                  this.lastResponse = JSON.parse(this.lastResponse);
+              }
               this.suttaText = this.lastResponse.root_text.text;
               this.suttaplex = this.lastResponse.suttaplex;
+              this.sendInfoToToolbar();
               //              this.$.ajaxParagraphs.generateRequest();
           }
 
@@ -120,20 +119,24 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           // returns the division-text title from the loaded sutta text
-          _computeTitle(suttaText) {
-              const matches = suttaText.match(/class="division">(.*?)</);
-              return matches ? matches[1] : '';
+          _computeTitle() {
+              let title;
+              try {
+                title = this.lastResponse.root_text.title;
+              } catch(e) {
+                  title = ''
+              }
+              return title;
           }
 
           // returns the full author information from the loaded sutta text
-          _computeAuthor(suttaText) {
-              const matches = suttaText.match(/author="(.*?)"/);
-              return matches ? matches[1] : '';
+          _computeAuthor() {
+              return this.author ? this.author : '';
           }
 
           // returns the meta-data from the loaded sutta text
-          _computeMeta(suttaText) {
-              const matches = suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+          _computeMeta() {
+              const matches = this.suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
               return matches ? matches[1] : '';
           }
 
@@ -151,14 +154,14 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
-          infoToParent(suttaText) {
-              this.dispatchEvent(new CustomEvent('eventFromTextPage'), {
+          sendInfoToToolbar() {
+              this.dispatchEvent(new CustomEvent('eventFromTextPage', {
                   detail: {
-                      suttatitle: this._computeTitle(suttaText) + '—' + this._computeAuthor(suttaText),
-                      suttameta: this._computeMeta(suttaText)
+                      suttatitle: `${this._computeTitle()} — ${this._computeAuthor()}`,
+                      suttameta: this._computeMeta()
                   },
                   bubbles: true, composed: true
-              });
+              }));
           }
 
           // Opens the paper-dialog box of the settings-menu.
