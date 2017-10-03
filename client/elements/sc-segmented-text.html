@@ -112,21 +112,9 @@ Issues that need to be fixed:
     </template>
 
     <template is="dom-if" if="[[!notFound]]">
-      <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
-      <div id="html_text_content" inner-h-t-m-l="hey"></div>
+      <sc-text-node suttaplex-item="[[suttaplex]]"></sc-text-node>
+      <div id="html_text_content" inner-h-t-m-l="[[suttaRootText]]"></div>
     </template>
-
-    <iron-ajax id="ajaxTranslated"
-               url="[[_computeTranslatedURL(suttaPath,author)]]"
-               handle-as="json"
-               last-response="{{suttaTranslatedText}}"
-               on-response="_addTranslatedText"></iron-ajax>
-
-    <iron-ajax id="ajaxOriginal"
-               url="[[_computeOriginalURL(suttaPath,author)]]"
-               handle-as="json"
-               last-response="{{suttaOriginalText}}"
-               on-response="_addOriginalText"></iron-ajax>
 
   </template>
 
@@ -147,7 +135,7 @@ Issues that need to be fixed:
                       type: String,
                       notify: true
                   },
-                  suttaText: {
+                  suttaRootText: {
                       type: String,
                       notify: true,
                       value: ''
@@ -192,8 +180,7 @@ Issues that need to be fixed:
                       observer: 'changeScript'
                   },
                   lastResponse: {
-                      type: String,
-                      observer: 'lastResponseChanged'
+                      type: String
                   }
               }
           }
@@ -208,10 +195,6 @@ Issues that need to be fixed:
           ready() {
               super.ready();
               console.log('in segmented text');
-          }
-
-          lastResponseChanged() {
-              console.log(this.lastResponse);
           }
 
           _callAjax() {
@@ -242,48 +225,50 @@ Issues that need to be fixed:
 
           _onResponse(e) {
               console.log('onResponse');
-              this.$.ajaxTranslated.generateRequest();
-              this.$.ajaxOriginal.generateRequest();
+              this.lastResponse = JSON.parse(this.lastResponse);
+              console.log(this.lastResponse);
+              this.suttaRootText = this.lastResponse.root_text.text;
+              this.suttaTranslatedText = this.lastResponse.translation.text;
+              this.suttaplex = this.lastResponse.suttaplex;
 //              this.$.ajaxParagraphs.generateRequest();
           }
 
           _addTranslatedText(e) {
               console.log('_addTranslatedText');
               // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-              const segments = this.shadowRoot.querySelectorAll('sc-segment');
-              console.dir(segments);
-              Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              const outputText = e.detail.response;
-              for (let key in outputText) {
-                  if (!key.startsWith("_")) {
-                      let subkey = key.replace(/:/g, "\\\:");
-                      console.log('subkey: ' + subkey );
-                      subkey = subkey.replace(/\./g, "\\\.");
-                      const segment = this.shadowRoot.querySelector('#' + subkey);
-                      segment.innerHTML = outputText[key] + " ";
-                  }
-              }
+//              const segments = this.shadowRoot.querySelectorAll('sc-segment');
+//              Array.from(segments).forEach(item => item.classList.add('translated-text'));
+//              const outputText = e.detail.response;
+//              for (let key in outputText) {
+//                  if (!key.startsWith("_")) {
+//                      let subkey = key.replace(/:/g, "\\\:");
+//                      console.log('subkey: ' + subkey );
+//                      subkey = subkey.replace(/\./g, "\\\.");
+//                      const segment = this.shadowRoot.querySelector('#' + subkey);
+//                      segment.innerHTML = outputText[key] + " ";
+//                  }
+//              }
           }
 
           _addOriginalText(e) {
               console.log('_addOriginalText');
               // creates a second 'sc-element' behind every 'sc-element' in the base markup and
               // populates that with the corresponding pali text segment.
-              if (!this.shadowRoot.querySelector('.original-text')) {
-                  const outputText = e.detail.response;
-                  for (let key in outputText) {
-                      if (!key.startsWith("_")) {
-                          let subkey = key.replace(/:/g, "\\\:");
-                          subkey = subkey.replace(/\./g, "\\\.");
-                          const segment = this.shadowRoot.querySelector('#' + subkey);
-                          const newSegment = document.createElement('sc-segment');
-                          newSegment.id = key;
-                          newSegment.classList.add("original-text");
-                          newSegment.innerHTML = outputText[key] + " ";
-                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
-                      }
-                  }
-              }
+//              if (!this.shadowRoot.querySelector('.original-text')) {
+//                  const outputText = e.detail.response;
+//                  for (let key in outputText) {
+//                      if (!key.startsWith("_")) {
+//                          let subkey = key.replace(/:/g, "\\\:");
+//                          subkey = subkey.replace(/\./g, "\\\.");
+//                          const segment = this.shadowRoot.querySelector('#' + subkey);
+//                          const newSegment = document.createElement('sc-segment');
+//                          newSegment.id = key;
+//                          newSegment.classList.add("original-text");
+//                          newSegment.innerHTML = outputText[key] + " ";
+//                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+//                      }
+//                  }
+//              }
               this.htmlLoaded = true;
               this.shadowRoot.querySelector('#html_text_content').classList.add('latin-script');
 
@@ -302,9 +287,9 @@ Issues that need to be fixed:
           }
 
           // returns the correct title from the first segment in the translated json file.
-          _computeTitle(suttaText) {
+          _computeTitle(suttaRootText) {
               console.log('_computeTitle');
-              return suttaText[this.suttaPath + ":1.1"];
+              return suttaRootText[this.suttaPath + ":1.1"];
           }
 
           // returns the full author details (only Sujato at the moment)
@@ -315,7 +300,7 @@ Issues that need to be fixed:
 
           // returns the meta data. This is still a mockup because we have no meta data for Sujato and it goes from the premise that
           // if the author is not sujato, it must be pali.
-          _computeMeta(suttaText) {
+          _computeMeta(suttaRootText) {
               console.log('_computeMeta');
               return (this.author === "sujato") ? "There is no Meta Area defined for Bhante Sujato's texts yet." : "<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by <span class='editor'>Blake Walshe</span> and <span class='editor'>Bhikkhu Sujato</span>.</p>";
           }

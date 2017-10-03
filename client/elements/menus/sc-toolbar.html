@@ -29,17 +29,17 @@ Issues:
 <dom-module id="sc-toolbar">
   <template>
     <style is="custom-style">
-      paper-icon-button {
+      .white-icon {
         color: white;
       }
 
-      paper-menu-button {
+      .toolbar-paper-button {
         --paper-menu-button-dropdown: {
           max-width: 100%;
         };
       }
 
-      paper-input {
+      .toolbar-input {
         display: inline-block;
         vertical-align: text-bottom;
         --paper-input-container: {
@@ -56,7 +56,7 @@ Issues:
         };
       }
 
-      paper-badge {
+      .toolbar-badge {
         --paper-badge-background: var(--paper-green-a700);
       }
 
@@ -69,7 +69,7 @@ Issues:
         transition: width .2s cubic-bezier(.4, 0, .2, 1);
       }
 
-      paper-dialog {
+      .toolbar-dialog {
         white-space: initial;
       }
 
@@ -92,7 +92,7 @@ Issues:
         margin: 0;
       }
 
-      paper-dialog paper-icon-button {
+      .toolbar-dialog paper-icon-button {
         color: var(--disabled-text-color);
       }
 
@@ -100,7 +100,7 @@ Issues:
         display: none;
       }
 
-      a {
+      .toolbar-link {
         text-decoration: none;
       }
 
@@ -112,24 +112,24 @@ Issues:
     <div id="toolsmenu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
       <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="searchAction"></iron-a11y-keys>
-      <paper-icon-button icon="search" id="searchboxbutton" on-tap="openSearch"></paper-icon-button>
-      <paper-input label="Search" no-label-float id="searchInput"></paper-input>
-      <paper-icon-button icon="close" id="closebutton" on-tap="closeSearch"></paper-icon-button>
+      <paper-icon-button icon="search" class="white-icon" on-tap="openSearch"></paper-icon-button>
+      <paper-input class="toolbar-input" label="Search" no-label-float id="searchInput"></paper-input>
+      <paper-icon-button icon="close" class="white-icon" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
-      <a href$="[[discourseLink]]" tabindex="-1" target="_blank">
-        <paper-icon-button id="discoursebutton" icon="communication:forum"></paper-icon-button>
+      <a class="toolbar-link" href$="[[discourseLink]]" tabindex="-1" target="_blank">
+        <paper-icon-button id="discoursebutton" class="white-icon" icon="communication:forum"></paper-icon-button>
       </a>
-      <paper-badge class$="[[toggleDisplay]]" for="discoursebutton" label="20"
+      <paper-badge class$="toolbar-badge [[toggleDisplay]]" for="discoursebutton" label="20"
                    title="This text has 20 references"></paper-badge>
 
       <!-- Settings-menu inside a dialog-box only appears on text-pages -->
-      <paper-icon-button id="settingsbutton" class$="[[toggleDisplay]]" icon="settings"
+      <paper-icon-button id="settingsbutton" class$="white-icon [[toggleDisplay]]" icon="settings"
                          on-click="openDialog"></paper-icon-button>
 
-      <paper-dialog id="dialog">
+      <paper-dialog class="toolbar-dialog" id="dialog">
         <div class="buttons">
-          <paper-icon-button icon="close" dialog-confirm autofocus></paper-icon-button>
+          <paper-icon-button icon="close" class="white-icon" dialog-confirm autofocus></paper-icon-button>
         </div>
         <h2>Tools and Information</h2>
         <paper-dialog-scrollable>
@@ -138,8 +138,8 @@ Issues:
       </paper-dialog>
 
       <!-- Menu for more options like language and other static pages -->
-      <paper-menu-button horizontal-align="right" ignore-select id="morevertbutton">
-        <paper-icon-button icon="more-vert" slot="dropdown-trigger"></paper-icon-button>
+      <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="morevertbutton">
+        <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger"></paper-icon-button>
         <div slot="dropdown-content"></div>
         <paper-listbox slot="dropdown-content" tabindex="0">
           <more-menu input-language="[[inputLanguage]]"></more-menu>

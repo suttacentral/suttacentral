@@ -8,20 +8,9 @@
 <link rel="import" href="../styles/sc-text-paragraph-num-styles.html">
 
 <!--
-This element loads the plain html pages which are at the moment defined as all pages that have an author
-which is not "sujato" or "pali".s It only loads English pages at the moment. Files are loaded from the mockup
-directory in `../data/texts/en/bodhi`. The paragraph numbers are loaded from `../data/paragraphtitles.json`
-(this file is complete and correct).
-
 The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-node.html`).
-
-Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested.
-
-Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
-
-Issues:
-    - Other language suttas need to be loaded and displayed correctly as well depending on how this will work
-    with the backend.
+Paragraph numbers can be displayed or hidden as requested via the settings-menu in the toolbar.
+Title, full Author name and Meta data are sent via events to the page-selector for use in the toolbar.
 -->
 <dom-module id="sc-page-text" attributes="suttatitle suttameta">
   <template>
@@ -95,16 +84,10 @@ Issues:
               ]
           }
 
-          ready() {
-              super.ready();
-              console.log('in regular sutta text');
-          }
-
           // Calls the correct sutta text file. Because Polymer tends to load automatic ajax functions first from where they
           // called before parsing the route to the correct page, the additional checks are needed and might have to be
           // adjusted when more authors are added for the segmented text pages.
           _callAjax() {
-              console.log('_callAjax');
               return (this.author && this.author !== 'sujato' && this.author !== 'pali') ? this.$.ajax.generateRequest() : '';
           }
 
@@ -114,7 +97,6 @@ Issues:
 
           _onResponse() {
               this.lastResponse = JSON.parse(this.lastResponse);
-              console.log(this.lastResponse);
               this.suttaText = this.lastResponse.root_text.text;
               this.suttaplex = this.lastResponse.suttaplex;
               //              this.$.ajaxParagraphs.generateRequest();
@@ -122,35 +104,30 @@ Issues:
 
           // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs() {
-              console.log('_addParagraphs');
               const infotext = this.shadowRoot.querySelector('#htmltextcontent');
               return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
           }
 
           // returns the division-text title from the loaded sutta text
           _computeTitle(suttaText) {
-              console.log('_computeTitle');
               const matches = suttaText.match(/class="division">(.*?)</);
               return matches ? matches[1] : '';
           }
 
           // returns the full author information from the loaded sutta text
           _computeAuthor(suttaText) {
-              console.log('_computeAuthor');
               const matches = suttaText.match(/author="(.*?)"/);
               return matches ? matches[1] : '';
           }
 
           // returns the meta-data from the loaded sutta text
           _computeMeta(suttaText) {
-              console.log('_computeMeta');
               const matches = suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
               return matches ? matches[1] : '';
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computePars(e) {
-              console.log('_computePars');
               const paragraphTitles = e.detail.response;
               for (let key in paragraphTitles) {
                   const refs = this.shadowRoot.querySelectorAll('.' + key);
@@ -164,7 +141,6 @@ Issues:
 
           // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
           infoToParent(suttaText) {
-              console.log('_infoToParent');
               this.dispatchEvent(new CustomEvent('eventFromTextPage'), {
                   detail: {
                       suttatitle: this._computeTitle(suttaText) + '—' + this._computeAuthor(suttaText),
