@@ -9,7 +9,6 @@
 <link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
 
 <link rel="import" href="more-menu.html">
-<link rel="import" href="settings-menu.html">
 
 <!--
 Base toolbar that appear on the top right in the header of every page. Not all items are shown on all pages
@@ -67,34 +66,6 @@ Issues:
         transition: width .2s cubic-bezier(.4, 0, .2, 1);
       }
 
-      .toolbar-dialog {
-        white-space: initial;
-      }
-
-      #dialog {
-        position: fixed;
-        top: 50px;
-        left: 25%;
-        right: 25%;
-        max-width: 600px;
-      }
-
-      @media screen and (max-width: 840px) {
-        #dialog {
-          left: 0;
-        }
-      }
-
-      h2 {
-        @apply --paper-font-headline;
-        @apply --sc-sans-font;
-        margin: 0;
-      }
-
-      .toolbar-dialog paper-icon-button {
-        color: var(--disabled-text-color);
-      }
-
       .hidebutton {
         display: none;
       }
@@ -103,7 +74,7 @@ Issues:
         text-decoration: none;
       }
 
-      .search-open #discoursebutton, .search-open > #morevertbutton, .search-open > #settingsbutton {
+      .search-open #discoursebutton, .search-open > #morevertbutton {
         display: none;
       }
     </style>
@@ -121,10 +92,6 @@ Issues:
       </a>
       <paper-badge class$="toolbar-badge [[toggleDisplay]]" for="discoursebutton" label="20"
                    title="This text has 20 references"></paper-badge>
-
-      <!-- Settings-menu inside a dialog-box only appears on text-pages -->
-      <paper-icon-button id="settingsbutton" class$="white-icon [[toggleDisplay]]" icon="settings"
-                         on-click="openDialog"></paper-icon-button>
 
       <!-- Menu for more options like language and other static pages -->
       <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="morevertbutton">

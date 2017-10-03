@@ -1,10 +1,11 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/../bower_components/polymer/polymer.html">
+<link rel="import" href="/../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="/../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/../bower_components/iron-icons/iron-icons.html">
 
-<link rel="import" href="../../styles/sc-suttaplex-styles.html">
-<link rel="import" href="../suttaplex/sc-suttaplex.html">
+<link rel="import" href="/../styles/sc-suttaplex-styles.html">
+<link rel="import" href="/../elements/menus/settings-menu.html">
+<link rel="import" href="/../elements/suttaplex/sc-suttaplex.html">
 
 <!--
 Pulls in one relevant suttaplex-card inside a collapse-item to display on top of each sutta text.
@@ -21,8 +22,6 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       }
 
       .heading {
-        cursor: pointer;
-        margin-right: 16px;
         display: flex;
         justify-content: flex-end;
       }
@@ -33,11 +32,35 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
         margin: 0 auto 64px;
       }
 
+      .toolbar-dialog {
+        white-space: initial;
+      }
+
+      #dialog {
+        position: fixed;
+        top: 50px;
+        margin: 5% auto;
+        left: var(--app-drawer-width);
+        right: 0;
+        max-width: 600px;
+      }
+
+      @media screen and (max-width: 840px) {
+        #dialog {
+          left: 0;
+        }
+      }
+
+      .toolbar-dialog paper-icon-button {
+        color: var(--disabled-text-color);
+      }
+
     </style>
 
     <div class="container">
-      <div class="heading" title="View Parallels & References" on-tap="_toggleOpened">
-        <paper-icon-button class="justify-content-end" icon="[[_toggleIcon]]"></paper-icon-button>
+      <div class="heading" title="View Parallels & References">
+        <paper-icon-button icon="settings" on-tap="_openDialog"></paper-icon-button>
+        <paper-icon-button icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
       </div>
 
       <iron-collapse opened="{{opened}}">
@@ -46,6 +69,17 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
         </div>
       </iron-collapse>
     </div>
+
+    <paper-dialog class="toolbar-dialog" id="dialog">
+      <div class="buttons">
+        <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
+      </div>
+      <h2>Tools and Information</h2>
+      <paper-dialog-scrollable>
+        <settings-menu meta-area="[[metaArea]]" disable-views="[[viewsDisabled]]"></settings-menu>
+      </paper-dialog-scrollable>
+    </paper-dialog>
+
   </template>
 
   <script>
@@ -75,6 +109,11 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
           _computeToggleIcon() {
               return this.opened ? 'icons:expand-less' : 'icons:expand-more';
+          }
+
+          // Opens the paper-dialog box of the settings-menu.
+          _openDialog() {
+              this.$.dialog.open();
           }
       }
 

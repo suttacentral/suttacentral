@@ -116,16 +116,6 @@ Issues that need to be fixed:
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node suttaplex-item="[[suttaplex]]"></sc-text-node>
       <div id="html_text_content" inner-h-t-m-l="[[suttaRootText]]"></div>
-      <paper-dialog class="toolbar-dialog" id="dialog">
-        <div class="buttons">
-          <paper-icon-button icon="close" class="white-icon" dialog-confirm autofocus></paper-icon-button>
-        </div>
-        <h2>Tools and Information</h2>
-        <paper-dialog-scrollable>
-          <settings-menu meta-area="[[metaArea]]" disable-views="[[viewsDisabled]]"></settings-menu>
-        </paper-dialog-scrollable>
-      </paper-dialog>
-
     </template>
 
   </template>
@@ -424,11 +414,6 @@ Issues that need to be fixed:
                           break;
                   }
               }
-          }
-
-          // Opens the paper-dialog box of the settings-menu.
-          openDialog() {
-              this.$.dialog.open();
           }
 
           //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.

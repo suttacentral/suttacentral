@@ -44,8 +44,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node category="[[suttaPath]]" suttaplex-item="[[suttaplex]]"></sc-text-node>
       <div id="html_text_content" inner-h-t-m-l="[[suttaText]]"></div>
-
-
     </template>
   </template>
 
@@ -166,11 +164,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   },
                   bubbles: true, composed: true
               }));
-          }
-
-          // Opens the paper-dialog box of the settings-menu.
-          openDialog() {
-              this.$.dialog.open();
           }
 
       }
