@@ -150,8 +150,7 @@ Issues that need to be fixed:
                   suttaText: {
                       type: String,
                       notify: true,
-                      value: '',
-                      observer: 'suttaTextChanged'
+                      value: ''
                   },
                   suttaTranslatedText: {
                       type: Object,
@@ -192,7 +191,10 @@ Issues that need to be fixed:
                       notify: true,
                       observer: 'changeScript'
                   },
-                  lastResponse: String
+                  lastResponse: {
+                      type: String,
+                      observer: 'lastResponseChanged'
+                  }
               }
           }
 
@@ -208,8 +210,8 @@ Issues that need to be fixed:
               console.log('in segmented text');
           }
 
-          suttaTextChanged() {
-              console.log(this.suttaText);
+          lastResponseChanged() {
+              console.log(this.lastResponse);
           }
 
           _callAjax() {

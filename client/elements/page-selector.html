@@ -36,26 +36,27 @@ Issues that need to be fixed:
       :host {
         display: block;
         box-sizing: border-box;
+        --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
       }
 
       .container {
         position: relative;
       }
 
-      app-toolbar, sc-toolbar {
+      .toolbar-header, #sc_toolbar {
         background-color: var(--sc-gold-500);
         white-space: nowrap;
       }
 
-      .list-mode #toolbarheader, .text-mode #toolbarheader, .segmented-mode #toolbarheader {
+      .list-mode .toolbar-header, .text-mode .toolbar-header, .segmented-mode .toolbar-header {
         @apply --shadow-elevation-8dp;
       }
 
-      .list-mode #sctoolbar, .list-mode #toolbarheader {
+      .list-mode #sc_toolbar, .list-mode .toolbar-header {
         background-color: var(--paper-deep-orange-900);
       }
 
-      .search-mode #sctoolbar, .search-mode #toolbarheader, .dictionary-mode #sctoolbar, .dictionary-mode #toolbarheader {
+      .search-mode #sc_toolbar, .search-mode .toolbar-header, .dictionary-mode #sc_toolbar, .dictionary-mode .toolbar-header {
         background-color: var(--sc-green-600);
       }
 
@@ -65,8 +66,8 @@ Issues that need to be fixed:
       }
 
       #toolbartitle {
-        text-transform: capitalize;
         @apply --sc-sans-font;
+        text-transform: capitalize;
         color: white;
       }
 
@@ -76,7 +77,7 @@ Issues that need to be fixed:
 
       @media screen and (max-width: 450px) {
         #toolbartitle {
-          font-size: 16px;
+          font-size: calc(16px * var(--sc-skolar-font-scale));
         }
       }
 
@@ -95,10 +96,10 @@ Issues that need to be fixed:
     <div class="container">
       <app-header-layout>
         <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="[[mainClass]]">
-          <app-toolbar id="toolbarheader">
+          <app-toolbar class="toolbar-header">
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
             <div main-title id="toolbartitlebox"><p id="toolbartitle">[[toolbarTitle]]</p></div>
-            <sc-toolbar id="sctoolbar" input-language="[[inputLanguage]]" sutta-path="[[author]]"
+            <sc-toolbar id="sc_toolbar" input-language="[[inputLanguage]]" sutta-path="[[author]]"
                         category="[[category]]" meta-area="[[metaArea]]"></sc-toolbar>
           </app-toolbar>
         </app-header>
@@ -321,7 +322,7 @@ Issues that need to be fixed:
 
           // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
           _changeView(category, author) {
-              this.$.sctoolbar.closeSearch();
+              this.$.sc_toolbar.closeSearch();
               this.$.header.resetLayout();
           }
 
