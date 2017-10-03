@@ -97,9 +97,9 @@ Issues that need to be fixed:
     <iron-ajax id="ajax"
                url="[[_computeUrl(suttaPath,author)]]"
                handle-as="text"
-               last-response="{{suttaText}}"
+               last-response="{{lastResponse}}"
                last-error='{{notFound}}'
-               on-response="_loadedHTML"></iron-ajax>
+               on-response="_onResponse"></iron-ajax>
 
     <!--<iron-ajax id="ajaxParagraphs"-->
                <!--url="../data/paragraphtitles.json"-->
@@ -212,7 +212,6 @@ Issues that need to be fixed:
           }
 
           _callAjax() {
-              // starts loading the html markup files from '../data/texts/markup'
               this.htmlLoaded = false;
               if (this.author && (this.author === "sujato" || this.author === "pali")) {
                   this.$.ajax.generateRequest();
@@ -238,10 +237,8 @@ Issues that need to be fixed:
               return `${this._getBaseUrl()}/${suttaUid}/${author}`;
           }
 
-          _loadedHTML(e) {
-              console.log('loadedHTML');
-              // when the base html markup are loaded, the json files for the translated text,
-              // the pali text and the paragraph numbers are loaded.
+          _onResponse(e) {
+              console.log('onResponse');
               this.$.ajaxTranslated.generateRequest();
               this.$.ajaxOriginal.generateRequest();
 //              this.$.ajaxParagraphs.generateRequest();

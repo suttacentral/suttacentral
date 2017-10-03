@@ -36,8 +36,8 @@ Issues:
     <iron-ajax id="ajax"
                url="[[_computeURL(suttaPath,author)]]"
                handle-as="text"
-               last-response="{{suttaText}}"
-               on-response="_loadedHTML"
+               last-response="{{lastResponse}}"
+               on-response="_onResponse"
                last-error='{{notFound}}'></iron-ajax>
 
     <!--<iron-ajax id="ajaxParagraphs"-->
@@ -52,7 +52,7 @@ Issues:
 
     <template is="dom-if" if="[[!notFound]]">
       <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
-      <div id="htmltextcontent" inner-h-t-m-l="asd"></div>
+      <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
     </template>
   </template>
   <script>
@@ -115,8 +115,10 @@ Issues:
           }
 
           // After the text file is loaded, it calls the file that contains the paragraph numbers.
-          _loadedHTML(e) {
-              console.log('_loadedHTML');
+          _onResponse(e) {
+              this.lastResponse = JSON.parse(this.lastResponse);
+              console.log('_onResponse');
+              this.suttaText = this.lastResponse.root_text.text;
               //              this.$.ajaxParagraphs.generateRequest();
           }
 
