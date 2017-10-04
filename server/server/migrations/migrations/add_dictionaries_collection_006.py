@@ -9,6 +9,9 @@ class SecondMigration(Migration):
     def create_collection(self):
         db = get_db()
 
-        po_htmls = db.create_collection('dictionaries')
-        po_htmls.add_hash_index(fields=['from'], unique=False)
-        po_htmls.add_hash_index(fields=['to'], unique=False)
+        dictionaries = db.create_collection('dictionaries')
+        dictionaries.add_hash_index(fields=['from'], unique=False)
+        dictionaries.add_hash_index(fields=['to'], unique=False)
+        dictionaries.add_hash_index(fields=['lookup'], unique=False)
+        dictionaries.add_hash_index(fields=['main'], unique=False)
+        dictionaries.add_hash_index(fields=['type'], unique=False)

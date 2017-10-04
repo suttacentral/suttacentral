@@ -275,7 +275,7 @@ class Parallels(Resource):
         return data, 200
 
 
-class Dictionaries(Resource):
+class LookupDictionaries(Resource):
     def get(self):
         """
         Send parallel information for given sutta.
