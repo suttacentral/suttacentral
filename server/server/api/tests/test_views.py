@@ -85,6 +85,6 @@ def test_lookup_dictionaries(client):
         'from': 'pli',
         'to': 'en'
     }
-    res = client.get(api.url_for(Dictionaries, **data))
+    res = client.get(api.url_for(LookupDictionaries, **data))
 
     assert res.status_code == 200
