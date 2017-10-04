@@ -38,11 +38,11 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
         margin: 0 auto 64px;
       }
 
-      .toolbar-dialog {
+      .dialog {
         white-space: initial;
       }
 
-      #dialog {
+      #settings_dialog {
         position: fixed;
         top: 50px;
         margin: 5% auto;
@@ -52,20 +52,26 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       }
 
       @media screen and (max-width: 840px) {
-        #dialog {
+        #settings_dialog {
           left: 0;
         }
       }
 
-      .toolbar-dialog paper-icon-button {
+      .dialog paper-icon-button {
         color: var(--disabled-text-color);
+      }
+
+      .margin-vertical-md {
+        margin-top: 8px;
+        margin-bottom: 8px;
       }
 
     </style>
 
     <div class="container">
       <div class="heading" title="View Parallels & References">
-        <paper-icon-button icon="settings" on-tap="_openDialog"></paper-icon-button>
+        <paper-icon-button icon="info" on-tap="_openInfoDialog"></paper-icon-button>
+        <paper-icon-button icon="settings" on-tap="_openSettingsDialog"></paper-icon-button>
         <paper-icon-button icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
       </div>
 
@@ -76,15 +82,44 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       </iron-collapse>
     </div>
 
-    <paper-dialog class="toolbar-dialog" id="dialog"
+    <paper-dialog id="settings_dialog" class="dialog"
                   entry-animation="fade-in-animation"
                   exit-animation="fade-out-animation">
       <div class="buttons">
         <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
       </div>
-      <h2>Tools and Information</h2>
+      <h2>Text settings</h2>
       <paper-dialog-scrollable>
         <settings-menu meta-area="[[metaArea]]"></settings-menu>
+      </paper-dialog-scrollable>
+    </paper-dialog>
+
+    <paper-dialog id="info_dialog" class="dialog"
+                  entry-animation="fade-in-animation"
+                  exit-animation="fade-out-animation">
+      <div class="buttons">
+        <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
+      </div>
+      <h2>Sutta information</h2>
+      <paper-dialog-scrollable>
+        <div class="dialogue-section">
+          <h3>Publication details</h3>
+          <div inner-h-t-m-l="[[metaArea]]">
+            <section class="margin-vertical-md">This is an independent sūtra. In the Taishō canon, on which this edition
+              is based, it is collected
+              together
+              with the Dīrghāgama. The text is from CBETA.
+            </section>
+            <section class="margin-vertical-md">
+              Prepared for SuttaCentral by Bhikkhu Sujato.
+            </section>
+            <section class="margin-vertical-md">
+              First Added: 2017-01-27
+              <br>
+              Last Modified: 2017-01-27
+            </section>
+          </div>
+        </div>
       </paper-dialog-scrollable>
     </paper-dialog>
 
@@ -116,14 +151,21 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
           ready() {
               super.ready();
-              let dialog = this.$.dialog;
-              dialog.addEventListener('opened-changed', () => {
+              this._addScrollLockListeners();
+          }
+
+          _addScrollLockListeners() {
+              let scrollLockListener = (dialog) => {
                   if (dialog.opened) {
                       Polymer.IronDropdownScrollManager.pushScrollLock(dialog);
                   } else {
                       Polymer.IronDropdownScrollManager.removeScrollLock(dialog);
                   }
-              });
+              };
+              let settingsDialog = this.$.settings_dialog;
+              let infoDialog = this.$.info_dialog;
+              settingsDialog.addEventListener('opened-changed', () => { scrollLockListener(settingsDialog) });
+              infoDialog.addEventListener('opened-changed', () => { scrollLockListener(infoDialog) });
           }
 
           _toggleOpened() {
@@ -135,9 +177,12 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
               return this.opened ? 'icons:expand-less' : 'icons:expand-more';
           }
 
-          // Opens the paper-dialog box of the settings-menu.
-          _openDialog() {
-              this.$.dialog.open();
+          _openSettingsDialog() {
+              this.$.settings_dialog.open();
+          }
+
+          _openInfoDialog() {
+              this.$.info_dialog.open();
           }
       }
 
