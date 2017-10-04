@@ -112,7 +112,11 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   this.lastResponse = JSON.parse(this.lastResponse);
               }
               try {
-                  this.suttaText = this.lastResponse.root_text.text;
+                  if (this.suttaText.root_text) {
+                      this.suttaText = this.lastResponse.root_text.text;
+                  } else {
+                      this.suttaText = this.lastResponse.translation.text;
+                  }
               } catch (e) {
                   this.suttaText = '<section><h2>Could not find sutta text in database.</h2></section>';
               }

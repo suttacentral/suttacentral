@@ -342,7 +342,7 @@ class Sutta(Resource):
                 description: Complete information set for sutta-view
                 schema:
                     id: sutta
-                    type: object
+                    type:  object
                     properties:
                         root_text:
                             type: object
@@ -379,6 +379,8 @@ class Sutta(Resource):
 
         """
         lang = request.args.get('lang', 'en')
+
+        author = author.lower()
 
         db = get_db()
 
