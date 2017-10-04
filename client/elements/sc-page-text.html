@@ -95,12 +95,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               console.log('in normal text');
           }
 
-
-          // Calls the correct sutta text file. Because Polymer tends to load automatic ajax functions first from where they
-          // called before parsing the route to the correct page, the additional checks are needed and might have to be
-          // adjusted when more authors are added for the segmented text pages.
           _callAjax() {
-              return (this.author && this.author !== 'sujato' && this.author !== 'pali') ? this.$.ajax.generateRequest() : '';
+              this.$.ajax.generateRequest();
           }
 
           _computeURL(suttaUid, author) {
@@ -128,7 +124,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs() {
               const infotext = this.shadowRoot.querySelector('#html_text_content');
-              return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
+              return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode')
+                  : (infotext) ? infotext.classList.add('infomode') : '';
           }
 
           // returns the division-text title from the loaded sutta text
