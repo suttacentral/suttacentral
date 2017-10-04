@@ -16,7 +16,7 @@
 <!--
 Pulls in one relevant suttaplex-card inside a collapse-item to display on top of each sutta text.
 -->
-<dom-module id="sc-text-node">
+<dom-module id="sc-text-options">
   <template>
     <style is="custom-style" include="sc-suttaplex-styles">
       .container {
@@ -91,9 +91,9 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
   </template>
 
   <script>
-      class SCTextNode extends Polymer.Element {
+      class SCTextOptions extends Polymer.Element {
           static get is() {
-              return 'sc-text-node';
+              return 'sc-text-options';
           }
 
           static get properties() {
@@ -141,7 +141,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
           }
       }
 
-      customElements.define(SCTextNode.is, SCTextNode);
+      customElements.define(SCTextOptions.is, SCTextOptions);
   </script>
 
 </dom-module>

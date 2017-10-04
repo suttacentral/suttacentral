@@ -4,13 +4,13 @@
 <link rel="import" href="/../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="/../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
-<link rel="import" href="/../elements/addons/sc-text-node.html">
+<link rel="import" href="/../elements/addons/sc-text-options.html">
 <link rel="import" href="/../styles/sc-text-styles.html">
 <link rel="import" href="/../styles/sc-text-heading-styles.html">
 <link rel="import" href="/../styles/sc-text-paragraph-num-styles.html">
 
 <!--
-The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-node.html`).
+The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-options.html`).
 Paragraph numbers can be displayed or hidden as requested via the settings-menu in the toolbar.
 Title, full Author name and Meta data are sent via events to the page-selector for use in the toolbar.
 -->
@@ -42,7 +42,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
     </template>
 
     <template is="dom-if" if="[[!notFound]]">
-      <sc-text-node suttaplex-item="[[suttaplex]]"></sc-text-node>
+      <sc-text-options suttaplex-item="[[suttaplex]]"></sc-text-options>
       <div id="html_text_content" inner-h-t-m-l="[[suttaText]]"></div>
     </template>
   </template>
