@@ -1,5 +1,8 @@
+import os
+import json
 from collections import defaultdict
 
+import stripe
 from flask import request, current_app
 from flask_restful import Resource
 
@@ -424,3 +427,46 @@ class Currencies(Resource):
         }
 
         return response_data, 200
+
+
+class Donations(Resource):
+    def post(self):
+        data = json.loads(list(request.form.keys())[0])
+        currency = data.get('currency')
+        amount = data.get('amount')
+        frequency = data.get('frequency')
+        stripe_data = data.get('stripe')
+        name = data.get('name')
+        email = data.get('email')
+        message = data.get('message')
+
+        secret_key = os.environ.get('STRIPE_SECRET')
+
+        stripe.api_key = secret_key
+
+        db = get_db()
+        try:
+            currency = list(db['currencies'].find({'symbol': currency}))[0]
+        except IndexError:
+            return 'No such currency', 404
+
+        if currency['decimal']:
+            amount = amount*100
+        amount = int(amount)
+
+        customer_data = {
+            'source': stripe_data['token']['id']
+        }
+
+        if email:
+            customer_data['email'] = email
+        customer = stripe.Customer.create(**customer_data)
+
+        charge = stripe.Charge.create(
+            customer=customer.id,
+            amount=amount,
+            currency=currency['symbol'],
+            description=f'Donation by {name if name else ""}, massage {message if message else ""}'
+        )
+
+        return '', 200

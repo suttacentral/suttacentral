@@ -13,6 +13,7 @@
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 
 <link rel="import" href="../styles/static-styles.html">
 
@@ -176,6 +177,29 @@
         font-weight: 500;
         font-size: 15px;
       }
+
+      .spinner {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 101;
+      }
+
+      .no-d {
+        display: none;
+      }
+
+      .blocker {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+        z-index: 100;
+      }
+
     </style>
     <iron-ajax
             auto
@@ -183,6 +207,19 @@
             handle-as="json"
             last-response="{{ responseData }}"
             on-response="_handleResponse"></iron-ajax>
+    
+    <iron-ajax
+            class="make-donation-ajax"
+            url="/api/donate"
+            handle-as="json"
+            method="post"
+            body="{{ formData }}"
+            last-response="{{ donationResponseData }}"
+            last-error="{{ donationResponseError}}"
+            on-error="_paymentError"
+            on-response="_paymentFinished"></iron-ajax>
+
+    <iron-location path="{{path}}"></iron-location>
 
     <div id="page-wrap">
       <main>
@@ -204,7 +241,7 @@
                 </paper-listbox>
               </paper-dropdown-menu>
 
-              <paper-input label="Amount" class="data-input" type="number" min="1" step=".01"
+              <paper-input label="Amount" class="data-input amont-input" type="number" min="1" step=".01"
                            auto-validate pattern="^[+]?(\d+[.]?\d{0,2})$"
                            error-message="Invalid value" required></paper-input>
             </div>
@@ -222,16 +259,16 @@
               </label>
             </div>
 
-            <paper-input label="Name (optional)" class="data-input">
+            <paper-input label="Name (optional)" class="data-input name-input">
               <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
             </paper-input>
 
-            <paper-input label="Email (optional)" class="data-input" auto-validate pattern="^\S+@\S+\.\S+$"
+            <paper-input label="Email (optional)" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
                          error-message="Invalid email">
               <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
             </paper-input>
 
-            <paper-textarea label="Message (optional)" class="data-input" rows=2>
+            <paper-textarea label="Message (optional)" class="data-input message-input" rows=2>
             </paper-textarea>
 
             <div class="flex-row submit">
@@ -251,6 +288,13 @@
         </section>
       </main>
     </div>
+    <template is="dom-if" if="{{processingPayment}}">
+      <div class="blocker"></div>
+      <div class="spinner">
+        <paper-spinner active></paper-spinner>
+      </div>
+    </template>
+
   </template>
 
   <script>
@@ -270,7 +314,27 @@
                   default_currency_index: {
                       type: Number
                   },
-
+                  data: {
+                    type: Object
+                  },
+                  donationResponse: {
+                    type: Object
+                  },
+                  path: {
+                    type: String
+                  },
+                  formData: {
+                    type: String
+                  },
+                  donationResponseData: {
+                    type: Object
+                  },
+                  donationResponseError: {
+                    type: Object
+                  },
+                  processingPayment: {
+                    type: Boolean,
+                  }
               }
           }
 
@@ -307,6 +371,7 @@
                   focus: 'is-focused',
                   empty: 'is-empty',
                 },
+
               });
               this.card.mount(stripe_div);
 
@@ -343,13 +408,50 @@
           }
 
           _makeDonation(e) {
-            let form = this.shadowRoot.querySelector('.payment-iron-form')
-            if(!form.validate()){
+            let ironForm = this.shadowRoot.querySelector('.payment-iron-form');
+            if(!ironForm.validate()){
               return;
             }
+            let data = this._getFormData();
+            this.processingPayment = true;
             this.stripe.createToken(this.card).then((result) => {
-                
+              data.stripe = result;
+              debugger;
+              this.formData = JSON.stringify(data);
+              let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
+              ironAjax.generateRequest();
             });
+          }
+
+          _paymentFinished(event) {
+              this.processingPayment = false;
+              console.log(this.donationResponseData);
+              this.set('path', '/');
+          }
+
+          _paymentError(event) {
+            this.processingPayment = false;
+          }
+
+          _getFormData() {
+              let form = this.shadowRoot.querySelector('.payment-form');
+
+              let data = {};
+
+              let currency = form.querySelector('.currency-menu-listbox').selected;
+              data.currency = this.currencies[currency].symbol;
+
+              data.amount = parseFloat(form.querySelector('.amont-input').value);
+              data.oneTimeDonation = form.querySelector('.one-time-donation').checked;
+              data.monthlyDonation = form.querySelector('.monthly-donation').checked;
+              data.name = form.querySelector('.name-input').value;
+              data.email = form.querySelector('.email-input').value;
+              data.message = form.querySelector('.message-input').value;
+              return data;
+          }
+
+          _donationFinalized(e) {
+              console.log(e);
           }
       }
 

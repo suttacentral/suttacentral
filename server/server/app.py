@@ -6,7 +6,7 @@ from flask import Blueprint, Flask
 from flask_cors import CORS
 from flask_restful import Api
 
-from api.views import Languages, Menu, SuttaplexList, Parallels, Dictionaries, Sutta, Currencies
+from api.views import Languages, Menu, SuttaplexList, Parallels, Dictionaries, Sutta, Currencies, Donations
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
@@ -27,6 +27,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Sutta, '/suttas/<string:uid>/<string:lang>')
     api.add_resource(Dictionaries, '/dictionaries')
     api.add_resource(Currencies, '/currencies')
+    api.add_resource(Donations, '/donate')
 
     app.register_blueprint(api_bp)
     return api, app
