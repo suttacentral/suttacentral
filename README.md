@@ -341,5 +341,5 @@ Issues:
 
 ### menus/settings-menu.html and addons/sc-dictionary-lookup.html
 Issues: 
-    -The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English. A mockup dictionary is in `data/dictionaries/pi2en.json` but this is not the latest version, only for testing. The matching should be fuzzy so no direct word-to-word lookup.
+    -The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English. A mockup dictionary is in `data/dictionaries/pli2en.json` but this is not the latest version, only for testing. The matching should be fuzzy so no direct word-to-word lookup.
   - The repository with the basic code for this tool is https://github.com/blake-sc/palilookup but is broken.
