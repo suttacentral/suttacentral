@@ -10,6 +10,7 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
 
 <link rel="import" href="../../img/sc-svg-icons.html">
 <link rel="import" href="../addons/sc-sutta-note.html">
@@ -136,6 +137,11 @@
       .difficulty-icon {
         padding-right: 8px;
       }
+
+      .paper-badge {
+        --paper-badge-margin-left: -15px;
+        --paper-badge-margin-bottom: -10px;
+      }
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -179,7 +185,9 @@
           </div>
         </div>
 
-        <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened"></paper-icon-button>
+        <paper-icon-button id="parallels-toggle" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
+        </paper-icon-button>
+        <paper-badge for="parallels-toggle" label="[[item.parallels_number]]" class="paper-badge"></paper-badge>
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
