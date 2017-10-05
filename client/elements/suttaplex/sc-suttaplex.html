@@ -138,6 +138,11 @@
         padding-right: 8px;
       }
 
+      .toggle-button {
+        min-width: 40px;
+        align-self: flex-end;
+      }
+
       .paper-badge {
         --paper-badge-margin-left: -15px;
         --paper-badge-margin-bottom: -10px;
@@ -171,7 +176,7 @@
       <div class="card-actions">
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
-            <template is="dom-if" if="{{ _isChosenLang(translation.lang) }}">
+            <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button flat title$="Go  to a translation by [[translation.author]]">
                 <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]">[[translation.author]]</a>
               </paper-button>
@@ -185,14 +190,14 @@
           </div>
         </div>
 
-        <paper-icon-button id="parallels-toggle" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
+        <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
         </paper-icon-button>
         <paper-badge for="parallels-toggle" label="[[item.parallel_count]]" class="paper-badge"
                      title="Number of parallels"></paper-badge>
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
-        <iron-collapse no-animation id="collapse" opened="{{ parallelsOpened }}">
+        <iron-collapse no-animation id="collapse" opened="{{parallelsOpened}}">
           <sc-view-parallels root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"></sc-view-parallels>
         </iron-collapse>
       </template>
