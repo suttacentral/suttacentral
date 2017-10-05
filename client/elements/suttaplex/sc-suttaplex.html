@@ -171,7 +171,7 @@
       <div class="card-actions">
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
-            <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
+            <template is="dom-if" if="{{ _isChosenLang(translation.lang) }}">
               <paper-button flat title$="Go  to a translation by [[translation.author]]">
                 <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]">[[translation.author]]</a>
               </paper-button>
@@ -187,11 +187,12 @@
 
         <paper-icon-button id="parallels-toggle" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
         </paper-icon-button>
-        <paper-badge for="parallels-toggle" label="[[item.parallels_number]]" class="paper-badge"></paper-badge>
+        <paper-badge for="parallels-toggle" label="[[item.parallels_number]]" class="paper-badge"
+                     title="Number of parallels"></paper-badge>
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
-        <iron-collapse no-animation id="collapse" opened="{{parallelsOpened}}">
+        <iron-collapse no-animation id="collapse" opened="{{ parallelsOpened }}">
           <sc-view-parallels root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"></sc-view-parallels>
         </iron-collapse>
       </template>
@@ -252,12 +253,12 @@
               return (!checkText) ? 'hide-element' : '';
           }
 
-          _computeHideUID(item){
-            return (item.translated_title || item.original_title) ? '' : 'hide-element'
+          _computeHideUID(item) {
+              return (item.translated_title || item.original_title) ? '' : 'hide-element'
           }
 
           _computeHideOriginalTitle(item) {
-            return item.translated_title ? '' : 'hide-element'
+              return item.translated_title ? '' : 'hide-element'
           }
 
           // returns the relevant icon for the expander
@@ -290,17 +291,17 @@
 
           _toggleParallelsOpened() {
               this.parallelsOpened = !this.parallelsOpened;
-              this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
+              this.dispatchEvent(new CustomEvent('iron-resize', {composed: true, bubbles: true}));
           }
 
           _computeMainHeading(item) {
-            if (item.translated_title) {
-              return item.translated_title;
-            } else if (item.original_title){
-              return item.original_title;
-            } else {
-              return item.uid;
-            }
+              if (item.translated_title) {
+                  return item.translated_title;
+              } else if (item.original_title) {
+                  return item.original_title;
+              } else {
+                  return item.uid;
+              }
           }
       }
 
