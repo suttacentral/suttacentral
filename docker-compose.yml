@@ -79,6 +79,12 @@ services:
     labels:
       application: 'sc-frontend-tester'
 
+  sc-frontend-builder:
+    image: node
+    container_name: 'sc-frontend-builder'
+    labels:
+      application: 'sc-frontend-builder'
+
 volumes:
   db-data-volume:
   nginx-data-volume:
