@@ -96,7 +96,7 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
             RETURN translation.title
     )[0]
     
-    LET parallels_number = LENGTH(
+    LET parallel_count = LENGTH(
         FOR rel IN relationship
             FILTER rel._from == v._id
             RETURN rel
@@ -113,7 +113,7 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
         from: e._from,
         translated_title: translated_titles,
         translations: translations,
-        parallels_number: parallels_number
+        parallel_count: parallel_count
     }
 '''
 
@@ -263,7 +263,7 @@ LET legacy_html = (
         }
 )
 
-LET parallels_number = LENGTH(
+LET parallel_count = LENGTH(
     FOR rel IN relationship
         FILTER rel._from == root_text._id
         RETURN rel
@@ -280,7 +280,7 @@ RETURN {
         original_title: root_text.name,
         root_lang: root_text.root_lang,
         translations: FLATTEN([po_translations, legacy_translations]),
-        parallels_number: parallels_number
+        parallel_count: parallel_count
     }
 }
 '''
