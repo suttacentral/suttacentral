@@ -22,6 +22,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
       .button-text:hover {
           cursor: pointer;
+          background-color: var(--paper-grey-200);
       }
     </style>
 
@@ -47,7 +48,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
           static get properties() {
               return {
-                  inputUrl: String,
+                  item: {
+                      type: Object,
+                  },
                   inputData: {
                       type: Object,
                       notify: true
@@ -67,7 +70,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
           // Copy the link to the suttaplex page
           _copyLink() {
-              this._copyToClipboard("https://suttacentral.net/" + this.inputUrl);
+            const getUrl = window.location;
+            const baseUrl = getUrl .protocol + "//" + getUrl.host;
+              this._copyToClipboard(baseUrl + '/sutta/' + this.item.uid);
           }
 
           //  copy cite-information about parallels and bibliography.
