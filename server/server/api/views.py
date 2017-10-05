@@ -431,10 +431,19 @@ class Currencies(Resource):
 
 class Donations(Resource):
     def post(self):
+        """
+        Process the payment
+        ---
+        responses:
+            all:
+                description: Information massage.
+                type: string
+        """
         data = json.loads(list(request.form.keys())[0])
         currency = data.get('currency')
         amount = data.get('amount')
-        frequency = data.get('frequency')
+        one_time_donation = data.get('oneTimeDonation')
+        monthly_donation = data.get('monthlyDonation')
         stripe_data = data.get('stripe')
         name = data.get('name')
         email = data.get('email')
@@ -443,15 +452,14 @@ class Donations(Resource):
         secret_key = os.environ.get('STRIPE_SECRET')
 
         stripe.api_key = secret_key
-
         db = get_db()
         try:
             currency = list(db['currencies'].find({'symbol': currency}))[0]
         except IndexError:
-            return 'No such currency', 404
+            return 'No such currency', 400
 
         if currency['decimal']:
-            amount = amount*100
+            amount = amount * 100
         amount = int(amount)
 
         customer_data = {
@@ -462,11 +470,38 @@ class Donations(Resource):
             customer_data['email'] = email
         customer = stripe.Customer.create(**customer_data)
 
-        charge = stripe.Charge.create(
-            customer=customer.id,
-            amount=amount,
-            currency=currency['symbol'],
-            description=f'Donation by {name if name else ""}, massage {message if message else ""}'
-        )
+        if one_time_donation:
+            charge = stripe.Charge.create(
+                customer=customer.id,
+                amount=amount,
+                currency=currency['symbol'],
+                metadata={"name": name, "message": message},
+                description=f'Donation by {name if name else ""}, massage {message if message else ""}'
+            )
 
-        return '', 200
+        elif monthly_donation:
+            plan = get_plan(amount, currency['symbol'])
+            subscription = stripe.Subscription.create(
+                customer=customer.id,
+                items=[{"plan": plan.stripe_id}]
+            )
+
+        else:
+            return 'Select either one time or monthly', 400
+
+        return 'Subscribed' if monthly_donation else 'Donated', 200
+
+
+def get_plan(amount, currency):
+    plan_id = f'monthly_{amount}_{currency}'
+    try:
+        plan = stripe.Plan.retrieve(plan_id)
+    except stripe.error.InvalidRequestError:
+        plan = stripe.Plan.create(
+            amount=amount,
+            interval='month',
+            name='Monthly Donation to SuttaCentral',
+            currency=currency,
+            statement_descriptor='SuttaCentralDonation',
+            id=plan_id)
+    return plan

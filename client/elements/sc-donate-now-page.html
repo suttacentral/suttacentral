@@ -14,12 +14,17 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/iron-location/iron-location.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="../styles/static-styles.html">
 
 <dom-module id="sc-donate-now-page">
   <template>
     <style include="static-styles">
+      #page-wrap {
+        min-height: 0;
+      }
       .flex-row {
         display: flex;
       }
@@ -58,6 +63,7 @@
 
       .legal-information {
         margin-top: 3em;
+        padding-bottom: 1em;
         opacity: .38;
         color: #000000;
       }
@@ -199,9 +205,21 @@
         opacity: 1;
         z-index: 100;
       }
+      .toast {
+        --paper-toast-color: white;
+        text-align: center;
+        font-size: 20px;
+        width: 200px;
+        margin-left: calc(50vw - 150px);
+      }
+
+      .error-toast {
+        --paper-toast-background-color: red;
+      }
 
     </style>
     <iron-ajax
+            id='currency_ajax'
             auto
             url="/api/currencies"
             handle-as="json"
@@ -222,72 +240,71 @@
     <iron-location path="{{path}}"></iron-location>
 
     <div id="page-wrap">
-      <main>
-        <section>
-          <iron-form class="payment-iron-form">
-          <form class="payment-form">
-            <div class="flex-row">
-              <paper-dropdown-menu class="form-prefix currency-dropdown data-input" title="Select currency"
-                                   dynamic-align label="currency" always-float-label>
-                <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
-                               selected="[[default_currency_index]]">
-                  <template is="dom-repeat" items="{{ currencies }}">
-                    <paper-item class="currency-menu-item" title="[[item.name]]">
-                      <paper-item-body>
-                        [[item.symbol]]
-                      </paper-item-body>
-                    </paper-item>
-                  </template>
-                </paper-listbox>
-              </paper-dropdown-menu>
+      <section>
+        <iron-form class="payment-iron-form">
+        <form class="payment-form">
+          <div class="flex-row">
+            <paper-dropdown-menu class="form-prefix currency-dropdown data-input" title="Select currency"
+                                  dynamic-align label="currency" always-float-label>
+              <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
+                              selected="[[default_currency_index]]">
+                <template is="dom-repeat" items="{{ currencies }}">
+                  <paper-item class="currency-menu-item" title="[[item.name]]">
+                    <paper-item-body>
+                      [[item.symbol]]
+                    </paper-item-body>
+                  </paper-item>
+                </template>
+              </paper-listbox>
+            </paper-dropdown-menu>
 
-              <paper-input label="Amount" class="data-input amont-input" type="number" min="1" step=".01"
-                           auto-validate pattern="^[+]?(\d+[.]?\d{0,2})$"
-                           error-message="Invalid value" required></paper-input>
-            </div>
-
-            <p class="explanation">You can make a one-time donation or a monthly donation.</p>
-            <div class="flex-row">
-              <paper-checkbox class="frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
-              <paper-checkbox class="frequency-checkbox monthly-donation">Monthly</paper-checkbox>
-            </div>
-
-            <div class="card-details">
-              <label class="card-label">
-                <div id="card-element" class="field is-empty"></div>
-                <span class="card-first-span"><span class="card-second-span">Card number</span></span>
-              </label>
-            </div>
-
-            <paper-input label="Name (optional)" class="data-input name-input">
-              <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
-            </paper-input>
-
-            <paper-input label="Email (optional)" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
-                         error-message="Invalid email">
-              <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
-            </paper-input>
-
-            <paper-textarea label="Message (optional)" class="data-input message-input" rows=2>
-            </paper-textarea>
-
-            <div class="flex-row submit">
-              <paper-button on-tap="_makeDonation" class="submit-button">
-                PAY WITH CARD
-              </paper-button>
-            </div>
-          </form>
-        </iron-form>
-              
-          <div class="legal-information">
-              <iron-icon icon="icons:info-outline"></iron-icon><p>SuttaCentral does not handle or store your credit card details. 
-              All credit card transactions are handled securely by <a href="https://stripe.com" target="blank">Stripe</a>.</p>
-              <p>The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards,
-               and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable.</p>
+            <paper-input label="Amount" class="data-input amont-input" type="number" min="1" step=".01"
+                          auto-validate pattern="^[+]?(\d+[.]?\d{0,2})$"
+                          error-message="Invalid value" required></paper-input>
           </div>
-        </section>
-      </main>
+
+          <p class="explanation">You can make a one-time donation or a monthly donation.</p>
+          <div class="flex-row">
+            <paper-checkbox class="frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
+            <paper-checkbox class="frequency-checkbox monthly-donation">Monthly</paper-checkbox>
+          </div>
+
+          <div class="card-details">
+            <label class="card-label">
+              <div id="card-element" class="field is-empty"></div>
+              <span class="card-first-span"><span class="card-second-span">Card number</span></span>
+            </label>
+          </div>
+
+          <paper-input label="Name (optional)" class="data-input name-input">
+            <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
+          </paper-input>
+
+          <paper-input label="Email (optional)" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
+                        error-message="Invalid email">
+            <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
+          </paper-input>
+
+          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2>
+          </paper-textarea>
+
+          <div class="flex-row submit">
+            <paper-button on-tap="_makeDonation" class="submit-button">
+              PAY WITH CARD
+            </paper-button>
+          </div>
+        </form>
+      </iron-form>
+            
+        <div class="legal-information">
+            <iron-icon icon="icons:info-outline"></iron-icon><p>SuttaCentral does not handle or store your credit card details. 
+            All credit card transactions are handled securely by <a href="https://stripe.com" target="blank">Stripe</a>.</p>
+            <p>The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards,
+              and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable.</p>
+        </div>
+      </section>
     </div>
+    <paper-toast class="toast error-toast" text="Error!"></paper-toast>
     <template is="dom-if" if="{{processingPayment}}">
       <div class="blocker"></div>
       <div class="spinner">
@@ -414,9 +431,12 @@
             }
             let data = this._getFormData();
             this.processingPayment = true;
-            this.stripe.createToken(this.card).then((result) => {
+            this.stripe.createToken(this.card).then((result, error) => {
+              if (error){
+                this.shadowRoot.querySelector('.error-toast').open();
+                return;
+              }
               data.stripe = result;
-              debugger;
               this.formData = JSON.stringify(data);
               let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
               ironAjax.generateRequest();
@@ -425,12 +445,12 @@
 
           _paymentFinished(event) {
               this.processingPayment = false;
-              console.log(this.donationResponseData);
               this.set('path', '/');
           }
 
           _paymentError(event) {
             this.processingPayment = false;
+            this.shadowRoot.querySelector('.error-toast').open();
           }
 
           _getFormData() {
