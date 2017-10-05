@@ -9,13 +9,17 @@
  -->
 <script>
     const initialState = {
-        currentLocation: 'home_page'
+        siteLanguage: 'en'
     };
 
     const reducer = (state, action) => {
         switch (action.type) {
             case 'SWITCH_LOCATION':
                 return Object.assign({}, state, { currentLocation: action.location });
+            case 'CHANGE_SITE_LANGUAGE':
+                return Object.assign({}, state, { siteLanguage: action.language });
+            default:
+                return state;
         }
     };
 
