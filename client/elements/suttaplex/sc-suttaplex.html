@@ -136,6 +136,11 @@
       .difficulty-icon {
         padding-right: 8px;
       }
+
+      .toggle-button {
+        min-width: 40px;
+        align-self: flex-end;
+      }
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -179,7 +184,7 @@
           </div>
         </div>
 
-        <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened"></paper-icon-button>
+        <paper-icon-button class="toggle-button" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened"></paper-icon-button>
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
