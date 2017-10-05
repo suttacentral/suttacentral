@@ -79,7 +79,7 @@ def test_lookup_dictionaries_no_query(client):
 
 def test_lookup_dictionaries(client):
 
-    utils.generate_dict(_from='pli', to='en')
+    utils.generate_lookup_dict(_from='pli', to='en')
 
     data = {
         'from': 'pli',
