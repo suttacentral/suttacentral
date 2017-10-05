@@ -31,7 +31,7 @@
                     }
                 },
                 "analyzer": {
-                    "pi": {
+                    "pli": {
                         "tokenizer": "standard",
                         "char_filter": ["denumber", "sanskrit_to_pali", "vy_normalize", "m_normalize"],
                         "filter": [
@@ -52,7 +52,7 @@
                             "stemmed": {
                                 "type": "text",
                                 "term_vector": "with_positions_offsets",
-                                "analyzer": "pi"
+                                "analyzer": "pli"
                             }
                         }
                     }
