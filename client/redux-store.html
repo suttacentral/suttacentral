@@ -9,7 +9,7 @@
  -->
 <script>
     const initialState = {
-        siteLocation: 'homepage',
+        currentLocation: 'homepage',
         siteLanguage: 'en'
     };
 
@@ -33,5 +33,6 @@
                 : v => v
         )
     );
+
     ReduxMixin = PolymerRedux(store);
 </script>
