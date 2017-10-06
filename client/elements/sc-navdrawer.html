@@ -12,23 +12,9 @@
 <link rel="import" href="page-selector.html">
 
 <!--
-The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates
-this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**), parses the route
-through `app-route` and feeds all information through to the **page-selector.html**.
-
-**app-drawer**
-
-**iron-location** and **app-rout**
-These parse the url given but at the moment only deal with the following url:
-    - search pages: `/search?query=searchterm`
-    - url with one or two terms i.e. `/`, `/dons`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc.
-     but not with more than 2 terms.
-
-Issues that need to be fixed:
-    - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new
-    menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1`
-     but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and
-     the **sc-view-suttaplex.html**.
+  The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates
+  this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**), parses the route
+  through `app-route` and feeds all information through to the **page-selector.html**.
 -->
 <dom-module id="sc-navdrawer">
   <template>
@@ -169,10 +155,8 @@ Issues that need to be fixed:
   </template>
 
   <script>
-      class SCNavdrawer extends Polymer.Element {
-          static get is() {
-              return 'sc-navdrawer'
-          }
+      class SCNavdrawer extends ReduxMixin(Polymer.Element) {
+          static get is() { return 'sc-navdrawer'; }
 
           static get properties() {
               return {
@@ -200,12 +184,30 @@ Issues that need to be fixed:
                   navList: {
                       type: Array,
                       observer: '_parseNavList'
+                  },
+                  currentView: {
+                      type: String,
+                      statePath: 'currentView'
                   }
               }
           }
 
           static get observers() {
-              return ['_updateScroll(route)']
+              return [
+                  '_updateScroll(route)',
+                  '_routeChanged(route.*)'
+              ]
+          }
+
+          static get actions() {
+              return {
+                  changeRoute(route) {
+                      return {
+                          type: 'CHANGE_ROUTE',
+                          route: route
+                      }
+                  }
+              }
           }
 
           ready() {
@@ -216,6 +218,49 @@ Issues that need to be fixed:
               this.addEventListener('search', (e) => this.initiateSearch(e));
               // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
+          }
+
+          _routeChanged() {
+              if (this.route.__queryParams === undefined) {
+                  return;
+              }
+              const routeName = this._computeRouteName(this.route.path);
+              this._handleRouteChange(routeName);
+          }
+
+          _handleRouteChange(routeName) {
+              let currentRoute;
+              switch (routeName.toLowerCase()) {
+                  case '':
+                      currentRoute = Object.assign({}, this.route, {
+                          name: 'HOME'
+                      });
+                      break;
+                  case 'suttaplex':
+                      currentRoute = Object.assign({}, this.route, {
+                          name: routeName.toUpperCase(),
+                          suttaplexId: this._getPathParamNumber(2)
+                      });
+                      break;
+                  default:
+                      currentRoute = Object.assign({}, this.route, { name: 'HOME' })
+
+              }
+              this.dispatch('changeRoute', currentRoute);
+          }
+
+          _computeRouteName(routePath) {
+              return routePath.split('\/')[1];
+          }
+
+          _getPathParamNumber(number) {
+              try {
+                  return this.route.path.split('\/')[number];
+              } catch (e) {
+                  // TODO show a toast here?
+                  console.log(e);
+                  return '';
+              }
           }
 
           // Set the width of the nav drawer
@@ -232,11 +277,15 @@ Issues that need to be fixed:
           // Open the first two tiers of the sidebar menu and add icons
           _parseNavList() {
               this.navList[0].open = true;
-              if (!this.navList[0].children) { return; }
+              if (!this.navList[0].children) {
+                  return;
+              }
               this.navList[0].children.forEach((item) => {
                   item.open = true;
                   item.icon = 'trending-flat';
-                  if (!item.children) { return; }
+                  if (!item.children) {
+                      return;
+                  }
                   item.children.forEach((subItem) => {
                       subItem.icon = 'turned-in';
                   })

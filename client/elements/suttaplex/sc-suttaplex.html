@@ -190,7 +190,8 @@
           </div>
         </div>
 
-        <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
+        <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]"
+                           on-tap="_toggleParallelsOpened">
         </paper-icon-button>
         <paper-badge for="parallels-toggle" label="[[item.parallel_count]]" class="paper-badge"
                      title="Number of parallels"></paper-badge>
@@ -206,7 +207,7 @@
   </template>
 
   <script>
-      class Suttaplex extends Polymer.Element {
+      class SCSuttaplex extends Polymer.Element {
           static get is() {
               return 'sc-suttaplex'
           }
@@ -296,7 +297,7 @@
 
           _toggleParallelsOpened() {
               this.parallelsOpened = !this.parallelsOpened;
-              this.dispatchEvent(new CustomEvent('iron-resize', {composed: true, bubbles: true}));
+              this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
           }
 
           _computeMainHeading(item) {
@@ -310,6 +311,6 @@
           }
       }
 
-      customElements.define(Suttaplex.is, Suttaplex)
+      customElements.define(SCSuttaplex.is, SCSuttaplex)
   </script>
 </dom-module>

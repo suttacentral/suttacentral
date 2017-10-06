@@ -108,7 +108,7 @@ Issues that need to be fixed:
           <sc-page-static category="[[category]]" input-language="[[inputLanguage]]"></sc-page-static>
         </template>
 
-        <template is="dom-if" if="[[_checkList(category)]]">
+        <template is="dom-if" if="[[_isSuttaplex()]]">
           <sc-view-suttaplex category="[[category]]"></sc-view-suttaplex>
         </template>
 
@@ -137,8 +137,9 @@ Issues that need to be fixed:
   </template>
 
   <script>
-      class SCPageSelector extends Polymer.Element {
+      class SCPageSelector extends ReduxMixin(Polymer.Element) {
           static get is() { return 'page-selector'; }
+
           static get properties() {
               return {
                   inputLanguage: String,
@@ -221,6 +222,14 @@ Issues that need to be fixed:
                       type: String,
                       notify: true,
                       computed: '_checkDictionaryItem(subPath,category,activePath)'
+                  },
+                  currentRouteName: {
+                      type: String,
+                      statePath: 'currentRoute.name'
+                  },
+                  suttaplexId: {
+                      type: String,
+                      statePath: 'currentRoute.suttaplexId'
                   }
               }
           }
@@ -349,9 +358,8 @@ Issues that need to be fixed:
 
           // checks if a route is not part of any of the other classes of pages (static,search,dictionary or text)
           // and sets the toolbar title, meta area and css class accordingly.
-          _checkList(category) {
-              const author = this._checkAuthor(this.subPath, category, this.activePath);
-              if (author === '' && (this.staticPages.indexOf(category) === -1) && category !== 'search' && category !== 'define') {
+          _isSuttaplex() {
+              if (this.currentRouteName === 'SUTTAPLEX') {
                   this.mainClass = 'list-mode';
                   this.toolbarTitle = this.divisionTitle;
                   return true;

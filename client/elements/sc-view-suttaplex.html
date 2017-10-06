@@ -67,6 +67,8 @@
       }
     </style>
 
+    <iron-meta id$="meta"></iron-meta>
+
     <iron-ajax
         auto
         url="[[_getApiUrl(category)]]"
@@ -133,7 +135,7 @@
               if (category.startsWith('root/')) {
                   category = category.replace('root/', '');
               }
-              return `api/suttaplex/${category}`;
+              return `${this.$.meta.byKey('API_URL')}${category}`;
           }
 
           _isSuttaplex(item) {
