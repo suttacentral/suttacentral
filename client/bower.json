@@ -51,7 +51,8 @@
     "neon-animation": "^2.0.1",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
     "iron-media-query": "^2.0.0",
-    "iron-meta": "^2.0.2"
+    "iron-meta": "^2.0.2",
+    "polymer-redux": "tur-nr/polymer-redux#^1.0.3"
   },
   "devDependencies": {
     "web-component-tester": "^6.2.0"

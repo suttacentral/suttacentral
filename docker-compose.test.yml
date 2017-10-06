@@ -23,3 +23,9 @@ services:
     working_dir: /opt/sc/frontend
     volumes:
       - ./client/:/opt/sc/frontend
+
+  sc-frontend-builder:
+    command: npm install
+    working_dir: /opt/sc/frontend
+    volumes:
+      - ./client/:/opt/sc/frontend

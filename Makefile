@@ -29,7 +29,7 @@ rebuild-all: clean-all build-all
 rebuild-flask: clean-flask build-flask
 rebuild-arangodb: clean-arangodb build-arangodb
 rebuild-nginx: clean-nginx build-nginx
-rebuild-elasticsearch: clean-elasitcsearch build-elasticsearch
+rebuild-elasticsearch: clean-elasticsearch build-elasticsearch
 rebuild-swagger: clean-swagger build-swagger
 
 run-dev:
@@ -97,7 +97,7 @@ clean-arangodb: stop-arangodb rm-arangodb
 clean-flask: stop-flask rm-flask
 clean-nginx: stop-nginx rm-nginx
 clean-elasticsearch: stop-elasticsearch rm-elasticsearch
-clean-all: clean-arangodb clean-flask clean-nginx clean-elasticsearch clean rm-all-volumes
+clean-all: clean-arangodb clean-flask clean-nginx clean-elasticsearch rm-all-volumes
 
 #Open shell in container
 shell-arangodb:
