@@ -85,32 +85,6 @@
 
     <iron-media-query query="(min-width: 992px)" query-matches="{{wideScreen}}"></iron-media-query>
 
-    <iron-location path="{{path}}" query="{{query}}"></iron-location>
-
-    <iron-query-params
-        params-string="{{query}}"
-        params-object="{{queryParams}}">
-    </iron-query-params>
-
-    <app-route-converter
-        path="{{path}}"
-        query-params="{{queryParams}}"
-        route="{{route}}">
-    </app-route-converter>
-
-    <app-route route="{{route}}"
-               pattern="/:collection"
-               data="{{collectionData}}"
-               tail="{{pathDataTail}}">
-    </app-route>
-
-    <app-route
-        route="{{pathDataTail}}"
-        pattern="/:subpath"
-        data="{{subPathData}}"
-        active="{{subPathIsActive}}">
-    </app-route>
-
     <iron-ajax
         auto
         url="[[_getMenuUrl()]]"
@@ -148,19 +122,17 @@
         </div>
       </app-drawer>
 
-      <page-selector category="[[category]]" sub-path="[[subPathData.subpath]]" active-path="[[subPathIsActive]]"
-                     input-language="[[inputLanguage]]" query-params="[[queryParams]]"></page-selector>
+      <page-selector></page-selector>
 
     </app-drawer-layout>
   </template>
 
   <script>
-      class SCNavdrawer extends ReduxMixin(Polymer.Element) {
+      class SCNavdrawer extends Polymer.Element {
           static get is() { return 'sc-navdrawer'; }
 
           static get properties() {
               return {
-                  route: Object,
                   inputLanguage: {
                       type: String,
                       notify: true
@@ -184,83 +156,16 @@
                   navList: {
                       type: Array,
                       observer: '_parseNavList'
-                  },
-                  currentView: {
-                      type: String,
-                      statePath: 'currentView'
-                  }
-              }
-          }
-
-          static get observers() {
-              return [
-                  '_updateScroll(route)',
-                  '_routeChanged(route.*)'
-              ]
-          }
-
-          static get actions() {
-              return {
-                  changeRoute(route) {
-                      return {
-                          type: 'CHANGE_ROUTE',
-                          route: route
-                      }
                   }
               }
           }
 
           ready() {
               super.ready();
-              // listens to input from the language dropdown menu on the top right
-              this.addEventListener('languageSelection', (e) => this.changeLanguage(e));
               // listens to input from the search bar (i.e. a search-term) and feeds this to the iron-location
               this.addEventListener('search', (e) => this.initiateSearch(e));
               // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
-          }
-
-          _routeChanged() {
-              if (this.route.__queryParams === undefined) {
-                  return;
-              }
-              const routeName = this._computeRouteName(this.route.path);
-              this._handleRouteChange(routeName);
-          }
-
-          _handleRouteChange(routeName) {
-              let currentRoute;
-              switch (routeName.toLowerCase()) {
-                  case '':
-                      currentRoute = Object.assign({}, this.route, {
-                          name: 'HOME'
-                      });
-                      break;
-                  case 'suttaplex':
-                      currentRoute = Object.assign({}, this.route, {
-                          name: routeName.toUpperCase(),
-                          suttaplexId: this._getPathParamNumber(2)
-                      });
-                      break;
-                  default:
-                      currentRoute = Object.assign({}, this.route, { name: 'HOME' })
-
-              }
-              this.dispatch('changeRoute', currentRoute);
-          }
-
-          _computeRouteName(routePath) {
-              return routePath.split('\/')[1];
-          }
-
-          _getPathParamNumber(number) {
-              try {
-                  return this.route.path.split('\/')[number];
-              } catch (e) {
-                  // TODO show a toast here?
-                  console.log(e);
-                  return '';
-              }
           }
 
           // Set the width of the nav drawer
@@ -292,20 +197,11 @@
               });
           }
 
-          _updateScroll() {
-              window.scroll(0, 0);
-          }
-
           // Polymer problem here with loading anything with a dot in the path. Bug report filed.
           // So when using "polymer serve" to start development server, you have to use a colon
           // instead of a dot. But with python server/app.py you can use the correct path name.
           _calculateCategory(collectionData) {
               this.category = collectionData.collection.replace(':', '.');
-          }
-
-          // sets the inputLanguage for all pages
-          changeLanguage(event) {
-              return this.inputLanguage = event.detail.Language;
           }
 
           // opens the app-drawer when it is not visible.

@@ -91,8 +91,7 @@
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
               <section class$="[[_calculateClass(item.type)]]">
-                <sc-title input-title="[[item.original_title]]" input-text="[[item.blurb]]"
-                          input-type="[[item.type]]">
+                <sc-title input-title="[[item.original_title]]" input-text="[[item.blurb]]" input-type="[[item.type]]">
                 </sc-title>
               </section>
             </template>
@@ -104,7 +103,7 @@
   </template>
 
   <script>
-      class ScViewSuttaplex extends Polymer.Element {
+      class SCViewSuttaplex extends Polymer.Element {
           static get is() {
               return 'sc-view-suttaplex';
           }
@@ -147,7 +146,7 @@
           }
       }
 
-      customElements.define(ScViewSuttaplex.is, ScViewSuttaplex);
+      customElements.define(SCViewSuttaplex.is, SCViewSuttaplex);
   </script>
 </dom-module>
 

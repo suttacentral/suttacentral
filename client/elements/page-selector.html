@@ -75,15 +75,15 @@ Issues that need to be fixed:
         text-transform: none;
       }
 
+      #drawertoggle {
+        z-index: 1;
+        color: white;
+      }
+
       @media screen and (max-width: 450px) {
         #toolbartitle {
           font-size: calc(16px * var(--sc-skolar-font-scale));
         }
-      }
-
-      #drawertoggle {
-        z-index: 1;
-        color: white;
       }
 
       @media screen and (min-width: 841px) {
@@ -92,6 +92,14 @@ Issues that need to be fixed:
         }
       }
     </style>
+
+    <iron-location path="{{path}}" query="{{query}}"></iron-location>
+
+    <app-route route="{{route}}"
+               pattern="/:collection"
+               data="{{collectionData}}"
+               tail="{{pathDataTail}}">
+    </app-route>
 
     <div class="container">
       <app-header-layout>
@@ -104,12 +112,12 @@ Issues that need to be fixed:
           </app-toolbar>
         </app-header>
 
-        <template is="dom-if" if="[[_checkStatic(category)]]">
-          <sc-page-static category="[[category]]" input-language="[[inputLanguage]]"></sc-page-static>
+        <template is="dom-if" if="[[shouldShowStaticPage]]">
+          <sc-page-static></sc-page-static>
         </template>
 
-        <template is="dom-if" if="[[_isSuttaplex()]]">
-          <sc-view-suttaplex category="[[category]]"></sc-view-suttaplex>
+        <template is="dom-if" if="[[shouldShowSuttaplex]]">
+          <sc-view-suttaplex category="[[categoryId]]"></sc-view-suttaplex>
         </template>
 
         <template is="dom-if" if="[[_checkText(category)]]">
@@ -142,7 +150,6 @@ Issues that need to be fixed:
 
           static get properties() {
               return {
-                  inputLanguage: String,
                   subPath: {
                       type: String,
                       notify: true
@@ -208,10 +215,12 @@ Issues that need to be fixed:
                   // Class set on the class on the header depending on the chosen page.
                   mainClass: String,
 
-                  // Array of the various static pages available
+
+                  // Defines all the available static pate routes.
+                  // See <sc-page-static.html>.
                   staticPages: {
                       type: Array,
-                      value: ['dons', 'people', 'downloads', '']
+                      value: ['HOME', 'DONATIONS', 'DOWNLOADS', 'PEOPLE']
                   },
                   searchQuery: {
                       type: String,
@@ -223,20 +232,40 @@ Issues that need to be fixed:
                       notify: true,
                       computed: '_checkDictionaryItem(subPath,category,activePath)'
                   },
-                  currentRouteName: {
+                  selectedPage: {
                       type: String,
-                      statePath: 'currentRoute.name'
+                      statePath: 'currentRoute.name',
+                      observer: '_recalculateView'
                   },
-                  suttaplexId: {
+                  categoryId: {
                       type: String,
-                      statePath: 'currentRoute.suttaplexId'
-                  }
+                      statePath: 'currentRoute.categoryId'
+                  },
+                  inputLanguage: {
+                      type: String,
+                      statePath: 'siteLanguage'
+                  },
+                  route: Object,
+                  shouldShowStaticPage: Boolean
               }
           }
           static get observers() {
               return [
-                  '_changeView(category,author)'
+                  '_changeView(category,author)',
+                  '_scrollToTop(route)',
+                  '_routeChanged(route.*)'
               ];
+          }
+
+          static get actions() {
+              return {
+                  changeRoute(route) {
+                      return {
+                          type: 'CHANGE_ROUTE',
+                          route: route
+                      }
+                  }
+              }
           }
 
           ready() {
@@ -256,6 +285,54 @@ Issues that need to be fixed:
               // fires if in the settings menu the option for a change of script is chosen.
               // Only applies to segmented text pages where pali is shown.
               this.addEventListener('changeScript', this._changeScript);
+          }
+
+          _recalculateView() {
+              this.shouldShowStaticPage = this._isStaticPage();
+          }
+
+          _routeChanged() {
+              if (this.route.__queryParams === undefined) {
+                  return;
+              }
+              const routeName = this._computeRouteName(this.route.path);
+              this._handleRouteChange(routeName);
+          }
+
+          _handleRouteChange(routeName) {
+              let currentRoute;
+              routeName = routeName.toUpperCase();
+              switch (routeName) {
+                  case 'SUTTAPLEX':
+                      currentRoute = Object.assign({}, this.route, {
+                          name: routeName,
+                          suttaplexId: this._getPathParamNumber(2)
+                      });
+                      break;
+                  case 'DONATIONS':
+                  case 'PEOPLE':
+                  case 'DOWNLOADS':
+                      currentRoute = Object.assign({}, this.route, { name: currentRoute });
+                      break;
+                  default:
+                      currentRoute = Object.assign({}, this.route, { name: 'HOME' })
+
+              }
+              this.dispatch('changeRoute', currentRoute);
+          }
+
+          _computeRouteName(routePath) {
+              return routePath.split('\/')[1];
+          }
+
+          _getPathParamNumber(number) {
+              try {
+                  return this.route.path.split('\/')[number];
+              } catch (e) {
+                  // TODO show a toast here?
+                  console.log(e);
+                  return '';
+              }
           }
 
           // changes the title in the toolbar and meta area in the settings-menu dialog-box depending on the chosen view
@@ -346,20 +423,19 @@ Issues that need to be fixed:
 
           // checks if a page is a static page by checking the first term in the route against the staticPages-array
           // and sets the toolbar title and css class accordingly.
-          _checkStatic(category) {
-              if (this.staticPages.indexOf(category) > -1) {
-                  this.mainClass = 'static-mode';
-                  this.toolbarTitle = '';
-                  return true;
-              } else {
-                  return false;
-              }
+          _isStaticPage() {
+              console.log('selected Page: ' + this.selectedPage);
+              console.log(this.staticPages);
+              console.log('includes? : ' + this.staticPages.includes(this.selectedPage));
+              return this.staticPages.includes(this.selectedPage);
           }
 
           // checks if a route is not part of any of the other classes of pages (static,search,dictionary or text)
           // and sets the toolbar title, meta area and css class accordingly.
           _isSuttaplex() {
+              console.log(this.currentRouteName);
               if (this.currentRouteName === 'SUTTAPLEX') {
+                  console.log('in suttaplex view');
                   this.mainClass = 'list-mode';
                   this.toolbarTitle = this.divisionTitle;
                   return true;
@@ -421,6 +497,11 @@ Issues that need to be fixed:
                   return false;
               }
           }
+
+          _scrollToTop() {
+              window.scroll(0, 0);
+          }
+
       }
 
       customElements.define(SCPageSelector.is, SCPageSelector);
