@@ -1,7 +1,7 @@
 {
   "name": "web-component-tester",
   "description": "web-component-tester makes testing your web components a breeze!",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "main": [
     "browser.js"
   ],
@@ -41,14 +41,13 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.22"
   },
   "homepage": "https://github.com/Polymer/web-component-tester",
-  "_release": "6.2.0",
+  "_release": "6.3.0",
   "_resolution": {
     "type": "version",
-    "tag": "v6.2.0",
-    "commit": "172396e7659202391ff49743293389f3f03defd7"
+    "tag": "v6.3.0",
+    "commit": "69a875659048bb827e676e631a9523faa3def43f"
   },
   "_source": "https://github.com/Polymer/web-component-tester.git",
   "_target": "^6.2.0",
-  "_originalSource": "web-component-tester",
-  "_direct": true
+  "_originalSource": "web-component-tester"
 }

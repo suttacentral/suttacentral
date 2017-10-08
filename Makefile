@@ -29,7 +29,7 @@ rebuild-all: clean-all build-all
 rebuild-flask: clean-flask build-flask
 rebuild-arangodb: clean-arangodb build-arangodb
 rebuild-nginx: clean-nginx build-nginx
-rebuild-elasticsearch: clean-elasitcsearch build-elasticsearch
+rebuild-elasticsearch: clean-elasticsearch build-elasticsearch
 rebuild-swagger: clean-swagger build-swagger
 
 run-dev:

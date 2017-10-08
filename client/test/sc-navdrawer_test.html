@@ -5,12 +5,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="../bower_components/web-component-tester/browser.js"></script>
-  <script src="../bower_components/test-fixture/test-fixture-mocha.js"></script>
+  <script src="/../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="/../bower_components/web-component-tester/browser.js"></script>
+  <script src="/../bower_components/test-fixture/test-fixture-mocha.js"></script>
 
   <!--Import the element to test -->
-  <link rel="import" href="../elements/sc-navdrawer.html">
+  <link rel="import" href="/../elements/sc-navdrawer.html">
 
 </head>
 
@@ -25,11 +25,9 @@
 <script>
     suite('<sc-navdrawer>', () => {
         let basic;
-        let withList;
 
         setup(() => {
             basic = fixture('navdrawer');
-            //            withList = fixture('navdrawer', { navList: [{ 'name': 'Sutta', 'lang': 'pli', 'open': true }] });
         });
 
         test('Should display title', (done) => {
@@ -40,13 +38,6 @@
             });
         });
 
-        //        test('Should display menu', () => {
-        //                        flush(() => {
-        //            let treeNodes = withList.shadowRoot.querySelector('paper-tree')
-        //                .shadowRoot.querySelectorAll('paper-tree-node');
-        //            assert.equal(treeNodes.length, 1, 'There is exactly one menu item');
-        //                        });
-        //        });
 
     });
 </script>
