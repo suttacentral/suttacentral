@@ -95,6 +95,12 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
             LIMIT 1
             RETURN translation.title
     )[0]
+    
+    LET parallel_count = LENGTH(
+        FOR rel IN relationship
+            FILTER rel._from == v._id
+            RETURN rel
+    )
         
     RETURN {
         volpages: volpages,
@@ -106,7 +112,8 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
         type: e.type ? e.type : 'grouping',
         from: e._from,
         translated_title: translated_titles,
-        translations: translations
+        translations: translations,
+        parallel_count: parallel_count
     }
 '''
 
@@ -255,6 +262,12 @@ LET legacy_html = (
             
         }
 )
+
+LET parallel_count = LENGTH(
+    FOR rel IN relationship
+        FILTER rel._from == root_text._id
+        RETURN rel
+)
     
 RETURN {
     root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
@@ -266,7 +279,8 @@ RETURN {
         difficulty: difficulty,
         original_title: root_text.name,
         root_lang: root_text.root_lang,
-        translations: FLATTEN([po_translations, legacy_translations])
+        translations: FLATTEN([po_translations, legacy_translations]),
+        parallel_count: parallel_count
     }
 }
 '''

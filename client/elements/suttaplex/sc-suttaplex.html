@@ -10,6 +10,7 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
 
 <link rel="import" href="../../img/sc-svg-icons.html">
 <link rel="import" href="../addons/sc-sutta-note.html">
@@ -141,6 +142,11 @@
         min-width: 40px;
         align-self: flex-end;
       }
+
+      .paper-badge {
+        --paper-badge-margin-left: -15px;
+        --paper-badge-margin-bottom: -10px;
+      }
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -184,7 +190,10 @@
           </div>
         </div>
 
-        <paper-icon-button class="toggle-button" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened"></paper-icon-button>
+        <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
+        </paper-icon-button>
+        <paper-badge for="parallels-toggle" label="[[item.parallel_count]]" class="paper-badge"
+                     title="Number of parallels"></paper-badge>
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
@@ -249,12 +258,12 @@
               return (!checkText) ? 'hide-element' : '';
           }
 
-          _computeHideUID(item){
-            return (item.translated_title || item.original_title) ? '' : 'hide-element'
+          _computeHideUID(item) {
+              return (item.translated_title || item.original_title) ? '' : 'hide-element'
           }
 
           _computeHideOriginalTitle(item) {
-            return item.translated_title ? '' : 'hide-element'
+              return item.translated_title ? '' : 'hide-element'
           }
 
           // returns the relevant icon for the expander
@@ -287,17 +296,17 @@
 
           _toggleParallelsOpened() {
               this.parallelsOpened = !this.parallelsOpened;
-              this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
+              this.dispatchEvent(new CustomEvent('iron-resize', {composed: true, bubbles: true}));
           }
 
           _computeMainHeading(item) {
-            if (item.translated_title) {
-              return item.translated_title;
-            } else if (item.original_title){
-              return item.original_title;
-            } else {
-              return item.uid;
-            }
+              if (item.translated_title) {
+                  return item.translated_title;
+              } else if (item.original_title) {
+                  return item.original_title;
+              } else {
+                  return item.uid;
+              }
           }
       }
 
