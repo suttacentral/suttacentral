@@ -476,7 +476,7 @@ class Donations(Resource):
                 amount=amount,
                 currency=currency['symbol'],
                 metadata={"name": name, "message": message},
-                description=f'Donation by {name if name else ""}, massage {message if message else ""}'
+                description=f'Donation by {name if name else ""}, message {message if message else ""}'
             )
 
         elif monthly_donation:

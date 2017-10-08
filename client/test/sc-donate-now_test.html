@@ -29,21 +29,21 @@
             setup(() => {
                 basic = fixture('ScDonateNowPage');
                 server = sinon.fakeServer.create();
-                server.respondWith('GET', '/api/currencies',[
+                server.respondWith('GET', '/api/currencies', [
                     200,
                     { 'Content-Type': 'application/json' },
-                    '{"default_currency_index":1,"currencies":' +
-                    '[{"american_express":false,"decimal":true,"name":"Afghan Afghani","symbol":"AFN"},' + 
-                    '{"american_express":true,"decimal":true,"name":"Albanian Lek","symbol":"ALL"}]}'
+                    '{"default_currency_index" : 1, "currencies" :' +
+                    '[{"american_express": false, "decimal" : true, "name" : "Afghan Afghani", "symbol" : "AFN"},' + 
+                    '{"american_express" : true, "decimal" : true, "name" : "Albanian Lek", "symbol" : "ALL"}]}'
 
                 ]);
             })
 
             test('Should have "PAY WITH CARD" in button', (done) => {
                 flush(() => {
-                    done();
                     let button = basic.shadowRoot.querySelector('.submit-button');
                     assert.include(button.innerHTML, 'PAY WITH CARD');
+                    done();
                 })
             })
 
