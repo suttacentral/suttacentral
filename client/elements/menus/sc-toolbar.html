@@ -87,10 +87,10 @@ Issues:
       <paper-icon-button icon="close" class="white-icon" id="closebutton" on-tap="closeSearch"></paper-icon-button>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
-      <a class="toolbar-link" href$="[[discourseLink]]" tabindex="-1" target="_blank">
+      <a class="toolbar-link" tabindex="-1" target="_blank">
         <paper-icon-button id="discoursebutton" class="white-icon" icon="communication:forum"></paper-icon-button>
       </a>
-      <paper-badge class$="toolbar-badge [[toggleDisplay]]" for="discoursebutton" label="20"
+      <paper-badge class="toolbar-badge" hidden for="discoursebutton" label="20"
                    title="This text has 20 references"></paper-badge>
 
       <!-- Menu for more options like language and other static pages -->
@@ -129,35 +129,9 @@ Issues:
                       notify: true
                   },
 
-                  // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
-                  // This should only be visible on text-pages.
-                  toggleDisplay: {
-                      type: String,
-                      computed: '_computeClass(suttaPath)'
-                  },
-
-                  // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
-                  // for that specific text.
-                  discourseLink: {
-                      type: String,
-                      computed: '_computeDiscourseLink(suttaPath,category)'
-                  },
-
                   // The input on the search box
                   searchInput: String
               }
-          }
-
-          // Determines if the paper-badge that shows the number of search results found on Discourse is visible.
-          _computeClass(suttaPath) {
-              return (suttaPath) ? "" : "hidebutton";
-          }
-
-          // Determines which Discourse link to use on which pages. On text-pages it shows a link with a search
-          // for that specific text.
-          _computeDiscourseLink(suttaPath, category) {
-              return (suttaPath) ? 'https://discourse.suttacentral.net/search?q="'
-                  + category + ' "' : "https://discourse.suttacentral.net/";
           }
 
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.

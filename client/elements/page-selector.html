@@ -97,17 +97,17 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           <app-toolbar class="toolbar-header">
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
             <div main-title id="toolbartitlebox"><p id="toolbartitle">[[toolbarTitle]]</p></div>
-            <sc-toolbar id="sc_toolbar" input-language="[[inputLanguage]]" sutta-path="[[author]]"
-                        category="[[category]]" meta-area="[[metaArea]]"></sc-toolbar>
+            <sc-toolbar id="sc_toolbar" sutta-path="[[author]]" category="[[categoryId]]"></sc-toolbar>
           </app-toolbar>
+
         </app-header>
 
         <template is="dom-if" if="[[shouldShowStaticPage]]">
           <sc-page-static></sc-page-static>
         </template>
 
-        <template is="dom-if" if="[[shouldShowSuttaplex]]">
-          <sc-view-suttaplex category="[[categoryId]]"></sc-view-suttaplex>
+        <template is="dom-if" if="[[shouldShowSuttaplexList]]" restamp>
+          <sc-view-suttaplex></sc-view-suttaplex>
         </template>
 
         <template is="dom-if" if="[[_checkText(category)]]">
@@ -151,14 +151,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: Boolean,
                       notify: true
                   },
-                  toolbarTitle: {
-                      type: String,
-                      value: ''
-                  },
-                  metaArea: {
-                      type: String,
-                      value: ''
-                  },
                   divisionTitle: {
                       type: String,
                       notify: true
@@ -167,15 +159,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: String,
                       notify: true
                   },
-                  suttaMeta: {
-                      type: String,
-                      notify: true
-                  },
                   suttaSegTitle: {
-                      type: String,
-                      notify: true
-                  },
-                  suttaSegMeta: {
                       type: String,
                       notify: true
                   },
@@ -233,13 +217,18 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: String,
                       statePath: 'currentRoute.categoryId'
                   },
+                  toolbarTitle: {
+                      type: String,
+                      statePath: 'toolbarTitle'
+                  },
                   inputLanguage: {
                       type: String,
                       statePath: 'siteLanguage'
                   },
                   shouldShowStaticPage: Boolean,
+                  shouldShowSuttaplexList: Boolean,
                   path: String,
-                  query: String,
+                  query: String
               }
           }
 
@@ -257,6 +246,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       return {
                           type: 'CHANGE_ROUTE',
                           route: route
+                      }
+                  },
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
                       }
                   }
               }
@@ -283,6 +278,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           _recalculateView() {
               this.shouldShowStaticPage = this._isStaticPage();
+              this.shouldShowSuttaplexList = this._isSuttaplexList();
+              console.log(this.shouldShowSuttaplexList);
           }
 
           _routeChanged() {
@@ -301,15 +298,17 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   case 'SUTTAPLEX':
                       currentRoute = Object.assign({}, this.route, {
                           name: routeName,
-                          suttaplexId: this._getPathParamNumber(2)
+                          categoryId: this._getPathParamNumber(2)
                       });
                       break;
+                  case 'HOME':
                   case 'DONATIONS':
                   case 'PEOPLE':
                   case 'DOWNLOADS':
                       currentRoute = Object.assign({}, this.route, { name: routeName });
                       break;
                   default:
+                      // TODO: replace with 404 page
                       currentRoute = Object.assign({}, this.route, { name: 'HOME' })
 
               }
@@ -330,7 +329,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               }
           }
 
-          // changes the title in the toolbar and meta area in the settings-menu dialog-box depending on the chosen view
+          // changes the title in the toolbar in the settings-menu dialog-box depending on the chosen view
           addTitles(event) {
               switch (this.mainClass) {
                   case 'list-mode':
@@ -343,21 +342,13 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       if (event.detail.suttatitle) {
                           this.suttaTitle = event.detail.suttatitle
                       }
-                      if (event.detail.suttameta) {
-                          this.suttaMeta = event.detail.suttameta
-                      }
                       this.toolbarTitle = this.suttaTitle;
-                      this.metaArea = this.suttaMeta;
                       break;
                   case 'segmented-mode':
                       if (event.detail.suttasegtitle) {
                           this.suttaSegTitle = event.detail.suttasegtitle
                       }
-                      if (event.detail.suttasegmeta) {
-                          this.suttaSegMeta = event.detail.suttasegmeta
-                      }
                       this.toolbarTitle = this.suttaSegTitle;
-                      this.metaArea = this.suttaSegMeta;
                       break;
               }
           }
@@ -423,66 +414,57 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           // checks if a route is not part of any of the other classes of pages (static,search,dictionary or text)
-          // and sets the toolbar title, meta area and css class accordingly.
-          _isSuttaplex() {
-              if (this.currentRouteName === 'SUTTAPLEX') {
-                  console.log('in suttaplex view');
+          // and sets the toolbar title and css class accordingly.
+          _isSuttaplexList() {
+              if (this.selectedPage === 'SUTTAPLEX') {
                   this.mainClass = 'list-mode';
-                  this.toolbarTitle = this.divisionTitle;
+                  this.dispatch('changeToolbarTitle', { title: this.divisionTitle });
                   return true;
               } else {
                   return false;
               }
           }
 
-          // checks if a page is a html-text page by checking if there is an author and if the author is not equal to "sujato" or "pali"
-          // and sets the toolbar title, meta area and css class accordingly.
-          // Note that this might have to change if other authors will also be used for segmented texts.
+          // checks if a page is a html-text page by checking and sets the toolbar title and css class accordingly.
           _checkText(category) {
               const author = this._checkAuthor(this.subPath, category, this.activePath);
               if (author && author !== 'sujato' && author !== 'pali') {
                   this.mainClass = 'text-mode';
-                  this.toolbarTitle = this.suttaTitle;
-                  this.metaArea = this.suttaMeta;
+                  this.dispatch('changeToolbarTitle', { title: this.suttaTitle });
                   return true;
               } else {
                   return false;
               }
           }
 
-          // checks if a page is a segmented-text page by checking if there is an author and if the author is equal to "sujato" or "pali"
-          // and sets the toolbar title, meta area and css class accordingly.
-          // Note that this might have to change if other authors will also be used for segmented texts.
+          // checks if a page is a segmented-text page and sets the toolbar title and css class accordingly.
           _checkSegmented(category) {
               const author = this._checkAuthor(this.subPath, category, this.activePath);
               if (author && (author === 'sujato' || author === 'pali')) {
                   this.mainClass = 'segmented-mode';
-                  this.toolbarTitle = this.suttaSegTitle;
-                  this.metaArea = this.suttaSegMeta;
+                  this.dispatch('changeToolbarTitle', { title: this.suttaSegTitle });
                   return true;
               } else {
                   return false;
               }
           }
 
-          // checks if a page is a search page by checking the first term in the route = "search"
-          // and sets the toolbar title and css class accordingly.
+          // checks if a page is a search page and sets the toolbar title and css class accordingly.
           _checkSearch(category) {
               if (category === 'search') {
                   this.mainClass = 'search-mode';
-                  this.toolbarTitle = 'SuttaCentral — search results';
+                  this.dispatch('changeToolbarTitle', { title: 'SuttaCentral — search results' });
                   return true;
               } else {
                   return false;
               }
           }
 
-          // checks if a page is a dictionary page by checking the first term in the route = "define"
-          // and sets the toolbar title and css class accordingly.
+          // checks if a page is a dictionary page and sets the toolbar title and css class accordingly.
           _checkDictionary(category) {
               if (category === 'define') {
                   this.mainClass = 'dictionary-mode';
-                  this.toolbarTitle = 'SuttaCentral — Dictionary results';
+                  this.dispatch('changeToolbarTitle', { title: 'SuttaCentral — dictionary results' });
                   return true;
               } else {
                   return false;

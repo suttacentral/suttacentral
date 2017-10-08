@@ -13,9 +13,11 @@
             name: 'HOME',
             path: '/',
             prefix: '',
-            __queryParams: {}
+            __queryParams: {},
+            categoryId: ''
         },
-        siteLanguage: 'en'
+        siteLanguage: 'en',
+        toolbarTitle: '',
     };
 
     const reducer = (state, action) => {
@@ -24,6 +26,8 @@
                 return Object.assign({}, state, { currentRoute: action.route });
             case 'CHANGE_SITE_LANGUAGE':
                 return Object.assign({}, state, { siteLanguage: action.language });
+            case 'CHANGE_TOOLBAR_TITLE':
+                return Object.assign({}, state, { toolbarTitle: action.title });
             default:
                 return state;
         }
