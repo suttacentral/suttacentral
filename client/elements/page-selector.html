@@ -418,7 +418,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           _isSuttaplexList() {
               if (this.selectedPage === 'SUTTAPLEX') {
                   this.mainClass = 'list-mode';
-                  this.dispatch('changeToolbarTitle', { title: this.divisionTitle });
+                  this.dispatch('changeToolbarTitle', this.divisionTitle);
                   return true;
               } else {
                   return false;
@@ -430,7 +430,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               const author = this._checkAuthor(this.subPath, category, this.activePath);
               if (author && author !== 'sujato' && author !== 'pali') {
                   this.mainClass = 'text-mode';
-                  this.dispatch('changeToolbarTitle', { title: this.suttaTitle });
+                  this.dispatch('changeToolbarTitle', this.suttaTitle);
                   return true;
               } else {
                   return false;
@@ -442,7 +442,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               const author = this._checkAuthor(this.subPath, category, this.activePath);
               if (author && (author === 'sujato' || author === 'pali')) {
                   this.mainClass = 'segmented-mode';
-                  this.dispatch('changeToolbarTitle', { title: this.suttaSegTitle });
+                  this.dispatch('changeToolbarTitle', this.suttaSegTitle);
                   return true;
               } else {
                   return false;
@@ -453,7 +453,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           _checkSearch(category) {
               if (category === 'search') {
                   this.mainClass = 'search-mode';
-                  this.dispatch('changeToolbarTitle', { title: 'SuttaCentral — search results' });
+                  this.dispatch('changeToolbarTitle', 'SuttaCentral — search results');
                   return true;
               } else {
                   return false;
@@ -464,7 +464,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           _checkDictionary(category) {
               if (category === 'define') {
                   this.mainClass = 'dictionary-mode';
-                  this.dispatch('changeToolbarTitle', { title: 'SuttaCentral — dictionary results' });
+                  this.dispatch('changeToolbarTitle', 'SuttaCentral — dictionary results');
                   return true;
               } else {
                   return false;
