@@ -173,22 +173,22 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           // If author name is too long it looks really bad in paper-item so just cut it.
           _shortenAuthor(author) {
               if (author.length > 16) {
-                  return `${author.substring(0, 15)}...`
+                  return `${author.substring(0, 15)}...`;
               } else {
-                  return author
+                  return author;
               }
           }
 
           _computeAuthor(author) {
-              return author ? author : 'Anonym'
+              return author ? author : 'Anonym';
           }
 
           _computeAuthorForList(author) {
-              return this._shortenAuthor(this._computeAuthor(author))
+              return this._shortenAuthor(this._computeAuthor(author));
           }
 
           _languageTitle(language) {
-              return `Select '${language.lang}' translation by ${this._computeAuthor(language.author)}`
+              return `Select '${language.lang}' translation by ${this._computeAuthor(language.author)}`;
           }
 
           _computeFullLanguageName(isoCode) {

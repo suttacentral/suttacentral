@@ -1,8 +1,10 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/../bower_components/polymer/polymer.html">
+<link rel="import" href="/../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="/../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="/../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="/../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/../bower_components/app-route/app-location.html">
+<link rel="import" href="/../bower_components/iron-location/iron-query-params.html">
 
 <link rel="import" href="menus/sc-toolbar.html">
 <link rel="import" href="sc-page-static.html">
@@ -23,12 +25,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     - normal html text pages: **sc-page-text.html**
     - segmented text pages from pootle output: **sc-segmented-text.html**
     - suttaplex list: **sc-view-suttaplex.html**
-
-Issues that need to be fixed:
-    - Right now it is only possible to parse routes with only 2 terms. It should be possible to parse longer
-    routes (see description under **sc-navdrawer.html**). This is probably only important for the suttaplex list
-    so if a longer route exists, it might be sufficient to just forward that to **sc-view-suttaplex.html** and parse
-    it there further.
 -->
 <dom-module id="page-selector" attributes="togdraw">
   <template>
@@ -93,13 +89,7 @@ Issues that need to be fixed:
       }
     </style>
 
-    <iron-location path="{{path}}" query="{{query}}"></iron-location>
-
-    <app-route route="{{route}}"
-               pattern="/:collection"
-               data="{{collectionData}}"
-               tail="{{pathDataTail}}">
-    </app-route>
+    <app-location route={{route}}></app-location>
 
     <div class="container">
       <app-header-layout>
@@ -141,6 +131,8 @@ Issues that need to be fixed:
         </template>
 
       </app-header-layout>
+
+
     </div>
   </template>
 
@@ -150,6 +142,7 @@ Issues that need to be fixed:
 
           static get properties() {
               return {
+                  route: Object,
                   subPath: {
                       type: String,
                       notify: true
@@ -215,7 +208,6 @@ Issues that need to be fixed:
                   // Class set on the class on the header depending on the chosen page.
                   mainClass: String,
 
-
                   // Defines all the available static pate routes.
                   // See <sc-page-static.html>.
                   staticPages: {
@@ -245,10 +237,12 @@ Issues that need to be fixed:
                       type: String,
                       statePath: 'siteLanguage'
                   },
-                  route: Object,
-                  shouldShowStaticPage: Boolean
+                  shouldShowStaticPage: Boolean,
+                  path: String,
+                  query: String,
               }
           }
+
           static get observers() {
               return [
                   '_changeView(category,author)',
@@ -301,6 +295,7 @@ Issues that need to be fixed:
 
           _handleRouteChange(routeName) {
               let currentRoute;
+              // Normalize the URL:
               routeName = routeName.toUpperCase();
               switch (routeName) {
                   case 'SUTTAPLEX':
@@ -312,7 +307,7 @@ Issues that need to be fixed:
                   case 'DONATIONS':
                   case 'PEOPLE':
                   case 'DOWNLOADS':
-                      currentRoute = Object.assign({}, this.route, { name: currentRoute });
+                      currentRoute = Object.assign({}, this.route, { name: routeName });
                       break;
                   default:
                       currentRoute = Object.assign({}, this.route, { name: 'HOME' })
@@ -330,7 +325,7 @@ Issues that need to be fixed:
                   return this.route.path.split('\/')[number];
               } catch (e) {
                   // TODO show a toast here?
-                  console.log(e);
+                  console.error(e);
                   return '';
               }
           }
@@ -424,16 +419,12 @@ Issues that need to be fixed:
           // checks if a page is a static page by checking the first term in the route against the staticPages-array
           // and sets the toolbar title and css class accordingly.
           _isStaticPage() {
-              console.log('selected Page: ' + this.selectedPage);
-              console.log(this.staticPages);
-              console.log('includes? : ' + this.staticPages.includes(this.selectedPage));
               return this.staticPages.includes(this.selectedPage);
           }
 
           // checks if a route is not part of any of the other classes of pages (static,search,dictionary or text)
           // and sets the toolbar title, meta area and css class accordingly.
           _isSuttaplex() {
-              console.log(this.currentRouteName);
               if (this.currentRouteName === 'SUTTAPLEX') {
                   console.log('in suttaplex view');
                   this.mainClass = 'list-mode';

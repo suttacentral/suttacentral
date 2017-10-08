@@ -80,23 +80,23 @@
     </app-toolbar>
 
     <iron-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
-      <div name="home">
+      <div name="HOME">
         <home-page></home-page>
       </div>
-      <div name="dons">
+      <div name="DONATIONS">
         <dons-page></dons-page>
       </div>
-      <div name="downloads">
+      <div name="DOWNLOADS">
         <downloads-page></downloads-page>
       </div>
-      <div name="people">
+      <div name="PEOPLE">
         <people-page></people-page>
       </div>
     </iron-pages>
   </template>
 
   <script>
-      class SCPageStatic extends Polymer.Element {
+      class SCPageStatic extends ReduxMixin(Polymer.Element) {
           static get is() { return 'sc-page-static'; }
 
           static get properties() {
@@ -108,30 +108,25 @@
                   },
                   pages: {
                       type: String,
-                      value: 'home'
+                      value: 'HOME'
                   }
               }
-          }
-
-          ready() {
-              super.ready();
-              console.log('in static page');
           }
 
           // chooses one of four static pages/elements from the '/static'-folder.
           _changeView() {
               switch (this.selectedPage) {
                   case 'HOME':
-                      this.$.pages.selected = 'home';
+                      this.$.pages.selected = 'HOME';
                       break;
                   case 'DONATIONS':
-                      this.$.pages.selected = 'dons';
+                      this.$.pages.selected = 'DONATIONS';
                       break;
                   case 'DOWNLOADS':
-                      this.$.pages.selected = 'downloads';
+                      this.$.pages.selected = 'DOWNLOADS';
                       break;
                   case 'PEOPLE':
-                      this.$.pages.selected = 'people';
+                      this.$.pages.selected = 'PEOPLE';
                       break;
               }
           }

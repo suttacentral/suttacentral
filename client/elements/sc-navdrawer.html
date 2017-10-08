@@ -1,8 +1,5 @@
 <link rel="import" href="/../bower_components/polymer/polymer.html">
 <link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/../bower_components/app-route/app-route.html">
-<link rel="import" href="/../bower_components/app-route/app-route-converter.html">
-<link rel="import" href="/../bower_components/iron-location/iron-query-params.html">
 <link rel="import" href="/../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="/../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="/../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
@@ -13,8 +10,7 @@
 
 <!--
   The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates
-  this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**), parses the route
-  through `app-route` and feeds all information through to the **page-selector.html**.
+  this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**).
 -->
 <dom-module id="sc-navdrawer">
   <template>
@@ -137,18 +133,10 @@
                       type: String,
                       notify: true
                   },
-                  collectionData: {
-                      type: Object,
-                      notify: true,
-                      observer: '_calculateCategory'
-                  },
                   category: {
                       type: String,
                       notify: true
                   },
-                  queryParams: Object,
-                  path: String,
-                  query: String,
                   wideScreen: {
                       type: Boolean,
                       observer: '_screenWidthChanged'
@@ -195,13 +183,6 @@
                       subItem.icon = 'turned-in';
                   })
               });
-          }
-
-          // Polymer problem here with loading anything with a dot in the path. Bug report filed.
-          // So when using "polymer serve" to start development server, you have to use a colon
-          // instead of a dot. But with python server/app.py you can use the correct path name.
-          _calculateCategory(collectionData) {
-              this.category = collectionData.collection.replace(':', '.');
           }
 
           // opens the app-drawer when it is not visible.

@@ -8,7 +8,7 @@
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
 
-<link rel="import" href="more-menu.html">
+<link rel="import" href="sc-more-menu.html">
 
 <!--
 Base toolbar that appear on the top right in the header of every page. Not all items are shown on all pages
@@ -98,7 +98,7 @@ Issues:
         <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger"></paper-icon-button>
         <div slot="dropdown-content"></div>
         <paper-listbox slot="dropdown-content" tabindex="0">
-          <more-menu input-language="[[inputLanguage]]"></more-menu>
+          <sc-more-menu input-language="[[inputLanguage]]"></sc-more-menu>
         </paper-listbox>
       </paper-menu-button>
     </div>

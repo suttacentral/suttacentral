@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+
+<link rel="import" href="language-base-menu.html">
+
+<!--
+Basic more-vert menu on the main toolbar for choice of language and for choosing static pages
+-->
+<dom-module id="sc-more-menu">
+  <template>
+    <style>
+      .more-menu-link {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .more-menu-paper-item .more-menu-icon {
+        margin-right: 16px;
+        color: var(--disabled-text-color);
+      }
+
+      .more-menu-paper-item {
+        @apply --sc-sans-font;
+      }
+
+    </style>
+
+    <paper-item class="more-menu-paper-item">
+      <iron-icon class="more-menu-icon" icon="language"></iron-icon>
+      <language-base-menu></language-base-menu>
+    </paper-item>
+    
+    <a class="more-menu-link" href="/donations" tabindex="-1">
+      <paper-item class="more-menu-paper-item">
+        <iron-icon class="more-menu-icon" src="../../img/pray.png"></iron-icon>
+        Donations
+      </paper-item>
+    </a>
+    <a class="more-menu-link" href="/downloads" tabindex="-1">
+      <paper-item class="more-menu-paper-item">
+        <iron-icon class="more-menu-icon" icon="file-download"></iron-icon>
+        Downloads
+      </paper-item>
+    </a>
+    <a class="more-menu-link" href="/people" tabindex="-1">
+      <paper-item class="more-menu-paper-item">
+        <iron-icon class="more-menu-icon" icon="social:people"></iron-icon>
+        Acknowledgements
+      </paper-item>
+    </a>
+  </template>
+
+  <script>
+      class SCMoreMenu extends Polymer.Element {
+          static get is() {return 'sc-more-menu' };
+
+          static get properties() {
+              return {
+                  inputLanguage: String
+              }
+          }
+      }
+
+      customElements.define(SCMoreMenu.is, SCMoreMenu);
+  </script>
+</dom-module>
