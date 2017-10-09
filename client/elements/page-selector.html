@@ -190,7 +190,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   // See <sc-page-static.html>.
                   staticPages: {
                       type: Array,
-                      value: ['HOME', 'DONATIONS', 'DOWNLOADS', 'PEOPLE']
+                      value: ['HOME', 'DONATIONS', 'DOWNLOADS', 'PEOPLE', 'NOT-FOUND']
                   },
                   searchQuery: {
                       type: String,
@@ -301,24 +301,23 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               // Normalize the URL:
               routeName = this._computeRouteName(this.route.path).toUpperCase();
               switch (routeName) {
-                  case 'HOME':
+                  case '':
+                      currentRoute = { ...this.route, name: 'HOME' };
+                      break;
                   case 'DONATIONS':
                   case 'PEOPLE':
                   case 'DOWNLOADS':
-                      currentRoute = Object.assign({}, this.route, { name: routeName });
+                      currentRoute = { ...this.route, name: routeName };
                       break;
                   case 'SUTTAPLEX':
-                      currentRoute = Object.assign({}, this.route, {
-                          name: routeName,
-                          categoryId: this._getPathParamNumber(2)
-                      });
+                      currentRoute = { ...this.route, name: routeName, categoryId: this._getPathParamNumber(2) };
                       break;
                   case 'SEARCH':
-                      currentRoute = Object.assign({}, this.route, { name: routeName });
+                      currentRoute = { ...this.route, name: routeName };
                       break;
                   default:
-                      // TODO: replace with 404 page
-                      currentRoute = Object.assign({}, this.route, { name: 'HOME' })
+                      // TODO: create a 404 page
+                      currentRoute = { ...this.route, name: 'NOT-FOUND' };
 
               }
               this.dispatch('changeRoute', currentRoute);

@@ -23,13 +23,13 @@
     const reducer = (state, action) => {
         switch (action.type) {
             case 'CHANGE_ROUTE':
-                return { ...state, currentRoute: action.route };
+                return Object.assign({}, state, { currentRoute: action.route });
             case 'CHANGE_SITE_LANGUAGE':
-                return { ...state, siteLanguage: action.language };
+                return Object.assign({}, state, { siteLanguage: action.language });
             case 'CHANGE_TOOLBAR_TITLE':
-                return { ...state, toolbarTitle: action.title };
+                return Object.assign({}, state, { toolbarTitle: action.title });
             case 'INITIATE_SEARCH':
-                return { ...state, searchParams: action.params };
+                return Object.assign({}, state, { searchParams: action.params });
             default:
                 return state;
         }

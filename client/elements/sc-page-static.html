@@ -46,6 +46,12 @@
         margin-left: 64px;
       }
 
+      .page-not-found-container {
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-static-subtitle;
+        margin: 38px;
+      }
+
       @media (max-width: 925px) {
         .subtitle {
           @apply --sc-skolar-font-size-xl;
@@ -92,6 +98,12 @@
       <div name="PEOPLE">
         <people-page></people-page>
       </div>
+      <div name="NOT-FOUND">
+        <div class="page-not-found-container">
+          <h2>Error 404</h2>
+          <h3>Page not found</h3>
+        </div>
+      </div>
     </iron-pages>
   </template>
 
@@ -127,6 +139,9 @@
                       break;
                   case 'PEOPLE':
                       this.$.pages.selected = 'PEOPLE';
+                      break;
+                  case 'NOT-FOUND':
+                      this.$.pages.selected = 'NOT-FOUND';
                       break;
               }
           }
