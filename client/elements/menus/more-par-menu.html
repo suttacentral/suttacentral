@@ -22,27 +22,27 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
 
       .button-text:hover {
-          cursor: pointer;
-          background-color: var(--paper-grey-200);
+        cursor: pointer;
+        background-color: var(--paper-grey-200);
       }
     </style>
 
     <iron-ajax id="parallelsAjax"
-                url="[[_getAPIEndpoint(item)]]"
-                handle-as="json"
-                loading="{{loadingParallels}}"
-                last-response="{{Parallels}}"
-                on-response="_gotParallels"></iron-ajax>
+               auto
+               url="[[_getAPIEndpoint(item)]]"
+               handle-as="json"
+               loading="{{ loadingParallels }}"
+               last-response="{{ parallels }}"></iron-ajax>
 
     <paper-item on-tap="_copyLink" class="button-text" title="[[itemLink]]">
       <iron-icon icon="link"></iron-icon>
       Copy link
     </paper-item>
-    <paper-item on-tap="_copyContent" class="button-text">
+    <paper-item on-tap="_copyContent" class="button-text" disabled="{{loadingParallels}}">
       <iron-icon icon="content-copy"></iron-icon>
       Copy table
     </paper-item>
-    <paper-item on-tap="_copyCite" class="button-text">
+    <paper-item on-tap="_copyCite" class="button-text" disabled="{{loadingParallels}}">
       <iron-icon icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>
@@ -71,26 +71,31 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                       type: Array,
                       computed: '_computeLink()'
                   },
-                  Parallels: {
-                      type: Array
+                  parallels: {
+                      type: Object
                   },
                   loadingParallels: {
                       type: Boolean,
-                      value: false
+                      value: true
                   }
               }
           }
 
           // copy the parallels-table in html-string
           _copyContent() {
-              const copyTextarea = this._computeCopyTable(this.inputData, this.parallelsArray);
+              const copyTextarea = this._computeCopyTable();
+              this._copyToClipboard(copyTextarea);
+          }
+
+          _gotParallels() {
+              const copyTextarea = this._computeCopyTable();
               this._copyToClipboard(copyTextarea);
           }
 
           _computeLink() {
-            const getUrl = window.location;
-            const baseUrl = getUrl .protocol + "//" + getUrl.host;
-            return baseUrl + '/sutta/' + this.item.uid;
+              const getUrl = window.location;
+              const baseUrl = getUrl.protocol + "//" + getUrl.host;
+              return baseUrl + '/sutta/' + this.item.uid;
           }
 
           // Copy the link to the suttaplex page
@@ -121,44 +126,52 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               }
           }
 
-          
+          _computeIconForType(type) {
+            if (type === 'parallels') return 'swap-horiz';
+            if (type === 'retells') return 'cached';
+            if (type === 'mentions') return 'editor:format-quote';
+            return '';
+        }
+
           // icons to be used instead of iron icons in the base html-string copy function
-          _computeIcon(icon) {
-              switch (icon) {
+          _computeIcon(parallel) {
+              switch (this._computeIconForType(parallel.type)) {
                   case 'swap-horiz':
-                  return '⮀';
+                      return '⮀';
                   case 'compare-arrows':
-                  return '≈';
+                      return '≈';
                   case 'editor:format-quote':
-                  return '❞';
+                      return '❞';
                   case 'cached':
-                  return '🔃';
-                }
-            }  
+                      return '🔃';
+              }
+          }
 
           // creates a parallels-table in html-string
-          _computeCopyTable(inputData, parallelsArray) {
-              let titlepi = "";
-              if (inputData.parallels) {
-                  tablefinalplugin = "";
-                  for (let x = 0; x < inputData.parallels.length; x++) {
-                      const relationships = inputData.parallels[x].relations;
-                      let tableplugin = "\n<tbody>\n  <tr>\n    <td rowspan='" + relationships.length + "'>" + inputData.parallels[x].id + "</td>";
-                      for (let i = 0; i < relationships.length; i++) {
-                          for (let parobject = 0; parobject < parallelsArray.length; parobject++) {
-                              if (parallelsArray[parobject].parid === relationships[i].id) {
-                                  titlepi = parallelsArray[parobject].partitle;
-                              }
-                          }
-                          tableplugin += "\n    <td>" + this._computeIcon(relationships[i].icon) + "</td>\n    <td>" + relationships[i].id + "</td>\n    <td>" + titlepi + "</td>\n  </tr>";
-                          if (i < relationships.length - 1) {
-                              tableplugin += "\n  <tr>";
-                          }
+          _computeCopyTable() {
+              let head = `<!DOCTYPE>\n<html>\n<head>\n  <title>${this.item.uid} ${this.item.original_title}</title>\n</head>\n`;
+              let body = `<body>\n<table>\n  <caption>${this.item.original_title}</caption>\n`;
+              for (let section of Object.keys(this.parallels)) {
+                  let tbody = '<tbody>\n';
+                  let size = this.parallels[section].length;
+                  let first = true;
+                  let tr = '';
+                  for(let parallel of this.parallels[section]){
+                      tr = '  <tr>\n';
+                      if(first) {
+                          tr += `    <td rowspan=${size}>${section}</td>\n`;
+                          first = false;
                       }
-                      tablefinalplugin += tableplugin + "\n</tbody>";
+                      tr += `    <td>${this._computeIcon(parallel)}</td>\n`
+                      tr += `    <td>${parallel.to.to}</td>\n`
+                      tr += `    <td>${parallel.to.original_title}</td>\n`
+                      tbody += `${tr}  </tr>\n`;
                   }
-                  return "<!DOCTYPE html>\n<html>\n<head>\n  <title>" + inputData.id + " " + inputData.titlepi + "</title>\n</head>\n<body>\n<table>\n  <caption>" + inputData.titlepi + "</caption>" + tablefinalplugin + "\n</table>\n</body>\n</html>";
+                  
+                  body += `${tbody}</tbody>\n`;
               }
+              body += '</table>\n</doby>\n</html>';
+              return head + body
           }
 
           // creates cite data for parallels with parallels-list and bibliographical information
@@ -190,10 +203,12 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   return this.citeData = citefinalplugin + "Retrieved from https://suttacentral.net/" + inputData.url + " on " + d + ".";
               }
           }
+
           _getAPIEndpoint(item) {
               return `api/parallels/${item.uid}`;
-          } 
+          }
       }
+
       customElements.define(SCMoreParMenu.is, SCMoreParMenu);
   </script>
 </dom-module>
