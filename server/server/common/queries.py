@@ -284,3 +284,10 @@ RETURN {
     }
 }
 '''
+
+CURRENCIES = '''
+FOR currency IN currencies
+    FILTER currency.use == true
+    SORT currency.name
+    RETURN KEEP(currency, ['name', 'symbol', 'american_express', 'decimal'])
+'''
