@@ -76,6 +76,7 @@ Bhante Sujato needs to re-write them.
           @apply --sc-skolar-font-size-xxl;
           padding-top: 0.2em;
         }
+
         .subtitle {
           @apply --sc-skolar-font-size-md;
           margin-bottom: 0.5em;
@@ -125,23 +126,31 @@ Bhante Sujato needs to re-write them.
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-page-static',
-          properties: {
-              inputLanguage: String,
-              category: {
-                  type: String,
-                  observer: '_changeView'
-              },
-              pages: {
-                  type: String,
-                  value: 'home'
+      class SCPageStatic extends Polymer.Element {
+          static get is() {
+              return 'sc-page-static';
+          }
+
+          static get properties() {
+              return {
+                  inputLanguage: String,
+                  category: {
+                      type: String,
+                      observer: '_changeView'
+                  },
+                  pages: {
+                      type: String,
+                      value: 'home'
+                  }
               }
-          },
+          }
+
           // chooses one of four static pages/elements from the '/static'-folder.
-          _changeView: function(category) {
+          _changeView(category) {
               this.$.pages.selected = category ? category : 'home';
-          },
-      });
+          }
+      }
+
+      customElements.define(SCPageStatic.is, SCPageStatic);
   </script>
 </dom-module>

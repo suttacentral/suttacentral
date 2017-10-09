@@ -80,11 +80,18 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
   </template>
 
   <script>
-      Polymer({
-          is: 'more-menu',
-          properties: {
-              inputLanguage: String
+      class SCMoreMenu extends Polymer.Element {
+          static get is() {
+              return 'more-menu';
           }
-      });
+
+          static get properties() {
+              return {
+                  inputLanguage: String
+              }
+          }
+      }
+
+      customElements.define(SCMoreMenu.is, SCMoreMenu);
   </script>
 </dom-module>
