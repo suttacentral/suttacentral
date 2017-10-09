@@ -1,0 +1,38 @@
+<link rel="import" href="/../bower_components/polymer-redux/polymer-redux.html">
+<script src="/../node_modules/redux/dist/redux.js"></script>
+
+<!--
+ This element creates and describes the redux store.
+ ---
+ Redux introduction: http://redux.js.org/docs/introduction/
+ Polymer-redux docs: https://tur-nr.github.io/polymer-redux/
+ -->
+<script>
+    const initialState = {
+        currentLocation: 'homepage',
+        siteLanguage: 'en'
+    };
+
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case 'SWITCH_LOCATION':
+                return Object.assign({}, state, { currentLocation: action.location });
+            case 'CHANGE_SITE_LANGUAGE':
+                return Object.assign({}, state, { siteLanguage: action.language });
+            default:
+                return state;
+        }
+    };
+
+    const store = Redux.createStore(
+        reducer,
+        initialState,
+        Redux.compose(
+            window.devToolsExtension
+                ? window.devToolsExtension()
+                : v => v
+        )
+    );
+
+    ReduxMixin = PolymerRedux(store);
+</script>

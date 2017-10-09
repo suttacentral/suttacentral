@@ -7,32 +7,33 @@
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
+<link rel="import" href="/../redux-store.html">
+
 <!--
-This is the base language menu that determines the language of all pages. Dropdown inside the toolbar more-vert-menu.
-The last chosen language is remembered through app-localstorage.
+This is the base language menu that determines the language of the site.
 -->
 <dom-module id="language-base-menu" attributes="Language">
   <template>
-    <style is="custom-style">
+    <style>
       :host {
         --primary-color: var(--sc-gold-500);
       }
 
-      paper-dropdown-menu, paper-listbox {
+      .language-menu-container {
         @apply --sc-skolar-font-size-md;
         width: 200px;
       }
 
-      paper-item {
+      .language-menu-paper-item {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
         text-transform: capitalize;
       }
 
       .iso-code {
-        color: var(--secondary-text-color);
         @apply --paper-font-caption;
         @apply --sc-sans-font;
+        color: var(--secondary-text-color);
         position: absolute;
         right: 15px;
         margin-top: -34px;
@@ -45,15 +46,17 @@ The last chosen language is remembered through app-localstorage.
         auto
         url='api/languages'
         handle-as="json"
-        last-response="{{allLanguages}}"
-        on-response="computeNewLanguage"></iron-ajax>
+        last-response="{{allLanguages}}"></iron-ajax>
 
-    <paper-dropdown-menu class="custom" label="Language" title="Select the site in another language">
-      <paper-listbox slot="dropdown-content" selected="{{selectedLanguageNr}}">
+    <paper-dropdown-menu class="language-menu-container" label="Language" title="Select the site in another language">
+      <paper-listbox class="language-menu-container" slot="dropdown-content" selected="{{selectedLanguageNr}}">
         <template is="dom-repeat" items="{{allLanguages}}" as="language">
-          <paper-item id='[[language.uid]]'>
-            <paper-item-body>[[language.name]]</paper-item-body>
+          <paper-item class="language-menu-paper-item" id='[[language.uid]]'>
+            <paper-item-body>
+              [[language.name]]
+            </paper-item-body>
           </paper-item>
+          <!-- These ISO codes technically count as separate paper-listbox elements. -->
           <div class="iso-code">[[language.iso_code]]</div>
         </template>
       </paper-listbox>
@@ -62,46 +65,67 @@ The last chosen language is remembered through app-localstorage.
   </template>
 
   <script>
-      class LanguageBaseMenu extends Polymer.Element {
+      class LanguageBaseMenu extends ReduxMixin(Polymer.Element) {
           static get is() {
-              return 'language-base-menu'
+              return 'language-base-menu';
           }
 
           static get properties() {
               return {
-                  languages: {
+                  allLanguages: {
                       type: Array,
-                      notify: true,
-                      value: () => []
+                      value: () => { return []; }
                   },
                   selectedLanguageNr: {
                       type: Number,
-                      value: 0,
-                      notify: true,
-                      observer: '_languageChanged'
+                      observer: '_selectedLanguageNrChanged'
+                  },
+                  siteLanguage: {
+                      type: String,
+                      statePath: 'siteLanguage'
                   }
               };
           }
 
-          // TODO: set new language here
-          _languageChanged() {
-          }
-
-          // Will compute the equivalent language code to the chosen language.
-          computeNewLanguage(e) {
-              const allLanguages = e.detail.response;
-              if (allLanguages[this.selectedLanguageNr]) {
-                  this.passNewLanguageSelected(allLanguages[this.selectedLanguageNr].id);
-              } else {
-                  this.passNewLanguageSelected("en");
+          // Redux actions
+          static get actions() {
+              return {
+                  changeLanguage(language) {
+                      return {
+                          type: 'CHANGE_SITE_LANGUAGE',
+                          language: language
+                      }
+                  }
               }
           }
 
-          // Pass chosen language code on to main page sc-navdrawer.html
-          passNewLanguageSelected(selectedLanguage) {
-              this.dispatchEvent(new Event('languageSelection', {Language: selectedLanguage}));
+          // Is invoked when a language is chosen from the list.
+          _selectedLanguageNrChanged() {
+              if (!this.allLanguages || this.allLanguages.length === 0 || !this.selectedLanguageNr) {
+                  return;
+              }
+              try {
+                  // When selecting a language from the array of all languages, we're dividing by two.
+                  // That's because of the ISO codes inside our list which paper-listbox treats as separate elements.
+                  const languageIsoCode = this.allLanguages[this.selectedLanguageNr / 2].iso_code;
+                  this.dispatch('changeLanguage', languageIsoCode);
+              } catch (e) {
+                  console.log('Couldn\'t select language from the list of languages.');
+                  console.log(e);
+              }
+          }
+
+          // Listens to changes in the global redux app state and updates the language chosen in the list dropdown.
+          _computeSelectedLanguageNr(chosenLanguageIsoCode) {
+              try {
+                  const isoCodes = this.allLanguages.map(item => item.iso_code);
+                  return isoCodes.indexOf(chosenLanguageIsoCode) * 2;
+              } catch(e) {
+                  return 0;
+              }
           }
       }
+
       customElements.define(LanguageBaseMenu.is, LanguageBaseMenu);
   </script>
 </dom-module>
