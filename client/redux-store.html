@@ -16,12 +16,10 @@
             __queryParams: {},
             categoryId: ''
         },
-        siteOptions: {
-
-        },
+        siteOptions: {},
         siteLanguage: 'en',
         toolbarTitle: '',
-        searchQuery: ''
+        searchParams: {}
     };
 
     const reducer = (state, action) => {
@@ -33,7 +31,7 @@
             case 'CHANGE_TOOLBAR_TITLE':
                 return { ...state, toolbarTitle: action.title };
             case 'INITIATE_SEARCH':
-                return { ...state, searchQuery: action.query };
+                return { ...state, searchParams: action.params };
             default:
                 return state;
         }

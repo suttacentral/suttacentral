@@ -138,17 +138,6 @@ Issues:
               }
           }
 
-          static get actions() {
-              return {
-                  initiateSearch(searchQuery) {
-                      return {
-                          type: 'INITIATE_SEARCH',
-                          query: searchQuery
-                      };
-                  }
-              }
-          }
-
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
           // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
           openSearch() {
@@ -203,7 +192,6 @@ Issues:
               const searchQuery = this.shadowRoot.querySelector('#searchInput').value;
               this.set('path', '/search');
               this.set('query', `query=${searchQuery}`);
-              this.dispatch('initiateSearch', searchQuery);
           }
 
       }

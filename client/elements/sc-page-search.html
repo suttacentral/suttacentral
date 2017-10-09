@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-location/iron-location.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
@@ -127,12 +128,14 @@ than ten results in total, a dropdown selection menu appears at the top.
     </style>
 
     <iron-ajax id="ajax"
-               url="api/search"
+               url="[[getUrl()]]"
                params='[[searchParams]]'
                handle-as="json"
                loading="{{loadingResults}}"
                last-response="{{responseData}}"
                on-response="_didRespond"></iron-ajax>
+
+    <iron-meta id="meta"></iron-meta>
 
     <div class="loadingIndicator">
       <paper-spinner-lite class="paper-spinner" active="{{loadingResults}}"></paper-spinner-lite>
@@ -181,7 +184,7 @@ than ten results in total, a dropdown selection menu appears at the top.
   <script>
       class SCPageSearch extends ReduxMixin(Polymer.Element) {
           static get is() {
-              return 'sc-page-search'
+              return 'sc-page-search';
           }
 
           static get properties() {
@@ -190,12 +193,13 @@ than ten results in total, a dropdown selection menu appears at the top.
                   searchQuery: {
                       type: String,
                       value: '',
-                      statePath: 'searchQuery',
+                      statePath: 'currentRoute.__queryParams.query',
                       observer: '_startNewSearch'
                   },
                   // The actual query parameters of the search
                   searchParams: {
-
+                      type: Object,
+                      statePath: 'searchParams'
                   },
                   lastSearchResults: {
                       type: Array,
@@ -232,6 +236,17 @@ than ten results in total, a dropdown selection menu appears at the top.
                       value: 170
                   },
                   totalLoadedResults: Number
+              }
+          }
+
+          static get actions() {
+              return {
+                  initiateSearch(params) {
+                      return {
+                          type: 'INITIATE_SEARCH',
+                          params: params
+                      };
+                  }
               }
           }
 
@@ -296,11 +311,11 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           _loadNextPage() {
               this.currentPage++;
-              this.searchParams = {
+              this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
                   offset: (this.currentPage * this.resultsPerLoad),
                   query: this.searchQuery
-              };
+              });
               this._generateRequest();
           }
 
@@ -312,10 +327,10 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.set('currentFilter', 'all');
               this.set('totalLoadedResults', 0);
               this.shadowRoot.querySelector('#filter_menu').resetFilter();
-              this.searchParams = {
+              this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
                   query: this.searchQuery
-              };
+              });
               this._generateRequest();
           }
 
@@ -423,6 +438,10 @@ than ten results in total, a dropdown selection menu appears at the top.
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
           _calculateLink(item) {
               return (item.category === 'dictionary') ? ('/define/' + item._source.heading.title) : item.url;
+          }
+
+          _getUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/search`;
           }
       }
 
