@@ -1,22 +1,22 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
-<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
-<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
-<link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="/bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="/bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/paper-card/paper-card.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="/bower_components/paper-badge/paper-badge.html">
 
-<link rel="import" href="../../img/sc-svg-icons.html">
-<link rel="import" href="../addons/sc-sutta-note.html">
-<link rel="import" href="../menus/language-menu.html">
-<link rel="import" href="../menus/more-par-menu.html">
-<link rel="import" href="sc-view-parallels.html">
+<link rel="import" href="/img/sc-svg-icons.html">
+<link rel="import" href="/elements/addons/sc-sutta-note.html">
+<link rel="import" href="/elements/menus/language-menu.html">
+<link rel="import" href="/elements/menus/more-par-menu.html">
+<link rel="import" href="/elements/suttaplex/sc-view-parallels.html">
 
 <!--
   Suttaplex card
@@ -183,7 +183,7 @@
             </template>
           </template>
           <div class="languagedrop">
-            <language-menu language-choice="[[item.translations]]" title-label="More translations"
+            <language-menu language-choice="[[item.translations]]" title-label="More"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
                            input-url="[[item.uid]]" id="languageMenu" on-paper-dropdown-close="_changeItemZIndex"
                            on-paper-dropdown-open="_changeItemZIndex"></language-menu>
