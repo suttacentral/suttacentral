@@ -302,22 +302,24 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               routeName = this._computeRouteName(this.route.path).toUpperCase();
               switch (routeName) {
                   case '':
-                      currentRoute = { ...this.route, name: 'HOME' };
+                      currentRoute = Object.assign({}, this.route, { name: 'HOME' });
                       break;
                   case 'DONATIONS':
                   case 'PEOPLE':
                   case 'DOWNLOADS':
-                      currentRoute = { ...this.route, name: routeName };
+                      currentRoute = Object.assign({}, this.route, { name: routeName });
                       break;
                   case 'SUTTAPLEX':
-                      currentRoute = { ...this.route, name: routeName, categoryId: this._getPathParamNumber(2) };
+                      currentRoute = Object.assign({}, this.route, {
+                          name: routeName,
+                          categoryId: this._getPathParamNumber(2)
+                      });
                       break;
                   case 'SEARCH':
-                      currentRoute = { ...this.route, name: routeName };
+                      currentRoute = Object.assign({}, this.route, { name: routeName });
                       break;
                   default:
-                      // TODO: create a 404 page
-                      currentRoute = { ...this.route, name: 'NOT-FOUND' };
+                      currentRoute = Object.assign({}, this.route, { name: 'NOT-FOUND' });
 
               }
               this.dispatch('changeRoute', currentRoute);
