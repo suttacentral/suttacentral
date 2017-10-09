@@ -1,10 +1,13 @@
+import os
+import json
 from collections import defaultdict
 
+import stripe
 from flask import request, current_app
 from flask_restful import Resource
 
 from common.arangodb import get_db
-from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW
+from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW, CURRENCIES
 from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort
 
 
@@ -275,7 +278,7 @@ class Parallels(Resource):
         return data, 200
 
 
-class Dictionaries(Resource):
+class LookupDictionaries(Resource):
     def get(self):
         """
         Send parallel information for given sutta.
@@ -379,3 +382,126 @@ class Sutta(Resource):
         results = db.aql.execute(SUTTA_VIEW,
                                  bind_vars={'uid': uid, 'language': lang, 'author': author})
         return results.next(), 200
+
+
+class Currencies(Resource):
+    def get(self):
+        """
+        Send list of available currencies.
+        ---
+        responses:
+            200:
+                schema:
+                    id: currencies
+                    type: array
+                    item:
+                        $ref '#/definitions/currency'
+        definitions:
+            currency:
+                type: object
+                properties:
+                    american_express:
+                        type: bool
+                    name:
+                        type: string
+                    symbol:
+                        type: string
+        """
+        db = get_db()
+
+        data = db.aql.execute(CURRENCIES)
+
+        currencies = []
+        default_currency_index: int = None
+
+        DEFAULT_CURRENCY = 'USD'
+
+        for i, x in enumerate(data):
+            currencies.append(x)
+            if x['symbol'] == DEFAULT_CURRENCY:
+                default_currency_index = i
+
+        response_data = {
+            'default_currency_index': default_currency_index,
+            'currencies': currencies
+        }
+
+        return response_data, 200
+
+
+class Donations(Resource):
+    def post(self):
+        """
+        Process the payment
+        ---
+        responses:
+            all:
+                description: Information massage.
+                type: string
+        """
+        data = json.loads(list(request.form.keys())[0])
+        currency = data.get('currency')
+        amount = data.get('amount')
+        one_time_donation = data.get('oneTimeDonation')
+        monthly_donation = data.get('monthlyDonation')
+        stripe_data = data.get('stripe')
+        name = data.get('name')
+        email = data.get('email')
+        message = data.get('message')
+
+        secret_key = os.environ.get('STRIPE_SECRET')
+
+        stripe.api_key = secret_key
+        db = get_db()
+        try:
+            currency = list(db['currencies'].find({'symbol': currency}))[0]
+        except IndexError:
+            return 'No such currency', 400
+
+        if currency['decimal']:
+            amount = amount * 100
+        amount = int(amount)
+
+        customer_data = {
+            'source': stripe_data['token']['id']
+        }
+
+        if email:
+            customer_data['email'] = email
+        customer = stripe.Customer.create(**customer_data)
+
+        if one_time_donation:
+            charge = stripe.Charge.create(
+                customer=customer.id,
+                amount=amount,
+                currency=currency['symbol'],
+                metadata={"name": name, "message": message},
+                description=f'Donation by {name if name else ""}, message {message if message else ""}'
+            )
+
+        elif monthly_donation:
+            plan = get_plan(amount, currency['symbol'])
+            subscription = stripe.Subscription.create(
+                customer=customer.id,
+                items=[{"plan": plan.stripe_id}]
+            )
+
+        else:
+            return 'Select either one time or monthly', 400
+
+        return 'Subscribed' if monthly_donation else 'Donated', 200
+
+
+def get_plan(amount, currency):
+    plan_id = f'monthly_{amount}_{currency}'
+    try:
+        plan = stripe.Plan.retrieve(plan_id)
+    except stripe.error.InvalidRequestError:
+        plan = stripe.Plan.create(
+            amount=amount,
+            interval='month',
+            name='Monthly Donation to SuttaCentral',
+            currency=currency,
+            statement_descriptor='SuttaCentralDonation',
+            id=plan_id)
+    return plan

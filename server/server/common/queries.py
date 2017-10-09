@@ -173,7 +173,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
 # Takes 2 bind_vars: `from` and `to`.
 DICTIONARIES = '''
 FOR dict IN dictionaries
-    FILTER dict.from == @from AND dict.to == @to
+    FILTER dict.from == @from AND dict.to == @to AND dict.lookup == true
     LIMIT 1
     RETURN {
         from: dict.from,
@@ -283,4 +283,11 @@ RETURN {
         parallel_count: parallel_count
     }
 }
+'''
+
+CURRENCIES = '''
+FOR currency IN currencies
+    FILTER currency.use == true
+    SORT currency.name
+    RETURN KEEP(currency, ['name', 'symbol', 'american_express', 'decimal'])
 '''

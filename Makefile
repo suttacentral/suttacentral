@@ -29,7 +29,7 @@ rebuild-all: clean-all build-all
 rebuild-flask: clean-flask build-flask
 rebuild-arangodb: clean-arangodb build-arangodb
 rebuild-nginx: clean-nginx build-nginx
-rebuild-elasticsearch: clean-elasitcsearch build-elasticsearch
+rebuild-elasticsearch: clean-elasticsearch build-elasticsearch
 rebuild-swagger: clean-swagger build-swagger
 
 run-dev:
@@ -147,7 +147,13 @@ prepare-tests:
 	@bash wait_for_flask.sh
 # Run tests
 test:
-	@docker exec -t sc-frontend-tester bash -c "polymer lint && wct"
+	@make test-client
+	@make test-server
+
+test-client:
+	@docker exec -t sc-frontend-tester bash -c "echo 'Running client linter' && polymer lint && wct"
+
+test-server:
 	@docker exec -t sc-flask pytest server/
 
 load-data:

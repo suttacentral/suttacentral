@@ -228,7 +228,7 @@ Issues that need to be fixed:
 ### iron-location and app-rout
 These parse the url given but at the moment only deal with the following url:
   - search pages: `/search?query=searchterm`
-  - url with one or two terms i.e. `/`, `/dons`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc. but not with more than 2 terms.
+  - url with one or two terms i.e. `/`, `/donations`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc. but not with more than 2 terms.
 
 Issues that need to be fixed:
   - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1` but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and the **sc-view-suttaplex.html**.
@@ -341,5 +341,5 @@ Issues:
 
 ### menus/settings-menu.html and addons/sc-dictionary-lookup.html
 Issues: 
-    -The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English. A mockup dictionary is in `data/dictionaries/pi2en.json` but this is not the latest version, only for testing. The matching should be fuzzy so no direct word-to-word lookup.
+    -The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English. A mockup dictionary is in `data/dictionaries/pli2en.json` but this is not the latest version, only for testing. The matching should be fuzzy so no direct word-to-word lookup.
   - The repository with the basic code for this tool is https://github.com/blake-sc/palilookup but is broken.

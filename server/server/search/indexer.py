@@ -57,7 +57,7 @@ class ElasticIndexer:
     es = es
     version = 1
     suppress_elasticsearch_errors = False
-    non_aliased_indexes = {'pi2en-glossary', 'translations', 'pali-lookup'}
+    non_aliased_indexes = {'pli2en-glossary', 'translations', 'pali-lookup'}
 
     @property
     def doc_type(self):

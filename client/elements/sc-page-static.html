@@ -1,11 +1,12 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="static/home-page.html">
-<link rel="import" href="static/dons-page.html">
-<link rel="import" href="static/downloads-page.html">
-<link rel="import" href="static/people-page.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/elements/static/home-page.html">
+<link rel="import" href="/elements/static/donations-page.html">
+<link rel="import" href="/elements/static/downloads-page.html">
+<link rel="import" href="/elements/static/people-page.html">
+<link rel="import" href="/elements/sc-donate-now-page.html">
+<link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
 
 <!--
 For the static pages an additional larger toolbar is added and depending on the route it chooses one of 4
@@ -87,8 +88,11 @@ Bhante Sujato needs to re-write them.
       <div name="home">
         <home-page></home-page>
       </div>
-      <div name="dons">
-        <dons-page></dons-page>
+      <div name="donations">
+        <sc-donations-page></sc-donations-page>
+      </div>
+      <div name="donate-now">
+        <sc-donate-now-page></sc-donate-now-page>
       </div>
       <div name="downloads">
         <downloads-page></downloads-page>
@@ -119,8 +123,8 @@ Bhante Sujato needs to re-write them.
                   case '':
                       this.$.pages.selected = "home";
                       break;
-                  case 'dons':
-                      this.$.pages.selected = "dons";
+                  case 'donations':
+                      this.$.pages.selected = "donations";
                       break;
                   case 'downloads':
                       this.$.pages.selected = "downloads";
@@ -128,6 +132,9 @@ Bhante Sujato needs to re-write them.
                   case 'people':
                       this.$.pages.selected = "people";
                       break;
+                  case 'donate-now':
+                      this.$.pages.selected = "donate-now";
+                      break
               }
           },
       });
