@@ -147,7 +147,7 @@ prepare-tests:
 	@bash wait_for_flask.sh
 # Run tests
 test:
-	@docker exec -t sc-frontend-tester bash -c "polymer lint && wct"
+	@docker exec -t sc-frontend-tester bash -c "echo 'Running client linter' && polymer lint && wct"
 	@docker exec -t sc-flask pytest server/
 
 load-data:

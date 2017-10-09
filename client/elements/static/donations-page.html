@@ -1,0 +1,119 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
+<link rel="import" href="/styles/static-styles.html">
+
+<dom-module id="sc-donations-page">
+  <template>
+    <style include="static-styles">
+      .donate-button {
+        background: var(--sc-gold-300);
+        color: white;
+        font-weight: bold;
+      }
+
+      .donate-link {
+          background: none;
+      }
+
+      .donate-link:hover {
+          background: none;
+      }
+
+      .donations-button {
+        display: flex;
+        justify-content: center;
+      }
+
+    </style>
+
+    <div id="page-wrap">
+      <main>
+        <section>
+          <article>
+            <h1>SuttaCentral Donations</h1>
+            <p>Your donation is greatly appreciated. It will support the ongoing development of SuttaCentral so
+              we can continue bring the Buddha’s word to people all around the world.</p>
+
+            <div class="donations-button">
+                <a href="/donate-now" class="donate-link">
+                  <paper-button raised class="donate-button">DONATE</paper-button>
+                </a>
+            </div>
+
+            <h2>What does SuttaCentral spend money on?</h2>
+            <ul>
+              <li>IT development: we employ professional programmers in addition to volunteers.</li>
+              <li>Servers: costs of servers and other infrastructure.</li>
+              <li>Hardware: computer and other hardware for workers on SC, especially monastics.</li>
+              <li>Other</li>
+            </ul>
+            <h2>Ethical banking</h2>
+            <p>SuttaCentral Development Trust uses <a href="https://www.communitysectorbanking.com.au/"
+                                                      target="_blank">Adelaide Bendigo community sector banking</a>,
+              which has ethical and green investment policies.
+              <a href="https://www.climatecouncil.org.au/what-you-need-to-know-about-fossil-fuel-divestment"
+                 target="_blank">Bendigo Bank has publicly divested from fossil fuels</a>.</p>
+            <table>
+              <tr>
+                <td>Account name</td>
+                <td><strong>SuttaCentral Development Trust</strong></td>
+              </tr>
+              <tr>
+                <td>Bank name</td>
+                <td><strong>Adelaide Bendigo Community Sector Banking</strong></td>
+              </tr>
+              <tr>
+                <td>BSB</td>
+                <td><strong>633 000</strong></td>
+              </tr>
+              <tr>
+                <td>Account no.</td>
+                <td><strong>154500086</strong></td>
+              </tr>
+              <tr>
+                <td>Address</td>
+                <td><strong>1273 Pacific Highway, Turramurra NSW 2074</strong></td>
+              </tr>
+              <tr>
+                <td>Swift code</td>
+                <td><strong>BENDAU3B</strong></td>
+              </tr>
+            </table>
+
+            <p>For any questions, please contact our financial officer, Deepika Weerakoon
+              (suttacentraldevelopmenttrust@gmail.com).
+              Deepika manages the funds on behalf of SuttaCentral Development Trust.</p>
+
+            <h2>SuttaCentral Development Trust</h2>
+
+            <p>The SuttaCentral Development Trust is a charitable trust. The founding members of the trust are Bhante
+              Sujato, Bhante Brahmali, and John Kelly. The trust is managed by Deepika Weerakoon.</p>
+
+            <p>The accountants and auditors of the Trust are 
+              <a href="http://www.alwisco.com.au" target="_blank">Randolph Alwis & Co Pty Ltd</a>.
+              The <a href="https://abr.business.gov.au/SearchByAbn.aspx?SearchText=858%20188%2075744"
+                     target="_blank">ABN is 858 188 75744</a>.</p>
+
+            <p>Financial details of the trust are available if you have any inquiries. The Trust was created solely
+              to support the development of SuttaCentral. All funds in the Trust will be solely spent on SuttaCentral,
+              and none on trust administration, which is being managed by volunteers.</p>
+
+          </article>
+        </section>
+      </main>
+    </div>
+  </template>
+
+  <script>
+      class SCDonationsPage extends Polymer.Element {
+          static get is() {
+              return 'sc-donations-page';
+          }
+      }
+
+      customElements.define(SCDonationsPage.is, SCDonationsPage);
+  </script>
+</dom-module>
