@@ -128,7 +128,7 @@ than ten results in total, a dropdown selection menu appears at the top.
     </style>
 
     <iron-ajax id="ajax"
-               url="[[getUrl()]]"
+               url="[[_getUrl()]]"
                params='[[searchParams]]'
                handle-as="json"
                loading="{{loadingResults}}"
@@ -319,19 +319,27 @@ than ten results in total, a dropdown selection menu appears at the top.
               this._generateRequest();
           }
 
-          // Clears search result arrays, resets variables and generates a new search request.
+          // generates a new search request.
           _startNewSearch() {
+              if (!this.searchQuery) {
+                  return;
+              }
+              this.clearSearchPage();
+              this.dispatch('initiateSearch', {
+                  limit: this.resultsPerLoad,
+                  query: this.searchQuery
+              });
+              this._generateRequest();
+          }
+
+          // Clears search result arrays, resets variables
+          clearSearchPage() {
               this.splice('visibleSearchResults', 0, this.visibleSearchResults.length);
               this.splice('allSearchResults', 0, this.allSearchResults.length);
               this.set('currentPage', 0);
               this.set('currentFilter', 'all');
               this.set('totalLoadedResults', 0);
               this.shadowRoot.querySelector('#filter_menu').resetFilter();
-              this.dispatch('initiateSearch', {
-                  limit: this.resultsPerLoad,
-                  query: this.searchQuery
-              });
-              this._generateRequest();
           }
 
           // If the number of results is less than 10 or there is only 1 category of results, the search filtering
