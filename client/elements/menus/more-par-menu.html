@@ -27,7 +27,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
     </style>
 
-    <iron-ajax id="parallelsAjax"
+    <iron-ajax id="parallels_ajax"
                auto
                url="[[_getAPIEndpoint(item)]]"
                handle-as="json"
@@ -93,8 +93,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
 
           _computeLink() {
-              const getUrl = window.location;
-              const baseUrl = getUrl.protocol + "//" + getUrl.host;
+              const url = window.location;
+              const baseUrl = url.protocol + "//" + url.host;
               return baseUrl + '/sutta/' + this.item.uid;
           }
 
@@ -149,7 +149,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
           // creates a parallels-table in html-string
           _computeCopyTable() {
-              let head = `<!DOCTYPE>\n<html>\n<head>\n  <title>${this.item.uid} ${this.item.original_title}</title>\n</head>\n`;
+              const head = `<!DOCTYPE>\n<html>\n<head>\n  <title>${this.item.uid} ${this.item.original_title}</title>\n</head>\n`;
               let body = `<body>\n<table>\n  <caption>${this.item.original_title}</caption>\n`;
               for (let section of Object.keys(this.parallels)) {
                   let tbody = '<tbody>\n';
@@ -162,16 +162,16 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                           tr += `    <td rowspan=${size}>${section}</td>\n`;
                           first = false;
                       }
-                      tr += `    <td>${this._computeIcon(parallel)}</td>\n`
-                      tr += `    <td>${parallel.to.to}</td>\n`
-                      tr += `    <td>${parallel.to.original_title}</td>\n`
+                      tr += `    <td>${this._computeIcon(parallel)}</td>\n`;
+                      tr += `    <td>${parallel.to.to}</td>\n`;
+                      tr += `    <td>${parallel.to.original_title}</td>\n`;
                       tbody += `${tr}  </tr>\n`;
                   }
                   
                   body += `${tbody}</tbody>\n`;
               }
-              body += '</table>\n</doby>\n</html>';
-              return head + body
+              body += '</table>\n</body>\n</html>';
+              return head + body;
           }
 
           // creates cite data for parallels with parallels-list and bibliographical information
