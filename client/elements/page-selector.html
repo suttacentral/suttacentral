@@ -56,7 +56,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         background-color: var(--sc-green-600);
       }
 
-      #toolbartitlebox {
+      #toolbar_title_box {
         width: 1px;
         z-index: -10;
       }
@@ -96,7 +96,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="[[mainClass]]">
           <app-toolbar class="toolbar-header">
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
-            <div main-title id="toolbartitlebox"><p id="toolbartitle">[[toolbarTitle]]</p></div>
+
+            <div main-title id="toolbar_title_box">
+              <p id="toolbar_title">[[toolbarTitle]]</p>
+            </div>
+
             <sc-toolbar id="sc_toolbar" sutta-path="[[author]]" category="[[categoryId]]"></sc-toolbar>
           </app-toolbar>
 
@@ -110,6 +114,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           <sc-view-suttaplex></sc-view-suttaplex>
         </template>
 
+        <template is="dom-if" if="[[shouldShowSearchPage]]">
+          <sc-page-search></sc-page-search>
+        </template>
+
         <template is="dom-if" if="[[_checkText(category)]]">
           <sc-page-text sutta-path="[[category]]" author="[[author]]" input-language="[[inputLanguage]]"
                         show-paragraphs="[[showParagraphs]]"></sc-page-text>
@@ -119,10 +127,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           <sc-segmented-text sutta-path="[[category]]" author="[[author]]" show-viewer="[[showViewer]]"
                              pali-script="[[paliScript]]" input-language="[[inputLanguage]]"
                              show-paragraphs="[[showParagraphs]]"></sc-segmented-text>
-        </template>
-
-        <template is="dom-if" if="[[_checkSearch(category)]]">
-          <sc-page-search search-query="[[searchQuery]]"></sc-page-search>
         </template>
 
         <template is="dom-if" if="[[_checkDictionary(category)]]">
@@ -142,15 +146,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           static get properties() {
               return {
-                  route: Object,
-                  subPath: {
-                      type: String,
-                      notify: true
-                  },
-                  activePath: {
-                      type: Boolean,
-                      notify: true
-                  },
                   divisionTitle: {
                       type: String,
                       notify: true
@@ -208,6 +203,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       notify: true,
                       computed: '_checkDictionaryItem(subPath,category,activePath)'
                   },
+                  route: Object,
                   selectedPage: {
                       type: String,
                       statePath: 'currentRoute.name',
@@ -225,8 +221,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: String,
                       statePath: 'siteLanguage'
                   },
+                  // Variables that control the <dom-if> elements in the template:
                   shouldShowStaticPage: Boolean,
                   shouldShowSuttaplexList: Boolean,
+                  shouldShowSingleSuttaplex: Boolean,
+                  shouldShowSearchPage: Boolean,
+                  shouldShowSimpleSuttaView: Boolean,
                   path: String,
                   query: String
               }
@@ -236,7 +236,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               return [
                   '_changeView(category,author)',
                   '_scrollToTop(route)',
-                  '_routeChanged(route.*)'
+                  '_handleRouteChange(route.*)'
               ];
           }
 
@@ -246,13 +246,13 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       return {
                           type: 'CHANGE_ROUTE',
                           route: route
-                      }
+                      };
                   },
                   changeToolbarTitle(title) {
                       return {
                           type: 'CHANGE_TOOLBAR_TITLE',
                           title: title
-                      }
+                      };
                   }
               }
           }
@@ -261,7 +261,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               super.ready();
               // these event listeners listen from input from the latest chosen view to change the title in the toolbar
               this.addEventListener('eventFromTextPage', this.addTitles);
-              this.addEventListener('eventFromSuttaplexPage', this.addTitles);
               this.addEventListener('eventFromSegmentedTextPage', this.addTitles);
 
               // fires if in the settings menu an option is chosen for a certain view i.e. side-by-side, line-by-line, etc.
@@ -279,32 +278,43 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           _recalculateView() {
               this.shouldShowStaticPage = this._isStaticPage();
               this.shouldShowSuttaplexList = this._isSuttaplexList();
-              console.log(this.shouldShowSuttaplexList);
+              this.shouldShowSearchPage = this._isSearchPage();
+              this._setDisplayOptions();
           }
 
-          _routeChanged() {
-              if (this.route.__queryParams === undefined) {
-                  return;
-              }
-              const routeName = this._computeRouteName(this.route.path);
-              this._handleRouteChange(routeName);
+          _isStaticPage() {
+              return this.staticPages.includes(this.selectedPage);
+          }
+
+          _isSuttaplexList() {
+              return (this.selectedPage === 'SUTTAPLEX');
+          }
+
+          _isSearchPage() {
+              return (this.selectedPage === 'SEARCH');
           }
 
           _handleRouteChange(routeName) {
+              if (this.route.__queryParams === undefined) {
+                  return;
+              }
               let currentRoute;
               // Normalize the URL:
-              routeName = routeName.toUpperCase();
+              routeName = this._computeRouteName(this.route.path).toUpperCase();
               switch (routeName) {
+                  case 'HOME':
+                  case 'DONATIONS':
+                  case 'PEOPLE':
+                  case 'DOWNLOADS':
+                      currentRoute = Object.assign({}, this.route, { name: routeName });
+                      break;
                   case 'SUTTAPLEX':
                       currentRoute = Object.assign({}, this.route, {
                           name: routeName,
                           categoryId: this._getPathParamNumber(2)
                       });
                       break;
-                  case 'HOME':
-                  case 'DONATIONS':
-                  case 'PEOPLE':
-                  case 'DOWNLOADS':
+                  case 'SEARCH':
                       currentRoute = Object.assign({}, this.route, { name: routeName });
                       break;
                   default:
@@ -315,10 +325,14 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.dispatch('changeRoute', currentRoute);
           }
 
+          // Returns the main path category (first path param).
           _computeRouteName(routePath) {
               return routePath.split('\/')[1];
           }
 
+          // Returns a nested path parameter.
+          // Example:
+          // if path = "http://suttacentral.net/sutta/dn1/sujato", _getPathParamNumber(1) returns "dn1".
           _getPathParamNumber(number) {
               try {
                   return this.route.path.split('\/')[number];
@@ -326,6 +340,22 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   // TODO show a toast here?
                   console.error(e);
                   return '';
+              }
+          }
+
+          // Sets the color of the toolbar (via the mainClass variable) and other display options
+          // based on the current route.
+          _setDisplayOptions() {
+              if (this.shouldShowStaticPage) {
+                  this.mainClass = '';
+              }
+              else if (this.shouldShowSuttaplexList || this.shouldShowSingleSuttaplex) {
+                  this.mainClass = 'list-mode';
+                  this.dispatch('changeToolbarTitle', this.divisionTitle);
+              }
+              else if (this.shouldShowSearchPage) {
+                  this.mainClass = 'search-mode';
+                  this.dispatch('changeToolbarTitle', 'SuttaCentral — search results');
               }
           }
 
@@ -407,24 +437,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               }));
           }
 
-          // checks if a page is a static page by checking the first term in the route against the staticPages-array
-          // and sets the toolbar title and css class accordingly.
-          _isStaticPage() {
-              return this.staticPages.includes(this.selectedPage);
-          }
-
-          // checks if a route is not part of any of the other classes of pages (static,search,dictionary or text)
-          // and sets the toolbar title and css class accordingly.
-          _isSuttaplexList() {
-              if (this.selectedPage === 'SUTTAPLEX') {
-                  this.mainClass = 'list-mode';
-                  this.dispatch('changeToolbarTitle', this.divisionTitle);
-                  return true;
-              } else {
-                  return false;
-              }
-          }
-
           // checks if a page is a html-text page by checking and sets the toolbar title and css class accordingly.
           _checkText(category) {
               const author = this._checkAuthor(this.subPath, category, this.activePath);
@@ -443,17 +455,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               if (author && (author === 'sujato' || author === 'pali')) {
                   this.mainClass = 'segmented-mode';
                   this.dispatch('changeToolbarTitle', this.suttaSegTitle);
-                  return true;
-              } else {
-                  return false;
-              }
-          }
-
-          // checks if a page is a search page and sets the toolbar title and css class accordingly.
-          _checkSearch(category) {
-              if (category === 'search') {
-                  this.mainClass = 'search-mode';
-                  this.dispatch('changeToolbarTitle', 'SuttaCentral — search results');
                   return true;
               } else {
                   return false;

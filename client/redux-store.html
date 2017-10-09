@@ -16,18 +16,24 @@
             __queryParams: {},
             categoryId: ''
         },
+        siteOptions: {
+
+        },
         siteLanguage: 'en',
         toolbarTitle: '',
+        searchQuery: ''
     };
 
     const reducer = (state, action) => {
         switch (action.type) {
             case 'CHANGE_ROUTE':
-                return Object.assign({}, state, { currentRoute: action.route });
+                return { ...state, currentRoute: action.route };
             case 'CHANGE_SITE_LANGUAGE':
-                return Object.assign({}, state, { siteLanguage: action.language });
+                return { ...state, siteLanguage: action.language };
             case 'CHANGE_TOOLBAR_TITLE':
-                return Object.assign({}, state, { toolbarTitle: action.title });
+                return { ...state, toolbarTitle: action.title };
+            case 'INITIATE_SEARCH':
+                return { ...state, searchQuery: action.query };
             default:
                 return state;
         }
@@ -36,11 +42,8 @@
     const store = Redux.createStore(
         reducer,
         initialState,
-        Redux.compose(
-            window.devToolsExtension
-                ? window.devToolsExtension()
-                : v => v
-        )
+        // Enable redux dev tools extension:
+        Redux.compose(window.devToolsExtension ? window.devToolsExtension() : v => v)
     );
 
     ReduxMixin = PolymerRedux(store);

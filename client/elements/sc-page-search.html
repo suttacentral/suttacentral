@@ -179,7 +179,7 @@ than ten results in total, a dropdown selection menu appears at the top.
     </div>
   </template>
   <script>
-      class SCPageSearch extends Polymer.Element {
+      class SCPageSearch extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-page-search'
           }
@@ -190,6 +190,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                   searchQuery: {
                       type: String,
                       value: '',
+                      statePath: 'searchQuery',
                       observer: '_startNewSearch'
                   },
                   // The actual query parameters of the search

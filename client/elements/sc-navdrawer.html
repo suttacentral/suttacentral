@@ -150,8 +150,6 @@
 
           ready() {
               super.ready();
-              // listens to input from the search bar (i.e. a search-term) and feeds this to the iron-location
-              this.addEventListener('search', (e) => this.initiateSearch(e));
               // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
           }
@@ -188,11 +186,6 @@
           // opens the app-drawer when it is not visible.
           _toggleDrawer(event) {
               return this.shadowRoot.querySelector('app-drawer').setAttribute('opened', event.detail.togdraw);
-          }
-
-          initiateSearch(event) {
-              this.set('path', '/search');
-              this.set('query', `query=${event.detail}`);
           }
 
           _getMenuUrl() {

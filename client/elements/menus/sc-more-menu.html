@@ -54,14 +54,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
   </template>
 
   <script>
-      class SCMoreMenu extends Polymer.Element {
-          static get is() {return 'sc-more-menu' };
-
-          static get properties() {
-              return {
-                  inputLanguage: String
-              }
-          }
+      class SCMoreMenu extends ReduxMixin(Polymer.Element) {
+          static get is() {
+              return 'sc-more-menu'
+          };
       }
 
       customElements.define(SCMoreMenu.is, SCMoreMenu);
