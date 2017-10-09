@@ -46,7 +46,7 @@ This is the base language menu that determines the language of the site.
 
     <iron-ajax
         auto
-        url='[[_getLanguagesUrl()]]'
+        url='[[_getUrl()]]'
         handle-as="json"
         last-response="{{allLanguages}}"></iron-ajax>
 
@@ -68,7 +68,9 @@ This is the base language menu that determines the language of the site.
 
   <script>
       class LanguageBaseMenu extends ReduxMixin(Polymer.Element) {
-          static get is() { return 'language-base-menu'; }
+          static get is() {
+              return 'language-base-menu';
+          }
 
           static get properties() {
               return {
@@ -118,14 +120,13 @@ This is the base language menu that determines the language of the site.
           // Listens to changes in the global redux app state and updates the language chosen in the list dropdown.
           _computeSelectedLanguageNr(chosenLanguageIsoCode) {
               try {
-                  const isoCodes = this.allLanguages.map(item => item.iso_code);
+                  const isoCodes =this.allLanguages.map(item => item.iso_code);
                   return isoCodes.indexOf(chosenLanguageIsoCode) * 2;
               } catch (e) {
-                  return 0;
-              }
+                  return 0;}
           }
 
-          _getLanguagesUrl() {
+          _getUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/languages`;
           }
       }

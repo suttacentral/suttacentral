@@ -1,11 +1,13 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="static/home-page.html">
-<link rel="import" href="static/dons-page.html">
-<link rel="import" href="static/downloads-page.html">
-<link rel="import" href="static/people-page.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="/../bower_components/polymer/polymer.html">
+<link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="/../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="/../elements/static/home-page.html">
+<link rel="import" href="/../elements/static/donations-page.html">
+<link rel="import" href="/../elements/static/downloads-page.html">
+<link rel="import" href="/../elements/static/people-page.html">
+<link rel="import" href="/../elements/sc-donate-now-page.html">
 
 <dom-module id="sc-page-static">
   <template>
@@ -92,7 +94,10 @@
         <home-page></home-page>
       </div>
       <div name="DONATIONS">
-        <dons-page></dons-page>
+        <sc-donations-page></sc-donations-page>
+      </div>
+      <div name="DONATE-NOW">
+        <sc-donate-now-page></sc-donate-now-page>
       </div>
       <div name="DOWNLOADS">
         <downloads-page></downloads-page>
@@ -135,6 +140,9 @@
                       break;
                   case 'DONATIONS':
                       this.$.pages.selected = 'DONATIONS';
+                      break;
+                  case 'DONATE-NOW':
+                      this.$.pages.selected = "DONATE-NOW";
                       break;
                   case 'DOWNLOADS':
                       this.$.pages.selected = 'DOWNLOADS';

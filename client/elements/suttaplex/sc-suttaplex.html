@@ -1,22 +1,22 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
-<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
-<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
-<link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="/../bower_components/polymer/polymer.html">
+<link rel="import" href="/../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="/../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="/../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="/../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/../bower_components/paper-item/paper-item.html">
+<link rel="import" href="/../bower_components/paper-button/paper-button.html">
+<link rel="import" href="/../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/../bower_components/paper-card/paper-card.html">
+<link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/../bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="/../bower_components/paper-badge/paper-badge.html">
 
-<link rel="import" href="../../img/sc-svg-icons.html">
-<link rel="import" href="../addons/sc-sutta-note.html">
-<link rel="import" href="../menus/language-menu.html">
-<link rel="import" href="../menus/more-par-menu.html">
-<link rel="import" href="sc-view-parallels.html">
+<link rel="import" href="/../img/sc-svg-icons.html">
+<link rel="import" href="/../elements/addons/sc-sutta-note.html">
+<link rel="import" href="/../elements/menus/language-menu.html">
+<link rel="import" href="/../elements/menus/more-par-menu.html">
+<link rel="import" href="/../elements/suttaplex/sc-view-parallels.html">
 
 <!--
   Suttaplex card
@@ -143,6 +143,10 @@
         align-self: flex-end;
       }
 
+      .more-info {
+        align-self: flex-end;
+      }
+
       .paper-badge {
         --paper-badge-margin-left: -15px;
         --paper-badge-margin-bottom: -10px;
@@ -183,18 +187,31 @@
             </template>
           </template>
           <div class="languagedrop">
-            <language-menu language-choice="[[item.translations]]" title-label="More translations"
+            <language-menu language-choice="[[item.translations]]" title-label="More"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
                            root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndex"
                            on-paper-dropdown-open="_changeItemZIndex"></language-menu>
           </div>
         </div>
 
-        <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]"
-                           on-tap="_toggleParallelsOpened">
-        </paper-icon-button>
-        <paper-badge for="parallels-toggle" label="[[item.parallel_count]]" class="paper-badge"
-                     title="Number of parallels"></paper-badge>
+        <div>
+          <template is="dom-if" if="[[parallelsOpened]]">
+            <paper-menu-button horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top"
+                                aria-disabled="false">
+                <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
+                                    tabindex="0" aria-disabled="false"></paper-icon-button>
+                <div slot="dropdown-content"></div>
+                <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
+                    <more-par-menu tabindex="0" item="[[item]]" ></more-par-menu>
+                </paper-listbox>
+              </paper-menu-button>
+          </template>
+
+          <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
+          </paper-icon-button>
+          <paper-badge for="parallels-toggle" label="[[item.parallel_count]]" class="paper-badge"
+                        title="Number of parallels"></paper-badge>
+        </div>
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
@@ -284,7 +301,7 @@
 
           // Computes API endpoint URL for given translation
           _computeApiUrlEndpoint(uid, author) {
-              return `${uid}/${author}`;
+              return `/sutta/${uid}/?author=${author}`;
           }
 
           _isChosenLang(lang) {
@@ -311,6 +328,6 @@
           }
       }
 
-      customElements.define(SCSuttaplex.is, SCSuttaplex)
+      customElements.define(SCSuttaplex.is, SCSuttaplex);
   </script>
 </dom-module>

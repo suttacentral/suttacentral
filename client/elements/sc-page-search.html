@@ -1,13 +1,13 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-location/iron-location.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../bower_components/iron-list/iron-list.html">
-<link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
-<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="/../bower_components/polymer/polymer.html">
+<link rel="import" href="/../bower_components/iron-location/iron-location.html">
+<link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="/../bower_components/iron-list/iron-list.html">
+<link rel="import" href="/../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
+<link rel="import" href="/../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="/../bower_components/iron-flex-layout/iron-flex-layout.html">
 
-<link rel="import" href="menus/search-filter-menu.html">
+<link rel="import" href="/../elements/menus/search-filter-menu.html">
 
 <!--
 The search page opens when a search string is typed into the search-input-box in the toolbar.
@@ -415,7 +415,8 @@ than ten results in total, a dropdown selection menu appears at the top.
           }
 
           _areAllItemsLoaded() {
-              return this.totalLoadedResults !== 0 && this.totalLoadedResults === this.resultCount;
+              return (this.resultCount === 0 && this.currentPage > 0) ||
+                      (this.totalLoadedResults !== 0 && this.totalLoadedResults >= this.resultCount);
           }
 
           _calculateItemCategory(item) {

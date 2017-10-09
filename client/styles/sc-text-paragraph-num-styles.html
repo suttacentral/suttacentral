@@ -90,7 +90,7 @@
         content: "Fol "
       }
 
-      a.gatha-number:before {
+      a.gn:before {
         content: "Verse "
       }
 
@@ -303,6 +303,10 @@
         content: "San "
       }
 
+      a.sag:before {
+        content: "Sag "
+      }
+
       a.say-v:before {
         content: "Say-v "
       }
@@ -331,7 +335,7 @@
         content: "SHT "
       }
 
-      a.snp-vagga-section-verse:before, a.snp-vagga-verse:before {
+      a.svsv:before, a.svv:before {
         content: "SNP "
       }
 
@@ -355,7 +359,7 @@
         content: "Tri "
       }
 
-      a.ud-sutta:before, a.ud-vagga-sutta:before {
+      a.us:before, a.uvs:before {
         content: "Ud "
       }
 
@@ -368,7 +372,7 @@
         content: "Uv "
       }
 
-      a.vagga-gatha-num-sc:before {
+      a.vgns:before {
         content: "Vagga/verse "
       }
 
@@ -380,11 +384,11 @@
         content: "Var-v "
       }
 
-      a.verse-num-sc:before {
+      a.vns:before {
         content: "SC verse "
       }
 
-      a.verse-num-pts:before {
+      a.vnp:before {
         content: "PTS verse "
       }
 
@@ -404,7 +408,7 @@
         content: "WP "
       }
 
-      a.wp-verse:before {
+      a.wpv:before {
         content: "WP verse "
       }
 
@@ -434,7 +438,7 @@
       a.eno89,
       a.fuk03,
       a.fol,
-      a.gatha-number,
+      a.gn,
       a.gatn,
       a.gbm,
       a.gno78,
@@ -470,16 +474,17 @@
       a.rs-vp,
       a.san87,
       a.san89,
+      a.sag,
       a.sc,
       a.sen,
       a.sht,
-      a.snp-vagga-section-verse,
-      a.snp-vagga-verse,
+      a.svsv,
+      a.svv,
       a.t,
       a.titus,
       a.t-linehead,
-      a.ud-sutta,
-      a.ud-vagga-sutta,
+      a.us,
+      a.uvs,
       a.tri62,
       a.tri95,
       a.msviv,
@@ -489,7 +494,7 @@
       a.vai58,
       a.vai59,
       a.vai61,
-      a.verse-num-pts,
+      a.vnp,
       a.vimula,
       a.vn,
       a.nst,
@@ -546,8 +551,8 @@
       a.sbvi,
       a.sbvii,
       a.ia,
-      a.verse-num-sc,
-      a.vagga-gatha-num-sc,
+      a.vns,
+      a.vgns,
       a.ba,
       a.pts-s,
       a.fa,
@@ -557,7 +562,7 @@
       a.dhskm,
       a.bv,
       a.thv,
-      a.wp-verse,
+      a.wpv,
       a.flw {
         visibility: hidden;
         text-align: left;
@@ -586,7 +591,7 @@
       .infomode a.eno89,
       .infomode a.fuk03,
       .infomode a.fol,
-      .infomode a.gatha-number,
+      .infomode a.gn,
       .infomode a.gatn,
       .infomode a.gbm,
       .infomode a.gno78,
@@ -622,16 +627,17 @@
       .infomode a.rs-vp,
       .infomode a.san87,
       .infomode a.san89,
+      .infomode a.sag,
       .infomode a.sc,
       .infomode a.sen,
       .infomode a.sht,
-      .infomode a.snp-vagga-section-verse,
-      .infomode a.snp-vagga-verse,
+      .infomode a.svsv,
+      .infomode a.svv,
       .infomode a.t,
       .infomode a.titus,
       .infomode a.t-linehead,
-      .infomode a.ud-sutta,
-      .infomode a.ud-vagga-sutta,
+      .infomode a.us,
+      .infomode a.uvs,
       .infomode a.tri62,
       .infomode a.tri95,
       .infomode a.msviv,
@@ -641,7 +647,7 @@
       .infomode a.vai58,
       .infomode a.vai59,
       .infomode a.vai61,
-      .infomode a.verse-num-pts,
+      .infomode a.vnp,
       .infomode a.vimula,
       .infomode a.vn,
       .infomode a.nst,
@@ -698,8 +704,8 @@
       .infomode a.sbvi,
       .infomode a.sbvii,
       .infomode a.ia,
-      .infomode a.verse-num-sc,
-      .infomode a.vagga-gatha-num-sc,
+      .infomode a.vns,
+      .infomode a.vgns,
       .infomode a.ba,
       .infomode a.pts-s,
       .infomode a.fa,
@@ -709,7 +715,7 @@
       .infomode a.dhskm,
       .infomode a.bv,
       .infomode a.thv,
-      .infomode a.wp-verse,
+      .infomode a.wpv,
       .infomode a.flw {
         visibility: visible;
         opacity: 1;
@@ -717,8 +723,8 @@
         transition-property: opacity;
       }
 
-      a.snp-vagga-section-verse,
-      a.snp-vagga-verse {
+      a.svsv,
+      a.svv {
         display: none;
       }
 
@@ -749,7 +755,7 @@
 
       a.wp,
       a.gbm,
-      a.verse-num-sc,
+      a.vns,
       a.dhskm {
         color: var(--paper-red-500);
       }
@@ -759,14 +765,14 @@
       }
 
       a.pts1ed,
-      a.vagga-gatha-num-sc {
+      a.vgns {
         color: var(--paper-cyan-500);
       }
 
       a.pts2ed,
       a.pts-vp-en,
       a.pts-s,
-      a.wp-verse {
+      a.wpv {
         color: var(--paper-red-500);
       }
 

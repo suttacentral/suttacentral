@@ -98,12 +98,15 @@ def generate_relationships(roots: List[models.Root]) -> models.ModelList:
     return models.Relationship.generate(roots)
 
 
-def generate_dict(_from, to):
+def generate_lookup_dict(_from, to):
     db = get_db()
     db['dictionaries'].insert({
         'from': _from,
         'to': to,
-        'dictionary': []
+        'dictionary': [],
+        'lookup': True,
+        'main': True,
+        'type': 'maindata'
     })
 
 
