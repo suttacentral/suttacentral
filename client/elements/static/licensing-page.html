@@ -1,0 +1,65 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<link rel="import" href="/styles/static-styles.html">
+
+<dom-module id="sc-licensing-page">
+  <template>
+    <style include="static-styles">
+    </style>
+
+    <div id="page-wrap">
+      <main>
+        <section>
+          <article>
+            <h1>Licensing</h1>
+            <p>The Buddhist texts, whether in original languages or translation, are regarded by the Buddhist traditions
+              as “the Buddha’s words”. They are a spiritual heritage of humanity, not belonging to any individual. At
+              SuttaCentral we continue this tradition by making the texts available to everyone free of charge.</p>
+            <p>Our source files are freely available on 
+                <a href="https://github.com/suttacentral" title="SuttaCentral on Github" target="_blank">SuttaCentral’s
+              Github repository</a>. SuttaCentral is proud to be part of the open source community.</p>
+            <p>Material on SuttaCentral falls in three distinct categories in relation to copyright, which are detailed
+              below. If you wish to assert copyright over any material on SuttaCentral, or wish to discuss copyright on
+              SuttaCentral, please do not hesitate to contact us 
+              <a href="https://discourse.suttacentral.net/" target="_blank">on our forum</a>.</p>
+            <h3>1. Original material created by SuttaCentral</h3>
+            <p>All original material created by SuttaCentral is dedicated to the Public Domain by means of 
+                <a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank">Creative Commons Zero (CC0
+              1.0 Universal)</a>.</p>
+            <p>This includes all text, design, software, and images created by SuttaCentral or persons working for
+              SuttaCentral, on the domain suttacentral.net, or any domains or subdomains owned or managed by
+              SuttaCentral, unless otherwise specified.</p>
+            <p>You are invited to copy, alter, redistribute, present, perform, convey or make use of any or all of this
+              material in any way you wish. We would appreciate a notice of attribution, but you are under no legal
+              obligation to do so. Since we retain no legal control over this material, it is legally possible to copy
+              it, make alterations, and assert a licence on the altered version. However, we respectfully request that
+              you do not do this, as it is contrary to the spirit of our project and the Buddhist tradition.</p>
+            <p>Please let us know if you would like any assistance in making use of our materials.</p>
+            <h3>2. Material created by others and made available for SuttaCentral</h3>
+            <p>For certain of the material on SuttaCentral the copyright has been asserted by third parties. This
+              includes most of the translated texts. In such cases the terms of the copyright are specified by the
+              copyright asserter, who is usually the translator or original publisher. Such material is used in accord
+              with the licence, or by permission. The relevant copyright notices as specified by the asserter of
+              copyright are included with the material.</p>
+            <h3>3. Public domain material</h3>
+            <p>The original texts of Buddhism in Pali, Chinese, Sanskrit, Tibetan, and other languages are in the 
+                <a href="http://creativecommons.org/publicdomain/mark/1.0/" target="_blank">public domain</a>. Such
+              material does not fall within the scope of copyright.</p>
+            <p>In addition, the reference data, including information on parallels, is not an “original creation” and as
+              such does not fall within the scope of copyright.</p>
+          </article>
+        </section>
+      </main>
+    </div>
+  </template>
+
+  <script>
+      class SCLicensingPage extends Polymer.Element {
+          static get is() {
+              return 'sc-licensing-page';
+          }
+      }
+
+      customElements.define(SCLicensingPage.is, SCLicensingPage);
+  </script>
+</dom-module>
