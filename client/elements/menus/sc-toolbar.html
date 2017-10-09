@@ -155,7 +155,7 @@ Issues:
                       searchSize = 540
                   }
                   if (window.innerWidth < 1040) {
-                      Polymer.dom(this.root.host.offsetParent).querySelector('#toolbartitlebox')
+                      Polymer.dom(this.root.host.offsetParent).querySelector('#toolbar_title_box')
                           .setAttribute('style', 'visibility:hidden')
                   }
                   let searchWidth;
@@ -184,7 +184,7 @@ Issues:
                   this.shadowRoot.querySelector('#searchInput').removeAttribute('style', 'width');
                   this.shadowRoot.querySelector('#closebutton').style.display = 'none';
                   this.shadowRoot.querySelector('#toolsmenu').classList.remove('search-open');
-                  Polymer.dom(this.root.host.offsetParent).querySelector('#toolbartitlebox')
+                  Polymer.dom(this.root.host.offsetParent).querySelector('#toolbar_title_box')
                       .removeAttribute('style', 'display');
               }
           }
