@@ -1,6 +1,6 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
 
-<link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="/styles/static-styles.html">
 
 <dom-module id="downloads-page">
   <template>
@@ -13,7 +13,6 @@
     <div id="page-wrap">
       <main>
         <section>
-
           <h1>Downloads</h1>
 
           <h2 id="book_of_the_discipline">The Book of the Discipline</h2>
@@ -103,8 +102,11 @@
   </template>
 
   <script>
-      Polymer({
-          is: 'downloads-page'
-      });
+      class SCDownloadsPage extends Polymer.Element {
+          static get is() {
+            return 'downloads-page';
+          }
+      }
+      customElements.define(SCDownloadsPage.is, SCDownloadsPage);
   </script>
 </dom-module>

@@ -1,8 +1,8 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
 
-<link rel="import" href="../addons/sc-epigraph.html">
-<link rel="import" href="../addons/random-image.html">
-<link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="/elements/addons/sc-epigraph.html">
+<link rel="import" href="/elements/addons/random-image.html">
+<link rel="import" href="/styles/static-styles.html">
 
 <dom-module id="home-page">
   <template>
@@ -56,8 +56,11 @@
   </template>
 
   <script>
-      Polymer({
-          is: 'home-page'
-      });
+      class SCHomePage extends Polymer.Element {
+          static get is() {
+             return 'home-page';
+          }
+      }
+      customElements.define(SCHomePage.is, SCHomePage);
   </script>
 </dom-module>
