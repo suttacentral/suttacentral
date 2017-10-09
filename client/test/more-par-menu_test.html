@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name=viewport content="width=device-width, minimum-scale=1.0, inital-scale=1.0, user-scalable=yes">
+    
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="/bower_components/web-component-tester/browser.js"></script>
+    <script src="/bower_components/test-fixture/test-fixture-mocha.js"></script>
+
+    <link rel="import" href="/elements/menus/more-par-menu.html">
+</head>
+
+<body>
+
+    <test-fixture id="ScMoreParMenu">
+        <template>
+            <more-par-menu></more-par-menu>
+        </template>
+    </test-fixture>
+
+    <script>
+        suite('<sc-donate-now-page>', () => {
+            let basic;
+            let server;
+
+            setup(() => {
+                basic = fixture('ScMoreParMenu');
+            })
+
+            test('Should have 3 buttons', (done) => {
+                flush(() => {
+                    let buttons = basic.shadowRoot.querySelector('.button-text');
+                    assert.equal(buttons.length, 3);
+                    done();
+                })
+            })
+
+            teardown(() => {
+                server.restore();
+            })
+        })
+    </script>
+</body>
+</html>

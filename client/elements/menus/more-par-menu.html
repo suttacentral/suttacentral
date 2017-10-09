@@ -1,9 +1,10 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
-<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="/bower_components/iron-icons/social-icons.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/neon-animation/web-animations.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 
 <!--
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
@@ -16,55 +17,100 @@ Menu on top of the suttaplex parallel's list for copying information from parall
         color: var(--disabled-text-color);
       }
 
-      paper-item {
+      .button-text {
         color: inherit;
+      }
+
+      .button-text:hover {
+        cursor: pointer;
+        background-color: var(--paper-grey-200);
       }
     </style>
 
-    <paper-item on-tap="_copyLink">
+    <iron-ajax id="parallels_ajax"
+               auto
+               url="[[_getAPIEndpoint(item)]]"
+               handle-as="json"
+               loading="{{ loadingParallels }}"
+               last-response="{{ parallels }}"></iron-ajax>
+
+    <paper-item on-tap="_copyLink" class="button-text" title="[[itemLink]]">
       <iron-icon icon="link"></iron-icon>
       Copy link
     </paper-item>
-    <paper-item on-tap="_copyContent">
+    <paper-item on-tap="_copyContent" class="button-text" disabled="{{loadingParallels}}">
       <iron-icon icon="content-copy"></iron-icon>
       Copy table
     </paper-item>
-    <paper-item on-tap="_copyCite">
+    <paper-item on-tap="_copyCite" class="button-text" disabled="{{loadingParallels}}">
       <iron-icon icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>
   </template>
 
   <script>
-      Polymer({
-          is: 'more-par-menu',
-          properties: {
-              inputUrl: String,
-              inputData: {
-                  type: Object,
-                  notify: true
-              },
-              parallelsArray: {
-                  type: Array,
-                  notify: true
+      class SCMoreParMenu extends Polymer.Element {
+          static get is() {
+              return 'more-par-menu';
+          }
+
+          static get properties() {
+              return {
+                  item: {
+                      type: Object,
+                  },
+                  inputData: {
+                      type: Object,
+                      notify: true
+                  },
+                  parallelsArray: {
+                      type: Array,
+                      notify: true
+                  },
+                  itemLink: {
+                      type: Array,
+                      computed: '_computeLink()'
+                  },
+                  parallels: {
+                      type: Object
+                  },
+                  loadingParallels: {
+                      type: Boolean,
+                      value: true
+                  }
               }
-          },
+          }
+
           // copy the parallels-table in html-string
-          _copyContent: function() {
-              const copyTextarea = this._computeCopyTable(this.inputData, this.parallelsArray);
+          _copyContent() {
+              const copyTextarea = this._computeCopyTable();
               this._copyToClipboard(copyTextarea);
-          },
+          }
+
+          _gotParallels() {
+              const copyTextarea = this._computeCopyTable();
+              this._copyToClipboard(copyTextarea);
+          }
+
+          _computeLink() {
+              const url = window.location;
+              const baseUrl = url.protocol + "//" + url.host;
+              return baseUrl + '/sutta/' + this.item.uid;
+          }
+
           // Copy the link to the suttaplex page
-          _copyLink: function() {
-              this._copyToClipboard("https://suttacentral.net/" + this.inputUrl);
-          },
+          _copyLink() {
+              this._copyToClipboard(this.itemLink);
+          }
+
           //  copy cite-information about parallels and bibliography.
-          _copyCite: function() {
+          _copyCite() {
               const copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
               this._copyToClipboard(copyTextarea);
-          },
+          }
+
           // copies inputtext to the clipboard by creating and selecting a dummy element.
-          _copyToClipboard: function(inputText) {
+          _copyToClipboard(inputText) {
               const textarea = document.createElement("textarea");
               textarea.textContent = inputText;
               textarea.style.position = "fixed";
@@ -78,10 +124,18 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               } finally {
                   document.body.removeChild(textarea);
               }
-          },
+          }
+
+          _computeIconForType(type) {
+            if (type === 'parallels') return 'swap-horiz';
+            if (type === 'retells') return 'cached';
+            if (type === 'mentions') return 'editor:format-quote';
+            return '';
+        }
+
           // icons to be used instead of iron icons in the base html-string copy function
-          _computeIcon: function(icon) {
-              switch (icon) {
+          _computeIcon(parallel) {
+              switch (this._computeIconForType(parallel.type)) {
                   case 'swap-horiz':
                       return '⮀';
                   case 'compare-arrows':
@@ -91,33 +145,37 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   case 'cached':
                       return '🔃';
               }
-          },
+          }
+
           // creates a parallels-table in html-string
-          _computeCopyTable: function(inputData, parallelsArray) {
-              let titlepi = "";
-              if (inputData.parallels) {
-                  tablefinalplugin = "";
-                  for (let x = 0; x < inputData.parallels.length; x++) {
-                      const relationships = inputData.parallels[x].relations;
-                      let tableplugin = "\n<tbody>\n  <tr>\n    <td rowspan='" + relationships.length + "'>" + inputData.parallels[x].id + "</td>";
-                      for (let i = 0; i < relationships.length; i++) {
-                          for (let parobject = 0; parobject < parallelsArray.length; parobject++) {
-                              if (parallelsArray[parobject].parid === relationships[i].id) {
-                                  titlepi = parallelsArray[parobject].partitle;
-                              }
-                          }
-                          tableplugin += "\n    <td>" + this._computeIcon(relationships[i].icon) + "</td>\n    <td>" + relationships[i].id + "</td>\n    <td>" + titlepi + "</td>\n  </tr>";
-                          if (i < relationships.length - 1) {
-                              tableplugin += "\n  <tr>";
-                          }
+          _computeCopyTable() {
+              const head = `<!DOCTYPE>\n<html>\n<head>\n  <title>${this.item.uid} ${this.item.original_title}</title>\n</head>\n`;
+              let body = `<body>\n<table>\n  <caption>${this.item.original_title}</caption>\n`;
+              for (let section of Object.keys(this.parallels)) {
+                  let tbody = '<tbody>\n';
+                  let size = this.parallels[section].length;
+                  let first = true;
+                  let tr = '';
+                  for(let parallel of this.parallels[section]){
+                      tr = '  <tr>\n';
+                      if(first) {
+                          tr += `    <td rowspan=${size}>${section}</td>\n`;
+                          first = false;
                       }
-                      tablefinalplugin += tableplugin + "\n</tbody>";
+                      tr += `    <td>${this._computeIcon(parallel)}</td>\n`;
+                      tr += `    <td>${parallel.to.to}</td>\n`;
+                      tr += `    <td>${parallel.to.original_title}</td>\n`;
+                      tbody += `${tr}  </tr>\n`;
                   }
-                  return "<!DOCTYPE html>\n<html>\n<head>\n  <title>" + inputData.id + " " + inputData.titlepi + "</title>\n</head>\n<body>\n<table>\n  <caption>" + inputData.titlepi + "</caption>" + tablefinalplugin + "\n</table>\n</body>\n</html>";
+                  
+                  body += `${tbody}</tbody>\n`;
               }
-          },
+              body += '</table>\n</body>\n</html>';
+              return head + body;
+          }
+
           // creates cite data for parallels with parallels-list and bibliographical information
-          _computeCiteData: function(inputData, parallelsArray) {
+          _computeCiteData(inputData, parallelsArray) {
               if (inputData.parallels) {
                   citefinalplugin = "";
                   const d = new Date();
@@ -145,6 +203,12 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   return this.citeData = citefinalplugin + "Retrieved from https://suttacentral.net/" + inputData.url + " on " + d + ".";
               }
           }
-      });
+
+          _getAPIEndpoint(item) {
+              return `api/parallels/${item.uid}`;
+          }
+      }
+
+      customElements.define(SCMoreParMenu.is, SCMoreParMenu);
   </script>
 </dom-module>
