@@ -1,9 +1,10 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
-<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="/bower_components/iron-icons/social-icons.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/neon-animation/web-animations.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 
 <!--
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
@@ -26,7 +27,14 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
     </style>
 
-    <paper-item on-tap="_copyLink" class="button-text">
+    <iron-ajax id="parallelsAjax"
+                url="[[_getAPIEndpoint(item)]]"
+                handle-as="json"
+                loading="{{loadingParallels}}"
+                last-response="{{Parallels}}"
+                on-response="_gotParallels"></iron-ajax>
+
+    <paper-item on-tap="_copyLink" class="button-text" title="[[itemLink]]">
       <iron-icon icon="link"></iron-icon>
       Copy link
     </paper-item>
@@ -58,6 +66,17 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   parallelsArray: {
                       type: Array,
                       notify: true
+                  },
+                  itemLink: {
+                      type: Array,
+                      computed: '_computeLink()'
+                  },
+                  Parallels: {
+                      type: Array
+                  },
+                  loadingParallels: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -68,11 +87,15 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               this._copyToClipboard(copyTextarea);
           }
 
-          // Copy the link to the suttaplex page
-          _copyLink() {
+          _computeLink() {
             const getUrl = window.location;
             const baseUrl = getUrl .protocol + "//" + getUrl.host;
-              this._copyToClipboard(baseUrl + '/sutta/' + this.item.uid);
+            return baseUrl + '/sutta/' + this.item.uid;
+          }
+
+          // Copy the link to the suttaplex page
+          _copyLink() {
+              this._copyToClipboard(this.itemLink);
           }
 
           //  copy cite-information about parallels and bibliography.
@@ -98,19 +121,20 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               }
           }
 
+          
           // icons to be used instead of iron icons in the base html-string copy function
           _computeIcon(icon) {
               switch (icon) {
                   case 'swap-horiz':
-                      return '⮀';
+                  return '⮀';
                   case 'compare-arrows':
-                      return '≈';
+                  return '≈';
                   case 'editor:format-quote':
-                      return '❞';
+                  return '❞';
                   case 'cached':
-                      return '🔃';
-              }
-          }
+                  return '🔃';
+                }
+            }  
 
           // creates a parallels-table in html-string
           _computeCopyTable(inputData, parallelsArray) {
@@ -165,7 +189,10 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   }
                   return this.citeData = citefinalplugin + "Retrieved from https://suttacentral.net/" + inputData.url + " on " + d + ".";
               }
-          }        
+          }
+          _getAPIEndpoint(item) {
+              return `api/parallels/${item.uid}`;
+          } 
       }
       customElements.define(SCMoreParMenu.is, SCMoreParMenu);
   </script>

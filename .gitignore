@@ -10,3 +10,4 @@ client/data/
 /data
 /server/nextdata/
 .DS_Store
+client/node_modules/
