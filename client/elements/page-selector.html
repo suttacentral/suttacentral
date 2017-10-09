@@ -61,13 +61,13 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         z-index: -10;
       }
 
-      #toolbartitle {
+      #toolbar_title {
         @apply --sc-sans-font;
         text-transform: capitalize;
         color: white;
       }
 
-      .search-mode #toolbartitle, .dictionary-mode #toolbartitle {
+      .search-mode #toolbar_title, .dictionary-mode #toolbar_title {
         text-transform: none;
       }
 
@@ -77,7 +77,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       }
 
       @media screen and (max-width: 450px) {
-        #toolbartitle {
+        #toolbar_title {
           font-size: calc(16px * var(--sc-skolar-font-scale));
         }
       }
@@ -366,19 +366,19 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       if (event.detail.divisiontitle) {
                           this.divisionTitle = event.detail.divisiontitle
                       }
-                      this.toolbarTitle = this.divisionTitle;
+                      this.dispatch('changeToolbarTitle', this.divisionTitle);
                       break;
                   case 'text-mode':
                       if (event.detail.suttatitle) {
                           this.suttaTitle = event.detail.suttatitle
                       }
-                      this.toolbarTitle = this.suttaTitle;
+                      this.dispatch('changeToolbarTitle', this.suttaTitle);
                       break;
                   case 'segmented-mode':
                       if (event.detail.suttasegtitle) {
                           this.suttaSegTitle = event.detail.suttasegtitle
                       }
-                      this.toolbarTitle = this.suttaSegTitle;
+                      this.dispatch('changeToolbarTitle', this.suttaSegTitle);
                       break;
               }
           }

@@ -12,8 +12,7 @@
 <link rel="import" href="/../elements/menus/sc-more-menu.html">
 
 <!--
-Base toolbar that appear on the top right in the header of every page. Not all items are shown on all pages
-This toolbar is called from the page-selector.
+Base toolbar that appear on the top right in the header of every page. This toolbar is called from the page-selector.
 
 Issues:
   - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows
@@ -38,8 +37,6 @@ Issues:
       }
 
       .toolbar-input {
-        display: inline-block;
-        vertical-align: text-bottom;
         --paper-input-container: {
           padding: 0;
         };
@@ -52,17 +49,19 @@ Issues:
         --paper-input-container-input: {
           color: white;
         };
+        display: inline-block;
+        vertical-align: text-bottom;
       }
 
       .toolbar-badge {
         --paper-badge-background: var(--paper-green-a700);
       }
 
-      #closebutton {
+      #close_button {
         display: none;
       }
 
-      #searchInput {
+      #search_input {
         width: 0;
         transition: width .2s cubic-bezier(.4, 0, .2, 1);
       }
@@ -75,19 +74,19 @@ Issues:
         text-decoration: none;
       }
 
-      .search-open #discoursebutton, .search-open > #morevertbutton {
+      .search-open #discoursebutton, .search-open > #more_vert_button {
         display: none;
       }
     </style>
 
     <iron-location path="{{path}}" query="{{query}}"></iron-location>
 
-    <div id="toolsmenu">
+    <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
-      <iron-a11y-keys target="{{searchInput}}" keys="enter" on-keys-pressed="startSearch"></iron-a11y-keys>
+      <iron-a11y-keys target="search_input" keys="enter" on-keys-pressed="startSearch"></iron-a11y-keys>
       <paper-icon-button icon="search" class="white-icon" on-tap="openSearch"></paper-icon-button>
-      <paper-input class="toolbar-input" label="Search" no-label-float id="searchInput"></paper-input>
-      <paper-icon-button icon="close" class="white-icon" id="closebutton" on-tap="closeSearch"></paper-icon-button>
+      <paper-input class="toolbar-input" label="Search" no-label-float id="search_input"></paper-input>
+      <paper-icon-button icon="close" class="white-icon" id="close_button" on-tap="closeSearch"></paper-icon-button>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
       <a class="toolbar-link" tabindex="-1" target="_blank">
@@ -98,7 +97,7 @@ Issues:
                    title="This text has 20 references"></paper-badge>
 
       <!-- Menu for more options like language and other static pages -->
-      <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="morevertbutton">
+      <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="more_vert_button">
         <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger"></paper-icon-button>
         <div slot="dropdown-content"></div>
         <paper-listbox slot="dropdown-content" tabindex="0">
@@ -116,25 +115,6 @@ Issues:
 
           static get properties() {
               return {
-                  inputLanguage: String,
-
-                  // If suttaPath exists, it means that there is an author and that this is a text-page with
-                  // different elements showing.
-                  suttaPath: {
-                      type: String,
-                      value: '',
-                      notify: true
-                  },
-                  category: String,
-
-                  // Value of the meta data of the text-pages that is passed onto the settings-menu dialog
-                  metaArea: {
-                      type: String,
-                      notify: true
-                  },
-
-                  // The input on the search box
-                  searchInput: String,
                   path: String,
                   query: String
               }
@@ -143,17 +123,14 @@ Issues:
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
           // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
           openSearch() {
-              if (this.shadowRoot.querySelector('#searchInput').classList.contains('opened')) {
+              if (this.shadowRoot.querySelector('#search_input').classList.contains('opened')) {
                   this.startSearch();
               } else {
-                  this.shadowRoot.querySelector('#searchInput').classList.add('opened');
-                  this.shadowRoot.querySelector('#searchInput').focus();
-                  this.shadowRoot.querySelector('#closebutton').style.display = 'inline-block';
-                  this.shadowRoot.querySelector('#searchInput').value = '';
+                  this.shadowRoot.querySelector('#search_input').classList.add('opened');
+                  this.shadowRoot.querySelector('#search_input').focus();
+                  this.shadowRoot.querySelector('#close_button').style.display = 'inline-block';
+                  this.shadowRoot.querySelector('#search_input').value = '';
                   let searchSize = 500;
-                  if (this.suttaPath) {
-                      searchSize = 540
-                  }
                   if (window.innerWidth < 1040) {
                       Polymer.dom(this.root.host.offsetParent).querySelector('#toolbar_title_box')
                           .setAttribute('style', 'visibility:hidden')
@@ -164,10 +141,7 @@ Issues:
                   } else if (window.innerWidth > 480) {
                       searchWidth = window.innerWidth - (searchSize - 210);
                   } else {
-                      this.shadowRoot.querySelector('#toolsmenu').classList.add('search-open');
-                      if (this.suttaPath) {
-                          searchSize = 500
-                      }
+                      this.shadowRoot.querySelector('#tools_menu').classList.add('search-open');
                       searchWidth = window.innerWidth - (searchSize - 320);
                   }
                   if (searchWidth > 360) {
@@ -179,11 +153,11 @@ Issues:
 
           // Closes the searchbox and resets original values.
           closeSearch() {
-              if (this.shadowRoot.querySelector('#searchInput').classList.contains('opened')) {
-                  this.shadowRoot.querySelector('#searchInput').classList.remove('opened');
-                  this.shadowRoot.querySelector('#searchInput').removeAttribute('style', 'width');
-                  this.shadowRoot.querySelector('#closebutton').style.display = 'none';
-                  this.shadowRoot.querySelector('#toolsmenu').classList.remove('search-open');
+              if (this.shadowRoot.querySelector('#search_input').classList.contains('opened')) {
+                  this.shadowRoot.querySelector('#search_input').classList.remove('opened');
+                  this.shadowRoot.querySelector('#search_input').removeAttribute('style', 'width');
+                  this.shadowRoot.querySelector('#close_button').style.display = 'none';
+                  this.shadowRoot.querySelector('#tools_menu').classList.remove('search-open');
                   Polymer.dom(this.root.host.offsetParent).querySelector('#toolbar_title_box')
                       .removeAttribute('style', 'display');
               }
@@ -191,7 +165,7 @@ Issues:
 
           // Initiates the search function.
           startSearch() {
-              const searchQuery = this.shadowRoot.querySelector('#searchInput').value;
+              const searchQuery = this.shadowRoot.querySelector('#search_input').value;
               this.set('path', '/search');
               this.set('query', `query=${searchQuery}`);
           }
