@@ -53,7 +53,7 @@
     "iron-media-query": "^2.0.0",
     "iron-form": "^2.0.1",
     "paper-checkbox": "^2.0.1",
-    "paper-toast": "^2.0.0"
+    "paper-toast": "^2.0.0",
     "polymer-redux": "tur-nr/polymer-redux#^1.0.3"
   },
   "devDependencies": {
