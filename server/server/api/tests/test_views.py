@@ -1,4 +1,4 @@
-from api.views import Languages, Menu, SuttaplexList, Parallels, Dictionaries, Sutta
+from api.views import Languages, Menu, SuttaplexList, Parallels, LookupDictionaries, Sutta
 from app import api
 from common import utils
 
@@ -71,20 +71,20 @@ def test_sutta_view(client):
     assert res.status_code == 200
 
 
-def test_dictionaries_no_query(client):
-    res = client.get(api.url_for(Dictionaries))
+def test_lookup_dictionaries_no_query(client):
+    res = client.get(api.url_for(LookupDictionaries))
 
     assert res.status_code == 422
 
 
-def test_dictionaries(client):
+def test_lookup_dictionaries(client):
 
-    utils.generate_dict(_from='pli', to='en')
+    utils.generate_lookup_dict(_from='pli', to='en')
 
     data = {
         'from': 'pli',
         'to': 'en'
     }
-    res = client.get(api.url_for(Dictionaries, **data))
+    res = client.get(api.url_for(LookupDictionaries, **data))
 
     assert res.status_code == 200
