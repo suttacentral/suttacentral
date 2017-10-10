@@ -52,7 +52,8 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
             LET res = {
                 lang: text.lang,
                 author: text.author,
-                id: text._key
+                id: text._key,
+                segmented: false
                 }
             // Add title if it is in desired language
             LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
@@ -67,7 +68,8 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
             LET res = {
                 lang: text.lang,
                 author: text.author,
-                id: text._key
+                id: text._key,
+                segmented: true
             }
             //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
             RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
