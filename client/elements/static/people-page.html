@@ -1,6 +1,6 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
 
-<link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="/styles/static-styles.html">
 
 <dom-module id="people-page">
   <template>
@@ -171,8 +171,11 @@
   </template>
 
   <script>
-      Polymer({
-          is: 'people-page'
-      });
+      class SCPeoplePage extends Polymer.Element {
+          static get is() {
+            return 'people-page';
+          }
+      }
+      customElements.define(SCPeoplePage.is, SCPeoplePage);
   </script>
 </dom-module>
