@@ -1,12 +1,20 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+
 <link rel="import" href="/elements/static/home-page.html">
 <link rel="import" href="/elements/static/donations-page.html">
 <link rel="import" href="/elements/static/downloads-page.html">
 <link rel="import" href="/elements/static/people-page.html">
 <link rel="import" href="/elements/sc-donate-now-page.html">
-<link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="/elements/static/offline-page.html">
+<link rel="import" href="/elements/static/numbering-page.html">
+<link rel="import" href="/elements/static/abbreviations-page.html">
+<link rel="import" href="/elements/static/methodology-page.html">
+<link rel="import" href="/elements/static/acknowledgments-page.html">
+<link rel="import" href="/elements/static/licensing-page.html">
+<link rel="import" href="/elements/static/about-page.html">
 
 <!--
 For the static pages an additional larger toolbar is added and depending on the route it chooses one of 4
@@ -70,6 +78,7 @@ Bhante Sujato needs to re-write them.
           @apply --sc-skolar-font-size-xxl;
           padding-top: 0.2em;
         }
+
         .subtitle {
           @apply --sc-skolar-font-size-md;
           margin-bottom: 0.5em;
@@ -100,43 +109,56 @@ Bhante Sujato needs to re-write them.
       <div name="people">
         <people-page></people-page>
       </div>
+      <div name="offline">
+        <sc-offline-page></sc-offline-page>
+      </div>
+      <div name="numbering">
+        <sc-numbering-page></sc-numbering-page>
+      </div>
+      <div name="abbreviations">
+        <sc-abbreviations-page></sc-abbreviations-page>
+      </div>
+      <div name="methodology">
+        <sc-methodology-page></sc-methodology-page>
+      </div>
+      <div name="acknowledgments">
+        <sc-acknowledgments-page></sc-acknowledgments-page>
+      </div>
+      <div name="licensing">
+        <sc-licensing-page></sc-licensing-page>
+      </div>
+      <div name="about">
+        <sc-about-page></sc-about-page>
+      </div>
     </iron-pages>
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-page-static',
-          properties: {
-              inputLanguage: String,
-              category: {
-                  type: String,
-                  observer: '_changeView'
-              },
-              pages: {
-                  type: String,
-                  value: 'home'
+      class SCPageStatic extends Polymer.Element {
+          static get is() {
+              return 'sc-page-static';
+          }
+
+          static get properties() {
+              return {
+                  inputLanguage: String,
+                  category: {
+                      type: String,
+                      observer: '_changeView'
+                  },
+                  pages: {
+                      type: String,
+                      value: 'home'
+                  }
               }
-          },
+          }
+
           // chooses one of four static pages/elements from the '/static'-folder.
-          _changeView: function(category) {
-              switch (category) {
-                  case '':
-                      this.$.pages.selected = "home";
-                      break;
-                  case 'donations':
-                      this.$.pages.selected = "donations";
-                      break;
-                  case 'downloads':
-                      this.$.pages.selected = "downloads";
-                      break;
-                  case 'people':
-                      this.$.pages.selected = "people";
-                      break;
-                  case 'donate-now':
-                      this.$.pages.selected = "donate-now";
-                      break
-              }
-          },
-      });
+          _changeView(category) {
+              this.$.pages.selected = category ? category : 'home';
+          }
+      }
+
+      customElements.define(SCPageStatic.is, SCPageStatic);
   </script>
 </dom-module>
