@@ -27,10 +27,17 @@ FOR pit IN pitaka
         FILTER group_edge._to LIKE 'grouping/%'
         FOR v, e, p IN 0..{_MAX_NESTING_LEVEL} OUTBOUND group `root_edges`
             FILTER e.type != 'text'
+            LET lang_num = (
+                FOR lang IN language
+                    FILTER lang.iso_code == v.root_lang
+                    LIMIT 1
+                    RETURN lang.num
+            )[0]
             RETURN {{
                 from: IS_NULL(e._from) ? {{uid: group_edge._from, name: pit.name}} : e._from,
                 name: v.name,
-                id: v._id
+                id: v._id,
+                lang_num: lang_num
             }}
 '''
 
