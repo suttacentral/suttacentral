@@ -94,7 +94,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     <div class="container">
       <app-header-layout>
 
-        <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="[[mainClass]]">
+        <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
 
@@ -104,10 +104,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
             <sc-toolbar id="sc_toolbar"></sc-toolbar>
           </app-toolbar>
-
         </app-header>
 
-        <template is="dom-if" if="[[shouldShowStaticPage]]">
+        <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
           <sc-page-static></sc-page-static>
         </template>
 
@@ -120,19 +119,15 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         </template>
 
         <template is="dom-if" if="[[shouldShowSimpleSuttaPage]]" restamp>
-          <sc-page-text sutta-path="[[category]]" author="[[author]]" input-language="[[inputLanguage]]"
-                        show-paragraphs="[[showParagraphs]]"></sc-page-text>
+          <sc-page-text></sc-page-text>
         </template>
 
         <template is="dom-if" if="[[shouldShowSegmentedSuttaPage]]" restamp>
-          <sc-segmented-text sutta-path="[[category]]" author="[[author]]" show-viewer="[[showViewer]]"
-                             pali-script="[[paliScript]]" input-language="[[inputLanguage]]"
-                             show-paragraphs="[[showParagraphs]]"></sc-segmented-text>
+          <sc-segmented-text></sc-segmented-text>
         </template>
 
         <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp>
-          <sc-page-dictionary dictionary-item="[[dictionaryItem]]"
-                              input-language="[[inputLanguage]]"></sc-page-dictionary>
+          <sc-page-dictionary></sc-page-dictionary>
         </template>
 
       </app-header-layout>
@@ -146,74 +141,31 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           static get properties() {
               return {
-                  divisionTitle: {
-                      type: String,
-                      notify: true
-                  },
-                  suttaTitle: {
-                      type: String,
-                      notify: true
-                  },
-                  suttaSegTitle: {
-                      type: String,
-                      notify: true
-                  },
-                  showViewer: {
-                      type: String,
-                      notify: true
-                  },
-                  paliScript: {
-                      type: Number,
-                      notify: true
-                  },
-                  showParagraphs: Boolean,
-                  category: {
-                      type: String,
-                      notify: true,
-                      observer: '_changeView'
-                  },
+                  route: Object,
                   queryParams: {
                       type: Object,
                       notify: true
                   },
-
-                  // Class set on the class on the header depending on the chosen page.
-                  mainClass: String,
-
                   // Defines all the available static pate routes.
                   // See <sc-page-static.html>.
                   staticPages: {
                       type: Array,
-                      value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'NUMBERING',
-                          'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGEMENTS', 'LICENSING', 'ABOUT']
+                      value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
+                          'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGEMENTS', 'LICENSING']
                   },
-                  searchQuery: {
-                      type: String,
-                      notify: true,
-                      computed: '_checkSearchQuery(queryParams)'
-                  },
-                  dictionaryItem: {
-                      type: String,
-                      notify: true,
-                      computed: '_checkDictionaryItem(subPath,category,activePath)'
-                  },
-                  route: Object,
                   selectedPage: {
                       type: String,
                       statePath: 'currentRoute.name',
                       observer: '_recalculateView'
                   },
-                  categoryId: {
+                  // Class set on the class on the header depending on the chosen page.
+                  toolbarMode: {
                       type: String,
-                      statePath: 'currentRoute.categoryId'
+                      statePath: 'toolbarOptions.mode'
                   },
                   toolbarTitle: {
                       type: String,
-                      statePath: 'toolbarTitle'
-                  },
-                  inputLanguage: {
-                      type: String,
-                      statePath: 'siteLanguage'
+                      statePath: 'toolbarOptions.title'
                   },
                   // Variables that control the <dom-if> elements in the template:
                   shouldShowStaticPage: Boolean,
@@ -221,15 +173,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   shouldShowSearchPage: Boolean,
                   shouldShowSimpleSuttaTextPage: Boolean,
                   shouldShowSegmentedSuttaTextPage: Boolean,
-                  shouldShowDictionaryPage: Boolean,
-                  path: String,
-                  query: String
+                  shouldShowDictionaryPage: Boolean
               }
           }
 
           static get observers() {
               return [
-                  '_changeView(category,author)',
                   '_scrollToTop(route)',
                   '_handleRouteChange(route.*)'
               ];
@@ -248,26 +197,14 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                           type: 'CHANGE_TOOLBAR_TITLE',
                           title: title
                       };
+                  },
+                  changeToolbarMode(mode) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_MODE',
+                          mode: mode
+                      };
                   }
               }
-          }
-
-          ready() {
-              super.ready();
-              // these event listeners listen from input from the latest chosen view to change the title in the toolbar
-              this.addEventListener('eventFromTextPage', this.addTitles);
-              this.addEventListener('eventFromSegmentedTextPage', this.addTitles);
-
-              // fires if in the settings menu an option is chosen for a certain view i.e. side-by-side, line-by-line, etc.
-              // only applies to segmented text pages.
-              this.addEventListener('eventFromTools', this.changeSegmentedView);
-
-              // fires if in the settings menu the option "textual information" is chosen. Only applies to text pages.
-              this.addEventListener('changeTextInfo', this._changeTextInfo);
-
-              // fires if in the settings menu the option for a change of script is chosen.
-              // Only applies to segmented text pages where pali is shown.
-              this.addEventListener('changeScript', this._changeScript);
           }
 
           _recalculateView() {
@@ -282,65 +219,18 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           // Sets the color of the toolbar (via the mainClass variable) and other display options
           // based on the current route.
-          // TODO: dispatch title change events from respective elements
+          // TODO set this in the respective elements
           _setDisplayOptions() {
-              if (this.shouldShowStaticPage) {
-                  this.dispatch('changeToolbarTitle', ' ');
-                  this.mainClass = '';
-              }
-              else if (this.shouldShowSuttaplexListPage) {
-                  this.mainClass = 'list-mode';
-              }
-              else if (this.shouldShowSearchPage) {
-                  this.mainClass = 'search-mode';
-              }
-              else if (this.shouldShowSimpleSuttaPage) {
-                  this.mainClass = 'text-mode';
-                  this.dispatch('changeToolbarTitle', this.suttaTitle);
+              if (this.shouldShowSimpleSuttaPage) {
+                  this.dispatch('changeToolbarMode', 'text-mode');
               }
               else if (this.shouldShowSegmentedSuttaPage) {
-                  this.mainClass = 'segmented-mode';
-                  this.dispatch('changeToolbarTitle', this.suttaSegTitle);
+                  this.dispatch('changeToolbarMode', 'segmented-mode');
               }
               else if (this.shouldShowDictionaryPage) {
-                  this.mainClass = 'dictionary-mode';
-                  this.dispatch('changeToolbarTitle', 'SuttaCentral — dictionary results');
+                  this.dispatch('changeToolbarMode', 'dictionary-mode');
+                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
               }
-          }
-
-          _isStaticPage(pageName) {
-              return this.staticPages.includes(pageName);
-          }
-
-          _isSuttaplexListPage() {
-              return (this.selectedPage === 'SUTTAPLEX');
-          }
-
-          _isSearchPage() {
-              return (this.selectedPage === 'SEARCH');
-          }
-
-          _isSimpleSuttaTextPage() {
-              if (this.selectedPage !== 'SUTTA') {
-                  return false;
-              }
-              const author = this._getPathParamNumber(1);
-              return !!(author && author !== 'sujato' && author !== 'pali');
-          }
-
-          // checks if a page is a segmented-text page and sets the toolbar title and css class accordingly.
-          _isSegmentedSuttaTextPage() {
-              if (this.selectedPage !== 'SUTTA') {
-                  return false;
-              }
-              const author = this._getPathParamNumber(1);
-              return !!(author && (author === 'sujato' || author === 'pali'));
-          }
-
-          // checks if a page is a dictionary page and sets the toolbar title and css class accordingly.
-          _isDictionaryPage() {
-              return this._getBaseRouteName() === 'DEFINE';
-
           }
 
           // Dispatches the CHANGE_ROUTE action with the correct parameters.
@@ -349,7 +239,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   return;
               }
               const routeName = this._getBaseRouteName();
-              // route to static pages:
               if (this._isStaticPage(routeName)) {
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
                   return;
@@ -371,9 +260,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       break;
                   default:
                       newRoute = Object.assign({}, this.route, { name: 'NOT-FOUND' });
-
               }
               this.dispatch('changeRoute', newRoute);
+              this._changeView();
           }
 
           _getSuttaplexRouteParams(routeName) {
@@ -409,44 +298,37 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               }
           }
 
-          // changes the title in the toolbar in the settings-menu dialog-box depending on the chosen view
-          // TODO: dispatch title change events from respective elements
-          addTitles(event) {
-              switch (this.mainClass) {
-                  case 'list-mode':
-                      if (event.detail.divisiontitle) {
-                          this.divisionTitle = event.detail.divisiontitle
-                      }
-                      this.dispatch('changeToolbarTitle', this.divisionTitle);
-                      break;
-                  case 'text-mode':
-                      if (event.detail.suttatitle) {
-                          this.suttaTitle = event.detail.suttatitle
-                      }
-                      this.dispatch('changeToolbarTitle', this.suttaTitle);
-                      break;
-                  case 'segmented-mode':
-                      if (event.detail.suttasegtitle) {
-                          this.suttaSegTitle = event.detail.suttasegtitle
-                      }
-                      this.dispatch('changeToolbarTitle', this.suttaSegTitle);
-                      break;
+          _isStaticPage(pageName) {
+              return this.staticPages.includes(pageName);
+          }
+
+          _isSuttaplexListPage() {
+              return (this.selectedPage === 'SUTTAPLEX');
+          }
+
+          _isSearchPage() {
+              return (this.selectedPage === 'SEARCH');
+          }
+
+          _isSimpleSuttaTextPage() {
+              if (this.selectedPage !== 'SUTTA') {
+                  return false;
               }
+              const author = this._getPathParamNumber(1);
+              return !!(author && author !== 'sujato' && author !== 'pali');
           }
 
-          // set the view-mode for the segmented text pages to the chosen value.
-          changeSegmentedView(e) {
-              return this.showViewer = e.detail.selectedView;
+          // checks if a page is a segmented-text page and sets the toolbar title and css class accordingly.
+          _isSegmentedSuttaTextPage() {
+              if (this.selectedPage !== 'SUTTA') {
+                  return false;
+              }
+              const author = this._getPathParamNumber(1);
+              return !!(author && (author === 'sujato' || author === 'pali'));
           }
 
-          // set the textual info-mode for the text pages to the chosen value.
-          _changeTextInfo(e) {
-              return this.showParagraphs = e.detail.textInfo;
-          }
-
-          // set the script type for pali pages in segmented text pages.
-          _changeScript(e) {
-              return this.paliScript = e.detail.scriptchoice;
+          _isDictionaryPage() {
+              return this._getBaseRouteName() === 'DEFINE';
           }
 
           // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.

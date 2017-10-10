@@ -252,6 +252,12 @@ than ten results in total, a dropdown selection menu appears at the top.
                           type: 'CHANGE_TOOLBAR_TITLE',
                           title: title
                       };
+                  },
+                  changeToolbarMode(mode) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_MODE',
+                          mode: mode
+                      };
                   }
               }
           }
@@ -261,6 +267,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
               this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
               this.dispatch('changeToolbarTitle', 'SuttaCentral — Search results');
+              this.dispatch('changeToolbarMode', 'search-mode');
           }
 
           // After results have been loaded into memory, pushes items to an array.
@@ -431,7 +438,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                   return item.category;
               }
               if (item._source.is_root) {
-                  return 'root-text'
+                  return 'root-text';
               }
               else return 'translation';
           }

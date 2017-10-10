@@ -16,7 +16,10 @@
             __queryParams: {}
         },
         siteLanguage: 'en',
-        toolbarTitle: '',
+        toolbarOptions: {
+            title: '',
+            mode: ''
+        },
         searchParams: {}
     };
 
@@ -27,7 +30,11 @@
             case 'CHANGE_SITE_LANGUAGE':
                 return Object.assign({}, state, { siteLanguage: action.language });
             case 'CHANGE_TOOLBAR_TITLE':
-                return Object.assign({}, state, { toolbarTitle: action.title });
+                const titleOptions = Object.assign({}, state.toolbarOptions, { title: action.title });
+                return Object.assign({}, state, { toolbarOptions: titleOptions });
+            case 'CHANGE_TOOLBAR_MODE':
+                const modeOptions = Object.assign({}, state.toolbarOptions, { mode: action.mode });
+                return Object.assign({}, state, { toolbarOptions: modeOptions });
             case 'INITIATE_SEARCH':
                 return Object.assign({}, state, { searchParams: action.params });
             default:
