@@ -184,8 +184,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   // See <sc-page-static.html>.
                   staticPages: {
                       type: Array,
-                      value: ["donations", "people", "downloads", "donate-now", "offline", "numbering", "abbreviations",
-                          "methodology", "acknowledgments", "licensing", "about", ""]
+                      value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'NUMBERING',
+                          'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGEMENTS', 'LICENSING', 'ABOUT']
                   },
                   searchQuery: {
                       type: String,
@@ -271,7 +271,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _recalculateView() {
-              this.shouldShowStaticPage = this._isStaticPage();
+              this.shouldShowStaticPage = this._isStaticPage(this.selectedPage);
               this.shouldShowSuttaplexListPage = this._isSuttaplexListPage();
               this.shouldShowSearchPage = this._isSearchPage();
               this.shouldShowSimpleSuttaPage = this._isSimpleSuttaTextPage();
@@ -308,8 +308,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               }
           }
 
-          _isStaticPage() {
-              return this.staticPages.includes(this.selectedPage);
+          _isStaticPage(pageName) {
+              return this.staticPages.includes(pageName);
           }
 
           _isSuttaplexListPage() {
@@ -348,17 +348,17 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               if (this.route.__queryParams === undefined) {
                   return;
               }
-              let newRoute;
               const routeName = this._getBaseRouteName();
+              // route to static pages:
+              if (this._isStaticPage(routeName)) {
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
+                  return;
+              }
+              // route to other pages:
+              let newRoute;
               switch (routeName) {
                   case '':
                       newRoute = Object.assign({}, this.route, { name: 'HOME' });
-                      break;
-                  case 'DONATIONS':
-                  case 'DONATE-NOW':
-                  case 'PEOPLE':
-                  case 'DOWNLOADS':
-                      newRoute = Object.assign({}, this.route, { name: routeName });
                       break;
                   case 'SUTTAPLEX':
                       newRoute = Object.assign({}, this.route, this._getSuttaplexRouteParams(routeName));

@@ -112,25 +112,25 @@
       <div name="PEOPLE">
         <people-page></people-page>
       </div>
-      <div name="offline">
+      <div name="OFFLINE">
         <sc-offline-page></sc-offline-page>
       </div>
-      <div name="numbering">
+      <div name="NUMBERING">
         <sc-numbering-page></sc-numbering-page>
       </div>
-      <div name="abbreviations">
+      <div name="ABBREVIATIONS">
         <sc-abbreviations-page></sc-abbreviations-page>
       </div>
-      <div name="methodology">
+      <div name="METHODOLOGY">
         <sc-methodology-page></sc-methodology-page>
       </div>
-      <div name="acknowledgments">
-        <sc-acknowledgments-page></sc-acknowledgments-page>
+      <div name="ACKNOWLEDGEMENTS">
+        <sc-acknowledgements-page></sc-acknowledgements-page>
       </div>
-      <div name="licensing">
+      <div name="LICENSING">
         <sc-licensing-page></sc-licensing-page>
       </div>
-      <div name="about">
+      <div name="ABOUT">
         <sc-about-page></sc-about-page>
       </div>
       <div name="NOT-FOUND">
@@ -172,26 +172,7 @@
           }
 
           _changeView() {
-              switch (this.selectedPage) {
-                  case 'HOME':
-                      this.$.pages.selected = 'HOME';
-                      break;
-                  case 'DONATIONS':
-                      this.$.pages.selected = 'DONATIONS';
-                      break;
-                  case 'DONATE-NOW':
-                      this.$.pages.selected = "DONATE-NOW";
-                      break;
-                  case 'DOWNLOADS':
-                      this.$.pages.selected = 'DOWNLOADS';
-                      break;
-                  case 'PEOPLE':
-                      this.$.pages.selected = 'PEOPLE';
-                      break;
-                  case 'NOT-FOUND':
-                      this.$.pages.selected = 'NOT-FOUND';
-                      break;
-              }
+              this.$.pages.selected = this.selectedPage;
           }
       }
 
