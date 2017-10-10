@@ -110,7 +110,8 @@
           static get properties() {
               return {
                   responseData: {
-                      type: Array
+                      type: Array,
+                      observer: '_responseDataChanged'
                   },
                   categoryId: {
                       type: String,
@@ -121,12 +122,30 @@
               }
           }
 
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  }
+              }
+          }
+
           _categoryChanged() {
               if (!this.categoryId) {
                   return;
               }
               this.$.ajax.url = `${this.$.meta.byKey('API_ROOT')}\/suttaplex\/${this.categoryId}`;
               this.$.ajax.generateRequest();
+          }
+
+          _responseDataChanged() {
+              if (!this.responseData) {
+                  return;
+              }
+              this.dispatch('changeToolbarTitle', this.responseData[0].original_title);
           }
 
           _isSuttaplex(item) {

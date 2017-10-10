@@ -132,7 +132,17 @@
               }
           }
 
-          // chooses one of four static pages/elements from the '/static'-folder.
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  }
+              }
+          }
+
           _changeView() {
               switch (this.selectedPage) {
                   case 'HOME':
