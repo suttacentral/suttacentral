@@ -46,7 +46,6 @@ FOR pit IN pitaka
 SUTTAPLEX_LIST = '''
 FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
     LET legacy_translations = (
-        FILTER e.type == 'text'
         FOR text IN html_text
             FILTER text.uid == v.uid
             LET res = {
@@ -118,7 +117,7 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
         difficulty: difficulty,
         original_title: v.name,
         root_lang: v.root_lang,
-        type: e.type ? e.type : difficulty ? 'text' : 'grouping',
+        type: e.type ? e.type : v.type ? 'grouping' : 'text',
         from: e._from,
         translated_title: translated_titles,
         translations: translations,
