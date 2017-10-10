@@ -180,6 +180,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           static get observers() {
               return [
                   '_scrollToTop(route)',
+                  '_changeView(route)',
                   '_handleRouteChange(route.*)'
               ];
           }
@@ -235,15 +236,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           // Dispatches the CHANGE_ROUTE action with the correct parameters.
           _handleRouteChange() {
-              if (this.route.__queryParams === undefined) {
-                  return;
-              }
               const routeName = this._getBaseRouteName();
               if (this._isStaticPage(routeName)) {
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
                   return;
               }
-              // route to other pages:
               let newRoute;
               switch (routeName) {
                   case '':
@@ -262,7 +259,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       newRoute = Object.assign({}, this.route, { name: 'NOT-FOUND' });
               }
               this.dispatch('changeRoute', newRoute);
-              this._changeView();
           }
 
           _getSuttaplexRouteParams(routeName) {
@@ -333,8 +329,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
           _changeView() {
-              this.$.sc_toolbar.closeSearch();
-              this.$.header.resetLayout();
+              this.shadowRoot.querySelector('#sc_toolbar').closeSearch();
           }
 
           // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
