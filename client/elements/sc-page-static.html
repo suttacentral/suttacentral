@@ -1,7 +1,7 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="/bower_components/iron-lazy-pages/iron-lazy-pages.html">
 
 <link rel="import" href="/elements/static/home-page.html">
 <link rel="import" href="/elements/static/donations-page.html">
@@ -96,7 +96,7 @@
       </div>
     </app-toolbar>
 
-    <iron-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
+    <iron-lazy-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
       <div name="HOME">
         <home-page></home-page>
       </div>
@@ -139,7 +139,7 @@
           <h3>Page not found</h3>
         </div>
       </div>
-    </iron-pages>
+    </iron-lazy-pages>
   </template>
 
   <script>

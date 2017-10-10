@@ -55,7 +55,8 @@
     "polymer-redux": "tur-nr/polymer-redux#^1.0.3",
     "iron-form": "^2.0.1",
     "paper-checkbox": "^2.0.1",
-    "paper-toast": "^2.0.0"
+    "paper-toast": "^2.0.0",
+    "iron-lazy-pages": "TimvdLippe/iron-lazy-pages#^2.1.0"
   },
   "devDependencies": {
     "web-component-tester": "^6.2.0"
