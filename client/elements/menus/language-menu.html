@@ -91,6 +91,13 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         display: none;
       }
 
+      .segmented-border {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-top: 1px dashed var(--paper-grey-500);
+        border-bottom: 1px dashed var(--paper-grey-500);
+      }
+
     </style>
 
     <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
@@ -109,7 +116,8 @@ Language-menu used in the suttaplex card for denoting which translations exist o
             <section class="language-choice-box">
               <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
                 <paper-item-body>
-                  <a class="language-menu-url" href="/[[rootId]]/[[language.author]]">
+                  <a class$="{{_translationBorder(language.segmented)}} language-menu-url"
+                     href="/suttas/[[language.id]]?author=[[language.author]]">
                     [[_computeAuthorForList(language.author)]]
                   </a>
                 </paper-item-body>
@@ -193,6 +201,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
           _computeFullLanguageName(isoCode) {
               return this.rootLangMappings[isoCode];
+          }
+
+          _translationBorder(segmented) {
+            return segmented ? 'segmented-border' : '';
           }
 
       }

@@ -180,7 +180,13 @@ def flat_tree(data: List[Dict], children='children') -> List[Dict]:
 def language_sort(original_lang):
     def l_sort(lang):
         if lang['lang'] == original_lang:
-            return '11111'  # So that root language is always first.
+            result = '11111'  # So that root language is always first.
         else:
-            return lang['lang']
+            result = lang['lang']
+        if lang['segmented']:
+            result += '_0'
+        else:
+            result += '_1'
+        return result
+
     return l_sort

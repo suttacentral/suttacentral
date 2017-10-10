@@ -151,6 +151,13 @@
         --paper-badge-margin-left: -15px;
         --paper-badge-margin-bottom: -10px;
       }
+
+      .segmented-border {
+        padding: 5px;
+        border: 1px dashed var(--paper-grey-700);
+        border-radius: 5px;
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -182,7 +189,8 @@
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button flat title$="Go  to a translation by [[translation.author]]">
-                <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]">[[translation.author]]</a>
+                <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]"
+                   class$="{{_translationBorder(translation.segmented)}}">[[translation.author]]</a>
               </paper-button>
             </template>
           </template>
@@ -325,6 +333,10 @@
               } else {
                   return item.uid;
               }
+          }
+
+          _translationBorder(segmented) {
+              return segmented ? 'segmented-border' : '';
           }
       }
 

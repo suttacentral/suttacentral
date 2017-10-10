@@ -27,10 +27,17 @@ FOR pit IN pitaka
         FILTER group_edge._to LIKE 'grouping/%'
         FOR v, e, p IN 0..{_MAX_NESTING_LEVEL} OUTBOUND group `root_edges`
             FILTER e.type != 'text'
+            LET lang_num = (
+                FOR lang IN language
+                    FILTER lang.iso_code == v.root_lang
+                    LIMIT 1
+                    RETURN lang.num
+            )[0]
             RETURN {{
                 from: IS_NULL(e._from) ? {{uid: group_edge._from, name: pit.name}} : e._from,
                 name: v.name,
-                id: v._id
+                id: v._id,
+                lang_num: lang_num
             }}
 '''
 
@@ -39,13 +46,13 @@ FOR pit IN pitaka
 SUTTAPLEX_LIST = '''
 FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
     LET legacy_translations = (
-        FILTER e.type == 'text'
         FOR text IN html_text
             FILTER text.uid == v.uid
             LET res = {
                 lang: text.lang,
                 author: text.author,
-                id: text._key
+                id: text._key,
+                segmented: false
                 }
             // Add title if it is in desired language
             LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
@@ -60,7 +67,8 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
             LET res = {
                 lang: text.lang,
                 author: text.author,
-                id: text._key
+                id: text._key,
+                segmented: true
             }
             //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
             RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
@@ -109,7 +117,7 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
         difficulty: difficulty,
         original_title: v.name,
         root_lang: v.root_lang,
-        type: e.type ? e.type : 'grouping',
+        type: e.type ? e.type : v.type ? 'grouping' : 'text',
         from: e._from,
         translated_title: translated_titles,
         translations: translations,

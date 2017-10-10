@@ -5,6 +5,7 @@ from collections import defaultdict
 import stripe
 from flask import request, current_app
 from flask_restful import Resource
+from sortedcontainers import SortedListWithKey
 
 from common.arangodb import get_db
 from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW, CURRENCIES
@@ -85,7 +86,7 @@ class Menu(Resource):
                 uid = x['from']['uid']
 
                 if uid not in root_uids:
-                    vertex = self._vertex(x['from']['name'], uid)
+                    vertex = self._vertex(x['from']['name'], uid, x['lang_num'])
                     data.append(vertex)
                     root_uids.append(uid)
                     edges[uid] = vertex
@@ -96,21 +97,33 @@ class Menu(Resource):
             _id = x['id']
             name = x['name']
 
-            vertex = self._vertex(name, _id)
+            vertex = self._vertex(name, _id, x['lang_num'])
 
             try:
-                edges[_from]['children'].append(vertex)
+                try:
+                    edges[_from]['children'].add(vertex)
+                except AttributeError:
+                    edges[_from]['children'].append(vertex)
+
             except KeyError:
-                edges[_from]['children'] = [vertex]
+                if vertex['uid'].startswith('root'):
+                    edges[_from]['children'] = SortedListWithKey([vertex], key=lambda z: f'{z["lang_num"]}_{z["name"]}')
+                else:
+                    edges[_from]['children'] = [vertex]
 
             edges[_id] = vertex
+
+        for edge in edges:
+            if 'children' in edges[edge]:
+                edges[edge]['children'] = list(edges[edge]['children'])
 
         return data, 200
 
     @staticmethod
-    def _vertex(name, uid) -> dict:
+    def _vertex(name, uid, lang_num) -> dict:
         return {'name': name,
-                'uid': uid}
+                'uid': uid,
+                'lang_num': lang_num}
 
 
 class SuttaplexList(Resource):
