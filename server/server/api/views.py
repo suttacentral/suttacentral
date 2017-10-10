@@ -274,6 +274,8 @@ class Parallels(Resource):
         for result in results:
             _from = result.pop('from')
             data[_from].append(result)
+            result['to']['translations'] = sorted(result['to']['translations'],
+                                                  key=language_sort(result['to']['root_lang']))
 
         return data, 200
 
