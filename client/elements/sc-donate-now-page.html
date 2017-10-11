@@ -206,7 +206,7 @@
         --paper-toast-color: white;
         text-align: center;
         font-size: 20px;
-        width: 200px;
+        /* width: 200px; */
         margin-left: calc(50vw - 150px);
       }
 
@@ -301,7 +301,7 @@
         </div>
       </section>
     </div>
-    <paper-toast class="toast error-toast" text="Error!"></paper-toast>
+    <paper-toast class="toast error-toast" text="[[errorMessage]]" duration=5000></paper-toast>
     <template is="dom-if" if="{{processingPayment}}">
       <div class="blocker"></div>
       <div class="spinner">
@@ -348,6 +348,14 @@
                   },
                   processingPayment: {
                     type: Boolean,
+                  },
+                  errorMessage: {
+                    type: String,
+                    value: 'Error!'
+                  },
+                  StripeValid: {
+                    type: Boolean,
+                    value: false
                   }
               }
           }
@@ -396,9 +404,11 @@
                   if (error) {
                     cardFirstSpan.classList.add('error-bar');
                     cardSecondSpan.style['color'] = '#E4584C';
+                    this.StripeValid = false;
                   } else {
                     cardFirstSpan.classList.remove('error-bar')
                     cardSecondSpan.style['color'] = '';
+                    this.StripeValid = true;
                   }
               })
 
@@ -423,7 +433,7 @@
 
           _makeDonation(e) {
             let ironForm = this.shadowRoot.querySelector('.payment-iron-form');
-            if(!ironForm.validate()){
+            if(!ironForm.validate() || !this.StripeValid){
               return;
             }
             let data = this._getFormData();
@@ -446,6 +456,7 @@
           }
 
           _paymentError(event) {
+            this.errorMessage = this.donationResponseError.response.err_message;
             this.processingPayment = false;
             this.shadowRoot.querySelector('.error-toast').open();
           }
@@ -465,10 +476,6 @@
               data.email = form.querySelector('.email-input').value;
               data.message = form.querySelector('.message-input').value;
               return data;
-          }
-
-          _donationFinalized(e) {
-              console.log(e);
           }
       }
 

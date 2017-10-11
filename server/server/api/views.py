@@ -493,24 +493,39 @@ class Donations(Resource):
             customer_data['email'] = email
         customer = stripe.Customer.create(**customer_data)
 
-        if one_time_donation:
-            charge = stripe.Charge.create(
-                customer=customer.id,
-                amount=amount,
-                currency=currency['symbol'],
-                metadata={"name": name, "message": message},
-                description=f'Donation by {name if name else ""}, message {message if message else ""}'
-            )
+        try:
+            if one_time_donation:
+                charge = stripe.Charge.create(
+                    customer=customer.id,
+                    amount=amount,
+                    currency=currency['symbol'],
+                    metadata={"name": name, "message": message},
+                    description=f'''Donation by {name if name else ""}, 
+                                message {message if message else ""}'''
+                )
 
-        elif monthly_donation:
-            plan = get_plan(amount, currency['symbol'])
-            subscription = stripe.Subscription.create(
-                customer=customer.id,
-                items=[{"plan": plan.stripe_id}]
-            )
+            elif monthly_donation:
+                plan = get_plan(amount, currency['symbol'])
+                subscription = stripe.Subscription.create(
+                    customer=customer.id,
+                    items=[{"plan": plan.stripe_id}]
+                )
 
-        else:
-            return 'Select either one time or monthly', 400
+            else:
+                return {'err_message': 'Select either one time or monthly'}, 400
+
+        except stripe.InvalidRequestError as e:
+            message = 'Error!'
+            print(e)
+            if 'Amount must convert to at least 50 cents' in str(e):
+                message = 'Amount cannot be less than $0.50. '
+                message += str(e).split('least 50 cents. ')[1]
+
+            elif 'more than $999,999.99' in str(e) or 'Invalid integer' in str(e):
+                message = '''Due to Stripe limitations, 
+                             please make a direct payment, or else contact us for help.'''
+
+            return {'err_message': message}, 400
 
         return 'Subscribed' if monthly_donation else 'Donated', 200
 
