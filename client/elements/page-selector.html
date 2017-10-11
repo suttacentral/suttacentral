@@ -137,7 +137,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
   <script>
       class SCPageSelector extends ReduxMixin(Polymer.Element) {
-          static get is() { return 'page-selector'; }
+          static get is() {
+              return 'page-selector';
+          }
 
           static get properties() {
               return {

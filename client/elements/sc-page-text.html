@@ -1,13 +1,13 @@
-<link rel="import" href="/../bower_components/polymer/polymer.html">
-<link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="/../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="/../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
-<link rel="import" href="/../elements/addons/sc-text-options.html">
-<link rel="import" href="/../styles/sc-text-styles.html">
-<link rel="import" href="/../styles/sc-text-heading-styles.html">
-<link rel="import" href="/../styles/sc-text-paragraph-num-styles.html">
+<link rel="import" href="/elements/addons/sc-text-options.html">
+<link rel="import" href="/styles/sc-text-styles.html">
+<link rel="import" href="/styles/sc-text-heading-styles.html">
+<link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
 <!--
 The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-options.html`).
@@ -30,12 +30,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                last-response="{{lastResponse}}"
                on-response="_onResponse"
                last-error='{{notFound}}'></iron-ajax>
-
-    <!--<iron-ajax id="ajaxParagraphs"-->
-    <!--url="../data/paragraphtitles.json"-->
-    <!--handle-as="json"-->
-    <!--last-response="{{paragraphTitles}}"-->
-    <!--on-response="_computePars"></iron-ajax>-->
 
     <template is="dom-if" if="[[notFound]]">
       <p class="not-found">Sorry, the page you requested does not exist.</p>
@@ -123,7 +117,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs() {
-              const infotext = this.shadowRoot.querySelector('#html_text_content');
+              const infotext = this.$.html_text_content;
               return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode')
                   : (infotext) ? infotext.classList.add('infomode') : '';
           }
@@ -134,7 +128,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               try {
                   title = this.lastResponse.root_text.title;
               } catch (e) {
-                  title = ''
+                  title = '';
               }
               return title;
           }

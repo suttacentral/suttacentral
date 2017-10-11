@@ -1,24 +1,24 @@
-<link rel="import" href="/../bower_components/polymer/polymer.html">
-<link rel="import" href="/../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="/../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="/../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="/../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="/../bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
-<link rel="import" href="/../bower_components/iron-collapse/iron-collapse.html">
-<link rel="import" href="/../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="/../bower_components/neon-animation/animations/fade-in-animation.html">
-<link rel="import" href="/../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
+<link rel="import" href="/bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="/bower_components/neon-animation/web-animations.html">
+<link rel="import" href="/bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="/bower_components/neon-animation/animations/fade-out-animation.html">
 
-<link rel="import" href="/../styles/sc-suttaplex-styles.html">
-<link rel="import" href="/../elements/menus/settings-menu.html">
-<link rel="import" href="/../elements/suttaplex/sc-suttaplex.html">
+<link rel="import" href="/styles/sc-suttaplex-styles.html">
+<link rel="import" href="/elements/menus/settings-menu.html">
+<link rel="import" href="/elements/suttaplex/sc-suttaplex.html">
 
 <!--
 Pulls in one relevant suttaplex-card inside a collapse-item to display on top of each sutta text.
 -->
 <dom-module id="sc-text-options">
   <template>
-    <style is="custom-style" include="sc-suttaplex-styles">
+    <style include="sc-suttaplex-styles">
       .container {
         margin: 0 auto;
         padding: 32px 5% 0 !important;
@@ -69,7 +69,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
     </style>
 
     <div class="container">
-      <div class="heading" title="View Parallels & References">
+      <div class="heading" title="View Parallels &amp; References">
         <paper-icon-button icon="info" on-tap="_openInfoDialog"></paper-icon-button>
         <paper-icon-button icon="settings" on-tap="_openSettingsDialog"></paper-icon-button>
         <paper-icon-button icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
@@ -106,9 +106,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
           <h3>Publication details</h3>
           <div inner-h-t-m-l="[[metaArea]]">
             <section class="margin-vertical-md">This is an independent sūtra. In the Taishō canon, on which this edition
-              is based, it is collected
-              together
-              with the Dīrghāgama. The text is from CBETA.
+              is based, it is collected together with the Dīrghāgama. The text is from CBETA.
             </section>
             <section class="margin-vertical-md">
               Prepared for SuttaCentral by Bhikkhu Sujato.

@@ -12,7 +12,7 @@
 <link rel="import" href="/elements/menus/sc-more-menu.html">
 
 <!--
-Base toolbar that appear on the top right in the header of every page. This toolbar is called from the page-selector.
+Base toolbar that appears on the top right in the header of every page. This toolbar is called from the page-selector.
 
 Issues:
   - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows
@@ -123,7 +123,7 @@ Issues:
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
           // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
           openSearch() {
-              if (this.shadowRoot.querySelector('#search_input').classList.contains('opened')) {
+              if (this.$.search_input.classList.contains('opened')) {
                   this.startSearch();
               } else {
                   this.shadowRoot.querySelector('#search_input').classList.add('opened');
@@ -141,7 +141,7 @@ Issues:
                   } else if (window.innerWidth > 480) {
                       searchWidth = window.innerWidth - (searchSize - 210);
                   } else {
-                      this.shadowRoot.querySelector('#tools_menu').classList.add('search-open');
+                      this.$.tools_menu.classList.add('search-open');
                       searchWidth = window.innerWidth - (searchSize - 320);
                   }
                   if (searchWidth > 360) {
@@ -153,11 +153,11 @@ Issues:
 
           // Closes the searchbox and resets original values.
           closeSearch() {
-              if (this.shadowRoot.querySelector('#search_input').classList.contains('opened')) {
-                  this.shadowRoot.querySelector('#search_input').classList.remove('opened');
-                  this.shadowRoot.querySelector('#search_input').removeAttribute('style', 'width');
-                  this.shadowRoot.querySelector('#close_button').style.display = 'none';
-                  this.shadowRoot.querySelector('#tools_menu').classList.remove('search-open');
+              if (this.$.search_input.classList.contains('opened')) {
+                  this.$.search_input.classList.remove('opened');
+                  this.$.search_input.removeAttribute('style', 'width');
+                  this.$.close_button.style.display = 'none';
+                  this.$.tools_menu.classList.remove('search-open');
                   Polymer.dom(this.root.host.offsetParent).querySelector('#toolbar_title_box')
                       .removeAttribute('style', 'display');
               }
@@ -165,7 +165,7 @@ Issues:
 
           // Initiates the search function.
           startSearch() {
-              const searchQuery = this.shadowRoot.querySelector('#search_input').value;
+              const searchQuery = this.$.search_input.value;
               this.set('path', '/search');
               this.set('query', `query=${searchQuery}`);
           }
