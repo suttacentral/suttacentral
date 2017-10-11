@@ -273,7 +273,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).
           _isSuttaplexListPage() {
               const idParam = this._getPathParamNumber(1);
-              // Static sites and the search page also only has one path parameter
+              // Static sites and the search page also only has one path parameter, so we need additional checks here:
               if (this._isStaticPage(idParam) || this._isSearchPage()) {
                   return false;
               }
