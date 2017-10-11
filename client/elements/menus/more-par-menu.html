@@ -95,7 +95,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           _computeLink() {
               const url = window.location;
               const baseUrl = url.protocol + "//" + url.host;
-              return baseUrl + '/sutta/' + this.item.uid;
+              return `${baseUrl}/${this.item.uid}`;
           }
 
           // Copy the link to the suttaplex page

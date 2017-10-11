@@ -189,7 +189,7 @@
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button flat title$="Go  to a translation by [[translation.author]]">
-                <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]"
+                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]"
                    class$="{{_translationBorder(translation.segmented)}}">[[translation.author]]</a>
               </paper-button>
             </template>
@@ -308,8 +308,8 @@
           }
 
           // Computes API endpoint URL for given translation
-          _computeApiUrlEndpoint(uid, author) {
-              return `/sutta/${uid}/?author=${author}`;
+          _getSuttaTextUrl(uid, lang, author) {
+              return `${uid}/${lang}/${author}`;
           }
 
           _isChosenLang(lang) {

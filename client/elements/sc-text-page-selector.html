@@ -6,9 +6,6 @@
 
 <dom-module id="sc-text-page-selector">
   <template>
-    <style>
-    </style>
-
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax
@@ -51,6 +48,18 @@
                   lastResponse: {
                       type: Object,
                       observer: '_onResponse'
+                  },
+                  author: {
+                      type: String,
+                      statePath: 'currentRoute.authorName'
+                  },
+                  suttaUid: {
+                      type: String,
+                      statePath: 'currentRoute.authorName'
+                  },
+                  langIsoCode: {
+                      type: String,
+                      statePath: 'currentRoute.authorName'
                   }
               }
           }
@@ -73,6 +82,7 @@
           }
 
           _onResponse() {
+              // todo check if segmented
               if (this.isSegmentedText) {
                   this.dispatch('changeToolbarMode', 'segmented-mode');
               }
@@ -84,6 +94,10 @@
           // checks if a page is a segmented-text page and sets the toolbar title and css class accordingly.
           _isSegmentedSuttaTextPage() {
               return !!(langIsoCode && author && (author === 'sujato' || author === 'pali'));
+          }
+
+          _getUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/suttas/${suttaUid}/${author}`;
           }
       }
 
