@@ -1,18 +1,18 @@
-<link rel="import" href="/../bower_components/polymer/polymer.html">
-<link rel="import" href="/../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="/../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="/../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="/../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="/../bower_components/app-route/app-location.html">
-<link rel="import" href="/../bower_components/iron-location/iron-query-params.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="/bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="/bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/app-route/app-location.html">
+<link rel="import" href="/bower_components/iron-location/iron-query-params.html">
 
-<link rel="import" href="/../elements/menus/sc-toolbar.html">
-<link rel="import" href="/../elements/sc-page-static.html">
-<link rel="import" href="/../elements/sc-view-suttaplex.html">
-<link rel="import" href="/../elements/sc-page-text.html">
-<link rel="import" href="/../elements/sc-segmented-text.html">
-<link rel="import" href="/../elements/sc-page-search.html">
-<link rel="import" href="/../elements/sc-page-dictionary.html">
+<link rel="import" href="/elements/menus/sc-toolbar.html">
+<link rel="import" href="/elements/sc-page-static.html">
+<link rel="import" href="/elements/sc-view-suttaplex.html">
+<link rel="import" href="/elements/sc-page-text.html">
+<link rel="import" href="/elements/sc-segmented-text.html">
+<link rel="import" href="/elements/sc-page-search.html">
+<link rel="import" href="/elements/sc-page-dictionary.html">
 
 <!--
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
@@ -52,7 +52,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         background-color: var(--paper-deep-orange-900);
       }
 
-      .search-mode #sc_toolbar, .search-mode .toolbar-header, .dictionary-mode #sc_toolbar, .dictionary-mode .toolbar-header {
+      .search-mode #sc_toolbar, .search-mode .toolbar-header,
+      .dictionary-mode #sc_toolbar, .dictionary-mode .toolbar-header {
         background-color: var(--sc-green-600);
       }
 
@@ -331,7 +332,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
           _changeView() {
-              this.shadowRoot.querySelector('#sc_toolbar').closeSearch();
+              this.$.sc_toolbar.closeSearch();
           }
 
           // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.

@@ -126,10 +126,10 @@ Issues:
               if (this.$.search_input.classList.contains('opened')) {
                   this.startSearch();
               } else {
-                  this.shadowRoot.querySelector('#search_input').classList.add('opened');
-                  this.shadowRoot.querySelector('#search_input').focus();
-                  this.shadowRoot.querySelector('#close_button').style.display = 'inline-block';
-                  this.shadowRoot.querySelector('#search_input').value = '';
+                  this.$.search_input.classList.add('opened');
+                  this.$.search_input.focus();
+                  this.$.close_button.style.display = 'inline-block';
+                  this.$.search_input.value = '';
                   let searchSize = 500;
                   if (window.innerWidth < 1040) {
                       Polymer.dom(this.root.host.offsetParent).querySelector('#toolbar_title_box')

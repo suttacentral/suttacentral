@@ -1,14 +1,14 @@
-<link rel="import" href="/../bower_components/polymer/polymer.html">
-<link rel="import" href="/../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="/../bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="/../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="/../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
-<link rel="import" href="/../elements/addons/sc-text-options.html">
-<link rel="import" href="/../styles/sc-text-styles.html">
-<link rel="import" href="/../styles/sc-text-heading-styles.html">
-<link rel="import" href="/../styles/sc-text-paragraph-num-styles.html">
+<link rel="import" href="/elements/addons/sc-text-options.html">
+<link rel="import" href="/styles/sc-text-styles.html">
+<link rel="import" href="/styles/sc-text-heading-styles.html">
+<link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
 <!--
 This element loads the segmented text pages that are created in Pootle, which are at the moment defined as
@@ -103,12 +103,6 @@ Issues that need to be fixed:
                last-error='{{notFound}}'
                on-response="_onResponse"></iron-ajax>
 
-    <!--<iron-ajax id="ajaxParagraphs"-->
-    <!--url="../data/paragraphtitles.json"-->
-    <!--handle-as="json"-->
-    <!--last-response="{{paragraphTitles}}"-->
-    <!--on-response="_computePars"></iron-ajax>-->
-
     <template is="dom-if" if="[[notFound]]">
       <p class="not-found">Sorry, the page you requested does not exist.</p>
     </template>
@@ -162,19 +156,16 @@ Issues that need to be fixed:
                       notify: true,
                       observer: '_addParagraphs'
                   },
-
                   // checks if the html markup is fully loaded before other functions can start
                   htmlLoaded: {
                       type: Boolean,
                       notify: true
                   },
-
                   // View for segmented text selected in the toolbar-settings-menu.
                   showViewer: {
                       type: String,
                       observer: 'setView'
                   },
-
                   // Choice of script to use for the pali. Default is Latin.
                   paliScript: {
                       type: Number,
@@ -278,7 +269,7 @@ Issues that need to be fixed:
               //                  }
               //              }
               this.htmlLoaded = true;
-              this.shadowRoot.querySelector('#html_text_content').classList.add('latin-script');
+              this.$.html_text_content.classList.add('latin-script');
 
               // checks settings from the settings-menu and changes the view accordingly.
               this.setView(this.showViewer);
@@ -290,8 +281,9 @@ Issues that need to be fixed:
           // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs() {
               console.log('_addParagraphs');
-              const infotext = this.shadowRoot.querySelector('#html_text_content');
-              return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
+              const infotext = this.$.html_text_content;
+              return (infotext && !this.showParagraphs) ?
+                  infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
           }
 
           // returns the correct title from the first segment in the translated json file.
@@ -353,10 +345,10 @@ Issues that need to be fixed:
                   if (this.author !== 'pali') {
                       switch (showViewer) {
                           case 'side-by-side':
-                              this.shadowRoot.querySelector('#html_text_content').classList.add('side-by-side');
+                              this.$.html_text_content.classList.add('side-by-side');
                               break;
                           case 'line-by-line':
-                              this.shadowRoot.querySelector('#html_text_content').classList.add('line-by-line');
+                              this.$.html_text_content.classList.add('line-by-line');
                               break;
                           case 'popup':
                               Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
@@ -372,7 +364,7 @@ Issues that need to be fixed:
                       }
                   } else {
                       // if the author is "pali", only the pali is shown and not the translated text.
-                      this.shadowRoot.querySelector('#html_text_content').classList.add('show-pali');
+                      this.$.html_text_content.classList.add('show-pali');
                   }
               }
           }
@@ -380,7 +372,7 @@ Issues that need to be fixed:
           // reset all classes and remove tooltips.
           _cleanCode() {
               console.log('_cleanCode');
-              this.shadowRoot.querySelector('#html_text_content').classList.remove('side-by-side', 'line-by-line', 'show-pali');
+              this.$.html_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
               Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
                   .forEach(item => item.parentNode.removeChild(item));
           }
@@ -392,31 +384,31 @@ Issues that need to be fixed:
               if (this.htmlLoaded) {
                   const segments = this.shadowRoot.querySelectorAll('.original-text');
                   const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-                  this.shadowRoot.querySelector('#html_text_content').classList
+                  this.$.html_text_content.classList
                       .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
                   Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
                   Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
                   switch (paliScript) {
                       case 0:
-                          this.shadowRoot.querySelector('#html_text_content').classList.add('latin-script');
+                          this.$.html_text_content.classList.add('latin-script');
                           break;
                       case 1:
-                          this.shadowRoot.querySelector('#html_text_content').classList.add('sinhala-script');
+                          this.$.html_text_content.classList.add('sinhala-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
                           break;
                       case 2:
-                          this.shadowRoot.querySelector('#html_text_content').classList.add('devanagari-script');
+                          this.$.html_text_content.classList.add('devanagari-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
                           break;
                       case 3:
-                          this.shadowRoot.querySelector('#html_text_content').classList.add('thai-script');
+                          this.$.html_text_content.classList.add('thai-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
                           break;
                       case 4:
-                          this.shadowRoot.querySelector('#html_text_content').classList.add('myanmar-script');
+                          this.$.html_text_content.classList.add('myanmar-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           break;
@@ -515,47 +507,47 @@ Issues that need to be fixed:
                   d = l.charAt(h + 2);
                   if (m[f]) {
                       if (h === 0 || g === 'a') {
-                          c += m[f]
+                          c += m[f];
                       } else {
                           if (f !== 'a') {
-                              c += b[f]
+                              c += b[f];
                           }
                       }
-                      h++
+                      h++;
                   } else {
                       if (j[f + e]) {
                           c += j[f + e];
                           h += 2;
                           if (a[d]) {
-                              c += '්'
+                              c += '්';
                           }
                       } else {
                           if (b[f] && f !== 'a') {
                               c += b[f];
                               h++;
                               if (a[e] && f !== 'ṃ') {
-                                  c += '්'
+                                  c += '්';
                               }
                           } else {
                               if (!b[f]) {
                                   if (a[g] || (g === 'h' && a[k])) {
-                                      c += '්'
+                                      c += '්';
                                   }
                                   c += f;
                                   h++;
                                   if (m[e]) {
                                       c += m[e];
-                                      h++
+                                      h++;
                                   }
                               } else {
-                                  h++
+                                  h++;
                               }
                           }
                       }
                   }
               }
               if (a[f]) {
-                  c += '්'
+                  c += '්';
               }
               c = c.replace(/ඤ්ජ/g, 'ඦ');
               c = c.replace(/ණ්ඩ/g, 'ඬ');
@@ -563,7 +555,7 @@ Issues that need to be fixed:
               c = c.replace(/ම්බ/g, 'ඹ');
               c = c.replace(/්ර/g, '්ර');
               c = c.replace(/\`+/g, '"');
-              return c.slice(0, -1)
+              return c.slice(0, -1);
           }
 
           toMyanmar(k) {
@@ -648,49 +640,49 @@ Issues that need to be fixed:
                   c = k.charAt(g + 2);
                   if (m[e]) {
                       if (g === 0 || f === 'a') {
-                          b += m[e]
+                          b += m[e];
                       } else {
                           if (e === 'ā') {
                               if (n[h]) {
-                                  b += 'ါ'
+                                  b += 'ါ';
                               } else {
-                                  b += 'ာ'
+                                  b += 'ာ';
                               }
                           } else {
                               if (e === 'o') {
                                   if (n[h]) {
-                                      b += 'ေါ'
+                                      b += 'ေါ';
                                   } else {
-                                      b += 'ော'
+                                      b += 'ော';
                                   }
                               } else {
                                   if (e !== 'a') {
-                                      b += l[e]
+                                      b += l[e];
                                   }
                               }
                           }
                       }
                       g++;
-                      h = false
+                      h = false;
                   } else {
                       if (l[e + d] && d === 'h') {
                           b += l[e + d];
                           if (c !== 'y' && !h) {
-                              h = e + d
+                              h = e + d;
                           }
                           if (a[c]) {
-                              b += '္'
+                              b += '္';
                           }
-                          g += 2
+                          g += 2;
                       } else {
                           if (l[e] && e !== 'a') {
                               b += l[e];
                               g++;
                               if (d !== 'y' && !h) {
-                                  h = e
+                                  h = e;
                               }
                               if (a[d] && e !== 'ṃ') {
-                                  b += '္'
+                                  b += '္';
                               }
                           } else {
                               if (!l[e]) {
@@ -699,16 +691,16 @@ Issues that need to be fixed:
                                   if (m[d]) {
                                       if (m[d + c]) {
                                           b += m[d + c];
-                                          g += 2
+                                          g += 2;
                                       } else {
                                           b += m[d];
-                                          g++
+                                          g++;
                                       }
                                   }
-                                  h = false
+                                  h = false;
                               } else {
                                   h = false;
-                                  g++
+                                  g++;
                               }
                           }
                       }
@@ -721,7 +713,7 @@ Issues that need to be fixed:
               b = b.replace(/္ဟ/g, 'ှ');
               b = b.replace(/သ္သ/g, 'ဿ');
               b = b.replace(/င္/g, 'င်္');
-              return b.slice(0, -1)
+              return b.slice(0, -1);
           }
 
           toDevar(l) {
@@ -785,44 +777,44 @@ Issues that need to be fixed:
                   b = l.charAt(j + 4);
                   if (j === 0 && m[g]) {
                       c += m[g];
-                      j += 1
+                      j += 1;
                   } else {
                       if (f === 'h' && n[g + f]) {
                           c += n[g + f];
                           if (e && !m[e] && f !== 'ṃ') {
-                              c += '्'
+                              c += '्';
                           }
-                          j += 2
+                          j += 2;
                       } else {
                           if (n[g]) {
                               c += n[g];
                               if (f && !m[f] && !m[g] && g !== 'ṃ') {
-                                  c += '्'
+                                  c += '्';
                               }
-                              j++
+                              j++;
                           } else {
                               if (g !== 'a') {
                                   if (a[h] || (h === 'h' && a[k])) {
-                                      c += '्'
+                                      c += '्';
                                   }
                                   c += g;
                                   j++;
                                   if (m[f]) {
                                       c += m[f];
-                                      j++
+                                      j++;
                                   }
                               } else {
-                                  j++
+                                  j++;
                               }
                           }
                       }
                   }
               }
               if (a[g]) {
-                  c += '्'
+                  c += '्';
               }
               c = c.replace(/\`+/g, '"');
-              return c.slice(0, -1)
+              return c.slice(0, -1);
           }
 
           toThai(m) {
@@ -912,66 +904,66 @@ Issues that need to be fixed:
                   if (n[g]) {
                       if (g === 'o' || g === 'e') {
                           c += j[g] + j.a;
-                          k++
+                          k++;
                       } else {
                           if (k === 0) {
-                              c += j.a
+                              c += j.a;
                           }
                           if (g === 'i' && f === 'ṃ') {
                               c += j[g + f];
-                              k++
+                              k++;
                           } else {
                               if (g !== 'a') {
-                                  c += j[g]
+                                  c += j[g];
                               }
                           }
-                          k++
+                          k++;
                       }
                   } else {
                       if (j[g + f] && f === 'h') {
                           if (e === 'o' || e === 'e') {
                               c += j[e];
-                              k++
+                              k++;
                           }
                           c += j[g + f];
                           if (a[e]) {
-                              c += 'ฺ'
+                              c += 'ฺ';
                           }
-                          k = k + 2
+                          k = k + 2;
                       } else {
                           if (j[g] && g !== 'a') {
                               if (f === 'o' || f === 'e') {
                                   c += j[f];
-                                  k++
+                                  k++;
                               }
                               c += j[g];
                               if (a[f] && g !== 'ṃ') {
-                                  c += 'ฺ'
+                                  c += 'ฺ';
                               }
-                              k++
+                              k++;
                           } else {
                               if (!j[g]) {
                                   c += g;
                                   if (a[h] || (h === 'h' && a[l])) {
-                                      c += 'ฺ'
+                                      c += 'ฺ';
                                   }
                                   k++;
                                   if (f === 'o' || f === 'e') {
                                       c += j[f];
-                                      k++
+                                      k++;
                                   }
                                   if (n[f]) {
-                                      c += j.a
+                                      c += j.a;
                                   }
                               } else {
-                                  k++
+                                  k++;
                               }
                           }
                       }
                   }
               }
               if (a[g]) {
-                  c += 'ฺ'
+                  c += 'ฺ';
               }
               c = c.replace(/\`+/g, '"');
               return c.slice(0, -1);
