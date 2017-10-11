@@ -213,6 +213,9 @@
       .error-toast {
         --paper-toast-background-color: red;
       }
+      .success-toast {
+        --paper-toast-background-color: green;
+      }
 
     </style>
     <iron-ajax
@@ -273,16 +276,16 @@
             </label>
           </div>
 
-          <paper-input label="Name (optional)" class="data-input name-input">
+          <paper-input label="Name (optional)" class="data-input name-input" maxlength=200>
             <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>
 
           <paper-input label="Email (optional)" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
-                        error-message="Invalid email">
+                        error-message="Invalid email" maxlength=200>
             <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>
 
-          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2>
+          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2 maxlength=200>
           </paper-textarea>
 
           <div class="flex-row submit">
@@ -302,6 +305,7 @@
       </section>
     </div>
     <paper-toast class="toast error-toast" text="[[errorMessage]]" duration=5000></paper-toast>
+    <paper-toast class="toast success-toast" text="[[successMessage]]" duration=3000></paper-toast>
     <template is="dom-if" if="{{processingPayment}}">
       <div class="blocker"></div>
       <div class="spinner">
@@ -356,6 +360,18 @@
                   StripeValid: {
                     type: Boolean,
                     value: false
+                  },
+                  errorMessages: {
+                    type: Object,
+                    value: {
+                      0: 'Unknown error',
+                      1: 'Amount cannot be less than $0.50 USD.',
+                      2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.'
+                    }
+                  },
+                  successMessage: {
+                    type: String,
+                    value: 'Sadhu! Your payment has been completed successfully. You will be redirected in 3 seconds.'
                   }
               }
           }
@@ -452,11 +468,13 @@
 
           _paymentFinished(event) {
               this.processingPayment = false;
-              this.set('path', '/');
+              this.shadowRoot.querySelector('.success-toast').open();
+              setTimeout(() => {this.set('path', '/')}, 3500);
           }
 
           _paymentError(event) {
-            this.errorMessage = this.donationResponseError.response.err_message;
+            let errCode = this.donationResponseError.response['err_code']
+            this.errorMessage = this.errorMessages[errCode];
             this.processingPayment = false;
             this.shadowRoot.querySelector('.error-toast').open();
           }

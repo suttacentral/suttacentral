@@ -515,17 +515,14 @@ class Donations(Resource):
                 return {'err_message': 'Select either one time or monthly'}, 400
 
         except stripe.InvalidRequestError as e:
-            message = 'Error!'
-            print(e)
+            code = 0
             if 'Amount must convert to at least 50 cents' in str(e):
-                message = 'Amount cannot be less than $0.50. '
-                message += str(e).split('least 50 cents. ')[1]
+                code = 1
 
             elif 'more than $999,999.99' in str(e) or 'Invalid integer' in str(e):
-                message = '''Due to Stripe limitations, 
-                             please make a direct payment, or else contact us for help.'''
+                code = 2
 
-            return {'err_message': message}, 400
+            return {'err_code': code}, 400
 
         return 'Subscribed' if monthly_donation else 'Donated', 200
 
