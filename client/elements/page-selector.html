@@ -220,13 +220,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           // based on the current route.
           // TODO set this in the respective elements
           _setDisplayOptions() {
-              if (this.shouldShowSimpleSuttaPage) {
-                  this.dispatch('changeToolbarMode', 'text-mode');
-              }
-              else if (this.shouldShowSegmentedSuttaPage) {
-                  this.dispatch('changeToolbarMode', 'segmented-mode');
-              }
-              else if (this.shouldShowDictionaryPage) {
+              if (this.shouldShowDictionaryPage) {
                   this.dispatch('changeToolbarMode', 'dictionary-mode');
                   this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
               }
@@ -244,7 +238,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               else if (this._isSuttaplexListPage()) {
                   this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
               }
-              else if (this._isSimpleSuttaTextPage() || this._isSegmentedSuttaTextPage()) {
+              else if (this._isSuttaTextPage()) {
+                  console.log('routing to text page');
                   this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaRouteParams()));
               }
               else {
@@ -276,12 +271,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _isSuttaTextPage() {
-              if (this._isStaticPage()) {
+              if (this._isStaticPage(this._getPathParamNumber(1))) {
                   return false;
               }
               const langIsoCode = this._getPathParamNumber(2);
               const author = this._getPathParamNumber(3);
-              return !!(langIsoCode && author && author !== 'sujato' && author !== 'pali');
+              return (langIsoCode && author);
           }
 
           _getSuttaplexRouteParams() {

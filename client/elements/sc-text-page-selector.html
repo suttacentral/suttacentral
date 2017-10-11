@@ -11,15 +11,14 @@
 
     <iron-meta id="meta"></iron-meta>
 
-    <!--<iron-ajax-->
-    <!--auto-->
-    <!--url="[[_getUrl()]]"-->
-    <!--handle-as="json"-->
-    <!--loading="{{loading}}"-->
-    <!--last-error="{{error}}"-->
-    <!--last-response="{{navList}}"-->
-    <!--&gt;</iron-ajax>-->
-
+    <iron-ajax
+        auto
+        url="[[_getUrl()]]"
+        handle-as="json"
+        loading="{{loading}}"
+        last-error="{{error}}"
+        last-response="{{lastResponse}}"
+    ></iron-ajax>
 
     <template is="dom-if" if="[[!isSegmentedText]]" restamp>
       <sc-page-text></sc-page-text>
@@ -29,11 +28,16 @@
       <sc-segmented-text></sc-segmented-text>
     </template>
 
+    <template is="dom-if" if="[[error]]">
+      <h2>Page error</h2>
+      <h3>Could not load the sutta text.</h3>
+    </template>
+
 
   </template>
 
   <script>
-      class SCTextPageSelector extends Polymer.Element {
+      class SCTextPageSelector extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-text-page-selector';
           }
@@ -43,12 +47,38 @@
                   isSegmentedText: {
                       type: Boolean,
                       computed: '_isSegmentedSuttaTextPage'
+                  },
+                  lastResponse: {
+                      type: Object,
+                      observer: '_onResponse'
                   }
               }
           }
 
-          ready() {
-              super.ready();
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
+                  changeToolbarMode(mode) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_MODE',
+                          mode: mode
+                      };
+                  }
+              }
+          }
+
+          _onResponse() {
+              if (this.isSegmentedText) {
+                  this.dispatch('changeToolbarMode', 'segmented-mode');
+              }
+              else {
+                  this.dispatch('changeToolbarMode', 'text-mode');
+              }
           }
 
           // checks if a page is a segmented-text page and sets the toolbar title and css class accordingly.
