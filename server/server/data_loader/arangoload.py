@@ -179,6 +179,8 @@ def process_category_files(category_files, db, edges, mapping):
             if 'contains' in entry:
                 for uid in entry['contains']:
                     child = mapping.get(pathlib.PurePath(uid))
+                    if child is None:
+                        continue
                     child[entry['type']] = entry['uid']
                     edges.append({
                         '_from': f'{category_name}/{entry["_key"]}',
