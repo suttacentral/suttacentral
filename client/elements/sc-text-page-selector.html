@@ -1,0 +1,56 @@
+<dom-module id="sc-text-page-selector">
+  <template>
+    <style>
+    </style>
+
+    <iron-meta id="meta"></iron-meta>
+
+    <!--<iron-ajax-->
+    <!--auto-->
+    <!--url="[[_getUrl()]]"-->
+    <!--handle-as="json"-->
+    <!--loading="{{loading}}"-->
+    <!--last-error="{{error}}"-->
+    <!--last-response="{{navList}}"-->
+    <!--&gt;</iron-ajax>-->
+
+
+    <template is="dom-if" if="[[!isSegmentedText]]" restamp>
+      <sc-page-text></sc-page-text>
+    </template>
+
+    <template is="dom-if" if="[[isSegmentedText]]" restamp>
+      <sc-segmented-text></sc-segmented-text>
+    </template>
+
+
+  </template>
+
+  <script>
+      class SCTextPageSelector extends Polymer.Element {
+          static get is() {
+              return 'sc-text-page-selector';
+          }
+
+          static get properties() {
+              return {
+                  isSegmentedText: {
+                      type: Boolean,
+                      computed: '_isSegmentedSuttaTextPage'
+                  }
+              }
+          }
+
+          ready() {
+              super.ready();
+          }
+
+          // checks if a page is a segmented-text page and sets the toolbar title and css class accordingly.
+          _isSegmentedSuttaTextPage() {
+              return !!(langIsoCode && author && (author === 'sujato' || author === 'pali'));
+          }
+      }
+
+      customElements.define(SCTextPageSelector.is, SCTextPageSelector);
+  </script>
+</dom-module>
