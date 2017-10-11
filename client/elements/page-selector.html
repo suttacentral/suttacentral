@@ -274,6 +274,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           _isSuttaplexListPage() {
               const idParam = this._getPathParamNumber(1);
               // Static sites and the search page also only has one path parameter
+              if (this._isStaticPage(idParam) || this._isSearchPage()) {
                   return false;
               }
               return idParam && !this._getPathParamNumber(2);
