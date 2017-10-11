@@ -23,7 +23,7 @@
 -->
 <dom-module id="sc-suttaplex" attributes="open url">
   <template>
-    <style is="custom-style" include="sc-suttaplex-styles">
+    <style include="sc-suttaplex-styles">
       .heading {
         cursor: pointer;
       }
@@ -197,16 +197,16 @@
           <div class="languagedrop">
             <language-menu language-choice="[[item.translations]]" title-label="More"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
-                           input-url="[[item.uid]]" id="languageMenu" on-paper-dropdown-close="_changeItemZIndex"
+                           root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndex"
                            on-paper-dropdown-open="_changeItemZIndex"></language-menu>
           </div>
         </div>
 
         <div>
           <template is="dom-if" if="[[parallelsOpened]]">
-            <paper-menu-button horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top" 
+            <paper-menu-button horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top"
                                 aria-disabled="false">
-                <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button" 
+                <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
                                     tabindex="0" aria-disabled="false"></paper-icon-button>
                 <div slot="dropdown-content"></div>
                 <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
@@ -307,7 +307,7 @@
               return level ? 'sc-svg-icons:' + level : '';
           }
 
-          // Computes API endpoint URL for given tranlation
+          // Computes API endpoint URL for given translation
           _computeApiUrlEndpoint(uid, author) {
               return `/sutta/${uid}/?author=${author}`;
           }
@@ -322,7 +322,7 @@
 
           _toggleParallelsOpened() {
               this.parallelsOpened = !this.parallelsOpened;
-              this.dispatchEvent(new CustomEvent('iron-resize', {composed: true, bubbles: true}));
+              this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
           }
 
           _computeMainHeading(item) {

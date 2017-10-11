@@ -52,7 +52,7 @@
         padding-top: 0;
       }
 
-      paper-spinner-lite {
+      .loading-spinner {
         --paper-spinner-color: var(--sc-gold-500);
         left: 50%;
         top: 50px;
@@ -62,25 +62,26 @@
         display: block;
       }
 
-      iron-list {
+      .suttaplex-list {
         height: 100vh; /* don't use % values unless the parent element is sized. */
       }
     </style>
 
+    <iron-meta id="meta"></iron-meta>
+
     <iron-ajax
-            auto
-            url="[[_getApiUrl(category)]]"
-            handle-as="json"
-            loading="{{ loadingResults }}"
-            last-response="{{ responseData }}"></iron-ajax>
+        id="ajax"
+        handle-as="json"
+        loading="{{ loadingResults }}"
+        last-response="{{ responseData }}"></iron-ajax>
 
     <div class="division-content main">
 
       <div class="loading-indicator">
-        <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
+        <paper-spinner-lite class="loading-spinner" active="{{loadingResults}}"></paper-spinner-lite>
       </div>
 
-      <iron-list items="{{responseData}}" as="item" scroll-target="document" id="suttaplex-iron">
+      <iron-list class="suttaplex-list" items="{{responseData}}" as="item" scroll-target="document">
         <template>
           <div>
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
@@ -89,8 +90,7 @@
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
               <section class$="[[_calculateClass(item.type)]]">
-                <sc-title input-title="[[item.original_title]]" input-text="[[item.blurb]]"
-                          input-type="[[item.type]]">
+                <sc-title input-title="[[item.original_title]]" input-text="[[item.blurb]]" input-type="[[item.type]]">
                 </sc-title>
               </section>
             </template>
@@ -102,38 +102,57 @@
   </template>
 
   <script>
-      class ScViewSuttaplex extends Polymer.Element {
+      class SCViewSuttaplex extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-view-suttaplex';
           }
 
           static get properties() {
               return {
-                  loadingResults: {
-                      type: Boolean,
-                      value: true
-                  },
                   responseData: {
                       type: Array,
+                      observer: '_responseDataChanged'
                   },
-                  NotFound: {
-                      type: Object
+                  categoryId: {
+                      type: String,
+                      statePath: 'currentRoute.categoryId',
+                      observer: '_categoryChanged'
                   },
-                  titleFontSize: {
-                      type: Number,
-                      value: 44
-                  },
-                  category: String,
                   item: Object
               }
           }
 
-          // Compute API endpoint url
-          _getApiUrl(category) {
-              if (category.startsWith('root/')) {
-                  category = category.replace('root/', '');
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
+                  changeToolbarMode(mode) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_MODE',
+                          mode: mode
+                      };
+                  }
               }
-              return `api/suttaplex/${category}`;
+          }
+
+          _categoryChanged() {
+              if (!this.categoryId) {
+                  return;
+              }
+              this.$.ajax.url = `${this.$.meta.byKey('API_ROOT')}\/suttaplex\/${this.categoryId}`;
+              this.$.ajax.generateRequest();
+          }
+
+          _responseDataChanged() {
+              if (!this.responseData) {
+                  return;
+              }
+              this.dispatch('changeToolbarTitle', this.responseData[0].original_title);
+              this.dispatch('changeToolbarMode', 'list-mode');
           }
 
           _isSuttaplex(item) {
@@ -144,7 +163,8 @@
               return itemType === 'grouping' ? 'node' : 'vagga-node';
           }
       }
-      customElements.define(ScViewSuttaplex.is, ScViewSuttaplex);
+
+      customElements.define(SCViewSuttaplex.is, SCViewSuttaplex);
   </script>
 </dom-module>
 

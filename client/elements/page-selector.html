@@ -1,16 +1,18 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="/bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="/bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/app-route/app-location.html">
+<link rel="import" href="/bower_components/iron-location/iron-query-params.html">
 
-<link rel="import" href="menus/sc-toolbar.html">
-<link rel="import" href="sc-page-static.html">
-<link rel="import" href="sc-view-suttaplex.html">
-<link rel="import" href="sc-page-text.html">
-<link rel="import" href="sc-segmented-text.html">
-<link rel="import" href="sc-page-search.html">
-<link rel="import" href="sc-page-dictionary.html">
+<link rel="import" href="/elements/menus/sc-toolbar.html">
+<link rel="import" href="/elements/sc-page-static.html">
+<link rel="import" href="/elements/sc-view-suttaplex.html">
+<link rel="import" href="/elements/sc-page-text.html">
+<link rel="import" href="/elements/sc-segmented-text.html">
+<link rel="import" href="/elements/sc-page-search.html">
+<link rel="import" href="/elements/sc-page-dictionary.html">
 
 <!--
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
@@ -23,66 +25,62 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     - normal html text pages: **sc-page-text.html**
     - segmented text pages from pootle output: **sc-segmented-text.html**
     - suttaplex list: **sc-view-suttaplex.html**
-
-Issues that need to be fixed:
-    - Right now it is only possible to parse routes with only 2 terms. It should be possible to parse longer
-    routes (see description under **sc-navdrawer.html**). This is probably only important for the suttaplex list
-    so if a longer route exists, it might be sufficient to just forward that to **sc-view-suttaplex.html** and parse
-    it there further.
 -->
 <dom-module id="page-selector" attributes="togdraw">
   <template>
-    <style is="custom-style">
+    <style>
       :host {
         display: block;
         box-sizing: border-box;
+        --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
       }
 
       .container {
         position: relative;
       }
 
-      app-toolbar, sc-toolbar {
+      .toolbar-header, #sc_toolbar {
         background-color: var(--sc-gold-500);
         white-space: nowrap;
       }
 
-      .list-mode #toolbarheader, .text-mode #toolbarheader, .segmented-mode #toolbarheader {
+      .list-mode .toolbar-header, .text-mode .toolbar-header, .segmented-mode .toolbar-header {
         @apply --shadow-elevation-8dp;
       }
 
-      .list-mode #sctoolbar, .list-mode #toolbarheader {
+      .list-mode #sc_toolbar, .list-mode .toolbar-header {
         background-color: var(--paper-deep-orange-900);
       }
 
-      .search-mode #sctoolbar, .search-mode #toolbarheader, .dictionary-mode #sctoolbar, .dictionary-mode #toolbarheader {
+      .search-mode #sc_toolbar, .search-mode .toolbar-header,
+      .dictionary-mode #sc_toolbar, .dictionary-mode .toolbar-header {
         background-color: var(--sc-green-600);
       }
 
-      #toolbartitlebox {
+      #toolbar_title_box {
         width: 1px;
         z-index: -10;
       }
 
-      #toolbartitle {
-        text-transform: capitalize;
+      #toolbar_title {
         @apply --sc-sans-font;
+        text-transform: capitalize;
         color: white;
       }
 
-      .search-mode #toolbartitle, .dictionary-mode #toolbartitle {
+      .search-mode #toolbar_title, .dictionary-mode #toolbar_title {
         text-transform: none;
-      }
-
-      @media screen and (max-width: 450px) {
-        #toolbartitle {
-          font-size: 16px;
-        }
       }
 
       #drawertoggle {
         z-index: 1;
         color: white;
+      }
+
+      @media screen and (max-width: 450px) {
+        #toolbar_title {
+          font-size: calc(16px * var(--sc-skolar-font-scale));
+        }
       }
 
       @media screen and (min-width: 841px) {
@@ -91,300 +89,267 @@ Issues that need to be fixed:
         }
       }
     </style>
+
+    <app-location route={{route}}></app-location>
+
     <div class="container">
       <app-header-layout>
-        <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="[[mainClass]]">
-          <app-toolbar id="toolbarheader">
+
+        <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="[[toolbarMode]]">
+          <app-toolbar class="toolbar-header">
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
-            <div main-title id="toolbartitlebox"><p id="toolbartitle">[[toolbarTitle]]</p></div>
-            <sc-toolbar id="sctoolbar" input-language="[[inputLanguage]]" sutta-path="[[author]]"
-                        category="[[category]]" meta-area="[[metaArea]]"></sc-toolbar>
+
+            <div main-title id="toolbar_title_box">
+              <p id="toolbar_title">[[toolbarTitle]]</p>
+            </div>
+
+            <sc-toolbar id="sc_toolbar"></sc-toolbar>
           </app-toolbar>
         </app-header>
 
-        <template is="dom-if" if="[[_checkStatic(category)]]">
-          <sc-page-static category="[[category]]" input-language="[[inputLanguage]]"></sc-page-static>
+        <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
+          <sc-page-static></sc-page-static>
         </template>
 
-        <template is="dom-if" if="[[_checkList(category)]]">
-          <sc-view-suttaplex category="[[category]]"></sc-view-suttaplex>
+        <template is="dom-if" if="[[shouldShowSuttaplexListPage]]" restamp>
+          <sc-view-suttaplex></sc-view-suttaplex>
         </template>
 
-        <template is="dom-if" if="[[_checkText(category)]]">
-          <sc-page-text sutta-path="[[category]]" author="[[author]]" input-language="[[inputLanguage]]"
-                        show-paragraphs="[[showParagraphs]]"></sc-page-text>
+        <template is="dom-if" if="[[shouldShowSearchPage]]" restamp>
+          <sc-page-search></sc-page-search>
         </template>
 
-        <template is="dom-if" if="[[_checkSegmented(category)]]">
-          <sc-segmented-text sutta-path="[[category]]" author="[[author]]" show-viewer="[[showViewer]]"
-                             pali-script="[[paliScript]]" input-language="[[inputLanguage]]"
-                             show-paragraphs="[[showParagraphs]]"></sc-segmented-text>
+        <template is="dom-if" if="[[shouldShowSimpleSuttaPage]]" restamp>
+          <sc-page-text></sc-page-text>
         </template>
 
-        <template is="dom-if" if="[[_checkSearch(category)]]">
-          <sc-page-search search-query="[[searchQuery]]"></sc-page-search>
+        <template is="dom-if" if="[[shouldShowSegmentedSuttaPage]]" restamp>
+          <sc-segmented-text></sc-segmented-text>
         </template>
 
-        <template is="dom-if" if="[[_checkDictionary(category)]]">
-          <sc-page-dictionary dictionary-item="[[dictionaryItem]]"
-                              input-language="[[inputLanguage]]"></sc-page-dictionary>
+        <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp>
+          <sc-page-dictionary></sc-page-dictionary>
         </template>
 
       </app-header-layout>
+
     </div>
   </template>
+
   <script>
-      Polymer({
-          is: 'page-selector',
-          properties: {
-              inputLanguage: String,
-              subPath: {
-                  type: String,
-                  notify: true
-              },
-              activePath: {
-                  type: Boolean,
-                  notify: true
-              },
-              toolbarTitle: {
-                  type: String,
-                  value: ""
-              },
-              metaArea: {
-                  type: String,
-                  value: ""
-              },
-              divisionTitle: {
-                  type: String,
-                  notify: true
-              },
-              suttaTitle: {
-                  type: String,
-                  notify: true
-              },
-              suttaMeta: {
-                  type: String,
-                  notify: true
-              },
-              suttaSegTitle: {
-                  type: String,
-                  notify: true
-              },
-              suttaSegMeta: {
-                  type: String,
-                  notify: true
-              },
-              showViewer: {
-                  type: String,
-                  notify: true
-              },
-              paliScript: {
-                  type: Number,
-                  notify: true
-              },
-              showParagraphs: Boolean,
-              category: {
-                  type: String,
-                  notify: true,
-                  observer: '_changeView'
-              },
-              queryParams: {
-                  type: Object,
-                  notify: true
-              },
+      class SCPageSelector extends ReduxMixin(Polymer.Element) {
+          static get is() {
+              return 'page-selector';
+          }
 
-              // author of the text-page if any.
-              author: {
-                  type: String,
-                  notify: true,
-                  computed: '_checkAuthor(subPath,category,activePath)'
-              },
-
-              // Class set on the class on the header depending on the chosen page.
-              mainClass: String,
-
-              // Array of the various static pages available
-              staticPages: {
-                  type: Array,
-                  value: ["donations", "people", "downloads", "donate-now", "offline", "numbering", "abbreviations", 
-                          "methodology", "acknowledgments", "licensing", "about", ""]
-              },
-              searchQuery: {
-                  type: String,
-                  notify: true,
-                  computed: '_checkSearchQuery(queryParams)'
-              },
-              dictionaryItem: {
-                  type: String,
-                  notify: true,
-                  computed: '_checkDictionaryItem(subPath,category,activePath)'
-              }
-          },
-          observers: [
-              '_changeView(category,author)'
-          ],
-          ready: function() {
-              // these event listeners listen from input from the latest chosen view to change the title in the toolbar
-              this.addEventListener('eventFromTextPage', this.addTitles);
-              this.addEventListener('eventFromSuttaplexPage', this.addTitles);
-              this.addEventListener('eventFromSegmentedTextPage', this.addTitles);
-
-              // fires if in the settings menu an option is chosen for a certain view i.e. side-by-side, line-by-line, etc.
-              // only applies to segmented text pages.
-              this.addEventListener('eventFromTools', this.changeSegmentedView);
-
-              // fires if in the settings menu the option "textual information" is chosen. Only applies to text pages.
-              this.addEventListener('changeTextInfo', this._changeTextInfo);
-
-              // fires if in the settings menu the option for a change of script is chosen.
-              // Only applies to segmented text pages where pali is shown.
-              this.addEventListener('changeScript', this._changeScript);
-          },
-          // changes the title in the toolbar and meta area in the settings-menu dialog-box depending on the chosen view
-          addTitles: function(event) {
-              switch (this.mainClass) {
-                  case 'list-mode':
-                      if (event.detail.divisiontitle) {
-                          this.divisionTitle = event.detail.divisiontitle
-                      }
-                      this.toolbarTitle = this.divisionTitle;
-                      break;
-                  case 'text-mode':
-                      if (event.detail.suttatitle) {
-                          this.suttaTitle = event.detail.suttatitle
-                      }
-                      if (event.detail.suttameta) {
-                          this.suttaMeta = event.detail.suttameta
-                      }
-                      this.toolbarTitle = this.suttaTitle;
-                      this.metaArea = this.suttaMeta;
-                      break;
-                  case 'segmented-mode':
-                      if (event.detail.suttasegtitle) {
-                          this.suttaSegTitle = event.detail.suttasegtitle
-                      }
-                      if (event.detail.suttasegmeta) {
-                          this.suttaSegMeta = event.detail.suttasegmeta
-                      }
-                      this.toolbarTitle = this.suttaSegTitle;
-                      this.metaArea = this.suttaSegMeta;
-                      break;
-              }
-          },
-          // find the author name in the route: The additional check for "activePath" is needed because otherwise the
-          // different views for different vaggas vs. the full view of all the vaggas is not always taken.
-          // Note that this will have to be changed for longer and more complex routes.
-          _checkAuthor: function(subPath, category, activePath) {
-              return (category !== "define" && subPath && activePath && !subPath.startsWith("vagga")) ? subPath : "";
-          },
-          // find the vagga name in the route. The additional check for "activePath" is needed because otherwise the
-          // different views for different vaggas vs. the full view of all the vaggas is not always taken.
-          // Note that this will have to be changed for longer and more complex routes.
-          _computeVagga: function(subPath, activePath) {
-              return (subPath && activePath && subPath.startsWith("vagga")) ? subPath : "";
-          },
-          // if there are query parameters given, then pass this info to the search page.
-          _checkSearchQuery: function(queryParams) {
-              return (queryParams.query) ? queryParams.query : "";
-          },
-          // if the first term of the route = "define", pass the second term as dictionary-search-term to the dictionary page.
-          _checkDictionaryItem: function(subPath, category, activePath) {
-              return (activePath && category === "define") ? subPath : "";
-          },
-          // set the view-mode for the segmented text pages to the chosen value.
-          changeSegmentedView: function(e) {
-              return this.showViewer = e.detail.selectedView;
-          },
-          // set the textual info-mode for the text pages to the chosen value.
-          _changeTextInfo: function(e) {
-              return this.showParagraphs = e.detail.textInfo;
-          },
-          // set the script type for pali pages in segmented text pages.
-          _changeScript: function(e) {
-              return this.paliScript = e.detail.scriptchoice;
-          },
-          // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
-          _changeView: function(category, author) {
-              this.$.sctoolbar.closeSearch();
-              this.$.header.resetLayout();
-          },
-          // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
-          _toggleDrawer: function() {
-              this.fire('toggleDrawer', {togdraw: "opened"});
-          },
-          // checks if a page is a static page by checking the first term in the route against the staticPages-array
-          // and sets the toolbar title and css class accordingly.
-          _checkStatic: function(category) {
-              if (this.staticPages.indexOf(category) > -1) {
-                  this.mainClass = "static-mode";
-                  this.toolbarTitle = '';
-                  return true;
-              } else {
-                  return false;
-              }
-          },
-          // checks if a route is not part of any of the other classes of pages (static,search,dictionary or text)
-          // and sets the toolbar title, meta area and css class accordingly.
-          _checkList: function(category) {
-              const author = this._checkAuthor(this.subPath, category, this.activePath);
-              if (author === "" && (this.staticPages.indexOf(category) === -1) && category !== 'search' && category !== 'define') {
-                  this.mainClass = "list-mode";
-                  this.toolbarTitle = this.divisionTitle;
-                  return true;
-              } else {
-                  return false;
-              }
-          },
-          // checks if a page is a html-text page by checking if there is an author and if the author is not equal to "sujato" or "pali"
-          // and sets the toolbar title, meta area and css class accordingly.
-          // Note that this might have to change if other authors will also be used for segmented texts.
-          _checkText: function(category) {
-              const author = this._checkAuthor(this.subPath, category, this.activePath);
-              if (author && author !== "sujato" && author !== "pali") {
-                  this.mainClass = "text-mode";
-                  this.toolbarTitle = this.suttaTitle;
-                  this.metaArea = this.suttaMeta;
-                  return true;
-              } else {
-                  return false;
-              }
-          },
-          // checks if a page is a segmented-text page by checking if there is an author and if the author is equal to "sujato" or "pali"
-          // and sets the toolbar title, meta area and css class accordingly.
-          // Note that this might have to change if other authors will also be used for segmented texts.
-          _checkSegmented: function(category) {
-              const author = this._checkAuthor(this.subPath, category, this.activePath);
-              if (author && (author === "sujato" || author === "pali")) {
-                  this.mainClass = "segmented-mode";
-                  this.toolbarTitle = this.suttaSegTitle;
-                  this.metaArea = this.suttaSegMeta;
-                  return true;
-              } else {
-                  return false;
-              }
-          },
-          // checks if a page is a search page by checking the first term in the route = "search"
-          // and sets the toolbar title and css class accordingly.
-          _checkSearch: function(category) {
-              if (category === "search") {
-                  this.mainClass = "search-mode";
-                  this.toolbarTitle = 'SuttaCentral — search results';
-                  return true;
-              } else {
-                  return false;
-              }
-          },
-          // checks if a page is a dictionary page by checking the first term in the route = "define"
-          // and sets the toolbar title and css class accordingly.
-          _checkDictionary: function(category) {
-              if (category === "define") {
-                  this.mainClass = "dictionary-mode";
-                  this.toolbarTitle = 'SuttaCentral — Dictionary results';
-                  return true;
-              } else {
-                  return false;
+          static get properties() {
+              return {
+                  route: Object,
+                  queryParams: {
+                      type: Object,
+                      notify: true
+                  },
+                  // Defines all the available static pate routes.
+                  // See <sc-page-static.html>.
+                  staticPages: {
+                      type: Array,
+                      value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
+                          'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGEMENTS', 'LICENSING']
+                  },
+                  selectedPage: {
+                      type: String,
+                      statePath: 'currentRoute.name',
+                      observer: '_recalculateView'
+                  },
+                  // Class set on the class on the header depending on the chosen page.
+                  toolbarMode: {
+                      type: String,
+                      statePath: 'toolbarOptions.mode'
+                  },
+                  toolbarTitle: {
+                      type: String,
+                      statePath: 'toolbarOptions.title'
+                  },
+                  // Variables that control the <dom-if> elements in the template:
+                  shouldShowStaticPage: Boolean,
+                  shouldShowSuttaplexListPage: Boolean,
+                  shouldShowSearchPage: Boolean,
+                  shouldShowSimpleSuttaPage: Boolean,
+                  shouldShowSegmentedSuttaPage: Boolean,
+                  shouldShowDictionaryPage: Boolean
               }
           }
-      });
+
+          static get observers() {
+              return [
+                  '_scrollToTop(route)',
+                  '_changeView(route)',
+                  '_handleRouteChange(route.*)'
+              ];
+          }
+
+          static get actions() {
+              return {
+                  changeRoute(route) {
+                      return {
+                          type: 'CHANGE_ROUTE',
+                          route: route
+                      };
+                  },
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
+                  changeToolbarMode(mode) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_MODE',
+                          mode: mode
+                      };
+                  }
+              }
+          }
+
+          _recalculateView() {
+              this.shouldShowStaticPage = this._isStaticPage(this.selectedPage);
+              this.shouldShowSuttaplexListPage = this._isSuttaplexListPage();
+              this.shouldShowSearchPage = this._isSearchPage();
+              this.shouldShowSimpleSuttaPage = this._isSimpleSuttaTextPage();
+              this.shouldShowSegmentedSuttaPage = this._isSegmentedSuttaTextPage();
+              this.shouldShowDictionaryPage = this._isDictionaryPage();
+              this._setDisplayOptions();
+          }
+
+          // Sets the color of the toolbar (via the mainClass variable) and other display options
+          // based on the current route.
+          // TODO set this in the respective elements
+          _setDisplayOptions() {
+              if (this.shouldShowSimpleSuttaPage) {
+                  this.dispatch('changeToolbarMode', 'text-mode');
+              }
+              else if (this.shouldShowSegmentedSuttaPage) {
+                  this.dispatch('changeToolbarMode', 'segmented-mode');
+              }
+              else if (this.shouldShowDictionaryPage) {
+                  this.dispatch('changeToolbarMode', 'dictionary-mode');
+                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
+              }
+          }
+
+          // Dispatches the CHANGE_ROUTE action with the correct parameters.
+          _handleRouteChange() {
+              const routeName = this._getBaseRouteName();
+              if (routeName === '') {
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'HOME' }));
+              }
+              else if (this._isStaticPage(routeName) || routeName === 'SEARCH') {
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
+              }
+              else if (this._isSuttaplexListPage()) {
+                  this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
+              }
+              else if (this._isSimpleSuttaTextPage() || this._isSegmentedSuttaTextPage()) {
+                  this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaRouteParams()));
+              }
+              else {
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
+              }
+          }
+
+          _isStaticPage(pageName) {
+              return this.staticPages.includes(pageName);
+          }
+
+          _isSearchPage() {
+              return (this.selectedPage === 'SEARCH');
+          }
+
+          _isDictionaryPage() {
+              return this.selectedPage === 'DEFINE';
+          }
+
+          // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).
+          _isSuttaplexListPage() {
+              if (this._isStaticPage()) {
+                  return false;
+              }
+              const idParam = this._getPathParamNumber(1);
+              return (idParam && !this._getPathParamNumber(2));
+          }
+
+          _isSimpleSuttaTextPage() {
+              if (this._isStaticPage()) {
+                  return false;
+              }
+              const langIsoCode = this._getPathParamNumber(2);
+              const author = this._getPathParamNumber(3);
+              return !!(langIsoCode && author && author !== 'sujato' && author !== 'pali');
+          }
+
+          // checks if a page is a segmented-text page and sets the toolbar title and css class accordingly.
+          _isSegmentedSuttaTextPage() {
+              if (this._isStaticPage()) {
+                  return false;
+              }
+              const langIsoCode = this._getPathParamNumber(2);
+              const author = this._getPathParamNumber(3);
+              return !!(langIsoCode && author && (author === 'sujato' || author === 'pali'));
+          }
+
+          _getSuttaplexRouteParams() {
+              return {
+                  name: 'SUTTAPLEX',
+                  categoryId: this._getPathParamNumber(1)
+              };
+          }
+
+          _getSuttaRouteParams() {
+              return {
+                  name: 'SUTTA',
+                  suttaId: this._getPathParamNumber(1),
+                  langName: this._getPathParamNumber(2),
+                  authorName: this._getPathParamNumber(3)
+              };
+          }
+
+          // Returns the main path category (first path param). Normalized by converting to upper case.
+          _getBaseRouteName() {
+              return this.route.path.split('\/')[1].toUpperCase();
+          }
+
+          // Returns a nested path parameter.
+          // Example:
+          // if path = "http://suttacentral.net/sutta/dn1/sujato", _getPathParamNumber(1) returns "dn1".
+          _getPathParamNumber(number) {
+              try {
+                  return this.route.path.split('\/')[number];
+              } catch (e) {
+                  console.error(e);
+                  return '';
+              }
+          }
+
+          // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
+          _changeView() {
+              this.$.sc_toolbar.closeSearch();
+          }
+
+          // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
+          _toggleDrawer() {
+              this.dispatchEvent(new CustomEvent('toggleDrawer', {
+                  detail: { togdraw: 'opened' },
+                  composed: true,
+                  bubbles: true
+              }));
+          }
+
+          _scrollToTop() {
+              window.scroll(0, 0);
+          }
+
+      }
+
+      customElements.define(SCPageSelector.is, SCPageSelector);
   </script>
 </dom-module>

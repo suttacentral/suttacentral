@@ -2,28 +2,28 @@
 <head>
   <meta charset="UTF-8">
   <title>SuttaCentral</title>
-  <link rel="icon" href="img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
   <script>
       window.customElements = window.customElements || {};
       window.customElements.forcePolyfill = true;
       window.ShadyDOM = {force: true};
     </script>
-  <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
-  <link rel="import" href="bower_components/paper-styles/color.html">
-  <link rel="import" href="bower_components/paper-styles/paper-styles.html">
-  <link rel="import" href="bower_components/paper-styles/typography.html">
-  <link rel="import" href="bower_components/paper-styles/shadow.html">
-  <link rel="import" href="bower_components/paper-styles/default-theme.html">
-  <link rel="import" href="bower_components/iron-meta/iron-meta.html">
+  <link rel="import" href="/bower_components/paper-styles/color.html">
+  <link rel="import" href="/bower_components/paper-styles/paper-styles.html">
+  <link rel="import" href="/bower_components/paper-styles/typography.html">
+  <link rel="import" href="/bower_components/paper-styles/shadow.html">
+  <link rel="import" href="/bower_components/paper-styles/default-theme.html">
+  <link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 
-  <link rel="import" href="elements/sc-navdrawer.html">
-  <link rel="import" href="styles/sc-styles.html">
+  <link rel="import" href="/elements/sc-navdrawer.html">
+  <link rel="import" href="/styles/sc-styles.html">
 
-  <script src="https://js.stripe.com/v3/"></script>  
+  <script src="https://js.stripe.com/v3/"></script>
 
   <style is="custom-style">
     html, body {
@@ -32,6 +32,10 @@
     }
 
   </style>
+
+  <!-- Global static variables -->
+  <iron-meta key="API_ROOT" value="http://localhost/api"></iron-meta>
+
 </head>
 <body>
 <sc-navdrawer></sc-navdrawer>

@@ -43,7 +43,7 @@
           <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
         </template>
       </div>
-      
+
     </div>
 
     <template is="dom-if" if="[[inputText]]">
@@ -62,29 +62,29 @@
 
           static get properties() {
               return {
-                inputTitle: String,
-                inputText: String,
-                inputType: String,
-                opened: {
-                  type: Boolean,
-                  value: false,
-                  notify: true
-                },
-                toggleIcon: {
-                  type: String,
-                  computed: '_computeToggleIcon(opened)'
-                },
-                inputTextToHtml: {
-                  type: Array,
-                  computed: '_splitText(inputText)'
-                }
+                  inputTitle: String,
+                  inputText: String,
+                  inputType: String,
+                  opened: {
+                      type: Boolean,
+                      value: false,
+                      notify: true
+                  },
+                  toggleIcon: {
+                      type: String,
+                      computed: '_computeToggleIcon(opened)'
+                  },
+                  inputTextToHtml: {
+                      type: Array,
+                      computed: '_splitText(inputText)'
+                  }
               }
           }
 
           _computeToggleIcon() {
-            return this.opened ? 'icons:expand-less' : 'icons:expand-more';
+              return this.opened ? 'icons:expand-less' : 'icons:expand-more';
           }
-          
+
           _toggleOpened(e) {
               this.opened = !this.opened;
               this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
@@ -94,8 +94,9 @@
               return inputType === 'grouping' ? 'node-top-heading' : 'node-secondary-heading';
           }
 
-          _splitText(text){
-            return `<p>${text.split("\n").join("</p><p>")}</p>`;
+          _splitText(text) {
+              if (!text) { return ''; }
+              return `<p>${text.split('\n').join('</p><p>')}</p>`;
           }
 
       }

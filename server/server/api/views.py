@@ -341,7 +341,7 @@ class LookupDictionaries(Resource):
 
 
 class Sutta(Resource):
-    def get(self, uid, lang):
+    def get(self, uid, author):
         """
         Send Complete information set for sutta-view for given uid.
         ---
@@ -349,12 +349,18 @@ class Sutta(Resource):
            - in: path
              name: author
              type: string
+           - in: path
+             name: uid
+             type: string
+           - in: query
+             name: lang
+             type: string
         responses:
             200:
                 description: Complete information set for sutta-view
                 schema:
                     id: sutta
-                    type: object
+                    type:  object
                     properties:
                         root_text:
                             type: object
@@ -390,7 +396,9 @@ class Sutta(Resource):
                             $ref: '#/definitions/Suttaplex'
 
         """
-        author = request.args.get('author', 'root')
+        lang = request.args.get('lang', 'en')
+
+        author = author.lower()
 
         db = get_db()
 

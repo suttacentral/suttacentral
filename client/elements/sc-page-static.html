@@ -1,7 +1,7 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="/bower_components/iron-lazy-pages/iron-lazy-pages.html">
 
 <link rel="import" href="/elements/static/home-page.html">
 <link rel="import" href="/elements/static/donations-page.html">
@@ -16,14 +16,9 @@
 <link rel="import" href="/elements/static/licensing-page.html">
 <link rel="import" href="/elements/static/about-page.html">
 
-<!--
-For the static pages an additional larger toolbar is added and depending on the route it chooses one of 4
-different elements through `iron-pages` that are filed in the `/static` folder. The texts are just mockup and
-Bhante Sujato needs to re-write them.
--->
 <dom-module id="sc-page-static">
   <template>
-    <style is="custom-style">
+    <style>
       app-toolbar {
         background-color: var(--sc-gold-500);
         white-space: nowrap;
@@ -60,6 +55,12 @@ Bhante Sujato needs to re-write them.
         margin-left: 64px;
       }
 
+      .page-not-found-container {
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-static-subtitle;
+        margin: 38px;
+      }
+
       @media (max-width: 925px) {
         .subtitle {
           @apply --sc-skolar-font-size-xl;
@@ -90,72 +91,102 @@ Bhante Sujato needs to re-write them.
       <div class="title" main-title><h1>SuttaCentral</h1></div>
     </app-toolbar>
     <app-toolbar id="lasttoolbar">
-      <div class="title" main-title><p class="subtitle">Early Buddhist texts, translations, and parallels</p></div>
+      <div class="title" main-title>
+        <p class="subtitle">Early Buddhist texts, translations, and parallels</p>
+      </div>
     </app-toolbar>
 
-    <iron-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
-      <div name="home">
+    <iron-lazy-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
+      <div name="HOME">
         <home-page></home-page>
       </div>
-      <div name="donations">
+      <div name="DONATIONS">
         <sc-donations-page></sc-donations-page>
       </div>
-      <div name="donate-now">
+      <div name="DONATE-NOW">
         <sc-donate-now-page></sc-donate-now-page>
       </div>
-      <div name="downloads">
+      <div name="DOWNLOADS">
         <downloads-page></downloads-page>
       </div>
-      <div name="people">
+      <div name="PEOPLE">
         <people-page></people-page>
       </div>
-      <div name="offline">
+      <div name="OFFLINE">
         <sc-offline-page></sc-offline-page>
       </div>
-      <div name="numbering">
+      <div name="NUMBERING">
         <sc-numbering-page></sc-numbering-page>
       </div>
-      <div name="abbreviations">
+      <div name="ABBREVIATIONS">
         <sc-abbreviations-page></sc-abbreviations-page>
       </div>
-      <div name="methodology">
+      <div name="METHODOLOGY">
         <sc-methodology-page></sc-methodology-page>
       </div>
-      <div name="acknowledgments">
-        <sc-acknowledgments-page></sc-acknowledgments-page>
+      <div name="ACKNOWLEDGEMENTS">
+        <sc-acknowledgements-page></sc-acknowledgements-page>
       </div>
-      <div name="licensing">
+      <div name="LICENSING">
         <sc-licensing-page></sc-licensing-page>
       </div>
-      <div name="about">
+      <div name="ABOUT">
         <sc-about-page></sc-about-page>
       </div>
-    </iron-pages>
+      <div name="NOT-FOUND">
+        <div class="page-not-found-container">
+          <h2>Error 404</h2>
+          <h3>Page not found</h3>
+        </div>
+      </div>
+    </iron-lazy-pages>
   </template>
 
   <script>
-      class SCPageStatic extends Polymer.Element {
+      class SCPageStatic extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-page-static';
           }
 
           static get properties() {
               return {
-                  inputLanguage: String,
-                  category: {
+                  selectedPage: {
                       type: String,
-                      observer: '_changeView'
+                      observer: '_changeView',
+                      statePath: 'currentRoute.name'
                   },
                   pages: {
                       type: String,
-                      value: 'home'
+                      value: 'HOME'
                   }
               }
           }
 
-          // chooses one of four static pages/elements from the '/static'-folder.
-          _changeView(category) {
-              this.$.pages.selected = category ? category : 'home';
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
+                  changeToolbarMode(mode) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_MODE',
+                          mode: mode
+                      };
+                  }
+              }
+          }
+
+          ready() {
+              super.ready();
+              this.dispatch('changeToolbarTitle', '');
+              this.dispatch('changeToolbarMode', '');
+          }
+
+          _changeView() {
+              this.$.pages.selected = this.selectedPage;
           }
       }
 

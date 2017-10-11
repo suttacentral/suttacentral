@@ -106,7 +106,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
         <template is="dom-if" if="[[originalLanguage]]">
           <paper-item class="root-lang-menu-item language-menu-item" title="Original language">
-            <a class="language-menu-url" href="/[[inputUrl]]/[[originalLanguage]]">
+            <a class="language-menu-url" href="/[[rootId]]/[[originalLanguage]]">
               [[_computeFullLanguageName(originalLanguage)]]</a>
           </paper-item>
         </template>
@@ -116,7 +116,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
             <section class="language-choice-box">
               <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
                 <paper-item-body>
-                  <a class$="{{_translationBorder(language.segmented)}} language-menu-url" 
+                  <a class$="{{_translationBorder(language.segmented)}} language-menu-url"
                      href="/suttas/[[language.id]]?author=[[language.author]]">
                     [[_computeAuthorForList(language.author)]]
                   </a>
@@ -147,7 +147,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   titleLabel: String,
                   inputLanguage: String,
                   originalLanguage: String,
-                  inputUrl: String,
+                  rootId: String,
                   newLanguage: {
                       type: String,
                       computed: '_otherLanguage(languageChoice, inputLanguage)'
@@ -181,22 +181,22 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           // If author name is too long it looks really bad in paper-item so just cut it.
           _shortenAuthor(author) {
               if (author.length > 16) {
-                  return `${author.substring(0, 15)}...`
+                  return `${author.substring(0, 15)}...`;
               } else {
-                  return author
+                  return author;
               }
           }
 
           _computeAuthor(author) {
-              return author ? author : 'Anonym'
+              return author ? author : 'Anonym';
           }
 
           _computeAuthorForList(author) {
-              return this._shortenAuthor(this._computeAuthor(author))
+              return this._shortenAuthor(this._computeAuthor(author));
           }
 
           _languageTitle(language) {
-              return `Select '${language.lang}' translation by ${this._computeAuthor(language.author)}`
+              return `Select '${language.lang}' translation by ${this._computeAuthor(language.author)}`;
           }
 
           _computeFullLanguageName(isoCode) {

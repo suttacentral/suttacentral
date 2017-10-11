@@ -1,34 +1,16 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/app-route/app-route-converter.html">
-<link rel="import" href="../bower_components/iron-location/iron-query-params.html">
-<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
 
-<link rel="import" href="paper-tree-sc/paper-tree.html">
-<link rel="import" href="page-selector.html">
+<link rel="import" href="/elements/paper-tree-sc/paper-tree.html">
+<link rel="import" href="/elements/page-selector.html">
 
 <!--
-The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates
-this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**), parses the route
-through `app-route` and feeds all information through to the **page-selector.html**.
-
-**app-drawer**
-
-**iron-location** and **app-rout**
-These parse the url given but at the moment only deal with the following url:
-    - search pages: `/search?query=searchterm`
-    - url with one or two terms i.e. `/`, `/donations`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc.
-     but not with more than 2 terms.
-
-Issues that need to be fixed:
-    - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new
-    menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1`
-     but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and
-     the **sc-view-suttaplex.html**.
+  The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates
+  this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**).
 -->
 <dom-module id="sc-navdrawer">
   <template>
@@ -52,7 +34,7 @@ Issues that need to be fixed:
 
       .nav-wheel-icon {
         color: white;
-        font-size: calc(45px * var(--sc-skolar-font-scale));
+        font-size: 45px;
         display: inline-block;
         vertical-align: middle;
         @apply --sc-serif-font;
@@ -95,37 +77,13 @@ Issues that need to be fixed:
 
     </style>
 
+    <iron-meta id="meta"></iron-meta>
+
     <iron-media-query query="(min-width: 992px)" query-matches="{{wideScreen}}"></iron-media-query>
-
-    <iron-location path="{{path}}" query="{{query}}"></iron-location>
-
-    <iron-query-params
-        params-string="{{query}}"
-        params-object="{{queryParams}}">
-    </iron-query-params>
-
-    <app-route-converter
-        path="{{path}}"
-        query-params="{{queryParams}}"
-        route="{{route}}">
-    </app-route-converter>
-
-    <app-route route="{{route}}"
-               pattern="/:collection"
-               data="{{collectionData}}"
-               tail="{{pathDataTail}}">
-    </app-route>
-
-    <app-route
-        route="{{pathDataTail}}"
-        pattern="/:subpath"
-        data="{{subPathData}}"
-        active="{{subPathIsActive}}">
-    </app-route>
 
     <iron-ajax
         auto
-        url="api/menu"
+        url="[[_getUrl()]]"
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
@@ -160,8 +118,7 @@ Issues that need to be fixed:
         </div>
       </app-drawer>
 
-      <page-selector category="[[category]]" sub-path="[[subPathData.subpath]]" active-path="[[subPathIsActive]]"
-                     input-language="[[inputLanguage]]" query-params="[[queryParams]]"></page-selector>
+      <page-selector></page-selector>
 
     </app-drawer-layout>
   </template>
@@ -169,28 +126,19 @@ Issues that need to be fixed:
   <script>
       class SCNavdrawer extends Polymer.Element {
           static get is() {
-              return 'sc-navdrawer'
+              return 'sc-navdrawer';
           }
 
           static get properties() {
               return {
-                  route: Object,
                   inputLanguage: {
                       type: String,
                       notify: true
-                  },
-                  collectionData: {
-                      type: Object,
-                      notify: true,
-                      observer: '_calculateCategory'
                   },
                   category: {
                       type: String,
                       notify: true
                   },
-                  queryParams: Object,
-                  path: String,
-                  query: String,
                   wideScreen: {
                       type: Boolean,
                       observer: '_screenWidthChanged'
@@ -202,16 +150,8 @@ Issues that need to be fixed:
               }
           }
 
-          static get observers() {
-              return ['_updateScroll(route)']
-          }
-
           ready() {
               super.ready();
-              // listens to input from the language dropdown menu on the top right
-              this.addEventListener('languageSelection', (e) => this.changeLanguage(e));
-              // listens to input from the search bar (i.e. a search-term) and feeds this to the iron-location
-              this.addEventListener('search', (e) => this.initiateSearch(e));
               // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
           }
@@ -230,31 +170,19 @@ Issues that need to be fixed:
           // Open the first two tiers of the sidebar menu and add icons
           _parseNavList() {
               this.navList[0].open = true;
-              if (!this.navList[0].children) { return; }
+              if (!this.navList[0].children) {
+                  return;
+              }
               this.navList[0].children.forEach((item) => {
                   item.open = true;
                   item.icon = 'trending-flat';
-                  if (!item.children) { return; }
+                  if (!item.children) {
+                      return;
+                  }
                   item.children.forEach((subItem) => {
                       subItem.icon = 'turned-in';
                   })
               });
-          }
-
-          _updateScroll() {
-              window.scroll(0, 0);
-          }
-
-          // Polymer problem here with loading anything with a dot in the path. Bug report filed.
-          // So when using "polymer serve" to start development server, you have to use a colon
-          // instead of a dot. But with python server/app.py you can use the correct path name.
-          _calculateCategory(collectionData) {
-              this.category = collectionData.collection.replace(':', '.');
-          }
-
-          // sets the inputLanguage for all pages
-          changeLanguage(event) {
-              return this.inputLanguage = event.detail.Language;
           }
 
           // opens the app-drawer when it is not visible.
@@ -262,9 +190,8 @@ Issues that need to be fixed:
               return this.shadowRoot.querySelector('app-drawer').setAttribute('opened', event.detail.togdraw);
           }
 
-          initiateSearch(event) {
-              this.set('path', '/search');
-              this.set('query', `query=${event.detail}`);
+          _getUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/menu`;
           }
       }
 

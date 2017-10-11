@@ -1,5 +1,5 @@
 {
-  "testTimeout": 20000,
+  "testTimeout": 30000,
   "plugins": {
     "local": {
       "disabled": true

@@ -1,6 +1,7 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-location/iron-location.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="/bower_components/iron-list/iron-list.html">
 <link rel="import" href="/bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
@@ -49,9 +50,9 @@ than ten results in total, a dropdown selection menu appears at the top.
       }
 
       .search-result-term {
+        @apply --sc-serif-font;
         font-weight: bold;
         color: var(--sc-green-600);
-        @apply --sc-serif-font;
       }
 
       .search-result-item {
@@ -65,9 +66,9 @@ than ten results in total, a dropdown selection menu appears at the top.
       }
 
       .padded-container {
-        padding: 0 16px;
         @apply --layout-flex;
         @apply --layout-vertical;
+        padding: 0 16px;
       }
 
       .search-result-title {
@@ -127,12 +128,14 @@ than ten results in total, a dropdown selection menu appears at the top.
     </style>
 
     <iron-ajax id="ajax"
-               url="api/search"
+               url="[[_getUrl()]]"
                params='[[searchParams]]'
                handle-as="json"
                loading="{{loadingResults}}"
                last-response="{{responseData}}"
                on-response="_didRespond"></iron-ajax>
+
+    <iron-meta id="meta"></iron-meta>
 
     <div class="loadingIndicator">
       <paper-spinner-lite class="paper-spinner" active="{{loadingResults}}"></paper-spinner-lite>
@@ -179,9 +182,9 @@ than ten results in total, a dropdown selection menu appears at the top.
     </div>
   </template>
   <script>
-      class SCPageSearch extends Polymer.Element {
+      class SCPageSearch extends ReduxMixin(Polymer.Element) {
           static get is() {
-              return 'sc-page-search'
+              return 'sc-page-search';
           }
 
           static get properties() {
@@ -190,11 +193,13 @@ than ten results in total, a dropdown selection menu appears at the top.
                   searchQuery: {
                       type: String,
                       value: '',
+                      statePath: 'currentRoute.__queryParams.query',
                       observer: '_startNewSearch'
                   },
                   // The actual query parameters of the search
                   searchParams: {
-
+                      type: Object,
+                      statePath: 'searchParams'
                   },
                   lastSearchResults: {
                       type: Array,
@@ -234,10 +239,35 @@ than ten results in total, a dropdown selection menu appears at the top.
               }
           }
 
+          static get actions() {
+              return {
+                  initiateSearch(params) {
+                      return {
+                          type: 'INITIATE_SEARCH',
+                          params: params
+                      };
+                  },
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
+                  changeToolbarMode(mode) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_MODE',
+                          mode: mode
+                      };
+                  }
+              }
+          }
+
           ready() {
               super.ready();
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
               this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
+              this.dispatch('changeToolbarTitle', 'SuttaCentral — Search results');
+              this.dispatch('changeToolbarMode', 'search-mode');
           }
 
           // After results have been loaded into memory, pushes items to an array.
@@ -295,27 +325,35 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           _loadNextPage() {
               this.currentPage++;
-              this.searchParams = {
+              this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
                   offset: (this.currentPage * this.resultsPerLoad),
                   query: this.searchQuery
-              };
+              });
               this._generateRequest();
           }
 
-          // Clears search result arrays, resets variables and generates a new search request.
+          // generates a new search request.
           _startNewSearch() {
+              if (!this.searchQuery) {
+                  return;
+              }
+              this.clearSearchPage();
+              this.dispatch('initiateSearch', {
+                  limit: this.resultsPerLoad,
+                  query: this.searchQuery
+              });
+              this._generateRequest();
+          }
+
+          // Clears search result arrays, resets variables
+          clearSearchPage() {
               this.splice('visibleSearchResults', 0, this.visibleSearchResults.length);
               this.splice('allSearchResults', 0, this.allSearchResults.length);
               this.set('currentPage', 0);
               this.set('currentFilter', 'all');
               this.set('totalLoadedResults', 0);
               this.shadowRoot.querySelector('#filter_menu').resetFilter();
-              this.searchParams = {
-                  limit: this.resultsPerLoad,
-                  query: this.searchQuery
-              };
-              this._generateRequest();
           }
 
           // If the number of results is less than 10 or there is only 1 category of results, the search filtering
@@ -391,8 +429,8 @@ than ten results in total, a dropdown selection menu appears at the top.
           }
 
           _areAllItemsLoaded() {
-              return (this.resultCount === 0 && this.currentPage > 0) || 
-                      (this.totalLoadedResults !== 0 && this.totalLoadedResults >= this.resultCount);
+              return (this.resultCount === 0 && this.currentPage > 0) ||
+                  (this.totalLoadedResults !== 0 && this.totalLoadedResults >= this.resultCount);
           }
 
           _calculateItemCategory(item) {
@@ -400,7 +438,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                   return item.category;
               }
               if (item._source.is_root) {
-                  return 'root-text'
+                  return 'root-text';
               }
               else return 'translation';
           }
@@ -423,6 +461,10 @@ than ten results in total, a dropdown selection menu appears at the top.
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
           _calculateLink(item) {
               return (item.category === 'dictionary') ? ('/define/' + item._source.heading.title) : item.url;
+          }
+
+          _getUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/search`;
           }
       }
 

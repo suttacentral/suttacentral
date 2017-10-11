@@ -1,11 +1,14 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
-<link rel="import" href="../styles/sc-text-styles.html">
-<link rel="import" href="../styles/sc-text-heading-styles.html">
-<link rel="import" href="../styles/sc-text-paragraph-num-styles.html">
-<link rel="import" href="addons/sc-text-node.html">
+<link rel="import" href="/elements/addons/sc-text-options.html">
+<link rel="import" href="/styles/sc-text-styles.html">
+<link rel="import" href="/styles/sc-text-heading-styles.html">
+<link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
 <!--
 This element loads the segmented text pages that are created in Pootle, which are at the moment defined as
@@ -16,7 +19,7 @@ This elements first loads the html markup file from `../data/texts/markup`, then
 from `../data/texts/en/sujato` and the pali from `../data/texts/pli` as well as the file that contains the paragraph
 numbers from `../data/paragraphtitles.json`.
 
-The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-node.html`).
+The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-options.html`).
 
 Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested. Via this menu,
 also the type of view (none, side-by-side, line-by-line or popup) can be chosen to display the english and pali
@@ -36,7 +39,7 @@ Issues that need to be fixed:
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
   <template>
     <style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-      .notfound {
+      .not-found {
         @apply --paper-font-display1;
       }
 
@@ -45,302 +48,312 @@ Issues that need to be fixed:
         display: none;
       }
 
-      .sidebyside section {
+      .side-by-side section {
         padding: 0 7% 32px 1% !important;
       }
 
-      .sidebyside .translated-text {
+      .side-by-side .translated-text {
         display: inline-block;
         width: 47%;
         padding-right: 5px;
         vertical-align: text-top;
       }
 
-      .sidebyside .original-text {
+      .side-by-side .original-text {
         display: inline-block;
         width: 47%;
         padding-left: 5px;
         vertical-align: text-top;
       }
 
-      .linebyline .translated-text, .linebyline .original-text {
+      .line-by-line .translated-text, .line-by-line .original-text {
         display: block;
       }
 
-      .showpali .translated-text {
+      .show-pali .translated-text {
         display: none;
       }
 
-      .showpali .original-text {
-        display: inline;
+      .show-pali .original-text {
         @apply --sc-serif-font;
+        display: inline;
       }
 
-      paper-tooltip {
+      .text-tooltip {
+        @apply --sc-sans-font;
+        @apply --shadow-elevation-6dp;
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--paper-grey-700);
         --paper-tooltip: {
-          @apply --sc-sans-font;
-          @apply --shadow-elevation-6dp;
           font-size: 12px;
           line-height: 16px;
           padding: 8px 16px;
-          text-shadow: 0px 0px #ffffff;
+          text-shadow: 0 0 #ffffff;
           white-space: normal;
         };
       }
     </style>
 
-    <iron-ajax id="ajax"
-               url="[[_computeURL(suttaPath,author)]]"
-               handle-as="text"
-               last-response="{{suttaText}}"
-               last-error='{{notFound}}'
-               on-response="_loadedHTML"></iron-ajax>
+    <iron-meta id="meta"></iron-meta>
 
-    <iron-ajax id="ajaxParagraphs"
-               url="../data/paragraphtitles.json"
-               handle-as="json"
-               last-response="{{paragraphTitles}}"
-               on-response="_computePars"></iron-ajax>
+    <iron-ajax id="ajax"
+               url="[[_computeUrl(suttaPath,author)]]"
+               handle-as="text"
+               last-response="{{lastResponse}}"
+               last-error='{{notFound}}'
+               on-response="_onResponse"></iron-ajax>
 
     <template is="dom-if" if="[[notFound]]">
-      <p class="notfound">Sorry, the page your requested does not exist.</p>
+      <p class="not-found">Sorry, the page you requested does not exist.</p>
     </template>
 
     <template is="dom-if" if="[[!notFound]]">
-      <sc-text-node category="[[suttaPath]]" input-language="[[inputLanguage]]"></sc-text-node>
-      <div id="htmltextcontent" inner-h-t-m-l="[[suttaText]]"></div>
+      <sc-text-options suttaplex-item="[[suttaplex]]"></sc-text-options>
+      <div id="html_text_content" inner-h-t-m-l="[[suttaRootText]]"></div>
     </template>
-
-    <iron-ajax id="ajaxTranslated"
-               url="[[_computeTranslatedURL(suttaPath,author)]]"
-               handle-as="json"
-               last-response="{{suttaTranslatedText}}"
-               on-response="_addTranslatedText"></iron-ajax>
-
-    <iron-ajax id="ajaxOriginal"
-               url="[[_computeOriginalURL(suttaPath,author)]]"
-               handle-as="json"
-               last-response="{{suttaOriginalText}}"
-               on-response="_addOriginalText"></iron-ajax>
 
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-segmented-text',
+      class SCSegmentedText extends Polymer.Element {
+          static get is() {
+              return 'sc-segmented-text';
+          }
 
-          properties: {
-              suttaPath: {
-                  type: String,
-                  notify: true
-              },
-              author: {
-                  type: String,
-                  notify: true
-              },
-              suttaText: {
-                  type: String,
-                  notify: true,
-                  value: function() {
-                      return ""
+          static get properties() {
+              return {
+                  // The ID of the sutta to be displayed
+                  suttaPath: {
+                      type: String,
+                      notify: true
+                  },
+                  author: {
+                      type: String,
+                      notify: true
+                  },
+                  suttaRootText: {
+                      type: String,
+                      notify: true,
+                      value: ''
+                  },
+                  suttaTranslatedText: {
+                      type: Object,
+                      notify: true,
+                      value: () => { return {}; }
+                  },
+                  suttaOriginalText: {
+                      type: Object,
+                      notify: true,
+                      value: () => { return {}; }
+                  },
+                  inputLanguage: String,
+                  notFound: Object,
+                  paragraphTitles: Object,
+                  // If true, shows the paragraph numbers on the right of the text.
+                  // Data is passed on from the toolbar-settings-menu.
+                  showParagraphs: {
+                      type: Boolean,
+                      notify: true,
+                      observer: '_addParagraphs'
+                  },
+                  // checks if the html markup is fully loaded before other functions can start
+                  htmlLoaded: {
+                      type: Boolean,
+                      notify: true
+                  },
+                  // View for segmented text selected in the toolbar-settings-menu.
+                  showViewer: {
+                      type: String,
+                      observer: 'setView'
+                  },
+                  // Choice of script to use for the pali. Default is Latin.
+                  paliScript: {
+                      type: Number,
+                      notify: true,
+                      observer: 'changeScript'
+                  },
+                  suttaplex: {
+                      type: Object,
+                      value: () => { return {}; }
+                  },
+                  lastResponse: {
+                      type: Object,
+                      value: () => { return {}; }
                   }
-              },
-              suttaTranslatedText: {
-                  type: Object,
-                  notify: true,
-                  value: function() {
-                      return {}
-                  }
-              },
-              suttaOriginalText: {
-                  type: Object,
-                  notify: true,
-                  value: function() {
-                      return {}
-                  }
-              },
-              inputLanguage: String,
-              notFound: Object,
-              paragraphTitles: Object,
-              // If true, shows the paragraph numbers on the right of the text.
-              // Data is passed on from the toolbar-settings-menu.
-              showParagraphs: {
-                  type: Boolean,
-                  notify: true,
-                  observer: '_addParagraphs'
-              },
-
-              // checks if the html markup is fully loaded before other functions can start
-              htmlLoaded: {
-                  type: Boolean,
-                  notify: true
-              },
-
-              // View for segmented text selected in the toolbar-settings-menu.
-              showViewer: {
-                  type: String,
-                  observer: 'setView'
-              },
-
-              // Choice of script to use for the pali. Default is Latin.
-              paliScript: {
-                  type: Number,
-                  notify: true,
-                  observer: 'changeScript'
               }
-          },
-          observers: [
-              'infoToParent(suttaTranslatedText)',
-              '_callAjax(suttaPath,author)',
-          ],
-          _callAjax: function() {
-              // starts loading the html markup files from '../data/texts/markup'
+          }
+
+          static get observers() {
+              return [
+                  '_callAjax(suttaPath,author)'
+              ]
+          }
+
+          ready() {
+              super.ready();
+              console.log('in segmented text');
+          }
+
+          _callAjax() {
               this.htmlLoaded = false;
-              if (this.author && (this.author === "sujato" || this.author === "pali")) {
+              if (this.author && (this.author === 'sujato' || this.author === 'pali')) {
                   this.$.ajax.generateRequest();
               }
-          },
-          // finds the correct markup file to load.
-          _computeURL: function(category, author) {
-              let pathname;
-              if (category.startsWith("dn") || category.startsWith("mn")) {
-                  pathname = category.replace(/\d{1,5}/, "");
-                  return `../data/texts/markup/${pathname}/${category}.html`;
-              } else if (category.startsWith("an") || category.startsWith("sn")) {
-                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
-                  const subpathname = category.split(".", 1)[0];
-                  return `../data/texts/markup/${pathname}/${subpathname}/${category}.html`;
+          }
+
+          _getBaseUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/suttas`;
+          }
+
+          _computeUrl(suttaUid, author) {
+              console.log('_computeUrl(): ' + suttaUid + ' ' + author);
+              return `${this._getBaseUrl()}/${suttaUid}/${author}`;
+          }
+
+          _computeTranslatedURL(suttaUid, author) {
+              console.log('_computeTranslatedUrl(): ' + suttaUid + ' ' + author);
+              return `${this._getBaseUrl()}/${suttaUid}/${author}`;
+          }
+
+          _computeOriginalURL(suttaUid, author) {
+              console.log('_computeOriginalUrl(): ' + suttaUid + ' ' + author);
+              return `${this._getBaseUrl()}/${suttaUid}/${author}`;
+          }
+
+          _onResponse(e) {
+              console.log('onResponse');
+              if (typeof(this.lastResponse) !== 'object') {
+                  this.lastResponse = JSON.parse(this.lastResponse);
               }
-          },
-          // finds the correct translated json file to load. Only works for "sujato" as author
-          _computeTranslatedURL: function(category, author) {
-              let pathname;
-              // so this might have to change when more translators use pootle.
-              const authorRoute = "en/sujato";
-              if (category.startsWith("dn") || category.startsWith("mn")) {
-                  pathname = category.replace(/\d{1,5}/, "");
-                  return `../data/texts/${authorRoute}/${pathname}/${category}.json`;
-              } else if (category.startsWith("an") || category.startsWith("sn")) {
-                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
-                  const subpathname = category.split(".", 1)[0];
-                  return `../data/texts/${authorRoute}/${pathname}/${subpathname}/${category}.json`;
-              }
-          },
-          // finds the correct pali json file to load.
-          _computeOriginalURL: function(category, author) {
-              let pathname;
-              if (category.startsWith("dn") || category.startsWith("mn")) {
-                  pathname = category.replace(/\d{1,5}/, "");
-                  return `../data/texts/pli/${pathname}/${category}.json`;
-              } else if (category.startsWith("an") || category.startsWith("sn")) {
-                  pathname = category.replace(/[\d{1,5}\-\.]/g, "");
-                  const subpathname = category.split(".", 1)[0];
-                  return `../data/texts/pli/${pathname}/${subpathname}/${category}.json`;
-              }
-          },
-          _loadedHTML: function(e) {
-              // when the base html markup are loaded, the json files for the translated text,
-              // the pali text and the paragraph numbers are loaded.
-              this.$.ajaxTranslated.generateRequest();
-              this.$.ajaxOriginal.generateRequest();
-              this.$.ajaxParagraphs.generateRequest();
-          },
-          _addTranslatedText: function(e) {
+              this.suttaRootText = this.lastResponse.root_text.text;
+              this.suttaTranslatedText = this.lastResponse.translation.text;
+              this.suttaplex = this.lastResponse.suttaplex;
+              this.sendInfoToToolbar();
+              //              this.$.ajaxParagraphs.generateRequest();
+          }
+
+          _addTranslatedText(e) {
+              console.log('_addTranslatedText');
               // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-              const segments = this.shadowRoot.querySelectorAll('sc-segment');
-              Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              outputText = e.detail.response;
-              for (let key in outputText) {
-                  if (!key.startsWith("_")) {
-                      subkey = key.replace(/:/g, "\\\:");
-                      subkey = subkey.replace(/\./g, "\\\.");
-                      const segment = this.shadowRoot.querySelector('#' + subkey);
-                      segment.innerHTML = outputText[key] + " ";
-                  }
-              }
-          },
-          _addOriginalText: function(e) {
+              //              const segments = this.shadowRoot.querySelectorAll('sc-segment');
+              //              Array.from(segments).forEach(item => item.classList.add('translated-text'));
+              //              const outputText = e.detail.response;
+              //              for (let key in outputText) {
+              //                  if (!key.startsWith("_")) {
+              //                      let subkey = key.replace(/:/g, "\\\:");
+              //                      console.log('subkey: ' + subkey );
+              //                      subkey = subkey.replace(/\./g, "\\\.");
+              //                      const segment = this.shadowRoot.querySelector('#' + subkey);
+              //                      segment.innerHTML = outputText[key] + " ";
+              //                  }
+              //              }
+          }
+
+          _addOriginalText(e) {
+              console.log('_addOriginalText');
               // creates a second 'sc-element' behind every 'sc-element' in the base markup and
-              // polulates that with the corresponding pali text segment.
-              if (!this.$$('.original-text')) {
-                  outputText = e.detail.response;
-                  for (let key in outputText) {
-                      if (!key.startsWith("_")) {
-                          subkey = key.replace(/:/g, "\\\:");
-                          subkey = subkey.replace(/\./g, "\\\.");
-                          const segment = this.shadowRoot.querySelector('#' + subkey);
-                          const newSegment = document.createElement('sc-segment');
-                          newSegment.id = key;
-                          newSegment.classList.add("original-text");
-                          newSegment.innerHTML = outputText[key] + " ";
-                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
-                      }
-                  }
-              }
+              // populates that with the corresponding pali text segment.
+              //              if (!this.shadowRoot.querySelector('.original-text')) {
+              //                  const outputText = e.detail.response;
+              //                  for (let key in outputText) {
+              //                      if (!key.startsWith("_")) {
+              //                          let subkey = key.replace(/:/g, "\\\:");
+              //                          subkey = subkey.replace(/\./g, "\\\.");
+              //                          const segment = this.shadowRoot.querySelector('#' + subkey);
+              //                          const newSegment = document.createElement('sc-segment');
+              //                          newSegment.id = key;
+              //                          newSegment.classList.add("original-text");
+              //                          newSegment.innerHTML = outputText[key] + " ";
+              //                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+              //                      }
+              //                  }
+              //              }
               this.htmlLoaded = true;
-              this.$$('#htmltextcontent').classList.add('latin-script');
+              this.$.html_text_content.classList.add('latin-script');
 
               // checks settings from the settings-menu and changes the view accordingly.
               this.setView(this.showViewer);
               if (this.paliScript) {
                   this.changeScript(this.paliScript)
               }
-          },
+          }
+
           // adds a class to the main container to either show or hide paragraph numbers.
-          _addParagraphs: function() {
-              const infotext = this.shadowRoot.querySelector('#htmltextcontent');
-              return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : "";
-          },
+          _addParagraphs() {
+              console.log('_addParagraphs');
+              const infotext = this.$.html_text_content;
+              return (infotext && !this.showParagraphs) ?
+                  infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
+          }
+
           // returns the correct title from the first segment in the translated json file.
-          _computeTitle: function(suttaText) {
-              return suttaText[this.suttaPath + ":1.1"];
-          },
+          _computeTitle() {
+              let title = this.lastResponse.root_text.title;
+              console.log(`title: ${title}`);
+              return title ? title : '';
+          }
+
           // returns the full author details (only Sujato at the moment)
-          _computeAuthor: function(suttaTranslatedText) {
-              return (this.author === "sujato") ? "—Bhikkhu Sujato" : "";
-          },
+          _computeAuthor() {
+              let author = this.lastResponse.translation.author;
+              console.log(`author: ${author}`);
+              return author ? author : '';
+          }
+
           // returns the meta data. This is still a mockup because we have no meta data for Sujato and it goes from the premise that
           // if the author is not sujato, it must be pali.
-          _computeMeta: function(suttaText) {
-              return (this.author === "sujato") ? "There is no Meta Area defined for Bhante Sujato's texts yet." : "<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by <span class='editor'>Blake Walshe</span> and <span class='editor'>Bhikkhu Sujato</span>.</p>";
-          },
+          _computeMeta() {
+              return (this.author === 'sujato') ? 'There is no Meta Area defined for Bhante Sujato\'s texts yet.' :
+                  '<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman ' +
+                  'Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on ' +
+                  'the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with ' +
+                  'corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by ' +
+                  '<span class=\'editor\'>Blake Walsh</span> and <span class=\'editor\'>Bhikkhu Sujato</span>.</p>';
+          }
+
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
-          _computePars: function(e) {
+          _computePars(e) {
+              console.log('_computePars');
               const paragraphTitles = e.detail.response;
               for (let key in paragraphTitles) {
                   const refs = this.shadowRoot.querySelectorAll('.' + key);
-                  Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key, ""));
+                  Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key, ''));
                   Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
               }
               if (this.showParagraphs) {
-                  this._addParagraphs()
+                  this._addParagraphs();
               }
-          },
+          }
+
           // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
-          infoToParent: function(suttaTranslatedText) {
-              this.fire('eventFromSegmentedTextPage', {
-                  suttasegtitle: this._computeTitle(suttaTranslatedText) + this._computeAuthor(suttaTranslatedText),
-                  suttasegmeta: this._computeMeta(suttaTranslatedText)
-              });
-          },
+          sendInfoToToolbar() {
+              this.dispatchEvent(new CustomEvent('eventFromSegmentedTextPage', {
+                  detail: {
+                      suttasegtitle: `${this._computeTitle()} - ${this._computeAuthor()}`,
+                      suttasegmeta: this._computeMeta()
+                  }, bubbles: true, composed: true
+              }));
+          }
+
           // if the base html and the pali texts have been fully loaded, the setting from the
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
-          setView: function(showViewer) {
+          setView(showViewer) {
+              console.log('_setView');
               if (this.htmlLoaded) {
                   this._cleanCode();
-                  if (this.author !== "pali") {
+                  if (this.author !== 'pali') {
                       switch (showViewer) {
-                          case "sidebyside":
-                              this.$$('#htmltextcontent').classList.add('sidebyside');
+                          case 'side-by-side':
+                              this.$.html_text_content.classList.add('side-by-side');
                               break;
-                          case "linebyline":
-                              this.$$('#htmltextcontent').classList.add('linebyline');
+                          case 'line-by-line':
+                              this.$.html_text_content.classList.add('line-by-line');
                               break;
-                          case "popup":
-                              Array.from(this.shadowRoot.querySelectorAll(".translated-text")).forEach(item => item.innerHTML = "<paper-tooltip fit-to-visible-bounds id=" + item.id + "></paper-tooltip>" + item.innerHTML);
+                          case 'popup':
+                              Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
+                                  item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
+                                      'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
                               if (!this.paliScript) {
                                   this.changeScript(0)
                               }
@@ -351,135 +364,140 @@ Issues that need to be fixed:
                       }
                   } else {
                       // if the author is "pali", only the pali is shown and not the translated text.
-                      this.$$('#htmltextcontent').classList.add('showpali');
+                      this.$.html_text_content.classList.add('show-pali');
                   }
               }
-          },
+          }
+
           // reset all classes and remove tooltips.
-          _cleanCode: function() {
-              this.$$('#htmltextcontent').classList.remove('sidebyside', 'linebyline', 'showpali');
-              Array.from(this.shadowRoot.querySelectorAll("paper-tooltip"))
+          _cleanCode() {
+              console.log('_cleanCode');
+              this.$.html_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
+              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
                   .forEach(item => item.parentNode.removeChild(item));
-          },
+          }
+
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
           // either in tooltips or in segments.
-          changeScript: function(paliScript) {
+          changeScript(paliScript) {
+              console.log('_changeScript');
               if (this.htmlLoaded) {
                   const segments = this.shadowRoot.querySelectorAll('.original-text');
                   const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-                  this.$$('#htmltextcontent').classList
+                  this.$.html_text_content.classList
                       .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-                  Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + " ");
+                  Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
                   Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
                   switch (paliScript) {
                       case 0:
-                          this.$$('#htmltextcontent').classList.add('latin-script');
+                          this.$.html_text_content.classList.add('latin-script');
                           break;
                       case 1:
-                          this.$$('#htmltextcontent').classList.add('sinhala-script');
+                          this.$.html_text_content.classList.add('sinhala-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
                           break;
                       case 2:
-                          this.$$('#htmltextcontent').classList.add('devanagari-script');
+                          this.$.html_text_content.classList.add('devanagari-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
                           break;
                       case 3:
-                          this.$$('#htmltextcontent').classList.add('thai-script');
+                          this.$.html_text_content.classList.add('thai-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
                           break;
                       case 4:
-                          this.$$('#htmltextcontent').classList.add('myanmar-script');
+                          this.$.html_text_content.classList.add('myanmar-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           break;
                   }
               }
-          },
+          }
+
           //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.
           // Note that they also remove all html coding first so this might have to be changed.
           // Fonts will also need to be implemented because it uses local fonts now.
-          toSinhala: function(l) {
-              l = l.replace(/<.*?>/g, "");
-              l = l.toLowerCase() + " ";
-              const m = {a: "අ", "ā": "ආ", i: "ඉ", "ī": "ඊ", u: "උ", "ū": "ඌ", e: "එ", o: "ඔ"};
+          toSinhala(l) {
+              l = l.replace(/<.*?>/g, '');
+              l = l.toLowerCase() + ' ';
+              const m = { a: 'අ', 'ā': 'ආ', i: 'ඉ', 'ī': 'ඊ', u: 'උ', 'ū': 'ඌ', e: 'එ', o: 'ඔ' };
               const b = {
-                  "ā": "ා",
-                  i: "ි",
-                  "ī": "ී",
-                  u: "ු",
-                  "ū": "ූ",
-                  e: "ෙ",
-                  o: "ො",
-                  "ṃ": "ං",
-                  k: "ක",
-                  g: "ග",
-                  "ṅ": "ඞ",
-                  c: "ච",
-                  j: "ජ",
-                  "ñ": "ඤ",
-                  "ṭ": "ට",
-                  "ḍ": "ඩ",
-                  "ṇ": "ණ",
-                  t: "ත",
-                  d: "ද",
-                  n: "න",
-                  p: "ප",
-                  b: "බ",
-                  m: "ම",
-                  y: "ය",
-                  r: "ර",
-                  l: "ල",
-                  "ḷ": "ළ",
-                  v: "ව",
-                  s: "ස",
-                  h: "හ"
+                  'ā': 'ා',
+                  i: 'ි',
+                  'ī': 'ී',
+                  u: 'ු',
+                  'ū': 'ූ',
+                  e: 'ෙ',
+                  o: 'ො',
+                  'ṃ': 'ං',
+                  k: 'ක',
+                  g: 'ග',
+                  'ṅ': 'ඞ',
+                  c: 'ච',
+                  j: 'ජ',
+                  'ñ': 'ඤ',
+                  'ṭ': 'ට',
+                  'ḍ': 'ඩ',
+                  'ṇ': 'ණ',
+                  t: 'ත',
+                  d: 'ද',
+                  n: 'න',
+                  p: 'ප',
+                  b: 'බ',
+                  m: 'ම',
+                  y: 'ය',
+                  r: 'ර',
+                  l: 'ල',
+                  'ḷ': 'ළ',
+                  v: 'ව',
+                  s: 'ස',
+                  h: 'හ'
               };
               const j = {
-                  kh: "ඛ",
-                  gh: "ඝ",
-                  ch: "ඡ",
-                  jh: "ඣ",
-                  "ṭh": "ඨ",
-                  "ḍh": "ඪ",
-                  th: "ථ",
-                  dh: "ධ",
-                  ph: "ඵ",
-                  bh: "භ",
-                  "jñ": "ඥ",
-                  "ṇḍ": "ඬ",
-                  nd: "ඳ",
-                  mb: "ඹ",
-                  rg: "ඟ"
+                  kh: 'ඛ',
+                  gh: 'ඝ',
+                  ch: 'ඡ',
+                  jh: 'ඣ',
+                  'ṭh': 'ඨ',
+                  'ḍh': 'ඪ',
+                  th: 'ථ',
+                  dh: 'ධ',
+                  ph: 'ඵ',
+                  bh: 'භ',
+                  'jñ': 'ඥ',
+                  'ṇḍ': 'ඬ',
+                  nd: 'ඳ',
+                  mb: 'ඹ',
+                  rg: 'ඟ'
               };
               const a = {
-                  k: "ක",
-                  g: "ග",
-                  "ṅ": "ඞ",
-                  c: "ච",
-                  j: "ජ",
-                  "ñ": "ඤ",
-                  "ṭ": "ට",
-                  "ḍ": "ඩ",
-                  "ṇ": "ණ",
-                  t: "ත",
-                  d: "ද",
-                  n: "න",
-                  p: "ප",
-                  b: "බ",
-                  m: "ම",
-                  y: "ය",
-                  r: "ර",
-                  l: "ල",
-                  "ḷ": "ළ",
-                  v: "ව",
-                  s: "ස",
-                  h: "හ"
+                  k: 'ක',
+                  g: 'ග',
+                  'ṅ': 'ඞ',
+                  c: 'ච',
+                  j: 'ජ',
+                  'ñ': 'ඤ',
+                  'ṭ': 'ට',
+                  'ḍ': 'ඩ',
+                  'ṇ': 'ණ',
+                  t: 'ත',
+                  d: 'ද',
+                  n: 'න',
+                  p: 'ප',
+                  b: 'බ',
+                  m: 'ම',
+                  y: 'ය',
+                  r: 'ර',
+                  l: 'ල',
+                  'ḷ': 'ළ',
+                  v: 'ව',
+                  s: 'ස',
+                  h: 'හ'
               };
               let k, g, f, e, d;
-              let c = "";
+              let c = '';
               let h = 0;
               while (h < l.length) {
                   k = l.charAt(h - 2);
@@ -488,130 +506,131 @@ Issues that need to be fixed:
                   e = l.charAt(h + 1);
                   d = l.charAt(h + 2);
                   if (m[f]) {
-                      if (h === 0 || g === "a") {
-                          c += m[f]
+                      if (h === 0 || g === 'a') {
+                          c += m[f];
                       } else {
-                          if (f !== "a") {
-                              c += b[f]
+                          if (f !== 'a') {
+                              c += b[f];
                           }
                       }
-                      h++
+                      h++;
                   } else {
                       if (j[f + e]) {
                           c += j[f + e];
                           h += 2;
                           if (a[d]) {
-                              c += "්"
+                              c += '්';
                           }
                       } else {
-                          if (b[f] && f !== "a") {
+                          if (b[f] && f !== 'a') {
                               c += b[f];
                               h++;
-                              if (a[e] && f !== "ṃ") {
-                                  c += "්"
+                              if (a[e] && f !== 'ṃ') {
+                                  c += '්';
                               }
                           } else {
                               if (!b[f]) {
-                                  if (a[g] || (g === "h" && a[k])) {
-                                      c += "්"
+                                  if (a[g] || (g === 'h' && a[k])) {
+                                      c += '්';
                                   }
                                   c += f;
                                   h++;
                                   if (m[e]) {
                                       c += m[e];
-                                      h++
+                                      h++;
                                   }
                               } else {
-                                  h++
+                                  h++;
                               }
                           }
                       }
                   }
               }
               if (a[f]) {
-                  c += "්"
+                  c += '්';
               }
-              c = c.replace(/ඤ්ජ/g, "ඦ");
-              c = c.replace(/ණ්ඩ/g, "ඬ");
-              c = c.replace(/න්ද/g, "ඳ");
-              c = c.replace(/ම්බ/g, "ඹ");
-              c = c.replace(/්ර/g, "්ර");
+              c = c.replace(/ඤ්ජ/g, 'ඦ');
+              c = c.replace(/ණ්ඩ/g, 'ඬ');
+              c = c.replace(/න්ද/g, 'ඳ');
+              c = c.replace(/ම්බ/g, 'ඹ');
+              c = c.replace(/්ර/g, '්ර');
               c = c.replace(/\`+/g, '"');
-              return c.slice(0, -1)
-          },
-          toMyanmar: function(k) {
-              k = k.replace(/<.*?>/g, "");
-              k = k.toLowerCase() + " ";
-              const m = {a: "အ", i: "ဣ", u: "ဥ", "ā": "အာ", "ī": "ဤ", "ū": "ဦ", e: "ဧ", o: "ဩ"};
+              return c.slice(0, -1);
+          }
+
+          toMyanmar(k) {
+              k = k.replace(/<.*?>/g, '');
+              k = k.toLowerCase() + ' ';
+              const m = { a: 'အ', i: 'ဣ', u: 'ဥ', 'ā': 'အာ', 'ī': 'ဤ', 'ū': 'ဦ', e: 'ဧ', o: 'ဩ' };
               const l = {
-                  i: "ိ",
-                  "ī": "ီ",
-                  u: "ု",
-                  "ū": "ူ",
-                  e: "ေ",
-                  "ṃ": "ံ",
-                  k: "က",
-                  kh: "ခ",
-                  g: "ဂ",
-                  gh: "ဃ",
-                  "ṅ": "င",
-                  c: "စ",
-                  ch: "ဆ",
-                  j: "ဇ",
-                  jh: "ဈ",
-                  "ñ": "ဉ",
-                  "ṭ": "ဋ",
-                  "ṭh": "ဌ",
-                  "ḍ": "ဍ",
-                  "ḍh": "ဎ",
-                  "ṇ": "ဏ",
-                  t: "တ",
-                  th: "ထ",
-                  d: "ဒ",
-                  dh: "ဓ",
-                  n: "န",
-                  p: "ပ",
-                  ph: "ဖ",
-                  b: "ဗ",
-                  bh: "ဘ",
-                  m: "မ",
-                  y: "ယ",
-                  r: "ရ",
-                  l: "လ",
-                  "ḷ": "ဠ",
-                  v: "ဝ",
-                  s: "သ",
-                  h: "ဟ"
+                  i: 'ိ',
+                  'ī': 'ီ',
+                  u: 'ု',
+                  'ū': 'ူ',
+                  e: 'ေ',
+                  'ṃ': 'ံ',
+                  k: 'က',
+                  kh: 'ခ',
+                  g: 'ဂ',
+                  gh: 'ဃ',
+                  'ṅ': 'င',
+                  c: 'စ',
+                  ch: 'ဆ',
+                  j: 'ဇ',
+                  jh: 'ဈ',
+                  'ñ': 'ဉ',
+                  'ṭ': 'ဋ',
+                  'ṭh': 'ဌ',
+                  'ḍ': 'ဍ',
+                  'ḍh': 'ဎ',
+                  'ṇ': 'ဏ',
+                  t: 'တ',
+                  th: 'ထ',
+                  d: 'ဒ',
+                  dh: 'ဓ',
+                  n: 'န',
+                  p: 'ပ',
+                  ph: 'ဖ',
+                  b: 'ဗ',
+                  bh: 'ဘ',
+                  m: 'မ',
+                  y: 'ယ',
+                  r: 'ရ',
+                  l: 'လ',
+                  'ḷ': 'ဠ',
+                  v: 'ဝ',
+                  s: 'သ',
+                  h: 'ဟ'
               };
               const a = {
-                  k: "က",
-                  g: "ဂ",
-                  "ṅ": "င",
-                  c: "စ",
-                  j: "ဇ",
-                  "ñ": "ဉ",
-                  "ṭ": "ဋ",
-                  "ḍ": "ဍ",
-                  "ṇ": "ဏ",
-                  t: "တ",
-                  d: "ဒ",
-                  n: "န",
-                  p: "ပ",
-                  b: "ဗ",
-                  m: "မ",
-                  y: "ယ",
-                  r: "ရ",
-                  l: "လ",
-                  "ḷ": "ဠ",
-                  v: "ဝ",
-                  s: "သ",
-                  h: "ဟ"
+                  k: 'က',
+                  g: 'ဂ',
+                  'ṅ': 'င',
+                  c: 'စ',
+                  j: 'ဇ',
+                  'ñ': 'ဉ',
+                  'ṭ': 'ဋ',
+                  'ḍ': 'ဍ',
+                  'ṇ': 'ဏ',
+                  t: 'တ',
+                  d: 'ဒ',
+                  n: 'န',
+                  p: 'ပ',
+                  b: 'ဗ',
+                  m: 'မ',
+                  y: 'ယ',
+                  r: 'ရ',
+                  l: 'လ',
+                  'ḷ': 'ဠ',
+                  v: 'ဝ',
+                  s: 'သ',
+                  h: 'ဟ'
               };
-              const n = {kh: "1", g: "1", d: "1", dh: "1", p: "1", v: "1"};
+              const n = { kh: '1', g: '1', d: '1', dh: '1', p: '1', v: '1' };
               let j, f, e, d, c;
-              let b = "";
+              let b = '';
               let g = 0;
-              k = k.replace(/\&quot;/g, "`");
+              k = k.replace(/\&quot;/g, '`');
               let h = false;
               while (g < k.length) {
                   j = k.charAt(g - 2);
@@ -620,50 +639,50 @@ Issues that need to be fixed:
                   d = k.charAt(g + 1);
                   c = k.charAt(g + 2);
                   if (m[e]) {
-                      if (g === 0 || f === "a") {
-                          b += m[e]
+                      if (g === 0 || f === 'a') {
+                          b += m[e];
                       } else {
-                          if (e === "ā") {
+                          if (e === 'ā') {
                               if (n[h]) {
-                                  b += "ါ"
+                                  b += 'ါ';
                               } else {
-                                  b += "ာ"
+                                  b += 'ာ';
                               }
                           } else {
-                              if (e === "o") {
+                              if (e === 'o') {
                                   if (n[h]) {
-                                      b += "ေါ"
+                                      b += 'ေါ';
                                   } else {
-                                      b += "ော"
+                                      b += 'ော';
                                   }
                               } else {
-                                  if (e !== "a") {
-                                      b += l[e]
+                                  if (e !== 'a') {
+                                      b += l[e];
                                   }
                               }
                           }
                       }
                       g++;
-                      h = false
+                      h = false;
                   } else {
-                      if (l[e + d] && d === "h") {
+                      if (l[e + d] && d === 'h') {
                           b += l[e + d];
-                          if (c !== "y" && !h) {
-                              h = e + d
+                          if (c !== 'y' && !h) {
+                              h = e + d;
                           }
                           if (a[c]) {
-                              b += "္"
+                              b += '္';
                           }
-                          g += 2
+                          g += 2;
                       } else {
-                          if (l[e] && e !== "a") {
+                          if (l[e] && e !== 'a') {
                               b += l[e];
                               g++;
-                              if (d !== "y" && !h) {
-                                  h = e
+                              if (d !== 'y' && !h) {
+                                  h = e;
                               }
-                              if (a[d] && e !== "ṃ") {
-                                  b += "္"
+                              if (a[d] && e !== 'ṃ') {
+                                  b += '္';
                               }
                           } else {
                               if (!l[e]) {
@@ -672,81 +691,82 @@ Issues that need to be fixed:
                                   if (m[d]) {
                                       if (m[d + c]) {
                                           b += m[d + c];
-                                          g += 2
+                                          g += 2;
                                       } else {
                                           b += m[d];
-                                          g++
+                                          g++;
                                       }
                                   }
-                                  h = false
+                                  h = false;
                               } else {
                                   h = false;
-                                  g++
+                                  g++;
                               }
                           }
                       }
                   }
               }
-              b = b.replace(/ဉ္ဉ/g, "ည");
-              b = b.replace(/္ယ/g, "ျ");
-              b = b.replace(/္ရ/g, "ြ");
-              b = b.replace(/္ဝ/g, "ွ");
-              b = b.replace(/္ဟ/g, "ှ");
-              b = b.replace(/သ္သ/g, "ဿ");
-              b = b.replace(/င္/g, "င်္");
-              return b.slice(0, -1)
-          },
-          toDevar: function(l) {
-              l = l.replace(/<.*?>/g, "");
-              l = l.toLowerCase() + " ";
-              const m = {a: " अ", i: " इ", u: " उ", "ā": " आ", "ī": " ई", "ū": " ऊ", e: " ए", o: " ओ"};
+              b = b.replace(/ဉ္ဉ/g, 'ည');
+              b = b.replace(/္ယ/g, 'ျ');
+              b = b.replace(/္ရ/g, 'ြ');
+              b = b.replace(/္ဝ/g, 'ွ');
+              b = b.replace(/္ဟ/g, 'ှ');
+              b = b.replace(/သ္သ/g, 'ဿ');
+              b = b.replace(/င္/g, 'င်္');
+              return b.slice(0, -1);
+          }
+
+          toDevar(l) {
+              l = l.replace(/<.*?>/g, '');
+              l = l.toLowerCase() + ' ';
+              const m = { a: ' अ', i: ' इ', u: ' उ', 'ā': ' आ', 'ī': ' ई', 'ū': ' ऊ', e: ' ए', o: ' ओ' };
               let n = {
-                  "ā": "ा",
-                  i: "ि",
-                  "ī": "ी",
-                  u: "ु",
-                  "ū": "ू",
-                  e: "े",
-                  o: "ो",
-                  "ṃ": "ं",
-                  k: "क",
-                  kh: "ख",
-                  g: "ग",
-                  gh: "घ",
-                  "ṅ": "ङ",
-                  c: "च",
-                  ch: "छ",
-                  j: "ज",
-                  jh: "झ",
-                  "ñ": "ञ",
-                  "ṭ": "ट",
-                  "ṭh": "ठ",
-                  "ḍ": "ड",
-                  "ḍh": "ढ",
-                  "ṇ": "ण",
-                  t: "त",
-                  th: "थ",
-                  d: "द",
-                  dh: "ध",
-                  n: "न",
-                  p: "प",
-                  ph: "फ",
-                  b: "ब",
-                  bh: "भ",
-                  m: "म",
-                  y: "य",
-                  r: "र",
-                  l: "ल",
-                  "ḷ": "ळ",
-                  v: "व",
-                  s: "स",
-                  h: "ह"
+                  'ā': 'ा',
+                  i: 'ि',
+                  'ī': 'ी',
+                  u: 'ु',
+                  'ū': 'ू',
+                  e: 'े',
+                  o: 'ो',
+                  'ṃ': 'ं',
+                  k: 'क',
+                  kh: 'ख',
+                  g: 'ग',
+                  gh: 'घ',
+                  'ṅ': 'ङ',
+                  c: 'च',
+                  ch: 'छ',
+                  j: 'ज',
+                  jh: 'झ',
+                  'ñ': 'ञ',
+                  'ṭ': 'ट',
+                  'ṭh': 'ठ',
+                  'ḍ': 'ड',
+                  'ḍh': 'ढ',
+                  'ṇ': 'ण',
+                  t: 'त',
+                  th: 'थ',
+                  d: 'द',
+                  dh: 'ध',
+                  n: 'न',
+                  p: 'प',
+                  ph: 'फ',
+                  b: 'ब',
+                  bh: 'भ',
+                  m: 'म',
+                  y: 'य',
+                  r: 'र',
+                  l: 'ल',
+                  'ḷ': 'ळ',
+                  v: 'व',
+                  s: 'स',
+                  h: 'ह'
               };
               let k, h, g, f, e, d, b;
-              let c = "";
+              let c = '';
               let a = 0;
               let j = 0;
-              l = l.replace(/\&quot;/g, "`");
+              l = l.replace(/\&quot;/g, '`');
               while (j < l.length) {
                   k = l.charAt(j - 2);
                   h = l.charAt(j - 1);
@@ -757,121 +777,122 @@ Issues that need to be fixed:
                   b = l.charAt(j + 4);
                   if (j === 0 && m[g]) {
                       c += m[g];
-                      j += 1
+                      j += 1;
                   } else {
-                      if (f === "h" && n[g + f]) {
+                      if (f === 'h' && n[g + f]) {
                           c += n[g + f];
-                          if (e && !m[e] && f !== "ṃ") {
-                              c += "्"
+                          if (e && !m[e] && f !== 'ṃ') {
+                              c += '्';
                           }
-                          j += 2
+                          j += 2;
                       } else {
                           if (n[g]) {
                               c += n[g];
-                              if (f && !m[f] && !m[g] && g !== "ṃ") {
-                                  c += "्"
+                              if (f && !m[f] && !m[g] && g !== 'ṃ') {
+                                  c += '्';
                               }
-                              j++
+                              j++;
                           } else {
-                              if (g !== "a") {
-                                  if (a[h] || (h === "h" && a[k])) {
-                                      c += "्"
+                              if (g !== 'a') {
+                                  if (a[h] || (h === 'h' && a[k])) {
+                                      c += '्';
                                   }
                                   c += g;
                                   j++;
                                   if (m[f]) {
                                       c += m[f];
-                                      j++
+                                      j++;
                                   }
                               } else {
-                                  j++
+                                  j++;
                               }
                           }
                       }
                   }
               }
               if (a[g]) {
-                  c += "्"
+                  c += '्';
               }
               c = c.replace(/\`+/g, '"');
-              return c.slice(0, -1)
-          },
-          toThai: function(m) {
-              m = m.replace(/<.*?>/g, "");
-              m = m.toLowerCase() + " ";
-              const n = {a: "1", "ā": "1", i: "1", "ī": "1", "iṃ": "1", u: "1", "ū": "1", e: "2", o: "2"};
+              return c.slice(0, -1);
+          }
+
+          toThai(m) {
+              m = m.replace(/<.*?>/g, '');
+              m = m.toLowerCase() + ' ';
+              const n = { a: '1', 'ā': '1', i: '1', 'ī': '1', 'iṃ': '1', u: '1', 'ū': '1', e: '2', o: '2' };
               const j = {
-                  a: "อ",
-                  "ā": "า",
-                  i: "ิ",
-                  "ī": "ี",
-                  "iṃ": "ึ",
-                  u: "ุ",
-                  "ū": "ู",
-                  e: "เ",
-                  o: "โ",
-                  "ṃ": "ํ",
-                  k: "ก",
-                  kh: "ข",
-                  g: "ค",
-                  gh: "ฆ",
-                  "ṅ": "ง",
-                  c: "จ",
-                  ch: "ฉ",
-                  j: "ช",
-                  jh: "ฌ",
-                  "ñ": "",
-                  "ṭ": "ฏ",
-                  "ṭh": "",
-                  "ḍ": "ฑ",
-                  "ḍh": "ฒ",
-                  "ṇ": "ณ",
-                  t: "ต",
-                  th: "ถ",
-                  d: "ท",
-                  dh: "ธ",
-                  n: "น",
-                  p: "ป",
-                  ph: "ผ",
-                  b: "พ",
-                  bh: "ภ",
-                  m: "ม",
-                  y: "ย",
-                  r: "ร",
-                  l: "ล",
-                  "ḷ": "ฬ",
-                  v: "ว",
-                  s: "ส",
-                  h: "ห"
+                  a: 'อ',
+                  'ā': 'า',
+                  i: 'ิ',
+                  'ī': 'ี',
+                  'iṃ': 'ึ',
+                  u: 'ุ',
+                  'ū': 'ู',
+                  e: 'เ',
+                  o: 'โ',
+                  'ṃ': 'ํ',
+                  k: 'ก',
+                  kh: 'ข',
+                  g: 'ค',
+                  gh: 'ฆ',
+                  'ṅ': 'ง',
+                  c: 'จ',
+                  ch: 'ฉ',
+                  j: 'ช',
+                  jh: 'ฌ',
+                  'ñ': '',
+                  'ṭ': 'ฏ',
+                  'ṭh': '',
+                  'ḍ': 'ฑ',
+                  'ḍh': 'ฒ',
+                  'ṇ': 'ณ',
+                  t: 'ต',
+                  th: 'ถ',
+                  d: 'ท',
+                  dh: 'ธ',
+                  n: 'น',
+                  p: 'ป',
+                  ph: 'ผ',
+                  b: 'พ',
+                  bh: 'ภ',
+                  m: 'ม',
+                  y: 'ย',
+                  r: 'ร',
+                  l: 'ล',
+                  'ḷ': 'ฬ',
+                  v: 'ว',
+                  s: 'ส',
+                  h: 'ห'
               };
               const a = {
-                  k: "1",
-                  g: "1",
-                  "ṅ": "1",
-                  c: "1",
-                  j: "1",
-                  "ñ": "1",
-                  "ṭ": "1",
-                  "ḍ": "1",
-                  "ṇ": "1",
-                  t: "1",
-                  d: "1",
-                  n: "1",
-                  p: "1",
-                  b: "1",
-                  m: "1",
-                  y: "1",
-                  r: "1",
-                  l: "1",
-                  "ḷ": "1",
-                  v: "1",
-                  s: "1",
-                  h: "1"
+                  k: '1',
+                  g: '1',
+                  'ṅ': '1',
+                  c: '1',
+                  j: '1',
+                  'ñ': '1',
+                  'ṭ': '1',
+                  'ḍ': '1',
+                  'ṇ': '1',
+                  t: '1',
+                  d: '1',
+                  n: '1',
+                  p: '1',
+                  b: '1',
+                  m: '1',
+                  y: '1',
+                  r: '1',
+                  l: '1',
+                  'ḷ': '1',
+                  v: '1',
+                  s: '1',
+                  h: '1'
               };
               let l, h, g, f, e, d, b;
-              let c = "";
+              let c = '';
               let k = 0;
-              m = m.replace(/\&quot;/g, "`");
+              m = m.replace(/\&quot;/g, '`');
               while (k < m.length) {
                   l = m.charAt(k - 2);
                   h = m.charAt(k - 1);
@@ -881,72 +902,74 @@ Issues that need to be fixed:
                   d = m.charAt(k + 3);
                   b = m.charAt(k + 4);
                   if (n[g]) {
-                      if (g === "o" || g === "e") {
+                      if (g === 'o' || g === 'e') {
                           c += j[g] + j.a;
-                          k++
+                          k++;
                       } else {
                           if (k === 0) {
-                              c += j.a
+                              c += j.a;
                           }
-                          if (g === "i" && f === "ṃ") {
+                          if (g === 'i' && f === 'ṃ') {
                               c += j[g + f];
-                              k++
+                              k++;
                           } else {
-                              if (g !== "a") {
-                                  c += j[g]
+                              if (g !== 'a') {
+                                  c += j[g];
                               }
                           }
-                          k++
+                          k++;
                       }
                   } else {
-                      if (j[g + f] && f === "h") {
-                          if (e === "o" || e === "e") {
+                      if (j[g + f] && f === 'h') {
+                          if (e === 'o' || e === 'e') {
                               c += j[e];
-                              k++
+                              k++;
                           }
                           c += j[g + f];
                           if (a[e]) {
-                              c += "ฺ"
+                              c += 'ฺ';
                           }
-                          k = k + 2
+                          k = k + 2;
                       } else {
-                          if (j[g] && g !== "a") {
-                              if (f === "o" || f === "e") {
+                          if (j[g] && g !== 'a') {
+                              if (f === 'o' || f === 'e') {
                                   c += j[f];
-                                  k++
+                                  k++;
                               }
                               c += j[g];
-                              if (a[f] && g !== "ṃ") {
-                                  c += "ฺ"
+                              if (a[f] && g !== 'ṃ') {
+                                  c += 'ฺ';
                               }
-                              k++
+                              k++;
                           } else {
                               if (!j[g]) {
                                   c += g;
-                                  if (a[h] || (h === "h" && a[l])) {
-                                      c += "ฺ"
+                                  if (a[h] || (h === 'h' && a[l])) {
+                                      c += 'ฺ';
                                   }
                                   k++;
-                                  if (f === "o" || f === "e") {
+                                  if (f === 'o' || f === 'e') {
                                       c += j[f];
-                                      k++
+                                      k++;
                                   }
                                   if (n[f]) {
-                                      c += j.a
+                                      c += j.a;
                                   }
                               } else {
-                                  k++
+                                  k++;
                               }
                           }
                       }
                   }
               }
               if (a[g]) {
-                  c += "ฺ"
+                  c += 'ฺ';
               }
               c = c.replace(/\`+/g, '"');
               return c.slice(0, -1);
           }
-      });
+      }
+
+      customElements.define(SCSegmentedText.is, SCSegmentedText);
   </script>
 </dom-module>

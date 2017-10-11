@@ -199,7 +199,9 @@
           }
 
           _computeLink(uid) {
-              return uid.substring(uid.indexOf('\/'), uid.length);
+              // The UID looks like this: 'root/<uid>/...', so we want to split on the '/' character and
+              // get the second element.
+              return `${uid.split('\/')[1]}`;
           }
 
           /**
