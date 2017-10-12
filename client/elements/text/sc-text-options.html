@@ -79,8 +79,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       </iron-collapse>
     </div>
 
-    <paper-dialog id="settings_dialog" class="dialog"
-                  entry-animation="fade-in-animation"
+    <paper-dialog id="settings_dialog" class="dialog" with-backdrop="true" entry-animation="fade-in-animation"
                   exit-animation="fade-out-animation">
       <div class="buttons">
         <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
@@ -91,8 +90,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       </paper-dialog-scrollable>
     </paper-dialog>
 
-    <paper-dialog id="info_dialog" class="dialog"
-                  entry-animation="fade-in-animation"
+    <paper-dialog id="info_dialog" class="dialog" with-backdrop="true" entry-animation="fade-in-animation"
                   exit-animation="fade-out-animation">
       <div class="buttons">
         <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
@@ -133,8 +131,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
                       computed: '_computeToggleIcon(opened)'
                   },
                   opened: {
-                      type: Boolean,
-                      reflectToAttribute: true
+                      type: Boolean
                   },
                   metaArea: {
                       type: String
