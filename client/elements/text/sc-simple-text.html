@@ -18,9 +18,13 @@ Title, full Author name and Meta data are sent via events to the page-selector f
       .not-found {
         @apply --paper-font-display1;
       }
+
+      .text-options {
+        padding: 32px;
+      }
     </style>
 
-    <sc-text-options suttaplex-item="[[suttaplex]]"></sc-text-options>
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
     <div id="html_text_content" inner-h-t-m-l="[[displayedSuttaText]]"></div>
 
   </template>
