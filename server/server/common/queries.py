@@ -118,6 +118,7 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
     )[0]
         
     RETURN {
+        acronym: v.acronym,
         volpages: volpages,
         uid: v.uid,
         blurb: blurb,
@@ -296,6 +297,7 @@ RETURN {
     root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
     translation: translated_text ? translated_text : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     suttaplex: {
+        acronym: v.acronym,
         volpages: volpages,
         uid: @uid,
         blurb: blurb,
