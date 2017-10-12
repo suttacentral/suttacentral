@@ -42,20 +42,23 @@ Title, full Author name and Meta data are sent via events to the page-selector f
   </template>
 
   <script>
-      class SCSimpleText extends Polymer.Element {
-          static get is() { return 'sc-simple-text' }
+      class SCSimpleText extends ReduxMixin(Polymer.Element) {
+          static get is() {
+              return 'sc-simple-text';
+          }
 
           static get properties() {
               return {
-                  suttaPath: {
-                      type: String
-                  },
                   author: {
                       type: String
                   },
-                  suttaText: {
+                  suttaRootText: {
                       type: String,
-                      value: ''
+                      statePath: 'suttaText.root_text'
+                  },
+                  suttaTranslationText: {
+                      type: String,
+                      statePath: 'suttaText.translation'
                   },
                   inputLanguage: String,
                   notFound: Object,
@@ -69,11 +72,22 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   paragraphTitles: Object,
                   suttaplex: {
                       type: Object,
-                      value: () => { return {}; }
+                      statePath: 'suttaText.suttaplex'
                   },
                   lastResponse: {
                       type: Object,
                       value: () => { return {}; }
+                  }
+              }
+          }
+
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
                   }
               }
           }

@@ -105,7 +105,6 @@
           }
 
           _onResponse() {
-              console.log(this.responseData);
               this.dispatch('downloadSuttaText', this.responseData);
               this.isSegmentedText = this._isSegmentedSuttaTextPage();
               if (this.isSegmentedText) {
@@ -118,8 +117,6 @@
 
           // checks if a page is a segmented-text page
           _isSegmentedSuttaTextPage() {
-              //              return !!(langIsoCode && author && (author === 'sujato' || author === 'pali'));
-              console.log('is segmented? ' + !!(this.responseData.root_text && this.responseData.translation));
               return !!(this.responseData.root_text && this.responseData.translation);
           }
 
