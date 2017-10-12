@@ -1,5 +1,6 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="/elements/sc-segmented-text.html">
 <link rel="import" href="/elements/sc-page-text.html">
@@ -10,6 +11,18 @@
 -->
 <dom-module id="sc-text-page-selector">
   <template>
+
+    <style>
+      .loadingIndicator {
+        font-size: 16px;
+        text-align: center;
+        height: 60px;
+      }
+
+      .center-vertical {
+        margin-top: 50%;
+      }
+    </style>
 
     <iron-meta id="meta"></iron-meta>
 
@@ -30,10 +43,14 @@
       <sc-segmented-text></sc-segmented-text>
     </template>
 
-    <template is="dom-if" if="[[error]]">
+    <template is="dom-if" class="center-vertical" if="[[error]]">
       <h2>Page error</h2>
       <h3>Could not load the sutta text.</h3>
     </template>
+
+    <div class="loadingIndicator center-vertical">
+      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+    </div>
 
   </template>
 
@@ -53,13 +70,13 @@
                       observer: '_onResponse'
                   },
                   author: {
-                      type: String,
+                      type: String
                   },
                   suttaId: {
-                      type: String,
+                      type: String
                   },
                   langIsoCode: {
-                      type: String,
+                      type: String
                   }
               }
           }
@@ -101,7 +118,7 @@
 
           // checks if a page is a segmented-text page
           _isSegmentedSuttaTextPage() {
-//              return !!(langIsoCode && author && (author === 'sujato' || author === 'pali'));
+              //              return !!(langIsoCode && author && (author === 'sujato' || author === 'pali'));
               console.log('is segmented? ' + !!(this.responseData.root_text && this.responseData.translation));
               return !!(this.responseData.root_text && this.responseData.translation);
           }

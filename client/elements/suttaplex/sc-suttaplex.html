@@ -205,20 +205,21 @@
         <div>
           <template is="dom-if" if="[[parallelsOpened]]">
             <paper-menu-button horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top"
-                                aria-disabled="false">
-                <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
-                                    tabindex="0" aria-disabled="false"></paper-icon-button>
-                <div slot="dropdown-content"></div>
-                <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
-                    <more-par-menu tabindex="0" item="[[item]]" ></more-par-menu>
-                </paper-listbox>
-              </paper-menu-button>
+                               aria-disabled="false">
+              <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
+                                 tabindex="0" aria-disabled="false"></paper-icon-button>
+              <div slot="dropdown-content"></div>
+              <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
+                <more-par-menu tabindex="0" item="[[item]]"></more-par-menu>
+              </paper-listbox>
+            </paper-menu-button>
           </template>
 
-          <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
+          <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]"
+                             on-tap="_toggleParallelsOpened">
           </paper-icon-button>
           <paper-badge for="parallels-toggle" label="[[item.parallel_count]]" class="paper-badge"
-                        title="Number of parallels"></paper-badge>
+                       title="Number of parallels"></paper-badge>
         </div>
       </div>
 
