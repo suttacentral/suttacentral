@@ -40,19 +40,16 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
       .dialog {
         white-space: initial;
-      }
-
-      #settings_dialog {
+        max-width: 630px;
         position: fixed;
         top: 50px;
         margin: 5% auto;
         left: var(--app-drawer-width);
         right: 0;
-        max-width: 630px;
       }
 
       @media screen and (max-width: 840px) {
-        #settings_dialog {
+        .dialog {
           left: 0;
         }
       }
