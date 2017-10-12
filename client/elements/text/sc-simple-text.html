@@ -53,6 +53,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   },
                   displayedSuttaText: String,
                   paragraphTitles: Object,
+                  title: String,
                   author: String,
                   lang: String
               }
@@ -79,6 +80,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this.displayedSuttaText = isRoot ? this.suttaRootText.text : this.suttaTranslatedText.text;
               this.author = isRoot ? this.suttaRootText.author : this.suttaTranslatedText.author;
               this.lang = isRoot ? this.suttaRootText.lang : this.suttaTranslatedText.lang;
+              this.title = isRoot ? this.suttaRootText.title : this.suttaTranslatedText.title;
+              this.dispatch('changeToolbarTitle', `${this.title} – ${this.author}`);
           }
 
           // adds a class to the main container to either show or hide paragraph numbers.
@@ -121,18 +124,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               if (this.showParagraphs) {
                   this._addParagraphs()
               }
-          }
-
-          // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
-          sendInfoToToolbar() {
-              // todo dispatch action
-              this.dispatchEvent(new CustomEvent('eventFromTextPage', {
-                  detail: {
-                      suttatitle: `${this._computeTitle()} — ${this._computeAuthor()}`,
-                      suttameta: this._computeMeta()
-                  },
-                  bubbles: true, composed: true
-              }));
           }
 
       }
