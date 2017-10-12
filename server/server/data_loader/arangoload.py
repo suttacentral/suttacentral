@@ -127,7 +127,7 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
     sutta_data = {}
     for sutta in sutta_file:
         uid = sutta.pop('uid')
-        sutta_data[uid] = sutta['acronym']
+        sutta_data[uid] = {'acronym': sutta['acronym'], 'biblio_uid': sutta['biblio_uid']}
 
     reg = regex.compile(r'^\D+')
     for root_file in root_files:
@@ -158,7 +158,11 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
             del entry['_path']
             entry['num'] = i  # number is used for ordering, it is not otherwise meaningful
             try:
-                entry['acronym'] = sutta_data[uid]
+                entry['acronym'] = sutta_data[uid]['acronym']
+            except KeyError:
+                pass
+            try:
+                entry['biblio_uid'] = sutta_data[uid]['biblio_uid']
             except KeyError:
                 pass
 
@@ -502,6 +506,6 @@ def run():
 
     currencies.load_currencies(db, additional_info_dir)
 
-    biblio.load_biblio(db, additional_info_dir)
+    biblio.load_biblios(db, additional_info_dir)
 
     change_tracker.update_mtimes()

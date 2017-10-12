@@ -109,6 +109,13 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
             FILTER rel._from == v._id
             RETURN rel
     )
+    
+    LET biblio = (
+        FOR biblio IN biblios
+            FILTER biblio.uid == v.biblio_uid
+            LIMIT 1
+            RETURN biblio.text
+    )[0]
         
     RETURN {
         volpages: volpages,
@@ -121,7 +128,8 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
         from: e._from,
         translated_title: translated_titles,
         translations: translations,
-        parallel_count: parallel_count
+        parallel_count: parallel_count,
+        biblio: biblio
     }
 '''
 
