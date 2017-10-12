@@ -284,6 +284,13 @@ LET parallel_count = LENGTH(
         FILTER rel._from == root_text._id
         RETURN rel
 )
+
+LET biblio = (
+    FOR biblio IN biblios
+        FILTER biblio.uid == root_text.biblio_uid
+        LIMIT 1
+        RETURN biblio.text
+)[0]
     
 RETURN {
     root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
@@ -296,7 +303,8 @@ RETURN {
         original_title: root_text.name,
         root_lang: root_text.root_lang,
         translations: FLATTEN([po_translations, legacy_translations]),
-        parallel_count: parallel_count
+        parallel_count: parallel_count,
+        biblio: biblio
     }
 }
 '''
