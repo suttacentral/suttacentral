@@ -29,12 +29,7 @@ The type of script used for the pali can be chosen.
 Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
 
 Issues that need to be fixed:
-    - Right now it only works for the segmented translations by Sujato and for the pali thereof and only for
-    the files I have for that with is all AN, SN, MN1-123. DN is not yet in there so the DN file that is shown in
-    the menu under DN1 is actually MN1 just to try things out but will need to be replaced.
     - The pali lookup tool does not yet work. See remarks under `settings-menu.html`.
-    - Only sujato is recognised as an author so that might have to change. It also only works for the pali right now
-    if a translated file for Sujato exists too.
 -->
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
   <template>
@@ -94,15 +89,6 @@ Issues that need to be fixed:
       }
     </style>
 
-    <iron-meta id="meta"></iron-meta>
-
-    <iron-ajax id="ajax"
-               url="[[_computeUrl(suttaPath,author)]]"
-               handle-as="text"
-               last-response="{{lastResponse}}"
-               last-error='{{notFound}}'
-               on-response="_onResponse"></iron-ajax>
-
     <template is="dom-if" if="[[notFound]]">
       <p class="not-found">Sorry, the page you requested does not exist.</p>
     </template>
@@ -115,7 +101,7 @@ Issues that need to be fixed:
   </template>
 
   <script>
-      class SCSegmentedText extends Polymer.Element {
+      class SCSegmentedText extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-segmented-text';
           }
