@@ -4,13 +4,13 @@
 <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
-<link rel="import" href="/elements/addons/sc-text-options.html">
+<link rel="import" href="/elements/text/sc-text-options.html">
 <link rel="import" href="/styles/sc-text-styles.html">
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
 <!--
-The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-options.html`).
+The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
 Paragraph numbers can be displayed or hidden as requested via the settings-menu in the toolbar.
 Title, full Author name and Meta data are sent via events to the page-selector for use in the toolbar.
 -->
@@ -24,21 +24,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
     <iron-meta id="meta"></iron-meta>
 
-    <iron-ajax id="ajax"
-               url="[[_computeURL(suttaPath,author)]]"
-               handle-as="text"
-               last-response="{{lastResponse}}"
-               on-response="_onResponse"
-               last-error='{{notFound}}'></iron-ajax>
+    <sc-text-options suttaplex-item="[[suttaplex]]"></sc-text-options>
+    <div id="html_text_content" inner-h-t-m-l="[[suttaText]]"></div>
 
-    <template is="dom-if" if="[[notFound]]">
-      <p class="not-found">Sorry, the page you requested does not exist.</p>
-    </template>
-
-    <template is="dom-if" if="[[!notFound]]">
-      <sc-text-options suttaplex-item="[[suttaplex]]"></sc-text-options>
-      <div id="html_text_content" inner-h-t-m-l="[[suttaText]]"></div>
-    </template>
   </template>
 
   <script>
@@ -60,9 +48,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       type: String,
                       statePath: 'suttaText.translation'
                   },
-                  inputLanguage: String,
-                  notFound: Object,
-
                   // If true, shows the paragraph numbers on the right of the text.
                   // Data is passed on from the toolbar-settings-menu.
                   showParagraphs: {
@@ -98,19 +83,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               ]
           }
 
-          ready() {
-              super.ready();
-              console.log('in normal text');
-          }
-
-          _callAjax() {
-              this.$.ajax.generateRequest();
-          }
-
-          _computeURL(suttaUid, author) {
-              return `${this.$.meta.byKey('API_ROOT')}/suttas/${suttaUid}/${author}`;
-          }
-
           _onResponse() {
               if (typeof(this.lastResponse) !== 'object') {
                   this.lastResponse = JSON.parse(this.lastResponse);
@@ -125,6 +97,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   this.suttaText = '<section><h2>Could not find sutta text in database.</h2></section>';
               }
               this.suttaplex = this.lastResponse.suttaplex;
+              this.author = this.lastResponse.translation.author;
               this.sendInfoToToolbar();
               //              this.$.ajaxParagraphs.generateRequest();
           }
@@ -173,6 +146,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
           sendInfoToToolbar() {
+
               this.dispatchEvent(new CustomEvent('eventFromTextPage', {
                   detail: {
                       suttatitle: `${this._computeTitle()} — ${this._computeAuthor()}`,

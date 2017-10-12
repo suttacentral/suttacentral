@@ -275,7 +275,7 @@ Issues that need to be fixed:
 ### sc-simple-text.html
 This element loads the plain html pages which are at the moment defined as all pages that have an author which is not "sujato" or "pali". It only loads English pages at the moment. Files are loaded from the mockup directory in `../data/texts/en/bodhi`. The paragraph numbers are loaded from `../data/paragraphtitles.json`(this file is complete and correct).
 
-The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-options.html`).
+The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
 
 Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested.
 
@@ -290,7 +290,7 @@ This element loads the segmented text pages that are created in Pootle, which ar
 
 This elements first loads the html markup file from `../data/texts/markup`, then the translation by Sujato from `../data/texts/en/sujato` and the pali from `../data/texts/pi` as well as the file that contains the paragraph numbers from `../data/paragraphtitles.json`. 
 
-The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-options.html`).
+The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
 
 Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested. Via this menu, also the type of view (none, side-by-side, line-by-line or popup) can be chosen to display the english and pali in relation to each other.
 The type of script used for the pali can be chosen.
