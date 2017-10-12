@@ -4,8 +4,13 @@
 <link rel="import" href="/elements/sc-segmented-text.html">
 <link rel="import" href="/elements/sc-page-text.html">
 
+<!--
+  This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
+  either the simple sutta text view or the segmented view.
+-->
 <dom-module id="sc-text-page-selector">
   <template>
+
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax
@@ -14,7 +19,7 @@
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
-        last-response="{{lastResponse}}"
+        last-response="{{responseData}}"
     ></iron-ajax>
 
     <template is="dom-if" if="[[!isSegmentedText]]" restamp>
@@ -30,7 +35,6 @@
       <h3>Could not load the sutta text.</h3>
     </template>
 
-
   </template>
 
   <script>
@@ -42,24 +46,20 @@
           static get properties() {
               return {
                   isSegmentedText: {
-                      type: Boolean,
-                      computed: '_isSegmentedSuttaTextPage'
+                      type: Boolean
                   },
-                  lastResponse: {
+                  responseData: {
                       type: Object,
                       observer: '_onResponse'
                   },
                   author: {
                       type: String,
-                      statePath: 'currentRoute.authorName'
                   },
-                  suttaUid: {
+                  suttaId: {
                       type: String,
-                      statePath: 'currentRoute.authorName'
                   },
                   langIsoCode: {
                       type: String,
-                      statePath: 'currentRoute.authorName'
                   }
               }
           }
@@ -77,12 +77,20 @@
                           type: 'CHANGE_TOOLBAR_MODE',
                           mode: mode
                       };
+                  },
+                  downloadSuttaText(text) {
+                      return {
+                          type: 'DOWNLOAD_SUTTA_TEXT',
+                          text: text
+                      }
                   }
               }
           }
 
           _onResponse() {
-              // todo check if segmented
+              console.log(this.responseData);
+              this.dispatch('downloadSuttaText', this.responseData);
+              this.isSegmentedText = this._isSegmentedSuttaTextPage();
               if (this.isSegmentedText) {
                   this.dispatch('changeToolbarMode', 'segmented-mode');
               }
@@ -91,13 +99,15 @@
               }
           }
 
-          // checks if a page is a segmented-text page and sets the toolbar title and css class accordingly.
+          // checks if a page is a segmented-text page
           _isSegmentedSuttaTextPage() {
-              return !!(langIsoCode && author && (author === 'sujato' || author === 'pali'));
+//              return !!(langIsoCode && author && (author === 'sujato' || author === 'pali'));
+              console.log('is segmented? ' + !!(this.responseData.root_text && this.responseData.translation));
+              return !!(this.responseData.root_text && this.responseData.translation);
           }
 
           _getUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/suttas/${suttaUid}/${author}`;
+              return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}/${this.author}?lang=${this.langIsoCode}`;
           }
       }
 

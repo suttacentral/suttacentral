@@ -20,7 +20,8 @@
             title: '',
             mode: ''
         },
-        searchParams: {}
+        searchParams: {},
+        suttaText: {}
     };
 
     const reducer = (state, action) => {
@@ -37,6 +38,8 @@
                 return Object.assign({}, state, { toolbarOptions: modeOptions });
             case 'INITIATE_SEARCH':
                 return Object.assign({}, state, { searchParams: action.params });
+            case 'DOWNLOAD_SUTTA_TEXT':
+                return Object.assign({}, state, { suttaText: action.text });
             default:
                 return state;
         }

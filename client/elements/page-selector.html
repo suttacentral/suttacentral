@@ -4,7 +4,6 @@
 <link rel="import" href="/bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="/bower_components/app-route/app-location.html">
-<link rel="import" href="/bower_components/iron-location/iron-query-params.html">
 
 <link rel="import" href="/elements/menus/sc-toolbar.html">
 <link rel="import" href="/elements/sc-page-static.html">
@@ -121,7 +120,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         </template>
 
         <template is="dom-if" if="[[shouldShowSuttaTextPage]]" restamp>
-          <sc-text-page-selector></sc-text-page-selector>
+          <sc-text-page-selector author="[[suttaAuthor]]" sutta-id="[[suttaId]]"
+                                 lang-iso-code="[[langIsoCode]]"></sc-text-page-selector>
         </template>
 
         <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp>
@@ -167,6 +167,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: String,
                       statePath: 'toolbarOptions.title'
                   },
+                  suttaId: String,
+                  suttaAuthor: String,
+                  langIsoCode: String,
                   // Variables that control the <dom-if> elements in the template:
                   shouldShowStaticPage: Boolean,
                   shouldShowSuttaplexListPage: Boolean,
@@ -239,8 +242,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
               }
               else if (this._isSuttaTextPage()) {
-                  console.log('routing to text page');
-                  this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaRouteParams()));
+                  const suttaRouteParams = this._getSuttaRouteParams();
+                  this.set('suttaId', suttaRouteParams.suttaId);
+                  this.set('langIsoCode', suttaRouteParams.langIsoCode);
+                  this.set('suttaAuthor', suttaRouteParams.authorName);
+                  this.dispatch('changeRoute', Object.assign({}, this.route, suttaRouteParams));
               }
               else {
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
@@ -248,7 +254,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _isStaticPage(pageName) {
-              if (!pageName) { return; }
+              if (!pageName) {
+                  return;
+              }
               return this.staticPages.includes(pageName.toUpperCase());
           }
 
@@ -290,7 +298,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               return {
                   name: 'SUTTA',
                   suttaId: this._getPathParamNumber(1),
-                  langName: this._getPathParamNumber(2),
+                  langIsoCode: this._getPathParamNumber(2),
                   authorName: this._getPathParamNumber(3)
               };
           }
