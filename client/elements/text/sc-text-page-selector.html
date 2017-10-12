@@ -2,8 +2,8 @@
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 
-<link rel="import" href="/elements/sc-segmented-text.html">
-<link rel="import" href="/elements/sc-page-text.html">
+<link rel="import" href="/elements/text/sc-segmented-text.html">
+<link rel="import" href="/elements/text/sc-simple-text.html">
 
 <!--
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
@@ -36,7 +36,7 @@
     ></iron-ajax>
 
     <template is="dom-if" if="[[!isSegmentedText]]" restamp>
-      <sc-page-text></sc-page-text>
+      <sc-simple-text></sc-simple-text>
     </template>
 
     <template is="dom-if" if="[[isSegmentedText]]" restamp>

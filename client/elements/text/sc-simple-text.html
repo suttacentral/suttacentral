@@ -14,7 +14,7 @@ The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addo
 Paragraph numbers can be displayed or hidden as requested via the settings-menu in the toolbar.
 Title, full Author name and Meta data are sent via events to the page-selector for use in the toolbar.
 -->
-<dom-module id="sc-page-text" attributes="suttatitle suttameta">
+<dom-module id="sc-simple-text" attributes="suttatitle suttameta">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
       .not-found {
@@ -42,8 +42,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
   </template>
 
   <script>
-      class SCPageText extends Polymer.Element {
-          static get is() { return 'sc-page-text' }
+      class SCSimpleText extends Polymer.Element {
+          static get is() { return 'sc-simple-text' }
 
           static get properties() {
               return {
@@ -170,6 +170,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
       }
 
-      customElements.define(SCPageText.is, SCPageText);
+      customElements.define(SCSimpleText.is, SCSimpleText);
   </script>
 </dom-module>
