@@ -1,6 +1,4 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
@@ -22,10 +20,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
       }
     </style>
 
-    <iron-meta id="meta"></iron-meta>
-
     <sc-text-options suttaplex-item="[[suttaplex]]"></sc-text-options>
-    <div id="html_text_content" inner-h-t-m-l="[[suttaText]]"></div>
+    <div id="html_text_content" inner-h-t-m-l="[[displayedSuttaText]]"></div>
 
   </template>
 
@@ -37,16 +33,17 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           static get properties() {
               return {
-                  author: {
-                      type: String
-                  },
                   suttaRootText: {
-                      type: String,
+                      type: Object,
                       statePath: 'suttaText.root_text'
                   },
-                  suttaTranslationText: {
-                      type: String,
+                  suttaTranslatedText: {
+                      type: Object,
                       statePath: 'suttaText.translation'
+                  },
+                  suttaplex: {
+                      type: Object,
+                      statePath: 'suttaText.suttaplex'
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   // Data is passed on from the toolbar-settings-menu.
@@ -54,15 +51,10 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       type: Boolean,
                       observer: '_addParagraphs'
                   },
+                  displayedSuttaText: String,
                   paragraphTitles: Object,
-                  suttaplex: {
-                      type: Object,
-                      statePath: 'suttaText.suttaplex'
-                  },
-                  lastResponse: {
-                      type: Object,
-                      value: () => { return {}; }
-                  }
+                  author: String,
+                  lang: String
               }
           }
 
@@ -77,29 +69,16 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               }
           }
 
-          static get observers() {
-              return [
-                  '_callAjax(suttaPath,author)'
-              ]
+          connectedCallback() {
+              super.connectedCallback();
+              this._setAttributes();
           }
 
-          _onResponse() {
-              if (typeof(this.lastResponse) !== 'object') {
-                  this.lastResponse = JSON.parse(this.lastResponse);
-              }
-              try {
-                  if (this.suttaText.root_text) {
-                      this.suttaText = this.lastResponse.root_text.text;
-                  } else {
-                      this.suttaText = this.lastResponse.translation.text;
-                  }
-              } catch (e) {
-                  this.suttaText = '<section><h2>Could not find sutta text in database.</h2></section>';
-              }
-              this.suttaplex = this.lastResponse.suttaplex;
-              this.author = this.lastResponse.translation.author;
-              this.sendInfoToToolbar();
-              //              this.$.ajaxParagraphs.generateRequest();
+          _setAttributes() {
+              const isRoot = !!(this.suttaRootText);
+              this.displayedSuttaText = isRoot ? this.suttaRootText.text : this.suttaTranslatedText.text;
+              this.author = isRoot ? this.suttaRootText.author : this.suttaTranslatedText.author;
+              this.lang = isRoot ? this.suttaRootText.lang : this.suttaTranslatedText.lang;
           }
 
           // adds a class to the main container to either show or hide paragraph numbers.
@@ -132,7 +111,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
-          _computePars(e) {
+          _computeParagraphs(e) {
               const paragraphTitles = e.detail.response;
               for (let key in paragraphTitles) {
                   const refs = this.shadowRoot.querySelectorAll('.' + key);
@@ -146,7 +125,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
           sendInfoToToolbar() {
-
+              // todo dispatch action
               this.dispatchEvent(new CustomEvent('eventFromTextPage', {
                   detail: {
                       suttatitle: `${this._computeTitle()} — ${this._computeAuthor()}`,
