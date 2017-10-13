@@ -37,7 +37,7 @@ FOR pit IN pitaka
                 from: IS_NULL(e._from) ? {{uid: group_edge._from, name: pit.name}} : e._from,
                 name: v.name,
                 id: v._id,
-                lang_num: lang_num
+                num: v.num
             }}
 '''
 
