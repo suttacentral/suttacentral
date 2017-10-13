@@ -64,7 +64,8 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
     <isw-dialog-remote
         id="info_dialog_remote"
-        dialog="info_dialog">
+        dialog="info_dialog"
+        data="[[metaArea]]">
     </isw-dialog-remote>
 
   </template>
@@ -89,25 +90,6 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
                       type: String
                   }
               }
-          }
-
-          ready() {
-              super.ready();
-//              this._addScrollLockListeners();
-          }
-
-          _addScrollLockListeners() {
-              let scrollLockListener = (dialog) => {
-                  if (dialog.opened) {
-                      Polymer.IronDropdownScrollManager.pushScrollLock(dialog);
-                  } else {
-                      Polymer.IronDropdownScrollManager.removeScrollLock(dialog);
-                  }
-              };
-              let settingsDialog = this.$.settings_dialog;
-              let infoDialog = this.$.info_dialog;
-              settingsDialog.addEventListener('opened-changed', () => { scrollLockListener(settingsDialog) });
-              infoDialog.addEventListener('opened-changed', () => { scrollLockListener(infoDialog) });
           }
 
           _toggleOpened() {

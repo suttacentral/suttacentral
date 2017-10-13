@@ -40,6 +40,9 @@
                 return Object.assign({}, state, { searchParams: action.params });
             case 'DOWNLOAD_SUTTA_TEXT':
                 return Object.assign({}, state, { suttaText: action.text });
+            case 'CHANGE_SUTTA_META_TEXT':
+                const newSuttaText = Object.assign({}, state.suttaText, { meta: action.metaText });
+                return Object.assign({}, state, { suttaText: newSuttaText });
             default:
                 return state;
         }

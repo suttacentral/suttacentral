@@ -174,7 +174,7 @@
       </paper-dialog-scrollable>
     </isw-dialog>
 
-    <isw-dialog id="info_dialog" name="info_dialog" class="dialog" with-backdrop="true"
+    <isw-dialog id="info_dialog" name="info_dialog" class="dialog" with-backdrop="true" data="{{infoDialogMetaArea}}"
                 entry-animation="fade-in-animation" exit-animation="fade-out-animation">
       <div class="buttons">
         <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
@@ -182,19 +182,7 @@
       <h2>Publication details</h2>
       <paper-dialog-scrollable>
         <div class="dialogue-section">
-          <div inner-h-t-m-l="[[settingsDialogMetaArea]]">
-            <section class="margin-vertical-md">
-              This is an independent sūtra. In the Taishō canon, on which this
-              edition is based, it is collected together with the Dīrghāgama. The text is from CBETA.
-            </section>
-            <section class="margin-vertical-md">
-              Prepared for SuttaCentral by Bhikkhu Sujato.
-            </section>
-            <section class="margin-vertical-md">
-              <i>First Added: 2017-01-27</i>
-              <br>
-              <i>Last Modified: 2017-01-27</i>
-            </section>
+          <div inner-h-t-m-l="[[infoDialogMetaArea]]">
           </div>
         </div>
       </paper-dialog-scrollable>
@@ -203,7 +191,7 @@
   </template>
 
   <script>
-      class SCNavdrawer extends Polymer.Element {
+      class SCNavdrawer extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-navdrawer';
           }
@@ -226,8 +214,9 @@
                       type: Array,
                       observer: '_parseNavList'
                   },
-                  settingsDialogMetaArea: {
-                      type: String
+                  infoDialogMetaArea: {
+                      type: String,
+                      statePath: 'suttaText.meta'
                   }
               }
           }

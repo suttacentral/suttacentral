@@ -70,6 +70,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                           type: 'CHANGE_TOOLBAR_TITLE',
                           title: title
                       };
+                  },
+                  changeSuttaMetaText(metaText) {
+                      return {
+                          type: 'CHANGE_SUTTA_META_TEXT',
+                          metaText: metaText
+                      }
                   }
               }
           }
@@ -85,6 +91,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this.author = isRoot ? this.suttaRootText.author : this.suttaTranslatedText.author;
               this.lang = isRoot ? this.suttaRootText.lang : this.suttaTranslatedText.lang;
               this.title = isRoot ? this.suttaRootText.title : this.suttaTranslatedText.title;
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
               this.dispatch('changeToolbarTitle', `${this.title} – ${this.author}`);
           }
 
@@ -95,25 +102,10 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   : (infotext) ? infotext.classList.add('infomode') : '';
           }
 
-          // returns the division-text title from the loaded sutta text
-          _computeTitle() {
-              let title;
-              try {
-                  title = this.lastResponse.root_text.title;
-              } catch (e) {
-                  title = '';
-              }
-              return title;
-          }
-
-          // returns the full author information from the loaded sutta text
-          _computeAuthor() {
-              return this.author ? this.author : '';
-          }
-
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              const matches = this.suttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              const matches = this.displayedSuttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              console.dir(matches);
               return matches ? matches[1] : '';
           }
 
@@ -129,7 +121,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   this._addParagraphs();
               }
           }
-
       }
 
       customElements.define(SCSimpleText.is, SCSimpleText);
