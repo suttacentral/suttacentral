@@ -196,7 +196,9 @@ and then used in sc-view-parallels.html . It is in effect a minature version of 
 
           // returns the URL for the parallel with the given index
           _computeParallelUrl() {
-              return `${this.parallelItem.uid}`;
+              const url = window.location;
+              const baseUrl = url.protocol + "//" + url.host;
+              return `${baseUrl}/${this.parallelItem.uid}`;
           }
 
           _getFirstVolpage() {

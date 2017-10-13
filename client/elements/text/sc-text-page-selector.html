@@ -27,8 +27,9 @@
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax
-        auto
+        id="ajax"
         url="[[_getUrl()]]"
+        debounce-duration="500"
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
@@ -69,16 +70,15 @@
                       type: Object,
                       observer: '_onResponse'
                   },
-                  author: {
-                      type: String
-                  },
-                  suttaId: {
-                      type: String
-                  },
-                  langIsoCode: {
-                      type: String
-                  }
+                  author: String,
+                  suttaId: String,
+                  langIsoCode: String,
+                  stopRequests: Boolean
               }
+          }
+
+          static get observers() {
+              return ['_paramChanged(author, suttaId, langIsoCode)'];
           }
 
           static get actions() {
@@ -105,6 +105,7 @@
           }
 
           _onResponse() {
+              console.dir(this.responseData);
               this.dispatch('downloadSuttaText', this.responseData);
               this.isSegmentedText = this._isSegmentedSuttaTextPage();
               if (this.isSegmentedText) {
@@ -115,12 +116,27 @@
               }
           }
 
+          // The stopRequests variable exists so that we don't make 3 consequent requests in case the
+          // author, suttaId and the langIsoCode all change at the same time.
+          _paramChanged() {
+              if (!this.stopRequests) {
+                  this.stopRequests = true;
+                  setTimeout(() => {
+                      console.log('generating request');
+                      this.$.ajax.url = this._getUrl();
+                      this.$.ajax.generateRequest();
+                      this.stopRequests = false;
+                  }, 500)
+              }
+          }
+
           // checks if a page is a segmented-text page
           _isSegmentedSuttaTextPage() {
               return !!(this.responseData.segmented);
           }
 
           _getUrl() {
+              console.log(this.suttaId);
               return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}/${this.author}?lang=${this.langIsoCode}`;
           }
       }

@@ -21,7 +21,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
     </style>
 
     <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
-    <div id="html_text_content" inner-h-t-m-l="[[displayedSuttaText]]"></div>
+    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]"></div>
 
   </template>
 
@@ -33,11 +33,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           static get properties() {
               return {
-                  suttaRootText: {
-                      type: Object,
-                      statePath: 'suttaText.root_text'
-                  },
-                  suttaTranslatedText: {
+                  // in simple texts, both root texts and translations are returned by the API in the translation object.
+                  sutta: {
                       type: Object,
                       statePath: 'suttaText.translation'
                   },
@@ -51,7 +48,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       type: Boolean,
                       observer: '_addParagraphs'
                   },
-                  displayedSuttaText: String,
                   paragraphTitles: Object,
                   title: String,
                   author: String,
@@ -78,15 +74,14 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           connectedCallback() {
               super.connectedCallback();
+              console.log('translation');
               this._setAttributes();
           }
 
           _setAttributes() {
-              const isRoot = !!(this.suttaRootText);
-              this.displayedSuttaText = isRoot ? this.suttaRootText.text : this.suttaTranslatedText.text;
-              this.author = isRoot ? this.suttaRootText.author : this.suttaTranslatedText.author;
-              this.lang = isRoot ? this.suttaRootText.lang : this.suttaTranslatedText.lang;
-              this.title = isRoot ? this.suttaRootText.title : this.suttaTranslatedText.title;
+              this.author = this.sutta.author;
+              this.lang = this.sutta.lang;
+              this.title = this.sutta.title;
               this.dispatch('changeSuttaMetaText', this._computeMeta());
               this.dispatch('changeToolbarTitle', `${this.title} – ${this.author}`);
           }
@@ -100,7 +95,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              const matches = this.displayedSuttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              const matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
               return matches ? matches[1] : '';
           }
 

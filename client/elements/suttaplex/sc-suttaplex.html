@@ -346,7 +346,9 @@
 
           // Computes API endpoint URL for given translation
           _getSuttaTextUrl(uid, lang, author) {
-              return `${uid}/${lang}/${author}`;
+              const url = window.location;
+              const baseUrl = url.protocol + "//" + url.host;
+              return `${baseUrl}/${uid}/${lang}/${author}`;
           }
 
           _isChosenLang(lang) {
