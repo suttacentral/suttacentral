@@ -81,6 +81,10 @@
         font-weight: bold;
       }
 
+      .submit-button[disabled] {
+        background: var(--paper-grey-400);
+      }
+
       .card-details {
         font-size: 19px;
         padding: 0;
@@ -260,7 +264,7 @@
             </paper-dropdown-menu>
 
             <paper-input label="Amount" class="data-input amount-input" auto-validate pattern="^[+]?(\d+[.,]?\d{0,2})$" 
-                         allowed-pattern="[0-9.,]" error-message="Invalid value" required></paper-input>
+                         allowed-pattern="[0-9.,]" error-message="Invalid value" required maxlength=20></paper-input>
           </div>
 
           <p class="explanation">You can make a one-time donation or a monthly donation.</p>
@@ -285,11 +289,11 @@
             <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>
 
-          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2 maxlength=200>
+          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2 maxlength=200 char-counter>
           </paper-textarea>
 
           <div class="flex-row submit">
-            <paper-button on-tap="_makeDonation" class="submit-button">
+            <paper-button  id="submitButton" on-tap="_makeDonation" class="submit-button">
               PAY WITH CARD
             </paper-button>
           </div>
@@ -305,7 +309,7 @@
       </section>
     </div>
     <paper-toast class="toast error-toast" text="[[errorMessage]]" duration=5000></paper-toast>
-    <paper-toast class="toast success-toast" text="[[successMessage]]" duration=3000></paper-toast>
+    <paper-toast class="toast success-toast" text="[[successMessage]]" duration=5000></paper-toast>
     <template is="dom-if" if="{{processingPayment}}">
       <div class="blocker"></div>
       <div class="spinner">
@@ -459,7 +463,6 @@
                   e.preventDefault();
                 }
               })
-
           }
 
           _handleResponse() {
@@ -474,9 +477,12 @@
             }
             let data = this._getFormData();
             this.processingPayment = true;
+            this.$.submitButton.disabled = true;
             this.stripe.createToken(this.card).then((result, error) => {
               if (error){
                 this.shadowRoot.querySelector('.error-toast').open();
+                this.processingPayment = false;
+                this.$.submitButton.disabled = false;
                 return;
               }
               data.stripe = result;
@@ -488,11 +494,16 @@
 
           _paymentFinished(event) {
               this.processingPayment = false;
-              this.shadowRoot.querySelector('.success-toast').open();
-              setTimeout(() => { this.set('path', '/') }, 3500);
+              let successToast = this.shadowRoot.querySelector('.success-toast');
+              successToast.open();
+              setTimeout(() => { 
+                this.$.submitButton.disabled = false;
+                this.set('path', '/') ;
+              }, successToast.duration + 500);
           }
 
           _paymentError(event) {
+            this.$.submitButton.disabled = false;
             let errCode = this.donationResponseError.response['err_code']
             this.errorMessage = this.errorMessages[errCode];
             this.processingPayment = false;
