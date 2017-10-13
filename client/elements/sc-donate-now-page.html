@@ -259,8 +259,8 @@
               </paper-listbox>
             </paper-dropdown-menu>
 
-            <paper-input label="Amount" class="data-input amont-input" type="number" min="1" step=".01"
-                          auto-validate pattern="^[+]?(\d+[.]?\d{0,2})$"
+            <paper-input label="Amount" class="data-input amount-input" type="number" min="1" step=".01"
+                          auto-validate pattern="^[+]?(\d+[.,]?\d{0,2})$" allowed-pattern="[0-9.,]"
                           error-message="Invalid value" required></paper-input>
           </div>
 
@@ -440,6 +440,27 @@
                   oneTimeDonation.checked = false;
                   monthly.checked = true;
               });
+              
+              let amountInput = this.shadowRoot.querySelector('.amount-input'); 
+              amountInput.onpaste = (e) => {  // Prevent from text data.
+                let pastedText = '';
+                if (window.clipboardData && window.clipboardData.getData) { // IE
+                    pastedText = window.clipboardData.getData('Text');
+                } else if (e.clipboardData && e.clipboardData.getData) {
+                    pastedText = e.clipboardData.getData('text/plain');
+                }
+                if (!/^[+]?(\d+[.,]?\d{0,2})$/.test(pastedText)){
+                  return false;
+                }
+              }
+
+              amountInput.addEventListener('keydown', (e) => {
+                if (e.key === ','){
+                  debugger;
+                  e.preventDefault();
+                }
+              })
+
           }
 
           _handleResponse() {
@@ -487,7 +508,7 @@
               let currency = form.querySelector('.currency-menu-listbox').selected;
               data.currency = this.currencies[currency].symbol;
 
-              data.amount = parseFloat(form.querySelector('.amont-input').value);
+              data.amount = parseFloat(form.querySelector('.amount-input').value);
               data.oneTimeDonation = form.querySelector('.one-time-donation').checked;
               data.monthlyDonation = form.querySelector('.monthly-donation').checked;
               data.name = form.querySelector('.name-input').value;
