@@ -200,7 +200,8 @@ LET legacy_translations = (
         LET res = {
             lang: text.lang,
             author: text.author,
-            id: text._key
+            id: text._key,
+            segmented: false
             }
         // Add title if it is in desired language
         LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
@@ -215,7 +216,8 @@ LET po_translations = (
         LET res = {
             lang: text.lang,
             author: text.author,
-            id: text._key
+            id: text._key,
+            segmented: true
         }
         //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
         RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
@@ -276,11 +278,19 @@ LET parallel_count = LENGTH(
         FILTER rel._from == root_text._id
         RETURN rel
 )
+
+LET biblio = (
+    FOR biblio IN biblios
+        FILTER biblio.uid == root_text.biblio_uid
+        LIMIT 1
+        RETURN biblio.text
+)[0]
     
 RETURN {
     root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
     translation: translated_text ? translated_text : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     suttaplex: {
+        acronym: root_text.acronym,
         volpages: volpages,
         uid: @uid,
         blurb: blurb,
@@ -288,7 +298,8 @@ RETURN {
         original_title: root_text.name,
         root_lang: root_text.root_lang,
         translations: FLATTEN([po_translations, legacy_translations]),
-        parallel_count: parallel_count
+        parallel_count: parallel_count,
+        biblio: biblio
     }
 }
 '''
