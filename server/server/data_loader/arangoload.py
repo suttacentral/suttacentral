@@ -11,7 +11,7 @@ from flask import current_app
 from tqdm import tqdm
 from git import InvalidGitRepositoryError, Repo
 
-from . import po, textdata, dictionaries, currencies
+from . import po, textdata, dictionaries, currencies, biblio
 
 
 class ChangeTracker:
@@ -120,7 +120,15 @@ def process_root_languages(structure_dir):
     return data
 
 
-def process_root_files(docs, edges, mapping, root_files, root_languages):
+def process_root_files(docs, edges, mapping, root_files, root_languages, structure_dir):
+    with open(structure_dir / 'sutta.json', 'r') as f:
+        sutta_file = json.load(f)
+
+    sutta_data = {}
+    for sutta in sutta_file:
+        uid = sutta.pop('uid')
+        sutta_data[uid] = {'acronym': sutta['acronym'], 'biblio_uid': sutta['biblio_uid']}
+
     reg = regex.compile(r'^\D+')
     for root_file in root_files:
         with root_file.open('r', encoding='utf8') as f:
@@ -149,6 +157,14 @@ def process_root_files(docs, edges, mapping, root_files, root_languages):
 
             del entry['_path']
             entry['num'] = i  # number is used for ordering, it is not otherwise meaningful
+            try:
+                entry['acronym'] = sutta_data[uid]['acronym']
+            except KeyError:
+                pass
+            try:
+                entry['biblio_uid'] = sutta_data[uid]['biblio_uid']
+            except KeyError:
+                pass
 
             docs.append(entry)
 
@@ -163,6 +179,8 @@ def process_root_files(docs, edges, mapping, root_files, root_languages):
 def process_category_files(category_files, db, edges, mapping):
     for category_file in category_files:
         category_name = category_file.stem
+        if category_name in ['sutta']:
+            continue
         collection = db[category_name]
         category_docs = []
 
@@ -224,7 +242,7 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     if change_tracker.is_any_file_new_or_changed(root_files + category_files):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
-        process_root_files(docs, edges, mapping, root_files, root_languages)
+        process_root_files(docs, edges, mapping, root_files, root_languages, structure_dir)
 
         process_category_files(category_files, db, edges, mapping)
 
@@ -487,5 +505,7 @@ def run():
     dictionaries.load_dictionaries(db, dictionaries_dir)
 
     currencies.load_currencies(db, additional_info_dir)
+
+    biblio.load_biblios(db, additional_info_dir)
 
     change_tracker.update_mtimes()
