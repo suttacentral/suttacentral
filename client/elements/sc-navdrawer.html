@@ -182,7 +182,7 @@
       <h2>Publication details</h2>
       <paper-dialog-scrollable>
         <div class="dialogue-section">
-          <div inner-h-t-m-l="[[metaArea]]">
+          <div inner-h-t-m-l="[[settingsDialogMetaArea]]">
             <section class="margin-vertical-md">
               This is an independent sūtra. In the Taishō canon, on which this
               edition is based, it is collected together with the Dīrghāgama. The text is from CBETA.
@@ -225,6 +225,9 @@
                   navList: {
                       type: Array,
                       observer: '_parseNavList'
+                  },
+                  settingsDialogMetaArea: {
+                      type: String
                   }
               }
           }
