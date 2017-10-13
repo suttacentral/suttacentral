@@ -8,9 +8,24 @@
 <link rel="import" href="/elements/paper-tree-sc/paper-tree.html">
 <link rel="import" href="/elements/page-selector.html">
 
+<!-- Imports for the sutta text dialogs: -->
+<link rel="import" href="/bower_components/isw-dialog/isw-dialog.html">
+<link rel="import" href="/bower_components/neon-animation/web-animations.html">
+<link rel="import" href="/bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="/bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
 <!--
   The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates
   this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**).
+
+  Issue:
+    For the grayed out backdrop, the sutta text dialogs must be placed outside the text-view itself because of a
+    missing functionality in webcomponents. At the moment, they can't be moved to a separate element as well.
+    TODO: Move the text dialogs back to <sc-text-options> once the following issue is fixed:
+    https://github.com/PolymerElements/paper-dialog/issues/152
+    https://github.com/PolymerElements/paper-dialog-behavior/issues/78
+    https://github.com/PolymerElements/paper-dialog/issues/44#issuecomment-172013206
 -->
 <dom-module id="sc-navdrawer">
   <template>
@@ -75,6 +90,28 @@
         left: 50%;
       }
 
+      /* styles for the text dialogs: */
+
+      .dialog {
+        white-space: initial;
+        max-width: 630px;
+        position: fixed;
+        top: 50px;
+        margin: 5% auto;
+        left: var(--app-drawer-width);
+        right: 0;
+      }
+
+      @media screen and (max-width: 840px) {
+        .dialog {
+          left: 0;
+        }
+      }
+
+      .dialog paper-icon-button {
+        color: var(--disabled-text-color);
+      }
+
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -121,6 +158,48 @@
       <page-selector></page-selector>
 
     </app-drawer-layout>
+
+    <!--
+      The dialogs for the sutta text view:
+    -->
+
+    <isw-dialog id="settings_dialog" name="settings_dialog" class="dialog" with-backdrop="true"
+                entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+      <div class="buttons">
+        <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
+      </div>
+      <h2>Text settings</h2>
+      <paper-dialog-scrollable>
+        <settings-menu></settings-menu>
+      </paper-dialog-scrollable>
+    </isw-dialog>
+
+    <isw-dialog id="info_dialog" name="info_dialog" class="dialog" with-backdrop="true"
+                entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+      <div class="buttons">
+        <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
+      </div>
+      <h2>Publication details</h2>
+      <paper-dialog-scrollable>
+        <div class="dialogue-section">
+          <div inner-h-t-m-l="[[metaArea]]">
+            <section class="margin-vertical-md">
+              This is an independent sūtra. In the Taishō canon, on which this
+              edition is based, it is collected together with the Dīrghāgama. The text is from CBETA.
+            </section>
+            <section class="margin-vertical-md">
+              Prepared for SuttaCentral by Bhikkhu Sujato.
+            </section>
+            <section class="margin-vertical-md">
+              <i>First Added: 2017-01-27</i>
+              <br>
+              <i>Last Modified: 2017-01-27</i>
+            </section>
+          </div>
+        </div>
+      </paper-dialog-scrollable>
+    </isw-dialog>
+
   </template>
 
   <script>
@@ -154,6 +233,8 @@
               super.ready();
               // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
+              // Lock scroll for the text dialogs:
+              this._addScrollLockListeners();
           }
 
           // Set the width of the nav drawer
@@ -192,6 +273,21 @@
 
           _getUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/menu`;
+          }
+
+          // Locks scroll on text dialogs:
+          _addScrollLockListeners() {
+              let scrollLockListener = (dialog) => {
+                  if (dialog.opened) {
+                      Polymer.IronDropdownScrollManager.pushScrollLock(dialog);
+                  } else {
+                      Polymer.IronDropdownScrollManager.removeScrollLock(dialog);
+                  }
+              };
+              let settingsDialog = this.$.settings_dialog;
+              let infoDialog = this.$.info_dialog;
+              settingsDialog.addEventListener('opened-changed', () => { scrollLockListener(settingsDialog) });
+              infoDialog.addEventListener('opened-changed', () => { scrollLockListener(infoDialog) });
           }
       }
 

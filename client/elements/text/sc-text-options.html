@@ -1,13 +1,9 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="/bower_components/isw-dialog/isw-dialog-remote.html">
 <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="/bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
 <link rel="import" href="/bower_components/iron-collapse/iron-collapse.html">
-<link rel="import" href="/bower_components/neon-animation/web-animations.html">
-<link rel="import" href="/bower_components/neon-animation/animations/fade-in-animation.html">
-<link rel="import" href="/bower_components/neon-animation/animations/fade-out-animation.html">
 
 <link rel="import" href="/styles/sc-suttaplex-styles.html">
 <link rel="import" href="/elements/menus/settings-menu.html">
@@ -79,41 +75,15 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       </iron-collapse>
     </div>
 
-    <paper-dialog id="settings_dialog" class="dialog" with-backdrop="true" entry-animation="fade-in-animation"
-                  exit-animation="fade-out-animation">
-      <div class="buttons">
-        <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
-      </div>
-      <h2>Text settings</h2>
-      <paper-dialog-scrollable>
-        <settings-menu></settings-menu>
-      </paper-dialog-scrollable>
-    </paper-dialog>
+    <isw-dialog-remote
+        id="settings_dialog_remote"
+        dialog="settings_dialog">
+    </isw-dialog-remote>
 
-    <paper-dialog id="info_dialog" class="dialog" with-backdrop="true" entry-animation="fade-in-animation"
-                  exit-animation="fade-out-animation">
-      <div class="buttons">
-        <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
-      </div>
-      <h2>Publication details</h2>
-      <paper-dialog-scrollable>
-        <div class="dialogue-section">
-          <div inner-h-t-m-l="[[metaArea]]">
-            <section class="margin-vertical-md">This is an independent sūtra. In the Taishō canon, on which this edition
-              is based, it is collected together with the Dīrghāgama. The text is from CBETA.
-            </section>
-            <section class="margin-vertical-md">
-              Prepared for SuttaCentral by Bhikkhu Sujato.
-            </section>
-            <section class="margin-vertical-md">
-              <i>First Added: 2017-01-27</i>
-              <br>
-              <i>Last Modified: 2017-01-27</i>
-            </section>
-          </div>
-        </div>
-      </paper-dialog-scrollable>
-    </paper-dialog>
+    <isw-dialog-remote
+        id="info_dialog_remote"
+        dialog="info_dialog">
+    </isw-dialog-remote>
 
   </template>
 
@@ -141,7 +111,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
           ready() {
               super.ready();
-              this._addScrollLockListeners();
+//              this._addScrollLockListeners();
           }
 
           _addScrollLockListeners() {
@@ -168,11 +138,11 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
           }
 
           _openSettingsDialog() {
-              this.$.settings_dialog.open();
+              this.$.settings_dialog_remote.open();
           }
 
           _openInfoDialog() {
-              this.$.info_dialog.open();
+              this.$.info_dialog_remote.open();
           }
       }
 
