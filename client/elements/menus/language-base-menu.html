@@ -48,11 +48,12 @@ This is the base language menu that determines the language of the site.
         auto
         url='[[_getUrl()]]'
         handle-as="json"
-        last-response="{{allLanguages}}"></iron-ajax>
+        last-response="{{lastResponse}}"
+        on-response="_onResponse"></iron-ajax>
 
     <paper-dropdown-menu class="language-menu-container" label="Language" title="Select the site in another language">
       <paper-listbox class="language-menu-container" slot="dropdown-content" selected="{{selectedLanguageNr}}">
-        <template is="dom-repeat" items="{{allLanguages}}" as="language">
+        <template is="dom-repeat" items="{{lastResponse}}" as="language">
           <paper-item class="language-menu-paper-item" id='[[language.uid]]'>
             <paper-item-body>
               [[language.name]]
@@ -74,7 +75,7 @@ This is the base language menu that determines the language of the site.
 
           static get properties() {
               return {
-                  allLanguages: {
+                  lastResponse: {
                       type: Array,
                       value: () => { return []; }
                   },
@@ -85,6 +86,10 @@ This is the base language menu that determines the language of the site.
                   siteLanguage: {
                       type: String,
                       statePath: 'siteLanguage'
+                  },
+                  isoCodes: {
+                      type: Array,
+                      statePath: 'language.isoCodes'
                   }
               };
           }
@@ -97,32 +102,42 @@ This is the base language menu that determines the language of the site.
                           type: 'CHANGE_SITE_LANGUAGE',
                           language: language
                       }
+                  },
+                  storeIsoCodes(isoCodes) {
+                      return {
+                          type: 'STORE_ISO_CODES',
+                          isoCodes: isoCodes
+                      }
                   }
               }
           }
 
+          _onResponse() {
+              // TODO during the internationalization phase, replace this with an object that contains all ISO codes.
+              this.dispatch('storeIsoCodes', this.lastResponse.map(item => item.iso_code));
+          }
+
           // Is invoked when a language is chosen from the list.
           _selectedLanguageNrChanged() {
-              if (!this.allLanguages || this.allLanguages.length === 0 || !this.selectedLanguageNr) {
+              if (!this.lastResponse || this.lastResponse.length === 0 || !this.selectedLanguageNr) {
                   return;
               }
               try {
                   // When selecting a language from the array of all languages, we're dividing by two.
                   // That's because of the ISO codes inside our list which paper-listbox treats as separate elements.
-                  const languageIsoCode = this.allLanguages[this.selectedLanguageNr / 2].iso_code;
+                  const languageIsoCode = this.lastResponse[this.selectedLanguageNr / 2].iso_code;
                   this.dispatch('changeLanguage', languageIsoCode);
               } catch (e) {
-                  console.log('Couldn\'t select language from the list of languages.');
-                  console.log(e);
+                  console.error(e);
               }
           }
 
           // Listens to changes in the global redux app state and updates the language chosen in the list dropdown.
           _computeSelectedLanguageNr(chosenLanguageIsoCode) {
               try {
-                  const isoCodes = this.allLanguages.map(item => item.iso_code);
-                  return isoCodes.indexOf(chosenLanguageIsoCode) * 2;
+                  return this.isoCodes.indexOf(chosenLanguageIsoCode) * 2;
               } catch (e) {
+                  console.error(e);
                   return 0;
               }
           }
