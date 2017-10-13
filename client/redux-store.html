@@ -17,7 +17,6 @@
         },
         siteLanguage: 'en',
         language: {
-            isoCodes: [],
             rootLangMappings: {
                 'pli': 'Pali',
                 'lzh': 'Chinese',
@@ -59,9 +58,6 @@
             case 'CHANGE_SUTTA_META_TEXT':
                 return Object.assign({}, state,
                     { suttaText: Object.assign({}, state.suttaText, { meta: action.metaText }) });
-            case 'STORE_ISO_CODES':
-                return Object.assign({}, state,
-                    { language: Object.assign({}, state.language, { isoCodes: action.isoCodes }) });
             default:
                 return state;
         }
