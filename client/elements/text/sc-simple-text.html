@@ -53,7 +53,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   // in simple texts, both root texts and translations are returned by the API in the translation object.
                   sutta: {
                       type: Object,
-                      statePath: 'suttaText.translation'
+                      statePath: 'suttaText.translation',
+                      observer: '_setAttributes'
                   },
                   suttaplex: {
                       type: Object,
@@ -87,12 +88,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       }
                   }
               }
-          }
-
-          connectedCallback() {
-              super.connectedCallback();
-              console.log('translation');
-              this._setAttributes();
           }
 
           _setAttributes() {

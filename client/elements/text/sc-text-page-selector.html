@@ -122,7 +122,6 @@
               if (!this.stopRequests) {
                   this.stopRequests = true;
                   setTimeout(() => {
-                      console.log('generating request');
                       this.$.ajax.url = this._getUrl();
                       this.$.ajax.generateRequest();
                       this.stopRequests = false;
@@ -136,7 +135,6 @@
           }
 
           _getUrl() {
-              console.log(this.suttaId);
               return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}/${this.author}?lang=${this.langIsoCode}`;
           }
       }
