@@ -18,10 +18,27 @@ Title, full Author name and Meta data are sent via events to the page-selector f
       .text-options {
         padding: 32px;
       }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .margin-top-xl {
+        margin-top: 10vh;
+      }
     </style>
 
-    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
-    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]"></div>
+    <template is="dom-if" if="[[sutta.text]]">
+      <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+      <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]"></div>
+    </template>
+
+    <template is="dom-if" if="[[!sutta.text]]">
+      <div class="text-center margin-top-xl">
+        <h2>Error</h2>
+        <h3>Could not find the sutta text.</h3>
+      </div>
+    </template>
 
   </template>
 
@@ -79,6 +96,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _setAttributes() {
+              if (!this.sutta) {
+                  return;
+              }
               this.author = this.sutta.author;
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;

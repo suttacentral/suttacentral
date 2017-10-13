@@ -169,11 +169,11 @@
 
       .volpage-biblio-info {
         @apply --paper-font-body1;
-        position:absolute;
-        z-index:200;
-        background-color:#fff;
+        position: absolute;
+        z-index: 200;
+        background-color: #fff;
         @apply --shadow-elevation-3dp;
-        padding:12px;
+        padding: 12px;
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         margin: 0 48px 0 0;
         white-space: normal;
@@ -271,7 +271,7 @@
   <script>
       class SCSuttaplex extends Polymer.Element {
           static get is() {
-              return 'sc-suttaplex'
+              return 'sc-suttaplex';
           }
 
           static get properties() {
@@ -347,7 +347,7 @@
           // Computes API endpoint URL for given translation
           _getSuttaTextUrl(uid, lang, author) {
               const url = window.location;
-              const baseUrl = url.protocol + "//" + url.host;
+              const baseUrl = url.protocol + '//' + url.host;
               return `${baseUrl}/${uid}/${lang}/${author}`;
           }
 
