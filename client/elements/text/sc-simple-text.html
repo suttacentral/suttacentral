@@ -105,7 +105,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
               const matches = this.displayedSuttaText.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
-              console.dir(matches);
               return matches ? matches[1] : '';
           }
 
