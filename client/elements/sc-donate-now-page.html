@@ -202,16 +202,20 @@
         opacity: 1;
         z-index: 100;
       }
+      
       .toast {
         --paper-toast-color: white;
         text-align: center;
         font-size: 20px;
-        width: 200px;
         margin-left: calc(50vw - 150px);
       }
 
       .error-toast {
         --paper-toast-background-color: red;
+      }
+
+      .success-toast {
+        --paper-toast-background-color: green;
       }
 
     </style>
@@ -273,16 +277,16 @@
             </label>
           </div>
 
-          <paper-input label="Name (optional)" class="data-input name-input">
+          <paper-input label="Name (optional)" class="data-input name-input" maxlength=200>
             <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>
 
           <paper-input label="Email (optional)" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
-                        error-message="Invalid email">
+                        error-message="Invalid email" maxlength=200>
             <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>
 
-          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2>
+          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2 maxlength=200>
           </paper-textarea>
 
           <div class="flex-row submit">
@@ -301,7 +305,8 @@
         </div>
       </section>
     </div>
-    <paper-toast class="toast error-toast" text="Error!"></paper-toast>
+    <paper-toast class="toast error-toast" text="[[errorMessage]]" duration=5000></paper-toast>
+    <paper-toast class="toast success-toast" text="[[successMessage]]" duration=3000></paper-toast>
     <template is="dom-if" if="{{processingPayment}}">
       <div class="blocker"></div>
       <div class="spinner">
@@ -348,6 +353,25 @@
                   },
                   processingPayment: {
                     type: Boolean,
+                  },
+                  errorMessage: {
+                    type: String,
+                    value: 'Error!'
+                  },
+                  isStripValid: {
+                    type: Boolean,
+                  },
+                  errorMessages: {
+                    type: Object,
+                    value: {
+                      0: 'Unknown error',
+                      1: 'Amount cannot be less than $0.50 USD.',
+                      2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.'
+                    }
+                  },
+                  successMessage: {
+                    type: String,
+                    value: 'Sadhu! Your payment has been completed successfully. You will be redirected in 3 seconds.'
                   }
               }
           }
@@ -396,9 +420,11 @@
                   if (error) {
                     cardFirstSpan.classList.add('error-bar');
                     cardSecondSpan.style['color'] = '#E4584C';
+                    this.isStripValid = false;
                   } else {
                     cardFirstSpan.classList.remove('error-bar')
                     cardSecondSpan.style['color'] = '';
+                    this.isStripValid = true;
                   }
               })
 
@@ -423,7 +449,7 @@
 
           _makeDonation(e) {
             let ironForm = this.shadowRoot.querySelector('.payment-iron-form');
-            if(!ironForm.validate()){
+            if(!ironForm.validate() || !this.isStripValid){
               return;
             }
             let data = this._getFormData();
@@ -442,10 +468,13 @@
 
           _paymentFinished(event) {
               this.processingPayment = false;
-              this.set('path', '/');
+              this.shadowRoot.querySelector('.success-toast').open();
+              setTimeout(() => { this.set('path', '/') }, 3500);
           }
 
           _paymentError(event) {
+            let errCode = this.donationResponseError.response['err_code']
+            this.errorMessage = this.errorMessages[errCode];
             this.processingPayment = false;
             this.shadowRoot.querySelector('.error-toast').open();
           }
@@ -465,10 +494,6 @@
               data.email = form.querySelector('.email-input').value;
               data.message = form.querySelector('.message-input').value;
               return data;
-          }
-
-          _donationFinalized(e) {
-              console.log(e);
           }
       }
 
