@@ -78,17 +78,13 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
           static get properties() {
               return {
-                  suttaplexItem: Object,
                   _toggleIcon: {
                       type: String,
                       computed: '_computeToggleIcon(opened)'
                   },
-                  opened: {
-                      type: Boolean
-                  },
-                  metaArea: {
-                      type: String
-                  }
+                  suttaplexItem: Object,
+                  opened: Boolean,
+                  metaArea: String
               }
           }
 
