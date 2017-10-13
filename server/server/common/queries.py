@@ -297,7 +297,7 @@ RETURN {
     root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
     translation: translated_text ? translated_text : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     suttaplex: {
-        acronym: v.acronym,
+        acronym: root_text.acronym,
         volpages: volpages,
         uid: @uid,
         blurb: blurb,

@@ -112,10 +112,10 @@
 
       details p {
         @apply --paper-font-body1;
+        @apply --shadow-elevation-3dp;
         position: absolute;
         z-index: 200;
         background-color: #fff;
-        @apply --shadow-elevation-3dp;
         padding: 12px;
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         margin: 0 48px 0 0;
@@ -179,6 +179,10 @@
         white-space: normal;
       }
 
+      .no-margin {
+        margin: 0;
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -197,13 +201,13 @@
           <span title="SuttaCentral ID" class$="[[_computeHideUID(item)]]">[[item.acronym]]</span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
-              <span class="book" style="margin: 0"><iron-icon icon="book"></iron-icon></span>
+              <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
               <span class="vol-page" title="Volume and page">[[item.volpages]]</span>
             </template>
             <template is="dom-if" if=[[item.biblio]]>
               <details class="display-inline">
                 <summary class="volpage-biblio-info-summary">
-                  <span class="book" style="margin: 0"><iron-icon icon="book"></iron-icon></span>
+                  <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
                   <span class="vol-page" title="Volume and page">[[item.volpages]]</span>
                 </summary>
                 <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
