@@ -1,9 +1,5 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
 <link rel="import" href="/elements/text/sc-text-options.html">
 <link rel="import" href="/styles/sc-text-styles.html">
@@ -33,7 +29,7 @@ Issues that need to be fixed:
 -->
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
   <template>
-    <style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
+    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
       .not-found {
         @apply --paper-font-display1;
       }
@@ -101,12 +97,12 @@ Issues that need to be fixed:
       }
     </style>
 
-    <template is="dom-if" if="[[sutta.text]]">
+    <template is="dom-if" if="[[rootSutta.text]]">
       <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
       <div id="html_text_content" inner-h-t-m-l="[[rootSutta.text]]"></div>
     </template>
 
-    <template is="dom-if" if="[[!sutta.text]]">
+    <template is="dom-if" if="[[!rootSutta.text]]">
       <div class="text-center margin-top-xl">
         <h2>Error</h2>
         <h3>Could not find the sutta text.</h3>
@@ -143,16 +139,13 @@ Issues that need to be fixed:
                       notify: true,
                       observer: '_addParagraphs'
                   },
-                  // checks if the html markup is fully loaded before other functions can start
-                  htmlLoaded: {
-                      type: Boolean,
-                      notify: true
-                  },
                   // View for segmented text selected in the toolbar-settings-menu.
                   showViewer: {
                       type: String,
                       observer: 'setView'
                   },
+                  // checks if the html markup is fully loaded before other functions can start
+                  htmlLoaded: Boolean,
                   // Choice of script to use for the pali. Default is Latin.
                   paliScript: {
                       type: Number,
@@ -187,6 +180,7 @@ Issues that need to be fixed:
 
           ready() {
               super.ready();
+              this.htmlLoaded = false;
               console.log('in segmented text');
           }
 
@@ -213,58 +207,49 @@ Issues that need to be fixed:
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              const matches = this.translatedSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              let matches = this.translatedSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              if (!matches) {
+                  matches = this.rootSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              }
               return matches ? matches[1] : '';
           }
 
-          _onResponse(e) {
-              console.log('onResponse');
-              if (typeof(this.lastResponse) !== 'object') {
-                  this.lastResponse = JSON.parse(this.lastResponse);
-              }
-              this.suttaRootText = this.lastResponse.root_text.text;
-              this.suttaTranslatedText = this.lastResponse.translation.text;
-              this.suttaplex = this.lastResponse.suttaplex;
-              this.sendInfoToToolbar();
-              //              this.$.ajaxParagraphs.generateRequest();
-          }
-
+          // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
           _addTranslatedText(e) {
               console.log('_addTranslatedText');
-              // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-              //              const segments = this.shadowRoot.querySelectorAll('sc-segment');
-              //              Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              //              const outputText = e.detail.response;
-              //              for (let key in outputText) {
-              //                  if (!key.startsWith("_")) {
-              //                      let subkey = key.replace(/:/g, "\\\:");
-              //                      console.log('subkey: ' + subkey );
-              //                      subkey = subkey.replace(/\./g, "\\\.");
-              //                      const segment = this.shadowRoot.querySelector('#' + subkey);
-              //                      segment.innerHTML = outputText[key] + " ";
-              //                  }
-              //              }
+              const segments = this.shadowRoot.querySelectorAll('sc-segment');
+              Array.from(segments).forEach(item => item.classList.add('translated-text'));
+              const outputText = e.detail.response;
+              for (let key in outputText) {
+                  if (!key.startsWith('_')) {
+                      let subkey = key.replace(/:/g, '\\\:');
+                      console.log('subkey: ' + subkey);
+                      subkey = subkey.replace(/\./g, '\\\.');
+                      const segment = this.shadowRoot.querySelector('#' + subkey);
+                      segment.innerHTML = outputText[key] + ' ';
+                  }
+              }
           }
 
+          // creates a second 'sc-element' behind every 'sc-element' in the base markup and
+          // populates that with the corresponding pali text segment.
           _addOriginalText(e) {
               console.log('_addOriginalText');
-              // creates a second 'sc-element' behind every 'sc-element' in the base markup and
-              // populates that with the corresponding pali text segment.
-              //              if (!this.shadowRoot.querySelector('.original-text')) {
-              //                  const outputText = e.detail.response;
-              //                  for (let key in outputText) {
-              //                      if (!key.startsWith("_")) {
-              //                          let subkey = key.replace(/:/g, "\\\:");
-              //                          subkey = subkey.replace(/\./g, "\\\.");
-              //                          const segment = this.shadowRoot.querySelector('#' + subkey);
-              //                          const newSegment = document.createElement('sc-segment');
-              //                          newSegment.id = key;
-              //                          newSegment.classList.add("original-text");
-              //                          newSegment.innerHTML = outputText[key] + " ";
-              //                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
-              //                      }
-              //                  }
-              //              }
+              if (!this.shadowRoot.querySelector('.original-text')) {
+                  const outputText = e.detail.response;
+                  for (let key in outputText) {
+                      if (!key.startsWith('_')) {
+                          let subkey = key.replace(/:/g, '\\\:');
+                          subkey = subkey.replace(/\./g, '\\\.');
+                          const segment = this.shadowRoot.querySelector('#' + subkey);
+                          const newSegment = document.createElement('sc-segment');
+                          newSegment.id = key;
+                          newSegment.classList.add('original-text');
+                          newSegment.innerHTML = outputText[key] + ' ';
+                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+                      }
+                  }
+              }
               this.htmlLoaded = true;
               this.$.html_text_content.classList.add('latin-script');
 
