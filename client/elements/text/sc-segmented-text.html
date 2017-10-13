@@ -87,15 +87,30 @@ Issues that need to be fixed:
           white-space: normal;
         };
       }
+
+      .text-options {
+        padding: 32px;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .margin-top-xl {
+        margin-top: 10vh;
+      }
     </style>
 
-    <template is="dom-if" if="[[notFound]]">
-      <p class="not-found">Sorry, the page you requested does not exist.</p>
+    <template is="dom-if" if="[[sutta.text]]">
+      <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+      <div id="html_text_content" inner-h-t-m-l="[[rootSutta.text]]"></div>
     </template>
 
-    <template is="dom-if" if="[[!notFound]]">
-      <sc-text-options suttaplex-item="[[suttaplex]]"></sc-text-options>
-      <div id="html_text_content" inner-h-t-m-l="[[suttaRootText]]"></div>
+    <template is="dom-if" if="[[!sutta.text]]">
+      <div class="text-center margin-top-xl">
+        <h2>Error</h2>
+        <h3>Could not find the sutta text.</h3>
+      </div>
     </template>
 
   </template>
@@ -108,35 +123,21 @@ Issues that need to be fixed:
 
           static get properties() {
               return {
-                  // The ID of the sutta to be displayed
-                  suttaPath: {
-                      type: String,
-                      notify: true
-                  },
-                  author: {
-                      type: String,
-                      notify: true
-                  },
-                  suttaRootText: {
-                      type: String,
-                      notify: true,
-                      value: ''
-                  },
-                  suttaTranslatedText: {
+                  rootSutta: {
                       type: Object,
-                      notify: true,
-                      value: () => { return {}; }
+                      statePath: 'suttaText.root_text',
+                      observer: '_setRootAttributes'
                   },
-                  suttaOriginalText: {
+                  translatedSutta: {
                       type: Object,
-                      notify: true,
-                      value: () => { return {}; }
+                      statePath: 'suttaText.translation',
+                      observer: '_setTranslatedAttributes'
                   },
-                  inputLanguage: String,
-                  notFound: Object,
-                  paragraphTitles: Object,
+                  suttaplex: {
+                      type: Object,
+                      statePath: 'suttaText.suttaplex'
+                  },
                   // If true, shows the paragraph numbers on the right of the text.
-                  // Data is passed on from the toolbar-settings-menu.
                   showParagraphs: {
                       type: Boolean,
                       notify: true,
@@ -155,24 +156,33 @@ Issues that need to be fixed:
                   // Choice of script to use for the pali. Default is Latin.
                   paliScript: {
                       type: Number,
-                      notify: true,
                       observer: 'changeScript'
                   },
-                  suttaplex: {
-                      type: Object,
-                      value: () => { return {}; }
-                  },
-                  lastResponse: {
-                      type: Object,
-                      value: () => { return {}; }
-                  }
+                  paragraphTitles: Object,
+                  rootAuthor: String,
+                  rootLang: String,
+                  rootTitle: String,
+                  translationAuthor: String,
+                  translationLang: String,
+                  translatedTitle: String
               }
           }
 
-          static get observers() {
-              return [
-                  '_callAjax(suttaPath,author)'
-              ]
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
+                  changeSuttaMetaText(metaText) {
+                      return {
+                          type: 'CHANGE_SUTTA_META_TEXT',
+                          metaText: metaText
+                      }
+                  }
+              }
           }
 
           ready() {
@@ -180,30 +190,31 @@ Issues that need to be fixed:
               console.log('in segmented text');
           }
 
-          _callAjax() {
-              this.htmlLoaded = false;
-              if (this.author && (this.author === 'sujato' || this.author === 'pali')) {
-                  this.$.ajax.generateRequest();
+          _setRootAttributes() {
+              if (!this.rootSutta) {
+                  return;
               }
+              this.rootAuthor = this.rootSutta.author;
+              this.rootLang = this.rootSutta.lang;
+              this.rootTitle = this.rootSutta.title;
           }
 
-          _getBaseUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/suttas`;
+          _setTranslatedAttributes() {
+              if (!this.translatedSutta) {
+                  return;
+              }
+              this.translationAuthor = this.translatedSutta.author;
+              this.translationLang = this.translatedSutta.lang;
+              this.translatedTitle = this.translatedSutta.title;
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
+              this.dispatch('changeToolbarTitle',
+                  `${this.translatedTitle ? this.translatedTitle : this.rootTitle} – ${this.translationAuthor}`);
           }
 
-          _computeUrl(suttaUid, author) {
-              console.log('_computeUrl(): ' + suttaUid + ' ' + author);
-              return `${this._getBaseUrl()}/${suttaUid}/${author}`;
-          }
-
-          _computeTranslatedURL(suttaUid, author) {
-              console.log('_computeTranslatedUrl(): ' + suttaUid + ' ' + author);
-              return `${this._getBaseUrl()}/${suttaUid}/${author}`;
-          }
-
-          _computeOriginalURL(suttaUid, author) {
-              console.log('_computeOriginalUrl(): ' + suttaUid + ' ' + author);
-              return `${this._getBaseUrl()}/${suttaUid}/${author}`;
+          // returns the meta-data from the loaded sutta text
+          _computeMeta() {
+              const matches = this.translatedSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              return matches ? matches[1] : '';
           }
 
           _onResponse(e) {
@@ -284,17 +295,6 @@ Issues that need to be fixed:
               let author = this.lastResponse.translation.author;
               console.log(`author: ${author}`);
               return author ? author : '';
-          }
-
-          // returns the meta data. This is still a mockup because we have no meta data for Sujato and it goes from the premise that
-          // if the author is not sujato, it must be pali.
-          _computeMeta() {
-              return (this.author === 'sujato') ? 'There is no Meta Area defined for Bhante Sujato\'s texts yet.' :
-                  '<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman ' +
-                  'Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on ' +
-                  'the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with ' +
-                  'corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by ' +
-                  '<span class=\'editor\'>Blake Walsh</span> and <span class=\'editor\'>Bhikkhu Sujato</span>.</p>';
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
