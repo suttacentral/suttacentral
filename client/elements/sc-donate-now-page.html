@@ -363,6 +363,7 @@
                   },
                   isStripValid: {
                     type: Boolean,
+                    value: false
                   },
                   errorMessages: {
                     type: Object,
@@ -419,8 +420,9 @@
               let cardFirstSpan = this.shadowRoot.querySelector('.card-first-span');
               let cardSecondSpan = this.shadowRoot.querySelector('.card-second-span');     
 
-              this.card.addEventListener('change', ({error}) => {
-                  if (error) {
+              this.card.addEventListener('change', ({error, empty}) => {
+                console.log(empty);
+                  if (error || empty) {
                     cardFirstSpan.classList.add('error-bar');
                     cardSecondSpan.style['color'] = '#E4584C';
                     this.isStripValid = false;
@@ -472,7 +474,12 @@
 
           _makeDonation(e) {
             let ironForm = this.shadowRoot.querySelector('.payment-iron-form');
-            if(!ironForm.validate() || !this.isStripValid){
+            if(!this.isStripValid){
+              console.log('sdfsad');
+              this.shadowRoot.querySelector('.card-first-span').classList.add('error-bar');
+              return;
+            }
+            if(!ironForm.validate()){
               return;
             }
             let data = this._getFormData();
