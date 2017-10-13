@@ -309,7 +309,8 @@ RETURN {
         translations: FLATTEN([po_translations, legacy_translations]),
         parallel_count: parallel_count,
         biblio: biblio
-    }
+    },
+    segmented: translated_text ? true : false    
 }
 '''
 
