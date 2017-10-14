@@ -156,11 +156,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
                           'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGEMENTS', 'LICENSING']
                   },
-                  allIsoCodes: [
-                      'af', 'ar', 'ca', 'cs', 'lzh', 'de', 'en', 'es', 'fa', 'fr', 'pgd', 'he', 'id', 'it', 'la', 'hu',
-                      'nl', 'no', 'ot', 'pli', 'pl', 'pt', 'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct', 'xto', 'vn',
-                      'uig', 'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh'
-                  ],
+                  allIsoCodes: {
+                      type: Array,
+                      value: [ 'af', 'ar', 'ca', 'cs', 'lzh', 'de', 'en', 'es', 'fa', 'fr', 'pgd', 'he', 'id', 'it',
+                          'la', 'hu', 'nl', 'no', 'ot', 'pli', 'pl', 'pt', 'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct',
+                          'xto', 'vn', 'uig', 'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh']
+                  },
                   selectedPage: {
                       type: String,
                       statePath: 'currentRoute.name',
