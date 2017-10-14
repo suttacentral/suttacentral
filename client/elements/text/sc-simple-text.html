@@ -88,6 +88,11 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               }
           }
 
+          ready() {
+              super.ready();
+              console.log('in simple text');
+          }
+
           _setAttributes() {
               if (!this.sutta) {
                   return;
