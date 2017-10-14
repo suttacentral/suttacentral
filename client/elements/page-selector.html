@@ -295,7 +295,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               }
               const pathIsoCode = this._getPathParamNumber(2);
               const pathAuthor = this._getPathParamNumber(3);
-              return ((pathIsoCode && pathAuthor) || this.allIsoCodes.indexOf(pathIsoCode) !== -1);
+              return (!!(pathIsoCode && pathAuthor) || this.allIsoCodes.indexOf(pathIsoCode) !== -1);
           }
 
           _getSuttaplexRouteParams() {
