@@ -12,7 +12,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 -->
 <dom-module id="language-menu">
   <template>
-    <style>
+    <style include="paper-item-shared-styles">
       :host {
         --primary-color: var(--paper-green-a700);
       }
@@ -105,23 +105,22 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       <paper-listbox class="language-menu-listbox" slot="dropdown-content">
 
         <template is="dom-if" if="[[originalLanguage]]">
-          <paper-item class="root-lang-menu-item language-menu-item" title="Original language">
-            <a class="language-menu-url" href="/[[rootId]]/[[originalLanguage]]">
-              [[_computeFullLanguageName(originalLanguage)]]</a>
-          </paper-item>
+          <a class="language-menu-url" href="/[[rootId]]/[[originalLanguage]]">
+            <button class="paper-item root-lang-menu-item language-menu-item" role="option" title="Original language">
+              [[_computeFullLanguageName(originalLanguage)]]
+            </button>
+          </a>
         </template>
 
         <template is="dom-repeat" items="[[languageChoice]]" as="language">
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
             <section class="language-choice-box">
-              <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
-                <a class$="{{_translationBorder(language.segmented)}} language-menu-url"
-                   href="/[[rootId]]/[[language.lang]]/[[language.author]]">
-                  <paper-item-body>
-                    [[_computeAuthorForList(language.author)]]
-                  </paper-item-body>
-                </a>
-              </paper-item>
+              <a class$="{{_translationBorder(language.segmented)}} language-menu-url"
+                 href="/[[rootId]]/[[language.lang]]/[[language.author]]">
+                <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
+                  [[_computeAuthorForList(language.author)]]
+                </paper-item>
+              </a>
             </section>
             <div class="iso-code">[[language.lang]]</div>
           </template>
