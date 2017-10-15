@@ -33,7 +33,9 @@
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
-        last-response="{{responseData}}"></iron-ajax>
+        last-response="{{responseData}}"
+        on-response="{{_onResponse}}"
+    ></iron-ajax>
 
     <template is="dom-if" if="[[!isSegmentedText]]" restamp>
       <sc-simple-text id="simple_text"></sc-simple-text>
@@ -43,7 +45,7 @@
       <sc-segmented-text id="segmented_text"></sc-segmented-text>
     </template>
 
-    <div class="loadingIndicator center-vertical">
+    <div class="loadingIndicator center-vertical" hidden$="[[error]]">
       <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
     </div>
 
@@ -57,13 +59,8 @@
 
           static get properties() {
               return {
-                  isSegmentedText: {
-                      type: Boolean
-                  },
-                  responseData: {
-                      type: Object,
-                      observer: '_onResponse'
-                  },
+                  isSegmentedText: Boolean,
+                  responseData: Object,
                   author: String,
                   suttaId: String,
                   langIsoCode: String,
