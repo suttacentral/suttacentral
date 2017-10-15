@@ -97,10 +97,8 @@ Issues that need to be fixed:
       }
     </style>
 
-    <template is="dom-if" if="[[rootSutta.text]]">
-      <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
-      <div id="html_text_content" inner-h-t-m-l="[[rootSutta.text]]"></div>
-    </template>
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+    <div id="html_text_content" inner-h-t-m-l="[[rootSutta.text]]"></div>
 
     <template is="dom-if" if="[[!rootSutta.text]]">
       <div class="text-center margin-top-xl">
@@ -121,13 +119,12 @@ Issues that need to be fixed:
               return {
                   rootSutta: {
                       type: Object,
-                      statePath: 'suttaText.root_text',
-                      observer: '_setRootAttributes'
+                      statePath: 'suttaText.root_text'
                   },
                   translatedSutta: {
                       type: Object,
                       statePath: 'suttaText.translation',
-                      observer: '_setTranslatedAttributes'
+                      observer: '_updateView'
                   },
                   suttaplex: {
                       type: Object,
@@ -184,6 +181,12 @@ Issues that need to be fixed:
               this.htmlLoaded = false;
           }
 
+          _updateView() {
+              this._setRootAttributes();
+              this._setTranslatedAttributes();
+              this._updateToolbar();
+          }
+
           _setRootAttributes() {
               if (!this.rootSutta) {
                   return;
@@ -191,6 +194,7 @@ Issues that need to be fixed:
               this.rootAuthor = this.rootSutta.author;
               this.rootLang = this.rootSutta.lang;
               this.rootTitle = this.rootSutta.title;
+              console.log(this.rootTitle);
           }
 
           _setTranslatedAttributes() {
@@ -200,6 +204,9 @@ Issues that need to be fixed:
               this.translationAuthor = this.translatedSutta.author;
               this.translationLang = this.translatedSutta.lang;
               this.translatedTitle = this.translatedSutta.title;
+          }
+
+          _updateToolbar() {
               this.dispatch('changeSuttaMetaText', this._computeMeta());
               this.dispatch('changeToolbarTitle',
                   `${this.translatedTitle ? this.translatedTitle : this.rootTitle} – ${this.translationAuthor}`);

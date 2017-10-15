@@ -33,20 +33,14 @@
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
-        last-response="{{responseData}}"
-    ></iron-ajax>
+        last-response="{{responseData}}"></iron-ajax>
 
     <template is="dom-if" if="[[!isSegmentedText]]" restamp>
-      <sc-simple-text></sc-simple-text>
+      <sc-simple-text id="simple_text"></sc-simple-text>
     </template>
 
     <template is="dom-if" if="[[isSegmentedText]]" restamp>
-      <sc-segmented-text></sc-segmented-text>
-    </template>
-
-    <template is="dom-if" class="center-vertical" if="[[error]]">
-      <h2>Page error</h2>
-      <h3>Could not load the sutta text.</h3>
+      <sc-segmented-text id="segmented_text"></sc-segmented-text>
     </template>
 
     <div class="loadingIndicator center-vertical">
@@ -107,7 +101,7 @@
           _onResponse() {
               console.dir(this.responseData);
               this.dispatch('downloadSuttaText', this.responseData);
-              this.isSegmentedText = this._isSegmentedSuttaTextPage();
+              this.isSegmentedText = this.isSuttaTextSegmented();
               if (this.isSegmentedText) {
                   this.dispatch('changeToolbarMode', 'segmented-mode');
               }
@@ -121,16 +115,18 @@
           _paramChanged() {
               if (!this.stopRequests) {
                   this.stopRequests = true;
+                  // wait 50ms until all routes parameters are changed
                   setTimeout(() => {
                       this.$.ajax.url = this._getUrl();
                       this.$.ajax.generateRequest();
                       this.stopRequests = false;
-                  }, 500)
+                  }, 50);
+//                  this.dispatchEvent(new CustomEvent('reload-sutta-text', { bubbles: true, composed: true }));
               }
           }
 
           // checks if a page is a segmented-text page
-          _isSegmentedSuttaTextPage() {
+          isSuttaTextSegmented() {
               return !!(this.responseData.segmented);
           }
 

@@ -26,10 +26,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
       }
     </style>
 
-    <template is="dom-if" if="[[sutta.text]]">
-      <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
-      <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]"></div>
-    </template>
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
       <div class="text-center margin-top-xl">
@@ -52,7 +50,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   sutta: {
                       type: Object,
                       statePath: 'suttaText.translation',
-                      observer: '_setAttributes'
+                      observer: '_updateView'
                   },
                   suttaplex: {
                       type: Object,
@@ -93,6 +91,11 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               console.log('in simple text');
           }
 
+          _updateView() {
+              this._setAttributes();
+              this._updateToolbar();
+          }
+
           _setAttributes() {
               if (!this.sutta) {
                   return;
@@ -100,6 +103,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this.author = this.sutta.author;
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;
+          }
+
+          _updateToolbar() {
               this.dispatch('changeSuttaMetaText', this._computeMeta());
               this.dispatch('changeToolbarTitle', `${this.title} – ${this.author}`);
           }
