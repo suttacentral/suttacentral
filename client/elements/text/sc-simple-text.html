@@ -26,8 +26,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
       }
     </style>
 
-    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
-    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]"></div>
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]" hidden$="[[!suttaplex]]"></sc-text-options>
+    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[!sutta]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
       <div class="text-center margin-top-xl">
