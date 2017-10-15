@@ -147,7 +147,9 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                           'xto': 'TocharianA',
                           'kho': 'Khotanese'
                       }
-                  }
+                  },
+                  responseData: Object,
+                  error: Boolean
               }
           }
 
@@ -170,7 +172,6 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
           _didRespond() {
               this.rootKeys = Object.keys(this.responseData);
-              console.log(this.responseData);
           }
 
           _resizeParentList() {

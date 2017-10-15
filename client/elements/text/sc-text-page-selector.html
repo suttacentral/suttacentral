@@ -99,7 +99,6 @@
           }
 
           _onResponse() {
-              console.dir(this.responseData);
               this.dispatch('downloadSuttaText', this.responseData);
               this.isSegmentedText = this.isSuttaTextSegmented();
               if (this.isSegmentedText) {
@@ -121,7 +120,6 @@
                       this.$.ajax.generateRequest();
                       this.stopRequests = false;
                   }, 50);
-//                  this.dispatchEvent(new CustomEvent('reload-sutta-text', { bubbles: true, composed: true }));
               }
           }
 

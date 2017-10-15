@@ -177,7 +177,6 @@ Issues that need to be fixed:
 
           ready() {
               super.ready();
-              console.log('in segmented text');
               this.htmlLoaded = false;
           }
 
@@ -194,7 +193,6 @@ Issues that need to be fixed:
               this.rootAuthor = this.rootSutta.author;
               this.rootLang = this.rootSutta.lang;
               this.rootTitle = this.rootSutta.title;
-              console.log(this.rootTitle);
           }
 
           _setTranslatedAttributes() {
@@ -223,7 +221,6 @@ Issues that need to be fixed:
 
           // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
           _addTranslatedText(e) {
-              console.log('_addTranslatedText');
               const segments = this.shadowRoot.querySelectorAll('sc-segment');
               Array.from(segments).forEach(item => item.classList.add('translated-text'));
               const outputText = e.detail.response;
@@ -241,7 +238,6 @@ Issues that need to be fixed:
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
           _addOriginalText(e) {
-              console.log('_addOriginalText');
               if (!this.shadowRoot.querySelector('.original-text')) {
                   const outputText = e.detail.response;
                   for (let key in outputText) {
@@ -269,29 +265,13 @@ Issues that need to be fixed:
 
           // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs() {
-              console.log('_addParagraphs');
               const infotext = this.$.html_text_content;
               return (infotext && !this.showParagraphs) ?
                   infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
           }
 
-          // returns the correct title from the first segment in the translated json file.
-          _computeTitle() {
-              let title = this.lastResponse.root_text.title;
-              console.log(`title: ${title}`);
-              return title ? title : '';
-          }
-
-          // returns the full author details (only Sujato at the moment)
-          _computeAuthor() {
-              let author = this.lastResponse.translation.author;
-              console.log(`author: ${author}`);
-              return author ? author : '';
-          }
-
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computePars(e) {
-              console.log('_computePars');
               const paragraphTitles = e.detail.response;
               for (let key in paragraphTitles) {
                   const refs = this.shadowRoot.querySelectorAll('.' + key);
@@ -301,16 +281,6 @@ Issues that need to be fixed:
               if (this.showParagraphs) {
                   this._addParagraphs();
               }
-          }
-
-          // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
-          sendInfoToToolbar() {
-              this.dispatchEvent(new CustomEvent('eventFromSegmentedTextPage', {
-                  detail: {
-                      suttasegtitle: `${this._computeTitle()} - ${this._computeAuthor()}`,
-                      suttasegmeta: this._computeMeta()
-                  }, bubbles: true, composed: true
-              }));
           }
 
           // if the base html and the pali texts have been fully loaded, the setting from the
@@ -349,7 +319,6 @@ Issues that need to be fixed:
 
           // reset all classes and remove tooltips.
           _cleanCode() {
-              console.log('_cleanCode');
               this.$.html_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
               Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
                   .forEach(item => item.parentNode.removeChild(item));
@@ -358,7 +327,6 @@ Issues that need to be fixed:
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
           // either in tooltips or in segments.
           changeScript(paliScript) {
-              console.log('_changeScript');
               if (this.htmlLoaded) {
                   const segments = this.shadowRoot.querySelectorAll('.original-text');
                   const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');

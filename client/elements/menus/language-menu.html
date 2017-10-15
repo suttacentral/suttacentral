@@ -115,12 +115,12 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
             <section class="language-choice-box">
               <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
-                <paper-item-body>
-                  <a class$="{{_translationBorder(language.segmented)}} language-menu-url"
-                     href="/[[rootId]]/[[language.lang]]/[[language.author]]">
+                <a class$="{{_translationBorder(language.segmented)}} language-menu-url"
+                   href="/[[rootId]]/[[language.lang]]/[[language.author]]">
+                  <paper-item-body>
                     [[_computeAuthorForList(language.author)]]
-                  </a>
-                </paper-item-body>
+                  </paper-item-body>
+                </a>
               </paper-item>
             </section>
             <div class="iso-code">[[language.lang]]</div>
@@ -204,7 +204,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _translationBorder(segmented) {
-            return segmented ? 'segmented-border' : '';
+              return segmented ? 'segmented-border' : '';
           }
 
       }
