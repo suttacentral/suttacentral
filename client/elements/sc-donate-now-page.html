@@ -81,6 +81,10 @@
         font-weight: bold;
       }
 
+      .submit-button[disabled] {
+        background: var(--paper-grey-400);
+      }
+
       .card-details {
         font-size: 19px;
         padding: 0;
@@ -259,9 +263,8 @@
               </paper-listbox>
             </paper-dropdown-menu>
 
-            <paper-input label="Amount" class="data-input amont-input" type="number" min="1" step=".01"
-                          auto-validate pattern="^[+]?(\d+[.]?\d{0,2})$"
-                          error-message="Invalid value" required></paper-input>
+            <paper-input label="Amount" class="data-input amount-input" auto-validate pattern="^[+]?(\d+[.,]?\d{0,2})$" 
+                         allowed-pattern="[0-9.,]" error-message="Invalid value" required maxlength=20></paper-input>
           </div>
 
           <p class="explanation">You can make a one-time donation or a monthly donation.</p>
@@ -286,11 +289,11 @@
             <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>
 
-          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2 maxlength=200>
+          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2 maxlength=200 char-counter>
           </paper-textarea>
 
           <div class="flex-row submit">
-            <paper-button on-tap="_makeDonation" class="submit-button">
+            <paper-button  id="submitButton" on-tap="_makeDonation" class="submit-button">
               PAY WITH CARD
             </paper-button>
           </div>
@@ -306,7 +309,7 @@
       </section>
     </div>
     <paper-toast class="toast error-toast" text="[[errorMessage]]" duration=5000></paper-toast>
-    <paper-toast class="toast success-toast" text="[[successMessage]]" duration=3000></paper-toast>
+    <paper-toast class="toast success-toast" text="[[successMessage]]" duration=5000></paper-toast>
     <template is="dom-if" if="{{processingPayment}}">
       <div class="blocker"></div>
       <div class="spinner">
@@ -358,8 +361,9 @@
                     type: String,
                     value: 'Error!'
                   },
-                  isStripValid: {
+                  isStripeValid: {
                     type: Boolean,
+                    value: false
                   },
                   errorMessages: {
                     type: Object,
@@ -416,17 +420,17 @@
               let cardFirstSpan = this.shadowRoot.querySelector('.card-first-span');
               let cardSecondSpan = this.shadowRoot.querySelector('.card-second-span');     
 
-              this.card.addEventListener('change', ({error}) => {
-                  if (error) {
+              this.card.addEventListener('change', ({error, empty}) => {
+                  if (error || empty) {
                     cardFirstSpan.classList.add('error-bar');
                     cardSecondSpan.style['color'] = '#E4584C';
-                    this.isStripValid = false;
+                    this.isStripeValid = false;
                   } else {
-                    cardFirstSpan.classList.remove('error-bar')
+                    cardFirstSpan.classList.remove('error-bar');
                     cardSecondSpan.style['color'] = '';
-                    this.isStripValid = true;
+                    this.isStripeValid = true;
                   }
-              })
+              });
 
               let oneTimeDonation = this.shadowRoot.querySelector('.one-time-donation');
               let monthly = this.shadowRoot.querySelector('.monthly-donation');
@@ -440,6 +444,26 @@
                   oneTimeDonation.checked = false;
                   monthly.checked = true;
               });
+              
+              let amountInput = this.shadowRoot.querySelector('.amount-input'); 
+              amountInput.onpaste = (e) => {  // Don't allow pasting text data.
+                let pastedText = '';
+                if (window.clipboardData && window.clipboardData.getData) { // IE
+                    pastedText = window.clipboardData.getData('Text');
+                } else if (e.clipboardData && e.clipboardData.getData) {
+                    pastedText = e.clipboardData.getData('text/plain');
+                }
+                if (!/^[+]?(\d+[.,]?\d{0,2})$/.test(pastedText)){
+                  return false;
+                }
+              }
+
+              amountInput.addEventListener('keydown', (e) => {
+                if (e.key === ','){
+                  amountInput.value += '.';
+                  e.preventDefault();
+                }
+              })
           }
 
           _handleResponse() {
@@ -449,14 +473,21 @@
 
           _makeDonation(e) {
             let ironForm = this.shadowRoot.querySelector('.payment-iron-form');
-            if(!ironForm.validate() || !this.isStripValid){
+            if(!this.isStripeValid){
+              this.shadowRoot.querySelector('.card-first-span').classList.add('error-bar');
+              return;
+            }
+            if(!ironForm.validate()){
               return;
             }
             let data = this._getFormData();
             this.processingPayment = true;
+            this.$.submitButton.disabled = true;
             this.stripe.createToken(this.card).then((result, error) => {
               if (error){
                 this.shadowRoot.querySelector('.error-toast').open();
+                this.processingPayment = false;
+                this.$.submitButton.disabled = false;
                 return;
               }
               data.stripe = result;
@@ -468,11 +499,16 @@
 
           _paymentFinished(event) {
               this.processingPayment = false;
-              this.shadowRoot.querySelector('.success-toast').open();
-              setTimeout(() => { this.set('path', '/') }, 3500);
+              let successToast = this.shadowRoot.querySelector('.success-toast');
+              successToast.open();
+              setTimeout(() => { 
+                this.$.submitButton.disabled = false;
+                this.set('path', '/');
+              }, successToast.duration + 500);
           }
 
           _paymentError(event) {
+            this.$.submitButton.disabled = false;
             let errCode = this.donationResponseError.response['err_code']
             this.errorMessage = this.errorMessages[errCode];
             this.processingPayment = false;
@@ -487,7 +523,7 @@
               let currency = form.querySelector('.currency-menu-listbox').selected;
               data.currency = this.currencies[currency].symbol;
 
-              data.amount = parseFloat(form.querySelector('.amont-input').value);
+              data.amount = parseFloat(form.querySelector('.amount-input').value);
               data.oneTimeDonation = form.querySelector('.one-time-donation').checked;
               data.monthlyDonation = form.querySelector('.monthly-donation').checked;
               data.name = form.querySelector('.name-input').value;
