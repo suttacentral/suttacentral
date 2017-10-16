@@ -341,7 +341,7 @@ class LookupDictionaries(Resource):
 
 
 class Sutta(Resource):
-    def get(self, uid, author):
+    def get(self, uid, author: str=''):
         """
         Send Complete information set for sutta-view for given uid.
         ---
