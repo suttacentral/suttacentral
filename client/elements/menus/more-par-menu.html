@@ -31,8 +31,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
 
       .table-element[disabled] {
-        color: var(--paper-grey-200);
         --iron-icon-fill-color: var(--paper-grey-200);
+        color: var(--paper-grey-200);
       }
     </style>
 
@@ -47,11 +47,11 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       <iron-icon icon="link"></iron-icon>
       Copy link
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="{{ gotParallels }}">
+    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="{{ areParallelsAvailable }}">
       <iron-icon icon="content-copy"></iron-icon>
       Copy table
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="{{ gotParallels }}">
+    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="{{ areParallelsAvailable }}">
       <iron-icon icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>
@@ -87,10 +87,10 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   loadingParallels: {
                       type: Boolean,
                   },
-                  gotParallels: {
+                  areParallelsAvailable: {
                       type: Boolean,
                       value: false,
-                      computed: "_gotParallels(loadingParallels)"
+                      computed: "_setAreParallelsAvaiable(loadingParallels)"
                   }
               }
           }
@@ -111,18 +111,12 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   this._notifyCopy('Parallels table copied!', true);
               } catch (err) {
                   this._notifyCopy('Error!', false);
+                  console.error(err);
               }
           }
 
-          _gotParallels(loadingParallels) {
-              if (loadingParallels) {
-                  return true;
-              }
-              if (Object.keys(this.parallels).length === 0 && this.parallels.constructor == Object) {
-                  return true;
-              } else {
-                  return false;
-              }
+          _setAreParallelsAvaiable(loadingParallels) {
+            return loadingParallels || (Object.keys(this.parallels).length === 0 && typeof this.parallels === 'object')
           }
 
           _computeLink() {
@@ -138,6 +132,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   this._notifyCopy('Link copied!', true);
               } catch (err) {
                   this._notifyCopy('Error!', false);
+                  console.error(err);
               }
           }
 
@@ -149,6 +144,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   this._notifyCopy('Cite copied!', true);
               } catch (err) {
                   this._notifyCopy('Error!', false);
+                  console.error(err);
               }
           }
 
