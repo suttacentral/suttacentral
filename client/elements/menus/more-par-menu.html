@@ -39,15 +39,15 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                loading="{{ loadingParallels }}"
                last-response="{{ parallels }}"></iron-ajax>
 
-    <paper-item on-tap="_copyLink" class="button-text" title="[[itemLink]]" class="table-element">
+    <paper-item class="table-element" on-tap="_copyLink" class="button-text" title="[[itemLink]]">
       <iron-icon icon="link"></iron-icon>
       Copy link
     </paper-item>
-    <paper-item on-tap="_copyContent" class="button-text" disabled="{{loadingParallels}}" class="table-element">
+    <paper-item class="table-element" on-tap="_copyContent" class="button-text" disabled="{{loadingParallels}}">
       <iron-icon icon="content-copy"></iron-icon>
       Copy table
     </paper-item>
-    <paper-item on-tap="_copyCite" class="button-text" disabled="{{loadingParallels}}" class="table-element">
+    <paper-item class="table-element" on-tap="_copyCite" class="button-text" disabled="{{loadingParallels}}">
       <iron-icon icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>
