@@ -90,7 +90,10 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
           _toggleOpened() {
               this.opened = !this.opened;
-              this.dispatchEvent(new CustomEvent('toggle', { detail: this, bubbles: true, composed: true }));
+          }
+
+          _closeSuttaplex() {
+              this.opened = false;
           }
 
           _computeToggleIcon() {

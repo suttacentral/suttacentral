@@ -34,14 +34,13 @@
         loading="{{loading}}"
         last-error="{{error}}"
         last-response="{{responseData}}"
-        on-response="{{_onResponse}}"
     ></iron-ajax>
 
-    <template is="dom-if" if="[[!isSegmentedText]]" restamp>
+    <template id="simple_text_container" is="dom-if" if="[[!isSegmentedText]]" restamp>
       <sc-simple-text id="simple_text"></sc-simple-text>
     </template>
 
-    <template is="dom-if" if="[[isSegmentedText]]" restamp>
+    <template id="segmented_text_container" is="dom-if" if="[[isSegmentedText]]" restamp>
       <sc-segmented-text id="segmented_text"></sc-segmented-text>
     </template>
 
@@ -59,12 +58,28 @@
 
           static get properties() {
               return {
-                  isSegmentedText: Boolean,
-                  responseData: Object,
-                  author: String,
-                  suttaId: String,
-                  langIsoCode: String,
-                  stopRequests: Boolean
+                  responseData: {
+                      type: Object,
+                      observer: '_onResponse'
+                  },
+                  error: {
+                      type: Object
+                  },
+                  author: {
+                      type: String
+                  },
+                  suttaId: {
+                      type: String
+                  },
+                  langIsoCode: {
+                      type: String
+                  },
+                  stopRequests: {
+                      type: Boolean
+                  },
+                  isSegmentedText: {
+                      type: Boolean
+                  }
               }
           }
 

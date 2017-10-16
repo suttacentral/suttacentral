@@ -62,10 +62,18 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       type: Boolean,
                       observer: '_addParagraphs'
                   },
-                  paragraphTitles: Object,
-                  title: String,
-                  author: String,
-                  lang: String
+                  paragraphTitles: {
+                      type: Object
+                  },
+                  title: {
+                      type: String
+                  },
+                  author: {
+                      type: String
+                  },
+                  lang: {
+                      type: String
+                  }
               }
           }
 
@@ -86,7 +94,13 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               }
           }
 
+          ready() {
+              super.ready();
+              console.log('in simple text');
+          }
+
           _updateView() {
+              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this._setAttributes();
               this._updateToolbar();
           }

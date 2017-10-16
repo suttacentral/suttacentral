@@ -181,6 +181,7 @@ Issues that need to be fixed:
           }
 
           _updateView() {
+              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this._setRootAttributes();
               this._setTranslatedAttributes();
               this._updateToolbar();
