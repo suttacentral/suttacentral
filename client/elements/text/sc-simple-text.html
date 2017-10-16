@@ -119,7 +119,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   return;
               }
               this.dispatch('changeSuttaMetaText', this._computeMeta());
-              this.dispatch('changeToolbarTitle', `${this.title} – ${this.author}`);
+              const title = this.author ? `${this.title} – ${this.author}` : `${this.title}`;
+              this.dispatch('changeToolbarTitle', title);
           }
 
           // adds a class to the main container to either show or hide paragraph numbers.
