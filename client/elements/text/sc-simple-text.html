@@ -94,11 +94,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               }
           }
 
-          ready() {
-              super.ready();
-              console.log('in simple text');
-          }
-
           _updateView() {
               this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this._setAttributes();

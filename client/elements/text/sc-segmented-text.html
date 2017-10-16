@@ -228,7 +228,6 @@ Issues that need to be fixed:
               for (let key in outputText) {
                   if (!key.startsWith('_')) {
                       let subkey = key.replace(/:/g, '\\\:');
-                      console.log('subkey: ' + subkey);
                       subkey = subkey.replace(/\./g, '\\\.');
                       const segment = this.shadowRoot.querySelector('#' + subkey);
                       segment.innerHTML = outputText[key] + ' ';
@@ -288,7 +287,6 @@ Issues that need to be fixed:
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
           setView(showViewer) {
-              console.log('_setView');
               if (this.htmlLoaded) {
                   this._cleanCode();
                   if (this.author !== 'pali') {
