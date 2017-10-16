@@ -27,7 +27,12 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
 
       .table-element {
-        white-space:nowrap;
+        white-space: nowrap;
+      }
+
+      .table-element[disabled] {
+        color: var(--paper-grey-200);
+        --iron-icon-fill-color: var(--paper-grey-200);
       }
     </style>
 
@@ -38,19 +43,19 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                loading="{{ loadingParallels }}"
                last-response="{{ parallels }}"></iron-ajax>
 
-    <paper-item class="table-element" on-tap="_copyLink" class="button-text" title="[[itemLink]]">
+    <paper-item class="table-element button-text" on-tap="_copyLink" title="[[itemLink]]">
       <iron-icon icon="link"></iron-icon>
       Copy link
     </paper-item>
-    <paper-item class="table-element" on-tap="_copyContent" class="button-text" disabled="{{loadingParallels}}">
+    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="{{ gotParallels }}">
       <iron-icon icon="content-copy"></iron-icon>
       Copy table
     </paper-item>
-    <paper-item class="table-element" on-tap="_copyCite" class="button-text" disabled="{{loadingParallels}}">
+    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="{{ gotParallels }}">
       <iron-icon icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>
-    
+
   </template>
 
   <script>
@@ -81,24 +86,43 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   },
                   loadingParallels: {
                       type: Boolean,
-                      value: true
+                  },
+                  gotParallels: {
+                      type: Boolean,
+                      value: false,
+                      computed: "_gotParallels(loadingParallels)"
                   }
               }
           }
-          _notifyCopy(message) {
-              this.dispatchEvent(new CustomEvent('par-menu-copied', {detail: message, bubbles: true, composed: true}))
+
+          _notifyCopy(message, success) {
+              this.dispatchEvent(new CustomEvent('par-menu-copied', {
+                  detail: {message: message, success: success},
+                  bubbles: true,
+                  composed: true
+              }))
           }
 
           // copy the parallels-table in html-string
           _copyContent() {
-              const copyTextarea = this._computeCopyTable();
-              this._copyToClipboard(copyTextarea);
-              this._notifyCopy('Parallels table copied!');
+              try {
+                  const copyTextarea = this._computeCopyTable();
+                  this._copyToClipboard(copyTextarea);
+                  this._notifyCopy('Parallels table copied!', true);
+              } catch (err) {
+                  this._notifyCopy('Error!', false);
+              }
           }
 
-          _gotParallels() {
-              const copyTextarea = this._computeCopyTable();
-              this._copyToClipboard(copyTextarea);
+          _gotParallels(loadingParallels) {
+              if (loadingParallels) {
+                  return true
+              }
+              if (Object.keys(this.parallels).length === 0 && this.parallels.constructor == Object) {
+                  return true;
+              } else {
+                  return false;
+              }
           }
 
           _computeLink() {
@@ -109,15 +133,23 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
           // Copy the link to the suttaplex page
           _copyLink() {
-              this._copyToClipboard(this.itemLink);
-              this._notifyCopy('Link copied!');
+              try {
+                  this._copyToClipboard(this.itemLink);
+                  this._notifyCopy('Link copied!', true);
+              } catch (err) {
+                  this._notifyCopy('Error!', false);
+              }
           }
 
           //  copy cite-information about parallels and bibliography.
           _copyCite() {
-              const copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
-              this._copyToClipboard(copyTextarea);
-              this._notifyCopy('Cite copied!');
+              try {
+                  const copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
+                  this._copyToClipboard(copyTextarea);
+                  this._notifyCopy('Cite copied!');
+              } catch (err) {
+                  this._notifyCopy('Error!', false);
+              }
           }
 
           // copies inputtext to the clipboard by creating and selecting a dummy element.
@@ -138,11 +170,11 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
 
           _computeIconForType(type) {
-            if (type === 'parallels') return 'swap-horiz';
-            if (type === 'retells') return 'cached';
-            if (type === 'mentions') return 'editor:format-quote';
-            return '';
-        }
+              if (type === 'parallels') return 'swap-horiz';
+              if (type === 'retells') return 'cached';
+              if (type === 'mentions') return 'editor:format-quote';
+              return '';
+          }
 
           // icons to be used instead of iron icons in the base html-string copy function
           _computeIcon(parallel) {
@@ -167,9 +199,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   let size = this.parallels[section].length;
                   let first = true;
                   let tr = '';
-                  for(let parallel of this.parallels[section]){
+                  for (let parallel of this.parallels[section]) {
                       tr = '  <tr>\n';
-                      if(first) {
+                      if (first) {
                           tr += `    <td rowspan=${size}>${section}</td>\n`;
                           first = false;
                       }
@@ -178,7 +210,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                       tr += `    <td>${parallel.to.original_title}</td>\n`;
                       tbody += `${tr}  </tr>\n`;
                   }
-                  
+
                   body += `${tbody}</tbody>\n`;
               }
               body += '</table>\n</body>\n</html>';

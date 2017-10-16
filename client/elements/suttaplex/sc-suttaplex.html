@@ -195,9 +195,13 @@
       .success-toast {
         --paper-toast-background-color: green;
       }
+      
+      .error-toast {
+        --paper-toast-background-color: red;
+      }
 
       @media screen and (max-width: 596px) {
-        .rigt-elements {
+        .right-elements {
           display: flex;
           flex-flow: column;
         }
@@ -266,7 +270,7 @@
           </div>
         </div>
 
-        <div class="rigt-elements">
+        <div class="right-elements">
           <template is="dom-if" if="[[parallelsOpened]]">
             <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true" 
                                 vertical-align="top" aria-disabled="false">
@@ -294,6 +298,7 @@
 
     </paper-card>
     <paper-toast id="success_toast" class="toast success-toast" text="[[toastMessage]]" duration=3000></paper-toast>
+    <paper-toast id="error_toast" class="toast error-toast" text="[[toastMessage]]" duration=3000></paper-toast>
   </template>
 
   <script>
@@ -342,8 +347,13 @@
           ready() {
             super.ready();
             this.addEventListener('par-menu-copied', (e) => {
-              this.toastMessage = e.detail;
-              this.$.success_toast.open();
+              this.toastMessage = e.detail.message;
+              const success = e.detail.success;
+              if (success) {
+                this.$.success_toast.open();
+              } else {
+                this.$.error_toast.open();
+              }
               copy_menu.opened = false;  // Close dropdown after the copy action.
             })
           }
