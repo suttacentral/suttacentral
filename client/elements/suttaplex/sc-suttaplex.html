@@ -171,11 +171,11 @@
 
       .volpage-biblio-info {
         @apply --paper-font-body1;
-        position:absolute;
-        z-index:200;
-        background-color:#fff;
+        position: absolute;
+        z-index: 200;
+        background-color: #fff;
         @apply --shadow-elevation-3dp;
-        padding:12px;
+        padding: 12px;
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         margin: 0 48px 0 0;
         white-space: normal;
@@ -195,7 +195,7 @@
       .success-toast {
         --paper-toast-background-color: green;
       }
-      
+
       .error-toast {
         --paper-toast-background-color: red;
       }
@@ -248,17 +248,17 @@
           </template>
         </div>
 
-        <p class$="suttaplex-description [[_computeHide(item.blurb)]]" title="Description">
-          [[item.blurb]]</p>
+        <p class$="suttaplex-description [[_computeHide(item.blurb)]]" title="Description"
+           inner-h-t-m-l="[[item.blurb]]"></p>
       </div>
 
       <div class="card-actions">
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
-            <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
+            <template is="dom-if" if="{{ _isChosenLang(translation.lang) }}">
               <paper-button flat title$="Go  to a translation by [[translation.author]]">
                 <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]"
-                   class$="{{_translationBorder(translation.segmented)}}">[[translation.author]]</a>
+                   class$="{{ _translationBorder(translation.segmented) }}">[[translation.author]]</a>
               </paper-button>
             </template>
           </template>
@@ -272,7 +272,7 @@
 
         <div class="right-elements">
           <template is="dom-if" if="[[parallelsOpened]]">
-            <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true" 
+            <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true"
                                 vertical-align="top" aria-disabled="false">
                 <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
                                     tabindex="0" aria-disabled="false"></paper-icon-button>
@@ -283,15 +283,16 @@
               </paper-menu-button>
           </template>
 
-          <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
+          <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
+                             on-tap="_toggleParallelsOpened">
           </paper-icon-button>
           <paper-badge for="parallels_toggle" label="[[item.parallel_count]]" class="paper-badge"
-                        title="Number of parallels"></paper-badge>
+                       title="Number of parallels"></paper-badge>
         </div>
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
-        <iron-collapse no-animation id="collapse" opened="{{parallelsOpened}}">
+        <iron-collapse no-animation id="collapse" opened="{{ parallelsOpened }}">
           <sc-view-parallels root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"></sc-view-parallels>
         </iron-collapse>
       </template>
@@ -415,7 +416,7 @@
 
           _toggleParallelsOpened() {
               this.parallelsOpened = !this.parallelsOpened;
-              this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
+              this.dispatchEvent(new CustomEvent('iron-resize', {composed: true, bubbles: true}));
           }
 
           _computeMainHeading(item) {
