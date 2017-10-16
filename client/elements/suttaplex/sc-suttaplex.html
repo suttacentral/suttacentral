@@ -268,8 +268,8 @@
 
         <div class="rigt-elements">
           <template is="dom-if" if="[[parallelsOpened]]">
-            <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top"
-                                aria-disabled="false">
+            <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true" 
+                                vertical-align="top" aria-disabled="false">
                 <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
                                     tabindex="0" aria-disabled="false"></paper-icon-button>
                 <div slot="dropdown-content"></div>
@@ -310,7 +310,8 @@
                   },
                   parallelsOpened: {
                       type: Boolean,
-                      value: false
+                      value: false,
+                      observer: '_parallelsOpenedChanged'
                   },
                   opened: {
                       type: Boolean,
@@ -349,11 +350,19 @@
 
           _changeItemZIndex(e) {
               let node = this.parentNode;
+              if(node.style === undefined){
+                 return;
+              }
               if (e.type.endsWith('open')) {
                   node.style['z-index'] = 100;
-              } else {
+              } else if (node.style['z-index'] == 100 && this.parallelsOpened === false) {
                   node.style['z-index'] = null;
               }
+          }
+
+          _parallelsOpenedChanged(e) {
+            const event_mock = { type: e ? 'open' : 'close' };
+            this._changeItemZIndex(event_mock);
           }
 
           // general function to hide or display various elements.
