@@ -361,7 +361,7 @@
                     type: String,
                     value: 'Error!'
                   },
-                  isStripValid: {
+                  isStripeValid: {
                     type: Boolean,
                     value: false
                   },
@@ -421,15 +421,14 @@
               let cardSecondSpan = this.shadowRoot.querySelector('.card-second-span');     
 
               this.card.addEventListener('change', ({error, empty}) => {
-                console.log(empty);
                   if (error || empty) {
                     cardFirstSpan.classList.add('error-bar');
                     cardSecondSpan.style['color'] = '#E4584C';
-                    this.isStripValid = false;
+                    this.isStripeValid = false;
                   } else {
                     cardFirstSpan.classList.remove('error-bar');
                     cardSecondSpan.style['color'] = '';
-                    this.isStripValid = true;
+                    this.isStripeValid = true;
                   }
               });
 
@@ -474,8 +473,7 @@
 
           _makeDonation(e) {
             let ironForm = this.shadowRoot.querySelector('.payment-iron-form');
-            if(!this.isStripValid){
-              console.log('sdfsad');
+            if(!this.isStripeValid){
               this.shadowRoot.querySelector('.card-first-span').classList.add('error-bar');
               return;
             }
@@ -505,7 +503,7 @@
               successToast.open();
               setTimeout(() => { 
                 this.$.submitButton.disabled = false;
-                this.set('path', '/') ;
+                this.set('path', '/');
               }, successToast.duration + 500);
           }
 
