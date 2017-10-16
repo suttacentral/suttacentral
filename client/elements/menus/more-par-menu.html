@@ -5,7 +5,6 @@
 <link rel="import" href="/bower_components/paper-item/paper-item.html">
 <link rel="import" href="/bower_components/neon-animation/web-animations.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
 
 <!--
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
@@ -51,6 +50,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       <iron-icon icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>
+    
   </template>
 
   <script>
@@ -85,11 +85,15 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   }
               }
           }
+          _notifyCopy(message) {
+              this.dispatchEvent(new CustomEvent('par-menu-copied', {detail: message, bubbles: true, composed: true}))
+          }
 
           // copy the parallels-table in html-string
           _copyContent() {
               const copyTextarea = this._computeCopyTable();
               this._copyToClipboard(copyTextarea);
+              this._notifyCopy('Parallels table copied!');
           }
 
           _gotParallels() {
@@ -106,12 +110,14 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           // Copy the link to the suttaplex page
           _copyLink() {
               this._copyToClipboard(this.itemLink);
+              this._notifyCopy('Link copied!');
           }
 
           //  copy cite-information about parallels and bibliography.
           _copyCite() {
               const copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
               this._copyToClipboard(copyTextarea);
+              this._notifyCopy('Cite copied!');
           }
 
           // copies inputtext to the clipboard by creating and selecting a dummy element.
