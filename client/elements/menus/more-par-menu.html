@@ -116,7 +116,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
           _gotParallels(loadingParallels) {
               if (loadingParallels) {
-                  return true
+                  return true;
               }
               if (Object.keys(this.parallels).length === 0 && this.parallels.constructor == Object) {
                   return true;
@@ -146,7 +146,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               try {
                   const copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
                   this._copyToClipboard(copyTextarea);
-                  this._notifyCopy('Cite copied!');
+                  this._notifyCopy('Cite copied!', true);
               } catch (err) {
                   this._notifyCopy('Error!', false);
               }
