@@ -10,7 +10,7 @@
 <link rel="import" href="/bower_components/paper-card/paper-card.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/paper-badge/paper-badge.html">
-<link rel="import" href="/bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="/img/sc-svg-icons.html">
 <link rel="import" href="/elements/addons/sc-sutta-note.html">
@@ -183,6 +183,36 @@
         margin: 0;
       }
 
+      .toast {
+        --paper-toast-color: white;
+        text-align: center;
+        font-size: 20px;
+        margin-left: calc(50vw - 150px);
+      }
+
+      .success-toast {
+        --paper-toast-background-color: green;
+      }
+
+      .error-toast {
+        --paper-toast-background-color: red;
+      }
+
+      @media screen and (max-width: 596px) {
+        .right-elements {
+          display: flex;
+          flex-flow: column;
+        }
+
+        #copy_menu {
+          order: 1;
+        }
+
+        #parallels_toggle {
+          order: 0;
+        }
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -216,8 +246,8 @@
           </template>
         </div>
 
-        <p class$="suttaplex-description [[_computeHide(item.blurb)]]" title="Description">
-          [[item.blurb]]</p>
+        <p class$="suttaplex-description [[_computeHide(item.blurb)]]" title="Description"
+           inner-h-t-m-l="[[item.blurb]]"></p>
       </div>
 
       <div class="card-actions">
@@ -238,23 +268,23 @@
           </div>
         </div>
 
-        <div>
+        <div class="right-elements">
           <template is="dom-if" if="[[parallelsOpened]]">
-            <paper-menu-button horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top"
-                               aria-disabled="false">
-              <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
-                                 tabindex="0" aria-disabled="false"></paper-icon-button>
-              <div slot="dropdown-content"></div>
-              <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
-                <more-par-menu tabindex="0" item="[[item]]"></more-par-menu>
-              </paper-listbox>
-            </paper-menu-button>
+            <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top"
+                                aria-disabled="false">
+                <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
+                                    tabindex="0" aria-disabled="false"></paper-icon-button>
+                <div slot="dropdown-content"></div>
+                <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
+                    <more-par-menu tabindex="0" item="[[item]]" ></more-par-menu>
+                </paper-listbox>
+              </paper-menu-button>
           </template>
 
-          <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]"
+          <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
                              on-tap="_toggleParallelsOpened">
           </paper-icon-button>
-          <paper-badge for="parallels-toggle" label="[[item.parallel_count]]" class="paper-badge"
+          <paper-badge for="parallels_toggle" label="[[item.parallel_count]]" class="paper-badge"
                        title="Number of parallels"></paper-badge>
         </div>
       </div>
@@ -266,6 +296,8 @@
       </template>
 
     </paper-card>
+    <paper-toast id="success_toast" class="toast success-toast" text="[[toastMessage]]" duration=3000></paper-toast>
+    <paper-toast id="error_toast" class="toast error-toast" text="[[toastMessage]]" duration=3000></paper-toast>
   </template>
 
   <script>
@@ -282,7 +314,8 @@
                   },
                   parallelsOpened: {
                       type: Boolean,
-                      value: false
+                      value: false,
+                      observer: '_parallelsOpenedChanged'
                   },
                   opened: {
                       type: Boolean,
@@ -303,17 +336,43 @@
                   },
                   level: String,
                   // The suttaplex item
-                  item: Object
+                  item: Object,
+                  toastMessage: {
+                    type: String
+                }
               }
+          }
+
+          ready() {
+            super.ready();
+            this.addEventListener('par-menu-copied', (e) => {
+              this.toastMessage = e.detail.message;
+              const success = e.detail.success;
+              if (success) {
+                this.$.success_toast.open();
+              } else {
+                this.$.error_toast.open();
+              }
+              copy_menu.opened = false;  // Close dropdown after the copy action.
+            })
           }
 
           _changeItemZIndex(e) {
               let node = this.parentNode;
+              if(node.style === undefined){
+                 return;
+              }
               if (e.type.endsWith('open')) {
                   node.style['z-index'] = 100;
-              } else {
+              } else if (node.style['z-index'] === 100 && this.parallelsOpened === false) {
                   node.style['z-index'] = null;
               }
+          }
+
+          _parallelsOpenedChanged(e) {
+            const type = e ? 'open' : 'close';
+            const event_mock = { type: type };
+            this._changeItemZIndex(event_mock);
           }
 
           // general function to hide or display various elements.

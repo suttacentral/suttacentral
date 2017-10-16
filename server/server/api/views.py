@@ -86,7 +86,7 @@ class Menu(Resource):
                 uid = x['from']['uid']
 
                 if uid not in root_uids:
-                    vertex = self._vertex(x['from']['name'], uid, x['lang_num'])
+                    vertex = self._vertex(x['from']['name'], uid, x['num'])
                     data.append(vertex)
                     root_uids.append(uid)
                     edges[uid] = vertex
@@ -97,7 +97,7 @@ class Menu(Resource):
             _id = x['id']
             name = x['name']
 
-            vertex = self._vertex(name, _id, x['lang_num'])
+            vertex = self._vertex(name, _id, x['num'])
 
             try:
                 try:
@@ -107,7 +107,7 @@ class Menu(Resource):
 
             except KeyError:
                 if vertex['uid'].startswith('root'):
-                    edges[_from]['children'] = SortedListWithKey([vertex], key=lambda z: f'{z["lang_num"]}_{z["name"]}')
+                    edges[_from]['children'] = SortedListWithKey([vertex], key=lambda z: z['num'])
                 else:
                     edges[_from]['children'] = [vertex]
 
@@ -120,10 +120,10 @@ class Menu(Resource):
         return data, 200
 
     @staticmethod
-    def _vertex(name, uid, lang_num) -> dict:
+    def _vertex(name, uid, num) -> dict:
         return {'name': name,
                 'uid': uid,
-                'lang_num': lang_num}
+                'num': num}
 
 
 class SuttaplexList(Resource):
@@ -519,7 +519,7 @@ class Donations(Resource):
             if 'Amount must convert to at least 50 cents' in str(e):
                 code = 1
 
-            elif 'more than $999,999.99' in str(e) or 'Invalid integer' in str(e):
+            elif '999,999.99' in str(e) or 'Invalid integer' in str(e):
                 code = 2
 
             return {'err_code': code}, 400

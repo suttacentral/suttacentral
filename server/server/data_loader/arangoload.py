@@ -120,6 +120,16 @@ def process_root_languages(structure_dir):
     return data
 
 
+def process_menu_ordering(structure_dir):
+    with open(structure_dir / 'menu-structure.json', 'r') as f:
+       raw_data = json.load(f)
+    data = {}
+    for level in raw_data:
+        for i, sutta in enumerate(level):
+            data[sutta] = i
+    return data
+
+
 def process_root_files(docs, edges, mapping, root_files, root_languages, structure_dir):
     with open(structure_dir / 'sutta.json', 'r') as f:
         sutta_file = json.load(f)
@@ -130,6 +140,7 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
         sutta_data[uid] = {'acronym': sutta['acronym'], 'biblio_uid': sutta['biblio_uid']}
 
     reg = regex.compile(r'^\D+')
+    number_reg = regex.compile(r'.*?([0-9]+)$')
     for root_file in root_files:
         with root_file.open('r', encoding='utf8') as f:
             entries = json.load(f)
@@ -156,7 +167,13 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
                     base_uid = '-'.join(base_uid.split('-')[:-1])
 
             del entry['_path']
-            entry['num'] = i  # number is used for ordering, it is not otherwise meaningful
+            ordering_data = process_menu_ordering(structure_dir)
+            try:
+                entry['num'] = ordering_data[uid]
+            except KeyError:
+                if number_reg.match(uid):
+                    num = number_reg.match(uid).group(1)
+                    entry['num'] = int(num)
             try:
                 entry['acronym'] = sutta_data[uid]['acronym']
             except KeyError:
@@ -179,7 +196,7 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
 def process_category_files(category_files, db, edges, mapping):
     for category_file in category_files:
         category_name = category_file.stem
-        if category_name in ['sutta']:
+        if category_name not in ['grouping', 'language', 'pitaka', 'sect']:
             continue
         collection = db[category_name]
         category_docs = []
