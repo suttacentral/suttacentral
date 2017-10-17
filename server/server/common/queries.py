@@ -322,3 +322,7 @@ FOR currency IN currencies
     SORT currency.name
     RETURN KEEP(currency, ['name', 'symbol', 'american_express', 'decimal'])
 '''
+
+PARAGRAPHS = '''
+
+'''

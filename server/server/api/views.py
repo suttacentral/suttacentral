@@ -8,7 +8,7 @@ from flask_restful import Resource
 from sortedcontainers import SortedListWithKey
 
 from common.arangodb import get_db
-from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW, CURRENCIES
+from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW, CURRENCIES, PARAGRAPHS
 from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort
 
 
@@ -450,6 +450,24 @@ class Currencies(Resource):
         }
 
         return response_data, 200
+
+
+class Paragraphs(Resource):
+    def get(self):
+        """
+        Send list of textual information paragraphs for the sutta view
+        ---
+        responses:
+            200:
+                schema:
+                    id: paragraphs
+                    type: object
+        """
+        db = get_db()
+
+        data = db.aql.execute(PARAGRAPHS)
+
+        return data, 200
 
 
 class Donations(Resource):

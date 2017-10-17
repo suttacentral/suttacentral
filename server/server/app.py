@@ -6,7 +6,8 @@ from flask import Blueprint, Flask
 from flask_cors import CORS
 from flask_restful import Api
 
-from api.views import Languages, Menu, SuttaplexList, Parallels, LookupDictionaries, Sutta, Currencies, Donations
+from api.views import Languages, Menu, SuttaplexList, Paragraphs, Parallels, LookupDictionaries, Sutta, Currencies, \
+    Donations
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
@@ -28,6 +29,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(LookupDictionaries, '/dictionaries/lookup')
     api.add_resource(Currencies, '/currencies')
     api.add_resource(Donations, '/donate')
+    api.add_resource(Paragraphs, '/paragraphs')
 
     app.register_blueprint(api_bp)
     return api, app
@@ -37,7 +39,6 @@ api, app = app_factory()
 arango = ArangoDB(app)
 swagger = Swagger(app, config=swagger_config, template=swagger_template)
 CORS(app)
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
