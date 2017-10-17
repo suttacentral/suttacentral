@@ -467,7 +467,7 @@ class Paragraphs(Resource):
 
         data = db.aql.execute(PARAGRAPHS)
 
-        return data, 200
+        return [{"uid": paragraph['uid'], "description": paragraph['description']} for paragraph in data], 200
 
 
 class Donations(Resource):
