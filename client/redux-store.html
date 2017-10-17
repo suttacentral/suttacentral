@@ -21,7 +21,8 @@
             mode: ''
         },
         searchParams: {},
-        suttaText: {}
+        suttaText: {},
+        textParagraphs: []
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -45,6 +46,8 @@
             case 'CHANGE_SUTTA_META_TEXT':
                 return Object.assign({}, state,
                     { suttaText: Object.assign({}, state.suttaText, { meta: action.metaText }) });
+            case 'DOWNLOAD_TEXT_PARAGRAPHS':
+                return Object.assign({}, state, { textParagraphs: action.paragraphs });
             default:
                 return state;
         }

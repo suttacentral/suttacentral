@@ -27,13 +27,21 @@
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax
-        id="ajax"
-        url="[[_getUrl()]]"
+        id="sutta_text_ajax"
+        url="[[_getSuttaTextUrl()]]"
         debounce-duration="500"
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
         last-response="{{responseData}}"
+    ></iron-ajax>
+
+    <iron-ajax
+        auto
+        id="paragraphs_ajax"
+        url="[[_getParagraphsUrl()]]"
+        handle-as="json"
+        last-response="{{paragraphsResponseData}}"
     ></iron-ajax>
 
     <template id="simple_text_container" is="dom-if" if="[[!isSegmentedText]]" restamp>
@@ -61,6 +69,10 @@
                   responseData: {
                       type: Object,
                       observer: '_onResponse'
+                  },
+                  paragraphsResponseData: {
+                      type: Object,
+                      observer: '_onParagraphsLoaded'
                   },
                   error: {
                       type: Object
@@ -106,6 +118,12 @@
                           type: 'DOWNLOAD_SUTTA_TEXT',
                           text: text
                       }
+                  },
+                  downloadParagraphs(data) {
+                      return {
+                          type: 'DOWNLOAD_TEXT_PARAGRAPHS',
+                          paragraphs: data
+                      }
                   }
               }
           }
@@ -121,6 +139,10 @@
               }
           }
 
+          _onParagraphsLoaded() {
+              this.dispatch('downloadParagraphs', this.paragraphsResponseData);
+          }
+
           // The stopRequests variable exists so that we don't make 3 consequent requests in case the
           // author, suttaId and the langIsoCode all change at the same time.
           _paramChanged() {
@@ -128,8 +150,8 @@
                   this.stopRequests = true;
                   // wait 50ms until all routes parameters are changed
                   setTimeout(() => {
-                      this.$.ajax.url = this._getUrl();
-                      this.$.ajax.generateRequest();
+                      this.$.sutta_text_ajax.url = this._getSuttaTextUrl();
+                      this.$.sutta_text_ajax.generateRequest();
                       this.stopRequests = false;
                   }, 50);
               }
@@ -140,12 +162,16 @@
               return !!(this.responseData.segmented);
           }
 
-          _getUrl() {
+          _getSuttaTextUrl() {
               if (this.author) {
                   return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}/${this.author}?lang=${this.langIsoCode}`;
               } else {
-                  return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`
+                  return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`;
               }
+          }
+
+          _getParagraphsUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/paragraphs`;
           }
       }
 
