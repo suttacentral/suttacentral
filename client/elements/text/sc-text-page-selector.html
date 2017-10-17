@@ -33,16 +33,7 @@
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
-        last-response="{{responseData}}"
-    ></iron-ajax>
-
-    <iron-ajax
-        auto
-        id="paragraphs_ajax"
-        url="[[_getParagraphsUrl()]]"
-        handle-as="json"
-        last-response="{{paragraphsResponseData}}"
-    ></iron-ajax>
+        last-response="{{responseData}}"></iron-ajax>
 
     <template id="simple_text_container" is="dom-if" if="[[!isSegmentedText]]" restamp>
       <sc-simple-text id="simple_text"></sc-simple-text>
@@ -69,10 +60,6 @@
                   responseData: {
                       type: Object,
                       observer: '_onResponse'
-                  },
-                  paragraphsResponseData: {
-                      type: Object,
-                      observer: '_onParagraphsLoaded'
                   },
                   error: {
                       type: Object
@@ -118,12 +105,6 @@
                           type: 'DOWNLOAD_SUTTA_TEXT',
                           text: text
                       }
-                  },
-                  downloadParagraphs(data) {
-                      return {
-                          type: 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS',
-                          descriptions: data
-                      }
                   }
               }
           }
@@ -137,10 +118,6 @@
               else {
                   this.dispatch('changeToolbarMode', 'text-mode');
               }
-          }
-
-          _onParagraphsLoaded() {
-              this.dispatch('downloadParagraphs', this.paragraphsResponseData);
           }
 
           // The stopRequests variable exists so that we don't make 3 consequent requests in case the
@@ -168,10 +145,6 @@
               } else {
                   return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`;
               }
-          }
-
-          _getParagraphsUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/paragraphs`;
           }
       }
 
