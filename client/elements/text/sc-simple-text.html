@@ -60,10 +60,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   // Data is passed on from the toolbar-settings-menu.
                   showParagraphs: {
                       type: Boolean,
+                      statePath: 'textParagraphs.enabled',
                       observer: '_addParagraphs'
                   },
-                  paragraphTitles: {
-                      type: Object
+                  paragraphs: {
+                      type: Array,
+                      statePath: 'textParagraphs.descriptions'
                   },
                   title: {
                       type: String
@@ -133,6 +135,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs(e) {
+              console.log(this.paragraphs);
               const paragraphTitles = e.detail.response;
               for (let key in paragraphTitles) {
                   const refs = this.shadowRoot.querySelectorAll('.' + key);

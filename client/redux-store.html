@@ -22,7 +22,10 @@
         },
         searchParams: {},
         suttaText: {},
-        textParagraphs: []
+        textParagraphs: {
+            enabled: false,
+            descriptions: []
+        }
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -46,8 +49,12 @@
             case 'CHANGE_SUTTA_META_TEXT':
                 return Object.assign({}, state,
                     { suttaText: Object.assign({}, state.suttaText, { meta: action.metaText }) });
-            case 'DOWNLOAD_TEXT_PARAGRAPHS':
-                return Object.assign({}, state, { textParagraphs: action.paragraphs });
+            case 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS':
+                return Object.assign({}, state,
+                    { textParagraphs: Object.assign({}, state.textParagraphs, { descriptions: action.descriptions }) });
+            case 'TOGGLE_TEXTUAL_INFORMATION_ENABLED':
+                return Object.assign({}, state,
+                    { textParagraphs: Object.assign({}, state.textParagraphs, { enabled: action.enabled }) });
             default:
                 return state;
         }

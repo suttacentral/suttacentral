@@ -133,8 +133,12 @@ Issues that need to be fixed:
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
                       type: Boolean,
-                      notify: true,
+                      statePath: 'textParagraphs.enabled',
                       observer: '_addParagraphs'
+                  },
+                  paragraphs: {
+                      type: Array,
+                      statePath: 'textParagraphs.descriptions'
                   },
                   // View for segmented text selected in the toolbar-settings-menu.
                   showViewer: {
