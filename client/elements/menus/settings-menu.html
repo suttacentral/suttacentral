@@ -11,7 +11,6 @@
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <link rel="import" href="../addons/sc-dictionary-lookup.html">
 
@@ -89,9 +88,7 @@ Issues:
       <div class="dialogue-section">
         <h3 class="menu-header">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-        <paper-toggle-button class="menu-toggle-button" noink active="{{textualInfoEnabled}}"></paper-toggle-button>
-        <app-localstorage-document key="textualInfoEnabled" data="{{textualInfoEnabled}}"
-                                   session-only="{{sessionOnly}}"></app-localstorage-document>
+        <paper-toggle-button class="menu-toggle-button" noink active="{{textualInfoToggleState}}"></paper-toggle-button>
       </div>
 
       <div class="dialogue-section">
@@ -113,8 +110,6 @@ Issues:
             Pop-up
           </paper-radio-button>
         </paper-radio-group>
-        <app-localstorage-document key="radioSelected" data="{{radioSelected}}"
-                                   session-only="{{sessionOnly}}"></app-localstorage-document>
       </div>
 
       <div class="dialogue-section">
@@ -128,8 +123,6 @@ Issues:
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
             </template>
           </paper-listbox>
-          <app-localstorage-document key="paliLookupSelected" data="{{paliLookupSelected}}"
-                                     session-only="{{sessionOnly}}"></app-localstorage-document>
         </paper-dropdown-menu>
         <template is="dom-if" if="[[_dictionaryLookup(paliLookupSelected)]]">
           <sc-dictionary-lookup
@@ -148,8 +141,6 @@ Issues:
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
             </template>
           </paper-listbox>
-          <app-localstorage-document key="chineseLookupSelected" data="{{chineseLookupSelected}}"
-                                     session-only="{{sessionOnly}}"></app-localstorage-document>
         </paper-dropdown-menu>
         <template is="dom-if" if="[[_dictionaryLookup(chineseLookupSelected)]]">
           <sc-dictionary-lookup
@@ -166,8 +157,6 @@ Issues:
               <paper-item class="menu-item">[[script.language]]</paper-item>
             </template>
           </paper-listbox>
-          <app-localstorage-document key="paliScriptSelected" data="{{paliScriptSelected}}"
-                                     session-only="{{sessionOnly}}"></app-localstorage-document>
         </paper-dropdown-menu>
       </div>
 
@@ -260,7 +249,8 @@ Issues:
                           {
                               'script': 'myanmar',
                               'language': 'မြန်မာဘာသာ'
-                          }]
+                          }
+                      ]
                   },
                   // pali script selected number.
                   paliScriptSelected: {
@@ -268,13 +258,15 @@ Issues:
                       value: 0,
                       observer: '_changeScript'
                   },
-                  // Boolean that says whether or not paragraph numbers should be
-                  // displayed on text pages.
                   textualInfoEnabled: {
                       type: Boolean,
-                      value: false,
-                      observer: '_getReferences',
-                      statePath: 'textParagraphs.enabled'
+                      statePath: 'textParagraphs.enabled',
+                      observer: '_getReferences'
+                  },
+                  // The state of the textual info paper-toggle-button
+                  textualInfoToggleState: {
+                      type: Boolean,
+                      observer: '_textInfoToggleStateChanged'
                   },
                   textualInfoResponse: {
                       type: Object,
@@ -285,11 +277,6 @@ Issues:
                       type: Boolean,
                       value: true,
                       observer: '_rememberSettings'
-                  },
-                  sessionOnly: {
-                      type: Boolean,
-                      value: false,
-                      notify: true
                   }
               }
           }
@@ -311,10 +298,9 @@ Issues:
               }
           }
 
-          _getReferences() {
-              this.dispatch('toggleTextualInfo', this.textualInfoEnabled);
-              if (this.textualInfoEnabled) {
-                  this.$.paragraphs_ajax.generateRequest();
+          _textInfoToggleStateChanged() {
+              if (this.textualInfoToggleState !== undefined) {
+                  this.dispatch('toggleTextualInfo', this.textualInfoToggleState);
               }
           }
 
@@ -327,13 +313,16 @@ Issues:
               // Fires the choice of which view for the segmented text pages is selected to page-selector.html.
           }
 
+          _getReferences() {
+              if (this.textualInfoEnabled) {
+                  this.$.paragraphs_ajax.generateRequest();
+              }
+          }
+
           _rememberSettings(rememberSettings) {
               // TODO
               // sets the attribute sessionOnly on the app-localstorage so whatever the user chooses after
               // setting this attribute will not be stored but settings before setting this attribute will be maintained.
-              if (!rememberSettings) {
-                  this.sessionOnly = true;
-              }
           }
 
           _dictionaryLookup(valueSelected) {
@@ -358,8 +347,8 @@ Issues:
           }
 
           _changeScript() {
-              // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
               // TODO
+              // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
           }
 
           _getParagraphsUrl() {
