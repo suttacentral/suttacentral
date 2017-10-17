@@ -1,0 +1,25 @@
+{
+  "name": "isw-dialog",
+  "description": "Material Design Polymer 2.0 Dialog, stacking context safe with remote-control.",
+  "main": [
+    "isw-dialog.html",
+    "isw-dialog-remote.html"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "paper-dialog-behavior": "PolymerElements/paper-dialog-behavior#^2.0.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "paper-button": "PolymerElements/paper-button#^2.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^2.0.0",
+    "paper-input": "PolymerElements/paper-input#^2.0.0",
+    "app-layout": "PolymerElements/app-layout#^2.0.0",
+    "paper-dialog": "PolymerElements/paper-dialog#^2.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+	<title>isw-dialog demo</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../app-layout/app-layout.html">
+	<link rel="import" href="../../paper-button/paper-button.html">
+	<link rel="import" href="../../paper-dialog/paper-dialog.html">
+	<link rel="import" href="../../paper-input/paper-input.html">
+	<link rel="import" href="../../paper-styles/paper-styles.html">
+
+	<link rel="import" href="../isw-dialog.html">
+	<link rel="import" href="../isw-dialog-remote.html">
+
+	<style>
+		body {
+			font-family: 'Roboto', 'Noto', sans-serif;
+			line-height: 1.5;
+			background-color: #FFFFFF;
+		}
+
+		#drawer {
+			background-color: #DDDDDD;
+			height: 100%;
+		}
+
+		app-toolbar {
+			color: #FFFFFF;
+			background: #00508C;
+		}
+	</style>
+</head>
+<body>
+	<dom-module id="demo-element-dialog">
+		<template>
+			<isw-dialog id="dialog" name="myTestDialog" data="{{_data}}" modal>
+				<h2>Test Dialog</h2>
+				<p>Text from remote: [[_data.text]]</p>
+				<div class="buttons">
+					<paper-button dialog-dismiss>Cancel</paper-button>
+					<paper-button dialog-confirm>Accept</paper-button>
+				</div>
+			</isw-dialog>
+		</template>
+		<script>
+			HTMLImports.whenReady( function() {
+				class DemoElementDialog extends Polymer.Element {
+					static get is() {
+						return 'demo-element-dialog';
+					}
+
+					static get properties() {
+						return {
+							_data: {
+								type: Object,
+								notify: true
+							}
+						};
+					}
+				}
+
+				window.customElements.define( DemoElementDialog.is, DemoElementDialog );
+			} );
+		</script>
+	</dom-module>
+
+	<dom-module id="demo-element-view">
+		<template>
+			<style>
+				:host {
+					display: block;
+					padding: 32px;
+				}
+
+				paper-button {
+					color: #FFFFFF;
+					background: #00508C;
+				}
+			</style>
+
+			<h3>Dialog Remote Control</h3>
+			<p>See console for events the remote received.</p>
+
+			<paper-input label="Text send to the dialog" value="{{_data.text}}"></paper-input><br>
+			<paper-button on-tap="openIsw" raised>Open isw-dialog</paper-button>
+			<paper-button on-tap="openPaper" raised>Open paper-dialog</paper-button>
+
+			<paper-dialog id="paperDialog" modal>
+				<h2>Test Dialog</h2>
+				<p>Text from remote: [[_data.text]]</p>
+				<div class="buttons">
+					<paper-button dialog-dismiss>Cancel</paper-button>
+					<paper-button dialog-confirm>Accept</paper-button>
+				</div>
+			</paper-dialog>
+
+			<isw-dialog-remote
+					id="remote"
+					dialog="myTestDialog"
+					data="[[_data]]"
+					on-iron-overlay-canceled="_canceled"
+					on-iron-overlay-closed="_closed"
+					on-iron-overlay-opened="_opened"></isw-dialog-remote>
+		</template>
+
+		<script>
+			HTMLImports.whenReady( function() {
+				class DemoElementView extends Polymer.Element {
+					static get is() {
+						return 'demo-element-view';
+					}
+
+					static get properties() {
+						return {
+							_data: {
+								type: Object,
+								value: {
+									text: 'Some text.'
+								},
+								notify: true
+							}
+						};
+					}
+
+					openPaper() {
+						this.$.paperDialog.open();
+					}
+
+					openIsw() {
+						this.$.remote.open();
+					}
+
+					_canceled( event ) {
+						console.log( event );
+					}
+
+					_closed( event ) {
+						console.log( event );
+					}
+
+					_opened( event ) {
+						console.log( event );
+					}
+				}
+				window.customElements.define( DemoElementView.is, DemoElementView );
+			} );
+		</script>
+	</dom-module>
+
+	<demo-element-dialog></demo-element-dialog>
+	<app-drawer-layout fullbleed>
+		<app-drawer slot="drawer">
+			<div id="drawer"></div>
+		</app-drawer>
+		<app-header-layout fixed condenses>
+			<app-header slot="header">
+				<app-toolbar>isw-dialog demo</app-toolbar>
+			</app-header>
+			<demo-element-view></demo-element-view>
+		</app-header-layout>
+	</app-drawer-layout>
+</body>
+</html>

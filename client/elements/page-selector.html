@@ -3,16 +3,17 @@
 <link rel="import" href="/bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="/bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="/bower_components/app-route/app-location.html">
-<link rel="import" href="/bower_components/iron-location/iron-query-params.html">
 
 <link rel="import" href="/elements/menus/sc-toolbar.html">
 <link rel="import" href="/elements/sc-page-static.html">
 <link rel="import" href="/elements/sc-view-suttaplex.html">
-<link rel="import" href="/elements/sc-page-text.html">
-<link rel="import" href="/elements/sc-segmented-text.html">
+<link rel="import" href="/elements/text/sc-simple-text.html">
+<link rel="import" href="/elements/text/sc-segmented-text.html">
 <link rel="import" href="/elements/sc-page-search.html">
 <link rel="import" href="/elements/sc-page-dictionary.html">
+<link rel="import" href="/elements/text/sc-text-page-selector.html">
 
 <!--
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
@@ -22,7 +23,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     - static pages: **sc-page-static.html**
     - search page: **sc-page-search.html**
     - dictionary page: **sc-page-dictionary.html**
-    - normal html text pages: **sc-page-text.html**
+    - normal html text pages: **sc-simple-text.html**
     - segmented text pages from pootle output: **sc-segmented-text.html**
     - suttaplex list: **sc-view-suttaplex.html**
 -->
@@ -92,6 +93,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
     <app-location route={{route}}></app-location>
 
+    <iron-meta id="meta"></iron-meta>
+
     <div class="container">
       <app-header-layout>
 
@@ -119,12 +122,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           <sc-page-search></sc-page-search>
         </template>
 
-        <template is="dom-if" if="[[shouldShowSimpleSuttaPage]]" restamp>
-          <sc-page-text></sc-page-text>
-        </template>
-
-        <template is="dom-if" if="[[shouldShowSegmentedSuttaPage]]" restamp>
-          <sc-segmented-text></sc-segmented-text>
+        <template is="dom-if" if="[[shouldShowSuttaTextPage]]" restamp>
+          <sc-text-page-selector author="[[suttaAuthor]]" sutta-id="[[suttaId]]"
+                                 lang-iso-code="[[langIsoCode]]"></sc-text-page-selector>
         </template>
 
         <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp>
@@ -156,6 +156,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
                           'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGEMENTS', 'LICENSING']
                   },
+                  allIsoCodes: {
+                      type: Array,
+                      value: [ 'af', 'ar', 'ca', 'cs', 'lzh', 'de', 'en', 'es', 'fa', 'fr', 'pgd', 'he', 'id', 'it',
+                          'la', 'hu', 'nl', 'no', 'ot', 'pli', 'pl', 'pt', 'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct',
+                          'xto', 'vn', 'uig', 'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh']
+                  },
                   selectedPage: {
                       type: String,
                       statePath: 'currentRoute.name',
@@ -170,12 +176,14 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: String,
                       statePath: 'toolbarOptions.title'
                   },
+                  suttaId: String,
+                  suttaAuthor: String,
+                  langIsoCode: String,
                   // Variables that control the <dom-if> elements in the template:
                   shouldShowStaticPage: Boolean,
                   shouldShowSuttaplexListPage: Boolean,
                   shouldShowSearchPage: Boolean,
-                  shouldShowSimpleSuttaPage: Boolean,
-                  shouldShowSegmentedSuttaPage: Boolean,
+                  shouldShowSuttaTextPage: Boolean,
                   shouldShowDictionaryPage: Boolean
               }
           }
@@ -215,8 +223,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.shouldShowStaticPage = this._isStaticPage(this.selectedPage);
               this.shouldShowSuttaplexListPage = this._isSuttaplexListPage();
               this.shouldShowSearchPage = this._isSearchPage();
-              this.shouldShowSimpleSuttaPage = this._isSimpleSuttaTextPage();
-              this.shouldShowSegmentedSuttaPage = this._isSegmentedSuttaTextPage();
+              this.shouldShowSuttaTextPage = this._isSuttaTextPage();
               this.shouldShowDictionaryPage = this._isDictionaryPage();
               this._setDisplayOptions();
           }
@@ -225,13 +232,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           // based on the current route.
           // TODO set this in the respective elements
           _setDisplayOptions() {
-              if (this.shouldShowSimpleSuttaPage) {
-                  this.dispatch('changeToolbarMode', 'text-mode');
-              }
-              else if (this.shouldShowSegmentedSuttaPage) {
-                  this.dispatch('changeToolbarMode', 'segmented-mode');
-              }
-              else if (this.shouldShowDictionaryPage) {
+              if (this.shouldShowDictionaryPage) {
                   this.dispatch('changeToolbarMode', 'dictionary-mode');
                   this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
               }
@@ -249,8 +250,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               else if (this._isSuttaplexListPage()) {
                   this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
               }
-              else if (this._isSimpleSuttaTextPage() || this._isSegmentedSuttaTextPage()) {
-                  this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaRouteParams()));
+              else if (this._isSuttaTextPage()) {
+                  const suttaRouteParams = this._getSuttaRouteParams();
+                  this.set('suttaId', suttaRouteParams.suttaId);
+                  this.set('langIsoCode', suttaRouteParams.langIsoCode);
+                  this.set('suttaAuthor', suttaRouteParams.authorName);
+                  this.dispatch('changeRoute', Object.assign({}, this.route, suttaRouteParams));
               }
               else {
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
@@ -258,7 +263,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _isStaticPage(pageName) {
-              if (!pageName) { return; }
+              if (!pageName) {
+                  return;
+              }
               return this.staticPages.includes(pageName.toUpperCase());
           }
 
@@ -280,23 +287,15 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               return idParam && !this._getPathParamNumber(2);
           }
 
-          _isSimpleSuttaTextPage() {
-              if (this._isStaticPage()) {
+          // returns true if the path has three path parameters or - (for suttas with no author) if the second param
+          // is an iso code
+          _isSuttaTextPage() {
+              if (this._isStaticPage(this._getPathParamNumber(1))) {
                   return false;
               }
-              const langIsoCode = this._getPathParamNumber(2);
-              const author = this._getPathParamNumber(3);
-              return !!(langIsoCode && author && author !== 'sujato' && author !== 'pali');
-          }
-
-          // checks if a page is a segmented-text page and sets the toolbar title and css class accordingly.
-          _isSegmentedSuttaTextPage() {
-              if (this._isStaticPage()) {
-                  return false;
-              }
-              const langIsoCode = this._getPathParamNumber(2);
-              const author = this._getPathParamNumber(3);
-              return !!(langIsoCode && author && (author === 'sujato' || author === 'pali'));
+              const pathIsoCode = this._getPathParamNumber(2);
+              const pathAuthor = this._getPathParamNumber(3);
+              return (!!(pathIsoCode && pathAuthor) || this.allIsoCodes.indexOf(pathIsoCode) !== -1);
           }
 
           _getSuttaplexRouteParams() {
@@ -310,7 +309,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               return {
                   name: 'SUTTA',
                   suttaId: this._getPathParamNumber(1),
-                  langName: this._getPathParamNumber(2),
+                  langIsoCode: this._getPathParamNumber(2),
                   authorName: this._getPathParamNumber(3)
               };
           }
