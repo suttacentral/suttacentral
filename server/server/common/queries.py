@@ -324,5 +324,6 @@ FOR currency IN currencies
 '''
 
 PARAGRAPHS = '''
-
+FOR paragraph IN paragraphs
+    RETURN paragraph
 '''
