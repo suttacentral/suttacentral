@@ -88,7 +88,8 @@ Issues:
       <div class="dialogue-section">
         <h3 class="menu-header">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-        <paper-toggle-button class="menu-toggle-button" noink active="{{textualInfoToggleState}}"></paper-toggle-button>
+        <paper-toggle-button class="menu-toggle-button" noink
+                             active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
       </div>
 
       <div class="dialogue-section">
@@ -259,13 +260,13 @@ Issues:
                   },
                   textualInfoEnabled: {
                       type: Boolean,
-                      statePath: 'textParagraphs.enabled',
-                      observer: '_getReferences'
+                      statePath: 'textParagraphs.enabled'
                   },
                   // The state of the textual info paper-toggle-button
-                  textualInfoToggleState: {
+                  textualInfoToggleEnabled: {
                       type: Boolean,
-                      observer: '_textInfoToggleStateChanged'
+                      observer: '_textualInfoToggleStateChanged',
+                      value: false
                   },
                   textualInfoResponse: {
                       type: Object,
@@ -297,25 +298,24 @@ Issues:
               }
           }
 
-          _textInfoToggleStateChanged() {
-              if (this.textualInfoToggleState !== undefined) {
-                  this.dispatch('toggleTextualInfo', this.textualInfoToggleState);
+          _textualInfoToggleStateChanged() {
+              if (this.textualInfoToggleEnabled) {
+                  this.$.paragraphs_ajax.generateRequest();
+              } else {
+                  this.dispatch('toggleTextualInfo', false);
               }
           }
 
           _onParagraphsLoaded() {
-              this.dispatch('downloadParagraphs', this.textualInfoResponse);
+              if (this.textualInfoResponse) {
+                  this.dispatch('downloadParagraphs', this.textualInfoResponse);
+                  this.dispatch('toggleTextualInfo', this.textualInfoToggleEnabled);
+              }
           }
 
           _radioGroupChanged() {
               // TODO
               // Fires the choice of which view for the segmented text pages is selected to page-selector.html.
-          }
-
-          _getReferences() {
-              if (this.textualInfoEnabled) {
-                  this.$.paragraphs_ajax.generateRequest();
-              }
           }
 
           _rememberSettings(rememberSettings) {

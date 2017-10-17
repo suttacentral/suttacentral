@@ -65,8 +65,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   },
                   paragraphs: {
                       type: Array,
-                      statePath: 'textParagraphs.descriptions',
-                      value: () => { return []; }
+                      statePath: 'textParagraphs.descriptions'
                   },
                   title: {
                       type: String
@@ -129,8 +128,11 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs() {
               const infotext = this.$.html_text_content;
-              return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode')
-                  : (infotext) ? infotext.classList.add('infomode') : '';
+              if (infotext && !this.showParagraphs) {
+                  infotext.classList.remove('infomode');
+              } else {
+                  infotext ? infotext.classList.add('infomode') : '';
+              }
           }
 
           // returns the meta-data from the loaded sutta text
@@ -141,14 +143,16 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
-              console.log(this.paragraphs);
-              for (let key in this.paragraphs) {
-                  const refs = this.shadowRoot.querySelectorAll('.' + key);
-                  Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key, ''));
-                  Array.from(refs).forEach(item => item.title = this.paragraphs[key]);
-              }
-              if (this.showParagraphs) {
-                  this._addParagraphs();
+              if (this.paragraphs) {
+                  console.log(this.paragraphs);
+                  for (let key in this.paragraphs) {
+                      const refs = this.shadowRoot.querySelectorAll('.' + key);
+                      Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key, ''));
+                      Array.from(refs).forEach(item => item.title = this.paragraphs[key]);
+                  }
+                  if (this.showParagraphs) {
+                      this._addParagraphs();
+                  }
               }
           }
       }
