@@ -1,0 +1,51 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<!--
+  Badge element
+-->
+<dom-module id="sc-badge">
+  <template>
+    <style include="sc-badge-styles">
+
+      .badge {
+        position: relative;
+        background-color: var(--paper-green-a700);;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        top: -43px;
+        left: 25px
+      }
+
+      .badge-number {
+        text-align: center;
+        color: white;
+        font-size: 13px;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+    </style>
+    <div class="badge"><div class="badge-number">[[number]]</div></div>
+  </template>
+
+  <script>
+      class SCBadge extends Polymer.Element {
+          static get is() {
+              return 'sc-badge'
+          }
+
+          static get properties() {
+              return {
+                  number: {
+                      type: Number,
+                  }
+                }
+            }
+        }
+
+      customElements.define(SCBadge.is, SCBadge);
+  </script>
+</dom-module>

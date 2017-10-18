@@ -9,8 +9,6 @@
 <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="/bower_components/paper-card/paper-card.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/bower_components/paper-badge/paper-badge.html">
-<link rel="import" href="/bower_components/paper-badge/paper-badge.html">
 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
 
 
@@ -19,6 +17,7 @@
 <link rel="import" href="/elements/menus/language-menu.html">
 <link rel="import" href="/elements/menus/more-par-menu.html">
 <link rel="import" href="/elements/suttaplex/sc-view-parallels.html">
+<link rel="import" href="/elements/addons/sc-badge.html">
 
 <!--
   Suttaplex card
@@ -94,10 +93,6 @@
         vertical-align: middle;
         margin: -18px 4px 0;
         padding: 0 8px;
-      }
-
-      paper-badge {
-        --paper-badge-background: var(--paper-green-a700);
       }
 
       #moremenu {
@@ -193,26 +188,23 @@
       }
 
       .success-toast {
-        --paper-toast-background-color: green;
+        --paper-toast-background-color: var(--paper-green-a700);;
       }
 
       .error-toast {
         --paper-toast-background-color: red;
       }
 
-      @media screen and (max-width: 596px) {
-        .right-elements {
-          display: flex;
-          flex-flow: column;
-        }
+      .right-elements {
+        align-self: flex-end;
+      }
 
-        #copy_menu {
-          order: 1;
-        }
+      .pull-right {
+        min-width: 90px;
+      }
 
-        #parallels_toggle {
-          order: 0;
-        }
+      .parallels-toggle-div {
+        display: inline-grid;
       }
 
     </style>
@@ -270,7 +262,7 @@
           </div>
         </div>
 
-        <div class="right-elements">
+        <div class$="right-elements {{_shouldPullRight(parallelsOpened)}}">
           <template is="dom-if" if="[[parallelsOpened]]">
             <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true"
                                 vertical-align="top" aria-disabled="false">
@@ -282,12 +274,13 @@
                 </paper-listbox>
               </paper-menu-button>
           </template>
-
-          <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
-                             on-tap="_toggleParallelsOpened">
-          </paper-icon-button>
-          <paper-badge for="parallels_toggle" label="[[item.parallel_count]]" class="paper-badge"
-                       title="Number of parallels"></paper-badge>
+          
+          <div class="parallels-toggle-div">
+            <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
+                              on-tap="_toggleParallelsOpened">
+            </paper-icon-button>
+            <sc-badge number="[[item.parallel_count]]"></sc-badge>
+          </div>
         </div>
       </div>
 
@@ -375,6 +368,10 @@
             const type = e ? 'open' : 'close';
             const event_mock = { type: type };
             this._changeItemZIndex(event_mock);
+          }
+
+          _shouldPullRight(parallelsOpened) {
+             return parallelsOpened ? 'pull-right' : '';
           }
 
           // general function to hide or display various elements.
