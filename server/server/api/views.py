@@ -461,7 +461,9 @@ class Paragraphs(Resource):
             200:
                 schema:
                     id: paragraphs
-                    type: object
+                    type: array
+                    item:
+                        $ref: '#/definitions/paragraph'
         definitions:
             paragraph:
                 type: object
