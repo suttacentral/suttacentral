@@ -184,6 +184,13 @@ Issues that need to be fixed:
               this.htmlLoaded = false;
           }
 
+          connectedCallback() {
+              super.connectedCallback();
+              if (this.showParagraphs && this.paragraphs.length !== 0) {
+                  this._computeParagraphs();
+              }
+          }
+
           _updateView() {
               this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this._setRootAttributes();
