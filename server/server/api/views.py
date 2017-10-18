@@ -462,12 +462,20 @@ class Paragraphs(Resource):
                 schema:
                     id: paragraphs
                     type: object
+        definitions:
+            paragraph:
+                type: object
+                properties:
+                    uid:
+                        type: string
+                    description:
+                        type: string
         """
         db = get_db()
 
         data = db.aql.execute(PARAGRAPHS)
 
-        return [{"uid": paragraph['uid'], "description": paragraph['description']} for paragraph in data], 200
+        return data.batch(), 200
 
 
 class Donations(Resource):

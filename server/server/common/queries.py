@@ -325,5 +325,8 @@ FOR currency IN currencies
 
 PARAGRAPHS = '''
 FOR paragraph IN paragraphs
-    RETURN paragraph
+    RETURN {
+        uid: paragraph.uid,
+        description: paragraph.description
+    }
 '''

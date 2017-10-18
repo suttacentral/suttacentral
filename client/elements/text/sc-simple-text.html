@@ -131,8 +131,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               const infotext = this.$.html_text_content;
               if (infotext && !this.showParagraphs) {
                   infotext.classList.remove('infomode');
-              } else {
-                  infotext ? infotext.classList.add('infomode') : '';
+              } else if (infotext) {
+                  infotext.classList.add('infomode');
               }
           }
 
