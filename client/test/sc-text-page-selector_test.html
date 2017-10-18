@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="/bower_components/web-component-tester/browser.js"></script>
+  <script src="/bower_components/test-fixture/test-fixture-mocha.js"></script>
+  <script src="/bower_components/iron-ajax/iron-ajax.html"></script>
+
+  <link rel="import" href="/elements/text/sc-text-page-selector.html">
+
+</head>
+
+<body>
+
+<test-fixture id="ajax">
+  <template>
+    <iron-ajax></iron-ajax>
+  </template>
+</test-fixture>
+
+<test-fixture id="segmented">
+  <template>
+    <sc-text-page-selector author="sujato" sutta-id="dn1" lang-iso-code="en"></sc-text-page-selector>
+  </template>
+</test-fixture>
+
+<script>
+    suite('<iron-ajax>', () => {
+        let ajax;
+        let request;
+        let server;
+        let responseHeaders = {
+            json: { 'Content-Type': 'application/json' }
+        };
+
+        setup(() => {
+            server = sinon.fakeServer.create();
+            server.respondWith(
+                'GET',
+                /.*\/suttas\/.*/, [
+                    200,
+                    responseHeaders.json,
+                    '{\n' +
+                    '    "root_text": {\n' +
+                    '        "uid": "dn1",\n' +
+                    '        "lang": "pli",\n' +
+                    '        "is_root": true,\n' +
+                    '        "title": "Brahma\u00adj\u0101la\u00adsutta",\n' +
+                    '        "author": "Pali text from the Mah\u0101sa\u1e45g\u012bti Tipi\u1e6daka Buddhavasse 2500",\n' +
+                    '        "author_uid": null,\n' +
+                    '        "text": "<!DOCTYPE html>\\n<html>\\n<head>\\n<meta charset=\\"utf-8\\"/>\\n<meta content=\\"Pali text from the Mah\u0101sa\u1e45g\u012bti Tipi\u1e6daka Buddhavasse 2500\\" name=\\"description\\"/>\\n<title></title>\\n</head>\\n<body>\\n<div id=\\"text\\" lang=\\"pli\\">\\n<section class=\\"sutta\\" id=\\"dn1\\">\\n<article>\\n<div class=\\"hgroup\\">\\n<p class=\\"division\\">D\u012bgha\u00a0Nik\u0101ya\u00a01</p>\\n<h1>Brahma\u00adj\u0101la\u00adsutta</h1>\\n</div>\\n<h2>1.\u00a0Parib\u00adb\u0101ja\u00adka\u00adkath\u0101</h2>\\n<p><a class=\\"sc\\" id=\\"1\\"></a><a class=\\"pts\\" id=\\"pts1.1\\"></a><a class=\\"ms\\" id=\\"p_6D_2\\"></a><a class=\\"msdiv\\" id=\\"msdiv1\\"></a><span class=\\"evam\\">Eva\u1e43 me suta\u1e43\u2014\u200b</span> \u00a0 eka\u1e43 samaya\u1e43 bhagav\u0101 antar\u0101 ca r\u0101jagaha\u1e43 antar\u0101 ca n\u0101\u1e37anda\u1e43 addh\u0101\u00adna\u00admaggap\u00adpa\u1e6di\u00adpanno hoti mahat\u0101 \u00adbhik\u00adkhu\u00adsa\u1e43\u00adghena saddhi\u1e43 pa\u00f1camattehi bhikkhusatehi. Suppiyopi kho paribb\u0101jako antar\u0101 ca r\u0101jagaha\u1e43 antar\u0101 ca n\u0101\u1e37anda\u1e43 addh\u0101\u00adna\u00admaggap\u00adpa\u1e6di\u00adpanno hoti saddhi\u1e43 antev\u0101sin\u0101 brahmadattena m\u0101\u1e47avena. Tatra suda\u1e43 suppiyo paribb\u0101jako aneka\u00adpariy\u0101\u00adyena buddhassa ava\u1e47\u1e47a\u1e43 bh\u0101sati, dhammassa ava\u1e47\u1e47a\u1e43 bh\u0101sati, sa\u1e43ghassa ava\u1e47\u1e47a\u1e43 bh\u0101sati; suppiyassa pana paribb\u0101jakassa antev\u0101s\u012b brahmadatto m\u0101\u1e47avo aneka\u00adpariy\u0101\u00adyena buddhassa va\u1e47\u1e47a\u1e43 bh\u0101sati, dhammassa va\u1e47\u1e47a\u1e43 bh\u0101sati, sa\u1e43ghassa va\u1e47\u1e47a\u1e43 bh\u0101sati. Itiha te ubho \u0101cariyantev\u0101s\u012b a\u00f1\u00f1ama\u00f1\u00f1assa ujuvi\u00adpac\u00adcan\u012b\u00adka\u00adv\u0101d\u0101 bhagavanta\u1e43 pi\u1e6d\u1e6dhito pi\u1e6d\u1e6dhito <span class=\\"var\\" id=\\"note1\\" title=\\"anubaddh\u0101 (bj, pts1)\\">anubandh\u0101</span> honti \u00adbhik\u00adkhu\u00adsa\u1e43\u00adgha\u00f1ca.</p>\\n<p><a class=\\"sc\\" id=\\"2\\"></a><a class=\\"pts\\" id=\\"pts1.2\\"></a><a class=\\"ms\\" id=\\"p_6D_3\\"></a><a class=\\"msdiv\\" id=\\"msdiv2\\"></a>Atha kho bhagav\u0101 amba\u00adla\u1e6d\u1e6dhi\u00adk\u0101\u00adya\u1e43 r\u0101j\u0101g\u0101rake ekarattiv\u0101sa\u1e43 <span class=\\"var\\" id=\\"note2\\" title=\\"upaga\u00f1chi (bj, s1-3, km, pts1)\\">upagacchi</span> saddhi\u1e43 \u00adbhik\u00adkhu\u00adsa\u1e43\u00adghena. Suppiyopi kho paribb\u0101jako amba\u00adla\u1e6d\u1e6dhi\u00adk\u0101\u00adya\u1e43 r\u0101j\u0101g\u0101rake ekarattiv\u0101sa\u1e43 <span class=\\"var\\" id=\\"note3\\" title=\\"upaga\u00f1chi (bj, s1-3, km, pts1)\\">upagacchi</span> antev\u0101sin\u0101 brahmadattena m\u0101\u1e47avena. Tatrapi suda\u1e43 suppiyo paribb\u0101jako aneka\u00adpariy\u0101\u00adyena buddhassa ava\u1e47\u1e47a\u1e43 bh\u0101sati, dhammassa ava\u1e47\u1e47a\u1e43 bh\u0101sati, sa\u1e43ghassa ava\u1e47\u1e47a\u1e43 bh\u0101sati; suppiyassa pana paribb\u0101jakassa antev\u0101s\u012b brahmadatto m\u0101\u1e47avo aneka\u00adpariy\u0101\u00adyena buddhassa va\u1e47\u1e47a\u1e43 bh\u0101sati, dhammassa va\u1e47\u1e47a\u1e43 bh\u0101sati, sa\u1e43ghassa va\u1e47\u1e47a\u1e43 bh\u0101sati. Itiha te ubho \u0101cariyantev\u0101s\u012b a\u00f1\u00f1ama\u00f1\u00f1assa ujuvi\u00adpac\u00adcan\u012b\u00adka\u00adv\u0101d\u0101 viharanti.</p>\\n\\n<h2>5.\u00a0Viva\u1e6d\u1e6dakath\u0101di</h2>\\n<p><a class=\\"sc\\" id=\\"212\\"></a><a class=\\"ms\\" id=\\"p_6D_218\\"></a><a class=\\"msdiv\\" id=\\"msdiv145\\"></a>Yato kho, bhikkhave, bhikkhu channa\u1e43 phas\u00ads\u0101yata\u00adn\u0101\u00adna\u1e43 samudaya\u00f1ca attha\u1e45gama\u00f1ca ass\u0101da\u00f1ca \u0101d\u012bnava\u00f1ca nissara\u1e47a\u00f1ca yath\u0101bh\u016bta\u1e43 paj\u0101n\u0101ti, aya\u1e43 imehi sabbeheva uttaritara\u1e43 paj\u0101n\u0101ti.</p>\\n<p><a class=\\"sc\\" id=\\"213\\"></a><a class=\\"ms\\" id=\\"p_6D_219\\"></a><a class=\\"msdiv\\" id=\\"msdiv146\\"></a>Ye hi keci, bhikkhave, sama\u1e47\u0101 v\u0101 br\u0101hma\u1e47\u0101 v\u0101 pubban\u00adta\u00adkap\u00adpik\u0101 v\u0101 aparan\u00adta\u00adkap\u00adpik\u0101 v\u0101 pubban\u00adt\u0101\u00adpa\u00adrantakap\u00adpik\u0101 v\u0101 pubban\u00adt\u0101\u00adpa\u00adrant\u0101\u00adnu\u00addi\u1e6d\u1e6dhino pubban\u00adt\u0101\u00adpa\u00adranta\u1e43 \u0101rabbha anekavihit\u0101ni adhi\u00admutti\u00adpad\u0101ni abhivadanti, sabbe te imeheva dv\u0101sa\u1e6d\u1e6dhiy\u0101 vatth\u016bhi antoj\u0101l\u012bkat\u0101, ettha sit\u0101va ummujjam\u0101n\u0101 ummujjanti, ettha pariy\u0101pann\u0101 antoj\u0101l\u012bkat\u0101va ummujjam\u0101n\u0101 ummujjanti.</p>\\n<p><a class=\\"sc\\" id=\\"214\\"></a><a class=\\"pts\\" id=\\"pts1.46\\"></a><a class=\\"ms\\" id=\\"p_6D_220\\"></a>Seyyath\u0101pi, bhikkhave, dakkho keva\u1e6d\u1e6do v\u0101 keva\u1e6d\u1e6dantev\u0101s\u012b v\u0101 sukhumac\u00adchi\u00adkena j\u0101lena paritta\u1e43 <span class=\\"var\\" id=\\"note60\\" title=\\"udakarahada\u1e43 (s1-3)\\">udakadaha\u1e43</span> otthareyya. Tassa evamassa: \u2018ye kho keci imasmi\u1e43 udakadahe o\u1e37\u0101rik\u0101 p\u0101\u1e47\u0101, sabbe te antoj\u0101l\u012bkat\u0101. Ettha sit\u0101va ummujjam\u0101n\u0101 ummujjanti; ettha pariy\u0101pann\u0101 antoj\u0101l\u012bkat\u0101va ummujjam\u0101n\u0101 ummujjant\u012b\u2019ti; evameva kho, bhikkhave, ye hi keci sama\u1e47\u0101 v\u0101 br\u0101hma\u1e47\u0101 v\u0101 pubban\u00adta\u00adkap\u00adpik\u0101 v\u0101 aparan\u00adta\u00adkap\u00adpik\u0101 v\u0101 pubban\u00adt\u0101\u00adpa\u00adrantakap\u00adpik\u0101 v\u0101 pubban\u00adt\u0101\u00adpa\u00adrant\u0101\u00adnu\u00addi\u1e6d\u1e6dhino pubban\u00adt\u0101\u00adpa\u00adranta\u1e43 \u0101rabbha anekavihit\u0101ni adhi\u00admutti\u00adpad\u0101ni abhivadanti, sabbe te imeheva dv\u0101sa\u1e6d\u1e6dhiy\u0101 vatth\u016bhi antoj\u0101l\u012bkat\u0101 ettha sit\u0101va ummujjam\u0101n\u0101 ummujjanti, ettha pariy\u0101pann\u0101 antoj\u0101l\u012bkat\u0101va ummujjam\u0101n\u0101 ummujjanti.</p>\\n<p><a class=\\"sc\\" id=\\"215\\"></a><a class=\\"ms\\" id=\\"p_6D_221\\"></a><a class=\\"msdiv\\" id=\\"msdiv147\\"></a>Ucchin\u00adna\u00adbhava\u00adnettiko, bhikkhave, tath\u0101gatassa k\u0101yo ti\u1e6d\u1e6dhati. Y\u0101vassa k\u0101yo \u1e6dhassati, t\u0101va na\u1e43 dakkhanti devamanuss\u0101. K\u0101yassa bhed\u0101 uddha\u1e43 j\u012bvita\u00adpariy\u0101\u00add\u0101n\u0101 na na\u1e43 dakkhanti devamanuss\u0101.</p>\\n<p><a class=\\"sc\\" id=\\"216\\"></a><a class=\\"ms\\" id=\\"p_6D_222\\"></a>Seyyath\u0101pi, bhikkhave, ambapi\u1e47\u1e0diy\u0101 va\u1e47\u1e6dacchinn\u0101ya y\u0101ni k\u0101nici amb\u0101ni <span class=\\"var\\" id=\\"note61\\" title=\\"va\u1e47\u00ad\u1e6d\u016b\u00adpani\u00adbandha\u00adn\u0101ni (pts1) | va\u1e47\u1e0da\u00adpa\u1e6di\u00adbaddh\u0101ni (mr)\\">va\u1e47\u00ad\u1e6dapa\u1e6di\u00adbandh\u0101ni</span>, sabb\u0101ni t\u0101ni tadanvay\u0101ni bhavanti; evameva kho, bhikkhave, ucchin\u00adna\u00adbhava\u00adnettiko tath\u0101gatassa k\u0101yo ti\u1e6d\u1e6dhati, y\u0101vassa k\u0101yo \u1e6dhassati, t\u0101va na\u1e43 dakkhanti devamanuss\u0101, k\u0101yassa bhed\u0101 uddha\u1e43 j\u012bvita\u00adpariy\u0101\u00add\u0101n\u0101 na na\u1e43 dakkhanti devamanuss\u0101\u201dti.</p>\\n<p><a class=\\"sc\\" id=\\"217\\"></a><a class=\\"ms\\" id=\\"p_6D_223\\"></a><a class=\\"msdiv\\" id=\\"msdiv148\\"></a>Eva\u1e43 vutte, \u0101yasm\u0101 \u0101nando bhagavanta\u1e43 etadavoca: \u201cacchariya\u1e43, bhante, abbhuta\u1e43, bhante, ko n\u0101mo aya\u1e43, bhante, dhammapariy\u0101yo\u201dti? \u201cTasm\u0101tiha tva\u1e43, \u0101nanda, ima\u1e43 dhamma\u00adpariy\u0101\u00adya\u1e43 atthaj\u0101lantipi na\u1e43 dh\u0101rehi, dhamma\u00adj\u0101lan\u00adtipi na\u1e43 dh\u0101rehi, brahma\u00adj\u0101lan\u00adtipi na\u1e43 dh\u0101rehi, di\u1e6d\u1e6dhi\u00adj\u0101lan\u00adtipi na\u1e43 dh\u0101rehi, anuttaro sa\u1e45g\u0101\u00adma\u00advi\u00adjayo\u00adtipi na\u1e43 dh\u0101reh\u012b\u201dti.</p>\\n<p><a class=\\"sc\\" id=\\"218\\"></a><a class=\\"ms\\" id=\\"p_6D_224\\"></a><a class=\\"msdiv\\" id=\\"msdiv149\\"></a>Idamavoca bhagav\u0101. Attaman\u0101 te bhikkh\u016b bhagavato bh\u0101sita\u1e43 abhinandunti. Imasmi\u00f1ca pana vey\u00ady\u0101ka\u00adra\u00ad\u1e47as\u00admi\u1e43 bha\u00f1\u00f1am\u0101ne <span class=\\"var\\" id=\\"note62\\" title=\\"sahass\u012b (pts1)\\">dasasahass\u012b</span> lokadh\u0101tu akampitth\u0101ti.</p>\\n<p class=\\"endsutta\\">Brahma\u00adj\u0101la\u00adsutta\u1e43 ni\u1e6d\u1e6dhita\u1e43 pa\u1e6dhama\u1e43.</p>\\n</article>\\n<aside id=\\"metaarea\\">\\n<p>Pali text from the Mah\u0101sa\u1e45g\u012bti Tipi\u1e6daka Buddhavasse 2500: World Tipi\u1e6daka Edition in Roman Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on the digital edition of the Cha\u1e6d\u1e6dha Sa\u1e45g\u0101yana published by the Vipassana Research Institute, with corrections and proofreading by the Dhamma Society.</p> <span class=\\"hidden\\">Brahma\u00adj\u0101la\u00adsutta</span> <span class=\\"hidden\\">Parib\u00adb\u0101ja\u00adka\u00adkath\u0101</span>\\n<p>Prepared for SuttaCentral by <span class=\\"editor\\">Blake Walshe</span> and <span class=\\"editor\\">Bhikkhu Sujato</span>.</p></aside>\\n</section>\\n</div>\\n</body>\\n</html>"\n' +
+                    '    },\n' +
+                    '    "translation": {\n' +
+                    '        "uid": "dn1",\n' +
+                    '        "lang": "en",\n' +
+                    '        "author": "sujato",\n' +
+                    '        "text": "<div id=\\"text\\" lang=\\"pi\\"><section class=\\"sutta\\" id=\\"dn1\\"><article><div class=\\"hgroup\\"><p class=\\"division\\"><sc-seg id=\\"dn1:1.1\\">Long Discourses 1</sc-seg></p>\\n<h1><sc-seg id=\\"dn1:2.1\\">The Prime Net</sc-seg></h1></div><h2><sc-seg id=\\"dn1:3.1\\">Talk on Wanderers</sc-seg></h2><p><a class=\\"sc\\" id=\\"1\\"></a><a class=\\"pts\\" id=\\"pts1.1\\"></a><sc-seg id=\\"dn1:4.1\\"><span class=\u201devam\u201d>So I have heard.</span></sc-seg><sc-seg id=\\"dn1:4.2\\">At one time the Buddha was travelling along the road between R\u0101jagaha and N\u0101landa together with a large Sa\u1e45gha of around five hundred mendicants.</sc-seg><sc-seg id=\\"dn1:4.3\\">And the wanderer Suppiya was also travelling along the same road together with his pupil, the brahmin student Brahmadatta.</sc-seg><sc-seg id=\\"dn1:4.4\\">Meanwhile, Suppiya criticized the Buddha, the teaching, and the Sa\u1e45gha in many ways,</sc-seg><sc-seg id=\\"dn1:4.5\\">but his pupil Brahmadatta praised them in many ways.</sc-seg><sc-seg id=\\"dn1:4.6\\">In this way both teacher and pupil, while directly contradicting each other, followed behind the Buddha and the Sa\u1e45gha of mendicants.</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"2\\"></a><a class=\\"pts\\" id=\\"pts1.2\\"></a><sc-seg id=\\"dn1:5.1\\">Then the Buddha took up residence for the night in the royal rest-house in Ambala\u1e6d\u1e6dhik\u0101 together with the Sa\u1e45gha of mendicants.</sc-seg><sc-seg id=\\"dn1:5.2\\">And Suppiya and Brahmadatta did likewise.</sc-seg><sc-seg id=\\"dn1:5.3\\">There too, Suppiya criticized the Buddha, the teaching, and the Sa\u1e45gha in many ways,</sc-seg><sc-seg id=\\"dn1:5.4\\">but his pupil Brahmadatta praised them in many ways.</sc-seg><sc-seg id=\\"dn1:5.5\\">In this way both teacher and pupil kept directly contradicting each other.</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"3\\"></a></p>\\n<p><a class=\\"sc\\" id=\\"183\\"></a><sc-seg id=\\"dn1:210.1\\">they theorize about the future on these forty-four grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"184\\"></a><sc-seg id=\\"dn1:211.1\\">When those ascetics and brahmins theorize about the past and the future on these sixty-two grounds, these things are only the feeling of those who do not know or see, the agitation and evasiveness of those under the sway of craving. </sc-seg></p>\\n<h3><sc-seg id=\\"dn1:212.1\\">Conditioned by Contact</sc-seg></h3><p><a class=\\"sc\\" id=\\"185\\"></a><a class=\\"pts\\" id=\\"pts1.42\\"></a><sc-seg id=\\"dn1:213.1\\">Now, these things are conditioned by contact. Namely, when those ascetics and brahmins assert that the self and the cosmos are eternal on four grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"186\\"></a><sc-seg id=\\"dn1:214.1\\">partially eternal on four grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"187\\"></a><sc-seg id=\\"dn1:215.1\\">finite or infinite on four grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"188\\"></a><sc-seg id=\\"dn1:216.1\\">or they resort to equivocation on four grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"189\\"></a><sc-seg id=\\"dn1:217.1\\">or they assert that the self and the cosmos arose by chance on two grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"190\\"></a><sc-seg id=\\"dn1:218.1\\">they theorize about the past on these eighteen grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"191\\"></a><sc-seg id=\\"dn1:219.1\\">or they assert that the self lives on after death in a percipient form on sixteen grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"192\\"></a><sc-seg id=\\"dn1:220.1\\">or that the self lives on after death in a non-percipient form on eight grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"193\\"></a><sc-seg id=\\"dn1:221.1\\">or that the self lives on after death in a neither percipient nor non-percipient form on eight grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"194\\"></a><sc-seg id=\\"dn1:222.1\\">or they assert the annihilation of an existing being on seven grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"195\\"></a><sc-seg id=\\"dn1:223.1\\">or they assert the ultimate extinguishment of an existing being in the present life on five grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"196\\"></a><a class=\\"pts\\" id=\\"pts1.43\\"></a><sc-seg id=\\"dn1:224.1\\">they theorize about the future on these forty-four grounds \u2026</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"197\\"></a><sc-seg id=\\"dn1:225.1\\">When those ascetics and brahmins theorize about the past and the future on these sixty-two grounds, that too is conditioned by contact.</sc-seg></p>\\n<h3><sc-seg id=\\"dn1:226.1\\">Not Possible</sc-seg></h3><p><a class=\\"sc\\" id=\\"198\\"></a><sc-seg id=\\"dn1:227.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"199\\"></a><sc-seg id=\\"dn1:228.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"200\\"></a><sc-seg id=\\"dn1:229.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"201\\"></a><sc-seg id=\\"dn1:230.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"202\\"></a><sc-seg id=\\"dn1:231.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"203\\"></a><sc-seg id=\\"dn1:232.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"204\\"></a><a class=\\"pts\\" id=\\"pts1.44\\"></a><sc-seg id=\\"dn1:233.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"205\\"></a><sc-seg id=\\"dn1:234.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"206\\"></a><sc-seg id=\\"dn1:235.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"207\\"></a><sc-seg id=\\"dn1:236.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"208\\"></a><sc-seg id=\\"dn1:237.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"209\\"></a><sc-seg id=\\"dn1:238.1\\"></sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"210\\"></a><sc-seg id=\\"dn1:239.1\\">Now, when those ascetics and brahmins theorize about the past and the future on these sixty-two grounds, it is not possible that they should experience these things without contact.</sc-seg></p>\\n<h3><sc-seg id=\\"dn1:240.1\\">Dependent Origination</sc-seg></h3><p><a class=\\"sc\\" id=\\"211\\"></a><a class=\\"pts\\" id=\\"pts1.45\\"></a><sc-seg id=\\"dn1:241.1\\"></sc-seg><sc-seg id=\\"dn1:241.2\\"></sc-seg><sc-seg id=\\"dn1:241.3\\"></sc-seg><sc-seg id=\\"dn1:241.4\\"></sc-seg><sc-seg id=\\"dn1:241.5\\"></sc-seg><sc-seg id=\\"dn1:241.6\\"></sc-seg><sc-seg id=\\"dn1:241.7\\"></sc-seg><sc-seg id=\\"dn1:241.8\\"></sc-seg><sc-seg id=\\"dn1:241.9\\"></sc-seg><sc-seg id=\\"dn1:241.10\\"></sc-seg><sc-seg id=\\"dn1:241.11\\"></sc-seg><sc-seg id=\\"dn1:241.12\\"></sc-seg><sc-seg id=\\"dn1:241.13\\">Now, when those ascetics and brahmins theorize about the past and the future on these sixty-two grounds, all of them experience this by repeated contact through the six fields of contact. Their feeling is a condition for craving. Craving is a condition for grasping. Grasping is a condition for future existence. Future existence is a condition for rebirth. Rebirth is a condition for old age and death, sorrow, crying, pain, sadness, and distress to come to be.</sc-seg></p>\\n<h2><sc-seg id=\\"dn1:242.1\\"></sc-seg></h2><p><a class=\\"sc\\" id=\\"212\\"></a><sc-seg id=\\"dn1:243.1\\">When a mendicant truly understands the six fields of contact\u2019s origin, ending, gratification, drawback, and escape, they understand what lies beyond all these things.</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"213\\"></a><sc-seg id=\\"dn1:244.1\\">All of these ascetics and brahmins who theorize about the past or the future are trapped in the net of these sixty-two grounds, so that wherever they emerge they are caught and trapped in this very net.</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"214\\"></a><a class=\\"pts\\" id=\\"pts1.46\\"></a><sc-seg id=\\"dn1:245.1\\">Suppose and expert fisherman or his apprentice was to cast a fine-meshed net over a small pond.</sc-seg><sc-seg id=\\"dn1:245.2\\">They\u2019d think:</sc-seg><sc-seg id=\\"dn1:245.3\\">\u2018Any sizable creatures in this pond will be trapped in the net.</sc-seg><sc-seg id=\\"dn1:245.4\\">Wherever they emerge they are caught and trapped in this very net.\u2019</sc-seg><sc-seg id=\\"dn1:245.5\\"></sc-seg><sc-seg id=\\"dn1:245.6\\">in the same way, all of these ascetics and brahmins who theorize about the past or the future are trapped in the net of these sixty-two grounds, so that wherever they emerge they are caught and trapped in this very net.</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"215\\"></a><sc-seg id=\\"dn1:246.1\\">The Realized One\u2019s body remains, but his attachment to being reborn has been cut off.</sc-seg><sc-seg id=\\"dn1:246.2\\">As long as his body remains he will be seen by gods and humans.</sc-seg><sc-seg id=\\"dn1:246.3\\">But when his body breaks up, after life has ended, gods and men will see him no more.</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"216\\"></a><sc-seg id=\\"dn1:247.1\\">When the stalk of a bunch of mangoes is cut, all the mangoes attached to the stalk will follow along.</sc-seg><sc-seg id=\\"dn1:247.2\\">In the same way, the Realized One\u2019s body remains, but his attachment to being reborn has been cut off. As long as his body remains he will be seen by gods and humans. But when his body breaks up, after life has ended, gods and men will see him no more.\u201d</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"217\\"></a><sc-seg id=\\"dn1:248.1\\">When he said this, Venerable \u0100nanda said to the Buddha: </sc-seg><sc-seg id=\\"dn1:248.2\\">\u201cIt\u2019s incredible, sir, it\u2019s amazing! What is the name of this explanation of the teaching?\u201d</sc-seg><sc-seg id=\\"dn1:248.3\\">\u201cWell, then, \u0100nanda, you may remember this explanation of the teaching as \u2018The Net of Meaning\u2019, or else \u2018The Net of the Teaching\u2019, or else \u2018The Prime Net\u2019, or else \u2018The Net of Views\u2019, or else \u2018The Supreme Victory in Battle\u2019.\u201d</sc-seg></p>\\n<p><a class=\\"sc\\" id=\\"218\\"></a><sc-seg id=\\"dn1:249.1\\">This is what the Buddha said.</sc-seg><sc-seg id=\\"dn1:249.2\\">Uplifted, the mendicants approved of what the Buddha said.</sc-seg><sc-seg id=\\"dn1:249.3\\">And while this discourse was being spoken, the galaxy shook.</sc-seg></p>\\n<p class=\\"endsutta\\"><sc-seg id=\\"dn1:250.1\\"></sc-seg>",\n' +
+                    '        "title": null\n' +
+                    '    },\n' +
+                    '    "suttaplex": {\n' +
+                    '        "acronym": null,\n' +
+                    '        "volpages": [\n' +
+                    '            "DN i 1"\n' +
+                    '        ],\n' +
+                    '        "uid": "dn1",\n' +
+                    '        "blurb": "While others may praise or criticize the Buddha, they tend to focus on trivial details. The Buddha presents an analysis of 62 kinds of wrong view, seeing through which one becomes detached from meaningless speculations.",\n' +
+                    '        "difficulty": 3,\n' +
+                    '        "original_title": "Brahmaj\u0101la",\n' +
+                    '        "root_lang": "pli",\n' +
+                    '        "translations": [\n' +
+                    '            {\n' +
+                    '                "author": "sujato",\n' +
+                    '                "id": "en_dn1_sujato",\n' +
+                    '                "lang": "en",\n' +
+                    '                "segmented": true,\n' +
+                    '                "title": "The Prime Net"\n' +
+                    '            },\n' +
+                    '            {\n' +
+                    '                "lang": "pli",\n' +
+                    '                "author": "ms",\n' +
+                    '                "id": "pli_dn1_ms",\n' +
+                    '                "segmented": true\n' +
+                    '            },\n' +
+                    '            {\n' +
+                    '                "lang": "id",\n' +
+                    '                "author": "Indra Anggara",\n' +
+                    '                "id": "id_dn1",\n' +
+                    '                "segmented": false\n' +
+                    '            },\n' +
+                    '            {\n' +
+                    '                "lang": "ru",\n' +
+                    '                "author": "\u0410. \u042f. \u0421\u044b\u0440\u043a\u0438\u043d\u0430",\n' +
+                    '                "id": "ru_dn1",\n' +
+                    '                "segmented": false\n' +
+                    '            }\n' +
+                    '        ],\n' +
+                    '        "parallel_count": 26,\n' +
+                    '        "biblio": null\n' +
+                    '    },\n' +
+                    '    "segmented": true\n' +
+                    '}'
+                ]);
+
+        });
+
+        teardown(() => {
+            server.restore();
+        });
+
+        suite('<sc-page-selector>', () => {
+            let segmented;
+
+            setup(() => {
+                ajax = fixture('ajax');
+                segmented = fixture('segmented');
+            });
+
+            test('the request should go through', (done) => {
+                request = segmented.generateRequest();
+                server.respond();
+                expect(request.response).to.be.an('object');
+                expect(request.response.segmented).to.be.equal('true');
+                done();
+            });
+
+            test('it should be segmented', (done) => {
+                request = ajax.generateRequest();
+                server.respond();
+                assert.equal(segmented.isSegmentedText, true);
+                done();
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

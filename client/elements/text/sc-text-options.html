@@ -1,0 +1,115 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/isw-dialog/isw-dialog-remote.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
+<link rel="import" href="/bower_components/iron-collapse/iron-collapse.html">
+
+<link rel="import" href="/styles/sc-suttaplex-styles.html">
+<link rel="import" href="/elements/menus/settings-menu.html">
+<link rel="import" href="/elements/suttaplex/sc-suttaplex.html">
+
+<!--
+Pulls in one relevant suttaplex-card inside a collapse-item to display on top of each sutta text.
+-->
+<dom-module id="sc-text-options">
+  <template>
+    <style include="sc-suttaplex-styles">
+      .container {
+        margin: 0 auto;
+        padding: 32px 5% 0 !important;
+        max-width: 640px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .heading {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .sutta-list {
+        max-width: 720px;
+        transition: margin-top 0.3s, margin-bottom 0.3s;
+        margin: 0 auto 64px;
+      }
+
+      .margin-vertical-md {
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
+
+    </style>
+
+    <div class="container">
+      <div class="heading" title="View Parallels &amp; References">
+        <paper-icon-button icon="info" on-tap="_openInfoDialog"></paper-icon-button>
+        <paper-icon-button icon="settings" on-tap="_openSettingsDialog"></paper-icon-button>
+        <paper-icon-button icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
+      </div>
+
+      <iron-collapse opened="{{opened}}">
+        <div class="sutta-list">
+          <sc-suttaplex item="[[suttaplexItem]]"></sc-suttaplex>
+        </div>
+      </iron-collapse>
+    </div>
+
+    <!--These elements remotely control the text dialogs: -->
+
+    <isw-dialog-remote
+        id="settings_dialog_remote"
+        dialog="settings_dialog">
+    </isw-dialog-remote>
+
+    <isw-dialog-remote
+        id="info_dialog_remote"
+        dialog="info_dialog"
+        data="[[metaArea]]">
+    </isw-dialog-remote>
+
+  </template>
+
+  <script>
+      class SCTextOptions extends Polymer.Element {
+          static get is() {
+              return 'sc-text-options';
+          }
+
+          static get properties() {
+              return {
+                  _toggleIcon: {
+                      type: String,
+                      computed: '_computeToggleIcon(opened)'
+                  },
+                  suttaplexItem: Object,
+                  opened: Boolean,
+                  metaArea: String
+              }
+          }
+
+          _toggleOpened() {
+              this.opened = !this.opened;
+          }
+
+          _closeSuttaplex() {
+              this.opened = false;
+          }
+
+          _computeToggleIcon() {
+              return this.opened ? 'icons:expand-less' : 'icons:expand-more';
+          }
+
+          _openSettingsDialog() {
+              this.$.settings_dialog_remote.open();
+          }
+
+          _openInfoDialog() {
+              this.$.info_dialog_remote.open();
+          }
+      }
+
+      customElements.define(SCTextOptions.is, SCTextOptions);
+  </script>
+
+</dom-module>

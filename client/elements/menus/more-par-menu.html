@@ -120,9 +120,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
 
           _computeLink() {
-              const url = window.location;
-              const baseUrl = url.protocol + "//" + url.host;
-              return baseUrl + '/sutta/' + this.item.uid;
+              return `${this.item.uid}`;
           }
 
           // Copy the link to the suttaplex page
@@ -244,7 +242,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
 
           _getAPIEndpoint(item) {
-              return `api/parallels/${item.uid}`;
+              return `/api/parallels/${item.uid}`;
           }
       }
 

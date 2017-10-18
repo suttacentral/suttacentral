@@ -11,7 +11,6 @@
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
 
-
 <link rel="import" href="/img/sc-svg-icons.html">
 <link rel="import" href="/elements/addons/sc-sutta-note.html">
 <link rel="import" href="/elements/menus/language-menu.html">
@@ -247,10 +246,10 @@
       <div class="card-actions">
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
-            <template is="dom-if" if="{{ _isChosenLang(translation.lang) }}">
+            <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button flat title$="Go  to a translation by [[translation.author]]">
-                <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]"
-                   class$="{{ _translationBorder(translation.segmented) }}">[[translation.author]]</a>
+                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]"
+                   class$="{{_translationBorder(translation.segmented)}}">[[translation.author]]</a>
               </paper-button>
             </template>
           </template>
@@ -274,7 +273,7 @@
                 </paper-listbox>
               </paper-menu-button>
           </template>
-          
+
           <div class="parallels-toggle-div">
             <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
                               on-tap="_toggleParallelsOpened">
@@ -285,7 +284,7 @@
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
-        <iron-collapse no-animation id="collapse" opened="{{ parallelsOpened }}">
+        <iron-collapse no-animation id="collapse" opened="{{parallelsOpened}}">
           <sc-view-parallels root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"></sc-view-parallels>
         </iron-collapse>
       </template>
@@ -298,7 +297,7 @@
   <script>
       class SCSuttaplex extends Polymer.Element {
           static get is() {
-              return 'sc-suttaplex'
+              return 'sc-suttaplex';
           }
 
           static get properties() {
@@ -359,7 +358,7 @@
               }
               if (e.type.endsWith('open')) {
                   node.style['z-index'] = 100;
-              } else if (node.style['z-index'] == 100 && this.parallelsOpened === false) {
+              } else if (node.style['z-index'] === 100 && this.parallelsOpened === false) {
                   node.style['z-index'] = null;
               }
           }
@@ -403,8 +402,10 @@
           }
 
           // Computes API endpoint URL for given translation
-          _computeApiUrlEndpoint(uid, author) {
-              return `/sutta/${uid}/?author=${author}`;
+          _getSuttaTextUrl(uid, lang, author) {
+              const url = window.location;
+              const baseUrl = url.protocol + '//' + url.host;
+              return `${baseUrl}/${uid}/${lang}/${author}`;
           }
 
           _isChosenLang(lang) {
@@ -413,7 +414,7 @@
 
           _toggleParallelsOpened() {
               this.parallelsOpened = !this.parallelsOpened;
-              this.dispatchEvent(new CustomEvent('iron-resize', {composed: true, bubbles: true}));
+              this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
           }
 
           _computeMainHeading(item) {

@@ -1,0 +1,154 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
+
+<link rel="import" href="/elements/text/sc-segmented-text.html">
+<link rel="import" href="/elements/text/sc-simple-text.html">
+
+<!--
+  This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
+  either the simple sutta text view or the segmented view.
+-->
+<dom-module id="sc-text-page-selector">
+  <template>
+
+    <style>
+      .loadingIndicator {
+        font-size: 16px;
+        text-align: center;
+        height: 60px;
+      }
+
+      .center-vertical {
+        margin-top: 50%;
+      }
+    </style>
+
+    <iron-meta id="meta"></iron-meta>
+
+    <iron-ajax
+        id="ajax"
+        url="[[_getUrl()]]"
+        debounce-duration="500"
+        handle-as="json"
+        loading="{{loading}}"
+        last-error="{{error}}"
+        last-response="{{responseData}}"
+    ></iron-ajax>
+
+    <template id="simple_text_container" is="dom-if" if="[[!isSegmentedText]]" restamp>
+      <sc-simple-text id="simple_text"></sc-simple-text>
+    </template>
+
+    <template id="segmented_text_container" is="dom-if" if="[[isSegmentedText]]" restamp>
+      <sc-segmented-text id="segmented_text"></sc-segmented-text>
+    </template>
+
+    <div class="loadingIndicator center-vertical" hidden$="[[error]]">
+      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+    </div>
+
+  </template>
+
+  <script>
+      class SCTextPageSelector extends ReduxMixin(Polymer.Element) {
+          static get is() {
+              return 'sc-text-page-selector';
+          }
+
+          static get properties() {
+              return {
+                  responseData: {
+                      type: Object,
+                      observer: '_onResponse'
+                  },
+                  error: {
+                      type: Object
+                  },
+                  author: {
+                      type: String
+                  },
+                  suttaId: {
+                      type: String
+                  },
+                  langIsoCode: {
+                      type: String
+                  },
+                  stopRequests: {
+                      type: Boolean
+                  },
+                  isSegmentedText: {
+                      type: Boolean
+                  }
+              }
+          }
+
+          static get observers() {
+              return ['_paramChanged(author, suttaId, langIsoCode)'];
+          }
+
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
+                  changeToolbarMode(mode) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_MODE',
+                          mode: mode
+                      };
+                  },
+                  downloadSuttaText(text) {
+                      return {
+                          type: 'DOWNLOAD_SUTTA_TEXT',
+                          text: text
+                      }
+                  }
+              }
+          }
+
+          _onResponse() {
+              this.dispatch('downloadSuttaText', this.responseData);
+              this.isSegmentedText = this.isSuttaTextSegmented();
+              if (this.isSegmentedText) {
+                  this.dispatch('changeToolbarMode', 'segmented-mode');
+              }
+              else {
+                  this.dispatch('changeToolbarMode', 'text-mode');
+              }
+          }
+
+          // The stopRequests variable exists so that we don't make 3 consequent requests in case the
+          // author, suttaId and the langIsoCode all change at the same time.
+          _paramChanged() {
+              if (!this.stopRequests) {
+                  this.stopRequests = true;
+                  // wait 50ms until all routes parameters are changed
+                  setTimeout(() => {
+                      this.$.ajax.url = this._getUrl();
+                      this.$.ajax.generateRequest();
+                      this.stopRequests = false;
+                  }, 50);
+              }
+          }
+
+          // checks if a page is a segmented-text page
+          isSuttaTextSegmented() {
+              return !!(this.responseData.segmented);
+          }
+
+          _getUrl() {
+              if (this.author) {
+                  return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}/${this.author}?lang=${this.langIsoCode}`;
+              } else {
+                  return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`
+              }
+          }
+      }
+
+      customElements.define(SCTextPageSelector.is, SCTextPageSelector);
+  </script>
+</dom-module>
