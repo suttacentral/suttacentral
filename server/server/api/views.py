@@ -86,7 +86,7 @@ class Menu(Resource):
                 uid = x['from']['uid']
 
                 if uid not in root_uids:
-                    vertex = self._vertex(x['from']['name'], uid, x['lang_num'])
+                    vertex = self._vertex(x['from']['name'], uid, x['num'])
                     data.append(vertex)
                     root_uids.append(uid)
                     edges[uid] = vertex
@@ -97,7 +97,7 @@ class Menu(Resource):
             _id = x['id']
             name = x['name']
 
-            vertex = self._vertex(name, _id, x['lang_num'])
+            vertex = self._vertex(name, _id, x['num'])
 
             try:
                 try:
@@ -107,7 +107,7 @@ class Menu(Resource):
 
             except KeyError:
                 if vertex['uid'].startswith('root'):
-                    edges[_from]['children'] = SortedListWithKey([vertex], key=lambda z: f'{z["lang_num"]}_{z["name"]}')
+                    edges[_from]['children'] = SortedListWithKey([vertex], key=lambda z: z['num'])
                 else:
                     edges[_from]['children'] = [vertex]
 
@@ -120,10 +120,10 @@ class Menu(Resource):
         return data, 200
 
     @staticmethod
-    def _vertex(name, uid, lang_num) -> dict:
+    def _vertex(name, uid, num) -> dict:
         return {'name': name,
                 'uid': uid,
-                'lang_num': lang_num}
+                'num': num}
 
 
 class SuttaplexList(Resource):
@@ -341,7 +341,7 @@ class LookupDictionaries(Resource):
 
 
 class Sutta(Resource):
-    def get(self, uid, author):
+    def get(self, uid, author: str=''):
         """
         Send Complete information set for sutta-view for given uid.
         ---
@@ -493,24 +493,36 @@ class Donations(Resource):
             customer_data['email'] = email
         customer = stripe.Customer.create(**customer_data)
 
-        if one_time_donation:
-            charge = stripe.Charge.create(
-                customer=customer.id,
-                amount=amount,
-                currency=currency['symbol'],
-                metadata={"name": name, "message": message},
-                description=f'Donation by {name if name else ""}, message {message if message else ""}'
-            )
+        try:
+            if one_time_donation:
+                charge = stripe.Charge.create(
+                    customer=customer.id,
+                    amount=amount,
+                    currency=currency['symbol'],
+                    metadata={"name": name, "message": message},
+                    description=f'''Donation by {name if name else ""}, 
+                                message {message if message else ""}'''
+                )
 
-        elif monthly_donation:
-            plan = get_plan(amount, currency['symbol'])
-            subscription = stripe.Subscription.create(
-                customer=customer.id,
-                items=[{"plan": plan.stripe_id}]
-            )
+            elif monthly_donation:
+                plan = get_plan(amount, currency['symbol'])
+                subscription = stripe.Subscription.create(
+                    customer=customer.id,
+                    items=[{"plan": plan.stripe_id}]
+                )
 
-        else:
-            return 'Select either one time or monthly', 400
+            else:
+                return {'err_message': 'Select either one time or monthly'}, 400
+
+        except stripe.InvalidRequestError as e:
+            code = 0
+            if 'Amount must convert to at least 50 cents' in str(e):
+                code = 1
+
+            elif '999,999.99' in str(e) or 'Invalid integer' in str(e):
+                code = 2
+
+            return {'err_code': code}, 400
 
         return 'Subscribed' if monthly_donation else 'Donated', 200
 

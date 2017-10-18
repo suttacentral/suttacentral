@@ -37,7 +37,7 @@ FOR pit IN pitaka
                 from: IS_NULL(e._from) ? {{uid: group_edge._from, name: pit.name}} : e._from,
                 name: v.name,
                 id: v._id,
-                lang_num: lang_num
+                num: v.num
             }}
 '''
 
@@ -109,8 +109,16 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
             FILTER rel._from == v._id
             RETURN rel
     )
+    
+    LET biblio = (
+        FOR biblio IN biblios
+            FILTER biblio.uid == v.biblio_uid
+            LIMIT 1
+            RETURN biblio.text
+    )[0]
         
     RETURN {
+        acronym: v.acronym,
         volpages: volpages,
         uid: v.uid,
         blurb: blurb,
@@ -121,7 +129,8 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
         from: e._from,
         translated_title: translated_titles,
         translations: translations,
-        parallel_count: parallel_count
+        parallel_count: parallel_count,
+        biblio: biblio
     }
 '''
 
@@ -135,7 +144,8 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             LET res = {
                 lang: text.lang,
                 author: text.author,
-                id: text._key
+                id: text._key,
+                segmented: false
                 }
             // Add title if it is in desired language
             LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
@@ -149,7 +159,8 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             LET res = {
                 lang: text.lang,
                 author: text.author,
-                id: text._key
+                id: text._key,
+                segmented: true
             }
             //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
             RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
@@ -200,7 +211,8 @@ LET legacy_translations = (
         LET res = {
             lang: text.lang,
             author: text.author,
-            id: text._key
+            id: text._key,
+            segmented: false
             }
         // Add title if it is in desired language
         LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
@@ -215,7 +227,8 @@ LET po_translations = (
         LET res = {
             lang: text.lang,
             author: text.author,
-            id: text._key
+            id: text._key,
+            segmented: true
         }
         //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
         RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
@@ -276,11 +289,19 @@ LET parallel_count = LENGTH(
         FILTER rel._from == root_text._id
         RETURN rel
 )
+
+LET biblio = (
+    FOR biblio IN biblios
+        FILTER biblio.uid == root_text.biblio_uid
+        LIMIT 1
+        RETURN biblio.text
+)[0]
     
 RETURN {
     root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
     translation: translated_text ? translated_text : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     suttaplex: {
+        acronym: root_text.acronym,
         volpages: volpages,
         uid: @uid,
         blurb: blurb,
@@ -288,8 +309,10 @@ RETURN {
         original_title: root_text.name,
         root_lang: root_text.root_lang,
         translations: FLATTEN([po_translations, legacy_translations]),
-        parallel_count: parallel_count
-    }
+        parallel_count: parallel_count,
+        biblio: biblio
+    },
+    segmented: translated_text ? true : false    
 }
 '''
 

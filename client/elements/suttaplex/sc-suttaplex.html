@@ -10,7 +10,7 @@
 <link rel="import" href="/bower_components/paper-card/paper-card.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/paper-badge/paper-badge.html">
-<link rel="import" href="/bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="/img/sc-svg-icons.html">
 <link rel="import" href="/elements/addons/sc-sutta-note.html">
@@ -112,10 +112,10 @@
 
       details p {
         @apply --paper-font-body1;
+        @apply --shadow-elevation-3dp;
         position: absolute;
         z-index: 200;
         background-color: #fff;
-        @apply --shadow-elevation-3dp;
         padding: 12px;
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         margin: 0 48px 0 0;
@@ -158,6 +158,61 @@
         border-radius: 5px;
       }
 
+      .display-inline {
+        display: inline-block;
+      }
+
+      .volpage-biblio-info-summary {
+        outline: none;
+        cursor: pointer;
+      }
+
+      .volpage-biblio-info {
+        @apply --paper-font-body1;
+        position: absolute;
+        z-index: 200;
+        background-color: #fff;
+        @apply --shadow-elevation-3dp;
+        padding: 12px;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        margin: 0 48px 0 0;
+        white-space: normal;
+      }
+
+      .no-margin {
+        margin: 0;
+      }
+
+      .toast {
+        --paper-toast-color: white;
+        text-align: center;
+        font-size: 20px;
+        margin-left: calc(50vw - 150px);
+      }
+
+      .success-toast {
+        --paper-toast-background-color: green;
+      }
+
+      .error-toast {
+        --paper-toast-background-color: red;
+      }
+
+      @media screen and (max-width: 596px) {
+        .right-elements {
+          display: flex;
+          flex-flow: column;
+        }
+
+        #copy_menu {
+          order: 1;
+        }
+
+        #parallels_toggle {
+          order: 0;
+        }
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -173,15 +228,26 @@
 
         <div class="suttaplex-nerdy-row">
           <span title="Original title" class$="[[_computeHideOriginalTitle(item)]]">[[item.original_title]]</span>
-          <span title="SuttaCentral ID" class$="[[_computeHideUID(item)]]">[[_toUpper(item.uid)]]</span>
+          <span title="SuttaCentral ID" class$="[[_computeHideUID(item)]]">[[item.acronym]]</span>
           <template is="dom-if" if="[[item.volpages]]">
-            <span class="book" style="margin: 0"><iron-icon icon="book"></iron-icon></span>
-            <span class="vol-page" title="Volume and page">[[item.volpages]]</span>
+            <template is="dom-if" if=[[!item.biblio]]>
+              <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
+              <span class="vol-page" title="Volume and page">[[item.volpages]]</span>
+            </template>
+            <template is="dom-if" if=[[item.biblio]]>
+              <details class="display-inline">
+                <summary class="volpage-biblio-info-summary">
+                  <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
+                  <span class="vol-page" title="Volume and page">[[item.volpages]]</span>
+                </summary>
+                <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
+              </details>
+            </template>
           </template>
         </div>
 
-        <p class$="suttaplex-description [[_computeHide(item.blurb)]]" title="Description">
-          [[item.blurb]]</p>
+        <p class$="suttaplex-description [[_computeHide(item.blurb)]]" title="Description"
+           inner-h-t-m-l="[[item.blurb]]"></p>
       </div>
 
       <div class="card-actions">
@@ -189,7 +255,7 @@
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button flat title$="Go  to a translation by [[translation.author]]">
-                <a href="[[_computeApiUrlEndpoint(item.uid, translation.author)]]"
+                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]"
                    class$="{{_translationBorder(translation.segmented)}}">[[translation.author]]</a>
               </paper-button>
             </template>
@@ -202,9 +268,9 @@
           </div>
         </div>
 
-        <div>
+        <div class="right-elements">
           <template is="dom-if" if="[[parallelsOpened]]">
-            <paper-menu-button horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top"
+            <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true" vertical-align="top"
                                 aria-disabled="false">
                 <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
                                     tabindex="0" aria-disabled="false"></paper-icon-button>
@@ -215,10 +281,11 @@
               </paper-menu-button>
           </template>
 
-          <paper-icon-button id="parallels-toggle" class="toggle-button" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
+          <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
+                             on-tap="_toggleParallelsOpened">
           </paper-icon-button>
-          <paper-badge for="parallels-toggle" label="[[item.parallel_count]]" class="paper-badge"
-                        title="Number of parallels"></paper-badge>
+          <paper-badge for="parallels_toggle" label="[[item.parallel_count]]" class="paper-badge"
+                       title="Number of parallels"></paper-badge>
         </div>
       </div>
 
@@ -229,12 +296,14 @@
       </template>
 
     </paper-card>
+    <paper-toast id="success_toast" class="toast success-toast" text="[[toastMessage]]" duration=3000></paper-toast>
+    <paper-toast id="error_toast" class="toast error-toast" text="[[toastMessage]]" duration=3000></paper-toast>
   </template>
 
   <script>
       class SCSuttaplex extends Polymer.Element {
           static get is() {
-              return 'sc-suttaplex'
+              return 'sc-suttaplex';
           }
 
           static get properties() {
@@ -245,7 +314,8 @@
                   },
                   parallelsOpened: {
                       type: Boolean,
-                      value: false
+                      value: false,
+                      observer: '_parallelsOpenedChanged'
                   },
                   opened: {
                       type: Boolean,
@@ -266,17 +336,43 @@
                   },
                   level: String,
                   // The suttaplex item
-                  item: Object
+                  item: Object,
+                  toastMessage: {
+                    type: String
+                }
               }
+          }
+
+          ready() {
+            super.ready();
+            this.addEventListener('par-menu-copied', (e) => {
+              this.toastMessage = e.detail.message;
+              const success = e.detail.success;
+              if (success) {
+                this.$.success_toast.open();
+              } else {
+                this.$.error_toast.open();
+              }
+              copy_menu.opened = false;  // Close dropdown after the copy action.
+            })
           }
 
           _changeItemZIndex(e) {
               let node = this.parentNode;
+              if(node.style === undefined){
+                 return;
+              }
               if (e.type.endsWith('open')) {
                   node.style['z-index'] = 100;
-              } else {
+              } else if (node.style['z-index'] === 100 && this.parallelsOpened === false) {
                   node.style['z-index'] = null;
               }
+          }
+
+          _parallelsOpenedChanged(e) {
+            const type = e ? 'open' : 'close';
+            const event_mock = { type: type };
+            this._changeItemZIndex(event_mock);
           }
 
           // general function to hide or display various elements.
@@ -308,16 +404,14 @@
           }
 
           // Computes API endpoint URL for given translation
-          _computeApiUrlEndpoint(uid, author) {
-              return `/sutta/${uid}/?author=${author}`;
+          _getSuttaTextUrl(uid, lang, author) {
+              const url = window.location;
+              const baseUrl = url.protocol + '//' + url.host;
+              return `${baseUrl}/${uid}/${lang}/${author}`;
           }
 
           _isChosenLang(lang) {
               return lang === this.inputLanguage;
-          }
-
-          _toUpper(text) {
-              return text.toUpperCase();
           }
 
           _toggleParallelsOpened() {
@@ -331,7 +425,7 @@
               } else if (item.original_title) {
                   return item.original_title;
               } else {
-                  return item.uid;
+                  return item.acronym;
               }
           }
 

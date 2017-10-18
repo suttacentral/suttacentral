@@ -20,9 +20,12 @@
             title: '',
             mode: ''
         },
-        searchParams: {}
+        searchParams: {},
+        suttaText: {}
     };
 
+    // The reducer accepts the current state and an action and returns a new state object
+    // (note that the old state object is unmodified).
     const reducer = (state, action) => {
         switch (action.type) {
             case 'CHANGE_ROUTE':
@@ -30,13 +33,18 @@
             case 'CHANGE_SITE_LANGUAGE':
                 return Object.assign({}, state, { siteLanguage: action.language });
             case 'CHANGE_TOOLBAR_TITLE':
-                const titleOptions = Object.assign({}, state.toolbarOptions, { title: action.title });
-                return Object.assign({}, state, { toolbarOptions: titleOptions });
+                return Object.assign({}, state,
+                    { toolbarOptions: Object.assign({}, state.toolbarOptions, { title: action.title }) });
             case 'CHANGE_TOOLBAR_MODE':
-                const modeOptions = Object.assign({}, state.toolbarOptions, { mode: action.mode });
-                return Object.assign({}, state, { toolbarOptions: modeOptions });
+                return Object.assign({}, state,
+                    { toolbarOptions: Object.assign({}, state.toolbarOptions, { mode: action.mode }) });
             case 'INITIATE_SEARCH':
                 return Object.assign({}, state, { searchParams: action.params });
+            case 'DOWNLOAD_SUTTA_TEXT':
+                return Object.assign({}, state, { suttaText: action.text });
+            case 'CHANGE_SUTTA_META_TEXT':
+                return Object.assign({}, state,
+                    { suttaText: Object.assign({}, state.suttaText, { meta: action.metaText }) });
             default:
                 return state;
         }

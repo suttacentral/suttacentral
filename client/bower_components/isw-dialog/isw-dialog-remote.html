@@ -1,0 +1,115 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`isw-dialog-remote`
+
+A stacking-context safe paper-dialog with remote-control.
+
+Place your dialog somewhere save from stacking-context issues, and access it over a remote element in your view.
+
+Designed as a workshift solution till the stacking context issues in paper-dialog are fixed.
+
+    <isw-dialog name="myUniqueDialogName" data="{{dataFromRemote}}">
+      <h2>Header</h2>
+      <paper-dialog-scrollable>
+        Lorem ipsum: [[dataFromRemote.someTextProperty]]
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm autofocus>Accept</paper-button>
+      </div>
+    </isw-dialog>
+
+    <isw-dialog-remote
+        id="dialogRemote"
+        dialog="myUniqueDialogName"
+        data="[[dataForDialog]]"
+        on-iron-overlay-closed="_closed">
+    </isw-dialog-remote>
+
+    open() {
+      this.$.dialogRemote.open();
+    }
+    _closed( event ) {
+      console.log( event );
+    }
+
+@demo demo/index.html
+-->
+
+<dom-module id="isw-dialog-remote">
+	<script>
+		Polymer( {
+			is: 'isw-dialog-remote',
+
+			properties: {
+				/**
+				 * Name of the dialog to control.
+				 */
+				dialog: {
+					type: String
+				},
+				/**
+				 * Data for the dialog.
+				 */
+				data: {
+					type: Object,
+					notify: true
+				}
+			},
+
+			observers: [
+				'_dataChanged(data.*)'
+			],
+
+			ready: function() {
+				// Listen to dialog 'isw-dialog-dialog-action' events.
+				document.addEventListener( 'isw-dialog-' + this.dialog + '-canceled', e => this._remoteCanceled( e ) );
+				document.addEventListener( 'isw-dialog-' + this.dialog + '-closed', e => this._remoteClosed( e ) );
+				document.addEventListener( 'isw-dialog-' + this.dialog + '-opened', e => this._remoteOpened( e ) );
+			},
+
+			/**
+			 * Send `open` to the dialog.
+			 */
+			open: function() {
+				document.dispatchEvent( new CustomEvent( 'isw-dialog-' + this.dialog + '-open' ) );
+			},
+
+			/**
+			 * Send `close` to the dialog.
+			 */
+			close: function() {
+				document.dispatchEvent( new CustomEvent( 'isw-dialog-' + this.dialog + '-close' ) );
+			},
+
+			/**
+			 * Send `data-changed` to the dialog.
+			 */
+			_dataChanged: function( data ) {
+				document.dispatchEvent( new CustomEvent( 'isw-dialog-' + this.dialog + '-data-changed',  { detail: this.data } ) );
+			},
+
+			/**
+			 * Execute `iron-overlay-closed` from remote.
+			 */
+			_remoteCanceled: function( event ) {
+				this.dispatchEvent( new CustomEvent( 'iron-overlay-canceled', { detail: event.detail } ) );
+			},
+
+			/**
+			 * Execute `iron-overlay-closed` from remote.
+			 */
+			_remoteClosed: function( event ) {
+				this.dispatchEvent( new CustomEvent( 'iron-overlay-closed', { detail: event.detail } ) );
+			},
+
+			/**
+			 * Execute `iron-overlay-closed` from remote.
+			 */
+			_remoteOpened: function( event ) {
+				this.dispatchEvent( new CustomEvent( 'iron-overlay-opened', { detail: event.detail } ) );
+			}
+		});
+	</script>
+</dom-module>

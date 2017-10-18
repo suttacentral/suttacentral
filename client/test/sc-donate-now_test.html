@@ -37,7 +37,7 @@
                     '{"american_express" : true, "decimal" : true, "name" : "Albanian Lek", "symbol" : "ALL"}]}'
 
                 ]);
-            })
+            });
 
             test('Should have "PAY WITH CARD" in button', (done) => {
                 flush(() => {
@@ -45,7 +45,7 @@
                     assert.include(button.innerHTML, 'PAY WITH CARD');
                     done();
                 })
-            })
+            });
 
             teardown(() => {
                 server.restore();

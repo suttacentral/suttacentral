@@ -1,11 +1,7 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
-<link rel="import" href="/elements/addons/sc-text-options.html">
+<link rel="import" href="/elements/text/sc-text-options.html">
 <link rel="import" href="/styles/sc-text-styles.html">
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
@@ -19,7 +15,7 @@ This elements first loads the html markup file from `../data/texts/markup`, then
 from `../data/texts/en/sujato` and the pali from `../data/texts/pli` as well as the file that contains the paragraph
 numbers from `../data/paragraphtitles.json`.
 
-The relevant suttaplex card is shown at the top, hidden behind a dropdown (`addons/sc-text-options.html`).
+The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
 
 Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested. Via this menu,
 also the type of view (none, side-by-side, line-by-line or popup) can be chosen to display the english and pali
@@ -29,16 +25,11 @@ The type of script used for the pali can be chosen.
 Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
 
 Issues that need to be fixed:
-    - Right now it only works for the segmented translations by Sujato and for the pali thereof and only for
-    the files I have for that with is all AN, SN, MN1-123. DN is not yet in there so the DN file that is shown in
-    the menu under DN1 is actually MN1 just to try things out but will need to be replaced.
     - The pali lookup tool does not yet work. See remarks under `settings-menu.html`.
-    - Only sujato is recognised as an author so that might have to change. It also only works for the pali right now
-    if a translated file for Sujato exists too.
 -->
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
   <template>
-    <style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
+    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
       .not-found {
         @apply --paper-font-display1;
       }
@@ -92,182 +83,176 @@ Issues that need to be fixed:
           white-space: normal;
         };
       }
+
+      .text-options {
+        padding: 32px;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .margin-top-xl {
+        margin-top: 10vh;
+      }
     </style>
 
-    <iron-meta id="meta"></iron-meta>
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]" hidden$="[[!suttaplex]]"></sc-text-options>
+    <div id="html_text_content" inner-h-t-m-l="[[rootSutta.text]]" hidden$="[[!rootSutta]]"></div>
 
-    <iron-ajax id="ajax"
-               url="[[_computeUrl(suttaPath,author)]]"
-               handle-as="text"
-               last-response="{{lastResponse}}"
-               last-error='{{notFound}}'
-               on-response="_onResponse"></iron-ajax>
-
-    <template is="dom-if" if="[[notFound]]">
-      <p class="not-found">Sorry, the page you requested does not exist.</p>
-    </template>
-
-    <template is="dom-if" if="[[!notFound]]">
-      <sc-text-options suttaplex-item="[[suttaplex]]"></sc-text-options>
-      <div id="html_text_content" inner-h-t-m-l="[[suttaRootText]]"></div>
+    <template is="dom-if" if="[[!rootSutta.text]]">
+      <div class="text-center margin-top-xl">
+        <h2>Error</h2>
+        <h3>Could not find the sutta text.</h3>
+      </div>
     </template>
 
   </template>
 
   <script>
-      class SCSegmentedText extends Polymer.Element {
+      class SCSegmentedText extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-segmented-text';
           }
 
           static get properties() {
               return {
-                  // The ID of the sutta to be displayed
-                  suttaPath: {
-                      type: String,
-                      notify: true
-                  },
-                  author: {
-                      type: String,
-                      notify: true
-                  },
-                  suttaRootText: {
-                      type: String,
-                      notify: true,
-                      value: ''
-                  },
-                  suttaTranslatedText: {
+                  rootSutta: {
                       type: Object,
-                      notify: true,
-                      value: () => { return {}; }
+                      statePath: 'suttaText.root_text'
                   },
-                  suttaOriginalText: {
+                  translatedSutta: {
                       type: Object,
-                      notify: true,
-                      value: () => { return {}; }
+                      statePath: 'suttaText.translation',
+                      observer: '_updateView'
                   },
-                  inputLanguage: String,
-                  notFound: Object,
-                  paragraphTitles: Object,
+                  suttaplex: {
+                      type: Object,
+                      statePath: 'suttaText.suttaplex'
+                  },
                   // If true, shows the paragraph numbers on the right of the text.
-                  // Data is passed on from the toolbar-settings-menu.
                   showParagraphs: {
                       type: Boolean,
                       notify: true,
                       observer: '_addParagraphs'
-                  },
-                  // checks if the html markup is fully loaded before other functions can start
-                  htmlLoaded: {
-                      type: Boolean,
-                      notify: true
                   },
                   // View for segmented text selected in the toolbar-settings-menu.
                   showViewer: {
                       type: String,
                       observer: 'setView'
                   },
+                  // checks if the html markup is fully loaded before other functions can start
+                  htmlLoaded: Boolean,
                   // Choice of script to use for the pali. Default is Latin.
                   paliScript: {
                       type: Number,
-                      notify: true,
                       observer: 'changeScript'
                   },
-                  suttaplex: {
-                      type: Object,
-                      value: () => { return {}; }
+                  paragraphTitles: Object,
+                  rootAuthor: String,
+                  rootLang: String,
+                  rootTitle: String,
+                  translationAuthor: String,
+                  translationLang: String,
+                  translatedTitle: String
+              }
+          }
+
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
                   },
-                  lastResponse: {
-                      type: Object,
-                      value: () => { return {}; }
+                  changeSuttaMetaText(metaText) {
+                      return {
+                          type: 'CHANGE_SUTTA_META_TEXT',
+                          metaText: metaText
+                      }
                   }
               }
           }
 
-          static get observers() {
-              return [
-                  '_callAjax(suttaPath,author)'
-              ]
-          }
-
           ready() {
               super.ready();
-              console.log('in segmented text');
-          }
-
-          _callAjax() {
               this.htmlLoaded = false;
-              if (this.author && (this.author === 'sujato' || this.author === 'pali')) {
-                  this.$.ajax.generateRequest();
+          }
+
+          _updateView() {
+              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
+              this._setRootAttributes();
+              this._setTranslatedAttributes();
+              this._updateToolbar();
+          }
+
+          _setRootAttributes() {
+              if (!this.rootSutta) {
+                  return;
               }
+              this.rootAuthor = this.rootSutta.author;
+              this.rootLang = this.rootSutta.lang;
+              this.rootTitle = this.rootSutta.title;
           }
 
-          _getBaseUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/suttas`;
-          }
-
-          _computeUrl(suttaUid, author) {
-              console.log('_computeUrl(): ' + suttaUid + ' ' + author);
-              return `${this._getBaseUrl()}/${suttaUid}/${author}`;
-          }
-
-          _computeTranslatedURL(suttaUid, author) {
-              console.log('_computeTranslatedUrl(): ' + suttaUid + ' ' + author);
-              return `${this._getBaseUrl()}/${suttaUid}/${author}`;
-          }
-
-          _computeOriginalURL(suttaUid, author) {
-              console.log('_computeOriginalUrl(): ' + suttaUid + ' ' + author);
-              return `${this._getBaseUrl()}/${suttaUid}/${author}`;
-          }
-
-          _onResponse(e) {
-              console.log('onResponse');
-              if (typeof(this.lastResponse) !== 'object') {
-                  this.lastResponse = JSON.parse(this.lastResponse);
+          _setTranslatedAttributes() {
+              if (!this.translatedSutta) {
+                  return;
               }
-              this.suttaRootText = this.lastResponse.root_text.text;
-              this.suttaTranslatedText = this.lastResponse.translation.text;
-              this.suttaplex = this.lastResponse.suttaplex;
-              this.sendInfoToToolbar();
-              //              this.$.ajaxParagraphs.generateRequest();
+              this.translationAuthor = this.translatedSutta.author;
+              this.translationLang = this.translatedSutta.lang;
+              this.translatedTitle = this.translatedSutta.title;
           }
 
+          _updateToolbar() {
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
+              this.dispatch('changeToolbarTitle',
+                  `${this.translatedTitle ? this.translatedTitle : this.rootTitle} – ${this.translationAuthor}`);
+          }
+
+          // returns the meta-data from the loaded sutta text
+          _computeMeta() {
+              let matches = this.translatedSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              if (!matches) {
+                  matches = this.rootSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              }
+              return matches ? matches[1] : '';
+          }
+
+          // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
           _addTranslatedText(e) {
-              console.log('_addTranslatedText');
-              // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-              //              const segments = this.shadowRoot.querySelectorAll('sc-segment');
-              //              Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              //              const outputText = e.detail.response;
-              //              for (let key in outputText) {
-              //                  if (!key.startsWith("_")) {
-              //                      let subkey = key.replace(/:/g, "\\\:");
-              //                      console.log('subkey: ' + subkey );
-              //                      subkey = subkey.replace(/\./g, "\\\.");
-              //                      const segment = this.shadowRoot.querySelector('#' + subkey);
-              //                      segment.innerHTML = outputText[key] + " ";
-              //                  }
-              //              }
+              const segments = this.shadowRoot.querySelectorAll('sc-segment');
+              Array.from(segments).forEach(item => item.classList.add('translated-text'));
+              const outputText = e.detail.response;
+              for (let key in outputText) {
+                  if (!key.startsWith('_')) {
+                      let subkey = key.replace(/:/g, '\\\:');
+                      subkey = subkey.replace(/\./g, '\\\.');
+                      const segment = this.shadowRoot.querySelector('#' + subkey);
+                      segment.innerHTML = outputText[key] + ' ';
+                  }
+              }
           }
 
+          // creates a second 'sc-element' behind every 'sc-element' in the base markup and
+          // populates that with the corresponding pali text segment.
           _addOriginalText(e) {
-              console.log('_addOriginalText');
-              // creates a second 'sc-element' behind every 'sc-element' in the base markup and
-              // populates that with the corresponding pali text segment.
-              //              if (!this.shadowRoot.querySelector('.original-text')) {
-              //                  const outputText = e.detail.response;
-              //                  for (let key in outputText) {
-              //                      if (!key.startsWith("_")) {
-              //                          let subkey = key.replace(/:/g, "\\\:");
-              //                          subkey = subkey.replace(/\./g, "\\\.");
-              //                          const segment = this.shadowRoot.querySelector('#' + subkey);
-              //                          const newSegment = document.createElement('sc-segment');
-              //                          newSegment.id = key;
-              //                          newSegment.classList.add("original-text");
-              //                          newSegment.innerHTML = outputText[key] + " ";
-              //                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
-              //                      }
-              //                  }
-              //              }
+              if (!this.shadowRoot.querySelector('.original-text')) {
+                  const outputText = e.detail.response;
+                  for (let key in outputText) {
+                      if (!key.startsWith('_')) {
+                          let subkey = key.replace(/:/g, '\\\:');
+                          subkey = subkey.replace(/\./g, '\\\.');
+                          const segment = this.shadowRoot.querySelector('#' + subkey);
+                          const newSegment = document.createElement('sc-segment');
+                          newSegment.id = key;
+                          newSegment.classList.add('original-text');
+                          newSegment.innerHTML = outputText[key] + ' ';
+                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+                      }
+                  }
+              }
               this.htmlLoaded = true;
               this.$.html_text_content.classList.add('latin-script');
 
@@ -280,40 +265,13 @@ Issues that need to be fixed:
 
           // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs() {
-              console.log('_addParagraphs');
               const infotext = this.$.html_text_content;
               return (infotext && !this.showParagraphs) ?
                   infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
           }
 
-          // returns the correct title from the first segment in the translated json file.
-          _computeTitle() {
-              let title = this.lastResponse.root_text.title;
-              console.log(`title: ${title}`);
-              return title ? title : '';
-          }
-
-          // returns the full author details (only Sujato at the moment)
-          _computeAuthor() {
-              let author = this.lastResponse.translation.author;
-              console.log(`author: ${author}`);
-              return author ? author : '';
-          }
-
-          // returns the meta data. This is still a mockup because we have no meta data for Sujato and it goes from the premise that
-          // if the author is not sujato, it must be pali.
-          _computeMeta() {
-              return (this.author === 'sujato') ? 'There is no Meta Area defined for Bhante Sujato\'s texts yet.' :
-                  '<p>Pali text from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman ' +
-                  'Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on ' +
-                  'the digital edition of the Chaṭṭha Saṅgāyana published by the Vipassana Research Institute, with ' +
-                  'corrections and proofreading by the Dhamma Society.</p><p>Prepared for SuttaCentral by ' +
-                  '<span class=\'editor\'>Blake Walsh</span> and <span class=\'editor\'>Bhikkhu Sujato</span>.</p>';
-          }
-
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computePars(e) {
-              console.log('_computePars');
               const paragraphTitles = e.detail.response;
               for (let key in paragraphTitles) {
                   const refs = this.shadowRoot.querySelectorAll('.' + key);
@@ -325,21 +283,10 @@ Issues that need to be fixed:
               }
           }
 
-          // Sends title and meta data to the page-selector for use in the header and toolbar-settings-menu.
-          sendInfoToToolbar() {
-              this.dispatchEvent(new CustomEvent('eventFromSegmentedTextPage', {
-                  detail: {
-                      suttasegtitle: `${this._computeTitle()} - ${this._computeAuthor()}`,
-                      suttasegmeta: this._computeMeta()
-                  }, bubbles: true, composed: true
-              }));
-          }
-
           // if the base html and the pali texts have been fully loaded, the setting from the
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
           setView(showViewer) {
-              console.log('_setView');
               if (this.htmlLoaded) {
                   this._cleanCode();
                   if (this.author !== 'pali') {
@@ -371,7 +318,6 @@ Issues that need to be fixed:
 
           // reset all classes and remove tooltips.
           _cleanCode() {
-              console.log('_cleanCode');
               this.$.html_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
               Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
                   .forEach(item => item.parentNode.removeChild(item));
@@ -380,7 +326,6 @@ Issues that need to be fixed:
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
           // either in tooltips or in segments.
           changeScript(paliScript) {
-              console.log('_changeScript');
               if (this.htmlLoaded) {
                   const segments = this.shadowRoot.querySelectorAll('.original-text');
                   const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');

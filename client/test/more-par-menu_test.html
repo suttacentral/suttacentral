@@ -27,7 +27,7 @@
 
             setup(() => {
                 basic = fixture('ScMoreParMenu');
-            })
+            });
 
             test('Should have 3 buttons', (done) => {
                 flush(() => {
@@ -35,7 +35,7 @@
                     assert.equal(buttons.length, 3);
                     done();
                 })
-            })
+            });
 
             teardown(() => {
                 server.restore();

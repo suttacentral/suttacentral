@@ -1,0 +1,150 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<link rel="import" href="/elements/text/sc-text-options.html">
+<link rel="import" href="/styles/sc-text-styles.html">
+<link rel="import" href="/styles/sc-text-heading-styles.html">
+<link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
+
+<!--
+The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
+Paragraph numbers can be displayed or hidden as requested via the settings-menu in the toolbar.
+Title, full Author name and Meta data are sent via events to the page-selector for use in the toolbar.
+-->
+<dom-module id="sc-simple-text" attributes="suttatitle suttameta">
+  <template>
+    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
+      .text-options {
+        padding: 32px;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .margin-top-xl {
+        margin-top: 10vh;
+      }
+    </style>
+
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]" hidden$="[[!suttaplex]]"></sc-text-options>
+    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[!sutta]]"></div>
+
+    <template is="dom-if" if="[[!sutta.text]]">
+      <div class="text-center margin-top-xl">
+        <h2>Error</h2>
+        <h3>Could not find the sutta text.</h3>
+      </div>
+    </template>
+
+  </template>
+
+  <script>
+      class SCSimpleText extends ReduxMixin(Polymer.Element) {
+          static get is() {
+              return 'sc-simple-text';
+          }
+
+          static get properties() {
+              return {
+                  // in simple texts, both root texts and translations are returned by the API in the translation object.
+                  sutta: {
+                      type: Object,
+                      statePath: 'suttaText.translation',
+                      observer: '_updateView'
+                  },
+                  suttaplex: {
+                      type: Object,
+                      statePath: 'suttaText.suttaplex'
+                  },
+                  // If true, shows the paragraph numbers on the right of the text.
+                  // Data is passed on from the toolbar-settings-menu.
+                  showParagraphs: {
+                      type: Boolean,
+                      observer: '_addParagraphs'
+                  },
+                  paragraphTitles: {
+                      type: Object
+                  },
+                  title: {
+                      type: String
+                  },
+                  author: {
+                      type: String
+                  },
+                  lang: {
+                      type: String
+                  }
+              }
+          }
+
+          static get actions() {
+              return {
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
+                  changeSuttaMetaText(metaText) {
+                      return {
+                          type: 'CHANGE_SUTTA_META_TEXT',
+                          metaText: metaText
+                      }
+                  }
+              }
+          }
+
+          _updateView() {
+              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
+              this._setAttributes();
+              this._updateToolbar();
+          }
+
+          _setAttributes() {
+              if (!this.sutta) {
+                  return;
+              }
+              this.author = this.sutta.author;
+              this.lang = this.sutta.lang;
+              this.title = this.sutta.title;
+          }
+
+          _updateToolbar() {
+              if (!this.sutta) {
+                  return;
+              }
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
+              const title = this.author ? `${this.title} – ${this.author}` : `${this.title}`;
+              this.dispatch('changeToolbarTitle', title);
+          }
+
+          // adds a class to the main container to either show or hide paragraph numbers.
+          _addParagraphs() {
+              const infotext = this.$.html_text_content;
+              return (infotext && !this.showParagraphs) ? infotext.classList.remove('infomode')
+                  : (infotext) ? infotext.classList.add('infomode') : '';
+          }
+
+          // returns the meta-data from the loaded sutta text
+          _computeMeta() {
+              const matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              return matches ? matches[1] : '';
+          }
+
+          // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
+          _computeParagraphs(e) {
+              const paragraphTitles = e.detail.response;
+              for (let key in paragraphTitles) {
+                  const refs = this.shadowRoot.querySelectorAll('.' + key);
+                  Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key, ''));
+                  Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
+              }
+              if (this.showParagraphs) {
+                  this._addParagraphs();
+              }
+          }
+      }
+
+      customElements.define(SCSimpleText.is, SCSimpleText);
+  </script>
+</dom-module>
