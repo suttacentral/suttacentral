@@ -417,7 +417,7 @@ class Currencies(Resource):
                 schema:
                     id: currencies
                     type: array
-                    item:
+                    items:
                         $ref '#/definitions/currency'
         definitions:
             currency:
@@ -462,8 +462,9 @@ class Paragraphs(Resource):
                 schema:
                     id: paragraphs
                     type: array
-                    item:
+                    items:
                         $ref: '#/definitions/paragraph'
+
         definitions:
             paragraph:
                 type: object
