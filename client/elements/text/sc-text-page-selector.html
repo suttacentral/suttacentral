@@ -27,14 +27,13 @@
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax
-        id="ajax"
-        url="[[_getUrl()]]"
+        id="sutta_text_ajax"
+        url="[[_getSuttaTextUrl()]]"
         debounce-duration="500"
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
-        last-response="{{responseData}}"
-    ></iron-ajax>
+        last-response="{{responseData}}"></iron-ajax>
 
     <template id="simple_text_container" is="dom-if" if="[[!isSegmentedText]]" restamp>
       <sc-simple-text id="simple_text"></sc-simple-text>
@@ -44,7 +43,7 @@
       <sc-segmented-text id="segmented_text"></sc-segmented-text>
     </template>
 
-    <div class="loadingIndicator center-vertical" hidden$="[[error]]">
+    <div class="loadingIndicator center-vertical" hidden$="[[_shouldHideLoadingIndicator()]]">
       <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
     </div>
 
@@ -128,8 +127,8 @@
                   this.stopRequests = true;
                   // wait 50ms until all routes parameters are changed
                   setTimeout(() => {
-                      this.$.ajax.url = this._getUrl();
-                      this.$.ajax.generateRequest();
+                      this.$.sutta_text_ajax.url = this._getSuttaTextUrl();
+                      this.$.sutta_text_ajax.generateRequest();
                       this.stopRequests = false;
                   }, 50);
               }
@@ -140,12 +139,16 @@
               return !!(this.responseData.segmented);
           }
 
-          _getUrl() {
+          _getSuttaTextUrl() {
               if (this.author) {
                   return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}/${this.author}?lang=${this.langIsoCode}`;
               } else {
-                  return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`
+                  return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`;
               }
+          }
+
+          _shouldHideLoadingIndicator() {
+              return (this.error || !this.loading);
           }
       }
 
