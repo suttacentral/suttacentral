@@ -133,8 +133,12 @@ Issues that need to be fixed:
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
                       type: Boolean,
-                      notify: true,
-                      observer: '_addParagraphs'
+                      statePath: 'textParagraphs.enabled',
+                      observer: '_computeParagraphs'
+                  },
+                  paragraphs: {
+                      type: Array,
+                      statePath: 'textParagraphs.descriptions'
                   },
                   // View for segmented text selected in the toolbar-settings-menu.
                   showViewer: {
@@ -178,6 +182,13 @@ Issues that need to be fixed:
           ready() {
               super.ready();
               this.htmlLoaded = false;
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              if (this.showParagraphs && this.paragraphs.length !== 0) {
+                  this._computeParagraphs();
+              }
           }
 
           _updateView() {
@@ -271,16 +282,17 @@ Issues that need to be fixed:
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
-          _computePars(e) {
-              const paragraphTitles = e.detail.response;
-              for (let key in paragraphTitles) {
-                  const refs = this.shadowRoot.querySelectorAll('.' + key);
-                  Array.from(refs).forEach(item => item.innerHTML = item.id.replace(key, ''));
-                  Array.from(refs).forEach(item => item.title = paragraphTitles[key]);
+          _computeParagraphs() {
+              if (this.paragraphs && this.showParagraphs) {
+                  this.paragraphs.forEach((paragraph) => {
+                      const refs = this.shadowRoot.querySelectorAll('.' + paragraph.uid);
+                      Array.from(refs).forEach((item) => {
+                          item.innerHTML = item.id.replace(paragraph.uid, '');
+                          item.title = paragraph.description;
+                      });
+                  });
               }
-              if (this.showParagraphs) {
-                  this._addParagraphs();
-              }
+              this._addParagraphs();
           }
 
           // if the base html and the pali texts have been fully loaded, the setting from the

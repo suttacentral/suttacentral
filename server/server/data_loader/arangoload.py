@@ -11,7 +11,7 @@ from flask import current_app
 from tqdm import tqdm
 from git import InvalidGitRepositoryError, Repo
 
-from . import po, textdata, dictionaries, currencies, biblio
+from . import po, textdata, dictionaries, currencies, biblio, paragraphs
 
 
 class ChangeTracker:
@@ -522,6 +522,8 @@ def run():
     dictionaries.load_dictionaries(db, dictionaries_dir)
 
     currencies.load_currencies(db, additional_info_dir)
+
+    paragraphs.load_paragraphs(db, additional_info_dir)
 
     biblio.load_biblios(db, additional_info_dir)
 
