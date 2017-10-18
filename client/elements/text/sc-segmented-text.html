@@ -98,9 +98,9 @@ Issues that need to be fixed:
     </style>
 
     <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]" hidden$="[[!suttaplex]]"></sc-text-options>
-    <div id="html_text_content" inner-h-t-m-l="[[rootSutta.text]]" hidden$="[[!rootSutta]]"></div>
+    <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[!translatedSutta]]"></div>
 
-    <template is="dom-if" if="[[!rootSutta.text]]">
+    <template is="dom-if" if="[[!translatedSutta.text]]">
       <div class="text-center margin-top-xl">
         <h2>Error</h2>
         <h3>Could not find the sutta text.</h3>
