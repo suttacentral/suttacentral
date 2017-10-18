@@ -6,7 +6,6 @@
 <link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="/bower_components/paper-input/paper-input.html">
 <link rel="import" href="/bower_components/iron-a11y-keys/iron-a11y-keys.html">
-<link rel="import" href="/bower_components/paper-badge/paper-badge.html">
 <link rel="import" href="/bower_components/iron-location/iron-location.html">
 
 <link rel="import" href="/elements/menus/sc-more-menu.html">
@@ -53,10 +52,6 @@ Issues:
         vertical-align: text-bottom;
       }
 
-      .toolbar-badge {
-        --paper-badge-background: var(--paper-green-a700);
-      }
-
       #close_button {
         display: none;
       }
@@ -92,9 +87,6 @@ Issues:
       <a class="toolbar-link" tabindex="-1" target="_blank">
         <paper-icon-button id="discoursebutton" class="white-icon" icon="communication:forum"></paper-icon-button>
       </a>
-
-      <paper-badge class="toolbar-badge" hidden for="discoursebutton" label="20"
-                   title="This text has 20 references"></paper-badge>
 
       <!-- Menu for more options like language and other static pages -->
       <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="more_vert_button">
