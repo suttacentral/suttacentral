@@ -43,7 +43,7 @@
       <sc-segmented-text id="segmented_text"></sc-segmented-text>
     </template>
 
-    <div class="loadingIndicator center-vertical" hidden$="[[error]]">
+    <div class="loadingIndicator center-vertical" hidden$="[[_shouldHideLoadingIndicator()]]">
       <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
     </div>
 
@@ -145,6 +145,10 @@
               } else {
                   return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`;
               }
+          }
+
+          _shouldHideLoadingIndicator() {
+              return (this.error || !this.loading);
           }
       }
 
