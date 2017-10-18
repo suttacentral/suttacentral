@@ -460,7 +460,9 @@
 
               amountInput.addEventListener('keydown', (e) => {
                 if (e.key === ','){
-                  amountInput.value += '.';
+                  let posiiton = amountInput.$.nativeInput.selectionStart;
+                  amountInput.value = amountInput.value.slice(0, posiiton) + '.' + amountInput.value.slice(posiiton);
+                  posiiton += 1;
                   e.preventDefault();
                 }
               })
