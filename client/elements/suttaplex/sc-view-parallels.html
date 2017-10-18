@@ -59,12 +59,13 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
     <iron-meta id="meta"></iron-meta>
 
-    <iron-ajax id="ajax"
-               url="[[_getAPIEndpoint(itemUid)]]"
-               handle-as="json"
-               loading="{{loadingResults}}"
-               last-response="{{responseData}}"
-               on-response="_didRespond"></iron-ajax>
+    <iron-ajax
+        id="ajax"
+        url="[[_getAPIEndpoint(itemUid)]]"
+        handle-as="json"
+        loading="{{loadingResults}}"
+        last-response="{{responseData}}"
+        on-response="_didRespond"></iron-ajax>
 
     <div class="parallels-expanded">
 
@@ -120,12 +121,14 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
           static get properties() {
               return {
-                  itemUid: String,
+                  itemUid: {
+                      type: String,
+                      observer: '_itemUidChanged'
+                  },
                   rootKeys: Array,
                   originalLanguage: String,
                   inputLanguage: String,
                   inputUrl: String,
-                  responseData: Object,
                   loadingResults: {
                       type: Boolean,
                       notify: true
@@ -144,13 +147,22 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                           'xto': 'TocharianA',
                           'kho': 'Khotanese'
                       }
-                  }
+                  },
+                  responseData: Object,
+                  error: Boolean
               }
           }
 
           ready() {
               super.ready();
               this.addEventListener('loading-results-changed', this._resizeParentList)
+          }
+
+          _itemUidChanged() {
+              if (!this.responseData) {
+                  return;
+              }
+              this.shadowRoot.querySelector('#ajax').generateRequest();
           }
 
           connectedCallback() {
