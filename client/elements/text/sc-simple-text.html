@@ -145,10 +145,10 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           _computeParagraphs() {
               if (this.paragraphs) {
                   this.paragraphs.forEach((paragraph) => {
-                      const refs = this.getElementsByClassName('.' + paragraph.uid);
+                      const refs = this.shadowRoot.querySelectorAll('.' + paragraph.uid);
                       Array.from(refs).forEach((item) => {
                           item.innerHTML = item.id.replace(paragraph.uid, '');
-                          item.title = this.paragraphs[paragraph.uid];
+                          item.title = this.paragraphs.filter((paragraph) => paragraph.uid === item.id);
                       });
                   });
                   this._addParagraphs();
