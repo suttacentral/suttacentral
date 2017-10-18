@@ -168,7 +168,7 @@ Issues:
       </div>
 
       <div class="dialogue-section">
-        <h3>Remember what I have selected on this page</h3>
+        <h3>Remember what I have selected</h3>
         <paper-toggle-button noink checked active="{{rememberSettings}}"></paper-toggle-button>
         <app-localstorage-document key="rememberSettings" data="{{rememberSettings}}"></app-localstorage-document>
       </div>
@@ -188,95 +188,96 @@ Issues:
                   value: function() {
                       return []
                   },
-                  observer: "_disableRadioGroup"
+                  observer: '_disableRadioGroup'
               },
 
               // Selected type of view for segmented-text pages.
               radioSelected: {
                   type: String,
-                  value: "none",
+                  value: 'none',
                   observer: '_radioGroupChanged'
               },
               // possible values for the pali to language lookup.
               paliLookupArray: {
                   type: Array,
-                  value: [{
-                      "dict": "none",
-                      "language": "None"
-                  },
+                  value: [
                       {
-                          "dict": "pli2en",
-                          "language": "Pali → English"
+                          'dict': 'none',
+                          'language': 'None'
                       },
                       {
-                          "dict": "pli2es",
-                          "language": "Pali → Spanish"
+                          'dict': 'pli2en',
+                          'language': 'Pali → English'
+                      },
+                      {
+                          'dict': 'pli2es',
+                          'language': 'Pali → Spanish'
                       }]
               },
               // pali to language lookup selected number.
               paliLookupSelected: {
                   type: Number,
-                  value: 0,
+                  value: 0
               },
               // possible values for the chinese to language lookup.
               chineseLookupArray: {
                   type: Array,
                   value: [{
-                      "dict": "none",
-                      "language": "None"
+                      'dict': 'none',
+                      'language': 'None'
                   },
                       {
-                          "dict": "lzh2en",
-                          "language": "Chinese → English"
+                          'dict': 'lzh2en',
+                          'language': 'Chinese → English'
                       }]
               },
               // chinese to language lookup selected number.
               chineseLookupSelected: {
                   type: Number,
-                  value: 0,
+                  value: 0
               },
               // possible values for the script chooser for pali.
               paliScriptChooser: {
                   type: Array,
                   value: [{
-                      "script": "latin",
-                      "language": "Latin"
+                      'script': 'latin',
+                      'language': 'Latin'
                   },
                       {
-                          "script": "sinhala",
-                          "language": "සිංහල"
+                          'script': 'sinhala',
+                          'language': 'සිංහල'
                       },
                       {
-                          "script": "devanagari",
-                          "language": "नागरी"
+                          'script': 'devanagari',
+                          'language': 'नागरी'
                       },
                       {
-                          "script": "thai",
-                          "language": "ไทย"
+                          'script': 'thai',
+                          'language': 'ไทย'
                       },
                       {
-                          "script": "myanmar",
-                          "language": "မြန်မာဘာသာ"
+                          'script': 'myanmar',
+                          'language': 'မြန်မာဘာသာ'
                       }]
               },
               // pali script selected number.
               paliScriptSelected: {
                   type: Number,
                   value: 0,
-                  observer: "_changeScript"
+                  observer: '_changeScript'
               },
               // Boolean that says wether or not paragraph numbers should be
               // displayed on text pages.
               textualInfoEnabled: {
                   type: Boolean,
                   value: false,
-                  observer: "_getReferences"
+                  observer: '_getReferences'
               },
               // Boolean that remembers settings on this page.
               rememberSettings: {
                   type: Boolean,
                   value: true,
-                  observer: "_rememberSettings"
+                  observer: '_rememberSettings'
               },
               sessionOnly: {
                   type: Boolean,
@@ -286,11 +287,11 @@ Issues:
           },
           _getReferences: function(textualInfoEnabled) {
               // Fires the choice of textualInfoEnabled to page-selector.html and from there to the text pages.
-              this.fire('changeTextInfo', {textInfo: textualInfoEnabled});
+              this.fire('changeTextInfo', { textInfo: textualInfoEnabled });
           },
           _radioGroupChanged: function() {
               // Fires the choice of which view for the segmented text pages is selected to page-selector.html.
-              this.fire('eventFromTools', {selectedView: this.radioSelected});
+              this.fire('eventFromTools', { selectedView: this.radioSelected });
           },
           _rememberSettings: function(rememberSettings) {
               // sets the attribute sessionOnly on the app-localstorage so whatever the user chooses after
@@ -311,15 +312,15 @@ Issues:
               // function not used at the moment. The idea was to be able to disable the choice of various
               // views on normal text pages because they are only available on segmented text pages.
               if (disableViews === true) {
-                  const refs = this.querySelectorAll("paper-radio-button");
+                  const refs = this.querySelectorAll('paper-radio-button');
                   for (let i = 0; i < refs.length; i++) {
-                      refs[i].setAttribute("disabled", true);
+                      refs[i].setAttribute('disabled', true);
                   }
               }
           },
           _changeScript: function() {
               // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
-              this.fire('changeScript', {scriptchoice: this.paliScriptSelected});
+              this.fire('changeScript', { scriptchoice: this.paliScriptSelected });
           }
       });
   </script>
