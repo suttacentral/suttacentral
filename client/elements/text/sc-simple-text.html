@@ -143,16 +143,16 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
-              if (this.paragraphs) {
+              if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.shadowRoot.querySelectorAll('.' + paragraph.uid);
                       Array.from(refs).forEach((item) => {
                           item.innerHTML = item.id.replace(paragraph.uid, '');
-                          item.title = this.paragraphs.filter((paragraph) => paragraph.uid === item.id);
+                          item.title = paragraph.description;
                       });
                   });
-                  this._addParagraphs();
               }
+              this._addParagraphs();
           }
       }
 
