@@ -262,6 +262,10 @@ Issues:
                       type: Boolean,
                       statePath: 'textParagraphs.enabled'
                   },
+                  textualInfoDescriptions: {
+                      type: Array,
+                      statePath: 'textParagraphs.descriptions'
+                  },
                   // The state of the textual info paper-toggle-button
                   textualInfoToggleEnabled: {
                       type: Boolean,
@@ -308,7 +312,9 @@ Issues:
 
           _onParagraphsLoaded() {
               if (this.textualInfoResponse) {
-                  this.dispatch('downloadParagraphs', this.textualInfoResponse);
+                  if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
+                      this.dispatch('downloadParagraphs', this.textualInfoResponse);
+                  }
                   this.dispatch('toggleTextualInfo', this.textualInfoToggleEnabled);
               }
           }

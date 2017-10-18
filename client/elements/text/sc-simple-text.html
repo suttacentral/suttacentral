@@ -57,7 +57,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       statePath: 'suttaText.suttaplex'
                   },
                   // If true, shows the paragraph numbers on the right of the text.
-                  // Data is passed on from the toolbar-settings-menu.
                   showParagraphs: {
                       type: Boolean,
                       statePath: 'textParagraphs.enabled',
@@ -79,9 +78,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               }
           }
 
-          ready() {
-              super.ready();
+          connectedCallback() {
+              super.connectedCallback();
               console.log('in simple text');
+              if (this.showParagraphs && this.paragraphs.length !== 0) {
+                  this._computeParagraphs();
+              }
           }
 
           static get actions() {
