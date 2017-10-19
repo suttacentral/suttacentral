@@ -548,7 +548,7 @@ class Donations(Resource):
             if 'Amount must convert to at least 50 cents' in str(e):
                 code = 1
 
-            elif '999,999.99' in str(e) or 'Invalid integer' in str(e):
+            elif any(x in str(e) for x in ['99999999', '999,999.99', 'Invalid integer']):
                 code = 2
 
             return {'err_code': code}, 400
