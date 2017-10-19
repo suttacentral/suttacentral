@@ -297,8 +297,8 @@ def get_true_uids(uid: str, all_uids: Set[str]) -> List[str]:
         >>> get_true_uids('sn19.19-sn19.21', {'sn19.19', 'sn19.20', 'agh54'})
         >>> ['sn19.19', 'sn19.20']
 
-        >>> get_true_uids('dhsk12-dhsk13', {'dhsk12', 'dhsk13'})
-        >>> ['dhsk12', 'dhsk13']
+        >>> get_true_uids('dk12-dk13', {'dk12', 'dk13'})
+        >>> ['dk12', 'dk13']
     """
     uids = []
     seen = set()
@@ -329,7 +329,7 @@ def get_true_uids(uid: str, all_uids: Set[str]) -> List[str]:
         else:
             expand(m[1], m[2], m[3])
 
-    # More complex: dhsk1-dhsk17 sn19.1-sn19.21
+    # More complex: dk1-dk17 sn19.1-sn19.21
     # backreference is a big help here!
     m = regex.match(r'(.*)(\d+)-\1(\d+)', uid)
     if m:
