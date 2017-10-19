@@ -5,11 +5,11 @@ from collections import defaultdict
 import stripe
 from flask import request, current_app
 from flask_restful import Resource
-from sortedcontainers import SortedListWithKey
+from sortedcontainers import SortedListWithKey, SortedDict
 
 from common.arangodb import get_db
 from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW, CURRENCIES, PARAGRAPHS
-from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort
+from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort, sort_parallels_key
 
 
 class Languages(Resource):
@@ -283,10 +283,13 @@ class Parallels(Resource):
         results = db.aql.execute(PARALLELS,
                                  bind_vars={'language': language, 'uid': uid})
 
-        data = defaultdict(list)
+        data = SortedDict(sort_parallels_key)
         for result in results:
             _from = result.pop('from')
-            data[_from].append(result)
+            try:
+                data[_from].append(result)
+            except KeyError:
+                data[_from] = [result]
             result['to']['translations'] = sorted(result['to']['translations'],
                                                   key=language_sort(result['to']['root_lang']))
 
