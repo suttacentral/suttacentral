@@ -201,11 +201,11 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
           // returns the icon for the parallel with the given index.
           _getParallelIcon(item) {
-            if(item.resembling){
-                return 'icons:compare-arrows';
-            }
             switch (item.type) {
                 case 'full':
+                    if(item.resembling){
+                        return 'icons:compare-arrows';
+                    }
                     return 'swap-horiz';
                 case 'retelling':
                     return 'cached';
@@ -221,18 +221,16 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
             if (!item) {
                 return;
             }
-            if(item.resembling){
-                return 'resembling';
-            }
             switch (item.type) {
                 case 'full':
-                    return 'Full Parallel';
+                    if(item.resembling){
+                        return 'Resembling parallel';
+                    }
+                    return 'Full parallel';
                 case 'retelling':
                     return 'Retelling parallel';
                 case 'mention':
                     return 'Mention';
-                case 'resembling':
-                    return 'Resembling parallel';
             }
         }
 
