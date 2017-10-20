@@ -391,10 +391,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
                 continue
 
             for to_uid in uids[1:]:
-                if to_uid.startswith('~'):
-                    resembling = True
-                else:
-                    resembling = False
+                is_resembling = to_uid.startswith('~')
                 to_uids = get_true_uids(to_uid, all_uids)
                 if not to_uids:
                     print_once(f'Could not find any uids for: {to_uid}', antispam)
@@ -407,7 +404,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
                             'from': uids[0],
                             'to': to_uid.lstrip('~'),
                             'type': r_type,
-                            'resembling': resembling
+                            'resembling': is_resembling
                         })
 
     db['relationship'].truncate()

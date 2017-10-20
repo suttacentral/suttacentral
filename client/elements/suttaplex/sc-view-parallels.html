@@ -63,14 +63,14 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
             id="ajax"
             url="[[_getAPIEndpoint(itemUid)]]"
             handle-as="json"
-            loading="{{ loadingResults }}"
-            last-response="{{ responseData }}"
+            loading="{{loadingResults}}"
+            last-response="{{responseData}}"
             on-response="_didRespond"></iron-ajax>
 
     <div class="parallels-expanded">
 
       <div class="loadingIndicator">
-        <paper-spinner-lite class="paper-spinner" active="{{ loadingResults }}"></paper-spinner-lite>
+        <paper-spinner-lite class="paper-spinner" active="{{loadingResults}}"></paper-spinner-lite>
       </div>
 
       <table class="parallels-table">
@@ -175,7 +175,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           }
 
           _resizeParentList() {
-              this.dispatchEvent(new CustomEvent('iron-resize', {bubbles: true, composed: true}));
+              this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true, composed: true }));
           }
 
           _getRelations(rootId) {
@@ -201,38 +201,38 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
           // returns the icon for the parallel with the given index.
           _getParallelIcon(item) {
-            switch (item.type) {
-                case 'full':
-                    if(item.resembling){
-                        return 'icons:compare-arrows';
-                    }
-                    return 'swap-horiz';
-                case 'retelling':
-                    return 'cached';
-                case 'mention':
-                    return 'editor:format-quote';
-                default:
-                    return '';
-            }
+              switch (item.type) {
+                  case 'full':
+                      if (item.resembling) {
+                          return 'icons:compare-arrows';
+                      }
+                      return 'swap-horiz';
+                  case 'retelling':
+                      return 'cached';
+                  case 'mention':
+                      return 'editor:format-quote';
+                  default:
+                      return '';
+              }
           }
 
-        // returns the correct title for each type of parallel.
-        _computeIconTitle(item) {
-            if (!item) {
-                return;
-            }
-            switch (item.type) {
-                case 'full':
-                    if(item.resembling){
-                        return 'Resembling parallel';
-                    }
-                    return 'Full parallel';
-                case 'retelling':
-                    return 'Retelling parallel';
-                case 'mention':
-                    return 'Mention';
-            }
-        }
+          // returns the correct title for each type of parallel.
+          _computeIconTitle(item) {
+              if (!item) {
+                  return;
+              }
+              switch (item.type) {
+                  case 'full':
+                      if (item.resembling) {
+                          return 'Resembling parallel';
+                      }
+                      return 'Full parallel';
+                  case 'retelling':
+                      return 'Retelling parallel';
+                  case 'mention':
+                      return 'Mention';
+              }
+          }
 
           // returns the title for the parallel icon with the given index.
           _getFirstParallelIconTitle(rootId) {
