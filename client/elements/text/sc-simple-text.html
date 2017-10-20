@@ -39,11 +39,11 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
     <sc-text-options class="text-options" suttaplex-item="{{suttaplex}}"></sc-text-options>
 
-    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading)]]">
-      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading, textViewHidden)]]">
+      <paper-spinner-lite active></paper-spinner-lite>
     </div>
 
-    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[loading]]"></div>
+    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[textViewHidden]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
       <div class="text-center margin-top-xl">
@@ -90,29 +90,16 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       type: String
                   },
                   loading: {
-                      type: Boolean
+                      type: Boolean,
+                      observer: '_loadingChanged'
                   },
                   error: {
                       type: Object
+                  },
+                  textViewHidden: {
+                      type: Boolean,
+                      value: false
                   }
-              }
-          }
-
-          ready() {
-              super.ready();
-              // insert the sutta text into the main element again to force reloading styles
-              document.addEventListener('visibilitychange', () => {
-                  // this.$.html_text_content.innerHTML = this.sutta.text;
-                  setTimeout(() => {
-                      this.$.html_text_content.innerHTML = this.sutta.text
-                  }, 200);
-              })
-          }
-
-          connectedCallback() {
-              super.connectedCallback();
-              if (this.showParagraphs && this.paragraphs.length !== 0) {
-                  this._computeParagraphs();
               }
           }
 
@@ -133,9 +120,29 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               }
           }
 
+          ready() {
+              super.ready();
+              document.addEventListener('visibilitychange', () => {
+                  // Hide the text and display the loading spinner:
+                  this.textViewHidden = true;
+                  // Insert the sutta text into the main element again to force reloading styles:
+                  // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
+                  setTimeout(() => {
+                      this.$.html_text_content.innerHTML = this.sutta.text;
+                      this.textViewHidden = false;
+                  }, 200);
+              })
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              if (this.showParagraphs && this.paragraphs.length !== 0) {
+                  this._computeParagraphs();
+              }
+          }
+
           _updateView() {
               this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
-              //              this.$.html_text_content.innerHTML = this.sutta.text;
               this._setAttributes();
               this._updateToolbar();
           }
@@ -188,8 +195,15 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this._addParagraphs();
           }
 
-          _shouldShowLoadingIndicator(error, loading) {
-              return (!error && loading);
+          // Display the loading indicator in two cases:
+          // 1: If there's no error and the text view is loading, or...
+          // 2: If the text view is currently hidden
+          _shouldShowLoadingIndicator(error, loading, textViewHidden) {
+              return ((!error && loading) || textViewHidden);
+          }
+
+          _loadingChanged() {
+              this.textViewHidden = this.loading;
           }
       }
 
