@@ -22,9 +22,8 @@
         last-error="{{error}}"
         last-response="{{responseData}}"></iron-ajax>
 
-    <template id="simple_text_container" is="dom-if" if="[[!isSegmentedText]]" restamp>
-      <sc-simple-text loading="{{loading}}" error="{{error}}" id="simple_text"></sc-simple-text>
-    </template>
+      <sc-simple-text id="simple_text" sutta="[[responseData.root_text]]" suttaplex="[[responseData.suttaplex]]"
+                      loading="{{loading}}" error="{{error}}"></sc-simple-text>
 
     <template id="segmented_text_container" is="dom-if" if="[[isSegmentedText]]" restamp>
       <sc-segmented-text loading="{{loading}}" error="{{error}}" id="segmented_text"></sc-segmented-text>
