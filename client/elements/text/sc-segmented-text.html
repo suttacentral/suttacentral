@@ -130,17 +130,14 @@ Issues that need to be fixed:
           static get properties() {
               return {
                   rootSutta: {
-                      type: Object,
-                      statePath: 'suttaText.root_text'
+                      type: Object
                   },
                   translatedSutta: {
                       type: Object,
-                      statePath: 'suttaText.translation',
                       observer: '_updateView'
                   },
                   suttaplex: {
-                      type: Object,
-                      statePath: 'suttaText.suttaplex'
+                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {

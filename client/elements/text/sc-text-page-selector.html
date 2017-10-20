@@ -22,12 +22,12 @@
         last-error="{{error}}"
         last-response="{{responseData}}"></iron-ajax>
 
-      <sc-simple-text id="simple_text" sutta="[[responseData.root_text]]" suttaplex="[[responseData.suttaplex]]"
-                      loading="{{loading}}" error="{{error}}"></sc-simple-text>
+    <sc-simple-text id="simple_text" sutta="[[responseData.root_text]]" suttaplex="[[responseData.suttaplex]]"
+                    loading="{{loading}}" error="{{error}}" hidden$="[[isSegmentedText]]"></sc-simple-text>
 
-    <template id="segmented_text_container" is="dom-if" if="[[isSegmentedText]]" restamp>
-      <sc-segmented-text loading="{{loading}}" error="{{error}}" id="segmented_text"></sc-segmented-text>
-    </template>
+    <sc-segmented-text id="segmented_text" root-sutta="[[responseData.root_text]]"
+                       suttaplex="[[responseData.suttaplex]]" translated-sutta="[[responseData.translation]]"
+                       loading="{{loading}}" error="{{error}}" hidden$="[[!isSegmentedText]]"></sc-segmented-text>
 
   </template>
 
