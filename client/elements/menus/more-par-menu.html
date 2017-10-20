@@ -36,6 +36,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
     </style>
 
+    <iron-meta id="meta"></iron-meta>
+
     <iron-ajax id="parallels_ajax"
                auto
                url="[[_getAPIEndpoint(item)]]"
@@ -71,10 +73,6 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   },
                   inputData: {
                       type: Object,
-                      notify: true
-                  },
-                  parallelsArray: {
-                      type: Array,
                       notify: true
                   },
                   itemLink: {
@@ -116,7 +114,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
 
           _setAreParallelsAvaiable(loadingParallels) {
-            return loadingParallels || (Object.keys(this.parallels).length === 0 && typeof this.parallels === 'object')
+              return loadingParallels || (Object.keys(this.parallels).length === 0 && typeof this.parallels === 'object')
           }
 
           _computeLink() {
@@ -138,8 +136,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
           //  copy cite-information about parallels and bibliography.
           _copyCite() {
+              this._computeCiteData();
               try {
-                  const copyTextarea = this._computeCiteData(this.inputData, this.parallelsArray);
+                  const copyTextarea = this._computeCiteData();
                   this._copyToClipboard(copyTextarea);
                   this._notifyCopy('Cite copied!', true);
               } catch (err) {
@@ -213,38 +212,65 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               return head + body;
           }
 
-          // creates cite data for parallels with parallels-list and bibliographical information
-          _computeCiteData(inputData, parallelsArray) {
-              if (inputData.parallels) {
-                  citefinalplugin = "";
-                  const d = new Date();
-                  for (let x = 0; x < inputData.parallels.length; x++) {
-                      const relationships = inputData.parallels[x].relations;
-                      let citeplugin = "Parallels for " + inputData.parallels[x].id + " " + inputData.titlepi + " (" + inputData.volpage + "): ";
-                      for (let i = 0; i < relationships.length; i++) {
-                          citeplugin += relationships[i].id;
-                          for (let parobject = 0; parobject < parallelsArray.length; parobject++) {
-                              if (parallelsArray[parobject].parid === relationships[i].id) {
-                                  if (parallelsArray[parobject].volumepage) {
-                                      citeplugin += " (" + parallelsArray[parobject].volumepage + ") ";
-                                  }
-                                  if (parallelsArray[parobject].biblio) {
-                                      citeplugin += parallelsArray[parobject].biblio;
-                                  }
-                              }
-                          }
-                          if (i < relationships.length - 1) {
-                              citeplugin += "; ";
-                          }
-                      }
-                      citefinalplugin += citeplugin + "\n";
+          _computeCiteData() {
+              let result = '';
+
+              for (let section of Object.keys(this.parallels)) {
+                  let acronymUid = this._generateAcronymUid(this.item.acronym, section)
+                  result += `Parallels for ${acronymUid} ${this.item.original_title} `;
+                  if (this.item.volpages.length > 0) {
+                      result += `(${this.item.volpages[0]})`;
                   }
-                  return this.citeData = citefinalplugin + "Retrieved from https://suttacentral.net/" + inputData.url + " on " + d + ".";
+                  result = this._strip(result, ' ');
+                  result += ': '
+                  for (let parallel of this.parallels[section]) {
+                      result += this._generateAcronymUid(parallel.to.acronym, parallel.to.to);
+                      result += ' ';
+                      if (parallel.to.volpages.length > 0) {
+                          result += `(${this.item.volpages[0]}) `;
+                      }
+                      if (parallel.to.biblio) {
+                          result += this._getTextFromHtml(parallel.to.biblio);
+                      }
+                      result = this._strip(result, ' ');
+                      result += '; ';
+                  }
+                  result = this._strip(result, ' ');
+                  result = this._strip(result, ';');
+                  result += '\n';
+              }
+              result += `Retrieved from ${window.location.href} on ${new Date()}.`
+              return result;
+          }
+
+          _strip(s, toStrip) {
+              if (s[s.length - 1] === toStrip) {
+                  return s.substring(0, s.length - 1);
+              }
+              return s;
+          }
+
+          _generateAcronymUid(acronym, uid) {
+              if (acronym) {
+                  let paragraph = uid.split(/#(.+)/)[1];
+                  if (paragraph) {
+                      acronym += `#${paragraph}`;
+                  }
+                  return acronym;
+              } else {
+                  return uid;
               }
           }
 
+          _getTextFromHtml(htmlString) {
+              let tmp = document.createElement('div');
+              tmp.innerHTML = htmlString;
+              let text = tmp.textContent;
+              return text;
+          }
+
           _getAPIEndpoint(item) {
-              return `/api/parallels/${item.uid}`;
+              return `${this.$.meta.byKey('API_ROOT')}/parallels/${item.uid}`;
           }
       }
 
