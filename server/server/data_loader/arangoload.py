@@ -378,11 +378,12 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
     ll_edges = []
     for entry in tqdm(relationship_data):
         for r_type, uids in entry.items():
-            if r_type == 'remarks':
+            if r_type == 'retells':
                 r_type = 'retelling'
-                continue
             elif r_type == 'mentions':
                 r_type = 'mention'
+            elif r_type == 'parallels':
+                r_type = 'full'
 
             from_uids = get_true_uids(uids[0], all_uids)
             if not from_uids:
@@ -390,11 +391,10 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
                 continue
 
             for to_uid in uids[1:]:
-                if r_type == 'parallels':
-                    if to_uid.startswith('~'):
-                        r_type = 'resembling'
-                    else:
-                        r_type = 'full'
+                if to_uid.startswith('~'):
+                    resembling = True
+                else:
+                    resembling = False
                 to_uids = get_true_uids(to_uid, all_uids)
                 if not to_uids:
                     print_once(f'Could not find any uids for: {to_uid}', antispam)
@@ -407,6 +407,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
                             'from': uids[0],
                             'to': to_uid.lstrip('~'),
                             'type': r_type,
+                            'resembling': resembling
                         })
 
     db['relationship'].truncate()
