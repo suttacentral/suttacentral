@@ -1,5 +1,6 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="/elements/text/sc-text-options.html">
 <link rel="import" href="/styles/sc-text-styles.html">
@@ -95,10 +96,21 @@ Issues that need to be fixed:
       .margin-top-xl {
         margin-top: 10vh;
       }
+
+      .loading-indicator {
+        font-size: 16px;
+        text-align: center;
+        height: 60px;
+      }
     </style>
 
-    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]" hidden$="[[!suttaplex]]"></sc-text-options>
-    <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[!translatedSutta]]"></div>
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]" hidden$="[[_shouldHideSuttaView()]]"></sc-text-options>
+
+    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading)]]">
+      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+    </div>
+
+    <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[_shouldHideSuttaView()]]"></div>
 
     <template is="dom-if" if="[[!translatedSutta.text]]">
       <div class="text-center margin-top-xl">
@@ -158,7 +170,13 @@ Issues that need to be fixed:
                   rootTitle: String,
                   translationAuthor: String,
                   translationLang: String,
-                  translatedTitle: String
+                  translatedTitle: String,
+                  loading: {
+                      type: Boolean
+                  },
+                  error: {
+                      type: Object
+                  }
               }
           }
 
@@ -179,13 +197,9 @@ Issues that need to be fixed:
               }
           }
 
-          ready() {
-              super.ready();
-              this.htmlLoaded = false;
-          }
-
           connectedCallback() {
               super.connectedCallback();
+              this.htmlLoaded = false;
               if (this.showParagraphs && this.paragraphs.length !== 0) {
                   this._computeParagraphs();
               }
@@ -333,6 +347,10 @@ Issues that need to be fixed:
               this.$.html_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
               Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
                   .forEach(item => item.parentNode.removeChild(item));
+          }
+
+          _shouldShowLoadingIndicator(error, loading) {
+              return (!error && loading);
           }
 
           // if the base html and pali text are fully loaded, implements the correct script for the pali text

@@ -1,6 +1,5 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="/elements/text/sc-segmented-text.html">
 <link rel="import" href="/elements/text/sc-simple-text.html">
@@ -11,18 +10,6 @@
 -->
 <dom-module id="sc-text-page-selector">
   <template>
-
-    <style>
-      .loadingIndicator {
-        font-size: 16px;
-        text-align: center;
-        height: 60px;
-      }
-
-      .center-vertical {
-        margin-top: 50%;
-      }
-    </style>
 
     <iron-meta id="meta"></iron-meta>
 
@@ -36,16 +23,12 @@
         last-response="{{responseData}}"></iron-ajax>
 
     <template id="simple_text_container" is="dom-if" if="[[!isSegmentedText]]" restamp>
-      <sc-simple-text id="simple_text"></sc-simple-text>
+      <sc-simple-text loading="{{loading}}" error="{{error}}" id="simple_text"></sc-simple-text>
     </template>
 
     <template id="segmented_text_container" is="dom-if" if="[[isSegmentedText]]" restamp>
-      <sc-segmented-text id="segmented_text"></sc-segmented-text>
+      <sc-segmented-text loading="{{loading}}" error="{{error}}" id="segmented_text"></sc-segmented-text>
     </template>
-
-    <div class="loadingIndicator center-vertical" hidden$="[[_shouldHideLoadingIndicator()]]">
-      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
-    </div>
 
   </template>
 
@@ -145,10 +128,6 @@
               } else {
                   return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`;
               }
-          }
-
-          _shouldHideLoadingIndicator() {
-              return (this.error || !this.loading);
           }
       }
 
