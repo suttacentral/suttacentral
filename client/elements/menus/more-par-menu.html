@@ -224,7 +224,6 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   result = this._strip(result, ' ');
                   result += ': '
                   for (let parallel of this.parallels[section]) {
-
                       result += this._generateAcronymUid(parallel.to.acronym, parallel.to.to);
                       result += ' ';
                       if (parallel.to.volpages.length > 0) {
@@ -233,7 +232,6 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                       if (parallel.to.biblio) {
                           result += this._getTextFromHtml(parallel.to.biblio);
                       }
-
                       result = this._strip(result, ' ');
                       result += '; ';
                   }
@@ -254,13 +252,11 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
           _generateAcronymUid(acronym, uid) {
               if (acronym) {
-                  let result = '';
-                  result += acronym;
                   let paragraph = uid.split(/#(.+)/)[1];
                   if (paragraph) {
-                      result += `#${paragraph}`;
+                      acronym += `#${paragraph}`;
                   }
-                  return result;
+                  return acronym;
               } else {
                   return uid;
               }
@@ -270,8 +266,6 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               let tmp = document.createElement('div');
               tmp.innerHTML = htmlString;
               let text = tmp.textContent;
-              document.body.appendChild(tmp);
-              document.body.removeChild(tmp);
               return text;
           }
 
