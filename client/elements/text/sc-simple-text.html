@@ -1,4 +1,5 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="/elements/text/sc-text-options.html">
 <link rel="import" href="/styles/sc-text-styles.html">
@@ -9,6 +10,7 @@
 The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
 Paragraph numbers can be displayed or hidden as requested via the settings-menu in the toolbar.
 Title, full Author name and Meta data are sent via events to the page-selector for use in the toolbar.
+-->
 -->
 <dom-module id="sc-simple-text" attributes="suttatitle suttameta">
   <template>
@@ -24,10 +26,23 @@ Title, full Author name and Meta data are sent via events to the page-selector f
       .margin-top-xl {
         margin-top: 10vh;
       }
+
+      .loading-indicator {
+        position: static;
+        font-size: 16px;
+        text-align: center;
+        height: 60px;
+      }
+
     </style>
 
-    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]" hidden$="[[!suttaplex]]"></sc-text-options>
-    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[!sutta]]"></div>
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+
+    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading)]]">
+      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+    </div>
+
+    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[loading]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
       <div class="text-center margin-top-xl">
@@ -74,6 +89,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   },
                   lang: {
                       type: String
+                  },
+                  loading: {
+                      type: Boolean
+                  },
+                  error: {
+                      type: Object
                   }
               }
           }
@@ -154,6 +175,10 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   });
               }
               this._addParagraphs();
+          }
+
+          _shouldShowLoadingIndicator(error, loading) {
+              return (!error && loading);
           }
       }
 

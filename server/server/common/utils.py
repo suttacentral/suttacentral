@@ -1,10 +1,10 @@
 import re
-from typing import Callable, List, Dict
+from typing import Callable, Dict, List
 
 import decorator
 
-from common.arangodb import get_client, get_db
 from common import models
+from common.arangodb import get_client, get_db
 from migrations.runner import run_migrations
 
 

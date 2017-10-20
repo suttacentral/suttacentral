@@ -4,8 +4,8 @@ from typing import List
 
 import polib
 import regex
-from arango.exceptions import DocumentInsertError
 from arango.database import Database
+from arango.exceptions import DocumentInsertError
 
 from .util import iter_sub_dirs
 

@@ -1,15 +1,14 @@
-import os
 import json
-from collections import defaultdict
+import os
 
 import stripe
-from flask import request, current_app
+from flask import current_app, request
 from flask_restful import Resource
 from sortedcontainers import SortedListWithKey, SortedDict
 
 from common.arangodb import get_db
-from common.queries import LANGUAGES, MENU, SUTTAPLEX_LIST, PARALLELS, DICTIONARIES, SUTTA_VIEW, CURRENCIES, PARAGRAPHS
-from common.utils import recursive_sort, uid_sort_key, flat_tree, language_sort, sort_parallels_key
+from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST
+from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key
 
 
 class Languages(Resource):
