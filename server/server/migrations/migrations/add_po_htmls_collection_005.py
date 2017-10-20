@@ -13,4 +13,3 @@ class SecondMigration(Migration):
         po_htmls.add_hash_index(fields=['uid'], unique=False)
         po_htmls.add_hash_index(fields=['lang'], unique=False)
         po_htmls.add_hash_index(fields=['author'], unique=False)
-

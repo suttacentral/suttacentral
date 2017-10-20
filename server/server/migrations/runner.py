@@ -4,8 +4,8 @@ from inspect import getmembers, isclass
 from pathlib import Path
 
 from arango.exceptions import CollectionCreateError
-
 from flask import current_app
+
 from common.arangodb import get_client, get_db
 
 from .base import Migration

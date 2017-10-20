@@ -8,10 +8,10 @@ from typing import Any, List, Set
 import regex
 from arango import ArangoClient
 from flask import current_app
-from tqdm import tqdm
 from git import InvalidGitRepositoryError, Repo
+from tqdm import tqdm
 
-from . import po, textdata, dictionaries, currencies, biblio, paragraphs
+from . import biblio, currencies, dictionaries, paragraphs, po, textdata
 
 
 class ChangeTracker:
