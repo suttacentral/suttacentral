@@ -22,7 +22,7 @@
         last-error="{{error}}"
         last-response="{{responseData}}"></iron-ajax>
 
-    <sc-simple-text id="simple_text" sutta="[[responseData.root_text]]" suttaplex="[[responseData.suttaplex]]"
+    <sc-simple-text id="simple_text" sutta="[[responseData.translation]]" suttaplex="[[responseData.suttaplex]]"
                     loading="{{loading}}" error="{{error}}" hidden$="[[isSegmentedText]]"></sc-simple-text>
 
     <sc-segmented-text id="segmented_text" root-sutta="[[responseData.root_text]]"

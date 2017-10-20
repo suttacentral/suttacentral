@@ -14,7 +14,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 -->
 <dom-module id="sc-simple-text" attributes="suttatitle suttameta">
   <template>
-    <style is="custom-style" include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
+    <style is="custom-style"
+           include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
       .text-options {
         padding: 32px;
       }
@@ -97,6 +98,17 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               }
           }
 
+          ready() {
+              super.ready();
+              // insert the sutta text into the main element again to force reloading styles
+              document.addEventListener('visibilitychange', () => {
+                  // this.$.html_text_content.innerHTML = this.sutta.text;
+                  setTimeout(() => {
+                      this.$.html_text_content.innerHTML = this.sutta.text
+                  }, 200);
+              })
+          }
+
           connectedCallback() {
               super.connectedCallback();
               if (this.showParagraphs && this.paragraphs.length !== 0) {
@@ -123,6 +135,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           _updateView() {
               this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
+              //              this.$.html_text_content.innerHTML = this.sutta.text;
               this._setAttributes();
               this._updateToolbar();
           }
@@ -148,7 +161,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
               const matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
-              console.log(matches);
               return matches ? matches[1] : '';
           }
 

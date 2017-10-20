@@ -194,6 +194,17 @@ Issues that need to be fixed:
               }
           }
 
+          ready() {
+              super.ready();
+              // insert the sutta text into the main element again to force reloading styles
+              document.addEventListener('visibilitychange', () => {
+                  // this.$.html_text_content.innerHTML = this.sutta.text;
+                  setTimeout(() => {
+                      this.$.html_text_content.innerHTML = this.translatedSutta.text
+                  }, 200);
+              })
+          }
+
           connectedCallback() {
               super.connectedCallback();
               this.htmlLoaded = false;
