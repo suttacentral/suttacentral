@@ -172,17 +172,26 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             RETURN text.volpage
     )
     SORT e.resembling
+    
+    LET biblio = (
+        FOR biblio IN biblios
+            FILTER biblio.uid == v.biblio_uid
+            LIMIT 1
+            RETURN biblio.text
+    )[0]
         
     RETURN {
         from: e.from,
         to: {
             to: e.to,
             volpages: volpages,
+            acronym: v.acronym,
             uid: v.uid,
             root_lang: v.root_lang,
             original_title: v.name,
             type: e.type,
             from: e._from,
+            biblio: biblio,
             translations: FLATTEN([po_translations, legacy_translations])
         },
         type: e.type,
