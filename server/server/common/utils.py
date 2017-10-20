@@ -190,3 +190,11 @@ def language_sort(original_lang):
         return result
 
     return l_sort
+
+
+def sort_parallels_key(x):
+    if '#' not in x:
+        return -1
+    _, number, *_ = x.split('#')
+    number = number.strip('-')
+    return int(number)

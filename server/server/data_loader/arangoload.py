@@ -377,40 +377,36 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
     antispam = set()
     ll_edges = []
     for entry in tqdm(relationship_data):
-        remarks = entry.pop('remarks', None)
-        assert len(entry) == 1
         for r_type, uids in entry.items():
-            pass
-        full = [uid for uid in uids if not uid.startswith('~')]
-        partial = [uid for uid in uids if uid.startswith('~')]
+            if r_type == 'retells':
+                r_type = 'retelling'
+            elif r_type == 'mentions':
+                r_type = 'mention'
+            elif r_type == 'parallels':
+                r_type = 'full'
 
-        # TODO: directionality has to be taken into account
-        # for some relationship kinds
-        for from_uid in full:
-            true_from_uids = get_true_uids(from_uid, all_uids)
-            if not true_from_uids:
-                print_once(f'Could not find any uids for: {from_uid}', antispam)
+            from_uids = get_true_uids(uids[0], all_uids)
+            if not from_uids:
+                print_once(f'Could not find any uids for: {uids[0]}', antispam)
                 continue
-            for to_uids, is_partial in ((full, False), (partial, True)):
-                for to_uid in to_uids:
-                    if to_uid == from_uid:
-                        continue
-                    true_to_uids = get_true_uids(to_uid, all_uids)
-                    if not true_from_uids:
-                        if is_partial:
-                            print_once(f'Could not find any uids for: {to_uid}', antispam)
-                        continue
 
-                    for true_from_uid in true_from_uids:
-                        for true_to_uid in true_to_uids:
-                            ll_edges.append({
-                                '_from': true_from_uid,
-                                '_to': true_to_uid,
-                                'from': from_uid,
-                                'to': to_uid.lstrip('~'),
-                                'type': r_type,
-                                'partial': is_partial,
-                            })
+            for to_uid in uids[1:]:
+                is_resembling = to_uid.startswith('~')
+                to_uids = get_true_uids(to_uid, all_uids)
+                if not to_uids:
+                    print_once(f'Could not find any uids for: {to_uid}', antispam)
+                    continue
+                for true_uid in to_uids:
+                    for true_from_uid in from_uids:
+                        ll_edges.append({
+                            '_from': true_from_uid,
+                            '_to': true_uid,
+                            'from': uids[0],
+                            'to': to_uid.lstrip('~'),
+                            'type': r_type,
+                            'resembling': is_resembling
+                        })
+
     db['relationship'].truncate()
     db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
 

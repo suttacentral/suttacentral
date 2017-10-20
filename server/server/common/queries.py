@@ -171,6 +171,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             FILTER HAS(text, "volpage")
             RETURN text.volpage
     )
+    SORT e.resembling
     
     LET biblio = (
         FOR biblio IN biblios
@@ -194,7 +195,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             translations: FLATTEN([po_translations, legacy_translations])
         },
         type: e.type,
-        partial: e.partial
+        resembling: e.resembling
     }
 '''
 
