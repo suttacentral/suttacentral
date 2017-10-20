@@ -11,7 +11,7 @@ from data_loader import arangoload
 @pytest.mark.parametrize('input_uid_range,expected_result,not_valid', [
     ('sn12-14', ['sn12', 'sn13', 'sn14'], []),
     ('fh12.33-12.34', ['fh12.33', 'fh12.34'], []),
-    ('dhsk12-dhsk13', ['dhsk12', 'dhsk13'], []),
+    ('dk12-dk13', ['dk12', 'dk13'], []),
     ('sn19.19-sn19.21', ['sn19.19', 'sn19.20', 'sn19.21'], ['sn19.21']),
     ('sfsdfsf', [], ['sn19.21'])
 ])
