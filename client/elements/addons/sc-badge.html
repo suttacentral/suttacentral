@@ -6,7 +6,6 @@
 <dom-module id="sc-badge">
   <template>
     <style>
-
       .badge {
         position: relative;
         background-color: var(--paper-green-a700);;
@@ -26,9 +25,12 @@
         left: 50%;
         transform: translate(-50%, -50%);
       }
-
     </style>
-    <div class="badge"><div class="badge-number">[[number]]</div></div>
+
+    <div class="badge">
+      <div class="badge-number">[[number]]</div>
+    </div>
+
   </template>
 
   <script>
@@ -42,9 +44,9 @@
                   number: {
                       type: Number
                   }
-                }
-            }
-        }
+              }
+          }
+      }
 
       customElements.define(SCBadge.is, SCBadge);
   </script>
