@@ -105,7 +105,7 @@ It is in effect a miniature version of the suttaplex-card
 
         <div class="parallel-item-details d-flex justify-content-space-between align-items-center vertical-margin-xs">
           <div class$="parallel-item-id [[_computeRootIdVisibility()]]">
-            <div class="uppercase" title="SuttaCentral ID">[[parallelItem.uid]]</div>
+            <div title="SuttaCentral ID">[[_getAcronymOrId(parallelItem)]]</div>
           </div>
 
           <div class="parallel-item-volpages-container">
@@ -221,6 +221,10 @@ It is in effect a miniature version of the suttaplex-card
 
           _shouldShowLanguageDropdown() {
               return this.parallelItem.translations.length > 0 || this.parallelItem.root_lang;
+          }
+
+          _getAcronymOrId(item) {
+            return item.acronym ? item.acronym : item.uid;
           }
 
       }
