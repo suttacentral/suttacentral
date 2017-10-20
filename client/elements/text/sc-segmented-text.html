@@ -104,13 +104,13 @@ Issues that need to be fixed:
       }
     </style>
 
-    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]" hidden$="[[_shouldHideSuttaView()]]"></sc-text-options>
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading)]]">
       <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
     </div>
 
-    <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[_shouldHideSuttaView()]]"></div>
+    <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[loading]]"></div>
 
     <template is="dom-if" if="[[!translatedSutta.text]]">
       <div class="text-center margin-top-xl">
