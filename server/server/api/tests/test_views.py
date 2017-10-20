@@ -1,4 +1,4 @@
-from api.views import Languages, Menu, SuttaplexList, Parallels, LookupDictionaries, Sutta
+from api.views import Languages, LookupDictionaries, Menu, Parallels, Sutta, SuttaplexList
 from app import api
 from common import utils
 
