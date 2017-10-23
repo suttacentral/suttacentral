@@ -38,7 +38,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
     <sc-text-options class="text-options" suttaplex-item="{{suttaplex}}"></sc-text-options>
 
-    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading, textViewHidden)]]">
+    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, textViewHidden)]]">
       <paper-spinner-lite active></paper-spinner-lite>
     </div>
 
@@ -88,7 +88,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   lang: {
                       type: String
                   },
-                  loading: {
+                  isLoading: {
                       type: Boolean,
                       observer: '_loadingChanged'
                   },
@@ -203,12 +203,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           // Display the loading indicator in two cases:
           // 1: If there's no error and the text view is loading, or...
           // 2: If the text view is currently hidden
-          _shouldShowLoadingIndicator(error, loading, textViewHidden) {
-              return ((!error && loading) || textViewHidden);
+          _shouldShowLoadingIndicator(error, isLoading, textViewHidden) {
+              return ((!error && isLoading) || textViewHidden);
           }
 
           _loadingChanged() {
-              this.isTextViewHidden = this.loading;
+              this.isTextViewHidden = this.isLoading;
           }
       }
 

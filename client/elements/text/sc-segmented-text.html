@@ -106,8 +106,8 @@ Issues that need to be fixed:
 
     <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
 
-    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading, isTextViewHidden)]]">
-      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
+      <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
     <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[isTextViewHidden]]"></div>
@@ -182,7 +182,7 @@ Issues that need to be fixed:
                   translatedTitle: {
                       type: String
                   },
-                  loading: {
+                  isLoading: {
                       type: Boolean,
                       observer: '_loadingChanged'
                   },
@@ -393,7 +393,7 @@ Issues that need to be fixed:
           }
 
           _loadingChanged() {
-              this.isTextViewHidden = this.loading;
+              this.isTextViewHidden = this.isLoading;
           }
 
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
