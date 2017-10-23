@@ -106,11 +106,11 @@ Issues that need to be fixed:
 
     <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
 
-    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading, textViewHidden)]]">
+    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading, isTextViewHidden)]]">
       <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
     </div>
 
-    <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[textViewHidden]]"></div>
+    <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!translatedSutta.text]]">
       <div class="text-center margin-top-xl">
@@ -189,7 +189,7 @@ Issues that need to be fixed:
                   error: {
                       type: Object
                   },
-                  textViewHidden: {
+                  isTextViewHidden: {
                       type: Boolean,
                       value: false
                   }
@@ -217,12 +217,12 @@ Issues that need to be fixed:
               super.ready();
               document.addEventListener('visibilitychange', () => {
                   // Hide the text and display the loading spinner:
-                  this.textViewHidden = true;
+                  this.isTextViewHidden = true;
                   // Insert the sutta text into the main element again to force reloading styles:
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
                       this.$.html_text_content.innerHTML = this.translatedSutta.text;
-                      this.textViewHidden = false;
+                      this.isTextViewHidden = false;
                   }, 200);
               })
           }
@@ -272,7 +272,13 @@ Issues that need to be fixed:
               if (!matches) {
                   matches = this.rootSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
               }
-              return matches ? matches[1] : '';
+              let metaText;
+              try {
+                  metaText = matches[1];
+              } catch(e) {
+                  console.error(e);
+              }
+              return matches ? metaText : '';
           }
 
           // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
@@ -382,12 +388,12 @@ Issues that need to be fixed:
           // Display the loading indicator in two cases:
           // 1: If there's no error and the text view is loading, or...
           // 2: If the text view is currently hidden
-          _shouldShowLoadingIndicator(error, loading, textViewHidden) {
-              return ((!error && loading) || textViewHidden);
+          _shouldShowLoadingIndicator(error, loading, isTextViewHidden) {
+              return ((!error && loading) || isTextViewHidden);
           }
 
           _loadingChanged() {
-              this.textViewHidden = this.loading;
+              this.isTextViewHidden = this.loading;
           }
 
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
