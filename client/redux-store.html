@@ -25,7 +25,8 @@
         suttaMetaText: '',
         textOptions: {
             paragraphsEnabled: false,
-            paragraphDescriptions: []
+            paragraphDescriptions: [],
+            segmentedSuttaTextView: 0
         }
     };
 
@@ -55,6 +56,9 @@
             case 'TOGGLE_TEXTUAL_INFORMATION_ENABLED':
                 return Object.assign({}, state,
                     { textOptions: Object.assign({}, state.textOptions, { paragraphsEnabled: action.enabled }) });
+            case 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW':
+                return Object.assign({}, state,
+                    { textOptions: Object.assign({}, state.textOptions, { segmentedSuttaTextView: action.view }) });
             default:
                 return state;
         }

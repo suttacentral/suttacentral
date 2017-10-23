@@ -309,6 +309,12 @@ Issues:
                           type: 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS',
                           descriptions: data
                       }
+                  },
+                  chooseSegmentedSuttaTextView(viewNumber) {
+                      return {
+                          type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
+                          view: viewNumber
+                      }
                   }
               }
           }
@@ -331,8 +337,7 @@ Issues:
           }
 
           _radioGroupChanged() {
-              // TODO
-              // Fires the choice of which view for the segmented text pages is selected to page-selector.html.
+              this.dispatch('chooseSegmentedSuttaTextView', this.radioSelected);
           }
 
           _rememberSettings(rememberSettings) {
