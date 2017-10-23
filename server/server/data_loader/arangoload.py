@@ -2,6 +2,7 @@ import json
 import logging
 import pathlib
 from collections import Counter
+from itertools import product
 from pathlib import Path
 from typing import Any, List, Set
 
@@ -377,6 +378,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
     antispam = set()
     ll_edges = []
     for entry in tqdm(relationship_data):
+        entry.pop('remarks', None)
         for r_type, uids in entry.items():
             if r_type == 'retells':
                 r_type = 'retelling'
@@ -385,28 +387,48 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
             elif r_type == 'parallels':
                 r_type = 'full'
 
-            from_uids = get_true_uids(uids[0], all_uids)
-            if not from_uids:
-                print_once(f'Could not find any uids for: {uids[0]}', antispam)
-                continue
+            if r_type == 'full':
+                full = [uid for uid in uids if not uid.startswith('~')]
+                partial = [uid for uid in uids if uid.startswith('~')]
+                for from_uid in full:
+                    true_from_uids = get_true_uids(from_uid, all_uids)
+                    if not true_from_uids:
+                        print_once(f'Could not find any uids for: {from_uid}', antispam)
+                        continue
+                    for to_uids, is_resembling in ((full, False), (partial, True)):
+                        for to_uid in to_uids:
+                            if to_uid == from_uid:
+                                continue
+                            if not true_from_uids:
+                                if is_resembling:
+                                    print_once(f'Could not find any uids for: {to_uid}', antispam)
+                                continue
 
-            for to_uid in uids[1:]:
-                is_resembling = to_uid.startswith('~')
-                to_uids = get_true_uids(to_uid, all_uids)
-                if not to_uids:
-                    print_once(f'Could not find any uids for: {to_uid}', antispam)
-                    continue
-                for true_uid in to_uids:
-                    for true_from_uid in from_uids:
+                            true_to_uids = get_true_uids(to_uid, all_uids)
+                            for true_from_uid in true_from_uids:
+                                for true_to_uid in true_to_uids:
+                                    ll_edges.append({
+                                        '_from': true_from_uid,
+                                        '_to': true_to_uid,
+                                        'from': from_uid,
+                                        'to': to_uid.lstrip('~'),
+                                        'type': r_type,
+                                        'resembling': is_resembling,
+                                    })
+            else:
+                first_uid = uids[0]
+                true_first_uids = get_true_uids(first_uid, all_uids)
+                for true_first_uid, from_uid in product(true_first_uids, uids[1:]):
+                    true_from_uids = get_true_uids(from_uid, all_uids)
+                    for true_from_uid in true_from_uids:
                         ll_edges.append({
                             '_from': true_from_uid,
-                            '_to': true_uid,
-                            'from': uids[0],
-                            'to': to_uid.lstrip('~'),
+                            '_to': true_first_uid,
+                            'from': from_uid,
+                            'to': first_uid.lstrip('~'),
                             'type': r_type,
-                            'resembling': is_resembling
+                            'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
                         })
-
     db['relationship'].truncate()
     db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
 
