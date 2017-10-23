@@ -142,12 +142,12 @@ Issues that need to be fixed:
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
                       type: Boolean,
-                      statePath: 'textParagraphs.enabled',
+                      statePath: 'textOptions.paragraphsEnabled',
                       observer: '_computeParagraphs'
                   },
                   paragraphs: {
                       type: Array,
-                      statePath: 'textParagraphs.descriptions'
+                      statePath: 'textOptions.paragraphDescriptions'
                   },
                   // View for segmented text selected in the toolbar-settings-menu.
                   showViewer: {
@@ -303,8 +303,8 @@ Issues that need to be fixed:
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
           _addOriginalText(originalText) {
-              console.log('adding original text');
               if (!this.shadowRoot.querySelector('.original-text')) {
+                  console.dir(originalText);
                   for (let key in originalText) {
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:');

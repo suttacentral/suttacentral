@@ -72,12 +72,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
                       type: Boolean,
-                      statePath: 'textParagraphs.enabled',
+                      statePath: 'textOptions.paragraphsEnabled',
                       observer: '_computeParagraphs'
                   },
                   paragraphs: {
                       type: Array,
-                      statePath: 'textParagraphs.descriptions'
+                      statePath: 'textOptions.paragraphDescriptions'
                   },
                   title: {
                       type: String
