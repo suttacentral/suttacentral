@@ -399,12 +399,12 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
                         for to_uid in to_uids:
                             if to_uid == from_uid:
                                 continue
-                            true_to_uids = get_true_uids(to_uid, all_uids)
                             if not true_from_uids:
                                 if is_resembling:
                                     print_once(f'Could not find any uids for: {to_uid}', antispam)
                                 continue
 
+                            true_to_uids = get_true_uids(to_uid, all_uids)
                             for true_from_uid in true_from_uids:
                                 for true_to_uid in true_to_uids:
                                     ll_edges.append({
