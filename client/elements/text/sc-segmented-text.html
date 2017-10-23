@@ -274,11 +274,15 @@ Issues that need to be fixed:
               }
               let metaText;
               try {
-                  metaText = matches[1];
+                  if (matches && matches.length > 0) {
+                      metaText = matches[1];
+                  } else {
+                      metaText = '';
+                  }
               } catch(e) {
                   console.error(e);
               }
-              return matches ? metaText : '';
+              return metaText;
           }
 
           // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.

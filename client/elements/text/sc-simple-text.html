@@ -169,11 +169,15 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               const matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
               let metaText;
               try {
-                  metaText = matches[1];
+                  if (matches && matches.length > 0) {
+                      metaText = matches[1];
+                  } else {
+                      metaText = '';
+                  }
               } catch(e) {
                   console.error(e);
               }
-              return matches ? metaText : '';
+              return metaText;
           }
 
           // adds a class to the main container to either show or hide paragraph numbers.
