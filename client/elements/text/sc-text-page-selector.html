@@ -1,5 +1,6 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="/elements/text/sc-segmented-text.html">
 <link rel="import" href="/elements/text/sc-simple-text.html">
@@ -10,6 +11,15 @@
 -->
 <dom-module id="sc-text-page-selector">
   <template>
+
+    <style>
+      .loading-indicator {
+        font-size: 16px;
+        text-align: center;
+        height: 60px;
+        margin-top: 50vh;
+      }
+    </style>
 
     <iron-meta id="meta"></iron-meta>
 
@@ -22,12 +32,18 @@
         last-error="{{error}}"
         last-response="{{responseData}}"></iron-ajax>
 
+    <div class="loading-indicator" hidden$="[[!loading]]">
+      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+    </div>
+
     <sc-simple-text id="simple_text" sutta="[[responseData.translation]]" suttaplex="[[responseData.suttaplex]]"
-                    loading="{{loading}}" error="{{error}}" hidden$="[[isSegmentedText]]"></sc-simple-text>
+                    loading="{{loading}}" error="{{error}}"
+                    hidden$="[[_shouldHideSimpleText(isSegmentedText, loading)]]"></sc-simple-text>
 
     <sc-segmented-text id="segmented_text" root-sutta="[[responseData.root_text]]"
                        suttaplex="[[responseData.suttaplex]]" translated-sutta="[[responseData.translation]]"
-                       loading="{{loading}}" error="{{error}}" hidden$="[[!isSegmentedText]]"></sc-segmented-text>
+                       loading="{{loading}}" error="{{error}}"
+                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, loading)]]"></sc-segmented-text>
 
   </template>
 
@@ -114,6 +130,14 @@
                       this.stopRequests = false;
                   }, 50);
               }
+          }
+
+          _shouldHideSimpleText(isSegmentedText, loading) {
+              return (isSegmentedText || loading);
+          }
+
+          _shouldHideSegmentedText(isSegmentedText, loading) {
+              return (!isSegmentedText || loading);
           }
 
           // checks if a page is a segmented-text page
