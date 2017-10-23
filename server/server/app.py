@@ -6,8 +6,8 @@ from flask import Blueprint, Flask
 from flask_cors import CORS
 from flask_restful import Api
 
-from api.views import Languages, Menu, SuttaplexList, Paragraphs, Parallels, LookupDictionaries, Sutta, Currencies, \
-    Donations
+from api.views import (Currencies, Donations, Languages, LookupDictionaries, Menu, Paragraphs, Parallels, Sutta,
+                       SuttaplexList)
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search

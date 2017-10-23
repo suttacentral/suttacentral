@@ -16,4 +16,3 @@ class SecondMigration(Migration):
         blurbs = db.create_collection('blurbs')
         blurbs.add_hash_index(fields=['uid'], unique=False)
         blurbs.add_hash_index(fields=['lang'], unique=False)
-

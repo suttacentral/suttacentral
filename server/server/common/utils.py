@@ -1,10 +1,10 @@
 import re
-from typing import Callable, List, Dict
+from typing import Callable, Dict, List
 
 import decorator
 
-from common.arangodb import get_client, get_db
 from common import models
+from common.arangodb import get_client, get_db
 from migrations.runner import run_migrations
 
 
@@ -190,3 +190,11 @@ def language_sort(original_lang):
         return result
 
     return l_sort
+
+
+def sort_parallels_key(x):
+    if '#' not in x:
+        return -1
+    _, number, *_ = x.split('#')
+    number = number.strip('-')
+    return int(number)
