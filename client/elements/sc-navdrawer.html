@@ -112,6 +112,11 @@
         color: var(--disabled-text-color);
       }
 
+      .menu-header {
+        @apply --paper-font-title;
+        @apply --sc-sans-font;
+        margin: 0
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -168,7 +173,7 @@
       <div class="buttons">
         <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
       </div>
-      <h2>Text settings</h2>
+      <h2 class="menu-header">Text settings</h2>
       <paper-dialog-scrollable>
         <settings-menu></settings-menu>
       </paper-dialog-scrollable>
@@ -179,7 +184,7 @@
       <div class="buttons">
         <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
       </div>
-      <h2>Publication details</h2>
+      <h2 class="menu-header">Publication details</h2>
       <paper-dialog-scrollable>
         <div class="dialogue-section">
           <div inner-h-t-m-l="[[infoDialogMetaArea]]">

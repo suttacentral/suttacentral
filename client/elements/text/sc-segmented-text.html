@@ -224,7 +224,7 @@ Issues that need to be fixed:
                       this.$.html_text_content.innerHTML = this.translatedSutta.text;
                       this.isTextViewHidden = false;
                   }, 200);
-              })
+              });
           }
 
           connectedCallback() {
@@ -240,6 +240,7 @@ Issues that need to be fixed:
               this._setRootAttributes();
               this._setTranslatedAttributes();
               this._updateToolbar();
+              this._addOriginalText(this.rootText);
           }
 
           _setRootAttributes() {
@@ -286,26 +287,25 @@ Issues that need to be fixed:
           }
 
           // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-          _addTranslatedText(e) {
+          _addTranslatedText(translatedText) {
               const segments = this.shadowRoot.querySelectorAll('sc-segment');
               Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              const outputText = e.detail.response;
-              for (let key in outputText) {
+              for (let key in translatedText) {
                   if (!key.startsWith('_')) {
                       let subkey = key.replace(/:/g, '\\\:');
                       subkey = subkey.replace(/\./g, '\\\.');
                       const segment = this.shadowRoot.querySelector('#' + subkey);
-                      segment.innerHTML = outputText[key] + ' ';
+                      segment.innerHTML = translatedText[key] + ' ';
                   }
               }
           }
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
-          _addOriginalText(e) {
+          _addOriginalText(originalText) {
+              console.log('adding original text');
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  const outputText = e.detail.response;
-                  for (let key in outputText) {
+                  for (let key in originalText) {
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:');
                           subkey = subkey.replace(/\./g, '\\\.');
@@ -313,7 +313,7 @@ Issues that need to be fixed:
                           const newSegment = document.createElement('sc-segment');
                           newSegment.id = key;
                           newSegment.classList.add('original-text');
-                          newSegment.innerHTML = outputText[key] + ' ';
+                          newSegment.innerHTML = originalText[key] + ' ';
                           segment.parentNode.insertBefore(newSegment, segment.nextSibling);
                       }
                   }
