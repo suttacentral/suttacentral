@@ -133,17 +133,11 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               })
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              if (this.showParagraphs && this.paragraphs.length !== 0) {
-                  this._computeParagraphs();
-              }
-          }
-
           _updateView() {
               this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this._setAttributes();
               this._updateToolbar();
+              this._computeParagraphs();
           }
 
           _setAttributes() {
@@ -174,20 +168,10 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   } else {
                       metaText = '';
                   }
-              } catch(e) {
+              } catch (e) {
                   console.error(e);
               }
               return metaText;
-          }
-
-          // adds a class to the main container to either show or hide paragraph numbers.
-          _addParagraphs() {
-              const infotext = this.$.html_text_content;
-              if (infotext && !this.showParagraphs) {
-                  infotext.classList.remove('infomode');
-              } else if (infotext) {
-                  infotext.classList.add('infomode');
-              }
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
@@ -201,7 +185,25 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       });
                   });
               }
-              this._addParagraphs();
+              if (this.showParagraphs) {
+                  this._addParagraphs(this.$.html_text_content);
+              } else {
+                  this._removeParagraphs(this.$.html_text_content);
+              }
+          }
+
+          // adds a class to the main container to either show...
+          _addParagraphs(textElement) {
+              if (textElement) {
+                  textElement.classList.add('infomode');
+              }
+          }
+
+          // ... or hide paragraph numbers.
+          _removeParagraphs(textElement) {
+              if (textElement) {
+                  textElement.classList.remove('infomode');
+              }
           }
 
           // Display the loading indicator in two cases:

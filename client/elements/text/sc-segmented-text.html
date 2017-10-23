@@ -230,9 +230,6 @@ Issues that need to be fixed:
           connectedCallback() {
               super.connectedCallback();
               this.htmlLoaded = false;
-              if (this.showParagraphs && this.paragraphs.length !== 0) {
-                  this._computeParagraphs();
-              }
           }
 
           _updateView() {
@@ -240,7 +237,7 @@ Issues that need to be fixed:
               this._setRootAttributes();
               this._setTranslatedAttributes();
               this._updateToolbar();
-              this._addOriginalText(this.rootText);
+              this._computeParagraphs();
           }
 
           _setRootAttributes() {
@@ -280,7 +277,7 @@ Issues that need to be fixed:
                   } else {
                       metaText = '';
                   }
-              } catch(e) {
+              } catch (e) {
                   console.error(e);
               }
               return metaText;
@@ -304,7 +301,6 @@ Issues that need to be fixed:
           // populates that with the corresponding pali text segment.
           _addOriginalText(originalText) {
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  console.dir(originalText);
                   for (let key in originalText) {
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:');
@@ -328,13 +324,6 @@ Issues that need to be fixed:
               }
           }
 
-          // adds a class to the main container to either show or hide paragraph numbers.
-          _addParagraphs() {
-              const infotext = this.$.html_text_content;
-              return (infotext && !this.showParagraphs) ?
-                  infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
-          }
-
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
               if (this.paragraphs && this.showParagraphs) {
@@ -346,7 +335,25 @@ Issues that need to be fixed:
                       });
                   });
               }
-              this._addParagraphs();
+              if (this.showParagraphs) {
+                  this._addParagraphs(this.$.html_text_content);
+              } else {
+                  this._removeParagraphs(this.$.html_text_content);
+              }
+          }
+
+          // adds a class to the main container to either show...
+          _addParagraphs(textElement) {
+              if (textElement) {
+                  textElement.classList.add('infomode');
+              }
+          }
+
+          // ... or hide paragraph numbers.
+          _removeParagraphs(textElement) {
+              if (textElement) {
+                  textElement.classList.remove('infomode');
+              }
           }
 
           // if the base html and the pali texts have been fully loaded, the setting from the
