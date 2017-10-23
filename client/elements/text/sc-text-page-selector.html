@@ -28,22 +28,22 @@
         url="[[_getSuttaTextUrl()]]"
         debounce-duration="500"
         handle-as="json"
-        loading="{{loading}}"
+        loading="{{isLoading}}"
         last-error="{{error}}"
         last-response="{{responseData}}"></iron-ajax>
 
-    <div class="loading-indicator" hidden$="[[!loading]]">
-      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+    <div class="loading-indicator" hidden$="[[!isLoading]]">
+      <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
     <sc-simple-text id="simple_text" sutta="[[responseData.translation]]" suttaplex="[[responseData.suttaplex]]"
-                    loading="{{loading}}" error="{{error}}"
-                    hidden$="[[_shouldHideSimpleText(isSegmentedText, loading)]]"></sc-simple-text>
+                    is-loading="{{isLoading}}" error="{{error}}"
+                    hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]"></sc-simple-text>
 
     <sc-segmented-text id="segmented_text" root-sutta="[[responseData.root_text]]"
                        suttaplex="[[responseData.suttaplex]]" translated-sutta="[[responseData.translation]]"
-                       loading="{{loading}}" error="{{error}}"
-                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, loading)]]"></sc-segmented-text>
+                       is-loading="{{isLoading}}" error="{{error}}"
+                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]"></sc-segmented-text>
 
   </template>
 
@@ -132,12 +132,12 @@
               }
           }
 
-          _shouldHideSimpleText(isSegmentedText, loading) {
-              return (isSegmentedText || loading);
+          _shouldHideSimpleText(isSegmentedText, isLoading) {
+              return (isSegmentedText || isLoading);
           }
 
-          _shouldHideSegmentedText(isSegmentedText, loading) {
-              return (!isSegmentedText || loading);
+          _shouldHideSegmentedText(isSegmentedText, isLoading) {
+              return (!isSegmentedText || isLoading);
           }
 
           // checks if a page is a segmented-text page
