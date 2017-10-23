@@ -1,5 +1,6 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="/elements/text/sc-segmented-text.html">
 <link rel="import" href="/elements/text/sc-simple-text.html">
@@ -11,6 +12,15 @@
 <dom-module id="sc-text-page-selector">
   <template>
 
+    <style>
+      .loading-indicator {
+        font-size: 16px;
+        text-align: center;
+        height: 60px;
+        margin-top: 50vh;
+      }
+    </style>
+
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax
@@ -18,17 +28,22 @@
         url="[[_getSuttaTextUrl()]]"
         debounce-duration="500"
         handle-as="json"
-        loading="{{loading}}"
+        loading="{{isLoading}}"
         last-error="{{error}}"
         last-response="{{responseData}}"></iron-ajax>
 
-    <template id="simple_text_container" is="dom-if" if="[[!isSegmentedText]]" restamp>
-      <sc-simple-text loading="{{loading}}" error="{{error}}" id="simple_text"></sc-simple-text>
-    </template>
+    <div class="loading-indicator" hidden$="[[!isLoading]]">
+      <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
+    </div>
 
-    <template id="segmented_text_container" is="dom-if" if="[[isSegmentedText]]" restamp>
-      <sc-segmented-text loading="{{loading}}" error="{{error}}" id="segmented_text"></sc-segmented-text>
-    </template>
+    <sc-simple-text id="simple_text" sutta="[[responseData.translation]]" suttaplex="[[responseData.suttaplex]]"
+                    is-loading="{{isLoading}}" error="{{error}}"
+                    hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]"></sc-simple-text>
+
+    <sc-segmented-text id="segmented_text" root-sutta="[[responseData.root_text]]"
+                       suttaplex="[[responseData.suttaplex]]" translated-sutta="[[responseData.translation]]"
+                       is-loading="{{isLoading}}" error="{{error}}"
+                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]"></sc-segmented-text>
 
   </template>
 
@@ -115,6 +130,14 @@
                       this.stopRequests = false;
                   }, 50);
               }
+          }
+
+          _shouldHideSimpleText(isSegmentedText, isLoading) {
+              return (isSegmentedText || isLoading);
+          }
+
+          _shouldHideSegmentedText(isSegmentedText, isLoading) {
+              return (!isSegmentedText || isLoading);
           }
 
           // checks if a page is a segmented-text page

@@ -22,6 +22,7 @@
         },
         searchParams: {},
         suttaText: {},
+        suttaMetaText: '',
         textParagraphs: {
             enabled: false,
             descriptions: []
@@ -47,8 +48,7 @@
             case 'DOWNLOAD_SUTTA_TEXT':
                 return Object.assign({}, state, { suttaText: action.text });
             case 'CHANGE_SUTTA_META_TEXT':
-                return Object.assign({}, state,
-                    { suttaText: Object.assign({}, state.suttaText, { meta: action.metaText }) });
+                return Object.assign({}, state, { suttaMetaText: action.metaText });
             case 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS':
                 return Object.assign({}, state,
                     { textParagraphs: Object.assign({}, state.textParagraphs, { descriptions: action.descriptions }) });

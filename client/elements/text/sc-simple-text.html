@@ -36,13 +36,13 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
     </style>
 
-    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+    <sc-text-options class="text-options" suttaplex-item="{{suttaplex}}"></sc-text-options>
 
-    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, loading)]]">
-      <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
+      <paper-spinner-lite active></paper-spinner-lite>
     </div>
 
-    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[loading]]"></div>
+    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
       <div class="text-center margin-top-xl">
@@ -64,12 +64,10 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   // in simple texts, both root texts and translations are returned by the API in the translation object.
                   sutta: {
                       type: Object,
-                      statePath: 'suttaText.translation',
                       observer: '_updateView'
                   },
                   suttaplex: {
-                      type: Object,
-                      statePath: 'suttaText.suttaplex'
+                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -90,19 +88,17 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   lang: {
                       type: String
                   },
-                  loading: {
-                      type: Boolean
+                  isLoading: {
+                      type: Boolean,
+                      observer: '_loadingChanged'
                   },
                   error: {
                       type: Object
+                  },
+                  isTextViewHidden: {
+                      type: Boolean,
+                      value: false
                   }
-              }
-          }
-
-          connectedCallback() {
-              super.connectedCallback();
-              if (this.showParagraphs && this.paragraphs.length !== 0) {
-                  this._computeParagraphs();
               }
           }
 
@@ -120,6 +116,27 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                           metaText: metaText
                       }
                   }
+              }
+          }
+
+          ready() {
+              super.ready();
+              document.addEventListener('visibilitychange', () => {
+                  // Hide the text and display the loading spinner:
+                  this.isTextViewHidden = true;
+                  // Insert the sutta text into the main element again to force reloading styles:
+                  // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
+                  setTimeout(() => {
+                      this.$.html_text_content.innerHTML = this.sutta.text;
+                      this.isTextViewHidden = false;
+                  }, 200);
+              })
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              if (this.showParagraphs && this.paragraphs.length !== 0) {
+                  this._computeParagraphs();
               }
           }
 
@@ -147,6 +164,18 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this.dispatch('changeToolbarTitle', title);
           }
 
+          // returns the meta-data from the loaded sutta text
+          _computeMeta() {
+              const matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              let metaText;
+              try {
+                  metaText = matches[1];
+              } catch(e) {
+                  console.error(e);
+              }
+              return matches ? metaText : '';
+          }
+
           // adds a class to the main container to either show or hide paragraph numbers.
           _addParagraphs() {
               const infotext = this.$.html_text_content;
@@ -155,12 +184,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               } else if (infotext) {
                   infotext.classList.add('infomode');
               }
-          }
-
-          // returns the meta-data from the loaded sutta text
-          _computeMeta() {
-              const matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
-              return matches ? matches[1] : '';
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
@@ -177,8 +200,15 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this._addParagraphs();
           }
 
-          _shouldShowLoadingIndicator(error, loading) {
-              return (!error && loading);
+          // Display the loading indicator in two cases:
+          // 1: If there's no error and the text view is loading, or...
+          // 2: If the text view is currently hidden
+          _shouldShowLoadingIndicator(error, isLoading, isTextViewHidden) {
+              return ((!error && isLoading) || isTextViewHidden);
+          }
+
+          _loadingChanged() {
+              this.isTextViewHidden = this.isLoading;
           }
       }
 
