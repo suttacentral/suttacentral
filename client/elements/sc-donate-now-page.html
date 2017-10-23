@@ -22,6 +22,10 @@
 <dom-module id="sc-donate-now-page">
   <template>
     <style include="static-styles">
+      #page-wrap {
+        font-family: sans-serif;
+      }
+
       .flex-row {
         display: flex;
       }
@@ -215,11 +219,15 @@
       }
 
       .error-toast {
-        --paper-toast-background-color: red;
+        --paper-toast-background-color: #323232;
       }
 
       .success-toast {
-        --paper-toast-background-color: green;
+        --paper-toast-background-color: #323232;
+      }
+
+      .sans-font {
+        font-family: sans-serif;
       }
 
     </style>
@@ -294,7 +302,7 @@
 
           <div class="flex-row submit">
             <paper-button  id="submitButton" on-tap="_makeDonation" class="submit-button">
-              PAY WITH CARD
+              <div class="sans-font">PAY WITH CARD</div>
             </paper-button>
           </div>
         </form>
