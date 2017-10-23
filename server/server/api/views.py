@@ -99,11 +99,9 @@ class Menu(Resource):
             vertex = self._vertex(name, _id, x['num'])
 
             try:
-                try:
-                    edges[_from]['children'].add(vertex)
-                except AttributeError:
-                    edges[_from]['children'].append(vertex)
-
+                edges[_from]['children'].add(vertex)
+            except AttributeError:
+                edges[_from]['children'].append(vertex)
             except KeyError:
                 if vertex['uid'].startswith('root'):
                     edges[_from]['children'] = SortedListWithKey([vertex], key=lambda z: z['num'])
