@@ -72,12 +72,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
                       type: Boolean,
-                      statePath: 'textParagraphs.enabled',
+                      statePath: 'textOptions.paragraphsEnabled',
                       observer: '_computeParagraphs'
                   },
                   paragraphs: {
                       type: Array,
-                      statePath: 'textParagraphs.descriptions'
+                      statePath: 'textOptions.paragraphDescriptions'
                   },
                   title: {
                       type: String
@@ -133,17 +133,11 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               })
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              if (this.showParagraphs && this.paragraphs.length !== 0) {
-                  this._computeParagraphs();
-              }
-          }
-
           _updateView() {
               this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this._setAttributes();
               this._updateToolbar();
+              this._computeParagraphs();
           }
 
           _setAttributes() {
@@ -169,21 +163,15 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               const matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
               let metaText;
               try {
-                  metaText = matches[1];
-              } catch(e) {
+                  if (matches && matches.length > 0) {
+                      metaText = matches[1];
+                  } else {
+                      metaText = '';
+                  }
+              } catch (e) {
                   console.error(e);
               }
-              return matches ? metaText : '';
-          }
-
-          // adds a class to the main container to either show or hide paragraph numbers.
-          _addParagraphs() {
-              const infotext = this.$.html_text_content;
-              if (infotext && !this.showParagraphs) {
-                  infotext.classList.remove('infomode');
-              } else if (infotext) {
-                  infotext.classList.add('infomode');
-              }
+              return metaText;
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
@@ -197,7 +185,25 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       });
                   });
               }
-              this._addParagraphs();
+              if (this.showParagraphs) {
+                  this._addParagraphs(this.$.html_text_content);
+              } else {
+                  this._removeParagraphs(this.$.html_text_content);
+              }
+          }
+
+          // adds a class to the main container to either show...
+          _addParagraphs(textElement) {
+              if (textElement) {
+                  textElement.classList.add('infomode');
+              }
+          }
+
+          // ... or hide paragraph numbers.
+          _removeParagraphs(textElement) {
+              if (textElement) {
+                  textElement.classList.remove('infomode');
+              }
           }
 
           // Display the loading indicator in two cases:
