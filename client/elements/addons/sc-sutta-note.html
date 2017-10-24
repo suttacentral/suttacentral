@@ -1,6 +1,6 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
 
 <!--
 Basic note for each sutta if they exist with a paper-tooltip.
@@ -40,11 +40,19 @@ Used in the Suttaplex.
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-sutta-note',
-          properties: {
-              noteData: String
+      class SCSuttaNote extends Polymer.Element {
+          static get is(){
+              return 'sc-sutta-note';
           }
-      });
+          
+          static get properties(){
+              return {
+                noteData: {
+                  type: String
+                }
+              }
+          }
+      }
+      customElements.define(SCSuttaNote.is, SCSuttaNote);
   </script>
 </dom-module>
