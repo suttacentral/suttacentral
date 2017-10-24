@@ -306,10 +306,31 @@ LET biblio = (
         LIMIT 1
         RETURN biblio.text
 )[0]
+
+LET markup = (
+    FOR markup IN po_markup
+        FILTER markup.uid == @uid
+        LIMIT 1
+        RETURN markup.markup
+)[0]
+
+LET root_sutta_text = (
+    RETURN translated_text ? 
+        (FOR object IN po_strings FILTER object.uid == @uid AND object.lang == root_text.root_lang LIMIT 1 RETURN object)[0] 
+        : 
+        null
+)[0]
+
+LET translation = (
+    RETURN translated_text ? 
+        (FOR object IN po_strings FILTER object.uid == @uid AND object.lang == root_text.root_lang LIMIT 1 RETURN object)[0]
+        :
+        (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0]
+)[0]
     
 RETURN {
-    root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
-    translation: translated_text ? translated_text : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
+    root_text: root_sutta_text,
+    translation: translation,
     suttaplex: {
         acronym: root_text.acronym,
         volpages: volpages,
@@ -322,7 +343,8 @@ RETURN {
         parallel_count: parallel_count,
         biblio: biblio
     },
-    segmented: translated_text ? true : false    
+    segmented: translated_text ? true : false,
+    markup: translated_text ? markup : null
 }
 '''
 
