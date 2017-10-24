@@ -216,14 +216,6 @@
         margin-left: calc(50vw - 150px);
       }
 
-      .error-toast {
-        --paper-toast-background-color: #323232;
-      }
-
-      .success-toast {
-        --paper-toast-background-color: #323232;
-      }
-
       .sans-font {
         @apply --sc-sans-font;
       }
@@ -388,7 +380,8 @@
                     value: {
                       0: 'Unknown error',
                       1: 'Amount cannot be less than $0.50 USD.',
-                      2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.'
+                      2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
+                      3: 'Your card was declined.'
                     }
                   },
                   successMessage: {
@@ -505,6 +498,7 @@
             this.$.submitButton.disabled = true;
             this.stripe.createToken(this.card).then((result, error) => {
               if (error){
+                console.log(error);
                 this.shadowRoot.querySelector('.error-toast').open();
                 this.processingPayment = false;
                 this.$.submitButton.disabled = false;

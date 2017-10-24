@@ -520,7 +520,11 @@ class Donations(Resource):
 
         if email:
             customer_data['email'] = email
-        customer = stripe.Customer.create(**customer_data)
+
+        try:
+            customer = stripe.Customer.create(**customer_data)
+        except stripe.CardError:
+            return {'err_code': 3}, 400
 
         try:
             if one_time_donation:
