@@ -194,7 +194,11 @@ def language_sort(original_lang):
 
 def sort_parallels_key(x):
     if '#' not in x:
-        return -1
-    _, number, *_ = x.split('#')
+        return x, -1
+    prefix, number, *_ = x.split('#')
     number = number.strip('-')
-    return int(number)
+    try:
+        number = int(number)
+    except ValueError:
+        number = 0
+    return prefix, number

@@ -114,6 +114,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
 
           _setAreParallelsAvaiable(loadingParallels) {
+              if (this.parallels === undefined || this.parallels === null){
+                  return false;
+              }
               return loadingParallels || (Object.keys(this.parallels).length === 0 && typeof this.parallels === 'object')
           }
 
