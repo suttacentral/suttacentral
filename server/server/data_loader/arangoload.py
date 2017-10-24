@@ -431,15 +431,15 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
             else:
                 first_uid = uids[0]
                 true_first_uids = get_true_uids(first_uid, all_uids)
-                for true_first_uid, from_uid in product(true_first_uids, uids[1:]):
-                    true_from_uids = get_true_uids(from_uid, all_uids)
+                for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
+                    true_from_uids = get_true_uids(to_uid, all_uids)
                     for true_from_uid in true_from_uids:
                         remark = remarks.get(frozenset([true_from_uid, true_first_uid]), None)
                         ll_edges.append({
-                            '_from': true_from_uid,
-                            '_to': true_first_uid,
-                            'from': from_uid,
-                            'to': first_uid.lstrip('~'),
+                            '_from': true_first_uid,
+                            '_to': true_from_uid,
+                            'from': first_uid.lstrip('~'),
+                            'to': to_uid,
                             'type': r_type,
                             'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
                             'remark': remark
