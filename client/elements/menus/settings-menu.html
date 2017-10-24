@@ -52,7 +52,16 @@ Issues:
 
       .nerdy-row {
         @apply --sc-paper-font-body;
+        @apply --sc-sans-font;
         color: var(--secondary-text-color);
+      }
+
+      .menu-item {
+        @apply --paper-font-title;
+        @apply --sc-sans-font;
+      }
+
+      .menu-option {
         @apply --sc-sans-font;
       }
 
@@ -86,27 +95,29 @@ Issues:
 
     <div class="paper-dialogue-container">
       <div class="dialogue-section">
-        <h3 class="menu-header">View textual information</h3>
+        <h3 class="menu-item">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
         <paper-toggle-button class="menu-toggle-button" noink
                              active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
       </div>
 
       <div class="dialogue-section">
-        <h3>View original text with translation</h3>
+        <h3 class="menu-item">View original text with translation</h3>
         <div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.
         </div>
         <paper-radio-group selected="{{radioSelected}}">
-          <paper-radio-button name="none">None</paper-radio-button>
-          <paper-radio-button id="sides" name="sidebyside">
+          <paper-radio-button name="none" class="menu-option">
+            None
+          </paper-radio-button>
+          <paper-radio-button id="sides" name="sidebyside" class="menu-option">
             <iron-icon class="menu-icon" icon="view-column"></iron-icon>
             Side by side
           </paper-radio-button>
-          <paper-radio-button name="linebyline">
+          <paper-radio-button name="linebyline" class="menu-option">
             <iron-icon class="menu-icon" icon="view-headline"></iron-icon>
             Line by line
           </paper-radio-button>
-          <paper-radio-button name="popup">
+          <paper-radio-button name="popup" class="menu-option">
             <iron-icon class="menu-icon" icon="editor:insert-comment"></iron-icon>
             Pop-up
           </paper-radio-button>
@@ -114,7 +125,7 @@ Issues:
       </div>
 
       <div class="dialogue-section">
-        <h3>Activate Pali word lookup</h3>
+        <h3 class="menu-item">Activate Pali word lookup</h3>
         <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid
           only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.
         </div>
@@ -132,7 +143,7 @@ Issues:
       </div>
 
       <div class="dialogue-section">
-        <h3>Activate Chinese word lookup</h3>
+        <h3 class="menu-item">Activate Chinese word lookup</h3>
         <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital
           Dictionary of Buddhism.
         </div>
@@ -150,7 +161,7 @@ Issues:
       </div>
 
       <div class="dialogue-section">
-        <h3>Change the script of the Pali text</h3>
+        <h3 class="menu-item">Change the script of the Pali text</h3>
         <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
         <paper-dropdown-menu class="menu-dropdown" label="Script">
           <paper-listbox slot="dropdown-content" selected="{{paliScriptSelected}}">
@@ -162,7 +173,7 @@ Issues:
       </div>
 
       <div class="dialogue-section">
-        <h3>Remember what I have selected</h3>
+        <h3 class="menu-item">Remember what I have selected</h3>
         <paper-toggle-button class="menu-toggle-button" noink checked
                              active="{{rememberSettings}}"></paper-toggle-button>
       </div>
@@ -298,6 +309,12 @@ Issues:
                           type: 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS',
                           descriptions: data
                       }
+                  },
+                  chooseSegmentedSuttaTextView(viewNumber) {
+                      return {
+                          type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
+                          view: viewNumber
+                      }
                   }
               }
           }
@@ -320,8 +337,7 @@ Issues:
           }
 
           _radioGroupChanged() {
-              // TODO
-              // Fires the choice of which view for the segmented text pages is selected to page-selector.html.
+              this.dispatch('chooseSegmentedSuttaTextView', this.radioSelected);
           }
 
           _rememberSettings(rememberSettings) {

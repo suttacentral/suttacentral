@@ -23,9 +23,10 @@
         searchParams: {},
         suttaText: {},
         suttaMetaText: '',
-        textParagraphs: {
-            enabled: false,
-            descriptions: []
+        textOptions: {
+            paragraphsEnabled: false,
+            paragraphDescriptions: [],
+            segmentedSuttaTextView: 0
         }
     };
 
@@ -51,10 +52,13 @@
                 return Object.assign({}, state, { suttaMetaText: action.metaText });
             case 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS':
                 return Object.assign({}, state,
-                    { textParagraphs: Object.assign({}, state.textParagraphs, { descriptions: action.descriptions }) });
+                    { textOptions: Object.assign({}, state.textOptions, { paragraphDescriptions: action.descriptions }) });
             case 'TOGGLE_TEXTUAL_INFORMATION_ENABLED':
                 return Object.assign({}, state,
-                    { textParagraphs: Object.assign({}, state.textParagraphs, { enabled: action.enabled }) });
+                    { textOptions: Object.assign({}, state.textOptions, { paragraphsEnabled: action.enabled }) });
+            case 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW':
+                return Object.assign({}, state,
+                    { textOptions: Object.assign({}, state.textOptions, { segmentedSuttaTextView: action.view }) });
             default:
                 return state;
         }
