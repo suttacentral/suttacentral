@@ -36,8 +36,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
     </style>
 
-    <sc-text-options class="text-options" suttaplex-item="{{suttaplex}}"></sc-text-options>
-
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
       <paper-spinner-lite active></paper-spinner-lite>
     </div>
@@ -66,9 +64,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   sutta: {
                       type: Object,
                       observer: '_updateView'
-                  },
-                  suttaplex: {
-                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -135,7 +130,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _updateView() {
-              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();

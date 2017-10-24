@@ -85,10 +85,6 @@ Issues that need to be fixed:
         };
       }
 
-      .text-options {
-        padding: 32px;
-      }
-
       .text-center {
         text-align: center;
       }
@@ -103,8 +99,6 @@ Issues that need to be fixed:
         height: 60px;
       }
     </style>
-
-    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
@@ -136,9 +130,6 @@ Issues that need to be fixed:
                   translatedSutta: {
                       type: Object,
                       observer: '_updateView'
-                  },
-                  suttaplex: {
-                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -239,7 +230,6 @@ Issues that need to be fixed:
           }
 
           _updateView() {
-              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this._setRootAttributes();
               this._setTranslatedAttributes();
               this._updateToolbar();
@@ -265,28 +255,13 @@ Issues that need to be fixed:
           }
 
           _updateToolbar() {
-              this.dispatch('changeSuttaMetaText', this._computeMeta());
               this.dispatch('changeToolbarTitle',
                   `${this.translatedTitle ? this.translatedTitle : this.rootTitle} – ${this.translationAuthor}`);
           }
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              let matches = this.translatedSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
-              if (!matches) {
-                  matches = this.rootSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
-              }
-              let metaText;
-              try {
-                  if (matches && matches.length > 1) {
-                      metaText = matches[1];
-                  } else {
-                      metaText = '';
-                  }
-              } catch (e) {
-                  console.error(e);
-              }
-              return metaText;
+              return this.translatedSutta.author_blurb;
           }
 
           // if the base html and the pali texts have been fully loaded, the setting from the
@@ -297,11 +272,11 @@ Issues that need to be fixed:
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       this.$.segmented_translated_text_content.classList.add('side-by-side');
-                      this._addOriginalText();
+                      //                      this._addOriginalText();
                       break;
                   case 'linebyline':
                       this.$.segmented_translated_text_content.classList.add('line-by-line');
-                      this._addOriginalText();
+                      //                      this._addOriginalText();
                       break;
                   case 'popup':
                       Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>

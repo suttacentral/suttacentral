@@ -18,6 +18,10 @@
         height: 60px;
         margin-top: 50vh;
       }
+
+      .text-options {
+        padding: 32px;
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -31,16 +35,18 @@
         last-error="{{error}}"
         last-response="{{responseData}}"></iron-ajax>
 
+    <sc-text-options class="text-options" suttaplex-item="[[responseData.suttaplex]]"></sc-text-options>
+
     <div class="loading-indicator" hidden$="[[!isLoading]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <sc-simple-text id="simple_text" sutta="[[responseData.translation]]" suttaplex="[[responseData.suttaplex]]"
+    <sc-simple-text id="simple_text" sutta="[[responseData.translation]]"
                     is-loading="{{isLoading}}" error="{{error}}"
                     hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]"></sc-simple-text>
 
     <sc-segmented-text id="segmented_text" root-sutta="[[responseData.root_text]]"
-                       suttaplex="[[responseData.suttaplex]]" translated-sutta="[[responseData.translation]]"
+                       translated-sutta="[[responseData.translation]]"
                        root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="{{error}}"
                        hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]"></sc-segmented-text>
 
@@ -107,6 +113,7 @@
           }
 
           _onResponse() {
+              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this.dispatch('downloadSuttaText', this.responseData);
               this.isSegmentedText = this.isSuttaTextSegmented();
               if (this.isSegmentedText) {
