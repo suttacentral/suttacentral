@@ -42,7 +42,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
       <paper-spinner-lite active></paper-spinner-lite>
     </div>
 
-    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[isTextViewHidden]]"></div>
+    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[sutta.text]]"
+         hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
       <div class="text-center margin-top-xl">
@@ -127,7 +128,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   // Insert the sutta text into the main element again to force reloading styles:
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
-                      this.$.html_text_content.innerHTML = this.sutta.text;
+                      this.$.simple_text_content.innerHTML = this.sutta.text;
                       this.isTextViewHidden = false;
                   }, 200);
               })
@@ -186,9 +187,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   });
               }
               if (this.showParagraphs) {
-                  this._addParagraphs(this.$.html_text_content);
+                  this._addParagraphs(this.$.simple_text_content);
               } else {
-                  this._removeParagraphs(this.$.html_text_content);
+                  this._removeParagraphs(this.$.simple_text_content);
               }
           }
 

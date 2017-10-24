@@ -41,7 +41,7 @@
 
     <sc-segmented-text id="segmented_text" root-sutta="[[responseData.root_text]]"
                        suttaplex="[[responseData.suttaplex]]" translated-sutta="[[responseData.translation]]"
-                       is-loading="{{isLoading}}" error="{{error}}"
+                       root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="{{error}}"
                        hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]"></sc-segmented-text>
 
   </template>

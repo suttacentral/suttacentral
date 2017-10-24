@@ -110,7 +110,8 @@ Issues that need to be fixed:
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[isTextViewHidden]]"></div>
+    <div id="segmented_translated_text_content" class="html-text-content" inner-h-t-m-l="[[translatedSutta.text]]"
+         hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!translatedSutta.text]]">
       <div class="text-center margin-top-xl">
@@ -192,6 +193,11 @@ Issues that need to be fixed:
                   isTextViewHidden: {
                       type: Boolean,
                       value: false
+                  },
+                  chosenTextView: {
+                      type: String,
+                      statePath: 'textOptions.segmentedSuttaTextView',
+                      observer: 'setView'
                   }
               }
           }
@@ -221,7 +227,7 @@ Issues that need to be fixed:
                   // Insert the sutta text into the main element again to force reloading styles:
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
-                      this.$.html_text_content.innerHTML = this.translatedSutta.text;
+                      this.$.segmented_translated_text_content.innerHTML = this.translatedSutta.text;
                       this.isTextViewHidden = false;
                   }, 200);
               });
@@ -283,9 +289,37 @@ Issues that need to be fixed:
               return metaText;
           }
 
-          // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-          _addTranslatedText(translatedText) {
-              const segments = this.shadowRoot.querySelectorAll('sc-segment');
+          // if the base html and the pali texts have been fully loaded, the setting from the
+          // settings-menu for the relevant view is implemented by adding relevant class
+          // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
+          setView() {
+              this._cleanCode();
+              switch (this.chosenTextView) {
+                  case 'sidebyside':
+                      this.$.segmented_translated_text_content.classList.add('side-by-side');
+                      this._addOriginalText();
+                      break;
+                  case 'linebyline':
+                      this.$.segmented_translated_text_content.classList.add('line-by-line');
+                      this._addOriginalText();
+                      break;
+                  case 'popup':
+                      Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
+                          item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
+                              'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
+                      if (!this.paliScript) {
+                          this.changeScript(0)
+                      }
+                      else {
+                          this.changeScript(this.paliScript)
+                      }
+                      break;
+              }
+          }
+
+          _addTranslatedText() {
+              const segments = this.shadowRoot.querySelectorAll('sc-seg');
+              console.dir(segments);
               Array.from(segments).forEach(item => item.classList.add('translated-text'));
               for (let key in translatedText) {
                   if (!key.startsWith('_')) {
@@ -297,16 +331,15 @@ Issues that need to be fixed:
               }
           }
 
-          // creates a second 'sc-element' behind every 'sc-element' in the base markup and
-          // populates that with the corresponding pali text segment.
-          _addOriginalText(originalText) {
+          _addOriginalText() {
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  for (let key in originalText) {
+                  for (let key in this.rootSutta.text) {
+                      console.log(key);
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:');
                           subkey = subkey.replace(/\./g, '\\\.');
                           const segment = this.shadowRoot.querySelector('#' + subkey);
-                          const newSegment = document.createElement('sc-segment');
+                          const newSegment = document.createElement('sc-seg');
                           newSegment.id = key;
                           newSegment.classList.add('original-text');
                           newSegment.innerHTML = originalText[key] + ' ';
@@ -315,13 +348,20 @@ Issues that need to be fixed:
                   }
               }
               this.htmlLoaded = true;
-              this.$.html_text_content.classList.add('latin-script');
+              this.$.segmented_translated_text_content.classList.add('latin-script');
 
               // checks settings from the settings-menu and changes the view accordingly.
               this.setView(this.showViewer);
               if (this.paliScript) {
                   this.changeScript(this.paliScript)
               }
+          }
+
+          // reset all classes and remove tooltips.
+          _cleanCode() {
+              this.$.segmented_translated_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
+              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
+                  .forEach(item => item.parentNode.removeChild(item));
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
@@ -336,9 +376,9 @@ Issues that need to be fixed:
                   });
               }
               if (this.showParagraphs) {
-                  this._addParagraphs(this.$.html_text_content);
+                  this._addParagraphs(this.$.segmented_translated_text_content);
               } else {
-                  this._removeParagraphs(this.$.html_text_content);
+                  this._removeParagraphs(this.$.segmented_translated_text_content);
               }
           }
 
@@ -354,46 +394,6 @@ Issues that need to be fixed:
               if (textElement) {
                   textElement.classList.remove('infomode');
               }
-          }
-
-          // if the base html and the pali texts have been fully loaded, the setting from the
-          // settings-menu for the relevant view is implemented by adding relevant class
-          // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
-          setView(showViewer) {
-              if (this.htmlLoaded) {
-                  this._cleanCode();
-                  if (this.author !== 'pali') {
-                      switch (showViewer) {
-                          case 'side-by-side':
-                              this.$.html_text_content.classList.add('side-by-side');
-                              break;
-                          case 'line-by-line':
-                              this.$.html_text_content.classList.add('line-by-line');
-                              break;
-                          case 'popup':
-                              Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
-                                  item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
-                                      'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
-                              if (!this.paliScript) {
-                                  this.changeScript(0)
-                              }
-                              else {
-                                  this.changeScript(this.paliScript)
-                              }
-                              break;
-                      }
-                  } else {
-                      // if the author is "pali", only the pali is shown and not the translated text.
-                      this.$.html_text_content.classList.add('show-pali');
-                  }
-              }
-          }
-
-          // reset all classes and remove tooltips.
-          _cleanCode() {
-              this.$.html_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
-              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
-                  .forEach(item => item.parentNode.removeChild(item));
           }
 
           // Display the loading indicator in two cases:
@@ -413,31 +413,31 @@ Issues that need to be fixed:
               if (this.htmlLoaded) {
                   const segments = this.shadowRoot.querySelectorAll('.original-text');
                   const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-                  this.$.html_text_content.classList
+                  this.$.segmented_translated_text_content.classList
                       .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
                   Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
                   Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
                   switch (paliScript) {
                       case 0:
-                          this.$.html_text_content.classList.add('latin-script');
+                          this.$.segmented_translated_text_content.classList.add('latin-script');
                           break;
                       case 1:
-                          this.$.html_text_content.classList.add('sinhala-script');
+                          this.$.segmented_translated_text_content.classList.add('sinhala-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
                           break;
                       case 2:
-                          this.$.html_text_content.classList.add('devanagari-script');
+                          this.$.segmented_translated_text_content.classList.add('devanagari-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
                           break;
                       case 3:
-                          this.$.html_text_content.classList.add('thai-script');
+                          this.$.segmented_translated_text_content.classList.add('thai-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
                           break;
                       case 4:
-                          this.$.html_text_content.classList.add('myanmar-script');
+                          this.$.segmented_translated_text_content.classList.add('myanmar-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           break;
