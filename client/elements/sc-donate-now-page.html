@@ -23,7 +23,7 @@
   <template>
     <style include="static-styles">
       #page-wrap {
-        font-family: sans-serif;
+        @apply --sc-sans-font;
       }
 
       .flex-row {
@@ -227,7 +227,13 @@
       }
 
       .sans-font {
-        font-family: sans-serif;
+        @apply --sc-sans-font;
+      }
+
+      .data-input{
+      --paper-input-container: {
+         @apply --sc-sans-font;
+        };
       }
 
     </style>
@@ -277,8 +283,8 @@
 
           <p class="explanation">You can make a one-time donation or a monthly donation.</p>
           <div class="flex-row">
-            <paper-checkbox class="frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
-            <paper-checkbox class="frequency-checkbox monthly-donation">Monthly</paper-checkbox>
+            <paper-checkbox class="sans-font frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
+            <paper-checkbox class="sans-font frequency-checkbox monthly-donation">Monthly</paper-checkbox>
           </div>
 
           <div class="card-details">
