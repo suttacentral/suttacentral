@@ -314,23 +314,17 @@ LET markup = (
         RETURN markup.markup
 )[0]
 
-LET root_sutta_text = (
-    RETURN translated_text ? 
-        (FOR object IN po_strings FILTER object.uid == @uid AND object.lang == root_text.root_lang LIMIT 1 RETURN object)[0] 
-        : 
-        null
+LET root_strings = (
+    FOR object IN po_strings FILTER object.uid == @uid AND object.lang == root_text.root_lang LIMIT 1 RETURN object
 )[0]
 
-LET translation = (
-    RETURN translated_text ? 
-        (FOR object IN po_strings FILTER object.uid == @uid AND object.lang == root_text.root_lang LIMIT 1 RETURN object)[0]
-        :
-        (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0]
+LET translated_strings = (
+    FOR object IN po_strings FILTER object.uid == @uid AND object.lang == @language LIMIT 1 RETURN object
 )[0]
-    
+
 RETURN {
-    root_text: root_sutta_text,
-    translation: translation,
+    root_text: translated_text ? root_strings : null,
+    translation: translated_text ? translated_strings : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     suttaplex: {
         acronym: root_text.acronym,
         volpages: volpages,
