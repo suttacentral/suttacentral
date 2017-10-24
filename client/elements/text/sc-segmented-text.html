@@ -142,12 +142,12 @@ Issues that need to be fixed:
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
                       type: Boolean,
-                      statePath: 'textParagraphs.enabled',
+                      statePath: 'textOptions.paragraphsEnabled',
                       observer: '_computeParagraphs'
                   },
                   paragraphs: {
                       type: Array,
-                      statePath: 'textParagraphs.descriptions'
+                      statePath: 'textOptions.paragraphDescriptions'
                   },
                   // View for segmented text selected in the toolbar-settings-menu.
                   showViewer: {
@@ -224,15 +224,12 @@ Issues that need to be fixed:
                       this.$.html_text_content.innerHTML = this.translatedSutta.text;
                       this.isTextViewHidden = false;
                   }, 200);
-              })
+              });
           }
 
           connectedCallback() {
               super.connectedCallback();
               this.htmlLoaded = false;
-              if (this.showParagraphs && this.paragraphs.length !== 0) {
-                  this._computeParagraphs();
-              }
           }
 
           _updateView() {
@@ -240,6 +237,7 @@ Issues that need to be fixed:
               this._setRootAttributes();
               this._setTranslatedAttributes();
               this._updateToolbar();
+              this._computeParagraphs();
           }
 
           _setRootAttributes() {
@@ -274,34 +272,36 @@ Issues that need to be fixed:
               }
               let metaText;
               try {
-                  metaText = matches[1];
-              } catch(e) {
+                  if (matches && matches.length > 0) {
+                      metaText = matches[1];
+                  } else {
+                      metaText = '';
+                  }
+              } catch (e) {
                   console.error(e);
               }
-              return matches ? metaText : '';
+              return metaText;
           }
 
           // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-          _addTranslatedText(e) {
+          _addTranslatedText(translatedText) {
               const segments = this.shadowRoot.querySelectorAll('sc-segment');
               Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              const outputText = e.detail.response;
-              for (let key in outputText) {
+              for (let key in translatedText) {
                   if (!key.startsWith('_')) {
                       let subkey = key.replace(/:/g, '\\\:');
                       subkey = subkey.replace(/\./g, '\\\.');
                       const segment = this.shadowRoot.querySelector('#' + subkey);
-                      segment.innerHTML = outputText[key] + ' ';
+                      segment.innerHTML = translatedText[key] + ' ';
                   }
               }
           }
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
-          _addOriginalText(e) {
+          _addOriginalText(originalText) {
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  const outputText = e.detail.response;
-                  for (let key in outputText) {
+                  for (let key in originalText) {
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:');
                           subkey = subkey.replace(/\./g, '\\\.');
@@ -309,7 +309,7 @@ Issues that need to be fixed:
                           const newSegment = document.createElement('sc-segment');
                           newSegment.id = key;
                           newSegment.classList.add('original-text');
-                          newSegment.innerHTML = outputText[key] + ' ';
+                          newSegment.innerHTML = originalText[key] + ' ';
                           segment.parentNode.insertBefore(newSegment, segment.nextSibling);
                       }
                   }
@@ -324,13 +324,6 @@ Issues that need to be fixed:
               }
           }
 
-          // adds a class to the main container to either show or hide paragraph numbers.
-          _addParagraphs() {
-              const infotext = this.$.html_text_content;
-              return (infotext && !this.showParagraphs) ?
-                  infotext.classList.remove('infomode') : (infotext) ? infotext.classList.add('infomode') : '';
-          }
-
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
               if (this.paragraphs && this.showParagraphs) {
@@ -342,7 +335,25 @@ Issues that need to be fixed:
                       });
                   });
               }
-              this._addParagraphs();
+              if (this.showParagraphs) {
+                  this._addParagraphs(this.$.html_text_content);
+              } else {
+                  this._removeParagraphs(this.$.html_text_content);
+              }
+          }
+
+          // adds a class to the main container to either show...
+          _addParagraphs(textElement) {
+              if (textElement) {
+                  textElement.classList.add('infomode');
+              }
+          }
+
+          // ... or hide paragraph numbers.
+          _removeParagraphs(textElement) {
+              if (textElement) {
+                  textElement.classList.remove('infomode');
+              }
           }
 
           // if the base html and the pali texts have been fully loaded, the setting from the
