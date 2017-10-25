@@ -100,9 +100,9 @@ Issues that need to be fixed:
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <div id="segmented_translated_text_content" class="html-text-content" hidden$="[[isTextViewHidden]]"></div>
+    <div id="segmented_translated_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]"></div>
 
-    <template is="dom-if" if="[[!translatedSutta.text]]">
+    <template is="dom-if" if="[[!translatedSutta.strings]]">
       <div class="text-center margin-top-xl">
         <h2>Error</h2>
         <h3>Could not find the sutta text.</h3>
@@ -186,7 +186,11 @@ Issues that need to be fixed:
                       observer: 'setView'
                   },
                   isSegmented: {
-                      type: Boolean
+                      type: Boolean,
+                      observer: '_updateView'
+                  },
+                  markup: {
+                      type: String
                   }
               }
           }
@@ -216,7 +220,7 @@ Issues that need to be fixed:
                   // Insert the sutta text into the main element again to force reloading styles:
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
-                      this.$.segmented_translated_text_content.innerHTML = this.translatedSutta.text;
+                      //                      this.$.segmented_translated_text_content.innerHTML = this.translatedSutta.text;
                       this.isTextViewHidden = false;
                   }, 200);
               });
@@ -235,6 +239,7 @@ Issues that need to be fixed:
               this._setTranslatedAttributes();
               this._updateToolbar();
               this._computeParagraphs();
+              this._addTranslatedText();
           }
 
           _setRootAttributes() {
@@ -296,31 +301,36 @@ Issues that need to be fixed:
           }
 
           _addTranslatedText() {
-              const segments = this.shadowRoot.querySelectorAll('sc-seg');
-              console.dir(segments);
-              Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              for (let key in this.translatedSutta.strings) {
-                  if (!key.startsWith('_')) {
-                      let subkey = key.replace(/:/g, '\\\:');
-                      subkey = subkey.replace(/\./g, '\\\.');
-                      const segment = this.shadowRoot.querySelector('#' + subkey);
-                      segment.innerHTML = translatedText[key] + ' ';
-                  }
+              try {
+                  const segments = this.shadowRoot.querySelectorAll('sc-seg');
+                  Array.from(segments).forEach(item => item.classList.add('translated-text'));
+                  console.dir(segments);
+                  console.dir(this.translatedSutta.strings);
+                  this.translatedSutta.strings.forEach((key) => {
+                      if (!key[0].startsWith('_')) {
+                          let subkey = key[0].replace(/:/g, '\\\:');
+                          subkey = subkey.replace(/\./g, '\\\.');
+                          const segment = this.shadowRoot.querySelector('#' + subkey);
+                          segment.innerHTML = this.translatedSutta.strings[key[0]] + ' ';
+                      }
+                  });
+              }
+              catch (e) {
+                  console.error(e);
               }
           }
 
           _addOriginalText() {
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  for (let key in this.rootSutta.text) {
-                      console.log(key);
-                      if (!key.startsWith('_')) {
-                          let subkey = key.replace(/:/g, '\\\:');
+                  for (let key in this.rootSutta.strings) {
+                      if (this.rootSutta.strings.hasOwnProperty(key) && !key[0].startsWith('_')) {
+                          let subkey = key[0].replace(/:/g, '\\\:');
                           subkey = subkey.replace(/\./g, '\\\.');
                           const segment = this.shadowRoot.querySelector('#' + subkey);
                           const newSegment = document.createElement('sc-seg');
-                          newSegment.id = key;
+                          newSegment.id = key[0];
                           newSegment.classList.add('original-text');
-                          newSegment.innerHTML = originalText[key] + ' ';
+                          //                          newSegment.innerHTML = originalText[key[0]] + ' ';
                           segment.parentNode.insertBefore(newSegment, segment.nextSibling);
                       }
                   }

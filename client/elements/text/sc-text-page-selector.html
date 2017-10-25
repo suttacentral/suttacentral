@@ -41,14 +41,15 @@
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <sc-simple-text id="simple_text" sutta="[[translatedSutta]]"
-                    is-loading="{{isLoading}}" error="[[lastError]]" is-segmented="[[isSegmentedText]]"
-                    hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]"></sc-simple-text>
+    <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
+                    is-segmented="[[isSegmentedText]]" hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+    </sc-simple-text>
 
-    <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]"
-                       translated-sutta="[[translatedSutta]]" is-segmented="[[isSegmentedText]]"
-                       root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]"
-                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]"></sc-segmented-text>
+    <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" translated-sutta="[[translatedSutta]]"
+                       is-segmented="[[isSegmentedText]]" root-lang="[[responseData.root_text.lang]]"
+                       is-loading="{{isLoading}}" error="[[lastError]]" markup="[[markup]]"
+                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
+    </sc-segmented-text>
 
   </template>
 
@@ -90,6 +91,9 @@
                   },
                   rootSutta: {
                       type: Object
+                  },
+                  markup: {
+                      type: String
                   }
               }
           }
@@ -134,8 +138,9 @@
           setProperties() {
               this.suttaplex = this.responseData.suttaplex;
               this.translatedSutta = this.responseData.translation;
+              this.rootSutta = this.responseData.root_text;
+              this.markup = this.responseData.markup;
               this.author = this.responseData.translation.author;
-              this.rootSutta = this.responseData.root_sutta;
               this.isSegmentedText = !!(this.responseData.segmented);
           }
 
@@ -153,7 +158,7 @@
           _paramChanged() {
               if (!this.stopRequests) {
                   this.stopRequests = true;
-                  // wait 50ms until all routes parameters are changed
+                  // wait 50ms until all route parameters are changed
                   setTimeout(() => {
                       this.$.sutta_text_ajax.url = this._getSuttaTextUrl();
                       this.$.sutta_text_ajax.generateRequest();
