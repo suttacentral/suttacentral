@@ -35,18 +35,18 @@
         last-error="{{error}}"
         last-response="{{responseData}}"></iron-ajax>
 
-    <sc-text-options class="text-options" suttaplex-item="[[responseData.suttaplex]]"></sc-text-options>
+    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
 
     <div class="loading-indicator" hidden$="[[!isLoading]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <sc-simple-text id="simple_text" sutta="[[responseData.translation]]"
+    <sc-simple-text id="simple_text" sutta="[[translatedSutta]]"
                     is-loading="{{isLoading}}" error="{{error}}" is-segmented="[[isSegmentedText]]"
                     hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]"></sc-simple-text>
 
-    <sc-segmented-text id="segmented_text" root-sutta="[[responseData.root_text]]"
-                       translated-sutta="[[responseData.translation]]" is-segmented="[[isSegmentedText]]"
+    <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]"
+                       translated-sutta="[[translatedSutta]]" is-segmented="[[isSegmentedText]]"
                        root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="{{error}}"
                        hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]"></sc-segmented-text>
 
@@ -81,6 +81,15 @@
                   },
                   isSegmentedText: {
                       type: Boolean
+                  },
+                  suttaplex: {
+                      type: Object
+                  },
+                  translatedSutta: {
+                      type: Object
+                  },
+                  rootSutta: {
+                      type: Object
                   }
               }
           }
@@ -113,9 +122,24 @@
           }
 
           _onResponse() {
+              if (!this.responseData) {
+                  return;
+              }
+              this.setProperties();
               this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this.dispatch('downloadSuttaText', this.responseData);
+              this.changeToolbarMode();
+          }
+
+          setProperties() {
+              this.suttaplex = this.responseData.suttaplex;
+              this.translatedSutta = this.responseData.translation;
+              this.author = this.responseData.translation.author;
+              this.rootSutta = this.responseData.root_sutta;
               this.isSegmentedText = this.isSuttaTextSegmented();
+          }
+
+          changeToolbarMode() {
               if (this.isSegmentedText) {
                   this.dispatch('changeToolbarMode', 'segmented-mode');
               }

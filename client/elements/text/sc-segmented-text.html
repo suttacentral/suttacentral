@@ -232,6 +232,9 @@ Issues that need to be fixed:
           }
 
           _updateView() {
+              if (!this.isSegmented || this.isSegmented === undefined) {
+                  return;
+              }
               this._setRootAttributes();
               this._setTranslatedAttributes();
               this._updateToolbar();

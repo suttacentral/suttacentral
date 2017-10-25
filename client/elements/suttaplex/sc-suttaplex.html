@@ -422,6 +422,9 @@
           }
 
           _computeMainHeading(item) {
+              if (!item) {
+                  return '';
+              }
               if (item.translated_title) {
                   return item.translated_title;
               } else if (item.original_title) {
