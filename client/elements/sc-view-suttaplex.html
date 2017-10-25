@@ -65,6 +65,21 @@
       .suttaplex-list {
         height: 100vh; /* don't use % values unless the parent element is sized. */
       }
+
+      .toast {
+        --paper-toast-color: white;
+        text-align: center;
+        font-size: 20px;
+        margin-left: calc(50vw - 150px);
+      }
+
+      .success-toast {
+        --paper-toast-background-color: var(--paper-green-a700);;
+      }
+
+      .error-toast {
+        --paper-toast-background-color: red;
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -99,6 +114,8 @@
       </iron-list>
 
     </div>
+    <paper-toast id="success_toast" class="toast success-toast" text="[[toastMessage]]" duration=3000></paper-toast>
+    <paper-toast id="error_toast" class="toast error-toast" text="[[toastMessage]]" duration=3000></paper-toast>
   </template>
 
   <script>
@@ -118,7 +135,12 @@
                       statePath: 'currentRoute.categoryId',
                       observer: '_categoryChanged'
                   },
-                  item: Object
+                  item: {
+                    type: Object
+                  },
+                  toastMessage: {
+                    type: String
+                  }
               }
           }
 
@@ -137,6 +159,19 @@
                       };
                   }
               }
+          }
+
+          ready() {
+            super.ready();
+            this.addEventListener('par-menu-copied', (e) => {
+              this.toastMessage = e.detail.message;
+              const success = e.detail.success;
+              if (success) {
+                this.$.success_toast.open();
+              } else {
+                this.$.error_toast.open();
+              }
+            })
           }
 
           _categoryChanged() {

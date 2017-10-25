@@ -179,22 +179,8 @@
         margin: 0;
       }
 
-      .toast {
-        --paper-toast-color: white;
-        text-align: center;
-        font-size: 20px;
-        margin-left: calc(50vw - 150px);
-      }
-
-      .success-toast {
-        --paper-toast-background-color: var(--paper-green-a700);;
-      }
-
-      .error-toast {
-        --paper-toast-background-color: red;
-      }
-
       .right-elements {
+        display: flex;
         align-self: flex-end;
       }
 
@@ -297,8 +283,6 @@
       </template>
 
     </paper-card>
-    <paper-toast id="success_toast" class="toast success-toast" text="[[toastMessage]]" duration=3000></paper-toast>
-    <paper-toast id="error_toast" class="toast error-toast" text="[[toastMessage]]" duration=3000></paper-toast>
   </template>
 
   <script>
@@ -347,14 +331,7 @@
           ready() {
             super.ready();
             this.addEventListener('par-menu-copied', (e) => {
-              this.toastMessage = e.detail.message;
-              const success = e.detail.success;
-              if (success) {
-                this.$.success_toast.open();
-              } else {
-                this.$.error_toast.open();
-              }
-              copy_menu.opened = false;  // Close dropdown after the copy action.
+              this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
             })
 
             this.$.copy_menu.addEventListener('opened-changed', (e) => {
