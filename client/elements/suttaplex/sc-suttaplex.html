@@ -74,6 +74,8 @@
       paper-card.suttaplex .card-actions {
         padding: 0 16px 8px;
         display: flex;
+        flex-flow: wrap;
+        flex-grow: 1;
         justify-content: space-between;
         align-items: baseline;
         border-top: 0;
@@ -83,7 +85,18 @@
         display: inline-block;
       }
 
-      .card-actions-right {
+      .right-elements {
+        display: flex;
+        align-self: flex-end;
+      }
+
+      .flex-div {
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+      }
+
+      .vert-menu {
         display: inline-block;
       }
 
@@ -137,6 +150,11 @@
       .toggle-button {
         min-width: 40px;
         align-self: flex-end;
+        z-index: 201;
+      }
+
+      .behind-button {
+        z-index: 200;
       }
 
       .more-info {
@@ -179,17 +197,16 @@
         margin: 0;
       }
 
-      .right-elements {
-        display: flex;
-        align-self: flex-end;
-      }
-
       .parallels-toggle-div {
         display: inline-grid;
       }
 
-      .vert-menu {
-        display: inline-block;
+      .fixed-pos {
+        position: fixed;
+      }
+
+      .no-left-padding {
+        padding-left: 0;
       }
 
     </style>
@@ -234,50 +251,52 @@
       <div class="card-actions">
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
-            <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
+            <template is="dom-if" if="{{ _isChosenLang(translation.lang) }}">
               <paper-button flat title$="Go to a translation by [[translation.author]]"
-                            class$="{{_translationBorder(translation.segmented)}}">
+                            class$="{{ _translationBorder(translation.segmented) }}">
                 <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
                   [[translation.author]]
                 </a>
               </paper-button>
             </template>
           </template>
+        </div>
+        <div class="flex-div">
           <div class="languagedrop">
             <language-menu language-choice="[[item.translations]]" title-label="More"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
                            root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndex"
-                           on-paper-dropdown-open="_changeItemZIndex"></language-menu>
+                           on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></language-menu>
           </div>
-        </div>
 
-        <div class="right-elements">
-          <div class="vert-menu">
-            <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true"
-                                vertical-align="top" aria-disabled="false">
+          <div class="right-elements">
+            <div class="vert-menu">
+              <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true"
+                                 vertical-align="top" aria-disabled="false">
                 <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
-                                    tabindex="0" aria-disabled="false"></paper-icon-button>
+                                   tabindex="0" aria-disabled="false"></paper-icon-button>
                 <div slot="dropdown-content"></div>
                 <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
-                    <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
-                    </more-par-menu>
+                  <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
+                  </more-par-menu>
                 </paper-listbox>
               </paper-menu-button>
-          </div>
-
-          <template is="dom-if" if="[[item.parallel_count]]">
-            <div class="parallels-toggle-div">
-              <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
-                                on-tap="_toggleParallelsOpened">
-              </paper-icon-button>
-              <sc-badge number="[[item.parallel_count]]"></sc-badge>
             </div>
-          </template>
+
+            <template is="dom-if" if="[[item.parallel_count]]">
+              <div class="parallels-toggle-div">
+                <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
+                                   on-tap="_toggleParallelsOpened">
+                </paper-icon-button>
+                <sc-badge class="fixed-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
-        <iron-collapse no-animation id="collapse" opened="{{parallelsOpened}}">
+        <iron-collapse no-animation id="collapse" opened="{{ parallelsOpened }}">
           <sc-view-parallels root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"></sc-view-parallels>
         </iron-collapse>
       </template>
@@ -323,32 +342,32 @@
                   // The suttaplex item
                   item: Object,
                   toastMessage: {
-                    type: String
-                }
+                      type: String
+                  }
               }
           }
 
           ready() {
-            super.ready();
-            this.addEventListener('par-menu-copied', (e) => {
-              this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
-            })
+              super.ready();
+              this.addEventListener('par-menu-copied', (e) => {
+                  this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
+              })
 
-            this.$.copy_menu.addEventListener('opened-changed', (e) => {
-                const open = e.detail.value;
-                if (open) {
-                  this.$.more_par_menu._sendRequest();
-                }
-                const type = open ? 'open' : 'close';
-                const event_mock = { type: type };
-                this._changeItemZIndex(event_mock);
-            })
+              this.$.copy_menu.addEventListener('opened-changed', (e) => {
+                  const open = e.detail.value;
+                  if (open) {
+                      this.$.more_par_menu._sendRequest();
+                  }
+                  const type = open ? 'open' : 'close';
+                  const event_mock = { type: type };
+                  this._changeItemZIndex(event_mock);
+              })
           }
 
           _changeItemZIndex(e) {
               let node = this.parentNode;
-              if(node.style === undefined){
-                 return;
+              if (node.style === undefined) {
+                  return;
               }
               if (e.type.endsWith('open')) {
                   node.style['z-index'] = 100;
@@ -358,13 +377,13 @@
           }
 
           _parallelsOpenedChanged(e) {
-            const type = e ? 'open' : 'close';
-            const event_mock = { type: type };
-            this._changeItemZIndex(event_mock);
+              const type = e ? 'open' : 'close';
+              const event_mock = { type: type };
+              this._changeItemZIndex(event_mock);
           }
 
           _shouldPullRight(parallelsOpened) {
-             return parallelsOpened ? 'pull-right' : '';
+              return parallelsOpened ? 'pull-right' : '';
           }
 
           // general function to hide or display various elements.
