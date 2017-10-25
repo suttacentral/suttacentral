@@ -252,7 +252,9 @@ Issues that need to be fixed:
               }
               this.translationAuthor = this.translatedSutta.author;
               this.translationLang = this.translatedSutta.lang;
-              this.translatedTitle = this.translatedSutta.strings[1][1];
+              if (this.translatedSutta.strings) {
+                  this.translatedTitle = this.translatedSutta.strings[1][1];
+              }
           }
 
           _updateToolbar() {

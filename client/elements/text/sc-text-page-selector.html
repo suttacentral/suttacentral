@@ -32,7 +32,7 @@
         debounce-duration="500"
         handle-as="json"
         loading="{{isLoading}}"
-        last-error="{{error}}"
+        last-error="{{lastError}}"
         last-response="{{responseData}}"></iron-ajax>
 
     <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
@@ -42,12 +42,12 @@
     </div>
 
     <sc-simple-text id="simple_text" sutta="[[translatedSutta]]"
-                    is-loading="{{isLoading}}" error="{{error}}" is-segmented="[[isSegmentedText]]"
+                    is-loading="{{isLoading}}" error="[[lastError]]" is-segmented="[[isSegmentedText]]"
                     hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]"></sc-simple-text>
 
     <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]"
                        translated-sutta="[[translatedSutta]]" is-segmented="[[isSegmentedText]]"
-                       root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="{{error}}"
+                       root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]"
                        hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]"></sc-segmented-text>
 
   </template>
@@ -64,7 +64,7 @@
                       type: Object,
                       observer: '_onResponse'
                   },
-                  error: {
+                  lastError: {
                       type: Object
                   },
                   author: {
@@ -136,7 +136,7 @@
               this.translatedSutta = this.responseData.translation;
               this.author = this.responseData.translation.author;
               this.rootSutta = this.responseData.root_sutta;
-              this.isSegmentedText = this.isSuttaTextSegmented();
+              this.isSegmentedText = !!(this.responseData.segmented);
           }
 
           changeToolbarMode() {
@@ -168,11 +168,6 @@
 
           _shouldHideSegmentedText(isSegmentedText, isLoading) {
               return (!isSegmentedText || isLoading);
-          }
-
-          // checks if a page is a segmented-text page
-          isSuttaTextSegmented() {
-              return !!(this.responseData.segmented);
           }
 
           _getSuttaTextUrl() {

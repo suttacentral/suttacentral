@@ -90,7 +90,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       value: false
                   },
                   isSegmented: {
-                      type: Boolean
+                      type: Boolean,
+                      observer: '_isSegmentedChanged'
                   }
               }
           }
@@ -142,7 +143,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _updateToolbar() {
-              if (!this.sutta || this.isSegmented) {
+              if (!this.sutta.text || this.isSegmented || this.isSegmented === undefined) {
                   return;
               }
               this.dispatch('changeSuttaMetaText', this._computeMeta());
@@ -206,7 +207,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _loadingChanged() {
-              this.isTextViewHidden = this.isLoading || this.isSegmented;
+              this.isTextViewHidden = !!(this.isLoading || this.isSegmented);
+          }
+
+          _isSegmentedChanged() {
+              this.isTextViewHidden = !!(this.isSegmented);
+              this._updateToolbar();
           }
       }
 
