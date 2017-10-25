@@ -296,7 +296,7 @@
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
-        <iron-collapse no-animation id="collapse" opened="{{ parallelsOpened }}">
+        <iron-collapse no-animation id="collapse" opened="{{parallelsOpened}}">
           <sc-view-parallels root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"></sc-view-parallels>
         </iron-collapse>
       </template>
