@@ -42,11 +42,11 @@
     </div>
 
     <sc-simple-text id="simple_text" sutta="[[responseData.translation]]"
-                    is-loading="{{isLoading}}" error="{{error}}"
+                    is-loading="{{isLoading}}" error="{{error}}" is-segmented="[[isSegmentedText]]"
                     hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]"></sc-simple-text>
 
     <sc-segmented-text id="segmented_text" root-sutta="[[responseData.root_text]]"
-                       translated-sutta="[[responseData.translation]]"
+                       translated-sutta="[[responseData.translation]]" is-segmented="[[isSegmentedText]]"
                        root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="{{error}}"
                        hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]"></sc-segmented-text>
 

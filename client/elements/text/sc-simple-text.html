@@ -94,6 +94,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   isTextViewHidden: {
                       type: Boolean,
                       value: false
+                  },
+                  isSegmented: {
+                      type: Boolean
                   }
               }
           }
@@ -130,6 +133,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _updateView() {
+              if (!this.isSegmented) {
+                  return;
+              }
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
