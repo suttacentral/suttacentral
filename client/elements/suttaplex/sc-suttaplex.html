@@ -179,31 +179,17 @@
         margin: 0;
       }
 
-      .toast {
-        --paper-toast-color: white;
-        text-align: center;
-        font-size: 20px;
-        margin-left: calc(50vw - 150px);
-      }
-
-      .success-toast {
-        --paper-toast-background-color: var(--paper-green-a700);;
-      }
-
-      .error-toast {
-        --paper-toast-background-color: red;
-      }
-
       .right-elements {
+        display: flex;
         align-self: flex-end;
-      }
-
-      .pull-right {
-        min-width: 90px;
       }
 
       .parallels-toggle-div {
         display: inline-grid;
+      }
+
+      .vert-menu {
+        display: inline-block;
       }
 
     </style>
@@ -265,25 +251,28 @@
           </div>
         </div>
 
-        <div class$="right-elements {{_shouldPullRight(parallelsOpened)}}">
-          <template is="dom-if" if="[[parallelsOpened]]">
+        <div class="right-elements">
+          <div class="vert-menu">
             <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true"
                                 vertical-align="top" aria-disabled="false">
                 <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
                                     tabindex="0" aria-disabled="false"></paper-icon-button>
                 <div slot="dropdown-content"></div>
                 <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
-                    <more-par-menu tabindex="0" item="[[item]]" ></more-par-menu>
+                    <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
+                    </more-par-menu>
                 </paper-listbox>
               </paper-menu-button>
-          </template>
-
-          <div class="parallels-toggle-div">
-            <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
-                              on-tap="_toggleParallelsOpened">
-            </paper-icon-button>
-            <sc-badge number="[[item.parallel_count]]"></sc-badge>
           </div>
+
+          <template is="dom-if" if="[[item.parallel_count]]">
+            <div class="parallels-toggle-div">
+              <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
+                                on-tap="_toggleParallelsOpened">
+              </paper-icon-button>
+              <sc-badge number="[[item.parallel_count]]"></sc-badge>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -294,8 +283,6 @@
       </template>
 
     </paper-card>
-    <paper-toast id="success_toast" class="toast success-toast" text="[[toastMessage]]" duration=3000></paper-toast>
-    <paper-toast id="error_toast" class="toast error-toast" text="[[toastMessage]]" duration=3000></paper-toast>
   </template>
 
   <script>
@@ -344,14 +331,17 @@
           ready() {
             super.ready();
             this.addEventListener('par-menu-copied', (e) => {
-              this.toastMessage = e.detail.message;
-              const success = e.detail.success;
-              if (success) {
-                this.$.success_toast.open();
-              } else {
-                this.$.error_toast.open();
-              }
-              copy_menu.opened = false;  // Close dropdown after the copy action.
+              this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
+            })
+
+            this.$.copy_menu.addEventListener('opened-changed', (e) => {
+                const open = e.detail.value;
+                if (open) {
+                  this.$.more_par_menu._sendRequest();
+                }
+                const type = open ? 'open' : 'close';
+                const event_mock = { type: type };
+                this._changeItemZIndex(event_mock);
             })
           }
 
@@ -362,8 +352,8 @@
               }
               if (e.type.endsWith('open')) {
                   node.style['z-index'] = 100;
-              } else if (node.style['z-index'] === 100 && this.parallelsOpened === false) {
-                  node.style['z-index'] = null;
+              } else if (node.style['z-index'] === '100') {
+                  node.style['z-index'] = 0;
               }
           }
 

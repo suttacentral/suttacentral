@@ -39,7 +39,6 @@ Menu on top of the suttaplex parallel's list for copying information from parall
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax id="parallels_ajax"
-               auto
                url="[[_getAPIEndpoint(item)]]"
                handle-as="json"
                loading="{{ loadingParallels }}"
@@ -101,6 +100,13 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               }))
           }
 
+          _sendRequest(){
+              if(this.parallels){
+                  return;
+              }
+              this.$.parallels_ajax.generateRequest();
+          }
+
           // copy the parallels-table in html-string
           _copyContent() {
               try {
@@ -114,13 +120,20 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
 
           _setAreParallelsAvaiable(loadingParallels) {
+              if (this.parallels === undefined || this.parallels === null){
+                  return false;
+              }
               return loadingParallels || (Object.keys(this.parallels).length === 0 && typeof this.parallels === 'object')
           }
 
           _computeLink() {
               const url = window.location;
               const baseUrl = url.protocol + '//' + url.host;
-              return `${baseUrl}/${this.item.uid}`;
+              try {
+                return `${baseUrl}/${this.item.uid}`;
+              } catch (err) {
+                this._notifyCopy('Error!', false);
+              }
           }
 
           // Copy the link to the suttaplex page

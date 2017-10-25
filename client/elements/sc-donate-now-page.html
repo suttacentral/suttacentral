@@ -210,6 +210,7 @@
       }
       
       .toast {
+        @apply --sc-sans-font;
         --paper-toast-color: white;
         text-align: center;
         font-size: 20px;
@@ -230,6 +231,14 @@
 
       .form-prefix {
         color: var(--disabled-text-color);
+      }
+
+      .success-toast {
+        --paper-toast-background-color: var(--paper-green-a700);
+      }
+
+      .error-toast {
+        --paper-toast-background-color: red;
       }
 
     </style>
