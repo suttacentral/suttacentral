@@ -336,7 +336,7 @@
 
             this.$.copy_menu.addEventListener('opened-changed', (e) => {
                 const open = e.detail.value;
-                if (open){
+                if (open) {
                   this.$.more_par_menu._sendRequest();
                 }
                 const type = open ? 'open' : 'close';
