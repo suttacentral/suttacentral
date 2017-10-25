@@ -104,8 +104,7 @@ Issues that need to be fixed:
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <div id="segmented_translated_text_content" class="html-text-content" inner-h-t-m-l="[[translatedSutta.text]]"
-         hidden$="[[isTextViewHidden]]"></div>
+    <div id="segmented_translated_text_content" class="html-text-content" hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!translatedSutta.text]]">
       <div class="text-center margin-top-xl">
@@ -245,7 +244,7 @@ Issues that need to be fixed:
               }
               this.rootAuthor = this.rootSutta.author;
               this.rootLang = this.rootSutta.lang;
-              this.rootTitle = this.rootSutta.title;
+              this.rootTitle = this.rootSutta.strings[1][1];
           }
 
           _setTranslatedAttributes() {
@@ -254,7 +253,7 @@ Issues that need to be fixed:
               }
               this.translationAuthor = this.translatedSutta.author;
               this.translationLang = this.translatedSutta.lang;
-              this.translatedTitle = this.translatedSutta.title;
+              this.translatedTitle = this.translatedSutta.strings[1][1];
           }
 
           _updateToolbar() {
@@ -299,7 +298,7 @@ Issues that need to be fixed:
               const segments = this.shadowRoot.querySelectorAll('sc-seg');
               console.dir(segments);
               Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              for (let key in translatedText) {
+              for (let key in this.translatedSutta.strings) {
                   if (!key.startsWith('_')) {
                       let subkey = key.replace(/:/g, '\\\:');
                       subkey = subkey.replace(/\./g, '\\\.');
