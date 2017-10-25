@@ -15,10 +15,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 <dom-module id="sc-simple-text" attributes="suttatitle suttameta">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-      .text-options {
-        padding: 32px;
-      }
-
       .text-center {
         text-align: center;
       }
@@ -30,7 +26,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
       .loading-indicator {
         font-size: 16px;
         text-align: center;
-        height: 60px;
       }
 
     </style>
@@ -211,7 +206,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _loadingChanged() {
-              this.isTextViewHidden = this.isLoading;
+              this.isTextViewHidden = this.isLoading || this.isSegmented;
           }
       }
 
