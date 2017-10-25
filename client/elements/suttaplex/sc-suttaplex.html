@@ -251,9 +251,9 @@
       <div class="card-actions">
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
-            <template is="dom-if" if="{{ _isChosenLang(translation.lang) }}">
+            <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button flat title$="Go to a translation by [[translation.author]]"
-                            class$="{{ _translationBorder(translation.segmented) }}">
+                            class$="{{_translationBorder(translation.segmented)}}">
                 <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
                   [[translation.author]]
                 </a>
