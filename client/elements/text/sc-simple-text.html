@@ -132,9 +132,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _updateView() {
-              if (this.isSegmented || this.isSegmented === undefined) {
-                  return;
-              }
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
@@ -150,10 +147,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _updateToolbar() {
-              if (!this.sutta) {
+              if (!this.sutta || this.isSegmented) {
                   return;
               }
-              console.log(this.author);
               this.dispatch('changeSuttaMetaText', this._computeMeta());
               const title = this.author ? `${this.title} – ${this.author}` : `${this.title}`;
               this.dispatch('changeToolbarTitle', title);
