@@ -27,7 +27,7 @@
         color: var(--secondary-text-color);
       }
 
-      h2 {
+      h2, h3, h4, h5, h6 {
         color: var(--secondary-text-color);
       }
 
@@ -47,6 +47,35 @@
 
       a:visited {
         background: linear-gradient(to top, rgba(161, 136, 127, 0) 1px, rgba(161, 136, 127, 1) 1px, rgba(161, 136, 127, 1) 3px, rgba(161, 136, 127, 0) 3px)
+      }
+
+      caption {
+        font-size: 20px;
+        padding: 20px;
+      }
+
+      table {
+        margin: 48px auto;
+        border-collapse: collapse;
+      }
+
+      td {
+        padding: 12px 24px 12px 24px;
+        vertical-align: text-top;
+        border-top: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      td:first-child {
+        font-weight: bold
+      }
+
+      li {
+        padding: 4px 0
+      }
+
+      ul {
+        padding-left: 48px;
       }
     </style>
   </template>
