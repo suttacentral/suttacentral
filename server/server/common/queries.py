@@ -265,19 +265,6 @@ LET difficulty = (
         RETURN difficulty.difficulty
 )[0]
 
-LET translated_text = (
-    FOR html IN po_htmls
-        FILTER html.uid == @uid AND html.lang == @language AND LOWER(html.author) == @author
-        LIMIT 1
-        RETURN {
-            uid: html.uid,
-            lang: html.lang,
-            author: html.author,
-            text: html.html,
-            title: html.strings[1][1]
-        }
-)[0]
-
 LET legacy_html = (
     FOR html IN html_text
         FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author) == @author) OR html.lang == root_text.root_lang)
@@ -314,17 +301,23 @@ LET markup = (
         RETURN markup.markup
 )[0]
 
-LET root_strings = (
-    FOR object IN po_strings FILTER object.uid == @uid AND object.lang == root_text.root_lang LIMIT 1 RETURN object
+LET root_po_obj = (
+    FOR object IN po_strings
+        FILTER object.uid == @uid AND object.lang == root_text.root_lang
+        LIMIT 1 
+        RETURN object
 )[0]
 
-LET translated_strings = (
-    FOR object IN po_strings FILTER object.uid == @uid AND object.lang == @language LIMIT 1 RETURN object
+LET translated_po_obj = (
+    FOR object IN po_strings 
+        FILTER object.uid == @uid AND object.lang == @language AND LOWER(object.author) == @author
+        LIMIT 1 
+        RETURN object
 )[0]
 
 RETURN {
-    root_text: translated_text ? root_strings : null,
-    translation: translated_text ? translated_strings : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
+    root_text: translated_po_obj ? root_po_obj : null,
+    translation: translated_po_obj ? translated_po_obj : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     suttaplex: {
         acronym: root_text.acronym,
         volpages: volpages,
@@ -337,8 +330,8 @@ RETURN {
         parallel_count: parallel_count,
         biblio: biblio
     },
-    segmented: translated_text ? true : false,
-    markup: translated_text ? markup : null
+    segmented: translated_po_obj ? true : false,
+    markup: translated_po_obj ? markup : null
 }
 '''
 

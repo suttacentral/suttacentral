@@ -38,17 +38,17 @@ def load_info(po_file):
 
 def extract_strings_from_po_file(po_file):
     markup = []
-    msgids = []
-    msgstrs = []
+    msgids = {}
+    msgstrs = {}
 
     po = polib.pofile(po_file)
 
     for entry in po:
         markup.append(entry.comment + f'<sc-seg id="{entry.msgctxt}"></sc-seg>')
         if entry.msgid:
-            msgids.append((entry.msgctxt, entry.msgid))
+            msgids[entry.msgctxt] = entry.msgid
         if entry.msgstr:
-            msgstrs.append((entry.msgctxt, entry.msgstr))
+            msgstrs[entry.msgctxt] = entry.msgstr
 
     markup = clean_html(''.join(markup))
 
@@ -61,11 +61,11 @@ def extract_strings_from_po_file(po_file):
 
 def process_dir(change_tracker, po_dir, info):
     """Process po files in folder
-    
+
     Note that this function operates recursively, a file called "info.po"
     will apply data to all files in the same folder, or in subfolders,
     but not of course parent or sibling folders.
-    
+
     """
 
     info_file = next(po_dir.glob('info.po'), None)
@@ -143,7 +143,7 @@ def load_po_texts(change_tracker, po_dir, db):
             "en": "Awesome translation by Sujato"
         },
         "markup" "dn2",
-        "strings": [...]
+        "strings": {...}
     }
     
     while a markup entry looks like this:
