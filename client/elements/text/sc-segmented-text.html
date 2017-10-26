@@ -280,11 +280,11 @@ Issues that need to be fixed:
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       this.$.segmented_translated_text_content.classList.add('side-by-side');
-                      //                      this._addOriginalText();
+                      this._addOriginalText();
                       break;
                   case 'linebyline':
                       this.$.segmented_translated_text_content.classList.add('line-by-line');
-                      //                      this._addOriginalText();
+                      this._addOriginalText();
                       break;
                   case 'popup':
                       Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
@@ -304,8 +304,6 @@ Issues that need to be fixed:
               try {
                   const segments = this.shadowRoot.querySelectorAll('sc-seg');
                   Array.from(segments).forEach(item => item.classList.add('translated-text'));
-                  console.dir(segments);
-                  console.dir(this.translatedSutta.strings);
                   Object.entries(this.translatedSutta.strings).forEach(([key, value]) => {
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:');
@@ -322,24 +320,23 @@ Issues that need to be fixed:
 
           _addOriginalText() {
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  for (let key in this.rootSutta.strings) {
-                      if (this.rootSutta.strings.hasOwnProperty(key) && !key[0].startsWith('_')) {
-                          let subkey = key[0].replace(/:/g, '\\\:');
+                  Object.entries(this.rootSutta.strings).forEach(([key, value]) => {
+                      if (!key.startsWith('_')) {
+                          let subkey = key.replace(/:/g, '\\\:');
                           subkey = subkey.replace(/\./g, '\\\.');
                           const segment = this.shadowRoot.querySelector('#' + subkey);
                           const newSegment = document.createElement('sc-seg');
-                          newSegment.id = key[0];
+                          newSegment.id = key;
                           newSegment.classList.add('original-text');
-                          //                          newSegment.innerHTML = originalText[key[0]] + ' ';
+                          newSegment.innerHTML = value + ' ';
                           segment.parentNode.insertBefore(newSegment, segment.nextSibling);
                       }
-                  }
+                  });
               }
               this.htmlLoaded = true;
               this.$.segmented_translated_text_content.classList.add('latin-script');
 
               // checks settings from the settings-menu and changes the view accordingly.
-              this.setView(this.showViewer);
               if (this.paliScript) {
                   this.changeScript(this.paliScript)
               }
