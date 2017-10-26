@@ -55,7 +55,9 @@ def extract_strings_from_po_file(po_file):
     return {
         "markup": markup,
         "msgids": msgids,
-        "msgstrs": msgstrs
+        "msgstrs": msgstrs,
+        "root_title": po[1].msgid,
+        "translated_title": po[1].msgstr
     }
 
 
@@ -97,7 +99,8 @@ def process_dir(change_tracker, po_dir, info):
                 # also root language blurb probably wont exist
                 # because that would be i.e. in pali!
             },
-            "strings": data['msgids']
+            "strings": data['msgids'],
+            "title": data['root_title']
         }
 
         # This doc is for the translated strings
@@ -109,7 +112,8 @@ def process_dir(change_tracker, po_dir, info):
             "author_blurb": {
                 info['tr_lang']: info['author_blurb']
             },
-            "strings": data['msgstrs']
+            "strings": data['msgstrs'],
+            "title": data['translated_title']
         }
 
         # this doc is for the markup

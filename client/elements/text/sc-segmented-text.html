@@ -248,7 +248,7 @@ Issues that need to be fixed:
               }
               this.rootAuthor = this.rootSutta.author;
               this.rootLang = this.rootSutta.lang;
-              this.rootTitle = this.rootSutta.strings[1][1];
+              this.rootTitle = this.rootSutta.title;
           }
 
           _setTranslatedAttributes() {
@@ -258,7 +258,7 @@ Issues that need to be fixed:
               this.translationAuthor = this.translatedSutta.author;
               this.translationLang = this.translatedSutta.lang;
               if (this.translatedSutta.strings) {
-                  this.translatedTitle = this.translatedSutta.strings[1][1];
+                  this.translatedTitle = this.translatedSutta.title;
               }
           }
 
