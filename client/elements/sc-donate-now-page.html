@@ -67,10 +67,6 @@
         color: var(--secondary-text-color);
       }
 
-      .card-details {
-        margin-top: 1.5em;
-      }
-
       .submit {
         width: 100%;
         justify-content: flex-end;
@@ -91,6 +87,11 @@
         font-size: 19px;
         padding: 0;
         margin: 0;
+      }
+
+      .card-row {
+        margin-top: 2.5em;
+        margin-bottom: 1.2em;
       }
 
       .card-label {
@@ -292,11 +293,13 @@
             <paper-checkbox class="sans-font frequency-checkbox monthly-donation">Monthly</paper-checkbox>
           </div>
 
-          <div class="card-details">
-            <label class="card-label">
-              <div id="card-element" class="field is-empty"></div>
-              <span class="card-first-span"><span class="card-second-span">Card number</span></span>
-            </label>
+          <div class="card-row">
+            <div class="card-details">
+              <label class="card-label">
+                <div id="card-element" class="field is-empty"></div>
+                <span class="card-first-span"><span class="card-second-span">Card number</span></span>
+              </label>
+            </div>
           </div>
 
           <paper-input label="Name (optional)" class="data-input name-input" maxlength=200>
@@ -421,7 +424,7 @@
                     fontSize: '19px',
               
                     '::placeholder': {
-                      color: '##737373',
+                      color: '#737373',
                     },
                   },
                   invalid: {
