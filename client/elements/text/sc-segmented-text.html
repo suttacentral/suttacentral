@@ -306,12 +306,12 @@ Issues that need to be fixed:
                   Array.from(segments).forEach(item => item.classList.add('translated-text'));
                   console.dir(segments);
                   console.dir(this.translatedSutta.strings);
-                  this.translatedSutta.strings.forEach((key) => {
-                      if (!key[0].startsWith('_')) {
-                          let subkey = key[0].replace(/:/g, '\\\:');
+                  Object.entries(this.translatedSutta.strings).forEach(([key, value]) => {
+                      if (!key.startsWith('_')) {
+                          let subkey = key.replace(/:/g, '\\\:');
                           subkey = subkey.replace(/\./g, '\\\.');
                           const segment = this.shadowRoot.querySelector('#' + subkey);
-                          segment.innerHTML = this.translatedSutta.strings[key[0]] + ' ';
+                          segment.innerHTML = value + ' ';
                       }
                   });
               }
