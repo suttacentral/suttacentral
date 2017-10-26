@@ -37,7 +37,7 @@ Issues that need to be fixed:
       }
 
       .side-by-side section {
-        padding: 0 7% 32px 1% !important;
+        padding: 32px !important;
       }
 
       .side-by-side .translated-text {
@@ -94,13 +94,14 @@ Issues that need to be fixed:
         text-align: center;
         height: 60px;
       }
+
     </style>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <div id="segmented_translated_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]"></div>
+    <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]"></div>
 
     <template is="dom-if" if="[[!translatedSutta.strings]]">
       <div class="text-center margin-top-xl">
@@ -220,7 +221,7 @@ Issues that need to be fixed:
                   // Insert the sutta text into the main element again to force reloading styles:
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
-                      //                      this.$.segmented_translated_text_content.innerHTML = this.translatedSutta.text;
+                      //                      this.$.segmented_text_content.innerHTML = this.translatedSutta.text;
                       this.isTextViewHidden = false;
                   }, 200);
               });
@@ -279,11 +280,11 @@ Issues that need to be fixed:
               this._cleanCode();
               switch (this.chosenTextView) {
                   case 'sidebyside':
-                      this.$.segmented_translated_text_content.classList.add('side-by-side');
+                      this.$.segmented_text_content.classList.add('side-by-side');
                       this._addOriginalText();
                       break;
                   case 'linebyline':
-                      this.$.segmented_translated_text_content.classList.add('line-by-line');
+                      this.$.segmented_text_content.classList.add('line-by-line');
                       this._addOriginalText();
                       break;
                   case 'popup':
@@ -334,7 +335,7 @@ Issues that need to be fixed:
                   });
               }
               this.htmlLoaded = true;
-              this.$.segmented_translated_text_content.classList.add('latin-script');
+              this.$.segmented_text_content.classList.add('latin-script');
 
               // checks settings from the settings-menu and changes the view accordingly.
               if (this.paliScript) {
@@ -344,7 +345,7 @@ Issues that need to be fixed:
 
           // reset all classes and remove tooltips.
           _cleanCode() {
-              this.$.segmented_translated_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
+              this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
               Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
                   .forEach(item => item.parentNode.removeChild(item));
           }
@@ -361,9 +362,9 @@ Issues that need to be fixed:
                   });
               }
               if (this.showParagraphs) {
-                  this._addParagraphs(this.$.segmented_translated_text_content);
+                  this._addParagraphs(this.$.segmented_text_content);
               } else {
-                  this._removeParagraphs(this.$.segmented_translated_text_content);
+                  this._removeParagraphs(this.$.segmented_text_content);
               }
           }
 
@@ -398,31 +399,31 @@ Issues that need to be fixed:
               if (this.htmlLoaded) {
                   const segments = this.shadowRoot.querySelectorAll('.original-text');
                   const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-                  this.$.segmented_translated_text_content.classList
+                  this.$.segmented_text_content.classList
                       .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
                   Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
                   Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
                   switch (paliScript) {
                       case 0:
-                          this.$.segmented_translated_text_content.classList.add('latin-script');
+                          this.$.segmented_text_content.classList.add('latin-script');
                           break;
                       case 1:
-                          this.$.segmented_translated_text_content.classList.add('sinhala-script');
+                          this.$.segmented_text_content.classList.add('sinhala-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
                           break;
                       case 2:
-                          this.$.segmented_translated_text_content.classList.add('devanagari-script');
+                          this.$.segmented_text_content.classList.add('devanagari-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
                           break;
                       case 3:
-                          this.$.segmented_translated_text_content.classList.add('thai-script');
+                          this.$.segmented_text_content.classList.add('thai-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
                           break;
                       case 4:
-                          this.$.segmented_translated_text_content.classList.add('myanmar-script');
+                          this.$.segmented_text_content.classList.add('myanmar-script');
                           Array.from(segments).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           Array.from(tooltips).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
                           break;
