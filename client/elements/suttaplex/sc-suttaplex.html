@@ -83,6 +83,12 @@
 
       .card-actions-left {
         display: inline-block;
+        align-self: flex-start;
+      }
+
+      .card-actions-left paper-button:first-of-type {
+        margin-left: 0;
+        padding-left: 0;
       }
 
       .right-elements {
@@ -104,7 +110,6 @@
         display: inline-block;
         vertical-align: middle;
         margin: -18px 4px 0;
-        padding: 0 8px;
       }
 
       #moremenu {
@@ -209,6 +214,10 @@
         padding-left: 0;
       }
 
+      .top-space {
+        margin-top: 24px;
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -248,7 +257,7 @@
            inner-h-t-m-l="[[item.blurb]]"></p>
       </div>
 
-      <div class="card-actions">
+      <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
@@ -442,6 +451,10 @@
 
           _translationBorder(segmented) {
               return segmented ? 'segmented-border' : '';
+          }
+
+          _addPaddingIfNoBlurb(blurb) {
+            return (blurb === null || blurb === undefined) ? 'top-space' : '';
           }
       }
 
