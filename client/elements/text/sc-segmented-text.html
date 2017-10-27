@@ -311,13 +311,11 @@ Issues that need to be fixed:
 
           _addTranslatedText() {
               try {
-                  console.dir(this.convertToHTMLNode(this.markup));
                   const segments = this.shadowRoot.querySelectorAll('sc-seg');
                   Array.from(segments).forEach(item => item.classList.add('translated-text'));
                   Object.entries(this.translatedSutta.strings).forEach(([key, value]) => {
                       if (!key.startsWith('_')) {
-                          let subkey = key.replace(/:/g, '\\\:');
-                          subkey = subkey.replace(/\./g, '\\\.');
+                          let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
                           const segment = this.shadowRoot.querySelector('#' + subkey);
                           segment.innerHTML = value + ' ';
                       }
