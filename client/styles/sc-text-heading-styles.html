@@ -34,7 +34,7 @@
 
       h4 {
         @apply --paper-font-subhead;
-        font-size: 18px;
+        @apply --sc-skolar-font-size-l;
       }
 
       h5 {
@@ -50,9 +50,9 @@
       .hgroup p {
         @apply --sc-all-small-caps;
         @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-md;
         margin: 0;
         padding: 0;
-        font-size: 16px;
       }
 
       p + h1 {
@@ -61,7 +61,7 @@
 
       .hgroup p.subheading {
         @apply --sc-serif-font;
-        font-size: 18px;
+        @apply --sc-skolar-font-size-l;
         font-style: italic;
         margin: -20px 0 44px 0;
         text-transform: none;
@@ -84,7 +84,7 @@
       .mirror-left {
         text-align: right;
         display: table-cell;
-        padding-right: 16px;
+        padding-right: var(--size-md);
         border-right: 1px solid var(--dark-divider-opacity);
         width: 50%;
       }
@@ -92,7 +92,7 @@
       .mirror-right {
         text-align: left;
         display: table-cell;
-        padding-left: 16px;
+        padding-left: var(--size-md);
       }
 
       .mirror-middle {

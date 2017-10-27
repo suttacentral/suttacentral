@@ -2,13 +2,23 @@
 
 <custom-style>
   <style is="custom-style">
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+
     html {
+
+      /* COLORS */
+
       --sc-gold-100: #FFCB61;
       --sc-gold-300: #F6B735;
       --sc-gold-500: #DF990A;
       --sc-gold-700: #B37800;
       --sc-gold-900: #8A5D00;
       --sc-green-600: #43A047;
+
+      /* FONT MIXINS */
 
       --sc-skolar-font-scale: 1.13;
 
@@ -22,6 +32,10 @@
         -webkit-font-smoothing: antialiased;
       };
 
+      --sc-skolar-font-size-xxs: {
+        font-size: calc(10px * var(--sc-skolar-font-scale));
+      };
+
       --sc-skolar-font-size-xs: {
         font-size: calc(12px * var(--sc-skolar-font-scale));
       };
@@ -32,6 +46,10 @@
 
       --sc-skolar-font-size-md: {
         font-size: calc(16px * var(--sc-skolar-font-scale));
+      };
+
+      --sc-skolar-font-size-l: {
+        font-size: calc(18px * var(--sc-skolar-font-scale));
       };
 
       --sc-skolar-font-size-xl: {
