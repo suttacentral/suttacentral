@@ -38,12 +38,12 @@
       }
 
       dd .ref {
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-s;
         color: var(--secondary-text-color);
         background-color: var(--paper-grey-200);
         border-radius: 2px;
         padding: 4px 8px;
-        font-size: 14px;
-        @apply --sc-sans-font;
       }
 
       dd .author {
@@ -60,13 +60,13 @@
       }
 
       dd .abbr {
+        @apply --sc-skolar-font-size-s;
+        @apply --sc-sans-font;
         color: white;
         font-weight: bold;
         background-color: var(--paper-grey-700);
         border-radius: 2px;
         padding: 4px 8px;
-        font-size: 14px;
-        @apply --sc-sans-font;
       }
 
       dd .inline-li {
@@ -165,9 +165,8 @@
       }
 
       .google-maps {
-        margin-top: 16px;
+        @apply --vertical-margin-md;
         height: 480px;
-        margin-bottom: 20px;
       }
 
       .google-maps iframe {

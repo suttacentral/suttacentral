@@ -9,9 +9,11 @@
   <template>
     <style include="static-styles">
       .donate-button {
-        background: var(--sc-gold-300);
+        @apply --sc-sans-font;
+        background: var(--sc-green-600);
         color: white;
         font-weight: bold;
+        margin: 64px 0;
       }
 
       .donate-link {
@@ -25,6 +27,10 @@
       .donations-button {
         display: flex;
         justify-content: center;
+      }
+
+      .account-data td {
+        padding-right: var(--size-md);
       }
 
     </style>
@@ -56,7 +62,7 @@
               which has ethical and green investment policies.
               <a href="https://www.climatecouncil.org.au/what-you-need-to-know-about-fossil-fuel-divestment"
                  target="_blank">Bendigo Bank has publicly divested from fossil fuels</a>.</p>
-            <table>
+            <table class="account-data">
               <tr>
                 <td>Account name</td>
                 <td><strong>SuttaCentral Development Trust</strong></td>

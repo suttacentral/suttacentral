@@ -195,6 +195,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             translations: FLATTEN([po_translations, legacy_translations])
         },
         type: e.type,
+        remark: e.remark,
         resembling: e.resembling
     }
 '''

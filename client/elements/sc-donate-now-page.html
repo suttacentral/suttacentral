@@ -23,6 +23,10 @@
 <dom-module id="sc-donate-now-page">
   <template>
     <style include="static-styles">
+      #page-wrap {
+        @apply --sc-sans-font;
+      }
+
       .flex-row {
         display: flex;
       }
@@ -32,7 +36,7 @@
       }
 
       .data-input {
-        --paper-input-container-focus-color: var(--sc-gold-300);
+        --paper-input-container-focus-color: var(--sc-green-600);
       }
 
       .currency-dropdown {
@@ -50,24 +54,18 @@
 
       .frequency-checkbox {
         margin-right: 1em;
-        --paper-checkbox-checked-color: var(--sc-gold-300);
+        --paper-checkbox-checked-color: var(--sc-green-600);
       }
 
       .explanation {
         margin-bottom: 0;
-        opacity: .38;
-        color: #000000;
+        color: var(--secondary-text-color);
       }
 
       .legal-information {
         margin-top: 3em;
         padding-bottom: 1em;
-        opacity: .38;
-        color: #000000;
-      }
-
-      .card-details {
-        margin-top: 1.5em;
+        color: var(--secondary-text-color);
       }
 
       .submit {
@@ -77,7 +75,7 @@
       }
 
       .submit-button {
-        background: var(--sc-gold-300);
+        background: var(--sc-green-600);
         color: white;
         font-weight: bold;
       }
@@ -87,9 +85,14 @@
       }
 
       .card-details {
-        font-size: 19px;
+        @apply --sc-skolar-font-size-xl;
         padding: 0;
         margin: 0;
+      }
+
+      .card-row {
+        margin-top: 2.5em;
+        margin-bottom: 1.2em;
       }
 
       .card-label {
@@ -133,11 +136,11 @@
       }
 
       label .field.is-focused + span span {
-        color: var(--sc-gold-300);
+        color: var(--sc-green-600);
       }
 
       label .field.is-focused + span {
-        border-bottom: 2px solid var(--sc-gold-300);
+        border-bottom: 2px solid var(--sc-green-600);
       }
 
       .field {
@@ -161,8 +164,8 @@
       .field:-ms-input-placeholder { color: #000000; }
 
       .success, .error {
+        @apply --sc-skolar-font-size-s;
         display: none;
-        font-size: 15px;
       }
 
       .success.visible, .error.visible {
@@ -178,12 +181,12 @@
       }
 
       .success {
-        color: var(--sc-gold-300);
+        color: var(--sc-green-600);
       }
 
       .success .token {
+        @apply --sc-skolar-font-size-s;
         font-weight: 500;
-        font-size: 15px;
       }
 
       .spinner {
@@ -209,18 +212,35 @@
       }
       
       .toast {
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-xl;
         --paper-toast-color: white;
         text-align: center;
-        font-size: 20px;
         margin-left: calc(50vw - 150px);
+      }
+
+      .sans-font {
+        @apply --sc-sans-font;
+      }
+
+      .data-input{
+        --paper-input-container: {
+          @apply --sc-sans-font;
+          color: var(--secondary-text-color);
+        };
+        padding-bottom: var(--size-md);
+      }
+
+      .form-prefix {
+        color: var(--disabled-text-color);
+      }
+
+      .success-toast {
+        --paper-toast-background-color: var(--paper-green-a700);
       }
 
       .error-toast {
         --paper-toast-background-color: red;
-      }
-
-      .success-toast {
-        --paper-toast-background-color: green;
       }
 
     </style>
@@ -251,7 +271,7 @@
         <form class="payment-form">
           <div class="flex-row">
             <paper-dropdown-menu class="form-prefix currency-dropdown data-input" title="Select currency"
-                                  dynamic-align label="currency" always-float-label>
+                                  dynamic-align label="Currency" always-float-label>
               <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
                               selected="[[default_currency_index]]">
                 <template is="dom-repeat" items="{{ currencies }}">
@@ -270,15 +290,17 @@
 
           <p class="explanation">You can make a one-time donation or a monthly donation.</p>
           <div class="flex-row">
-            <paper-checkbox class="frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
-            <paper-checkbox class="frequency-checkbox monthly-donation">Monthly</paper-checkbox>
+            <paper-checkbox class="sans-font frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
+            <paper-checkbox class="sans-font frequency-checkbox monthly-donation">Monthly</paper-checkbox>
           </div>
 
-          <div class="card-details">
-            <label class="card-label">
-              <div id="card-element" class="field is-empty"></div>
-              <span class="card-first-span"><span class="card-second-span">Card number</span></span>
-            </label>
+          <div class="card-row">
+            <div class="card-details">
+              <label class="card-label">
+                <div id="card-element" class="field is-empty"></div>
+                <span class="card-first-span"><span class="card-second-span">Card number</span></span>
+              </label>
+            </div>
           </div>
 
           <paper-input label="Name (optional)" class="data-input name-input" maxlength=200>
@@ -294,8 +316,8 @@
           </paper-textarea>
 
           <div class="flex-row submit">
-            <paper-button  id="submitButton" on-tap="_makeDonation" class="submit-button">
-              PAY WITH CARD
+            <paper-button  id="submitButton" on-tap="_makeDonation" class="submit-button" raised>
+              <div class="sans-font">PAY WITH CARD</div>
             </paper-button>
           </div>
         </form>
@@ -371,7 +393,8 @@
                     value: {
                       0: 'Unknown error',
                       1: 'Amount cannot be less than $0.50 USD.',
-                      2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.'
+                      2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
+                      3: 'Your card was declined.'
                     }
                   },
                   successMessage: {
@@ -395,14 +418,14 @@
                 iconStyle: 'solid',
                 style: {
                   base: {
-                    iconColor: '#000000',
+                    iconColor: '#9A9A9A',
                     lineHeight: '36px',
                     fontWeight: 300,
                     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
                     fontSize: '19px',
               
                     '::placeholder': {
-                      color: '##737373',
+                      color: '#737373',
                     },
                   },
                   invalid: {
@@ -488,6 +511,7 @@
             this.$.submitButton.disabled = true;
             this.stripe.createToken(this.card).then((result, error) => {
               if (error){
+                console.log(error);
                 this.shadowRoot.querySelector('.error-toast').open();
                 this.processingPayment = false;
                 this.$.submitButton.disabled = false;

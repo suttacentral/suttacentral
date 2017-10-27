@@ -1,7 +1,7 @@
 import json
 import logging
 import pathlib
-from collections import Counter
+from collections import Counter, defaultdict
 from itertools import product
 from pathlib import Path
 from typing import Any, List, Set
@@ -358,7 +358,7 @@ def print_once(msg: Any, antispam: Set):
     antispam.add(msg)
 
 
-def generate_relationship_edges(change_tracker, relationship_dir, db):
+def generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir,  db):
     relationship_files = list(relationship_dir.glob('*.json'))
 
     if not change_tracker.is_any_file_new_or_changed(relationship_files):
@@ -375,6 +375,17 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
         SORT doc.num
         RETURN doc.uid
     '''))
+
+    with open(additional_info_dir / 'notes.json', 'r') as f:
+        remarks_data = json.load(f)
+
+    remarks = defaultdict(dict)
+
+    for remark in remarks_data:
+        uids = remark['relations']
+        remark_text = remark['remark']
+        remarks[frozenset(uids)] = remark_text
+
     antispam = set()
     ll_edges = []
     for entry in tqdm(relationship_data):
@@ -407,6 +418,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
                             true_to_uids = get_true_uids(to_uid, all_uids)
                             for true_from_uid in true_from_uids:
                                 for true_to_uid in true_to_uids:
+                                    remark = remarks.get(frozenset([true_from_uid, true_to_uid]), None)
                                     ll_edges.append({
                                         '_from': true_from_uid,
                                         '_to': true_to_uid,
@@ -414,20 +426,23 @@ def generate_relationship_edges(change_tracker, relationship_dir, db):
                                         'to': to_uid.lstrip('~'),
                                         'type': r_type,
                                         'resembling': is_resembling,
+                                        'remark': remark
                                     })
             else:
                 first_uid = uids[0]
                 true_first_uids = get_true_uids(first_uid, all_uids)
-                for true_first_uid, from_uid in product(true_first_uids, uids[1:]):
-                    true_from_uids = get_true_uids(from_uid, all_uids)
+                for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
+                    true_from_uids = get_true_uids(to_uid, all_uids)
                     for true_from_uid in true_from_uids:
+                        remark = remarks.get(frozenset([true_from_uid, true_first_uid]), None)
                         ll_edges.append({
-                            '_from': true_from_uid,
-                            '_to': true_first_uid,
-                            'from': from_uid,
-                            'to': first_uid.lstrip('~'),
+                            '_from': true_first_uid,
+                            '_to': true_from_uid,
+                            'from': first_uid.lstrip('~'),
+                            'to': to_uid,
                             'type': r_type,
                             'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
+                            'remark': remark
                         })
     db['relationship'].truncate()
     db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
@@ -526,6 +541,8 @@ def run():
     load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
 
     add_root_docs_and_edges(change_tracker, db, structure_dir)
+
+    generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
 
     po.load_po_texts(change_tracker, po_dir, db)
 
