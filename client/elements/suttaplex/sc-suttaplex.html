@@ -171,12 +171,6 @@
         --paper-badge-margin-bottom: -10px;
       }
 
-      .segmented-border {
-        padding: 5px;
-        border: 1px dashed var(--paper-grey-700);
-        border-radius: 5px;
-      }
-
       .display-inline {
         display: inline-block;
       }
@@ -261,8 +255,7 @@
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
-              <paper-button flat title$="Go to a translation by [[translation.author]]"
-                            class$="{{_translationBorder(translation.segmented)}}">
+              <paper-button flat title$="Go to a translation by [[translation.author]]">
                 <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
                   [[translation.author]]
                 </a>
@@ -447,10 +440,6 @@
               } else {
                   return item.acronym;
               }
-          }
-
-          _translationBorder(segmented) {
-              return segmented ? 'segmented-border' : '';
           }
 
           _addPaddingIfNoBlurb(blurb) {
