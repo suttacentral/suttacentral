@@ -77,9 +77,9 @@ Issues that need to be fixed:
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--paper-grey-700);
         --paper-tooltip: {
-          font-size: 12px;
+          @apply --sc-skolar-font-size-xs;
           line-height: 16px;
-          padding: 8px 16px;
+          padding: 8px var(--size-md);
           text-shadow: 0 0 #ffffff;
           white-space: normal;
         };
@@ -98,7 +98,7 @@ Issues that need to be fixed:
       }
 
       .loading-indicator {
-        font-size: 16px;
+        @apply --sc-skolar-font-size-s;
         text-align: center;
         height: 60px;
       }

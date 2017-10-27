@@ -1,5 +1,6 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="/bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
@@ -48,11 +49,11 @@
       }
 
       .nav-wheel-icon {
+        @apply --sc-serif-font;
         color: white;
         font-size: 45px;
         display: inline-block;
         vertical-align: middle;
-        @apply --sc-serif-font;
       }
 
       .nav-home-title {
@@ -64,7 +65,7 @@
         background-color: var(--paper-amber-400);
         border-bottom: 4px solid var(--paper-deep-orange-900);
         margin: 0;
-        padding: 0 0 0 16px;
+        padding: 0 0 0 var(--size-md);
         white-space: nowrap;
         height: 60px;
         line-height: 1.4;
@@ -87,18 +88,30 @@
 
       .paper-spinner {
         --paper-spinner-color: var(--sc-gold-500);
+      }
+
+      .icon-middle {
+        position: absolute;
+        margin: 0;
+        top: 50%;
         left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .network-error-icon {
+        width: 64px;
+        height: 64px;
       }
 
       /* styles for the text dialogs: */
 
       .dialog {
+        left: var(--app-drawer-width);
         white-space: initial;
         max-width: 630px;
         position: fixed;
         top: 50px;
         margin: 5% auto;
-        left: var(--app-drawer-width);
         right: 0;
       }
 
@@ -117,6 +130,7 @@
         @apply --sc-sans-font;
         margin: 0
       }
+
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -143,14 +157,15 @@
             </a>
           </div>
           <div id="container" class="nav-list-container">
-            <template is="dom-if" if="{{loading}}">
+            <template is="dom-if" if="{{_shouldShowLoadingIndicator(loading, error)}}">
               <div class="loading-indicator">
-                <paper-spinner-lite class="paper-spinner" active="{{loading}}"></paper-spinner-lite>
+                <paper-spinner-lite class="paper-spinner icon-middle" active="{{loading}}"></paper-spinner-lite>
               </div>
             </template>
 
             <template is="dom-if" if="{{error}}">
-              <h2>Couldn't load the menu.</h2>
+              <iron-icon class="network-error-icon icon-middle" title="Network error"
+                         src="img/nonetwork.svg"></iron-icon>
             </template>
 
             <template is="dom-repeat" items="{{navList}}">
@@ -285,6 +300,10 @@
               let infoDialog = this.$.info_dialog;
               settingsDialog.addEventListener('opened-changed', () => { scrollLockListener(settingsDialog) });
               infoDialog.addEventListener('opened-changed', () => { scrollLockListener(infoDialog) });
+          }
+
+          _shouldShowLoadingIndicator(loading, error) {
+              return !!(loading && !error);
           }
       }
 
