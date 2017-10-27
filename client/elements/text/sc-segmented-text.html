@@ -192,6 +192,9 @@ Issues that need to be fixed:
                   },
                   markup: {
                       type: String
+                  },
+                  assembledTranslatedText: {
+                      type: String
                   }
               }
           }
@@ -221,7 +224,13 @@ Issues that need to be fixed:
                   // Insert the sutta text into the main element again to force reloading styles:
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
-                      //                      this.$.segmented_text_content.innerHTML = this.translatedSutta.text;
+                      if (this.assembledTranslatedText) {
+                          console.log('inserting preassembled text');
+                          this.$.segmented_text_content.innerHTML = this.assembledTranslatedText;
+                      } else {
+                          console.log('assembling text');
+                          this._addTranslatedText();
+                      }
                       this.isTextViewHidden = false;
                   }, 200);
               });
@@ -241,6 +250,7 @@ Issues that need to be fixed:
               this._updateToolbar();
               this._computeParagraphs();
               this._addTranslatedText();
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
           }
 
           _setRootAttributes() {
@@ -258,9 +268,7 @@ Issues that need to be fixed:
               }
               this.translationAuthor = this.translatedSutta.author;
               this.translationLang = this.translatedSutta.lang;
-              if (this.translatedSutta.strings) {
-                  this.translatedTitle = this.translatedSutta.title;
-              }
+              this.translatedTitle = this.translatedSutta.title;
           }
 
           _updateToolbar() {
@@ -270,7 +278,7 @@ Issues that need to be fixed:
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              return this.translatedSutta.author_blurb;
+              return this.translatedSutta.author_blurb[this.translationLang];
           }
 
           // if the base html and the pali texts have been fully loaded, the setting from the
@@ -303,6 +311,7 @@ Issues that need to be fixed:
 
           _addTranslatedText() {
               try {
+                  console.dir(this.convertToHTMLNode(this.markup));
                   const segments = this.shadowRoot.querySelectorAll('sc-seg');
                   Array.from(segments).forEach(item => item.classList.add('translated-text'));
                   Object.entries(this.translatedSutta.strings).forEach(([key, value]) => {
@@ -317,6 +326,10 @@ Issues that need to be fixed:
               catch (e) {
                   console.error(e);
               }
+          }
+
+          convertToHTMLNode(html) {
+              return new DOMParser().parseFromString(html, 'text/html').body.childNodes;
           }
 
           _addOriginalText() {
