@@ -101,7 +101,8 @@ Issues that need to be fixed:
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]"></div>
+    <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]"
+         hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!translatedSutta.strings]]">
       <div class="text-center margin-top-xl">
@@ -124,8 +125,7 @@ Issues that need to be fixed:
                       type: Object
                   },
                   translatedSutta: {
-                      type: Object,
-                      observer: '_updateView'
+                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -187,11 +187,11 @@ Issues that need to be fixed:
                       observer: 'setView'
                   },
                   isSegmented: {
-                      type: Boolean,
-                      observer: '_updateView'
+                      type: Boolean
                   },
                   markup: {
-                      type: String
+                      type: String,
+                      observer: '_updateView'
                   },
                   assembledTranslatedText: {
                       type: String
@@ -225,10 +225,8 @@ Issues that need to be fixed:
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
                       if (this.assembledTranslatedText) {
-                          console.log('inserting preassembled text');
                           this.$.segmented_text_content.innerHTML = this.assembledTranslatedText;
                       } else {
-                          console.log('assembling text');
                           this._addTranslatedText();
                       }
                       this.isTextViewHidden = false;
@@ -245,12 +243,16 @@ Issues that need to be fixed:
               if (!this.isSegmented || this.isSegmented === undefined) {
                   return;
               }
-              this._setRootAttributes();
-              this._setTranslatedAttributes();
-              this._updateToolbar();
-              this._computeParagraphs();
-              this._addTranslatedText();
-              this.dispatch('changeSuttaMetaText', this._computeMeta());
+              try {
+                  this._setRootAttributes();
+                  this._setTranslatedAttributes();
+                  this._updateToolbar();
+                  this._computeParagraphs();
+                  this._addTranslatedText();
+                  this.dispatch('changeSuttaMetaText', this._computeMeta());
+              } catch (e) {
+                  console.error(e);
+              }
           }
 
           _setRootAttributes() {
@@ -285,6 +287,9 @@ Issues that need to be fixed:
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
           setView() {
+              if (!this.isSegmented || !this.markup) {
+                  return;
+              }
               this._cleanCode();
               switch (this.chosenTextView) {
                   case 'sidebyside':
@@ -320,6 +325,7 @@ Issues that need to be fixed:
                           segment.innerHTML = value + ' ';
                       }
                   });
+                  this.assembledTranslatedText = this.shadowRoot.querySelector('#segmented_text_content').innerHTML;
               }
               catch (e) {
                   console.error(e);
@@ -328,7 +334,7 @@ Issues that need to be fixed:
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
-          _addOriginalText(e) {
+          _addOriginalText() {
               if (!this.shadowRoot.querySelector('.original-text')) {
                   Object.entries(this.rootSutta.strings).forEach(([key, value]) => {
                       if (!key.startsWith('_')) {

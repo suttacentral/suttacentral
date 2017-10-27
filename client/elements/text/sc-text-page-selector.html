@@ -136,12 +136,12 @@
           }
 
           setProperties() {
+              this.isSegmentedText = !!(this.responseData.segmented);
               this.suttaplex = this.responseData.suttaplex;
               this.translatedSutta = this.responseData.translation;
               this.rootSutta = this.responseData.root_text;
               this.markup = this.responseData.markup;
               this.author = this.responseData.translation.author;
-              this.isSegmentedText = !!(this.responseData.segmented);
           }
 
           changeToolbarMode() {

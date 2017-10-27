@@ -145,7 +145,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _updateToolbar() {
-              if (!this.sutta.text || this.isSegmented || this.isSegmented === undefined) {
+              if (!this.sutta || !this.sutta.text || this.isSegmented || this.isSegmented === undefined) {
                   return;
               }
               this.dispatch('changeSuttaMetaText', this._computeMeta());
