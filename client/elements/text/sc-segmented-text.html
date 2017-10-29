@@ -43,7 +43,7 @@ Issues that need to be fixed:
       .side-by-side .translated-text {
         display: inline-block;
         width: 47%;
-        padding-right: 5px;
+        padding-right: var(--size-l);
         vertical-align: text-top;
       }
 
@@ -125,7 +125,8 @@ Issues that need to be fixed:
                       type: Object
                   },
                   translatedSutta: {
-                      type: Object
+                      type: Object,
+                      observer: '_updateView'
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -227,7 +228,7 @@ Issues that need to be fixed:
           }
 
           _updateView() {
-              if (!this.isSegmented || this.isSegmented === undefined) {
+              if (!this.isSegmented || this.isSegmented === undefined || !this.markup) {
                   return;
               }
               try {
@@ -267,7 +268,7 @@ Issues that need to be fixed:
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              return this.translatedSutta.author_blurb[this.translationLang];
+              return this.translatedSutta.author_blurb[this.translationLang] || 'No metadata available.';
           }
 
           // if the base html and the pali texts have been fully loaded, the setting from the
@@ -303,16 +304,17 @@ Issues that need to be fixed:
 
           _addTranslatedText() {
               try {
-                  const segments = this.shadowRoot.querySelectorAll('sc-seg');
+                  const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
+                  const segments = textContainer.getElementsByTagName('sc-seg');
                   Array.from(segments).forEach(item => item.classList.add('translated-text'));
                   Object.entries(this.translatedSutta.strings).forEach(([key, value]) => {
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-                          const segment = this.shadowRoot.querySelector('#' + subkey);
+                          const segment = textContainer.querySelector(`#${subkey}`);
                           segment.innerHTML = value + ' ';
                       }
                   });
-                  this.assembledTranslatedText = this.shadowRoot.querySelector('#segmented_text_content').innerHTML;
+                  this.assembledTranslatedText = textContainer.innerHTML;
               }
               catch (e) {
                   console.error(e);

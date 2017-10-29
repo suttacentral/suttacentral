@@ -45,9 +45,9 @@
                     is-segmented="[[isSegmentedText]]" hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
     </sc-simple-text>
 
-    <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" translated-sutta="[[translatedSutta]]"
-                       is-segmented="[[isSegmentedText]]" root-lang="[[responseData.root_text.lang]]"
-                       is-loading="{{isLoading}}" error="[[lastError]]" markup="[[markup]]"
+    <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
+                       translated-sutta="[[translatedSutta]]" is-segmented="[[isSegmentedText]]"
+                       root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]"
                        hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
     </sc-segmented-text>
 
