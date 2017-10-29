@@ -43,7 +43,7 @@ Issues that need to be fixed:
       .side-by-side .translated-text {
         display: inline-block;
         width: 47%;
-        padding-right: var(--size-l);
+        padding-right: var(--size-md);
         vertical-align: text-top;
       }
 
@@ -141,7 +141,7 @@ Issues that need to be fixed:
                   // View for segmented text selected in the toolbar-settings-menu.
                   showViewer: {
                       type: String,
-                      observer: 'setView'
+                      observer: 'setViewOptions'
                   },
                   // checks if the html markup is fully loaded before other functions can start
                   htmlLoaded: Boolean,
@@ -185,7 +185,7 @@ Issues that need to be fixed:
                   chosenTextView: {
                       type: String,
                       statePath: 'textOptions.segmentedSuttaTextView',
-                      observer: 'setView'
+                      observer: 'setViewOptions'
                   },
                   isSegmented: {
                       type: Boolean
@@ -213,6 +213,12 @@ Issues that need to be fixed:
                           type: 'CHANGE_SUTTA_META_TEXT',
                           metaText: metaText
                       }
+                  },
+                  chooseSegmentedSuttaTextView(viewNumber) {
+                      return {
+                          type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
+                          view: viewNumber
+                      }
                   }
               }
           }
@@ -232,11 +238,13 @@ Issues that need to be fixed:
                   return;
               }
               try {
+                  this._resetViewOptions();
                   this._setRootAttributes();
                   this._setTranslatedAttributes();
                   this._updateToolbar();
                   this._computeParagraphs();
                   this._addTranslatedText();
+                  this.dispatch('chooseSegmentedSuttaTextView', 'none');
                   this.dispatch('changeSuttaMetaText', this._computeMeta());
               } catch (e) {
                   console.error(e);
@@ -274,11 +282,11 @@ Issues that need to be fixed:
           // if the base html and the pali texts have been fully loaded, the setting from the
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
-          setView() {
+          setViewOptions() {
               if (!this.isSegmented || !this.markup) {
                   return;
               }
-              this._cleanCode();
+              this._resetViewOptions();
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       this.$.segmented_text_content.classList.add('side-by-side');
@@ -300,6 +308,13 @@ Issues that need to be fixed:
                       }
                       break;
               }
+          }
+
+          // reset all classes and remove tooltips.
+          _resetViewOptions() {
+              this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
+              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
+                  .forEach(item => item.parentNode.removeChild(item));
           }
 
           _addTranslatedText() {
@@ -345,13 +360,6 @@ Issues that need to be fixed:
               if (this.paliScript) {
                   this.changeScript(this.paliScript)
               }
-          }
-
-          // reset all classes and remove tooltips.
-          _cleanCode() {
-              this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
-              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
-                  .forEach(item => item.parentNode.removeChild(item));
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
