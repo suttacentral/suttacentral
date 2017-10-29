@@ -218,20 +218,7 @@ Issues that need to be fixed:
 
           ready() {
               super.ready();
-              document.addEventListener('visibilitychange', () => {
-                  // Hide the text and display the loading spinner:
-                  this.isTextViewHidden = true;
-                  // Insert the sutta text into the main element again to force reloading styles:
-                  // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
-                  setTimeout(() => {
-                      if (this.assembledTranslatedText) {
-                          this.$.segmented_text_content.innerHTML = this.assembledTranslatedText;
-                      } else {
-                          this._addTranslatedText();
-                      }
-                      this.isTextViewHidden = false;
-                  }, 200);
-              });
+              document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
           }
 
           connectedCallback() {
@@ -406,6 +393,26 @@ Issues that need to be fixed:
 
           _loadingChanged() {
               this.isTextViewHidden = this.isLoading;
+          }
+
+          _handleVisibilityChange() {
+              if (document.hidden) {
+                  return;
+              }
+              // Hide the text and display the loading spinner:
+              this.isTextViewHidden = true;
+              // Insert the sutta text into the main element again to force reloading styles:
+              // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
+              setTimeout(() => {
+                  if (this.assembledTranslatedText) {
+                      console.log('loading saved text');
+                      this.$.segmented_text_content.innerHTML = this.assembledTranslatedText;
+                  } else {
+                      console.log('computing text');
+                      this._addTranslatedText();
+                  }
+                  this.isTextViewHidden = false;
+              }, 200);
           }
 
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
