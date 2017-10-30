@@ -36,10 +36,6 @@ Issues that need to be fixed:
         display: none;
       }
 
-      .side-by-side section {
-        padding: 32px !important;
-      }
-
       .side-by-side .translated-text {
         display: inline-block;
         width: 47%;
@@ -415,10 +411,8 @@ Issues that need to be fixed:
               // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
               setTimeout(() => {
                   if (this.assembledTranslatedText) {
-                      console.log('loading saved text');
                       this.$.segmented_text_content.innerHTML = this.assembledTranslatedText;
                   } else {
-                      console.log('computing text');
                       this._addTranslatedText();
                   }
                   this.isTextViewHidden = false;
