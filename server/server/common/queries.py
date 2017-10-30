@@ -256,14 +256,28 @@ LET root_po_obj = (
     FOR object IN po_strings
         FILTER object.uid == @uid AND object.lang == root_text.root_lang
         LIMIT 1 
-        RETURN object
+        RETURN {
+            uid: object.uid,
+            author: object.author,
+            author_blurb: object.author_blurb,
+            lang: object.lang,
+            strings: object.strings,
+            title: object.title
+        }
 )[0]
 
 LET translated_po_obj = (
     FOR object IN po_strings 
         FILTER object.uid == @uid AND object.lang == @language AND LOWER(object.author) == @author
         LIMIT 1 
-        RETURN object
+        RETURN {
+            uid: object.uid,
+            author: object.author,
+            author_blurb: object.author_blurb,
+            lang: object.lang,
+            strings: object.strings,
+            title: object.title
+        }
 )[0]
 
 LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
