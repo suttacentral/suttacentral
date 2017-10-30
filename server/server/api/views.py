@@ -179,7 +179,6 @@ class SuttaplexList(Resource):
         """
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
         uid = uid.replace('/', '-').strip('-')
-        uid = f'root/{uid}'
 
         db = get_db()
         results = db.aql.execute(SUTTAPLEX_LIST,
