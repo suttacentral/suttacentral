@@ -134,11 +134,6 @@ Issues that need to be fixed:
                       type: Array,
                       statePath: 'textOptions.paragraphDescriptions'
                   },
-                  // View for segmented text selected in the toolbar-settings-menu.
-                  showViewer: {
-                      type: String,
-                      observer: 'setViewOptions'
-                  },
                   // checks if the html markup is fully loaded before other functions can start
                   htmlLoaded: Boolean,
                   // Choice of script to use for the pali. Default is Latin.
@@ -181,7 +176,7 @@ Issues that need to be fixed:
                   chosenTextView: {
                       type: String,
                       statePath: 'textOptions.segmentedSuttaTextView',
-                      observer: 'setViewOptions'
+                      observer: '_setViewOptions'
                   },
                   isSegmented: {
                       type: Boolean
@@ -278,22 +273,23 @@ Issues that need to be fixed:
           // if the base html and the pali texts have been fully loaded, the setting from the
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
-          setViewOptions() {
+          _setViewOptions() {
               if (!this.isSegmented || !this.markup) {
                   return;
               }
               this._resetViewOptions();
+              const textContent = this.$.segmented_text_content;
               switch (this.chosenTextView) {
                   case 'sidebyside':
-                      this.$.segmented_text_content.classList.add('side-by-side');
+                      textContent.classList.add('side-by-side');
                       this._addOriginalText();
                       break;
                   case 'linebyline':
-                      this.$.segmented_text_content.classList.add('line-by-line');
+                      textContent.classList.add('line-by-line');
                       this._addOriginalText();
                       break;
                   case 'popup':
-                      Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
+                      Array.from(textContent.querySelectorAll('.translated-text')).forEach(item =>
                           item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
                               'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
                       if (!this.paliScript) {
@@ -304,6 +300,7 @@ Issues that need to be fixed:
                       }
                       break;
               }
+              this.assembledTranslatedText = textContent.innerHTML;
           }
 
           // reset all classes and remove tooltips.
@@ -402,7 +399,7 @@ Issues that need to be fixed:
           }
 
           _handleVisibilityChange() {
-              if (document.hidden) {
+              if (document.hidden || this.chosenTextView !== 'none') {
                   return;
               }
               // Hide the text and display the loading spinner:

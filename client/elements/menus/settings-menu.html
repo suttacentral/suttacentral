@@ -192,7 +192,6 @@ Issues:
                   // Selected type of view for segmented-text pages.
                   selectedTextView: {
                       type: String,
-                      value: 'none',
                       observer: '_textViewChanged',
                       statePath: 'textOptions.segmentedSuttaTextView'
                   },
@@ -333,7 +332,7 @@ Issues:
           }
 
           _textViewChanged() {
-              this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
+              setTimeout(() => { this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView); }, 0);
           }
 
           _onParagraphsLoaded() {
