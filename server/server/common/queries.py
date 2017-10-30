@@ -183,7 +183,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
         FOR text IN legacy_translations
             FILTER HAS(text, "volpage")
             RETURN text.volpage
-    )
+    )[0]
     
     SORT e.resembling
     
