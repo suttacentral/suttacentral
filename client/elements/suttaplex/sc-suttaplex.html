@@ -255,7 +255,7 @@
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
-              <paper-button flat title$="Go to a translation by [[translation.author]]">
+              <paper-button flat title$="Go to a translation by [[_capitalize(translation.author)]]">
                 <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
                   [[translation.author]]
                 </a>
@@ -444,6 +444,10 @@
 
           _addPaddingIfNoBlurb(blurb) {
             return (blurb === null || blurb === undefined) ? 'top-space' : '';
+          }
+
+          _capitalize(author){
+            return author.replace(/\b\w/g, l => l.toUpperCase());
           }
       }
 
