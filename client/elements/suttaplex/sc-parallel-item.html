@@ -121,16 +121,16 @@ It is in effect a miniature version of the suttaplex-card
                       <span class="book no-margin">
                         <iron-icon icon="book"></iron-icon>
                       </span>
-                      <span class="vol-page" title="Volume and page number">[[_getFirstVolpage()]]</span>
+                      <span class="vol-page" title="Volume and page number">[[parallelItem.volpages]]</span>
                     </summary>
                     <p class="parallel-item-biblio-info" inner-h-t-m-l="[[parallelItem.bib]]"></p>
                   </details>
                 </template>
                 <template is="dom-if" if="[[!parallelItem.bib]]">
-                  <span class="book no-margin">
+                  <span class="book no-margin" title="Volume and page number">
                     <iron-icon icon="book"></iron-icon>
                   </span>
-                  <span class="vol-page" title="Volume and page number">[[_getFirstVolpage()]]</span>
+                  <span class="vol-page" title="Volume and page number">[[parallelItem.volpages]]</span>
                 </template>
               </div>
             </template>
@@ -208,12 +208,8 @@ It is in effect a miniature version of the suttaplex-card
               return `${this.parallelItem.uid}`;
           }
 
-          _getFirstVolpage() {
-              return this.parallelItem.volpages[0];
-          }
-
           _volpagesAvailable() {
-              return this.parallelItem.volpages.length > 0;
+              return !!this.parallelItem.volpages;
           }
 
           _computeFullLangName(isoCode) {

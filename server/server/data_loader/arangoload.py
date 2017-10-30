@@ -138,7 +138,7 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
     sutta_data = {}
     for sutta in sutta_file:
         uid = sutta.pop('uid')
-        sutta_data[uid] = {'acronym': sutta['acronym'], 'biblio_uid': sutta['biblio_uid']}
+        sutta_data[uid] = {'acronym': sutta['acronym'], 'biblio_uid': sutta['biblio_uid'], 'volpage': sutta['volpage']}
 
     reg = regex.compile(r'^\D+')
     number_reg = regex.compile(r'.*?([0-9]+)$')
@@ -175,14 +175,12 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
                 if number_reg.match(uid):
                     num = number_reg.match(uid).group(1)
                     entry['num'] = int(num)
-            try:
-                entry['acronym'] = sutta_data[uid]['acronym']
-            except KeyError:
-                pass
-            try:
-                entry['biblio_uid'] = sutta_data[uid]['biblio_uid']
-            except KeyError:
-                pass
+
+            for data_name in ['volpage', 'biblio_uid', 'acronym']:
+                try:
+                    entry[data_name] = sutta_data[uid][data_name]
+                except KeyError:
+                    pass
 
             docs.append(entry)
 
