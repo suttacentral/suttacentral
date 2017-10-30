@@ -199,10 +199,11 @@
 
       .parallels-toggle-div {
         display: inline-grid;
+        position: relative;
       }
 
-      .fixed-pos {
-        position: fixed;
+      .absolute-pos {
+        position: absolute;
       }
 
       .no-left-padding {
@@ -291,7 +292,7 @@
                 <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
                                    on-tap="_toggleParallelsOpened">
                 </paper-icon-button>
-                <sc-badge class="fixed-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
+                <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
               </div>
             </template>
           </div>
