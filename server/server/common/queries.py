@@ -17,15 +17,15 @@ FOR text IN html_text
     RETURN {uid: text.uid, mtime: text.mtime}
 '''
 
-_MAX_NESTING_LEVEL = 5
+_MAX_NESTING_LEVEL = '5'
 
-MENU = f'''
+MENU = '''
 FOR pit IN pitaka
     SORT pit.num
     FOR group, group_edge, group_path IN OUTBOUND pit `root_edges`
         SORT group.num
         FILTER group_edge._to LIKE 'grouping/%'
-        FOR v, e, p IN 0..{_MAX_NESTING_LEVEL} OUTBOUND group `root_edges`
+        FOR v, e, p IN 0..''' + _MAX_NESTING_LEVEL + ''' OUTBOUND group `root_edges`
             FILTER e.type != 'text'
             LET lang_num = (
                 FOR lang IN language
@@ -33,18 +33,18 @@ FOR pit IN pitaka
                     LIMIT 1
                     RETURN lang.num
             )[0]
-            RETURN {{
-                from: IS_NULL(e._from) ? {{uid: group_edge._from, name: pit.name}} : e._from,
+            RETURN {
+                from: IS_NULL(e._from) ? {uid: group_edge._from, name: pit.name} : e._from,
                 name: v.name,
                 id: v._id,
                 num: v.num
-            }}
+            }
 '''
 
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
-FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
+FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
     LET legacy_translations = (
         FOR text IN html_text
             FILTER text.uid == v.uid
@@ -97,6 +97,19 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
     
     LET translations = FLATTEN([po_translations, legacy_translations])
     
+    LET is_segmented_original = (
+        FOR translation IN translations
+            FILTER translation.lang == v.root_lang AND translation.segmented == true
+            LIMIT 1
+            RETURN true
+    )[0]
+
+    LET filtered_translations = (
+        FOR translation IN translations
+            FILTER translation.lang != v.root_lang OR translation.segmented == true OR is_segmented_original == null
+            RETURN translation
+    )
+    
     LET translated_titles = (
         FOR translation IN translations
             FILTER translation.lang == @language AND HAS(translation, 'title')
@@ -128,7 +141,7 @@ FOR v, e, p IN 0..6 OUTBOUND @uid `root_edges`
         type: e.type ? e.type : v.type ? 'grouping' : 'text',
         from: e._from,
         translated_title: translated_titles,
-        translations: translations,
+        translations: filtered_translations,
         parallel_count: parallel_count,
         biblio: biblio
     }
@@ -216,56 +229,6 @@ FOR dict IN dictionaries
 SUTTA_VIEW = '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
 
-LET legacy_translations = (
-    FOR text IN html_text
-        FILTER text.uid == @uid
-        LET res = {
-            lang: text.lang,
-            author: text.author,
-            id: text._key,
-            segmented: false
-            }
-        // Add title if it is in desired language
-        LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
-        // Add volpage info if it exists.
-        RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res
-    )
-
-LET po_translations = (
-    FOR text IN po_strings
-        FILTER text.uid == @uid
-        SORT text.lang
-        LET res = {
-            lang: text.lang,
-            author: text.author,
-            id: text._key,
-            segmented: true
-        }
-        //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
-        RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
-)
-
-LET blurb = (
-    FOR blurb IN blurbs
-        FILTER blurb.uid == @uid
-        LIMIT 1
-        RETURN blurb.blurb
-        
-)[0]
-
-LET volpages = (
-    FOR text IN legacy_translations
-        FILTER HAS(text, "volpage")
-        RETURN text.volpage
-)
-
-LET difficulty = (
-    FOR difficulty IN difficulties
-        FILTER difficulty.uid == @uid
-        LIMIT 1
-        RETURN difficulty.difficulty
-)[0]
-
 LET translated_text = (
     FOR html IN po_htmls
         FILTER html.uid == @uid AND html.lang == @language AND LOWER(html.author) == @author
@@ -295,35 +258,13 @@ LET legacy_html = (
         }
 )
 
-LET parallel_count = LENGTH(
-    FOR rel IN relationship
-        FILTER rel._from == root_text._id
-        RETURN rel
-)
-
-LET biblio = (
-    FOR biblio IN biblios
-        FILTER biblio.uid == root_text.biblio_uid
-        LIMIT 1
-        RETURN biblio.text
-)[0]
+LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
     
 RETURN {
     root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
     translation: translated_text ? translated_text : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
-    suttaplex: {
-        acronym: root_text.acronym,
-        volpages: volpages,
-        uid: @uid,
-        blurb: blurb,
-        difficulty: difficulty,
-        original_title: root_text.name,
-        root_lang: root_text.root_lang,
-        translations: FLATTEN([po_translations, legacy_translations]),
-        parallel_count: parallel_count,
-        biblio: biblio
-    },
-    segmented: translated_text ? true : false    
+    segmented: translated_text ? true : false,
+    suttaplex: suttaplex
 }
 '''
 
