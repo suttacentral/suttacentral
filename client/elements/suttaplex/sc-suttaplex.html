@@ -83,6 +83,12 @@
 
       .card-actions-left {
         display: inline-block;
+        align-self: flex-start;
+      }
+
+      .card-actions-left paper-button:first-of-type {
+        margin-left: 0;
+        padding-left: 0;
       }
 
       .right-elements {
@@ -104,7 +110,6 @@
         display: inline-block;
         vertical-align: middle;
         margin: -18px 4px 0;
-        padding: 0 8px;
       }
 
       #moremenu {
@@ -166,12 +171,6 @@
         --paper-badge-margin-bottom: -10px;
       }
 
-      .segmented-border {
-        padding: 5px;
-        border: 1px dashed var(--paper-grey-700);
-        border-radius: 5px;
-      }
-
       .display-inline {
         display: inline-block;
       }
@@ -207,6 +206,10 @@
 
       .no-left-padding {
         padding-left: 0;
+      }
+
+      .top-space {
+        margin-top: 24px;
       }
 
     </style>
@@ -248,12 +251,11 @@
            inner-h-t-m-l="[[item.blurb]]"></p>
       </div>
 
-      <div class="card-actions">
+      <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
-              <paper-button flat title$="Go to a translation by [[translation.author]]"
-                            class$="{{_translationBorder(translation.segmented)}}">
+              <paper-button flat title$="Go to a translation by [[translation.author]]">
                 <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
                   [[translation.author]]
                 </a>
@@ -445,8 +447,8 @@
               }
           }
 
-          _translationBorder(segmented) {
-              return segmented ? 'segmented-border' : '';
+          _addPaddingIfNoBlurb(blurb) {
+            return (blurb === null || blurb === undefined) ? 'top-space' : '';
           }
       }
 
