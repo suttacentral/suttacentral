@@ -330,9 +330,9 @@ Issues that need to be fixed:
           }
 
           _addPrimaryText(textStrings) {
+              const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
+              const segments = textContainer.getElementsByTagName('sc-seg');
               try {
-                  const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
-                  const segments = textContainer.getElementsByTagName('sc-seg');
                   Array.from(segments).forEach(item => item.classList.add('translated-text'));
                   Object.entries(textStrings).forEach(([key, value]) => {
                       if (!key.startsWith('_')) {
@@ -341,11 +341,11 @@ Issues that need to be fixed:
                           segment.innerHTML = value + ' ';
                       }
                   });
-                  this.assembledMainText = textContainer.innerHTML;
               }
               catch (e) {
                   console.error(e);
               }
+              this.assembledMainText = textContainer.innerHTML;
           }
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
