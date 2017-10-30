@@ -49,8 +49,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       .root-lang-menu-item {
         color: var(--paper-green-a700);
         background-color: #E0FAEB;
-        display: flex;
-        justify-content: space-between;
+        cursor: pointer;        
       }
 
       .root-lang-menu-item:hover {
@@ -96,26 +95,22 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         display: none;
       }
 
+      .no-outline:focus {
+        outline: none;
+      }
+
     </style>
 
     <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
                          title="Select a language" id="paper-dropdown-menu" dynamic-align=true>
       <paper-listbox class="language-menu-listbox" slot="dropdown-content">
 
-        <template is="dom-if" if="[[originalLanguage]]">
-          <a class="language-menu-url" href="/[[rootId]]/[[originalLanguage]]">
-            <button class="paper-item root-lang-menu-item language-menu-item" role="option" title="Original language">
-              [[_computeFullLanguageName(originalLanguage)]]
-            </button>
-          </a>
-        </template>
-
         <template is="dom-repeat" items="[[languageChoice]]" as="language">
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
-            <section class="language-choice-box">
+            <section class$="{{_rootLanguageClassOrStandard(language)}} no-outline">
               <a class="language-menu-url"
                  href="/[[rootId]]/[[language.lang]]/[[language.author]]">
-                <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
+                <paper-item class="language-menu-item " id='[[language.id]]' title="[[_languageTitle(language)]]">
                   [[_computeAuthorForList(language.author)]]
                 </paper-item>
               </a>
@@ -198,6 +193,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
           _computeFullLanguageName(isoCode) {
               return this.rootLangMappings[isoCode];
+          }
+
+          _rootLanguageClassOrStandard(language) {
+            return language.lang === this.originalLanguage ? 'root-lang-menu-item' : 'language-choice-box';
           }
 
       }
