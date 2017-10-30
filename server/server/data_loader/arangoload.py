@@ -544,6 +544,8 @@ def run():
 
     po.load_po_texts(change_tracker, po_dir, db)
 
+    generate_relationship_edges(change_tracker, relationship_dir, db)
+
     load_html_texts(change_tracker, data_dir, db, html_dir)
 
     process_blurbs(db, additional_info_dir)

@@ -9,5 +9,5 @@ class SecondMigration(Migration):
     def create_collection(self):
         db = get_db()
 
-        po_htmls = db.create_collection('biblios')
-        po_htmls.add_hash_index(fields=['uid'], unique=True)
+        biblios = db.create_collection('biblios')
+        biblios.add_hash_index(fields=['uid'], unique=True)

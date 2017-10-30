@@ -344,7 +344,9 @@
                   },
                   level: String,
                   // The suttaplex item
-                  item: Object,
+                  item: {
+                      type: Object
+                  },
                   toastMessage: {
                       type: String
                   }
@@ -435,6 +437,9 @@
           }
 
           _computeMainHeading(item) {
+              if (!item) {
+                  return '';
+              }
               if (item.translated_title) {
                   return item.translated_title;
               } else if (item.original_title) {

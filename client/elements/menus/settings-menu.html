@@ -1,18 +1,19 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
-<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
-<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
-<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="/bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="/bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="/bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="/bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
+<link rel="import" href="/bower_components/neon-animation/web-animations.html">
 
-<link rel="import" href="../addons/sc-dictionary-lookup.html">
+<link rel="import" href="/elements/addons/sc-dictionary-lookup.html">
 
 <!--
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
@@ -82,6 +83,17 @@ Issues:
           display: none;
         }
       }
+
+      .loading-indicator {
+        @apply --sc-skolar-font-size-s;
+        width: 90%;
+        display: flex;
+        text-align: center;
+        position: absolute;
+        height: inherit;
+        justify-content: center;
+        align-items: center;
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -94,6 +106,10 @@ Issues:
     ></iron-ajax>
 
     <div class="paper-dialogue-container">
+      <div class="loading-indicator">
+        <paper-spinner-lite active="[[showLoadingSpinner]]"></paper-spinner-lite>
+      </div>
+
       <div class="dialogue-section">
         <h3 class="menu-item">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
@@ -105,7 +121,7 @@ Issues:
         <h3 class="menu-item">View original text with translation</h3>
         <div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.
         </div>
-        <paper-radio-group selected="{{radioSelected}}">
+        <paper-radio-group selected="{{selectedTextView}}">
           <paper-radio-button name="none" class="menu-option">
             None
           </paper-radio-button>
@@ -173,7 +189,7 @@ Issues:
       </div>
 
       <div class="dialogue-section">
-        <h3 class="menu-item">Remember what I have selected</h3>
+        <h3 class="menu-item">Select this to remember these settings next time you visit SuttaCentral.</h3>
         <paper-toggle-button class="menu-toggle-button" noink checked
                              active="{{rememberSettings}}"></paper-toggle-button>
       </div>
@@ -190,10 +206,10 @@ Issues:
           static get properties() {
               return {
                   // Selected type of view for segmented-text pages.
-                  radioSelected: {
+                  selectedTextView: {
                       type: String,
-                      value: 'none',
-                      observer: '_radioGroupChanged'
+                      observer: '_textViewChanged',
+                      statePath: 'textOptions.segmentedSuttaTextView'
                   },
                   // possible values for the pali to language lookup.
                   paliLookupArray: {
@@ -292,6 +308,10 @@ Issues:
                       type: Boolean,
                       value: true,
                       observer: '_rememberSettings'
+                  },
+                  showLoadingSpinner: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -310,10 +330,10 @@ Issues:
                           descriptions: data
                       }
                   },
-                  chooseSegmentedSuttaTextView(viewNumber) {
+                  chooseSegmentedSuttaTextView(view) {
                       return {
                           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
-                          view: viewNumber
+                          view: view
                       }
                   }
               }
@@ -327,6 +347,14 @@ Issues:
               }
           }
 
+          _textViewChanged() {
+              this.showLoadingSpinner = true;
+              setTimeout(() => {
+                  this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
+                  this.showLoadingSpinner = false;
+              }, 0);
+          }
+
           _onParagraphsLoaded() {
               if (this.textualInfoResponse) {
                   if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
@@ -334,10 +362,6 @@ Issues:
                   }
                   this.dispatch('toggleTextualInfo', this.textualInfoToggleEnabled);
               }
-          }
-
-          _radioGroupChanged() {
-              this.dispatch('chooseSegmentedSuttaTextView', this.radioSelected);
           }
 
           _rememberSettings(rememberSettings) {
@@ -354,17 +378,6 @@ Issues:
           _getDictionary(valueArray, valueSelected) {
               // needs more work
               return valueArray[valueSelected].dict;
-          }
-
-          _disableRadioGroup(disableViews) {
-              // function not used at the moment. The idea was to be able to disable the choice of various
-              // views on normal text pages because they are only available on segmented text pages.
-              if (disableViews === true) {
-                  const refs = this.querySelectorAll('paper-radio-button');
-                  for (let i = 0; i < refs.length; i++) {
-                      refs[i].setAttribute('disabled', true);
-                  }
-              }
           }
 
           _changeScript() {

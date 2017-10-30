@@ -31,23 +31,15 @@ Issues that need to be fixed:
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-      .not-found {
-        @apply --paper-font-display1;
-      }
-
       .original-text {
         @apply --sc-sans-font;
         display: none;
       }
 
-      .side-by-side section {
-        padding: 0 7% 32px 1% !important;
-      }
-
       .side-by-side .translated-text {
         display: inline-block;
         width: 47%;
-        padding-right: 5px;
+        padding-right: var(--size-md);
         vertical-align: text-top;
       }
 
@@ -85,10 +77,6 @@ Issues that need to be fixed:
         };
       }
 
-      .text-options {
-        padding: 32px;
-      }
-
       .text-center {
         text-align: center;
       }
@@ -102,17 +90,17 @@ Issues that need to be fixed:
         text-align: center;
         height: 60px;
       }
-    </style>
 
-    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+    </style>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <div id="html_text_content" inner-h-t-m-l="[[translatedSutta.text]]" hidden$="[[isTextViewHidden]]"></div>
+    <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]"
+         hidden$="[[isTextViewHidden]]"></div>
 
-    <template is="dom-if" if="[[!translatedSutta.text]]">
+    <template is="dom-if" if="[[!translatedSutta.strings]]">
       <div class="text-center margin-top-xl">
         <h2>Error</h2>
         <h3>Could not find the sutta text.</h3>
@@ -130,14 +118,12 @@ Issues that need to be fixed:
           static get properties() {
               return {
                   rootSutta: {
-                      type: Object
+                      type: Object,
+                      observer: '_updateView'
                   },
                   translatedSutta: {
                       type: Object,
                       observer: '_updateView'
-                  },
-                  suttaplex: {
-                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -148,11 +134,6 @@ Issues that need to be fixed:
                   paragraphs: {
                       type: Array,
                       statePath: 'textOptions.paragraphDescriptions'
-                  },
-                  // View for segmented text selected in the toolbar-settings-menu.
-                  showViewer: {
-                      type: String,
-                      observer: 'setView'
                   },
                   // checks if the html markup is fully loaded before other functions can start
                   htmlLoaded: Boolean,
@@ -192,6 +173,21 @@ Issues that need to be fixed:
                   isTextViewHidden: {
                       type: Boolean,
                       value: false
+                  },
+                  chosenTextView: {
+                      type: String,
+                      statePath: 'textOptions.segmentedSuttaTextView',
+                      observer: '_setViewOptions'
+                  },
+                  isSegmented: {
+                      type: Boolean
+                  },
+                  markup: {
+                      type: String,
+                      observer: '_updateView'
+                  },
+                  assembledMainText: {
+                      type: String
                   }
               }
           }
@@ -209,22 +205,19 @@ Issues that need to be fixed:
                           type: 'CHANGE_SUTTA_META_TEXT',
                           metaText: metaText
                       }
+                  },
+                  chooseSegmentedSuttaTextView(viewNumber) {
+                      return {
+                          type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
+                          view: viewNumber
+                      }
                   }
               }
           }
 
           ready() {
               super.ready();
-              document.addEventListener('visibilitychange', () => {
-                  // Hide the text and display the loading spinner:
-                  this.isTextViewHidden = true;
-                  // Insert the sutta text into the main element again to force reloading styles:
-                  // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
-                  setTimeout(() => {
-                      this.$.html_text_content.innerHTML = this.translatedSutta.text;
-                      this.isTextViewHidden = false;
-                  }, 200);
-              });
+              document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
           }
 
           connectedCallback() {
@@ -233,15 +226,34 @@ Issues that need to be fixed:
           }
 
           _updateView() {
-              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
-              this._setRootAttributes();
-              this._setTranslatedAttributes();
-              this._updateToolbar();
-              this._computeParagraphs();
+              if (!this.isSegmented || this.isSegmented === undefined || !this.markup) {
+                  return;
+              }
+              try {
+                  this._resetViewOptions();
+                  this._setRootAttributes();
+                  this._setTranslatedAttributes();
+                  this._updateToolbar();
+                  this._computeParagraphs();
+                  this._addTextContent();
+                  this.dispatch('chooseSegmentedSuttaTextView', 'none');
+                  this.dispatch('changeSuttaMetaText', this._computeMeta());
+              } catch (e) {
+                  console.error(e);
+              }
+          }
+
+          _addTextContent() {
+              if (this.translatedSutta) {
+                  this._addPrimaryText(this.translatedSutta.strings);
+              } else {
+                  this._addPrimaryText(this.rootSutta.strings);
+              }
           }
 
           _setRootAttributes() {
               if (!this.rootSutta) {
+                  this.rootAuthor = this.rootLang = this.rootTitle = null;
                   return;
               }
               this.rootAuthor = this.rootSutta.author;
@@ -251,6 +263,7 @@ Issues that need to be fixed:
 
           _setTranslatedAttributes() {
               if (!this.translatedSutta) {
+                  this.translationAuthor = this.translationLang = this.translatedTitle = null;
                   return;
               }
               this.translationAuthor = this.translatedSutta.author;
@@ -259,66 +272,103 @@ Issues that need to be fixed:
           }
 
           _updateToolbar() {
-              this.dispatch('changeSuttaMetaText', this._computeMeta());
               this.dispatch('changeToolbarTitle',
-                  `${this.translatedTitle ? this.translatedTitle : this.rootTitle} – ${this.translationAuthor}`);
+                  `${this.translatedTitle || this.rootTitle} – ${this.translationAuthor || this.rootAuthor}`);
           }
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              let matches = this.translatedSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
-              if (!matches) {
-                  matches = this.rootSutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              if (this.translatedSutta) {
+                  return this.translatedSutta.author_blurb[this.translationLang] || 'No metadata available.';
+              } else {
+                  return 'No metadata available.';
               }
-              let metaText;
-              try {
-                  if (matches && matches.length > 0) {
-                      metaText = matches[1];
-                  } else {
-                      metaText = '';
-                  }
-              } catch (e) {
-                  console.error(e);
-              }
-              return metaText;
           }
 
-          // populates the empty 'sc-segment's in the base html with the corresponding translated text segment.
-          _addTranslatedText(translatedText) {
-              const segments = this.shadowRoot.querySelectorAll('sc-segment');
-              Array.from(segments).forEach(item => item.classList.add('translated-text'));
-              for (let key in translatedText) {
-                  if (!key.startsWith('_')) {
-                      let subkey = key.replace(/:/g, '\\\:');
-                      subkey = subkey.replace(/\./g, '\\\.');
-                      const segment = this.shadowRoot.querySelector('#' + subkey);
-                      segment.innerHTML = translatedText[key] + ' ';
-                  }
+          // if the base html and the pali texts have been fully loaded, the setting from the
+          // settings-menu for the relevant view is implemented by adding relevant class
+          // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
+          _setViewOptions() {
+              if (!this.isSegmented || !this.markup || !this.translatedSutta) {
+                  return;
               }
+              this._resetViewOptions();
+              const textContent = this.$.segmented_text_content;
+              switch (this.chosenTextView) {
+                  case 'sidebyside':
+                      textContent.classList.add('side-by-side');
+                      this._addSecondaryText();
+                      break;
+                  case 'linebyline':
+                      textContent.classList.add('line-by-line');
+                      this._addSecondaryText();
+                      break;
+                  case 'popup':
+                      this._addLookupTooltips(textContent);
+                      break;
+              }
+              this.assembledMainText = textContent.innerHTML;
+          }
+
+          // reset all classes and remove tooltips.
+          _resetViewOptions() {
+              this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
+              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
+                  .forEach(item => item.parentNode.removeChild(item));
+          }
+
+          _addLookupTooltips(textContent) {
+              Array.from(textContent.querySelectorAll('.translated-text')).forEach(item =>
+                  item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
+                      'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
+              if (!this.paliScript) {
+                  this.changeScript(0)
+              }
+              else {
+                  this.changeScript(this.paliScript)
+              }
+          }
+
+          _addPrimaryText(textStrings) {
+              const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
+              const segments = textContainer.getElementsByTagName('sc-seg');
+              try {
+                  Array.from(segments).forEach(item => item.classList.add('translated-text'));
+                  Object.entries(textStrings).forEach(([key, value]) => {
+                      if (!key.startsWith('_')) {
+                          let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+                          const segment = textContainer.querySelector(`#${subkey}`);
+                          segment.innerHTML = value + ' ';
+                      }
+                  });
+              }
+              catch (e) {
+                  console.error(e);
+              }
+              this.assembledMainText = textContainer.innerHTML;
           }
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
-          _addOriginalText(originalText) {
+          _addSecondaryText() {
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  for (let key in originalText) {
+                  Object.entries(this.rootSutta.strings).forEach(([key, value]) => {
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:');
                           subkey = subkey.replace(/\./g, '\\\.');
                           const segment = this.shadowRoot.querySelector('#' + subkey);
-                          const newSegment = document.createElement('sc-segment');
+                          const newSegment = document.createElement('sc-seg');
                           newSegment.id = key;
                           newSegment.classList.add('original-text');
-                          newSegment.innerHTML = originalText[key] + ' ';
+                          newSegment.innerHTML = value + ' ';
                           segment.parentNode.insertBefore(newSegment, segment.nextSibling);
                       }
-                  }
+                  });
               }
               this.htmlLoaded = true;
-              this.$.html_text_content.classList.add('latin-script');
+              this.$.segmented_text_content.classList.add('latin-script');
 
               // checks settings from the settings-menu and changes the view accordingly.
-              this.setView(this.showViewer);
               if (this.paliScript) {
                   this.changeScript(this.paliScript)
               }
@@ -336,9 +386,9 @@ Issues that need to be fixed:
                   });
               }
               if (this.showParagraphs) {
-                  this._addParagraphs(this.$.html_text_content);
+                  this._addParagraphs(this.$.segmented_text_content);
               } else {
-                  this._removeParagraphs(this.$.html_text_content);
+                  this._removeParagraphs(this.$.segmented_text_content);
               }
           }
 
@@ -356,46 +406,6 @@ Issues that need to be fixed:
               }
           }
 
-          // if the base html and the pali texts have been fully loaded, the setting from the
-          // settings-menu for the relevant view is implemented by adding relevant class
-          // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
-          setView(showViewer) {
-              if (this.htmlLoaded) {
-                  this._cleanCode();
-                  if (this.author !== 'pali') {
-                      switch (showViewer) {
-                          case 'side-by-side':
-                              this.$.html_text_content.classList.add('side-by-side');
-                              break;
-                          case 'line-by-line':
-                              this.$.html_text_content.classList.add('line-by-line');
-                              break;
-                          case 'popup':
-                              Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
-                                  item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
-                                      'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
-                              if (!this.paliScript) {
-                                  this.changeScript(0)
-                              }
-                              else {
-                                  this.changeScript(this.paliScript)
-                              }
-                              break;
-                      }
-                  } else {
-                      // if the author is "pali", only the pali is shown and not the translated text.
-                      this.$.html_text_content.classList.add('show-pali');
-                  }
-              }
-          }
-
-          // reset all classes and remove tooltips.
-          _cleanCode() {
-              this.$.html_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
-              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
-                  .forEach(item => item.parentNode.removeChild(item));
-          }
-
           // Display the loading indicator in two cases:
           // 1: If there's no error and the text view is loading, or...
           // 2: If the text view is currently hidden
@@ -407,42 +417,63 @@ Issues that need to be fixed:
               this.isTextViewHidden = this.isLoading;
           }
 
+          _handleVisibilityChange() {
+              if (document.hidden || this.chosenTextView !== 'none') {
+                  return;
+              }
+              // Hide the text and display the loading spinner:
+              this.isTextViewHidden = true;
+              // Insert the sutta text into the main element again to force reloading styles:
+              // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
+              setTimeout(() => {
+                  if (this.assembledMainText) {
+                      this.$.segmented_text_content.innerHTML = this.assembledMainText;
+                  } else {
+                      this._addTextContent();
+                  }
+                  this.isTextViewHidden = false;
+              }, 200);
+          }
+
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
           // either in tooltips or in segments.
           changeScript(paliScript) {
               if (this.htmlLoaded) {
                   const segments = this.shadowRoot.querySelectorAll('.original-text');
                   const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-                  this.$.html_text_content.classList
+                  this.$.segmented_text_content.classList
                       .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
                   Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
                   Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
                   switch (paliScript) {
                       case 0:
-                          this.$.html_text_content.classList.add('latin-script');
+                          this.$.segmented_text_content.classList.add('latin-script');
                           break;
                       case 1:
-                          this.$.html_text_content.classList.add('sinhala-script');
-                          Array.from(segments).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
-                          Array.from(tooltips).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
+                          this._setScript('sinhala', segments, tooltips);
                           break;
                       case 2:
-                          this.$.html_text_content.classList.add('devanagari-script');
-                          Array.from(segments).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
-                          Array.from(tooltips).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
+                          this._setScript('devanagari', segments, tooltips);
                           break;
                       case 3:
-                          this.$.html_text_content.classList.add('thai-script');
-                          Array.from(segments).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
-                          Array.from(tooltips).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
+                          this._setScript('thai', segments, tooltips);
                           break;
                       case 4:
-                          this.$.html_text_content.classList.add('myanmar-script');
-                          Array.from(segments).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
-                          Array.from(tooltips).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
+                          this._setScript('myanmar', segments, tooltips);
                           break;
                   }
               }
+          }
+
+          _setScript(scriptName, segments, tooltips) {
+              this.$.segmented_text_content.classList.add(`${scriptName}-script`);
+              const className = `to${this._capitalize(scriptName)}`;
+              Array.from(segments).forEach(item => item.innerHTML = this[className](item.innerHTML));
+              Array.from(tooltips).forEach(item => item.innerHTML = this[className](item.innerHTML));
+          }
+
+          _capitalize(text) {
+              return text.charAt(0).toUpperCase() + text.slice(1);
           }
 
           //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.
@@ -745,7 +776,7 @@ Issues that need to be fixed:
               return b.slice(0, -1);
           }
 
-          toDevar(l) {
+          toDevanagari(l) {
               l = l.replace(/<.*?>/g, '');
               l = l.toLowerCase() + ' ';
               const m = { a: ' अ', i: ' इ', u: ' उ', 'ā': ' आ', 'ī': ' ई', 'ū': ' ऊ', e: ' ए', o: ' ओ' };

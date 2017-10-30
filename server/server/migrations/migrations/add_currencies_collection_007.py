@@ -9,5 +9,5 @@ class SecondMigration(Migration):
     def create_collection(self):
         db = get_db()
 
-        po_htmls = db.create_collection('currencies')
-        po_htmls.add_hash_index(fields=['symbol'], unique=True)
+        currencies = db.create_collection('currencies')
+        currencies.add_hash_index(fields=['symbol'], unique=True)
