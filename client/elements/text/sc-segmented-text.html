@@ -245,14 +245,15 @@ Issues that need to be fixed:
 
           _addTextContent() {
               if (this.translatedSutta) {
-                  this._addTranslatedText(this.translatedSutta.strings);
+                  this._addPrimaryText(this.translatedSutta.strings);
               } else {
-                  this._addTranslatedText(this.rootSutta.strings);
+                  this._addPrimaryText(this.rootSutta.strings);
               }
           }
 
           _setRootAttributes() {
               if (!this.rootSutta) {
+                  this.rootAuthor = this.rootLang = this.rootTitle = null;
                   return;
               }
               this.rootAuthor = this.rootSutta.author;
@@ -262,6 +263,7 @@ Issues that need to be fixed:
 
           _setTranslatedAttributes() {
               if (!this.translatedSutta) {
+                  this.translationAuthor = this.translationLang = this.translatedTitle = null;
                   return;
               }
               this.translationAuthor = this.translatedSutta.author;
@@ -295,11 +297,11 @@ Issues that need to be fixed:
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       textContent.classList.add('side-by-side');
-                      this._addOriginalText();
+                      this._addSecondaryText();
                       break;
                   case 'linebyline':
                       textContent.classList.add('line-by-line');
-                      this._addOriginalText();
+                      this._addSecondaryText();
                       break;
                   case 'popup':
                       Array.from(textContent.querySelectorAll('.translated-text')).forEach(item =>
@@ -323,7 +325,7 @@ Issues that need to be fixed:
                   .forEach(item => item.parentNode.removeChild(item));
           }
 
-          _addTranslatedText(textStrings) {
+          _addPrimaryText(textStrings) {
               try {
                   const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
                   const segments = textContainer.getElementsByTagName('sc-seg');
@@ -344,7 +346,7 @@ Issues that need to be fixed:
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
-          _addOriginalText() {
+          _addSecondaryText() {
               if (!this.shadowRoot.querySelector('.original-text')) {
                   Object.entries(this.rootSutta.strings).forEach(([key, value]) => {
                       if (!key.startsWith('_')) {

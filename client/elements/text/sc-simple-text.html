@@ -123,7 +123,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   // Insert the sutta text into the main element again to force reloading styles:
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
-                      this.$.simple_text_content.innerHTML = this.sutta.text;
+                      if (!this.isSegmented) {
+                          this.$.simple_text_content.innerHTML = this.sutta.text;
+                      }
                       this.isTextViewHidden = false;
                   }, 200);
               })
