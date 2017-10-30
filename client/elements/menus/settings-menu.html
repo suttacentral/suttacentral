@@ -7,6 +7,7 @@
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="/bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="/bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
@@ -82,6 +83,13 @@ Issues:
           display: none;
         }
       }
+
+      .loading-indicator {
+        @apply --sc-skolar-font-size-s;
+        text-align: center;
+        position: absolute;
+        width: 90%;
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -94,6 +102,10 @@ Issues:
     ></iron-ajax>
 
     <div class="paper-dialogue-container">
+      <div class="loading-indicator">
+        <paper-spinner-lite active="[[showLoadingSpinner]]"></paper-spinner-lite>
+      </div>
+
       <div class="dialogue-section">
         <h3 class="menu-item">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
@@ -296,6 +308,10 @@ Issues:
                   isSegmentedText: {
                       type: Boolean,
                       statePath: 'suttaText.segmented'
+                  },
+                  showLoadingSpinner: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -332,7 +348,11 @@ Issues:
           }
 
           _textViewChanged() {
-              setTimeout(() => { this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView); }, 0);
+              this.showLoadingSpinner = true;
+              setTimeout(() => {
+                  this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
+                  this.showLoadingSpinner = false;
+              }, 0);
           }
 
           _onParagraphsLoaded() {
