@@ -304,15 +304,7 @@ Issues that need to be fixed:
                       this._addSecondaryText();
                       break;
                   case 'popup':
-                      Array.from(textContent.querySelectorAll('.translated-text')).forEach(item =>
-                          item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
-                              'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
-                      if (!this.paliScript) {
-                          this.changeScript(0)
-                      }
-                      else {
-                          this.changeScript(this.paliScript)
-                      }
+                      this._addLookupTooltips(textContent);
                       break;
               }
               this.assembledMainText = textContent.innerHTML;
@@ -323,6 +315,18 @@ Issues that need to be fixed:
               this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
               Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
                   .forEach(item => item.parentNode.removeChild(item));
+          }
+
+          _addLookupTooltips(textContent) {
+              Array.from(textContent.querySelectorAll('.translated-text')).forEach(item =>
+                  item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
+                      'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
+              if (!this.paliScript) {
+                  this.changeScript(0)
+              }
+              else {
+                  this.changeScript(this.paliScript)
+              }
           }
 
           _addPrimaryText(textStrings) {
