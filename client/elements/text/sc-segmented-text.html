@@ -450,27 +450,30 @@ Issues that need to be fixed:
                           this.$.segmented_text_content.classList.add('latin-script');
                           break;
                       case 1:
-                          this.$.segmented_text_content.classList.add('sinhala-script');
-                          Array.from(segments).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
-                          Array.from(tooltips).forEach(item => item.innerHTML = this.toSinhala(item.innerHTML));
+                          this._setScript('sinhala', segments, tooltips);
                           break;
                       case 2:
-                          this.$.segmented_text_content.classList.add('devanagari-script');
-                          Array.from(segments).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
-                          Array.from(tooltips).forEach(item => item.innerHTML = this.toDevar(item.innerHTML));
+                          this._setScript('devanagari', segments, tooltips);
                           break;
                       case 3:
-                          this.$.segmented_text_content.classList.add('thai-script');
-                          Array.from(segments).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
-                          Array.from(tooltips).forEach(item => item.innerHTML = this.toThai(item.innerHTML));
+                          this._setScript('thai', segments, tooltips);
                           break;
                       case 4:
-                          this.$.segmented_text_content.classList.add('myanmar-script');
-                          Array.from(segments).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
-                          Array.from(tooltips).forEach(item => item.innerHTML = this.toMyanmar(item.innerHTML));
+                          this._setScript('myanmar', segments, tooltips);
                           break;
                   }
               }
+          }
+
+          _setScript(scriptName, segments, tooltips) {
+              this.$.segmented_text_content.classList.add(`${scriptName}-script`);
+              const className = `to${this._capitalize(scriptName)}`;
+              Array.from(segments).forEach(item => item.innerHTML = this[className](item.innerHTML));
+              Array.from(tooltips).forEach(item => item.innerHTML = this[className](item.innerHTML));
+          }
+
+          _capitalize(text) {
+              return text.charAt(0).toUpperCase() + text.slice(1);
           }
 
           //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.
@@ -773,7 +776,7 @@ Issues that need to be fixed:
               return b.slice(0, -1);
           }
 
-          toDevar(l) {
+          toDevanagari(l) {
               l = l.replace(/<.*?>/g, '');
               l = l.toLowerCase() + ' ';
               const m = { a: ' अ', i: ' इ', u: ' उ', 'ā': ' आ', 'ī': ' ई', 'ū': ' ऊ', e: ' ए', o: ' ओ' };
