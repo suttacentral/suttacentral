@@ -101,11 +101,11 @@ Issues:
                              active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
       </div>
 
-      <div class="dialogue-section">
+      <div class="dialogue-section" hidden$="[[!isSegmentedText]]">
         <h3 class="menu-item">View original text with translation</h3>
         <div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.
         </div>
-        <paper-radio-group selected="{{radioSelected}}">
+        <paper-radio-group selected="{{selectedTextView}}">
           <paper-radio-button name="none" class="menu-option">
             None
           </paper-radio-button>
@@ -190,10 +190,10 @@ Issues:
           static get properties() {
               return {
                   // Selected type of view for segmented-text pages.
-                  radioSelected: {
+                  selectedTextView: {
                       type: String,
                       value: 'none',
-                      observer: '_radioGroupChanged'
+                      observer: '_textViewChanged'
                   },
                   // possible values for the pali to language lookup.
                   paliLookupArray: {
@@ -292,6 +292,10 @@ Issues:
                       type: Boolean,
                       value: true,
                       observer: '_rememberSettings'
+                  },
+                  isSegmentedText: {
+                      type: Boolean,
+                      statePath: 'suttaText.segmented'
                   }
               }
           }
@@ -310,10 +314,10 @@ Issues:
                           descriptions: data
                       }
                   },
-                  chooseSegmentedSuttaTextView(viewNumber) {
+                  chooseSegmentedSuttaTextView(view) {
                       return {
                           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
-                          view: viewNumber
+                          view: view
                       }
                   }
               }
@@ -327,6 +331,10 @@ Issues:
               }
           }
 
+          _textViewChanged() {
+              this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
+          }
+
           _onParagraphsLoaded() {
               if (this.textualInfoResponse) {
                   if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
@@ -334,10 +342,6 @@ Issues:
                   }
                   this.dispatch('toggleTextualInfo', this.textualInfoToggleEnabled);
               }
-          }
-
-          _radioGroupChanged() {
-              this.dispatch('chooseSegmentedSuttaTextView', this.radioSelected);
           }
 
           _rememberSettings(rememberSettings) {
@@ -354,17 +358,6 @@ Issues:
           _getDictionary(valueArray, valueSelected) {
               // needs more work
               return valueArray[valueSelected].dict;
-          }
-
-          _disableRadioGroup(disableViews) {
-              // function not used at the moment. The idea was to be able to disable the choice of various
-              // views on normal text pages because they are only available on segmented text pages.
-              if (disableViews === true) {
-                  const refs = this.querySelectorAll('paper-radio-button');
-                  for (let i = 0; i < refs.length; i++) {
-                      refs[i].setAttribute('disabled', true);
-                  }
-              }
           }
 
           _changeScript() {
