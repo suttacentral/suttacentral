@@ -289,7 +289,7 @@ Issues that need to be fixed:
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
           _setViewOptions() {
-              if (!this.isSegmented || !this.markup) {
+              if (!this.isSegmented || !this.markup || !this.translatedSutta) {
                   return;
               }
               this._resetViewOptions();
