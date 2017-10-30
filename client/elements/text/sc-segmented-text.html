@@ -118,7 +118,8 @@ Issues that need to be fixed:
           static get properties() {
               return {
                   rootSutta: {
-                      type: Object
+                      type: Object,
+                      observer: '_updateView'
                   },
                   translatedSutta: {
                       type: Object,
@@ -185,7 +186,7 @@ Issues that need to be fixed:
                       type: String,
                       observer: '_updateView'
                   },
-                  assembledTranslatedText: {
+                  assembledMainText: {
                       type: String
                   }
               }
@@ -234,11 +235,19 @@ Issues that need to be fixed:
                   this._setTranslatedAttributes();
                   this._updateToolbar();
                   this._computeParagraphs();
-                  this._addTranslatedText();
+                  this._addTextContent();
                   this.dispatch('chooseSegmentedSuttaTextView', 'none');
                   this.dispatch('changeSuttaMetaText', this._computeMeta());
               } catch (e) {
                   console.error(e);
+              }
+          }
+
+          _addTextContent() {
+              if (this.translatedSutta) {
+                  this._addTranslatedText(this.translatedSutta.strings);
+              } else {
+                  this._addTranslatedText(this.rootSutta.strings);
               }
           }
 
@@ -262,12 +271,16 @@ Issues that need to be fixed:
 
           _updateToolbar() {
               this.dispatch('changeToolbarTitle',
-                  `${this.translatedTitle ? this.translatedTitle : this.rootTitle} – ${this.translationAuthor}`);
+                  `${this.translatedTitle || this.rootTitle} – ${this.translationAuthor || this.rootAuthor}`);
           }
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              return this.translatedSutta.author_blurb[this.translationLang] || 'No metadata available.';
+              if (this.translatedSutta) {
+                  return this.translatedSutta.author_blurb[this.translationLang] || 'No metadata available.';
+              } else {
+                  return 'No metadata available.';
+              }
           }
 
           // if the base html and the pali texts have been fully loaded, the setting from the
@@ -300,7 +313,7 @@ Issues that need to be fixed:
                       }
                       break;
               }
-              this.assembledTranslatedText = textContent.innerHTML;
+              this.assembledMainText = textContent.innerHTML;
           }
 
           // reset all classes and remove tooltips.
@@ -310,19 +323,19 @@ Issues that need to be fixed:
                   .forEach(item => item.parentNode.removeChild(item));
           }
 
-          _addTranslatedText() {
+          _addTranslatedText(textStrings) {
               try {
                   const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
                   const segments = textContainer.getElementsByTagName('sc-seg');
                   Array.from(segments).forEach(item => item.classList.add('translated-text'));
-                  Object.entries(this.translatedSutta.strings).forEach(([key, value]) => {
+                  Object.entries(textStrings).forEach(([key, value]) => {
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
                           const segment = textContainer.querySelector(`#${subkey}`);
                           segment.innerHTML = value + ' ';
                       }
                   });
-                  this.assembledTranslatedText = textContainer.innerHTML;
+                  this.assembledMainText = textContainer.innerHTML;
               }
               catch (e) {
                   console.error(e);
@@ -407,10 +420,10 @@ Issues that need to be fixed:
               // Insert the sutta text into the main element again to force reloading styles:
               // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
               setTimeout(() => {
-                  if (this.assembledTranslatedText) {
-                      this.$.segmented_text_content.innerHTML = this.assembledTranslatedText;
+                  if (this.assembledMainText) {
+                      this.$.segmented_text_content.innerHTML = this.assembledMainText;
                   } else {
-                      this._addTranslatedText();
+                      this._addTextContent();
                   }
                   this.isTextViewHidden = false;
               }, 200);

@@ -269,7 +269,8 @@ LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
     
 RETURN {
     root_text: translated_po_obj ? root_po_obj : null,
-    translation: translated_po_obj ? translated_po_obj : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
+    translation: translated_po_obj ? (root_po_obj == translated_po_obj ? null : translated_po_obj) 
+        : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     segmented: translated_po_obj ? true : false,
     markup: translated_po_obj ? markup : null,
     suttaplex: suttaplex
