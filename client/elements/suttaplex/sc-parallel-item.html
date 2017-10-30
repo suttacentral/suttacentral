@@ -19,7 +19,7 @@ It is in effect a miniature version of the suttaplex-card
 
       .parallel-item-main-info-container {
         width: 100%;
-        max-width: 180px;
+        max-width: 320px;
       }
 
       .parallel-item-title {
@@ -52,10 +52,14 @@ It is in effect a miniature version of the suttaplex-card
         flex-wrap: wrap;
       }
 
+      .parallel-item-details div:not(:last-child) {
+        margin-right: 12px;
+      }
+
       .parallel-item-language-dropdown {
-        display: inline-block;
+        display: flex;
+        justify-content: flex-end;
         vertical-align: middle;
-        justify-content: center;
         margin-top: -16px;
       }
 
@@ -99,6 +103,14 @@ It is in effect a miniature version of the suttaplex-card
       #remark_info {
         cursor: help;
       }
+
+      .parallel-item-volpages-container {
+        display: flex;
+      }
+
+      .no-right-padding {
+        padding-right: 0;
+      }
       
     </style>
 
@@ -107,7 +119,7 @@ It is in effect a miniature version of the suttaplex-card
       <div class="parallel-item-main-info-container">
         <div class="parallel-item-title vertical-margin-xs">[[_computeTitle()]]</div>
 
-        <div class="parallel-item-details d-flex justify-content-space-between align-items-center vertical-margin-xs">
+        <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
           <div class$="parallel-item-id [[_computeRootIdVisibility()]]">
             <div title="SuttaCentral ID">[[_getAcronymOrId(parallelItem)]]</div>
           </div>
@@ -135,7 +147,9 @@ It is in effect a miniature version of the suttaplex-card
               </div>
             </template>
             <template is="dom-if" if="[[remark]]">
-              <sc-sutta-note note-data="[[remark]]"></sc-sutta-note>
+              <div class="sutta-remark">
+                <sc-sutta-note note-data="[[remark]]"></sc-sutta-note>
+              </div>
             </template>
           </div>
 
@@ -153,7 +167,8 @@ It is in effect a miniature version of the suttaplex-card
                          title-label="[[_computeLanguageDropdownTitle()]]"
                          original-language="[[parallelItem.root_lang]]"
                          input-language=""
-                         root-id="[[_computeParallelUrl()]]"></language-menu>
+                         root-id="[[_computeParallelUrl()]]"
+                         class="no-right-padding"></language-menu>
         </div>
       </template>
 
