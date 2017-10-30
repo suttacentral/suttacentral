@@ -82,7 +82,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             
     )[0]
     
-    LET volpages = (
+    LET legacy_volpages = (
         FOR text IN legacy_translations
             FILTER HAS(text, "volpage")
             RETURN text.volpage
@@ -132,7 +132,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         
     RETURN {
         acronym: v.acronym,
-        volpages: volpages,
+        volpages: v.volpage ? v.volpage : legacy_volpages[0],
         uid: v.uid,
         blurb: blurb,
         difficulty: difficulty,
@@ -179,11 +179,12 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
     )
     
-    LET volpages = (
+    LET legacy_volpages = (
         FOR text IN legacy_translations
             FILTER HAS(text, "volpage")
             RETURN text.volpage
-    )
+    )[0]
+    
     SORT e.resembling
     
     LET biblio = (
@@ -197,7 +198,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
         from: e.from,
         to: {
             to: e.to,
-            volpages: volpages,
+            volpages: v.volpage ? v.volpage : legacy_volpages,
             acronym: v.acronym,
             uid: v.uid,
             root_lang: v.root_lang,
