@@ -387,24 +387,14 @@ Issues that need to be fixed:
                   });
                   this.assembledMainText = this.$.segmented_text_content.innerHTML;
               }
-              if (this.showParagraphs) {
-                  this._addParagraphs(this.$.segmented_text_content);
-              } else {
-                  this._removeParagraphs(this.$.segmented_text_content);
-              }
+              this._setParagraphsVisible(this.showParagraphs);
           }
 
-          // adds a class to the main container to either show...
-          _addParagraphs(textElement) {
+          // adds a class to the main container to either show or hide the textual info paragraphs
+          _setParagraphsVisible(visible) {
+              const textElement = this.$.simple_text_content;
               if (textElement) {
-                  textElement.classList.add('infomode');
-              }
-          }
-
-          // ... or hide paragraph numbers.
-          _removeParagraphs(textElement) {
-              if (textElement) {
-                  textElement.classList.remove('infomode');
+                  visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
               }
           }
 
