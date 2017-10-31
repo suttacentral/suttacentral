@@ -5,12 +5,6 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
-<!--
-The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
-Paragraph numbers can be displayed or hidden as requested via the settings-menu in the toolbar.
-Title, full Author name and Meta data are sent via events to the page-selector for use in the toolbar.
--->
--->
 <dom-module id="sc-simple-text" attributes="suttatitle suttameta">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
@@ -85,10 +79,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   },
                   assembledText: {
                       type: String
-                  },
-                  paragraphsComputed: {
-                      type: Boolean,
-                      value: false
                   }
               }
           }
@@ -116,6 +106,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _updateView() {
+              if (this.isSegmented || this.isSegmented === undefined) {
+                  return;
+              }
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
@@ -134,7 +127,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _updateToolbar() {
-              if (!this.sutta || !this.sutta.text || this.isSegmented || this.isSegmented === undefined) {
+              if (!this.sutta || !this.sutta.text) {
                   return;
               }
               this.dispatch('changeSuttaMetaText', this._computeMeta());
@@ -162,19 +155,23 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           _computeParagraphs() {
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
-                      const refs = this.shadowRoot.querySelectorAll('.' + paragraph.uid);
+                      const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
-                          item.innerHTML = item.id.replace(paragraph.uid, '');
-                          item.title = paragraph.description;
-                          item.href = `#${item.id}`;
-                          item.addEventListener('click', () => {
-                              this._scrollToSection(item.id, true, 0);
-                          });
+                          this._addParagraphData(item, paragraph);
                       });
                       this.assembledText = this.$.simple_text_content.innerHTML;
                   });
               }
               this._setParagraphsVisible(this.showParagraphs);
+          }
+
+          _addParagraphData(item, data) {
+              item.innerHTML = item.id.replace(data.uid, '');
+              item.title = data.description;
+              item.href = `#${item.id}`;
+              item.addEventListener('click', () => {
+                  this._scrollToSection(item.id, true, 0);
+              });
           }
 
           // adds a class to the main container to either show or hide the textual info paragraphs
