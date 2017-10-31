@@ -420,7 +420,7 @@ Issues that need to be fixed:
           }
 
           _handleVisibilityChange() {
-              if (document.hidden || this.chosenTextView !== 'none') {
+              if (document.hidden || this.chosenTextView !== 'none' || !this.isSegmented) {
                   return;
               }
               // Hide the text and display the loading spinner:

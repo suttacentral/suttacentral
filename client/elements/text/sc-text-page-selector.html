@@ -35,7 +35,7 @@
         last-error="{{lastError}}"
         last-response="{{responseData}}"></iron-ajax>
 
-    <sc-text-options class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+    <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
 
     <div class="loading-indicator" hidden$="[[!isLoading]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
@@ -130,7 +130,7 @@
                   return;
               }
               this.setProperties();
-              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
+              this.shadowRoot.querySelector('#sutta_text_options')._closeSuttaplex();
               this.dispatch('downloadSuttaText', this.responseData);
               this.changeToolbarMode();
           }
