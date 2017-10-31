@@ -82,7 +82,9 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
                       type: String,
                       computed: '_computeToggleIcon(opened)'
                   },
-                  suttaplexItem: Object,
+                  suttaplexItem: {
+                      type: Object
+                  },
                   opened: Boolean,
                   metaArea: String
               }

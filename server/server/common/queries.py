@@ -64,14 +64,13 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         FOR text IN po_strings
             FILTER text.uid == v.uid
             SORT text.lang
-            LET res = {
+            RETURN {
                 lang: text.lang,
                 author: text.author,
                 id: text._key,
-                segmented: true
+                segmented: true,
+                title: text.title
             }
-            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
-            RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
     )
     
     LET blurb = (
@@ -230,19 +229,6 @@ FOR dict IN dictionaries
 SUTTA_VIEW = '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
 
-LET translated_text = (
-    FOR html IN po_htmls
-        FILTER html.uid == @uid AND html.lang == @language AND LOWER(html.author) == @author
-        LIMIT 1
-        RETURN {
-            uid: html.uid,
-            lang: html.lang,
-            author: html.author,
-            text: html.html,
-            title: html.strings[1][1]
-        }
-)[0]
-
 LET legacy_html = (
     FOR html IN html_text
         FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author) == @author) OR html.lang == root_text.root_lang)
@@ -255,16 +241,52 @@ LET legacy_html = (
             author: html.author,
             author_uid: html.author_uid,
             text: html.text
-            
         }
 )
+
+LET markup = (
+    FOR markup IN po_markup
+        FILTER markup.uid == @uid
+        LIMIT 1
+        RETURN markup.markup
+)[0]
+
+LET root_po_obj = (
+    FOR object IN po_strings
+        FILTER object.uid == @uid AND object.lang == root_text.root_lang
+        LIMIT 1 
+        RETURN {
+            uid: object.uid,
+            author: object.author,
+            author_blurb: object.author_blurb,
+            lang: object.lang,
+            strings: object.strings,
+            title: object.title
+        }
+)[0]
+
+LET translated_po_obj = (
+    FOR object IN po_strings 
+        FILTER object.uid == @uid AND object.lang == @language AND LOWER(object.author) == @author
+        LIMIT 1 
+        RETURN {
+            uid: object.uid,
+            author: object.author,
+            author_blurb: object.author_blurb,
+            lang: object.lang,
+            strings: object.strings,
+            title: object.title
+        }
+)[0]
 
 LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
     
 RETURN {
-    root_text: (FOR html IN legacy_html FILTER html.lang == root_text.root_lang LIMIT 1 RETURN html)[0],
-    translation: translated_text ? translated_text : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
-    segmented: translated_text ? true : false,
+    root_text: translated_po_obj ? root_po_obj : null,
+    translation: translated_po_obj ? (root_po_obj == translated_po_obj ? null : translated_po_obj) 
+        : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
+    segmented: translated_po_obj ? true : false,
+    markup: translated_po_obj ? markup : null,
     suttaplex: suttaplex
 }
 '''

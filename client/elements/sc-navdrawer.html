@@ -128,18 +128,18 @@
       .menu-header {
         @apply --paper-font-title;
         @apply --sc-sans-font;
-        margin: 0
+        margin: 0;
       }
-
     </style>
 
-    <iron-meta id="meta"></iron-meta>
+    <iron-meta id="meta" key="API_ROOT" value="{{_getApiUrl()}}"></iron-meta>
+    
 
     <iron-media-query query="(min-width: 992px)" query-matches="{{wideScreen}}"></iron-media-query>
 
     <iron-ajax
         auto
-        url="[[_getUrl()]]"
+        url="[[_getMenuUrl()]]"
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
@@ -283,8 +283,8 @@
               return this.shadowRoot.querySelector('app-drawer').setAttribute('opened', event.detail.togdraw);
           }
 
-          _getUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/menu`;
+          _getMenuUrl() {
+              return `${this._getApiUrl()}/menu`;
           }
 
           // Locks scroll on text dialogs:
@@ -304,6 +304,11 @@
 
           _shouldShowLoadingIndicator(loading, error) {
               return !!(loading && !error);
+          }
+
+          _getApiUrl() {
+            let currentUrl = window.location;
+            return `${currentUrl.protocol}//${currentUrl.host}/api`;
           }
       }
 

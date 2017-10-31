@@ -15,10 +15,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 <dom-module id="sc-simple-text" attributes="suttatitle suttameta">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-      .text-options {
-        padding: 32px;
-      }
-
       .text-center {
         text-align: center;
       }
@@ -36,13 +32,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
     </style>
 
-    <sc-text-options class="text-options" suttaplex-item="{{suttaplex}}"></sc-text-options>
-
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
       <paper-spinner-lite active></paper-spinner-lite>
     </div>
 
-    <div id="html_text_content" inner-h-t-m-l="[[sutta.text]]" hidden$="[[isTextViewHidden]]"></div>
+    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[sutta.text]]"
+         hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
       <div class="text-center margin-top-xl">
@@ -65,9 +60,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   sutta: {
                       type: Object,
                       observer: '_updateView'
-                  },
-                  suttaplex: {
-                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -98,6 +90,10 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   isTextViewHidden: {
                       type: Boolean,
                       value: false
+                  },
+                  isSegmented: {
+                      type: Boolean,
+                      observer: '_isSegmentedChanged'
                   }
               }
           }
@@ -127,14 +123,15 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   // Insert the sutta text into the main element again to force reloading styles:
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
-                      this.$.html_text_content.innerHTML = this.sutta.text;
+                      if (!this.isSegmented) {
+                          this.$.simple_text_content.innerHTML = this.sutta.text;
+                      }
                       this.isTextViewHidden = false;
                   }, 200);
               })
           }
 
           _updateView() {
-              this.shadowRoot.querySelector('.text-options')._closeSuttaplex();
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
@@ -150,7 +147,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _updateToolbar() {
-              if (!this.sutta) {
+              if (!this.sutta || !this.sutta.text || this.isSegmented || this.isSegmented === undefined) {
                   return;
               }
               this.dispatch('changeSuttaMetaText', this._computeMeta());
@@ -186,9 +183,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   });
               }
               if (this.showParagraphs) {
-                  this._addParagraphs(this.$.html_text_content);
+                  this._addParagraphs(this.$.simple_text_content);
               } else {
-                  this._removeParagraphs(this.$.html_text_content);
+                  this._removeParagraphs(this.$.simple_text_content);
               }
           }
 
@@ -214,7 +211,12 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           }
 
           _loadingChanged() {
-              this.isTextViewHidden = this.isLoading;
+              this.isTextViewHidden = !!(this.isLoading || this.isSegmented);
+          }
+
+          _isSegmentedChanged() {
+              this.isTextViewHidden = !!(this.isSegmented);
+              this._updateToolbar();
           }
       }
 
