@@ -24,7 +24,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
     </style>
 
-    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[sutta.text]]"
+    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[assembledText]]"
          hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
@@ -85,6 +85,10 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   },
                   assembledText: {
                       type: String
+                  },
+                  paragraphsComputed: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -115,20 +119,8 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
-          }
-
-          connectedCallback() {
-              super.connectedCallback();
-              console.log(this.$.simple_text_content.innerHTML);
-          }
-
-          // Scrolls to the section indicated after the hash sign in the URL:
-          _scrollToChosenSection() {
-              const sectionId = window.location.hash.substr(1);
-              const section = this.$.simple_text_content.querySelector(`#${sectionId}`);
-              if (section) {
-                  section.scrollIntoView();
-              }
+              // Scroll to the section after the hash sign in the url:
+              this._scrollToSection(window.location.hash.substr(1), false, 500);
           }
 
           _setAttributes() {
@@ -138,7 +130,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this.author = this.sutta.author;
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;
-              this.assembledText = this.$.simple_text_content.innerHTML;
+              this.assembledText = this.sutta.text;
           }
 
           _updateToolbar() {
@@ -175,6 +167,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                           item.innerHTML = item.id.replace(paragraph.uid, '');
                           item.title = paragraph.description;
                           item.href = `#${item.id}`;
+                          item.addEventListener('click', () => {
+                              this._scrollToSection(item.id, true, 0);
+                          });
                       });
                       this.assembledText = this.$.simple_text_content.innerHTML;
                   });
@@ -211,6 +206,18 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   this.shadowRoot.querySelector('#simple_text_content').innerHTML = this.assembledText;
                   this.isTextViewHidden = false;
               }, 200);
+          }
+
+          // Scrolls to the chosen section
+          _scrollToSection(sectionId, isSmooth, delay) {
+              try {
+                  const section = this.shadowRoot.getElementById(sectionId);
+                  setTimeout(() => {
+                      section.scrollIntoView({ behavior: isSmooth ? 'smooth' : 'instant', inline: 'end' });
+                  }, delay);
+              } catch (e) {
+                  console.error(e);
+              }
           }
 
       }
