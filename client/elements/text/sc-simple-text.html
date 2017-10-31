@@ -180,6 +180,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                           item.innerHTML = item.id.replace(paragraph.uid, '');
                           item.title = paragraph.description;
                           item.href = `#${item.id}`;
+                          item.scrollIntoView({ behavior: 'smooth' });
                       });
                   });
               }
