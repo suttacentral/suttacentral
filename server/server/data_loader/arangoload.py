@@ -540,8 +540,6 @@ def run():
 
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
-    generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
-
     po.load_po_texts(change_tracker, po_dir, db)
 
     generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
