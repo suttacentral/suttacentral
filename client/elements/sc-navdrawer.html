@@ -139,7 +139,7 @@
 
     <iron-ajax
         auto
-        url="[[_getUrl()]]"
+        url="[[_getMenuUrl()]]"
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
@@ -283,7 +283,7 @@
               return this.shadowRoot.querySelector('app-drawer').setAttribute('opened', event.detail.togdraw);
           }
 
-          _getUrl() {
+          _getMenuUrl() {
               return `${this._getApiUrl()}/menu`;
           }
 
@@ -307,8 +307,8 @@
           }
 
           _getApiUrl() {
-            let getUrl = window.location;
-            return `${getUrl.protocol}//${getUrl.host}/api`;
+            let currentUrl = window.location;
+            return `${currentUrl.protocol}//${currentUrl.host}/api`;
           }
       }
 
