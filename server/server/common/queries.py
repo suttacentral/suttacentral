@@ -64,14 +64,13 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         FOR text IN po_strings
             FILTER text.uid == v.uid
             SORT text.lang
-            LET res = {
+            RETURN {
                 lang: text.lang,
                 author: text.author,
                 id: text._key,
-                segmented: true
+                segmented: true,
+                title: text.title
             }
-            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
-            RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
     )
     
     LET blurb = (
