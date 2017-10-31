@@ -382,8 +382,10 @@ Issues that need to be fixed:
                       Array.from(refs).forEach((item) => {
                           item.innerHTML = item.id.replace(paragraph.uid, '');
                           item.title = paragraph.description;
+                          item.href = `#${item.id}`;
                       });
                   });
+                  this.assembledMainText = this.$.segmented_text_content.innerHTML;
               }
               if (this.showParagraphs) {
                   this._addParagraphs(this.$.segmented_text_content);
@@ -418,7 +420,7 @@ Issues that need to be fixed:
           }
 
           _handleVisibilityChange() {
-              if (document.hidden || this.chosenTextView !== 'none') {
+              if (document.hidden || this.chosenTextView !== 'none' || !this.isSegmented) {
                   return;
               }
               // Hide the text and display the loading spinner:

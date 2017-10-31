@@ -1,5 +1,4 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="/elements/text/sc-text-options.html">
 <link rel="import" href="/styles/sc-text-styles.html">
@@ -23,18 +22,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
         margin-top: 10vh;
       }
 
-      .loading-indicator {
-        @apply --sc-skolar-font-size-s;
-        position: static;
-        text-align: center;
-        height: 60px;
-      }
-
     </style>
-
-    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
-      <paper-spinner-lite active></paper-spinner-lite>
-    </div>
 
     <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[sutta.text]]"
          hidden$="[[isTextViewHidden]]"></div>
@@ -94,6 +82,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   isSegmented: {
                       type: Boolean,
                       observer: '_isSegmentedChanged'
+                  },
+                  assembledText: {
+                      type: String
                   }
               }
           }
@@ -124,7 +115,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                   // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
                   setTimeout(() => {
                       if (!this.isSegmented) {
-                          this.$.simple_text_content.innerHTML = this.sutta.text;
+                          this.$.simple_text_content.innerHTML = this.assembledText;
                       }
                       this.isTextViewHidden = false;
                   }, 200);
@@ -137,6 +128,15 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this._computeParagraphs();
           }
 
+          // Scrolls to the section indicated after the hash sign in the URL:
+          _scrollToChosenSection() {
+              const sectionId = window.location.hash.substr(1);
+              const section = this.$.simple_text_content.querySelector(`#${sectionId}`);
+              if (section) {
+                  section.scrollIntoView();
+              }
+          }
+
           _setAttributes() {
               if (!this.sutta) {
                   return;
@@ -144,6 +144,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this.author = this.sutta.author;
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;
+              this.assembledText = this.$.simple_text_content.innerHTML;
           }
 
           _updateToolbar() {
@@ -179,7 +180,9 @@ Title, full Author name and Meta data are sent via events to the page-selector f
                       Array.from(refs).forEach((item) => {
                           item.innerHTML = item.id.replace(paragraph.uid, '');
                           item.title = paragraph.description;
+                          item.href = `#${item.id}`;
                       });
+                      this.assembledText = this.$.simple_text_content.innerHTML;
                   });
               }
               if (this.showParagraphs) {
@@ -201,13 +204,6 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               if (textElement) {
                   textElement.classList.remove('infomode');
               }
-          }
-
-          // Display the loading indicator in two cases:
-          // 1: If there's no error and the text view is loading, or...
-          // 2: If the text view is currently hidden
-          _shouldShowLoadingIndicator(error, isLoading, isTextViewHidden) {
-              return ((!error && isLoading) || isTextViewHidden);
           }
 
           _loadingChanged() {
