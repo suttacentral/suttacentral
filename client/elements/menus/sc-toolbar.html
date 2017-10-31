@@ -90,9 +90,8 @@ Issues:
 
       <!-- Menu for more options like language and other static pages -->
       <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="more_vert_button">
-        <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger"></paper-icon-button>
-        <div slot="dropdown-content"></div>
-        <paper-listbox slot="dropdown-content" tabindex="0">
+        <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
+        <paper-listbox slot="dropdown-content" tabindex="0" id="paper_listbox">
           <sc-more-menu></sc-more-menu>
         </paper-listbox>
       </paper-menu-button>
@@ -110,6 +109,11 @@ Issues:
                   path: String,
                   query: String
               }
+          }
+
+          ready() {
+            super.ready();
+            this.$.paper_listbox.addEventListener('iron-select', (e) => {console.log(e);})
           }
 
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
