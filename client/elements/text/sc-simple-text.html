@@ -108,24 +108,18 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           ready() {
               super.ready();
-              document.addEventListener('visibilitychange', () => {
-                  // Hide the text and display the loading spinner:
-                  this.isTextViewHidden = true;
-                  // Insert the sutta text into the main element again to force reloading styles:
-                  // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
-                  setTimeout(() => {
-                      if (!this.isSegmented) {
-                          this.$.simple_text_content.innerHTML = this.assembledText;
-                      }
-                      this.isTextViewHidden = false;
-                  }, 200);
-              })
+              document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
           }
 
           _updateView() {
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              console.log(this.$.simple_text_content.innerHTML);
           }
 
           // Scrolls to the section indicated after the hash sign in the URL:
@@ -214,6 +208,21 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this.isTextViewHidden = !!(this.isSegmented);
               this._updateToolbar();
           }
+
+          // Insert the sutta text into the main element again to force reloading styles:
+          // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
+          _handleVisibilityChange() {
+              if (document.hidden || this.isSegmented) {
+                  return;
+              }
+              // Hide the text and display the loading spinner:
+              this.isTextViewHidden = true;
+              setTimeout(() => {
+                  this.shadowRoot.querySelector('#simple_text_content').innerHTML = this.assembledText;
+                  this.isTextViewHidden = false;
+              }, 200);
+          }
+
       }
 
       customElements.define(SCSimpleText.is, SCSimpleText);
