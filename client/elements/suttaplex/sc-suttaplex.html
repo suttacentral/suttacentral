@@ -56,6 +56,8 @@
 
       .suttaplex-nerdy-row {
         @apply --paper-font-body2;
+        display: flex;
+        flex-wrap: wrap;
         color: var(--secondary-text-color);
         font-weight: normal;
         white-space: nowrap;
@@ -235,17 +237,21 @@
           </span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
-              <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
-              <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
+              <div>
+                <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
+                <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
+              </div>
             </template>
             <template is="dom-if" if=[[item.biblio]]>
-              <details class="display-inline">
-                <summary class="volpage-biblio-info-summary">
-                  <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
-                  <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
-                </summary>
-                <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
-              </details>
+              <div>
+                <details class="display-inline">
+                  <summary class="volpage-biblio-info-summary">
+                    <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
+                    <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
+                  </summary>
+                  <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
+                </details>
+              </div>
             </template>
           </template>
         </div>
