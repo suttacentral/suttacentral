@@ -250,8 +250,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   for (let parallel of this.parallels[section]) {
                       result += this._generateAcronymUid(parallel.to.acronym, parallel.to.to);
                       result += ' ';
-                      if (parallel.to.volpages.length > 0) {
-                          result += `(${this.item.volpages[0]}) `;
+                      if (parallel.to.volpages) {
+                          result += `(${this.item.volpages}) `;
                       }
                       if (parallel.to.biblio) {
                           result += this._getTextFromHtml(parallel.to.biblio);
