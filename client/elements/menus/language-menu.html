@@ -102,7 +102,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         outline: none;
       }
 
-
     </style>
 
     <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
@@ -163,14 +162,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                       }
                   }
               }
-          }
-
-          ready() {
-            super.ready();
-            this.$.paper_dropdown_menu.addEventListener('opened-changed', () => {
-              let e = this.shadowRoot.querySelector('#contentWrapper');
-              console.log(e);
-            })            
           }
 
           // does not list items that are from the inputLanguage because those are listed elsewhere.
