@@ -7,27 +7,6 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
-<!--
-This element loads the segmented text pages that are created in Pootle, which are at the moment defined as
-all pages that have an author which is "sujato" or "pali". This only works with texts translated by Sujato at
-the moment but will in the long run have to extend also to pali text pages where there is no translation available.
-
-This elements first loads the html markup file from `../data/texts/markup`, then the translation by Sujato
-from `../data/texts/en/sujato` and the pali from `../data/texts/pli` as well as the file that contains the paragraph
-numbers from `../data/paragraphtitles.json`.
-
-The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
-
-Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested. Via this menu,
-also the type of view (none, side-by-side, line-by-line or popup) can be chosen to display the english and pali
-in relation to each other.
-The type of script used for the pali can be chosen.
-
-Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
-
-Issues that need to be fixed:
-    - The pali lookup tool does not yet work. See remarks under `settings-menu.html`.
--->
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
@@ -229,18 +208,16 @@ Issues that need to be fixed:
               if (!this.isSegmented || this.isSegmented === undefined || !this.markup) {
                   return;
               }
-              try {
-                  this._resetViewOptions();
-                  this._setRootAttributes();
-                  this._setTranslatedAttributes();
-                  this._updateToolbar();
-                  this._computeParagraphs();
-                  this._addTextContent();
-                  this.dispatch('chooseSegmentedSuttaTextView', 'none');
-                  this.dispatch('changeSuttaMetaText', this._computeMeta());
-              } catch (e) {
-                  console.error(e);
-              }
+              this._resetViewOptions();
+              this._setRootAttributes();
+              this._setTranslatedAttributes();
+              this._updateToolbar();
+              this._computeParagraphs();
+              this._addTextContent();
+              // Scroll to the section after the hash sign in the url:
+              this._scrollToSection(window.location.hash.substr(1), false, 500);
+              this.dispatch('chooseSegmentedSuttaTextView', 'none');
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
           }
 
           _addTextContent() {
@@ -378,33 +355,30 @@ Issues that need to be fixed:
           _computeParagraphs() {
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
-                      const refs = this.shadowRoot.querySelectorAll('.' + paragraph.uid);
+                      const refs = this.$.segmented_text_content.querySelectorAll('.' + paragraph.uid);
                       Array.from(refs).forEach((item) => {
-                          item.innerHTML = item.id.replace(paragraph.uid, '');
-                          item.title = paragraph.description;
-                          item.href = `#${item.id}`;
+                          this._addParagraphData(item, paragraph);
                       });
                   });
                   this.assembledMainText = this.$.segmented_text_content.innerHTML;
               }
-              if (this.showParagraphs) {
-                  this._addParagraphs(this.$.segmented_text_content);
-              } else {
-                  this._removeParagraphs(this.$.segmented_text_content);
-              }
+              this._setParagraphsVisible(this.showParagraphs);
           }
 
-          // adds a class to the main container to either show...
-          _addParagraphs(textElement) {
-              if (textElement) {
-                  textElement.classList.add('infomode');
-              }
+          _addParagraphData(item, data) {
+              item.innerHTML = item.id.replace(data.uid, '');
+              item.title = data.description;
+              item.href = `#${item.id}`;
+              item.addEventListener('click', () => {
+                  this._scrollToSection(item.id, true, 0);
+              });
           }
 
-          // ... or hide paragraph numbers.
-          _removeParagraphs(textElement) {
+          // adds a class to the main container to either show or hide the textual info paragraphs
+          _setParagraphsVisible(visible) {
+              const textElement = this.$.segmented_text_content;
               if (textElement) {
-                  textElement.classList.remove('infomode');
+                  visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
               }
           }
 
@@ -435,6 +409,18 @@ Issues that need to be fixed:
                   }
                   this.isTextViewHidden = false;
               }, 200);
+          }
+
+          // Scrolls to the chosen section
+          _scrollToSection(sectionId, isSmooth, delay) {
+              try {
+                  const section = this.shadowRoot.getElementById(sectionId);
+                  setTimeout(() => {
+                      section.scrollIntoView({ behavior: isSmooth ? 'smooth' : 'instant', inline: 'end' });
+                  }, delay);
+              } catch (e) {
+                  console.error(e);
+              }
           }
 
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
