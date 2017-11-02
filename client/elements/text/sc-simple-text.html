@@ -5,12 +5,6 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
-<!--
-The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
-Paragraph numbers can be displayed or hidden as requested via the settings-menu in the toolbar.
-Title, full Author name and Meta data are sent via events to the page-selector for use in the toolbar.
--->
--->
 <dom-module id="sc-simple-text" attributes="suttatitle suttameta">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
@@ -24,7 +18,7 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
     </style>
 
-    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[sutta.text]]"
+    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[assembledText]]"
          hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
@@ -108,33 +102,18 @@ Title, full Author name and Meta data are sent via events to the page-selector f
 
           ready() {
               super.ready();
-              document.addEventListener('visibilitychange', () => {
-                  // Hide the text and display the loading spinner:
-                  this.isTextViewHidden = true;
-                  // Insert the sutta text into the main element again to force reloading styles:
-                  // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
-                  setTimeout(() => {
-                      if (!this.isSegmented) {
-                          this.$.simple_text_content.innerHTML = this.assembledText;
-                      }
-                      this.isTextViewHidden = false;
-                  }, 200);
-              })
+              document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
           }
 
           _updateView() {
+              if (this.isSegmented || this.isSegmented === undefined) {
+                  return;
+              }
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
-          }
-
-          // Scrolls to the section indicated after the hash sign in the URL:
-          _scrollToChosenSection() {
-              const sectionId = window.location.hash.substr(1);
-              const section = this.$.simple_text_content.querySelector(`#${sectionId}`);
-              if (section) {
-                  section.scrollIntoView();
-              }
+              // Scroll to the section after the hash sign in the url:
+              this._scrollToSection(window.location.hash.substr(1), false, 500);
           }
 
           _setAttributes() {
@@ -144,11 +123,11 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this.author = this.sutta.author;
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;
-              this.assembledText = this.$.simple_text_content.innerHTML;
+              this.assembledText = this.sutta.text;
           }
 
           _updateToolbar() {
-              if (!this.sutta || !this.sutta.text || this.isSegmented || this.isSegmented === undefined) {
+              if (!this.sutta || !this.sutta.text) {
                   return;
               }
               this.dispatch('changeSuttaMetaText', this._computeMeta());
@@ -176,33 +155,30 @@ Title, full Author name and Meta data are sent via events to the page-selector f
           _computeParagraphs() {
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
-                      const refs = this.shadowRoot.querySelectorAll('.' + paragraph.uid);
+                      const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
-                          item.innerHTML = item.id.replace(paragraph.uid, '');
-                          item.title = paragraph.description;
-                          item.href = `#${item.id}`;
+                          this._addParagraphData(item, paragraph);
                       });
                       this.assembledText = this.$.simple_text_content.innerHTML;
                   });
               }
-              if (this.showParagraphs) {
-                  this._addParagraphs(this.$.simple_text_content);
-              } else {
-                  this._removeParagraphs(this.$.simple_text_content);
-              }
+              this._setParagraphsVisible(this.showParagraphs);
           }
 
-          // adds a class to the main container to either show...
-          _addParagraphs(textElement) {
-              if (textElement) {
-                  textElement.classList.add('infomode');
-              }
+          _addParagraphData(item, data) {
+              item.innerHTML = item.id.replace(data.uid, '');
+              item.title = data.description;
+              item.href = `#${item.id}`;
+              item.addEventListener('click', () => {
+                  this._scrollToSection(item.id, true, 0);
+              });
           }
 
-          // ... or hide paragraph numbers.
-          _removeParagraphs(textElement) {
+          // adds a class to the main container to either show or hide the textual info paragraphs
+          _setParagraphsVisible(visible) {
+              const textElement = this.$.simple_text_content;
               if (textElement) {
-                  textElement.classList.remove('infomode');
+                  visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
               }
           }
 
@@ -214,6 +190,33 @@ Title, full Author name and Meta data are sent via events to the page-selector f
               this.isTextViewHidden = !!(this.isSegmented);
               this._updateToolbar();
           }
+
+          // Insert the sutta text into the main element again to force reloading styles:
+          // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
+          _handleVisibilityChange() {
+              if (document.hidden || this.isSegmented) {
+                  return;
+              }
+              // Hide the text and display the loading spinner:
+              this.isTextViewHidden = true;
+              setTimeout(() => {
+                  this.shadowRoot.querySelector('#simple_text_content').innerHTML = this.assembledText;
+                  this.isTextViewHidden = false;
+              }, 200);
+          }
+
+          // Scrolls to the chosen section
+          _scrollToSection(sectionId, isSmooth, delay) {
+              try {
+                  const section = this.shadowRoot.getElementById(sectionId);
+                  setTimeout(() => {
+                      section.scrollIntoView({ behavior: isSmooth ? 'smooth' : 'instant', inline: 'end' });
+                  }, delay);
+              } catch (e) {
+                  console.error(e);
+              }
+          }
+
       }
 
       customElements.define(SCSimpleText.is, SCSimpleText);
