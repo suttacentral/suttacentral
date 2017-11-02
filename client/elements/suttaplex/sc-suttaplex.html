@@ -231,7 +231,8 @@
           <span title="Original title" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
             [[item.original_title]]
           </span>
-          <span title="SuttaCentral ID" class$="[[_computeHideUID(item)]] nerdy-row-element">[[item.acronym]]</span>
+          <span title="SuttaCentral ID" class$="[[_computeHideUID(item)]] nerdy-row-element">[[_getAcronymOrUid(item)]]
+          </span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
               <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
@@ -445,7 +446,7 @@
               } else if (item.original_title) {
                   return item.original_title;
               } else {
-                  return item.acronym;
+                  return item.acronym || item.uid;
               }
           }
 
@@ -455,6 +456,10 @@
 
           _capitalize(author){
             return author.replace(/\b\w/g, l => l.toUpperCase());
+          }
+
+          _getAcronymOrUid(item) {
+            return item.acronym || item.uid;
           }
       }
 
