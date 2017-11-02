@@ -6,6 +6,7 @@
 <link rel="import" href="/styles/sc-text-styles.html">
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
+<link rel="import" href="/elements/lookups/lzh2en.html">
 
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
   <template>
@@ -85,6 +86,8 @@
         <h3>Could not find the sutta text.</h3>
       </div>
     </template>
+
+    <sc-chinese-lookup id="lookup"></sc-chinese-lookup>
 
   </template>
 
@@ -197,6 +200,7 @@
           ready() {
               super.ready();
               document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
+              this.$.lookup.init();
           }
 
           connectedCallback() {
