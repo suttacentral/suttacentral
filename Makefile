@@ -173,3 +173,12 @@ run-preview-env:
 	@make index-elasticsearch
 	@echo "\033[1;32mDONE!"
 	@make run-dev
+
+
+run-preview-env-no-search:
+	@make rebuild-all
+	@make run-dev-no-logs
+	@bash wait_for_flask.sh
+	@make load-data
+	@echo "\033[1;32mDONE!"
+	@make run-dev
