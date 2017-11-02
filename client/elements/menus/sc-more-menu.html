@@ -101,31 +101,35 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           };
 
           static get properties() {
-            return {
-              created: {
-                type: Boolean,
-                value: false
-              }
-            };
+              return {
+                  created: {
+                      type: Boolean,
+                      value: false
+                  }
+              };
           }
 
           ready() {
-            super.ready();
-            this.shadowRoot.querySelectorAll('.more-menu-link').forEach((e) => {
-                e.addEventListener('click', (e) => {
-                    this._dispatchItemSelectedEvent();
-                });
-            });
-            this.$.language_menu.addEventListener('iron-select', (e) => {
-              if(this.created){
-                  this._dispatchItemSelectedEvent();
-              };
-              this.created = true;
-            });
+              super.ready();
+              this._initializeListeners();
+          }
+
+          _initializeListeners() {
+              this.shadowRoot.querySelectorAll('.more-menu-link').forEach((e) => {
+                  e.addEventListener('click', (e) => {
+                      this._dispatchItemSelectedEvent();
+                  });
+              });
+              this.$.language_menu.addEventListener('iron-select', (e) => {
+                  if (this.created) {
+                      this._dispatchItemSelectedEvent();
+                  }
+                  this.created = true;
+              });
           }
 
           _dispatchItemSelectedEvent() {
-            this.dispatchEvent(new CustomEvent('item-selected'));
+              this.dispatchEvent(new CustomEvent('item-selected'));
           }
       }
 
