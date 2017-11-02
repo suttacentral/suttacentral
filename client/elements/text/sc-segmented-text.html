@@ -416,7 +416,11 @@
               try {
                   const section = this.shadowRoot.getElementById(sectionId);
                   setTimeout(() => {
-                      section.scrollIntoView({ behavior: isSmooth ? 'smooth' : 'instant', inline: 'end' });
+                      section.scrollIntoView({
+                          behavior: isSmooth ? 'smooth' : 'instant',
+                          block: 'start',
+                          inline: 'nearest'
+                      });
                   }, delay);
               } catch (e) {
                   console.error(e);
