@@ -177,25 +177,20 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               }
           }
 
-          _computeIconForType(type) {
-              if (type === 'parallels') return 'swap-horiz';
-              if (type === 'retells') return 'cached';
-              if (type === 'mentions') return 'editor:format-quote';
-              return '';
-          }
-
-          // icons to be used instead of iron icons in the base html-string copy function
           _computeIcon(parallel) {
-              switch (this._computeIconForType(parallel.type)) {
-                  case 'swap-horiz':
-                      return '⮀';
-                  case 'compare-arrows':
-                      return '≈';
-                  case 'editor:format-quote':
-                      return '❞';
-                  case 'cached':
-                      return '🔃';
-              }
+            switch (parallel.type) {
+                case 'full':
+                    if (parallel.resembling) {
+                        return '≈';
+                    }
+                    return '⮀';
+                case 'retelling':
+                    return '🔃';
+                case 'mention':
+                    return '❞';
+                default:
+                    return '';
+            }
           }
 
           // creates a parallels-table in html-string
@@ -239,8 +234,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   for (let parallel of this.parallels[section]) {
                       result += this._generateAcronymUid(parallel.to.acronym, parallel.to.to);
                       result += ' ';
-                      if (parallel.to.volpages.length > 0) {
-                          result += `(${this.item.volpages[0]}) `;
+                      if (parallel.to.volpages) {
+                          result += `(${this.item.volpages}) `;
                       }
                       if (parallel.to.biblio) {
                           result += this._getTextFromHtml(parallel.to.biblio);
