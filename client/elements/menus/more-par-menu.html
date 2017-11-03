@@ -177,36 +177,20 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               }
           }
 
-          _computeIconForType(parallel) {
+          _computeIcon(parallel) {
             switch (parallel.type) {
                 case 'full':
                     if (parallel.resembling) {
-                        return 'compare-arrows';
+                        return '≈';
                     }
-                    return 'swap-horiz';
+                    return '⮀';
                 case 'retelling':
-                    return 'cached';
+                    return '🔃';
                 case 'mention':
-                    return 'editor:format-quote';
+                    return '❞';
                 default:
                     return '';
             }
-              return '';
-          }
-
-          // icons to be used instead of iron icons in the base html-string copy function
-          _computeIcon(parallel) {
-              switch (this._computeIconForType(parallel)) {
-                  case 'swap-horiz':
-                      return '⮀';
-                  case 'compare-arrows':
-                      return '≈';
-                  case 'editor:format-quote':
-                      return '❞';
-                  case 'cached':
-                      return '🔃';
-              }
-              return '';
           }
 
           // creates a parallels-table in html-string
