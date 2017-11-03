@@ -6,7 +6,7 @@
 <link rel="import" href="/styles/sc-text-styles.html">
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
-<link rel="import" href="/elements/lookups/lzh2en.html">
+<link rel="import" href="/elements/lookups/sc-pli.html">
 
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
   <template>
@@ -87,7 +87,7 @@
       </div>
     </template>
 
-    <sc-chinese-lookup id="lookup"></sc-chinese-lookup>
+    <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
 
   </template>
 
@@ -200,7 +200,7 @@
           ready() {
               super.ready();
               document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
-              this.$.lookup.init();
+              window.lookup = this.$.pali_lookup;
           }
 
           connectedCallback() {
