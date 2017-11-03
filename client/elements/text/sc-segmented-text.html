@@ -10,52 +10,6 @@
 <dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-      .original-text {
-        @apply --sc-sans-font;
-        display: none;
-      }
-
-      .side-by-side .translated-text {
-        display: inline-block;
-        width: 47%;
-        padding-right: var(--size-md);
-        vertical-align: text-top;
-      }
-
-      .side-by-side .original-text {
-        display: inline-block;
-        width: 47%;
-        padding-left: 5px;
-        vertical-align: text-top;
-      }
-
-      .line-by-line .translated-text, .line-by-line .original-text {
-        display: block;
-      }
-
-      .show-pali .translated-text {
-        display: none;
-      }
-
-      .show-pali .original-text {
-        @apply --sc-serif-font;
-        display: inline;
-      }
-
-      .text-tooltip {
-        @apply --sc-sans-font;
-        @apply --shadow-elevation-6dp;
-        --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--paper-grey-700);
-        --paper-tooltip: {
-          @apply --sc-skolar-font-size-xs;
-          line-height: 16px;
-          padding: 8px var(--size-md);
-          text-shadow: 0 0 #ffffff;
-          white-space: normal;
-        };
-      }
-
       .text-center {
         text-align: center;
       }
