@@ -283,18 +283,14 @@
           // populates that with the corresponding pali text segment.
           _addSecondaryText() {
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  Object.entries(this.rootSutta.strings).forEach(([key, value]) => {
-                      if (!key.startsWith('_')) {
-                          let subkey = key.replace(/:/g, '\\\:');
-                          subkey = subkey.replace(/\./g, '\\\.');
-                          const segment = this.shadowRoot.querySelector('#' + subkey);
-                          const newSegment = document.createElement('sc-seg');
-                          newSegment.id = key;
-                          newSegment.classList.add('original-text');
-                          newSegment.innerHTML = value + ' ';
-                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+                  const stringsArr = Object.entries(this.rootSutta.strings);
+                  const asyncLoop = () => {
+                      this.insertSecondarySegment(stringsArr.shift());
+                      if (stringsArr.length > 0) {
+                          setTimeout(asyncLoop, 25);
                       }
-                  });
+                  };
+                  setTimeout(asyncLoop, 25);
               }
               this.htmlLoaded = true;
               this.$.segmented_text_content.classList.add('latin-script');
@@ -302,6 +298,18 @@
               // checks settings from the settings-menu and changes the view accordingly.
               if (this.paliScript) {
                   this.changeScript(this.paliScript)
+              }
+          }
+
+          insertSecondarySegment([key, content]) {
+              if (!key.startsWith('_')) {
+                  const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+                  const segment = this.shadowRoot.querySelector('#' + subkey);
+                  const newSegment = document.createElement('sc-seg');
+                  newSegment.id = key;
+                  newSegment.classList.add('original-text');
+                  newSegment.innerHTML = content + ' ';
+                  segment.parentNode.insertBefore(newSegment, segment.nextSibling);
               }
           }
 
