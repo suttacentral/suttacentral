@@ -34,15 +34,18 @@
                   loadingDict: {
                       type: Boolean,
                       value: false
+                  },
+                  isTi: {
+                      type: Boolean
                   }
               }
           }
 
-          getDict() {
+          init() {
               return this.$.ajax.generateRequest();
           }
 
-          lookupWordHandler(word) {
+          lookupWord(word) {
 
               word = word.toLowerCase().trim();
               word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), '');//optional hyphen, syllable-breaker
@@ -53,17 +56,34 @@
                   word = this.reverseMap[word];
               }
               word = word.replace(/ṃg/g, 'ṅg').replace(/ṃk/g, 'ṅk').replace(/ṃ/g, 'ṃ').replace(/Ṃ/g, 'ṃ');
-              meaning = this.lookupWord(word);
+              let allMatches = this._lookupWord(word);
+              meaning = this._toHtml(allMatches);
               return meaning;
           }
 
-          lookupWord(word) {
+          _toHtml(allMatches) {
+            let out = "";
+              if (allMatches.length === 0) {
+                  allMatches.push({ "base": original, "meaning": "?" });
+              }
+              if (this.isTi) allMatches.push({ "base": "iti", "meaning": "endquote" });
+              for (let match of allMatches) {
+                  let href = "http://suttacentral.net/define/" + match.base;
+                  if(out){
+                    out += " + ";
+                  }
+                  out += '<a href="' + href + '" target="_blank">' + match.base + '</a>: ' + match.meaning;
+              }
+              return out;
+          }
+
+          _lookupWord(word) {
 
               let allMatches = [];
 
-              let isTi = false;
+              this.isTi = false;
               if (word.match(/[’”]ti$/)) {
-                  isTi = true;
+                  this.isTi = true;
                   word = word.replace(/[’”]ti$/, "");
               }
               word = word.replace(/[’”]/g, "");
@@ -71,7 +91,7 @@
               let unword = null; //The un-negated version.
 
               //First we try to match the word as-is
-              let m = this.matchComplete(word, { "ti": isTi });
+              let m = this.matchComplete(word, { "ti": this.isTi });
               if (!m || m.length == 0) {
                   if (word.search(/^an|^a(.)\1/) != -1) {
                       unword = word.substring(2, word.length);
@@ -81,7 +101,7 @@
                   }
 
                   if (unword) {
-                      m = this.matchComplete(unword, { "ti": isTi });
+                      m = this.matchComplete(unword, { "ti": this.isTi });
                       if (m && m.length > 0) {
                           allMatches.push({ "base": "an", "meaning": "non/not" });
                       }
@@ -128,7 +148,7 @@
                           starts.push(vowels[i] + firstchar);
                       }
                       for (let i in starts) {
-                          m = this.matchComplete(starts[i] + leftover, { "ti": isTi });
+                          m = this.matchComplete(starts[i] + leftover, { "ti": this.isTi });
                           if (m && m.length > 0) {
                               allMatches = allMatches.concat(m);
                               foundComplete = true;
@@ -151,20 +171,7 @@
                   //In the long run it would be nice to implement 'two ended candle' match.
               }
 
-              let out = "";
-              if (allMatches.length == 0) {
-                  allMatches.push({ "base": original, "meaning": "?" });
-              }
-              if (isTi) allMatches.push({ "base": "iti", "meaning": "endquote" });
-              for (let i in allMatches) {
-                  let href = "http://suttacentral.net/define/" + allMatches[i].base;
-
-                  out += '<a href="' + href + '" target="_blank">' + allMatches[i].base + '</a>: ' + allMatches[i].meaning;
-                  if (i != allMatches.length - 1) {
-                      out += " + ";
-                  }
-              }
-              return out;
+              return allMatches;
           }
 
           matchComplete(word, args) {
