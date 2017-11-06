@@ -271,7 +271,7 @@
               }
               setTimeout(() => {
                   textContainer.innerHTML = textContainer.innerHTML;
-              }, 1000);
+              }, 2000);
               this.assembledMainText = textContainer.innerHTML;
           }
 
@@ -288,7 +288,7 @@
               segmentedTextContent.classList.add('latin-script');
               setTimeout(() => {
                   segmentedTextContent.innerHTML = segmentedTextContent.innerHTML;
-              }, 1000);
+              }, 2000);
 
               // checks settings from the settings-menu and changes the view accordingly.
               if (this.paliScript) {
@@ -396,22 +396,22 @@
               const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
               this.$.segmented_text_content.classList
                   .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-              Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
-              Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
+//              Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
+//              Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
               switch (paliScript) {
-                  case 0:
+                  case 'latin':
                       this.$.segmented_text_content.classList.add('latin-script');
                       break;
-                  case 1:
+                  case 'sinhala':
                       this._setScript('sinhala', segments, tooltips);
                       break;
-                  case 2:
+                  case 'devanagari':
                       this._setScript('devanagari', segments, tooltips);
                       break;
-                  case 3:
+                  case 'thai':
                       this._setScript('thai', segments, tooltips);
                       break;
-                  case 4:
+                  case 'myanmar':
                       this._setScript('myanmar', segments, tooltips);
                       break;
               }
