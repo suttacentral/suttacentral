@@ -68,11 +68,6 @@
                       type: Array,
                       statePath: 'textOptions.paragraphDescriptions'
                   },
-                  // Choice of script to use for the pali. Default is Latin.
-                  paliScript: {
-                      type: Number,
-                      observer: 'changeScript'
-                  },
                   paragraphTitles: {
                       type: Object
                   },
@@ -109,6 +104,11 @@
                       type: String,
                       statePath: 'textOptions.segmentedSuttaTextView',
                       observer: '_setViewOptions'
+                  },
+                  paliScript: {
+                      type: String,
+                      statePath: 'textOptions.script',
+                      observer: 'changeScript'
                   },
                   isSegmented: {
                       type: Boolean

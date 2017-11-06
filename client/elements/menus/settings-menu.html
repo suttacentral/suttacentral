@@ -181,7 +181,7 @@ Issues:
         <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
         <paper-dropdown-menu class="menu-dropdown" label="Script">
           <paper-listbox slot="dropdown-content" selected="{{paliScriptSelected}}">
-            <template is="dom-repeat" items="[[paliScriptChooser]]" as="script">
+            <template is="dom-repeat" items="[[paliScripts]]" as="script">
               <paper-item class="menu-item">[[script.language]]</paper-item>
             </template>
           </paper-listbox>
@@ -254,7 +254,7 @@ Issues:
                       value: 0
                   },
                   // possible values for the script chooser for pali.
-                  paliScriptChooser: {
+                  paliScripts: {
                       type: Array,
                       value: [
                           {
@@ -282,7 +282,6 @@ Issues:
                   // pali script selected number.
                   paliScriptSelected: {
                       type: Number,
-                      value: 0,
                       observer: '_changeScript'
                   },
                   textualInfoEnabled: {
@@ -335,6 +334,12 @@ Issues:
                           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
                           view: view
                       }
+                  },
+                  choosePaliTextScript(script) {
+                      return {
+                          type: 'CHOOSE_PALI_TEXT_SCRIPT',
+                          script: script
+                      }
                   }
               }
           }
@@ -380,9 +385,9 @@ Issues:
               return valueArray[valueSelected].dict;
           }
 
+          // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
           _changeScript() {
-              // TODO
-              // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
+              this.dispatch('choosePaliTextScript', this.paliScripts[this.paliScriptSelected].script);
           }
 
           _getParagraphsUrl() {
