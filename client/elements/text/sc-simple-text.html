@@ -154,15 +154,19 @@
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
               if (this.paragraphs && this.showParagraphs) {
-                  this.paragraphs.forEach((paragraph) => {
-                      const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
-                      Array.from(refs).forEach((item) => {
-                          this._addParagraphData(item, paragraph);
-                      });
-                      this.assembledText = this.$.simple_text_content.innerHTML;
-                  });
+                  this._addParagraphScrollListeners();
               }
               this._setParagraphsVisible(this.showParagraphs);
+          }
+
+          _addParagraphScrollListeners() {
+              this.paragraphs.forEach((paragraph) => {
+                  const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
+                  Array.from(refs).forEach((item) => {
+                      this._addParagraphData(item, paragraph);
+                  });
+                  this.assembledText = this.$.simple_text_content.innerHTML;
+              });
           }
 
           _addParagraphData(item, data) {
@@ -201,6 +205,7 @@
               this.isTextViewHidden = true;
               setTimeout(() => {
                   this.shadowRoot.querySelector('#simple_text_content').innerHTML = this.assembledText;
+                  this._addParagraphScrollListeners();
                   this.isTextViewHidden = false;
               }, 200);
           }
