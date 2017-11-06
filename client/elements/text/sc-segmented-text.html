@@ -319,7 +319,7 @@
 
           _addParagraphScrollListeners() {
               this.paragraphs.forEach((paragraph) => {
-                  const refs = this.$.segmented_text_content.querySelectorAll('.' + paragraph.uid);
+                  const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
                   Array.from(refs).forEach((item) => {
                       this._addParagraphData(item, paragraph);
                   });
