@@ -7,55 +7,9 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
-<dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
+<dom-module id="sc-segmented-text">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-      .original-text {
-        @apply --sc-sans-font;
-        display: none;
-      }
-
-      .side-by-side .translated-text {
-        display: inline-block;
-        width: 47%;
-        padding-right: var(--size-md);
-        vertical-align: text-top;
-      }
-
-      .side-by-side .original-text {
-        display: inline-block;
-        width: 47%;
-        padding-left: 5px;
-        vertical-align: text-top;
-      }
-
-      .line-by-line .translated-text, .line-by-line .original-text {
-        display: block;
-      }
-
-      .show-pali .translated-text {
-        display: none;
-      }
-
-      .show-pali .original-text {
-        @apply --sc-serif-font;
-        display: inline;
-      }
-
-      .text-tooltip {
-        @apply --sc-sans-font;
-        @apply --shadow-elevation-6dp;
-        --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--paper-grey-700);
-        --paper-tooltip: {
-          @apply --sc-skolar-font-size-xs;
-          line-height: 16px;
-          padding: 8px var(--size-md);
-          text-shadow: 0 0 #ffffff;
-          white-space: normal;
-        };
-      }
-
       .text-center {
         text-align: center;
       }
@@ -114,8 +68,6 @@
                       type: Array,
                       statePath: 'textOptions.paragraphDescriptions'
                   },
-                  // checks if the html markup is fully loaded before other functions can start
-                  htmlLoaded: Boolean,
                   // Choice of script to use for the pali. Default is Latin.
                   paliScript: {
                       type: Number,
@@ -199,11 +151,6 @@
               document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              this.htmlLoaded = false;
-          }
-
           _updateView() {
               if (!this.isSegmented || this.isSegmented === undefined || !this.markup) {
                   return;
@@ -269,8 +216,8 @@
               if (!this.isSegmented || !this.markup || !this.translatedSutta) {
                   return;
               }
-              this._resetViewOptions();
               const textContent = this.$.segmented_text_content;
+              this._resetViewOptions();
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       textContent.classList.add('side-by-side');
@@ -322,32 +269,42 @@
               catch (e) {
                   console.error(e);
               }
+              setTimeout(() => {
+                  textContainer.innerHTML = textContainer.innerHTML;
+              }, 1000);
               this.assembledMainText = textContainer.innerHTML;
           }
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
           _addSecondaryText() {
+              const segmentedTextContent = this.$.segmented_text_content;
               if (!this.shadowRoot.querySelector('.original-text')) {
-                  Object.entries(this.rootSutta.strings).forEach(([key, value]) => {
-                      if (!key.startsWith('_')) {
-                          let subkey = key.replace(/:/g, '\\\:');
-                          subkey = subkey.replace(/\./g, '\\\.');
-                          const segment = this.shadowRoot.querySelector('#' + subkey);
-                          const newSegment = document.createElement('sc-seg');
-                          newSegment.id = key;
-                          newSegment.classList.add('original-text');
-                          newSegment.innerHTML = value + ' ';
-                          segment.parentNode.insertBefore(newSegment, segment.nextSibling);
-                      }
-                  });
+                  const stringsArr = Object.entries(this.rootSutta.strings);
+                  stringsArr.forEach(item => {
+                      this.insertSecondarySegment(item);
+                  })
               }
-              this.htmlLoaded = true;
-              this.$.segmented_text_content.classList.add('latin-script');
+              segmentedTextContent.classList.add('latin-script');
+              setTimeout(() => {
+                  segmentedTextContent.innerHTML = segmentedTextContent.innerHTML;
+              }, 1000);
 
               // checks settings from the settings-menu and changes the view accordingly.
               if (this.paliScript) {
-                  this.changeScript(this.paliScript)
+                  this.changeScript(this.paliScript);
+              }
+          }
+
+          insertSecondarySegment([key, content]) {
+              if (!key.startsWith('_')) {
+                  const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+                  const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
+                  const newSegment = document.createElement('sc-seg');
+                  newSegment.id = key;
+                  newSegment.classList.add('original-text');
+                  newSegment.innerHTML = content + ' ';
+                  segment.parentNode.insertBefore(newSegment, segment.nextSibling);
               }
           }
 
@@ -430,30 +387,28 @@
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
           // either in tooltips or in segments.
           changeScript(paliScript) {
-              if (this.htmlLoaded) {
-                  const segments = this.shadowRoot.querySelectorAll('.original-text');
-                  const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-                  this.$.segmented_text_content.classList
-                      .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-                  Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
-                  Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
-                  switch (paliScript) {
-                      case 0:
-                          this.$.segmented_text_content.classList.add('latin-script');
-                          break;
-                      case 1:
-                          this._setScript('sinhala', segments, tooltips);
-                          break;
-                      case 2:
-                          this._setScript('devanagari', segments, tooltips);
-                          break;
-                      case 3:
-                          this._setScript('thai', segments, tooltips);
-                          break;
-                      case 4:
-                          this._setScript('myanmar', segments, tooltips);
-                          break;
-                  }
+              const segments = this.shadowRoot.querySelectorAll('.original-text');
+              const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
+              this.$.segmented_text_content.classList
+                  .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
+              Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
+              Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
+              switch (paliScript) {
+                  case 0:
+                      this.$.segmented_text_content.classList.add('latin-script');
+                      break;
+                  case 1:
+                      this._setScript('sinhala', segments, tooltips);
+                      break;
+                  case 2:
+                      this._setScript('devanagari', segments, tooltips);
+                      break;
+                  case 3:
+                      this._setScript('thai', segments, tooltips);
+                      break;
+                  case 4:
+                      this._setScript('myanmar', segments, tooltips);
+                      break;
               }
           }
 

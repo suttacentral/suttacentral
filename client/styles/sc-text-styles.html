@@ -9,7 +9,7 @@
 
       .html-text-content section {
         margin: 0 auto !important;
-        padding: 32px 10% 32px;
+        padding: var(--size-lg) 10% var(--size-lg);
         max-width: 40em;
         display: block;
       }
@@ -30,6 +30,52 @@
 
       .html-text-content aside {
         display: none;
+      }
+
+      .original-text {
+        @apply --sc-sans-font;
+        display: none;
+      }
+
+      .side-by-side .translated-text {
+        display: inline-block;
+        width: 47%;
+        padding-right: var(--size-md);
+        vertical-align: text-top;
+      }
+
+      .side-by-side .original-text {
+        display: inline-block;
+        width: 47%;
+        padding-left: 5px;
+        vertical-align: text-top;
+      }
+
+      .line-by-line .translated-text, .line-by-line .original-text {
+        display: block;
+      }
+
+      .show-pali .translated-text {
+        display: none;
+      }
+
+      .show-pali .original-text {
+        @apply --sc-serif-font;
+        display: inline;
+      }
+
+      .text-tooltip {
+        @apply --sc-sans-font;
+        @apply --shadow-elevation-6dp;
+        --paper-tooltip-opacity: 0.98;
+        --paper-tooltip-background: var(--paper-grey-700);
+        --paper-tooltip: {
+          @apply --sc-skolar-font-size-xs;
+          line-height: var(--size-md);
+          padding: var(--size-sm) var(--size-md);
+          text-shadow: 0 0 #ffffff;
+          white-space: normal;
+        };
       }
 
       a {
