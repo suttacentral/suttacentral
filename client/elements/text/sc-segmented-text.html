@@ -269,31 +269,28 @@
               catch (e) {
                   console.error(e);
               }
-              setTimeout(() => {
-                  textContainer.innerHTML = textContainer.innerHTML;
-              }, 2000);
+              this._reloadInnerHTML(textContainer);
               this.assembledMainText = textContainer.innerHTML;
           }
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
           _addSecondaryText() {
-              const segmentedTextContent = this.$.segmented_text_content;
+              const textContainer = this.$.segmented_text_content;
               if (!this.shadowRoot.querySelector('.original-text')) {
                   const stringsArr = Object.entries(this.rootSutta.strings);
                   stringsArr.forEach(item => {
                       this.insertSecondarySegment(item);
                   })
               }
-              segmentedTextContent.classList.add('latin-script');
+              textContainer.classList.add('latin-script');
+              this._reloadInnerHTML(textContainer);
+          }
+
+          _reloadInnerHTML(segmentedTextContent) {
               setTimeout(() => {
                   segmentedTextContent.innerHTML = segmentedTextContent.innerHTML;
               }, 2000);
-
-              // checks settings from the settings-menu and changes the view accordingly.
-              if (this.paliScript) {
-                  this.changeScript(this.paliScript);
-              }
           }
 
           insertSecondarySegment([key, content]) {
@@ -392,12 +389,12 @@
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
           // either in tooltips or in segments.
           changeScript(paliScript) {
+              if (!this.rootSutta) {
+                  return;
+              }
               const segments = this.shadowRoot.querySelectorAll('.original-text');
               const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-              this.$.segmented_text_content.classList
-                  .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-//              Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
-//              Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
+              this._resetScript(segments, tooltips);
               switch (paliScript) {
                   case 'latin':
                       this.$.segmented_text_content.classList.add('latin-script');
@@ -415,6 +412,14 @@
                       this._setScript('myanmar', segments, tooltips);
                       break;
               }
+              this._reloadInnerHTML(this.$.segmented_text_content);
+          }
+
+          _resetScript(segments, tooltips) {
+              this.$.segmented_text_content.classList
+                  .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
+              Array.from(segments).forEach(item => item.innerHTML = this.rootSutta.strings[item.id] + ' ');
+              Array.from(tooltips).forEach(item => item.innerHTML = this.rootSutta.strings[item.id]);
           }
 
           _setScript(scriptName, segments, tooltips) {
