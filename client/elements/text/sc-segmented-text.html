@@ -7,7 +7,7 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
-<dom-module id="sc-segmented-text" attributes="suttasegtitle suttasegmeta">
+<dom-module id="sc-segmented-text">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
       .text-center {
@@ -68,8 +68,6 @@
                       type: Array,
                       statePath: 'textOptions.paragraphDescriptions'
                   },
-                  // checks if the html markup is fully loaded before other functions can start
-                  htmlLoaded: Boolean,
                   // Choice of script to use for the pali. Default is Latin.
                   paliScript: {
                       type: Number,
@@ -153,11 +151,6 @@
               document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              this.htmlLoaded = false;
-          }
-
           _updateView() {
               if (!this.isSegmented || this.isSegmented === undefined || !this.markup) {
                   return;
@@ -223,8 +216,8 @@
               if (!this.isSegmented || !this.markup || !this.translatedSutta) {
                   return;
               }
-              this._resetViewOptions();
               const textContent = this.$.segmented_text_content;
+              this._resetViewOptions();
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       textContent.classList.add('side-by-side');
@@ -276,35 +269,37 @@
               catch (e) {
                   console.error(e);
               }
+              setTimeout(() => {
+                  textContainer.innerHTML = textContainer.innerHTML;
+              }, 2000);
               this.assembledMainText = textContainer.innerHTML;
           }
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
           _addSecondaryText() {
+              const segmentedTextContent = this.$.segmented_text_content;
               if (!this.shadowRoot.querySelector('.original-text')) {
                   const stringsArr = Object.entries(this.rootSutta.strings);
-                  const asyncLoop = () => {
-                      this.insertSecondarySegment(stringsArr.shift());
-                      if (stringsArr.length > 0) {
-                          setTimeout(asyncLoop, 25);
-                      }
-                  };
-                  setTimeout(asyncLoop, 25);
+                  stringsArr.forEach(item => {
+                      this.insertSecondarySegment(item);
+                  })
               }
-              this.htmlLoaded = true;
-              this.$.segmented_text_content.classList.add('latin-script');
+              segmentedTextContent.classList.add('latin-script');
+              setTimeout(() => {
+                  segmentedTextContent.innerHTML = segmentedTextContent.innerHTML;
+              }, 2000);
 
               // checks settings from the settings-menu and changes the view accordingly.
               if (this.paliScript) {
-                  this.changeScript(this.paliScript)
+                  this.changeScript(this.paliScript);
               }
           }
 
           insertSecondarySegment([key, content]) {
               if (!key.startsWith('_')) {
                   const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-                  const segment = this.shadowRoot.querySelector('#' + subkey);
+                  const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
                   const newSegment = document.createElement('sc-seg');
                   newSegment.id = key;
                   newSegment.classList.add('original-text');
@@ -392,30 +387,28 @@
           // if the base html and pali text are fully loaded, implements the correct script for the pali text
           // either in tooltips or in segments.
           changeScript(paliScript) {
-              if (this.htmlLoaded) {
-                  const segments = this.shadowRoot.querySelectorAll('.original-text');
-                  const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-                  this.$.segmented_text_content.classList
-                      .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-                  Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
-                  Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
-                  switch (paliScript) {
-                      case 0:
-                          this.$.segmented_text_content.classList.add('latin-script');
-                          break;
-                      case 1:
-                          this._setScript('sinhala', segments, tooltips);
-                          break;
-                      case 2:
-                          this._setScript('devanagari', segments, tooltips);
-                          break;
-                      case 3:
-                          this._setScript('thai', segments, tooltips);
-                          break;
-                      case 4:
-                          this._setScript('myanmar', segments, tooltips);
-                          break;
-                  }
+              const segments = this.shadowRoot.querySelectorAll('.original-text');
+              const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
+              this.$.segmented_text_content.classList
+                  .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
+              Array.from(segments).forEach(item => item.innerHTML = this.suttaOriginalText[item.id] + ' ');
+              Array.from(tooltips).forEach(item => item.innerHTML = this.suttaOriginalText[item.id]);
+              switch (paliScript) {
+                  case 0:
+                      this.$.segmented_text_content.classList.add('latin-script');
+                      break;
+                  case 1:
+                      this._setScript('sinhala', segments, tooltips);
+                      break;
+                  case 2:
+                      this._setScript('devanagari', segments, tooltips);
+                      break;
+                  case 3:
+                      this._setScript('thai', segments, tooltips);
+                      break;
+                  case 4:
+                      this._setScript('myanmar', segments, tooltips);
+                      break;
               }
           }
 
