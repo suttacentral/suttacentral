@@ -9,7 +9,7 @@
 
       .html-text-content section {
         margin: 0 auto !important;
-        padding: 32px 10% 32px;
+        padding: var(--size-lg) 10% var(--size-lg);
         max-width: 40em;
         display: block;
       }
@@ -71,8 +71,8 @@
         --paper-tooltip-background: var(--paper-grey-700);
         --paper-tooltip: {
           @apply --sc-skolar-font-size-xs;
-          line-height: 16px;
-          padding: 8px var(--size-md);
+          line-height: var(--size-md);
+          padding: var(--size-sm) var(--size-md);
           text-shadow: 0 0 #ffffff;
           white-space: normal;
         };
