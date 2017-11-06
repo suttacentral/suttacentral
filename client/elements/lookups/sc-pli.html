@@ -16,7 +16,7 @@
       class SCPaliLookup extends Polymer.Element {
           static get is() {
               return 'sc-pali-lookup';
-          }
+          } 
 
           static get properties() {
               return {
@@ -105,21 +105,19 @@
                   }
                   let foundComplete = false;
                   while (m && !foundComplete) {
-                      allMatches = allMatches.concat(m);
-                      if(m.length > 1){debugger;}
-                      if (m instanceof Array){
-                        m = m[0];
+                      if(m instanceof Array && m.length === 1){
+                          m = m[0];
                       }
+                      allMatches = allMatches.concat(m);
                       let leftover = m.leftover;
                       let firstchar = '';
                       let sandhi = m.base[m.base.length - 1];
                       if(leftover){
-                        let firstchar = leftover[0];
+                        firstchar = leftover[0];
                         leftover = leftover.substring(1, leftover.length);
                       } else {
-                          leftover = '';
+                          break;
                       }
-                      console.log('test');
                       let starts = [firstchar, "", sandhi + firstchar];
                       let vowels = ['a', 'ā', 'i', 'ī', 'u', 'ū', 'o', 'e'];
                       //As a rule sandhi doesn't shortern vowels
@@ -129,7 +127,6 @@
                       for (let i in vowels) {
                           starts.push(vowels[i] + firstchar);
                       }
-                      let foundComplete = false;
                       for (let i in starts) {
                           m = this.matchComplete(starts[i] + leftover, { "ti": isTi });
                           if (m && m.length > 0) {
