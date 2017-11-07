@@ -165,6 +165,7 @@
               }
               this._setParagraphsVisible(this.showParagraphs);
           }
+
           _addParagraphScrollListeners() {
               this.paragraphs.forEach((paragraph) => {
                   const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
@@ -255,6 +256,7 @@
                       this._setScript('myanmar', tooltips);
                       break;
               }
+              this._computeParagraphs();
           }
 
           _resetScript() {
@@ -271,17 +273,17 @@
               const textElement = this.shadowRoot.querySelector('#text').querySelector('article');
               this.setSimpleTextContentScript(textElement, t, scriptFunctionName);
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+              this.assembledText = this.$.simple_text_content.innerHTML;
           }
 
           setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
               const childNodes = elem.childNodes;
               if (childNodes && childNodes.length > 0) {
                   childNodes.forEach((item) => {
-                      // Skip elements containing no text and container elements
-                      if (item.innerText && item.nodeName !== 'ARTICLE' && item.nodeName !== 'DIV') {
-                          item.innerText = transliterator[scriptFunctionName](item.innerText);
-                      }
                       this.setSimpleTextContentScript(item, transliterator, scriptFunctionName);
+                      if (item.textContent && item.childNodes.length === 0) {
+                          item.textContent = transliterator[scriptFunctionName](item.textContent);
+                      }
                   });
               }
           }
@@ -295,6 +297,7 @@
               setTimeout(() => {
                   // This doesn't make sense but hey, it works.
                   this.$.simple_text_content.innerHTML = this.$.simple_text_content.innerHTML;
+                  this._computeParagraphs();
               }, 2000);
           }
 

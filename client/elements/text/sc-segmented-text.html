@@ -432,6 +432,7 @@
               setTimeout(() => {
                   // This doesn't make sense but hey, it works.
                   this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
+                  this._computeParagraphs();
               }, 2000);
           }
 
