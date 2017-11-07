@@ -19,7 +19,7 @@
       .side-by-side .translated-text {
         display: inline-block;
         width: 47%;
-        padding-right: var(--size-md);
+        padding-right: let(--size-md);
         vertical-align: text-top;
       }
 
@@ -47,11 +47,11 @@
         @apply --sc-sans-font;
         @apply --shadow-elevation-6dp;
         --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--paper-grey-700);
+        --paper-tooltip-background: let(--paper-grey-700);
         --paper-tooltip: {
           @apply --sc-skolar-font-size-xs;
           line-height: 16px;
-          padding: 8px var(--size-md);
+          padding: 8px let(--size-md);
           text-shadow: 0 0 #ffffff;
           white-space: normal;
         };
@@ -87,7 +87,9 @@
       </div>
     </template>
 
-    <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
+    <template is="dom-if" if="[[isPaliLookupEnabled]]">
+        <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
+    </template>
 
   </template>
 
@@ -170,6 +172,10 @@
                   },
                   assembledMainText: {
                       type: String
+                  },
+                  isPaliLookupEnabled: {
+                      type: Boolean,
+                      value: true
                   }
               }
           }
@@ -200,12 +206,16 @@
           ready() {
               super.ready();
               document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
-              window.lookup = this.$.pali_lookup;
           }
 
           connectedCallback() {
               super.connectedCallback();
               this.htmlLoaded = false;
+          }
+
+          _test(e) {
+              console.log('test');
+              console.log(e);
           }
 
           _updateView() {
@@ -310,6 +320,42 @@
               }
           }
 
+          _wordsIntoSpans(text){
+            let div = document.createElement('div');
+            div.innerHTML = text;
+            this._recurseDomChildren(div, true);
+            let str = div.innerHTML.replace(/spfrnt/g, `<span class="word">`).replace(/spback/g, "</span>");
+            return str;
+          }
+
+          _recurseDomChildren(start, output){
+                let nodes;
+                if(start.childNodes){
+                    nodes = start.childNodes;
+                    this._loopNodeChildren(nodes, output);
+                }
+            }
+            _loopNodeChildren(nodes, output){
+                let node;
+                for(let i=0;i<nodes.length;i++){
+                    node = nodes[i];
+                    this._addSpanToNode(node);
+                    if(node.childNodes){
+                        this._recurseDomChildren(node, output);
+                    }
+                }
+            }
+            _addSpanToNode(node){
+                if(node.nodeType != 3) return;
+                let tt = node.data;
+                let strArr = tt.split(" ");
+                let str = "";
+                for( let i = 0 ; i < strArr.length; i++) if (strArr[i]){
+                    str += 'spfrnt' + strArr[i] + 'spback ';
+                }
+                node.data = str;   
+            }
+
           _addPrimaryText(textStrings) {
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
               const segments = textContainer.getElementsByTagName('sc-seg');
@@ -319,6 +365,7 @@
                       if (!key.startsWith('_')) {
                           let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
                           const segment = textContainer.querySelector(`#${subkey}`);
+                          value = this._wordsIntoSpans(value);
                           segment.innerHTML = value + ' ';
                       }
                   });
@@ -341,6 +388,7 @@
                           const newSegment = document.createElement('sc-seg');
                           newSegment.id = key;
                           newSegment.classList.add('original-text');
+                          value = this._wordsIntoSpans(value);
                           newSegment.innerHTML = value + ' ';
                           segment.parentNode.insertBefore(newSegment, segment.nextSibling);
                       }

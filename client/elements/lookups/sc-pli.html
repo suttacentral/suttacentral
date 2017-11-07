@@ -4,6 +4,7 @@
 <dom-module id="sc-pali-lookup">
   <template>
         <iron-ajax
+        auto
         url="http://127.0.0.1/api/dictionaries/lookup?from=pli&to=en"
         id="ajax"
         handle-as="json"
@@ -33,7 +34,7 @@
                   },
                   loadingDict: {
                       type: Boolean,
-                      value: false
+                      value: true
                   },
                   isTi: {
                       type: Boolean
@@ -46,7 +47,6 @@
           }
 
           lookupWord(word) {
-
               word = word.toLowerCase().trim();
               word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), '');//optional hyphen, syllable-breaker
               let meaning = '';
