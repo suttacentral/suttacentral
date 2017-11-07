@@ -391,7 +391,11 @@ Issues:
 
           // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
           _changeScript() {
-              this.dispatch('choosePaliTextScript', this.paliScripts[this.paliScriptSelected].script);
+              this.showLoadingSpinner = true;
+              setTimeout(() => {
+                  this.dispatch('choosePaliTextScript', this.paliScripts[this.paliScriptSelected].script);
+                  this.showLoadingSpinner = false;
+              }, 0);
           }
 
           _getParagraphsUrl() {
