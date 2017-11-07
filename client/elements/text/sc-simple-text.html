@@ -271,6 +271,7 @@
               const textElement = this.shadowRoot.querySelector('#text').querySelector('article');
               this.setSimpleTextContentScript(textElement, t, scriptFunctionName);
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+              this.assembledText = this.$.simple_text_content.innerHTML;
           }
 
           setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
