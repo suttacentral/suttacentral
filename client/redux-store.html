@@ -26,7 +26,8 @@
         textOptions: {
             paragraphsEnabled: false,
             paragraphDescriptions: [],
-            segmentedSuttaTextView: 'none'
+            segmentedSuttaTextView: 'none',
+            script: 'latin'
         }
     };
 
@@ -59,6 +60,9 @@
             case 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW':
                 return Object.assign({}, state,
                     { textOptions: Object.assign({}, state.textOptions, { segmentedSuttaTextView: action.view }) });
+            case 'CHOOSE_PALI_TEXT_SCRIPT':
+                return Object.assign({}, state,
+                    { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
             default:
                 return state;
         }

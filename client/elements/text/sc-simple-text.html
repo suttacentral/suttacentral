@@ -5,7 +5,8 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
-<dom-module id="sc-simple-text" attributes="suttatitle suttameta">
+<dom-module id="sc-simple-text">
+
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
       .text-center {
@@ -48,6 +49,11 @@
                       type: Boolean,
                       statePath: 'textOptions.paragraphsEnabled',
                       observer: '_computeParagraphs'
+                  },
+                  paliScript: {
+                      type: String,
+                      statePath: 'textOptions.script',
+                      observer: 'changeScript'
                   },
                   paragraphs: {
                       type: Array,
@@ -124,6 +130,7 @@
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;
               this.assembledText = this.sutta.text;
+              this._reloadInnerHTML();
           }
 
           _updateToolbar() {
@@ -158,15 +165,14 @@
               }
               this._setParagraphsVisible(this.showParagraphs);
           }
-
           _addParagraphScrollListeners() {
               this.paragraphs.forEach((paragraph) => {
                   const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
                   Array.from(refs).forEach((item) => {
                       this._addParagraphData(item, paragraph);
                   });
-                  this.assembledText = this.$.simple_text_content.innerHTML;
               });
+              this.assembledText = this.$.simple_text_content.innerHTML;
           }
 
           _addParagraphData(item, data) {
@@ -224,6 +230,72 @@
               } catch (e) {
                   console.error(e);
               }
+          }
+
+          changeScript(paliScript) {
+              if (!this.sutta || this.sutta.lang !== 'pli') {
+                  return;
+              }
+              const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
+              this._resetScript();
+              switch (paliScript) {
+                  case 'latin':
+                      this.$.simple_text_content.classList.add('latin-script');
+                      break;
+                  case 'sinhala':
+                      this._setScript('sinhala', tooltips);
+                      break;
+                  case 'devanagari':
+                      this._setScript('devanagari', tooltips);
+                      break;
+                  case 'thai':
+                      this._setScript('thai', tooltips);
+                      break;
+                  case 'myanmar':
+                      this._setScript('myanmar', tooltips);
+                      break;
+              }
+          }
+
+          _resetScript() {
+              this.$.simple_text_content.classList
+                  .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
+              this.$.simple_text_content.innerHTML = this.sutta.text;
+              this._reloadInnerHTML();
+          }
+
+          _setScript(scriptName, tooltips) {
+              this.$.simple_text_content.classList.add(`${scriptName}-script`);
+              const t = new Transliterator();
+              const scriptFunctionName = `to${this._capitalize(scriptName)}`;
+              const textElement = this.shadowRoot.querySelector('#text').querySelector('article');
+              this.setSimpleTextContentScript(textElement, t, scriptFunctionName);
+              Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+          }
+
+          setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
+              const childNodes = elem.childNodes;
+              if (childNodes && childNodes.length > 0) {
+                  childNodes.forEach((item) => {
+                      // Skip elements containing no text and container elements
+                      if (item.innerText && item.nodeName !== 'ARTICLE' && item.nodeName !== 'DIV') {
+                          item.innerText = transliterator[scriptFunctionName](item.innerText);
+                      }
+                      this.setSimpleTextContentScript(item, transliterator, scriptFunctionName);
+                  });
+              }
+          }
+
+          _capitalize(text) {
+              return text.charAt(0).toUpperCase() + text.slice(1);
+          }
+
+          // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
+          _reloadInnerHTML() {
+              setTimeout(() => {
+                  // This doesn't make sense but hey, it works.
+                  this.$.simple_text_content.innerHTML = this.$.simple_text_content.innerHTML;
+              }, 2000);
           }
 
       }
