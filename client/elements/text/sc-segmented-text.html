@@ -9,9 +9,6 @@
 
 <dom-module id="sc-segmented-text">
 
-  <!-- Import the transliteration module for changing the script of the Pali texts -->
-  <script src="transliterator.js"></script>
-
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
       .text-center {
@@ -291,12 +288,6 @@
               this._reloadInnerHTML(textContainer);
           }
 
-          _reloadInnerHTML(segmentedTextContent) {
-              setTimeout(() => {
-                  segmentedTextContent.innerHTML = segmentedTextContent.innerHTML;
-              }, 2000);
-          }
-
           insertSecondarySegment([key, content]) {
               if (!key.startsWith('_')) {
                   const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
@@ -435,6 +426,15 @@
           _capitalize(text) {
               return text.charAt(0).toUpperCase() + text.slice(1);
           }
+
+          // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
+          _reloadInnerHTML(textContent) {
+              setTimeout(() => {
+                  // This doesn't make sense, but hey, it works.
+                  textContent.innerHTML = textContent.innerHTML;
+              }, 2000);
+          }
+
 
       }
 

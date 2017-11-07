@@ -5,7 +5,8 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 
-<dom-module id="sc-simple-text" attributes="suttatitle suttameta">
+<dom-module id="sc-simple-text">
+
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
       .text-center {
@@ -48,6 +49,11 @@
                       type: Boolean,
                       statePath: 'textOptions.paragraphsEnabled',
                       observer: '_computeParagraphs'
+                  },
+                  paliScript: {
+                      type: String,
+                      statePath: 'textOptions.script',
+                      observer: 'changeScript'
                   },
                   paragraphs: {
                       type: Array,
@@ -124,6 +130,7 @@
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;
               this.assembledText = this.sutta.text;
+              this._reloadInnerHTML();
           }
 
           _updateToolbar() {
@@ -165,8 +172,8 @@
                   Array.from(refs).forEach((item) => {
                       this._addParagraphData(item, paragraph);
                   });
-                  this.assembledText = this.$.simple_text_content.innerHTML;
               });
+              this.assembledText = this.$.simple_text_content.innerHTML;
           }
 
           _addParagraphData(item, data) {
@@ -224,6 +231,63 @@
               } catch (e) {
                   console.error(e);
               }
+          }
+
+          changeScript(paliScript) {
+              if (!this.sutta || this.sutta.lang !== 'pli') {
+                  console.log('not a Pali text or no text');
+                  console.dir(this.sutta);
+                  if (this.sutta) {
+                      console.log(this.sutta.lang);
+                  }
+                  return;
+              }
+              const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
+              this._resetScript();
+              switch (paliScript) {
+                  case 'latin':
+                      this.$.simple_text_content.classList.add('latin-script');
+                      break;
+                  case 'sinhala':
+                      this._setScript('sinhala', tooltips);
+                      break;
+                  case 'devanagari':
+                      this._setScript('devanagari', tooltips);
+                      break;
+                  case 'thai':
+                      this._setScript('thai', tooltips);
+                      break;
+                  case 'myanmar':
+                      this._setScript('myanmar', tooltips);
+                      break;
+              }
+          }
+
+          _resetScript() {
+              this.$.simple_text_content.classList
+                  .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
+              this.assembledText = this.sutta.text;
+              this._reloadInnerHTML();
+          }
+
+          _setScript(scriptName, tooltips) {
+              this.$.simple_text_content.classList.add(`${scriptName}-script`);
+              const t = new Transliterator();
+              const scriptFn = `to${this._capitalize(scriptName)}`;
+              //              Array.from(segments).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
+              Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
+          }
+
+          _capitalize(text) {
+              return text.charAt(0).toUpperCase() + text.slice(1);
+          }
+
+          // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
+          _reloadInnerHTML(textContent) {
+              setTimeout(() => {
+                  // This doesn't make sense, but hey, it works.
+                  textContent.innerHTML = textContent.innerHTML;
+              }, 2000);
           }
 
       }
