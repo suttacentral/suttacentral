@@ -270,7 +270,7 @@
               catch (e) {
                   console.error(e);
               }
-              this._reloadInnerHTML(textContainer);
+              this._reloadInnerHTML();
               this.assembledMainText = textContainer.innerHTML;
           }
 
@@ -285,7 +285,7 @@
                   })
               }
               textContainer.classList.add('latin-script');
-              this._reloadInnerHTML(textContainer);
+              this._reloadInnerHTML();
           }
 
           insertSecondarySegment([key, content]) {
@@ -420,7 +420,7 @@
               const scriptFn = `to${this._capitalize(scriptName)}`;
               Array.from(segments).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
-              this._reloadInnerHTML(this.$.segmented_text_content);
+              this._reloadInnerHTML();
           }
 
           _capitalize(text) {
@@ -430,8 +430,8 @@
           // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
           _reloadInnerHTML(textContent) {
               setTimeout(() => {
-                  // This doesn't make sense, but hey, it works.
-                  textContent.innerHTML = textContent.innerHTML;
+                  // This doesn't make sense but hey, it works.
+                  this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
               }, 2000);
           }
 

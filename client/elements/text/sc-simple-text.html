@@ -130,7 +130,7 @@
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;
               this.assembledText = this.sutta.text;
-              this._reloadInnerHTML(this.$.simple_text_content);
+              this._reloadInnerHTML();
           }
 
           _updateToolbar() {
@@ -235,11 +235,6 @@
 
           changeScript(paliScript) {
               if (!this.sutta || this.sutta.lang !== 'pli') {
-                  console.log('not a Pali text or no text');
-                  console.dir(this.sutta);
-                  if (this.sutta) {
-                      console.log(this.sutta.lang);
-                  }
                   return;
               }
               const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
@@ -266,16 +261,28 @@
           _resetScript() {
               this.$.simple_text_content.classList
                   .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-              this.assembledText = this.sutta.text;
-              this._reloadInnerHTML(this.$.simple_text_content);
+              this.$.simple_text_content.innerHTML = this.sutta.text;
+              this._reloadInnerHTML();
           }
 
           _setScript(scriptName, tooltips) {
               this.$.simple_text_content.classList.add(`${scriptName}-script`);
               const t = new Transliterator();
-              const scriptFn = `to${this._capitalize(scriptName)}`;
-              //              Array.from(segments).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
-              Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
+              const scriptFunctionName = `to${this._capitalize(scriptName)}`;
+              this.setSimpleTextContentScript(this.shadowRoot.querySelector('#text'), t, scriptFunctionName);
+              Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+          }
+
+          setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
+              const childNodes = elem.childNodes;
+              if (childNodes && childNodes.length > 0) {
+                  childNodes.forEach(item => {
+                      if (item.innerText) {
+                          item.innerText = transliterator[scriptFunctionName](item.innerText);
+                      }
+                      this.setSimpleTextContentScript(item);
+                  });
+              }
           }
 
           _capitalize(text) {
@@ -283,10 +290,10 @@
           }
 
           // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
-          _reloadInnerHTML(textContent) {
+          _reloadInnerHTML() {
               setTimeout(() => {
-                  // This doesn't make sense, but hey, it works.
-                  textContent.innerHTML = textContent.innerHTML;
+                  // This doesn't make sense but hey, it works.
+                  this.$.simple_text_content.innerHTML = this.$.simple_text_content.innerHTML;
               }, 2000);
           }
 
