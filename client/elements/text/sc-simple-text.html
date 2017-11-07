@@ -130,7 +130,7 @@
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;
               this.assembledText = this.sutta.text;
-              this._reloadInnerHTML();
+              this._reloadInnerHTML(this.$.simple_text_content);
           }
 
           _updateToolbar() {
@@ -267,7 +267,7 @@
               this.$.simple_text_content.classList
                   .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
               this.assembledText = this.sutta.text;
-              this._reloadInnerHTML();
+              this._reloadInnerHTML(this.$.simple_text_content);
           }
 
           _setScript(scriptName, tooltips) {
