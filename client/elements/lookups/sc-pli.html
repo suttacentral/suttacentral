@@ -57,11 +57,11 @@
               }
               word = word.replace(/ṃg/g, 'ṅg').replace(/ṃk/g, 'ṅk').replace(/ṃ/g, 'ṃ').replace(/Ṃ/g, 'ṃ');
               let allMatches = this._lookupWord(word);
-              meaning = this._toHtml(allMatches);
+              meaning = this._toHtml(allMatches, word);
               return meaning;
           }
 
-          _toHtml(allMatches) {
+          _toHtml(allMatches, original) {
             let out = "";
               if (allMatches.length === 0) {
                   allMatches.push({ "base": original, "meaning": "?" });

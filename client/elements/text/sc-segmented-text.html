@@ -11,6 +11,14 @@
 <dom-module id="sc-segmented-text">
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
+
+      :host{
+          --paper-tooltip: {
+          font-size: 14px;
+          opacity: 1;
+          max-width: 200px;
+        }
+      }
       .text-center {
         text-align: center;
       }
@@ -23,6 +31,10 @@
         @apply --sc-skolar-font-size-s;
         text-align: center;
         height: 60px;
+      }
+
+      .word:hover {
+          color: var(--sc-green-600)
       }
 
     </style>
@@ -128,6 +140,10 @@
                   isPaliLookupEnabled: {
                       type: Boolean,
                       value: true
+                  },
+                  tooltipCounter: {
+                      type: Number,
+                      value: 0
                   }
               }
           }
@@ -317,6 +333,7 @@
               }
               setTimeout(() => {
                   textContainer.innerHTML = textContainer.innerHTML;
+                  this._addLookupTooltips(textContainer);
               }, 1000);
               this.assembledMainText = textContainer.innerHTML;
           }
@@ -353,6 +370,58 @@
                   newSegment.innerHTML = content + ' ';
                   segment.parentNode.insertBefore(newSegment, segment.nextSibling);
               }
+          }
+
+          _addTooltip(v, tooltip, paliLookup, isHovered, e) {
+            let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+            setTimeout(() => {
+                if(isHovered.word){
+                    v.id = `lookup_target${this.tooltipCounter}`;
+                    let explenation = paliLookup.lookupWord(v.innerText);
+                    tooltip.innerHTML = explenation;
+                    tooltip.animationDelay = 0;
+                    tooltip.manualMode = true;
+                    tooltip.offset = 0;
+                    tooltip.for = `lookup_target${this.tooltipCounter}`;
+                    this.tooltipCounter++;
+                    v.parentNode.insertBefore(tooltip, v.nextSibling);
+                    tooltip.show();
+                }
+            }, timeToWait);
+          }
+
+          _removeTooltip(v, tooltip, isHovered, e) {
+            let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 200;
+            setTimeout(() => {
+                if(!isHovered.word && !isHovered.tooltip){
+                    v.removeAttribute("id");
+                    tooltip.hide();
+                    v.parentNode.removeChild(tooltip);
+                }
+            }, timeToWait);
+          }
+
+          _addLookupTooltips(textContainer) {
+            let paliLookup = this.shadowRoot.querySelector('#pali_lookup');
+            textContainer.querySelectorAll('.word').forEach((v) => {
+                      let tooltip = document.createElement('paper-tooltip')
+                      let isHovered = {word: false, tooltip: false};
+                      v.addEventListener('mouseover', (e) => {
+                          isHovered.word = true;
+                          this._addTooltip(v, tooltip, paliLookup, isHovered, e);
+                      });
+                      v.addEventListener('mouseout', (e) => {
+                          isHovered.word = false;
+                          this._removeTooltip(v, tooltip, isHovered, e);
+                      });
+                      tooltip.addEventListener('mouseover', (e) => {
+                          isHovered.tooltip = true;
+                      });
+                      tooltip.addEventListener('mouseout', (e) => {
+                          isHovered.tooltip = false;
+                          this._removeTooltip(v, tooltip, isHovered, e);
+                      });
+                  })
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
@@ -412,6 +481,7 @@
               setTimeout(() => {
                   if (this.assembledMainText) {
                       this.$.segmented_text_content.innerHTML = this.assembledMainText;
+                      this._addLookupTooltips(this.$.segmented_text_content);
                       this._addParagraphScrollListeners();
                   } else {
                       this._addTextContent();
