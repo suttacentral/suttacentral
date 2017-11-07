@@ -390,10 +390,8 @@
               }
           }
 
-          // if the base html and pali text are fully loaded, implements the correct script for the pali text
-          // either in tooltips or in segments.
           changeScript(paliScript) {
-              if (!this.rootSutta) {
+              if (!this.rootSutta || this.rootSutta.lang !== "pli") {
                   return;
               }
               const segments = this.shadowRoot.querySelectorAll('.original-text');
