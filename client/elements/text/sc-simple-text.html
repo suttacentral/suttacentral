@@ -165,7 +165,6 @@
               }
               this._setParagraphsVisible(this.showParagraphs);
           }
-
           _addParagraphScrollListeners() {
               this.paragraphs.forEach((paragraph) => {
                   const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
@@ -269,18 +268,20 @@
               this.$.simple_text_content.classList.add(`${scriptName}-script`);
               const t = new Transliterator();
               const scriptFunctionName = `to${this._capitalize(scriptName)}`;
-              this.setSimpleTextContentScript(this.shadowRoot.querySelector('#text'), t, scriptFunctionName);
+              const textElement = this.shadowRoot.querySelector('#text').querySelector('article');
+              this.setSimpleTextContentScript(textElement, t, scriptFunctionName);
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
           }
 
           setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
               const childNodes = elem.childNodes;
               if (childNodes && childNodes.length > 0) {
-                  childNodes.forEach(item => {
-                      if (item.innerText) {
+                  childNodes.forEach((item) => {
+                      // Skip elements containing no text and container elements
+                      if (item.innerText && item.nodeName !== 'ARTICLE' && item.nodeName !== 'DIV') {
                           item.innerText = transliterator[scriptFunctionName](item.innerText);
                       }
-                      this.setSimpleTextContentScript(item);
+                      this.setSimpleTextContentScript(item, transliterator, scriptFunctionName);
                   });
               }
           }
