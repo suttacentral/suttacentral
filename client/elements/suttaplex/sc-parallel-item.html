@@ -213,8 +213,11 @@ It is in effect a miniature version of the suttaplex-card
           // returns the relevant header, either the title in the translated language,
           // otherwise in pali or otherwise just the ID.
           _computeTitle() {
-              return this.parallelItem.original_title ? this.parallelItem.original_title :
-                  this.parallelItem.acronym ? this.parallelItem.acronym : this.parallelItem.uid;
+              if (this.parallelItem.original_title) {
+                  return this.parallelItem.original_title;
+              } else {
+                  return this.parallelItem.acronym ? this.parallelItem.acronym : this.parallelItem.uid;
+              }
           }
 
           _computeRootIdVisibility() {
