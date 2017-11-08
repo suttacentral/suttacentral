@@ -361,7 +361,7 @@
                   const newSegment = document.createElement('sc-seg');
                   newSegment.id = key;
                   newSegment.classList.add('original-text');
-                  value = this._wordsIntoSpans(content);
+                  content = this._wordsIntoSpans(content);
                   newSegment.innerHTML = content + ' ';
                   segment.parentNode.insertBefore(newSegment, segment.nextSibling);
               }
