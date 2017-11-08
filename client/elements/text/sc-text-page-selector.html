@@ -46,13 +46,15 @@
     </div>
 
     <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
-                    is-segmented="[[isSegmentedText]]" hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+                    is-segmented="[[isSegmentedText]]" hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]"
+                    lang-iso-code="[[langIsoCode]]">
     </sc-simple-text>
 
-    <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
+    <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]" 
                        translated-sutta="[[translatedSutta]]" is-segmented="[[isSegmentedText]]"
                        root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]"
-                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
+                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]"
+                       lang-iso-code="[[langIsoCode]]">
     </sc-segmented-text>
 
   </template>
