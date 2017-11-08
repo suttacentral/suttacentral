@@ -111,7 +111,7 @@ It is in effect a miniature version of the suttaplex-card
       .no-padding {
         padding: 0;
       }
-      
+
     </style>
 
     <div class="parallel-item d-flex justify-content-space-between" style="flex-wrap: wrap">
@@ -120,9 +120,11 @@ It is in effect a miniature version of the suttaplex-card
         <div class="parallel-item-title vertical-margin-xs">[[_computeTitle()]]</div>
 
         <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
-          <div class$="parallel-item-id [[_computeRootIdVisibility()]]">
-            <div title="SuttaCentral ID">[[_getAcronymOrId(parallelItem)]]</div>
-          </div>
+          <template is="dom-if" if="[[_getAcronymOrId(parallelItem)]]">
+            <div class$="parallel-item-id [[_computeRootIdVisibility()]]">
+              <div title="SuttaCentral ID">[[_getAcronymOrId(parallelItem)]]</div>
+            </div>
+          </template>
 
           <div class="parallel-item-volpages-container">
             <template is="dom-if" if="[[_volpagesAvailable()]]">
@@ -189,7 +191,7 @@ It is in effect a miniature version of the suttaplex-card
                       type: Object
                   },
                   remark: {
-                    type: String
+                      type: String
                   },
                   rootLangMappings: {
                       type: Object,
@@ -211,7 +213,8 @@ It is in effect a miniature version of the suttaplex-card
           // returns the relevant header, either the title in the translated language,
           // otherwise in pali or otherwise just the ID.
           _computeTitle() {
-              return this.parallelItem.original_title ? this.parallelItem.original_title : this.parallelItem.uid;
+              return this.parallelItem.original_title ? this.parallelItem.original_title :
+                  this.parallelItem.acronym ? this.parallelItem.acronym : this.parallelItem.uid;
           }
 
           _computeRootIdVisibility() {
@@ -245,9 +248,10 @@ It is in effect a miniature version of the suttaplex-card
           }
 
           _getAcronymOrId(item) {
-            return item.acronym ? item.acronym : item.uid;
+              if (this._computeTitle() === this.parallelItem.uid) {
+                  return item.acronym ? item.acronym : item.uid;
+              } else return '';
           }
-
       }
 
       customElements.define(SCParallelItem.is, SCParallelItem);
