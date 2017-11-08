@@ -38,6 +38,10 @@
           color: var(--sc-green-600)
       }
 
+      .palceholder {
+          display: none;
+      }
+
     </style>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
@@ -365,14 +369,11 @@
 
           _addTooltip(v, tooltip, paliLookup, isHovered, e) {
             let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+            let explenation = paliLookup.lookupWord(v.innerText);
+            tooltip.innerHTML = explenation;
             setTimeout(() => {
                 if(isHovered.word){
                     v.id = `lookup_target${this.tooltipCounter}`;
-                    let explenation = paliLookup.lookupWord(v.innerText);
-                    tooltip.innerHTML = explenation;
-                    tooltip.animationDelay = 0;
-                    tooltip.manualMode = true;
-                    tooltip.offset = 0;
                     tooltip.for = `lookup_target${this.tooltipCounter}`;
                     this.tooltipCounter++;
                     v.parentNode.insertBefore(tooltip, v.nextSibling);
@@ -387,7 +388,6 @@
                 if(!isHovered.word && !isHovered.tooltip){
                     v.removeAttribute("id");
                     tooltip.hide();
-                    v.parentNode.removeChild(tooltip);
                 }
             }, timeToWait);
           }
@@ -395,7 +395,12 @@
           _addLookupTooltips(textContainer) {
             let paliLookup = this.shadowRoot.querySelector('#pali_lookup');
             textContainer.querySelectorAll('.word').forEach((v) => {
-                      let tooltip = document.createElement('paper-tooltip')
+                      let tooltip = document.createElement('paper-tooltip');
+                      tooltip.animationDelay = 0;
+                      tooltip.manualMode = true;
+                      tooltip.fitToVisibleBounds = true;
+                      tooltip.offset = 0;
+
                       let isHovered = {word: false, tooltip: false};
                       v.addEventListener('mouseover', (e) => {
                           isHovered.word = true;
