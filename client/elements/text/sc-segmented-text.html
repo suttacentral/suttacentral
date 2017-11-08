@@ -322,6 +322,9 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
+              if (!item.classList.contains('textual-info-paragraph')) {
+                  item.classList.add('textual-info-paragraph');
+              }
               item.addEventListener('click', () => {
                   this._scrollToSection(item.id, true, 0);
               });
@@ -428,14 +431,12 @@
           }
 
           // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
-          _reloadInnerHTML(textContent) {
+          _reloadInnerHTML() {
               setTimeout(() => {
                   // This doesn't make sense but hey, it works.
                   this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
-                  this._computeParagraphs();
               }, 2000);
           }
-
 
       }
 
