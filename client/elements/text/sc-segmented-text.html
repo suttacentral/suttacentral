@@ -371,12 +371,12 @@
             let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
             let explenation = paliLookup.lookupWord(v.innerText);
             tooltip.innerHTML = explenation;
+            v.parentNode.insertBefore(tooltip, v.nextSibling);
             setTimeout(() => {
                 if(isHovered.word){
                     v.id = `lookup_target${this.tooltipCounter}`;
                     tooltip.for = `lookup_target${this.tooltipCounter}`;
                     this.tooltipCounter++;
-                    v.parentNode.insertBefore(tooltip, v.nextSibling);
                     tooltip.show();
                 }
             }, timeToWait);
@@ -387,7 +387,7 @@
             setTimeout(() => {
                 if(!isHovered.word && !isHovered.tooltip){
                     v.removeAttribute("id");
-                    tooltip.hide();
+                   tooltip.hide();
                 }
             }, timeToWait);
           }
