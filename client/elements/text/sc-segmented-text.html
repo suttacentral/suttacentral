@@ -121,6 +121,9 @@
                       type: Boolean,
                       value: false
                   },
+                  hidden: {
+                    type: Boolean,
+                  },
                   chosenTextView: {
                       type: String,
                       statePath: 'textOptions.segmentedSuttaTextView',
@@ -143,13 +146,18 @@
                   },
                   isPaliLookupEnabled: {
                       type: Boolean,
-                      value: true
+                      statePath: 'paliLookup.activated',
+                      observer: '_paliLookupStateChanged'
                   },
                   tooltipCounter: {
                       type: Number,
                       value: 0
                   },
                   isLookupAllowed: {
+                      type: Boolean,
+                      value: false
+                  },
+                  spansGenerated: {
                       type: Boolean,
                       value: false
                   }
@@ -404,7 +412,9 @@
                       } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                           this._wordsIntoSpans('.original-text');
                       }
-                      this._addParagraphScrollListeners();
+                      if (this.paragraphs && this.showParagraphs) {
+                        this._addParagraphScrollListeners();
+                      }
                   } else {
                       this._addTextContent();
                   }
@@ -476,16 +486,21 @@
 
           // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
           _reloadInnerHTML(textContent) {
+              this.isLookupAllowed = false;
               setTimeout(() => {
                   // This doesn't make sense but hey, it works.
                   this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
                   this._addLookupTooltips(this.$.segmented_text_content);
+                  this.isLookupAllowed = true;
 
                   this._computeParagraphs();
               }, 2000);
           }
-
+          // Lookup word start
           _wordsIntoSpans(selector){
+            if(!this.isPaliLookupEnabled){
+                return;
+            }
             let segments = this.shadowRoot.querySelectorAll(selector);
             let self = this;
             function process_async(items, process) {
@@ -559,7 +574,7 @@
                     states.isTooltipShowed = true;
                 }
             }, timeToWait);
-          }
+            }
 
           _removeTooltip(v, tooltip, states, e) {
             let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
@@ -575,6 +590,9 @@
 
           _addLookupTooltips(textContainer, self) {
             self = self || this;
+            if(!self.isPaliLookupEnabled){
+                return;
+            }
             let paliLookup = self.shadowRoot.querySelector('#pali_lookup');
             textContainer.querySelectorAll('.word').forEach((v) => {
                 let tooltip = document.createElement('paper-tooltip');
@@ -587,10 +605,10 @@
                             isTooltipHovered: false,
                             isTooltipShowed: false};
                 v.addEventListener('mouseover', (e) => {
-                    if(this.isLookupAllowed){
-                    v.style.color = '#43A047'; // It can not be in class because of some strange bug in some cases.
-                    states.isWordHovered = true;
-                    self._addTooltip(v, tooltip, paliLookup, states, e);
+                    if(this.isPaliLookupEnabled && this.isLookupAllowed){
+                        v.style.color = '#43A047'; // It can not be in class because of some strange bug in some cases.
+                        states.isWordHovered = true;
+                        self._addTooltip(v, tooltip, paliLookup, states, e);
                     }
                 });
                 v.addEventListener('mouseout', (e) => {
@@ -611,6 +629,26 @@
             })
           }
 
+          _paliLookupStateChanged(){
+              if(this.hidden){
+                  return;
+              }
+              if(this.isPaliLookupEnabled){
+                if(!this.spansGenerated){
+                    if (this.translatedSutta && 
+                    (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
+                        this._wordsIntoSpans('.translated-text');
+                    } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
+                        if(this.shadowRoot.querySelector('.original-text')){
+                            this._wordsIntoSpans('.original-text');
+                        } else {
+                            this._wordsIntoSpans('.translated-text');
+                        }
+                    }
+                }
+              }
+          }
+        // Lookup word end
       }
 
       customElements.define(SCSegmentedText.is, SCSegmentedText);

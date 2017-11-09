@@ -13,8 +13,6 @@
 <link rel="import" href="/bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="/bower_components/neon-animation/web-animations.html">
 
-<link rel="import" href="/elements/addons/sc-dictionary-lookup.html">
-
 <!--
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
 type of view for segmented pages (showing pali next to translated text), lookup tools and publication details .
@@ -150,17 +148,13 @@ Issues:
         <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid
           only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="Lookup">
+        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="plali_lookup_menu">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliLookupSelected}}">
             <template is="dom-repeat" items="[[paliLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
-        <template is="dom-if" if="[[_dictionaryLookup(paliLookupSelected)]]">
-          <sc-dictionary-lookup
-              input-dictionary="[[_getDictionary(paliLookupArray,paliLookupSelected)]]"></sc-dictionary-lookup>
-        </template>
       </div>
 
       <div class="dialogue-section">
@@ -175,10 +169,6 @@ Issues:
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
-        <template is="dom-if" if="[[_dictionaryLookup(chineseLookupSelected)]]">
-          <sc-dictionary-lookup
-              input-dictionary="[[_getDictionary(chineseLookupArray,chineseLookupSelected)]]"></sc-dictionary-lookup>
-        </template>
       </div>
 
       <div class="dialogue-section">
@@ -230,13 +220,34 @@ Issues:
                           {
                               'dict': 'pli2es',
                               'language': 'Pali → Spanish'
-                          }
+                          },
+                          {
+                              'dict': 'pli2de',
+                              'language': 'Pali → Deutsch'
+                          },
+                          {
+                              'dict': 'pli2zh',
+                              'language': 'Pali → Chinese'
+                          },
+                          {
+                              'dict': 'pli2pt',
+                              'language': 'Pali → Portugues'
+                          },
+                          {
+                              'dict': 'pli2id',
+                              'language': 'Pali → Bahasa Indonesia'
+                          },
+                          {
+                              'dict': 'pli2nl',
+                              'language': 'Pali → Nederlands'
+                          },
                       ]
                   },
                   // pali to language lookup selected number.
                   paliLookupSelected: {
                       type: Number,
-                      value: 0
+                      value: 0,
+                      observer: '_paliLookupChanged'
                   },
                   // possible values for the chinese to language lookup.
                   chineseLookupArray: {
@@ -344,8 +355,21 @@ Issues:
                           type: 'CHOOSE_PALI_TEXT_SCRIPT',
                           script: script
                       }
+                  },
+                  activatePaliLookup(activated, targetLanguage) {
+                      return {
+                          type: 'ACTIVATE_PALI_LOOKUP',
+                          targetLanguage: targetLanguage,
+                          activated: activated
+                      }
                   }
               }
+          }
+
+          _paliLookupChanged(paliLookupSelected) {
+              const target = this.paliLookupArray[paliLookupSelected];
+              const targetLanguage = target.dict.split('2')[1];
+              this.dispatch('activatePaliLookup', Boolean(paliLookupSelected), targetLanguage);
           }
 
           _textualInfoToggleStateChanged() {

@@ -32,6 +32,10 @@
         margin-top: 10vh;
       }
 
+      h1 {  /* it is here becouse of the difference on how h1 calculates margin for bare text and text in spans */
+        -webkit-margin-before: 12px;
+      }
+
     </style>
 
     <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[assembledText]]"
@@ -78,7 +82,7 @@
                       type: Array,
                       statePath: 'textOptions.paragraphDescriptions'
                   },
-                  title: {
+                  suttaTitlte: {
                       type: String
                   },
                   author: {
@@ -106,13 +110,22 @@
                       type: String
                   },
                   isPaliLookupEnabled: {
-                      type: Boolean,
-                      value: true
+                    type: Boolean,
+                    statePath: 'paliLookup.activated',
+                    observer: '_paliLookupStateChanged'
                   },
                   tooltipCounter: {
                       type: Number,
                       value: 0
-                  }
+                  },
+                  isLookupAllowed: {
+                      type: Boolean,
+                      value: false
+                  },
+                  spansGenerated: {
+                      type: Boolean,
+                      value: false
+                }
               }
           }
 
@@ -155,7 +168,7 @@
               }
               this.author = this.sutta.author;
               this.lang = this.sutta.lang;
-              this.title = this.sutta.title;
+              this.suttaTitle = this.sutta.title;
               this.assembledText = this.sutta.text;
               this._reloadInnerHTML();
           }
@@ -165,7 +178,7 @@
                   return;
               }
               this.dispatch('changeSuttaMetaText', this._computeMeta());
-              const title = this.author ? `${this.title} – ${this.author}` : `${this.title}`;
+              const title = this.author ? `${this.suttaTitle} – ${this.author}` : `${this.suttaTitle}`;
               this.dispatch('changeToolbarTitle', title);
           }
 
@@ -240,7 +253,9 @@
               setTimeout(() => {
                   this.shadowRoot.querySelector('#simple_text_content').innerHTML = this.assembledText;
                   this._wordsIntoSpans('#simple_text_content');
-                  this._addParagraphScrollListeners();
+                  if (this.paragraphs && this.showParagraphs) {
+                    this._addParagraphScrollListeners();
+                  } 
                   this.isTextViewHidden = false;
               }, 200);
           }
@@ -329,8 +344,11 @@
                   this._computeParagraphs();
               }, 2000);
           }
-
+          // Lookup word start
           _wordsIntoSpans(selector){
+            if(!this.isPaliLookupEnabled){
+                return;
+            }
             let segments = this.shadowRoot.querySelectorAll(selector);
             let self = this;
             function process_async(items, process) {
@@ -404,7 +422,7 @@
                     states.isTooltipShowed = true;
                 }
             }, timeToWait);
-          }
+            }
 
           _removeTooltip(v, tooltip, states, e) {
             let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
@@ -420,6 +438,9 @@
 
           _addLookupTooltips(textContainer, self) {
             self = self || this;
+            if(!self.isPaliLookupEnabled){
+                return;
+            }
             let paliLookup = self.shadowRoot.querySelector('#pali_lookup');
             textContainer.querySelectorAll('.word').forEach((v) => {
                 let tooltip = document.createElement('paper-tooltip');
@@ -432,10 +453,10 @@
                             isTooltipHovered: false,
                             isTooltipShowed: false};
                 v.addEventListener('mouseover', (e) => {
-                    if(this.isLookupAllowed){
-                    v.style.color = '#43A047'; // It can not be in class because of some strange bug in some cases.
-                    states.isWordHovered = true;
-                    self._addTooltip(v, tooltip, paliLookup, states, e);
+                    if(this.isPaliLookupEnabled && this.isLookupAllowed){
+                        v.style.color = '#43A047'; // It can not be in class because of some strange bug in some cases.
+                        states.isWordHovered = true;
+                        self._addTooltip(v, tooltip, paliLookup, states, e);
                     }
                 });
                 v.addEventListener('mouseout', (e) => {
@@ -456,7 +477,19 @@
             })
           }
 
-
+          _paliLookupStateChanged(){
+              if(this.hidden){
+                  return;
+              }
+              if(this.isPaliLookupEnabled){
+                if(!this.spansGenerated){
+                    if(this.lang === 'pli' || this.lang === 'lzh') {
+                        this._wordsIntoSpans('.sc-simple-text');
+                    } 
+                }
+              }
+          }
+        // Lookup word end
       }
 
       customElements.define(SCSimpleText.is, SCSimpleText);

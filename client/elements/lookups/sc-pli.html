@@ -4,8 +4,7 @@
 <dom-module id="sc-pali-lookup">
   <template>
         <iron-ajax
-        auto
-        url="http://127.0.0.1/api/dictionaries/lookup?from=pli&to=en"
+        url="[[_computeUrl()]]"
         id="ajax"
         handle-as="json"
         loading="{{ loadingDict }}"
@@ -14,7 +13,7 @@
   </template>
 
   <script>
-      class SCPaliLookup extends Polymer.Element {
+      class SCPaliLookup extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-pali-lookup';
           } 
@@ -38,11 +37,26 @@
                   },
                   isTi: {
                       type: Boolean
+                  },
+                  loadedLanguage: {
+                      type: String
+                  },
+                  toLang: {
+                      type: String,
+                      statePath: 'paliLookup.targetLanguage',
+                      observer: '_targetLanguageChanged'
                   }
               }
           }
 
-          init() {
+          read() {
+              super.ready();
+              this._targetLanguageChanged();
+          }
+
+          getNewDict() {
+              this.$.ajax.url = this._computeUrl();
+              this.loadedLanguage = this.toLang;
               return this.$.ajax.generateRequest();
           }
 
@@ -59,6 +73,16 @@
               let allMatches = this._lookupWord(word);
               meaning = this._toHtml(allMatches, word);
               return meaning;
+          }
+
+          _computeUrl() {
+              return `http://127.0.0.1/api/dictionaries/lookup?from=pli&to=${this.toLang}`;
+          }
+
+          _targetLanguageChanged() {
+              if(!(typeof this.toLang === 'undefined') && this.toLang !== this.loadedLanguage){
+                this.getNewDict();
+              }
           }
 
           _toHtml(allMatches, original) {

@@ -28,6 +28,10 @@
             paragraphDescriptions: [],
             segmentedSuttaTextView: 'none',
             script: 'latin'
+        },
+        paliLookup: {
+            activated: false,
+            targetLanguage: 'en'
         }
     };
 
@@ -63,6 +67,10 @@
             case 'CHOOSE_PALI_TEXT_SCRIPT':
                 return Object.assign({}, state,
                     { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
+            case 'ACTIVATE_PALI_LOOKUP':
+                return Object.assign({}, state.paliLookup,
+                    { paliLookup: Object.assign({}, state.paliLookup, 
+                                            {activated: action.activated, targetLanguage: action.targetLanguage }) });
             default:
                 return state;
         }
