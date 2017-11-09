@@ -51,28 +51,29 @@
       .nav-wheel-icon {
         @apply --sc-serif-font;
         color: white;
+        margin-top: 5px;
+        margin-left: var(--size-md);
         font-size: 45px;
         display: inline-block;
-        vertical-align: middle;
+        vertical-align: sub;
       }
 
       .nav-home-title {
         @apply --sc-serif-font;
         @apply --sc-mixed-small-caps;
-        font-size: calc(24px * var(--sc-skolar-font-scale));
+        @apply --sc-skolar-font-size-static-subtitle;
+        background-color: var(--paper-grey-600);
+        padding-bottom: var(--size-xs);
+        color: white;
         font-weight: normal;
-        color: var(--paper-indigo-500);
-        background-color: var(--paper-amber-400);
-        border-bottom: 4px solid var(--paper-deep-orange-900);
         margin: 0;
-        padding: 0 0 0 var(--size-md);
         white-space: nowrap;
         height: 60px;
         line-height: 1.4;
       }
 
       .nav-home-link {
-        color: var(--paper-indigo-500);
+        color: white;
         text-decoration: none;
       }
 
@@ -133,7 +134,7 @@
     </style>
 
     <iron-meta id="meta" key="API_ROOT" value="{{_getApiUrl()}}"></iron-meta>
-    
+
 
     <iron-media-query query="(min-width: 992px)" query-matches="{{wideScreen}}"></iron-media-query>
 
@@ -307,8 +308,8 @@
           }
 
           _getApiUrl() {
-            let currentUrl = window.location;
-            return `${currentUrl.protocol}//${currentUrl.host}/api`;
+              let currentUrl = window.location;
+              return `${currentUrl.protocol}//${currentUrl.host}/api`;
           }
       }
 
