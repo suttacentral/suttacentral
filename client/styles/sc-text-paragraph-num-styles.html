@@ -436,17 +436,22 @@
       .textual-info-paragraph {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-xs;
+        margin-right: var(--size-sm);
+        padding: var(--size-xs) var(--size-sm) var(--size-xs) var(--size-sm);
         color: var(--secondary-text-color);
+        background-color: var(--paper-grey-300);
         transition: 250ms;
         transition-property: opacity;
         opacity: 0;
+        border-radius: 2px;
       }
 
-      @media screen and (min-width: 1460px) {
+      @media screen and (min-width: 1200px) {
         .textual-info-paragraph {
-          margin: 0 -6em 0 0;
+          margin-right: -6em;
           float: right;
           clear: right;
+          background-color: transparent;
         }
       }
 
