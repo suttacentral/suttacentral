@@ -24,8 +24,8 @@
       }
 
       .html-text-content.line-by-line .original-text {
-        padding-bottom: 20px;
         color: var(--secondary-text-color);
+        padding-bottom: 20px;
       }
 
       .html-text-content aside {
@@ -38,9 +38,9 @@
       }
 
       .side-by-side .translated-text {
+        padding-right: var(--size-md);
         display: inline-block;
         width: 47%;
-        padding-right: var(--size-md);
         vertical-align: text-top;
       }
 
@@ -68,7 +68,7 @@
         @apply --sc-sans-font;
         @apply --shadow-elevation-6dp;
         --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--paper-grey-700);
+        --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
           @apply --sc-skolar-font-size-xs;
           line-height: var(--size-md);
