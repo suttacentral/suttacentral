@@ -70,6 +70,10 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
         border-top: 1px solid rgba(0, 0, 0, 0.12);
       }
 
+      .grey-icon {
+        color: var(--sc-disabled-text-color);
+      }
+
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -102,7 +106,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               </paper-button>
             </td>
             <td class="parallels-relation-cell">
-              <iron-icon icon$="[[_getFirstParallelIcon(rootId)]]"
+              <iron-icon class="grey-icon" icon$="[[_getFirstParallelIcon(rootId)]]"
                          title$="[[_getFirstParallelIconTitle(rootId)]]"></iron-icon>
             </td>
             <td class="parallels-parallel-cell paper-lift white-bg">
@@ -114,7 +118,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           <template is="dom-repeat" items="[[_getOtherParallels(rootId)]]" as="item">
             <tr>
               <td class="parallels-relation-cell">
-                <iron-icon icon="[[_getParallelIcon(item)]]" title="[[_computeIconTitle(item)]]"></iron-icon>
+                <iron-icon class="grey-icon" icon="[[_getParallelIcon(item)]]" title="[[_computeIconTitle(item)]]"></iron-icon>
               </td>
               <td class="parallels-parallel-cell paper-lift white-bg">
                 <sc-parallel-item parallel-item="[[item.to]]" remark="[[item.remark]]"></sc-parallel-item>
