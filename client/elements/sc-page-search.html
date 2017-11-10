@@ -36,10 +36,10 @@ than ten results in total, a dropdown selection menu appears at the top.
       }
 
       .search-result-head {
+        color: var(--sc-secondary-text-color);
+        padding: 0 var(--size-md);
         display: flex;
         justify-content: space-between;
-        padding: 0 var(--size-md);
-        color: var(--sc-secondary-text-color);
       }
 
       .search-result-header {
@@ -56,8 +56,8 @@ than ten results in total, a dropdown selection menu appears at the top.
       }
 
       .search-result-item {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
         @apply --layout-horizontal;
-        border-bottom: 1px solid var(--paper-grey-300);
       }
 
       .search-result-item:focus {
@@ -82,8 +82,8 @@ than ten results in total, a dropdown selection menu appears at the top.
         @apply --paper-font-body2;
         @apply --sc-sans-font;
         color: var(--sc-secondary-text-color);
-        white-space: nowrap;
         margin: 0 0 var(--size-md);
+        white-space: nowrap;
         overflow: hidden;
       }
 

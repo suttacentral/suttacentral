@@ -27,7 +27,7 @@ Issues:
     <style is="custom-style" include="sc-dict-styles">
       .divisioncontent, .related-terms {
         @apply --sc-sans-font;
-        padding: 72px 0;
+        padding: var(--size-l) 0;
       }
 
       main {
@@ -43,29 +43,28 @@ Issues:
 
       h1 {
         @apply --paper-font-display1;
+        color: var(--sc-secondary-text-color);
         display: inline-block;
         margin: 0 0 0 -2px;
-        color: var(--sc-secondary-text-color);
       }
 
       .result-term {
+        @apply --sc-serif-font;
         font-weight: bold;
         color: var(--sc-primary-accent-color);
-        @apply --sc-serif-font;
       }
 
       .termsbutton {
-        color: var(--disabled-text-color);
+        color: var(--sc-disabled-text-color);
       }
 
       .related-terms {
-        text-align: left;
         margin: 0 var(--size-md) 48px 0;
+        text-align: left;
       }
 
       .related-terms ul {
-
-        margin: 8px 0 0 0;
+        margin: var(--size-sm) 0 0 0;
         display: block;
         list-style: none;
         padding: 0;
@@ -80,7 +79,6 @@ Issues:
 
       .entries {
         padding: 0;
-
       }
 
       .related-terms li {
@@ -88,10 +86,10 @@ Issues:
       }
 
       .related-terms a {
+        color: var(--sc-primary-accent-color);
+        padding: var(--size-xs) 0 var(--size-xs) var(--size-md);
+        margin: var(--size-xs) 0;
         text-decoration: none;
-        color: var(--paper-green-700);
-        padding: 4px 0px 4px var(--size-md);
-        margin: 4px 0;
         display: inline-block;
       }
 
@@ -108,7 +106,7 @@ Issues:
       }
 
       .book-entry {
-        border-bottom: 1px solid var(--paper-grey-300);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
       }
 
       paper-spinner-lite {

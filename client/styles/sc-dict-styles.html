@@ -29,7 +29,7 @@
 
       .case {
         @apply --sc-all-small-caps;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         @apply --sc-sans-font;
         display: block;
         @apply --paper-font-body2;
@@ -40,7 +40,7 @@
       dd .ref {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-s;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         background-color: var(--paper-grey-200);
         border-radius: 2px;
         padding: 4px 8px;
@@ -51,7 +51,7 @@
       }
 
       dd .eti {
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         @apply --paper-font-body1
       }
 
@@ -71,13 +71,13 @@
 
       dd .inline-li {
         @apply --sc-sans-font;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         font-weight: bold;
         padding: 0 0.5em;
       }
 
       dd .square {
-        color: var(--disabled-text-color);
+        color: var(--sc-disabled-text-color);
       }
 
       dd ol {
@@ -149,19 +149,18 @@
       }
 
       .compounds > li::before {
+        color: var(--sc-disabled-text-color);
         content: "◦";
-        color: var(--disabled-text-color);
         margin-left: -12px;
-
       }
 
       dd li::before {
+        @apply --sc-sans-font;
+        color: var(--sc-secondary-text-color);
         font-weight: bold;
         position: absolute;
         text-align: right;
         margin-left: -32px;
-        @apply --sc-sans-font;
-        color: var(--secondary-text-color);
       }
 
       .google-maps {
@@ -191,19 +190,19 @@
       dd a {
         color: inherit;
         text-decoration: none;
-        background: linear-gradient(to top, rgba(0, 230, 118, 0) 1.5px, rgba(0, 230, 118, 1) 1.5px, rgba(0, 230, 118, 1) 2.5px, rgba(0, 230, 118, 0) 2.5px)
+        background: linear-gradient(to top, rgba(0, 230, 118, 0) 1.5px, rgba(0, 230, 118, 1) 1.5px, rgba(0, 230, 118, 1) 2.5px, rgba(0, 230, 118, 0) 2.5px);
       }
 
       dd a:hover {
-        background: linear-gradient(to top, rgba(0, 230, 118, 0) 1px, rgba(0, 230, 118, 1) 1px, rgba(0, 230, 118, 1) 3px, rgba(0, 230, 118, 0) 3px)
+        background: linear-gradient(to top, rgba(0, 230, 118, 0) 1px, rgba(0, 230, 118, 1) 1px, rgba(0, 230, 118, 1) 3px, rgba(0, 230, 118, 0) 3px);
       }
 
       dd a:active {
-        background-color: var(--paper-green-300)
+        background-color: var(--sc-paper-tooltip-color);
       }
 
       dd a:visited {
-        background: linear-gradient(to top, rgba(102, 187, 106, 0) 1px, rgba(102, 187, 106, 1) 1px, rgba(102, 187, 106, 1) 3px, rgba(102, 187, 106, 0) 3px)
+        background: linear-gradient(to top, rgba(102, 187, 106, 0) 1px, rgba(102, 187, 106, 1) 1px, rgba(102, 187, 106, 1) 3px, rgba(102, 187, 106, 0) 3px);
       }
     </style>
   </template>
