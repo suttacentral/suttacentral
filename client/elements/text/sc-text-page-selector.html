@@ -114,12 +114,6 @@
                           title: title
                       };
                   },
-                  changeToolbarMode(mode) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_MODE',
-                          mode: mode
-                      };
-                  },
                   downloadSuttaText(text) {
                       return {
                           type: 'DOWNLOAD_SUTTA_TEXT',
@@ -136,7 +130,6 @@
               this.setProperties();
               this.shadowRoot.querySelector('#sutta_text_options')._closeSuttaplex();
               this.dispatch('downloadSuttaText', this.responseData);
-              this.changeToolbarMode();
           }
 
           setProperties() {
@@ -146,15 +139,6 @@
               this.rootSutta = this.responseData.root_text;
               this.markup = this.responseData.markup;
               this.author = this.responseData.translation.author;
-          }
-
-          changeToolbarMode() {
-              if (this.isSegmentedText) {
-                  this.dispatch('changeToolbarMode', 'segmented-mode');
-              }
-              else {
-                  this.dispatch('changeToolbarMode', 'text-mode');
-              }
           }
 
           // The stopRequests variable exists so that we don't make 3 consequent requests in case the

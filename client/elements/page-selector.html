@@ -45,7 +45,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         white-space: nowrap;
       }
 
-      .list-mode .toolbar-header, .text-mode .toolbar-header, .segmented-mode .toolbar-header {
+      .list-mode .toolbar-header, .text-mode .toolbar-header, .toolbar-header {
         @apply --shadow-elevation-8dp;
       }
 
@@ -159,7 +159,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   },
                   allIsoCodes: {
                       type: Array,
-                      value: [ 'af', 'ar', 'ca', 'cs', 'lzh', 'de', 'en', 'es', 'fa', 'fr', 'pgd', 'he', 'id', 'it',
+                      value: ['af', 'ar', 'ca', 'cs', 'lzh', 'de', 'en', 'es', 'fa', 'fr', 'pgd', 'he', 'id', 'it',
                           'la', 'hu', 'nl', 'no', 'ot', 'pli', 'pl', 'pt', 'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct',
                           'xto', 'vn', 'uig', 'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh']
                   },
@@ -256,6 +256,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   this.set('suttaId', suttaRouteParams.suttaId);
                   this.set('langIsoCode', suttaRouteParams.langIsoCode);
                   this.set('suttaAuthor', suttaRouteParams.authorName);
+                  this.dispatch('changeToolbarMode', 'text-mode');
                   this.dispatch('changeRoute', Object.assign({}, this.route, suttaRouteParams));
               }
               else {
