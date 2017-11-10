@@ -111,9 +111,6 @@
                       statePath: 'textOptions.script',
                       observer: 'changeScript'
                   },
-                  isSegmented: {
-                      type: Boolean
-                  },
                   markup: {
                       type: String,
                       observer: '_updateView'
@@ -148,7 +145,7 @@
           }
 
           _updateView() {
-              if (!this.isSegmented || this.isSegmented === undefined || !this.markup) {
+              if (!this.markup) {
                   return;
               }
               this._resetViewOptions();
@@ -209,7 +206,7 @@
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
           _setViewOptions() {
-              if (!this.isSegmented || !this.markup || !this.translatedSutta) {
+              if (!this.markup || !this.translatedSutta) {
                   return;
               }
               const textContent = this.$.segmented_text_content;
