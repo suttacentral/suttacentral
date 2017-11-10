@@ -27,7 +27,7 @@ Issues:
     <style is="custom-style" include="sc-dict-styles">
       .divisioncontent, .related-terms {
         @apply --sc-sans-font;
-        padding: 72px 0;
+        padding: var(--sc-size-xxl) 0;
       }
 
       main {
@@ -43,29 +43,28 @@ Issues:
 
       h1 {
         @apply --paper-font-display1;
+        color: var(--sc-secondary-text-color);
         display: inline-block;
         margin: 0 0 0 -2px;
-        color: var(--secondary-text-color);
       }
 
       .result-term {
-        font-weight: bold;
-        color: var(--sc-green-600);
         @apply --sc-serif-font;
+        font-weight: bold;
+        color: var(--sc-primary-accent-color);
       }
 
       .termsbutton {
-        color: var(--disabled-text-color);
+        color: var(--sc-disabled-text-color);
       }
 
       .related-terms {
+        margin: 0 var(--sc-size-md) var(--sc-size-xl) 0;
         text-align: left;
-        margin: 0 var(--size-md) 48px 0;
       }
 
       .related-terms ul {
-
-        margin: 8px 0 0 0;
+        margin: var(--sc-size-sm) 0 0 0;
         display: block;
         list-style: none;
         padding: 0;
@@ -73,14 +72,13 @@ Issues:
 
       .related-terms h3 {
         @apply --paper-font-body1;
-        color: var(--secondary-text-color);
-        margin: 24px 0 0 var(--size-md);
+        color: var(--sc-secondary-text-color);
+        margin: var(--sc-size-md-larger) 0 0 var(--sc-size-md);
         font-weight: bold;
       }
 
       .entries {
         padding: 0;
-
       }
 
       .related-terms li {
@@ -88,31 +86,31 @@ Issues:
       }
 
       .related-terms a {
+        color: var(--sc-primary-accent-color);
+        padding: var(--sc-size-xs) 0 var(--sc-size-xs) var(--sc-size-md);
+        margin: var(--sc-size-xs) 0;
         text-decoration: none;
-        color: var(--paper-green-700);
-        padding: 4px 0px 4px var(--size-md);
-        margin: 4px 0;
         display: inline-block;
       }
 
       .related-terms em {
-        color: var(--primary-text-color);
+        color: var(--sc-primary-text-color);
       }
 
       .source {
         @apply --paper-font-body1;
-        color: var(--secondary-text-color);
-        margin: 8px 0 var(--size-md);
+        color: var(--sc-secondary-text-color);
+        margin: var(--sc-size-sm) 0 var(--sc-size-md);
         font-weight: bold;
         @apply --sc-serif-font;
       }
 
       .book-entry {
-        border-bottom: 1px solid var(--paper-grey-300);
+        border-bottom: var(--sc-border);
       }
 
       paper-spinner-lite {
-        --paper-spinner-color: var(--sc-gold-500);
+        --paper-spinner-color: var(--sc-primary-color);
         left: 50%;
         top: 50px;
       }

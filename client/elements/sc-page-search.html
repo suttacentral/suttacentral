@@ -22,7 +22,7 @@ than ten results in total, a dropdown selection menu appears at the top.
     <style>
 
       #search_result_list {
-        padding: 28px 0 var(--size-md);
+        padding: 28px 0 var(--sc-size-md);
       }
 
       .search-results-container {
@@ -36,10 +36,10 @@ than ten results in total, a dropdown selection menu appears at the top.
       }
 
       .search-result-head {
+        color: var(--sc-secondary-text-color);
+        padding: 0 var(--sc-size-md);
         display: flex;
         justify-content: space-between;
-        padding: 0 var(--size-md);
-        color: var(--secondary-text-color);
       }
 
       .search-result-header {
@@ -52,12 +52,12 @@ than ten results in total, a dropdown selection menu appears at the top.
       .search-result-term {
         @apply --sc-serif-font;
         font-weight: bold;
-        color: var(--sc-green-600);
+        color: var(--sc-primary-accent-color);
       }
 
       .search-result-item {
+        border-bottom: var(--sc-border);
         @apply --layout-horizontal;
-        border-bottom: 1px solid var(--paper-grey-300);
       }
 
       .search-result-item:focus {
@@ -68,22 +68,22 @@ than ten results in total, a dropdown selection menu appears at the top.
       .padded-container {
         @apply --layout-flex;
         @apply --layout-vertical;
-        padding: 0 var(--size-md);
+        padding: 0 var(--sc-size-md);
       }
 
       .search-result-title {
         @apply --paper-font-headline;
         @apply --sc-sans-font;
-        color: var(--sc-green-600);
+        color: var(--sc-primary-accent-color);
         margin: 22px 0 0 0;
       }
 
       .search-result-division {
         @apply --paper-font-body2;
         @apply --sc-sans-font;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
+        margin: 0 0 var(--sc-size-md);
         white-space: nowrap;
-        margin: 0 0 var(--size-md);
         overflow: hidden;
       }
 
@@ -102,7 +102,7 @@ than ten results in total, a dropdown selection menu appears at the top.
       }
 
       .paper-spinner {
-        --paper-spinner-color: var(--sc-gold-500);
+        --paper-spinner-color: var(--sc-primary-color);
         left: 50%;
         top: 50px;
       }

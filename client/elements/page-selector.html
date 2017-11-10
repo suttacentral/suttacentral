@@ -31,9 +31,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
   <template>
     <style>
       :host {
+        --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
         display: block;
         box-sizing: border-box;
-        --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
       }
 
       .container {
@@ -41,7 +41,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       }
 
       .toolbar-header, #sc_toolbar {
-        background-color: var(--sc-gold-500);
+        background-color: var(--sc-primary-color);
         white-space: nowrap;
       }
 
@@ -50,12 +50,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       }
 
       .list-mode #sc_toolbar, .list-mode .toolbar-header {
-        background-color: var(--paper-deep-orange-900);
+        background-color: var(--sc-primary-accent-color);
       }
 
       .search-mode #sc_toolbar, .search-mode .toolbar-header,
       .dictionary-mode #sc_toolbar, .dictionary-mode .toolbar-header {
-        background-color: var(--sc-green-600);
+        background-color: var(--sc-primary-accent-color);
       }
 
       #toolbar_title_box {
@@ -80,7 +80,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
       @media screen and (max-width: 450px) {
         #toolbar_title {
-          font-size: calc(var(--size-md) * var(--sc-skolar-font-scale));
+          font-size: calc(var(--sc-size-md) * var(--sc-skolar-font-scale));
         }
       }
 

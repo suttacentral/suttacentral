@@ -24,11 +24,11 @@
 
       h1 {
         @apply --paper-font-display1;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       h2, h3, h4, h5, h6 {
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       a {
@@ -41,10 +41,6 @@
         background: linear-gradient(to top, rgba(223, 153, 10, 0) 1px, rgba(223, 153, 10, 1) 1px, rgba(223, 153, 10, 1) 3px, rgba(223, 153, 10, 0) 3px);
       }
 
-      a:active {
-        background-color: var(--paper-amber-300);
-      }
-
       a:visited {
         background: linear-gradient(to top, rgba(161, 136, 127, 0) 1px, rgba(161, 136, 127, 1) 1px, rgba(161, 136, 127, 1) 3px, rgba(161, 136, 127, 0) 3px);
       }
@@ -55,15 +51,15 @@
       }
 
       table {
-        margin: 48px auto;
+        margin: var(--sc-size-xl) auto;
         border-collapse: collapse;
       }
 
       td {
-        padding: 12px 24px 12px 24px;
+        padding: 12px var(--sc-size-md-larger) 12px var(--sc-size-md-larger);
         vertical-align: text-top;
-        border-top: 1px solid #e0e0e0;
-        border-bottom: 1px solid #e0e0e0;
+        border-top: 1px solid var(--sc-background-light-grey);
+        border-bottom: 1px solid var(--sc-background-light-grey);
       }
 
       td:first-child {
@@ -71,11 +67,11 @@
       }
 
       li {
-        padding: 4px 0;
+        padding: var(--sc-size-xs) 0;
       }
 
       ul {
-        padding-left: 48px;
+        padding-left: var(--sc-size-xl);
       }
     </style>
   </template>

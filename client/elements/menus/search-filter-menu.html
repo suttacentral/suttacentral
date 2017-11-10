@@ -13,25 +13,31 @@ The two necessary conditions are:
 -->
 <dom-module id="sc-search-filter-menu" attributes="searchView">
   <template>
-    <style is="custom-style">
+    <style>
       :host {
-        --primary-color: var(--sc-green-600);
+        --primary-color: var(--sc-primary-accent-color);
       }
 
-      paper-dropdown-menu, paper-listbox {
+      .filter-dropdown, .filter-menu-items {
         width: 150px;
       }
 
-      paper-item {
+      .filter-menu-item {
+        cursor: pointer;
         @apply --sc-sans-font;
       }
+
+      .filter-menu-item:hover {
+        background-color: var(--sc-tertiary-background-color);
+      }
+
     </style>
 
-    <paper-dropdown-menu class="custom" title="Select search scope">
-      <paper-listbox slot="dropdown-content" selected="{{searchSelected}}">
-        <paper-item id="all">All</paper-item>
-        <paper-item id="root-texts">Root texts</paper-item>
-        <paper-item id="translations">Translations</paper-item>
+    <paper-dropdown-menu class="filter-dropdown" title="Select search scope">
+      <paper-listbox class="filter-menu-items" slot="dropdown-content" selected="{{searchSelected}}">
+        <paper-item class="filter-menu-item" id="all">All</paper-item>
+        <paper-item class="filter-menu-item" id="root-texts">Root texts</paper-item>
+        <paper-item class="filter-menu-item" id="translations">Translations</paper-item>
         <!-- TODO add dictionaries category -->
         <!--<paper-item id="dictionaries">Dictionaries</paper-item>-->
       </paper-listbox>
