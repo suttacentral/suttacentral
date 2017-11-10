@@ -3,7 +3,7 @@
     <style>
 
       dl {
-        margin-top: 8px;
+        margin-top: var(--sc-size-sm);
       }
 
       dd {
@@ -41,9 +41,9 @@
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-s;
         color: var(--sc-secondary-text-color);
-        background-color: var(--paper-grey-200);
-        border-radius: 2px;
-        padding: 4px 8px;
+        background-color: var(--sc-tertiary-background-color);
+        border-radius: var(--sc-size-xxs);
+        padding: var(--sc-size-xs) var(--sc-size-sm);
       }
 
       dd .author {
@@ -65,8 +65,8 @@
         background-color: var(--sc-paper-tooltip-color);
         color: white;
         font-weight: bold;
-        border-radius: 2px;
-        padding: 4px 8px;
+        border-radius: var(--sc-size-xxs);
+        padding: var(--sc-size-xs) var(--sc-size-sm);
       }
 
       dd .inline-li {
@@ -112,7 +112,7 @@
 
       dd ol li {
         counter-increment: step-counter;
-        margin: 4px 0 0 0;
+        margin: var(--sc-size-xs) 0 0 0;
 
       }
 
