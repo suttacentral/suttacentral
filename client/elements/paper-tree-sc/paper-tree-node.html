@@ -30,10 +30,10 @@
       }
 
       .paper-tree-link {
+        color: var(--sc-primary-accent-color);
         text-transform: none;
         letter-spacing: 0;
         text-decoration: none;
-        color: var(--sc-primary-accent-color);
         cursor: pointer;
       }
 
@@ -45,19 +45,19 @@
       }
 
       .paper-tree-icon {
-        margin-left: 4px;
+        margin-left: var(--size-xs);
       }
 
       .data-lang {
         @apply --sc-skolar-font-size-xs;
-        padding-left: 12px;
         color: var(--sc-secondary-text-color);
+        padding-left: 12px;
         font-weight: normal;
       }
 
       .data-name {
-        padding: 4px 0 4px var(--size-md);
-        margin: 4px 0;
+        padding: var(--size-xs) 0 var(--size-xs) var(--size-md);
+        margin: var(--size-xs) 0;
         display: inline-block;
         width: 70%;
       }
@@ -71,8 +71,8 @@
       }
 
       .thick-font {
-        font-weight: 700;
         font-size: calc(1.1em * var(--sc-skolar-font-scale));
+        font-weight: 700;
       }
 
       .full-height {

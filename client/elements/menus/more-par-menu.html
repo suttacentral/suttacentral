@@ -22,8 +22,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
 
       .button-text:hover {
+        background-color: var(--sc-primary-background-color);
         cursor: pointer;
-        background-color: var(--paper-grey-200);
       }
 
       .table-element {
@@ -31,8 +31,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
 
       .table-element[disabled] {
-        --iron-icon-fill-color: var(--paper-grey-200);
-        color: var(--paper-grey-200);
+        --iron-icon-fill-color: var(--sc-primary-background-color);
+        color: var(--sc-primary-background-color);
       }
 
       .table-element .grey-icon {
@@ -45,18 +45,18 @@ Menu on top of the suttaplex parallel's list for copying information from parall
     <iron-ajax id="parallels_ajax"
                url="[[_getAPIEndpoint(item)]]"
                handle-as="json"
-               loading="{{ loadingParallels }}"
-               last-response="{{ parallels }}"></iron-ajax>
+               loading="{{loadingParallels}}"
+               last-response="{{parallels}}"></iron-ajax>
 
     <paper-item class="table-element button-text" on-tap="_copyLink" title="[[itemLink]]">
       <iron-icon class="grey-icon" icon="link"></iron-icon>
       Copy link
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="{{ areParallelsAvailable }}">
+    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="{{areParallelsAvailable}}">
       <iron-icon class="grey-icon" icon="content-copy"></iron-icon>
       Copy table
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="{{ areParallelsAvailable }}">
+    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="{{areParallelsAvailable}}">
       <iron-icon class="grey-icon" icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>

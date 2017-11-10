@@ -6,11 +6,12 @@
   <template>
     <style include="static-styles">
       .pre {
-        font-family: "Source Code Pro",  monospace;
+        @apply --sc-monospace-font;
+        margin: var(--size-l) var(--size-md);
       }
     </style>
 
-    <div id="page-wrap">
+    <code id="page-wrap">
       <main>
         <section>
           <article>
@@ -50,7 +51,7 @@
               segments, named dn1.10.1, dn1.10.2, etc. These same segment numbers apply to both text and translation.
               Here is how this looks in the underlying file, which uses the PO file type of the open source gettext
               translation system.</p>
-            <div class="pre">
+            <div class="pre"><code>
               <p>#msgctxt "dn1:10.1"<br>
               msgid "‘Bījagāmabhūtagāmasamārambhā paṭivirato samaṇo gotamo’ti—"<br>
               msgstr "‘The ascetic Gotama refrains from injuring plants and seeds.’"</p>
@@ -66,7 +67,7 @@
               <p>#msgctxt "dn1:10.4"<br>
               msgid "Naccagītavāditavisūkadassanā paṭivirato samaṇo gotamo …."<br>
               msgstr "‘He refrains from dancing, singing, music, and seeing shows.’"</p>
-            </div>
+            </code></div>
             <p>A reference to DN 1.10 would indicate this whole passage, as in older editions. But we also add the
               ability to reference by smaller segments. Note that in dn1:10.3 there is a variant reading. In this way
               the segment numbers can be used as a convenient universal address for variants, comments, and the like,
