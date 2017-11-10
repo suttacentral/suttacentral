@@ -106,11 +106,6 @@
               }
           }
 
-          ready() {
-              super.ready();
-              document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
-          }
-
           _updateView() {
               if (this.isSegmented || this.isSegmented === undefined) {
                   return;
@@ -130,7 +125,6 @@
               this.lang = this.sutta.lang;
               this.title = this.sutta.title;
               this.assembledText = this.sutta.text;
-              this._reloadInnerHTML();
           }
 
           _updateToolbar() {
@@ -202,26 +196,10 @@
               this._updateToolbar();
           }
 
-          // Insert the sutta text into the main element again to force reloading styles:
-          // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
-          _handleVisibilityChange() {
-              if (document.hidden || this.isSegmented) {
-                  return;
-              }
-              // Hide the text and display the loading spinner:
-              this.isTextViewHidden = true;
-              setTimeout(() => {
-                  this.shadowRoot.querySelector('#simple_text_content').innerHTML = this.assembledText;
-                  this._addParagraphScrollListeners();
-                  this.isTextViewHidden = false;
-              }, 200);
-          }
-
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
-              if (!sectionId) return;
               try {
-                  const section = this.shadowRoot.querySelector(`#${sectionId}`);
+                  const section = this.shadowRoot.getElementById(sectionId);
                   setTimeout(() => {
                       section.scrollIntoView({
                           behavior: isSmooth ? 'smooth' : 'instant',
@@ -264,7 +242,6 @@
               this.$.simple_text_content.classList
                   .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
               this.$.simple_text_content.innerHTML = this.sutta.text;
-              this._reloadInnerHTML();
           }
 
           _setScript(scriptName, tooltips) {
@@ -291,15 +268,6 @@
 
           _capitalize(text) {
               return text.charAt(0).toUpperCase() + text.slice(1);
-          }
-
-          // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
-          _reloadInnerHTML() {
-              setTimeout(() => {
-                  // This doesn't make sense but hey, it works.
-                  this.$.simple_text_content.innerHTML = this.$.simple_text_content.innerHTML;
-                  this._computeParagraphs();
-              }, 2000);
           }
 
       }
