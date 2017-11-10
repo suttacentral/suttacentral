@@ -246,6 +246,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'HOME' }));
               }
               else if (this._isStaticPage(routeName) || routeName === 'SEARCH') {
+                  this.dispatch('changeToolbarMode', '');
+                  this.dispatch('changeToolbarTitle', '');
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
               else if (this._isSuttaplexListPage()) {
