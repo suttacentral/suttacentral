@@ -228,7 +228,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.shouldShowDictionaryPage = this._isDictionaryPage();
           }
 
-          // Dispatches the CHANGE_ROUTE action with the correct parameters.
+          // Dispatches the CHANGE_ROUTE action and sets the toolbar attributes.
           _handleRouteChange() {
               const routeName = this._getBaseRouteName();
               if (routeName === '') {
@@ -252,7 +252,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
               else if (this._isSuttaplexListPage()) {
-                  console.log('its a suttaplex page');
                   this.dispatch('changeToolbarMode', 'list-mode');
                   this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
               }
