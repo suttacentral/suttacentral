@@ -39,8 +39,8 @@
       }
 
       paper-card.suttaplex {
-        border-radius: 0;
-        border-top: 1px solid var(--paper-grey-300);
+        margin-top: var(--size-sm);
+        border-radius: 2px;
         display: block;
       }
 
@@ -56,9 +56,9 @@
 
       .suttaplex-nerdy-row {
         @apply --paper-font-body2;
+        color: var(--sc-secondary-text-color);
         display: flex;
         flex-wrap: wrap;
-        color: var(--sc-secondary-text-color);
         font-weight: normal;
         white-space: nowrap;
         overflow: hidden;
@@ -120,7 +120,7 @@
       }
 
       summary::-webkit-details-marker {
-        color: var(--paper-grey-300);
+        color: var(--sc-paper-tooltip-color);
       }
 
       details {

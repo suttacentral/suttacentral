@@ -47,24 +47,23 @@
       }
 
       .currency-menu-item:hover {
-        background-color: var(--paper-grey-200);
+        background-color: var(--sc-primary-background-color);
         cursor: pointer;
       }
 
       .frequency-checkbox {
-        margin-right: 1em;
         --paper-checkbox-checked-color: var(--sc-primary-accent-color);
+        margin-right: 1em;
       }
 
       .explanation {
-        margin-bottom: 0;
         color: var(--sc-secondary-text-color);
       }
 
       .legal-information {
+        color: var(--sc-secondary-text-color);
         margin-top: 3em;
         padding-bottom: 1em;
-        color: var(--sc-secondary-text-color);
       }
 
       .submit {
@@ -80,7 +79,7 @@
       }
 
       .submit-button[disabled] {
-        background: var(--paper-grey-400);
+        background: var(--sc-disabled-text-color);
       }
 
       .card-details {
@@ -97,22 +96,22 @@
       .card-label {
         height: 35px;
         position: relative;
-        color: #000000;
+        color: var(--sc-primary-text-color);
         display: block;
         margin-top: 30px;
         margin-bottom: 10px;
       }
 
       .card-first-span {
+        line-height: var(--size-lg);
+        color: var(--sc-secondary-text-color);
+        border-bottom: 1px solid #586A82;
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         font-weight: 300;
-        line-height: 32px;
-        color: #737373;
-        border-bottom: 1px solid #586A82;
         transition: border-bottom-color 200ms ease-in-out;
         cursor: text;
         pointer-events: none;
@@ -123,7 +122,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        transform-origin: 0% 50%;
+        transform-origin: 0 50%;
         transition: transform 200ms ease-in-out;
         cursor: text;
       }
@@ -139,10 +138,11 @@
       }
 
       label .field.is-focused + span {
-        border-bottom: 2px solid var(--sc-primary-accent-color);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
       }
 
       .field {
+        padding-bottom: var(--size-xs);
         background: transparent;
         font-weight: 300;
         border: 0;
@@ -152,15 +152,21 @@
         display: block;
         width: 100%;
         line-height: 32px;
-        padding-bottom: 3px;
         transition: opacity 200ms ease-in-out;
       }
 
-      .field::-webkit-input-placeholder { color: #000000; }
-      .field::-moz-placeholder { color: #000000; }
+      .field::-webkit-input-placeholder {
+        color: var(--sc-primary-text-color);
+      }
+
+      .field::-moz-placeholder {
+        color: var(--sc-primary-text-color);
+      }
 
       /* IE doesn't show placeholders when empty+focused */
-      .field:-ms-input-placeholder { color: #000000; }
+      .field:-ms-input-placeholder {
+        color: var(--sc-primary-text-color);
+      }
 
       .success, .error {
         @apply --sc-skolar-font-size-s;
@@ -176,7 +182,7 @@
       }
 
       .error-bar {
-        border-bottom: 2px solid  #E4584C;
+        border-bottom: 2px solid #E4584C;
       }
 
       .success {
@@ -209,7 +215,7 @@
         opacity: 1;
         z-index: 100;
       }
-      
+
       .toast {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-xl;
@@ -222,7 +228,7 @@
         @apply --sc-sans-font;
       }
 
-      .data-input{
+      .data-input {
         --paper-input-container: {
           @apply --sc-sans-font;
           color: var(--sc-secondary-text-color);
@@ -244,89 +250,93 @@
 
     </style>
     <iron-ajax
-            id='currency_ajax'
-            auto
-            url="/api/currencies"
-            handle-as="json"
-            last-response="{{ responseData }}"
-            on-response="_handleResponse"></iron-ajax>
-    
+        id='currency_ajax'
+        auto
+        url="/api/currencies"
+        handle-as="json"
+        last-response="{{ responseData }}"
+        on-response="_handleResponse"></iron-ajax>
+
     <iron-ajax
-            class="make-donation-ajax"
-            url="/api/donate"
-            handle-as="json"
-            method="post"
-            body="{{ formData }}"
-            last-response="{{ donationResponseData }}"
-            last-error="{{ donationResponseError}}"
-            on-error="_paymentError"
-            on-response="_paymentFinished"></iron-ajax>
+        class="make-donation-ajax"
+        url="/api/donate"
+        handle-as="json"
+        method="post"
+        body="{{ formData }}"
+        last-response="{{ donationResponseData }}"
+        last-error="{{ donationResponseError}}"
+        on-error="_paymentError"
+        on-response="_paymentFinished"></iron-ajax>
 
     <iron-location path="{{path}}"></iron-location>
 
     <div id="page-wrap">
       <section>
         <iron-form class="payment-iron-form">
-        <form class="payment-form">
-          <div class="flex-row">
-            <paper-dropdown-menu class="form-prefix currency-dropdown data-input" title="Select currency"
-                                  dynamic-align label="Currency" always-float-label>
-              <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
-                              selected="[[default_currency_index]]">
-                <template is="dom-repeat" items="{{ currencies }}">
-                  <paper-item class="currency-menu-item" title="[[item.name]]">
-                    <paper-item-body>
-                      [[item.symbol]]
-                    </paper-item-body>
-                  </paper-item>
-                </template>
-              </paper-listbox>
-            </paper-dropdown-menu>
+          <form class="payment-form">
+            <div class="flex-row">
+              <paper-dropdown-menu class="form-prefix currency-dropdown data-input" title="Select currency"
+                                   dynamic-align label="Currency" always-float-label>
+                <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
+                               selected="[[default_currency_index]]">
+                  <template is="dom-repeat" items="{{ currencies }}">
+                    <paper-item class="currency-menu-item" title="[[item.name]]">
+                      <paper-item-body>
+                        [[item.symbol]]
+                      </paper-item-body>
+                    </paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
 
-            <paper-input label="Amount" class="data-input amount-input" auto-validate pattern="^[+]?(\d+[.,]?\d{0,2})$" 
-                         allowed-pattern="[0-9.,]" error-message="Invalid value" required maxlength=20></paper-input>
-          </div>
-
-          <p class="explanation">You can make a one-time donation or a monthly donation.</p>
-          <div class="flex-row">
-            <paper-checkbox class="sans-font frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
-            <paper-checkbox class="sans-font frequency-checkbox monthly-donation">Monthly</paper-checkbox>
-          </div>
-
-          <div class="card-row">
-            <div class="card-details">
-              <label class="card-label">
-                <div id="card-element" class="field is-empty"></div>
-                <span class="card-first-span"><span class="card-second-span">Card number</span></span>
-              </label>
+              <paper-input label="Amount" class="data-input amount-input" auto-validate
+                           pattern="^[+]?(\d+[.,]?\d{0,2})$"
+                           allowed-pattern="[0-9.,]" error-message="Invalid value" required maxlength=20></paper-input>
             </div>
-          </div>
 
-          <paper-input label="Name (optional)" class="data-input name-input" maxlength=200>
-            <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
-          </paper-input>
+            <p class="explanation">You can make a one-time donation or a monthly donation.</p>
+            <div class="flex-row">
+              <paper-checkbox class="sans-font frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
+              <paper-checkbox class="sans-font frequency-checkbox monthly-donation">Monthly</paper-checkbox>
+            </div>
 
-          <paper-input label="Email (optional)" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
-                        error-message="Invalid email" maxlength=200>
-            <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
-          </paper-input>
+            <div class="card-row">
+              <div class="card-details">
+                <label class="card-label">
+                  <div id="card-element" class="field is-empty"></div>
+                  <span class="card-first-span"><span class="card-second-span">Card number</span></span>
+                </label>
+              </div>
+            </div>
 
-          <paper-textarea label="Message (optional)" class="data-input message-input" rows=2 maxlength=200 char-counter>
-          </paper-textarea>
+            <paper-input label="Name (optional)" class="data-input name-input" maxlength=200>
+              <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
+            </paper-input>
 
-          <div class="flex-row submit">
-            <paper-button  id="submitButton" on-tap="_makeDonation" class="submit-button" raised>
-              <div class="sans-font">PAY WITH CARD</div>
-            </paper-button>
-          </div>
-        </form>
-      </iron-form>
-            
+            <paper-input label="Email (optional)" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
+                         error-message="Invalid email" maxlength=200>
+              <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
+            </paper-input>
+
+            <paper-textarea label="Message (optional)" class="data-input message-input" rows=2 maxlength=200
+                            char-counter>
+            </paper-textarea>
+
+            <div class="flex-row submit">
+              <paper-button id="submitButton" on-tap="_makeDonation" class="submit-button" raised>
+                <div class="sans-font">PAY WITH CARD</div>
+              </paper-button>
+            </div>
+          </form>
+        </iron-form>
+
         <div class="legal-information">
-            <iron-icon icon="icons:info-outline"></iron-icon><p>SuttaCentral does not handle or store your credit card details. 
-            All credit card transactions are handled securely by <a href="https://stripe.com" target="blank">Stripe</a>.</p>
-            <p>The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards,
-              and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable.</p>
+          <iron-icon icon="icons:info-outline"></iron-icon>
+          <p>SuttaCentral does not handle or store your credit card details.
+            All credit card transactions are handled securely by <a href="https://stripe.com" target="blank">Stripe</a>.
+          </p>
+          <p>The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards,
+            and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable.</p>
         </div>
       </section>
     </div>
@@ -359,46 +369,46 @@
                       type: Number
                   },
                   data: {
-                    type: Object
+                      type: Object
                   },
                   donationResponse: {
-                    type: Object
+                      type: Object
                   },
                   path: {
-                    type: String
+                      type: String
                   },
                   formData: {
-                    type: String
+                      type: String
                   },
                   donationResponseData: {
-                    type: Object
+                      type: Object
                   },
                   donationResponseError: {
-                    type: Object
+                      type: Object
                   },
                   processingPayment: {
-                    type: Boolean,
+                      type: Boolean
                   },
                   errorMessage: {
-                    type: String,
-                    value: 'Error!'
+                      type: String,
+                      value: 'Error!'
                   },
                   isStripeValid: {
-                    type: Boolean,
-                    value: false
+                      type: Boolean,
+                      value: false
                   },
                   errorMessages: {
-                    type: Object,
-                    value: {
-                      0: 'Unknown error',
-                      1: 'Amount cannot be less than $0.50 USD.',
-                      2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
-                      3: 'Your card was declined.'
-                    }
+                      type: Object,
+                      value: {
+                          0: 'Unknown error',
+                          1: 'Amount cannot be less than $0.50 USD.',
+                          2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
+                          3: 'Your card was declined.'
+                      }
                   },
                   successMessage: {
-                    type: String,
-                    value: 'Sadhu! Your payment has been completed successfully. You will be redirected in 5 seconds.'
+                      type: String,
+                      value: 'Sadhu! Your payment has been completed successfully. You will be redirected in 5 seconds.'
                   }
               }
           }
@@ -414,44 +424,44 @@
               let stripe_div = this.shadowRoot.querySelector('#card-element');
 
               this.card = this.stripe_elements.create('card', {
-                iconStyle: 'solid',
-                style: {
-                  base: {
-                    iconColor: '#9A9A9A',
-                    lineHeight: '36px',
-                    fontWeight: 300,
-                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                    fontSize: '19px',
-              
-                    '::placeholder': {
-                      color: '#737373',
-                    },
+                  iconStyle: 'solid',
+                  style: {
+                      base: {
+                          iconColor: '#9A9A9A',
+                          lineHeight: '36px',
+                          fontWeight: 300,
+                          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                          fontSize: '19px',
+
+                          '::placeholder': {
+                              color: '#737373'
+                          }
+                      },
+                      invalid: {
+                          iconColor: '#e85746',
+                          color: '#e85746'
+                      }
                   },
-                  invalid: {
-                    iconColor: '#e85746',
-                    color: '#e85746',
+                  classes: {
+                      focus: 'is-focused',
+                      empty: 'is-empty'
                   }
-                },
-                classes: {
-                  focus: 'is-focused',
-                  empty: 'is-empty',
-                },
 
               });
               this.card.mount(stripe_div);
 
               let cardFirstSpan = this.shadowRoot.querySelector('.card-first-span');
-              let cardSecondSpan = this.shadowRoot.querySelector('.card-second-span');     
+              let cardSecondSpan = this.shadowRoot.querySelector('.card-second-span');
 
-              this.card.addEventListener('change', ({error, empty}) => {
+              this.card.addEventListener('change', ({ error, empty }) => {
                   if (error || empty) {
-                    cardFirstSpan.classList.add('error-bar');
-                    cardSecondSpan.style['color'] = '#E4584C';
-                    this.isStripeValid = false;
+                      cardFirstSpan.classList.add('error-bar');
+                      cardSecondSpan.style['color'] = '#E4584C';
+                      this.isStripeValid = false;
                   } else {
-                    cardFirstSpan.classList.remove('error-bar');
-                    cardSecondSpan.style['color'] = '';
-                    this.isStripeValid = true;
+                      cardFirstSpan.classList.remove('error-bar');
+                      cardSecondSpan.style['color'] = '';
+                      this.isStripeValid = true;
                   }
               });
 
@@ -467,27 +477,27 @@
                   oneTimeDonation.checked = false;
                   monthly.checked = true;
               });
-              
-              let amountInput = this.shadowRoot.querySelector('.amount-input'); 
+
+              let amountInput = this.shadowRoot.querySelector('.amount-input');
               amountInput.onpaste = (e) => {  // Don't allow pasting text data.
-                let pastedText = '';
-                if (window.clipboardData && window.clipboardData.getData) { // IE
-                    pastedText = window.clipboardData.getData('Text');
-                } else if (e.clipboardData && e.clipboardData.getData) {
-                    pastedText = e.clipboardData.getData('text/plain');
-                }
-                if (!/^[+]?(\d+[.,]?\d{0,2})$/.test(pastedText)){
-                  return false;
-                }
+                  let pastedText = '';
+                  if (window.clipboardData && window.clipboardData.getData) { // IE
+                      pastedText = window.clipboardData.getData('Text');
+                  } else if (e.clipboardData && e.clipboardData.getData) {
+                      pastedText = e.clipboardData.getData('text/plain');
+                  }
+                  if (!/^[+]?(\d+[.,]?\d{0,2})$/.test(pastedText)) {
+                      return false;
+                  }
               }
 
               amountInput.addEventListener('keydown', (e) => {
-                if (e.key === ','){
-                  let posiiton = amountInput.$.nativeInput.selectionStart;
-                  amountInput.value = amountInput.value.slice(0, posiiton) + '.' + amountInput.value.slice(posiiton);
-                  posiiton += 1;
-                  e.preventDefault();
-                }
+                  if (e.key === ',') {
+                      let posiiton = amountInput.$.nativeInput.selectionStart;
+                      amountInput.value = amountInput.value.slice(0, posiiton) + '.' + amountInput.value.slice(posiiton);
+                      posiiton += 1;
+                      e.preventDefault();
+                  }
               })
           }
 
@@ -497,48 +507,48 @@
           }
 
           _makeDonation(e) {
-            let ironForm = this.shadowRoot.querySelector('.payment-iron-form');
-            if(!this.isStripeValid){
-              this.shadowRoot.querySelector('.card-first-span').classList.add('error-bar');
-              return;
-            }
-            if(!ironForm.validate()){
-              return;
-            }
-            let data = this._getFormData();
-            this.processingPayment = true;
-            this.$.submitButton.disabled = true;
-            this.stripe.createToken(this.card).then((result, error) => {
-              if (error){
-                console.log(error);
-                this.shadowRoot.querySelector('.error-toast').open();
-                this.processingPayment = false;
-                this.$.submitButton.disabled = false;
-                return;
+              let ironForm = this.shadowRoot.querySelector('.payment-iron-form');
+              if (!this.isStripeValid) {
+                  this.shadowRoot.querySelector('.card-first-span').classList.add('error-bar');
+                  return;
               }
-              data.stripe = result;
-              this.formData = JSON.stringify(data);
-              let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
-              ironAjax.generateRequest();
-            });
+              if (!ironForm.validate()) {
+                  return;
+              }
+              let data = this._getFormData();
+              this.processingPayment = true;
+              this.$.submitButton.disabled = true;
+              this.stripe.createToken(this.card).then((result, error) => {
+                  if (error) {
+                      console.log(error);
+                      this.shadowRoot.querySelector('.error-toast').open();
+                      this.processingPayment = false;
+                      this.$.submitButton.disabled = false;
+                      return;
+                  }
+                  data.stripe = result;
+                  this.formData = JSON.stringify(data);
+                  let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
+                  ironAjax.generateRequest();
+              });
           }
 
           _paymentFinished(event) {
               this.processingPayment = false;
               let successToast = this.shadowRoot.querySelector('.success-toast');
               successToast.open();
-              setTimeout(() => { 
-                this.$.submitButton.disabled = false;
-                this.set('path', '/');
+              setTimeout(() => {
+                  this.$.submitButton.disabled = false;
+                  this.set('path', '/');
               }, successToast.duration + 500);
           }
 
           _paymentError(event) {
-            this.$.submitButton.disabled = false;
-            let errCode = this.donationResponseError.response['err_code']
-            this.errorMessage = this.errorMessages[errCode];
-            this.processingPayment = false;
-            this.shadowRoot.querySelector('.error-toast').open();
+              this.$.submitButton.disabled = false;
+              let errCode = this.donationResponseError.response['err_code']
+              this.errorMessage = this.errorMessages[errCode];
+              this.processingPayment = false;
+              this.shadowRoot.querySelector('.error-toast').open();
           }
 
           _getFormData() {
