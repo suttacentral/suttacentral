@@ -45,10 +45,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         white-space: nowrap;
       }
 
-      .list-mode .toolbar-header, .text-mode .toolbar-header, .toolbar-header {
-        @apply --shadow-elevation-8dp;
-      }
-
       .list-mode #sc_toolbar, .list-mode .toolbar-header {
         background-color: var(--sc-primary-accent-color);
       }
@@ -168,6 +164,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       statePath: 'currentRoute.name',
                       observer: '_recalculateView'
                   },
+                  currentPath: {
+                      type: String,
+                      statePath: 'currentRoute.path'
+                  },
                   // Class set on the class on the header depending on the chosen page.
                   toolbarMode: {
                       type: String,
@@ -226,31 +226,33 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.shouldShowSearchPage = this._isSearchPage();
               this.shouldShowSuttaTextPage = this._isSuttaTextPage();
               this.shouldShowDictionaryPage = this._isDictionaryPage();
-              this._setDisplayOptions();
-          }
-
-          // Sets the color of the toolbar (via the mainClass variable) and other display options
-          // based on the current route.
-          // TODO set this in the dictionary element
-          _setDisplayOptions() {
-              if (this.shouldShowDictionaryPage) {
-                  this.dispatch('changeToolbarMode', 'dictionary-mode');
-                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
-              }
           }
 
           // Dispatches the CHANGE_ROUTE action with the correct parameters.
           _handleRouteChange() {
               const routeName = this._getBaseRouteName();
               if (routeName === '') {
+                  this.dispatch('changeToolbarTitle', '');
+                  this.dispatch('changeToolbarMode', '');
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'HOME' }));
               }
-              else if (this._isStaticPage(routeName) || routeName === 'SEARCH') {
+              else if (this._isStaticPage(routeName)) {
                   this.dispatch('changeToolbarMode', '');
                   this.dispatch('changeToolbarTitle', '');
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
+              else if (this._isSearchPage()) {
+                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Search results');
+                  this.dispatch('changeToolbarMode', 'search-mode');
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
+              }
+              else if (this._isDictionaryPage()) {
+                  this.dispatch('changeToolbarMode', 'dictionary-mode');
+                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
+              }
               else if (this._isSuttaplexListPage()) {
+                  console.log('its a suttaplex page');
                   this.dispatch('changeToolbarMode', 'list-mode');
                   this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
               }
@@ -275,11 +277,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _isSearchPage() {
-              return (this.selectedPage === 'SEARCH');
+              return (this.route.path === '/search');
           }
 
           _isDictionaryPage() {
-              return this.selectedPage === 'DEFINE';
+              return this.route.path === '/define';
           }
 
           // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).
