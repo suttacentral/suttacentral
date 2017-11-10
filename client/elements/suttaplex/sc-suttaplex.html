@@ -216,6 +216,10 @@
         margin-top: 24px;
       }
 
+      .grey-icon {
+        color: var(--sc-disabled-text-color);
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -284,8 +288,8 @@
             <div class="vert-menu">
               <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true"
                                  vertical-align="top" aria-disabled="false">
-                <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
-                                   tabindex="0" aria-disabled="false"></paper-icon-button>
+                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:more-vert"
+                                   role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
                 <div slot="dropdown-content"></div>
                 <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
                   <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
@@ -296,7 +300,7 @@
 
             <template is="dom-if" if="[[item.parallel_count]]">
               <div class="parallels-toggle-div">
-                <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
+                <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]"
                                    on-tap="_toggleParallelsOpened">
                 </paper-icon-button>
                 <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
@@ -457,15 +461,15 @@
           }
 
           _addPaddingIfNoBlurb(blurb) {
-            return (blurb === null || blurb === undefined) ? 'top-space' : '';
+              return (blurb === null || blurb === undefined) ? 'top-space' : '';
           }
 
-          _capitalize(author){
-            return author.replace(/\b\w/g, l => l.toUpperCase());
+          _capitalize(author) {
+              return author.replace(/\b\w/g, l => l.toUpperCase());
           }
 
           _getAcronymOrUid(item) {
-            return item.acronym || item.uid;
+              return item.acronym || item.uid;
           }
       }
 

@@ -34,6 +34,10 @@ Menu on top of the suttaplex parallel's list for copying information from parall
         --iron-icon-fill-color: var(--paper-grey-200);
         color: var(--paper-grey-200);
       }
+
+      .table-element .grey-icon {
+        color: var(--sc-disabled-text-color);
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -45,15 +49,15 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                last-response="{{ parallels }}"></iron-ajax>
 
     <paper-item class="table-element button-text" on-tap="_copyLink" title="[[itemLink]]">
-      <iron-icon icon="link"></iron-icon>
+      <iron-icon class="grey-icon" icon="link"></iron-icon>
       Copy link
     </paper-item>
     <paper-item class="table-element button-text" on-tap="_copyContent" disabled="{{ areParallelsAvailable }}">
-      <iron-icon icon="content-copy"></iron-icon>
+      <iron-icon class="grey-icon" icon="content-copy"></iron-icon>
       Copy table
     </paper-item>
     <paper-item class="table-element button-text" on-tap="_copyCite" disabled="{{ areParallelsAvailable }}">
-      <iron-icon icon="editor:format-quote"></iron-icon>
+      <iron-icon class="grey-icon" icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>
 
