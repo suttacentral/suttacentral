@@ -229,7 +229,7 @@
           <h3 class="suttaplex-heading">[[_computeMainHeading(item)]]</h3>
           <div class$="difficulty-icon [[item.difficulty.name]]"
                title="Recommended for [[item.difficulty.name]] students">
-            <iron-icon icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
+            <iron-icon class="grey-icon" icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
           </div>
         </div>
 
@@ -242,7 +242,9 @@
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
               <div>
-                <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
+                <span class="book" class="no-margin">
+                  <iron-icon class="grey-icon" icon="book"></iron-icon>
+                </span>
                 <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
               </div>
             </template>
@@ -250,7 +252,9 @@
               <div>
                 <details class="display-inline">
                   <summary class="volpage-biblio-info-summary">
-                    <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
+                    <span class="book" class="no-margin">
+                      <iron-icon class="grey-icon" icon="book"></iron-icon>
+                    </span>
                     <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
                   </summary>
                   <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
