@@ -79,10 +79,6 @@
                       type: Boolean,
                       value: false
                   },
-                  isSegmented: {
-                      type: Boolean,
-                      observer: '_isSegmentedChanged'
-                  },
                   assembledText: {
                       type: String
                   }
@@ -107,9 +103,6 @@
           }
 
           _updateView() {
-              if (this.isSegmented || this.isSegmented === undefined) {
-                  return;
-              }
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
@@ -188,16 +181,12 @@
           }
 
           _loadingChanged() {
-              this.isTextViewHidden = !!(this.isLoading || this.isSegmented);
-          }
-
-          _isSegmentedChanged() {
-              this.isTextViewHidden = !!(this.isSegmented);
-              this._updateToolbar();
+              this.isTextViewHidden = !!(this.isLoading);
           }
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
+              if (!sectionId) return;
               try {
                   const section = this.shadowRoot.getElementById(sectionId);
                   setTimeout(() => {

@@ -45,15 +45,20 @@
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
-                    is-segmented="[[isSegmentedText]]" hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
-    </sc-simple-text>
+    <template is="dom-if" if="[[!_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+      <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
+                      is-segmented="[[isSegmentedText]]"
+                      hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+      </sc-simple-text>
+    </template>
 
-    <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
-                       translated-sutta="[[translatedSutta]]" is-segmented="[[isSegmentedText]]"
-                       root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]"
-                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
-    </sc-segmented-text>
+    <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
+      <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
+                         translated-sutta="[[translatedSutta]]" is-segmented="[[isSegmentedText]]"
+                         root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]"
+                         hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
+      </sc-segmented-text>
+    </template>
 
   </template>
 

@@ -344,6 +344,7 @@
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
+              if (!sectionId) return;
               try {
                   const section = this.shadowRoot.getElementById(sectionId);
                   setTimeout(() => {
