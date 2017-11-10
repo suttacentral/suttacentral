@@ -111,9 +111,6 @@
                       statePath: 'textOptions.script',
                       observer: 'changeScript'
                   },
-                  isSegmented: {
-                      type: Boolean
-                  },
                   markup: {
                       type: String,
                       observer: '_updateView'
@@ -147,13 +144,8 @@
               }
           }
 
-          ready() {
-              super.ready();
-              document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
-          }
-
           _updateView() {
-              if (!this.isSegmented || this.isSegmented === undefined || !this.markup) {
+              if (!this.markup) {
                   return;
               }
               this._resetViewOptions();
@@ -214,7 +206,7 @@
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
           _setViewOptions() {
-              if (!this.isSegmented || !this.markup || !this.translatedSutta) {
+              if (!this.markup || !this.translatedSutta) {
                   return;
               }
               const textContent = this.$.segmented_text_content;
@@ -270,7 +262,6 @@
               catch (e) {
                   console.error(e);
               }
-              this._reloadInnerHTML();
               this.assembledMainText = textContainer.innerHTML;
           }
 
@@ -285,7 +276,6 @@
                   })
               }
               textContainer.classList.add('latin-script');
-              this._reloadInnerHTML();
           }
 
           insertSecondarySegment([key, content]) {
@@ -349,27 +339,9 @@
               this.isTextViewHidden = this.isLoading;
           }
 
-          _handleVisibilityChange() {
-              if (document.hidden || this.chosenTextView !== 'none' || !this.isSegmented) {
-                  return;
-              }
-              // Hide the text and display the loading spinner:
-              this.isTextViewHidden = true;
-              // Insert the sutta text into the main element again to force reloading styles:
-              // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
-              setTimeout(() => {
-                  if (this.assembledMainText) {
-                      this.$.segmented_text_content.innerHTML = this.assembledMainText;
-                      this._addParagraphScrollListeners();
-                  } else {
-                      this._addTextContent();
-                  }
-                  this.isTextViewHidden = false;
-              }, 200);
-          }
-
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
+              if (!sectionId) return;
               try {
                   const section = this.shadowRoot.getElementById(sectionId);
                   setTimeout(() => {
@@ -385,7 +357,7 @@
           }
 
           changeScript(paliScript) {
-              if (!this.rootSutta || this.rootSutta.lang !== "pli") {
+              if (!this.rootSutta || this.rootSutta.lang !== 'pli') {
                   return;
               }
               const segments = this.shadowRoot.querySelectorAll('.original-text');
@@ -423,21 +395,11 @@
               const scriptFn = `to${this._capitalize(scriptName)}`;
               Array.from(segments).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
-              this._reloadInnerHTML();
           }
 
           _capitalize(text) {
               return text.charAt(0).toUpperCase() + text.slice(1);
           }
-
-          // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
-          _reloadInnerHTML() {
-              setTimeout(() => {
-                  // This doesn't make sense but hey, it works.
-                  this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
-              }, 2000);
-          }
-
       }
 
       customElements.define(SCSegmentedText.is, SCSegmentedText);

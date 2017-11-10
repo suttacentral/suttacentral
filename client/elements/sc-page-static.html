@@ -162,29 +162,6 @@
               }
           }
 
-          static get actions() {
-              return {
-                  changeToolbarTitle(title) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_TITLE',
-                          title: title
-                      };
-                  },
-                  changeToolbarMode(mode) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_MODE',
-                          mode: mode
-                      };
-                  }
-              }
-          }
-
-          ready() {
-              super.ready();
-              this.dispatch('changeToolbarTitle', '');
-              this.dispatch('changeToolbarMode', '');
-          }
-
           _changeView() {
               this.$.pages.selected = this.selectedPage;
           }

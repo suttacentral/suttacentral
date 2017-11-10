@@ -89,8 +89,7 @@
       }
 
       .card-actions-left paper-button:first-of-type {
-        margin-left: 0;
-        padding-left: 0;
+        margin-left: -2px;
       }
 
       .right-elements {
@@ -220,6 +219,10 @@
         color: var(--sc-disabled-text-color);
       }
 
+      .author-button {
+        @apply --sc-skolar-font-size-md;
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -272,7 +275,8 @@
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
-              <paper-button flat title$="Go to a translation by [[_capitalize(translation.author)]]">
+              <paper-button class="author-button" flat
+                            title$="Go to a translation by [[_capitalize(translation.author)]]">
                 <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
                   [[translation.author]]
                 </a>

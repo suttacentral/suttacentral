@@ -45,10 +45,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         white-space: nowrap;
       }
 
-      .list-mode .toolbar-header, .text-mode .toolbar-header, .segmented-mode .toolbar-header {
-        @apply --shadow-elevation-8dp;
-      }
-
       .list-mode #sc_toolbar, .list-mode .toolbar-header {
         background-color: var(--sc-primary-accent-color);
       }
@@ -159,7 +155,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   },
                   allIsoCodes: {
                       type: Array,
-                      value: [ 'af', 'ar', 'ca', 'cs', 'lzh', 'de', 'en', 'es', 'fa', 'fr', 'pgd', 'he', 'id', 'it',
+                      value: ['af', 'ar', 'ca', 'cs', 'lzh', 'de', 'en', 'es', 'fa', 'fr', 'pgd', 'he', 'id', 'it',
                           'la', 'hu', 'nl', 'no', 'ot', 'pli', 'pl', 'pt', 'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct',
                           'xto', 'vn', 'uig', 'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh']
                   },
@@ -167,6 +163,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: String,
                       statePath: 'currentRoute.name',
                       observer: '_recalculateView'
+                  },
+                  currentPath: {
+                      type: String,
+                      statePath: 'currentRoute.path'
                   },
                   // Class set on the class on the header depending on the chosen page.
                   toolbarMode: {
@@ -226,29 +226,33 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.shouldShowSearchPage = this._isSearchPage();
               this.shouldShowSuttaTextPage = this._isSuttaTextPage();
               this.shouldShowDictionaryPage = this._isDictionaryPage();
-              this._setDisplayOptions();
           }
 
-          // Sets the color of the toolbar (via the mainClass variable) and other display options
-          // based on the current route.
-          // TODO set this in the dictionary element
-          _setDisplayOptions() {
-              if (this.shouldShowDictionaryPage) {
-                  this.dispatch('changeToolbarMode', 'dictionary-mode');
-                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
-              }
-          }
-
-          // Dispatches the CHANGE_ROUTE action with the correct parameters.
+          // Dispatches the CHANGE_ROUTE action and sets the toolbar attributes.
           _handleRouteChange() {
               const routeName = this._getBaseRouteName();
               if (routeName === '') {
+                  this.dispatch('changeToolbarTitle', '');
+                  this.dispatch('changeToolbarMode', '');
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'HOME' }));
               }
-              else if (this._isStaticPage(routeName) || routeName === 'SEARCH') {
+              else if (this._isStaticPage(routeName)) {
+                  this.dispatch('changeToolbarMode', '');
+                  this.dispatch('changeToolbarTitle', '');
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
+              }
+              else if (this._isSearchPage()) {
+                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Search results');
+                  this.dispatch('changeToolbarMode', 'search-mode');
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
+              }
+              else if (this._isDictionaryPage()) {
+                  this.dispatch('changeToolbarMode', 'dictionary-mode');
+                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
               else if (this._isSuttaplexListPage()) {
+                  this.dispatch('changeToolbarMode', 'list-mode');
                   this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
               }
               else if (this._isSuttaTextPage()) {
@@ -256,6 +260,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   this.set('suttaId', suttaRouteParams.suttaId);
                   this.set('langIsoCode', suttaRouteParams.langIsoCode);
                   this.set('suttaAuthor', suttaRouteParams.authorName);
+                  this.dispatch('changeToolbarMode', 'text-mode');
                   this.dispatch('changeRoute', Object.assign({}, this.route, suttaRouteParams));
               }
               else {
@@ -271,11 +276,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _isSearchPage() {
-              return (this.selectedPage === 'SEARCH');
+              return (this.route.path === '/search');
           }
 
           _isDictionaryPage() {
-              return this.selectedPage === 'DEFINE';
+              return this.route.path === '/define';
           }
 
           // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).

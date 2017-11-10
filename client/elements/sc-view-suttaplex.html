@@ -151,12 +151,6 @@
                           type: 'CHANGE_TOOLBAR_TITLE',
                           title: title
                       };
-                  },
-                  changeToolbarMode(mode) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_MODE',
-                          mode: mode
-                      };
                   }
               }
           }
@@ -187,7 +181,6 @@
                   return;
               }
               this.dispatch('changeToolbarTitle', this.responseData[0].original_title);
-              this.dispatch('changeToolbarMode', 'list-mode');
           }
 
           _isSuttaplex(item) {

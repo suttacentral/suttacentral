@@ -45,15 +45,19 @@
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
-    <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
-                    is-segmented="[[isSegmentedText]]" hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
-    </sc-simple-text>
+    <template is="dom-if" if="[[!_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+      <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
+                      hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+      </sc-simple-text>
+    </template>
 
-    <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
-                       translated-sutta="[[translatedSutta]]" is-segmented="[[isSegmentedText]]"
-                       root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]"
-                       hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
-    </sc-segmented-text>
+    <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
+      <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
+                         translated-sutta="[[translatedSutta]]" root-lang="[[responseData.root_text.lang]]"
+                         is-loading="{{isLoading}}" error="[[lastError]]"
+                         hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
+      </sc-segmented-text>
+    </template>
 
   </template>
 
@@ -114,12 +118,6 @@
                           title: title
                       };
                   },
-                  changeToolbarMode(mode) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_MODE',
-                          mode: mode
-                      };
-                  },
                   downloadSuttaText(text) {
                       return {
                           type: 'DOWNLOAD_SUTTA_TEXT',
@@ -136,7 +134,6 @@
               this.setProperties();
               this.shadowRoot.querySelector('#sutta_text_options')._closeSuttaplex();
               this.dispatch('downloadSuttaText', this.responseData);
-              this.changeToolbarMode();
           }
 
           setProperties() {
@@ -146,15 +143,6 @@
               this.rootSutta = this.responseData.root_text;
               this.markup = this.responseData.markup;
               this.author = this.responseData.translation.author;
-          }
-
-          changeToolbarMode() {
-              if (this.isSegmentedText) {
-                  this.dispatch('changeToolbarMode', 'segmented-mode');
-              }
-              else {
-                  this.dispatch('changeToolbarMode', 'text-mode');
-              }
           }
 
           // The stopRequests variable exists so that we don't make 3 consequent requests in case the
