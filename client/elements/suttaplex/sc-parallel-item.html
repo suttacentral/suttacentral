@@ -31,11 +31,11 @@ It is in effect a miniature version of the suttaplex-card
       .parallel-item-biblio-info {
         @apply --paper-font-body1;
         @apply --shadow-elevation-3dp;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
         position: absolute;
         z-index: 200;
         background-color: #fff;
         padding: 12px;
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
         margin: 0 48px 0 0;
         white-space: normal;
       }
@@ -67,7 +67,7 @@ It is in effect a miniature version of the suttaplex-card
         display: inline-block;
       }
 
-      .no-margin {
+      .scrollable-dialog {
         margin: 0;
       }
 
@@ -132,7 +132,7 @@ It is in effect a miniature version of the suttaplex-card
                 <template is="dom-if" if="[[parallelItem.bib]]">
                   <details class="d-block">
                     <summary class="parallel-item-biblio-summary">
-                      <span class="book no-margin">
+                      <span class="book scrollable-dialog">
                         <iron-icon icon="book"></iron-icon>
                       </span>
                       <span class="vol-page" title="Volume and page number">[[parallelItem.volpages]]</span>
@@ -141,7 +141,7 @@ It is in effect a miniature version of the suttaplex-card
                   </details>
                 </template>
                 <template is="dom-if" if="[[!parallelItem.bib]]">
-                  <span class="book no-margin" title="Volume and page number">
+                  <span class="book scrollable-dialog" title="Volume and page number">
                     <iron-icon icon="book"></iron-icon>
                   </span>
                   <span class="vol-page" title="Volume and page number">[[parallelItem.volpages]]</span>

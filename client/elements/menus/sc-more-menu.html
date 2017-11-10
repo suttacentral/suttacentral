@@ -27,13 +27,21 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         @apply --sc-sans-font;
       }
 
+      .more-menu-paper-item:hover {
+        background-color: var(--sc-tertiary-background-color);
+      }
+
+      .more-menu-paper-item.language-choice-box:hover {
+        background-color: unset;
+      }
+
       language-base-menu:after {
         content: "   ";
       }
 
     </style>
 
-    <paper-item class="more-menu-paper-item">
+    <paper-item class="more-menu-paper-item language-choice-box">
       <iron-icon class="more-menu-icon" icon="language"></iron-icon>
       <language-base-menu id="language_menu"></language-base-menu>
     </paper-item>

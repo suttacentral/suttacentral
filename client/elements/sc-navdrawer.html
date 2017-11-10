@@ -127,8 +127,9 @@
         color: var(--disabled-text-color);
       }
 
-      .dialog > paper-dialog-scrollable {
+      .menu-content {
         margin-top: var(--size-lg);
+        margin-bottom: var(--size-lg);
       }
 
       .dialog-header {
@@ -142,6 +143,14 @@
 
       .green-bg {
         background-color: var(--sc-primary-accent-color);
+      }
+
+      .scrollable-dialog {
+        margin-bottom: var(--size-lg);
+      }
+
+      .dialog-section {
+        margin-top: var(--size-lg);
       }
 
     </style>
@@ -202,7 +211,7 @@
         <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
       </div>
       <h2 class="dialog-header green-bg">Text settings</h2>
-      <paper-dialog-scrollable>
+      <paper-dialog-scrollable class="scrollable-dialog">
         <settings-menu></settings-menu>
       </paper-dialog-scrollable>
     </isw-dialog>
@@ -213,8 +222,8 @@
         <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
       </div>
       <h2 class="dialog-header green-bg">Publication details</h2>
-      <paper-dialog-scrollable>
-        <div class="dialogue-section">
+      <paper-dialog-scrollable class="scrollable-dialog">
+        <div class="dialog-section">
           <div inner-h-t-m-l="[[infoDialogMetaArea]]">
           </div>
         </div>
