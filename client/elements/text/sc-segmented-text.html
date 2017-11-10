@@ -370,8 +370,9 @@
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
+              if (!sectionId) return;
               try {
-                  const section = this.shadowRoot.getElementById(sectionId);
+                  const section = this.shadowRoot.querySelector(`#${sectionId}`);
                   setTimeout(() => {
                       section.scrollIntoView({
                           behavior: isSmooth ? 'smooth' : 'instant',
@@ -385,7 +386,7 @@
           }
 
           changeScript(paliScript) {
-              if (!this.rootSutta || this.rootSutta.lang !== "pli") {
+              if (!this.rootSutta || this.rootSutta.lang !== 'pli') {
                   return;
               }
               const segments = this.shadowRoot.querySelectorAll('.original-text');
