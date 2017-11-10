@@ -24,11 +24,11 @@
 
       h1 {
         @apply --paper-font-display1;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       h2, h3, h4, h5, h6 {
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       a {
@@ -39,10 +39,6 @@
 
       a:hover {
         background: linear-gradient(to top, rgba(223, 153, 10, 0) 1px, rgba(223, 153, 10, 1) 1px, rgba(223, 153, 10, 1) 3px, rgba(223, 153, 10, 0) 3px);
-      }
-
-      a:active {
-        background-color: var(--paper-amber-300);
       }
 
       a:visited {
@@ -62,8 +58,8 @@
       td {
         padding: 12px 24px 12px 24px;
         vertical-align: text-top;
-        border-top: 1px solid #e0e0e0;
-        border-bottom: 1px solid #e0e0e0;
+        border-top: 1px solid var(--sc-background-light-grey);
+        border-bottom: 1px solid var(--sc-background-light-grey);
       }
 
       td:first-child {

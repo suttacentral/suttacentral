@@ -24,7 +24,7 @@
       }
 
       .html-text-content.line-by-line .original-text {
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         padding-bottom: 20px;
       }
 
@@ -109,10 +109,10 @@
         @apply --paper-font-body1;
         @apply --sc-sans-font;
         @apply --padding-md;
-        color: var(--secondary-text-color);
-        background: var(--paper-grey-50);
-        border-radius: 2px;
+        color: var(--sc-secondary-text-color);
+        background: var(--sc-primary-background-color);
         border: 1px solid var(--sc-primary-background-color);
+        border-radius: 2px;
         display: inline-block;
         margin-bottom: var(--size-md);
       }
@@ -138,7 +138,7 @@
       .sutta ul li::before {
         position: absolute;
         content: "◦";
-        color: var(--disabled-text-color);
+        color: var(--sc-disabled-text-color);
         margin-left: -12px;
       }
 
@@ -169,7 +169,7 @@
         display: table;
         width: auto;
         margin: 0 auto;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       .endsutta,
@@ -179,17 +179,17 @@
       .endsubsection {
         font-style: italic;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       .uddana {
         margin-bottom: 32px;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       .endbook {
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -255,7 +255,7 @@
       #text:lang(en) .add,
       .infomode .add {
         display: inline;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         @apply --sc-sans-font;
       }
 
@@ -294,11 +294,11 @@
       }
 
       .expanded .infomode {
-        color: var(--paper-grey-300);
+        color: var(--sc-paper-tooltip-color);
       }
 
       .suppliedmetre {
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       /*This is for cases where the editor has "filled in the blanks" (hence "supplied") with metrical notation (hence "metre").
@@ -323,7 +323,7 @@
         @apply --sc-sans-font;
         display: inline-block;
         position: absolute;
-        background: var(paper-red-300);
+        background: var(--paper-red-300);
         padding: 0.5em;
         border-radius: 3px;
         margin-top: -2.5em;
@@ -348,7 +348,7 @@
       */
 
       .sic .infomode {
-        color: var(paper-red-500);
+        color: var(--paper-red-500);
       }
 
       /*
@@ -356,7 +356,7 @@
       */
 
       .lem .infomode {
-        color: var(paper-brown-500);
+        color: var(--paper-brown-500);
       }
 
       /*The adopted main reading in a text. Display normally.
@@ -389,7 +389,7 @@
       .gatha-number {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-s;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       /*As it says.*/
@@ -409,7 +409,7 @@
       */
 
       .unclear {
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       /*Text marked as uncertain, usually with a "?", in the transcribed text.
