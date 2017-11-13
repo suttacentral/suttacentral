@@ -29,6 +29,7 @@
             segmentedSuttaTextView: 'none',
             script: 'latin',
             paliLookupActivated: false,
+            paliLookupTargetDictRepr: 'Pali → English',
             paliLookupTargetLanguage: 'en'
         },
     };
@@ -69,7 +70,8 @@
                 return Object.assign({}, state.paliLookup,
                     { textOptions: Object.assign({}, state.textOptions, 
                                             {paliLookupActivated: action.paliLookupActivated, 
-                                             paliLookupTargetLanguage: action.paliLookupTargetLanguage }) });
+                                             paliLookupTargetLanguage: action.paliLookupTargetLanguage,
+                                             paliLookupTargetDictRepr: action.paliLookupTargetDictRepr}) });
             default:
                 return state;
         }

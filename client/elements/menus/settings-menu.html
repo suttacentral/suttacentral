@@ -359,11 +359,12 @@ Issues:
                           script: script
                       }
                   },
-                  activatePaliLookup(activated, targetLanguage) {
+                  activatePaliLookup(activated, targetLanguage, targetDictRepr) {
                       return {
                           type: 'ACTIVATE_PALI_LOOKUP',
                           paliLookupTargetLanguage: targetLanguage,
-                          paliLookupActivated: activated
+                          paliLookupActivated: activated,
+                          paliLookupTargetDictRepr: targetDictRepr
                       }
                   }
               }
@@ -372,7 +373,8 @@ Issues:
           _paliLookupChanged(paliLookupSelected) {
               const target = this.paliLookupArray[paliLookupSelected];
               const targetLanguage = target.dict.split('2')[1];
-              this.dispatch('activatePaliLookup', Boolean(paliLookupSelected), targetLanguage);
+              const targetDictRepr = target.language;
+              this.dispatch('activatePaliLookup', !!(paliLookupSelected), targetLanguage, targetDictRepr);
           }
 
           _textualInfoToggleStateChanged() {

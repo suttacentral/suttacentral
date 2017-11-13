@@ -121,7 +121,12 @@
                   spansGenerated: {
                       type: Boolean,
                       value: false
-                }
+                  },
+                  paliLookupTargetDictRepr: {
+                      type: String,
+                      statePath: 'textOptions.paliLookupTargetDictRepr',
+                      observer: 'paliLookupTargetDictReprChanged'
+                  }
               }
           }
 
@@ -437,13 +442,27 @@
                 return;
             }
             if(this.isPaliLookupEnabled){
-            if(!this.spansGenerated){
-                if(this.lang === 'pli' || this.lang === 'lzh') {
-                    this._wordsIntoSpans('.sutta');
-                } 
-            }
+                if(!this.spansGenerated){
+                    if(this.lang === 'pli' || this.lang === 'lzh') {
+                        this._wordsIntoSpans('.sutta');
+                    } 
+                }
             }
         }
+                
+        paliLookupTargetDictReprChanged() {
+            if(this.isPaliLookupEnabled){
+                const dictName = this.paliLookupTargetDictRepr.replace('→', 'to');
+                this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                    detail: {
+                        toastType: 'info',
+                        message: `The ${dictName} lookup dictionary is now enabled.`,
+                    },
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+          }
         // Lookup word end
 
       }

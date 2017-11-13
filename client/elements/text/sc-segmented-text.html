@@ -1,6 +1,7 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="/elements/text/sc-text-options.html">
 <link rel="import" href="/styles/sc-text-styles.html">
@@ -161,7 +162,12 @@
                   spansGenerated: {
                       type: Boolean,
                       value: false
-                  }
+                  },
+                  paliLookupTargetDictRepr: {
+                    type: String,
+                    statePath: 'textOptions.paliLookupTargetDictRepr',
+                    observer: 'paliLookupTargetDictReprChanged'
+                }
               }
           }
 
@@ -590,17 +596,29 @@
               if(this.isPaliLookupEnabled){
                 if(!this.spansGenerated){
                     if (this.translatedSutta && 
-                    (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
+                        (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
                         this._wordsIntoSpans('.translated-text');
                     } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                         if(this.shadowRoot.querySelector('.original-text')){
                             this._wordsIntoSpans('.original-text');
-                        } else {
-                            this._wordsIntoSpans('.translated-text');
                         }
                     }
                 }
               }
+          }
+        
+          paliLookupTargetDictReprChanged() {
+            if(this.isPaliLookupEnabled){
+                const dictName = this.paliLookupTargetDictRepr.replace('→', 'to');
+                this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                    detail: {
+                        toastType: 'info',
+                        message: `The ${dictName} lookup dictionary is now enabled.`,
+                    },
+                    bubbles: true,
+                    composed: true
+                }));
+            }
           }
         // Lookup word end
       }
