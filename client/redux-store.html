@@ -67,11 +67,11 @@
                 return Object.assign({}, state,
                     { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
             case 'ACTIVATE_PALI_LOOKUP':
-                return Object.assign({}, state.paliLookup,
+                return Object.assign({}, state,
                     { textOptions: Object.assign({}, state.textOptions, 
-                                            {paliLookupActivated: action.paliLookupActivated, 
-                                             paliLookupTargetLanguage: action.paliLookupTargetLanguage,
-                                             paliLookupTargetDictRepr: action.paliLookupTargetDictRepr}) });
+                                                {paliLookupActivated: action.paliLookupActivated, 
+                                                paliLookupTargetLanguage: action.paliLookupTargetLanguage,
+                                                paliLookupTargetDictRepr: action.paliLookupTargetDictRepr}) });
             default:
                 return state;
         }

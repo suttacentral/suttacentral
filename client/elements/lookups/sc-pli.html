@@ -1,14 +1,17 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 
 <dom-module id="sc-pali-lookup">
   <template>
-        <iron-ajax
-        url="[[_computeUrl()]]"
-        id="ajax"
-        handle-as="json"
-        loading="{{ loadingDict }}"
-        last-response="{{ dictData }}"></iron-ajax>
+    <iron-ajax
+    url="[[_computeUrl()]]"
+    id="ajax"
+    handle-as="json"
+    loading="{{loadingDict}}"
+    last-response="{{dictData}}"></iron-ajax>
+
+    <iron-meta id="meta"></iron-meta>
 
   </template>
 
@@ -20,10 +23,6 @@
 
           static get properties() {
               return {
-                  reverseMap: {
-                      type: Object,
-                      value: {}
-                  },
                   syllSpacer: {
                       type: String,
                       value: '‧'
@@ -49,11 +48,6 @@
               }
           }
 
-          read() {
-              super.ready();
-              this._targetLanguageChanged();
-          }
-
           getNewDict() {
               this.$.ajax.url = this._computeUrl();
               this.loadedLanguage = this.toLang;
@@ -61,27 +55,27 @@
           }
 
           lookupWord(word) {
-              word = word.replace(/(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=|“)/g,"");
+              word = this._stripSpecialCharacters(word);
               word = word.toLowerCase().trim();
               word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), '');//optional hyphen, syllable-breaker
               let meaning = '';
 
-              if (this.reverseMap[word]) {
-                  meaning += word + " : ";
-                  word = this.reverseMap[word];
-              }
               word = word.replace(/ṃg/g, 'ṅg').replace(/ṃk/g, 'ṅk').replace(/ṃ/g, 'ṃ').replace(/Ṃ/g, 'ṃ');
               let allMatches = this._lookupWord(word);
               meaning = this._toHtml(allMatches, word);
               return meaning;
           }
 
+          _stripSpecialCharacters(word) {
+              return word.replace(/(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=|“)/g,"");
+          }
+
           _computeUrl() {
-              return `http://127.0.0.1/api/dictionaries/lookup?from=pli&to=${this.toLang}`;
+              return `${this.$.meta.byKey('API_ROOT')}/dictionaries/lookup?from=pli&to=${this.toLang}`;
           }
 
           _targetLanguageChanged() {
-              if(!(typeof this.toLang === 'undefined') && this.toLang !== this.loadedLanguage){
+              if(typeof this.toLang !== 'undefined' && this.toLang !== this.loadedLanguage){
                 this.getNewDict();
               }
           }
@@ -103,7 +97,6 @@
           }
 
           _lookupWord(word) {
-
               let allMatches = [];
 
               this.isTi = false;
@@ -135,7 +128,6 @@
               if (m && m.length > 0) {
                   allMatches = allMatches.concat(m);
               }
-
 
               if (allMatches.length == 0) {
                   //Now we attempt to break up the compound.
@@ -182,8 +174,7 @@
                           m = this.matchPartial(starts[i] + leftover);
                           if (m) {
                               break
-                          }
-                          ;
+                          };
                       }
                       if (!m) {
                           let base = firstchar + leftover;
@@ -203,13 +194,11 @@
               let matches = [];
               for (let pi = 0; pi < 2; pi++) // 'pi (list)
                   for (let vy = 0; vy < 2; vy++) // vy / by (burmese)
-                      for (let ti = 0; ti < 2; ti++) // 'ti (end quote)
-                      {
+                      for (let ti = 0; ti < 2; ti++){ // 'ti (end quote)
                           //On the first pass change nothing.
                           let wordp = word;
                           //On the second pass we change the last vowel if 'ti', otherwise skip.
                           if (ti && args.ti == true) {
-
                               wordp = wordp.replace(/ī$/, "i").replace(/ā$/, "i").replace(/ū$/, "i").replace(/n$/, "").replace(/n$/, "ṃ");
                           }
                           if (pi) {

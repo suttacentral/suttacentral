@@ -19,7 +19,7 @@
           @apply --sc-skolar-font-size-s;
           opacity: 1;
           max-width: 200px;
-          background-color: var(--paper-grey-700);
+          background-color: var(--sc-paper-tooltip-color);
         }
       }
 
@@ -151,7 +151,7 @@
                       statePath: 'textOptions.paliLookupActivated',
                       observer: '_paliLookupStateChanged'
                   },
-                  tooltipCounter: {
+                  tooltipCount: {
                       type: Number,
                       value: 0
                   },
@@ -166,7 +166,7 @@
                   paliLookupTargetDictRepr: {
                     type: String,
                     statePath: 'textOptions.paliLookupTargetDictRepr',
-                    observer: 'paliLookupTargetDictReprChanged'
+                    observer: '_paliLookupTargetDictReprChanged'
                 }
               }
           }
@@ -214,12 +214,12 @@
               if (this.translatedSutta) {
                   this._addPrimaryText(this.translatedSutta.strings);
                   if (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh') {
-                      this._wordsIntoSpans('.translated-text');
+                      this._putWordsIntoSpans('.translated-text');
                   }
               } else {
                   this._addPrimaryText(this.rootSutta.strings);
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                      this._wordsIntoSpans('.translated-text');
+                      this._putWordsIntoSpans('.translated-text');
                   }
               }
           }
@@ -332,7 +332,7 @@
                       this.insertSecondarySegment(item);
                   })
                   if(this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                    this._wordsIntoSpans('.original-text');
+                    this._putWordsIntoSpans('.original-text');
                   }
               }
               textContainer.classList.add('latin-script');
@@ -462,7 +462,7 @@
           }
 
           // Lookup word start
-          _wordsIntoSpans(selector){
+          _putWordsIntoSpans(selector) {
             if(!this.isPaliLookupEnabled){
                 return;
             }
@@ -486,9 +486,10 @@
             setTimeout(() => {
                 this.isLookupAllowed = true;
             }, 2000) // Allow lookup after 2 seconds.
-            process_async(segments, this._segmentIntoSpans);
+            process_async(segments, this._putSegmentIntoSpans);
           }
-          _segmentIntoSpans(segment, self){
+
+          _putSegmentIntoSpans(segment, self){
             const text = segment.innerHTML;
             let div = document.createElement('div');
             div.innerHTML = text;
@@ -496,13 +497,15 @@
             const str = div.innerHTML.replace(/spfrnt/g, `<span class="word">`).replace(/spback/g, "</span>");
             segment.innerHTML = str;
           }
+
           _recurseDomChildren(start, output){
                 let nodes;
                 if(start.childNodes){
                     nodes = start.childNodes;
                     this._loopNodeChildren(nodes, output);
                 }
-            }
+        }
+
         _loopNodeChildren(nodes, output){
             let node;
             for(let i=0;i<nodes.length;i++){
@@ -513,8 +516,9 @@
                 }
             }
         }
+
         _addSpanToNode(node){
-            if(node.nodeType != 3) return;
+            if(node.nodeType !== 3) return;
             let tt = node.data;
             let strArr = tt.split(" ");
             let str = "";
@@ -525,31 +529,33 @@
         }
     
         _addTooltip(v, tooltip, paliLookup, states, e) {
-        let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
-        let explenation = paliLookup.lookupWord(v.innerText);
-        tooltip.innerHTML = explenation;
-        v.parentNode.insertBefore(tooltip, v.nextSibling);
-        setTimeout(() => {
-            if(states.isWordHovered && !states.isTooltipShowed){
-                v.id = `lookup_target${this.tooltipCounter}`;
-                tooltip.for = `lookup_target${this.tooltipCounter}`;
-                this.tooltipCounter++;
-                tooltip.show();
-                states.isTooltipShowed = true;
-            }
-        }, timeToWait);
+            let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+            let wordDefinition = paliLookup.lookupWord(v.innerText);
+            tooltip.innerHTML = wordDefinition;
+            v.parentNode.insertBefore(tooltip, v.nextSibling);
+            setTimeout(() => {
+                if(states.isWordHovered && !states.isTooltipShown){
+                    v.id = `lookup_target${this.tooltipCount}`;
+                    tooltip.for = `lookup_target${this.tooltipCount}`;
+                    this.tooltipCount++;
+                    tooltip.show();
+                    states.isTooltipShown = true;
+                }
+            }, timeToWait);
         }
-          _removeTooltip(v, tooltip, states, e) {
+
+        _removeTooltip(v, tooltip, states, e) {
             let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
             setTimeout(() => {
                 if(!states.isWordHovered && !states.isTooltipHovered){
                     v.style.color = '';
                     v.removeAttribute("id");
                     tooltip.hide();
-                    states.isTooltipShowed = false;
+                    states.isTooltipShown = false;
                 }
             }, timeToWait);
           }
+
           _addLookupTooltips(textContainer, self) {
             self = self || this;
             if(!self.isPaliLookupEnabled){
@@ -564,10 +570,10 @@
                 tooltip.offset = 0;
                 let states = {isWordHovered: false, 
                             isTooltipHovered: false,
-                            isTooltipShowed: false};
+                            isTooltipShown: false};
                 v.addEventListener('mouseover', (e) => {
                     if(this.isPaliLookupEnabled && this.isLookupAllowed){
-                        v.style.color = '#43A047'; // It can not be in class because of some strange bug in some cases.
+                        v.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                         states.isWordHovered = true;
                         self._addTooltip(v, tooltip, paliLookup, states, e);
                     }
@@ -589,25 +595,35 @@
                 });
             })
           }
+
+         _getAccentColor() {
+            const bodyStyle = window.getComputedStyle(document.body);
+            return bodyStyle.getPropertyValue('--sc-primary-accent-color');
+         }
+
           _paliLookupStateChanged(){
               if(this.hidden){
                   return;
               }
               if(this.isPaliLookupEnabled){
                 if(!this.spansGenerated){
-                    if (this.translatedSutta && 
-                        (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
-                        this._wordsIntoSpans('.translated-text');
-                    } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                        if(this.shadowRoot.querySelector('.original-text')){
-                            this._wordsIntoSpans('.original-text');
-                        }
-                    }
+                    this._conditionalyPutWordsIntoSpans();
                 }
               }
           }
+
+          _conditionalyPutWordsIntoSpans() {
+            if (this.translatedSutta && 
+                (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
+                this._putWordsIntoSpans('.translated-text');
+            } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
+                if(this.shadowRoot.querySelector('.original-text')){
+                    this._putWordsIntoSpans('.original-text');
+                }
+            }
+          }
         
-          paliLookupTargetDictReprChanged() {
+          _paliLookupTargetDictReprChanged() {
             if(this.isPaliLookupEnabled){
                 const dictName = this.paliLookupTargetDictRepr.replace('→', 'to');
                 this.dispatchEvent(new CustomEvent('show-sc-toast', {
