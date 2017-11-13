@@ -6,14 +6,16 @@
     </template>
 
     <script>
-        class SCChineseLookup extends Polymer.Element {
+        class SCChineseLookup extends ReduxMixin(Polymer.Element) {
             static get is() {
                 return 'sc-chinese-lookup';
             }
 
-            static get properties() {}
+            static get properties() {
+                return {}
+            }
 
-            setCurrent(node) {
+            lookup(node) {
                 var self=this,
                     graphs = '',
                     nodes = $(),
@@ -46,14 +48,14 @@
                 for (i = graphs.length; i > 0; i--) {
                     var snip = graphs.slice(0, i)
                     if (snip in sc.lzh2enData) {
-                        popup.push(self.lookupWord(snip))
+                        popup.push(self._lookupWord(snip))
                         if (first) {
                             first = false;
                             nodes.slice(0, i).addClass('current_lookup')
                             this.lastCurrentLookup = nodes[i-1];
                         }
                     } else if (i == 1 && snip in sc.lzh2enFallbackData) {
-                        popup.push(self.lookupWord(snip))
+                        popup.push(self._lookupWord(snip))
                         popup[0] = '<table class="popup fallback">'
                         fallback = true
                         if (first) {
@@ -74,11 +76,7 @@
                 self.popups.push(popup);
             }
 
-            lookupHandler(e){
-                sc.lzh2enLookup.setCurrent(e.target);
-            }
-
-            lookupWord(graph){
+            _lookupWord(graph){
                 //Check if word exists and return HTML which represents the meaning.
                 var out = "";
                 graph = graph.replace(/\u2060/, '');

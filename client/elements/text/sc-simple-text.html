@@ -5,6 +5,7 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 <link rel="import" href="/elements/lookups/sc-pli.html">
+<link rel="import" href="/elements/lookups/sc-lzh2en.html">
 
 <dom-module id="sc-simple-text">
 
@@ -51,6 +52,9 @@
     <template is="dom-if" if="[[isPaliLookupEnabled]]">
         <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
     </template>
+    <template is="dom-if" if="[[isChineseLookupEnabled]]">
+    </template>
+    <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
 
   </template>
 
@@ -126,6 +130,10 @@
                       type: String,
                       statePath: 'textOptions.paliLookupTargetDictRepr',
                       observer: '_paliLookupTargetDictReprChanged'
+                  },
+                  isChineseLookupEnabled: {
+                      type: Boolean,
+                      value: true
                   }
               }
           }
@@ -145,6 +153,12 @@
                       }
                   }
               }
+          }
+
+          ready(){
+              super.ready();
+              console.log('rser');
+              window.lookup = this.$.chinese_lookup;
           }
 
           _updateView() {

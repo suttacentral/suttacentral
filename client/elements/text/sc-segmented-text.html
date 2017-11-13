@@ -8,6 +8,7 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 <link rel="import" href="/elements/lookups/sc-pli.html">
+<link rel="import" href="/elements/lookups/sc-lzh2en.html">
 
 <dom-module id="sc-segmented-text">
 
@@ -64,6 +65,9 @@
 
     <template is="dom-if" if="[[isPaliLookupEnabled]]">
       <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
+    </template>
+    <template is="dom-if" if="[[isChineseLookupEnabled]]">
+      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
     </template>
 
   </template>
@@ -167,6 +171,10 @@
                       type: String,
                       statePath: 'textOptions.paliLookupTargetDictRepr',
                       observer: '_paliLookupTargetDictReprChanged'
+                  },
+                  isChineseLookupEnabled: {
+                      type: Boolean,
+                      value: true
                   }
               }
           }
