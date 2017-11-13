@@ -123,10 +123,6 @@
         }
       }
 
-      .dialog paper-icon-button {
-        color: var(--disabled-text-color);
-      }
-
       .menu-content {
         margin-top: var(--sc-size-lg);
         margin-bottom: var(--sc-size-lg);
@@ -147,10 +143,15 @@
 
       .scrollable-dialog {
         margin-bottom: var(--sc-size-lg);
+        margin-top: 0;
       }
 
       .dialog-section {
         margin-top: var(--sc-size-lg);
+      }
+
+      .white-icon {
+        color: white;
       }
 
     </style>
@@ -208,7 +209,7 @@
     <isw-dialog id="settings_dialog" name="settings_dialog" class="dialog" with-backdrop="true"
                 entry-animation="fade-in-animation" exit-animation="fade-out-animation">
       <div class="buttons green-bg">
-        <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
+        <paper-icon-button class="white-icon" icon="close" dialog-confirm></paper-icon-button>
       </div>
       <h2 class="dialog-header green-bg">Text settings</h2>
       <paper-dialog-scrollable class="scrollable-dialog">
@@ -219,7 +220,7 @@
     <isw-dialog id="info_dialog" name="info_dialog" class="dialog" with-backdrop="true" data="{{infoDialogMetaArea}}"
                 entry-animation="fade-in-animation" exit-animation="fade-out-animation">
       <div class="buttons green-bg">
-        <paper-icon-button icon="close" dialog-confirm></paper-icon-button>
+        <paper-icon-button class="white-icon" icon="close" dialog-confirm></paper-icon-button>
       </div>
       <h2 class="dialog-header green-bg">Publication details</h2>
       <paper-dialog-scrollable class="scrollable-dialog">
