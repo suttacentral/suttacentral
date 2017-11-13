@@ -142,7 +142,9 @@
               this.translatedSutta = this.responseData.translation;
               this.rootSutta = this.responseData.root_text;
               this.markup = this.responseData.markup;
-              this.author = this.responseData.translation.author;
+              if (this.responseData.translation) {
+                  this.author = this.responseData.translation.author;
+              }
           }
 
           // The stopRequests variable exists so that we don't make 3 consequent requests in case the

@@ -38,7 +38,7 @@
     <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]"
          hidden$="[[isTextViewHidden]]"></div>
 
-    <template is="dom-if" if="[[!translatedSutta.strings]]">
+    <template is="dom-if" if="[[_shouldShowError(rootSutta, translatedSutta)]]">
       <div class="text-center margin-top-xl">
         <h2>Error</h2>
         <h3>Could not find the sutta text.</h3>
@@ -249,31 +249,39 @@
                       item.classList.add('highlightable-segment');
                   }
               );
-              if (!this.paliScript) {
-                  this.changeScript(0)
-              }
-              else {
-                  this.changeScript(this.paliScript)
-              }
           }
 
           _addPrimaryText(textStrings) {
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
               const segments = textContainer.getElementsByTagName('sc-seg');
               try {
-                  Array.from(segments).forEach(item => item.classList.add('translated-text'));
-                  Object.entries(textStrings).forEach(([key, value]) => {
-                      if (!key.startsWith('_')) {
-                          let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-                          const segment = textContainer.querySelector(`#${subkey}`);
-                          segment.innerHTML = value + ' ';
-                      }
-                  });
+                  this.addSegmentClasses(segments);
+                  this.insertTextIntoSegments(textStrings, textContainer);
               }
               catch (e) {
                   console.error(e);
               }
               this.assembledMainText = textContainer.innerHTML;
+          }
+
+          addSegmentClasses(segments) {
+              let segmentClass = '';
+              if (this.translatedSutta) {
+                  segmentClass = 'translated-text';
+              } else {
+                  segmentClass = 'original-text';
+              }
+              Array.from(segments).forEach(item => item.classList.add(segmentClass));
+          }
+
+          insertTextIntoSegments(textStrings, textContainer) {
+              Object.entries(textStrings).forEach(([key, value]) => {
+                  if (!key.startsWith('_')) {
+                      let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+                      const segment = textContainer.querySelector(`#${subkey}`);
+                      segment.innerHTML = value + ' ';
+                  }
+              });
           }
 
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
@@ -346,10 +354,6 @@
               return ((!error && loading) || isTextViewHidden);
           }
 
-          _loadingChanged() {
-              this.isTextViewHidden = this.isLoading;
-          }
-
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
               if (!sectionId) return;
@@ -376,21 +380,32 @@
               this._resetScript(segments, tooltips);
               switch (paliScript) {
                   case 'latin':
+                      this._setScriptISOCode('Latn');
                       this.$.segmented_text_content.classList.add('latin-script');
                       break;
                   case 'sinhala':
+                      this._setScriptISOCode('Sinh');
                       this._setScript('sinhala', segments, tooltips);
                       break;
                   case 'devanagari':
+                      this._setScriptISOCode('Deva');
                       this._setScript('devanagari', segments, tooltips);
                       break;
                   case 'thai':
+                      this._setScriptISOCode('Thai');
                       this._setScript('thai', segments, tooltips);
                       break;
                   case 'myanmar':
+                      this._setScriptISOCode('Mymr');
                       this._setScript('myanmar', segments, tooltips);
                       break;
               }
+          }
+
+          _setScriptISOCode(isoCode) {
+              const textLang = this.translatedSutta ? this.translationLang : this.rootLang;
+              const langAttr = this.translatedSutta ? this.translationLang : `${textLang}-${isoCode}`;
+              this.shadowRoot.querySelector('#text').setAttribute('lang', langAttr);
           }
 
           _resetScript(segments, tooltips) {
@@ -410,6 +425,21 @@
 
           _capitalize(text) {
               return text.charAt(0).toUpperCase() + text.slice(1);
+          }
+
+          _loadingChanged() {
+              this.isTextViewHidden = this.isLoading;
+          }
+
+          _shouldShowError(rootSutta, translatedSutta) {
+              try {
+                  if (!translatedSutta) {
+                      return rootSutta ? !(rootSutta.strings) : true;
+                  }
+                  return !(translatedSutta.strings);
+              } catch (e) {
+                  console.error(e);
+              }
           }
       }
 
