@@ -43,7 +43,7 @@
                   },
                   toLang: {
                       type: String,
-                      statePath: 'paliLookup.targetLanguage',
+                      statePath: 'textOptions.paliLookupTargetLanguage',
                       observer: '_targetLanguageChanged'
                   }
               }
@@ -61,6 +61,7 @@
           }
 
           lookupWord(word) {
+              word = word.replace(/(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=|“)/g,"");
               word = word.toLowerCase().trim();
               word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), '');//optional hyphen, syllable-breaker
               let meaning = '';

@@ -27,12 +27,10 @@
             paragraphsEnabled: false,
             paragraphDescriptions: [],
             segmentedSuttaTextView: 'none',
-            script: 'latin'
+            script: 'latin',
+            paliLookupActivated: false,
+            paliLookupTargetLanguage: 'en'
         },
-        paliLookup: {
-            activated: false,
-            targetLanguage: 'en'
-        }
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -69,8 +67,9 @@
                     { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
             case 'ACTIVATE_PALI_LOOKUP':
                 return Object.assign({}, state.paliLookup,
-                    { paliLookup: Object.assign({}, state.paliLookup, 
-                                            {activated: action.activated, targetLanguage: action.targetLanguage }) });
+                    { textOptions: Object.assign({}, state.textOptions, 
+                                            {paliLookupActivated: action.paliLookupActivated, 
+                                             paliLookupTargetLanguage: action.paliLookupTargetLanguage }) });
             default:
                 return state;
         }
