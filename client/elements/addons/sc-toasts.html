@@ -1,0 +1,73 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+
+<dom-module id="sc-toasts">
+  <template>
+    <style>
+        .toast {
+            @apply --sc-sans-font;
+            @apply --sc-skolar-font-size-xl;
+            --paper-toast-color: white;
+            text-align: center;
+            margin-left: calc(50vw - 150px);
+            }
+       
+        .success-toast {
+        --paper-toast-background-color: var(--sc-primary-accent-color);
+        }
+
+        .error-toast {
+        --paper-toast-background-color: red;
+        }
+    </style>
+
+    <paper-toast id="error_toast" class="toast error-toast"></paper-toast>
+    <paper-toast id="success_toast" class="toast success-toast"></paper-toast>
+    <paper-toast id="info_toast" class="toast"></paper-toast>
+  </template>
+
+  <script>
+      class SCToasts extends Polymer.Element {
+          static get is(){
+              return 'sc-toasts';
+          }
+          
+          static get properties(){
+              return {
+                  defaultDuration: {
+                      type: Number,
+                      value: 5000
+                  },
+                  message: {
+                      type: String
+                  }
+              }
+          }
+
+          ready() {
+              super.ready();
+              this.parentNode.addEventListener('show-sc-toast', (e) => {
+                let toast = this._getToast(e.detail.toastType);
+                toast.text = e.detail.message;
+                toast.duration = e.detail.duration || this.defaultDuration;
+
+                toast.refit();
+                toast.show();
+              })
+              
+          }
+
+          _getToast(toastType) {
+            switch (toastType) {
+                case 'info':
+                    return this.$.info_toast;
+                case 'success':
+                    return this.$.success_toast;
+                case 'error':
+                    return this.$.error_toast;
+            }
+          }
+      }
+      customElements.define(SCToasts.is, SCToasts);
+  </script>
+</dom-module>
