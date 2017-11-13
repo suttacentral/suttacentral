@@ -25,6 +25,10 @@
         height: 60px;
       }
 
+      .highlightable-segment:hover {
+        color: var(--sc-primary-accent-color);
+      }
+
     </style>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
@@ -230,14 +234,21 @@
           // reset all classes and remove tooltips.
           _resetViewOptions() {
               this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
-              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
-                  .forEach(item => item.parentNode.removeChild(item));
+              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip')).forEach(item =>
+                  item.parentNode.removeChild(item)
+              );
+              Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
+                  item.classList.remove('highlightable-segment')
+              );
           }
 
           _addLookupTooltips(textContent) {
-              Array.from(textContent.querySelectorAll('.translated-text')).forEach(item =>
-                  item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
-                      'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
+              Array.from(textContent.querySelectorAll('.translated-text')).forEach(item => {
+                      item.innerHTML = `<paper-tooltip class='text-tooltip'
+                        fit-to-visible-bounds id=${item.id}></paper-tooltip>${item.innerHTML}`;
+                      item.classList.add('highlightable-segment');
+                  }
+              );
               if (!this.paliScript) {
                   this.changeScript(0)
               }
