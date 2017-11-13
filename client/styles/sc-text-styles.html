@@ -9,7 +9,7 @@
 
       .html-text-content section {
         margin: 0 auto !important;
-        padding: var(--size-lg) 10% var(--size-lg);
+        padding: var(--sc-size-lg) 10% var(--sc-size-lg);
         max-width: 40em;
         display: block;
       }
@@ -24,8 +24,8 @@
       }
 
       .html-text-content.line-by-line .original-text {
+        color: var(--sc-secondary-text-color);
         padding-bottom: 20px;
-        color: var(--secondary-text-color);
       }
 
       .html-text-content aside {
@@ -38,9 +38,9 @@
       }
 
       .side-by-side .translated-text {
+        padding-right: var(--sc-size-md);
         display: inline-block;
         width: 47%;
-        padding-right: var(--size-md);
         vertical-align: text-top;
       }
 
@@ -68,12 +68,12 @@
         @apply --sc-sans-font;
         @apply --shadow-elevation-6dp;
         --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--paper-grey-700);
+        --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
           @apply --sc-skolar-font-size-xs;
-          line-height: var(--size-md);
-          padding: var(--size-sm) var(--size-md);
-          text-shadow: 0 0 #ffffff;
+          line-height: var(--sc-size-md);
+          padding: var(--sc-size-sm) var(--sc-size-md);
+          text-shadow: 0 0 var(--sc-secondary-background-color);
           white-space: normal;
         };
       }
@@ -90,10 +90,6 @@
 
       /* These rules always apply */
 
-      .evam {
-        @apply --sc-mixed-small-caps;
-      }
-
       .infomode .term,
       .infomode .gloss {
         color: var(--paper-green-500);
@@ -109,12 +105,12 @@
         @apply --paper-font-body1;
         @apply --sc-sans-font;
         @apply --padding-md;
-        color: var(--secondary-text-color);
-        background: var(--paper-grey-50);
-        border-radius: 2px;
-        border: 1px solid var(--paper-grey-100);
+        color: var(--sc-secondary-text-color);
+        background: var(--sc-primary-background-color);
+        border: 1px solid var(--sc-primary-background-color);
+        border-radius: var(--sc-size-xxs);
         display: inline-block;
-        margin-bottom: var(--size-md);
+        margin-bottom: var(--sc-size-md);
       }
 
       .suttainfo p,
@@ -138,7 +134,7 @@
       .sutta ul li::before {
         position: absolute;
         content: "◦";
-        color: var(--disabled-text-color);
+        color: var(--sc-disabled-text-color);
         margin-left: -12px;
       }
 
@@ -169,7 +165,7 @@
         display: table;
         width: auto;
         margin: 0 auto;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       .endsutta,
@@ -179,17 +175,17 @@
       .endsubsection {
         font-style: italic;
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       .uddana {
         margin-bottom: 32px;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       .endbook {
         text-align: center;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -255,7 +251,7 @@
       #text:lang(en) .add,
       .infomode .add {
         display: inline;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         @apply --sc-sans-font;
       }
 
@@ -294,11 +290,11 @@
       }
 
       .expanded .infomode {
-        color: var(--paper-grey-300);
+        color: var(--sc-paper-tooltip-color);
       }
 
       .suppliedmetre {
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       /*This is for cases where the editor has "filled in the blanks" (hence "supplied") with metrical notation (hence "metre").
@@ -323,7 +319,7 @@
         @apply --sc-sans-font;
         display: inline-block;
         position: absolute;
-        background: var(paper-red-300);
+        background: var(--paper-red-300);
         padding: 0.5em;
         border-radius: 3px;
         margin-top: -2.5em;
@@ -331,8 +327,8 @@
         visibility: hidden;
         opacity: 0;
         transition: opacity 0.3s ease;
-        border: 1px solid var(paper-grey-100);
-        box-shadow: 6px 4px 10px rgba(136, 136, 136, 0.3);
+        border: 1px solid var(--sc-primary-background-color);
+        box-shadow: 6px var(--sc-size-xs) 10px rgba(136, 136, 136, 0.3);
       }
 
       .infomode .choice:hover .corr {
@@ -348,7 +344,7 @@
       */
 
       .sic .infomode {
-        color: var(paper-red-500);
+        color: var(--paper-red-500);
       }
 
       /*
@@ -356,7 +352,7 @@
       */
 
       .lem .infomode {
-        color: var(paper-brown-500);
+        color: var(--paper-brown-500);
       }
 
       /*The adopted main reading in a text. Display normally.
@@ -389,7 +385,7 @@
       .gatha-number {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-s;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       /*As it says.*/
@@ -409,7 +405,7 @@
       */
 
       .unclear {
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       /*Text marked as uncertain, usually with a "?", in the transcribed text.

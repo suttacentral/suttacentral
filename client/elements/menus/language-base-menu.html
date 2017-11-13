@@ -16,7 +16,7 @@ This is the base language menu that determines the language of the site.
   <template>
     <style>
       :host {
-        --primary-color: var(--sc-gold-500);
+        --primary-color: var(--sc-primary-color);
         --paper-menu-button-content: {
           display: block;
         };
@@ -33,12 +33,17 @@ This is the base language menu that determines the language of the site.
         width: 180px;
       }
 
+      .language-menu-paper-item:hover {
+        cursor: pointer;
+        background-color: var(--sc-tertiary-background-color);
+      }
+
       .iso-code {
         @apply --paper-font-caption;
         @apply --sc-sans-font;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
         position: absolute;
-        right: 15px;
+        right: var(--sc-size-md);
         margin-top: -34px;
         text-transform: none;
         pointer-events: none;

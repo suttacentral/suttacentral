@@ -39,13 +39,13 @@
       }
 
       paper-card.suttaplex {
-        border-radius: 0;
-        border-top: 1px solid var(--paper-grey-300);
+        margin-top: var(--sc-size-md);
+        border-radius: var(--sc-size-xxs);
         display: block;
       }
 
       paper-card.suttaplex .card-content {
-        padding-top: 24px;
+        padding-top: var(--sc-size-md-larger);
         padding-bottom: 1px;
       }
 
@@ -56,16 +56,16 @@
 
       .suttaplex-nerdy-row {
         @apply --paper-font-body2;
+        color: var(--sc-secondary-text-color);
         display: flex;
         flex-wrap: wrap;
-        color: var(--secondary-text-color);
         font-weight: normal;
         white-space: nowrap;
         overflow: hidden;
       }
 
       .nerdy-row-element {
-        margin-right: 24px;
+        margin-right: var(--sc-size-md-larger);
       }
 
       .suttaplex-description {
@@ -74,7 +74,7 @@
       }
 
       paper-card.suttaplex .card-actions {
-        padding: 0 var(--size-md) var(--size-sm);
+        padding: 0 var(--sc-size-md) var(--sc-size-sm);
         display: flex;
         flex-flow: wrap;
         flex-grow: 1;
@@ -89,8 +89,7 @@
       }
 
       .card-actions-left paper-button:first-of-type {
-        margin-left: 0;
-        padding-left: 0;
+        margin-left: -2px;
       }
 
       .right-elements {
@@ -111,7 +110,7 @@
       .languagedrop {
         display: inline-block;
         vertical-align: middle;
-        margin: -18px 4px 0;
+        margin: -18px var(--sc-size-xs) 0;
         width: 100px;
       }
 
@@ -120,7 +119,7 @@
       }
 
       summary::-webkit-details-marker {
-        color: var(--paper-grey-300);
+        color: var(--sc-paper-tooltip-color);
       }
 
       details {
@@ -134,8 +133,8 @@
         z-index: 200;
         background-color: #fff;
         padding: 12px;
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-        margin: 0 48px 0 0;
+        border-top: var(--sc-border);
+        margin: 0 var(--sc-size-xl) 0 0;
         white-space: normal;
       }
 
@@ -152,7 +151,7 @@
       }
 
       .difficulty-icon {
-        padding-right: 8px;
+        padding-right: var(--sc-size-sm);
       }
 
       .toggle-button {
@@ -190,12 +189,12 @@
         background-color: #fff;
         @apply --shadow-elevation-3dp;
         padding: 12px;
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-        margin: 0 48px 0 0;
+        border-top: var(--sc-border);
+        margin: 0 var(--sc-size-xl) 0 0;
         white-space: normal;
       }
 
-      .no-margin {
+      .scrollable-dialog {
         margin: 0;
       }
 
@@ -213,7 +212,15 @@
       }
 
       .top-space {
-        margin-top: 24px;
+        margin-top: var(--sc-size-md-larger);
+      }
+
+      .grey-icon {
+        color: var(--sc-disabled-text-color);
+      }
+
+      .author-button {
+        @apply --sc-skolar-font-size-md;
       }
 
     </style>
@@ -225,7 +232,7 @@
           <h3 class="suttaplex-heading">[[_computeMainHeading(item)]]</h3>
           <div class$="difficulty-icon [[item.difficulty.name]]"
                title="Recommended for [[item.difficulty.name]] students">
-            <iron-icon icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
+            <iron-icon class="grey-icon" icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
           </div>
         </div>
 
@@ -238,7 +245,9 @@
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
               <div>
-                <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
+                <span class="book" class="no-margin">
+                  <iron-icon class="grey-icon" icon="book"></iron-icon>
+                </span>
                 <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
               </div>
             </template>
@@ -246,7 +255,9 @@
               <div>
                 <details class="display-inline">
                   <summary class="volpage-biblio-info-summary">
-                    <span class="book" class="no-margin"><iron-icon icon="book"></iron-icon></span>
+                    <span class="book" class="no-margin">
+                      <iron-icon class="grey-icon" icon="book"></iron-icon>
+                    </span>
                     <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
                   </summary>
                   <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
@@ -264,7 +275,8 @@
         <div class="card-actions-left">
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
-              <paper-button flat title$="Go to a translation by [[_capitalize(translation.author)]]">
+              <paper-button class="author-button" flat
+                            title$="Go to a translation by [[_capitalize(translation.author)]]">
                 <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
                   [[translation.author]]
                 </a>
@@ -284,8 +296,8 @@
             <div class="vert-menu">
               <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true"
                                  vertical-align="top" aria-disabled="false">
-                <paper-icon-button class="more-info" slot="dropdown-trigger" icon="icons:more-vert" role="button"
-                                   tabindex="0" aria-disabled="false"></paper-icon-button>
+                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:more-vert"
+                                   role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
                 <div slot="dropdown-content"></div>
                 <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
                   <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
@@ -296,7 +308,7 @@
 
             <template is="dom-if" if="[[item.parallel_count]]">
               <div class="parallels-toggle-div">
-                <paper-icon-button id="parallels_toggle" class="toggle-button" icon="[[toggleIcon]]"
+                <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]"
                                    on-tap="_toggleParallelsOpened">
                 </paper-icon-button>
                 <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
@@ -457,15 +469,15 @@
           }
 
           _addPaddingIfNoBlurb(blurb) {
-            return (blurb === null || blurb === undefined) ? 'top-space' : '';
+              return (blurb === null || blurb === undefined) ? 'top-space' : '';
           }
 
-          _capitalize(author){
-            return author.replace(/\b\w/g, l => l.toUpperCase());
+          _capitalize(author) {
+              return author.replace(/\b\w/g, l => l.toUpperCase());
           }
 
           _getAcronymOrUid(item) {
-            return item.acronym || item.uid;
+              return item.acronym || item.uid;
           }
       }
 

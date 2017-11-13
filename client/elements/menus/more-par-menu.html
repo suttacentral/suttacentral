@@ -13,7 +13,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
   <template>
     <style is="custom-style">
       paper-item iron-icon {
-        margin-right: var(--size-md);
+        margin-right: var(--sc-size-md);
         color: var(--disabled-text-color);
       }
 
@@ -22,8 +22,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
 
       .button-text:hover {
+        background-color: var(--sc-tertiary-background-color);
         cursor: pointer;
-        background-color: var(--paper-grey-200);
       }
 
       .table-element {
@@ -31,8 +31,12 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       }
 
       .table-element[disabled] {
-        --iron-icon-fill-color: var(--paper-grey-200);
-        color: var(--paper-grey-200);
+        --iron-icon-fill-color: var(--sc-primary-background-color);
+        color: var(--sc-primary-background-color);
+      }
+
+      .table-element .grey-icon {
+        color: var(--sc-disabled-text-color);
       }
     </style>
 
@@ -41,19 +45,19 @@ Menu on top of the suttaplex parallel's list for copying information from parall
     <iron-ajax id="parallels_ajax"
                url="[[_getAPIEndpoint(item)]]"
                handle-as="json"
-               loading="{{ loadingParallels }}"
-               last-response="{{ parallels }}"></iron-ajax>
+               loading="{{loadingParallels}}"
+               last-response="{{parallels}}"></iron-ajax>
 
     <paper-item class="table-element button-text" on-tap="_copyLink" title="[[itemLink]]">
-      <iron-icon icon="link"></iron-icon>
+      <iron-icon class="grey-icon" icon="link"></iron-icon>
       Copy link
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="{{ areParallelsAvailable }}">
-      <iron-icon icon="content-copy"></iron-icon>
+    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="{{areParallelsAvailable}}">
+      <iron-icon class="grey-icon" icon="content-copy"></iron-icon>
       Copy table
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="{{ areParallelsAvailable }}">
-      <iron-icon icon="editor:format-quote"></iron-icon>
+    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="{{areParallelsAvailable}}">
+      <iron-icon class="grey-icon" icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>
 

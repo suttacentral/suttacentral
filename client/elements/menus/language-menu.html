@@ -14,7 +14,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
   <template>
     <style include="paper-item-shared-styles">
       :host {
-        --primary-color: var(--paper-green-a700);
+        --primary-color: var(--sc-primary-accent-color);
         --paper-menu-button-content: {
           display: flex;
         };
@@ -50,14 +50,12 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
       .root-lang-menu-item {
-        color: var(--paper-green-a700);
-        background-color: #E0FAEB;
+        color: var(--sc-primary-accent-color);
         cursor: pointer;
       }
 
       .root-lang-menu-item:hover {
-        cursor: pointer;
-        color: var(--paper-green-700)
+        background-color: var(--sc-tertiary-background-color);
       }
 
       .language-menu-url:focus {
@@ -65,11 +63,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
       .iso-code {
-        color: var(--secondary-text-color);
         @apply --paper-font-caption;
         @apply --sc-sans-font;
+        color: var(--sc-secondary-text-color);
+        right: var(--sc-size-md);
         position: absolute;
-        right: 15px;
         margin-top: -34px;
         margin-left: 10px;
         text-transform: none;
@@ -77,21 +75,8 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
       .language-choice-box:hover {
-        background-color: var(--paper-grey-200);
+        background-color: var(--sc-tertiary-background-color);
         cursor: pointer;
-      }
-
-      .separator {
-        border: 0;
-        height: 0;
-        margin: 0;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      }
-
-      .language-menu-root-icon {
-        color: var(--paper-grey-500);
-        margin-right: -6px;
       }
 
       .d-none {

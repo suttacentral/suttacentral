@@ -16,8 +16,8 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
   <template>
     <style include="sc-suttaplex-styles">
       .container {
+        padding: var(--sc-size-lg) 5% 0 !important;
         margin: 0 auto;
-        padding: 32px 5% 0 !important;
         max-width: 640px;
         display: flex;
         flex-direction: column;
@@ -31,12 +31,12 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       .sutta-list {
         max-width: 720px;
         transition: margin-top 0.3s, margin-bottom 0.3s;
-        margin: 0 auto 64px;
+        margin: 0 auto var(--sc-size-xxl);
       }
 
       .margin-vertical-md {
-        margin-top: 8px;
-        margin-bottom: 8px;
+        margin-top: var(--sc-size-sm);
+        margin-bottom: var(--sc-size-sm);
       }
 
     </style>

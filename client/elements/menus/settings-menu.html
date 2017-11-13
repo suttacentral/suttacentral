@@ -27,15 +27,15 @@ Issues:
   <template>
     <style is="custom-style">
       :host {
-        --primary-color: var(--sc-gold-500);
-        --accent-color: var(--paper-green-a700);
+        --primary-color: var(--sc-primary-color);
+        --accent-color: var(--sc-primary-accent-color);
       }
 
       .paper-dialogue-container {
         max-width: 40em;
       }
 
-      .menu-header {
+      .dialog-header {
         @apply --paper-font-title;
         @apply --sc-sans-font;
         margin: 0
@@ -45,14 +45,14 @@ Issues:
         color: white;
       }
 
-      .dialogue-section {
+      .dialog-section {
         margin-top: 36px;
       }
 
       .nerdy-row {
         @apply --sc-paper-font-body;
         @apply --sc-sans-font;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       .menu-item-title {
@@ -65,7 +65,7 @@ Issues:
       }
 
       .menu-item .menu-icon {
-        margin-right: 4px;
+        margin-right: var(--sc-size-xs);
       }
 
       .menu-item {
@@ -79,7 +79,9 @@ Issues:
       }
 
       .menu-toggle-button {
-        margin-top: 8px;
+        --paper-toggle-button-checked-bar-color: var(--sc-primary-color-medium);
+        --paper-toggle-button-checked-button-color: var(--sc-primary-color);
+        margin-top: var(--sc-size-sm);
       }
 
       @media screen and (max-width: 769px) {
@@ -113,14 +115,14 @@ Issues:
         <paper-spinner-lite active="[[showLoadingSpinner]]"></paper-spinner-lite>
       </div>
 
-      <div class="dialogue-section">
+      <div class="dialog-section">
         <h3 class="menu-item-title">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
         <paper-toggle-button class="menu-toggle-button" noink
                              active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
       </div>
 
-      <div class="dialogue-section">
+      <div class="dialog-section">
         <h3 class="menu-item-title">View original text with translation</h3>
         <div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.
         </div>
@@ -143,7 +145,7 @@ Issues:
         </paper-radio-group>
       </div>
 
-      <div class="dialogue-section">
+      <div class="dialog-section">
         <h3 class="menu-item-title">Activate Pali word lookup</h3>
         <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid
           only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.
@@ -157,7 +159,7 @@ Issues:
         </paper-dropdown-menu>
       </div>
 
-      <div class="dialogue-section">
+      <div class="dialog-section">
         <h3 class="menu-item-title">Activate Chinese word lookup</h3>
         <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital
           Dictionary of Buddhism.
@@ -171,7 +173,7 @@ Issues:
         </paper-dropdown-menu>
       </div>
 
-      <div class="dialogue-section">
+      <div class="dialog-section">
         <h3 class="menu-item-title">Change the script of the Pali text</h3>
         <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
         <paper-dropdown-menu class="menu-dropdown" label="Script">
@@ -183,8 +185,9 @@ Issues:
         </paper-dropdown-menu>
       </div>
 
-      <div class="dialogue-section">
-        <h3 class="menu-item-title">Select this to remember these settings next time you visit SuttaCentral.</h3>
+      <div class="dialog-section">
+        <h3 class="menu-item-title">Remember settings</h3>
+        <h3 class="nerdy-row">Select this to remember these settings next time you visit SuttaCentral.</h3>
         <paper-toggle-button class="menu-toggle-button" noink checked
                              active="{{rememberSettings}}"></paper-toggle-button>
       </div>

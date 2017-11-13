@@ -41,6 +41,10 @@
         height: 60px;
       }
 
+      .highlightable-segment:hover {
+        color: var(--sc-primary-accent-color);
+      }
+
     </style>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
@@ -134,9 +138,6 @@
                       statePath: 'textOptions.script',
                       observer: 'changeScript'
                   },
-                  isSegmented: {
-                      type: Boolean
-                  },
                   markup: {
                       type: String,
                       observer: '_updateView'
@@ -187,13 +188,8 @@
               }
           }
 
-          ready() {
-              super.ready();
-              document.addEventListener('visibilitychange', () => { this._handleVisibilityChange() });
-          }
-
           _updateView() {
-              if (!this.isSegmented || this.isSegmented === undefined || !this.markup) {
+              if (!this.markup) {
                   return;
               }
               this._resetViewOptions();
@@ -260,7 +256,7 @@
           // settings-menu for the relevant view is implemented by adding relevant class
           // or by adding a paper-tooltip and populating this with the pali text in the chosen script.
           _setViewOptions() {
-              if (!this.isSegmented || !this.markup || !this.translatedSutta) {
+              if (!this.markup || !this.translatedSutta) {
                   return;
               }
               const textContent = this.$.segmented_text_content;
@@ -284,20 +280,21 @@
           // reset all classes and remove tooltips.
           _resetViewOptions() {
               this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
-              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip'))
-                  .forEach(item => item.parentNode.removeChild(item));
+              Array.from(this.shadowRoot.querySelectorAll('paper-tooltip')).forEach(item =>
+                  item.parentNode.removeChild(item)
+              );
+              Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
+                  item.classList.remove('highlightable-segment')
+              );
           }
 
-          _addPopupTooltips(textContent) {
-              Array.from(textContent.querySelectorAll('.translated-text')).forEach(item =>
-                  item.innerHTML = '<paper-tooltip class=\'text-tooltip\' fit-to-visible-bounds ' +
-                      'id=' + item.id + '></paper-tooltip>' + item.innerHTML);
-              if (!this.paliScript) {
-                  this.changeScript(0)
-              }
-              else {
-                  this.changeScript(this.paliScript)
-              }
+          _addLookupTooltips(textContent) {
+              Array.from(textContent.querySelectorAll('.translated-text')).forEach(item => {
+                      item.innerHTML = `<paper-tooltip class='text-tooltip'
+                        fit-to-visible-bounds id=${item.id}></paper-tooltip>${item.innerHTML}`;
+                      item.classList.add('highlightable-segment');
+                  }
+              );
           }
 
           _addPrimaryText(textStrings) {
@@ -316,7 +313,6 @@
               catch (e) {
                   console.error(e);
               }
-              this._reloadInnerHTML();
               this.assembledMainText = textContainer.innerHTML;
           }
 
@@ -334,7 +330,6 @@
                   }
               }
               textContainer.classList.add('latin-script');
-              this._reloadInnerHTML();
           }
 
           insertSecondarySegment([key, content]) {
@@ -371,6 +366,9 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
+              if (!item.classList.contains('textual-info-paragraph')) {
+                  item.classList.add('textual-info-paragraph');
+              }
               item.addEventListener('click', () => {
                   this._scrollToSection(item.id, true, 0);
               });
@@ -395,35 +393,9 @@
               this.isTextViewHidden = this.isLoading;
           }
 
-          _handleVisibilityChange() {
-              if (document.hidden || this.chosenTextView !== 'none' || !this.isSegmented) {
-                  return;
-              }
-              // Hide the text and display the loading spinner:
-              this.isTextViewHidden = true;
-              // Insert the sutta text into the main element again to force reloading styles:
-              // This is a hacky solution required because of how inner-h-t-m-l is evaluated in Shady DOM.
-              setTimeout(() => {
-                  if (this.assembledMainText) {
-                      this.$.segmented_text_content.innerHTML = this.assembledMainText;
-                      if (this.translatedSutta && 
-                          (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
-                          this._wordsIntoSpans('.translated-text');
-                      } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                          this._wordsIntoSpans('.original-text');
-                      }
-                      if (this.paragraphs && this.showParagraphs) {
-                        this._addParagraphScrollListeners();
-                      }
-                  } else {
-                      this._addTextContent();
-                  }
-                  this.isTextViewHidden = false;
-              }, 200);
-          }
-
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
+              if (!sectionId) return;
               try {
                   const section = this.shadowRoot.getElementById(sectionId);
                   setTimeout(() => {
@@ -439,7 +411,7 @@
           }
 
           changeScript(paliScript) {
-              if (!this.rootSutta || this.rootSutta.lang !== "pli") {
+              if (!this.rootSutta || this.rootSutta.lang !== 'pli') {
                   return;
               }
               const segments = this.shadowRoot.querySelectorAll('.original-text');
@@ -477,178 +449,11 @@
               const scriptFn = `to${this._capitalize(scriptName)}`;
               Array.from(segments).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
-              this._reloadInnerHTML();
           }
 
           _capitalize(text) {
               return text.charAt(0).toUpperCase() + text.slice(1);
           }
-
-          // This exists because of https://stackoverflow.com/questions/47127404/text-renders-blank-in-chrome-reappears-when-selected
-          _reloadInnerHTML(textContent) {
-              this.isLookupAllowed = false;
-              setTimeout(() => {
-                  // This doesn't make sense but hey, it works.
-                  this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
-                  this._addLookupTooltips(this.$.segmented_text_content);
-                  this.isLookupAllowed = true;
-
-                  this._computeParagraphs();
-              }, 2000);
-          }
-          // Lookup word start
-          _wordsIntoSpans(selector){
-            if(!this.isPaliLookupEnabled){
-                return;
-            }
-            let segments = this.shadowRoot.querySelectorAll(selector);
-            let self = this;
-            function process_async(items, process) {
-                const temp = () => {
-                    const segment = items.shift(); 
-                    process(segment, self);
-                    self._addLookupTooltips(segment, self);
-                    if(items.length > 0) {
-                        setTimeout(temp, 0);
-                    } else {
-                        self.spansGenerated = true;
-                    }
-                }
-                setTimeout(temp, 0);
-            }
-            this.isLookupAllowed = false;
-            setTimeout(() => {
-                this.isLookupAllowed = true;
-            }, 2000) // Allow lookup after 2 seconds.
-            process_async(segments, this._segmentIntoSpans);
-          }
-
-          _segmentIntoSpans(segment, self){
-            const text = segment.innerHTML;
-            let div = document.createElement('div');
-            div.innerHTML = text;
-            self._recurseDomChildren(div, true);
-            const str = div.innerHTML.replace(/spfrnt/g, `<span class="word">`).replace(/spback/g, "</span>");
-            segment.innerHTML = str;
-          }
-
-          _recurseDomChildren(start, output){
-                let nodes;
-                if(start.childNodes){
-                    nodes = start.childNodes;
-                    this._loopNodeChildren(nodes, output);
-                }
-            }
-            _loopNodeChildren(nodes, output){
-                let node;
-                for(let i=0;i<nodes.length;i++){
-                    node = nodes[i];
-                    this._addSpanToNode(node);
-                    if(node.childNodes){
-                        this._recurseDomChildren(node, output);
-                    }
-                }
-            }
-            _addSpanToNode(node){
-                if(node.nodeType != 3) return;
-                let tt = node.data;
-                let strArr = tt.split(" ");
-                let str = "";
-                for( let i = 0 ; i < strArr.length; i++) if (strArr[i]){
-                    str += 'spfrnt' + strArr[i] + 'spback ';
-                }
-                node.data = str;
-            }
-        
-            _addTooltip(v, tooltip, paliLookup, states, e) {
-            let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
-            let explenation = paliLookup.lookupWord(v.innerText);
-            tooltip.innerHTML = explenation;
-            v.parentNode.insertBefore(tooltip, v.nextSibling);
-            setTimeout(() => {
-                if(states.isWordHovered && !states.isTooltipShowed){
-                    v.id = `lookup_target${this.tooltipCounter}`;
-                    tooltip.for = `lookup_target${this.tooltipCounter}`;
-                    this.tooltipCounter++;
-                    tooltip.show();
-                    states.isTooltipShowed = true;
-                }
-            }, timeToWait);
-            }
-
-          _removeTooltip(v, tooltip, states, e) {
-            let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
-            setTimeout(() => {
-                if(!states.isWordHovered && !states.isTooltipHovered){
-                    v.style.color = '';
-                    v.removeAttribute("id");
-                    tooltip.hide();
-                    states.isTooltipShowed = false;
-                }
-            }, timeToWait);
-          }
-
-          _addLookupTooltips(textContainer, self) {
-            self = self || this;
-            if(!self.isPaliLookupEnabled){
-                return;
-            }
-            let paliLookup = self.shadowRoot.querySelector('#pali_lookup');
-            textContainer.querySelectorAll('.word').forEach((v) => {
-                let tooltip = document.createElement('paper-tooltip');
-                tooltip.animationDelay = 0;
-                tooltip.manualMode = true;
-                tooltip.fitToVisibleBounds = true;
-                tooltip.offset = 0;
-
-                let states = {isWordHovered: false, 
-                            isTooltipHovered: false,
-                            isTooltipShowed: false};
-                v.addEventListener('mouseover', (e) => {
-                    if(this.isPaliLookupEnabled && this.isLookupAllowed){
-                        v.style.color = '#43A047'; // It can not be in class because of some strange bug in some cases.
-                        states.isWordHovered = true;
-                        self._addTooltip(v, tooltip, paliLookup, states, e);
-                    }
-                });
-                v.addEventListener('mouseout', (e) => {
-                    states.isWordHovered = false;
-                    setTimeout(() => {
-                    if(!states.isTooltipHovered)
-                    v.style.color = '';
-                    }, 0);
-                    self._removeTooltip(v, tooltip, states, e);
-                });
-                tooltip.addEventListener('mouseover', (e) => {
-                    states.isTooltipHovered = true;
-                });
-                tooltip.addEventListener('mouseout', (e) => {
-                    states.isTooltipHovered = false;
-                    self._removeTooltip(v, tooltip, states, e);
-                });
-            })
-          }
-
-          _paliLookupStateChanged(){
-              if(this.hidden){
-                  return;
-              }
-              if(this.isPaliLookupEnabled){
-                if(!this.spansGenerated){
-                    if (this.translatedSutta && 
-                    (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
-                        this._wordsIntoSpans('.translated-text');
-                    } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                        if(this.shadowRoot.querySelector('.original-text')){
-                            this._wordsIntoSpans('.original-text');
-                        } else {
-                            this._wordsIntoSpans('.translated-text');
-                        }
-                    }
-                }
-              }
-          }
-        // Lookup word end
       }
 
       customElements.define(SCSegmentedText.is, SCSegmentedText);

@@ -6,7 +6,7 @@
 <dom-module id="sc-title">
   <template>
     <style>
-      .no-margin {
+      .scrollable-dialog {
         margin: 0;
       }
 
@@ -34,13 +34,17 @@
         @apply --sc-sans-font;
       }
 
+      .grey-icon {
+        color: var(--disabled-text-color);
+      }
+
     </style>
 
     <div class="node-head-container">
       <h1 class$=".no-margin [[_calculateTitleClass(inputType)]]">[[inputTitle]]</h1>
       <div>
         <template is="dom-if" if="[[inputText]]">
-          <paper-icon-button icon="[[toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
+          <paper-icon-button class="grey-icon" icon="[[toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
         </template>
       </div>
     </div>

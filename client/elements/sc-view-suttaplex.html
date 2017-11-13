@@ -13,12 +13,12 @@
   <template>
     <style>
       .division-content {
-        color: var(--primary-text-color);
+        color: var(--sc-primary-text-color);
         padding: 0;
       }
 
       .main {
-        margin: 24px auto;
+        margin: var(--sc-size-md-larger) auto;
         max-width: 720px;
       }
 
@@ -39,13 +39,13 @@
       }
 
       .node {
-        padding: var(--size-md) var(--size-md) 0;
-        color: var(--secondary-text-color);
+        padding: var(--sc-size-md) var(--sc-size-md) 0;
+        color: var(--sc-secondary-text-color);
       }
 
       .vagga-node {
         @apply --padding-md;
-        color: var(--secondary-text-color);
+        color: var(--sc-secondary-text-color);
       }
 
       .vagga-node.firstvagga, .node + .vagga-node {
@@ -53,7 +53,7 @@
       }
 
       .loading-spinner {
-        --paper-spinner-color: var(--sc-gold-500);
+        --paper-spinner-color: var(--sc-primary-color);
         left: 50%;
         top: 50px;
       }
@@ -74,7 +74,7 @@
       }
 
       .success-toast {
-        --paper-toast-background-color: var(--paper-green-a700);
+        --paper-toast-background-color: var(--sc-primary-accent-color);
       }
 
       .error-toast {
@@ -151,12 +151,6 @@
                           type: 'CHANGE_TOOLBAR_TITLE',
                           title: title
                       };
-                  },
-                  changeToolbarMode(mode) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_MODE',
-                          mode: mode
-                      };
                   }
               }
           }
@@ -187,7 +181,6 @@
                   return;
               }
               this.dispatch('changeToolbarTitle', this.responseData[0].original_title);
-              this.dispatch('changeToolbarMode', 'list-mode');
           }
 
           _isSuttaplex(item) {
