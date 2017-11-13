@@ -581,8 +581,9 @@
                 v.addEventListener('mouseout', (e) => {
                     states.isWordHovered = false;
                     setTimeout(() => {
-                    if(!states.isTooltipHovered)
-                    v.style.color = '';
+                        if(!states.isTooltipHovered){
+                            v.style.color = '';
+                        }
                     }, 0);
                     self._removeTooltip(v, tooltip, states, e);
                 });
