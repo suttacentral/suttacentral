@@ -1,20 +1,99 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 
 <dom-module id="sc-chinese-lookup">
-  <template>
+    <template>
 
-  </template>
+    </template>
 
-  <script>
-      class SCChineseLookup extends Polymer.Element {
-          static get is() {
-              return 'sc-chinese-lookup';
-          }
+    <script>
+        class SCChineseLookup extends Polymer.Element {
+            static get is() {
+                return 'sc-chinese-lookup';
+            }
 
-          static get properties() {}
-      }
+            static get properties() {}
 
-      customElements.define(SCChineseLookup.is, SCChineseLookup);
-  </script>
+            setCurrent(node) {
+                var self=this,
+                    graphs = '',
+                    nodes = $(),
+                    iter = new Iter(node),
+                    i
+                self.popups.forEach(function(e) {
+                    $(e).remove();
+                });
+                self.popups.length = 0;
+                $('.current_lookup').removeClass('current_lookup fallback')
+                this.currentLookup = node
+                while (graphs.length < 10) {
+                    if ($(node).is('span.lookup')) {
+                        graphs += $(node).text();
+                        nodes.push(node)
+                    }
+                    node = nextInOrder(node, document.ELEMENT_NODE)
+                    if (!node) {
+                        break
+                    }
+                }
+                
+                if (!graphs)
+                    return
+        
+                var popup = ['<div style="position: absolute"><div class="popup" style="position:relative"><table>'],
+                    first = true,
+                    fallback = false;
+                
+                for (i = graphs.length; i > 0; i--) {
+                    var snip = graphs.slice(0, i)
+                    if (snip in sc.lzh2enData) {
+                        popup.push(self.lookupWord(snip))
+                        if (first) {
+                            first = false;
+                            nodes.slice(0, i).addClass('current_lookup')
+                            this.lastCurrentLookup = nodes[i-1];
+                        }
+                    } else if (i == 1 && snip in sc.lzh2enFallbackData) {
+                        popup.push(self.lookupWord(snip))
+                        popup[0] = '<table class="popup fallback">'
+                        fallback = true
+                        if (first) {
+                            first = false;
+                            nodes.slice(0, i).addClass('current_lookup fallback')
+                            this.lastCurrentLookup = nodes[i-1];
+                        }
+                    }
+                }
+                if (this.lastCurrentLookup == null)
+                    this.lastCurrentLookup = this.currentLookup;
+                if (first)
+                    return
+        
+                popup.push('</table></div></div>')
+        
+                popup = self.popup(nodes[0], popup.join('\n'))
+                self.popups.push(popup);
+            }
+
+            lookupHandler(e){
+                sc.lzh2enLookup.setCurrent(e.target);
+            }
+
+            lookupWord(graph){
+                //Check if word exists and return HTML which represents the meaning.
+                var out = "";
+                graph = graph.replace(/\u2060/, '');
+                if (sc.lzh2enData[graph])
+                {
+                    var href = "http://www.buddhism-dict.net/cgi-bin/xpr-ddb.pl?q=" + encodeURI(graph);
+                    return ('<tr><td class="ideograph"><a title="Go to full entry at the DDB. Login with user name ‘guest’" href="' + href + '" target="_blank">' + graph + '</a></td> <td class="meaning"> ' + sc.lzh2enData[graph][0] + ': ' + sc.lzh2enData[graph][1] + '</td></tr>');
+                } else if (sc.lzh2enFallbackData[graph]) {
+                    var href = "http://www.buddhism-dict.net/cgi-bin/dealt-lookup?q=" + encodeURI(graph);
+                    return ('<tr class="fallback"><td class="ideograph"><a title="Go to full entry at the CJKV. Login with user name ‘guest’" href="' + href + '" target="_blank">' + graph + '</a></td> <td class="meaning"> ' + sc.lzh2enFallbackData[graph][0] + ': ' + sc.lzh2enFallbackData[graph][1] + '</td></tr>')
+                }
+                return "";
+            }
+        }
+
+        customElements.define(SCChineseLookup.is, SCChineseLookup);
+    </script>
 </dom-module>
-
