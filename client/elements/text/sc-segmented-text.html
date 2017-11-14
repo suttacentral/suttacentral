@@ -181,7 +181,7 @@
                       statePath: 'textOptions.chineseLookupActivated',
                       observer: '_chineseLookupStateChanged'
                   },
-                  paliLookupTargetDictRepr: {
+                  chineseLookupTargetDictRepr: {
                     type: String,
                     statePath: 'textOptions.chineseLookupTargetDictRepr',
                     observer: '_chineseLookupTargetDictReprChanged'
@@ -530,15 +530,11 @@
 
           // Lookup word start
           _putGraphsIntoSpans(selector){
-            if (this.isChineseLookupEnabled) {
-                this._startGeneratingSpans(selector, 'graph');
-            }
+            this._startGeneratingSpans(selector, 'graph');
           }
 
           _putWordsIntoSpans(selector) {
-            if (this.isPaliLookupEnabled) {
-                this._startGeneratingSpans(selector, 'word');
-            }
+            this._startGeneratingSpans(selector, 'word');
           }
 
           _startGeneratingSpans(selector, unit) {
@@ -568,41 +564,48 @@
               process_async(segments, this._putSegmentIntoSpans);
           }
 
-          _putSegmentIntoSpans(segment, unit, self) {
+          _putSegmentIntoSpans(segment, unit, that) {
               const text = segment.innerHTML;
               let div = document.createElement('div');
               div.innerHTML = text;
-              self._recurseDomChildren(div, true);
+              that._recurseDomChildren(div, true, unit);
               segment.innerHTML = div.innerHTML.replace(/%spfrnt%/g, `<span class="word">`).replace(/%spback%/g, '</span>');
           }
 
-          _recurseDomChildren(start, output) {
+          _recurseDomChildren(start, output, unit) {
               let nodes;
               if (start.childNodes) {
                   nodes = start.childNodes;
-                  this._loopNodeChildren(nodes, output);
+                  this._loopNodeChildren(nodes, output, unit);
               }
           }
 
-          _loopNodeChildren(nodes, output) {
+          _loopNodeChildren(nodes, output, unit) {
               let node;
               for (let i = 0; i < nodes.length; i++) {
                   node = nodes[i];
-                  this._addSpanToNode(node);
+                  this._addSpanToNode(node, unit);
                   if (node.childNodes) {
-                      this._recurseDomChildren(node, output);
+                      this._recurseDomChildren(node, output, unit);
                   }
               }
           }
 
-          _addSpanToNode(node) {
+          _addSpanToNode(node, unit) {
               const NODE_TYPE_TEXT = 3;
               if (node.nodeType !== NODE_TYPE_TEXT) return;
               let tt = node.data;
               let strArr = tt.split(' ');
               let str = '';
               for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
-                  str += '%spfrnt%' + strArr[i] + '%spback% ';
+                  if(unit === 'word'){
+                    str += `%spfrnt%${strArr[i]}%spback% `;
+                  } else if (unit === 'graph') {
+                      for(let graph of strArr[i]){
+                          str += `%spfrnt%${graph}%spback%`;
+                      }
+                      str += ' ';
+                  }
               }
               node.data = str;
           }
@@ -634,12 +637,9 @@
               }, timeToWait);
           }
 
-          _addLookupTooltips(textContainer, self) {
-              self = self || this;
-              if (!self.isPaliLookupEnabled) {
-                  return;
-              }
-              let paliLookup = self.shadowRoot.querySelector('#pali_lookup');
+          _addLookupTooltips(textContainer, that) {
+              that = that || this;
+              let paliLookup = that.shadowRoot.querySelector('#pali_lookup');
               textContainer.querySelectorAll('.word').forEach((v) => {
                   let tooltip = document.createElement('paper-tooltip');
                   tooltip.animationDelay = 0;
@@ -655,7 +655,7 @@
                       if (this.isPaliLookupEnabled && this.isLookupAllowed) {
                           v.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                           states.isWordHovered = true;
-                          self._addTooltip(v, tooltip, paliLookup, states, e);
+                          that._addTooltip(v, tooltip, paliLookup, states, e);
                       }
                   });
                   v.addEventListener('mouseout', (e) => {
@@ -665,14 +665,14 @@
                               v.style.color = '';
                           }
                       }, 0);
-                      self._removeTooltip(v, tooltip, states, e);
+                      that._removeTooltip(v, tooltip, states, e);
                   });
                   tooltip.addEventListener('mouseover', (e) => {
                       states.isTooltipHovered = true;
                   });
                   tooltip.addEventListener('mouseout', (e) => {
                       states.isTooltipHovered = false;
-                      self._removeTooltip(v, tooltip, states, e);
+                      that._removeTooltip(v, tooltip, states, e);
                   });
               })
           }
@@ -682,15 +682,15 @@
               return bodyStyle.getPropertyValue('--sc-primary-accent-color');
           }
 
-            _conditionallyPutWordsIntoSpans(lang) {
-                if (this.translatedSutta && this.translatedSutta.lang === lang) {
-                    this._putIntoSpans('.translated-text', lang);
-                  } else if (this.rootSutta.lang === lang) {
-                      if (this.shadowRoot.querySelector('.original-text')) {
-                          this._putIntoSpans('.original-text', lang);
-                      }
+          _conditionallyPutIntoSpans(lang) {
+            if (this.translatedSutta && this.translatedSutta.lang === lang) {
+                this._putIntoSpans('.translated-text', lang);
+              } else if (this.rootSutta.lang === lang) {
+                  if (this.shadowRoot.querySelector('.original-text')) {
+                      this._putIntoSpans('.original-text', lang);
                   }
               }
+          }
 
             _putIntoSpans(selector, lang){
                 if(lang === 'pli'){
@@ -706,7 +706,7 @@
                 }
                 if (this.isPaliLookupEnabled) {
                     if (!this.spansForWordsGenerated) {
-                        this._conditionalyPutIntoSpans('pli');
+                        this._conditionallyPutIntoSpans('pli');
                     }
                 }
             }
@@ -717,22 +717,33 @@
                 }
                 if (this.isChineseLookupEnabled) {
                     if (!this.spansForGraphsGenerated) {
-                        this._conditionallyPutWordsIntoSpans('lzh');
+                        this._conditionallyPutIntoSpans('lzh');
                     }
                 }
             }
 
+         _showToast(dictName) {
+            this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                detail: {
+                    toastType: 'info',
+                    message: `The ${dictName} lookup dictionary is now enabled.`
+                },
+                bubbles: true,
+                composed: true
+            }));
+         }
+
           _paliLookupTargetDictReprChanged() {
               if (this.isPaliLookupEnabled) {
                   const dictName = this.paliLookupTargetDictRepr.replace('→', 'to');
-                  this.dispatchEvent(new CustomEvent('show-sc-toast', {
-                      detail: {
-                          toastType: 'info',
-                          message: `The ${dictName} lookup dictionary is now enabled.`
-                      },
-                      bubbles: true,
-                      composed: true
-                  }));
+                  this._showToast(dictName);
+              }
+          }
+
+          _chineseLookupTargetDictReprChanged() {
+              if (this.isChineseLookupEnabled){
+                const dictName = this.chineseLookupTargetDictRepr.replace('→', 'to');
+                this._showToast(dictName);
               }
           }
           // Lookup word end
