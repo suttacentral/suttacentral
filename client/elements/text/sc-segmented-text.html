@@ -42,10 +42,6 @@
         height: 60px;
       }
 
-      .highlightable-segment:hover {
-        color: var(--sc-primary-accent-color);
-      }
-
     </style>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
@@ -301,11 +297,15 @@
           }
 
           _addPopupTooltips(textContent) {
-              Array.from(textContent.querySelectorAll('.translated-text')).forEach(item => {
+              Array.from(textContent.querySelectorAll('.translated-text')).forEach(segment => {
                       let tooltip = document.createElement('paper-tooltip');
-                      item.innerHTML = `<paper-tooltip class='text-tooltip'
-                        fit-to-visible-bounds></paper-tooltip>${item.innerHTML}`;
-                      item.classList.add('highlightable-segment');
+                      let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
+                      this._setTooltipOptions(tooltip);
+                      segment.addEventListener('mouseover', (e) => {
+                          segment.style.color = this._getAccentColor();
+                          states.isWordHovered = true;
+                          this._showPopupTooltip(segment, tooltip, states, e);
+                      });
                   }
               );
           }
@@ -576,8 +576,18 @@
               node.data = str;
           }
 
-          _addTooltip(v, tooltip, paliLookup, states, e) {
-              let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+          _showPopupTooltip(segment, tooltip, states, e) {
+              tooltip.innerHTML = 'popup tooltip placeholder';
+              segment.appendChild(tooltip);
+              setTimeout(() => {
+                  if (states.isWordHovered && !states.isTooltipShown) {
+                      tooltip.show();
+                      states.isTooltipShown = true;
+                  }
+              }, this.getTooltipDelayTime(e));
+          };
+
+          _showLookupTooltip(v, tooltip, paliLookup, states, e) {
               tooltip.innerHTML = paliLookup.lookupWord(v.innerText);
               v.parentNode.insertBefore(tooltip, v.nextSibling);
               setTimeout(() => {
@@ -588,7 +598,7 @@
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, timeToWait);
+              }, this.getTooltipDelayTime(e));
           }
 
           _removeTooltip(v, tooltip, states, e) {
@@ -603,52 +613,55 @@
               }, timeToWait);
           }
 
-          _addLookupTooltips(textContainer, self) {
-              self = self || this;
-              if (!self.isPaliLookupEnabled) {
+          _addLookupTooltips(textContainer) {
+              if (!this.isPaliLookupEnabled) {
                   return;
               }
-              let paliLookup = self.shadowRoot.querySelector('#pali_lookup');
-              textContainer.querySelectorAll('.word').forEach((v) => {
+              let paliLookup = this.shadowRoot.querySelector('#pali_lookup');
+              textContainer.querySelectorAll('.word').forEach((word) => {
                   let tooltip = document.createElement('paper-tooltip');
-                  tooltip.animationDelay = 0;
-                  tooltip.manualMode = true;
-                  tooltip.fitToVisibleBounds = true;
-                  tooltip.offset = 0;
-                  let states = {
-                      isWordHovered: false,
-                      isTooltipHovered: false,
-                      isTooltipShown: false
-                  };
-                  v.addEventListener('mouseover', (e) => {
+                  let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
+                  this._setTooltipOptions(tooltip);
+                  word.addEventListener('mouseover', (e) => {
                       if (this.isPaliLookupEnabled && this.isLookupAllowed) {
-                          v.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
+                          word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                           states.isWordHovered = true;
-                          self._addTooltip(v, tooltip, paliLookup, states, e);
+                          this._showLookupTooltip(word, tooltip, paliLookup, states, e);
                       }
                   });
-                  v.addEventListener('mouseout', (e) => {
+                  word.addEventListener('mouseout', (e) => {
                       states.isWordHovered = false;
                       setTimeout(() => {
                           if (!states.isTooltipHovered) {
-                              v.style.color = '';
+                              word.style.color = '';
                           }
                       }, 0);
-                      self._removeTooltip(v, tooltip, states, e);
+                      this._removeTooltip(word, tooltip, states, e);
                   });
                   tooltip.addEventListener('mouseover', (e) => {
                       states.isTooltipHovered = true;
                   });
                   tooltip.addEventListener('mouseout', (e) => {
                       states.isTooltipHovered = false;
-                      self._removeTooltip(v, tooltip, states, e);
+                      this._removeTooltip(word, tooltip, states, e);
                   });
               })
+          }
+
+          _setTooltipOptions(tooltip) {
+              tooltip.animationDelay = 0;
+              tooltip.manualMode = true;
+              tooltip.fitToVisibleBounds = true;
+              tooltip.offset = 0;
           }
 
           _getAccentColor() {
               const bodyStyle = window.getComputedStyle(document.body);
               return bodyStyle.getPropertyValue('--sc-primary-accent-color');
+          }
+
+          getTooltipDelayTime(e) {
+              return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
           }
 
           _paliLookupStateChanged() {
