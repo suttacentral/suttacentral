@@ -297,8 +297,10 @@
 
           _addPopupTooltips(textContent) {
               Array.from(textContent.querySelectorAll('.translated-text')).forEach(item => {
+                      let tooltip = document.createElement('paper-tooltip');
+//                      tooltip.setId(item.id);
                       item.innerHTML = `<paper-tooltip class='text-tooltip'
-                        fit-to-visible-bounds id=${item.id}></paper-tooltip>${item.innerHTML}`;
+                        fit-to-visible-bounds></paper-tooltip>${item.innerHTML}`;
                       item.classList.add('highlightable-segment');
                   }
               );
@@ -353,7 +355,7 @@
                   const stringsArr = Object.entries(this.rootSutta.strings);
                   stringsArr.forEach(item => {
                       this.insertSecondarySegment(item);
-                  })
+                  });
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                       this._putWordsIntoSpans('.original-text');
                   }
@@ -562,7 +564,8 @@
           }
 
           _addSpanToNode(node) {
-              if (node.nodeType !== 3) return;
+              const NODE_TYPE_TEXT = 3;
+              if (node.nodeType !== NODE_TYPE_TEXT) return;
               let tt = node.data;
               let strArr = tt.split(' ');
               let str = '';
