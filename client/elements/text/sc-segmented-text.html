@@ -17,6 +17,7 @@
       :host {
         --paper-tooltip: {
           @apply --sc-skolar-font-size-s;
+          @apply --sc-sans-font;
           opacity: 1;
           max-width: 200px;
           background-color: var(--sc-paper-tooltip-color);
@@ -296,20 +297,6 @@
               }
           }
 
-          _addPopupTooltips(textContent) {
-              Array.from(textContent.querySelectorAll('.translated-text')).forEach(segment => {
-                      let tooltip = document.createElement('paper-tooltip');
-                      let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
-                      this._setTooltipOptions(tooltip);
-                      segment.addEventListener('mouseover', (e) => {
-                          segment.style.color = this._getAccentColor();
-                          states.isWordHovered = true;
-                          this._showPopupTooltip(segment, tooltip, states, e);
-                      });
-                  }
-              );
-          }
-
           _addPrimaryText(textStrings) {
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
               const segments = textContainer.getElementsByTagName('sc-seg');
@@ -576,6 +563,32 @@
               node.data = str;
           }
 
+          _addPopupTooltips(textContent) {
+              Array.from(textContent.querySelectorAll('.translated-text')).forEach(segment => {
+                      let tooltip = document.createElement('paper-tooltip');
+                      let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
+                      this._setTooltipOptions(tooltip);
+                      segment.addEventListener('mouseover', (e) => {
+                          segment.style.color = this._getAccentColor();
+                          states.isWordHovered = true;
+                          this._showPopupTooltip(segment, tooltip, states, e);
+                      });
+                      segment.addEventListener('mouseout', (e) => {
+                          states.isWordHovered = false;
+                          this._resetColor(states, segment);
+                          this._removeTooltip(segment, tooltip, states, e);
+                      });
+                      tooltip.addEventListener('mouseover', (e) => {
+                          states.isTooltipHovered = true;
+                      });
+                      tooltip.addEventListener('mouseout', (e) => {
+                          states.isTooltipHovered = false;
+                          this._removeTooltip(segment, tooltip, states, e);
+                      });
+                  }
+              );
+          }
+
           _showPopupTooltip(segment, tooltip, states, e) {
               tooltip.innerHTML = this.rootSutta.strings[segment.id];
               segment.appendChild(tooltip);
@@ -584,7 +597,7 @@
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, this.getTooltipDelayTime(e));
+              }, this._getTooltipDelayTime(e));
           };
 
           _showLookupTooltip(v, tooltip, paliLookup, states, e) {
@@ -598,19 +611,19 @@
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, this.getTooltipDelayTime(e));
+              }, this._getTooltipDelayTime(e));
           }
 
           _removeTooltip(v, tooltip, states, e) {
-              let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
               setTimeout(() => {
                   if (!states.isWordHovered && !states.isTooltipHovered) {
-                      v.style.color = '';
-                      v.removeAttribute('id');
+                      if (v.nodeName !== 'SC-SEG') {
+                          v.removeAttribute('id');
+                      }
                       tooltip.hide();
                       states.isTooltipShown = false;
                   }
-              }, timeToWait);
+              }, this._getTooltipDelayTime(e));
           }
 
           _addLookupTooltips(textContainer) {
@@ -631,11 +644,7 @@
                   });
                   word.addEventListener('mouseout', (e) => {
                       states.isWordHovered = false;
-                      setTimeout(() => {
-                          if (!states.isTooltipHovered) {
-                              word.style.color = '';
-                          }
-                      }, 0);
+                      this._resetColor(states, word);
                       this._removeTooltip(word, tooltip, states, e);
                   });
                   tooltip.addEventListener('mouseover', (e) => {
@@ -647,6 +656,7 @@
                   });
               })
           }
+
 
           _setTooltipOptions(tooltip) {
               tooltip.animationDelay = 0;
@@ -660,7 +670,14 @@
               return bodyStyle.getPropertyValue('--sc-primary-accent-color');
           }
 
-          getTooltipDelayTime(e) {
+          _resetColor(states, word) {
+              setTimeout(() => {
+                  if (!states.isTooltipHovered) {
+                      word.style.color = '';
+                  }
+              }, 0);
+          }
+          _getTooltipDelayTime(e) {
               return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
           }
 
