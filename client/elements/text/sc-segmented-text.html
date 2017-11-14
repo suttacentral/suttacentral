@@ -293,6 +293,11 @@
               Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
                   item.classList.remove('highlightable-segment')
               );
+              if (this.translatedSutta) {
+                  Array.from(this.shadowRoot.querySelectorAll('.segmented-root-text')).forEach(item =>
+                      item.remove()
+                  );
+              }
           }
 
           _addPopupTooltips(textContent) {
