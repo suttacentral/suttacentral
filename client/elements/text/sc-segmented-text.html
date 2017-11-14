@@ -18,6 +18,7 @@
         --paper-tooltip: {
           @apply --sc-skolar-font-size-s;
           @apply --sc-sans-font;
+          text-transform: unset;
           opacity: 1;
           max-width: 200px;
           background-color: var(--sc-paper-tooltip-color);
@@ -321,8 +322,7 @@
           }
 
           _addSegmentClasses(segments) {
-              let segmentClass = '';
-              let classToDelete = '';
+              let segmentClass, classToDelete;
               if (this.translatedSutta) {
                   segmentClass = 'translated-text';
                   classToDelete = 'original-text';
@@ -470,9 +470,9 @@
           _setScript(scriptName, segments, tooltips) {
               this.$.segmented_text_content.classList.add(`${scriptName}-script`);
               const t = new Transliterator();
-              const scriptFn = `to${this._capitalize(scriptName)}`;
-              Array.from(segments).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
-              Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
+              const scriptFunctionName = `to${this._capitalize(scriptName)}`;
+              Array.from(segments).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+              Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
           }
 
           _capitalize(text) {
@@ -561,6 +561,7 @@
           }
 
           _addPopupTooltips(textContent) {
+              const transliterator = new Transliterator();
               Array.from(textContent.querySelectorAll('.translated-text')).forEach(segment => {
                       let tooltip = document.createElement('paper-tooltip');
                       let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
@@ -569,7 +570,7 @@
                           if (this.chosenTextView !== 'popup') return;
                           segment.style.color = this._getAccentColor();
                           states.isWordHovered = true;
-                          this._showPopupTooltip(segment, tooltip, states, e);
+                          this._showPopupTooltip(segment, tooltip, states, e, transliterator);
                       });
                       segment.addEventListener('mouseout', (e) => {
                           states.isWordHovered = false;
@@ -587,8 +588,8 @@
               );
           }
 
-          _showPopupTooltip(segment, tooltip, states, e) {
-              tooltip.innerHTML = this._transliterateFragment(this.rootSutta.strings[segment.id]);
+          _showPopupTooltip(segment, tooltip, states, e, transliterator) {
+              tooltip.innerHTML = this._transliterateFragment(this.rootSutta.strings[segment.id], transliterator);
               segment.appendChild(tooltip);
               setTimeout(() => {
                   if (states.isWordHovered && !states.isTooltipShown) {
@@ -598,8 +599,13 @@
               }, this._getTooltipDelayTime(e));
           };
 
-          _transliterateFragment(fragment) {
-
+          _transliterateFragment(fragment, transliterator) {
+              if (this.paliScript === 'latin') {
+                  return fragment;
+              } else {
+                  const scriptFunctionName = `to${this._capitalize(this.paliScript)}`;
+                  return transliterator[scriptFunctionName](fragment);
+              }
           }
 
           _showLookupTooltip(v, tooltip, paliLookup, states, e) {
@@ -616,11 +622,12 @@
               }, this._getTooltipDelayTime(e));
           }
 
-          _removeTooltip(v, tooltip, states, e) {
+          _removeTooltip(word, tooltip, states, e) {
               setTimeout(() => {
                   if (!states.isWordHovered && !states.isTooltipHovered) {
-                      if (v.nodeName !== 'SC-SEG') {
-                          v.removeAttribute('id');
+                      word.style.color = '';
+                      if (word.nodeName !== 'SC-SEG') {
+                          word.removeAttribute('id');
                       }
                       tooltip.hide();
                       states.isTooltipShown = false;
@@ -677,6 +684,7 @@
                   }
               }, 0);
           }
+
           _getTooltipDelayTime(e) {
               return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
           }
