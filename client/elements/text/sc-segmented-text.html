@@ -294,9 +294,9 @@
                   item.classList.remove('highlightable-segment')
               );
               if (this.translatedSutta) {
-                  Array.from(this.shadowRoot.querySelectorAll('.segmented-root-text')).forEach(item =>
-                      item.remove()
-                  );
+                  Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => {
+                      item.parentNode.removeChild(item);
+                  });
               }
           }
 
@@ -315,8 +315,8 @@
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
               const segments = textContainer.getElementsByTagName('sc-seg');
               try {
-                  this.addSegmentClasses(segments);
-                  this.insertTextIntoSegments(textStrings, textContainer);
+                  this._addSegmentClasses(segments);
+                  this._insertPrimaryTextIntoSegments(textStrings, textContainer);
               }
               catch (e) {
                   console.error(e);
@@ -324,7 +324,7 @@
               this.assembledMainText = textContainer.innerHTML;
           }
 
-          addSegmentClasses(segments) {
+          _addSegmentClasses(segments) {
               let segmentClass = '';
               let classToDelete = '';
               if (this.translatedSutta) {
@@ -342,7 +342,7 @@
               );
           }
 
-          insertTextIntoSegments(textStrings, textContainer) {
+          _insertPrimaryTextIntoSegments(textStrings, textContainer) {
               Object.entries(textStrings).forEach(([key, value]) => {
                   if (!key.startsWith('_')) {
                       let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
@@ -359,7 +359,7 @@
               if (!this.shadowRoot.querySelector('.original-text')) {
                   const stringsArr = Object.entries(this.rootSutta.strings);
                   stringsArr.forEach(item => {
-                      this.insertSecondarySegment(item);
+                      this._insertSecondarySegment(item);
                   });
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                       this._putWordsIntoSpans('.original-text');
@@ -368,7 +368,7 @@
               textContainer.classList.add('latin-script');
           }
 
-          insertSecondarySegment([key, content]) {
+          _insertSecondarySegment([key, content]) {
               if (!key.startsWith('_')) {
                   const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
                   const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
