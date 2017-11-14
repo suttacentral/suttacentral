@@ -10,7 +10,7 @@
 
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-      :host{
+      :host {
         --paper-tooltip: {
           @apply --sc-skolar-font-size-s;
           opacity: 1;
@@ -20,8 +20,8 @@
       }
 
       .lookup-link {
-          color: white !important;
-          font-weight: bold;
+        color: white !important;
+        font-weight: bold;
       }
 
       .text-center {
@@ -32,7 +32,7 @@
         margin-top: 10vh;
       }
 
-      h1 {  /* it is here because of the difference on how h1 calculates margin for bare text and text in spans */
+      h1 { /* it is here because of the difference on how h1 calculates margin for bare text and text in spans */
         -webkit-margin-before: 12px;
       }
 
@@ -49,7 +49,7 @@
     </template>
 
     <template is="dom-if" if="[[isPaliLookupEnabled]]">
-        <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
+      <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
     </template>
 
   </template>
@@ -106,9 +106,9 @@
                       type: String
                   },
                   isPaliLookupEnabled: {
-                    type: Boolean,
-                    statePath: 'textOptions.paliLookupActivated',
-                    observer: '_paliLookupStateChanged'
+                      type: Boolean,
+                      statePath: 'textOptions.paliLookupActivated',
+                      observer: '_paliLookupStateChanged'
                   },
                   tooltipCount: {
                       type: Number,
@@ -212,9 +212,7 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
-              if (!item.classList.contains('textual-info-paragraph')) {
-                  item.classList.add('textual-info-paragraph');
-              }
+              item.classList.add('textual-info-paragraph');
               item.addEventListener('click', () => {
                   this._scrollToSection(item.id, true, 0);
               });
@@ -307,174 +305,176 @@
               return text.charAt(0).toUpperCase() + text.slice(1);
           }
 
-        // Lookup word start
-        _putWordsIntoSpans(selector){
-            if(!this.isPaliLookupEnabled){
-                return;
-            }
-            let segments = this.shadowRoot.querySelectorAll(selector);
-            let self = this;
-            function process_async(items, process) {
-                const temp = () => {
-                    const segment = items.shift(); 
-                    process(segment, self);
-                    self._addLookupTooltips(segment, self);
-                    if(items.length > 0) {
-                        setTimeout(temp, 0);
-                    } else {
-                        self.spansGenerated = true;
-                    }
-                };
-                items = Array.from(items);
-                setTimeout(temp, 0);
-            }
-            this.isLookupAllowed = false;
-            setTimeout(() => {
-                this.isLookupAllowed = true;
-            }, 2000); // Allow lookup after 2 seconds.
-            process_async(segments, this._putSegmentIntoSpans);
-        }
-
-        _putSegmentIntoSpans(segment, self){
-            const text = segment.innerHTML;
-            let div = document.createElement('div');
-            div.innerHTML = text;
-            self._recurseDomChildren(div, true);
-            const str = div.innerHTML.replace(/spfrnt/g, `<span class="word">`).replace(/spback/g, "</span>");
-            segment.innerHTML = str;
-        }
-
-        _recurseDomChildren(start, output){
-            let nodes;
-            if(start.childNodes){
-                nodes = start.childNodes;
-                this._loopNodeChildren(nodes, output);
-            }
-        }
-
-        _loopNodeChildren(nodes, output){
-            let node;
-            for(let i=0;i<nodes.length;i++){
-                node = nodes[i];
-                this._addSpanToNode(node);
-                if(node.childNodes){
-                    this._recurseDomChildren(node, output);
-                }
-            }
-        }
-
-        _addSpanToNode(node){
-            if(node.nodeType !== 3) return;
-            let tt = node.data;
-            let strArr = tt.split(" ");
-            let str = "";
-            for( let i = 0 ; i < strArr.length; i++) if (strArr[i]){
-                str += 'spfrnt' + strArr[i] + 'spback ';
-            }
-            node.data = str;
-        }
-    
-        _addTooltip(v, tooltip, paliLookup, states, e) {
-            let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
-            let wordDefinition = paliLookup.lookupWord(v.innerText);
-            tooltip.innerHTML = wordDefinition;
-            v.parentNode.insertBefore(tooltip, v.nextSibling);
-            setTimeout(() => {
-                if(states.isWordHovered && !states.isTooltipShown){
-                    v.id = `lookup_target${this.tooltipCount}`;
-                    tooltip.for = `lookup_target${this.tooltipCount}`;
-                    this.tooltipCount++;
-                    tooltip.show();
-                    states.isTooltipShown = true;
-                }
-            }, timeToWait);
-        }
-
-        _removeTooltip(v, tooltip, states, e) {
-            let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
-            setTimeout(() => {
-                if(!states.isWordHovered && !states.isTooltipHovered){
-                    v.style.color = '';
-                    v.removeAttribute("id");
-                    tooltip.hide();
-                    states.isTooltipShown = false;
-                }
-            }, timeToWait);
-        }
-
-        _addLookupTooltips(textContainer, self) {
-            self = self || this;
-            if(!self.isPaliLookupEnabled){
-                return;
-            }
-            
-            let paliLookup = self.shadowRoot.querySelector('#pali_lookup');
-            textContainer.querySelectorAll('.word').forEach((v) => {
-                let tooltip = document.createElement('paper-tooltip');
-                tooltip.animationDelay = 0;
-                tooltip.manualMode = true;
-                tooltip.fitToVisibleBounds = true;
-                tooltip.offset = 0;
-                let states = { isWordHovered: false, 
-                            isTooltipHovered: false,
-                            isTooltipShown: false };
-                v.addEventListener('mouseover', (e) => {
-                    if(this.isPaliLookupEnabled && this.isLookupAllowed){
-                        v.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
-                        states.isWordHovered = true;
-                        self._addTooltip(v, tooltip, paliLookup, states, e);
-                    }
-                });
-                v.addEventListener('mouseout', (e) => {
-                    states.isWordHovered = false;
-                    setTimeout(() => {
-                    if(!states.isTooltipHovered)
-                    v.style.color = '';
-                    }, 0);
-                    self._removeTooltip(v, tooltip, states, e);
-                });
-                tooltip.addEventListener('mouseover', (e) => {
-                    states.isTooltipHovered = true;
-                });
-                tooltip.addEventListener('mouseout', (e) => {
-                    states.isTooltipHovered = false;
-                    self._removeTooltip(v, tooltip, states, e);
-                });
-            })
-        }
-
-        _getAccentColor() {
-            const bodyStyle = window.getComputedStyle(document.body);
-            return bodyStyle.getPropertyValue('--sc-primary-accent-color');
-         }
-
-        _paliLookupStateChanged(){
-            if(this.hidden){
-                return;
-            }
-            if(this.isPaliLookupEnabled){
-                if(!this.spansGenerated){
-                    if(this.lang === 'pli' || this.lang === 'lzh') {
-                        this._putWordsIntoSpans('.sutta');
-                    } 
-                }
-            }
-        }
-                
-        _paliLookupTargetDictReprChanged() {
-            if(this.isPaliLookupEnabled){
-                const dictName = this.paliLookupTargetDictRepr.replace('→', 'to');
-                this.dispatchEvent(new CustomEvent('show-sc-toast', {
-                    detail: {
-                        toastType: 'info',
-                        message: `The ${dictName} lookup dictionary is now enabled.`,
-                    },
-                    bubbles: true,
-                    composed: true
-                }));
-            }
+          // Lookup word start
+          _putWordsIntoSpans(selector) {
+              if (!this.isPaliLookupEnabled) {
+                  return;
+              }
+              let segments = this.shadowRoot.querySelectorAll(selector);
+              let self = this;
+              function process_async(items, process) {
+                  const temp = () => {
+                      const segment = items.shift();
+                      process(segment, self);
+                      self._addLookupTooltips(segment, self);
+                      if (items.length > 0) {
+                          setTimeout(temp, 0);
+                      } else {
+                          self.spansGenerated = true;
+                      }
+                  };
+                  items = Array.from(items);
+                  setTimeout(temp, 0);
+              }
+              this.isLookupAllowed = false;
+              setTimeout(() => {
+                  this.isLookupAllowed = true;
+              }, 2000); // Allow lookup after 2 seconds.
+              process_async(segments, this._putSegmentIntoSpans);
           }
-        // Lookup word end
+
+          _putSegmentIntoSpans(segment, self) {
+              const text = segment.innerHTML;
+              let div = document.createElement('div');
+              div.innerHTML = text;
+              self._recurseDomChildren(div, true);
+              const str = div.innerHTML.replace(/spfrnt/g, `<span class="word">`).replace(/spback/g, '</span>');
+              segment.innerHTML = str;
+          }
+
+          _recurseDomChildren(start, output) {
+              let nodes;
+              if (start.childNodes) {
+                  nodes = start.childNodes;
+                  this._loopNodeChildren(nodes, output);
+              }
+          }
+
+          _loopNodeChildren(nodes, output) {
+              let node;
+              for (let i = 0; i < nodes.length; i++) {
+                  node = nodes[i];
+                  this._addSpanToNode(node);
+                  if (node.childNodes) {
+                      this._recurseDomChildren(node, output);
+                  }
+              }
+          }
+
+          _addSpanToNode(node) {
+              if (node.nodeType !== 3) return;
+              let tt = node.data;
+              let strArr = tt.split(' ');
+              let str = '';
+              for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
+                  str += 'spfrnt' + strArr[i] + 'spback ';
+              }
+              node.data = str;
+          }
+
+          _addTooltip(v, tooltip, paliLookup, states, e) {
+              let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+              let wordDefinition = paliLookup.lookupWord(v.innerText);
+              tooltip.innerHTML = wordDefinition;
+              v.parentNode.insertBefore(tooltip, v.nextSibling);
+              setTimeout(() => {
+                  if (states.isWordHovered && !states.isTooltipShown) {
+                      v.id = `lookup_target${this.tooltipCount}`;
+                      tooltip.for = `lookup_target${this.tooltipCount}`;
+                      this.tooltipCount++;
+                      tooltip.show();
+                      states.isTooltipShown = true;
+                  }
+              }, timeToWait);
+          }
+
+          _removeTooltip(v, tooltip, states, e) {
+              let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+              setTimeout(() => {
+                  if (!states.isWordHovered && !states.isTooltipHovered) {
+                      v.style.color = '';
+                      v.removeAttribute('id');
+                      tooltip.hide();
+                      states.isTooltipShown = false;
+                  }
+              }, timeToWait);
+          }
+
+          _addLookupTooltips(textContainer, self) {
+              self = self || this;
+              if (!self.isPaliLookupEnabled) {
+                  return;
+              }
+
+              let paliLookup = self.shadowRoot.querySelector('#pali_lookup');
+              textContainer.querySelectorAll('.word').forEach((v) => {
+                  let tooltip = document.createElement('paper-tooltip');
+                  tooltip.animationDelay = 0;
+                  tooltip.manualMode = true;
+                  tooltip.fitToVisibleBounds = true;
+                  tooltip.offset = 0;
+                  let states = {
+                      isWordHovered: false,
+                      isTooltipHovered: false,
+                      isTooltipShown: false
+                  };
+                  v.addEventListener('mouseover', (e) => {
+                      if (this.isPaliLookupEnabled && this.isLookupAllowed) {
+                          v.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
+                          states.isWordHovered = true;
+                          self._addTooltip(v, tooltip, paliLookup, states, e);
+                      }
+                  });
+                  v.addEventListener('mouseout', (e) => {
+                      states.isWordHovered = false;
+                      setTimeout(() => {
+                          if (!states.isTooltipHovered)
+                              v.style.color = '';
+                      }, 0);
+                      self._removeTooltip(v, tooltip, states, e);
+                  });
+                  tooltip.addEventListener('mouseover', (e) => {
+                      states.isTooltipHovered = true;
+                  });
+                  tooltip.addEventListener('mouseout', (e) => {
+                      states.isTooltipHovered = false;
+                      self._removeTooltip(v, tooltip, states, e);
+                  });
+              })
+          }
+
+          _getAccentColor() {
+              const bodyStyle = window.getComputedStyle(document.body);
+              return bodyStyle.getPropertyValue('--sc-primary-accent-color');
+          }
+
+          _paliLookupStateChanged() {
+              if (this.hidden) {
+                  return;
+              }
+              if (this.isPaliLookupEnabled) {
+                  if (!this.spansGenerated) {
+                      if (this.lang === 'pli' || this.lang === 'lzh') {
+                          this._putWordsIntoSpans('.sutta');
+                      }
+                  }
+              }
+          }
+
+          _paliLookupTargetDictReprChanged() {
+              if (this.isPaliLookupEnabled) {
+                  const dictName = this.paliLookupTargetDictRepr.replace('→', 'to');
+                  this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                      detail: {
+                          toastType: 'info',
+                          message: `The ${dictName} lookup dictionary is now enabled.`
+                      },
+                      bubbles: true,
+                      composed: true
+                  }));
+              }
+          }
+          // Lookup word end
 
       }
 
