@@ -569,6 +569,7 @@
                       let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
                       this._setTooltipOptions(tooltip);
                       segment.addEventListener('mouseover', (e) => {
+                          if (this.chosenTextView !== 'popup') return;
                           segment.style.color = this._getAccentColor();
                           states.isWordHovered = true;
                           this._showPopupTooltip(segment, tooltip, states, e);
@@ -656,7 +657,6 @@
                   });
               })
           }
-
 
           _setTooltipOptions(tooltip) {
               tooltip.animationDelay = 0;
