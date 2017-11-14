@@ -577,7 +577,7 @@
           }
 
           _showPopupTooltip(segment, tooltip, states, e) {
-              tooltip.innerHTML = 'popup tooltip placeholder';
+              tooltip.innerHTML = this.rootSutta.strings[segment.id];
               segment.appendChild(tooltip);
               setTimeout(() => {
                   if (states.isWordHovered && !states.isTooltipShown) {
