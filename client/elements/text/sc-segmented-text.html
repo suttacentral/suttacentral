@@ -186,7 +186,6 @@
                     statePath: 'textOptions.chineseLookupTargetDictRepr',
                     observer: '_chineseLookupTargetDictReprChanged'
                   }
-                  
               }
           }
 
@@ -312,12 +311,18 @@
               Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
                   item.classList.remove('highlightable-segment')
               );
+              if (this.translatedSutta) {
+                  Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => {
+                      item.parentNode.removeChild(item);
+                  });
+              }
           }
 
           _addPopupTooltips(textContent) {
               Array.from(textContent.querySelectorAll('.translated-text')).forEach(item => {
+                      let tooltip = document.createElement('paper-tooltip');
                       item.innerHTML = `<paper-tooltip class='text-tooltip'
-                        fit-to-visible-bounds id=${item.id}></paper-tooltip>${item.innerHTML}`;
+                        fit-to-visible-bounds></paper-tooltip>${item.innerHTML}`;
                       item.classList.add('highlightable-segment');
                   }
               );
@@ -327,8 +332,8 @@
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
               const segments = textContainer.getElementsByTagName('sc-seg');
               try {
-                  this.addSegmentClasses(segments);
-                  this.insertTextIntoSegments(textStrings, textContainer);
+                  this._addSegmentClasses(segments);
+                  this._insertPrimaryTextIntoSegments(textStrings, textContainer);
               }
               catch (e) {
                   console.error(e);
@@ -336,7 +341,7 @@
               this.assembledMainText = textContainer.innerHTML;
           }
 
-          addSegmentClasses(segments) {
+          _addSegmentClasses(segments) {
               let segmentClass = '';
               let classToDelete = '';
               if (this.translatedSutta) {
@@ -354,7 +359,7 @@
               );
           }
 
-          insertTextIntoSegments(textStrings, textContainer) {
+          _insertPrimaryTextIntoSegments(textStrings, textContainer) {
               Object.entries(textStrings).forEach(([key, value]) => {
                   if (!key.startsWith('_')) {
                       let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
@@ -371,8 +376,8 @@
               if (!this.shadowRoot.querySelector('.original-text')) {
                   const stringsArr = Object.entries(this.rootSutta.strings);
                   stringsArr.forEach(item => {
-                      this.insertSecondarySegment(item);
-                  })
+                      this._insertSecondarySegment(item);
+                  });
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                       this._putIntoSpans('.original-text', this.rootSutta.lang);
                   }
@@ -380,7 +385,7 @@
               textContainer.classList.add('latin-script');
           }
 
-          insertSecondarySegment([key, content]) {
+          _insertSecondarySegment([key, content]) {
               if (!key.startsWith('_')) {
                   const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
                   const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
@@ -414,9 +419,7 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
-              if (!item.classList.contains('textual-info-paragraph')) {
-                  item.classList.add('textual-info-paragraph');
-              }
+              item.classList.add('textual-info-paragraph');
               item.addEventListener('click', () => {
                   this._scrollToSection(item.id, true, 0);
               });
@@ -540,25 +543,24 @@
 
           _startGeneratingSpans(selector, unit) {
               let segments = this.shadowRoot.querySelectorAll(selector);
-              let self = this;
-              function process_async(items, process) {
+              const process_async = (items, process) => {
                   const temp = () => {
                       const segment = items.shift();
-                      process(segment, unit, self);
-                      self._addLookupTooltips(segment, self);
+                      process(segment, unit, this);
+                      this._addLookupTooltips(segment, this);
                       if (items.length > 0) {
                           setTimeout(temp, 0);
                       } else {
                           if(unit === 'word'){
-                            self.spansForWordsGenerated = true;
+                            this.spansForWordsGenerated = true;
                           } else if (unit === 'graph'){
-                            self.spansForGraphsGenerated = true;
+                            this.spansForGraphsGenerated = true;
                           }
                       }
                   };
                   items = Array.from(items);
                   setTimeout(temp, 0);
-              }
+              };
               this.isLookupAllowed = false;
               setTimeout(() => {
                   this.isLookupAllowed = true;
@@ -594,7 +596,8 @@
           }
 
           _addSpanToNode(node) {
-              if (node.nodeType !== 3) return;
+              const NODE_TYPE_TEXT = 3;
+              if (node.nodeType !== NODE_TYPE_TEXT) return;
               let tt = node.data;
               let strArr = tt.split(' ');
               let str = '';
@@ -679,7 +682,7 @@
               return bodyStyle.getPropertyValue('--sc-primary-accent-color');
           }
 
-            _conditionalyPutIntoSpans(lang) {
+            _conditionallyPutWordsIntoSpans(lang) {
                 if (this.translatedSutta && this.translatedSutta.lang === lang) {
                     this._putIntoSpans('.translated-text', lang);
                   } else if (this.rootSutta.lang === lang) {
@@ -688,7 +691,7 @@
                       }
                   }
               }
-            
+
             _putIntoSpans(selector, lang){
                 if(lang === 'pli'){
                     this._putWordsIntoSpans(selector);
@@ -714,7 +717,7 @@
                 }
                 if (this.isChineseLookupEnabled) {
                     if (!this.spansForGraphsGenerated) {
-                        this._conditionalyPutIntoSpans('lzh');
+                        this._conditionallyPutWordsIntoSpans('lzh');
                     }
                 }
             }
