@@ -18,9 +18,12 @@
       :host {
         --paper-tooltip: {
           @apply --sc-skolar-font-size-s;
+          @apply --sc-sans-font;
+          background-color: var(--sc-paper-tooltip-color);
+          font-feature-settings: normal;
+          text-transform: none;
           opacity: 1;
           max-width: 200px;
-          background-color: var(--sc-paper-tooltip-color);
         }
       }
 
@@ -41,10 +44,6 @@
         @apply --sc-skolar-font-size-s;
         text-align: center;
         height: 60px;
-      }
-
-      .highlightable-segment:hover {
-        color: var(--sc-primary-accent-color);
       }
 
     </style>
@@ -185,6 +184,16 @@
                     type: String,
                     statePath: 'textOptions.chineseLookupTargetDictRepr',
                     observer: '_chineseLookupTargetDictReprChanged'
+                  },
+                  scriptIsoCodes: {
+                      type: Object,
+                      value: {
+                          'latin': 'Latn',
+                          'sinhala': 'Sinh',
+                          'devanagari': 'Deva',
+                          'thai': 'Thai',
+                          'myanmar': 'Mymr'
+                      }
                   }
               }
           }
@@ -318,16 +327,6 @@
               }
           }
 
-          _addPopupTooltips(textContent) {
-              Array.from(textContent.querySelectorAll('.translated-text')).forEach(item => {
-                      let tooltip = document.createElement('paper-tooltip');
-                      item.innerHTML = `<paper-tooltip class='text-tooltip'
-                        fit-to-visible-bounds></paper-tooltip>${item.innerHTML}`;
-                      item.classList.add('highlightable-segment');
-                  }
-              );
-          }
-
           _addPrimaryText(textStrings) {
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
               const segments = textContainer.getElementsByTagName('sc-seg');
@@ -342,8 +341,7 @@
           }
 
           _addSegmentClasses(segments) {
-              let segmentClass = '';
-              let classToDelete = '';
+              let segmentClass, classToDelete;
               if (this.translatedSutta) {
                   segmentClass = 'translated-text';
                   classToDelete = 'original-text';
@@ -457,46 +455,33 @@
               }
           }
 
-          _changeScript(paliScript) {
+          _changeScript(toScript) {
               if (!this.rootSutta || this.rootSutta.lang !== 'pli') {
                   return;
               }
               const segments = this.shadowRoot.querySelectorAll('.original-text');
               const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
+              const scriptNames = Object.keys(this.scriptIsoCodes);
               this._resetScript(segments, tooltips);
-              switch (paliScript) {
-                  case 'latin':
-                      this._setScriptISOCode('Latn');
-                      this.$.segmented_text_content.classList.add('latin-script');
-                      break;
-                  case 'sinhala':
-                      this._setScriptISOCode('Sinh');
-                      this._setScript('sinhala', segments, tooltips);
-                      break;
-                  case 'devanagari':
-                      this._setScriptISOCode('Deva');
-                      this._setScript('devanagari', segments, tooltips);
-                      break;
-                  case 'thai':
-                      this._setScriptISOCode('Thai');
-                      this._setScript('thai', segments, tooltips);
-                      break;
-                  case 'myanmar':
-                      this._setScriptISOCode('Mymr');
-                      this._setScript('myanmar', segments, tooltips);
-                      break;
+              if (toScript === 'latin') {
+                  this.$.segmented_text_content.classList.add('latin-script');
+              } else if (scriptNames.includes(toScript)) {
+                  this._setScript(toScript, segments, tooltips);
               }
+              this._setScriptISOCode(toScript);
           }
 
-          _setScriptISOCode(isoCode) {
+          _setScriptISOCode(scriptName) {
               const textLang = this.translatedSutta ? this.translationLang : this.rootLang;
-              const langAttr = this.translatedSutta ? this.translationLang : `${textLang}-${isoCode}`;
+              const langAttr =
+                  this.translatedSutta ? this.translationLang : `${textLang}-${this.scriptIsoCodes[scriptName]}`;
               this.shadowRoot.querySelector('#text').setAttribute('lang', langAttr);
           }
 
           _resetScript(segments, tooltips) {
-              this.$.segmented_text_content.classList
-                  .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
+              Object.keys(this.scriptIsoCodes).forEach((scriptName) => {
+                  this.$.segmented_text_content.classList.remove(`${scriptName}-script`);
+              });
               Array.from(segments).forEach(item => item.innerHTML = this.rootSutta.strings[item.id] + ' ');
               Array.from(tooltips).forEach(item => item.innerHTML = this.rootSutta.strings[item.id]);
           }
@@ -504,9 +489,9 @@
           _setScript(scriptName, segments, tooltips) {
               this.$.segmented_text_content.classList.add(`${scriptName}-script`);
               const t = new Transliterator();
-              const scriptFn = `to${this._capitalize(scriptName)}`;
-              Array.from(segments).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
-              Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFn](item.innerHTML));
+              const scriptFunctionName = `to${this._capitalize(scriptName)}`;
+              Array.from(segments).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+              Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
           }
 
           _capitalize(text) {
@@ -610,8 +595,55 @@
               node.data = str;
           }
 
-          _addTooltip(v, tooltip, paliLookup, states, e) {
-              let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+          _addPopupTooltips(textContent) {
+              const transliterator = new Transliterator();
+              Array.from(textContent.querySelectorAll('.translated-text')).forEach(segment => {
+                      let tooltip = document.createElement('paper-tooltip');
+                      let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
+                      this._setTooltipOptions(tooltip);
+                      segment.addEventListener('mouseover', (e) => {
+                          if (this.chosenTextView !== 'popup') return;
+                          segment.style.color = this._getAccentColor();
+                          states.isWordHovered = true;
+                          this._showPopupTooltip(segment, tooltip, states, e, transliterator);
+                      });
+                      segment.addEventListener('mouseout', (e) => {
+                          states.isWordHovered = false;
+                          this._resetColor(states, segment);
+                          this._removeTooltip(segment, tooltip, states, e);
+                      });
+                      tooltip.addEventListener('mouseover', (e) => {
+                          states.isTooltipHovered = true;
+                      });
+                      tooltip.addEventListener('mouseout', (e) => {
+                          states.isTooltipHovered = false;
+                          this._removeTooltip(segment, tooltip, states, e);
+                      });
+                  }
+              );
+          }
+
+          _showPopupTooltip(segment, tooltip, states, e, transliterator) {
+              tooltip.innerHTML = this._transliterateFragment(this.rootSutta.strings[segment.id], transliterator);
+              segment.appendChild(tooltip);
+              setTimeout(() => {
+                  if (states.isWordHovered && !states.isTooltipShown) {
+                      tooltip.show();
+                      states.isTooltipShown = true;
+                  }
+              }, this._getTooltipDelayTime(e));
+          };
+
+          _transliterateFragment(fragment, transliterator) {
+              if (this.paliScript === 'latin') {
+                  return fragment;
+              } else {
+                  const scriptFunctionName = `to${this._capitalize(this.paliScript)}`;
+                  return transliterator[scriptFunctionName](fragment);
+              }
+          }
+
+          _showLookupTooltip(v, tooltip, paliLookup, states, e) {
               tooltip.innerHTML = paliLookup.lookupWord(v.innerText);
               v.parentNode.insertBefore(tooltip, v.nextSibling);
               setTimeout(() => {
@@ -622,59 +654,54 @@
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, timeToWait);
+              }, this._getTooltipDelayTime(e));
           }
 
-          _removeTooltip(v, tooltip, states, e) {
-              let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+          _removeTooltip(word, tooltip, states, e) {
               setTimeout(() => {
                   if (!states.isWordHovered && !states.isTooltipHovered) {
-                      v.style.color = '';
-                      v.removeAttribute('id');
+                      word.style.color = '';
+                      if (word.nodeName !== 'SC-SEG') {
+                          word.removeAttribute('id');
+                      }
                       tooltip.hide();
                       states.isTooltipShown = false;
                   }
-              }, timeToWait);
+              }, this._getTooltipDelayTime(e));
           }
 
-          _addLookupTooltips(textContainer, that) {
-              that = that || this;
+          _addLookupTooltips(textContainer) {
               let paliLookup = that.shadowRoot.querySelector('#pali_lookup');
-              textContainer.querySelectorAll('.word').forEach((v) => {
+              textContainer.querySelectorAll('.word').forEach((word) => {
                   let tooltip = document.createElement('paper-tooltip');
-                  tooltip.animationDelay = 0;
-                  tooltip.manualMode = true;
-                  tooltip.fitToVisibleBounds = true;
-                  tooltip.offset = 0;
-                  let states = {
-                      isWordHovered: false,
-                      isTooltipHovered: false,
-                      isTooltipShown: false
-                  };
-                  v.addEventListener('mouseover', (e) => {
+                  let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
+                  this._setTooltipOptions(tooltip);
+                  word.addEventListener('mouseover', (e) => {
                       if (this.isPaliLookupEnabled && this.isLookupAllowed) {
-                          v.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
+                          word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                           states.isWordHovered = true;
-                          that._addTooltip(v, tooltip, paliLookup, states, e);
+                          this._showLookupTooltip(word, tooltip, paliLookup, states, e);
                       }
                   });
-                  v.addEventListener('mouseout', (e) => {
+                  word.addEventListener('mouseout', (e) => {
                       states.isWordHovered = false;
-                      setTimeout(() => {
-                          if (!states.isTooltipHovered) {
-                              v.style.color = '';
-                          }
-                      }, 0);
-                      that._removeTooltip(v, tooltip, states, e);
+                      this._resetColor(states, word);
+                      this._removeTooltip(word, tooltip, states, e);
                   });
                   tooltip.addEventListener('mouseover', (e) => {
                       states.isTooltipHovered = true;
                   });
                   tooltip.addEventListener('mouseout', (e) => {
                       states.isTooltipHovered = false;
-                      that._removeTooltip(v, tooltip, states, e);
+                      this._removeTooltip(word, tooltip, states, e);
                   });
               })
+          }
+
+          _setTooltipOptions(tooltip) {
+              tooltip.animationDelay = 0;
+              tooltip.manualMode = true;
+              tooltip.offset = 0;
           }
 
           _getAccentColor() {
@@ -710,6 +737,17 @@
                     }
                 }
             }
+          _resetColor(states, word) {
+              setTimeout(() => {
+                  if (!states.isTooltipHovered) {
+                      word.style.color = '';
+                  }
+              }, 0);
+          }
+
+          _getTooltipDelayTime(e) {
+              return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+          }
 
             _chineseLookupStateChanged() {
                 if (this.hidden) {
