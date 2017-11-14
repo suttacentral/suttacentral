@@ -29,8 +29,11 @@
             segmentedSuttaTextView: 'none',
             script: 'latin',
             paliLookupActivated: false,
-            paliLookupTargetDictRepr: 'Pali → English',
-            paliLookupTargetLanguage: 'en'
+            paliLookupTargetDictRepr: '',
+            paliLookupTargetLanguage: '',
+            chineseLookupActivated: false,
+            chineseLookupTargetDictRepr: '',
+            chineseLookupTargetLanguage: ''
         },
     };
 
@@ -72,6 +75,12 @@
                                                 {paliLookupActivated: action.paliLookupActivated, 
                                                 paliLookupTargetLanguage: action.paliLookupTargetLanguage,
                                                 paliLookupTargetDictRepr: action.paliLookupTargetDictRepr}) });
+            case 'ACTIVATE_CHINESE_LOOKUP':
+                return Object.assign({}, state,
+                    { textOptions: Object.assign({}, state.textOptions, 
+                                                {chineseLookupActivated: action.chineseLookupActivated, 
+                                                chineseLookupTargetLanguage: action.chineseLookupTargetLanguage,
+                                                chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr}) });
             default:
                 return state;
         }

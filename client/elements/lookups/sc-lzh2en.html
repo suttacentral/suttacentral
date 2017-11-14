@@ -1,7 +1,22 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 
 <dom-module id="sc-chinese-lookup">
     <template>
+        <iron-ajax
+        id="ajax"
+        handle-as="json"
+        loading="{{loadingDict}}"
+        last-response="{{dictData}}"></iron-ajax>
+
+        <iron-ajax
+        id="fallback_ajax"
+        handle-as="json"
+        loading="{{loadingFallbackDictData}}"
+        last-response="{{fallbackDictData}}"></iron-ajax>
+
+        <iron-meta id="meta"></iron-meta>
 
     </template>
 
@@ -12,84 +27,97 @@
             }
 
             static get properties() {
-                return {}
+                return {
+                    loadedLanguage: {
+                        type: String
+                    },
+                    toLang: {
+                        type: String,
+                        statePath: 'textOptions.chineseLookupTargetLanguage',
+                        observer: '_targetLanguageChanged'
+                    },
+                    dictData: {
+                        type: Object,
+                    },
+                    loadingDict: {
+                        type: Boolean,
+                        value: true
+                    },
+                    loadingFallbackDictData: {
+                        type: Boolean,
+                        value: true
+                    },
+                    fallbackDictData: {
+                        type: Object
+                    }
+                }
             }
 
-            lookup(node) {
-                var self=this,
-                    graphs = '',
-                    nodes = $(),
-                    iter = new Iter(node),
-                    i
-                self.popups.forEach(function(e) {
-                    $(e).remove();
-                });
-                self.popups.length = 0;
-                $('.current_lookup').removeClass('current_lookup fallback')
-                this.currentLookup = node
-                while (graphs.length < 10) {
-                    if ($(node).is('span.lookup')) {
-                        graphs += $(node).text();
-                        nodes.push(node)
-                    }
-                    node = nextInOrder(node, document.ELEMENT_NODE)
-                    if (!node) {
-                        break
-                    }
+            getNewDict() {
+                this.$.ajax.url = this._computeUrl();
+                this.loadedLanguage = this.toLang;
+                if(this.toLang === 'en'){
+                    this.$.fallback_ajax.url = this._computeUrl(true);
+                    this.$.fallback_ajax.generateRequest();
                 }
+                return this.$.ajax.generateRequest();
+            }
+
+            lookup(graphs) {
+                let definition = '';
                 
-                if (!graphs)
-                    return
-        
-                var popup = ['<div style="position: absolute"><div class="popup" style="position:relative"><table>'],
-                    first = true,
-                    fallback = false;
-                
-                for (i = graphs.length; i > 0; i--) {
-                    var snip = graphs.slice(0, i)
-                    if (snip in sc.lzh2enData) {
-                        popup.push(self._lookupWord(snip))
-                        if (first) {
-                            first = false;
-                            nodes.slice(0, i).addClass('current_lookup')
-                            this.lastCurrentLookup = nodes[i-1];
-                        }
-                    } else if (i == 1 && snip in sc.lzh2enFallbackData) {
-                        popup.push(self._lookupWord(snip))
-                        popup[0] = '<table class="popup fallback">'
-                        fallback = true
-                        if (first) {
-                            first = false;
-                            nodes.slice(0, i).addClass('current_lookup fallback')
-                            this.lastCurrentLookup = nodes[i-1];
-                        }
-                    }
+                for (let i = graphs.length; i > 0; i--) {
+                    let snip = graphs.slice(0, i);
+                    definition += this._lookupWord(snip);
                 }
-                if (this.lastCurrentLookup == null)
-                    this.lastCurrentLookup = this.currentLookup;
-                if (first)
-                    return
         
-                popup.push('</table></div></div>')
-        
-                popup = self.popup(nodes[0], popup.join('\n'))
-                self.popups.push(popup);
+                return definition;
             }
 
             _lookupWord(graph){
-                //Check if word exists and return HTML which represents the meaning.
-                var out = "";
                 graph = graph.replace(/\u2060/, '');
-                if (sc.lzh2enData[graph])
-                {
-                    var href = "http://www.buddhism-dict.net/cgi-bin/xpr-ddb.pl?q=" + encodeURI(graph);
-                    return ('<tr><td class="ideograph"><a title="Go to full entry at the DDB. Login with user name ‘guest’" href="' + href + '" target="_blank">' + graph + '</a></td> <td class="meaning"> ' + sc.lzh2enData[graph][0] + ': ' + sc.lzh2enData[graph][1] + '</td></tr>');
-                } else if (sc.lzh2enFallbackData[graph]) {
-                    var href = "http://www.buddhism-dict.net/cgi-bin/dealt-lookup?q=" + encodeURI(graph);
-                    return ('<tr class="fallback"><td class="ideograph"><a title="Go to full entry at the CJKV. Login with user name ‘guest’" href="' + href + '" target="_blank">' + graph + '</a></td> <td class="meaning"> ' + sc.lzh2enFallbackData[graph][0] + ': ' + sc.lzh2enFallbackData[graph][1] + '</td></tr>')
+                if (this.dictData.dictionary[graph]) {
+                    const href = `http://www.buddhism-dict.net/cgi-bin/xpr-ddb.pl?q=${encodeURI(graph)}`;
+                    return `<tr>
+                              <td class="ideograph">
+                                <a title="Go to full entry at the DDB. Login with user name ‘guest’" 
+                                   href="${href}" target="_blank">${graph}
+                                </a>
+                              </td>
+                              <td class="meaning"> 
+                                ${this.dictData.dictionary[graph][0]}: ${this.dictData.dictionary[graph][1]}
+                              </td>
+                            </tr>`;
+
+                } else if (this.fallbackDictData.dictionary[graph]) {
+                    const href = `http://www.buddhism-dict.net/cgi-bin/dealt-lookup?q=${encodeURI(graph)}`;
+                    return `<tr class="fallback">
+                              <td class="ideograph">
+                                <a title="Go to full entry at the CJKV. Login with user name ‘guest’"
+                                   href="${href}" target="_blank">${graph}
+                                </a>
+                              </td>
+                              <td class="meaning">
+                                ${this.fallbackDictData.dictionary[graph][0]}: ${this.fallbackDictData.dictionary[graph][1]}
+                              </td>
+                            </tr>`
                 }
-                return "";
+                return '';
             }
+
+            _computeUrl(fallback) {
+                fallback = fallback || false;
+                const apiRoot = this.$.meta.byKey('API_ROOT');
+                console.log(`${apiRoot}/dictionaries/lookup?from=lzh&to=${this.toLang}&fallback=${fallback}`);
+                return `${apiRoot}/dictionaries/lookup?from=lzh&to=${this.toLang}&fallback=${fallback}`;
+            }
+
+            _targetLanguageChanged() {
+                if(typeof this.toLang !== 'undefined' && this.toLang !== this.loadedLanguage){
+                  this.getNewDict();
+                }
+            }
+  
         }
 
         customElements.define(SCChineseLookup.is, SCChineseLookup);

@@ -163,7 +163,11 @@
                       type: Boolean,
                       value: false
                   },
-                  spansGenerated: {
+                  spansForWordsGenerated: {
+                      type: Boolean,
+                      value: false
+                  },
+                  spansForGraphsGenerated: {
                       type: Boolean,
                       value: false
                   },
@@ -174,8 +178,15 @@
                   },
                   isChineseLookupEnabled: {
                       type: Boolean,
-                      value: true
+                      statePath: 'textOptions.chineseLookupActivated',
+                      observer: '_chineseLookupStateChanged'
+                  },
+                  paliLookupTargetDictRepr: {
+                    type: String,
+                    statePath: 'textOptions.chineseLookupTargetDictRepr',
+                    observer: '_chineseLookupTargetDictReprChanged'
                   }
+                  
               }
           }
 
@@ -223,12 +234,12 @@
               if (this.translatedSutta) {
                   this._addPrimaryText(this.translatedSutta.strings);
                   if (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh') {
-                      this._putWordsIntoSpans('.translated-text');
+                      this._putIntoSpans('.translated-text', this.rootSutta.lang);
                   }
               } else {
                   this._addPrimaryText(this.rootSutta.strings);
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                      this._putWordsIntoSpans('.translated-text');
+                      this._putIntoSpans('.translated-text', this.rootSutta.lang);
                   }
               }
           }
@@ -363,7 +374,7 @@
                       this.insertSecondarySegment(item);
                   })
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                      this._putWordsIntoSpans('.original-text');
+                      this._putIntoSpans('.original-text', this.rootSutta.lang);
                   }
               }
               textContainer.classList.add('latin-script');
@@ -515,21 +526,34 @@
           }
 
           // Lookup word start
+          _putGraphsIntoSpans(selector){
+            if (this.isChineseLookupEnabled) {
+                this._startGeneratingSpans(selector, 'graph');
+            }
+          }
+
           _putWordsIntoSpans(selector) {
-              if (!this.isPaliLookupEnabled) {
-                  return;
-              }
+            if (this.isPaliLookupEnabled) {
+                this._startGeneratingSpans(selector, 'word');
+            }
+          }
+
+          _startGeneratingSpans(selector, unit) {
               let segments = this.shadowRoot.querySelectorAll(selector);
               let self = this;
               function process_async(items, process) {
                   const temp = () => {
                       const segment = items.shift();
-                      process(segment, self);
+                      process(segment, unit, self);
                       self._addLookupTooltips(segment, self);
                       if (items.length > 0) {
                           setTimeout(temp, 0);
                       } else {
-                          self.spansGenerated = true;
+                          if(unit === 'word'){
+                            self.spansForWordsGenerated = true;
+                          } else if (unit === 'graph'){
+                            self.spansForGraphsGenerated = true;
+                          }
                       }
                   };
                   items = Array.from(items);
@@ -542,12 +566,12 @@
               process_async(segments, this._putSegmentIntoSpans);
           }
 
-          _putSegmentIntoSpans(segment, self) {
+          _putSegmentIntoSpans(segment, unit, self) {
               const text = segment.innerHTML;
               let div = document.createElement('div');
               div.innerHTML = text;
               self._recurseDomChildren(div, true);
-              segment.innerHTML = div.innerHTML.replace(/spfrnt/g, `<span class="word">`).replace(/spback/g, '</span>');
+              segment.innerHTML = div.innerHTML.replace(/%spfrnt%/g, `<span class="word">`).replace(/%spback%/g, '</span>');
           }
 
           _recurseDomChildren(start, output) {
@@ -575,7 +599,7 @@
               let strArr = tt.split(' ');
               let str = '';
               for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
-                  str += 'spfrnt' + strArr[i] + 'spback ';
+                  str += '%spfrnt%' + strArr[i] + '%spback% ';
               }
               node.data = str;
           }
@@ -655,27 +679,45 @@
               return bodyStyle.getPropertyValue('--sc-primary-accent-color');
           }
 
-          _paliLookupStateChanged() {
-              if (this.hidden) {
-                  return;
-              }
-              if (this.isPaliLookupEnabled) {
-                  if (!this.spansGenerated) {
-                      this._conditionalyPutWordsIntoSpans();
+            _conditionalyPutIntoSpans(lang) {
+                if (this.translatedSutta && this.translatedSutta.lang === lang) {
+                    this._putIntoSpans('.translated-text', lang);
+                  } else if (this.rootSutta.lang === lang) {
+                      if (this.shadowRoot.querySelector('.original-text')) {
+                          this._putIntoSpans('.original-text', lang);
+                      }
                   }
               }
-          }
+            
+            _putIntoSpans(selector, lang){
+                if(lang === 'pli'){
+                    this._putWordsIntoSpans(selector);
+                } else if (lang === 'lzh'){
+                    this._putGraphsIntoSpans(selector);
+                }
+            }
 
-          _conditionalyPutWordsIntoSpans() {
-              if (this.translatedSutta &&
-                  (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
-                  this._putWordsIntoSpans('.translated-text');
-              } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                  if (this.shadowRoot.querySelector('.original-text')) {
-                      this._putWordsIntoSpans('.original-text');
-                  }
-              }
-          }
+            _paliLookupStateChanged() {
+                if (this.hidden) {
+                        return;
+                }
+                if (this.isPaliLookupEnabled) {
+                    if (!this.spansForWordsGenerated) {
+                        this._conditionalyPutIntoSpans('pli');
+                    }
+                }
+            }
+
+            _chineseLookupStateChanged() {
+                if (this.hidden) {
+                    return;
+                }
+                if (this.isChineseLookupEnabled) {
+                    if (!this.spansForGraphsGenerated) {
+                        this._conditionalyPutIntoSpans('lzh');
+                    }
+                }
+            }
 
           _paliLookupTargetDictReprChanged() {
               if (this.isPaliLookupEnabled) {

@@ -298,12 +298,15 @@ class LookupDictionaries(Resource):
         Send parallel information for given sutta.
         ---
         parameters:
-           - in: path
+           - in: query
              name: from
              type: string
              required: true
-           - in: path
+           - in: query
              name: to
+             type: string
+           - in: query
+             name: fallback
              type: string
         responses:
             200:
@@ -325,13 +328,16 @@ class LookupDictionaries(Resource):
         to_lang = request.args.get('to', current_app.config.get('DEFAULT_LANGUAGE'))
         from_lang = request.args.get('from', None)
 
+        fallback = request.args.get('fallback', 'false')
+        main_dict = False if fallback == 'true' else True
+
         if from_lang is None:
             return 'from not specified', 422
 
         db = get_db()
 
         result = db.aql.execute(DICTIONARIES,
-                                bind_vars={'from': from_lang, 'to': to_lang})
+                                bind_vars={'from': from_lang, 'to': to_lang, 'main': main_dict})
 
         try:
             return result.next(), 200

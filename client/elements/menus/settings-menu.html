@@ -262,14 +262,15 @@ Issues:
                           },
                           {
                               'dict': 'lzh2en',
-                              'language': 'Chinese → English'
+                              'language': '汉语 → English'
                           }
                       ]
                   },
                   // chinese to language lookup selected number.
                   chineseLookupSelected: {
                       type: Number,
-                      value: 0
+                      value: 0,
+                      observer: '_chineseLookupChanged'
                   },
                   // possible values for the script chooser for pali.
                   paliScripts: {
@@ -366,6 +367,14 @@ Issues:
                           paliLookupActivated: activated,
                           paliLookupTargetDictRepr: targetDictRepr
                       }
+                  },
+                  activateChineseLookup(activated, targetLanguage, targetDictRepr) {
+                      return {
+                          type: 'ACTIVATE_CHINESE_LOOKUP',
+                          chineseLookupTargetLanguage: targetLanguage,
+                          chineseLookupActivated: activated,
+                          chineseLookupTargetDictRepr: targetDictRepr
+                      }
                   }
               }
           }
@@ -375,6 +384,13 @@ Issues:
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
               this.dispatch('activatePaliLookup', !!(paliLookupSelected), targetLanguage, targetDictRepr);
+          }
+
+          _chineseLookupChanged(chineseLookupSelected) {
+            const target = this.chineseLookupArray[chineseLookupSelected];
+            const targetLanguage = target.dict.split('2')[1];
+            const targetDictRepr = target.language;
+            this.dispatch('activateChineseLookup', !!(chineseLookupSelected), targetLanguage, targetDictRepr);
           }
 
           _textualInfoToggleStateChanged() {
