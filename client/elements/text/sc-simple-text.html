@@ -324,14 +324,14 @@
                     } else {
                         self.spansGenerated = true;
                     }
-                }
+                };
                 items = Array.from(items);
                 setTimeout(temp, 0);
             }
             this.isLookupAllowed = false;
             setTimeout(() => {
                 this.isLookupAllowed = true;
-            }, 2000) // Allow lookup after 2 seconds.
+            }, 2000); // Allow lookup after 2 seconds.
             process_async(segments, this._putSegmentIntoSpans);
         }
 

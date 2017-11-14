@@ -303,7 +303,6 @@
           _addPopupTooltips(textContent) {
               Array.from(textContent.querySelectorAll('.translated-text')).forEach(item => {
                       let tooltip = document.createElement('paper-tooltip');
-                      //                      tooltip.setId(item.id);
                       item.innerHTML = `<paper-tooltip class='text-tooltip'
                         fit-to-visible-bounds></paper-tooltip>${item.innerHTML}`;
                       item.classList.add('highlightable-segment');
@@ -519,21 +518,20 @@
                   return;
               }
               let segments = this.shadowRoot.querySelectorAll(selector);
-              let self = this;
-              function process_async(items, process) {
+              const process_async = (items, process) => {
                   const temp = () => {
                       const segment = items.shift();
-                      process(segment, self);
-                      self._addLookupTooltips(segment, self);
+                      process(segment, this);
+                      this._addLookupTooltips(segment, this);
                       if (items.length > 0) {
                           setTimeout(temp, 0);
                       } else {
-                          self.spansGenerated = true;
+                          this.spansGenerated = true;
                       }
                   };
                   items = Array.from(items);
                   setTimeout(temp, 0);
-              }
+              };
               this.isLookupAllowed = false;
               setTimeout(() => {
                   this.isLookupAllowed = true;
