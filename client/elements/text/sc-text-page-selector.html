@@ -51,7 +51,7 @@
       </sc-simple-text>
     </template>
 
-    <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]" restamp>
+    <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
       <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
                          translated-sutta="[[translatedSutta]]" root-lang="[[responseData.root_text.lang]]"
                          is-loading="{{isLoading}}" error="[[lastError]]"
