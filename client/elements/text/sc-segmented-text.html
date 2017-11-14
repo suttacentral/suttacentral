@@ -374,19 +374,19 @@
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
+              this._setParagraphsVisible(this.showParagraphs);
+              const paragraphsAdded =
+                  this.$.segmented_text_content.querySelector('.textual-info-paragraph') !== null;
+              if (paragraphsAdded) return;
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
                           this._addParagraphData(item, paragraph);
-                          const segmentSibling = this._getClosestSegmentSibling(item);
-                          const inlineItem = item.cloneNode(true);
-                          inlineItem.classList.add('paragraph-inline');
-                          segmentSibling.appendChild(inlineItem);
+                          this._addInlineParagraph(item);
                       });
                   });
               }
-              this._setParagraphsVisible(this.showParagraphs);
           }
 
           _addParagraphData(item, data) {
@@ -394,9 +394,15 @@
               item.title = data.description;
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph');
-              item.addEventListener('click', () => {
-                  this._scrollToSection(item.id, true, 0);
-              });
+              item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); });
+          }
+
+          _addInlineParagraph(item) {
+              const segmentSibling = this._getClosestSegmentSibling(item);
+              const inlineItem = item.cloneNode(true);
+              inlineItem.classList.add('textual-info-paragraph-inline');
+              inlineItem.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); });
+              segmentSibling.appendChild(inlineItem);
           }
 
           // adds a class to the main container to either show or hide the textual info paragraphs

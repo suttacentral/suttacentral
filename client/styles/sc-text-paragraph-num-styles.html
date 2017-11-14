@@ -441,17 +441,28 @@
         color: var(--sc-secondary-text-color);
         background-color: var(--sc-tertiary-background-color);
         transition: 250ms;
+        display: none;
         transition-property: opacity;
         opacity: 0;
+        float: right;
+        clear: right;
         border-radius: var(--sc-size-xxs);
+      }
+
+      .textual-info-paragraph-inline {
+        display: inline-block;
+        float: none;
       }
 
       @media screen and (min-width: 1200px) {
         .textual-info-paragraph {
           margin-right: -6em;
-          float: right;
-          clear: right;
+          display: block;
           background-color: transparent;
+        }
+
+        .textual-info-paragraph-inline {
+          display: none;
         }
       }
 
