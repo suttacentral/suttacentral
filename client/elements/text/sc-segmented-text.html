@@ -164,6 +164,16 @@
                       type: String,
                       statePath: 'textOptions.paliLookupTargetDictRepr',
                       observer: '_paliLookupTargetDictReprChanged'
+                  },
+                  scriptIsoCodes: {
+                      type: Object,
+                      value: {
+                          'latin': 'Latn',
+                          'sinhala': 'Sinh',
+                          'devanagari': 'Deva',
+                          'thai': 'Thai',
+                          'myanmar': 'Mymr'
+                      }
                   }
               }
           }
@@ -426,46 +436,33 @@
               }
           }
 
-          _changeScript(paliScript) {
+          _changeScript(toScript) {
               if (!this.rootSutta || this.rootSutta.lang !== 'pli') {
                   return;
               }
               const segments = this.shadowRoot.querySelectorAll('.original-text');
               const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
+              const scriptNames = Object.keys(this.scriptIsoCodes);
               this._resetScript(segments, tooltips);
-              switch (paliScript) {
-                  case 'latin':
-                      this._setScriptISOCode('Latn');
-                      this.$.segmented_text_content.classList.add('latin-script');
-                      break;
-                  case 'sinhala':
-                      this._setScriptISOCode('Sinh');
-                      this._setScript('sinhala', segments, tooltips);
-                      break;
-                  case 'devanagari':
-                      this._setScriptISOCode('Deva');
-                      this._setScript('devanagari', segments, tooltips);
-                      break;
-                  case 'thai':
-                      this._setScriptISOCode('Thai');
-                      this._setScript('thai', segments, tooltips);
-                      break;
-                  case 'myanmar':
-                      this._setScriptISOCode('Mymr');
-                      this._setScript('myanmar', segments, tooltips);
-                      break;
+              if (toScript === 'latin') {
+                  this.$.segmented_text_content.classList.add('latin-script');
+              } else if (scriptNames.includes(toScript)) {
+                  this._setScript(toScript, segments, tooltips);
               }
+              this._setScriptISOCode(toScript);
           }
 
-          _setScriptISOCode(isoCode) {
+          _setScriptISOCode(scriptName) {
               const textLang = this.translatedSutta ? this.translationLang : this.rootLang;
-              const langAttr = this.translatedSutta ? this.translationLang : `${textLang}-${isoCode}`;
+              const langAttr =
+                  this.translatedSutta ? this.translationLang : `${textLang}-${this.scriptIsoCodes[scriptName]}`;
               this.shadowRoot.querySelector('#text').setAttribute('lang', langAttr);
           }
 
           _resetScript(segments, tooltips) {
-              this.$.segmented_text_content.classList
-                  .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
+              Object.keys(this.scriptIsoCodes).forEach((scriptName) => {
+                  this.$.segmented_text_content.classList.remove(`${scriptName}-script`);
+              });
               Array.from(segments).forEach(item => item.innerHTML = this.rootSutta.strings[item.id] + ' ');
               Array.from(tooltips).forEach(item => item.innerHTML = this.rootSutta.strings[item.id]);
           }
@@ -591,7 +588,7 @@
           }
 
           _showPopupTooltip(segment, tooltip, states, e) {
-              tooltip.innerHTML = this.rootSutta.strings[segment.id];
+              tooltip.innerHTML = this._transliterateFragment(this.rootSutta.strings[segment.id]);
               segment.appendChild(tooltip);
               setTimeout(() => {
                   if (states.isWordHovered && !states.isTooltipShown) {
@@ -600,6 +597,10 @@
                   }
               }, this._getTooltipDelayTime(e));
           };
+
+          _transliterateFragment(fragment) {
+
+          }
 
           _showLookupTooltip(v, tooltip, paliLookup, states, e) {
               tooltip.innerHTML = paliLookup.lookupWord(v.innerText);
@@ -661,7 +662,6 @@
           _setTooltipOptions(tooltip) {
               tooltip.animationDelay = 0;
               tooltip.manualMode = true;
-              tooltip.fitToVisibleBounds = true;
               tooltip.offset = 0;
           }
 
