@@ -298,7 +298,7 @@
           _addPopupTooltips(textContent) {
               Array.from(textContent.querySelectorAll('.translated-text')).forEach(item => {
                       let tooltip = document.createElement('paper-tooltip');
-//                      tooltip.setId(item.id);
+                      //                      tooltip.setId(item.id);
                       item.innerHTML = `<paper-tooltip class='text-tooltip'
                         fit-to-visible-bounds></paper-tooltip>${item.innerHTML}`;
                       item.classList.add('highlightable-segment');
@@ -656,12 +656,12 @@
               }
               if (this.isPaliLookupEnabled) {
                   if (!this.spansGenerated) {
-                      this._conditionalyPutWordsIntoSpans();
+                      this._conditionallyPutWordsIntoSpans();
                   }
               }
           }
 
-          _conditionalyPutWordsIntoSpans() {
+          _conditionallyPutWordsIntoSpans() {
               if (this.translatedSutta &&
                   (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
                   this._putWordsIntoSpans('.translated-text');
