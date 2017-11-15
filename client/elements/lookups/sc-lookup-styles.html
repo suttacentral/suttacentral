@@ -1,0 +1,64 @@
+<dom-module id="sc-lookup-styles">
+    <template>
+        <style>
+        :host {
+            --paper-tooltip: {
+                @apply --sc-skolar-font-size-s;
+                @apply --sc-sans-font;
+                background-color: var(--sc-paper-tooltip-color);
+                font-feature-settings: normal;
+                text-transform: none;
+                opacity: 1;
+                max-width: 300px;
+            }
+            }
+    
+            .lookup-tooltip .separator{
+            width: 100%;
+            margin-bottom: 1em;
+            margin-top: .8em;
+            height: 1dp;
+            opacity: .12;
+            }
+    
+            
+            .lookup-tooltip .definition:last-of-type .separator{
+                display: none;
+            }
+            
+            .lookup-tooltip .definition {
+                margin-left: .4em;
+            }
+    
+            .lookup-tooltip .definition:last-of-type {
+            margin-bottom: .5em;
+            }
+    
+            .lookup-tooltip .definition:first-of-type {
+            margin-top: .7em;
+            }
+    
+            .lookup-tooltip .ideograph {
+                margin-right: .2em;
+            }
+    
+            .lookup-link {
+            color: var(--sc-primary-color-light) !important;
+            font-weight: bold;
+            }
+    
+            .lookup-link:hover {
+            color: var(--sc-primary-color-medium) !important; 
+            }
+
+            h1 { /* it is here because of the difference on how h1 calculates margin for bare text and text in spans */
+                -webkit-margin-before: 12px;
+            }
+        
+            .green-color {
+                color: var(--sc-primary-accent-color);
+            }
+        </style>
+    </template>
+</dom-module>
+      
