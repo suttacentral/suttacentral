@@ -31,7 +31,7 @@
             paliLookupActivated: false,
             paliLookupTargetDictRepr: 'Pali → English',
             paliLookupTargetLanguage: 'en'
-        },
+        }
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -68,21 +68,37 @@
                     { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
             case 'ACTIVATE_PALI_LOOKUP':
                 return Object.assign({}, state,
-                    { textOptions: Object.assign({}, state.textOptions, 
-                                                {paliLookupActivated: action.paliLookupActivated, 
-                                                paliLookupTargetLanguage: action.paliLookupTargetLanguage,
-                                                paliLookupTargetDictRepr: action.paliLookupTargetDictRepr}) });
+                    {
+                        textOptions: Object.assign({}, state.textOptions, {
+                            paliLookupActivated: action.paliLookupActivated,
+                            paliLookupTargetLanguage: action.paliLookupTargetLanguage,
+                            paliLookupTargetDictRepr: action.paliLookupTargetDictRepr
+                        })
+                    });
             default:
                 return state;
         }
     };
 
+    // Before creating the store, check if it's saved in LocalStorage:
+    const persistedState = localStorage.getItem('reduxState') ?
+        JSON.parse(localStorage.getItem('reduxState')) : initialState;
+    console.log('recreating persisted state: ');
+    console.dir(localStorage.getItem('reduxState'));
+
     const store = Redux.createStore(
         reducer,
-        initialState,
+        persistedState,
         // Enable redux dev tools extension:
         Redux.compose(window.devToolsExtension ? window.devToolsExtension() : v => v)
     );
+
+    // Persist the store in localStorage:
+    store.subscribe(() => {
+        localStorage.setItem('reduxState', JSON.stringify(store.getState()));
+        console.log('persisting state: ');
+        console.dir(store.getState());
+    });
 
     ReduxMixin = PolymerRedux(store);
 </script>
