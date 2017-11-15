@@ -63,44 +63,46 @@
                 return this.$.ajax.generateRequest();
             }
 
-            lookup(graphs) {
+            lookupWord(graphs) {
                 let definition = '';
-                
+                let length = 1;
                 for (let i = graphs.length; i > 0; i--) {
                     let snip = graphs.slice(0, i);
                     definition += this._lookupWord(snip);
+                    if(definition && i > length){
+                        length = i;
+                    }
                 }
-        
-                return definition;
+                return {html: definition, length: length};
             }
 
             _lookupWord(graph){
                 graph = graph.replace(/\u2060/, '');
                 if (this.dictData.dictionary[graph]) {
                     const href = `http://www.buddhism-dict.net/cgi-bin/xpr-ddb.pl?q=${encodeURI(graph)}`;
-                    return `<tr>
-                              <td class="ideograph">
+                    return `<div class="definition">
+                              <span class="ideograph">
                                 <a title="Go to full entry at the DDB. Login with user name ‘guest’" 
-                                   href="${href}" target="_blank">${graph}
-                                </a>
-                              </td>
-                              <td class="meaning"> 
+                                   href="${href}" target="_blank" class="lookup-link">${graph}</a>
+                              </span>
+                              <span class="meaning"> 
                                 ${this.dictData.dictionary[graph][0]}: ${this.dictData.dictionary[graph][1]}
-                              </td>
-                            </tr>`;
+                              </span>
+                              <hr class="separator">
+                            </div>`;
 
                 } else if (this.fallbackDictData.dictionary[graph]) {
                     const href = `http://www.buddhism-dict.net/cgi-bin/dealt-lookup?q=${encodeURI(graph)}`;
-                    return `<tr class="fallback">
-                              <td class="ideograph">
+                    return `<div class="fallback definition">
+                              <span class="ideograph">
                                 <a title="Go to full entry at the CJKV. Login with user name ‘guest’"
-                                   href="${href}" target="_blank">${graph}
-                                </a>
-                              </td>
-                              <td class="meaning">
+                                   href="${href}" target="_blank" class="lookup-link">${graph}</a>
+                              </span>
+                              <span class="meaning">
                                 ${this.fallbackDictData.dictionary[graph][0]}: ${this.fallbackDictData.dictionary[graph][1]}
-                              </td>
-                            </tr>`
+                              </span>
+                              <hr>
+                            </div>`
                 }
                 return '';
             }
@@ -108,7 +110,6 @@
             _computeUrl(fallback) {
                 fallback = fallback || false;
                 const apiRoot = this.$.meta.byKey('API_ROOT');
-                console.log(`${apiRoot}/dictionaries/lookup?from=lzh&to=${this.toLang}&fallback=${fallback}`);
                 return `${apiRoot}/dictionaries/lookup?from=lzh&to=${this.toLang}&fallback=${fallback}`;
             }
 

@@ -6,24 +6,12 @@
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 <link rel="import" href="/elements/lookups/sc-pli.html">
 <link rel="import" href="/elements/lookups/sc-lzh2en.html">
+<link rel="import" href="/elements/lookups/sc-lookup-styles.html">
 
 <dom-module id="sc-simple-text">
 
   <template>
-    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-      :host {
-        --paper-tooltip: {
-          @apply --sc-skolar-font-size-s;
-          opacity: 1;
-          max-width: 200px;
-          background-color: var(--sc-paper-tooltip-color);
-        }
-      }
-
-      .lookup-link {
-        color: white !important;
-        font-weight: bold;
-      }
+    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles">
 
       .text-center {
         text-align: center;
@@ -31,10 +19,6 @@
 
       .margin-top-xl {
         margin-top: 10vh;
-      }
-
-      h1 { /* it is here because of the difference on how h1 calculates margin for bare text and text in spans */
-        -webkit-margin-before: 12px;
       }
 
     </style>
@@ -53,8 +37,8 @@
       <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
     </template>
     <template is="dom-if" if="[[isChineseLookupEnabled]]">
+        <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
     </template>
-    <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
 
   </template>
 
@@ -320,21 +304,21 @@
           }
 
           // Lookup word start
-          _putGraphsIntoSpans(selector){
-            this._startGeneratingSpans(selector, 'graph');
+          _putGraphsIntoSpans(selector, lang){
+            this._startGeneratingSpans(selector, 'graph',lang);
           }
 
-          _putWordsIntoSpans(selector) {
-            this._startGeneratingSpans(selector, 'word');
+          _putWordsIntoSpans(selector, lang) {
+            this._startGeneratingSpans(selector, 'word', lang);
           }
 
-          _startGeneratingSpans(selector, unit) {
+          _startGeneratingSpans(selector, unit, lang) {
               let segments = this.shadowRoot.querySelectorAll(selector);
               const process_async = (items, process) => {
                   const temp = () => {
                       const segment = items.shift();
                       process(segment, unit, this);
-                      this._addLookupTooltips(segment, this);
+                      this._addLookupTooltips(segment, lang, this);
                       if (items.length > 0) {
                           setTimeout(temp, 0);
                       } else {
@@ -392,31 +376,75 @@
               const NODE_TYPE_TEXT = 3;
               if (node.nodeType !== NODE_TYPE_TEXT) return;
               let tt = node.data;
-              let strArr = tt.split(' ');
+              let strArr = tt.split(/\w+/g);
               let str = '';
               for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
                   if(unit === 'word'){
                     str += `%spfrnt_l%${strArr[i]}%spback_l% `;
                   } else if (unit === 'graph') {
+                      str += '%spfrnt%';
                       for(let graph of strArr[i]){
                           if(/^\s+$/.test(graph)){
                               continue;
                           }
-                          if(!(' ,!?;:：()[]【 】 。「」﹁﹂"、‧《》〈〉﹏—『』'.includes(graph))){
+                          if(!('，,!?？;:：()[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』'.includes(graph))){
                             str += `%spfrnt_l%${graph}%spback_l%`;
                           } else {
-                              str += `%spfrnt%${graph}%spback%`;
+                            str += `%spback%%spfrnt%${graph}%spback%%spfrnt%`;
                           }
                       }
-                      str += ' ';
+                      if(str.endsWith('%spfrnt%')){
+                          str = str.substring(0, str.length - '%spfrnt%'.length) + ' ';
+                      } else {
+                        str += '%spback% ';
+                      }
                   }
               }
               node.data = str;
           }
 
-          _addTooltip(v, tooltip, paliLookup, states, e) {
-              let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
-              tooltip.innerHTML = paliLookup.lookupWord(v.innerText);
+          _addTooltip(v, tooltip, lookup, states, e, lang) {
+              let timeToWait = this._getTooltipDelayTime(e);
+              if(lang === 'pli'){
+                let lookupResult = lookup.lookupWord(v.innerText);
+                tooltip.innerHTML = lookupResult.html;
+              } else if(lang === 'lzh') {
+                let graphs = v.innerText;
+                let lastNode = v;
+                for(let i = 0; i < 10; i++){
+                    let next = lastNode.nextElementSibling;
+                    lastNode = next;
+                    if(next !== null){
+                        if(!next.classList.contains('lookup_element')){
+                            i--;
+                            continue;
+                        }
+                        graphs += next.innerText;
+                    } else {
+                        break;
+                    }
+                }
+                let lookupResult = lookup.lookupWord(graphs);
+                tooltip.innerHTML = lookupResult.html;
+                if(lookupResult.length){
+                    setTimeout(() => {
+                        let lastElement = v;
+                        for(let i = 0; i < lookupResult.length - 1; i++){
+                            let nextElement = lastElement.nextElementSibling;
+                            if(!nextElement){
+                                break;
+                            }
+                            lastElement = nextElement;
+                            if(!nextElement.classList.contains('lookup_element')){
+                                i--;
+                                continue;
+                            }
+                            nextElement.classList.add('green-color');
+                        }
+                    }, 5);
+                }
+                tooltip.elementCount = lookupResult.length;
+              }
               v.parentNode.insertBefore(tooltip, v.nextSibling);
               setTimeout(() => {
                   if (states.isWordHovered && !states.isTooltipShown) {
@@ -430,55 +458,83 @@
           }
 
           _removeTooltip(v, tooltip, states, e) {
-              let timeToWait = e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+              let timeToWait = this._getTooltipDelayTime(e);
               setTimeout(() => {
                   if (!states.isWordHovered && !states.isTooltipHovered) {
                       v.style.color = '';
                       v.removeAttribute('id');
                       tooltip.hide();
                       states.isTooltipShown = false;
+                      let lastElement = v;
+                      for(let i = 0; i < tooltip.elementCount; i++){
+                        let nextElement = lastElement.nextElementSibling;
+                        if(!nextElement){
+                            break;
+                        }
+                        lastElement = nextElement;
+                        if(!nextElement.classList.contains('lookup_element')){
+                            i--;
+                            continue;
+                        }
+                        if(!nextElement.id){
+                            nextElement.classList.remove('green-color');
+                        }
+                    }
                   }
-              }, timeToWait);
+              }, 0);
           }
 
-          _addLookupTooltips(textContainer, that) {
+          _addLookupTooltips(textContainer, lang, that) {
               that = that || this;
-              let paliLookup = that.shadowRoot.querySelector('#pali_lookup');
-              textContainer.querySelectorAll('.lookup_element').forEach((v) => {
+              let lookupId;
+              if(lang === 'lzh'){
+                  lookupId = 'chinese_lookup';
+              } else if(lang === 'pli'){
+                  lookupId = 'pali_lookup';
+              }
+              let lookup = that.shadowRoot.querySelector(`#${lookupId}`);
+              textContainer.querySelectorAll('.lookup_element').forEach((word) => {
                   let tooltip = document.createElement('paper-tooltip');
-                  tooltip.animationDelay = 0;
-                  tooltip.manualMode = true;
-                  tooltip.fitToVisibleBounds = true;
-                  tooltip.offset = 0;
+                  this._setTooltipOptions(tooltip, lang);
                   let states = {
                       isWordHovered: false,
                       isTooltipHovered: false,
                       isTooltipShown: false
                   };
-                  v.addEventListener('mouseover', (e) => {
-                      if (this.isPaliLookupEnabled && this.isLookupAllowed) {
-                          v.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
+                  word.addEventListener('mouseover', (e) => {
+                      if ((this.isPaliLookupEnabled || this.isChineseLookupEnabled) && this.isLookupAllowed) {
+                          word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                           states.isWordHovered = true;
-                          that._addTooltip(v, tooltip, paliLookup, states, e);
+                          that._addTooltip(word, tooltip, lookup, states, e, lang);
                       }
                   });
-                  v.addEventListener('mouseout', (e) => {
+                  word.addEventListener('mouseout', (e) => {
                       states.isWordHovered = false;
                       setTimeout(() => {
                           if (!states.isTooltipHovered) {
-                              v.style.color = '';
+                              word.style.color = '';
                           }
                       }, 0);
-                      that._removeTooltip(v, tooltip, states, e);
+                      that._removeTooltip(word, tooltip, states, e);
                   });
                   tooltip.addEventListener('mouseover', (e) => {
                       states.isTooltipHovered = true;
                   });
                   tooltip.addEventListener('mouseout', (e) => {
                       states.isTooltipHovered = false;
-                      that._removeTooltip(v, tooltip, states, e);
+                      that._removeTooltip(word, tooltip, states, e);
                   });
               })
+          }
+
+          _setTooltipOptions(tooltip, lang) {
+            tooltip.classList.add('lookup-tooltip');
+            tooltip.animationDelay = 0;
+            tooltip.position = 'top';
+            tooltip.manualMode = true;
+            tooltip.fitToVisibleBounds = true;
+            tooltip.offset = 0;
+            tooltip.style['padding-bottom'] = '.2em';
           }
 
           _getAccentColor() {
@@ -494,9 +550,9 @@
 
             _putIntoSpans(selector, lang){
                 if(lang === 'pli'){
-                    this._putWordsIntoSpans(selector);
+                    this._putWordsIntoSpans(selector, lang);
                 } else if (lang === 'lzh'){
-                    this._putGraphsIntoSpans(selector);
+                    this._putGraphsIntoSpans(selector, lang);
                 }
             }
 
@@ -544,6 +600,10 @@
                 const dictName = this.chineseLookupTargetDictRepr.replace('→', 'to');
                 this._showToast(dictName);
               }
+          }
+
+          _getTooltipDelayTime(e) {
+            return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
           }
           // Lookup word end
 

@@ -9,28 +9,12 @@
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 <link rel="import" href="/elements/lookups/sc-pli.html">
 <link rel="import" href="/elements/lookups/sc-lzh2en.html">
+<link rel="import" href="/elements/lookups/sc-lookup-styles.html">
 
 <dom-module id="sc-segmented-text">
 
   <template>
-    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-
-      :host {
-        --paper-tooltip: {
-          @apply --sc-skolar-font-size-s;
-          @apply --sc-sans-font;
-          background-color: var(--sc-paper-tooltip-color);
-          font-feature-settings: normal;
-          text-transform: none;
-          opacity: 1;
-          max-width: 200px;
-        }
-      }
-
-      .lookup-link {
-        color: white !important;
-        font-weight: bold;
-      }
+    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles">
 
       .text-center {
         text-align: center;
@@ -644,7 +628,8 @@
           }
 
           _showLookupTooltip(v, tooltip, paliLookup, states, e) {
-              tooltip.innerHTML = paliLookup.lookupWord(v.innerText);
+              let lookupResult = paliLookup.lookupWord(v.innerText);
+              tooltip.innerHTML = lookupResult.html;
               v.parentNode.insertBefore(tooltip, v.nextSibling);
               setTimeout(() => {
                   if (states.isWordHovered && !states.isTooltipShown) {
@@ -671,7 +656,7 @@
           }
 
           _addLookupTooltips(textContainer) {
-              let paliLookup = that.shadowRoot.querySelector('#pali_lookup');
+              let paliLookup = this.shadowRoot.querySelector('#pali_lookup');
               textContainer.querySelectorAll('.word').forEach((word) => {
                   let tooltip = document.createElement('paper-tooltip');
                   let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
