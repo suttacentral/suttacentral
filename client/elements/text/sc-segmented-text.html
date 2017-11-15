@@ -142,9 +142,6 @@
                       type: String,
                       observer: '_updateView'
                   },
-                  assembledMainText: {
-                      type: String
-                  },
                   isPaliLookupEnabled: {
                       type: Boolean,
                       statePath: 'textOptions.paliLookupActivated',
@@ -290,7 +287,6 @@
                       this._addPopupTooltips(textContent);
                       break;
               }
-              this.assembledMainText = textContent.innerHTML;
           }
 
           // reset all classes and remove tooltips.
@@ -319,7 +315,6 @@
               catch (e) {
                   console.error(e);
               }
-              this.assembledMainText = textContainer.innerHTML;
           }
 
           _addSegmentClasses(segments) {
@@ -379,20 +374,19 @@
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
-              if (this.paragraphs && this.showParagraphs) {
-                  this._addParagraphScrollListeners();
-                  this.assembledMainText = this.$.segmented_text_content.innerHTML;
-              }
               this._setParagraphsVisible(this.showParagraphs);
-          }
-
-          _addParagraphScrollListeners() {
-              this.paragraphs.forEach((paragraph) => {
-                  const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
-                  Array.from(refs).forEach((item) => {
-                      this._addParagraphData(item, paragraph);
+              const paragraphsAdded =
+                  this.$.segmented_text_content.querySelector('.textual-info-paragraph') !== null;
+              if (paragraphsAdded) return;
+              if (this.paragraphs && this.showParagraphs) {
+                  this.paragraphs.forEach((paragraph) => {
+                      const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
+                      Array.from(refs).forEach((item) => {
+                          this._addParagraphData(item, paragraph);
+                          this._addInlineParagraph(item);
+                      });
                   });
-              });
+              }
           }
 
           _addParagraphData(item, data) {
@@ -400,9 +394,16 @@
               item.title = data.description;
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph');
-              item.addEventListener('click', () => {
-                  this._scrollToSection(item.id, true, 0);
-              });
+              item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); });
+          }
+
+          _addInlineParagraph(item) {
+              const segmentSibling = this._getClosestSegmentSibling(item);
+              const inlineItem = item.cloneNode(true);
+              inlineItem.classList.add('textual-info-paragraph-inline');
+              inlineItem.id = `${inlineItem.id}_inline`;
+              segmentSibling.insertBefore(inlineItem, segmentSibling.firstChild);
+              inlineItem.addEventListener('click', () => { this._scrollToSection(inlineItem.id, true, 0); });
           }
 
           // adds a class to the main container to either show or hide the textual info paragraphs
@@ -688,6 +689,16 @@
 
           _getTooltipDelayTime(e) {
               return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+          }
+
+          _getClosestSegmentSibling(node) {
+              while (node.nextElementSibling !== null) {
+                  if (node.nextElementSibling.nodeName === 'SC-SEG') {
+                      return node.nextElementSibling;
+                  }
+                  node = node.nextElementSibling;
+              }
+              return null;
           }
 
           _paliLookupStateChanged() {
