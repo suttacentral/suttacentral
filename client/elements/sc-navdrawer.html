@@ -130,12 +130,19 @@
       }
 
       .dialog-header {
-        @apply --paper-font-title;
         @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-xxl;
-        padding-bottom: var(--sc-size-lg);
+        @apply --sc-skolar-font-size-dialog-header;
+        font-weight: 500;
+        padding: var(--sc-size-lg) 0;
         color: white;
         margin: 0;
+      }
+
+      .buttons-bar {
+        margin-top: 0;
+        padding-right: 0;
+        display: flex;
+        justify-content: space-between;
       }
 
       .green-bg {
@@ -151,8 +158,9 @@
         margin-top: var(--sc-size-lg);
       }
 
-      .white-icon {
+      .close-dialog-icon {
         color: white;
+        margin: var(--sc-size-sm);
       }
 
     </style>
@@ -209,10 +217,10 @@
 
     <isw-dialog id="settings_dialog" name="settings_dialog" class="dialog" with-backdrop="true"
                 entry-animation="fade-in-animation" exit-animation="fade-out-animation">
-      <div class="buttons green-bg">
-        <paper-icon-button class="white-icon" icon="close" dialog-confirm></paper-icon-button>
+      <div class="buttons-bar green-bg">
+        <h2 class="dialog-header green-bg">Text settings</h2>
+        <paper-icon-button class="close-dialog-icon" icon="close" dialog-confirm></paper-icon-button>
       </div>
-      <h2 class="dialog-header green-bg">Text settings</h2>
       <paper-dialog-scrollable class="scrollable-dialog">
         <settings-menu></settings-menu>
       </paper-dialog-scrollable>
@@ -220,10 +228,10 @@
 
     <isw-dialog id="info_dialog" name="info_dialog" class="dialog" with-backdrop="true" data="{{infoDialogMetaArea}}"
                 entry-animation="fade-in-animation" exit-animation="fade-out-animation">
-      <div class="buttons green-bg">
-        <paper-icon-button class="white-icon" icon="close" dialog-confirm></paper-icon-button>
+      <div class="buttons-bar green-bg">
+        <h2 class="dialog-header green-bg">Publication details</h2>
+        <paper-icon-button class="close-dialog-icon" icon="close" dialog-confirm></paper-icon-button>
       </div>
-      <h2 class="dialog-header green-bg">Publication details</h2>
       <paper-dialog-scrollable class="scrollable-dialog">
         <div class="dialog-section">
           <div inner-h-t-m-l="[[infoDialogMetaArea]]">
@@ -265,7 +273,7 @@
                       statePath: 'suttaMetaText'
                   },
                   item: {
-                    type: Object
+                      type: Object
                   }
               }
           }
