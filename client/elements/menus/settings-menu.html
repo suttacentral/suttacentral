@@ -245,7 +245,7 @@ Issues:
                           {
                               'dict': 'pli2nl',
                               'language': 'Pali → Dutch'
-                          },
+                          }
                       ]
                   },
                   // pali to language lookup selected number.
@@ -304,19 +304,14 @@ Issues:
                       type: Number,
                       observer: '_changeScript'
                   },
-                  textualInfoEnabled: {
-                      type: Boolean,
-                      statePath: 'textParagraphs.enabled'
-                  },
-                  textualInfoDescriptions: {
-                      type: Array,
-                      statePath: 'textParagraphs.descriptions'
-                  },
                   // The state of the textual info paper-toggle-button
                   textualInfoToggleEnabled: {
                       type: Boolean,
-                      observer: '_textualInfoToggleStateChanged',
-                      value: false
+                      observer: '_textualInfoToggleStateChanged'
+                  },
+                  textualInfoEnabledInState: {
+                      type: Boolean,
+                      statePath: 'textOptions.paragraphsEnabled'
                   },
                   textualInfoResponse: {
                       type: Object,
@@ -380,7 +375,11 @@ Issues:
           }
 
           _textualInfoToggleStateChanged() {
+              console.log('toggle state changed');
+              console.log(this.textualInfoToggleEnabled);
               if (this.textualInfoToggleEnabled) {
+                  if (this.textualInfoEnabledInState) return;
+                  console.log('generating paragraph request');
                   this.$.paragraphs_ajax.generateRequest();
               } else {
                   this.dispatch('toggleTextualInfo', false);
@@ -400,7 +399,9 @@ Issues:
                   if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
                       this.dispatch('downloadParagraphs', this.textualInfoResponse);
                   }
-                  this.dispatch('toggleTextualInfo', this.textualInfoToggleEnabled);
+                  if (this.textualInfoToggleEnabled) {
+                      this.dispatch('toggleTextualInfo', true);
+                  }
               }
           }
 

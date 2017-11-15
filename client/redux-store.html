@@ -37,6 +37,7 @@
     // The reducer accepts the current state and an action and returns a new state object
     // (note that the old state object is unmodified).
     const reducer = (state, action) => {
+        console.log(action.type);
         switch (action.type) {
             case 'CHANGE_ROUTE':
                 return Object.assign({}, state, { currentRoute: action.route });
@@ -84,7 +85,7 @@
     const persistedState = localStorage.getItem('reduxState') ?
         JSON.parse(localStorage.getItem('reduxState')) : initialState;
     console.log('recreating persisted state: ');
-    console.dir(localStorage.getItem('reduxState'));
+    console.dir(JSON.parse(localStorage.getItem('reduxState')));
 
     const store = Redux.createStore(
         reducer,
