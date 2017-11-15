@@ -79,32 +79,39 @@
             _lookupWord(graph){
                 graph = graph.replace(/\u2060/, '');
                 if (this.dictData.dictionary[graph]) {
-                    const href = `http://www.buddhism-dict.net/cgi-bin/xpr-ddb.pl?q=${encodeURI(graph)}`;
-                    return `<div class="definition">
-                              <span class="ideograph">
-                                <a title="Go to full entry at the DDB. Login with user name ‘guest’" 
-                                   href="${href}" target="_blank" class="lookup-link">${graph}</a>
-                              </span>
-                              <span class="meaning"> 
-                                ${this.dictData.dictionary[graph][0]}: ${this.dictData.dictionary[graph][1]}
-                              </span>
-                              <hr class="separator">
-                            </div>`;
-
+                    return this._constructDictEntry(graph);
                 } else if (this.fallbackDictData.dictionary[graph]) {
-                    const href = `http://www.buddhism-dict.net/cgi-bin/dealt-lookup?q=${encodeURI(graph)}`;
-                    return `<div class="fallback definition">
-                              <span class="ideograph">
-                                <a title="Go to full entry at the CJKV. Login with user name ‘guest’"
-                                   href="${href}" target="_blank" class="lookup-link">${graph}</a>
-                              </span>
-                              <span class="meaning">
-                                ${this.fallbackDictData.dictionary[graph][0]}: ${this.fallbackDictData.dictionary[graph][1]} [modern chinese]
-                              </span>
-                              <hr>
-                            </div>`
+                    return this._constructFallbackEntry(graph);
                 }
                 return '';
+            }
+
+            _constructDictEntry(graph) {
+                const href = `http://www.buddhism-dict.net/cgi-bin/xpr-ddb.pl?q=${encodeURI(graph)}`;
+                return `<div class="definition">
+                          <span class="ideograph">
+                            <a title="Go to full entry at the DDB. Login with user name ‘guest’" 
+                               href="${href}" target="_blank" class="lookup-link">${graph}</a>
+                          </span>
+                          <span class="meaning"> 
+                            ${this.dictData.dictionary[graph][0]}: ${this.dictData.dictionary[graph][1]}
+                          </span>
+                          <hr class="separator">
+                        </div>`;
+            }
+
+            _constructFallbackEntry() {
+                const href = `http://www.buddhism-dict.net/cgi-bin/dealt-lookup?q=${encodeURI(graph)}`;
+                return `<div class="fallback definition">
+                          <span class="ideograph">
+                            <a title="Go to full entry at the CJKV. Login with user name ‘guest’"
+                               href="${href}" target="_blank" class="lookup-link">${graph}</a>
+                          </span>
+                          <span class="meaning">
+                            ${this.fallbackDictData.dictionary[graph][0]}: ${this.fallbackDictData.dictionary[graph][1]} [modern chinese]
+                          </span>
+                          <hr>
+                        </div>`
             }
 
             _computeUrl(fallback) {

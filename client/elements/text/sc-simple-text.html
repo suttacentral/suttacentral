@@ -375,27 +375,32 @@
               let str = '';
               for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
                   if(unit === 'word'){
-                    str += `%spfrnt_l%${strArr[i]}%spback_l% `;
+                      str += `%spfrnt_l%${strArr[i]}%spback_l% `;
                   } else if (unit === 'graph') {
-                      str += '%spfrnt%';
-                      for(let graph of strArr[i]){
-                          if(/^\s+$/.test(graph)){
-                              continue;
-                          }
-                          if(!('，,!?？;:：()[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』'.includes(graph))){
-                            str += `%spfrnt_l%${graph}%spback_l%`;
-                          } else {
-                            str += `%spback%%spfrnt%${graph}%spback%%spfrnt%`;
-                          }
-                      }
-                      if(str.endsWith('%spfrnt%')){
-                          str = str.substring(0, str.length - '%spfrnt%'.length) + ' ';
-                      } else {
-                        str += '%spback% ';
-                      }
+                      str = this._insertGraphsIntoMarkups(str, strArr);
                   }
               }
               node.data = str;
+          }
+
+          _insertGraphsIntoMarkups(str, strArr) {
+            str += '%spfrnt%';
+            for(let graph of strArr[i]){
+                if(/^\s+$/.test(graph)){
+                    continue;
+                }
+                if(!('，,!?？;:：()[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』'.includes(graph))){
+                  str += `%spfrnt_l%${graph}%spback_l%`;
+                } else {
+                  str += `%spback%%spfrnt%${graph}%spback%%spfrnt%`;
+                }
+            }
+            if(str.endsWith('%spfrnt%')){
+                str = str.substring(0, str.length - '%spfrnt%'.length) + ' ';
+            } else {
+              str += '%spback% ';
+            }
+            return str;
           }
 
           _addTooltip(v, tooltip, lookup, states, e, lang) {
@@ -404,41 +409,7 @@
                 let lookupResult = lookup.lookupWord(v.innerText);
                 tooltip.innerHTML = lookupResult.html;
               } else if(lang === 'lzh') {
-                let graphs = v.innerText;
-                let lastNode = v;
-                for(let i = 0; i < 10; i++){
-                    let next = lastNode.nextElementSibling;
-                    lastNode = next;
-                    if(next !== null){
-                        if(!next.classList.contains('lookup_element')){
-                            i--;
-                            continue;
-                        }
-                        graphs += next.innerText;
-                    } else {
-                        break;
-                    }
-                }
-                let lookupResult = lookup.lookupWord(graphs);
-                tooltip.innerHTML = lookupResult.html;
-                if(lookupResult.length){
-                    setTimeout(() => {
-                        let lastElement = v;
-                        for(let i = 0; i < lookupResult.length - 1; i++){
-                            let nextElement = lastElement.nextElementSibling;
-                            if(!nextElement){
-                                break;
-                            }
-                            lastElement = nextElement;
-                            if(!nextElement.classList.contains('lookup_element')){
-                                i--;
-                                continue;
-                            }
-                            nextElement.classList.add('green-color');
-                        }
-                    }, 5);
-                }
-                tooltip.elementCount = lookupResult.length;
+                this._addLzhTooltip(v, lookup, tooltip);
               }
               v.parentNode.insertBefore(tooltip, v.nextSibling);
               setTimeout(() => {
@@ -452,8 +423,49 @@
               }, timeToWait);
           }
 
+          _addLzhTooltip(v, lookup, tooltip) {
+            let graphs = v.innerText;
+            let lastNode = v;
+            for(let i = 0; i < 10; i++){
+                let next = lastNode.nextElementSibling;
+                lastNode = next;
+                if(next !== null){
+                    if(!next.classList.contains('lookup_element')){
+                        i--;
+                        continue;
+                    }
+                    graphs += next.innerText;
+                } else {
+                    break;
+                }
+            }
+            let lookupResult = lookup.lookupWord(graphs);
+            tooltip.innerHTML = lookupResult.html;
+            if(lookupResult.length){
+                setTimeout(() => {
+                    this._colorSelectedSibling(v, lookupResult);
+                }, 5);
+            }
+            tooltip.elementCount = lookupResult.length;
+          }
+          
+          _colorSelectedSibling(v, lookupResult) {
+            let lastElement = v;
+            for(let i = 0; i < lookupResult.length - 1; i++){
+                let nextElement = lastElement.nextElementSibling;
+                if(!nextElement){
+                    break;
+                }
+                lastElement = nextElement;
+                if(!nextElement.classList.contains('lookup_element')){
+                    i--;
+                    continue;
+                }
+                nextElement.classList.add('green-color');
+            }
+          }
+
           _removeTooltip(v, tooltip, states, e) {
-              let timeToWait = this._getTooltipDelayTime(e);
               setTimeout(() => {
                   if (!states.isWordHovered && !states.isTooltipHovered) {
                       v.style.color = '';
@@ -476,7 +488,7 @@
                         }
                     }
                   }
-              }, 0);
+              }, 10);
           }
 
           _addLookupTooltips(textContainer, lang, that) {
@@ -488,38 +500,42 @@
                   lookupId = 'pali_lookup';
               }
               let lookup = that.shadowRoot.querySelector(`#${lookupId}`);
-              textContainer.querySelectorAll('.lookup_element').forEach((word) => {
-                  let tooltip = document.createElement('paper-tooltip');
-                  this._setTooltipOptions(tooltip, lang);
-                  let states = {
-                      isWordHovered: false,
-                      isTooltipHovered: false,
-                      isTooltipShown: false
-                  };
-                  word.addEventListener('mouseover', (e) => {
-                      if ((this.isPaliLookupEnabled || this.isChineseLookupEnabled) && this.isLookupAllowed) {
-                          word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
-                          states.isWordHovered = true;
-                          that._addTooltip(word, tooltip, lookup, states, e, lang);
-                      }
-                  });
-                  word.addEventListener('mouseout', (e) => {
-                      states.isWordHovered = false;
-                      setTimeout(() => {
-                          if (!states.isTooltipHovered) {
-                              word.style.color = '';
-                          }
-                      }, 0);
-                      that._removeTooltip(word, tooltip, states, e);
-                  });
-                  tooltip.addEventListener('mouseover', (e) => {
-                      states.isTooltipHovered = true;
-                  });
-                  tooltip.addEventListener('mouseout', (e) => {
-                      states.isTooltipHovered = false;
-                      that._removeTooltip(word, tooltip, states, e);
-                  });
+              textContainer.querySelectorAll('.lookup_element').forEach((element) => {
+                this._addTooltipToElement(that, element, lang, lookup);
               })
+          }
+
+          _addTooltipToElement(that, words, lang, lookup) {
+            let tooltip = document.createElement('paper-tooltip');
+            this._setTooltipOptions(tooltip, lang);
+            let states = {
+                isWordHovered: false,
+                isTooltipHovered: false,
+                isTooltipShown: false
+            };
+            word.addEventListener('mouseover', (e) => {
+                if ((this.isPaliLookupEnabled || this.isChineseLookupEnabled) && this.isLookupAllowed) {
+                    word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
+                    states.isWordHovered = true;
+                    that._addTooltip(word, tooltip, lookup, states, e, lang);
+                }
+            });
+            word.addEventListener('mouseout', (e) => {
+                states.isWordHovered = false;
+                setTimeout(() => {
+                    if (!states.isTooltipHovered) {
+                        word.style.color = '';
+                    }
+                }, 0);
+                that._removeTooltip(word, tooltip, states, e);
+            });
+            tooltip.addEventListener('mouseover', (e) => {
+                states.isTooltipHovered = true;
+            });
+            tooltip.addEventListener('mouseout', (e) => {
+                states.isTooltipHovered = false;
+                that._removeTooltip(word, tooltip, states, e);
+            });
           }
 
           _setTooltipOptions(tooltip, lang) {
