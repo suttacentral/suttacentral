@@ -23,7 +23,7 @@
 
     </style>
 
-    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[assembledText]]"
+    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[sutta.text]]"
          hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[!sutta.text]]">
@@ -160,7 +160,6 @@
               this.author = this.sutta.author;
               this.lang = this.sutta.lang;
               this.suttaTitle = this.sutta.title;
-              this.assembledText = this.sutta.text;
           }
 
           _updateToolbar() {
@@ -190,20 +189,17 @@
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
-              if (this.paragraphs && this.showParagraphs) {
-                  this._addParagraphScrollListeners();
-              }
               this._setParagraphsVisible(this.showParagraphs);
-          }
-
-          _addParagraphScrollListeners() {
-              this.paragraphs.forEach((paragraph) => {
-                  const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
-                  Array.from(refs).forEach((item) => {
-                      this._addParagraphData(item, paragraph);
+              const paragraphsAdded =
+                  this.$.simple_text_content.querySelector('.textual-info-paragraph') !== null;
+              if (this.paragraphs && this.showParagraphs) {
+                  this.paragraphs.forEach((paragraph) => {
+                      const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
+                      Array.from(refs).forEach((item) => {
+                          this._addParagraphData(item, paragraph);
+                      });
                   });
-              });
-              this.assembledText = this.$.simple_text_content.innerHTML;
+              }
           }
 
           _addParagraphData(item, data) {
@@ -284,7 +280,6 @@
               const textElement = this.shadowRoot.querySelector('#text').querySelector('article');
               this.setSimpleTextContentScript(textElement, t, scriptFunctionName);
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
-              this.assembledText = this.$.simple_text_content.innerHTML;
           }
 
           setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
