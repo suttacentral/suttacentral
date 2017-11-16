@@ -311,15 +311,16 @@ Issues:
                   // The state of the textual info paper-toggle-button
                   textualInfoToggleEnabled: {
                       type: Boolean,
+                      statePath: 'textOptions.paragraphsEnabled',
                       observer: '_textualInfoToggleStateChanged'
-                  },
-                  textualInfoEnabledInState: {
-                      type: Boolean,
-                      statePath: 'textOptions.paragraphsEnabled'
                   },
                   textualInfoResponse: {
                       type: Object,
                       observer: '_onParagraphsLoaded'
+                  },
+                  textualParagraphs: {
+                      type: Object,
+                      statePath: 'textOptions.paragraphDescriptions'
                   },
                   // Boolean that remembers settings on this page.
                   rememberSettings: {
@@ -377,6 +378,30 @@ Issues:
               }
           }
 
+          _textualInfoToggleStateChanged() {
+              console.log('toggle state changed', this.textualInfoToggleEnabled);
+              console.log('paragraphs:');
+              console.dir(this.textualParagraphs);
+              if (this.textualParagraphs) {
+                  this.dispatch('toggleTextualInfo', true);
+              } else if (this.textualInfoToggleEnabled) {
+                  this.$.paragraphs_ajax.generateRequest();
+              } else {
+                  this.dispatch('toggleTextualInfo', false);
+              }
+          }
+
+          _onParagraphsLoaded() {
+              if (this.textualInfoResponse) {
+                  if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
+                      this.dispatch('downloadParagraphs', this.textualInfoResponse);
+                  }
+                  if (this.textualInfoToggleEnabled) {
+                      this.dispatch('toggleTextualInfo', true);
+                  }
+              }
+          }
+
           _paliLookupChanged(paliLookupSelected) {
               const target = this.paliLookupArray[paliLookupSelected];
               const targetLanguage = target.dict.split('2')[1];
@@ -391,32 +416,12 @@ Issues:
               this.dispatch('activateChineseLookup', !!(chineseLookupSelected), targetLanguage, targetDictRepr);
           }
 
-          _textualInfoToggleStateChanged() {
-              if (this.textualInfoToggleEnabled) {
-                  if (this.textualInfoEnabledInState) return;
-                  this.$.paragraphs_ajax.generateRequest();
-              } else {
-                  this.dispatch('toggleTextualInfo', false);
-              }
-          }
-
           _textViewChanged() {
               this.showLoadingSpinner = true;
               setTimeout(() => {
                   this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
                   this.showLoadingSpinner = false;
               }, 0);
-          }
-
-          _onParagraphsLoaded() {
-              if (this.textualInfoResponse) {
-                  if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
-                      this.dispatch('downloadParagraphs', this.textualInfoResponse);
-                  }
-                  if (this.textualInfoToggleEnabled) {
-                      this.dispatch('toggleTextualInfo', true);
-                  }
-              }
           }
 
           _dictionaryLookup(valueSelected) {
