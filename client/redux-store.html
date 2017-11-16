@@ -34,7 +34,7 @@
             chineseLookupActivated: false,
             chineseLookupTargetDictRepr: '',
             chineseLookupTargetLanguage: ''
-        },
+        }
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -70,28 +70,44 @@
                 return Object.assign({}, state,
                     { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
             case 'ACTIVATE_PALI_LOOKUP':
-                return Object.assign({}, state,
-                    { textOptions: Object.assign({}, state.textOptions, 
-                                                {paliLookupActivated: action.paliLookupActivated, 
-                                                paliLookupTargetLanguage: action.paliLookupTargetLanguage,
-                                                paliLookupTargetDictRepr: action.paliLookupTargetDictRepr}) });
+                return Object.assign({}, state, {
+                    textOptions: Object.assign({}, state.textOptions, {
+                        paliLookupActivated: action.paliLookupActivated,
+                        paliLookupTargetLanguage: action.paliLookupTargetLanguage,
+                        paliLookupTargetDictRepr: action.paliLookupTargetDictRepr
+                    })
+                });
             case 'ACTIVATE_CHINESE_LOOKUP':
-                return Object.assign({}, state,
-                    { textOptions: Object.assign({}, state.textOptions, 
-                                                {chineseLookupActivated: action.chineseLookupActivated, 
-                                                chineseLookupTargetLanguage: action.chineseLookupTargetLanguage,
-                                                chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr}) });
+                return Object.assign({}, state, {
+                    textOptions: Object.assign({}, state.textOptions, {
+                        chineseLookupActivated: action.chineseLookupActivated,
+                        chineseLookupTargetLanguage: action.chineseLookupTargetLanguage,
+                        chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr
+                    })
+                });
             default:
                 return state;
         }
     };
 
+    // Before creating the store, check if it's saved in LocalStorage:
+    const persistedState = localStorage.getItem('reduxState');
+    const rememberButtonEnabled = localStorage.getItem('rememberTextSettings');
+    const state = (persistedState && rememberButtonEnabled) ? JSON.parse(persistedState) : initialState;
+
     const store = Redux.createStore(
         reducer,
-        initialState,
+        state,
         // Enable redux dev tools extension:
         Redux.compose(window.devToolsExtension ? window.devToolsExtension() : v => v)
     );
+
+    // Persist the store in localStorage:
+    store.subscribe(() => {
+        if (localStorage.getItem('rememberTextSettings') === 'true') {
+            localStorage.setItem('reduxState', JSON.stringify(store.getState()));
+        }
+    });
 
     ReduxMixin = PolymerRedux(store);
 </script>
