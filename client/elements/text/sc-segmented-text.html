@@ -46,12 +46,8 @@
       </div>
     </template>
 
-    <template is="dom-if" if="[[isPaliLookupEnabled]]">
-      <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
-    </template>
-    <template is="dom-if" if="[[isChineseLookupEnabled]]">
-      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
-    </template>
+    <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
+    <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
 
   </template>
 
@@ -138,10 +134,6 @@
                   tooltipCount: {
                       type: Number,
                       value: 0
-                  },
-                  isLookupAllowed: {
-                      type: Boolean,
-                      value: false
                   },
                   spansForWordsGenerated: {
                       type: Boolean,
@@ -467,7 +459,10 @@
               Object.keys(this.scriptIsoCodes).forEach((scriptName) => {
                   this.$.segmented_text_content.classList.remove(`${scriptName}-script`);
               });
-              Array.from(segments).forEach(item => item.innerHTML = this.rootSutta.strings[item.id] + ' ');
+              Array.from(segments).forEach(item => {
+                  let words = item.querySelectorAll('.word');
+                  Array.from(words).forEach(word => word.innerHTML = word.dataset.latin_text || word.innerHTML);
+                });
               Array.from(tooltips).forEach(item => item.innerHTML = this.rootSutta.strings[item.id]);
           }
 
@@ -475,8 +470,25 @@
               this.$.segmented_text_content.classList.add(`${scriptName}-script`);
               const t = new Transliterator();
               const scriptFunctionName = `to${this._capitalize(scriptName)}`;
-              Array.from(segments).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+              this._ensureSpansExist();
+              this._setScriptOfSegments(segments, scriptFunctionName, t);
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+          }
+
+          _ensureSpansExist(){
+                if(!this.spansForWordsGenerated){
+                    this._conditionallyPutWordsIntoSpans();
+                }
+            }
+
+          _setScriptOfSegments(segments, scriptFunctionName, t) {
+            Array.from(segments).forEach(item => {
+                let words = item.querySelectorAll('.word');
+                Array.from(words).forEach(word => {
+                  word.dataset.latin_text = word.innerHTML;
+                  word.innerHTML = t[scriptFunctionName](word.innerHTML);
+              })
+            });
           }
 
           _capitalize(text) {
@@ -509,29 +521,25 @@
 
           _startGeneratingSpans(selector, unit) {
               let segments = this.shadowRoot.querySelectorAll(selector);
-              const process_async = (items, process) => {
-                  const temp = () => {
-                      const segment = items.shift();
-                      process(segment, unit, this);
-                      this._addLookupTooltips(segment, this);
-                      if (items.length > 0) {
-                          setTimeout(temp, 0);
-                      } else {
-                          if(unit === 'word'){
-                            this.spansForWordsGenerated = true;
-                          } else if (unit === 'graph'){
-                            this.spansForGraphsGenerated = true;
-                          }
-                      }
-                  };
-                  items = Array.from(items);
-                  setTimeout(temp, 0);
-              };
-              this.isLookupAllowed = false;
-              setTimeout(() => {
-                  this.isLookupAllowed = true;
-              }, 2000); // Allow lookup after 2 seconds.
-              process_async(segments, this._putSegmentIntoSpans);
+              segments = Array.from(segments);
+              let empty = true;
+              while(segments.length > 0){
+                  const segment = segments.shift();
+                  if(!segment) {
+                      return;
+                    }
+                  empty = false;
+                  this._putSegmentIntoSpans(segment, unit, this);
+                  this._addLookupTooltips(segment, this);
+              }
+              if(empty){
+                  return;
+              }
+              if(unit === 'word'){
+                  this.spansForWordsGenerated = true;
+              } else if (unit === 'graph'){
+                  this.spansForGraphsGenerated = true;
+              }
           }
 
           _putSegmentIntoSpans(segment, unit, that) {
@@ -565,7 +573,7 @@
               const NODE_TYPE_TEXT = 3;
               if (node.nodeType !== NODE_TYPE_TEXT) return;
               let tt = node.data;
-              let strArr = tt.split(' ');
+              let strArr = tt.split(/\s+/g);
               let str = '';
               for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
                   if(unit === 'word'){
@@ -629,7 +637,7 @@
           }
 
           _showLookupTooltip(v, tooltip, paliLookup, states, e) {
-              let lookupResult = paliLookup.lookupWord(v.innerText);
+              let lookupResult = paliLookup.lookupWord(v.dataset.latin_text || v.innerText);
               tooltip.innerHTML = lookupResult.html;
               v.parentNode.insertBefore(tooltip, v.nextSibling);
               setTimeout(() => {
@@ -663,7 +671,7 @@
                   let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
                   this._setTooltipOptions(tooltip);
                   word.addEventListener('mouseover', (e) => {
-                      if (this.isPaliLookupEnabled && this.isLookupAllowed) {
+                      if (this.isPaliLookupEnabled) {
                           word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                           states.isWordHovered = true;
                           this._showLookupTooltip(word, tooltip, paliLookup, states, e);
@@ -760,7 +768,7 @@
                   return;
               }
               if (this.isPaliLookupEnabled) {
-                  if (!this.spansGenerated) {
+                  if (!this.spansForWordsGenerated) {
                       this._conditionallyPutWordsIntoSpans();
                   }
               }

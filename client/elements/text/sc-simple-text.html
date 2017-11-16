@@ -33,12 +33,8 @@
       </div>
     </template>
 
-    <template is="dom-if" if="[[isPaliLookupEnabled]]">
-      <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
-    </template>
-    <template is="dom-if" if="[[isChineseLookupEnabled]]">
-        <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
-    </template>
+    <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
+    <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
 
   </template>
 
@@ -106,10 +102,6 @@
                   tooltipCount: {
                       type: Number,
                       value: 0
-                  },
-                  isLookupAllowed: {
-                      type: Boolean,
-                      value: false
                   },
                   spansGenerated: {
                       type: Boolean,
@@ -270,28 +262,33 @@
           _resetScript() {
               this.$.simple_text_content.classList
                   .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-              this.$.simple_text_content.innerHTML = this.sutta.text;
+              let words = this.$.simple_text_content.querySelectorAll('.words');
+              Array.from(words).forEach(word => word.innerHTML = word.dataset.latin_text || word.innerHTML);
           }
 
           _setScript(scriptName, tooltips) {
               this.$.simple_text_content.classList.add(`${scriptName}-script`);
               const t = new Transliterator();
               const scriptFunctionName = `to${this._capitalize(scriptName)}`;
+              this._ensureSpansExist();
               const textElement = this.shadowRoot.querySelector('#text').querySelector('article');
               this.setSimpleTextContentScript(textElement, t, scriptFunctionName);
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
           }
 
+          _ensureSpansExist(){
+            if(!this.spansForWordsGenerated){
+                this._conditionallyPutIntoSpans('pli');
+            }
+         }
+
           setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
               const childNodes = elem.childNodes;
-              if (childNodes && childNodes.length > 0) {
-                  childNodes.forEach((item) => {
-                      this.setSimpleTextContentScript(item, transliterator, scriptFunctionName);
-                      if (item.textContent && item.childNodes.length === 0) {
-                          item.textContent = transliterator[scriptFunctionName](item.textContent);
-                      }
-                  });
-              }
+              console.log(elem);
+              Array.from(elem.querySelectorAll('.word')).forEach(word => {
+                word.dataset.latin_text = word.innerHTML;
+                word.innerHTML = transliterator[scriptFunctionName](word.innerHTML);
+              })
           }
 
           _capitalize(text) {
@@ -308,30 +305,26 @@
           }
 
           _startGeneratingSpans(selector, unit, lang) {
-              let segments = this.shadowRoot.querySelectorAll(selector);
-              const process_async = (items, process) => {
-                  const temp = () => {
-                      const segment = items.shift();
-                      process(segment, unit, this);
-                      this._addLookupTooltips(segment, lang, this);
-                      if (items.length > 0) {
-                          setTimeout(temp, 0);
-                      } else {
-                          if(unit === 'word'){
-                            this.spansForWordsGenerated = true;
-                          } else if (unit === 'graph'){
-                            this.spansForGraphsGenerated = true;
-                          }
-                      }
-                  };
-                  items = Array.from(items);
-                  setTimeout(temp, 0);
-              };
-              this.isLookupAllowed = false;
-              setTimeout(() => {
-                  this.isLookupAllowed = true;
-              }, 2000); // Allow lookup after 2 seconds.
-              process_async(segments, this._putSegmentIntoSpans);
+            let segments = this.shadowRoot.querySelectorAll(selector);
+            segments = Array.from(segments);
+            let empty = true;
+            while(segments.length > 0){
+                const segment = segments.shift();
+                if(!segment) {
+                    return;
+                  }
+                empty = false;
+                this._putSegmentIntoSpans(segment, unit, this);
+                this._addLookupTooltips(segment, lang, this);
+            }
+            if(empty){
+                return;
+            }
+            if(unit === 'word'){
+                this.spansForWordsGenerated = true;
+            } else if (unit === 'graph'){
+                this.spansForGraphsGenerated = true;
+            }
           }
 
           _putSegmentIntoSpans(segment, unit, that) {
@@ -371,7 +364,7 @@
               const NODE_TYPE_TEXT = 3;
               if (node.nodeType !== NODE_TYPE_TEXT) return;
               let tt = node.data;
-              let strArr = tt.split(/\w+/g);
+              let strArr = tt.split(/\s+/g);
               let str = '';
               for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
                   if(unit === 'word'){
@@ -406,7 +399,7 @@
           _addTooltip(v, tooltip, lookup, states, e, lang) {
               let timeToWait = this._getTooltipDelayTime(e);
               if(lang === 'pli'){
-                let lookupResult = lookup.lookupWord(v.innerText);
+                let lookupResult = lookup.lookupWord(v.dataset.latin_text || v.innerText);
                 tooltip.innerHTML = lookupResult.html;
               } else if(lang === 'lzh') {
                 this._addLzhTooltip(v, lookup, tooltip);
@@ -505,7 +498,7 @@
               })
           }
 
-          _addTooltipToElement(that, words, lang, lookup) {
+          _addTooltipToElement(that, word, lang, lookup) {
             let tooltip = document.createElement('paper-tooltip');
             this._setTooltipOptions(tooltip, lang);
             let states = {
@@ -514,7 +507,7 @@
                 isTooltipShown: false
             };
             word.addEventListener('mouseover', (e) => {
-                if ((this.isPaliLookupEnabled || this.isChineseLookupEnabled) && this.isLookupAllowed) {
+                if (this.isPaliLookupEnabled || this.isChineseLookupEnabled) {
                     word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                     states.isWordHovered = true;
                     that._addTooltip(word, tooltip, lookup, states, e, lang);
