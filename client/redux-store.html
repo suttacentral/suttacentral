@@ -34,13 +34,12 @@
             chineseLookupActivated: false,
             chineseLookupTargetDictRepr: '',
             chineseLookupTargetLanguage: ''
-        },
+        }
     };
 
     // The reducer accepts the current state and an action and returns a new state object
     // (note that the old state object is unmodified).
     const reducer = (state, action) => {
-        console.log(action.type);
         switch (action.type) {
             case 'CHANGE_ROUTE':
                 return Object.assign({}, state, { currentRoute: action.route });
@@ -71,41 +70,43 @@
                 return Object.assign({}, state,
                     { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
             case 'ACTIVATE_PALI_LOOKUP':
-                return Object.assign({}, state,
-                    { textOptions: Object.assign({}, state.textOptions,
-                                                {paliLookupActivated: action.paliLookupActivated,
-                                                paliLookupTargetLanguage: action.paliLookupTargetLanguage,
-                                                paliLookupTargetDictRepr: action.paliLookupTargetDictRepr}) });
+                return Object.assign({}, state, {
+                    textOptions: Object.assign({}, state.textOptions, {
+                        paliLookupActivated: action.paliLookupActivated,
+                        paliLookupTargetLanguage: action.paliLookupTargetLanguage,
+                        paliLookupTargetDictRepr: action.paliLookupTargetDictRepr
+                    })
+                });
             case 'ACTIVATE_CHINESE_LOOKUP':
-                return Object.assign({}, state,
-                    { textOptions: Object.assign({}, state.textOptions,
-                                                {chineseLookupActivated: action.chineseLookupActivated,
-                                                chineseLookupTargetLanguage: action.chineseLookupTargetLanguage,
-                                                chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr}) });
+                return Object.assign({}, state, {
+                    textOptions: Object.assign({}, state.textOptions, {
+                        chineseLookupActivated: action.chineseLookupActivated,
+                        chineseLookupTargetLanguage: action.chineseLookupTargetLanguage,
+                        chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr
+                    })
+                });
             default:
                 return state;
         }
     };
 
     // Before creating the store, check if it's saved in LocalStorage:
-    const persistedState = localStorage.getItem('reduxState') ?
-        JSON.parse(localStorage.getItem('reduxState')) : initialState;
-    console.log('recreating persisted state: ');
-    console.dir(JSON.parse(localStorage.getItem('reduxState')));
+    const persistedState = localStorage.getItem('reduxState');
+    const rememberButtonEnabled = localStorage.getItem('rememberTextSettings');
+    const state = (persistedState && rememberButtonEnabled) ? JSON.parse(persistedState) : initialState;
 
     const store = Redux.createStore(
         reducer,
-        persistedState,
+        state,
         // Enable redux dev tools extension:
         Redux.compose(window.devToolsExtension ? window.devToolsExtension() : v => v)
     );
 
     // Persist the store in localStorage:
     store.subscribe(() => {
-        if (!localStorage.getItem('rememberTextSettings')) return;
-        localStorage.setItem('reduxState', JSON.stringify(store.getState()));
-        console.log('persisting state: ');
-        console.dir(store.getState());
+        if (localStorage.getItem('rememberTextSettings') === 'true') {
+            localStorage.setItem('reduxState', JSON.stringify(store.getState()));
+        }
     });
 
     ReduxMixin = PolymerRedux(store);
