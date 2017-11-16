@@ -5,7 +5,6 @@
 <link rel="import" href="/bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/neon-animation/web-animations.html">
-<link rel="import" href="/bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <link rel="import" href="/redux-store.html">
 
@@ -71,7 +70,6 @@ This is the base language menu that determines the language of the site.
           <div class="iso-code">[[language.iso_code]]</div>
         </template>
       </paper-listbox>
-      <app-localstorage-document key="selectedLanguageNr" data="{{selectedLanguageNr}}"></app-localstorage-document>
     </paper-dropdown-menu>
   </template>
 
