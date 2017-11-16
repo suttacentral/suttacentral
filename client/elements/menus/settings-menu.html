@@ -12,6 +12,7 @@
 <link rel="import" href="/bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="/bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="/bower_components/neon-animation/web-animations.html">
+<link rel="import" href="/bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <!--
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
@@ -196,6 +197,8 @@ Issues:
 
     </div>
 
+    <app-localstorage-document key="rememberTextSettings" data="{{rememberSettings}}"></app-localstorage-document>
+
   </template>
   <script>
       class SCSettingsMenu extends ReduxMixin(Polymer.Element) {
@@ -245,7 +248,7 @@ Issues:
                           {
                               'dict': 'pli2nl',
                               'language': 'Pāli → Nederlands'
-                          },
+                          }
                       ]
                   },
                   // pali to language lookup selected number.
@@ -305,19 +308,14 @@ Issues:
                       type: Number,
                       observer: '_changeScript'
                   },
-                  textualInfoEnabled: {
-                      type: Boolean,
-                      statePath: 'textParagraphs.enabled'
-                  },
-                  textualInfoDescriptions: {
-                      type: Array,
-                      statePath: 'textParagraphs.descriptions'
-                  },
                   // The state of the textual info paper-toggle-button
                   textualInfoToggleEnabled: {
                       type: Boolean,
-                      observer: '_textualInfoToggleStateChanged',
-                      value: false
+                      observer: '_textualInfoToggleStateChanged'
+                  },
+                  textualInfoEnabledInState: {
+                      type: Boolean,
+                      statePath: 'textOptions.paragraphsEnabled'
                   },
                   textualInfoResponse: {
                       type: Object,
@@ -325,9 +323,7 @@ Issues:
                   },
                   // Boolean that remembers settings on this page.
                   rememberSettings: {
-                      type: Boolean,
-                      value: true,
-                      observer: '_rememberSettings'
+                      type: Boolean
                   },
                   showLoadingSpinner: {
                       type: Boolean,
@@ -389,14 +385,15 @@ Issues:
           }
 
           _chineseLookupChanged(chineseLookupSelected) {
-            const target = this.chineseLookupArray[chineseLookupSelected];
-            const targetLanguage = target.dict.split('2')[1];
-            const targetDictRepr = target.language;
-            this.dispatch('activateChineseLookup', !!(chineseLookupSelected), targetLanguage, targetDictRepr);
+              const target = this.chineseLookupArray[chineseLookupSelected];
+              const targetLanguage = target.dict.split('2')[1];
+              const targetDictRepr = target.language;
+              this.dispatch('activateChineseLookup', !!(chineseLookupSelected), targetLanguage, targetDictRepr);
           }
 
           _textualInfoToggleStateChanged() {
               if (this.textualInfoToggleEnabled) {
+                  if (this.textualInfoEnabledInState) return;
                   this.$.paragraphs_ajax.generateRequest();
               } else {
                   this.dispatch('toggleTextualInfo', false);
@@ -416,14 +413,10 @@ Issues:
                   if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
                       this.dispatch('downloadParagraphs', this.textualInfoResponse);
                   }
-                  this.dispatch('toggleTextualInfo', this.textualInfoToggleEnabled);
+                  if (this.textualInfoToggleEnabled) {
+                      this.dispatch('toggleTextualInfo', true);
+                  }
               }
-          }
-
-          _rememberSettings(rememberSettings) {
-              // TODO
-              // sets the attribute sessionOnly on the app-localstorage so whatever the user chooses after
-              // setting this attribute will not be stored but settings before setting this attribute will be maintained.
           }
 
           _dictionaryLookup(valueSelected) {
