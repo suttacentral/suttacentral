@@ -5,7 +5,6 @@
 <dom-module id="sc-pali-lookup">
   <template>
     <iron-ajax
-    url="[[_computeUrl()]]"
     id="ajax"
     handle-as="json"
     loading="{{loadingDict}}"
@@ -63,7 +62,7 @@
               word = word.replace(/ṃg/g, 'ṅg').replace(/ṃk/g, 'ṅk').replace(/ṃ/g, 'ṃ').replace(/Ṃ/g, 'ṃ');
               let allMatches = this._lookupWord(word);
               meaning = this._toHtml(allMatches, word);
-              return meaning;
+              return {html: meaning};
           }
 
           _stripSpecialCharacters(word) {

@@ -216,7 +216,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
 # Takes 2 bind_vars: `from` and `to`.
 DICTIONARIES = '''
 FOR dict IN dictionaries
-    FILTER dict.from == @from AND dict.to == @to AND dict.lookup == true
+    FILTER dict.from == @from AND dict.to == @to AND dict.lookup == true AND dict.main == @main
     LIMIT 1
     RETURN {
         from: dict.from,

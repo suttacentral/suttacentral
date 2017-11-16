@@ -8,28 +8,13 @@
 <link rel="import" href="/styles/sc-text-heading-styles.html">
 <link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
 <link rel="import" href="/elements/lookups/sc-pli.html">
+<link rel="import" href="/elements/lookups/sc-lzh2en.html">
+<link rel="import" href="/elements/lookups/sc-lookup-styles.html">
 
 <dom-module id="sc-segmented-text">
 
   <template>
-    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles">
-
-      :host {
-        --paper-tooltip: {
-          @apply --sc-skolar-font-size-s;
-          @apply --sc-sans-font;
-          background-color: var(--sc-paper-tooltip-color);
-          font-feature-settings: normal;
-          text-transform: none;
-          opacity: 1;
-          max-width: 200px;
-        }
-      }
-
-      .lookup-link {
-        color: white !important;
-        font-weight: bold;
-      }
+    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles">
 
       .text-center {
         text-align: center;
@@ -63,6 +48,9 @@
 
     <template is="dom-if" if="[[isPaliLookupEnabled]]">
       <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
+    </template>
+    <template is="dom-if" if="[[isChineseLookupEnabled]]">
+      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
     </template>
 
   </template>
@@ -155,7 +143,11 @@
                       type: Boolean,
                       value: false
                   },
-                  spansGenerated: {
+                  spansForWordsGenerated: {
+                      type: Boolean,
+                      value: false
+                  },
+                  spansForGraphsGenerated: {
                       type: Boolean,
                       value: false
                   },
@@ -163,6 +155,16 @@
                       type: String,
                       statePath: 'textOptions.paliLookupTargetDictRepr',
                       observer: '_paliLookupTargetDictReprChanged'
+                  },
+                  isChineseLookupEnabled: {
+                      type: Boolean,
+                      statePath: 'textOptions.chineseLookupActivated',
+                      observer: '_chineseLookupStateChanged'
+                  },
+                  chineseLookupTargetDictRepr: {
+                    type: String,
+                    statePath: 'textOptions.chineseLookupTargetDictRepr',
+                    observer: '_chineseLookupTargetDictReprChanged'
                   },
                   scriptIsoCodes: {
                       type: Object,
@@ -221,12 +223,12 @@
               if (this.translatedSutta) {
                   this._addPrimaryText(this.translatedSutta.strings);
                   if (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh') {
-                      this._putWordsIntoSpans('.translated-text');
+                      this._putIntoSpans('.translated-text', this.rootSutta.lang);
                   }
               } else {
                   this._addPrimaryText(this.rootSutta.strings);
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                      this._putWordsIntoSpans('.translated-text');
+                      this._putIntoSpans('.translated-text', this.rootSutta.lang);
                   }
               }
           }
@@ -354,7 +356,7 @@
                       this._insertSecondarySegment(item);
                   });
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-                      this._putWordsIntoSpans('.original-text');
+                      this._putIntoSpans('.original-text', this.rootSutta.lang);
                   }
               }
               textContainer.classList.add('latin-script');
@@ -497,20 +499,29 @@
           }
 
           // Lookup word start
+          _putGraphsIntoSpans(selector){
+            this._startGeneratingSpans(selector, 'graph');
+          }
+
           _putWordsIntoSpans(selector) {
-              if (!this.isPaliLookupEnabled) {
-                  return;
-              }
+            this._startGeneratingSpans(selector, 'word');
+          }
+
+          _startGeneratingSpans(selector, unit) {
               let segments = this.shadowRoot.querySelectorAll(selector);
               const process_async = (items, process) => {
                   const temp = () => {
                       const segment = items.shift();
-                      process(segment, this);
+                      process(segment, unit, this);
                       this._addLookupTooltips(segment, this);
                       if (items.length > 0) {
                           setTimeout(temp, 0);
                       } else {
-                          this.spansGenerated = true;
+                          if(unit === 'word'){
+                            this.spansForWordsGenerated = true;
+                          } else if (unit === 'graph'){
+                            this.spansForGraphsGenerated = true;
+                          }
                       }
                   };
                   items = Array.from(items);
@@ -523,41 +534,48 @@
               process_async(segments, this._putSegmentIntoSpans);
           }
 
-          _putSegmentIntoSpans(segment, self) {
+          _putSegmentIntoSpans(segment, unit, that) {
               const text = segment.innerHTML;
               let div = document.createElement('div');
               div.innerHTML = text;
-              self._recurseDomChildren(div, true);
-              segment.innerHTML = div.innerHTML.replace(/spfrnt/g, `<span class="word">`).replace(/spback/g, '</span>');
+              that._recurseDomChildren(div, true, unit);
+              segment.innerHTML = div.innerHTML.replace(/%spfrnt%/g, `<span class="word">`).replace(/%spback%/g, '</span>');
           }
 
-          _recurseDomChildren(start, output) {
+          _recurseDomChildren(start, output, unit) {
               let nodes;
               if (start.childNodes) {
                   nodes = start.childNodes;
-                  this._loopNodeChildren(nodes, output);
+                  this._loopNodeChildren(nodes, output, unit);
               }
           }
 
-          _loopNodeChildren(nodes, output) {
+          _loopNodeChildren(nodes, output, unit) {
               let node;
               for (let i = 0; i < nodes.length; i++) {
                   node = nodes[i];
-                  this._addSpanToNode(node);
+                  this._addSpanToNode(node, unit);
                   if (node.childNodes) {
-                      this._recurseDomChildren(node, output);
+                      this._recurseDomChildren(node, output, unit);
                   }
               }
           }
 
-          _addSpanToNode(node) {
+          _addSpanToNode(node, unit) {
               const NODE_TYPE_TEXT = 3;
               if (node.nodeType !== NODE_TYPE_TEXT) return;
               let tt = node.data;
               let strArr = tt.split(' ');
               let str = '';
               for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
-                  str += 'spfrnt' + strArr[i] + 'spback ';
+                  if(unit === 'word'){
+                    str += `%spfrnt%${strArr[i]}%spback% `;
+                  } else if (unit === 'graph') {
+                      for(let graph of strArr[i]){
+                          str += `%spfrnt%${graph}%spback%`;
+                      }
+                      str += ' ';
+                  }
               }
               node.data = str;
           }
@@ -611,7 +629,8 @@
           }
 
           _showLookupTooltip(v, tooltip, paliLookup, states, e) {
-              tooltip.innerHTML = paliLookup.lookupWord(v.innerText);
+              let lookupResult = paliLookup.lookupWord(v.innerText);
+              tooltip.innerHTML = lookupResult.html;
               v.parentNode.insertBefore(tooltip, v.nextSibling);
               setTimeout(() => {
                   if (states.isWordHovered && !states.isTooltipShown) {
@@ -638,9 +657,6 @@
           }
 
           _addLookupTooltips(textContainer) {
-              if (!this.isPaliLookupEnabled) {
-                  return;
-              }
               let paliLookup = this.shadowRoot.querySelector('#pali_lookup');
               textContainer.querySelectorAll('.word').forEach((word) => {
                   let tooltip = document.createElement('paper-tooltip');
@@ -679,6 +695,34 @@
               return bodyStyle.getPropertyValue('--sc-primary-accent-color');
           }
 
+          _conditionallyPutIntoSpans(lang) {
+            if (this.translatedSutta && this.translatedSutta.lang === lang) {
+                this._putIntoSpans('.translated-text', lang);
+              } else if (this.rootSutta.lang === lang) {
+                  if (this.shadowRoot.querySelector('.original-text')) {
+                      this._putIntoSpans('.original-text', lang);
+                  }
+              }
+          }
+
+            _putIntoSpans(selector, lang){
+                if(lang === 'pli'){
+                    this._putWordsIntoSpans(selector);
+                } else if (lang === 'lzh'){
+                    this._putGraphsIntoSpans(selector);
+                }
+            }
+
+            _paliLookupStateChanged() {
+                if (this.hidden) {
+                        return;
+                }
+                if (this.isPaliLookupEnabled) {
+                    if (!this.spansForWordsGenerated) {
+                        this._conditionallyPutIntoSpans('pli');
+                    }
+                }
+            }
           _resetColor(states, word) {
               setTimeout(() => {
                   if (!states.isTooltipHovered) {
@@ -691,6 +735,16 @@
               return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
           }
 
+            _chineseLookupStateChanged() {
+                if (this.hidden) {
+                    return;
+                }
+                if (this.isChineseLookupEnabled) {
+                    if (!this.spansForGraphsGenerated) {
+                        this._conditionallyPutIntoSpans('lzh');
+                    }
+                }
+            }
           _getClosestSegmentSibling(node) {
               while (node.nextElementSibling !== null) {
                   if (node.nextElementSibling.nodeName === 'SC-SEG') {
@@ -723,17 +777,28 @@
               }
           }
 
+         _showToast(dictName) {
+            this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                detail: {
+                    toastType: 'info',
+                    message: `The ${dictName} lookup dictionary is now enabled.`
+                },
+                bubbles: true,
+                composed: true
+            }));
+         }
+
           _paliLookupTargetDictReprChanged() {
               if (this.isPaliLookupEnabled) {
                   const dictName = this.paliLookupTargetDictRepr.replace('→', 'to');
-                  this.dispatchEvent(new CustomEvent('show-sc-toast', {
-                      detail: {
-                          toastType: 'info',
-                          message: `The ${dictName} lookup dictionary is now enabled.`
-                      },
-                      bubbles: true,
-                      composed: true
-                  }));
+                  this._showToast(dictName);
+              }
+          }
+
+          _chineseLookupTargetDictReprChanged() {
+              if (this.isChineseLookupEnabled){
+                const dictName = this.chineseLookupTargetDictRepr.replace('→', 'to');
+                this._showToast(dictName);
               }
           }
           // Lookup word end
