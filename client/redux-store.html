@@ -72,8 +72,8 @@
                     { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
             case 'ACTIVATE_PALI_LOOKUP':
                 return Object.assign({}, state,
-                    { textOptions: Object.assign({}, state.textOptions, 
-                                                {paliLookupActivated: action.paliLookupActivated, 
+                    { textOptions: Object.assign({}, state.textOptions,
+                                                {paliLookupActivated: action.paliLookupActivated,
                                                 paliLookupTargetLanguage: action.paliLookupTargetLanguage,
                                                 paliLookupTargetDictRepr: action.paliLookupTargetDictRepr}) });
             case 'ACTIVATE_CHINESE_LOOKUP':
@@ -102,6 +102,7 @@
 
     // Persist the store in localStorage:
     store.subscribe(() => {
+        if (!localStorage.getItem('rememberTextSettings')) return;
         localStorage.setItem('reduxState', JSON.stringify(store.getState()));
         console.log('persisting state: ');
         console.dir(store.getState());

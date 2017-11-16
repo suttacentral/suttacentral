@@ -422,9 +422,7 @@ Issues:
           }
 
           _rememberSettings(rememberSettings) {
-              // TODO
-              // sets the attribute sessionOnly on the app-localstorage so whatever the user chooses after
-              // setting this attribute will not be stored but settings before setting this attribute will be maintained.
+              localStorage.setItem('rememberTextSettings', rememberSettings);
           }
 
           _dictionaryLookup(valueSelected) {
