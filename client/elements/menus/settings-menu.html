@@ -121,8 +121,8 @@ Issues:
       <div class="dialog-section">
         <h3 class="menu-item-title">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-        <paper-toggle-button class="menu-toggle-button" noink
-                             active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
+        <paper-toggle-button id="textual_info_toggle_button"
+                             class="menu-toggle-button" active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
       </div>
 
       <div class="dialog-section">
@@ -311,8 +311,7 @@ Issues:
                   // The state of the textual info paper-toggle-button
                   textualInfoToggleEnabled: {
                       type: Boolean,
-                      statePath: 'textOptions.paragraphsEnabled',
-                      observer: '_textualInfoToggleStateChanged'
+                      statePath: 'textOptions.paragraphsEnabled'
                   },
                   textualInfoResponse: {
                       type: Object,
@@ -331,6 +330,13 @@ Issues:
                       value: false
                   }
               }
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('checked-changed', (e) => {
+                  this._textualInfoToggleStateChanged(e.detail.value);
+              });
           }
 
           static get actions() {
@@ -378,13 +384,10 @@ Issues:
               }
           }
 
-          _textualInfoToggleStateChanged() {
-              console.log('toggle state changed', this.textualInfoToggleEnabled);
-              console.log('paragraphs:');
-              console.dir(this.textualParagraphs);
-              if (this.textualParagraphs) {
+          _textualInfoToggleStateChanged(toggleChecked) {
+              if (this.textualParagraphs && toggleChecked) {
                   this.dispatch('toggleTextualInfo', true);
-              } else if (this.textualInfoToggleEnabled) {
+              } else if (toggleChecked) {
                   this.$.paragraphs_ajax.generateRequest();
               } else {
                   this.dispatch('toggleTextualInfo', false);
@@ -422,16 +425,6 @@ Issues:
                   this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
                   this.showLoadingSpinner = false;
               }, 0);
-          }
-
-          _dictionaryLookup(valueSelected) {
-              // needs more work
-              return (valueSelected > 0);
-          }
-
-          _getDictionary(valueArray, valueSelected) {
-              // needs more work
-              return valueArray[valueSelected].dict;
           }
 
           // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
