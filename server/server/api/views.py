@@ -399,6 +399,13 @@ class Sutta(Resource):
                                     type: string
                         suttaplex:
                             $ref: '#/definitions/Suttaplex'
+                        next:
+                            type: object
+                            properties:
+                                uid:
+                                    type: string
+                                author:
+                                    type: string
 
         """
         lang = request.args.get('lang', 'en')
@@ -543,7 +550,7 @@ class Donations(Resource):
                 )
 
             elif monthly_donation:
-                plan = get_plan(amount, currency['symbol'])
+                plan = self._get_plan(amount, currency['symbol'])
                 subscription = stripe.Subscription.create(
                     customer=customer.id,
                     items=[{"plan": plan.stripe_id}]
@@ -564,17 +571,17 @@ class Donations(Resource):
 
         return 'Subscribed' if monthly_donation else 'Donated', 200
 
-
-def get_plan(amount, currency):
-    plan_id = f'monthly_{amount}_{currency}'
-    try:
-        plan = stripe.Plan.retrieve(plan_id)
-    except stripe.error.InvalidRequestError:
-        plan = stripe.Plan.create(
-            amount=amount,
-            interval='month',
-            name='Monthly Donation to SuttaCentral',
-            currency=currency,
-            statement_descriptor='SuttaCentralDonation',
-            id=plan_id)
-    return plan
+    @staticmethod
+    def _get_plan(amount, currency):
+        plan_id = f'monthly_{amount}_{currency}'
+        try:
+            plan = stripe.Plan.retrieve(plan_id)
+        except stripe.error.InvalidRequestError:
+            plan = stripe.Plan.create(
+                amount=amount,
+                interval='month',
+                name='Monthly Donation to SuttaCentral',
+                currency=currency,
+                statement_descriptor='SuttaCentralDonation',
+                id=plan_id)
+        return plan
