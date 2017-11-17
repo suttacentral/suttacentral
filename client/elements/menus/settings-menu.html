@@ -398,22 +398,20 @@ Issues:
 
           _textualInfoToggleStateChanged(toggleChecked) {
               if (this.textualParagraphs && toggleChecked) {
-                  this.dispatch('toggleTextualInfo', true);
-              } else if (toggleChecked) {
                   this.$.paragraphs_ajax.generateRequest();
+                  this.dispatch('toggleTextualInfo', true);
               } else {
                   this.dispatch('toggleTextualInfo', false);
               }
           }
 
           _onParagraphsLoaded() {
+              console.dir(this.textualInfoResponse);
               if (this.textualInfoResponse) {
                   if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
                       this.dispatch('downloadParagraphs', this.textualInfoResponse);
                   }
-                  if (this.textualInfoToggleEnabled) {
-                      this.dispatch('toggleTextualInfo', true);
-                  }
+                  this.dispatch('toggleTextualInfo', true);
               }
           }
 
