@@ -154,9 +154,9 @@
                       observer: '_chineseLookupStateChanged'
                   },
                   chineseLookupTargetDictRepr: {
-                    type: String,
-                    statePath: 'textOptions.chineseLookupTargetDictRepr',
-                    observer: '_chineseLookupTargetDictReprChanged'
+                      type: String,
+                      statePath: 'textOptions.chineseLookupTargetDictRepr',
+                      observer: '_chineseLookupTargetDictReprChanged'
                   },
                   scriptIsoCodes: {
                       type: Object,
@@ -223,6 +223,7 @@
                       this._putIntoSpans('.translated-text', this.rootSutta.lang);
                   }
               }
+              this._applyFirefoxShadyDomFix();
           }
 
           _setRootAttributes() {
@@ -462,7 +463,7 @@
               Array.from(segments).forEach(item => {
                   let words = item.querySelectorAll('.word');
                   Array.from(words).forEach(word => word.innerHTML = word.dataset.latin_text || word.innerHTML);
-                });
+              });
               Array.from(tooltips).forEach(item => item.innerHTML = this.rootSutta.strings[item.id]);
           }
 
@@ -475,20 +476,20 @@
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
           }
 
-          _ensureSpansExist(){
-                if(!this.spansForWordsGenerated){
-                    this._conditionallyPutWordsIntoSpans();
-                }
-            }
+          _ensureSpansExist() {
+              if (!this.spansForWordsGenerated) {
+                  this._conditionallyPutWordsIntoSpans();
+              }
+          }
 
           _setScriptOfSegments(segments, scriptFunctionName, t) {
-            Array.from(segments).forEach(item => {
-                let words = item.querySelectorAll('.word');
-                Array.from(words).forEach(word => {
-                  word.dataset.latin_text = word.innerHTML;
-                  word.innerHTML = t[scriptFunctionName](word.innerHTML);
-              })
-            });
+              Array.from(segments).forEach(item => {
+                  let words = item.querySelectorAll('.word');
+                  Array.from(words).forEach(word => {
+                      word.dataset.latin_text = word.innerHTML;
+                      word.innerHTML = t[scriptFunctionName](word.innerHTML);
+                  })
+              });
           }
 
           _capitalize(text) {
@@ -511,33 +512,33 @@
           }
 
           // Lookup word start
-          _putGraphsIntoSpans(selector){
-            this._startGeneratingSpans(selector, 'graph');
+          _putGraphsIntoSpans(selector) {
+              this._startGeneratingSpans(selector, 'graph');
           }
 
           _putWordsIntoSpans(selector) {
-            this._startGeneratingSpans(selector, 'word');
+              this._startGeneratingSpans(selector, 'word');
           }
 
           _startGeneratingSpans(selector, unit) {
               let segments = this.shadowRoot.querySelectorAll(selector);
               segments = Array.from(segments);
               let empty = true;
-              while(segments.length > 0){
+              while (segments.length > 0) {
                   const segment = segments.shift();
-                  if(!segment) {
+                  if (!segment) {
                       return;
-                    }
+                  }
                   empty = false;
                   this._putSegmentIntoSpans(segment, unit, this);
                   this._addLookupTooltips(segment, this);
               }
-              if(empty){
+              if (empty) {
                   return;
               }
-              if(unit === 'word'){
+              if (unit === 'word') {
                   this.spansForWordsGenerated = true;
-              } else if (unit === 'graph'){
+              } else if (unit === 'graph') {
                   this.spansForGraphsGenerated = true;
               }
           }
@@ -576,10 +577,10 @@
               let strArr = tt.split(/\s+/g);
               let str = '';
               for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
-                  if(unit === 'word'){
-                    str += `%spfrnt%${strArr[i]}%spback% `;
+                  if (unit === 'word') {
+                      str += `%spfrnt%${strArr[i]}%spback% `;
                   } else if (unit === 'graph') {
-                      for(let graph of strArr[i]){
+                      for (let graph of strArr[i]) {
                           str += `%spfrnt%${graph}%spback%`;
                       }
                       str += ' ';
@@ -704,8 +705,8 @@
           }
 
           _conditionallyPutIntoSpans(lang) {
-            if (this.translatedSutta && this.translatedSutta.lang === lang) {
-                this._putIntoSpans('.translated-text', lang);
+              if (this.translatedSutta && this.translatedSutta.lang === lang) {
+                  this._putIntoSpans('.translated-text', lang);
               } else if (this.rootSutta.lang === lang) {
                   if (this.shadowRoot.querySelector('.original-text')) {
                       this._putIntoSpans('.original-text', lang);
@@ -713,24 +714,24 @@
               }
           }
 
-            _putIntoSpans(selector, lang){
-                if(lang === 'pli'){
-                    this._putWordsIntoSpans(selector);
-                } else if (lang === 'lzh'){
-                    this._putGraphsIntoSpans(selector);
-                }
-            }
+          _putIntoSpans(selector, lang) {
+              if (lang === 'pli') {
+                  this._putWordsIntoSpans(selector);
+              } else if (lang === 'lzh') {
+                  this._putGraphsIntoSpans(selector);
+              }
+          }
 
-            _paliLookupStateChanged() {
-                if (this.hidden) {
-                        return;
-                }
-                if (this.isPaliLookupEnabled) {
-                    if (!this.spansForWordsGenerated) {
-                        this._conditionallyPutIntoSpans('pli');
-                    }
-                }
-            }
+          _paliLookupStateChanged() {
+              if (this.hidden) {
+                  return;
+              }
+              if (this.isPaliLookupEnabled) {
+                  if (!this.spansForWordsGenerated) {
+                      this._conditionallyPutIntoSpans('pli');
+                  }
+              }
+          }
           _resetColor(states, word) {
               setTimeout(() => {
                   if (!states.isTooltipHovered) {
@@ -743,16 +744,16 @@
               return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
           }
 
-            _chineseLookupStateChanged() {
-                if (this.hidden) {
-                    return;
-                }
-                if (this.isChineseLookupEnabled) {
-                    if (!this.spansForGraphsGenerated) {
-                        this._conditionallyPutIntoSpans('lzh');
-                    }
-                }
-            }
+          _chineseLookupStateChanged() {
+              if (this.hidden) {
+                  return;
+              }
+              if (this.isChineseLookupEnabled) {
+                  if (!this.spansForGraphsGenerated) {
+                      this._conditionallyPutIntoSpans('lzh');
+                  }
+              }
+          }
           _getClosestSegmentSibling(node) {
               while (node.nextElementSibling !== null) {
                   if (node.nextElementSibling.nodeName === 'SC-SEG') {
@@ -785,16 +786,16 @@
               }
           }
 
-         _showToast(dictName) {
-            this.dispatchEvent(new CustomEvent('show-sc-toast', {
-                detail: {
-                    toastType: 'info',
-                    message: `The ${dictName} lookup dictionary is now enabled.`
-                },
-                bubbles: true,
-                composed: true
-            }));
-         }
+          _showToast(dictName) {
+              this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                  detail: {
+                      toastType: 'info',
+                      message: `The ${dictName} lookup dictionary is now enabled.`
+                  },
+                  bubbles: true,
+                  composed: true
+              }));
+          }
 
           _paliLookupTargetDictReprChanged() {
               if (this.isPaliLookupEnabled) {
@@ -804,12 +805,21 @@
           }
 
           _chineseLookupTargetDictReprChanged() {
-              if (this.isChineseLookupEnabled){
-                const dictName = this.chineseLookupTargetDictRepr.replace('→', 'to');
-                this._showToast(dictName);
+              if (this.isChineseLookupEnabled) {
+                  const dictName = this.chineseLookupTargetDictRepr.replace('→', 'to');
+                  this._showToast(dictName);
               }
           }
-          // Lookup word end
+
+          _applyFirefoxShadyDomFix() {
+              if (navigator.userAgent.includes('Firefox')) {
+                  this.isTextViewHidden = true;
+                  setTimeout(() => {
+                      this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
+                      this.isTextViewHidden = false;
+                  }, 0);
+              }
+          }
       }
 
       customElements.define(SCSegmentedText.is, SCSegmentedText);
