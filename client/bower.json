@@ -52,7 +52,7 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
     "iron-media-query": "^2.0.0",
     "iron-meta": "^2.0.2",
-    "polymer-redux": "tur-nr/polymer-redux#^1.0.3",
+    "polymer-redux": "tur-nr/polymer-redux#^1.0.4",
     "iron-form": "^2.0.1",
     "paper-checkbox": "^2.0.1",
     "paper-toast": "^2.0.0",
