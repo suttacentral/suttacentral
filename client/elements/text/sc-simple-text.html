@@ -368,15 +368,15 @@
                   if (unit === 'word') {
                       str += `%spfrnt_l%${strArr[i]}%spback_l% `;
                   } else if (unit === 'graph') {
-                      str = this._insertGraphsIntoMarkups(str, strArr);
+                      str = this._insertGraphsIntoMarkups(str, strArr[i]);
                   }
               }
               node.data = str;
           }
 
-          _insertGraphsIntoMarkups(str, strArr) {
+          _insertGraphsIntoMarkups(str, graphs) {
               str += '%spfrnt%';
-              for (let graph of strArr[i]) {
+              for (let graph of graphs) {
                   if (/^\s+$/.test(graph)) {
                       continue;
                   }
