@@ -1,0 +1,85 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
+
+<dom-module id="sc-stepper">
+  <template>
+    <style>
+      .bar {
+        display: flex;
+        width: 100%;
+        height: 64px;
+        background-color: var(--sc-primary-color);
+        overflow: hidden
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .separator {
+        width: 2px;
+        height: 100%;
+        background-color: red;
+      }
+
+      .button-container{
+        margin: 0;
+        height: 100%;
+        width: calc(50% - 2px);
+      }
+    </style>
+
+    <iron-meta id="meta"></iron-meta>
+  
+    <div class="bar">
+      <div class="button-container">
+        <template is="dom-if" if="[[previous.uid]]">
+          <a href="[[_getUrl(previous)]]">
+            <paper-button class="button">previous</paper-button>
+          </a>
+        </template>
+      </div>
+      <div class="separator"></div>
+      <div class="button-container">
+          <template is="dom-if" if="[[next.uid]]">
+            <a href="[[_getUrl(next)]]">
+              <paper-button class="button">next</paper-button>
+            </a>
+          </template>
+        </div>
+
+    </div>
+
+  </template>
+
+  <script>
+      class SCStepper extends Polymer.Element {
+          static get is() {
+              return 'sc-stepper';
+          }
+
+          static get properties() {
+              return {
+                next: {
+                  type: Object
+                },
+                previous: {
+                  type: Object
+                },
+                lang: {
+                  type: String
+                }
+              }
+          }
+
+          _getUrl(object) {
+            const author = object.author;
+            const uid = object.uid;
+            return `/${uid}/${this.lang}/${author}`;
+          }
+        }
+
+      customElements.define(SCStepper.is, SCStepper);
+  </script>
+</dom-module>

@@ -357,7 +357,7 @@ LET neighbours = (
     )[0]
     
     RETURN {next: next, previous: previous}
-)
+)[0]
 
 LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
     
