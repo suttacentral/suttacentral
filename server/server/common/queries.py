@@ -226,6 +226,48 @@ FOR dict IN dictionaries
 '''
 
 # Takes 3 bind_vars: `language`, `uid` and `author`
+_NEIGHBOURS_SUBQUERY = '''LET legacy = (
+            FOR html IN html_text
+                FILTER html.uid == uid.uid AND html.lang == @language
+                SORT html.author
+                RETURN KEEP(html, ['author', 'uid'])
+            )
+            
+            LET same_author_legacy = (
+                FOR text IN legacy
+                    FILTER LOWER(text.author) == @author
+                    LIMIT 1
+                    RETURN KEEP(text, ['author', 'uid'])
+            )[0]
+            
+            LET first_text_legacy = legacy[0]
+            
+            LET segmented = (
+                FOR text IN po_strings
+                    FILTER text.uid == uid.uid AND text.lang == @language
+                    SORT text.author
+                    RETURN KEEP(text, ['author', 'uid'])
+            )
+            
+            LET first_text_segmented = segmented[0]
+            
+            LET same_author_segmented = (
+                FOR text IN segmented
+                    FILTER LOWER(text.author) == @author
+                    LIMIT 1
+                    RETURN KEEP(text, ['author', 'uid'])
+            )[0]
+            LET choosen = same_author_segmented ? same_author_segmented : 
+                            first_text_segmented ? first_text_segmented : 
+                            same_author_legacy ? same_author_legacy : 
+                            first_text_legacy ? first_text_legacy : null
+            
+            FILTER choosen != null
+            LIMIT 1
+            RETURN choosen
+'''
+
+
 SUTTA_VIEW = '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
 
@@ -287,25 +329,33 @@ LET neighbours = (
             RETURN KEEP(text_division, ['num', 'division'])
     )[0]
     
-    LET next = (
+    LET next_uids = (
         FOR text_division IN text_divisions
-            FILTER text_division.division == current.division AND (text_division.num == current.num + 1 OR text_division.num == current.num + 2) AND
+            FILTER text_division.division == current.division AND text_division.num > current.num AND
                    (text_division.type == null OR text_division.type == 'subdivision')
             SORT text_division.num
-            LIMIT 1
             RETURN text_division.type == 'subdivision' ? null : KEEP(text_division, ['uid'])
-    )[0]
+    )
 
-    LET previous = (
+    LET previous_uids = (
         FOR text_division IN text_divisions
-            FILTER text_division.division == current.division AND (text_division.num == current.num - 1 OR text_division.num == current.num - 2) AND
+            FILTER text_division.division == current.division AND text_division.num < current.num AND
                    (text_division.type == null OR text_division.type == 'subdivision')
             SORT text_division.num DESC
-            LIMIT 1
             RETURN text_division.type == 'subdivision' ? null : KEEP(text_division, ['uid'])
+    )
+    
+    LET next = (
+        FOR uid IN next_uids
+            ''' + _NEIGHBOURS_SUBQUERY + '''
     )[0]
     
-    RETURN {next: next.uid, previous: previous.uid}
+    LET previous = (
+        FOR uid IN previous_uids
+            ''' + _NEIGHBOURS_SUBQUERY + '''
+    )[0]
+    
+    RETURN {next: next, previous: previous}
 )
 
 LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
