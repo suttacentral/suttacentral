@@ -9,8 +9,9 @@
             @apply --sc-skolar-font-size-xl;
             --paper-toast-color: white;
             text-align: center;
-            margin-left: calc(50vw - 150px);
-            }
+            margin-left: calc(50vw + var(--app-drawer-width)/2);
+            transform: translateX(-50%);
+        }
        
         .success-toast {
         --paper-toast-background-color: var(--sc-primary-accent-color);
