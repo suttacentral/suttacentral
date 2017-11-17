@@ -121,8 +121,8 @@ Issues:
       <div class="dialog-section">
         <h3 class="menu-item-title">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-        <paper-toggle-button class="menu-toggle-button" noink
-                             active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
+        <paper-toggle-button id="textual_info_toggle_button"
+                             class="menu-toggle-button" active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
       </div>
 
       <div class="dialog-section">
@@ -311,15 +311,15 @@ Issues:
                   // The state of the textual info paper-toggle-button
                   textualInfoToggleEnabled: {
                       type: Boolean,
-                      observer: '_textualInfoToggleStateChanged'
-                  },
-                  textualInfoEnabledInState: {
-                      type: Boolean,
                       statePath: 'textOptions.paragraphsEnabled'
                   },
                   textualInfoResponse: {
                       type: Object,
                       observer: '_onParagraphsLoaded'
+                  },
+                  textualParagraphs: {
+                      type: Object,
+                      statePath: 'textOptions.paragraphDescriptions'
                   },
                   // Boolean that remembers settings on this page.
                   rememberSettings: {
@@ -330,6 +330,13 @@ Issues:
                       value: false
                   }
               }
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('checked-changed', (e) => {
+                  this._textualInfoToggleStateChanged(e.detail.value);
+              });
           }
 
           static get actions() {
@@ -377,6 +384,27 @@ Issues:
               }
           }
 
+          _textualInfoToggleStateChanged(toggleChecked) {
+              if (this.textualParagraphs && toggleChecked) {
+                  this.dispatch('toggleTextualInfo', true);
+              } else if (toggleChecked) {
+                  this.$.paragraphs_ajax.generateRequest();
+              } else {
+                  this.dispatch('toggleTextualInfo', false);
+              }
+          }
+
+          _onParagraphsLoaded() {
+              if (this.textualInfoResponse) {
+                  if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
+                      this.dispatch('downloadParagraphs', this.textualInfoResponse);
+                  }
+                  if (this.textualInfoToggleEnabled) {
+                      this.dispatch('toggleTextualInfo', true);
+                  }
+              }
+          }
+
           _paliLookupChanged(paliLookupSelected) {
               const target = this.paliLookupArray[paliLookupSelected];
               const targetLanguage = target.dict.split('2')[1];
@@ -391,42 +419,12 @@ Issues:
               this.dispatch('activateChineseLookup', !!(chineseLookupSelected), targetLanguage, targetDictRepr);
           }
 
-          _textualInfoToggleStateChanged() {
-              if (this.textualInfoToggleEnabled) {
-                  if (this.textualInfoEnabledInState) return;
-                  this.$.paragraphs_ajax.generateRequest();
-              } else {
-                  this.dispatch('toggleTextualInfo', false);
-              }
-          }
-
           _textViewChanged() {
               this.showLoadingSpinner = true;
               setTimeout(() => {
                   this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
                   this.showLoadingSpinner = false;
               }, 0);
-          }
-
-          _onParagraphsLoaded() {
-              if (this.textualInfoResponse) {
-                  if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
-                      this.dispatch('downloadParagraphs', this.textualInfoResponse);
-                  }
-                  if (this.textualInfoToggleEnabled) {
-                      this.dispatch('toggleTextualInfo', true);
-                  }
-              }
-          }
-
-          _dictionaryLookup(valueSelected) {
-              // needs more work
-              return (valueSelected > 0);
-          }
-
-          _getDictionary(valueArray, valueSelected) {
-              // needs more work
-              return valueArray[valueSelected].dict;
           }
 
           // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
