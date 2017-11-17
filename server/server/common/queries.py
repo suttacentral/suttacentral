@@ -257,14 +257,15 @@ _NEIGHBOURS_SUBQUERY = '''LET legacy = (
                     LIMIT 1
                     RETURN KEEP(text, ['author', 'uid'])
             )[0]
-            LET choosen = same_author_segmented ? same_author_segmented : 
+            
+            LET chosen = same_author_segmented ? same_author_segmented : 
                             first_text_segmented ? first_text_segmented : 
                             same_author_legacy ? same_author_legacy : 
                             first_text_legacy ? first_text_legacy : null
             
-            FILTER choosen != null
+            FILTER chosen != null
             LIMIT 1
-            RETURN choosen
+            RETURN chosen
 '''
 
 
