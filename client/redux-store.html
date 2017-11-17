@@ -93,7 +93,7 @@
     // Before creating the store, check if it's saved in LocalStorage:
     const persistedState = localStorage.getItem('reduxState');
     const rememberButtonEnabled = localStorage.getItem('rememberTextSettings');
-    const state = (persistedState && rememberButtonEnabled) ? JSON.parse(persistedState) : initialState;
+    const state = (persistedState && rememberButtonEnabled === 'true') ? JSON.parse(persistedState) : initialState;
 
     const store = Redux.createStore(
         reducer,
