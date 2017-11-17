@@ -251,11 +251,14 @@ Issues:
                           }
                       ]
                   },
+                  paliLookupLanguage: {
+                      type: String,
+                      statePath: 'textOptions.paliLookupTargetDictRepr'
+                  },
                   // pali to language lookup selected number.
                   paliLookupSelected: {
                       type: Number,
-                      value: 0,
-                      observer: '_paliLookupChanged'
+                      computed: '_findPaliLookupLanguageIndex(paliLookupLanguage)'
                   },
                   // possible values for the chinese to language lookup.
                   chineseLookupArray: {
@@ -337,6 +340,9 @@ Issues:
               this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('checked-changed', (e) => {
                   this._textualInfoToggleStateChanged(e.detail.value);
               });
+              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
+                  this._paliLookupChanged(e.detail.value);
+              });
           }
 
           static get actions() {
@@ -405,11 +411,19 @@ Issues:
               }
           }
 
-          _paliLookupChanged(paliLookupSelected) {
-              const target = this.paliLookupArray[paliLookupSelected];
+          _paliLookupChanged(lookup) {
+              if (!lookup) {
+                  return;
+              }
+              const langIndex = this._findPaliLookupLanguageIndex(lookup);
+              const target = this.paliLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              this.dispatch('activatePaliLookup', !!(paliLookupSelected), targetLanguage, targetDictRepr);
+              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
+          }
+
+          _findPaliLookupLanguageIndex(languageName) {
+              return this.paliLookupArray.findIndex(i => i.language === languageName);
           }
 
           _chineseLookupChanged(chineseLookupSelected) {
