@@ -207,7 +207,6 @@
               // Scroll to the section after the hash sign in the url:
               this._scrollToSection(window.location.hash.substr(1), false, 500);
               this._changeScript('latin');
-              this.dispatch('chooseSegmentedSuttaTextView', 'none');
               this.dispatch('changeSuttaMetaText', this._computeMeta());
           }
 
