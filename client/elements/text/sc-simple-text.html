@@ -135,12 +135,12 @@
           }
 
           _updateView() {
+              this._applyFirefoxShadyDomFix();
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
               // Scroll to the section after the hash sign in the url:
               this._scrollToSection(window.location.hash.substr(1), false, 500);
-              this._applyFirefoxShadyDomFix();
           }
 
           _setAttributes() {
@@ -395,7 +395,6 @@
           }
 
           _addTooltip(v, tooltip, lookup, states, e, lang) {
-              let timeToWait = this._getTooltipDelayTime(e);
               if (lang === 'pli') {
                   let lookupResult = lookup.lookupWord(v.dataset.latin_text || v.innerText);
                   tooltip.innerHTML = lookupResult.html;
@@ -411,7 +410,7 @@
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, timeToWait);
+              }, 10);
           }
 
           _addLzhTooltip(v, lookup, tooltip) {
@@ -604,9 +603,6 @@
               }
           }
 
-          _getTooltipDelayTime(e) {
-              return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
-          }
           // Lookup word end
 
           _applyFirefoxShadyDomFix() {

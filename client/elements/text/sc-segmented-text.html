@@ -212,6 +212,7 @@
           }
 
           _addTextContent() {
+              this._applyFirefoxShadyDomFix();
               if (this.translatedSutta) {
                   this._addPrimaryText(this.translatedSutta.strings);
                   if (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh') {
@@ -223,7 +224,6 @@
                       this._putIntoSpans('.translated-text', this.rootSutta.lang);
                   }
               }
-              this._applyFirefoxShadyDomFix();
           }
 
           _setRootAttributes() {
@@ -625,7 +625,7 @@
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, this._getTooltipDelayTime(e));
+              }, 10);
           };
 
           _transliterateFragment(fragment, transliterator) {
@@ -649,7 +649,7 @@
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, this._getTooltipDelayTime(e));
+              }, 10);
           }
 
           _removeTooltip(word, tooltip, states, e) {
@@ -662,7 +662,7 @@
                       tooltip.hide();
                       states.isTooltipShown = false;
                   }
-              }, this._getTooltipDelayTime(e));
+              }, 10);
           }
 
           _addLookupTooltips(textContainer) {
@@ -740,10 +740,6 @@
               }, 0);
           }
 
-          _getTooltipDelayTime(e) {
-              return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
-          }
-
           _chineseLookupStateChanged() {
               if (this.hidden) {
                   return;
@@ -754,6 +750,7 @@
                   }
               }
           }
+
           _getClosestSegmentSibling(node) {
               while (node.nextElementSibling !== null) {
                   if (node.nextElementSibling.nodeName === 'SC-SEG') {
