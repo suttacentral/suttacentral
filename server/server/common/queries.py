@@ -279,6 +279,35 @@ LET translated_po_obj = (
         }
 )[0]
 
+LET neighbours = (
+    LET current = (
+        FOR text_division IN text_divisions
+            FILTER text_division.uid == root_text.uid
+            LIMIT 1
+            RETURN KEEP(text_division, ['num', 'division'])
+    )[0]
+    
+    LET next = (
+        FOR text_division IN text_divisions
+            FILTER text_division.division == current.division AND (text_division.num == current.num + 1 OR text_division.num == current.num + 2) AND
+                   (text_division.type == null OR text_division.type == 'subdivision')
+            SORT text_division.num
+            LIMIT 1
+            RETURN text_division.type == 'subdivision' ? null : KEEP(text_division, ['uid'])
+    )[0]
+
+    LET previous = (
+        FOR text_division IN text_divisions
+            FILTER text_division.division == current.division AND (text_division.num == current.num - 1 OR text_division.num == current.num - 2) AND
+                   (text_division.type == null OR text_division.type == 'subdivision')
+            SORT text_division.num DESC
+            LIMIT 1
+            RETURN text_division.type == 'subdivision' ? null : KEEP(text_division, ['uid'])
+    )[0]
+    
+    RETURN {next: next.uid, previous: previous.uid}
+)
+
 LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
     
 RETURN {
@@ -287,7 +316,8 @@ RETURN {
         : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     segmented: translated_po_obj ? true : false,
     markup: translated_po_obj ? markup : null,
-    suttaplex: suttaplex
+    suttaplex: suttaplex,
+    neighbours: neighbours
 }
 '''
 
