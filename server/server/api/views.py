@@ -399,12 +399,12 @@ class Sutta(Resource):
                                     type: string
                         suttaplex:
                             $ref: '#/definitions/Suttaplex'
-                        next:
+                        neighbours:
                             type: object
                             properties:
-                                uid:
+                                next:
                                     type: string
-                                author:
+                                previous:
                                     type: string
 
         """
