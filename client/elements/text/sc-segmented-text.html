@@ -202,10 +202,8 @@
               this._setRootAttributes();
               this._setTranslatedAttributes();
               this._updateToolbar();
-              this._computeParagraphs();
               this._addTextContent();
-              // Scroll to the section after the hash sign in the url:
-              this._scrollToSection(window.location.hash.substr(1), false, 500);
+              this._computeParagraphs();
               this._changeScript('latin');
               this.dispatch('changeSuttaMetaText', this._computeMeta());
           }
@@ -381,6 +379,7 @@
                       });
                   });
               }
+              this._scrollToSectionInUrl();
           }
 
           _addParagraphData(item, data) {
@@ -398,6 +397,17 @@
               inlineItem.id = `${inlineItem.id}_inline`;
               segmentSibling.insertBefore(inlineItem, segmentSibling.firstChild);
               inlineItem.addEventListener('click', () => { this._scrollToSection(inlineItem.id, true, 0); });
+          }
+
+          _addInlineParagraphListeners() {
+              const inlineItems = this.shadowRoot.querySelectorAll('.textual-info-paragraph-inline');
+              if (!inlineItems) {
+                  return;
+              }
+              inlineItems.forEach((item) => {
+                      item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); })
+                  }
+              );
           }
 
           // adds a class to the main container to either show or hide the textual info paragraphs
@@ -420,6 +430,7 @@
               if (!sectionId) return;
               try {
                   const section = this.shadowRoot.getElementById(sectionId);
+                  if (!section) return;
                   setTimeout(() => {
                       section.scrollIntoView({
                           behavior: isSmooth ? 'smooth' : 'instant',
@@ -430,6 +441,20 @@
               } catch (e) {
                   console.error(e);
               }
+          }
+
+          _scrollToSectionInUrl() {
+              let textualInfoId = '';
+              const bodyStyle = window.getComputedStyle(document.body);
+              const xlScreenWidth = JSON.parse(bodyStyle.getPropertyValue('--sc-screen-xl').replace('px', ''));
+              if (window.innerWidth < xlScreenWidth) {
+                  textualInfoId = `${window.location.hash.substr(1)}_inline`;
+                  console.log('scrolling to inline');
+              } else {
+                  textualInfoId = `${window.location.hash.substr(1)}`;
+                  console.log('just scrolling');
+              }
+              this._scrollToSection(textualInfoId, false, 1000);
           }
 
           _changeScript(toScript) {
@@ -446,6 +471,7 @@
                   this._setScript(toScript, segments, tooltips);
               }
               this._setScriptISOCode(toScript);
+              this._addInlineParagraphListeners();
           }
 
           _setScriptISOCode(scriptName) {
@@ -721,16 +747,6 @@
               }
           }
 
-          _paliLookupStateChanged() {
-              if (this.hidden) {
-                  return;
-              }
-              if (this.isPaliLookupEnabled) {
-                  if (!this.spansForWordsGenerated) {
-                      this._conditionallyPutIntoSpans('pli');
-                  }
-              }
-          }
           _resetColor(states, word) {
               setTimeout(() => {
                   if (!states.isTooltipHovered) {
