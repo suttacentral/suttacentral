@@ -407,7 +407,6 @@ Issues:
           }
 
           _onParagraphsLoaded() {
-              console.dir(this.textualInfoResponse);
               if (this.textualInfoResponse) {
                   if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
                       this.dispatch('downloadParagraphs', this.textualInfoResponse);
