@@ -10,7 +10,7 @@
       .bar {
         display: flex;
         width: 100%;
-        height: calc(64px * 1.5);
+        height: calc(var(--sc-size-xxl) * 1.5);
         background-color: var(--sc-primary-color);
         overflow: hidden
       }
@@ -20,7 +20,7 @@
       }
 
       .button-container {
-        position: relative;        
+        position: relative;
         margin: 0;
         height: 100%;
         width: 50%;
@@ -32,7 +32,7 @@
       }
 
       .action {
-        @apply --sc-skolar-font-size-md;        
+        @apply --sc-skolar-font-size-md;
         color: var(--sc-paper-tooltip-text-color);
         opacity: .55;
       }
@@ -60,26 +60,6 @@
         justify-content: flex-end;
       }
 
-      @media (min-width: 1200px) {
-        .button-right {
-          margin-right: 20%;
-          width: 80%;          
-        }
-
-        .button-left {
-          margin-left: 20%;
-          width: 80%;          
-        }
-
-        .arrow-right {
-          margin-left: 1em;
-        }
-  
-        .arrow-left {
-          margin-right: 1em;   
-        }
-      }
-
       .text {
         margin: auto 0;
         display: flex;
@@ -90,14 +70,14 @@
         text-overflow: ellipsis;
       }
 
-      .text-element-rigth {
+      .text-element-right {
         text-align: end;
       }
-      
+
       .arrow {
         @apply --sc-skolar-font-size-l;
-        width: 24px;
-        min-width: 24px;
+        width: var(--sc-size-md-larger);
+        min-width: var(--sc-size-md-larger);
         color: var(--sc-paper-tooltip-text-color);
         margin-top: 1em;
         margin-left: .5em;
@@ -107,6 +87,26 @@
       .separator {
         width: 10%;
       }
+
+      @media (min-width: 1200px) {
+        .button-right {
+          margin-right: 20%;
+          width: 80%;
+        }
+
+        .button-left {
+          margin-left: 20%;
+          width: 80%;
+        }
+
+        .arrow-right {
+          margin-left: 1em;
+        }
+
+        .arrow-left {
+          margin-right: 1em;
+        }
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -114,7 +114,7 @@
     <div class="bar">
       <div class="button-container">
         <template is="dom-if" if="[[previous.uid]]">
-          <paper-ripple></paper-ripple>                
+          <paper-ripple></paper-ripple>
           <a href="[[_getUrl(previous)]]" class="link">
             <div class="button button-left">
               <div class="text">
@@ -134,10 +134,10 @@
       <div class="button-container">
         <template is="dom-if" if="[[next.uid]]">
           <paper-ripple></paper-ripple>
-          <a href="[[_getUrl(next)]]"  class="link">
+          <a href="[[_getUrl(next)]]" class="link">
             <div class="button button-right">
               <div class="text">
-                <div class="text-element text-element-rigth">
+                <div class="text-element text-element-right">
                   <span class="action">Next</span>
                   <span class="text-title">[[next.title]]</span>
                 </div>
