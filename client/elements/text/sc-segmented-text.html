@@ -445,11 +445,14 @@
 
           _scrollToSectionInUrl() {
               let textualInfoId = '';
-              // TODO: replace hardcoded 1200px with mixin screen width variable
-              if (window.innerWidth < 1200) {
+              const bodyStyle = window.getComputedStyle(document.body);
+              const xlScreenWidth = JSON.parse(bodyStyle.getPropertyValue('--sc-screen-xl').replace('px', ''));
+              if (window.innerWidth < xlScreenWidth) {
                   textualInfoId = `${window.location.hash.substr(1)}_inline`;
+                  console.log('scrolling to inline');
               } else {
                   textualInfoId = `${window.location.hash.substr(1)}`;
+                  console.log('just scrolling');
               }
               this._scrollToSection(textualInfoId, false, 1000);
           }
