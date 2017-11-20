@@ -17,9 +17,16 @@ def load_divisions(db, structure_dir: Path):
         division_objects.append({'uid': division_name})
         with division_file.open('r', encoding='utf-8') as f:
             division_data = json.load(f)
-        division_data = [{'uid': entry.pop('_path').split('/')[-1], **entry, 'division': division_name, 'num': i}
+        division_data = [{'uid': get_uid(entry), **entry, 'division': division_name, 'num': i}
                          for i, entry in enumerate(division_data)]
         text_division_data_objects += division_data
 
     divisions_collection.import_bulk(division_objects)
     text_divisions_collection.import_bulk(text_division_data_objects)
+
+
+def get_uid(entry):
+    if 'type' in entry:
+        return entry.pop('_path')
+    else:
+        return entry.pop('_path').split('/')[-1]
