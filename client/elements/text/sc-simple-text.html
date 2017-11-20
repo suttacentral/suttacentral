@@ -196,7 +196,7 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
-              item.classList.add('textual-info-paragraph');
+              item.classList.add('textual-info-paragraph', 'latin');
               item.addEventListener('click', () => {
                   this._scrollToSection(item.id, true, 0);
               });

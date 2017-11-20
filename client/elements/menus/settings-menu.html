@@ -167,7 +167,7 @@ Issues:
         <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital
           Dictionary of Buddhism.
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="Lookup">
+        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="chinese_lookup_menu">
           <paper-listbox slot="dropdown-content" selected="{{chineseLookupSelected}}">
             <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
@@ -251,11 +251,14 @@ Issues:
                           }
                       ]
                   },
+                  paliLookupLanguage: {
+                      type: String,
+                      statePath: 'textOptions.paliLookupTargetDictRepr'
+                  },
                   // pali to language lookup selected number.
                   paliLookupSelected: {
                       type: Number,
-                      value: 0,
-                      observer: '_paliLookupChanged'
+                      computed: '_findPaliLookupLanguageIndex(paliLookupLanguage)'
                   },
                   // possible values for the chinese to language lookup.
                   chineseLookupArray: {
@@ -271,11 +274,14 @@ Issues:
                           }
                       ]
                   },
+                  chineseLookupLanguage: {
+                      type: String,
+                      statePath: 'textOptions.chineseLookupTargetDictRepr'
+                  },
                   // chinese to language lookup selected number.
                   chineseLookupSelected: {
                       type: Number,
-                      value: 0,
-                      observer: '_chineseLookupChanged'
+                      computed: '_findChineseLookupLanguageIndex(chineseLookupLanguage)'
                   },
                   // possible values for the script chooser for pali.
                   paliScripts: {
@@ -337,6 +343,12 @@ Issues:
               this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('checked-changed', (e) => {
                   this._textualInfoToggleStateChanged(e.detail.value);
               });
+              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
+                  this._paliLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('value-changed', (e) => {
+                  this._chineseLookupChanged(e.detail.value);
+              });
           }
 
           static get actions() {
@@ -386,9 +398,9 @@ Issues:
 
           _textualInfoToggleStateChanged(toggleChecked) {
               if (this.textualParagraphs && toggleChecked) {
-                  this.dispatch('toggleTextualInfo', true);
-              } else if (toggleChecked) {
-                  this.$.paragraphs_ajax.generateRequest();
+                  this.$.paragraphs_ajax.generateRequest().completes.then(() => {
+                      this.dispatch('toggleTextualInfo', true);
+                  });
               } else {
                   this.dispatch('toggleTextualInfo', false);
               }
@@ -399,24 +411,38 @@ Issues:
                   if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
                       this.dispatch('downloadParagraphs', this.textualInfoResponse);
                   }
-                  if (this.textualInfoToggleEnabled) {
-                      this.dispatch('toggleTextualInfo', true);
-                  }
+                  this.dispatch('toggleTextualInfo', true);
               }
           }
 
-          _paliLookupChanged(paliLookupSelected) {
-              const target = this.paliLookupArray[paliLookupSelected];
+          _paliLookupChanged(lookupLanguage) {
+              if (!lookupLanguage) {
+                  return;
+              }
+              const langIndex = this._findPaliLookupLanguageIndex(lookupLanguage);
+              const target = this.paliLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              this.dispatch('activatePaliLookup', !!(paliLookupSelected), targetLanguage, targetDictRepr);
+              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
           }
 
-          _chineseLookupChanged(chineseLookupSelected) {
-              const target = this.chineseLookupArray[chineseLookupSelected];
+          _findPaliLookupLanguageIndex(languageName) {
+              return this.paliLookupArray.findIndex(i => i.language === languageName);
+          }
+
+          _chineseLookupChanged(lookupLanguage) {
+              if (!lookupLanguage) {
+                  return;
+              }
+              const langIndex = this._findChineseLookupLanguageIndex(lookupLanguage);
+              const target = this.chineseLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              this.dispatch('activateChineseLookup', !!(chineseLookupSelected), targetLanguage, targetDictRepr);
+              this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
+          }
+
+          _findChineseLookupLanguageIndex(languageName) {
+              return this.chineseLookupArray.findIndex(i => i.language === languageName);
           }
 
           _textViewChanged() {
