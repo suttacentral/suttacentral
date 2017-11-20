@@ -230,14 +230,14 @@ _NEIGHBOURS_SUBQUERY = '''LET legacy = (
             FOR html IN html_text
                 FILTER html.uid == uid.uid AND html.lang == @language
                 SORT html.author
-                RETURN KEEP(html, ['author', 'uid'])
+                RETURN KEEP(html, ['author', 'uid', 'title'])
             )
             
             LET same_author_legacy = (
                 FOR text IN legacy
                     FILTER LOWER(text.author) == @author
                     LIMIT 1
-                    RETURN KEEP(text, ['author', 'uid'])
+                    RETURN KEEP(text, ['author', 'uid', 'title'])
             )[0]
             
             LET first_text_legacy = legacy[0]
@@ -246,7 +246,7 @@ _NEIGHBOURS_SUBQUERY = '''LET legacy = (
                 FOR text IN po_strings
                     FILTER text.uid == uid.uid AND text.lang == @language
                     SORT text.author
-                    RETURN KEEP(text, ['author', 'uid'])
+                    RETURN KEEP(text, ['author', 'uid', 'title'])
             )
             
             LET first_text_segmented = segmented[0]
@@ -255,7 +255,7 @@ _NEIGHBOURS_SUBQUERY = '''LET legacy = (
                 FOR text IN segmented
                     FILTER LOWER(text.author) == @author
                     LIMIT 1
-                    RETURN KEEP(text, ['author', 'uid'])
+                    RETURN KEEP(text, ['author', 'uid', 'title'])
             )[0]
             
             LET chosen = same_author_segmented ? same_author_segmented : 
