@@ -444,10 +444,9 @@
           }
 
           _scrollToSectionInUrl() {
-              const w = window.innerWidth;
               let textualInfoId = '';
               // TODO: replace hardcoded 1200px with mixin screen width variable
-              if (w < 1200) {
+              if (window.innerWidth < 1200) {
                   textualInfoId = `${window.location.hash.substr(1)}_inline`;
               } else {
                   textualInfoId = `${window.location.hash.substr(1)}`;
