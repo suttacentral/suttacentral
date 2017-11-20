@@ -39,6 +39,7 @@
       }
 
       paper-card.suttaplex {
+        background-color: var(--sc-secondary-background-color);
         margin-top: var(--sc-size-md);
         border-radius: var(--sc-size-xxs);
         display: block;
@@ -105,6 +106,7 @@
 
       .vert-menu {
         display: inline-block;
+        --paper-listbox-background-color: var(--sc-secondary-background-color);
       }
 
       .languagedrop {
@@ -376,7 +378,7 @@
               super.ready();
               this.addEventListener('par-menu-copied', (e) => {
                   this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
-              })
+              });
 
               this.$.copy_menu.addEventListener('opened-changed', (e) => {
                   const open = e.detail.value;

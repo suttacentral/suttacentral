@@ -38,6 +38,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
       /* The actual list*/
       .language-menu-listbox {
+        background-color: var(--sc-secondary-background-color);
         width: 220px;
       }
 
@@ -75,6 +76,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         pointer-events: none;
       }
 
+      .language-choice-box {
+        background-color: var(--sc-secondary-background-color);
+      }
+
       .language-choice-box:hover {
         background-color: var(--sc-tertiary-background-color);
         cursor: pointer;
@@ -92,9 +97,9 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
     <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
                          title="Select a language" id="paper_dropdown_menu" dynamic-align=true>
-      <paper-listbox class="language-menu-listbox" slot="dropdown-content" >
+      <paper-listbox class="language-menu-listbox" slot="dropdown-content">
 
-        <template is="dom-repeat" items="[[languageChoice]]" as="language" >
+        <template is="dom-repeat" items="[[languageChoice]]" as="language">
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
             <section class$="{{_rootLanguageClassOrStandard(language)}} no-outline">
               <a class="language-menu-url"
@@ -185,7 +190,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _rootLanguageClassOrStandard(language) {
-            return language.lang === this.originalLanguage ? 'root-lang-menu-item' : 'language-choice-box';
+              return language.lang === this.originalLanguage ? 'root-lang-menu-item' : 'language-choice-box';
           }
 
       }
