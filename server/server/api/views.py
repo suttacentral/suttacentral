@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 import stripe
 from flask import current_app, request
@@ -403,9 +404,23 @@ class Sutta(Resource):
                             type: object
                             properties:
                                 next:
-                                    type: string
+                                    type: object
+                                    properties:
+                                        author:
+                                            type: string
+                                        title:
+                                            type: string
+                                        uid:
+                                            type: string
                                 previous:
-                                    type: string
+                                    type: object
+                                    properties:
+                                        author:
+                                            type: string
+                                        title:
+                                            type: string
+                                        uid:
+                                            type: string
 
         """
         lang = request.args.get('lang', 'en')
@@ -416,7 +431,21 @@ class Sutta(Resource):
 
         results = db.aql.execute(SUTTA_VIEW,
                                  bind_vars={'uid': uid, 'language': lang, 'author': author})
-        return results.next(), 200
+        data: dict = results.next()
+
+        r = re.compile(r'^[a-z\-]+')
+        original_prefix = r.match(uid)[0]
+
+        ordering: dict = data['neighbours']
+        for key, items in ordering.items():
+            for item in items:
+                if r.match(item['uid'])[0] == original_prefix:
+                    ordering[key] = item
+                    break
+            else:
+                ordering[key] = None
+
+        return data, 200
 
 
 class Currencies(Resource):
