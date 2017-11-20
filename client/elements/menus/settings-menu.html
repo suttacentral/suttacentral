@@ -398,8 +398,9 @@ Issues:
 
           _textualInfoToggleStateChanged(toggleChecked) {
               if (this.textualParagraphs && toggleChecked) {
-                  this.$.paragraphs_ajax.generateRequest();
-                  this.dispatch('toggleTextualInfo', true);
+                  this.$.paragraphs_ajax.generateRequest().completes.then(() => {
+                      this.dispatch('toggleTextualInfo', true);
+                  });
               } else {
                   this.dispatch('toggleTextualInfo', false);
               }
