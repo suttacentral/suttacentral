@@ -399,6 +399,17 @@
               inlineItem.addEventListener('click', () => { this._scrollToSection(inlineItem.id, true, 0); });
           }
 
+          _addInlineParagraphListeners() {
+              const inlineItems = this.shadowRoot.querySelectorAll('.textual-info-paragraph-inline');
+              if (!inlineItems) {
+                  return;
+              }
+              inlineItems.forEach((item) => {
+                      item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); })
+                  }
+              );
+          }
+
           // adds a class to the main container to either show or hide the textual info paragraphs
           _setParagraphsVisible(visible) {
               const textElement = this.$.segmented_text_content;
@@ -416,7 +427,6 @@
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
-              console.log(sectionId);
               if (!sectionId) return;
               try {
                   const section = this.shadowRoot.getElementById(sectionId);
@@ -442,7 +452,7 @@
               } else {
                   textualInfoId = `${window.location.hash.substr(1)}`;
               }
-              this._scrollToSection(textualInfoId, false, 0);
+              this._scrollToSection(textualInfoId, false, 1000);
           }
 
           _changeScript(toScript) {
@@ -459,6 +469,7 @@
                   this._setScript(toScript, segments, tooltips);
               }
               this._setScriptISOCode(toScript);
+              this._addInlineParagraphListeners();
           }
 
           _setScriptISOCode(scriptName) {
