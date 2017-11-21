@@ -719,9 +719,13 @@
           }
 
           _setTooltipOptions(tooltip) {
-              tooltip.animationDelay = 0;
-              tooltip.manualMode = true;
-              tooltip.offset = 0;
+            tooltip.classList.add('lookup-tooltip');
+            tooltip.animationDelay = 0;
+            tooltip.position = 'top';
+            tooltip.manualMode = true;
+            tooltip.fitToVisibleBounds = true;
+            tooltip.offset = 0;
+            tooltip.style['padding-bottom'] = '.2em';
           }
 
           _getAccentColor() {
