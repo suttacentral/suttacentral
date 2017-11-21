@@ -445,6 +445,7 @@
 
           // adds the 'tree'-icons to denote difficulty level if any.
           _computeDifficultyLevelName(level) {
+              if (!level) return;
               if (level.name) {
                   return `sc-svg-icons:${level.name}`;
               }
