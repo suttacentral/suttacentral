@@ -7,6 +7,7 @@
 <link rel="import" href="/bower_components/paper-item/paper-item.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
 <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="/bower_components/paper-card/paper-card.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
@@ -221,6 +222,11 @@
         color: var(--sc-disabled-text-color);
       }
 
+      .primary-accent-icon {
+        color: var(--sc-primary-accent-color);
+        stroke: var(--sc-primary-accent-color);
+      }
+
       .author-button {
         @apply --sc-skolar-font-size-md;
       }
@@ -234,7 +240,8 @@
           <h3 class="suttaplex-heading">[[_computeMainHeading(item)]]</h3>
           <div class$="difficulty-icon [[item.difficulty.name]]"
                title="Recommended for [[item.difficulty.name]] students">
-            <iron-icon class="grey-icon" icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
+            <iron-icon class="primary-accent-icon"
+                       icon="[[_computeDifficultyLevel(item.difficulty.name)]]"></iron-icon>
           </div>
         </div>
 
@@ -437,7 +444,7 @@
           }
 
           // adds the 'tree'-icons to denote difficulty level if any.
-          _computeLevel(level) {
+          _computeDifficultyLevel(level) {
               return level ? 'sc-svg-icons:' + level : '';
           }
 
