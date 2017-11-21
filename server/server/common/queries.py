@@ -226,6 +226,50 @@ FOR dict IN dictionaries
 '''
 
 # Takes 3 bind_vars: `language`, `uid` and `author`
+_NEIGHBOURS_SUBQUERY = '''
+LET legacy = (
+    FOR html IN html_text
+        FILTER html.uid == uid.uid AND html.lang == @language
+        SORT html.author
+        RETURN MERGE(KEEP(html, ['author', 'uid']), {'title': html.name})
+    )
+    
+    LET same_author_legacy = (
+        FOR text IN legacy
+            FILTER LOWER(text.author) == @author
+            LIMIT 1
+            RETURN text
+    )[0]
+    
+    LET first_text_legacy = legacy[0]
+    
+    LET segmented = (
+        FOR text IN po_strings
+            FILTER text.uid == uid.uid AND text.lang == @language
+            SORT text.author
+            RETURN KEEP(text, ['author', 'uid', 'title'])
+    )
+    
+    LET first_text_segmented = segmented[0]
+    
+    LET same_author_segmented = (
+        FOR text IN segmented
+            FILTER LOWER(text.author) == @author
+            LIMIT 1
+            RETURN text
+    )[0]
+    
+    LET chosen = same_author_segmented ? same_author_segmented : 
+                    first_text_segmented ? first_text_segmented : 
+                    same_author_legacy ? same_author_legacy : 
+                    first_text_legacy ? first_text_legacy : null
+    
+    FILTER chosen != null
+    LIMIT 2
+    RETURN chosen
+'''
+
+
 SUTTA_VIEW = '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
 
@@ -279,9 +323,47 @@ LET translated_po_obj = (
         }
 )[0]
 
+LET neighbours = (
+    LET current = (
+        FOR text_division IN text_divisions
+            FILTER text_division.uid == root_text.uid
+            LIMIT 1
+            RETURN KEEP(text_division, ['num', 'division'])
+    )[0]
+    
+    LET next_uids = (
+        FOR text_division IN text_divisions
+            FILTER text_division.division == current.division AND text_division.num > current.num
+                   AND text_division.type == null
+            SORT text_division.num
+            RETURN KEEP(text_division, ['uid'])
+    )
+
+    LET previous_uids = (
+        FOR text_division IN text_divisions
+            FILTER text_division.division == current.division AND text_division.num < current.num
+                   AND text_division.type == null
+            SORT text_division.num DESC
+            RETURN KEEP(text_division, ['uid'])
+    )
+    
+    LET next = (
+        FOR uid IN next_uids
+            ''' + _NEIGHBOURS_SUBQUERY + '''
+    )
+    
+    LET previous = (
+        FOR uid IN previous_uids
+            ''' + _NEIGHBOURS_SUBQUERY + '''
+    )
+    
+    RETURN {next: next, previous: previous}
+)[0]
+
 LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
     
 RETURN {
+    neighbours: neighbours,
     root_text: translated_po_obj ? root_po_obj : null,
     translation: translated_po_obj ? (root_po_obj == translated_po_obj ? null : translated_po_obj) 
         : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],

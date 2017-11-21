@@ -121,8 +121,8 @@ Issues:
       <div class="dialog-section">
         <h3 class="menu-item-title">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-        <paper-toggle-button class="menu-toggle-button" noink
-                             active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
+        <paper-toggle-button id="textual_info_toggle_button"
+                             class="menu-toggle-button" active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
       </div>
 
       <div class="dialog-section">
@@ -167,7 +167,7 @@ Issues:
         <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital
           Dictionary of Buddhism.
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="Lookup">
+        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="chinese_lookup_menu">
           <paper-listbox slot="dropdown-content" selected="{{chineseLookupSelected}}">
             <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
@@ -251,11 +251,14 @@ Issues:
                           }
                       ]
                   },
+                  paliLookupLanguage: {
+                      type: String,
+                      statePath: 'textOptions.paliLookupTargetDictRepr'
+                  },
                   // pali to language lookup selected number.
                   paliLookupSelected: {
                       type: Number,
-                      value: 0,
-                      observer: '_paliLookupChanged'
+                      computed: '_findPaliLookupLanguageIndex(paliLookupLanguage)'
                   },
                   // possible values for the chinese to language lookup.
                   chineseLookupArray: {
@@ -271,11 +274,14 @@ Issues:
                           }
                       ]
                   },
+                  chineseLookupLanguage: {
+                      type: String,
+                      statePath: 'textOptions.chineseLookupTargetDictRepr'
+                  },
                   // chinese to language lookup selected number.
                   chineseLookupSelected: {
                       type: Number,
-                      value: 0,
-                      observer: '_chineseLookupChanged'
+                      computed: '_findChineseLookupLanguageIndex(chineseLookupLanguage)'
                   },
                   // possible values for the script chooser for pali.
                   paliScripts: {
@@ -311,15 +317,15 @@ Issues:
                   // The state of the textual info paper-toggle-button
                   textualInfoToggleEnabled: {
                       type: Boolean,
-                      observer: '_textualInfoToggleStateChanged'
-                  },
-                  textualInfoEnabledInState: {
-                      type: Boolean,
                       statePath: 'textOptions.paragraphsEnabled'
                   },
                   textualInfoResponse: {
                       type: Object,
                       observer: '_onParagraphsLoaded'
+                  },
+                  textualParagraphs: {
+                      type: Object,
+                      statePath: 'textOptions.paragraphDescriptions'
                   },
                   // Boolean that remembers settings on this page.
                   rememberSettings: {
@@ -330,6 +336,19 @@ Issues:
                       value: false
                   }
               }
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('checked-changed', (e) => {
+                  this._textualInfoToggleStateChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
+                  this._paliLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('value-changed', (e) => {
+                  this._chineseLookupChanged(e.detail.value);
+              });
           }
 
           static get actions() {
@@ -377,27 +396,53 @@ Issues:
               }
           }
 
-          _paliLookupChanged(paliLookupSelected) {
-              const target = this.paliLookupArray[paliLookupSelected];
-              const targetLanguage = target.dict.split('2')[1];
-              const targetDictRepr = target.language;
-              this.dispatch('activatePaliLookup', !!(paliLookupSelected), targetLanguage, targetDictRepr);
-          }
-
-          _chineseLookupChanged(chineseLookupSelected) {
-              const target = this.chineseLookupArray[chineseLookupSelected];
-              const targetLanguage = target.dict.split('2')[1];
-              const targetDictRepr = target.language;
-              this.dispatch('activateChineseLookup', !!(chineseLookupSelected), targetLanguage, targetDictRepr);
-          }
-
-          _textualInfoToggleStateChanged() {
-              if (this.textualInfoToggleEnabled) {
-                  if (this.textualInfoEnabledInState) return;
-                  this.$.paragraphs_ajax.generateRequest();
+          _textualInfoToggleStateChanged(toggleChecked) {
+              if (this.textualParagraphs && toggleChecked) {
+                  this.$.paragraphs_ajax.generateRequest().completes.then(() => {
+                      this.dispatch('toggleTextualInfo', true);
+                  });
               } else {
                   this.dispatch('toggleTextualInfo', false);
               }
+          }
+
+          _onParagraphsLoaded() {
+              if (this.textualInfoResponse) {
+                  if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
+                      this.dispatch('downloadParagraphs', this.textualInfoResponse);
+                  }
+                  this.dispatch('toggleTextualInfo', true);
+              }
+          }
+
+          _paliLookupChanged(lookupLanguage) {
+              if (!lookupLanguage) {
+                  return;
+              }
+              const langIndex = this._findPaliLookupLanguageIndex(lookupLanguage);
+              const target = this.paliLookupArray[langIndex];
+              const targetLanguage = target.dict.split('2')[1];
+              const targetDictRepr = target.language;
+              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
+          }
+
+          _findPaliLookupLanguageIndex(languageName) {
+              return this.paliLookupArray.findIndex(i => i.language === languageName);
+          }
+
+          _chineseLookupChanged(lookupLanguage) {
+              if (!lookupLanguage) {
+                  return;
+              }
+              const langIndex = this._findChineseLookupLanguageIndex(lookupLanguage);
+              const target = this.chineseLookupArray[langIndex];
+              const targetLanguage = target.dict.split('2')[1];
+              const targetDictRepr = target.language;
+              this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
+          }
+
+          _findChineseLookupLanguageIndex(languageName) {
+              return this.chineseLookupArray.findIndex(i => i.language === languageName);
           }
 
           _textViewChanged() {
@@ -406,27 +451,6 @@ Issues:
                   this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
                   this.showLoadingSpinner = false;
               }, 0);
-          }
-
-          _onParagraphsLoaded() {
-              if (this.textualInfoResponse) {
-                  if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
-                      this.dispatch('downloadParagraphs', this.textualInfoResponse);
-                  }
-                  if (this.textualInfoToggleEnabled) {
-                      this.dispatch('toggleTextualInfo', true);
-                  }
-              }
-          }
-
-          _dictionaryLookup(valueSelected) {
-              // needs more work
-              return (valueSelected > 0);
-          }
-
-          _getDictionary(valueArray, valueSelected) {
-              // needs more work
-              return valueArray[valueSelected].dict;
           }
 
           // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.

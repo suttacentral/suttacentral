@@ -29,10 +29,10 @@
             segmentedSuttaTextView: 'none',
             script: 'latin',
             paliLookupActivated: false,
-            paliLookupTargetDictRepr: '',
+            paliLookupTargetDictRepr: 'None',
             paliLookupTargetLanguage: '',
             chineseLookupActivated: false,
-            chineseLookupTargetDictRepr: '',
+            chineseLookupTargetDictRepr: 'None',
             chineseLookupTargetLanguage: ''
         }
     };
@@ -93,7 +93,10 @@
     // Before creating the store, check if it's saved in LocalStorage:
     const persistedState = localStorage.getItem('reduxState');
     const rememberButtonEnabled = localStorage.getItem('rememberTextSettings');
-    const state = (persistedState && rememberButtonEnabled) ? JSON.parse(persistedState) : initialState;
+    if (rememberButtonEnabled === 'false') {
+        localStorage.removeItem('rememberTextSettings');
+    }
+    const state = (persistedState && rememberButtonEnabled === 'true') ? JSON.parse(persistedState) : initialState;
 
     const store = Redux.createStore(
         reducer,
