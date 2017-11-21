@@ -260,7 +260,7 @@
           _resetScript() {
               this.$.simple_text_content.classList
                   .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-              let words = this.$.simple_text_content.querySelectorAll('.words');
+              let words = this.$.simple_text_content.querySelectorAll('.word');
               Array.from(words).forEach(word => word.innerHTML = word.dataset.latin_text || word.innerHTML);
           }
 
@@ -333,7 +333,8 @@
               segment.innerHTML = div.innerHTML.replace(/%spfrnt%/g, `<span class="word">`)
                   .replace(/%spback%/g, '</span>')
                   .replace(/%spfrnt_l%/g, `<span class="word lookup_element">`)
-                  .replace(/%spback_l%/g, '</span>');
+                  .replace(/%spback_l%/g, '</span>')
+                  .replace(/%spfrnt_w%/g, '<span class="whitespace">');
           }
 
           _recurseDomChildren(start, output, unit) {
@@ -378,6 +379,7 @@
               str += '%spfrnt%';
               for (let graph of graphs) {
                   if (/^\s+$/.test(graph)) {
+                      str += `%spfrnt_w%graph%spback%`;
                       continue;
                   }
                   if (!('，,!?？;:：()[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』'.includes(graph))) {
