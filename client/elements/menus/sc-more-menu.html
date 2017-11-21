@@ -25,6 +25,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
 
       .more-menu-paper-item {
         @apply --sc-sans-font;
+        color: var(--sc-primary-text-color);
       }
 
       .more-menu-paper-item:hover {
@@ -37,6 +38,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
 
       language-base-menu:after {
         content: "   ";
+      }
+
+      .pwa-icon {
+        fill: var(--sc-primary-color);
       }
 
     </style>
@@ -54,7 +59,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
     </a>
     <a class="more-menu-link" href="/offline">
       <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" src="/img/pwa.svg"></iron-icon>
+        <iron-icon class="more-menu-icon pwa-icon" icon="sc-svg-icons:pwa"></iron-icon>
         Use Offline
       </paper-item>
     </a>
@@ -66,7 +71,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
     </a>
     <a class="more-menu-link" href="/abbreviations">
       <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" src="/img/abbreviations.svg"></iron-icon>
+        <iron-icon class="more-menu-icon" icon="sc-svg-icons:abbreviations"></iron-icon>
         Abbreviations
       </paper-item>
     </a>

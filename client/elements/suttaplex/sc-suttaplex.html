@@ -7,6 +7,7 @@
 <link rel="import" href="/bower_components/paper-item/paper-item.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
 <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="/bower_components/paper-card/paper-card.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
@@ -39,6 +40,7 @@
       }
 
       paper-card.suttaplex {
+        background-color: var(--sc-secondary-background-color);
         margin-top: var(--sc-size-md);
         border-radius: var(--sc-size-xxs);
         display: block;
@@ -105,6 +107,7 @@
 
       .vert-menu {
         display: inline-block;
+        --paper-listbox-background-color: var(--sc-secondary-background-color);
       }
 
       .languagedrop {
@@ -219,6 +222,11 @@
         color: var(--sc-disabled-text-color);
       }
 
+      .primary-accent-icon {
+        color: var(--sc-primary-accent-color);
+        stroke: var(--sc-primary-accent-color);
+      }
+
       .author-button {
         @apply --sc-skolar-font-size-md;
       }
@@ -230,9 +238,10 @@
 
         <div class="suttaplex-head-container">
           <h3 class="suttaplex-heading">[[_computeMainHeading(item)]]</h3>
-          <div class$="difficulty-icon [[item.difficulty.name]]"
-               title="Recommended for [[item.difficulty.name]] students">
-            <iron-icon class="grey-icon" icon="[[_computeLevel(item.difficulty.name)]]"></iron-icon>
+          <div class$="difficulty-icon [[_computeDifficultyLevelName(item.difficulty)]]"
+               title="Recommended for [[_computeDifficultyLevelName(item.difficulty)]] students">
+            <iron-icon class="primary-accent-icon"
+                       icon="[[_computeDifficultyLevelName(item.difficulty)]]"></iron-icon>
           </div>
         </div>
 
@@ -376,7 +385,7 @@
               super.ready();
               this.addEventListener('par-menu-copied', (e) => {
                   this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
-              })
+              });
 
               this.$.copy_menu.addEventListener('opened-changed', (e) => {
                   const open = e.detail.value;
@@ -435,8 +444,14 @@
           }
 
           // adds the 'tree'-icons to denote difficulty level if any.
-          _computeLevel(level) {
-              return level ? 'sc-svg-icons:' + level : '';
+          _computeDifficultyLevelName(level) {
+              if (level.name) {
+                  return `sc-svg-icons:${level.name}`;
+              }
+              else {
+                  const levels = {1: 'beginner', 2: 'intermediate', 3: 'advanced'};
+                  return `sc-svg-icons:${levels[level]}`;
+              }
           }
 
           // Computes API endpoint URL for given translation

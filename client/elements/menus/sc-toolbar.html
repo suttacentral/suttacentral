@@ -25,8 +25,8 @@ Issues:
 <dom-module id="sc-toolbar">
   <template>
     <style>
-      .close-dialog-icon {
-        color: white;
+      .white-icon {
+        color: var(--sc-tertiary-text-color);
       }
 
       .toolbar-paper-button {
@@ -39,14 +39,14 @@ Issues:
         --paper-input-container: {
           padding: 0;
         };
-        --paper-input-container-color: white;
-        --paper-input-container-focus-color: white;
+        --paper-input-container-color: var(--sc-tertiary-text-color);
+        --paper-input-container-focus-color: var(--sc-tertiary-text-color);
         --paper-input-container-label: {
-          color: white;
+          color: var(--sc-tertiary-text-color);
           opacity: 0.6;
         };
         --paper-input-container-input: {
-          color: white;
+          color: var(--sc-tertiary-text-color);
         };
         display: inline-block;
         vertical-align: text-bottom;
@@ -76,6 +76,10 @@ Issues:
       .search-open #discoursebutton, .search-open > #more_vert_button {
         display: none;
       }
+
+      .more-menu-list {
+        background-color: var(--sc-secondary-background-color);
+      }
     </style>
 
     <iron-location path="{{path}}" query="{{query}}"></iron-location>
@@ -83,19 +87,22 @@ Issues:
     <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
       <iron-a11y-keys target="search_input" keys="enter" on-keys-pressed="startSearch"></iron-a11y-keys>
-      <paper-icon-button icon="search" class="close-dialog-icon" on-tap="openSearch"></paper-icon-button>
+      <paper-icon-button icon="search" class="white-icon" on-tap="openSearch"></paper-icon-button>
       <paper-input class="toolbar-input" label="Search" no-label-float id="search_input"></paper-input>
-      <paper-icon-button icon="close" class="close-dialog-icon" id="close_button" on-tap="closeSearch"></paper-icon-button>
+      <paper-icon-button icon="close" class="white-icon" id="close_button"
+                         on-tap="closeSearch"></paper-icon-button>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
       <a class="toolbar-link" tabindex="-1" target="_blank">
-        <paper-icon-button id="discoursebutton" class="close-dialog-icon" icon="communication:forum"></paper-icon-button>
+        <paper-icon-button id="discoursebutton" class="white-icon"
+                           icon="communication:forum"></paper-icon-button>
       </a>
 
       <!-- Menu for more options like language and other static pages -->
       <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="more_vert_button">
-        <paper-icon-button icon="more-vert" class="close-dialog-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
-        <paper-listbox slot="dropdown-content" tabindex="0">
+        <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger"
+                           alt="menu"></paper-icon-button>
+        <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">
           <sc-more-menu id="more_menu"></sc-more-menu>
         </paper-listbox>
       </paper-menu-button>
@@ -116,10 +123,10 @@ Issues:
           }
 
           ready() {
-            super.ready();
-            this.$.more_menu.addEventListener('item-selected', (e) => {
-              this.$.more_vert_button.close();
-            })
+              super.ready();
+              this.$.more_menu.addEventListener('item-selected', (e) => {
+                  this.$.more_vert_button.close();
+              })
           }
 
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.

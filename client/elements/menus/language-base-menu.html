@@ -23,12 +23,18 @@ This is the base language menu that determines the language of the site.
 
       .language-menu-container {
         @apply --sc-skolar-font-size-md;
-        --paper-input-container-focus-color: var(--sc-primary-color);
+        --paper-input-container-focus-color: var(--sc-primary-accent-color);
+        --paper-input-container-input-color: var(--sc-secondary-text-color);
+        --paper-input-container-color: var(--sc-secondary-text-color);
+        --paper-dropdown-menu-icon: {
+          color: var(--sc-disabled-text-color);
+        }
       }
 
       .language-menu-paper-item {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
+        color: var(--sc-primary-text-color);
         text-transform: capitalize;
         width: 180px;
       }

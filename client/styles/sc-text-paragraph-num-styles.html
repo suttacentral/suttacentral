@@ -439,7 +439,7 @@
         margin-right: var(--sc-size-sm);
         padding: 0 var(--sc-size-sm) 0 var(--sc-size-sm);
         color: var(--sc-secondary-text-color);
-        background-color: var(--sc-textual-info-background-color);
+        background: var(--sc-textual-info-background-color);
         transition: 250ms;
         display: none;
         transition-property: opacity;
@@ -447,6 +447,10 @@
         float: right;
         clear: right;
         border-radius: var(--sc-size-xxs);
+      }
+
+      .textual-info-paragraph:hover {
+        background: var(--sc-textual-info-background-color);
       }
 
       .infomode .textual-info-paragraph-inline {
@@ -464,6 +468,10 @@
           margin-right: -6em;
           display: block;
           background-color: transparent;
+        }
+
+        .textual-info-paragraph:hover {
+          background: unset;
         }
 
         .textual-info-paragraph-inline {

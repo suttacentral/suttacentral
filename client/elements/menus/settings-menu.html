@@ -43,7 +43,7 @@ Issues:
       }
 
       #settingsbutton {
-        color: white;
+        color: var(--sc-tertiary-text-color);
       }
 
       .dialog-section {
@@ -59,10 +59,14 @@ Issues:
       .menu-item-title {
         @apply --paper-font-title;
         @apply --sc-sans-font;
+        color: var(--sc-primary-text-color);
       }
 
       .menu-option {
         @apply --sc-sans-font;
+        --paper-radio-button-unchecked-color: var(--sc-disabled-text-color);
+        --paper-radio-button-checked-color: var(--sc-primary-accent-color);
+        --paper-radio-button-label-color: var(--sc-primary-text-color);
       }
 
       .menu-item .menu-icon {
@@ -74,16 +78,23 @@ Issues:
         @apply --sc-skolar-font-size-md;
         --paper-item-selected-weight: 500;
         cursor: pointer;
+        color: var(--secondary-text-color);
       }
 
       .menu-dropdown, .menu-listbox {
         @apply --sc-skolar-font-size-md;
+        --paper-input-container-focus-color: var(--sc-primary-accent-color);
+        --paper-input-container-input-color: var(--sc-secondary-text-color);
+        --paper-input-container-color: var(--sc-secondary-text-color);
+        --paper-dropdown-menu-icon: {
+          color: var(--sc-disabled-text-color);
+        };
         width: 200px;
       }
 
       .menu-toggle-button {
-        --paper-toggle-button-checked-bar-color: var(--sc-primary-color-medium);
-        --paper-toggle-button-checked-button-color: var(--sc-primary-color);
+        --paper-toggle-button-checked-bar-color: var(--sc-disabled-text-color);
+        --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
         margin-top: var(--sc-size-sm);
       }
 

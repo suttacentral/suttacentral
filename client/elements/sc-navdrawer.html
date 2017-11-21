@@ -53,7 +53,7 @@
       .nav-wheel-icon {
         @apply --sc-serif-font;
         margin-left: var(--sc-size-md);
-        color: white;
+        color: var(--sc-tertiary-text-color);
         margin-top: 5px;
         font-size: 45px;
         display: inline-block;
@@ -85,6 +85,7 @@
 
       .nav-drawer-box {
         @apply --shadow-elevation-16dp;
+        background-color: var(--sc-secondary-background-color);
         overflow: auto;
         height: 100%;
       }
@@ -110,6 +111,7 @@
 
       .dialog {
         left: var(--app-drawer-width);
+        background-color: var(--sc-secondary-background-color);
         white-space: initial;
         max-width: 630px;
         position: fixed;
@@ -134,7 +136,7 @@
         @apply --sc-skolar-font-size-dialog-header;
         font-weight: 500;
         padding: var(--sc-size-lg) 0;
-        color: white;
+        color: var(--sc-tertiary-text-color);
         margin: 0;
       }
 
@@ -156,11 +158,16 @@
 
       .dialog-section {
         margin-top: var(--sc-size-lg);
+        color: var(--sc-primary-text-color);
       }
 
       .close-dialog-icon {
-        color: white;
+        color: var(--sc-tertiary-text-color);
         margin: var(--sc-size-sm);
+      }
+
+      .nav-home-title-text {
+        color: var(--sc-tertiary-text-color);
       }
 
     </style>
