@@ -348,6 +348,7 @@
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                       this._putIntoSpans('.original-text', this.rootSutta.lang);
                   }
+                  this._changeScript(this.paliScript);
               }
               textContainer.classList.add('latin-script');
           }
@@ -449,10 +450,8 @@
               const xlScreenWidth = JSON.parse(bodyStyle.getPropertyValue('--sc-screen-xl').replace('px', ''));
               if (window.innerWidth < xlScreenWidth) {
                   textualInfoId = `${window.location.hash.substr(1)}_inline`;
-                  console.log('scrolling to inline');
               } else {
                   textualInfoId = `${window.location.hash.substr(1)}`;
-                  console.log('just scrolling');
               }
               this._scrollToSection(textualInfoId, false, 1000);
           }
