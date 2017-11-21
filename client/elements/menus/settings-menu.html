@@ -190,7 +190,7 @@ Issues:
       <div class="dialog-section">
         <h3 class="menu-item-title">Change the script of the Pali text</h3>
         <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
-        <paper-dropdown-menu class="menu-dropdown" label="Script">
+        <paper-dropdown-menu class="menu-dropdown" label="Script" id="pali_script_menu">
           <paper-listbox slot="dropdown-content" selected="{{paliScriptSelected}}">
             <template is="dom-repeat" items="[[paliScripts]]" as="script">
               <paper-item class="menu-item">[[script.language]]</paper-item>
@@ -323,7 +323,11 @@ Issues:
                   // pali script selected number.
                   paliScriptSelected: {
                       type: Number,
-                      observer: '_changeScript'
+                      computed: "_findPaliScriptIndex(paliScript)"
+                  },
+                  paliScript: {
+                      type: String,
+                      statePath: 'textOptions.script'
                   },
                   // The state of the textual info paper-toggle-button
                   textualInfoToggleEnabled: {
@@ -359,6 +363,9 @@ Issues:
               });
               this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('value-changed', (e) => {
                   this._chineseLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#pali_script_menu').addEventListener('value-changed', (e) => {
+                  this._changeScript(e.detail.value);
               });
           }
 
@@ -465,16 +472,24 @@ Issues:
           }
 
           // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
-          _changeScript() {
+          _changeScript(language) {
+              if(!language) {
+                  return;
+              }
+              const script = this.paliScripts[this.paliScripts.findIndex(i => i.language === language)].script;
               this.showLoadingSpinner = true;
               setTimeout(() => {
-                  this.dispatch('choosePaliTextScript', this.paliScripts[this.paliScriptSelected].script);
+                  this.dispatch('choosePaliTextScript', script);
                   this.showLoadingSpinner = false;
               }, 0);
           }
 
           _getParagraphsUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/paragraphs`;
+          }
+
+          _findPaliScriptIndex(paliScript) {
+              return this.paliScripts.findIndex(i => i.script === paliScript);
           }
       }
 
