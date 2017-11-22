@@ -1,0 +1,47 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link href="/node_modules/viewerjs/dist/viewer.min.css" rel="stylesheet">
+<link rel="import" href="/elements/text/sc-viewer-import.html">
+
+<dom-module id="sc-image">
+  <template>
+
+    <style>
+    </style>
+
+    <div>
+        <img id="image" src="http://elelur.com/data_images/mammals/bear/bear-04.jpg" alt="Picture">
+    </div>
+
+  </template>
+
+  <script>
+      class SCImage extends Polymer.Element {
+          static get is() {
+              return 'sc-image';
+          }
+
+          static get properties() {
+              return {
+                  current: {
+                      type: String
+                  },
+                  next: {
+                      type: String
+                  },
+                  previous: {
+                      type: String
+                  }
+              }
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              const v = new Viewer(this.$.image);
+              v.show(); 
+              console.dir(v);
+          }
+      }
+
+      customElements.define(SCImage.is, SCImage);
+  </script>
+</dom-module>

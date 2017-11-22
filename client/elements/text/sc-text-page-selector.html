@@ -6,6 +6,7 @@
 <link rel="import" href="/elements/text/sc-segmented-text.html">
 <link rel="import" href="/elements/text/sc-simple-text.html">
 <link rel="import" href="/elements/text/sc-stepper.html">
+<link rel="import" href="/elements/text/sc-image.html">
 
 <!--
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
@@ -16,7 +17,7 @@
   <!-- Import the transliteration module for changing the script of the Pali texts -->
   <script src="transliterator.js"></script>
 
-  <template>
+  <template> 
     <style>
       .loading-indicator {
         @apply --sc-skolar-font-size-s;
@@ -70,6 +71,8 @@
     <template is="dom-if" if="[[!isLoading]]">
         <sc-stepper next="[[neighbours.next]]" previous="[[neighbours.previous]]" lang="[[langIsoCode]]"></sc-stepper>
     </template>
+
+    <sc-image id="sc_image"></sc-image>
 
   </template>
 

@@ -465,7 +465,7 @@ Issues:
               if(!language) {
                   return;
               }
-              const script = this.paliScripts[this.paliScripts.findIndex(i => i.language === language)].script;
+              const script = this.paliScripts.find(i => i.language === language).script;
               this.showLoadingSpinner = true;
               setTimeout(() => {
                   this.dispatch('choosePaliTextScript', script);
