@@ -474,8 +474,13 @@
                   if (!this.$.segmented_text_content.querySelector('.original-text[lang=\'pli-Latn\']')) {
                       segments.forEach((item) => this._setScriptISOCode(item, this.rootLang));
                   }
-              } else if (scriptNames.includes(toScript)) {
+              } else if (scriptNames.includes(toScript)) { // if the script name is valid:
                   this._setScript(toScript, segments, tooltips);
+              }
+              if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
+                  this._setScriptISOCode(this.shadowRoot.querySelector('#text'), this.rootLang);
+              } else {
+                  this.shadowRoot.querySelector('#text').removeAttribute('lang');
               }
               this._addInlineParagraphListeners();
           }
