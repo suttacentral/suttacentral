@@ -471,7 +471,7 @@
               if (toScript === 'latin') {
                   this.$.segmented_text_content.classList.add('latin-script');
                   // set the latin text segment iso codes, if not set already
-                  if (!this.$.segmented_text_content.querySelector('.original-text[lang=\'pli-Latn\']')) {
+                  if (!this.$.segmented_text_content.querySelector(`.original-text[lang='pli-Latn']`)) {
                       segments.forEach((item) => this._setScriptISOCode(item, this.rootLang));
                   }
               } else if (scriptNames.includes(toScript)) { // if the script name is valid:
