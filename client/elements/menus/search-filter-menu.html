@@ -22,6 +22,19 @@ The two necessary conditions are:
         width: 150px;
       }
 
+      .filter-menu-items {
+        --paper-input-container-focus-color: var(--sc-primary-accent-color);
+        --paper-input-container-input-color: var(--sc-secondary-text-color);
+        --paper-input-container-color: var(--sc-secondary-text-color);
+        --paper-dropdown-menu-icon: {
+          color: var(--sc-disabled-text-color);
+        };
+        --paper-dropdown-menu-input: {
+          --paper-input-container-input-color: var(--sc-primary-text-color);
+        };
+        background-color: var(--sc-secondary-background-color);
+      }
+
       .filter-menu-item {
         cursor: pointer;
         @apply --sc-sans-font;
@@ -55,7 +68,7 @@ The two necessary conditions are:
               return {
                   searchSelected: {
                       type: String,
-                      value: "0",
+                      value: '0',
                       observer: '_searchChanged'
                   }
               }
@@ -64,7 +77,7 @@ The two necessary conditions are:
           // Fires resulting choice to search page, where it is converted to a selection of the relevant items.
           _searchChanged() {
               this.dispatchEvent(new CustomEvent('search-filter-changed', {
-                  detail: {searchView: this.searchSelected},
+                  detail: { searchView: this.searchSelected },
                   composed: true,
                   bubbles: true
               }));

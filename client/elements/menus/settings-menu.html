@@ -83,13 +83,20 @@ Issues:
 
       .menu-dropdown, .menu-listbox {
         @apply --sc-skolar-font-size-md;
+        width: 200px;
+      }
+
+      .menu-listbox {
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-input-container-input-color: var(--sc-secondary-text-color);
         --paper-input-container-color: var(--sc-secondary-text-color);
         --paper-dropdown-menu-icon: {
           color: var(--sc-disabled-text-color);
         };
-        width: 200px;
+        --paper-dropdown-menu-input: {
+          --paper-input-container-input-color: var(--sc-primary-text-color);
+        };
+        background-color: var(--sc-secondary-background-color);
       }
 
       .menu-toggle-button {
@@ -179,7 +186,7 @@ Issues:
           Dictionary of Buddhism.
         </div>
         <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="chinese_lookup_menu">
-          <paper-listbox slot="dropdown-content" selected="{{chineseLookupSelected}}">
+          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{chineseLookupSelected}}">
             <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
             </template>
@@ -191,7 +198,7 @@ Issues:
         <h3 class="menu-item-title">Change the script of the Pali text</h3>
         <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
         <paper-dropdown-menu class="menu-dropdown" label="Script" id="pali_script_menu">
-          <paper-listbox slot="dropdown-content" selected="{{paliScriptSelected}}">
+          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliScriptSelected}}">
             <template is="dom-repeat" items="[[paliScripts]]" as="script">
               <paper-item class="menu-item">[[script.language]]</paper-item>
             </template>
