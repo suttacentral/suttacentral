@@ -301,7 +301,7 @@
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
               const segments = textContainer.getElementsByTagName('sc-seg');
               try {
-                  this._addSegmentClasses(segments);
+                  this._setPrimaryTextSegmentProperties(segments);
                   this._insertPrimaryTextIntoSegments(textStrings, textContainer);
               }
               catch (e) {
@@ -309,7 +309,7 @@
               }
           }
 
-          _addSegmentClasses(segments) {
+          _setPrimaryTextSegmentProperties(segments) {
               let segmentClass, classToDelete, langAttr;
               if (this.translatedSutta) {
                   segmentClass = 'translated-text';
@@ -346,7 +346,7 @@
               if (!this.shadowRoot.querySelector('.original-text')) {
                   const stringsArr = Object.entries(this.rootSutta.strings);
                   stringsArr.forEach(item => {
-                      this._insertSecondarySegment(item);
+                      this._insertSecondaryTextSegment(item);
                   });
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                       this._putIntoSpans('.original-text', this.rootSutta.lang);
@@ -356,7 +356,7 @@
               textContainer.classList.add('latin-script');
           }
 
-          _insertSecondarySegment([key, content]) {
+          _insertSecondaryTextSegment([key, content]) {
               if (!key.startsWith('_')) {
                   const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
                   const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
