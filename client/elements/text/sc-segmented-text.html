@@ -449,22 +449,17 @@
                   segments = this.shadowRoot.querySelectorAll('sc-seg.original-text');
               }
               const segmentOffsets = {};
-              Array.from(segments).forEach((segment) => {
-                  segmentOffsets[segment.id] = {
-                      segmentOffset: segment.offsetTop,
-                      parentOffset: segment.parentNode.offsetTop
-                  };
+              Array.from(segments).forEach((s) => {
+                  segmentOffsets[s.id] = { segmentOffset: s.offsetTop, parentOffset: s.parentNode.offsetTop };
               });
               Array.from(segmentedParagraphs).forEach((paragraph) => {
-                  //                  const segmentId = paragraph.getAttribute('data-reference-segment-id')
-                  //                      .replace(':', '\\:').replace('.', '\\.');
-                  //                  const segment = paragraph.parentNode.querySelector(`#${segmentId}`);
                   let prevElemMargin = 0;
                   if (paragraph.previousSibling) {
                       const prevTotalMargin = paragraph.previousSibling.getAttribute('data-total-margin');
                       const marginTop = parseInt(paragraph.previousSibling.style.marginTop);
                       if (!isNaN(marginTop)) {
-                          prevElemMargin = marginTop - paragraph.clientHeight;
+                          console.log(paragraph.clientHeight);
+                          prevElemMargin = marginTop;
                           if (!isNaN(prevTotalMargin)) {
                               prevElemMargin = prevTotalMargin - prevElemMargin;
                               paragraph.setAttribute('data-total-margin', prevElemMargin);
@@ -473,8 +468,8 @@
                   }
                   const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
                   requestAnimationFrame(() => {
-                      paragraph.style.marginTop = offsets.segmentOffset - offsets.parentOffset - prevElemMargin;
-                  });
+                      paragraph.style.marginTop = offsets.segmentOffset - offsets.parentOffset - prevElemMargin - 24;
+                  })
               });
           }
 
