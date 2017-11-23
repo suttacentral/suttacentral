@@ -387,3 +387,10 @@ FOR paragraph IN paragraphs
         description: paragraph.description
     }
 '''
+
+IMAGES = '''
+FOR image IN images
+    FILTER image.division == @division AND image.vol == @vol
+    SORT image.page
+    RETURN KEEP(image, ['name', 'page'])
+'''

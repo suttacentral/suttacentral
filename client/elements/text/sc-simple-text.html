@@ -13,6 +13,25 @@
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles">
 
+    :host {
+        --iron-icon-fill-color: var(--sc-disabled-text-color);
+        --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
+        --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
+        }
+
+        .image-link {
+            cursor: pointer;
+        }
+
+        .image-book-link {
+            margin-bottom: .5em;
+            margin-left: .2em;
+        }
+
+        .image-book-link:before {
+            display: none;
+        }
+
       .text-center {
         text-align: center;
       }
@@ -180,15 +199,44 @@
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
               this._setParagraphsVisible(this.showParagraphs);
+              const divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
               const paragraphsAdded =
                   this.$.simple_text_content.querySelector('.textual-info-paragraph') !== null;
               if (this.paragraphs && this.showParagraphs) {
-                  this.paragraphs.forEach((paragraph) => {
-                      const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
-                      Array.from(refs).forEach((item) => {
+                this.paragraphs.forEach((paragraph) => {
+                    const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
+                    Array.from(refs).forEach((item) => {
+                        if(item.id.startsWith('pts')){
+                          const prefix = /[^\d]+/.exec(item.id)[0];
+                          const sufix = item.id.substring(prefix.length);
+                          let [vol, page] = sufix.split('.');
+                          page = Number(page);
+                          if(vol.includes('ed')){
+                              let ed;
+                              [ed, vol] = vol.split('ed');
+                          }
+                          vol = Number(vol);
+                          item.innerHTML = `
+                              <div class="image-link" title="View page image">
+                                  <span>${prefix.toUpperCase()} ${sufix}</span>
+                                  <iron-icon class="image-book-link" icon="sc-svg-icons:book">
+                                  </iron-icon>
+                              </div>
+                          `;
+                          item.classList.add('image-book-link');
+                          item.classList.add('textual-info-paragraph');
+                          item.addEventListener('click', () => {
+                              this.dispatchEvent(new CustomEvent('show-image', {
+                                  detail: {vol: vol, division: divisionId, page: page},
+                                  bubbles: true,
+                                  composed: true
+                              }))
+                          })
+                      } else {
                           this._addParagraphData(item, paragraph);
-                      });
-                  });
+                      }
+                    });
+                });
               }
           }
 
@@ -282,7 +330,6 @@
 
           setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
               const childNodes = elem.childNodes;
-              console.log(elem);
               Array.from(elem.querySelectorAll('.word')).forEach(word => {
                   word.dataset.latin_text = word.innerHTML;
                   word.innerHTML = transliterator[scriptFunctionName](word.innerHTML);

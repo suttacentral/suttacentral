@@ -12,7 +12,7 @@ from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
-from . import biblio, currencies, dictionaries, paragraphs, po, textdata, divisions
+from . import biblio, currencies, dictionaries, paragraphs, po, textdata, divisions, images_files
 
 
 class ChangeTracker:
@@ -534,6 +534,8 @@ def run():
 
     collect_data(data_dir, current_app.config.get('DATA_REPO'))
     collect_data(po_dir, current_app.config.get('PO_REPO'))
+
+    images_files.load_images_links(db)
 
     change_tracker = ChangeTracker(data_dir, db)
 
