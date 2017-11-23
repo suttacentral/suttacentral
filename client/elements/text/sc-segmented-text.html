@@ -269,12 +269,14 @@
                       textContent.classList.add('side-by-side');
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
+                      this._addSegmentedTextualInfoTopMargins();
                       //                      this._addSegmentedTextualInfoTopMargins();
                       break;
                   case 'linebyline':
                       textContent.classList.add('line-by-line');
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
+                      this._addSegmentedTextualInfoTopMargins();
                       //                      this._addSegmentedTextualInfoTopMargins();
                       break;
                   case 'popup':
@@ -445,7 +447,14 @@
               Array.from(segmentedParagraphs).forEach((paragraph) => {
                   const segmentId = paragraph.getAttribute('data-reference-segment-id');
                   const segment = this.shadowRoot.getElementById(segmentId);
-                  paragraph.style.marginTop = segment.offsetTop - segment.parentElement.offsetTop;
+                  let prevElemMargin = 0;
+                  if (paragraph.previousSibling) {
+                      const marginTop = parseInt(paragraph.previousSibling.style.marginTop);
+                      if (typeof marginTop === 'number' && !isNaN(marginTop)) {
+                          prevElemMargin = marginTop;
+                      }
+                  }
+                  paragraph.style.marginTop = segment.offsetTop - segment.parentElement.offsetTop - prevElemMargin;
               });
           }
 
@@ -519,7 +528,7 @@
               } else {
                   textualInfoId = `${window.location.hash.substr(1)}`;
               }
-              this._scrollToSection(textualInfoId, false, 1000);
+              this._scrollToSection(textualInfoId, false, 2000);
           }
 
           _changeScript(toScript) {
