@@ -60,12 +60,10 @@
           static get properties() {
               return {
                   rootSutta: {
-                      type: Object,
-                      observer: '_updateView'
+                      type: Object
                   },
                   translatedSutta: {
-                      type: Object,
-                      observer: '_updateView'
+                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -269,13 +267,15 @@
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       textContent.classList.add('side-by-side');
-                      this._toggleSegmentedTextualInfo(true);
                       this._addSecondaryText();
+                      this._toggleSegmentedTextualInfo(true);
+                      //                      this._addSegmentedTextualInfoTopMargins();
                       break;
                   case 'linebyline':
-                      this._toggleSegmentedTextualInfo(true);
                       textContent.classList.add('line-by-line');
                       this._addSecondaryText();
+                      this._toggleSegmentedTextualInfo(true);
+                      //                      this._addSegmentedTextualInfoTopMargins();
                       break;
                   case 'popup':
                       this._addPopupTooltips(textContent);
@@ -304,41 +304,9 @@
               const textContent = this.shadowRoot.querySelector('#segmented_text_content');
               if (showSegmentedIDs) {
                   textContent.classList.add('segmented-infomode');
-                  // If the segmented paragraphs have been added already, don't do anything
-                  if (!this.shadowRoot.querySelector('.segmented-textual-info-paragraph')) {
-                      this._addSegmentedTextualInfoElements();
-                  }
               } else {
                   textContent.classList.remove('segmented-infomode');
               }
-          }
-
-          _addSegmentedTextualInfoElements() {
-              const segments = this.shadowRoot.querySelector('#segmented_text_content')
-                  .getElementsByTagName('sc-seg');
-              Array.from(segments).forEach((segment) => {
-                  const inlineParagraph = document.createElement('a');
-                  inlineParagraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
-                      'textual-info-paragraph-inline', 'sc');
-                  const parId = segment.id.split(':')[1];
-                  // The 0 level is to be ignored when adding segmented IDs:
-                  if (parId[0] === '0') {
-                      return;
-                  }
-                  // Insert inline paragraph:
-                  inlineParagraph.id = `${parId}_inline`;
-                  inlineParagraph.innerText = parId;
-                  inlineParagraph.href = `#${parId}`;
-                  inlineParagraph.title = 'SuttaCentral paragraph number';
-                  segment.insertBefore(inlineParagraph, segment.firstChild);
-                  // Insert regular paragraph:
-                  const paragraph = inlineParagraph.cloneNode(true);
-                  paragraph.id = parId;
-                  paragraph.classList.remove('textual-info-paragraph-inline');
-                  paragraph.addEventListener('click', () => {this._scrollToSection(parId, true, 0)});
-                  // insert before the first segment child to maintain paragraph order
-                  segment.parentNode.insertBefore(paragraph, segment.parentNode.getElementsByTagName('sc-seg')[0]);
-              });
           }
 
           _addPrimaryText(textStrings) {
@@ -428,7 +396,50 @@
                       });
                   });
               }
+              // Add segmented textal information paragraphs if not added already
+              if (!this.shadowRoot.querySelector('.segmented-textual-info-paragraph')) {
+                  this._addSegmentedTextualInfoElements();
+              }
               this._scrollToSectionInUrl();
+          }
+
+          _addSegmentedTextualInfoElements() {
+              const segments = this.shadowRoot.querySelector('#segmented_text_content')
+                  .getElementsByTagName('sc-seg');
+              Array.from(segments).forEach((segment) => {
+                  const inlineParagraph = document.createElement('a');
+                  inlineParagraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
+                      'textual-info-paragraph-inline', 'sc');
+                  const parId = segment.id.split(':')[1];
+                  // The 0 level is to be ignored when adding segmented IDs:
+                  if (parId[0] === '0') {
+                      return;
+                  }
+                  // Insert inline paragraph:
+                  inlineParagraph.id = `${parId}_inline`;
+                  inlineParagraph.innerText = parId;
+                  inlineParagraph.href = `#${parId}`;
+                  inlineParagraph.title = 'SuttaCentral paragraph number';
+                  segment.insertBefore(inlineParagraph, segment.firstChild);
+                  // Insert regular paragraph:
+                  const paragraph = inlineParagraph.cloneNode(true);
+                  paragraph.id = parId;
+                  paragraph.classList.remove('textual-info-paragraph-inline');
+                  paragraph.setAttribute('data-reference-segment-id', segment.id);
+                  paragraph.addEventListener('click', () => {this._scrollToSection(parId, true, 0)});
+                  // insert before the first segment child to maintain paragraph order
+                  segment.parentNode.insertBefore(paragraph, segment.parentNode.getElementsByTagName('sc-seg')[0]);
+              });
+          }
+
+          _addSegmentedTextualInfoTopMargins() {
+              const segmentedParagraphs = this.shadowRoot
+                  .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
+              Array.from(segmentedParagraphs).forEach((paragraph) => {
+                  const segmentId = paragraph.getAttribute('data-reference-segment-id');
+                  const segment = this.shadowRoot.getElementById(segmentId);
+                  paragraph.style.marginTop = segment.offsetTop - segment.parentElement.offsetTop;
+              });
           }
 
           _addParagraphData(item, data) {
