@@ -52,9 +52,10 @@
                   let toast = this._getToast(e.detail.toastType);
                   toast.text = e.detail.message;
                   toast.duration = e.detail.duration || this.defaultDuration;
-
-                  toast.refit();
-                  toast.show();
+                  setTimeout(() => {
+                      toast.refit();
+                      toast.open()
+                  }, 0);
               })
 
           }
