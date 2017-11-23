@@ -269,9 +269,11 @@
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       textContent.classList.add('side-by-side');
+                      this._toggleSegmentedTextualInfo(true);
                       this._addSecondaryText();
                       break;
                   case 'linebyline':
+                      this._toggleSegmentedTextualInfo(true);
                       textContent.classList.add('line-by-line');
                       this._addSecondaryText();
                       break;
@@ -294,6 +296,38 @@
                   Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => {
                       item.parentNode.removeChild(item);
                   });
+              }
+              this._toggleSegmentedTextualInfo(false);
+          }
+
+          _toggleSegmentedTextualInfo(showSegmentedIDs) {
+              const textContent = this.shadowRoot.querySelector('#segmented_text_content');
+              if (showSegmentedIDs) {
+                  textContent.classList.add('segmented-infomode');
+                  // If the segmented paragraphs have been added already, don't do anything
+                  if (!this.shadowRoot.querySelector('segmented-textual-info-paragraph')) {
+                      const segments = this.shadowRoot.querySelector('#segmented_text_content')
+                          .getElementsByTagName('sc-seg');
+                      Array.from(segments).forEach((segment) => {
+                          const paragraph = document.createElement('a');
+                          paragraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
+                              'textual-info-paragraph-inline', 'sc');
+                          const parId = segment.id.split(':')[1];
+                          // The 0 level is to be ignored when adding segmented IDs:
+                          if (parId[0] === '0') {
+                              return;
+                          }
+                          paragraph.id = parId;
+                          paragraph.innerText = parId;
+                          paragraph.href = `#${parId}`;
+                          paragraph.title = 'SuttaCentral paragraph number';
+                          segment.insertBefore(paragraph, segment.firstChild);
+                      });
+                  } else {
+                      return;
+                  }
+              } else {
+                  textContent.classList.remove('segmented-infomode');
               }
           }
 
