@@ -53,7 +53,7 @@
       .nav-wheel-icon {
         @apply --sc-serif-font;
         margin-left: var(--sc-size-md);
-        color: white;
+        color: var(--sc-tertiary-text-color);
         margin-top: 5px;
         font-size: 45px;
         display: inline-block;
@@ -77,6 +77,11 @@
       .nav-home-link {
         color: white;
         text-decoration: none;
+        background: none;
+      }
+
+      .nav-home-link:hover {
+        background: none;
       }
 
       .nav-home-link:focus {
@@ -85,6 +90,7 @@
 
       .nav-drawer-box {
         @apply --shadow-elevation-16dp;
+        background-color: var(--sc-secondary-background-color);
         overflow: auto;
         height: 100%;
       }
@@ -110,6 +116,7 @@
 
       .dialog {
         left: var(--app-drawer-width);
+        background-color: var(--sc-secondary-background-color);
         white-space: initial;
         max-width: 630px;
         position: fixed;
@@ -134,7 +141,7 @@
         @apply --sc-skolar-font-size-dialog-header;
         font-weight: 500;
         padding: var(--sc-size-lg) 0;
-        color: white;
+        color: var(--sc-tertiary-text-color);
         margin: 0;
       }
 
@@ -156,11 +163,30 @@
 
       .dialog-section {
         margin-top: var(--sc-size-lg);
+        color: var(--sc-primary-text-color);
       }
 
       .close-dialog-icon {
-        color: white;
+        color: var(--sc-tertiary-text-color);
         margin: var(--sc-size-sm);
+      }
+
+      .nav-home-title-text {
+        color: var(--sc-tertiary-text-color);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        background: linear-gradient(to top, rgba(223, 153, 10, 0) 1.5px, rgba(223, 153, 10, 1) 1.5px, rgba(223, 153, 10, 1) 2.5px, rgba(223, 153, 10, 0) 2.5px);
+      }
+
+      a:hover {
+        background: linear-gradient(to top, rgba(223, 153, 10, 0) 1px, rgba(223, 153, 10, 1) 1px, rgba(223, 153, 10, 1) 3px, rgba(223, 153, 10, 0) 3px);
+      }
+
+      a:visited {
+        background: linear-gradient(to top, rgba(161, 136, 127, 0) 1px, rgba(161, 136, 127, 1) 1px, rgba(161, 136, 127, 1) 3px, rgba(161, 136, 127, 0) 3px);
       }
 
     </style>

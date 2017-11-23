@@ -324,7 +324,7 @@
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
               const segments = textContainer.getElementsByTagName('sc-seg');
               try {
-                  this._addSegmentClasses(segments);
+                  this._setPrimaryTextSegmentProperties(segments);
                   this._insertPrimaryTextIntoSegments(textStrings, textContainer);
               }
               catch (e) {
@@ -332,18 +332,21 @@
               }
           }
 
-          _addSegmentClasses(segments) {
-              let segmentClass, classToDelete;
+          _setPrimaryTextSegmentProperties(segments) {
+              let segmentClass, classToDelete, langAttr;
               if (this.translatedSutta) {
                   segmentClass = 'translated-text';
                   classToDelete = 'original-text';
+                  langAttr = this.translationLang;
               } else {
                   segmentClass = 'original-text';
                   classToDelete = 'translated-text';
+                  langAttr = this.rootLang;
               }
               Array.from(segments).forEach(segment => {
                       segment.classList.add(segmentClass);
                       segment.classList.remove(classToDelete);
+                      this._setScriptISOCode(segment, langAttr);
                       segment.innerHTML = '';
                   }
               );
@@ -366,7 +369,7 @@
               if (!this.shadowRoot.querySelector('.original-text')) {
                   const stringsArr = Object.entries(this.rootSutta.strings);
                   stringsArr.forEach(item => {
-                      this._insertSecondarySegment(item);
+                      this._insertSecondaryTextSegment(item);
                   });
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                       this._putIntoSpans('.original-text', this.rootSutta.lang);
@@ -376,7 +379,7 @@
               textContainer.classList.add('latin-script');
           }
 
-          _insertSecondarySegment([key, content]) {
+          _insertSecondaryTextSegment([key, content]) {
               if (!key.startsWith('_')) {
                   const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
                   const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
@@ -384,6 +387,7 @@
                   newSegment.id = key;
                   newSegment.classList.add('original-text');
                   newSegment.innerHTML = content + ' ';
+                  this._setScriptISOCode(newSegment, this.rootLang);
                   segment.parentNode.insertBefore(newSegment, segment.nextSibling);
               }
           }
@@ -521,18 +525,26 @@
               this._resetScript(segments, tooltips);
               if (toScript === 'latin') {
                   this.$.segmented_text_content.classList.add('latin-script');
-              } else if (scriptNames.includes(toScript)) {
+                  // set the latin text segment iso codes, if not set already
+                  if (!this.$.segmented_text_content.querySelector(`.original-text[lang='pli-Latn']`)) {
+                      segments.forEach((item) => this._setScriptISOCode(item, this.rootLang));
+                  }
+              } else if (scriptNames.includes(toScript)) { // if the script name is valid:
                   this._setScript(toScript, segments, tooltips);
               }
-              this._setScriptISOCode(toScript);
+              if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
+                  this._setScriptISOCode(this.shadowRoot.querySelector('#text'), this.rootLang);
+              } else {
+                  this.shadowRoot.querySelector('#text').removeAttribute('lang');
+              }
               this._addInlineParagraphListeners();
           }
 
-          _setScriptISOCode(scriptName) {
-              const textLang = this.translatedSutta ? this.translationLang : this.rootLang;
-              const langAttr =
-                  this.translatedSutta ? this.translationLang : `${textLang}-${this.scriptIsoCodes[scriptName]}`;
-              this.shadowRoot.querySelector('#text').setAttribute('lang', langAttr);
+          _setScriptISOCode(targetNode, langAttr) {
+              if (langAttr === 'pli' && this.paliScript) {
+                  langAttr += `-${this.scriptIsoCodes[this.paliScript]}`;
+              }
+              targetNode.setAttribute('lang', langAttr);
           }
 
           _resetScript(segments, tooltips) {
@@ -563,6 +575,7 @@
 
           _setScriptOfSegments(segments, scriptFunctionName, t) {
               Array.from(segments).forEach(item => {
+                  this._setScriptISOCode(item, this.rootLang);
                   let words = item.querySelectorAll('.word');
                   Array.from(words).forEach(word => {
                       word.dataset.latin_text = word.innerHTML;
@@ -773,13 +786,13 @@
           }
 
           _setTooltipOptions(tooltip) {
-            tooltip.classList.add('lookup-tooltip');
-            tooltip.animationDelay = 0;
-            tooltip.position = 'top';
-            tooltip.manualMode = true;
-            tooltip.fitToVisibleBounds = true;
-            tooltip.offset = 0;
-            tooltip.style['padding-bottom'] = '.2em';
+              tooltip.classList.add('lookup-tooltip');
+              tooltip.animationDelay = 0;
+              tooltip.position = 'top';
+              tooltip.manualMode = true;
+              tooltip.fitToVisibleBounds = true;
+              tooltip.offset = 0;
+              tooltip.style['padding-bottom'] = '.2em';
           }
 
           _getAccentColor() {

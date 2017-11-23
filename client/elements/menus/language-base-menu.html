@@ -23,27 +23,39 @@ This is the base language menu that determines the language of the site.
 
       .language-menu-container {
         @apply --sc-skolar-font-size-md;
-        --paper-input-container-focus-color: var(--sc-primary-color);
+      }
+
+      .language-menu-list {
+        --paper-input-container-focus-color: var(--sc-primary-accent-color);
+        --paper-input-container-input-color: var(--sc-secondary-text-color);
+        --paper-input-container-color: var(--sc-secondary-text-color);
+        --paper-dropdown-menu-icon: {
+          color: var(--sc-disabled-text-color);
+        };
+        --paper-dropdown-menu-input: {
+          --paper-input-container-input-color: var(--sc-primary-text-color);
+        };
+        background-color: var(--sc-secondary-background-color);
       }
 
       .language-menu-paper-item {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
+        color: var(--sc-primary-text-color);
         text-transform: capitalize;
         width: 180px;
       }
 
       .language-menu-paper-item:hover {
-        cursor: pointer;
         background-color: var(--sc-tertiary-background-color);
+        cursor: pointer;
       }
 
       .iso-code {
         @apply --paper-font-caption;
         @apply --sc-sans-font;
-        color: var(--sc-secondary-text-color);
-        position: absolute;
         right: var(--sc-size-md);
+        position: absolute;
         margin-top: -34px;
         text-transform: none;
         pointer-events: none;
@@ -59,7 +71,7 @@ This is the base language menu that determines the language of the site.
         last-response="{{lastResponse}}"></iron-ajax>
 
     <paper-dropdown-menu class="language-menu-container" label="Language" title="Select the site in another language">
-      <paper-listbox class="language-menu-container" slot="dropdown-content" selected="{{selectedLanguageNr}}">
+      <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNr}}">
         <template is="dom-repeat" items="{{lastResponse}}" as="language">
           <paper-item class="language-menu-paper-item" id='[[language.uid]]'>
             <paper-item-body>

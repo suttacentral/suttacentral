@@ -12,13 +12,14 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 <dom-module id="more-par-menu">
   <template>
     <style is="custom-style">
+
       paper-item iron-icon {
         margin-right: var(--sc-size-md);
         color: var(--disabled-text-color);
       }
 
       .button-text {
-        color: inherit;
+        color: var(--sc-primary-text-color);
       }
 
       .button-text:hover {
@@ -72,7 +73,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           static get properties() {
               return {
                   item: {
-                      type: Object,
+                      type: Object
                   },
                   inputData: {
                       type: Object,
@@ -86,26 +87,26 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                       type: Object
                   },
                   loadingParallels: {
-                      type: Boolean,
+                      type: Boolean
                   },
                   areParallelsAvailable: {
                       type: Boolean,
                       value: false,
-                      computed: "_setAreParallelsAvaiable(loadingParallels)"
+                      computed: '_setAreParallelsAvaiable(loadingParallels)'
                   }
               }
           }
 
           _notifyCopy(message, success) {
               this.dispatchEvent(new CustomEvent('par-menu-copied', {
-                  detail: {message: message, success: success},
+                  detail: { message: message, success: success },
                   bubbles: true,
                   composed: true
               }))
           }
 
-          _sendRequest(){
-              if(this.parallels){
+          _sendRequest() {
+              if (this.parallels) {
                   return;
               }
               this.$.parallels_ajax.generateRequest();
@@ -124,7 +125,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
 
           _setAreParallelsAvaiable(loadingParallels) {
-              if (this.parallels === undefined || this.parallels === null){
+              if (this.parallels === undefined || this.parallels === null) {
                   return false;
               }
               return loadingParallels || (Object.keys(this.parallels).length === 0 && typeof this.parallels === 'object')
@@ -134,9 +135,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               const url = window.location;
               const baseUrl = url.protocol + '//' + url.host;
               try {
-                return `${baseUrl}/${this.item.uid}`;
+                  return `${baseUrl}/${this.item.uid}`;
               } catch (err) {
-                this._notifyCopy('Error!', false);
+                  this._notifyCopy('Error!', false);
               }
           }
 
@@ -166,13 +167,13 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
           // copies inputtext to the clipboard by creating and selecting a dummy element.
           _copyToClipboard(inputText) {
-              const textarea = document.createElement("textarea");
+              const textarea = document.createElement('textarea');
               textarea.textContent = inputText;
-              textarea.style.position = "fixed";
+              textarea.style.position = 'fixed';
               document.body.appendChild(textarea);
               textarea.select();
               try {
-                  return document.execCommand("copy");
+                  return document.execCommand('copy');
               } catch (err) {
                   console.error(err);
                   return false;
@@ -182,19 +183,19 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
 
           _computeIcon(parallel) {
-            switch (parallel.type) {
-                case 'full':
-                    if (parallel.resembling) {
-                        return '≈';
-                    }
-                    return '⮀';
-                case 'retelling':
-                    return '🔃';
-                case 'mention':
-                    return '❞';
-                default:
-                    return '';
-            }
+              switch (parallel.type) {
+                  case 'full':
+                      if (parallel.resembling) {
+                          return '≈';
+                      }
+                      return '⮀';
+                  case 'retelling':
+                      return '🔃';
+                  case 'mention':
+                      return '❞';
+                  default:
+                      return '';
+              }
           }
 
           // creates a parallels-table in html-string
