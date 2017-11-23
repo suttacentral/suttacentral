@@ -407,29 +407,36 @@
               const segments = this.shadowRoot.querySelector('#segmented_text_content')
                   .getElementsByTagName('sc-seg');
               Array.from(segments).forEach((segment) => {
-                  const inlineParagraph = document.createElement('a');
-                  inlineParagraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
-                      'textual-info-paragraph-inline', 'sc');
                   const parId = segment.id.split(':')[1];
                   // The 0 level is to be ignored when adding segmented IDs:
                   if (parId[0] === '0') {
                       return;
                   }
-                  // Insert inline paragraph:
-                  inlineParagraph.id = `${parId}_inline`;
-                  inlineParagraph.innerText = parId;
-                  inlineParagraph.href = `#${parId}`;
-                  inlineParagraph.title = 'SuttaCentral paragraph number';
-                  segment.insertBefore(inlineParagraph, segment.firstChild);
-                  // Insert regular paragraph:
-                  const paragraph = inlineParagraph.cloneNode(true);
-                  paragraph.id = parId;
-                  paragraph.classList.remove('textual-info-paragraph-inline');
-                  paragraph.setAttribute('data-reference-segment-id', segment.id);
-                  paragraph.addEventListener('click', () => {this._scrollToSection(parId, true, 0)});
-                  // insert before the first segment child to maintain paragraph order
-                  segment.parentNode.insertBefore(paragraph, segment.parentNode.getElementsByTagName('sc-seg')[0]);
+                  const inlineParagraph = this._insertInlineSegmentedParagraph(parId, segment);
+                  this._insertSegmentedParagraph(inlineParagraph, parId, segment);
               });
+          }
+
+          _insertInlineSegmentedParagraph(parId, segment) {
+              const inlineParagraph = document.createElement('a');
+              inlineParagraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
+                  'textual-info-paragraph-inline', 'sc');
+              inlineParagraph.id = `${parId}_inline`;
+              inlineParagraph.innerText = parId;
+              inlineParagraph.href = `#${parId}`;
+              inlineParagraph.title = 'SuttaCentral paragraph number';
+              segment.insertBefore(inlineParagraph, segment.firstChild);
+              return inlineParagraph;
+          }
+
+          _insertSegmentedParagraph(inlineParagraph, parId, segment) {
+              const paragraph = inlineParagraph.cloneNode(true);
+              paragraph.id = parId;
+              paragraph.classList.remove('textual-info-paragraph-inline');
+              paragraph.setAttribute('data-reference-segment-id', segment.id);
+              paragraph.addEventListener('click', () => {this._scrollToSection(parId, true, 0)});
+              // insert before the first segment child to maintain paragraph order
+              segment.parentNode.insertBefore(paragraph, segment.parentNode.getElementsByTagName('sc-seg')[0]);
           }
 
           _addSegmentedTextualInfoTopMargins() {
