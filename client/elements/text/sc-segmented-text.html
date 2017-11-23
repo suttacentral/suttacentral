@@ -306,29 +306,31 @@
                   textContent.classList.add('segmented-infomode');
                   // If the segmented paragraphs have been added already, don't do anything
                   if (!this.shadowRoot.querySelector('segmented-textual-info-paragraph')) {
-                      const segments = this.shadowRoot.querySelector('#segmented_text_content')
-                          .getElementsByTagName('sc-seg');
-                      Array.from(segments).forEach((segment) => {
-                          const paragraph = document.createElement('a');
-                          paragraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
-                              'textual-info-paragraph-inline', 'sc');
-                          const parId = segment.id.split(':')[1];
-                          // The 0 level is to be ignored when adding segmented IDs:
-                          if (parId[0] === '0') {
-                              return;
-                          }
-                          paragraph.id = parId;
-                          paragraph.innerText = parId;
-                          paragraph.href = `#${parId}`;
-                          paragraph.title = 'SuttaCentral paragraph number';
-                          segment.insertBefore(paragraph, segment.firstChild);
-                      });
-                  } else {
-                      return;
+                      this._addSegmentedTextualInfoElements();
                   }
               } else {
                   textContent.classList.remove('segmented-infomode');
               }
+          }
+
+          _addSegmentedTextualInfoElements() {
+              const segments = this.shadowRoot.querySelector('#segmented_text_content')
+                  .getElementsByTagName('sc-seg');
+              Array.from(segments).forEach((segment) => {
+                  const paragraph = document.createElement('a');
+                  paragraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
+                      'textual-info-paragraph-inline', 'sc');
+                  const parId = segment.id.split(':')[1];
+                  // The 0 level is to be ignored when adding segmented IDs:
+                  if (parId[0] === '0') {
+                      return;
+                  }
+                  paragraph.id = parId;
+                  paragraph.innerText = parId;
+                  paragraph.href = `#${parId}`;
+                  paragraph.title = 'SuttaCentral paragraph number';
+                  segment.insertBefore(paragraph, segment.firstChild);
+              });
           }
 
           _addPrimaryText(textStrings) {
