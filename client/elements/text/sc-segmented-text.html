@@ -270,14 +270,12 @@
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
                       this._addSegmentedTextualInfoTopMargins();
-                      //                      this._addSegmentedTextualInfoTopMargins();
                       break;
                   case 'linebyline':
                       textContent.classList.add('line-by-line');
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
                       this._addSegmentedTextualInfoTopMargins();
-                      //                      this._addSegmentedTextualInfoTopMargins();
                       break;
                   case 'popup':
                       this._addPopupTooltips(textContent);
@@ -444,17 +442,39 @@
           _addSegmentedTextualInfoTopMargins() {
               const segmentedParagraphs = this.shadowRoot
                   .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
+              let segments;
+              if (this.translatedSutta) {
+                  segments = this.shadowRoot.querySelectorAll('sc-seg.translated-text');
+              } else {
+                  segments = this.shadowRoot.querySelectorAll('sc-seg.original-text');
+              }
+              const segmentOffsets = {};
+              Array.from(segments).forEach((segment) => {
+                  segmentOffsets[segment.id] = {
+                      segmentOffset: segment.offsetTop,
+                      parentOffset: segment.parentNode.offsetTop
+                  };
+              });
               Array.from(segmentedParagraphs).forEach((paragraph) => {
-                  const segmentId = paragraph.getAttribute('data-reference-segment-id');
-                  const segment = this.shadowRoot.getElementById(segmentId);
+                  //                  const segmentId = paragraph.getAttribute('data-reference-segment-id')
+                  //                      .replace(':', '\\:').replace('.', '\\.');
+                  //                  const segment = paragraph.parentNode.querySelector(`#${segmentId}`);
                   let prevElemMargin = 0;
                   if (paragraph.previousSibling) {
+                      const prevTotalMargin = paragraph.previousSibling.getAttribute('data-total-margin');
                       const marginTop = parseInt(paragraph.previousSibling.style.marginTop);
-                      if (typeof marginTop === 'number' && !isNaN(marginTop)) {
-                          prevElemMargin = marginTop;
+                      if (!isNaN(marginTop)) {
+                          prevElemMargin = marginTop - paragraph.clientHeight;
+                          if (!isNaN(prevTotalMargin)) {
+                              prevElemMargin = prevTotalMargin - prevElemMargin;
+                              paragraph.setAttribute('data-total-margin', prevElemMargin);
+                          }
                       }
                   }
-                  paragraph.style.marginTop = segment.offsetTop - segment.parentElement.offsetTop - prevElemMargin;
+                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
+                  requestAnimationFrame(() => {
+                      paragraph.style.marginTop = offsets.segmentOffset - offsets.parentOffset - prevElemMargin;
+                  });
               });
           }
 
