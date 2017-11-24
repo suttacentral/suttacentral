@@ -273,13 +273,17 @@
                       textContent.classList.add('side-by-side');
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
-                      this._addSegmentedTextualInfoTopMargins();
+                      requestAnimationFrame(() => {
+//                          this._addSegmentedTextualInfoTopMargins();
+                      });
                       break;
                   case 'linebyline':
                       textContent.classList.add('line-by-line');
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
-                      this._addSegmentedTextualInfoTopMargins();
+                      requestAnimationFrame(() => {
+//                          this._addSegmentedTextualInfoTopMargins();
+                      });
                       break;
                   case 'popup':
                       this._addPopupTooltips(textContent);
@@ -424,7 +428,6 @@
           _insertInlineSegmentedParagraph(parId, segment) {
               const inlineParagraph = document.createElement('a');
               // Don't insert duplicate segments
-              console.log(segment.classList);
               if (this.translatedSutta && segment.classList.contains('original-text')) {
                   return;
               }
@@ -453,41 +456,30 @@
               });
           }
 
-          _addSegmentedTextualInfoTopMargins() {
-              const segmentedParagraphs = this.shadowRoot
-                  .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
-              let segments;
-              if (this.translatedSutta) {
-                  segments = this.shadowRoot.querySelectorAll('sc-seg.translated-text');
-              } else {
-                  segments = this.shadowRoot.querySelectorAll('sc-seg.original-text');
-              }
-              // store the segment offsets in an object to not query the elements in a loop which would force layout redraw:
-              const segmentOffsets = {};
-              Array.from(segments).forEach((s) => {
-                  segmentOffsets[s.id] = { segmentOffset: s.offsetTop, parentOffset: s.parentNode.offsetTop };
-              });
-              Array.from(segmentedParagraphs).forEach((paragraph) => {
-                  let prevElemMargin = 0;
-                  if (paragraph.previousSibling && paragraph.previousSibling.classList.contains('segmented-textual-info-paragraph')) {
-                      prevElemMargin += 24;
-                      //                      const prevTotalMargin = paragraph.previousSibling.getAttribute('data-total-margin');
-                      //                      const marginTop = parseInt(paragraph.previousSibling.style.marginTop);
-                      //                      if (!isNaN(marginTop)) {
-                      //                          console.log(paragraph.clientHeight);
-                      //                          prevElemMargin = marginTop;
-                      //                          if (!isNaN(prevTotalMargin)) {
-                      //                              prevElemMargin = prevTotalMargin - prevElemMargin;
-                      //                              paragraph.setAttribute('data-total-margin', prevElemMargin);
-                      //                          }
-                      //                      }
-                  }
-                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
-                  requestAnimationFrame(() => {
-                      paragraph.style.marginTop = offsets.segmentOffset - offsets.parentOffset - prevElemMargin;
-                  })
-              });
-          }
+//          _addSegmentedTextualInfoTopMargins() {
+//              const segmentedParagraphs = this.shadowRoot
+//                  .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
+//              let segments;
+//              if (this.translatedSutta) {
+//                  segments = this.shadowRoot.querySelectorAll('sc-seg.translated-text');
+//              } else {
+//                  segments = this.shadowRoot.querySelectorAll('sc-seg.original-text');
+//              }
+//              // store the segment offsets in an object to not query the elements in a loop which would force layout redraw:
+//              const segmentOffsets = {};
+//              Array.from(segments).forEach((s) => {
+//                  segmentOffsets[s.id] = { segmentOffset: s.offsetTop, parentOffset: s.parentNode.offsetTop };
+//              });
+//              Array.from(segmentedParagraphs).forEach((paragraph) => {
+//                  const paragraphCount = this._getPreviousSiblingCount(paragraph);
+//                  const paragraphCount = Array.from(paragraph.parentElement.childNodes).filter(i => i.nodeName === 'A').length;
+//                  console.log(paragraphCount);
+//                  debugger;
+//                  let prevElemMargin = 24 * (paragraphCount - 1);
+//                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
+//                  paragraph.style.marginTop = (offsets.segmentOffset - offsets.parentOffset) + prevElemMargin;
+//              });
+//          }
 
           _addParagraphData(item, data) {
               item.innerHTML = item.id.replace(data.uid, '');
