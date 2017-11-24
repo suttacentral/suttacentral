@@ -405,32 +405,7 @@
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
                           if(item.id.startsWith('pts')){
-                            const prefix = /[^\d]+/.exec(item.id)[0];
-                            const sufix = item.id.substring(prefix.length);
-                            let [vol, page] = sufix.split('.');
-                            page = Number(page);
-                            if(vol.includes('ed')){
-                                let ed;
-                                [ed, vol] = vol.split('ed');
-                            }
-                            vol = Number(vol);
-
-                            item.innerHTML = `
-                                <div class="image-link" title="View page image">
-                                    <span>${prefix.toUpperCase()} ${sufix}</span>
-                                    <iron-icon class="image-book-link" icon="sc-svg-icons:book">
-                                    </iron-icon>
-                                </div>
-                            `;
-                            item.classList.add('image-book-link');
-                            item.classList.add('textual-info-paragraph');
-                            item.addEventListener('click', () => {
-                                this.dispatchEvent(new CustomEvent('show-image', {
-                                    detail: {vol: vol, division: divisionId, page: page},
-                                    bubbles: true,
-                                    composed: true
-                                }))
-                            })
+                              this._processVolPageInfo(item, divisionId);
                         } else {
                             this._addParagraphData(item, paragraph);
                         }
@@ -439,6 +414,35 @@
                   });
               }
               this._scrollToSectionInUrl();
+          }
+
+          _processVolPageInfo(item, divisionId) {
+              const prefix = /[^\d]+/.exec(item.id)[0];
+              const suffix = item.id.substring(prefix.length);
+              let [vol, pageNumber] = suffix.split('.');
+              pageNumber = Number(pageNumber);
+              if (vol.includes('ed')) {
+                  let ed;
+                  [ed, vol] = vol.split('ed');
+              }
+              vol = Number(vol);
+
+              item.innerHTML = `
+                                <div class="image-link" title="View page image">
+                                    <span>${prefix.toUpperCase()} ${suffix}</span>
+                                    <iron-icon class="image-book-link" icon="sc-svg-icons:book">
+                                    </iron-icon>
+                                </div>
+                            `;
+              item.classList.add('image-book-link');
+              item.classList.add('textual-info-paragraph');
+              item.addEventListener('click', () => {
+                  this.dispatchEvent(new CustomEvent('show-image', {
+                      detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
+                      bubbles: true,
+                      composed: true
+                  }));
+              });
           }
 
           _addParagraphData(item, data) {

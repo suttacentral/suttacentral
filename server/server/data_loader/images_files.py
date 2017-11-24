@@ -24,7 +24,7 @@ def load_images_links(db):
                 'name': entry,
                 'division': re_data['division'],
                 'vol': int(vol_number),
-                'page': int(re_data['page_number'])
+                'page_number': int(re_data['page_number'])
             })
 
     collection = db['images']

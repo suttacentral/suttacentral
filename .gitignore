@@ -11,3 +11,4 @@ client/data/
 /server/nextdata/
 .DS_Store
 /client/node_modules/
+package-lock.json
