@@ -83,12 +83,10 @@
           static get properties() {
               return {
                   rootSutta: {
-                      type: Object,
-                      observer: '_updateView'
+                      type: Object
                   },
                   translatedSutta: {
-                      type: Object,
-                      observer: '_updateView'
+                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -190,6 +188,10 @@
                           'thai': 'Thai',
                           'myanmar': 'Mymr'
                       }
+                  },
+                  segmentedIDsAdded: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -293,10 +295,18 @@
                   case 'sidebyside':
                       textContent.classList.add('side-by-side');
                       this._addSecondaryText();
+                      this._toggleSegmentedTextualInfo(true);
+                      requestAnimationFrame(() => {
+//                          this._addSegmentedTextualInfoTopMargins();
+                      });
                       break;
                   case 'linebyline':
                       textContent.classList.add('line-by-line');
                       this._addSecondaryText();
+                      this._toggleSegmentedTextualInfo(true);
+                      requestAnimationFrame(() => {
+//                          this._addSegmentedTextualInfoTopMargins();
+                      });
                       break;
                   case 'popup':
                       this._addPopupTooltips(textContent);
@@ -317,6 +327,16 @@
                   Array.from(this.shadowRoot.querySelectorAll('.original-text')).forEach(item => {
                       item.parentNode.removeChild(item);
                   });
+              }
+              this._toggleSegmentedTextualInfo(false);
+          }
+
+          _toggleSegmentedTextualInfo(showSegmentedIDs) {
+              const textContent = this.shadowRoot.querySelector('#segmented_text_content');
+              if (showSegmentedIDs) {
+                  textContent.classList.add('segmented-infomode');
+              } else {
+                  textContent.classList.remove('segmented-infomode');
               }
           }
 
@@ -413,6 +433,10 @@
                       });
                   });
               }
+              // Add segmented textal information paragraphs if not added already
+              if (!this.segmentedIDsAdded) {
+                  this._addSegmentedTextualInfoElements();
+              }
               this._scrollToSectionInUrl();
           }
 
@@ -445,13 +469,82 @@
               });
           }
 
+          _addSegmentedTextualInfoElements() {
+              const segments = this.shadowRoot.querySelectorAll('sc-seg');
+              Array.from(segments).forEach((segment) => {
+                  const parId = segment.id.split(':')[1];
+                  // The 0 level is to be ignored when adding segmented IDs:
+                  if (parId[0] === '0') {
+                      return;
+                  }
+                  const inlineParagraph = this._insertInlineSegmentedParagraph(parId, segment);
+                  this._insertSegmentedParagraph(inlineParagraph, parId, segment);
+              });
+              this.segmentedIDsAdded = true;
+          }
+
+          _insertInlineSegmentedParagraph(parId, segment) {
+              // Don't insert duplicate segments
+              if (this.translatedSutta && segment.classList.contains('original-text')) {
+                  return;
+              }
+              const inlineParagraph = document.createElement('a');
+              inlineParagraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
+                  'textual-info-paragraph-inline', 'sc');
+              inlineParagraph.id = `${parId}_inline`;
+              inlineParagraph.innerText = parId;
+              inlineParagraph.href = `#${parId}`;
+              inlineParagraph.title = 'SuttaCentral paragraph number';
+              inlineParagraph.addEventListener('click', () => { this._scrollToSection(inlineParagraph.id, true, 0) });
+              requestAnimationFrame(() => {
+                  segment.insertBefore(inlineParagraph, segment.firstChild);
+              });
+              return inlineParagraph;
+          }
+
+          _insertSegmentedParagraph(inlineParagraph, parId, segment) {
+              const paragraph = inlineParagraph.cloneNode(true);
+              paragraph.id = parId;
+              paragraph.classList.remove('textual-info-paragraph-inline');
+              paragraph.setAttribute('data-reference-segment-id', segment.id);
+              paragraph.addEventListener('click', () => {this._scrollToSection(parId, true, 0)});
+              // insert before the first segment child to maintain paragraph order
+              requestAnimationFrame(() => {
+                  segment.parentNode.insertBefore(paragraph, segment.parentNode.getElementsByTagName('sc-seg')[0]);
+              });
+          }
+
+//          _addSegmentedTextualInfoTopMargins() {
+//              const segmentedParagraphs = this.shadowRoot
+//                  .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
+//              let segments;
+//              if (this.translatedSutta) {
+//                  segments = this.shadowRoot.querySelectorAll('sc-seg.translated-text');
+//              } else {
+//                  segments = this.shadowRoot.querySelectorAll('sc-seg.original-text');
+//              }
+//              // store the segment offsets in an object to not query the elements in a loop which would force layout redraw:
+//              const segmentOffsets = {};
+//              Array.from(segments).forEach((s) => {
+//                  segmentOffsets[s.id] = { segmentOffset: s.offsetTop, parentOffset: s.parentNode.offsetTop };
+//              });
+//              Array.from(segmentedParagraphs).forEach((paragraph) => {
+//                  const paragraphCount = this._getPreviousSiblingCount(paragraph);
+//                  const paragraphCount = Array.from(paragraph.parentElement.childNodes).filter(i => i.nodeName === 'A').length;
+//                  console.log(paragraphCount);
+//                  debugger;
+//                  let prevElemMargin = 24 * (paragraphCount - 1);
+//                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
+//                  paragraph.style.marginTop = (offsets.segmentOffset - offsets.parentOffset) + prevElemMargin;
+//              });
+//          }
+
           _addParagraphData(item, data) {
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph');
               item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); });
-              
           }
 
           _addInlineParagraph(item) {
@@ -516,7 +609,7 @@
               } else {
                   textualInfoId = `${window.location.hash.substr(1)}`;
               }
-              this._scrollToSection(textualInfoId, false, 1000);
+              this._scrollToSection(textualInfoId, false, 2000);
           }
 
           _changeScript(toScript) {
