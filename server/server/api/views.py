@@ -8,7 +8,8 @@ from flask_restful import Resource
 from sortedcontainers import SortedListWithKey, SortedDict
 
 from common.arangodb import get_db
-from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST
+from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST, \
+    IMAGES
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key
 
 
@@ -347,7 +348,7 @@ class LookupDictionaries(Resource):
 
 
 class Sutta(Resource):
-    def get(self, uid, author: str=''):
+    def get(self, uid, author=''):
         """
         Send Complete information set for sutta-view for given uid.
         ---
@@ -614,3 +615,28 @@ class Donations(Resource):
                 statement_descriptor='SuttaCentralDonation',
                 id=plan_id)
         return plan
+
+
+class Images(Resource):
+    def get(self, division, vol):
+        """
+        Send list of images for given division.
+        ---
+        responses:
+            200:
+                schema:
+                    id: images
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                            page:
+                                type: number
+        """
+        db = get_db()
+
+        data = db.aql.execute(IMAGES, bind_vars={'division': division, 'vol': vol})
+
+        return data.batch(), 200
