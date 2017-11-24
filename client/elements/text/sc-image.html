@@ -83,7 +83,7 @@
           }
 
           _handleResponse() {
-              setTimeout(() => {
+              requestAnimationFrame(() => {
                   const options = {
                     url: (e) => e.dataUrl,
                     navbar: false,
@@ -97,7 +97,7 @@
                   }
                   this.viewer.index = this.pageNumber - 1;
                   this.viewer.show();
-              }, 10)
+              });
           }
       }
 
