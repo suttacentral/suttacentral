@@ -2,6 +2,8 @@
 <link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+<link rel="imoprt" href="/bower_components/iron-meta/iron-meta.html">
+<link rel="imoprt" href="/bower_components/iron-icon/iron-icon.html">
 
 <link rel="import" href="/elements/text/sc-text-options.html">
 <link rel="import" href="/styles/sc-text-styles.html">
@@ -10,11 +12,30 @@
 <link rel="import" href="/elements/lookups/sc-pli.html">
 <link rel="import" href="/elements/lookups/sc-lzh2en.html">
 <link rel="import" href="/elements/lookups/sc-lookup-styles.html">
+<link rel="import" href="/img/sc-svg-icons.html">
 
 <dom-module id="sc-segmented-text">
 
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles">
+      :host {
+        --iron-icon-fill-color: var(--sc-disabled-text-color);
+        --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
+        --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
+      }
+
+      .image-link {
+          cursor: pointer;
+      }
+
+      .image-book-link {
+          margin-bottom: .5em;
+          margin-left: .2em;
+      }
+
+      .image-book-link:before {
+            display: none;
+      }
 
       .text-center {
         text-align: center;
@@ -31,6 +52,8 @@
       }
 
     </style>
+
+    <iron-meta id="meta"></iron-meta>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
@@ -371,6 +394,8 @@
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
+              const uid = (this.rootSutta || this.translatedSutta).uid;
+              const divisionId = /^[a-z]+/.exec(uid)[0];
               this._setParagraphsVisible(this.showParagraphs);
               const paragraphsAdded =
                   this.$.segmented_text_content.querySelector('.textual-info-paragraph') !== null;
@@ -379,12 +404,45 @@
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
-                          this._addParagraphData(item, paragraph);
-                          this._addInlineParagraph(item);
+                          if(item.id.startsWith('pts')){
+                              this._processVolPageInfo(item, divisionId);
+                        } else {
+                            this._addParagraphData(item, paragraph);
+                        }
+                        this._addInlineParagraph(item);
                       });
                   });
               }
               this._scrollToSectionInUrl();
+          }
+
+          _processVolPageInfo(item, divisionId) {
+              const prefix = /[^\d]+/.exec(item.id)[0];
+              const suffix = item.id.substring(prefix.length);
+              let [vol, pageNumber] = suffix.split('.');
+              pageNumber = Number(pageNumber);
+              if (vol.includes('ed')) {
+                  let ed;
+                  [ed, vol] = vol.split('ed');
+              }
+              vol = Number(vol);
+
+              item.innerHTML = `
+                                <div class="image-link" title="View page image">
+                                    <span>${prefix.toUpperCase()} ${suffix}</span>
+                                    <iron-icon class="image-book-link" icon="sc-svg-icons:book">
+                                    </iron-icon>
+                                </div>
+                            `;
+              item.classList.add('image-book-link');
+              item.classList.add('textual-info-paragraph');
+              item.addEventListener('click', () => {
+                  this.dispatchEvent(new CustomEvent('show-image', {
+                      detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
+                      bubbles: true,
+                      composed: true
+                  }));
+              });
           }
 
           _addParagraphData(item, data) {
@@ -393,6 +451,7 @@
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph');
               item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); });
+              
           }
 
           _addInlineParagraph(item) {

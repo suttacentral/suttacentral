@@ -22,3 +22,4 @@ tqdm==4.17.1
 pytest-sugar==0.9.0
 stripe==1.65.1
 sortedcontainers==1.5.7
+requests==2.18.3

@@ -1,0 +1,106 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
+
+<link href="/node_modules/viewerjs/dist/viewer.min.css" rel="stylesheet">
+<link rel="import" href="/elements/text/sc-viewer-import.html">
+
+<dom-module id="sc-image">
+  <template>
+
+    <style>
+        .hide {
+            display: none;
+        }
+    </style>
+    
+    <iron-meta id="meta"></iron-meta>
+
+    <iron-ajax
+        id="ajax"
+        debounce-duration="500"
+        handle-as="json"
+        loading="{{isLoading}}"
+        last-error="{{lastError}}"
+        last-response="{{imageData}}"
+        on-response="_handleResponse"></iron-ajax>
+
+    <ul id="images" class="hide">
+        <template is="dom-repeat" items="[[imageData]]" as="image">
+            <li><img class="image" data-url="[[_getImageUrl(image.name)]]" alt="[[image.name]]"></li>      
+        </template>
+    </ul>
+
+  </template>
+
+  <script>
+      class SCImage extends Polymer.Element {
+          static get is() {
+              return 'sc-image';
+          }
+
+          static get properties() {
+              return {
+                  division: {
+                      type: String
+                  },
+                  vol: {
+                      type: String
+                  },
+                  pageNumber: {
+                    type: Number
+                  },
+                  isLoading: {
+                      type: Boolean,
+                      value: false
+                  },
+                  lastError: {
+                      type: Object
+                  },
+                  imageData: {
+                      type: Array
+                  },
+                  viewer: {
+                      type: Object
+                  }
+              }
+          }
+
+          showImage(detail) {
+            this.division = detail.division;
+            this.vol = detail.vol;
+            this.pageNumber = detail.pageNumber;
+            this.$.ajax.url = this._getUrl();
+            this.$.ajax.generateRequest();
+          }
+
+          _getUrl() {
+            return `${this.$.meta.byKey('API_ROOT')}/images/${this.division}/${this.vol}`;
+          }
+
+          _getImageUrl(name) {
+            return `${this.$.meta.byKey('IMAGES_ROOT')}/${name}`;
+          }
+
+          _handleResponse() {
+              requestAnimationFrame(() => {
+                  const options = {
+                    url: (e) => e.dataUrl,
+                    navbar: false,
+                    transition: false
+                  }
+                  
+                  if(this.viewer){
+                    this.viewer.update();
+                  } else {
+                    this.viewer = new Viewer(this.$.images, options);
+                  }
+                  this.viewer.index = this.pageNumber - 1;
+                  this.viewer.show();
+              });
+          }
+      }
+
+      customElements.define(SCImage.is, SCImage);
+  </script>
+</dom-module>
