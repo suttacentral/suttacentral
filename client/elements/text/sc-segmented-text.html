@@ -484,11 +484,11 @@
           }
 
           _insertInlineSegmentedParagraph(parId, segment) {
-              const inlineParagraph = document.createElement('a');
               // Don't insert duplicate segments
               if (this.translatedSutta && segment.classList.contains('original-text')) {
                   return;
               }
+              const inlineParagraph = document.createElement('a');
               inlineParagraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
                   'textual-info-paragraph-inline', 'sc');
               inlineParagraph.id = `${parId}_inline`;
@@ -545,7 +545,6 @@
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph');
               item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); });
-
           }
 
           _addInlineParagraph(item) {
