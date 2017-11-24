@@ -165,6 +165,10 @@
                           'thai': 'Thai',
                           'myanmar': 'Mymr'
                       }
+                  },
+                  segmentedIDsAdded: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -397,15 +401,14 @@
                   });
               }
               // Add segmented textal information paragraphs if not added already
-              if (!this.shadowRoot.querySelector('.segmented-textual-info-paragraph')) {
+              if (!this.segmentedIDsAdded) {
                   this._addSegmentedTextualInfoElements();
               }
               this._scrollToSectionInUrl();
           }
 
           _addSegmentedTextualInfoElements() {
-              const segments = this.shadowRoot.querySelector('#segmented_text_content')
-                  .getElementsByTagName('sc-seg');
+              const segments = this.shadowRoot.querySelectorAll('sc-seg');
               Array.from(segments).forEach((segment) => {
                   const parId = segment.id.split(':')[1];
                   // The 0 level is to be ignored when adding segmented IDs:
@@ -415,17 +418,26 @@
                   const inlineParagraph = this._insertInlineSegmentedParagraph(parId, segment);
                   this._insertSegmentedParagraph(inlineParagraph, parId, segment);
               });
+              this.segmentedIDsAdded = true;
           }
 
           _insertInlineSegmentedParagraph(parId, segment) {
               const inlineParagraph = document.createElement('a');
+              // Don't insert duplicate segments
+              console.log(segment.classList);
+              if (this.translatedSutta && segment.classList.contains('original-text')) {
+                  return;
+              }
               inlineParagraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
                   'textual-info-paragraph-inline', 'sc');
               inlineParagraph.id = `${parId}_inline`;
               inlineParagraph.innerText = parId;
               inlineParagraph.href = `#${parId}`;
               inlineParagraph.title = 'SuttaCentral paragraph number';
-              segment.insertBefore(inlineParagraph, segment.firstChild);
+              inlineParagraph.addEventListener('click', () => { this._scrollToSection(inlineParagraph.id, true, 0) });
+              requestAnimationFrame(() => {
+                  segment.insertBefore(inlineParagraph, segment.firstChild);
+              });
               return inlineParagraph;
           }
 
@@ -436,7 +448,9 @@
               paragraph.setAttribute('data-reference-segment-id', segment.id);
               paragraph.addEventListener('click', () => {this._scrollToSection(parId, true, 0)});
               // insert before the first segment child to maintain paragraph order
-              segment.parentNode.insertBefore(paragraph, segment.parentNode.getElementsByTagName('sc-seg')[0]);
+              requestAnimationFrame(() => {
+                  segment.parentNode.insertBefore(paragraph, segment.parentNode.getElementsByTagName('sc-seg')[0]);
+              });
           }
 
           _addSegmentedTextualInfoTopMargins() {
@@ -448,27 +462,29 @@
               } else {
                   segments = this.shadowRoot.querySelectorAll('sc-seg.original-text');
               }
+              // store the segment offsets in an object to not query the elements in a loop which would force layout redraw:
               const segmentOffsets = {};
               Array.from(segments).forEach((s) => {
                   segmentOffsets[s.id] = { segmentOffset: s.offsetTop, parentOffset: s.parentNode.offsetTop };
               });
               Array.from(segmentedParagraphs).forEach((paragraph) => {
                   let prevElemMargin = 0;
-                  if (paragraph.previousSibling) {
-                      const prevTotalMargin = paragraph.previousSibling.getAttribute('data-total-margin');
-                      const marginTop = parseInt(paragraph.previousSibling.style.marginTop);
-                      if (!isNaN(marginTop)) {
-                          console.log(paragraph.clientHeight);
-                          prevElemMargin = marginTop;
-                          if (!isNaN(prevTotalMargin)) {
-                              prevElemMargin = prevTotalMargin - prevElemMargin;
-                              paragraph.setAttribute('data-total-margin', prevElemMargin);
-                          }
-                      }
+                  if (paragraph.previousSibling && paragraph.previousSibling.classList.contains('segmented-textual-info-paragraph')) {
+                      prevElemMargin += 24;
+                      //                      const prevTotalMargin = paragraph.previousSibling.getAttribute('data-total-margin');
+                      //                      const marginTop = parseInt(paragraph.previousSibling.style.marginTop);
+                      //                      if (!isNaN(marginTop)) {
+                      //                          console.log(paragraph.clientHeight);
+                      //                          prevElemMargin = marginTop;
+                      //                          if (!isNaN(prevTotalMargin)) {
+                      //                              prevElemMargin = prevTotalMargin - prevElemMargin;
+                      //                              paragraph.setAttribute('data-total-margin', prevElemMargin);
+                      //                          }
+                      //                      }
                   }
                   const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
                   requestAnimationFrame(() => {
-                      paragraph.style.marginTop = offsets.segmentOffset - offsets.parentOffset - prevElemMargin - 24;
+                      paragraph.style.marginTop = offsets.segmentOffset - offsets.parentOffset - prevElemMargin;
                   })
               });
           }
