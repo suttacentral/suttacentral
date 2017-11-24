@@ -266,7 +266,8 @@ LET legacy = (
     
     FILTER chosen != null
     LIMIT 2
-    RETURN chosen
+    LET additional_info = KEEP(DOCUMENT(CONCAT('root/', chosen.uid)), ['name', 'acronym'])
+    RETURN MERGE(chosen, {original_title: additional_info.name, acronym: additional_info.acronym})
 '''
 
 
