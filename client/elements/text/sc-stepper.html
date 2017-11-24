@@ -121,7 +121,7 @@
                 <iron-icon icon="arrow-back" class="arrow arrow-left"></iron-icon>
                 <div class="text-element">
                   <span class="action">Previous</span>
-                  <span class="text-title">[[previous.title]]</span>
+                  <span class="text-title">[[_getNameToDisplay(previous)]]</span>
                 </div>
               </div>
             </div>
@@ -139,7 +139,7 @@
               <div class="text">
                 <div class="text-element text-element-right">
                   <span class="action">Next</span>
-                  <span class="text-title">[[next.title]]</span>
+                  <span class="text-title">[[_getNameToDisplay(next)]]</span>
                 </div>
                 <iron-icon icon="arrow-forward" class="arrow arrow-right"></iron-icon>
               </div>
@@ -176,6 +176,10 @@
         const author = object.author;
         const uid = object.uid;
         return `/${uid}/${this.lang}/${author}`;
+      }
+
+      _getNameToDisplay(item) {
+        return item.title || item.original_title || item.acronym;
       }
     }
 
