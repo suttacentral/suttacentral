@@ -103,7 +103,7 @@
                         </div>`;
           }
 
-          _constructFallbackEntry() {
+          _constructFallbackEntry(graph) {
               const href = `http://www.buddhism-dict.net/cgi-bin/dealt-lookup?q=${encodeURI(graph)}`;
               return `<div class="fallback definition">
                           <span class="ideograph">
@@ -113,7 +113,7 @@
                           <span class="meaning">
                             ${this.fallbackDictData.dictionary[graph][0]}: ${this.fallbackDictData.dictionary[graph][1]} [modern chinese]
                           </span>
-                          <hr>
+                          <hr class="separator">
                         </div>`
           }
 
