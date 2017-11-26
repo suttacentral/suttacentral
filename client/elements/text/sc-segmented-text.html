@@ -25,16 +25,16 @@
       }
 
       .image-link {
-          cursor: pointer;
+        cursor: pointer;
       }
 
       .image-book-link {
-          margin-bottom: .5em;
-          margin-left: .2em;
+        margin-bottom: .5em;
+        margin-left: .2em;
       }
 
       .image-book-link:before {
-            display: none;
+        display: none;
       }
 
       .text-center {
@@ -296,17 +296,17 @@
                       textContent.classList.add('side-by-side');
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
-                      requestAnimationFrame(() => {
+//                      requestAnimationFrame(() => {
 //                          this._addSegmentedTextualInfoTopMargins();
-                      });
+//                      });
                       break;
                   case 'linebyline':
                       textContent.classList.add('line-by-line');
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
-                      requestAnimationFrame(() => {
+//                      requestAnimationFrame(() => {
 //                          this._addSegmentedTextualInfoTopMargins();
-                      });
+//                      });
                       break;
                   case 'popup':
                       this._addPopupTooltips(textContent);
@@ -424,12 +424,12 @@
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
-                          if(item.id.startsWith('pts')){
+                          if (item.id.startsWith('pts')) {
                               this._processVolPageInfo(item, divisionId);
-                        } else {
-                            this._addParagraphData(item, paragraph);
-                        }
-                        this._addInlineParagraph(item);
+                          } else {
+                              this._addParagraphData(item, paragraph);
+                          }
+                          this._addInlineParagraph(item);
                       });
                   });
               }
@@ -514,30 +514,51 @@
               });
           }
 
-//          _addSegmentedTextualInfoTopMargins() {
-//              const segmentedParagraphs = this.shadowRoot
-//                  .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
-//              let segments;
-//              if (this.translatedSutta) {
-//                  segments = this.shadowRoot.querySelectorAll('sc-seg.translated-text');
-//              } else {
-//                  segments = this.shadowRoot.querySelectorAll('sc-seg.original-text');
-//              }
-//              // store the segment offsets in an object to not query the elements in a loop which would force layout redraw:
-//              const segmentOffsets = {};
-//              Array.from(segments).forEach((s) => {
-//                  segmentOffsets[s.id] = { segmentOffset: s.offsetTop, parentOffset: s.parentNode.offsetTop };
-//              });
-//              Array.from(segmentedParagraphs).forEach((paragraph) => {
-//                  const paragraphCount = this._getPreviousSiblingCount(paragraph);
-//                  const paragraphCount = Array.from(paragraph.parentElement.childNodes).filter(i => i.nodeName === 'A').length;
-//                  console.log(paragraphCount);
-//                  debugger;
-//                  let prevElemMargin = 24 * (paragraphCount - 1);
-//                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
-//                  paragraph.style.marginTop = (offsets.segmentOffset - offsets.parentOffset) + prevElemMargin;
-//              });
-//          }
+          _addSegmentedTextualInfoTopMargins() {
+              console.log('addTopMargins');
+              const segmentedParagraphs = this.shadowRoot
+                  .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
+              //              let segments;
+              //              if (this.translatedSutta) {
+              //                  segments = this.shadowRoot.querySelectorAll('sc-seg.translated-text');
+              //              } else {
+              //                  segments = this.shadowRoot.querySelectorAll('sc-seg.original-text');
+              //              }
+              // store the segment offsets in an object to not query the elements in a loop which would force layout redraw:
+              //              const segmentOffsets = {};
+              //              Array.from(segments).forEach((s) => {
+              //                  segmentOffsets[s.id] = { segmentOffset: s.offsetTop, parentOffset: s.parentNode.offsetTop };
+              //              });
+              Array.from(segmentedParagraphs).forEach((paragraph) => {
+                  paragraph.style.position = 'fixed';
+                  paragraph.style.right = '10%';
+                  //                  const paragraphCount = this._getPreviousSiblingCount(paragraph);
+                  //                  console.log(paragraphCount);
+                  //                  let prevElemMargin = 0;
+                  //                  if (paragraph.previousSibling && paragraph.previousSibling.nodeName === 'A') {
+                  //                      prevElemMargin = 24;
+                  //                  }
+                  //                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
+                  //                  paragraph.style.marginTop = (offsets.segmentOffset - offsets.parentOffset) + prevElemMargin;
+                  //                  paragraph.style.marginTop = (offsets.segmentOffset - offsets.parentOffset);
+                  const segId = paragraph.getAttribute('data-reference-segment-id');
+                  const seg = this.shadowRoot.querySelector(`#${segId.replace(':', '\\:').replace('.', '\\.')}`);
+                  document.addEventListener('scroll', () => {
+                      requestAnimationFrame(() => {
+                          paragraph.style.top = seg.getBoundingClientRect().top
+                      });
+                  });
+              });
+          }
+
+          _getPreviousSiblingCount(paragraph) {
+              let count = 0;
+              while (paragraph = paragraph.previousSibling) {
+                  if (paragraph.nodeType === 3) continue; // text node
+                  if (paragraph.nodeName === 'A') count++;
+              }
+              return count;
+          }
 
           _addParagraphData(item, data) {
               item.innerHTML = item.id.replace(data.uid, '');
