@@ -192,6 +192,10 @@
                   segmentedIDsAdded: {
                       type: Boolean,
                       value: false
+                  },
+                  scriptChanged: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -295,17 +299,17 @@
                       textContent.classList.add('side-by-side');
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
-//                      requestAnimationFrame(() => {
-//                          this._addSegmentedTextualInfoTopMargins();
-//                      });
+                      //                      requestAnimationFrame(() => {
+                      //                          this._addSegmentedTextualInfoTopMargins();
+                      //                      });
                       break;
                   case 'linebyline':
                       textContent.classList.add('line-by-line');
                       this._addSecondaryText();
                       this._toggleSegmentedTextualInfo(true);
-//                      requestAnimationFrame(() => {
-//                          this._addSegmentedTextualInfoTopMargins();
-//                      });
+                      //                      requestAnimationFrame(() => {
+                      //                          this._addSegmentedTextualInfoTopMargins();
+                      //                      });
                       break;
                   case 'popup':
                       this._addPopupTooltips(textContent);
@@ -393,7 +397,6 @@
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                       this._putIntoSpans('.original-text', this.rootSutta.lang);
                   }
-                  this._changeScript(this.paliScript);
               }
               textContainer.classList.add('latin-script');
           }
@@ -639,15 +642,19 @@
               const segments = this.shadowRoot.querySelectorAll('.original-text');
               const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
               const scriptNames = Object.keys(this.scriptIsoCodes);
-              this._resetScript(segments, tooltips);
+              if (this.scriptChanged) {
+                  this._resetScript(segments, tooltips);
+              }
               if (toScript === 'latin') {
                   this.$.segmented_text_content.classList.add('latin-script');
                   // set the latin text segment iso codes, if not set already
                   if (!this.$.segmented_text_content.querySelector(`.original-text[lang='pli-Latn']`)) {
                       segments.forEach((item) => this._setScriptISOCode(item, this.rootLang));
                   }
+                  this.scriptChanged = false;
               } else if (scriptNames.includes(toScript)) { // if the script name is valid:
                   this._setScript(toScript, segments, tooltips);
+                  this.scriptChanged = true;
               }
               if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
                   this._setScriptISOCode(this.shadowRoot.querySelector('#text'), this.rootLang);
@@ -726,6 +733,7 @@
           }
 
           _putWordsIntoSpans(selector) {
+              console.log('putting words into spans');
               this._startGeneratingSpans(selector, 'word');
           }
 
