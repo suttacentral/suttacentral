@@ -193,7 +193,7 @@
                       type: Boolean,
                       value: false
                   },
-                  scriptChanged: {
+                  hasScriptBeenChanged: {
                       type: Boolean,
                       value: false
                   }
@@ -528,8 +528,8 @@
               Array.from(segmentedParagraphs).forEach((paragraph) => {
                   const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
                   let paragraphMargin = 0;
-                  if (paragraph.previousElementSibling &&
-                      paragraph.previousElementSibling.classList.contains('segmented-textual-info-paragraph')) {
+                  const previousSibling = paragraph.previousElementSibling;
+                  if (previousSibling && previousSibling.classList.contains('segmented-textual-info-paragraph')) {
                       paragraphMargin = 24;
                   }
                   if (offsets.prevElemOffset) {
@@ -639,7 +639,7 @@
               const segments = this.shadowRoot.querySelectorAll('.original-text');
               const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
               const scriptNames = Object.keys(this.scriptIsoCodes);
-              if (this.scriptChanged) {
+              if (this.hasScriptBeenChanged) {
                   this._resetScript(segments, tooltips);
               }
               if (toScript === 'latin') {
@@ -648,10 +648,10 @@
                   if (!this.$.segmented_text_content.querySelector(`.original-text[lang='pli-Latn']`)) {
                       segments.forEach((item) => this._setScriptISOCode(item, this.rootLang));
                   }
-                  this.scriptChanged = false;
+                  this.hasScriptBeenChanged = false;
               } else if (scriptNames.includes(toScript)) { // if the script name is valid:
                   this._setScript(toScript, segments, tooltips);
-                  this.scriptChanged = true;
+                  this.hasScriptBeenChanged = true;
               }
               if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
                   this._setScriptISOCode(this.shadowRoot.querySelector('#text'), this.rootLang);
