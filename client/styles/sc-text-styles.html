@@ -91,7 +91,7 @@
 
       .infomode .term,
       .infomode .gloss {
-        color: var(--paper-green-500);
+        color: var(--sc-primary-accent-color);
       }
 
       .term {
@@ -106,7 +106,7 @@
         @apply --padding-md;
         color: var(--sc-secondary-text-color);
         background: var(--sc-primary-background-color);
-        border: 1px solid var(--sc-primary-background-color);
+        border: 1px solid var(--sc-tertiary-background-color);
         border-radius: var(--sc-size-xxs);
         display: inline-block;
         margin-bottom: var(--sc-size-md);
@@ -222,8 +222,8 @@
       TITLE: Surplus text.
       */
 
-      .supplied .infomode {
-        color: var(--paper-cyan-500)
+      .infomode .supplied {
+        color: var(--sc-primary-color)
       }
 
       /*In almost all Sanskrit texts, there is reconstruction by the editor. These are marked <span class="supplied"></span>. In CSS this should by default display normally, and optionally, use color
@@ -232,8 +232,8 @@
       TITLE: Text hypothetically reconstructed by the editor or translator.
       */
 
-      .supplied2 .infomode {
-        color: var(--paper-cyan-500);
+      .infomode .supplied2 {
+        color: var(--sc-primary-color-dark);
       }
 
       /*In some cases there are two forms of supplied text, usually differentiated in the original by () and []. This difference is retained by using supplied2 for the []. Actually these should be marked more clearly to differentiate them, but this will differ according to the various publications, which I don't have. So for now let them behave as for .supplied, except use
@@ -267,17 +267,17 @@
         font-style: italic;
       }
 
-      .pe .infomode {
-        color: var(--paper-cyan-500);
+      .infomode .pe {
+        color: var(--sc-secondary-text-color);
       }
 
       .metre {
         display: none;
       }
 
-      .metre .infomode {
+      .infomode .metre {
         @apply --sc-skolar-font-size-xxs;
-        color: var(--paper-orange-500);
+        color: var(--sc-primary-accent-color);
         display: block;
         position: absolute;
         margin-top: -0.5rem;
@@ -288,8 +288,8 @@
         display: inline
       }
 
-      .expanded .infomode {
-        color: var(--sc-paper-tooltip-color);
+      .infomode .expanded {
+        color: var(--sc-secondary-text-color);
       }
 
       .suppliedmetre {
@@ -302,7 +302,7 @@
       */
 
       .gap {
-        color: var(--paper-green-300)
+        color: var(--sc-secondary-text-color)
       }
 
       /*For marking gaps in the text, which are filled in with + or the like.  In IB Horner's translation, deliberate gaps were marked by the translator with an *. Accidental omissions are marked with +.
@@ -310,11 +310,11 @@
       TITLE: Gap in the manuscript.
       */
 
-      .choice .corr {
+      .corr {
         display: none;
       }
 
-      .infomode .choice .corr {
+      .infomode .corr {
         @apply --sc-sans-font;
         display: inline-block;
         position: absolute;
@@ -330,44 +330,11 @@
         box-shadow: 6px var(--sc-size-xs) 10px rgba(136, 136, 136, 0.3);
       }
 
-      .infomode .choice:hover .corr {
+      .infomode .corr {
         visibility: visible;
         opacity: 1;
         transition: opacity 0.3s ease;
       }
-
-      /*A corrected reading that has been adopted in the text (usually by the latest editor mentioned in the meta). Hide by default.
-
-
-      TITLE: Reading corrected by the editor.
-      */
-
-      .sic .infomode {
-        color: var(--paper-red-500);
-      }
-
-      /*
-      TITLE: Apparently incorrect reading determined by the editor.
-      */
-
-      .lem .infomode {
-        color: var(--paper-brown-500);
-      }
-
-      /*The adopted main reading in a text. Display normally.
-
-
-
-      TITLE: Accepted reading in this text.
-      */
-
-      .rdg {
-      }
-
-      /*A variant reading. Use the same color as for "var" above. In fact, these var should be merged under rdg (which is the TEI terminology.) THIS IS BROKEN
-
-      TITLE: Variant reading.
-      */
 
       cite.book {
         font-style: italic;
@@ -389,12 +356,12 @@
 
       /*As it says.*/
 
-      .del {
+      .del, .del-scribe {
         display: none
       }
 
-      .del .infomode {
-        color: var(--paper-red-500);
+      .infomode .del, .infomode .del-scribe {
+        text-decoration: line-through;
         display: inline
       }
 
@@ -424,7 +391,6 @@
 
       .scribe {
         font-style: italic;
-        text-align: right
       }
 
       /*note in the text recording who copied the text*/
@@ -450,7 +416,7 @@
       /*= .note in CBETA text. Changed to avoid confusion with SC's .note. Indicates usually bracketed note or comment in the text. No need to indicate.*/
 
       .t-gaiji {
-        color: var(--paper-cyan-500)
+        color: var(--sc-primary-accent-color);
       }
 
     </style>
