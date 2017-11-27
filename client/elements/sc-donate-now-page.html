@@ -43,9 +43,10 @@
         --paper-input-container-color: var(--sc-secondary-text-color);
         --paper-input-container-input-color: var(--sc-secondary-text-color);
         --paper-dropdown-menu-icon: {
-        color: var(--sc-disabled-text-color);
-      };
-      width: 6em;
+          color: var(--sc-disabled-text-color);
+        };
+        width: 6em;
+        margin-right: var(--sc-size-md);
       }
 
       .currency-menu-listbox {
@@ -58,7 +59,7 @@
       }
 
       .currency-menu-item:hover {
-        background-color: var(--sc-primary-background-color);
+        background-color: var(--sc-tertiary-background-color);
         cursor: pointer;
       }
 
@@ -232,7 +233,7 @@
       .toast {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-xl;
-        --paper-toast-color: var(--sc-tertiary-text-color);
+        --paper-toast-color: var(--sc-paper-tooltip-color);
         text-align: center;
         margin-left: calc(50vw - 150px);
       }
@@ -245,8 +246,8 @@
         --paper-input-container: {
           @apply --sc-sans-font;
         };
-        --paper-input-container-label: {
-          color: var(--sc-secondary-text-color);
+        --paper-input-container-input: {
+          color: var(--sc-primary-text-color);
         };
         padding-bottom: var(--sc-size-md);
       }
@@ -290,7 +291,7 @@
         <iron-form class="payment-iron-form">
           <form class="payment-form">
             <div class="flex-row">
-              <paper-dropdown-menu class="form-prefix currency-dropdown data-input" title="Select currency"
+              <paper-dropdown-menu class="currency-dropdown data-input" title="Select currency"
                                    dynamic-align label="Currency" always-float-label>
                 <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
                                selected="[[default_currency_index]]">

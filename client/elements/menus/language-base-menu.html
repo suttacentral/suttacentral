@@ -23,17 +23,17 @@ This is the base language menu that determines the language of the site.
 
       .language-menu-container {
         @apply --sc-skolar-font-size-md;
+        --paper-input-container-input: {
+          color: var(--sc-primary-text-color);
+        };
       }
 
       .language-menu-list {
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
-        --paper-input-container-input-color: var(--sc-secondary-text-color);
+        --paper-input-container-input-color: var(--sc-primary-text-color);
         --paper-input-container-color: var(--sc-secondary-text-color);
         --paper-dropdown-menu-icon: {
           color: var(--sc-disabled-text-color);
-        };
-        --paper-dropdown-menu-input: {
-          --paper-input-container-input-color: var(--sc-primary-text-color);
         };
         background-color: var(--sc-secondary-background-color);
       }
