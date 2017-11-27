@@ -439,7 +439,9 @@
               if (!this.segmentedIDsAdded) {
                   this._addSegmentedTextualInfoElements();
               }
-              this._scrollToSectionInUrl();
+              requestAnimationFrame(() => {
+                  this._scrollToSectionInUrl();
+              });
           }
 
           _processVolPageInfo(item, divisionId) {
