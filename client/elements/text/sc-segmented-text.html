@@ -297,19 +297,20 @@
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       textContent.classList.add('side-by-side');
-                      this._addSecondaryText();
-                      this._toggleSegmentedTextualInfo(true);
-                      //                      requestAnimationFrame(() => {
-                      //                          this._addSegmentedTextualInfoTopMargins();
                       //                      });
+                      requestAnimationFrame(() => {
+                          this._addSecondaryText();
+                          this._toggleSegmentedTextualInfo(true);
+                          this._addSegmentedTextualInfoTopMargins();
+                      });
                       break;
                   case 'linebyline':
                       textContent.classList.add('line-by-line');
-                      this._addSecondaryText();
-                      this._toggleSegmentedTextualInfo(true);
-                      //                      requestAnimationFrame(() => {
-                      //                          this._addSegmentedTextualInfoTopMargins();
-                      //                      });
+                      requestAnimationFrame(() => {
+                          this._addSecondaryText();
+                          this._toggleSegmentedTextualInfo(true);
+                          this._addSegmentedTextualInfoTopMargins();
+                      });
                       break;
                   case 'popup':
                       this._addPopupTooltips(textContent);
@@ -517,49 +518,44 @@
           }
 
           _addSegmentedTextualInfoTopMargins() {
-              console.log('addTopMargins');
               const segmentedParagraphs = this.shadowRoot
                   .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
-              //              let segments;
-              //              if (this.translatedSutta) {
-              //                  segments = this.shadowRoot.querySelectorAll('sc-seg.translated-text');
-              //              } else {
-              //                  segments = this.shadowRoot.querySelectorAll('sc-seg.original-text');
-              //              }
+              let segments = this.translatedSutta ? this.shadowRoot.querySelectorAll('sc-seg.translated-text') :
+                  this.shadowRoot.querySelectorAll('sc-seg.original-text');
               // store the segment offsets in an object to not query the elements in a loop which would force layout redraw:
-              //              const segmentOffsets = {};
-              //              Array.from(segments).forEach((s) => {
-              //                  segmentOffsets[s.id] = { segmentOffset: s.offsetTop, parentOffset: s.parentNode.offsetTop };
-              //              });
+              const segmentOffsets = this.getSegmentTopOffsets(segments);
               Array.from(segmentedParagraphs).forEach((paragraph) => {
-                  paragraph.style.position = 'fixed';
-                  paragraph.style.right = '10%';
-                  //                  const paragraphCount = this._getPreviousSiblingCount(paragraph);
-                  //                  console.log(paragraphCount);
-                  //                  let prevElemMargin = 0;
-                  //                  if (paragraph.previousSibling && paragraph.previousSibling.nodeName === 'A') {
-                  //                      prevElemMargin = 24;
-                  //                  }
-                  //                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
-                  //                  paragraph.style.marginTop = (offsets.segmentOffset - offsets.parentOffset) + prevElemMargin;
-                  //                  paragraph.style.marginTop = (offsets.segmentOffset - offsets.parentOffset);
-                  const segId = paragraph.getAttribute('data-reference-segment-id');
-                  const seg = this.shadowRoot.querySelector(`#${segId.replace(':', '\\:').replace('.', '\\.')}`);
-                  document.addEventListener('scroll', () => {
-                      requestAnimationFrame(() => {
-                          paragraph.style.top = seg.getBoundingClientRect().top
-                      });
-                  });
+                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
+                  let paragraphMargin = 0;
+                  if (paragraph.previousElementSibling &&
+                      paragraph.previousElementSibling.classList.contains('segmented-textual-info-paragraph')) {
+                      paragraphMargin = 24;
+                  }
+                  if (offsets.prevElemOffset) {
+                      paragraph.style.marginTop = offsets.segmentOffset - offsets.prevElemOffset - paragraphMargin;
+                  } else {
+                      paragraph.style.marginTop = offsets.segmentOffset - paragraphMargin;
+                  }
               });
           }
 
-          _getPreviousSiblingCount(paragraph) {
-              let count = 0;
-              while (paragraph = paragraph.previousSibling) {
-                  if (paragraph.nodeType === 3) continue; // text node
-                  if (paragraph.nodeName === 'A') count++;
-              }
-              return count;
+          getSegmentTopOffsets(segments) {
+              const segmentOffsets = {};
+              Array.from(segments).forEach((s) => {
+                  let previousSegmentOffset;
+                  // Store the previous segment offset for segmented textual info top margin calculation:
+                  if (s.previousElementSibling) {
+                      const prevSegment = s.previousElementSibling.previousElementSibling;
+                      if (prevSegment && prevSegment.nodeName === 'SC-SEG') {
+                          previousSegmentOffset = prevSegment.offsetTop - prevSegment.parentNode.offsetTop;
+                      }
+                  }
+                  segmentOffsets[s.id] = {
+                      segmentOffset: s.offsetTop - s.parentNode.offsetTop,
+                      prevElemOffset: previousSegmentOffset
+                  };
+              });
+              return segmentOffsets;
           }
 
           _addParagraphData(item, data) {
