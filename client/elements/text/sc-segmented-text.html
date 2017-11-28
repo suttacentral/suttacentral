@@ -1,18 +1,18 @@
-<link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
-<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
-<link rel="imoprt" href="/bower_components/iron-meta/iron-meta.html">
-<link rel="imoprt" href="/bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 
-<link rel="import" href="/elements/text/sc-text-options.html">
-<link rel="import" href="/styles/sc-text-styles.html">
-<link rel="import" href="/styles/sc-text-heading-styles.html">
-<link rel="import" href="/styles/sc-text-paragraph-num-styles.html">
-<link rel="import" href="/elements/lookups/sc-pli.html">
-<link rel="import" href="/elements/lookups/sc-lzh2en.html">
-<link rel="import" href="/elements/lookups/sc-lookup-styles.html">
-<link rel="import" href="/img/sc-svg-icons.html">
+<link rel="import" href="../../elements/text/sc-text-options.html">
+<link rel="import" href="../../styles/sc-text-styles.html">
+<link rel="import" href="../../styles/sc-text-heading-styles.html">
+<link rel="import" href="../../styles/sc-text-paragraph-num-styles.html">
+<link rel="import" href="../../elements/lookups/sc-pli.html">
+<link rel="import" href="../../elements/lookups/sc-lzh2en.html">
+<link rel="import" href="../../elements/lookups/sc-lookup-styles.html">
+<link rel="import" href="../../img/sc-svg-icons.html">
 
 <dom-module id="sc-segmented-text">
 
@@ -756,9 +756,11 @@
                       this._setTooltipOptions(tooltip);
                       segment.addEventListener('mouseover', (e) => {
                           if (this.chosenTextView !== 'popup') return;
-                          segment.style.color = this._getAccentColor();
-                          states.isWordHovered = true;
-                          this._showPopupTooltip(segment, tooltip, states, e, transliterator);
+                          requestAnimationFrame(() => {
+                              segment.style.color = this._getAccentColor();
+                              states.isWordHovered = true;
+                              this._showPopupTooltip(segment, tooltip, states, e, transliterator);
+                          });
                       });
                       segment.addEventListener('mouseout', (e) => {
                           states.isWordHovered = false;
@@ -779,12 +781,12 @@
           _showPopupTooltip(segment, tooltip, states, e, transliterator) {
               tooltip.innerHTML = this._transliterateFragment(this.rootSutta.strings[segment.id], transliterator);
               segment.appendChild(tooltip);
-              setTimeout(() => {
+              requestAnimationFrame(() => {
                   if (states.isWordHovered && !states.isTooltipShown) {
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, 10);
+              });
           };
 
           _transliterateFragment(fragment, transliterator) {
@@ -800,19 +802,17 @@
               let lookupResult = paliLookup.lookupWord(v.dataset.latin_text || v.innerText);
               tooltip.innerHTML = lookupResult.html;
               v.parentNode.insertBefore(tooltip, v.nextSibling);
-              setTimeout(() => {
-                  if (states.isWordHovered && !states.isTooltipShown) {
-                      v.id = `lookup_target${this.tooltipCount}`;
-                      tooltip.for = `lookup_target${this.tooltipCount}`;
-                      this.tooltipCount++;
-                      tooltip.show();
-                      states.isTooltipShown = true;
-                  }
-              }, 10);
+              if (states.isWordHovered && !states.isTooltipShown) {
+                  v.id = `lookup_target${this.tooltipCount}`;
+                  tooltip.for = `lookup_target${this.tooltipCount}`;
+                  this.tooltipCount++;
+                  tooltip.show();
+                  states.isTooltipShown = true;
+              }
           }
 
           _removeTooltip(word, tooltip, states, e) {
-              setTimeout(() => {
+              requestAnimationFrame(() => {
                   if (!states.isWordHovered && !states.isTooltipHovered) {
                       word.style.color = '';
                       if (word.nodeName !== 'SC-SEG') {
@@ -821,7 +821,7 @@
                       tooltip.hide();
                       states.isTooltipShown = false;
                   }
-              }, 10);
+              });
           }
 
           _addLookupTooltips(textContainer) {
@@ -832,9 +832,11 @@
                   this._setTooltipOptions(tooltip);
                   word.addEventListener('mouseover', (e) => {
                       if (this.isPaliLookupEnabled) {
-                          word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
-                          states.isWordHovered = true;
-                          this._showLookupTooltip(word, tooltip, paliLookup, states, e);
+                          requestAnimationFrame(() => {
+                              word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
+                              states.isWordHovered = true;
+                              this._showLookupTooltip(word, tooltip, paliLookup, states, e);
+                          });
                       }
                   });
                   word.addEventListener('mouseout', (e) => {
@@ -886,11 +888,11 @@
           }
 
           _resetColor(states, word) {
-              setTimeout(() => {
+              requestAnimationFrame(() => {
                   if (!states.isTooltipHovered) {
                       word.style.color = '';
                   }
-              }, 0);
+              });
           }
 
           _chineseLookupStateChanged() {
@@ -964,10 +966,10 @@
           _applyFirefoxShadyDomFix() {
               if (navigator.userAgent.includes('Firefox')) {
                   this.isTextViewHidden = true;
-                  setTimeout(() => {
+                  requestAnimationFrame(() => {
                       this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
                       this.isTextViewHidden = false;
-                  }, 0);
+                  });
               }
           }
       }
