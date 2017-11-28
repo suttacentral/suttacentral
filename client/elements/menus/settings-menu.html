@@ -43,7 +43,7 @@ Issues:
       }
 
       #settingsbutton {
-        color: white;
+        color: var(--sc-tertiary-text-color);
       }
 
       .dialog-section {
@@ -59,10 +59,14 @@ Issues:
       .menu-item-title {
         @apply --paper-font-title;
         @apply --sc-sans-font;
+        color: var(--sc-primary-text-color);
       }
 
       .menu-option {
         @apply --sc-sans-font;
+        --paper-radio-button-unchecked-color: var(--sc-disabled-text-color);
+        --paper-radio-button-checked-color: var(--sc-primary-accent-color);
+        --paper-radio-button-label-color: var(--sc-primary-text-color);
       }
 
       .menu-item .menu-icon {
@@ -72,18 +76,36 @@ Issues:
       .menu-item {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
+        color: var(--sc-primary-text-color);
         --paper-item-selected-weight: 500;
         cursor: pointer;
       }
 
+      .menu-item:hover {
+        background-color: var(--sc-tertiary-background-color);
+      }
+
       .menu-dropdown, .menu-listbox {
         @apply --sc-skolar-font-size-md;
+        --paper-input-container-focus-color: var(--sc-primary-accent-color);
+        --paper-input-container-input: {
+          color: var(--sc-primary-text-color);
+        };
         width: 200px;
       }
 
+      .menu-listbox {
+        --paper-input-container-focus-color: var(--sc-primary-accent-color);
+        --paper-input-container-color: var(--sc-secondary-text-color);
+        --paper-input-container-input-color: var(--sc-secondary-text-color);
+        --paper-dropdown-menu-icon: {
+          color: var(--sc-disabled-text-color);
+        };
+      }
+
       .menu-toggle-button {
-        --paper-toggle-button-checked-bar-color: var(--sc-primary-color-medium);
-        --paper-toggle-button-checked-button-color: var(--sc-primary-color);
+        --paper-toggle-button-checked-bar-color: var(--sc-disabled-text-color);
+        --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
         margin-top: var(--sc-size-sm);
       }
 
@@ -121,8 +143,8 @@ Issues:
       <div class="dialog-section">
         <h3 class="menu-item-title">View textual information</h3>
         <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
-        <paper-toggle-button class="menu-toggle-button" noink
-                             active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
+        <paper-toggle-button id="textual_info_toggle_button"
+                             class="menu-toggle-button" active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
       </div>
 
       <div class="dialog-section">
@@ -167,8 +189,8 @@ Issues:
         <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital
           Dictionary of Buddhism.
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="Lookup">
-          <paper-listbox slot="dropdown-content" selected="{{chineseLookupSelected}}">
+        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="chinese_lookup_menu">
+          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{chineseLookupSelected}}">
             <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
             </template>
@@ -179,8 +201,8 @@ Issues:
       <div class="dialog-section">
         <h3 class="menu-item-title">Change the script of the Pali text</h3>
         <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
-        <paper-dropdown-menu class="menu-dropdown" label="Script">
-          <paper-listbox slot="dropdown-content" selected="{{paliScriptSelected}}">
+        <paper-dropdown-menu class="menu-dropdown" label="Script" id="pali_script_menu">
+          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliScriptSelected}}">
             <template is="dom-repeat" items="[[paliScripts]]" as="script">
               <paper-item class="menu-item">[[script.language]]</paper-item>
             </template>
@@ -251,11 +273,14 @@ Issues:
                           }
                       ]
                   },
+                  paliLookupLanguage: {
+                      type: String,
+                      statePath: 'textOptions.paliLookupTargetDictRepr'
+                  },
                   // pali to language lookup selected number.
                   paliLookupSelected: {
                       type: Number,
-                      value: 0,
-                      observer: '_paliLookupChanged'
+                      computed: '_findPaliLookupLanguageIndex(paliLookupLanguage)'
                   },
                   // possible values for the chinese to language lookup.
                   chineseLookupArray: {
@@ -271,11 +296,14 @@ Issues:
                           }
                       ]
                   },
+                  chineseLookupLanguage: {
+                      type: String,
+                      statePath: 'textOptions.chineseLookupTargetDictRepr'
+                  },
                   // chinese to language lookup selected number.
                   chineseLookupSelected: {
                       type: Number,
-                      value: 0,
-                      observer: '_chineseLookupChanged'
+                      computed: '_findChineseLookupLanguageIndex(chineseLookupLanguage)'
                   },
                   // possible values for the script chooser for pali.
                   paliScripts: {
@@ -306,20 +334,24 @@ Issues:
                   // pali script selected number.
                   paliScriptSelected: {
                       type: Number,
-                      observer: '_changeScript'
+                      computed: '_findPaliScriptIndex(paliScript)'
+                  },
+                  paliScript: {
+                      type: String,
+                      statePath: 'textOptions.script'
                   },
                   // The state of the textual info paper-toggle-button
                   textualInfoToggleEnabled: {
-                      type: Boolean,
-                      observer: '_textualInfoToggleStateChanged'
-                  },
-                  textualInfoEnabledInState: {
                       type: Boolean,
                       statePath: 'textOptions.paragraphsEnabled'
                   },
                   textualInfoResponse: {
                       type: Object,
                       observer: '_onParagraphsLoaded'
+                  },
+                  textualParagraphs: {
+                      type: Object,
+                      statePath: 'textOptions.paragraphDescriptions'
                   },
                   // Boolean that remembers settings on this page.
                   rememberSettings: {
@@ -330,6 +362,22 @@ Issues:
                       value: false
                   }
               }
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('checked-changed', (e) => {
+                  this._textualInfoToggleStateChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
+                  this._paliLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('value-changed', (e) => {
+                  this._chineseLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#pali_script_menu').addEventListener('value-changed', (e) => {
+                  this._changeScript(e.detail.value);
+              });
           }
 
           static get actions() {
@@ -377,27 +425,53 @@ Issues:
               }
           }
 
-          _paliLookupChanged(paliLookupSelected) {
-              const target = this.paliLookupArray[paliLookupSelected];
-              const targetLanguage = target.dict.split('2')[1];
-              const targetDictRepr = target.language;
-              this.dispatch('activatePaliLookup', !!(paliLookupSelected), targetLanguage, targetDictRepr);
-          }
-
-          _chineseLookupChanged(chineseLookupSelected) {
-              const target = this.chineseLookupArray[chineseLookupSelected];
-              const targetLanguage = target.dict.split('2')[1];
-              const targetDictRepr = target.language;
-              this.dispatch('activateChineseLookup', !!(chineseLookupSelected), targetLanguage, targetDictRepr);
-          }
-
-          _textualInfoToggleStateChanged() {
-              if (this.textualInfoToggleEnabled) {
-                  if (this.textualInfoEnabledInState) return;
-                  this.$.paragraphs_ajax.generateRequest();
+          _textualInfoToggleStateChanged(toggleChecked) {
+              if (this.textualParagraphs && toggleChecked) {
+                  this.$.paragraphs_ajax.generateRequest().completes.then(() => {
+                      this.dispatch('toggleTextualInfo', true);
+                  });
               } else {
                   this.dispatch('toggleTextualInfo', false);
               }
+          }
+
+          _onParagraphsLoaded() {
+              if (this.textualInfoResponse) {
+                  if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
+                      this.dispatch('downloadParagraphs', this.textualInfoResponse);
+                  }
+                  this.dispatch('toggleTextualInfo', true);
+              }
+          }
+
+          _paliLookupChanged(lookupLanguage) {
+              if (!lookupLanguage) {
+                  return;
+              }
+              const langIndex = this._findPaliLookupLanguageIndex(lookupLanguage);
+              const target = this.paliLookupArray[langIndex];
+              const targetLanguage = target.dict.split('2')[1];
+              const targetDictRepr = target.language;
+              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
+          }
+
+          _findPaliLookupLanguageIndex(languageName) {
+              return this.paliLookupArray.findIndex(i => i.language === languageName);
+          }
+
+          _chineseLookupChanged(lookupLanguage) {
+              if (!lookupLanguage) {
+                  return;
+              }
+              const langIndex = this._findChineseLookupLanguageIndex(lookupLanguage);
+              const target = this.chineseLookupArray[langIndex];
+              const targetLanguage = target.dict.split('2')[1];
+              const targetDictRepr = target.language;
+              this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
+          }
+
+          _findChineseLookupLanguageIndex(languageName) {
+              return this.chineseLookupArray.findIndex(i => i.language === languageName);
           }
 
           _textViewChanged() {
@@ -408,38 +482,25 @@ Issues:
               }, 0);
           }
 
-          _onParagraphsLoaded() {
-              if (this.textualInfoResponse) {
-                  if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
-                      this.dispatch('downloadParagraphs', this.textualInfoResponse);
-                  }
-                  if (this.textualInfoToggleEnabled) {
-                      this.dispatch('toggleTextualInfo', true);
-                  }
-              }
-          }
-
-          _dictionaryLookup(valueSelected) {
-              // needs more work
-              return (valueSelected > 0);
-          }
-
-          _getDictionary(valueArray, valueSelected) {
-              // needs more work
-              return valueArray[valueSelected].dict;
-          }
-
           // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
-          _changeScript() {
+          _changeScript(language) {
+              if (!language) {
+                  return;
+              }
+              const script = this.paliScripts.find(i => i.language === language).script;
               this.showLoadingSpinner = true;
               setTimeout(() => {
-                  this.dispatch('choosePaliTextScript', this.paliScripts[this.paliScriptSelected].script);
+                  this.dispatch('choosePaliTextScript', script);
                   this.showLoadingSpinner = false;
               }, 0);
           }
 
           _getParagraphsUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/paragraphs`;
+          }
+
+          _findPaliScriptIndex(paliScript) {
+              return this.paliScripts.findIndex(i => i.script === paliScript);
           }
       }
 

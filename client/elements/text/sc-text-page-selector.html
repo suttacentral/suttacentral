@@ -1,9 +1,12 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
 
 <link rel="import" href="/elements/text/sc-segmented-text.html">
 <link rel="import" href="/elements/text/sc-simple-text.html">
+<link rel="import" href="/elements/text/sc-stepper.html">
+<link rel="import" href="/elements/text/sc-image.html">
 
 <!--
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
@@ -14,7 +17,7 @@
   <!-- Import the transliteration module for changing the script of the Pali texts -->
   <script src="transliterator.js"></script>
 
-  <template>
+  <template> 
     <style>
       .loading-indicator {
         @apply --sc-skolar-font-size-s;
@@ -25,6 +28,10 @@
 
       .text-options {
         padding: var(--sc-size-lg);
+      }
+      
+      .wrapper {
+        min-height: calc(100% - var(--sc-size-xxl) * 2.5);
       }
     </style>
 
@@ -39,25 +46,33 @@
         last-error="{{lastError}}"
         last-response="{{responseData}}"></iron-ajax>
 
-    <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+    <div class="wrapper">
+        <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
 
-    <div class="loading-indicator" hidden$="[[!isLoading]]">
-      <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
+        <div class="loading-indicator" hidden$="[[!isLoading]]">
+        <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
+        </div>
+
+        <template is="dom-if" if="[[!_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+            <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
+                            hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+            </sc-simple-text>
+        </template>
+
+        <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]" restamp>
+            <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
+                                translated-sutta="[[translatedSutta]]" root-lang="[[responseData.root_text.lang]]"
+                                is-loading="{{isLoading}}" error="[[lastError]]"
+                                hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
+            </sc-segmented-text>
+        </template>
     </div>
 
-    <template is="dom-if" if="[[!_shouldHideSimpleText(isSegmentedText, isLoading)]]">
-      <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
-                      hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
-      </sc-simple-text>
+    <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, neighbours)]]">
+        <sc-stepper next="[[neighbours.next]]" previous="[[neighbours.previous]]" lang="[[langIsoCode]]"></sc-stepper>
     </template>
 
-    <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]" restamp>
-      <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
-                         translated-sutta="[[translatedSutta]]" root-lang="[[responseData.root_text.lang]]"
-                         is-loading="{{isLoading}}" error="[[lastError]]"
-                         hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
-      </sc-segmented-text>
-    </template>
+    <sc-image id="sc_image"></sc-image>
 
   </template>
 
@@ -102,6 +117,9 @@
                   },
                   markup: {
                       type: String
+                  },
+                  neighbours: {
+                      type: Object
                   }
               }
           }
@@ -127,6 +145,13 @@
               }
           }
 
+          ready() {
+              super.ready();
+              this.addEventListener('show-image', e => {
+                  this.$.sc_image.showImage(e.detail);
+              });
+          }
+
           _onResponse() {
               if (!this.responseData) {
                   return;
@@ -142,6 +167,7 @@
               this.translatedSutta = this.responseData.translation;
               this.rootSutta = this.responseData.root_text;
               this.markup = this.responseData.markup;
+              this.neighbours = this.responseData.neighbours;
               if (this.responseData.translation) {
                   this.author = this.responseData.translation.author;
               }
@@ -175,6 +201,10 @@
               } else {
                   return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`;
               }
+          }
+
+          _shouldDisplayStepper(isLoading, neighbours) {
+              return !isLoading && (neighbours.next || neighbours.previous);
           }
       }
 

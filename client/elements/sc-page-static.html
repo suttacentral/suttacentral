@@ -34,7 +34,7 @@
         @apply --sc-mixed-small-caps;
         @apply --sc-skolar-font-size-static-main-title;
         text-align: left;
-        color: white;
+        color: var(--sc-tertiary-text-color);
         padding-top: 0.5em;
         margin: 0;
         line-height: 1em;
@@ -44,7 +44,7 @@
       .subtitle {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-static-subtitle;
-        color: white;
+        color: var(--sc-tertiary-text-color);
         font-style: italic;
         text-align: left;
         margin-bottom: .75em;
@@ -53,6 +53,10 @@
 
       .title {
         margin-left: var(--sc-size-xxl);
+      }
+
+      .title-text {
+        color: var(--sc-tertiary-text-color);
       }
 
       .page-not-found-container {
@@ -88,7 +92,7 @@
     </style>
 
     <app-toolbar>
-      <div class="title" main-title><h1>SuttaCentral</h1></div>
+      <div class="title" main-title><h1 class="title-text">SuttaCentral</h1></div>
     </app-toolbar>
     <app-toolbar id="lasttoolbar">
       <div class="title" main-title>

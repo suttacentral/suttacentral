@@ -2,6 +2,8 @@
 <link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+<link rel="imoprt" href="/bower_components/iron-meta/iron-meta.html">
+<link rel="imoprt" href="/bower_components/iron-icon/iron-icon.html">
 
 <link rel="import" href="/elements/text/sc-text-options.html">
 <link rel="import" href="/styles/sc-text-styles.html">
@@ -10,11 +12,30 @@
 <link rel="import" href="/elements/lookups/sc-pli.html">
 <link rel="import" href="/elements/lookups/sc-lzh2en.html">
 <link rel="import" href="/elements/lookups/sc-lookup-styles.html">
+<link rel="import" href="/img/sc-svg-icons.html">
 
 <dom-module id="sc-segmented-text">
 
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles">
+      :host {
+        --iron-icon-fill-color: var(--sc-disabled-text-color);
+        --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
+        --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
+      }
+
+      .image-link {
+        cursor: pointer;
+      }
+
+      .image-book-link {
+        margin-bottom: .5em;
+        margin-left: .2em;
+      }
+
+      .image-book-link:before {
+        display: none;
+      }
 
       .text-center {
         text-align: center;
@@ -32,6 +53,8 @@
 
     </style>
 
+    <iron-meta id="meta"></iron-meta>
+
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
@@ -46,12 +69,8 @@
       </div>
     </template>
 
-    <template is="dom-if" if="[[isPaliLookupEnabled]]">
-      <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
-    </template>
-    <template is="dom-if" if="[[isChineseLookupEnabled]]">
-      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
-    </template>
+    <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
+    <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
 
   </template>
 
@@ -64,12 +83,10 @@
           static get properties() {
               return {
                   rootSutta: {
-                      type: Object,
-                      observer: '_updateView'
+                      type: Object
                   },
                   translatedSutta: {
-                      type: Object,
-                      observer: '_updateView'
+                      type: Object
                   },
                   // If true, shows the paragraph numbers on the right of the text.
                   showParagraphs: {
@@ -139,10 +156,6 @@
                       type: Number,
                       value: 0
                   },
-                  isLookupAllowed: {
-                      type: Boolean,
-                      value: false
-                  },
                   spansForWordsGenerated: {
                       type: Boolean,
                       value: false
@@ -162,9 +175,9 @@
                       observer: '_chineseLookupStateChanged'
                   },
                   chineseLookupTargetDictRepr: {
-                    type: String,
-                    statePath: 'textOptions.chineseLookupTargetDictRepr',
-                    observer: '_chineseLookupTargetDictReprChanged'
+                      type: String,
+                      statePath: 'textOptions.chineseLookupTargetDictRepr',
+                      observer: '_chineseLookupTargetDictReprChanged'
                   },
                   scriptIsoCodes: {
                       type: Object,
@@ -175,6 +188,14 @@
                           'thai': 'Thai',
                           'myanmar': 'Mymr'
                       }
+                  },
+                  segmentedIDsAdded: {
+                      type: Boolean,
+                      value: false
+                  },
+                  hasScriptBeenChanged: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -210,16 +231,13 @@
               this._setRootAttributes();
               this._setTranslatedAttributes();
               this._updateToolbar();
-              this._computeParagraphs();
               this._addTextContent();
-              // Scroll to the section after the hash sign in the url:
-              this._scrollToSection(window.location.hash.substr(1), false, 500);
-              this._changeScript('latin');
-              this.dispatch('chooseSegmentedSuttaTextView', 'none');
+              this._computeParagraphs();
               this.dispatch('changeSuttaMetaText', this._computeMeta());
           }
 
           _addTextContent() {
+              this._applyFirefoxShadyDomFix();
               if (this.translatedSutta) {
                   this._addPrimaryText(this.translatedSutta.strings);
                   if (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh') {
@@ -279,16 +297,25 @@
               switch (this.chosenTextView) {
                   case 'sidebyside':
                       textContent.classList.add('side-by-side');
-                      this._addSecondaryText();
+                      this._showComplexView();
                       break;
                   case 'linebyline':
                       textContent.classList.add('line-by-line');
-                      this._addSecondaryText();
+                      this._showComplexView();
                       break;
                   case 'popup':
                       this._addPopupTooltips(textContent);
                       break;
               }
+          }
+
+          // Sets options for displaying the side-by-side and line-by-line segmented views ('complex views').
+          _showComplexView() {
+              requestAnimationFrame(() => {
+                  this._addSecondaryText();
+                  this._toggleSegmentedTextualInfo(true);
+                  this._addSegmentedTextualInfoTopMargins();
+              });
           }
 
           // reset all classes and remove tooltips.
@@ -305,13 +332,23 @@
                       item.parentNode.removeChild(item);
                   });
               }
+              this._toggleSegmentedTextualInfo(false);
+          }
+
+          _toggleSegmentedTextualInfo(showSegmentedIDs) {
+              const textContent = this.shadowRoot.querySelector('#segmented_text_content');
+              if (showSegmentedIDs) {
+                  textContent.classList.add('segmented-infomode');
+              } else {
+                  textContent.classList.remove('segmented-infomode');
+              }
           }
 
           _addPrimaryText(textStrings) {
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
               const segments = textContainer.getElementsByTagName('sc-seg');
               try {
-                  this._addSegmentClasses(segments);
+                  this._setPrimaryTextSegmentProperties(segments);
                   this._insertPrimaryTextIntoSegments(textStrings, textContainer);
               }
               catch (e) {
@@ -319,18 +356,21 @@
               }
           }
 
-          _addSegmentClasses(segments) {
-              let segmentClass, classToDelete;
+          _setPrimaryTextSegmentProperties(segments) {
+              let segmentClass, classToDelete, langAttr;
               if (this.translatedSutta) {
                   segmentClass = 'translated-text';
                   classToDelete = 'original-text';
+                  langAttr = this.translationLang;
               } else {
                   segmentClass = 'original-text';
                   classToDelete = 'translated-text';
+                  langAttr = this.rootLang;
               }
               Array.from(segments).forEach(segment => {
                       segment.classList.add(segmentClass);
                       segment.classList.remove(classToDelete);
+                      this._setScriptISOCode(segment, langAttr);
                       segment.innerHTML = '';
                   }
               );
@@ -353,7 +393,7 @@
               if (!this.shadowRoot.querySelector('.original-text')) {
                   const stringsArr = Object.entries(this.rootSutta.strings);
                   stringsArr.forEach(item => {
-                      this._insertSecondarySegment(item);
+                      this._insertSecondaryTextSegment(item);
                   });
                   if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
                       this._putIntoSpans('.original-text', this.rootSutta.lang);
@@ -362,7 +402,7 @@
               textContainer.classList.add('latin-script');
           }
 
-          _insertSecondarySegment([key, content]) {
+          _insertSecondaryTextSegment([key, content]) {
               if (!key.startsWith('_')) {
                   const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
                   const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
@@ -370,12 +410,15 @@
                   newSegment.id = key;
                   newSegment.classList.add('original-text');
                   newSegment.innerHTML = content + ' ';
+                  this._setScriptISOCode(newSegment, this.rootLang);
                   segment.parentNode.insertBefore(newSegment, segment.nextSibling);
               }
           }
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
+              const uid = (this.rootSutta || this.translatedSutta).uid;
+              const divisionId = /^[a-z]+/.exec(uid)[0];
               this._setParagraphsVisible(this.showParagraphs);
               const paragraphsAdded =
                   this.$.segmented_text_content.querySelector('.textual-info-paragraph') !== null;
@@ -384,11 +427,137 @@
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
-                          this._addParagraphData(item, paragraph);
+                          if (item.id.startsWith('pts')) {
+                              this._processVolPageInfo(item, divisionId);
+                          } else {
+                              this._addParagraphData(item, paragraph);
+                          }
                           this._addInlineParagraph(item);
                       });
                   });
               }
+              // Add segmented textal information paragraphs if not added already
+              if (!this.segmentedIDsAdded) {
+                  this._addSegmentedTextualInfoElements();
+              }
+              requestAnimationFrame(() => {
+                  this._scrollToSectionInUrl();
+              });
+          }
+
+          _processVolPageInfo(item, divisionId) {
+              const prefix = /[^\d]+/.exec(item.id)[0];
+              const suffix = item.id.substring(prefix.length);
+              let [vol, pageNumber] = suffix.split('.');
+              pageNumber = Number(pageNumber);
+              if (vol.includes('ed')) {
+                  let ed;
+                  [ed, vol] = vol.split('ed');
+              }
+              vol = Number(vol);
+
+              item.innerHTML = `
+                                <div class="image-link" title="View page image">
+                                    <span>${prefix.toUpperCase()} ${suffix}</span>
+                                    <iron-icon class="image-book-link" icon="sc-svg-icons:book">
+                                    </iron-icon>
+                                </div>
+                            `;
+              item.classList.add('image-book-link');
+              item.classList.add('textual-info-paragraph');
+              item.addEventListener('click', () => {
+                  this.dispatchEvent(new CustomEvent('show-image', {
+                      detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
+                      bubbles: true,
+                      composed: true
+                  }));
+              });
+          }
+
+          _addSegmentedTextualInfoElements() {
+              const segments = this.shadowRoot.querySelectorAll('sc-seg');
+              Array.from(segments).forEach((segment) => {
+                  const parId = segment.id.split(':')[1];
+                  // The 0 level is to be ignored when adding segmented IDs:
+                  if (parId[0] === '0') {
+                      return;
+                  }
+                  const inlineParagraph = this._insertInlineSegmentedParagraph(parId, segment);
+                  this._insertSegmentedParagraph(inlineParagraph, parId, segment);
+              });
+              this.segmentedIDsAdded = true;
+          }
+
+          _insertInlineSegmentedParagraph(parId, segment) {
+              // Don't insert duplicate segments
+              if (this.translatedSutta && segment.classList.contains('original-text')) {
+                  return;
+              }
+              const inlineParagraph = document.createElement('a');
+              inlineParagraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
+                  'textual-info-paragraph-inline', 'sc');
+              inlineParagraph.id = `${parId}_inline`;
+              inlineParagraph.innerText = parId;
+              inlineParagraph.href = `#${parId}`;
+              inlineParagraph.title = 'SuttaCentral paragraph number';
+              inlineParagraph.addEventListener('click', () => { this._scrollToSection(inlineParagraph.id, true, 0) });
+              requestAnimationFrame(() => {
+                  segment.insertBefore(inlineParagraph, segment.firstChild);
+              });
+              return inlineParagraph;
+          }
+
+          _insertSegmentedParagraph(inlineParagraph, parId, segment) {
+              const paragraph = inlineParagraph.cloneNode(true);
+              paragraph.id = parId;
+              paragraph.classList.remove('textual-info-paragraph-inline');
+              paragraph.setAttribute('data-reference-segment-id', segment.id);
+              paragraph.addEventListener('click', () => {this._scrollToSection(parId, true, 0)});
+              // insert before the first segment child to maintain paragraph order
+              requestAnimationFrame(() => {
+                  segment.parentNode.insertBefore(paragraph, segment.parentNode.getElementsByTagName('sc-seg')[0]);
+              });
+          }
+
+          _addSegmentedTextualInfoTopMargins() {
+              const segmentedParagraphs = this.shadowRoot
+                  .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
+              let segments = this.translatedSutta ? this.shadowRoot.querySelectorAll('sc-seg.translated-text') :
+                  this.shadowRoot.querySelectorAll('sc-seg.original-text');
+              // store the segment offsets in an object to not query the elements in a loop which would force layout redraw:
+              const segmentOffsets = this.getSegmentTopOffsets(segments);
+              Array.from(segmentedParagraphs).forEach((paragraph) => {
+                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
+                  let paragraphMargin = 0;
+                  const previousSibling = paragraph.previousElementSibling;
+                  if (previousSibling && previousSibling.classList.contains('segmented-textual-info-paragraph')) {
+                      paragraphMargin = 24;
+                  }
+                  if (offsets.prevElemOffset) {
+                      paragraph.style.marginTop = offsets.segmentOffset - offsets.prevElemOffset - paragraphMargin;
+                  } else {
+                      paragraph.style.marginTop = offsets.segmentOffset - paragraphMargin;
+                  }
+              });
+          }
+
+          getSegmentTopOffsets(segments) {
+              const segmentOffsets = {};
+              Array.from(segments).forEach((s) => {
+                  let previousSegmentOffset;
+                  // Store the previous segment offset for segmented textual info top margin calculation:
+                  if (s.previousElementSibling) {
+                      const prevSegment = s.previousElementSibling.previousElementSibling;
+                      if (prevSegment && prevSegment.nodeName === 'SC-SEG') {
+                          previousSegmentOffset = prevSegment.offsetTop - prevSegment.parentNode.offsetTop;
+                      }
+                  }
+                  segmentOffsets[s.id] = {
+                      segmentOffset: s.offsetTop - s.parentNode.offsetTop,
+                      prevElemOffset: previousSegmentOffset
+                  };
+              });
+              return segmentOffsets;
           }
 
           _addParagraphData(item, data) {
@@ -406,6 +575,17 @@
               inlineItem.id = `${inlineItem.id}_inline`;
               segmentSibling.insertBefore(inlineItem, segmentSibling.firstChild);
               inlineItem.addEventListener('click', () => { this._scrollToSection(inlineItem.id, true, 0); });
+          }
+
+          _addInlineParagraphListeners() {
+              const inlineItems = this.shadowRoot.querySelectorAll('.textual-info-paragraph-inline');
+              if (!inlineItems) {
+                  return;
+              }
+              inlineItems.forEach((item) => {
+                      item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); })
+                  }
+              );
           }
 
           // adds a class to the main container to either show or hide the textual info paragraphs
@@ -428,6 +608,7 @@
               if (!sectionId) return;
               try {
                   const section = this.shadowRoot.getElementById(sectionId);
+                  if (!section) return;
                   setTimeout(() => {
                       section.scrollIntoView({
                           behavior: isSmooth ? 'smooth' : 'instant',
@@ -440,6 +621,18 @@
               }
           }
 
+          _scrollToSectionInUrl() {
+              let textualInfoId = '';
+              const bodyStyle = window.getComputedStyle(document.body);
+              const xlScreenWidth = JSON.parse(bodyStyle.getPropertyValue('--sc-screen-xl').replace('px', ''));
+              if (window.innerWidth < xlScreenWidth) {
+                  textualInfoId = `${window.location.hash.substr(1)}_inline`;
+              } else {
+                  textualInfoId = `${window.location.hash.substr(1)}`;
+              }
+              this._scrollToSection(textualInfoId, false, 2000);
+          }
+
           _changeScript(toScript) {
               if (!this.rootSutta || this.rootSutta.lang !== 'pli') {
                   return;
@@ -447,27 +640,43 @@
               const segments = this.shadowRoot.querySelectorAll('.original-text');
               const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
               const scriptNames = Object.keys(this.scriptIsoCodes);
-              this._resetScript(segments, tooltips);
+              if (this.hasScriptBeenChanged) {
+                  this._resetScript(segments, tooltips);
+              }
               if (toScript === 'latin') {
                   this.$.segmented_text_content.classList.add('latin-script');
-              } else if (scriptNames.includes(toScript)) {
+                  // set the latin text segment iso codes, if not set already
+                  if (!this.$.segmented_text_content.querySelector(`.original-text[lang='pli-Latn']`)) {
+                      segments.forEach((item) => this._setScriptISOCode(item, this.rootLang));
+                  }
+                  this.hasScriptBeenChanged = false;
+              } else if (scriptNames.includes(toScript)) { // if the script name is valid:
                   this._setScript(toScript, segments, tooltips);
+                  this.hasScriptBeenChanged = true;
               }
-              this._setScriptISOCode(toScript);
+              if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
+                  this._setScriptISOCode(this.shadowRoot.querySelector('#text'), this.rootLang);
+              } else {
+                  this.shadowRoot.querySelector('#text').removeAttribute('lang');
+              }
+              this._addInlineParagraphListeners();
           }
 
-          _setScriptISOCode(scriptName) {
-              const textLang = this.translatedSutta ? this.translationLang : this.rootLang;
-              const langAttr =
-                  this.translatedSutta ? this.translationLang : `${textLang}-${this.scriptIsoCodes[scriptName]}`;
-              this.shadowRoot.querySelector('#text').setAttribute('lang', langAttr);
+          _setScriptISOCode(targetNode, langAttr) {
+              if (langAttr === 'pli' && this.paliScript) {
+                  langAttr += `-${this.scriptIsoCodes[this.paliScript]}`;
+              }
+              targetNode.setAttribute('lang', langAttr);
           }
 
           _resetScript(segments, tooltips) {
               Object.keys(this.scriptIsoCodes).forEach((scriptName) => {
                   this.$.segmented_text_content.classList.remove(`${scriptName}-script`);
               });
-              Array.from(segments).forEach(item => item.innerHTML = this.rootSutta.strings[item.id] + ' ');
+              Array.from(segments).forEach(item => {
+                  let words = item.querySelectorAll('.word');
+                  Array.from(words).forEach(word => word.innerHTML = word.dataset.latin_text || word.innerHTML);
+              });
               Array.from(tooltips).forEach(item => item.innerHTML = this.rootSutta.strings[item.id]);
           }
 
@@ -475,8 +684,26 @@
               this.$.segmented_text_content.classList.add(`${scriptName}-script`);
               const t = new Transliterator();
               const scriptFunctionName = `to${this._capitalize(scriptName)}`;
-              Array.from(segments).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+              this._ensureSpansExist();
+              this._setScriptOfSegments(segments, scriptFunctionName, t);
               Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
+          }
+
+          _ensureSpansExist() {
+              if (!this.spansForWordsGenerated) {
+                  this._conditionallyPutWordsIntoSpans();
+              }
+          }
+
+          _setScriptOfSegments(segments, scriptFunctionName, t) {
+              Array.from(segments).forEach(item => {
+                  this._setScriptISOCode(item, this.rootLang);
+                  let words = item.querySelectorAll('.word');
+                  Array.from(words).forEach(word => {
+                      word.dataset.latin_text = word.innerHTML;
+                      word.innerHTML = t[scriptFunctionName](word.innerHTML);
+                  })
+              });
           }
 
           _capitalize(text) {
@@ -499,39 +726,35 @@
           }
 
           // Lookup word start
-          _putGraphsIntoSpans(selector){
-            this._startGeneratingSpans(selector, 'graph');
+          _putGraphsIntoSpans(selector) {
+              this._startGeneratingSpans(selector, 'graph');
           }
 
           _putWordsIntoSpans(selector) {
-            this._startGeneratingSpans(selector, 'word');
+              this._startGeneratingSpans(selector, 'word');
           }
 
           _startGeneratingSpans(selector, unit) {
               let segments = this.shadowRoot.querySelectorAll(selector);
-              const process_async = (items, process) => {
-                  const temp = () => {
-                      const segment = items.shift();
-                      process(segment, unit, this);
-                      this._addLookupTooltips(segment, this);
-                      if (items.length > 0) {
-                          setTimeout(temp, 0);
-                      } else {
-                          if(unit === 'word'){
-                            this.spansForWordsGenerated = true;
-                          } else if (unit === 'graph'){
-                            this.spansForGraphsGenerated = true;
-                          }
-                      }
-                  };
-                  items = Array.from(items);
-                  setTimeout(temp, 0);
-              };
-              this.isLookupAllowed = false;
-              setTimeout(() => {
-                  this.isLookupAllowed = true;
-              }, 2000); // Allow lookup after 2 seconds.
-              process_async(segments, this._putSegmentIntoSpans);
+              segments = Array.from(segments);
+              let empty = true;
+              while (segments.length > 0) {
+                  const segment = segments.shift();
+                  if (!segment) {
+                      return;
+                  }
+                  empty = false;
+                  this._putSegmentIntoSpans(segment, unit, this);
+                  this._addLookupTooltips(segment, this);
+              }
+              if (empty) {
+                  return;
+              }
+              if (unit === 'word') {
+                  this.spansForWordsGenerated = true;
+              } else if (unit === 'graph') {
+                  this.spansForGraphsGenerated = true;
+              }
           }
 
           _putSegmentIntoSpans(segment, unit, that) {
@@ -565,13 +788,13 @@
               const NODE_TYPE_TEXT = 3;
               if (node.nodeType !== NODE_TYPE_TEXT) return;
               let tt = node.data;
-              let strArr = tt.split(' ');
+              let strArr = tt.split(/\s+/g);
               let str = '';
               for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
-                  if(unit === 'word'){
-                    str += `%spfrnt%${strArr[i]}%spback% `;
+                  if (unit === 'word') {
+                      str += `%spfrnt%${strArr[i]}%spback% `;
                   } else if (unit === 'graph') {
-                      for(let graph of strArr[i]){
+                      for (let graph of strArr[i]) {
                           str += `%spfrnt%${graph}%spback%`;
                       }
                       str += ' ';
@@ -616,7 +839,7 @@
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, this._getTooltipDelayTime(e));
+              }, 10);
           };
 
           _transliterateFragment(fragment, transliterator) {
@@ -629,7 +852,7 @@
           }
 
           _showLookupTooltip(v, tooltip, paliLookup, states, e) {
-              let lookupResult = paliLookup.lookupWord(v.innerText);
+              let lookupResult = paliLookup.lookupWord(v.dataset.latin_text || v.innerText);
               tooltip.innerHTML = lookupResult.html;
               v.parentNode.insertBefore(tooltip, v.nextSibling);
               setTimeout(() => {
@@ -640,7 +863,7 @@
                       tooltip.show();
                       states.isTooltipShown = true;
                   }
-              }, this._getTooltipDelayTime(e));
+              }, 10);
           }
 
           _removeTooltip(word, tooltip, states, e) {
@@ -653,7 +876,7 @@
                       tooltip.hide();
                       states.isTooltipShown = false;
                   }
-              }, this._getTooltipDelayTime(e));
+              }, 10);
           }
 
           _addLookupTooltips(textContainer) {
@@ -663,7 +886,7 @@
                   let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
                   this._setTooltipOptions(tooltip);
                   word.addEventListener('mouseover', (e) => {
-                      if (this.isPaliLookupEnabled && this.isLookupAllowed) {
+                      if (this.isPaliLookupEnabled) {
                           word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                           states.isWordHovered = true;
                           this._showLookupTooltip(word, tooltip, paliLookup, states, e);
@@ -685,9 +908,13 @@
           }
 
           _setTooltipOptions(tooltip) {
+              tooltip.classList.add('lookup-tooltip');
               tooltip.animationDelay = 0;
+              tooltip.position = 'top';
               tooltip.manualMode = true;
+              tooltip.fitToVisibleBounds = true;
               tooltip.offset = 0;
+              tooltip.style['padding-bottom'] = '.2em';
           }
 
           _getAccentColor() {
@@ -696,8 +923,8 @@
           }
 
           _conditionallyPutIntoSpans(lang) {
-            if (this.translatedSutta && this.translatedSutta.lang === lang) {
-                this._putIntoSpans('.translated-text', lang);
+              if (this.translatedSutta && this.translatedSutta.lang === lang) {
+                  this._putIntoSpans('.translated-text', lang);
               } else if (this.rootSutta.lang === lang) {
                   if (this.shadowRoot.querySelector('.original-text')) {
                       this._putIntoSpans('.original-text', lang);
@@ -705,24 +932,14 @@
               }
           }
 
-            _putIntoSpans(selector, lang){
-                if(lang === 'pli'){
-                    this._putWordsIntoSpans(selector);
-                } else if (lang === 'lzh'){
-                    this._putGraphsIntoSpans(selector);
-                }
-            }
+          _putIntoSpans(selector, lang) {
+              if (lang === 'pli') {
+                  this._putWordsIntoSpans(selector);
+              } else if (lang === 'lzh') {
+                  this._putGraphsIntoSpans(selector);
+              }
+          }
 
-            _paliLookupStateChanged() {
-                if (this.hidden) {
-                        return;
-                }
-                if (this.isPaliLookupEnabled) {
-                    if (!this.spansForWordsGenerated) {
-                        this._conditionallyPutIntoSpans('pli');
-                    }
-                }
-            }
           _resetColor(states, word) {
               setTimeout(() => {
                   if (!states.isTooltipHovered) {
@@ -731,20 +948,17 @@
               }, 0);
           }
 
-          _getTooltipDelayTime(e) {
-              return e.sourceCapabilities.firesTouchEvents ? 10 : 100;
+          _chineseLookupStateChanged() {
+              if (this.hidden) {
+                  return;
+              }
+              if (this.isChineseLookupEnabled) {
+                  if (!this.spansForGraphsGenerated) {
+                      this._conditionallyPutIntoSpans('lzh');
+                  }
+              }
           }
 
-            _chineseLookupStateChanged() {
-                if (this.hidden) {
-                    return;
-                }
-                if (this.isChineseLookupEnabled) {
-                    if (!this.spansForGraphsGenerated) {
-                        this._conditionallyPutIntoSpans('lzh');
-                    }
-                }
-            }
           _getClosestSegmentSibling(node) {
               while (node.nextElementSibling !== null) {
                   if (node.nextElementSibling.nodeName === 'SC-SEG') {
@@ -760,7 +974,7 @@
                   return;
               }
               if (this.isPaliLookupEnabled) {
-                  if (!this.spansGenerated) {
+                  if (!this.spansForWordsGenerated) {
                       this._conditionallyPutWordsIntoSpans();
                   }
               }
@@ -777,16 +991,16 @@
               }
           }
 
-         _showToast(dictName) {
-            this.dispatchEvent(new CustomEvent('show-sc-toast', {
-                detail: {
-                    toastType: 'info',
-                    message: `The ${dictName} lookup dictionary is now enabled.`
-                },
-                bubbles: true,
-                composed: true
-            }));
-         }
+          _showToast(dictName) {
+              this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                  detail: {
+                      toastType: 'info',
+                      message: `The ${dictName} lookup dictionary is now enabled.`
+                  },
+                  bubbles: true,
+                  composed: true
+              }));
+          }
 
           _paliLookupTargetDictReprChanged() {
               if (this.isPaliLookupEnabled) {
@@ -796,12 +1010,21 @@
           }
 
           _chineseLookupTargetDictReprChanged() {
-              if (this.isChineseLookupEnabled){
-                const dictName = this.chineseLookupTargetDictRepr.replace('→', 'to');
-                this._showToast(dictName);
+              if (this.isChineseLookupEnabled) {
+                  const dictName = this.chineseLookupTargetDictRepr.replace('→', 'to');
+                  this._showToast(dictName);
               }
           }
-          // Lookup word end
+
+          _applyFirefoxShadyDomFix() {
+              if (navigator.userAgent.includes('Firefox')) {
+                  this.isTextViewHidden = true;
+                  setTimeout(() => {
+                      this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
+                      this.isTextViewHidden = false;
+                  }, 0);
+              }
+          }
       }
 
       customElements.define(SCSegmentedText.is, SCSegmentedText);

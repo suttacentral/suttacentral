@@ -437,10 +437,12 @@
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-xs;
         margin-right: var(--sc-size-sm);
-        padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xs) var(--sc-size-sm);
+        padding: 0 var(--sc-size-sm) 0 var(--sc-size-sm);
         color: var(--sc-secondary-text-color);
-        background-color: var(--sc-tertiary-background-color);
+        background: var(--sc-textual-info-background-color);
+        text-decoration: none;
         transition: 250ms;
+        font-style: normal;
         display: none;
         transition-property: opacity;
         opacity: 0;
@@ -449,9 +451,21 @@
         border-radius: var(--sc-size-xxs);
       }
 
-      .textual-info-paragraph-inline {
+      .infomode .textual-info-paragraph-inline {
         display: inline-block;
         float: none;
+      }
+
+      .infomode .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
+        display: none;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
+        display: inline-block;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline.sc {
+        display: none;
       }
 
       #simple_text_content .textual-info-paragraph {
@@ -466,8 +480,28 @@
           background-color: transparent;
         }
 
-        .textual-info-paragraph-inline {
+        .textual-info-paragraph-inline, .textual-info-paragraph-inline.segmented-textual-info-paragraph {
           display: none;
+        }
+
+        .infomode .textual-info-paragraph-inline {
+          display: none;
+        }
+
+        .infomode .segmented-textual-info-paragraph {
+          display: none;
+        }
+
+        .infomode.segmented-infomode .textual-info-paragraph {
+          display: none;
+        }
+
+        .infomode.segmented-infomode .textual-info-paragraph-inline.segmented-textual-info-paragraph.sc {
+          display: none;
+        }
+
+        .infomode.segmented-infomode .sc.textual-info-paragraph.segmented-textual-info-paragraph:not(.textual-info-paragraph-inline) {
+          display: block;
         }
 
         #simple_text_content .textual-info-paragraph {

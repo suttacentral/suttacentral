@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 import stripe
 from flask import current_app, request
@@ -7,7 +8,8 @@ from flask_restful import Resource
 from sortedcontainers import SortedListWithKey, SortedDict
 
 from common.arangodb import get_db
-from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST
+from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST, \
+    IMAGES
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key
 
 
@@ -346,7 +348,7 @@ class LookupDictionaries(Resource):
 
 
 class Sutta(Resource):
-    def get(self, uid, author: str=''):
+    def get(self, uid, author=''):
         """
         Send Complete information set for sutta-view for given uid.
         ---
@@ -399,6 +401,27 @@ class Sutta(Resource):
                                     type: string
                         suttaplex:
                             $ref: '#/definitions/Suttaplex'
+                        neighbours:
+                            type: object
+                            properties:
+                                next:
+                                    type: object
+                                    properties:
+                                        author:
+                                            type: string
+                                        title:
+                                            type: string
+                                        uid:
+                                            type: string
+                                previous:
+                                    type: object
+                                    properties:
+                                        author:
+                                            type: string
+                                        title:
+                                            type: string
+                                        uid:
+                                            type: string
 
         """
         lang = request.args.get('lang', 'en')
@@ -409,7 +432,21 @@ class Sutta(Resource):
 
         results = db.aql.execute(SUTTA_VIEW,
                                  bind_vars={'uid': uid, 'language': lang, 'author': author})
-        return results.next(), 200
+        data: dict = results.next()
+
+        r = re.compile(r'^[a-z\-]+')
+        original_prefix = r.match(uid)[0]
+
+        ordering: dict = data['neighbours']
+        for key, items in ordering.items():
+            for item in items:
+                if r.match(item['uid'])[0] == original_prefix:
+                    ordering[key] = item
+                    break
+            else:
+                ordering[key] = None
+
+        return data, 200
 
 
 class Currencies(Resource):
@@ -543,7 +580,7 @@ class Donations(Resource):
                 )
 
             elif monthly_donation:
-                plan = get_plan(amount, currency['symbol'])
+                plan = self._get_plan(amount, currency['symbol'])
                 subscription = stripe.Subscription.create(
                     customer=customer.id,
                     items=[{"plan": plan.stripe_id}]
@@ -564,17 +601,42 @@ class Donations(Resource):
 
         return 'Subscribed' if monthly_donation else 'Donated', 200
 
+    @staticmethod
+    def _get_plan(amount, currency):
+        plan_id = f'monthly_{amount}_{currency}'
+        try:
+            plan = stripe.Plan.retrieve(plan_id)
+        except stripe.error.InvalidRequestError:
+            plan = stripe.Plan.create(
+                amount=amount,
+                interval='month',
+                name='Monthly Donation to SuttaCentral',
+                currency=currency,
+                statement_descriptor='SuttaCentralDonation',
+                id=plan_id)
+        return plan
 
-def get_plan(amount, currency):
-    plan_id = f'monthly_{amount}_{currency}'
-    try:
-        plan = stripe.Plan.retrieve(plan_id)
-    except stripe.error.InvalidRequestError:
-        plan = stripe.Plan.create(
-            amount=amount,
-            interval='month',
-            name='Monthly Donation to SuttaCentral',
-            currency=currency,
-            statement_descriptor='SuttaCentralDonation',
-            id=plan_id)
-    return plan
+
+class Images(Resource):
+    def get(self, division, vol):
+        """
+        Send list of images for given division.
+        ---
+        responses:
+            200:
+                schema:
+                    id: images
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                            page:
+                                type: number
+        """
+        db = get_db()
+
+        data = db.aql.execute(IMAGES, bind_vars={'division': division, 'vol': vol})
+
+        return data.batch(), 200

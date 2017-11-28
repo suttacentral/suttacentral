@@ -39,20 +39,34 @@
       }
 
       .currency-dropdown {
+        --paper-input-container-focus-color: var(--sc-primary-accent-color);
+        --paper-input-container-color: var(--sc-secondary-text-color);
+        --paper-input-container-input-color: var(--sc-secondary-text-color);
+        --paper-dropdown-menu-icon: {
+          color: var(--sc-disabled-text-color);
+        };
         width: 6em;
+        margin-right: var(--sc-size-md);
       }
 
       .currency-menu-listbox {
         width: 6em;
+        background-color: var(--sc-secondary-background-color);
+      }
+
+      .currency-menu-item {
+        color: var(--sc-primary-text-color);
       }
 
       .currency-menu-item:hover {
-        background-color: var(--sc-primary-background-color);
+        background-color: var(--sc-tertiary-background-color);
         cursor: pointer;
       }
 
       .frequency-checkbox {
         --paper-checkbox-checked-color: var(--sc-primary-accent-color);
+        --paper-checkbox-unchecked-color: var(--sc-disabled-text-color);
+        --paper-checkbox-label-color: var(--sc-disabled-text-color);
         margin-right: 1em;
       }
 
@@ -74,7 +88,7 @@
 
       .submit-button {
         background: var(--sc-primary-accent-color);
-        color: white;
+        color: var(--sc-tertiary-text-color);
         font-weight: bold;
       }
 
@@ -146,7 +160,7 @@
         background: transparent;
         font-weight: 300;
         border: 0;
-        color: white;
+        color: var(--sc-tertiary-text-color);
         outline: none;
         cursor: text;
         display: block;
@@ -219,7 +233,7 @@
       .toast {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-xl;
-        --paper-toast-color: white;
+        --paper-toast-color: var(--sc-paper-tooltip-color);
         text-align: center;
         margin-left: calc(50vw - 150px);
       }
@@ -231,13 +245,15 @@
       .data-input {
         --paper-input-container: {
           @apply --sc-sans-font;
-          color: var(--sc-secondary-text-color);
+        };
+        --paper-input-container-input: {
+          color: var(--sc-primary-text-color);
         };
         padding-bottom: var(--sc-size-md);
       }
 
       .form-prefix {
-        color: var(--disabled-text-color);
+        color: var(--sc-disabled-text-color);
       }
 
       .success-toast {
@@ -275,7 +291,7 @@
         <iron-form class="payment-iron-form">
           <form class="payment-form">
             <div class="flex-row">
-              <paper-dropdown-menu class="form-prefix currency-dropdown data-input" title="Select currency"
+              <paper-dropdown-menu class="currency-dropdown data-input" title="Select currency"
                                    dynamic-align label="Currency" always-float-label>
                 <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
                                selected="[[default_currency_index]]">
@@ -331,7 +347,7 @@
         </iron-form>
 
         <div class="legal-information">
-          <iron-icon icon="icons:info-outline"></iron-icon>
+          <iron-icon icon="icons:info-outline" class="form-prefix"></iron-icon>
           <p>SuttaCentral does not handle or store your credit card details.
             All credit card transactions are handled securely by <a href="https://stripe.com" target="blank">Stripe</a>.
           </p>
@@ -427,19 +443,19 @@
                   iconStyle: 'solid',
                   style: {
                       base: {
-                          iconColor: '#9A9A9A',
+                          iconColor: this._getIconColor(),
                           lineHeight: '36px',
                           fontWeight: 300,
                           fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
                           fontSize: '19px',
 
                           '::placeholder': {
-                              color: '#737373'
+                              color: this._getPlaceholderColor()
                           }
                       },
                       invalid: {
-                          iconColor: '#e85746',
-                          color: '#e85746'
+                          iconColor: this._getErrorColor(),
+                          color: this._getErrorColor()
                       }
                   },
                   classes: {
@@ -456,7 +472,7 @@
               this.card.addEventListener('change', ({ error, empty }) => {
                   if (error || empty) {
                       cardFirstSpan.classList.add('error-bar');
-                      cardSecondSpan.style['color'] = '#E4584C';
+                      cardSecondSpan.style['color'] = this._getErrorColor();
                       this.isStripeValid = false;
                   } else {
                       cardFirstSpan.classList.remove('error-bar');
@@ -489,7 +505,7 @@
                   if (!/^[+]?(\d+[.,]?\d{0,2})$/.test(pastedText)) {
                       return false;
                   }
-              }
+              };
 
               amountInput.addEventListener('keydown', (e) => {
                   if (e.key === ',') {
@@ -566,6 +582,21 @@
               data.email = form.querySelector('.email-input').value;
               data.message = form.querySelector('.message-input').value;
               return data;
+          }
+
+          _getIconColor() {
+              const bodyStyle = window.getComputedStyle(document.body);
+              return bodyStyle.getPropertyValue('--sc-disabled-text-color');
+          }
+
+          _getErrorColor() {
+              const bodyStyle = window.getComputedStyle(document.body);
+              return bodyStyle.getPropertyValue('--sc-toast-error-color');
+          }
+
+          _getPlaceholderColor() {
+              const bodyStyle = window.getComputedStyle(document.body);
+              return bodyStyle.getPropertyValue('--sc-secondary-text-color');
           }
       }
 

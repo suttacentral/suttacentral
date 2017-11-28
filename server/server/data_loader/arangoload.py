@@ -12,7 +12,7 @@ from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
-from . import biblio, currencies, dictionaries, paragraphs, po, textdata
+from . import biblio, currencies, dictionaries, paragraphs, po, textdata, divisions, images_files
 
 
 class ChangeTracker:
@@ -98,6 +98,7 @@ def collect_data(repo_dir: Path, repo_addr: str):
     Args:
         repo_dir: Path to data directory.
     """
+    print(f'downloading {repo_addr}')
     if not repo_dir.exists():
         get_data(repo_dir, repo_addr)
     else:
@@ -534,6 +535,8 @@ def run():
     collect_data(data_dir, current_app.config.get('DATA_REPO'))
     collect_data(po_dir, current_app.config.get('PO_REPO'))
 
+    images_files.load_images_links(db)
+
     change_tracker = ChangeTracker(data_dir, db)
 
     load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
@@ -557,5 +560,7 @@ def run():
     paragraphs.load_paragraphs(db, additional_info_dir)
 
     biblio.load_biblios(db, additional_info_dir)
+
+    divisions.load_divisions(db, structure_dir)
 
     change_tracker.update_mtimes()
