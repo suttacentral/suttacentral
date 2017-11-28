@@ -480,10 +480,6 @@
           background-color: transparent;
         }
 
-        .textual-info-paragraph-inline, .textual-info-paragraph-inline.segmented-textual-info-paragraph {
-          display: none;
-        }
-
         .infomode .textual-info-paragraph-inline {
           display: none;
         }
@@ -497,7 +493,9 @@
         }
 
         .infomode.segmented-infomode .textual-info-paragraph-inline.segmented-textual-info-paragraph.sc {
-          display: none;
+          position: absolute;
+          right: 10%;
+          display: block;
         }
 
         .infomode.segmented-infomode .sc.textual-info-paragraph.segmented-textual-info-paragraph:not(.textual-info-paragraph-inline) {

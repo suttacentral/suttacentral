@@ -314,7 +314,6 @@
               requestAnimationFrame(() => {
                   this._addSecondaryText();
                   this._toggleSegmentedTextualInfo(true);
-                  this._addSegmentedTextualInfoTopMargins();
               });
           }
 
@@ -482,13 +481,12 @@
                   if (parId[0] === '0') {
                       return;
                   }
-                  const inlineParagraph = this._insertInlineSegmentedParagraph(parId, segment);
-                  this._insertSegmentedParagraph(inlineParagraph, parId, segment);
+                  this._insertSegmentedParagraph(parId, segment);
               });
               this.segmentedIDsAdded = true;
           }
 
-          _insertInlineSegmentedParagraph(parId, segment) {
+          _insertSegmentedParagraph(parId, segment) {
               // Don't insert duplicate segments
               if (this.translatedSutta && segment.classList.contains('original-text')) {
                   return;
@@ -505,59 +503,6 @@
                   segment.insertBefore(inlineParagraph, segment.firstChild);
               });
               return inlineParagraph;
-          }
-
-          _insertSegmentedParagraph(inlineParagraph, parId, segment) {
-              const paragraph = inlineParagraph.cloneNode(true);
-              paragraph.id = parId;
-              paragraph.classList.remove('textual-info-paragraph-inline');
-              paragraph.setAttribute('data-reference-segment-id', segment.id);
-              paragraph.addEventListener('click', () => {this._scrollToSection(parId, true, 0)});
-              // insert before the first segment child to maintain paragraph order
-              requestAnimationFrame(() => {
-                  segment.parentNode.insertBefore(paragraph, segment.parentNode.getElementsByTagName('sc-seg')[0]);
-              });
-          }
-
-          _addSegmentedTextualInfoTopMargins() {
-              const segmentedParagraphs = this.shadowRoot
-                  .querySelectorAll('.segmented-textual-info-paragraph.sc:not(.textual-info-paragraph-inline)');
-              let segments = this.translatedSutta ? this.shadowRoot.querySelectorAll('sc-seg.translated-text') :
-                  this.shadowRoot.querySelectorAll('sc-seg.original-text');
-              // store the segment offsets in an object to not query the elements in a loop which would force layout redraw:
-              const segmentOffsets = this.getSegmentTopOffsets(segments);
-              Array.from(segmentedParagraphs).forEach((paragraph) => {
-                  const offsets = segmentOffsets[paragraph.getAttribute('data-reference-segment-id')];
-                  let paragraphMargin = 0;
-                  const previousSibling = paragraph.previousElementSibling;
-                  if (previousSibling && previousSibling.classList.contains('segmented-textual-info-paragraph')) {
-                      paragraphMargin = 24;
-                  }
-                  if (offsets.prevElemOffset) {
-                      paragraph.style.marginTop = offsets.segmentOffset - offsets.prevElemOffset - paragraphMargin;
-                  } else {
-                      paragraph.style.marginTop = offsets.segmentOffset - paragraphMargin;
-                  }
-              });
-          }
-
-          getSegmentTopOffsets(segments) {
-              const segmentOffsets = {};
-              Array.from(segments).forEach((s) => {
-                  let previousSegmentOffset;
-                  // Store the previous segment offset for segmented textual info top margin calculation:
-                  if (s.previousElementSibling) {
-                      const prevSegment = s.previousElementSibling.previousElementSibling;
-                      if (prevSegment && prevSegment.nodeName === 'SC-SEG') {
-                          previousSegmentOffset = prevSegment.offsetTop - prevSegment.parentNode.offsetTop;
-                      }
-                  }
-                  segmentOffsets[s.id] = {
-                      segmentOffset: s.offsetTop - s.parentNode.offsetTop,
-                      prevElemOffset: previousSegmentOffset
-                  };
-              });
-              return segmentOffsets;
           }
 
           _addParagraphData(item, data) {
