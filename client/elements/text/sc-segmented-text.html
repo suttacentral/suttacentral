@@ -51,6 +51,18 @@
         height: 60px;
       }
 
+      .highlight-wrapper {
+          background-color: var(--sc-disabled-text-color-opaque);
+          display: flex;
+      }
+
+      article p,
+      .word,
+      .translated-text,
+      .original-text {
+        transition: background-color 500ms ease-in;        
+      }
+
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -438,10 +450,8 @@
               // Add segmented textal information paragraphs if not added already
               if (!this.segmentedIDsAdded) {
                   this._addSegmentedTextualInfoElements();
-              }
-              requestAnimationFrame(() => {
-                  this._scrollToSectionInUrl();
-              });
+              }              
+            this._scrollToSectionInUrl();
           }
 
           _processVolPageInfo(item, divisionId) {
@@ -548,23 +558,122 @@
               return ((!error && loading) || isTextViewHidden);
           }
 
+          _getElememtToHighlight(element) {
+            if(element.id.includes('inline') && !element.id.includes('.')){
+                element = element.parentNode;
+            }
+            return element.parentNode;
+          }
+
+          _generateId(element) {
+            if(element && element.includes('.') && !element.includes('inline')){
+                return `${element}_inline`;
+            }
+            return element
+          }
+
+          _gotScSeg(wrapper) {
+              return wrapper.querySelectorAll('sc-seg').length === 1;
+          }
+
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
               if (!sectionId) return;
-              try {
-                  const section = this.shadowRoot.getElementById(sectionId);
-                  if (!section) return;
-                  setTimeout(() => {
-                      section.scrollIntoView({
-                          behavior: isSmooth ? 'smooth' : 'instant',
-                          block: 'start',
-                          inline: 'nearest'
-                      });
-                  }, delay);
-              } catch (e) {
-                  console.error(e);
+              this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
+                v.classList.remove('highlight');
+                v.classList.remove('last-highlight');
+              })
+              this.shadowRoot.querySelectorAll('.highlight-wrapper').forEach(v => {
+                v.classList.remove('highlight-wrapper');
+              })
+              setTimeout(() => {
+                let [idFrom, idTo] = sectionId.split('-');
+                idFrom = this._generateId(idFrom);
+                idTo = this._generateId(idTo);
+                let firstSection = this.shadowRoot.getElementById(idFrom);
+                if (!firstSection) return;
+                firstSection = this._getElememtToHighlight(firstSection);
+                let section = firstSection;
+                let toSection = this.shadowRoot.getElementById(idTo);
+                if(toSection) {
+                    toSection = this._getElememtToHighlight(toSection);
+                }
+
+                const SIDEBYSIDE = !!(this.chosenTextView === 'sidebyside')
+                while(true) {
+                    if(!section) {
+                        break;
+                    }
+                    let wrapper
+                    if(SIDEBYSIDE){
+                        if(section.previousElementSibling && (section.nodeName !== 'SC-SEG' || ( 
+                           this._gotScSeg(section.previousElementSibling) &&
+                           section.previousElementSibling.classList.contains('highlight-wrapper')))) {
+                            wrapper = section.previousElementSibling;
+                        } else {
+                            wrapper = document.createElement('span');
+                        }
+                        wrapper.classList.add('highlight-wrapper');
+                        section.parentNode.insertBefore(wrapper, section);
+                        wrapper.appendChild(section.cloneNode(true));
+                    }
+                    section.classList.add('highlight');
+                    const margin = (section.currentStyle || window.getComputedStyle(section)).margin;
+                    if(section === toSection || !toSection){
+                        if(idFrom.includes('.') || (idTo && idTo.contains('.'))){
+                            let newSection = section.nextElementSibling;
+                            if(SIDEBYSIDE){
+                                section.remove();
+                            }
+                            section = newSection;                            
+                            if(!SIDEBYSIDE) {
+                                section.classList.add('highlight');
+                            }
+                            const padding = (section.currentStyle || window.getComputedStyle(section)).padding;
+                            if (padding && padding !== '0px') {
+                                section.style.padding = '0';
+                                section.style.margin = padding;
+                            } 
+                            if(SIDEBYSIDE){
+                                wrapper.appendChild(section.cloneNode(true));
+                                section.remove();
+                            }
+                            
+                        }
+                        break;
+                    } else if (margin && margin !== '0px'){
+                        section.style.margin = '0';
+                        section.style.padding = margin;
+                    }
+                    if(section.nextElementSibling === null && section.parentNode.nodeName === 'P'){
+                        let paragraph = section.parentNode;
+                        const margin = (paragraph.currentStyle || window.getComputedStyle(paragraph)).margin;
+                        paragraph.style.margin = '0';
+                        if(SIDEBYSIDE){
+                            wrapper.style.padding = margin;
+                        } else {
+                            paragraph.style.padding = margin;                            
+                        }
+                        let newSection = paragraph.nextElementSibling.firstChild;
+                        if(SIDEBYSIDE){
+                            section.remove();
+                        }
+                        section = newSection;
+                    } else {
+                        let newSection = section.nextElementSibling;
+                        if(SIDEBYSIDE){
+                            section.remove();
+                        }
+                        section = newSection;
+                    }
+                }
+                firstSection.scrollIntoView({
+                        behavior: isSmooth ? 'smooth' : 'instant',
+                        block: 'start',
+                        inline: 'nearest'
+                    });
+                }, delay);
               }
-          }
 
           _scrollToSectionInUrl() {
               let textualInfoId = '';
