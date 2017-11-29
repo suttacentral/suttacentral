@@ -499,7 +499,7 @@
               inlineParagraph.id = `${parId}_inline`;
               inlineParagraph.innerText = parId;
               inlineParagraph.href = `#${parId}`;
-              inlineParagraph.title = 'SuttaCentral paragraph number';
+              inlineParagraph.title = 'SuttaCentral segment number';
               inlineParagraph.addEventListener('click', () => { this._scrollToSection(inlineParagraph.id, true, 0) });
               requestAnimationFrame(() => {
                   segment.insertBefore(inlineParagraph, segment.firstChild);
