@@ -534,8 +534,9 @@
               inlineItem.addEventListener('click', () => { this._scrollToSection(inlineItem.id, true, 0); });
           }
 
-          _addInlineParagraphListeners() {
-              const inlineItems = this.shadowRoot.querySelectorAll('.textual-info-paragraph-inline');
+          _addInlineParagraphListeners(rootElement) {
+              rootElement = rootElement || this.shadowRoot;
+              const inlineItems = rootElement.querySelectorAll('.textual-info-paragraph-inline');
               if (!inlineItems) {
                   return;
               }
@@ -580,6 +581,7 @@
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
+              console.log('here');
               if (!sectionId) return;
               this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
                 v.classList.remove('highlight');
@@ -607,24 +609,30 @@
                         break;
                     }
                     let wrapper
+                    let wrapperAlreadyExists = false;
                     if(SIDEBYSIDE){
-                        if(section.previousElementSibling && (section.nodeName !== 'SC-SEG' || ( 
-                           this._gotScSeg(section.previousElementSibling) &&
-                           section.previousElementSibling.classList.contains('highlight-wrapper')))) {
-                            wrapper = section.previousElementSibling;
+                        if(section.parentNode && section.parentNode.nodeName === 'SPAN') {
+                            section.parentNode.classList.add('highlight-wrapper');
+                            wrapperAlreadyExists = true;
                         } else {
-                            wrapper = document.createElement('span');
+                            if(section.previousElementSibling && (section.nodeName !== 'SC-SEG' || ( 
+                            this._gotScSeg(section.previousElementSibling) &&
+                            section.previousElementSibling.classList.contains('highlight-wrapper')))) {
+                                wrapper = section.previousElementSibling;
+                            } else {
+                                wrapper = document.createElement('span');
+                            }
+                            wrapper.classList.add('highlight-wrapper');
+                            section.parentNode.insertBefore(wrapper, section);
+                            wrapper.appendChild(section.cloneNode(true));
                         }
-                        wrapper.classList.add('highlight-wrapper');
-                        section.parentNode.insertBefore(wrapper, section);
-                        wrapper.appendChild(section.cloneNode(true));
                     }
                     section.classList.add('highlight');
                     const margin = (section.currentStyle || window.getComputedStyle(section)).margin;
                     if(section === toSection || !toSection){
                         if(idFrom.includes('.') || (idTo && idTo.contains('.'))){
                             let newSection = section.nextElementSibling;
-                            if(SIDEBYSIDE){
+                            if(SIDEBYSIDE && !wrapperAlreadyExists){
                                 section.remove();
                             }
                             section = newSection;                            
@@ -636,11 +644,14 @@
                                 section.style.padding = '0';
                                 section.style.margin = padding;
                             } 
-                            if(SIDEBYSIDE){
+                            if(SIDEBYSIDE && !wrapperAlreadyExists){
                                 wrapper.appendChild(section.cloneNode(true));
                                 section.remove();
                             }
                             
+                        }
+                        if(SIDEBYSIDE){
+                            this._addInlineParagraphListeners(wrapper);
                         }
                         break;
                     } else if (margin && margin !== '0px'){
@@ -651,22 +662,25 @@
                         let paragraph = section.parentNode;
                         const margin = (paragraph.currentStyle || window.getComputedStyle(paragraph)).margin;
                         paragraph.style.margin = '0';
-                        if(SIDEBYSIDE){
+                        if(SIDEBYSIDE && !wrapperAlreadyExists){
                             wrapper.style.padding = margin;
                         } else {
                             paragraph.style.padding = margin;                            
                         }
                         let newSection = paragraph.nextElementSibling.firstChild;
-                        if(SIDEBYSIDE){
+                        if(SIDEBYSIDE && !wrapperAlreadyExists){
                             section.remove();
                         }
                         section = newSection;
                     } else {
                         let newSection = section.nextElementSibling;
-                        if(SIDEBYSIDE){
+                        if(SIDEBYSIDE && !wrapperAlreadyExists){
                             section.remove();
                         }
                         section = newSection;
+                    }
+                    if(SIDEBYSIDE){
+                        this._addInlineParagraphListeners(wrapper);
                     }
                 }
                 firstSection.scrollIntoView({
