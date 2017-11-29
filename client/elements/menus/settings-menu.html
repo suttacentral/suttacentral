@@ -1,18 +1,18 @@
-<link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="/bower_components/iron-icons/editor-icons.html">
-<link rel="import" href="/bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="/bower_components/paper-radio-button/paper-radio-button.html">
-<link rel="import" href="/bower_components/paper-radio-group/paper-radio-group.html">
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="/bower_components/paper-item/paper-item.html">
-<link rel="import" href="/bower_components/paper-spinner/paper-spinner-lite.html">
-<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="/bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="/bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
-<link rel="import" href="/bower_components/neon-animation/web-animations.html">
-<link rel="import" href="/bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <!--
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
@@ -366,7 +366,7 @@ Issues:
 
           connectedCallback() {
               super.connectedCallback();
-              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('checked-changed', (e) => {
+              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('active-changed', (e) => {
                   this._textualInfoToggleStateChanged(e.detail.value);
               });
               this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
@@ -427,8 +427,10 @@ Issues:
 
           _textualInfoToggleStateChanged(toggleChecked) {
               if (this.textualParagraphs && toggleChecked) {
+                  this.showLoadingSpinner = true;
                   this.$.paragraphs_ajax.generateRequest().completes.then(() => {
                       this.dispatch('toggleTextualInfo', true);
+                      this.showLoadingSpinner = false;
                   });
               } else {
                   this.dispatch('toggleTextualInfo', false);
@@ -439,8 +441,9 @@ Issues:
               if (this.textualInfoResponse) {
                   if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
                       this.dispatch('downloadParagraphs', this.textualInfoResponse);
+                  } else {
+                      this.dispatch('toggleTextualInfo', true);
                   }
-                  this.dispatch('toggleTextualInfo', true);
               }
           }
 
