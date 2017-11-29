@@ -4,8 +4,10 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
+<link rel="import" href="../../img/sc-language-icons.html">
 <link rel="import" href="../../redux-store.html">
 
 <!--
@@ -86,7 +88,8 @@ This is the base language menu that determines the language of the site.
             </paper-item-body>
           </paper-item>
           <div class="iso-code">
-            <img class="iso-code-image" src="[[_getLanguageCodeImagePath(language.iso_code)]]"/>
+            <iron-icon icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
+            <!--<iron-icon class="iso-code-image" src="[[_getLanguageCodeImagePath(language.iso_code)]]"></iron-icon>-->
           </div>
         </template>
       </paper-listbox>
@@ -159,6 +162,10 @@ This is the base language menu that determines the language of the site.
 
           _getUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/languages`;
+          }
+
+          _getLanguageIconName(isoCode) {
+              return `sc-language-icons:${isoCode}`;
           }
 
           _getLanguageCodeImagePath(isoCode) {
