@@ -60,6 +60,13 @@ This is the base language menu that determines the language of the site.
         text-transform: none;
         pointer-events: none;
       }
+
+      .iso-code-image {
+        width: var(--sc-size-lg);
+        color: var(--sc-disabled-text-color);
+        fill: var(--sc-disabled-text-color);
+      }
+
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -78,8 +85,9 @@ This is the base language menu that determines the language of the site.
               [[language.name]]
             </paper-item-body>
           </paper-item>
-          <!-- These ISO codes technically count as separate paper-listbox elements. -->
-          <div class="iso-code">[[language.iso_code]]</div>
+          <div class="iso-code">
+            <img class="iso-code-image" src="[[_getLanguageCodeImagePath(language.iso_code)]]"/>
+          </div>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
@@ -151,6 +159,10 @@ This is the base language menu that determines the language of the site.
 
           _getUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/languages`;
+          }
+
+          _getLanguageCodeImagePath(isoCode) {
+              return `../../img/language-icons/${isoCode}.svg`;
           }
       }
 
