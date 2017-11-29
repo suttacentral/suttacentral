@@ -40,6 +40,18 @@
         margin-top: 10vh;
       }
 
+      .highlight {
+          background-color: var(--sc-disabled-text-color-opaque);
+      }
+
+      article p,
+      .word,
+      .translated-text,
+      .original-text {
+        transition: background-color 300ms ease-in;        
+      }
+
+
     </style>
 
     <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[sutta.text]]"
@@ -267,13 +279,88 @@
               this.isTextViewHidden = !!(this.isLoading);
           }
 
+          _removeHighlights() {
+            this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
+                v.classList.remove('highlight');
+                v.classList.remove('last-highlight');
+              })
+          }
+
+          _processLastSection(section, idFrom, idTo) {
+            if(idFrom.includes('.') || (idTo && idTo.includes('.'))){
+                let newSection = section.nextElementSibling;
+                section = newSection;                            
+                section.classList.add('highlight');
+                const padding = (section.currentStyle || window.getComputedStyle(section)).padding;
+                if (padding && padding !== '0px') {
+                    section.style.padding = '0';
+                    section.style.margin = padding;
+                }   
+            }
+          }
+
+          _processParagraphHighlight(section) {
+            let paragraph = section.parentNode;
+            const margin = (paragraph.currentStyle || window.getComputedStyle(paragraph)).margin;
+            paragraph.style.margin = '0';
+            paragraph.style.padding = margin;                            
+            let newSection = paragraph.nextElementSibling.firstChild;
+            section = newSection;
+          }
+
+          _getElememtToHighlight(element) {
+            if(element.id.includes('inline') && !element.id.includes('.')){
+                element = element.parentNode;
+            }
+            return element.parentNode;
+          }
+
+          _processHighlightAndScroll(sectionId, isSmooth) {
+            let [idFrom, idTo] = sectionId.split('-');
+            let firstSection = this.shadowRoot.getElementById(idFrom);
+            if (!firstSection) return;
+            firstSection = this._getElememtToHighlight(firstSection);
+            let section = firstSection;
+            let toSection = this.shadowRoot.getElementById(idTo);
+            let last = true;
+            if(toSection) {
+                toSection = this._getElememtToHighlight(toSection);
+                last = false;
+            }
+            while(true) {
+                if(!section) {
+                    break;
+                }
+                section.classList.add('highlight');
+                const margin = (section.currentStyle || window.getComputedStyle(section)).margin;
+                section.style.margin = '0';
+                section.style.padding = margin;
+
+                let nextSection = section.nextElementSibling;
+                let sectionLink = nextSection.querySelector('.textual-info-paragraph');
+                if(sectionLink){
+                    if(last) {
+                        section.style.margin = margin;
+                        section.style.padding = '0';
+                        break;
+                    } else if(sectionLink.id === idTo) {
+                        last = true;
+                    }
+                }
+                section = nextSection;
+            }
+            return firstSection;
+          }
+
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
               if (!sectionId) return;
               try {
+                  this._removeHighlights();
                   const section = this.shadowRoot.getElementById(sectionId);
                   setTimeout(() => {
-                      section.scrollIntoView({
+                      const firstSection = this._processHighlightAndScroll(sectionId);
+                      firstSection.scrollIntoView({
                           behavior: isSmooth ? 'smooth' : 'instant',
                           block: 'start',
                           inline: 'nearest'
