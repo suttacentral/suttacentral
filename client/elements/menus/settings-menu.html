@@ -366,7 +366,7 @@ Issues:
 
           connectedCallback() {
               super.connectedCallback();
-              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('checked-changed', (e) => {
+              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('active-changed', (e) => {
                   this._textualInfoToggleStateChanged(e.detail.value);
               });
               this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
@@ -427,8 +427,10 @@ Issues:
 
           _textualInfoToggleStateChanged(toggleChecked) {
               if (this.textualParagraphs && toggleChecked) {
+                  this.showLoadingSpinner = true;
                   this.$.paragraphs_ajax.generateRequest().completes.then(() => {
                       this.dispatch('toggleTextualInfo', true);
+                      this.showLoadingSpinner = false;
                   });
               } else {
                   this.dispatch('toggleTextualInfo', false);
@@ -439,8 +441,9 @@ Issues:
               if (this.textualInfoResponse) {
                   if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
                       this.dispatch('downloadParagraphs', this.textualInfoResponse);
+                  } else {
+                      this.dispatch('toggleTextualInfo', true);
                   }
-                  this.dispatch('toggleTextualInfo', true);
               }
           }
 
