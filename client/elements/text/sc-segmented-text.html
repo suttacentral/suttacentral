@@ -416,11 +416,13 @@
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
+              if (!this.paragraphs || this.paragraphs.length === 0) {
+                  return;
+              }
               const uid = (this.rootSutta || this.translatedSutta).uid;
               const divisionId = /^[a-z]+/.exec(uid)[0];
               this._setParagraphsVisible(this.showParagraphs);
-              const paragraphsAdded =
-                  this.$.segmented_text_content.querySelector('.textual-info-paragraph') !== null;
+              const paragraphsAdded = this.$.segmented_text_content.querySelector('.textual-info-paragraph') !== null;
               if (paragraphsAdded) return;
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
@@ -497,7 +499,7 @@
               inlineParagraph.id = `${parId}_inline`;
               inlineParagraph.innerText = parId;
               inlineParagraph.href = `#${parId}`;
-              inlineParagraph.title = 'SuttaCentral paragraph number';
+              inlineParagraph.title = 'SuttaCentral segment number';
               inlineParagraph.addEventListener('click', () => { this._scrollToSection(inlineParagraph.id, true, 0) });
               requestAnimationFrame(() => {
                   segment.insertBefore(inlineParagraph, segment.firstChild);
