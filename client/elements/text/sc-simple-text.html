@@ -133,18 +133,28 @@
                       statePath: 'textOptions.chineseLookupTargetDictRepr',
                       observer: '_chineseLookupTargetDictReprChanged'
                   },
-                  classTitles: {
+                  classTitlesTI: {
                       type: Object,
                       value: {
-                          "gap":"Gap in the manuscript.",
-                          "term":"Defined term.",
                           "gloss":"Definition of term.",
                           "add":"Text added by the editor or translator for clarification",
                           "supplied":"Text hypothetically reconstructed by the editor or translator.",
                           "supplied2":"Text hypothetically reconstructed by the editor or translator.",
                           "expanded":"Text expanded by editor or translator although elided in original.",
+                          "surplus":"Text present in the source which the editor believes to be superfluous or redundant.",
+                          "del":"Text deleted by the editor as superfluous",
+                          "del-scribe":"Text deleted by the scribe as superfluous"
+                      }
+                  },
+                  classTitles: {
+                      type: Object,
+                      value: {
+                          "gap":"Gap in the manuscript.",
+                          "term":"Defined term.",
                           "pe":"Instructions for expanding text supplied by the editor or translator.",
-                          "unclear":"Unclear reading."
+                          "unclear":"Unclear reading.",
+                          "scribe":"Note of attribution by the scribe of the manuscript.",
+                          "suppliedmetre":"Metre reconstructed by the editor."
                       }
                   }
               }
@@ -277,6 +287,10 @@
                   for (var key in this.classTitles){
                       const classrefs = this.$.simple_text_content.querySelectorAll('.'+key);
                       Array.from(classrefs).forEach(item => item.title = this.classTitles[key]);
+                  }
+                  for (var key in this.classTitlesTI){
+                      const classrefsTI = this.$.simple_text_content.querySelectorAll('.'+key);
+                      visible ? Array.from(classrefsTI).forEach(item => item.title = this.classTitlesTI[key]) : Array.from(classrefsTI).forEach(item => item.title = "");
                   }
               }
           }
