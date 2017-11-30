@@ -55,12 +55,8 @@ This is the base language menu that determines the language of the site.
       }
 
       .iso-code {
-        @apply --paper-font-caption;
-        @apply --sc-sans-font;
         padding-right: var(--sc-size-sm);
         margin-top: var(--sc-size-xs);
-        text-transform: none;
-        pointer-events: none;
       }
 
       .iso-code-image {
@@ -163,10 +159,6 @@ This is the base language menu that determines the language of the site.
 
           _getLanguageIconName(isoCode) {
               return `sc-language-icons:${isoCode}`;
-          }
-
-          _getLanguageCodeImagePath(isoCode) {
-              return `../../img/language-icons/${isoCode}.svg`;
           }
       }
 
