@@ -329,7 +329,8 @@
 
       <template is="dom-if" if="[[parallelsOpened]]">
         <iron-collapse no-animation id="collapse" opened="{{parallelsOpened}}">
-          <sc-view-parallels root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"></sc-view-parallels>
+          <sc-view-parallels root-lang="[[item.root_lang]]" item-uid="[[item.uid]]" root-text="[[_getRootText()]]">
+          </sc-view-parallels>
         </iron-collapse>
       </template>
 
@@ -494,6 +495,10 @@
 
           _getAcronymOrUid(item) {
               return item.acronym || item.uid;
+          }
+
+          _getRootText() {
+            return this.item.translations.find(v => v.lang === this.item.root_lang);
           }
       }
 
