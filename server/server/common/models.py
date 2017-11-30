@@ -476,7 +476,7 @@ class Relationship(Model):
                 from_ = _from
                 to = root._id
             partial = bool(round(random()))
-            edge = cls(_from, root._id, from_, partial, to, 'parallel')
+            edge = cls(_from, root._id, from_, partial, to, 'full')
             edges.append(edge)
         return edges
 
