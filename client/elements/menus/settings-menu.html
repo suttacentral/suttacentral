@@ -17,12 +17,6 @@
 <!--
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
 type of view for segmented pages (showing pali next to translated text), lookup tools and publication details .
-
-Issues:
-  - The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English.
-  A mockup dictionary is in `data/dictionaries/pli2en.json` but this is not the latest version, only for testing.
-  The matching should be fuzzy so no direct word-to-word lookup.
-  - The repository with the basic code for this tool is https://github.com/blake-sc/palilookup but is broken.
 -->
 <dom-module id="settings-menu" attributes="selectedView textInfo scriptchoice">
   <template>
@@ -109,7 +103,7 @@ Issues:
       }
 
       .menu-toggle-button {
-        --paper-toggle-button-checked-bar-color: var(--sc-disabled-text-color);
+        --paper-toggle-button-checked-bar-color: var(--sc-primary-background-color);
         --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
         margin-top: var(--sc-size-sm);
       }
