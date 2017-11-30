@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
 <link rel="import" href="../../img/sc-svg-icons.html">
+<link rel="import" href="../../img/sc-language-icons.html">
 
 <!--
 Language-menu used in the suttaplex card for denoting which translations exist of this particular text
@@ -44,7 +45,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         outline: none;
       }
 
-      /* The actual list*/
       .language-menu-listbox {
         background-color: var(--sc-secondary-background-color);
         width: 220px;
@@ -57,6 +57,8 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
       .language-menu-item {
         color: var(--sc-primary-text-color);
+        padding-left: var(--sc-size-sm);
+        padding-right: var(--sc-size-sm);
         text-transform: capitalize;
       }
 
@@ -74,15 +76,12 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
       .iso-code {
-        @apply --paper-font-caption;
-        @apply --sc-sans-font;
-        color: var(--sc-secondary-text-color);
-        right: var(--sc-size-md);
-        position: absolute;
-        margin-top: -34px;
-        margin-left: 10px;
-        text-transform: none;
-        pointer-events: none;
+        padding-right: var(--sc-size-sm);
+        margin-top: var(--sc-size-xs);
+      }
+
+      .iso-code-image {
+        fill: var(--sc-disabled-text-color);
       }
 
       .language-choice-box {
@@ -114,11 +113,15 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               <a class="language-menu-url"
                  href="/[[rootId]]/[[language.lang]]/[[language.author]]">
                 <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
+                  <div class="iso-code">
+                    <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.lang)]]"></iron-icon>
+                  </div>
+                  <paper-item-body>
                   [[_computeAuthorForList(language.author)]]
+                  </paper-item-body>
                 </paper-item>
               </a>
             </section>
-            <div class="iso-code">[[language.lang]]</div>
           </template>
         </template>
 
@@ -202,6 +205,9 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               return language.lang === this.originalLanguage ? 'root-lang-menu-item' : 'language-choice-box';
           }
 
+          _getLanguageIconName(isoCode) {
+              return `sc-language-icons:${isoCode}`;
+          }
       }
 
       customElements.define(SCLanguageMenu.is, SCLanguageMenu)
