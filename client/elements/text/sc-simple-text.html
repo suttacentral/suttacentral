@@ -461,6 +461,11 @@
               } else if (unit === 'graph') {
                   this.spansForGraphsGenerated = true;
               }
+              this.shadowRoot.querySelectorAll('.textual-info-paragraph').forEach(item => {
+                  item.addEventListener('click', () => {
+                    this._scrollToSection(item.id, true, 0);
+              });
+            });
           }
 
           _putSegmentIntoSpans(segment, unit, that) {
@@ -523,7 +528,7 @@
                       str += `%spfrnt_w%graph%spback%`;
                       continue;
                   }
-                  if (!('，,!！?？;；:：()[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』'.includes(graph))) {
+                  if (!('，,!！?？;；:：（()）[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』'.includes(graph))) {
                       str += `%spfrnt_l%${graph}%spback_l%`;
                   } else {
                       str += `%spback%%spfrnt%${graph}%spback%%spfrnt%`;
