@@ -10,7 +10,8 @@ from sortedcontainers import SortedListWithKey, SortedDict
 from common.arangodb import get_db
 from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST, \
     IMAGES
-from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key
+from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
+    sort_parallels_type_key
 
 
 class Languages(Resource):
@@ -290,6 +291,8 @@ class Parallels(Resource):
                 data[_from] = [result]
             result['to']['translations'] = sorted(result['to']['translations'],
                                                   key=language_sort(result['to']['root_lang']))
+        for entry in data:
+            data[entry] = sorted(data[entry], key=sort_parallels_type_key)
 
         return data, 200
 
