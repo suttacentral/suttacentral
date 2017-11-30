@@ -433,7 +433,7 @@
                           } else {
                               this._addParagraphData(item, paragraph);
                           }
-                          this._addInlineParagraph(item);
+                          this._addInlineParagraph(item, divisionId);
                       });
                   });
               }
@@ -515,9 +515,12 @@
               item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); });
           }
 
-          _addInlineParagraph(item) {
+          _addInlineParagraph(item, divisionId) {
               const segmentSibling = this._getClosestSegmentSibling(item);
               const inlineItem = item.cloneNode(true);
+              if (item.id.startsWith('pts')) {
+                this._processVolPageInfo(inlineItem, divisionId);
+            }
               inlineItem.classList.add('textual-info-paragraph-inline');
               inlineItem.id = `${inlineItem.id}_inline`;
               segmentSibling.insertBefore(inlineItem, segmentSibling.firstChild);
@@ -724,6 +727,10 @@
               let node;
               for (let i = 0; i < nodes.length; i++) {
                   node = nodes[i];
+                  if(node.classList && (node.classList.contains('image-link') || 
+                                        node.classList.contains('textual-info-paragraph'))) {
+                      continue;
+                  }
                   this._addSpanToNode(node, unit);
                   if (node.childNodes) {
                       this._recurseDomChildren(node, output, unit);
