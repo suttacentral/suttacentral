@@ -111,7 +111,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
             <section class$="{{_rootLanguageClassOrStandard(language)}} no-outline">
               <a class="language-menu-url"
-                 href="/[[rootId]]/[[language.lang]]/[[language.author]]">
+                 href="/[[rootId]]/[[language.lang]]/[[language.author]][[_getParagraphRange()]]">
                 <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
                   <div class="iso-code">
                     <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.lang)]]"></iron-icon>
@@ -163,6 +163,9 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                           'xto': 'TocharianA',
                           'kho': 'Khotanese'
                       }
+                  },
+                  to: {
+                    type: String
                   }
               }
           }
@@ -207,6 +210,14 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
           _getLanguageIconName(isoCode) {
               return `sc-language-icons:${isoCode}`;
+          }
+          
+          _getParagraphRange() {
+            if(!this.to) {
+              return '';
+            }
+            const ids = this.to.split(/#(.*)/)[1];
+            return `#${ids}`;
           }
       }
 

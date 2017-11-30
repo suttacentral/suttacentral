@@ -169,7 +169,8 @@ It is in effect a miniature version of the suttaplex-card
                          original-language="[[parallelItem.root_lang]]"
                          input-language=""
                          root-id="[[_computeParallelUrl()]]"
-                         class="no-padding"></language-menu>
+                         class="no-padding"
+                         to="[[parallelItem.to]]"></language-menu>
         </div>
       </template>
 
@@ -184,7 +185,6 @@ It is in effect a miniature version of the suttaplex-card
 
           static get properties() {
               return {
-
                   // The parallel item to be displayed
                   parallelItem: {
                       type: Object
