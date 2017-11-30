@@ -679,7 +679,6 @@
                   const wrapperAlreadyExists = !wrapper;
 
                   const margin = window.getComputedStyle(section).margin;
-                  console.log(section);
                   if (section === toSection || !toSection) {
                       this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists);
                       break;
@@ -703,8 +702,6 @@
                       this._addInlineParagraphListeners(wrapper);
                   }
               }
-              console.log(toSection);
-              
               return firstSection;
           }
 
