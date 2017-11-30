@@ -340,8 +340,9 @@
                 let sectionLink = nextSection.querySelector('.textual-info-paragraph');
                 if(sectionLink){
                     if(last) {
-                        section.style.margin = margin;
-                        section.style.padding = '0';
+                        const marginBottom = (section.currentStyle || window.getComputedStyle(section)).paddingBottom;
+                        section.style.marginBottom = marginBottom;
+                        section.style.paddingBottom = '0';
                         break;
                     } else if(sectionLink.id === idTo) {
                         last = true;
