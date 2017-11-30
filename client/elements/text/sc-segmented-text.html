@@ -599,7 +599,7 @@
                   section.parentNode.insertBefore(wrapper, section);
                   wrapper.appendChild(section.cloneNode(true));
               }
-              return [wrapperAlreadyExists, wrapper];
+              return wrapper;
           }
 
           _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
@@ -669,13 +669,14 @@
               const isSideBySideView = !!(this.chosenTextView === 'isSideBySideView' && this.translatedSutta)
               while (section) {
                   let wrapper
-                  let wrapperAlreadyExists = false;
 
                   if (isSideBySideView) {
-                      [wrapperAlreadyExists, wrapper] = this._putSectionIntoWrapper();
+                      wrapper = this._putSectionIntoWrapper();
                   } else {
                       section.classList.add('highlight');
                   }
+
+                  const wrapperAlreadyExists = !wrapper;
 
                   const margin = window.getComputedStyle(section).margin;
                   console.log(section);
