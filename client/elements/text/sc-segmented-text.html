@@ -649,7 +649,7 @@
               if (isSideBySideView && !wrapperAlreadyExists) {
                   section.remove();
               }
-              section = newSection;
+              return newSection;
           }
 
           _processHighlightAndScroll(sectionId, isSmooth) {
@@ -678,6 +678,7 @@
                   }
 
                   const margin = window.getComputedStyle(section).margin;
+                  console.log(section);
                   if (section === toSection || !toSection) {
                       this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists);
                       break;
@@ -689,7 +690,7 @@
                   }
 
                   if (section.nextElementSibling === null && section.parentNode.nodeName === 'P') {
-                      this._processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper);
+                      section = this._processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper);
                   } else {
                       let newSection = section.nextElementSibling;
                       if (isSideBySideView && !wrapperAlreadyExists) {
@@ -701,6 +702,8 @@
                       this._addInlineParagraphListeners(wrapper);
                   }
               }
+              console.log(toSection);
+              
               return firstSection;
           }
 
