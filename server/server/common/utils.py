@@ -202,3 +202,17 @@ def sort_parallels_key(x):
     except ValueError:
         number = 0
     return prefix, number
+
+
+def sort_parallels_type_key(x):
+    if x['type'] == 'full' and x['resembling']:
+        p_type = 'resembling'
+    else:
+        p_type = x['type']
+    values = {
+        'full': 1,
+        'resembling': 2,
+        'mention': 3,
+        'retelling': 4,
+    }
+    return values[p_type], x['to']['to']
