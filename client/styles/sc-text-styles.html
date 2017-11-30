@@ -40,6 +40,10 @@
         @apply --sc-sans-font;
       }
 
+      [lang='pli-Latn'] .original-text {
+        @apply --sc-serif-font;
+      }
+
       .side-by-side .translated-text {
         padding-right: var(--sc-size-md);
         display: inline-block;
@@ -392,6 +396,20 @@
 
       .t-gaiji {
         color: var(--sc-primary-accent-color);
+      }
+
+      a.cr {
+        color: inherit;
+        text-decoration: none;
+        background: linear-gradient(to top, rgba(223, 153, 10, 0) 1.5px, rgba(223, 153, 10, 1) 1.5px, rgba(223, 153, 10, 1) 2.5px, rgba(223, 153, 10, 0) 2.5px);
+      }
+
+      a.cr:hover {
+        background: linear-gradient(to top, rgba(223, 153, 10, 0) 1px, rgba(223, 153, 10, 1) 1px, rgba(223, 153, 10, 1) 3px, rgba(223, 153, 10, 0) 3px);
+      }
+
+      a.cr:visited {
+        background: linear-gradient(to top, rgba(161, 136, 127, 0) 1px, rgba(161, 136, 127, 1) 1px, rgba(161, 136, 127, 1) 3px, rgba(161, 136, 127, 0) 3px);
       }
 
     </style>

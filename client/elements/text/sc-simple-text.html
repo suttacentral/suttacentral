@@ -144,6 +144,20 @@
                       type: String,
                       statePath: 'textOptions.chineseLookupTargetDictRepr',
                       observer: '_chineseLookupTargetDictReprChanged'
+                  },
+                  classTitles: {
+                      type: Object,
+                      value: {
+                          "gap":"Gap in the manuscript.",
+                          "term":"Defined term.",
+                          "gloss":"Definition of term.",
+                          "add":"Text added by the editor or translator for clarification",
+                          "supplied":"Text hypothetically reconstructed by the editor or translator.",
+                          "supplied2":"Text hypothetically reconstructed by the editor or translator.",
+                          "expanded":"Text expanded by editor or translator although elided in original.",
+                          "pe":"Instructions for expanding text supplied by the editor or translator.",
+                          "unclear":"Unclear reading."
+                      }
                   }
               }
           }
@@ -210,7 +224,7 @@
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
-              this._setParagraphsVisible(this.showParagraphs);
+              this._setTextualInformationVisible(this.showParagraphs);
               const divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
               const paragraphsAdded =
                   this.$.simple_text_content.querySelector('.textual-info-paragraph') !== null;
@@ -267,11 +281,15 @@
               });
           }
 
-          // adds a class to the main container to either show or hide the textual info paragraphs
-          _setParagraphsVisible(visible) {
+          // adds a class to the main container to either show or hide the textual info incl. paragraphs
+          _setTextualInformationVisible(visible) {
               const textElement = this.$.simple_text_content;
               if (textElement) {
                   visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
+                  for (var key in this.classTitles){
+                      const classrefs = this.$.simple_text_content.querySelectorAll('.'+key);
+                      Array.from(classrefs).forEach(item => item.title = this.classTitles[key]);
+                  }
               }
           }
 
