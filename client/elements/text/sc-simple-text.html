@@ -487,6 +487,9 @@
               let node;
               for (let i = 0; i < nodes.length; i++) {
                   node = nodes[i];
+                  if(node.classList && node.classList.contains('image-link')) {
+                    continue;
+                  }
                   if (unit === 'graph' && node.classList && node.classList.contains('latin')) {
                       continue;
                   }
