@@ -13,24 +13,24 @@
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles">
 
-    :host {
+      :host {
         --iron-icon-fill-color: var(--sc-disabled-text-color);
         --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
         --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
-        }
+      }
 
-        .image-link {
-            cursor: pointer;
-        }
+      .image-link {
+        cursor: pointer;
+      }
 
-        .image-book-link {
-            margin-bottom: .5em;
-            margin-left: .2em;
-        }
+      .image-book-link {
+        margin-bottom: .5em;
+        margin-left: .2em;
+      }
 
-        .image-book-link:before {
-            display: none;
-        }
+      .image-book-link:before {
+        display: none;
+      }
 
       .text-center {
         text-align: center;
@@ -41,14 +41,14 @@
       }
 
       .highlight {
-          background-color: var(--sc-disabled-text-color-opaque);
+        background-color: var(--sc-disabled-text-color-opaque);
       }
 
       article p,
       .word,
       .translated-text,
       .original-text {
-        transition: background-color 300ms ease-in;        
+        transition: background-color 300ms ease-in;
       }
 
 
@@ -215,16 +215,16 @@
               const paragraphsAdded =
                   this.$.simple_text_content.querySelector('.textual-info-paragraph') !== null;
               if (this.paragraphs && this.showParagraphs) {
-                this.paragraphs.forEach((paragraph) => {
-                    const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
-                    Array.from(refs).forEach((item) => {
-                        if(item.id.startsWith('pts')){
-                          this._processVolPageInfo(item, divisionId);
-                      } else {
-                          this._addParagraphData(item, paragraph);
-                      }
-                    });
-                });
+                  this.paragraphs.forEach((paragraph) => {
+                      const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
+                      Array.from(refs).forEach((item) => {
+                          if (item.id.startsWith('pts')) {
+                              this._processVolPageInfo(item, divisionId);
+                          } else {
+                              this._addParagraphData(item, paragraph);
+                          }
+                      });
+                  });
               }
           }
 
@@ -280,77 +280,57 @@
           }
 
           _removeHighlights() {
-            this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
-                v.classList.remove('highlight');
-                v.classList.remove('last-highlight');
+              this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
+                  v.classList.remove('highlight');
+                  v.classList.remove('last-highlight');
               })
           }
 
-          _processLastSection(section, idFrom, idTo) {
-            if(idFrom.includes('.') || (idTo && idTo.includes('.'))){
-                let newSection = section.nextElementSibling;
-                section = newSection;                            
-                section.classList.add('highlight');
-                const padding = (section.currentStyle || window.getComputedStyle(section)).padding;
-                if (padding && padding !== '0px') {
-                    section.style.padding = '0';
-                    section.style.margin = padding;
-                }   
-            }
-          }
-
-          _processParagraphHighlight(section) {
-            let paragraph = section.parentNode;
-            const margin = (paragraph.currentStyle || window.getComputedStyle(paragraph)).margin;
-            paragraph.style.margin = '0';
-            paragraph.style.padding = margin;                            
-            let newSection = paragraph.nextElementSibling.firstChild;
-            section = newSection;
-          }
-
           _getElememtToHighlight(element) {
-            if(element.id.includes('inline') && !element.id.includes('.')){
-                element = element.parentNode;
-            }
-            return element.parentNode;
+              if (element.id.includes('inline') && !element.id.includes('.')) {
+                  element = element.parentNode;
+              }
+              return element.parentNode;
           }
 
           _processHighlightAndScroll(sectionId, isSmooth) {
-            let [idFrom, idTo] = sectionId.split('-');
-            let firstSection = this.shadowRoot.getElementById(idFrom);
-            if (!firstSection) return;
-            firstSection = this._getElememtToHighlight(firstSection);
-            let section = firstSection;
-            let toSection = this.shadowRoot.getElementById(idTo);
-            let last = true;
-            if(toSection) {
-                toSection = this._getElememtToHighlight(toSection);
-                last = false;
-            }
-            while(true) {
-                if(!section) {
-                    break;
-                }
-                section.classList.add('highlight');
-                const margin = (section.currentStyle || window.getComputedStyle(section)).margin;
-                section.style.margin = '0';
-                section.style.padding = margin;
+              let [idFrom, idTo] = sectionId.split('-');
+              let firstSection = this.shadowRoot.getElementById(idFrom);
+              if (!firstSection) {
+                  return;
+              }
+              firstSection = this._getElememtToHighlight(firstSection);
+              let section = firstSection;
+              let toSection = this.shadowRoot.getElementById(idTo);
+              let last = true;
+              if (toSection) {
+                  toSection = this._getElememtToHighlight(toSection);
+                  last = false;
+              }
+              while (true) {
+                  if (!section) {
+                      break;
+                  }
+                  section.classList.add('highlight');
+                  const margin = (section.currentStyle || window.getComputedStyle(section)).margin;
+                  section.style.margin = '0';
+                  section.style.padding = margin;
 
-                let nextSection = section.nextElementSibling;
-                let sectionLink = nextSection.querySelector('.textual-info-paragraph');
-                if(sectionLink){
-                    if(last) {
-                        const marginBottom = (section.currentStyle || window.getComputedStyle(section)).paddingBottom;
-                        section.style.marginBottom = marginBottom;
-                        section.style.paddingBottom = '0';
-                        break;
-                    } else if(sectionLink.id === idTo) {
-                        last = true;
-                    }
-                }
-                section = nextSection;
-            }
-            return firstSection;
+                  let nextSection = section.nextElementSibling;
+                  let sectionLink = nextSection.querySelector('.textual-info-paragraph');
+                  if (sectionLink) {
+                      if (last) {
+                          const marginBottom = (section.currentStyle || window.getComputedStyle(section)).paddingBottom;
+                          section.style.marginBottom = marginBottom;
+                          section.style.paddingBottom = '0';
+                          break;
+                      } else if (sectionLink.id === idTo) {
+                          last = true;
+                      }
+                  }
+                  section = nextSection;
+              }
+              return firstSection;
           }
 
           // Scrolls to the chosen section
@@ -720,6 +700,7 @@
                   }
               }
           }
+
           _showToast(dictName) {
               this.dispatchEvent(new CustomEvent('show-sc-toast', {
                   detail: {
