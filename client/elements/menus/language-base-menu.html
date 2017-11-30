@@ -45,6 +45,7 @@ This is the base language menu that determines the language of the site.
         @apply --sc-skolar-font-size-md;
         color: var(--sc-primary-text-color);
         text-transform: capitalize;
+        padding-left: var(--sc-size-sm);
         width: 180px;
       }
 
@@ -56,16 +57,13 @@ This is the base language menu that determines the language of the site.
       .iso-code {
         @apply --paper-font-caption;
         @apply --sc-sans-font;
-        right: var(--sc-size-md);
-        position: absolute;
-        margin-top: -34px;
+        padding-right: var(--sc-size-sm);
+        margin-top: var(--sc-size-xs);
         text-transform: none;
         pointer-events: none;
       }
 
       .iso-code-image {
-        width: var(--sc-size-lg);
-        color: var(--sc-disabled-text-color);
         fill: var(--sc-disabled-text-color);
       }
 
@@ -83,13 +81,13 @@ This is the base language menu that determines the language of the site.
       <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNr}}">
         <template is="dom-repeat" items="{{lastResponse}}" as="language">
           <paper-item class="language-menu-paper-item" id='[[language.uid]]'>
+            <div class="iso-code">
+              <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
+            </div>
             <paper-item-body>
               [[language.name]]
             </paper-item-body>
           </paper-item>
-          <div class="iso-code">
-            <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
-          </div>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
