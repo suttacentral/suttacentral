@@ -317,7 +317,7 @@
               const textContent = this.$.segmented_text_content;
               this._resetViewOptions();
               switch (this.chosenTextView) {
-                  case 'sidebyside':
+                  case 'isSideBySideView':
                       textContent.classList.add('side-by-side');
                       this._showComplexView();
                       break;
@@ -444,7 +444,7 @@
               const uid = (this.rootSutta || this.translatedSutta).uid;
               const divisionId = /^[a-z]+/.exec(uid)[0];
               this._setParagraphsVisible(this.showParagraphs);
-              const paragraphsAdded = this.$.segmented_text_content.querySelector('.highlight-wrappertextual-info-paragraph') !== null;
+              const paragraphsAdded = this.$.segmented_text_content.querySelector('.textual-info-paragraph') !== null;
               if (paragraphsAdded) return;
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
@@ -543,8 +543,8 @@
               const segmentSibling = this._getClosestSegmentSibling(item);
               const inlineItem = item.cloneNode(true);
               if (item.id.startsWith('pts')) {
-                this._processVolPageInfo(inlineItem, divisionId);
-            }
+                  this._processVolPageInfo(inlineItem, divisionId);
+              }
               inlineItem.classList.add('textual-info-paragraph-inline');
               inlineItem.id = `${inlineItem.id}_inline`;
               segmentSibling.insertBefore(inlineItem, segmentSibling.firstChild);
@@ -582,21 +582,156 @@
               return ((!error && loading) || isTextViewHidden);
           }
 
-          _getElememtToHighlight(element) {
+          _putSectionIntoWrapper(section) {
+              let wrapperAlreadyExists = false;
+              let wrapper;
+              if (section.parentNode && section.parentNode.classList.contains('highlight-wrapper')) {
+                  section.parentNode.classList.add('highlight-wrapper-highlighted');
+                  wrapperAlreadyExists = true;
+              } else {
+                  if (this._previousElementIsNotFullWrapper(section)) {
+                      wrapper = section.previousElementSibling;
+                  } else {
+                      wrapper = document.createElement('span');
+                  }
+                  wrapper.classList.add('highlight-wrapper-highlighted');
+                  wrapper.classList.add('highlight-wrapper');
+                  section.parentNode.insertBefore(wrapper, section);
+                  wrapper.appendChild(section.cloneNode(true));
+              }
+              return [wrapperAlreadyExists, wrapper];
+          }
+
+          _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
+              if (idFrom.includes('.') || (idTo && idTo.includes('.'))) {
+                  let newSection = section.nextElementSibling;
+                  if (isSideBySideView && !wrapperAlreadyExists) {
+                      section.remove();
+                  }
+                  section = newSection;
+                  if (!isSideBySideView) {
+                      section.classList.add('highlight');
+                  }
+                  const padding = window.getComputedStyle(section).padding;
+                  if (padding && padding !== '0px') {
+                      requestAnimationFrame(() => {
+                          section.style.padding = '0';
+                          section.style.margin = padding;
+                      })
+                  }
+                  if (isSideBySideView && !wrapperAlreadyExists) {
+                      wrapper.appendChild(section.cloneNode(true));
+                      section.remove();
+                  }
+
+              }
+              if (isSideBySideView) {
+                  this._addInlineParagraphListeners(wrapper);
+              }
+          }
+
+          _processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper) {
+              let paragraph = section.parentNode;
+              const margin = window.getComputedStyle(paragraph).margin;
+              requestAnimationFrame(() => {
+                  paragraph.style.margin = '0';
+              })
+              if (isSideBySideView && !wrapperAlreadyExists) {
+                  requestAnimationFrame(() => {
+                      wrapper.style.padding = margin;
+                  })
+              } else if (this.chosenTextView === 'none') {
+                  requestAnimationFrame(() => {
+                      paragraph.style.padding = margin;
+                  })
+              }
+              let newSection = paragraph.nextElementSibling.firstChild;
+              if (isSideBySideView && !wrapperAlreadyExists) {
+                  section.remove();
+              }
+              section = newSection;
+          }
+
+          _processHighlightAndScroll(sectionId, isSmooth) {
+              let [idFrom, idTo] = sectionId.split('-');
+              idFrom = this._generateId(idFrom);
+              idTo = this._generateId(idTo);
+              let firstSection = this.shadowRoot.getElementById(idFrom);
+              if (!firstSection) {
+                  return;
+              }
+              firstSection = this._getElementToHighlight(firstSection);
+              let section = firstSection;
+              let toSection = this.shadowRoot.getElementById(idTo);
+              if (toSection) {
+                  toSection = this._getElementToHighlight(toSection);
+              }
+              const isSideBySideView = !!(this.chosenTextView === 'isSideBySideView' && this.translatedSutta)
+              while (section) {
+                  let wrapper
+                  let wrapperAlreadyExists = false;
+
+                  if (isSideBySideView) {
+                      [wrapperAlreadyExists, wrapper] = this._putSectionIntoWrapper();
+                  } else {
+                      section.classList.add('highlight');
+                  }
+
+                  const margin = window.getComputedStyle(section).margin;
+                  if (section === toSection || !toSection) {
+                      this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists);
+                      break;
+                  } else if (margin && margin !== '0px') {
+                      requestAnimationFrame(() => {
+                          section.style.margin = '0';
+                          section.style.padding = margin;
+                      })
+                  }
+
+                  if (section.nextElementSibling === null && section.parentNode.nodeName === 'P') {
+                      this._processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper);
+                  } else {
+                      let newSection = section.nextElementSibling;
+                      if (isSideBySideView && !wrapperAlreadyExists) {
+                          section.remove();
+                      }
+                      section = newSection;
+                  }
+                  if (isSideBySideView) {
+                      this._addInlineParagraphListeners(wrapper);
+                  }
+              }
+              return firstSection;
+          }
+
+          _previousElementIsNotFullWrapper(section) {
+              if (!section.previousElementSibling) {
+                  return false;
+              }
+              if (section.nodeName !== 'SC-SEG') {
+                  return true;
+              } else if (this._hasScSegments(section.previousElementSibling) &&
+                  section.previousElementSibling.classList.contains('highlight-wrapper-highlighted')) {
+                  return true;
+              }
+              return false;
+          }
+
+          _getElementToHighlight(element) {
               if (element.id.includes('inline') && !element.id.includes('.')) {
                   element = element.parentNode;
               }
               return element.parentNode;
           }
 
-          _generateId(element) {
-              if (element && element.includes('.') && !element.includes('inline')) {
-                  return `${element}_inline`;
+          _generateId(id) {
+              if (id && id.includes('.') && !id.includes('inline')) {
+                  return `${id}_inline`;
               }
-              return element;
+              return id;
           }
 
-          _gotScSeg(wrapper) {
+          _hasScSegments(wrapper) {
               return wrapper.querySelectorAll('sc-seg').length === 1;
           }
 
@@ -615,126 +750,6 @@
                   v.classList.remove('highlight-wrapper');
                   v.classList.add('disabled-highlight-wrapper');
               })
-          }
-
-
-          _putSectionIntoWrapper(section) {
-              let wrapperAlreadyExists = false;
-              let wrapper;
-              if (section.parentNode && section.parentNode.classList.contains('highlight-wrapper')) {
-                  section.parentNode.classList.add('highlight-wrapper-highlighted');
-                  wrapperAlreadyExists = true;
-              } else {
-                  if (section.previousElementSibling && (section.nodeName !== 'SC-SEG' || (
-                          this._gotScSeg(section.previousElementSibling) &&
-                          section.previousElementSibling.classList.contains('highlight-wrapper-highlighted')))) {
-                      wrapper = section.previousElementSibling;
-                  } else {
-                      wrapper = document.createElement('span');
-                  }
-                  wrapper.classList.add('highlight-wrapper-highlighted');
-                  wrapper.classList.add('highlight-wrapper');
-                  section.parentNode.insertBefore(wrapper, section);
-                  wrapper.appendChild(section.cloneNode(true));
-              }
-              return [wrapperAlreadyExists, wrapper];
-          }
-
-          _processLastSection(section, wrapper, idFrom, idTo, SIDEBYSIDE, wrapperAlreadyExists) {
-              if (idFrom.includes('.') || (idTo && idTo.includes('.'))) {
-                  let newSection = section.nextElementSibling;
-                  if (SIDEBYSIDE && !wrapperAlreadyExists) {
-                      section.remove();
-                  }
-                  section = newSection;
-                  if (!SIDEBYSIDE) {
-                      section.classList.add('highlight');
-                  }
-                  const padding = (section.currentStyle || window.getComputedStyle(section)).padding;
-                  if (padding && padding !== '0px') {
-                      section.style.padding = '0';
-                      section.style.margin = padding;
-                  }
-                  if (SIDEBYSIDE && !wrapperAlreadyExists) {
-                      wrapper.appendChild(section.cloneNode(true));
-                      section.remove();
-                  }
-
-              }
-              if (SIDEBYSIDE) {
-                  this._addInlineParagraphListeners(wrapper);
-              }
-          }
-
-          _processParagraphHighlight(section, SIDEBYSIDE, wrapperAlreadyExists, wrapper) {
-              let paragraph = section.parentNode;
-              const margin = (paragraph.currentStyle || window.getComputedStyle(paragraph)).margin;
-              paragraph.style.margin = '0';
-              if (SIDEBYSIDE && !wrapperAlreadyExists) {
-                  wrapper.style.padding = margin;
-              } else if (this.chosenTextView === 'none') {
-                  paragraph.style.padding = margin;
-              }
-              let newSection = paragraph.nextElementSibling.firstChild;
-              if (SIDEBYSIDE && !wrapperAlreadyExists) {
-                  section.remove();
-              }
-              section = newSection;
-          }
-
-          _processHighlightAndScroll(sectionId, isSmooth) {
-              let [idFrom, idTo] = sectionId.split('-');
-              idFrom = this._generateId(idFrom);
-              idTo = this._generateId(idTo);
-              let firstSection = this.shadowRoot.getElementById(idFrom);
-              if (!firstSection) {
-                  return;
-              }
-              firstSection = this._getElememtToHighlight(firstSection);
-              let section = firstSection;
-              let toSection = this.shadowRoot.getElementById(idTo);
-              if (toSection) {
-                  toSection = this._getElememtToHighlight(toSection);
-              }
-              const SIDEBYSIDE = !!(this.chosenTextView === 'sidebyside' && this.translatedSutta)
-              while (true) {
-                  if (!section) {
-                      break;
-                  }
-                  let wrapper
-                  let wrapperAlreadyExists = false;
-
-                  if (SIDEBYSIDE) {
-                      [wrapperAlreadyExists, wrapper] = this._putSectionIntoWrapper();
-                  }
-
-                  if (!SIDEBYSIDE) {
-                      section.classList.add('highlight');
-                  }
-
-                  const margin = (section.currentStyle || window.getComputedStyle(section)).margin;
-                  if (section === toSection || !toSection) {
-                      this._processLastSection(section, wrapper, idFrom, idTo, SIDEBYSIDE, wrapperAlreadyExists);
-                      break;
-                  } else if (margin && margin !== '0px') {
-                      section.style.margin = '0';
-                      section.style.padding = margin;
-                  }
-
-                  if (section.nextElementSibling === null && section.parentNode.nodeName === 'P') {
-                      this._processParagraphHighlight(section, SIDEBYSIDE, wrapperAlreadyExists, wrapper);
-                  } else {
-                      let newSection = section.nextElementSibling;
-                      if (SIDEBYSIDE && !wrapperAlreadyExists) {
-                          section.remove();
-                      }
-                      section = newSection;
-                  }
-                  if (SIDEBYSIDE) {
-                      this._addInlineParagraphListeners(wrapper);
-                  }
-              }
-              return firstSection;
           }
 
           // Scrolls to the chosen section
@@ -913,8 +928,8 @@
               let node;
               for (let i = 0; i < nodes.length; i++) {
                   node = nodes[i];
-                  if(node.classList && (node.classList.contains('image-link') || 
-                                        node.classList.contains('textual-info-paragraph'))) {
+                  if (node.classList && (node.classList.contains('image-link') ||
+                          node.classList.contains('textual-info-paragraph'))) {
                       continue;
                   }
                   this._addSpanToNode(node, unit);

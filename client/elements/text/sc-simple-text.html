@@ -148,15 +148,15 @@
                   classTitles: {
                       type: Object,
                       value: {
-                          "gap":"Gap in the manuscript.",
-                          "term":"Defined term.",
-                          "gloss":"Definition of term.",
-                          "add":"Text added by the editor or translator for clarification",
-                          "supplied":"Text hypothetically reconstructed by the editor or translator.",
-                          "supplied2":"Text hypothetically reconstructed by the editor or translator.",
-                          "expanded":"Text expanded by editor or translator although elided in original.",
-                          "pe":"Instructions for expanding text supplied by the editor or translator.",
-                          "unclear":"Unclear reading."
+                          "gap": "Gap in the manuscript.",
+                          "term": "Defined term.",
+                          "gloss": "Definition of term.",
+                          "add": "Text added by the editor or translator for clarification",
+                          "supplied": "Text hypothetically reconstructed by the editor or translator.",
+                          "supplied2": "Text hypothetically reconstructed by the editor or translator.",
+                          "expanded": "Text expanded by editor or translator although elided in original.",
+                          "pe": "Instructions for expanding text supplied by the editor or translator.",
+                          "unclear": "Unclear reading."
                       }
                   }
               }
@@ -286,8 +286,8 @@
               const textElement = this.$.simple_text_content;
               if (textElement) {
                   visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
-                  for (var key in this.classTitles){
-                      const classrefs = this.$.simple_text_content.querySelectorAll('.'+key);
+                  for (var key in this.classTitles) {
+                      const classrefs = this.$.simple_text_content.querySelectorAll('.' + key);
                       Array.from(classrefs).forEach(item => item.title = this.classTitles[key]);
                   }
               }
@@ -297,50 +297,36 @@
               this.isTextViewHidden = !!(this.isLoading);
           }
 
-          _removeHighlights() {
-              this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
-                  v.classList.remove('highlight');
-                  v.classList.remove('last-highlight');
-              })
-          }
-
-          _getElememtToHighlight(element) {
-              if (element.id.includes('inline') && !element.id.includes('.')) {
-                  element = element.parentNode;
-              }
-              return element.parentNode;
-          }
-
           _processHighlightAndScroll(sectionId, isSmooth) {
               let [idFrom, idTo] = sectionId.split('-');
               let firstSection = this.shadowRoot.getElementById(idFrom);
               if (!firstSection) {
                   return;
               }
-              firstSection = this._getElememtToHighlight(firstSection);
+              firstSection = this._getElementToHighlight(firstSection);
               let section = firstSection;
               let toSection = this.shadowRoot.getElementById(idTo);
               let last = true;
               if (toSection) {
-                  toSection = this._getElememtToHighlight(toSection);
+                  toSection = this._getElementToHighlight(toSection);
                   last = false;
               }
-              while (true) {
-                  if (!section) {
-                      break;
-                  }
+              while (section) {
                   section.classList.add('highlight');
-                  const margin = (section.currentStyle || window.getComputedStyle(section)).margin;
-                  section.style.margin = '0';
-                  section.style.padding = margin;
-
+                  const margin = window.getComputedStyle(section).margin;
+                  requestAnimationFrame(() => {
+                      section.style.margin = '0';
+                      section.style.padding = margin;
+                  })
                   let nextSection = section.nextElementSibling;
                   let sectionLink = nextSection.querySelector('.textual-info-paragraph');
                   if (sectionLink) {
                       if (last) {
-                          const marginBottom = (section.currentStyle || window.getComputedStyle(section)).paddingBottom;
-                          section.style.marginBottom = marginBottom;
-                          section.style.paddingBottom = '0';
+                          const marginBottom = window.getComputedStyle(section).paddingBottom;
+                          requestAnimationFrame(() => {
+                              section.style.marginBottom = marginBottom;
+                              section.style.paddingBottom = '0';
+                          })
                           break;
                       } else if (sectionLink.id === idTo) {
                           last = true;
@@ -349,6 +335,20 @@
                   section = nextSection;
               }
               return firstSection;
+          }
+
+          _removeHighlights() {
+              this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
+                  v.classList.remove('highlight');
+                  v.classList.remove('last-highlight');
+              })
+          }
+
+          _getElementToHighlight(element) {
+              if (element.id.includes('inline') && !element.id.includes('.')) {
+                  element = element.parentNode;
+              }
+              return element.parentNode;
           }
 
           // Scrolls to the chosen section
@@ -487,8 +487,8 @@
               let node;
               for (let i = 0; i < nodes.length; i++) {
                   node = nodes[i];
-                  if(node.classList && node.classList.contains('image-link')) {
-                    continue;
+                  if (node.classList && node.classList.contains('image-link')) {
+                      continue;
                   }
                   if (unit === 'graph' && node.classList && node.classList.contains('latin')) {
                       continue;
