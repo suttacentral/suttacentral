@@ -10,6 +10,7 @@
 <link rel="import" href="../elements/paper-tree-sc/paper-tree.html">
 <link rel="import" href="../elements/page-selector.html">
 <link rel="import" href="../elements/addons/sc-toasts.html">
+<link rel="import" href="../styles/sc-scrollbar-style.html">
 
 <!-- Imports for the sutta text dialogs: -->
 <link rel="import" href="../bower_components/isw-dialog/isw-dialog.html">
@@ -32,7 +33,7 @@
 -->
 <dom-module id="sc-navdrawer">
   <template>
-    <style>
+    <style include="sc-scrollbar-style">
       :host {
         background-color: grey;
         --app-drawer-width: 300px;
@@ -207,8 +208,8 @@
 
     <app-drawer-layout fullbleed responsive-width="840px">
 
-      <app-drawer slot="drawer">
-        <div class="nav-drawer-box">
+      <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer">
+        <div class="nav-drawer-box sc-scrollbar">
           <div class="nav-home-title">
             <a class="nav-home-link" href="/">
               <div class="nav-wheel-icon">☸</div>
