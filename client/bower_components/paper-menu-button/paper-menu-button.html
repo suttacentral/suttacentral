@@ -17,6 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../paper-styles/default-theme.html">
 <link rel="import" href="../paper-styles/shadow.html">
 <link rel="import" href="paper-menu-button-animations.html">
+<link rel="import" href="../../styles/sc-scrollbar-style.html">
 
 <!--
 Material design: [Dropdown buttons](https://www.google.com/design/spec/components/buttons.html#buttons-dropdown-buttons)
@@ -62,7 +63,7 @@ Custom property | Description | Default
 
 <dom-module id="paper-menu-button">
   <template>
-    <style>
+    <style include="sc-scrollbar-style">
       :host {
         display: inline-block;
         position: relative;
@@ -130,7 +131,7 @@ Custom property | Description | Default
       allow-outside-scroll="[[allowOutsideScroll]]"
       restore-focus-on-close="[[restoreFocusOnClose]]"
       on-iron-overlay-canceled="__onIronOverlayCanceled">
-      <div slot="dropdown-content" class="dropdown-content">
+      <div slot="dropdown-content" class="dropdown-content sc-scrollbar">
         <slot id="content" name="dropdown-content"></slot>
       </div>
     </iron-dropdown>
