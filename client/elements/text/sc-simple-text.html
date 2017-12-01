@@ -133,7 +133,7 @@
                       statePath: 'textOptions.chineseLookupTargetDictRepr',
                       observer: '_chineseLookupTargetDictReprChanged'
                   },
-                  classTitlesTI: {
+                  textualInfoClassTitles: {
                       type: Object,
                       value: {
                           "gloss":"Definition of term.",
@@ -288,9 +288,13 @@
                       const classrefs = this.$.simple_text_content.querySelectorAll('.'+key);
                       Array.from(classrefs).forEach(item => item.title = this.classTitles[key]);
                   }
-                  for (var key in this.classTitlesTI){
-                      const classrefsTI = this.$.simple_text_content.querySelectorAll('.'+key);
-                      visible ? Array.from(classrefsTI).forEach(item => item.title = this.classTitlesTI[key]) : Array.from(classrefsTI).forEach(item => item.title = "");
+                  for (var key in this.textualInfoClassTitles){
+                      const textualInfoclassrefs = this.$.simple_text_content.querySelectorAll(`.${key}`);
+                      if (visible) {
+                          Array.from(textualInfoclassrefs).forEach(item => item.title = this.textualInfoClassTitles[key]);
+                      } else {
+                          Array.from(textualInfoclassrefs).forEach(item => item.title = "");
+                      }
                   }
               }
           }
