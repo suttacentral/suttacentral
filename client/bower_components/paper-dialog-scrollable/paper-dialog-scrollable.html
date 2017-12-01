@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../paper-dialog-behavior/paper-dialog-behavior.html">
 <link rel="import" href="../paper-styles/default-theme.html">
+<link rel="import" href="../../styles/sc-scrollbar-style.html">
 
 <!--
 Material design: [Dialogs](https://www.google.com/design/spec/components/dialogs.html)
@@ -72,7 +73,7 @@ Custom property | Description | Default
 <dom-module id="paper-dialog-scrollable">
 
   <template>
-    <style>
+    <style include="sc-scrollbar-style">
 
       :host {
         display: block;
@@ -111,7 +112,7 @@ Custom property | Description | Default
       }
     </style>
 
-    <div id="scrollable" class="scrollable" on-scroll="updateScrollState">
+    <div id="scrollable" class="scrollable sc-scrollbar" on-scroll="updateScrollState">
       <slot></slot>
     </div>
   </template>

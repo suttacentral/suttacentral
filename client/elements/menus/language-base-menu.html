@@ -9,13 +9,15 @@
 
 <link rel="import" href="../../img/sc-language-icons.html">
 <link rel="import" href="../../redux-store.html">
+<link rel="import" href="../../styles/sc-scrollbar-style.html">
+
 
 <!--
 This is the base language menu that determines the language of the site.
 -->
 <dom-module id="language-base-menu" attributes="Language">
   <template>
-    <style>
+    <style include="sc-scrollbar-style">
       :host {
         --primary-color: var(--sc-primary-color);
         --paper-menu-button-content: {
@@ -31,6 +33,7 @@ This is the base language menu that determines the language of the site.
       }
 
       .language-menu-list {
+        @apply --shadow-elevation-8dp;
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-input-container-input-color: var(--sc-primary-text-color);
         --paper-input-container-color: var(--sc-secondary-text-color);
