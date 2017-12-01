@@ -51,6 +51,26 @@
         height: 60px;
       }
 
+      .highlight-wrapper {
+        display: flex;
+      }
+
+      .disabled-highlight-wrapper {
+        display: block;
+      }
+
+      .highlight,
+      .highlight-wrapper-highlighted {
+        background-color: var(--sc-disabled-text-color-opaque);
+      }
+
+      article p,
+      .word,
+      .translated-text,
+      .original-text {
+        transition: background-color 300ms ease-in;
+      }
+
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -292,6 +312,8 @@
               if (!this.markup || !this.translatedSutta) {
                   return;
               }
+              this._removeHighlights();
+              this._disableHighlightWrappers();
               const textContent = this.$.segmented_text_content;
               this._resetViewOptions();
               switch (this.chosenTextView) {
@@ -441,9 +463,7 @@
               if (!this.segmentedIDsAdded) {
                   this._addSegmentedTextualInfoElements();
               }
-              requestAnimationFrame(() => {
-                  this._scrollToSectionInUrl();
-              });
+              this._scrollToSectionInUrl();
           }
 
           _processVolPageInfo(item, divisionId) {
@@ -500,7 +520,9 @@
               inlineParagraph.innerText = parId;
               inlineParagraph.href = `#${parId}`;
               inlineParagraph.title = 'SuttaCentral segment number';
-              inlineParagraph.addEventListener('click', () => { this._scrollToSection(inlineParagraph.id, true, 0) });
+              inlineParagraph.addEventListener('click', () => {
+                  this._scrollToSection(inlineParagraph.id, true, 0)
+              });
               requestAnimationFrame(() => {
                   segment.insertBefore(inlineParagraph, segment.firstChild);
               });
@@ -512,28 +534,35 @@
               item.title = data.description;
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph');
-              item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); });
+              item.addEventListener('click', () => {
+                  this._scrollToSection(item.id, true, 0);
+              });
           }
 
           _addInlineParagraph(item, divisionId) {
               const segmentSibling = this._getClosestSegmentSibling(item);
               const inlineItem = item.cloneNode(true);
               if (item.id.startsWith('pts')) {
-                this._processVolPageInfo(inlineItem, divisionId);
-            }
+                  this._processVolPageInfo(inlineItem, divisionId);
+              }
               inlineItem.classList.add('textual-info-paragraph-inline');
               inlineItem.id = `${inlineItem.id}_inline`;
               segmentSibling.insertBefore(inlineItem, segmentSibling.firstChild);
-              inlineItem.addEventListener('click', () => { this._scrollToSection(inlineItem.id, true, 0); });
+              inlineItem.addEventListener('click', () => {
+                  this._scrollToSection(inlineItem.id, true, 0);
+              });
           }
 
-          _addInlineParagraphListeners() {
-              const inlineItems = this.shadowRoot.querySelectorAll('.textual-info-paragraph-inline');
+          _addInlineParagraphListeners(rootElement) {
+              rootElement = rootElement || this.shadowRoot;
+              const inlineItems = rootElement.querySelectorAll('.textual-info-paragraph-inline');
               if (!inlineItems) {
                   return;
               }
               inlineItems.forEach((item) => {
-                      item.addEventListener('click', () => { this._scrollToSection(item.id, true, 0); })
+                      item.addEventListener('click', () => {
+                          this._scrollToSection(item.id, true, 0);
+                      })
                   }
               );
           }
@@ -553,22 +582,195 @@
               return ((!error && loading) || isTextViewHidden);
           }
 
+          _putSectionIntoWrapper(section) {
+              let wrapperAlreadyExists = false;
+              let wrapper;
+              if (section.parentNode && section.parentNode.classList.contains('highlight-wrapper')) {
+                  section.parentNode.classList.add('highlight-wrapper-highlighted');
+                  wrapperAlreadyExists = true;
+              } else {
+                  if (this._previousElementIsNotFullWrapper(section)) {
+                      wrapper = section.previousElementSibling;
+                  } else {
+                      wrapper = document.createElement('span');
+                  }
+                  wrapper.classList.add('highlight-wrapper-highlighted');
+                  wrapper.classList.add('highlight-wrapper');
+                  section.parentNode.insertBefore(wrapper, section);
+                  wrapper.appendChild(section.cloneNode(true));
+              }
+              return wrapper;
+          }
+
+          _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
+              if (idFrom.includes('.') || (idTo && idTo.includes('.'))) {
+                  let newSection = section.nextElementSibling;
+                  if (isSideBySideView && !wrapperAlreadyExists) {
+                      section.remove();
+                  }
+                  section = newSection;
+                  if (!isSideBySideView) {
+                      section.classList.add('highlight');
+                  }
+                  const padding = window.getComputedStyle(section).padding;
+                  if (padding && padding !== '0px') {
+                      requestAnimationFrame(() => {
+                          section.style.padding = '0';
+                          section.style.margin = padding;
+                      })
+                  }
+                  if (isSideBySideView && !wrapperAlreadyExists) {
+                      wrapper.appendChild(section.cloneNode(true));
+                      section.remove();
+                  }
+
+              }
+              if (isSideBySideView) {
+                  this._addInlineParagraphListeners(wrapper);
+              }
+          }
+
+          _processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper) {
+              let paragraph = section.parentNode;
+              const margin = window.getComputedStyle(paragraph).margin;
+              requestAnimationFrame(() => {
+                  paragraph.style.margin = '0';
+              })
+              if (isSideBySideView && !wrapperAlreadyExists) {
+                  requestAnimationFrame(() => {
+                      wrapper.style.padding = margin;
+                  })
+              } else if (this.chosenTextView === 'none') {
+                  requestAnimationFrame(() => {
+                      paragraph.style.padding = margin;
+                  })
+              }
+              let newSection = paragraph.nextElementSibling.firstChild;
+              if (isSideBySideView && !wrapperAlreadyExists) {
+                  section.remove();
+              }
+              return newSection;
+          }
+
+          _processHighlightAndScroll(sectionId, isSmooth) {
+              let [idFrom, idTo] = sectionId.split('-');
+              idFrom = this._generateId(idFrom);
+              idTo = this._generateId(idTo);
+              let firstSection = this.shadowRoot.getElementById(idFrom);
+              if (!firstSection) {
+                  return;
+              }
+              firstSection = this._getElementToHighlight(firstSection);
+              let section = firstSection;
+              let toSection = this.shadowRoot.getElementById(idTo);
+              if (toSection) {
+                  toSection = this._getElementToHighlight(toSection);
+              }
+              const isSideBySideView = !!(this.chosenTextView === 'isSideBySideView' && this.translatedSutta)
+              while (section) {
+                  let wrapper;
+
+                  if (isSideBySideView) {
+                      wrapper = this._putSectionIntoWrapper();
+                  } else {
+                      section.classList.add('highlight');
+                  }
+
+                  const wrapperAlreadyExists = !wrapper;
+
+                  const margin = window.getComputedStyle(section).margin;
+                  if (section === toSection || !toSection) {
+                      this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists);
+                      break;
+                  } else if (margin && margin !== '0px') {
+                      requestAnimationFrame(() => {
+                          section.style.margin = '0';
+                          section.style.padding = margin;
+                      })
+                  }
+
+                  if (section.nextElementSibling === null && section.parentNode.nodeName === 'P') {
+                      section = this._processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper);
+                  } else {
+                      let newSection = section.nextElementSibling;
+                      if (isSideBySideView && !wrapperAlreadyExists) {
+                          section.remove();
+                      }
+                      section = newSection;
+                  }
+                  if (isSideBySideView) {
+                      this._addInlineParagraphListeners(wrapper);
+                  }
+              }
+              return firstSection;
+          }
+
+          _previousElementIsNotFullWrapper(section) {
+              if (!section.previousElementSibling) {
+                  return false;
+              }
+              if (section.nodeName !== 'SC-SEG') {
+                  return true;
+              } else if (this._hasScSegments(section.previousElementSibling) &&
+                  section.previousElementSibling.classList.contains('highlight-wrapper-highlighted')) {
+                  return true;
+              }
+              return false;
+          }
+
+          _getElementToHighlight(element) {
+              if (element.id.includes('inline') && !element.id.includes('.')) {
+                  element = element.parentNode;
+              }
+              return element.parentNode;
+          }
+
+          _generateId(id) {
+              if (id && id.includes('.') && !id.includes('inline')) {
+                  return `${id}_inline`;
+              }
+              return id;
+          }
+
+          _hasScSegments(wrapper) {
+              return wrapper.querySelectorAll('sc-seg').length === 1;
+          }
+
+          _removeHighlights() {
+              this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
+                  v.classList.remove('highlight');
+                  v.classList.remove('last-highlight');
+              })
+              this.shadowRoot.querySelectorAll('.highlight-wrapper-highlighted').forEach(v => {
+                  v.classList.remove('highlight-wrapper-highlighted');
+              })
+          }
+
+          _disableHighlightWrappers() {
+              this.shadowRoot.querySelectorAll('.highlight-wrapper').forEach(v => {
+                  v.classList.remove('highlight-wrapper');
+                  v.classList.add('disabled-highlight-wrapper');
+              })
+          }
+
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
-              if (!sectionId) return;
-              try {
-                  const section = this.shadowRoot.getElementById(sectionId);
-                  if (!section) return;
-                  setTimeout(() => {
-                      section.scrollIntoView({
-                          behavior: isSmooth ? 'smooth' : 'instant',
-                          block: 'start',
-                          inline: 'nearest'
-                      });
-                  }, delay);
-              } catch (e) {
-                  console.error(e);
+              if (!sectionId) {
+                  return;
               }
+              this._removeHighlights();
+              if (sectionId && sectionId.includes('.') &&
+                  (this.chosenTextView === 'none' || !this.translatedSutta)) {
+                  return;
+              }
+              setTimeout(() => {
+                  const firstSection = this._processHighlightAndScroll(sectionId);
+                  firstSection.scrollIntoView({
+                      behavior: isSmooth ? 'smooth' : 'instant',
+                      block: 'start',
+                      inline: 'nearest'
+                  });
+              }, delay);
           }
 
           _scrollToSectionInUrl() {
@@ -727,8 +929,8 @@
               let node;
               for (let i = 0; i < nodes.length; i++) {
                   node = nodes[i];
-                  if(node.classList && (node.classList.contains('image-link') || 
-                                        node.classList.contains('textual-info-paragraph'))) {
+                  if (node.classList && (node.classList.contains('image-link') ||
+                          node.classList.contains('textual-info-paragraph'))) {
                       continue;
                   }
                   this._addSpanToNode(node, unit);

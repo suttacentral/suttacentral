@@ -13,24 +13,24 @@
   <template>
     <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles">
 
-    :host {
+      :host {
         --iron-icon-fill-color: var(--sc-disabled-text-color);
         --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
         --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
-        }
+      }
 
-        .image-link {
-            cursor: pointer;
-        }
+      .image-link {
+        cursor: pointer;
+      }
 
-        .image-book-link {
-            margin-bottom: .5em;
-            margin-left: .2em;
-        }
+      .image-book-link {
+        margin-bottom: .5em;
+        margin-left: .2em;
+      }
 
-        .image-book-link:before {
-            display: none;
-        }
+      .image-book-link:before {
+        display: none;
+      }
 
       .text-center {
         text-align: center;
@@ -39,6 +39,18 @@
       .margin-top-xl {
         margin-top: 10vh;
       }
+
+      .highlight {
+        background-color: var(--sc-disabled-text-color-opaque);
+      }
+
+      article p,
+      .word,
+      .translated-text,
+      .original-text {
+        transition: background-color 300ms ease-in;
+      }
+
 
     </style>
 
@@ -227,16 +239,16 @@
               const paragraphsAdded =
                   this.$.simple_text_content.querySelector('.textual-info-paragraph') !== null;
               if (this.paragraphs && this.showParagraphs) {
-                this.paragraphs.forEach((paragraph) => {
-                    const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
-                    Array.from(refs).forEach((item) => {
-                        if(item.id.startsWith('pts')){
-                          this._processVolPageInfo(item, divisionId);
-                      } else {
-                          this._addParagraphData(item, paragraph);
-                      }
-                    });
-                });
+                  this.paragraphs.forEach((paragraph) => {
+                      const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
+                      Array.from(refs).forEach((item) => {
+                          if (item.id.startsWith('pts')) {
+                              this._processVolPageInfo(item, divisionId);
+                          } else {
+                              this._addParagraphData(item, paragraph);
+                          }
+                      });
+                  });
               }
           }
 
@@ -284,8 +296,8 @@
               const textElement = this.$.simple_text_content;
               if (textElement) {
                   visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
-                  for (var key in this.classTitles){
-                      const classrefs = this.$.simple_text_content.querySelectorAll('.'+key);
+                  for (var key in this.classTitles) {
+                      const classrefs = this.$.simple_text_content.querySelectorAll('.' + key);
                       Array.from(classrefs).forEach(item => item.title = this.classTitles[key]);
                   }
                   for (var key in this.textualInfoClassTitles){
@@ -303,13 +315,69 @@
               this.isTextViewHidden = !!(this.isLoading);
           }
 
+          _processHighlightAndScroll(sectionId, isSmooth) {
+              let [idFrom, idTo] = sectionId.split('-');
+              let firstSection = this.shadowRoot.getElementById(idFrom);
+              if (!firstSection) {
+                  return;
+              }
+              firstSection = this._getElementToHighlight(firstSection);
+              let section = firstSection;
+              let toSection = this.shadowRoot.getElementById(idTo);
+              let last = true;
+              if (toSection) {
+                  toSection = this._getElementToHighlight(toSection);
+                  last = false;
+              }
+              while (section) {
+                  section.classList.add('highlight');
+                  const margin = window.getComputedStyle(section).margin;
+                  requestAnimationFrame(() => {
+                      section.style.margin = '0';
+                      section.style.padding = margin;
+                  })
+                  let nextSection = section.nextElementSibling;
+                  let sectionLink = nextSection.querySelector('.textual-info-paragraph');
+                  if (sectionLink) {
+                      if (last) {
+                          const marginBottom = window.getComputedStyle(section).paddingBottom;
+                          requestAnimationFrame(() => {
+                              section.style.marginBottom = marginBottom;
+                              section.style.paddingBottom = '0';
+                          })
+                          break;
+                      } else if (sectionLink.id === idTo) {
+                          last = true;
+                      }
+                  }
+                  section = nextSection;
+              }
+              return firstSection;
+          }
+
+          _removeHighlights() {
+              this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
+                  v.classList.remove('highlight');
+                  v.classList.remove('last-highlight');
+              })
+          }
+
+          _getElementToHighlight(element) {
+              if (element.id.includes('inline') && !element.id.includes('.')) {
+                  element = element.parentNode;
+              }
+              return element.parentNode;
+          }
+
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
               if (!sectionId) return;
               try {
+                  this._removeHighlights();
                   const section = this.shadowRoot.getElementById(sectionId);
                   setTimeout(() => {
-                      section.scrollIntoView({
+                      const firstSection = this._processHighlightAndScroll(sectionId);
+                      firstSection.scrollIntoView({
                           behavior: isSmooth ? 'smooth' : 'instant',
                           block: 'start',
                           inline: 'nearest'
@@ -442,8 +510,8 @@
               let node;
               for (let i = 0; i < nodes.length; i++) {
                   node = nodes[i];
-                  if(node.classList && node.classList.contains('image-link')) {
-                    continue;
+                  if (node.classList && node.classList.contains('image-link')) {
+                      continue;
                   }
                   if (unit === 'graph' && node.classList && node.classList.contains('latin')) {
                       continue;
@@ -676,6 +744,7 @@
                   }
               }
           }
+
           _showToast(dictName) {
               this.dispatchEvent(new CustomEvent('show-sc-toast', {
                   detail: {
