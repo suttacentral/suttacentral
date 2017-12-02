@@ -168,6 +168,41 @@
                           "scribe":"Note of attribution by the scribe of the manuscript.",
                           "suppliedmetre":"Metre reconstructed by the editor."
                       }
+                  },
+                  editionsExpansionData: {
+                      type: Object,
+                      value: {
+                          'sī1': "Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)",
+                          'c-a': "Chaṭṭhasaṅgīti Piṭakaṃ Atthakathā",
+                          'c1': "Chaṭṭhasaṅgīti Piṭakaṃ 2496–2499 (1952–1955)",
+                          'c2': "Chaṭṭhasaṅgīti Piṭakaṃ 2nd ed. 2500–2506 (1956–1962)",
+                          'c3': "Chaṭṭhasaṅgīti Piṭakaṃ (1997)",
+                          'cha1': "Chaṭṭhasaṅgīti Piṭakaṃ 2496–2499 (1952–1955)",
+                          'cha2': "Chaṭṭhasaṅgīti Piṭakaṃ 2nd ed. 2500–2506 (1956–1962)",
+                          'cha3': "Chaṭṭhasaṅgīti Piṭakaṃ (1997)",
+                          'mr': "Maramma Tipiṭaka 2541 (1997)",
+                          'ka-ma': "Maramma Tipiṭaka 2541 (1997)",
+                          'si': "Sinhala Tipiṭaka 2501 (1957)",
+                          'ka-sī': "Sinhala Tipiṭaka 2501 (1957)",
+                          'km': "Phratraipiṭakapāḷi 2501–2512 (1958–1969)",
+                          'maku': "Mahāmakurājāvidyālai 2466 (1923)",
+                          'pts-a': "Pali Text Society Atthakathā",
+                          'pts1': "Pali Text Society 1st ed. 2424–2535 (1881–1992)",
+                          'pts2': "Pali Text Society 2nd ed. 2517–2541 (1974–1998)",
+                          'pā1': "Pali Text Society 1st ed. 2424–2535 (1881–1992)",
+                          'pā2': "Pali Text Society 2nd ed. 2517–2541 (1974–1998)",
+                          's-a': "Syāmaraṭṭhassa Tepiṭakaṃ Atthakathā",
+                          's1': "Chulachomklao Pāḷi Tipiṭaka 2436 (1893)",
+                          's2': "Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928)",
+                          's3': "Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)",
+                          's1-3': "Chulachomklao Pāḷi Tipiṭaka 2436 (1893), Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928) & 2538 (1995)",
+                          'syā1-3': "Chulachomklao Pāḷi Tipiṭaka 2436 (1893), Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928) & 2538 (1995)", 
+                          'syā1': "Chulachomklao Pāḷi Tipiṭaka 2436 (1893)",
+                          'syā2': "Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928)",
+                          'syā3': "Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)", 
+                          'bj': "Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)",
+                          'bj-a': "Buddhajayantītripiṭakagranthamālā Atthakathā)"
+                      }
                   }
               }
           }
@@ -235,7 +270,7 @@
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
               this._setTextualInformationVisible(this.showParagraphs);
-              const divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
+              const divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];s1-3
               const paragraphsAdded =
                   this.$.simple_text_content.querySelector('.textual-info-paragraph') !== null;
               if (this.paragraphs && this.showParagraphs) {
@@ -297,17 +332,20 @@
               if (textElement) {
                   visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
                   for (var key in this.classTitles) {
-                      const classrefs = this.$.simple_text_content.querySelectorAll('.' + key);
+                      const classrefs = textElement.querySelectorAll(`.${key}`);
                       Array.from(classrefs).forEach(item => item.title = this.classTitles[key]);
                   }
                   for (var key in this.textualInfoClassTitles){
-                      const textualInfoclassrefs = this.$.simple_text_content.querySelectorAll(`.${key}`);
+                      const textualInfoclassrefs = textElement.querySelectorAll(`.${key}`);
                       if (visible) {
                           Array.from(textualInfoclassrefs).forEach(item => item.title = this.textualInfoClassTitles[key]);
                       } else {
                           Array.from(textualInfoclassrefs).forEach(item => item.title = "");
                       }
                   }
+                  const varClasses = textElement.querySelectorAll('.var');
+                  Array.from(varClasses).forEach(item => item.innerHTML = this._markupVarNote(item.title,item.innerHTML));
+                  Array.from(varClasses).forEach(item => item.title = "");
               }
           }
 
@@ -781,6 +819,43 @@
                   }, 0);
               }
           }
+
+          _markupVarNote(noteData,referenceText) {
+              if (referenceText.includes('<table class="deets">')) {
+                return referenceText;
+              }
+              const noteItems = noteData.split(/ \| /);
+              var noteText = referenceText + '<table class="deets"><tbody>';
+              var out = "";
+
+              for (var item in noteItems) {
+                var m = noteItems[item].match(/^(\(.*?\)|[^\(]+)(.*)/),
+                  variant = m[1],
+                  comment = m[2];
+                if (variant && !comment) {
+                    // In some cases there is no variant, it's simply a comment
+                    // In this case, the comment takes the entire line.
+                    out = '<tr><td colspan=2>' + this._markupComment(comment) + '</td></tr>';
+                } else {
+                    // The normal case is a variant and a comment or qualification
+                    // pertaining to that variant reading.
+                    out = '<tr><td>' + variant + '</td><td>' + this._markupComment(comment) + '</td></tr>';
+                }
+                noteText += out;
+              }
+              return noteText + '</tbody></table>';
+          }
+
+          _markupComment(comment){
+              comment = comment.replace('(','').replace(')','');
+              const commentParts = comment.split(/,/);
+              var commentText = '<ul>'
+              for (var item in commentParts) {
+                commentText += '<li>' + this.editionsExpansionData[commentParts[item].replace(' ','')] + '</li>';
+              }
+              return commentText + '</ul>';
+          }
+
       }
 
       customElements.define(SCSimpleText.is, SCSimpleText);
