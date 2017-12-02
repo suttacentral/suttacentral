@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 
 <link rel="import" href="../../elements/text/sc-text-options.html">
 <link rel="import" href="../../styles/sc-text-styles.html">
@@ -270,7 +271,7 @@
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
               this._setTextualInformationVisible(this.showParagraphs);
-              const divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];s1-3
+              const divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
               const paragraphsAdded =
                   this.$.simple_text_content.querySelector('.textual-info-paragraph') !== null;
               if (this.paragraphs && this.showParagraphs) {
@@ -344,7 +345,9 @@
                       }
                   }
                   const varClasses = textElement.querySelectorAll('.var');
-                  Array.from(varClasses).forEach(item => item.innerHTML = this._markupVarNote(item.title,item.innerHTML));
+                  if (varClasses[0].innerHTML.indexOf('class="varnote"') == -1) {
+                    Array.from(varClasses).forEach(item => item.innerHTML = this._markupVarNote(item.title,item.innerHTML));
+                  }
                   Array.from(varClasses).forEach(item => item.title = "");
               }
           }
@@ -821,11 +824,8 @@
           }
 
           _markupVarNote(noteData,referenceText) {
-              if (referenceText.includes('<table class="deets">')) {
-                return referenceText;
-              }
               const noteItems = noteData.split(/ \| /);
-              var noteText = referenceText + '<table class="deets"><tbody>';
+              var noteText = referenceText + '<paper-tooltip class="varnote"><table><tbody>';
               var out = "";
 
               for (var item in noteItems) {
@@ -835,7 +835,7 @@
                 if (variant && !comment) {
                     // In some cases there is no variant, it's simply a comment
                     // In this case, the comment takes the entire line.
-                    out = '<tr><td colspan=2>' + this._markupComment(comment) + '</td></tr>';
+                    out = '<tr><td colspan=2>' + this._markupComment(variant) + '</td></tr>';
                 } else {
                     // The normal case is a variant and a comment or qualification
                     // pertaining to that variant reading.
@@ -843,7 +843,7 @@
                 }
                 noteText += out;
               }
-              return noteText + '</tbody></table>';
+              return noteText + '</tbody></table></paper-tooltip>';
           }
 
           _markupComment(comment){
@@ -851,7 +851,12 @@
               const commentParts = comment.split(/,/);
               var commentText = '<ul>'
               for (var item in commentParts) {
-                commentText += '<li>' + this.editionsExpansionData[commentParts[item].replace(' ','')] + '</li>';
+                var checkItem = this.editionsExpansionData[commentParts[item].replace(' ','')];
+                if (checkItem) {
+                    commentText += '<li>' + checkItem + '</li>';
+                } else {
+                    commentText += '<li>' + commentParts[item] + '</li>';
+                }
               }
               return commentText + '</ul>';
           }

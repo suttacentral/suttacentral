@@ -279,7 +279,7 @@
         color: var(--sc-primary-accent-color);
         display: block;
         position: absolute;
-        margin-top: -0.5rem;
+        margin-top: -0.9rem;
         letter-spacing: 0.2em;
       }
 
@@ -313,77 +313,16 @@
         color: var(--sc-secondary-accent-color)
       }
 
-      .var .deets {
-        position: absolute;
-        z-index: 20;
-        margin-top: 1.5em;
-        margin-left: -22em;
-        color: var(--sc-primary-color-dark);
-        padding: 0.3em 0.6em;
-        font-size: 0.8rem;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        border: 1px solid #ccc;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      .varnote table {
         @apply --sc-sans-font;
-        line-height: 1.3;
-        letter-spacing: 0;
-        font-style: normal;
-        -webkit-transition: opacity 0.5s ease;
-        -moz-transition: opacity 0.5s ease;
-        -o-transition: opacity 0.5s ease;
-        transition: opacity 0.5s ease;
-        visibility: hidden;
-        opacity: 0;
-        -webkit-transition: visibility 0s ease 0.5s,opacity 0.5s ease;
-        -moz-transition: visibility 0s ease 0.5s,opacity 0.5s ease;
-        -o-transition: visibility 0s ease 0.5s,opacity 0.5s ease;
-        transition: visibility 0s ease 0.5s,opacity 0.5s ease;
-        background-color: yellow;
+        color: var(--sc-paper-tooltip-text-color);
       }
 
-
-      .var .deets li,
-      .var .deets td,
-       {
-        margin-bottom: 0;
-        padding: .2em .4em .2em 1em;
-      }
-
-
-      .infomode .var:hover .deets {
-        visibility: visible;
-        opacity: 1;
-        -webkit-transition-delay: 0s;
-        -moz-transition-delay: 0s;
-        -o-transition-delay: 0s;
-        transition-delay: 0s;
-      }
-
-      .var table.deets {
-        display: inline-block;
-        max-width: inherit;
-        padding: 0em;
-        font-feature-settings: initial;
-        font-variant-caps: normal;
-        font-weight: normal;
-      }
-
-      .var table.deets td:first-child:not(:last-child) {
+      .varnote td:first-child:not(:last-child) {
         font-weight: bold;
       }
 
-      .var table.deets ul {
-        margin: 0;
-        padding: 0;
-      }
-
-      .var table.deets td[colspan="2"] {
-        font-size: inherit;
-      }
-       
-      .var table.deets td:nth-child(2) {
+      .varnote td:nth-child(2) {
         font-size: 0.8rem;
         vertical-align: middle;
       }
