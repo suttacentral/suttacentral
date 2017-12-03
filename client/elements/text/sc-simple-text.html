@@ -347,8 +347,16 @@
                   const varClasses = textElement.querySelectorAll('.var');
                   if (varClasses[0].innerHTML.indexOf('class="varnote"') == -1) {
                     Array.from(varClasses).forEach(item => item.innerHTML = this._markupVarNote(item.title,item.innerHTML));
+                    Array.from(varClasses).forEach(item => item.title = "");
                   }
-                  Array.from(varClasses).forEach(item => item.title = "");
+                  const corrClasses = textElement.querySelectorAll('.corr');
+                  for (var key in corrClasses) {
+                    var item = corrClasses[key];
+                    if (item.title) {
+                      item.innerHTML = this._markupCorrComment(item.title,item.innerHTML);
+                      item.title = "";
+                    }
+                  }
               }
           }
 
@@ -859,6 +867,12 @@
                 }
               }
               return commentText + '</ul>';
+          }
+
+          _markupCorrComment(comment,referenceText){
+              comment = comment.replace('[','').replace(']','');
+              const commentParts = comment.split(/→/);
+              return referenceText + '<paper-tooltip class="corrnote">' + commentParts[0] + ' has been corrected to ' + commentParts[1] + '</paper-tooltip>';
           }
 
       }

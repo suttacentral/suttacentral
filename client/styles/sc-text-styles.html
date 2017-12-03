@@ -209,11 +209,11 @@
 
       .surplus {
         display: none;
-        color: var(--sc-secondary-text-color);
       }
 
       .infomode .surplus {
         display: inline;
+        color: var(--sc-secondary-text-color);
       }
 
       /*For Mahaparinirvana text, marks apparently random phrases that are marked in bold in GRETIL.
@@ -248,7 +248,6 @@
       #text:lang(pra) .add,
       #text:lang(en) .add,
       .infomode .add {
-        display: inline;
         color: var(--sc-secondary-text-color);
         @apply --sc-sans-font;
       }
@@ -283,10 +282,6 @@
         letter-spacing: 0.2em;
       }
 
-      .expanded {
-        display: inline
-      }
-
       .infomode .expanded {
         color: var(--sc-secondary-text-color);
       }
@@ -313,11 +308,11 @@
         color: var(--sc-secondary-accent-color)
       }
 
-      .varnote {
+      .varnote, .corrnote {
         display: none;
       }
 
-      .infomode .varnote {
+      .infomode .varnote, .infomode .corrnote {
         display: block;
       }
 
