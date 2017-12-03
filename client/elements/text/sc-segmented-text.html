@@ -335,6 +335,7 @@
           _showComplexView() {
               requestAnimationFrame(() => {
                   this._addSecondaryText();
+                  this._changeScript(this.paliScript);
                   this._toggleSegmentedTextualInfo(true);
               });
           }
