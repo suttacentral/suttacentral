@@ -252,7 +252,7 @@
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
               <div>
-                <span class="book" class="no-margin">
+                <span class="book no-margin">
                   <iron-icon class="grey-icon" icon="book"></iron-icon>
                 </span>
                 <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
@@ -262,7 +262,7 @@
               <div>
                 <details class="display-inline">
                   <summary class="volpage-biblio-info-summary">
-                    <span class="book" class="no-margin">
+                    <span class="book no-margin">
                       <iron-icon class="grey-icon" icon="book"></iron-icon>
                     </span>
                     <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
@@ -496,7 +496,7 @@
           }
 
           _getRootText() {
-            return this.item.translations.find(v => v.lang === this.item.root_lang);
+              return this.item.translations.find(translation => translation.lang === this.item.root_lang);
           }
       }
 
