@@ -100,9 +100,11 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               <div class="parallels-root-id root" title="SuttaCentral ID">
                 [[rootId]]
               </div>
-              <paper-button flat class="dense" title="Go to text in original language">
-                <a href="[[_computeUrl(rootId)]]">[[_computeFullLangName(rootLang)]]</a>
-              </paper-button>
+              <template is="dom-if" if="[[rootText]]">
+                <paper-button flat class="dense" title="Go to text in original language">
+                  <a href="[[_computeUrl(rootId)]]">[[_computeFullLangName(rootLang)]]</a>
+                </paper-button>
+              </template>
             </td>
             <td class="parallels-relation-cell">
               <iron-icon class="grey-icon" icon$="[[_getFirstParallelIcon(rootId)]]"
@@ -283,7 +285,6 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           }
 
           _computeUrl(rootId) {
-            const item = this._getItemAtIndex(rootId, 0)
             return `/${this.itemUid}/${this.rootLang}/${this.rootText.author}${this._getParagraphRange(rootId)}`
           }
 
