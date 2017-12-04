@@ -102,32 +102,33 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
     </style>
+    <template is="dom-if" if="[[_shouldShowMenu(languageChoice)]]">
+      <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
+                          title="Select a language" id="paper_dropdown_menu" dynamic-align=true>
+        <paper-listbox class="language-menu-listbox" slot="dropdown-content">
 
-    <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
-                         title="Select a language" id="paper_dropdown_menu" dynamic-align=true>
-      <paper-listbox class="language-menu-listbox" slot="dropdown-content">
-
-        <template is="dom-repeat" items="[[languageChoice]]" as="language">
-          <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
-            <section class$="{{_rootLanguageClassOrStandard(language)}} no-outline">
-              <a class="language-menu-url"
-                 href="/[[rootId]]/[[language.lang]]/[[language.author]][[_getParagraphRange()]]">
-                <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
-                  <div class="iso-code">
-                    <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.lang)]]"></iron-icon>
-                  </div>
-                  <paper-item-body>
-                  [[_computeAuthorForList(language.author)]]
-                  </paper-item-body>
-                </paper-item>
-              </a>
-            </section>
+          <template is="dom-repeat" items="[[languageChoice]]" as="language">
+            <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
+              <section class$="{{_rootLanguageClassOrStandard(language)}} no-outline">
+                <a class="language-menu-url"
+                  href="/[[rootId]]/[[language.lang]]/[[language.author]][[_getParagraphRange()]]">
+                  <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
+                    <div class="iso-code">
+                      <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.lang)]]"></iron-icon>
+                    </div>
+                    <paper-item-body>
+                    [[_computeAuthorForList(language.author)]]
+                    </paper-item-body>
+                  </paper-item>
+                </a>
+              </section>
+            </template>
           </template>
-        </template>
 
-      </paper-listbox>
-    </paper-dropdown-menu>
+        </paper-listbox>
+      </paper-dropdown-menu>
 
+    </template>
   </template>
 
   <script>
@@ -186,6 +187,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               } else {
                   return author;
               }
+          }
+
+          _shouldShowMenu(languageChoice) {
+            return languageChoice.filter(v => {return v.lang !== this.inputLanguage}).length > 0;
           }
 
           _computeAuthor(author) {
