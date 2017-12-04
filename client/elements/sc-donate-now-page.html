@@ -299,7 +299,7 @@
               <paper-checkbox class="sans-font frequency-checkbox monthly-donation">Monthly</paper-checkbox>
             </div>
 
-            <stripe-card id="stripe_card"class="card-row" publishable-key="pk_test_vFqwBPDW08c5AKXMGLKaeJaB" token="{{ stripeResponse }}"
+            <stripe-card id="stripe_card" class="card-row" publishable-key="pk_test_vFqwBPDW08c5AKXMGLKaeJaB" token="{{stripeResponse}}"
                          hide-zip hide-submit></stripe-card>
 
             <paper-input label="Name (optional)" class="data-input name-input" maxlength=200>
@@ -465,12 +465,13 @@
                 let data = this._getFormData();
                 this.processingPayment = true;
                 this.$.submitButton.disabled = true;
-                console.log(this.stripeResponse);
                 data.stripe = this.stripeResponse;
                 this.formData = JSON.stringify(data);
                 let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
                 ironAjax.generateRequest();
-              }).catch(e => {console.error(e)});
+              }).catch(e => {
+                console.error(e)
+              });
           }
 
           _paymentFinished(event) {
