@@ -496,7 +496,7 @@
           }
 
           _getRootText() {
-              return this.item.translations.find(v => v.lang === this.item.root_lang);
+              return this.item.translations.find(translation => translation.lang === this.item.root_lang);
           }
       }
 

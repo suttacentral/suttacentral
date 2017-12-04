@@ -190,7 +190,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _shouldShowMenu(languageChoice) {
-            return languageChoice.filter(v => {return v.lang !== this.inputLanguage}).length > 0;
+            return languageChoice.some(item =>  item.lang !== this.inputLanguage);
           }
 
           _computeAuthor(author) {
