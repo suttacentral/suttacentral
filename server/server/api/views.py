@@ -560,7 +560,7 @@ class Donations(Resource):
         amount = int(amount)
 
         customer_data = {
-            'source': stripe_data['token']['id']
+            'source': stripe_data['id']
         }
 
         if email:
