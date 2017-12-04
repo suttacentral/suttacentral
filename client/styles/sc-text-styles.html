@@ -209,11 +209,11 @@
 
       .surplus {
         display: none;
-        color: var(--sc-secondary-text-color);
       }
 
       .infomode .surplus {
         display: inline;
+        color: var(--sc-secondary-text-color);
       }
 
       /*For Mahaparinirvana text, marks apparently random phrases that are marked in bold in GRETIL.
@@ -248,7 +248,6 @@
       #text:lang(pra) .add,
       #text:lang(en) .add,
       .infomode .add {
-        display: inline;
         color: var(--sc-secondary-text-color);
         @apply --sc-sans-font;
       }
@@ -279,12 +278,8 @@
         color: var(--sc-primary-accent-color);
         display: block;
         position: absolute;
-        margin-top: -0.5rem;
+        margin-top: -0.9rem;
         letter-spacing: 0.2em;
-      }
-
-      .expanded {
-        display: inline
       }
 
       .infomode .expanded {
@@ -308,6 +303,42 @@
 
       TITLE: Gap in the manuscript.
       */
+
+      .infomode .var {
+        color: var(--sc-secondary-accent-color)
+      }
+
+      .varnote,
+      .corrnote {
+        display: none;
+      }
+
+      .infomode .varnote,
+      .infomode .corrnote {
+        display: block;
+      }
+
+      .varnote table {
+        @apply --sc-sans-font;
+        color: var(--sc-paper-tooltip-text-color);
+      }
+
+      .varnote td:first-child:not(:last-child) {
+        font-weight: bold;
+      }
+
+      .varnote td:nth-child(2) {
+        font-size: 0.8rem;
+        vertical-align: middle;
+      }
+
+      /*indicates a variant reading. Similar to TEI rdg, except that refers only to a single reading, whereas for us var is used a little more loosely*/
+
+      .infomode .corr {
+        color: var(--sc-primary-accent-color)
+      }
+
+      /*indicates a corrected reading. There are some whith and some without a title. The ones with a title show the correction from→to in the title.*/
 
 
       cite.book {
@@ -390,6 +421,20 @@
 
       .t-gaiji {
         color: var(--sc-primary-accent-color);
+      }
+
+      a.cr {
+        color: inherit;
+        text-decoration: none;
+        background: linear-gradient(to top, var(--sc-primary-color-transparent) 1.5px, var(--sc-primary-color) 1.5px, var(--sc-primary-color) 2.5px, var(--sc-primary-color-transparent) 2.5px);
+      }
+
+      a.cr:hover {
+        background: linear-gradient(to top, var(--sc-primary-color-transparent) 1px, var(--sc-primary-color) 1px, var(--sc-primary-color) 3px, var(--sc-primary-color-transparent) 3px);
+      }
+
+      a.cr:visited {
+        background: linear-gradient(to top, var(--sc-primary-color-darkest-transparent) 1px, var(--sc-primary-color-darkest) 1px, var(--sc-primary-color-darkest) 3px, var(--sc-primary-color-darkest-transparent) 3px);
       }
 
     </style>
