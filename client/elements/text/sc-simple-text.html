@@ -332,29 +332,31 @@
               const textElement = this.$.simple_text_content;
               if (textElement) {
                   visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
-                  for (var key in this.classTitles) {
-                      const classrefs = textElement.querySelectorAll(`.${key}`);
-                      Array.from(classrefs).forEach(item => item.title = this.classTitles[key]);
+                  for (let key in this.classTitles) {
+                      const classRefs = textElement.querySelectorAll(`.${key}`);
+                      Array.from(classRefs).forEach(item => item.title = this.classTitles[key]);
                   }
-                  for (var key in this.textualInfoClassTitles){
-                      const textualInfoclassrefs = textElement.querySelectorAll(`.${key}`);
+                  for (let key in this.textualInfoClassTitles){
+                      const textualInfoClassRefs = textElement.querySelectorAll(`.${key}`);
                       if (visible) {
-                          Array.from(textualInfoclassrefs).forEach(item => item.title = this.textualInfoClassTitles[key]);
+                          Array.from(textualInfoClassRefs).forEach(item => item.title = this.textualInfoClassTitles[key]);
                       } else {
-                          Array.from(textualInfoclassrefs).forEach(item => item.title = "");
+                          Array.from(textualInfoClassRefs).forEach(item => item.title = "");
                       }
                   }
-                  const varClasses = textElement.querySelectorAll('.var');
-                  if (varClasses[0].innerHTML.indexOf('class="varnote"') == -1) {
-                    Array.from(varClasses).forEach(item => item.innerHTML = this._markupVarNote(item.title,item.innerHTML));
-                    Array.from(varClasses).forEach(item => item.title = "");
+                  const varElements = textElement.querySelectorAll('.var');
+                  if (varElements[0].innerHTML.indexOf('class="varnote"') === -1) {
+                    Array.from(varElements).forEach((item) => { 
+                        item.innerHTML = this._markupVarNote(item.title,item.innerHTML);
+                        item.title = '';
+                      });
                   }
-                  const corrClasses = textElement.querySelectorAll('.corr');
-                  for (var key in corrClasses) {
-                    var item = corrClasses[key];
+                  const corrElements = textElement.querySelectorAll('.corr');
+                  for (let key in corrElements) {
+                    const item = corrElements[key];
                     if (item.title) {
                       item.innerHTML = this._markupCorrComment(item.title,item.innerHTML);
-                      item.title = "";
+                      item.title = '';
                     }
                   }
               }
@@ -833,46 +835,89 @@
 
           _markupVarNote(noteData,referenceText) {
               const noteItems = noteData.split(/ \| /);
-              var noteText = referenceText + '<paper-tooltip class="varnote"><table><tbody>';
-              var out = "";
+              let noteText = `
+                                ${referenceText}
+                              <paper-tooltip class="varnote"><table><tbody>
+                             `;
+              let out = '';
 
-              for (var item in noteItems) {
-                var m = noteItems[item].match(/^(\(.*?\)|[^\(]+)(.*)/),
+              for (let item in noteItems) {
+                let m = noteItems[item].match(/^(\(.*?\)|[^\(]+)(.*)/),
                   variant = m[1],
                   comment = m[2];
                 if (variant && !comment) {
                     // In some cases there is no variant, it's simply a comment
                     // In this case, the comment takes the entire line.
-                    out = '<tr><td colspan=2>' + this._markupComment(variant) + '</td></tr>';
+                    out = `
+                            <tr><td colspan=2>
+                              ${this._markupComment(variant)}
+                            </td></tr>
+                          `;
                 } else {
                     // The normal case is a variant and a comment or qualification
                     // pertaining to that variant reading.
-                    out = '<tr><td>' + variant + '</td><td>' + this._markupComment(comment) + '</td></tr>';
+                    // out = '<tr><td>' + variant + '</td><td>' + this._markupComment(comment) + '</td></tr>';
+                   out = `
+                          <tr><td>
+                            ${variant}
+                          </td><td>
+                            ${this._markupComment(comment)}
+                          </td></tr>
+                         `;
                 }
                 noteText += out;
               }
-              return noteText + '</tbody></table></paper-tooltip>';
+              return `
+                        ${noteText}
+                      </tbody></table></paper-tooltip>
+                     `;
           }
 
           _markupComment(comment){
-              comment = comment.replace('(','').replace(')','');
+              comment = comment.replace('(', '').replace(')', '');
               const commentParts = comment.split(/,/);
-              var commentText = '<ul>'
-              for (var item in commentParts) {
-                var checkItem = this.editionsExpansionData[commentParts[item].replace(' ','')];
+              let commentText = `<ul>`;
+              for (let item in commentParts) {
+                const checkItem = this.editionsExpansionData[commentParts[item].replace(' ','')];
                 if (checkItem) {
-                    commentText += '<li>' + checkItem + '</li>';
+                    commentText += `
+                                    <li>
+                                      ${checkItem}
+                                    </li>
+                                   `;
                 } else {
-                    commentText += '<li>' + commentParts[item] + '</li>';
+                    commentText += `
+                                    <li>
+                                      ${commentParts[item]}
+                                    </li>
+                                   `;
                 }
               }
-              return commentText + '</ul>';
+              return `
+                        ${commentText}
+                      </ul>
+                     `;
           }
 
           _markupCorrComment(comment,referenceText){
-              comment = comment.replace('[','').replace(']','');
+              comment = comment.replace('[', '').replace(']', '');
               const commentParts = comment.split(/→/);
-              return referenceText + '<paper-tooltip class="corrnote">' + commentParts[0] + ' has been corrected to ' + commentParts[1] + '</paper-tooltip>';
+              let tooltipText = '';
+              if (commentParts[1]) {
+                tooltipText = `
+                                ${commentParts[0]}
+                                has been corrected to
+                                ${commentParts[1]}
+                              `;
+              } else {
+                tooltipText = commentParts[0];
+              }
+              return `
+                        ${referenceText}
+                      <paper-tooltip class="corrnote">
+                        ${tooltipText}
+                      </paper-tooltip>
+                     `;
           }
 
       }
