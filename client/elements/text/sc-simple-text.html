@@ -345,7 +345,7 @@
                       }
                   }
                   const varElements = textElement.querySelectorAll('.var');
-                  if (varElements[0].innerHTML.indexOf('class="varnote"') === -1) {
+                  if (varElements[0] && varElements[0].innerHTML.indexOf('class="varnote"') === -1) {
                     Array.from(varElements).forEach((item) => { 
                         item.innerHTML = this._markupVarNote(item.title,item.innerHTML);
                         item.title = '';
