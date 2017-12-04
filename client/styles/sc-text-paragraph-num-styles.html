@@ -428,10 +428,10 @@
         content: "Yam "
       }
 
-      a.msdiv,
-      a.ms,
-      a.ms-pa,
-      a.da,
+      #text a.msdiv,
+      #text a.ms,
+      #text a.ms-pa,
+      #text a.da,
       a.titus .infomode #text p a.ms,
       .infomode #text p a.ms-pa {
         display: none;
@@ -478,7 +478,7 @@
       }
 
       @media screen and (min-width: 1200px) {
-        .textual-info-paragraph {
+        .infomode .textual-info-paragraph {
           margin-right: -6em;
           display: block;
           background-color: transparent;
@@ -510,6 +510,7 @@
           display: block;
           float: right;
         }
+
       }
 
       @media screen and (min-width: 1500px) {
