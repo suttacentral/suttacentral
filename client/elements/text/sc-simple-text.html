@@ -884,15 +884,9 @@
               for (let item in commentParts) {
                 const checkItem = this.editionsExpansionData[commentParts[item].replace(' ','')];
                 if (checkItem) {
-                    commentText += `
-                                      ${checkItem}
-                                    <br>
-                                   `;
+                    commentText += `${checkItem}<br>`;
                 } else {
-                    commentText += `
-                                      ${commentParts[item]}
-                                    <br>
-                                   `;
+                    commentText += `${commentParts[item]}<br>`;
                 }
               }
               return commentText;
