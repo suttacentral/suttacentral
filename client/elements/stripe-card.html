@@ -35,6 +35,14 @@
         margin: 0 0.5em;
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-input-container-label-color: var(--sc-disabled-text-color);
+        --paper-input-container: {
+          @apply --sc-sans-font;
+        };
+        --paper-input-container-input: {
+          color: var(--sc-primary-text-color);
+        };
+        --paper-input-container-color: var(--sc-secondary-text-color);
+        padding-bottom: var(--sc-size-md);
       }
 
       #error {
@@ -58,13 +66,6 @@
       .large {
         flex-grow: 2;
         min-width: 20em;
-      }
-
-      #error {
-        @apply --paper-font-caption;
-        @apply --paper-input-error;
-        min-height: 1em;
-        color: var(--paper-input-container-invalid-color, var(--sc-toast-error-color));
       }
 
       /* hide input number selector */

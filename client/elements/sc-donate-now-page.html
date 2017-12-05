@@ -97,7 +97,6 @@
 
       .card-row {
         margin-top: 1.5em;
-        margin-bottom: 1em;
       }
 
       .card-first-span {
@@ -217,6 +216,7 @@
       .toast {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-xl;
+        color: var(--sc-tertiary-text-color);
         --paper-toast-color: var(--sc-paper-tooltip-color);
         text-align: center;
         margin-left: calc(50vw - 150px);
@@ -233,12 +233,13 @@
         --paper-input-container-input: {
           color: var(--sc-primary-text-color);
         };
+        --paper-input-container-color: var(--sc-secondary-text-color);
         padding-bottom: var(--sc-size-md);
       }
 
       .form-prefix {
         color: var(--sc-disabled-text-color);
-        margin-right: 0.5em;        
+        margin-right: 0.5em;
       }
 
       .success-toast {
@@ -301,7 +302,8 @@
               <paper-checkbox class="sans-font frequency-checkbox monthly-donation">Monthly</paper-checkbox>
             </div>
 
-            <stripe-card id="stripe_card" class="card-row" publishable-key="pk_test_vFqwBPDW08c5AKXMGLKaeJaB" token="{{stripeResponse}}"
+            <stripe-card id="stripe_card" class="card-row" publishable-key="pk_test_vFqwBPDW08c5AKXMGLKaeJaB"
+                         token="{{stripeResponse}}"
                          hide-zip hide-submit></stripe-card>
 
             <paper-input label="Name (optional)" class="data-input name-input" maxlength=200>
@@ -358,7 +360,7 @@
                       type: Object
                   },
                   stripeResponse: {
-                    type: String
+                      type: String
                   },
                   currencies: {
                       type: Array
@@ -464,15 +466,15 @@
                   return;
               }
               this.$.stripe_card.createToken().then(v => {
-                let data = this._getFormData();
-                this.processingPayment = true;
-                this.$.submitButton.disabled = true;
-                data.stripe = this.stripeResponse;
-                this.formData = JSON.stringify(data);
-                let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
-                ironAjax.generateRequest();
+                  let data = this._getFormData();
+                  this.processingPayment = true;
+                  this.$.submitButton.disabled = true;
+                  data.stripe = this.stripeResponse;
+                  this.formData = JSON.stringify(data);
+                  let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
+                  ironAjax.generateRequest();
               }).catch(e => {
-                console.error(e)
+                  console.error(e)
               });
           }
 
