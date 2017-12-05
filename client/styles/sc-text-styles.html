@@ -347,9 +347,7 @@
         color: var(--sc-paper-tooltip-text-color);
       }
 
-      .varnote td,
-      .varnote li,
-      .varnote ul {
+      .varnote td {
         padding: 0;
         vertical-align: middle;
         border: none;
@@ -357,11 +355,11 @@
 
       .varnote td:first-child:not(:last-child) {
         font-weight: bold;
+        padding-right: var(--sc-size-xs);
       }
 
-      .varnote td:nth-child(2) {
+      .varnote td:last-child {
         font-size: 0.8rem;
-        vertical-align: middle;
       }
 
       /*indicates a variant reading. Similar to TEI rdg, except that refers only to a single reading, whereas for us var is used a little more loosely*/
