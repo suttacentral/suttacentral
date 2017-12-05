@@ -49,7 +49,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                loading="{{loadingParallels}}"
                last-response="{{parallels}}"></iron-ajax>
 
-    <paper-item class="table-element button-text" on-tap="_copyLink" title="[[itemLink]]">
+    <paper-item class="table-element button-text" on-tap="_copyLink" title="[[_computeLink()]]">
       <iron-icon class="grey-icon" icon="link"></iron-icon>
       Copy link
     </paper-item>
@@ -78,10 +78,6 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   inputData: {
                       type: Object,
                       notify: true
-                  },
-                  itemLink: {
-                      type: Array,
-                      computed: '_computeLink()'
                   },
                   parallels: {
                       type: Object
@@ -144,7 +140,8 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           // Copy the link to the suttaplex page
           _copyLink() {
               try {
-                  this._copyToClipboard(this.itemLink);
+                  const link = this._computeLink();
+                  this._copyToClipboard(link);
                   this._notifyCopy('Link copied!', true);
               } catch (err) {
                   this._notifyCopy('Error!', false);
