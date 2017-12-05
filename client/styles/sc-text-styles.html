@@ -308,6 +308,30 @@
         color: var(--sc-secondary-accent-color)
       }
 
+      .textable {
+        margin: var(--sc-size-xl) auto;
+        border-collapse: collapse;
+      }
+
+      .textable td {
+        padding: 12px var(--sc-size-md-larger) 12px var(--sc-size-md-larger);
+        vertical-align: text-top;
+        border-top: 1px solid var(--sc-tertiary-background-color);
+        border-bottom: 1px solid var(--sc-tertiary-background-color);
+      }
+
+      .textable td:first-child {
+        font-weight: bold;
+      }
+
+      .textable li {
+        padding: var(--sc-size-xs) 0;
+      }
+
+      .textable ul {
+        padding-left: var(--sc-size-xl);
+      }
+
       .varnote,
       .corrnote {
         display: none;
@@ -321,6 +345,14 @@
       .varnote table {
         @apply --sc-sans-font;
         color: var(--sc-paper-tooltip-text-color);
+      }
+
+      .varnote td,
+      .varnote li,
+      .varnote ul {
+        padding: 0;
+        vertical-align: middle;
+        border: none;
       }
 
       .varnote td:first-child:not(:last-child) {
