@@ -93,7 +93,7 @@
     <iron-form id="form">
       <form>
         <div class="horizontal wrap">
-          <paper-input class="data-input large" id="cardNumber" type="tel" allowed-pattern="[0-9 ]"
+          <paper-input class="data-input large" id="cardNumber" type="tel" allowed-pattern="[0-9 ]" maxlength="19"
                        name="number" label="Card number" auto-validate required on-value-changed="_maskCard">
             <iron-icon icon="icons:credit-card" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>
