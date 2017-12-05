@@ -113,9 +113,7 @@ class Menu(Resource):
 
             edges[_id] = vertex
 
-        for edge in edges:
-            if 'children' in edges[edge]:
-                edges[edge]['children'] = list(edges[edge]['children'])
+        self._to_classic_lists(edges)
 
         return data, 200
 
@@ -124,6 +122,16 @@ class Menu(Resource):
         return {'name': name,
                 'uid': uid,
                 'num': num}
+    
+    def _to_classic_lists(self, edges):
+        for edge in edges:
+            if isinstance(edges, dict):
+                if 'children' in edges[edge]:
+                    edges[edge]['children'] = list(edges[edge]['children'])
+                    self._to_classic_lists(edges[edge]['children'])
+            elif 'children' in edge:
+                edge['children'] = list(edge['children'])
+                self._to_classic_lists(edge['children'])
 
 
 class SuttaplexList(Resource):
