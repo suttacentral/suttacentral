@@ -25,21 +25,21 @@ This is the base language menu that determines the language of the site.
         };
       }
 
-      .language-menu-container {
+      .language-menu-dropdown {
         @apply --sc-skolar-font-size-md;
-        --paper-input-container-input: {
-          color: var(--sc-primary-text-color);
+        --paper-input-container-focus-color: var(--sc-primary-accent-color);
+        --paper-dropdown-menu-icon: {
+          color: var(--sc-disabled-text-color);
         };
+        --paper-dropdown-menu-input: {
+          --paper-input-container-input-color: var(--sc-primary-text-color);
+          --paper-input-container-color: var(--sc-secondary-text-color);
+        };
+        background-color: var(--sc-secondary-background-color);
       }
 
       .language-menu-list {
         @apply --shadow-elevation-8dp;
-        --paper-input-container-focus-color: var(--sc-primary-accent-color);
-        --paper-input-container-input-color: var(--sc-primary-text-color);
-        --paper-input-container-color: var(--sc-secondary-text-color);
-        --paper-dropdown-menu-icon: {
-          color: var(--sc-disabled-text-color);
-        };
         background-color: var(--sc-secondary-background-color);
       }
 
@@ -76,7 +76,7 @@ This is the base language menu that determines the language of the site.
         handle-as="json"
         last-response="{{lastResponse}}"></iron-ajax>
 
-    <paper-dropdown-menu class="language-menu-container" label="Language" title="Select the site in another language">
+    <paper-dropdown-menu class="language-menu-dropdown" label="Language" title="Select the site in another language">
       <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNr}}">
         <template is="dom-repeat" items="{{lastResponse}}" as="language">
           <paper-item class="language-menu-paper-item" id='[[language.uid]]'>
