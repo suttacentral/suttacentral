@@ -880,27 +880,22 @@
           _markupComment(comment){
               comment = comment.replace('(', '').replace(')', '');
               const commentParts = comment.split(/,/);
-              let commentText = `<ul>`;
+              let commentText = '';
               for (let item in commentParts) {
                 const checkItem = this.editionsExpansionData[commentParts[item].replace(' ','')];
                 if (checkItem) {
                     commentText += `
-                                    <li>
                                       ${checkItem}
-                                    </li>
+                                    <br>
                                    `;
                 } else {
                     commentText += `
-                                    <li>
                                       ${commentParts[item]}
-                                    </li>
+                                    <br>
                                    `;
                 }
               }
-              return `
-                        ${commentText}
-                      </ul>
-                     `;
+              return commentText;
           }
 
           _markupCorrComment(comment,referenceText){
