@@ -1,5 +1,6 @@
 import re
 from typing import Callable, Dict, List
+from collections import defaultdict
 
 import decorator
 
@@ -216,3 +217,11 @@ def sort_parallels_type_key(x):
         'retelling': 4,
     }
     return values[p_type], x['to']['to']
+
+def groupby_unsorted(seq, key=lambda x: x):
+    seq = list(seq)
+    indexes = defaultdict(list)
+    for i, elem in enumerate(seq):
+        indexes[key(elem)].append(i)
+    for k, idxs in indexes.items():
+        yield k, (seq[i] for i in idxs)
