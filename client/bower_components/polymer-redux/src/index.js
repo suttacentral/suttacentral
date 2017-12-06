@@ -79,8 +79,9 @@ export default function PolymerRedux(store) {
 		});
 
 		subscribers.set(element, unsubscribe);
+		update(store.getState());
 
-		return update(store.getState());
+		return update;
 	};
 
 	/**
@@ -139,14 +140,14 @@ export default function PolymerRedux(store) {
 		}
 
 		connectedCallback() {
-			super.connectedCallback();
 			const properties = collect(this.constructor, 'properties');
 			bind(this, properties);
+			super.connectedCallback();
 		}
 
 		disconnectedCallback() {
-			super.disconnectedCallback();
 			unbind(this);
+			super.disconnectedCallback();
 		}
 
 		/**
