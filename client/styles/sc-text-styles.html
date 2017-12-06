@@ -278,7 +278,7 @@
         color: var(--sc-primary-accent-color);
         display: block;
         position: absolute;
-        margin-top: -0.9rem;
+        margin-top: -11px;
         letter-spacing: 0.2em;
       }
 
@@ -318,10 +318,6 @@
         vertical-align: text-top;
         border-top: 1px solid var(--sc-tertiary-background-color);
         border-bottom: 1px solid var(--sc-tertiary-background-color);
-      }
-
-      .textable td:first-child {
-        font-weight: bold;
       }
 
       .textable li {
@@ -364,7 +360,8 @@
 
       /*indicates a variant reading. Similar to TEI rdg, except that refers only to a single reading, whereas for us var is used a little more loosely*/
 
-      .infomode .corr {
+      .infomode .corr,
+      .infomode .corrected {
         color: var(--sc-primary-accent-color)
       }
 
