@@ -83,28 +83,29 @@
     <div class="node-container">
       <div class="node-row">
 
-        <template is="dom-if" if="{{data.icon}}">
+        <template is="dom-if" if="[[data.icon]]">
           <iron-icon class="paper-tree-icon" icon="[[data.icon]]"></iron-icon>
         </template>
 
-        <template is="dom-if" if="{{data.children}}">
-          <paper-icon-button class="paper-tree-toggle-button" icon="{{_computeIcon(data.*)}}" on-tap="toggleChildren"></paper-icon-button>
+        <template is="dom-if" if="[[data.children]]">
+          <paper-icon-button class="paper-tree-toggle-button" icon="[[_computeIcon(data.*)]]"
+                             on-tap="toggleChildren"></paper-icon-button>
         </template>
 
-        <template is="dom-if" if="{{_computeClickable(data.uid)}}">
-          <a class="paper-tree-link" href$="{{_computeLink(data.uid)}}">
+        <template is="dom-if" if="[[_computeClickable(data.uid)]]">
+          <a class="paper-tree-link" href$="[[_computeLink(data.uid)]]">
             <span class="node-name">
-              <span class="data-name">{{data.name}}
-                <span class="data-lang">{{data.lang}}</span>
+              <span class="data-name">[[data.name]]
+                <span class="data-lang">[[data.lang]]</span>
               </span>
             </span>
           </a>
         </template>
 
-        <template is="dom-if" if="{{!_computeClickable(data.uid)}}">
+        <template is="dom-if" if="[[!_computeClickable(data.uid)]]">
           <span class="node-name" on-tap="_select">
-            <span class$="data-name {{_computeFontWeight(data.uid)}}" inner-h-t-m-l="{{data.name}}">
-              <span class="data-lang">{{data.lang}}
+            <span class$="data-name [[_computeFontWeight(data.uid)]]" inner-h-t-m-l="[[data.name]]">
+              <span class="data-lang">[[data.lang]]
               </span>
             </span>
           </span>
@@ -112,16 +113,16 @@
 
       </div>
 
-      <iron-collapse opened="{{data.open}}">
-        <template is="dom-if" if="{{data.open}}">
-          <template is="dom-repeat" items="{{data.children}}">
-            <paper-tree-node data="{{item}}" is-wide="[[isWide]]"></paper-tree-node>
+      <iron-collapse opened="[[data.open]]">
+        <template is="dom-if" if="[[data.open]]">
+          <template is="dom-repeat" items="[[data.children]]">
+            <paper-tree-node data="[[item}}" is-wide="[[isWide]]"></paper-tree-node>
           </template>
         </template>
 
         <!--Dummy element that enables rolldown animation with iron-collapse-->
-        <template is="dom-if" if="{{!data.open}}">
-          <template is="dom-if" if="{{data.children}}">
+        <template is="dom-if" if="[[!data.open]]">
+          <template is="dom-if" if="[[data.children]]">
             <div class="full-height"></div>
           </template>
         </template>
