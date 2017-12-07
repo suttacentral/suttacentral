@@ -10,8 +10,15 @@
         color: var(--sc-paper-tooltip-text-color);
         --paper-toast-background-color: var(--sc-paper-tooltip-color);
         text-align: center;
-        margin-left: calc(50vw + var(--app-drawer-width) / 2);
+        margin-left: calc(50vw);
         transform: translateX(-50%);
+      }
+
+      /* 841px: width at which the persistent sidebar appears*/
+      @media screen and (min-width: 841px) {
+        .toast {
+          margin-left: calc(50vw + var(--app-drawer-width) / 2);
+        }
       }
 
       .success-toast {
@@ -56,7 +63,6 @@
               toast.text = e.detail.message;
               toast.duration = e.detail.duration || this.defaultDuration;
               requestAnimationFrame(() => {
-                  toast.refit();
                   toast.open()
               });
           }
