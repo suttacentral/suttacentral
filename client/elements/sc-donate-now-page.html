@@ -274,7 +274,7 @@
 
     <div id="page-wrap">
       <section>
-        <iron-form class="payment-iron-form">
+        <iron-form id="donation_form" class="payment-iron-form">
           <form class="payment-form">
             <div class="flex-row">
               <paper-dropdown-menu class="currency-dropdown data-input" title="Select currency"
@@ -484,6 +484,8 @@
               successToast.open();
               setTimeout(() => {
                   this.$.submitButton.disabled = false;
+                  this.$.donation_form.reset();
+                  this.shadowRoot.querySelector('.amount-input').value = undefined;
                   this.set('path', '/');
               }, successToast.duration + 500);
           }
