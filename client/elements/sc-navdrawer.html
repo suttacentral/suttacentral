@@ -217,20 +217,21 @@
             </a>
           </div>
           <div id="container" class="nav-list-container">
-            <template is="dom-if" if="{{_shouldShowLoadingIndicator(loading, error)}}">
+            <template is="dom-if" if="[[_shouldShowLoadingIndicator(loading, error)]]">
               <div class="loading-indicator">
-                <paper-spinner-lite class="paper-spinner icon-middle" active="{{loading}}"></paper-spinner-lite>
+                <paper-spinner-lite class="paper-spinner icon-middle" active="[[loading]]"></paper-spinner-lite>
               </div>
             </template>
 
-            <template is="dom-if" if="{{error}}">
+            <template is="dom-if" if="[[error]]">
               <iron-icon class="network-error-icon icon-middle" title="Network error"
                          src="img/nonetwork.svg"></iron-icon>
             </template>
 
-            <template is="dom-repeat" items="{{navList}}">
-              <paper-tree class="sc-paper-tree" data='{{item}}' is-wide="[[wideScreen]]"></paper-tree>
+            <template is="dom-repeat" items="[[navList]]">
+              <paper-tree class="sc-paper-tree" data='[[item]]' is-wide="[[wideScreen]]"></paper-tree>
             </template>
+
           </div>
         </div>
       </app-drawer>
