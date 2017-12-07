@@ -34,14 +34,14 @@
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
     "vaadin-combo-box": "^2.0.0-alpha4"
   },
-  "version": "1.0.4",
-  "_release": "1.0.4",
+  "version": "1.0.5",
+  "_release": "1.0.5",
   "_resolution": {
     "type": "version",
-    "tag": "v1.0.4",
-    "commit": "a6a96a866a7bc9e8e66415e9814806ec9002ac2e"
+    "tag": "v1.0.5",
+    "commit": "c587d5e12776e28e7c32bb6a182b228a2f115842"
   },
   "_source": "https://github.com/tur-nr/polymer-redux.git",
-  "_target": "^1.0.3",
+  "_target": "^1.0.4",
   "_originalSource": "tur-nr/polymer-redux"
 }

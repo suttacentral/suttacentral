@@ -19,7 +19,7 @@
       .date-separator {
         margin: 0.4em 0.3em .4em;
         font-size: 1.3em;
-        color: var(--sc-primary-text-color);
+        color: var(--sc-secondary-text-color);
         align-self: flex-end;
       }
 
@@ -35,6 +35,14 @@
         margin: 0 0.5em;
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-input-container-label-color: var(--sc-disabled-text-color);
+        --paper-input-container: {
+          @apply --sc-sans-font;
+        };
+        --paper-input-container-input: {
+          color: var(--sc-primary-text-color);
+        };
+        --paper-input-container-color: var(--sc-secondary-text-color);
+        padding-bottom: var(--sc-size-md);
       }
 
       #error {
@@ -60,13 +68,6 @@
         min-width: 20em;
       }
 
-      #error {
-        @apply --paper-font-caption;
-        @apply --paper-input-error;
-        min-height: 1em;
-        color: var(--paper-input-container-invalid-color, var(--sc-toast-error-color));
-      }
-
       /* hide input number selector */
       paper-input[type="number"] {
         --paper-input-container-input: {
@@ -88,12 +89,17 @@
       #cardNumber {
         margin-left: 0;
       }
+
+      #error {
+        display: none;
+      }
+
     </style>
 
     <iron-form id="form">
       <form>
         <div class="horizontal wrap">
-          <paper-input class="data-input large" id="cardNumber" type="tel" allowed-pattern="[0-9 ]"
+          <paper-input class="data-input large" id="cardNumber" type="tel" allowed-pattern="[0-9 ]" maxlength="19"
                        name="number" label="Card number" auto-validate required on-value-changed="_maskCard">
             <iron-icon icon="icons:credit-card" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>

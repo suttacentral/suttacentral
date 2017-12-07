@@ -11,7 +11,7 @@ from common.arangodb import get_db
 from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST, \
     IMAGES
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
-    sort_parallels_type_key
+    sort_parallels_type_key, groupby_unsorted
 
 
 class Languages(Resource):
@@ -75,56 +75,75 @@ class Menu(Resource):
                         type: array
                         items:
                             type: MenuItem
+                    depth:
+                        type: number
         """
         db = get_db()
-        results = db.aql.execute(MENU)
+        divisions = db.aql.execute(MENU)
 
-        data = []
-        root_uids = []
-        edges = {}
+        data = self.groupby_parents(divisions, ['pitaka'])
 
-        for x in results:
-            if isinstance(x['from'], dict):
-                uid = x['from']['uid']
-
-                if uid not in root_uids:
-                    vertex = self._vertex(x['from']['name'], uid, x['num'])
-                    data.append(vertex)
-                    root_uids.append(uid)
-                    edges[uid] = vertex
-
-                x['from'] = x['from']['uid']
-
-            _from = x['from']
-            _id = x['id']
-            name = x['name']
-
-            vertex = self._vertex(name, _id, x['num'])
-
-            try:
-                edges[_from]['children'].add(vertex)
-            except AttributeError:
-                edges[_from]['children'].append(vertex)
-            except KeyError:
-                if vertex['uid'].startswith('root'):
-                    edges[_from]['children'] = SortedListWithKey([vertex], key=lambda z: z['num'])
-                else:
-                    edges[_from]['children'] = [vertex]
-
-            edges[_id] = vertex
-
-        for edge in edges:
-            if 'children' in edges[edge]:
-                edges[edge]['children'] = list(edges[edge]['children'])
-
+        for pitaka in data:
+            children = pitaka.pop('children')
+            uid = pitaka['uid']
+            if uid == 'pitaka/su':
+                pitaka['children'] = self.groupby_parents(children, ['grouping'])
+            else:
+                pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
+        
+        self.recursive_cleanup(data, depth=0, mapping={})
+        
         return data, 200
-
+        
     @staticmethod
-    def _vertex(name, uid, num) -> dict:
-        return {'name': name,
-                'uid': uid,
-                'num': num}
-
+    def num_sort_key(entry):
+        return entry.get('num') or -1
+        
+    @staticmethod
+    def groupby_parent_property(entries, prop):
+        return ( (json.loads(key), list(group)) 
+                 for key, group 
+                 in groupby_unsorted(entries, lambda d: json.dumps(d['parents'].get(prop), sort_keys=True))
+                )
+    
+    def groupby_parents(self, entries, props):
+        out = []
+        prop = props[0]
+        remaining_props = props[1:]
+        for parent, children in self.groupby_parent_property(entries, prop):
+            if parent is None:
+                # This intentially looks as bad as possible in the menu
+                # it's a "hey classify me!"
+                parent = {
+                    'uid': f'{prop}/none',
+                    'name': f'None {prop}',
+                    'num': 84000
+                }
+            out.append(parent)
+            if remaining_props:
+                parent['children'] = self.groupby_parents(children, remaining_props)
+            else:
+                parent['children'] = children
+        return sorted(out, key=self.num_sort_key)
+    
+    def recursive_cleanup(self, menu_entries, depth, mapping):
+        menu_entries.sort(key=self.num_sort_key)
+        for menu_entry in menu_entries:
+            menu_entry['depth'] = depth + 1
+            mapping[menu_entry['uid']] = menu_entry
+            if 'descendents' in menu_entry:
+                descendents = menu_entry.pop('descendents')
+                mapping.update({d['uid']: d for d in descendents})
+                for descendent in descendents:
+                    parent = mapping[descendent.pop('from')]
+                    if not 'children' in parent:
+                        parent['children'] = []
+                    parent['children'].append(descendent)
+            if 'parents' in menu_entry:
+                del menu_entry['parents']
+            if 'children' in menu_entry:
+                children = menu_entry['children'] 
+                self.recursive_cleanup(children, depth=depth+1, mapping=mapping)
 
 class SuttaplexList(Resource):
     def get(self, uid):

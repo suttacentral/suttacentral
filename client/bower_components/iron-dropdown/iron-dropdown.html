@@ -277,14 +277,20 @@ method is called on the element.
          * @private
          */
         _saveScrollPosition: function() {
-          if (document.scrollingElement) {
-            this._scrollTop = document.scrollingElement.scrollTop;
-            this._scrollLeft = document.scrollingElement.scrollLeft;
-          } else {
+          requestAnimationFrame(() => {
+            if (document.scrollingElement) {
+              requestAnimationFrame(() => {
+                  this._scrollTop = document.scrollingElement.scrollTop;
+                  this._scrollLeft = document.scrollingElement.scrollLeft;
+              });
+            } else {
             // Since we don't know if is the body or html, get max.
-            this._scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
-            this._scrollLeft = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
-          }
+              requestAnimationFrame(() => {
+                this._scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+                this._scrollLeft = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
+              });
+            }
+          });
         },
 
         /**

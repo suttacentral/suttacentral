@@ -67,6 +67,7 @@
 
       .toast {
         @apply --sc-skolar-font-size-xl;
+        @apply --sc-sans-font;
         --paper-toast-color: var(--sc-tertiary-text-color);
         text-align: center;
         margin-left: calc(50vw - 150px);
@@ -92,14 +93,14 @@
     <div class="division-content main">
 
       <div class="loading-indicator">
-        <paper-spinner-lite class="loading-spinner" active="{{loadingResults}}"></paper-spinner-lite>
+        <paper-spinner-lite class="loading-spinner" active="[[loadingResults]]"></paper-spinner-lite>
       </div>
 
-      <iron-list class="suttaplex-list" items="{{responseData}}" as="item" scroll-target="document">
+      <iron-list id="suttaplex_list" class="suttaplex-list" items="{{responseData}}" as="item" scroll-target="document">
         <template>
           <div>
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
-              <sc-suttaplex item="[[item]]"></sc-suttaplex>
+              <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]"></sc-suttaplex>
             </template>
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
@@ -135,10 +136,10 @@
                       observer: '_categoryChanged'
                   },
                   item: {
-                    type: Object
+                      type: Object
                   },
                   toastMessage: {
-                    type: String
+                      type: String
                   }
               }
           }
@@ -155,16 +156,20 @@
           }
 
           ready() {
-            super.ready();
-            this.addEventListener('par-menu-copied', (e) => {
-              this.toastMessage = e.detail.message;
-              const success = e.detail.success;
-              if (success) {
-                this.$.success_toast.open();
-              } else {
-                this.$.error_toast.open();
-              }
-            })
+              super.ready();
+              this.addEventListener('par-menu-copied', (e) => {
+                  this.toastMessage = e.detail.message;
+                  const success = e.detail.success;
+                  if (success) {
+                      this.$.success_toast.open();
+                  } else {
+                      this.$.error_toast.open();
+                  }
+              });
+              this.addEventListener('parallels-opened', (e) => {
+                 console.log('opened parallel');
+                 console.dir(e);
+              });
           }
 
           _categoryChanged() {
@@ -188,6 +193,11 @@
 
           _calculateClass(itemType) {
               return itemType === 'grouping' ? 'node' : 'vagga-node';
+          }
+
+          // Close parallels when navigating to new page
+          _areParallelsOpen(item) {
+              return false;
           }
       }
 
