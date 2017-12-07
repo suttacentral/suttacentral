@@ -34,7 +34,6 @@
     "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
     "paper-button": "PolymerElements/paper-button#^2.0.0",
     "paper-card": "PolymerElements/paper-card#^2.0.0",
-    "paper-badge": "PolymerElements/paper-badge#^2.0.0",
     "paper-input": "PolymerElements/paper-input#^2.0.1",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
     "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",

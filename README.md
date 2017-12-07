@@ -335,9 +335,6 @@ If a card in the list is opened, this info is fired back to the `sc-view-suttapl
 Other elements should be self-explanatory. Just some issues that need to be fixed:
 
 ### menus/sc-toolbar.html
-Issues:
-  - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows the number 20 but it should show the correct search results instead.
-  - The paper badge has the annoying habbit of occasionally disappearing for no apparent reason. It seems that it calculates the position too far to the right so as to go off the screen. `this.$$('paper-badge').updatePosition();` does not seem to work to rectify this. It seems to also show this behavior here: https://github.com/PolymerElements/paper-badge/pull/12 and briefly show in the correct position but then disappear to the right.
 
 ### menus/settings-menu.html and addons/sc-dictionary-lookup.html
 Issues: 
