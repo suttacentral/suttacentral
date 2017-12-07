@@ -1,0 +1,13 @@
+{
+  "env": {
+    "es6": true,
+    "mocha": true
+  },
+  "globals": {
+    "fixture": true,
+    "flush": true,
+    "expect": true,
+    "sinon": true,
+    "WCT": true
+  }
+}

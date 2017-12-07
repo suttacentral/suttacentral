@@ -1,0 +1,42 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-icons/d2l-icons.html">
+<link rel="import" href="d2l-menu-item-selectable-styles.html">
+<link rel="import" href="d2l-menu-item-selectable-behavior.html">
+
+<dom-module id="d2l-menu-item-checkbox">
+	<template>
+		<style include="d2l-menu-item-selectable-styles"></style>
+		<d2l-icon icon="d2l-tier1:check" aria-hidden="true"></d2l-icon>
+		<span>[[text]]</span>
+	</template>
+	<script>
+		'use strict';
+		Polymer({
+			is: 'd2l-menu-item-checkbox',
+
+			behaviors: [
+				window.D2L.PolymerBehaviors.MenuItemSelectableBehavior
+			],
+
+			hostAttributes: {
+				'role': 'menuitemcheckbox'
+			},
+
+			attached: function() {
+				Polymer.RenderStatus.afterNextRender(this, function() {
+					this.listen(this, 'd2l-menu-item-select', '_onSelect');
+				}.bind(this));
+			},
+
+			detached: function() {
+				this.unlisten(this, 'd2l-menu-item-select', '_onSelect');
+			},
+
+			_onSelect: function(e) {
+				this.set('selected', !this.selected);
+				this.__onSelect(e);
+			}
+
+		});
+	</script>
+</dom-module>

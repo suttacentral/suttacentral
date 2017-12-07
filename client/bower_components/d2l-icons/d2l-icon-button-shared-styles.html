@@ -1,0 +1,67 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-offscreen/d2l-offscreen-shared-styles.html">
+<link rel="import" href="../d2l-colors/d2l-colors.html">
+
+<dom-module id="d2l-icon-button-shared-styles">
+	<template>
+		<style include="d2l-offscreen-shared-styles">
+			:host {
+				--d2l-icon-button: {
+					background-color: transparent;
+					border: none;
+					cursor: pointer;
+					display: inline-block;
+					font-family: inherit;
+					font-size: inherit;
+					line-height: 0;
+					margin: 0;
+					padding: 0;
+					text-decoration: none;
+				};
+				--d2l-icon-button-hover: {
+					outline-style: none;
+				};
+				--d2l-icon-button-icon: {
+					transition: color 0.3s ease;
+				};
+				--d2l-icon-button-icon-hover: {
+					color: var(--d2l-color-celestine-minus-1);
+				};
+			}
+
+			.d2l-icon-button::-moz-focus-inner {
+				border: 0;
+			}
+			.d2l-icon-button {
+				@apply(--d2l-icon-button);
+			}
+			.d2l-icon-button:disabled {
+				opacity: 0.5;
+			}
+			.d2l-icon-button:hover,
+			.d2l-icon-button:focus {
+				@apply(--d2l-icon-button-hover);
+			}
+			.d2l-icon-button > d2l-icon {
+				@apply(--d2l-icon-button-icon);
+			}
+			.d2l-icon-button:hover > d2l-icon,
+			.d2l-icon-button:focus > d2l-icon {
+				@apply(--d2l-icon-button-icon-hover);
+			}
+
+			.d2l-icon-button > span {
+				@apply(--d2l-offscreen);
+			}
+
+			/* Rules must be separate because some browsers will ignore
+			   the whole block if one selector is invalid */
+			:host-context([dir="rtl"]) .d2l-icon-button > span {
+				@apply(--d2l-offscreen-rtl);
+			}
+			:host(:dir(rtl)) .d2l-icon-button > span {
+				@apply(--d2l-offscreen-rtl);
+			}
+		</style>
+	</template>
+</dom-module>

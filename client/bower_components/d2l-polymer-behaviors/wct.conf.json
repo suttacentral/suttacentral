@@ -1,0 +1,51 @@
+{
+	"plugins": {
+		"local": {
+			"browsers": ["chrome"]
+		},
+		"sauce": {
+			"browsers": [
+				{
+					"browserName": "chrome",
+					"platform": "OS X 10.11",
+					"version": ""
+				},
+				{
+					"browserName": "chrome",
+					"platform": "Windows 10",
+					"version": ""
+				},
+				{
+					"browserName": "firefox",
+					"platform": "OS X 10.11",
+					"version": ""
+				},
+				{
+					"browserName": "firefox",
+					"platform": "Windows 10",
+					"version": ""
+				},
+				{
+					"browserName": "safari",
+					"platform": "OS X 10.11",
+					"version": "9.0"
+				},
+				{
+					"browserName": "microsoftedge",
+					"platform": "Windows 10",
+					"version": ""
+				},
+				{
+					"browserName": "internet explorer",
+					"platform": "Windows 10",
+					"version": "11"
+				},
+				{
+					"browserName": "internet explorer",
+					"platform": "Windows 8",
+					"version": "10"
+				}
+			]
+		}
+	}
+}

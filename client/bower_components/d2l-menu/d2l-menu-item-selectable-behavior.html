@@ -1,0 +1,42 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="d2l-menu-item-behavior.html">
+
+<script>
+'use strict';
+
+(function() {
+
+	/** @polymerBehavior */
+	var MenuItemSelectableBehavior = {
+
+		properties: {
+			selected: {
+				type: Boolean,
+				observer: '__onSelectedChanged',
+				reflectToAttribute: true
+			},
+			value: String
+		},
+
+		__onSelect: function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			this.fire('d2l-menu-item-change', {
+				value: this.value,
+				selected: this.selected
+			});
+		},
+
+		__onSelectedChanged: function(selected) {
+			selected ? this.setAttribute('aria-checked', true) : this.removeAttribute('aria-checked');
+		}
+
+	};
+
+	/** @polymerBehavior */
+	window.D2L.PolymerBehaviors.MenuItemSelectableBehavior = [
+		MenuItemSelectableBehavior,
+		window.D2L.PolymerBehaviors.MenuItemBehavior
+	];
+})();
+</script>

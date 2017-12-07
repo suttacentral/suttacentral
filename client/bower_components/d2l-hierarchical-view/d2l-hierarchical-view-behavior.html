@@ -1,0 +1,436 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-polymer-behaviors/d2l-dom.html">
+<link rel="import" href="../d2l-polymer-behaviors/d2l-dom-focus.html">
+
+<dom-module id="d2l-hierarchical-view-styles">
+	<template>
+		<style>
+
+			:host {
+				box-sizing: border-box;
+				display: inline-block;
+				position: relative;
+				left: 0;
+				overflow: hidden;
+				width: 100%;
+
+				--d2l-hierarchical-view-height-transition: height 300ms linear;
+
+				-webkit-transition: var(--d2l-hierarchical-view-height-transition);
+				transition: var(--d2l-hierarchical-view-height-transition);
+			}
+			:host([child-view]) {
+				display: none;
+				position: absolute;
+				top: 0;
+				left: 100%;
+			}
+			:host([shown]) {
+				display: inline-block;
+			}
+			.d2l-hierarchical-view-content.d2l-child-view-show {
+				-webkit-animation: show-child-view-animation forwards 300ms linear;
+				animation: show-child-view-animation 300ms forwards linear;
+			}
+			.d2l-hierarchical-view-content.d2l-child-view-hide {
+				-webkit-animation: hide-child-view-animation forwards 300ms linear;
+				animation: hide-child-view-animation 300ms forwards linear;
+			}
+
+			@keyframes show-child-view-animation {
+				0% { transform: translate(0,0); }
+				100% { transform: translate(-100%,0); }
+			}
+			@-webkit-keyframes show-child-view-animation {
+				0% { -webkit-transform: translate(0,0); }
+				100% { -webkit-transform: translate(-100%,0); }
+			}
+			@keyframes hide-child-view-animation {
+				0% { transform: translate(-100%,0); }
+				100% { transform: translate(0,0); }
+			}
+			@-webkit-keyframes hide-child-view-animation {
+				0% { -webkit-transform: translate(-100%,0); }
+				100% { -webkit-transform: translate(0,0); }
+			}
+
+		</style>
+	</template>
+</dom-module>
+<script>
+(function() {
+	'use strict';
+
+	/** @polymerBehavior */
+	var HierarchicalViewBehavior = {
+
+		properties: {
+			shown: {
+				type: Boolean,
+				reflectToAttribute: true
+			},
+			childView: {
+				type: Boolean,
+				reflectToAttribute: true
+			},
+			isAttached: {
+				type: Boolean
+			},
+			isHierarchicalView: {
+				type: Boolean,
+				readOnly: true,
+				value: true
+			}
+		},
+
+		__keyCodes: {
+			ESCAPE: 27
+		},
+
+		__nativeFocus: null,
+
+		listeners: {
+			'keydown': '__onKeyDown',
+			'd2l-hierarchical-view-hide-start': '__onHideStart',
+			'd2l-hierarchical-view-show-start': '__onShowStart',
+			'd2l-hierarchical-view-resize': '__onViewResize'
+		},
+
+		ready: function() {
+			this.__nativeFocus = document.createElement('div').focus;
+			this.__focusCapture = this.__focusCapture.bind(this);
+			this.__focusOutCapture = this.__focusOutCapture.bind(this);
+			this.__onWindowResize = this.__onWindowResize.bind(this);
+		},
+
+		attached: function() {
+
+			this.isAttached = true;
+
+			var parentView = D2L.Dom.findComposedAncestor(
+				Polymer.dom(this).parentNode,
+				function(node) { return node.isHierarchicalView; }
+			);
+
+			if (parentView) {
+				this.childView = true;
+			}
+
+			this.async(function() {
+				this.__autoSize(this);
+			}.bind(this));
+
+			Polymer.RenderStatus.afterNextRender(this, function() {
+				Polymer.dom(this).observeNodes(this.__observeNodes);
+
+				if (!this.childView) {
+					this.addEventListener('focus', this.__focusCapture, true);
+					this.addEventListener('focusout', this.__focusOutCapture, true);
+					window.addEventListener('resize', this.__onWindowResize);
+				}
+			}.bind(this));
+
+		},
+
+		detached: function() {
+
+			this.isAttached = false;
+
+			if (!this.childView) {
+				this.removeEventListener('focus', this.__focusCapture, true);
+				this.removeEventListener('focusout', this.__focusOutCapture, true);
+				window.removeEventListener('resize', this.__onWindowResize);
+			}
+		},
+
+		getActiveView: function() {
+			var rootView = this.getRootView();
+			var childViews = Polymer.dom(rootView).querySelectorAll('[child-view][shown]');
+			if (!childViews || childViews.length === 0) {
+				return rootView;
+			}
+			for (var i = 0; i < childViews.length; i++) {
+				var childView = childViews[i];
+				if (childView.isActive()) {
+					return childView;
+				}
+			}
+		},
+
+		getRootView: function() {
+			if (!this.childView) {
+				return this;
+			}
+			var rootView = D2L.Dom.findComposedAncestor(
+				Polymer.dom(this).parentNode,
+				function(node) {
+					return node.isHierarchicalView && !node.childView;
+				}
+			);
+			return rootView;
+		},
+
+		hide: function(data, sourceView) {
+			if (!sourceView) {
+				sourceView = this;
+			}
+			this.fire('d2l-hierarchical-view-hide-start', {
+				data: data,
+				isSource: sourceView === this,
+				sourceView: sourceView
+			});
+		},
+
+		isActive: function() {
+			var content = this.$$('.d2l-hierarchical-view-content');
+			if (this.childView && !this.shown) {
+				return false;
+			} else {
+				return !content.classList.contains('d2l-child-view-show');
+			}
+		},
+
+		resize: function() {
+			this.__fireViewResize();
+		},
+
+		show: function(data, sourceView) {
+
+			var _show = function(data, view) {
+				view.shown = true;
+				view.fire('d2l-hierarchical-view-show-start', {
+					isSource: sourceView === this,
+					data: data,
+					sourceView: sourceView
+				});
+			}.bind(this);
+
+			var _hideChildViews = function(data, view) {
+				var childViews = Polymer.dom(view).querySelectorAll('[child-view][shown]');
+				for (var i = 0; i < childViews.length; i++) {
+					childViews[i].hide(data);
+				}
+				this.resize();
+			}.bind(this);
+
+			if (sourceView) {
+				_show(data, this);
+				return;
+			}
+
+			sourceView = this;
+			var activeView = this.getActiveView();
+
+			if (D2L.Dom.isComposedAncestor(activeView, this)) {
+				_show(data, this);
+				return;
+			}
+
+			if (D2L.Dom.isComposedAncestor(this, activeView)) {
+				_hideChildViews(data, this);
+				return;
+			}
+
+			_hideChildViews(data, this.getRootView());
+			_show(data, this);
+
+		},
+
+		__autoSize: function(view) {
+
+			if (this.childView) {
+				return;
+			}
+
+			requestAnimationFrame(function() {
+				if (view.offsetParent === null) {
+					return;
+				}
+				var rect;
+				if (view === this) {
+					rect = this.$$('.d2l-hierarchical-view-content').getBoundingClientRect();
+				} else {
+					rect = view.getBoundingClientRect();
+				}
+				this.style.height = rect.height + 'px';
+			}.bind(this));
+
+		},
+
+		__fireShowComplete: function(data) {
+			this.fire('d2l-hierarchical-view-show-complete', { activeView: this.getActiveView(), data: data });
+		},
+
+		__fireHideComplete: function(data) {
+			this.fire('d2l-hierarchical-view-hide-complete', { activeView: this.getActiveView(), data: data });
+		},
+
+		__fireViewResize: function() {
+			if (!this.isActive()) {
+				var view = this.getActiveView();
+				view.resize();
+				return;
+			}
+			var content = this.$$('.d2l-hierarchical-view-content');
+			this.fire('d2l-hierarchical-view-resize', content.getBoundingClientRect());
+		},
+
+		__focusCapture: function(e) {
+
+			var parentView = this.__getParentViewFromEvent(e);
+
+			if (parentView.isActive()) {
+				return;
+			}
+
+			var relatedTarget = e.relatedTarget;
+			var focusableElement;
+
+			var getNextFocusable = function() {
+				var activeView = this.getActiveView();
+				if (this.__nativeFocus === activeView.focus) {
+					return D2L.Dom.Focus.getNextFocusable(activeView);
+				} else {
+					return activeView;
+				}
+			}.bind(this);
+
+			if (relatedTarget) {
+				if (!D2L.Dom.isComposedAncestor(this, relatedTarget)) {
+					focusableElement = getNextFocusable();
+				} else {
+					focusableElement = D2L.Dom.Focus.getPreviousFocusable(this);
+				}
+			} else {
+
+				// handle focus for ie
+				if (this.__focusPrevious) {
+					this.__focusPrevious = false;
+					focusableElement = D2L.Dom.Focus.getPreviousFocusable(this);
+				} else {
+					focusableElement = getNextFocusable();
+				}
+
+			}
+
+			if (focusableElement) {
+				focusableElement.focus();
+			}
+
+		},
+
+		__focusPrevious: false,
+
+		__focusOutCapture: function(e) {
+
+			// focus tracking required since ie only supports relatedTarget on focusin/focusout
+			var relatedTarget = e.relatedTarget;
+			var activeView = this.getActiveView();
+			this.__focusPrevious = false;
+			if (D2L.Dom.isComposedAncestor(activeView, e.target)) {
+				if (D2L.Dom.isComposedAncestor(this, relatedTarget)) {
+					this.__focusPrevious = true;
+				}
+			}
+
+		},
+
+		__getParentViewFromEvent: function(e) {
+			var path = Polymer.dom(e).path;
+			for (var i = 1; i < path.length; i++) {
+				if (path[i].isHierarchicalView) {
+					return path[i];
+				}
+			}
+		},
+
+		__observeNodes: function() {
+			if (this.isAttached && this.getActiveView() === this) {
+				this.__fireViewResize();
+			}
+		},
+
+		__onHideStart: function(e) {
+
+			var rootTarget = Polymer.dom(e).rootTarget;
+			if (rootTarget === this || !rootTarget.isHierarchicalView) {
+				return;
+			}
+
+			var parentView = this.__getParentViewFromEvent(e);
+			if (parentView === this) {
+				var content = this.$$('.d2l-hierarchical-view-content');
+
+				var data = e.detail.data;
+				var animationEnd = function(e) {
+					content.removeEventListener('animationend', animationEnd);
+					Polymer.dom(e).rootTarget.classList.remove('d2l-child-view-hide');
+					rootTarget.shown = false;
+					rootTarget.__fireHideComplete(data);
+				}.bind(this);
+				content.addEventListener('animationend', animationEnd);
+
+				content.classList.add('d2l-child-view-hide');
+				content.classList.remove('d2l-child-view-show');
+
+				this.fire('d2l-hierarchical-view-resize', content.getBoundingClientRect());
+			}
+
+		},
+
+		__onKeyDown: function(e) {
+			if (this.childView && e.keyCode === this.__keyCodes.ESCAPE) {
+				e.stopPropagation();
+				this.hide();
+				return;
+			}
+		},
+
+		__onViewResize: function(e) {
+			this.style.height = e.detail.height + 'px';
+		},
+
+		__onShowStart: function(e) {
+
+			var rootTarget = Polymer.dom(e).rootTarget;
+			if (rootTarget === this || !rootTarget.isHierarchicalView) {
+				return;
+			}
+
+			if (this.childView && !this.shown) {
+				/* deep link scenario */
+				this.show(e.detail.data, e.detail.sourceView);
+			}
+			var content = this.$$('.d2l-hierarchical-view-content');
+
+			if (e.detail.isSource && this.__getParentViewFromEvent(e) === this) {
+				var animationEnd = function() {
+					content.removeEventListener('animationend', animationEnd);
+					e.detail.sourceView.__fireShowComplete(e.detail.data, e.detail);
+				}.bind(this);
+				content.addEventListener('animationend', animationEnd);
+			}
+
+			content.classList.add('d2l-child-view-show');
+
+			if (e.detail.isSource && this.__getParentViewFromEvent(e) === this) {
+				e.detail.sourceView.__fireViewResize();
+			}
+
+		},
+
+		__onWindowResize: function() {
+			var view = this.getActiveView();
+			if (view) {
+				view.__fireViewResize();
+			}
+		}
+
+	};
+
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+	/** @polymerBehavior */
+	window.D2L.PolymerBehaviors.HierarchicalViewBehavior = [HierarchicalViewBehavior];
+})();
+</script>

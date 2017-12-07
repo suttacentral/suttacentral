@@ -1,0 +1,100 @@
+<html>
+<head>
+	<title>D2L DOM Focus</title>
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script>
+		var shadow = (window.location.search.indexOf('dom=shadow') > -1);
+		if (shadow) {
+			window.Polymer = window.Polymer || {};
+			window.Polymer.dom = 'shadow';
+		}
+	</script>
+	<link rel="stylesheet" href="demo-styles.css">
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../d2l-dom-focus.html">
+	<link rel="import" href="dom-focus-demo.html">
+	<style>
+	</style>
+</head>
+<body unresolved>
+
+	<h1>d2l-dom-focus</h1>
+
+	<h2>focus order</h2>
+
+	<div style="width: 60%;">
+		<button onclick="logForwardOrder();">Log Forward Order</button>
+		<button onclick="logReverseOrder();">Log Reverse Order</button>
+	</div>
+
+	<h2>getNextFocusable</h2>
+
+	<div style="width: 60%;">
+		<button onclick="focusNext(document.querySelector('#light1'));">Next from Light 1</button>
+		<button onclick="focusNext(document.querySelector('#wc1'));">Next from WC</button>
+		<button onclick="focusNext(document.querySelector('#wc1').getShadow1());">Next from Shadow 1</button>
+		<button onclick="focusNext(document.querySelector('#light2'));">Next from Light 2</button>
+		<button onclick="focusNext(document.querySelector('#wc1').getShadow2());">Next from Shadow 2</button>
+	</div>
+
+	<h2>getPreviousFocusable</h2>
+
+	<div style="width: 60%;">
+		<button onclick="focusPrevious(document.querySelector('#light3'));">Previous from Light 3</button>
+		<button onclick="focusPrevious(document.querySelector('#wc1').getShadow2());">Previous from Shadow 2</button>
+		<button onclick="focusPrevious(document.querySelector('#light2'));">Previous from Light 2</button>
+		<button onclick="focusPrevious(document.querySelector('#wc1').getShadow1());">Previous from Shadow 1</button>
+		<button onclick="focusPrevious(document.querySelector('#wc1'));">Previous from WC</button>
+	</div>
+
+	<h2>Component</h2>
+
+	<div id="fixture" style="width: 60%;">
+
+		<a id="light1" href="http://www.nasa.gov/topics/technology/index.html">Technology Drives Exploration (L1)</a>
+		<d2l-dom-focus-demo id="wc1">
+			<a id="light2" href="http://www.nasa.gov/topics/solarsystem/index.html">Solar System and Beyond (L2)</a>
+		</d2l-dom-focus-demo>
+		<a id="light3" href="http://www.nasa.gov/topics/journeytomars/index.html">Journey to Mars (L3)</a>
+
+	</div>
+
+	<div id="endFixture"></div>
+
+	<script>
+
+		function focusNext(target) {
+			var focusable =	D2L.Dom.Focus.getNextFocusable(target);
+			console.log(focusable);
+			focusable.focus();
+		}
+
+		function focusPrevious(target) {
+			var focusable =	D2L.Dom.Focus.getPreviousFocusable(target);
+			console.log(focusable);
+			focusable.focus();
+		}
+
+		function logForwardOrder() {
+			var focusable = D2L.Dom.Focus.getNextFocusable(document.getElementById('fixture'));
+			var count = 0;
+			while (focusable) {
+				count += 1;
+				console.log(count, focusable);
+				focusable = D2L.Dom.Focus.getNextFocusable(focusable);
+			}
+		}
+
+		function logReverseOrder() {
+			var focusable = D2L.Dom.Focus.getPreviousFocusable(document.getElementById('endFixture'));
+			var count = 0;
+			while (focusable && focusable.tagName !== 'BUTTON') {
+				count += 1;
+				console.log(count, focusable);
+				focusable = D2L.Dom.Focus.getPreviousFocusable(focusable);
+			}
+		}
+
+	</script>
+</body>
+</html>

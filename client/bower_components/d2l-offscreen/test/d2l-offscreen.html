@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+		<title>d2l-offscreen test</title>
+
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+
+		<link rel="import" href="../d2l-offscreen.html">
+	</head>
+	<body>
+		<test-fixture id="basic">
+			<template>
+				<div>
+					<d2l-offscreen>Hidden</d2l-offscreen>
+					<d2l-offscreen>Hidden</d2l-offscreen>
+				</div>
+			</template>
+		</test-fixture>
+
+		<script>
+			suite('d2l-offscreen', function() {
+				setup(function() {
+					this.fixture = fixture('basic');
+					this.element = this.fixture.querySelector('d2l-offscreen');
+				});
+
+				test('instantiating the element works', function() {
+					expect(this.element.is).to.equal('d2l-offscreen');
+				});
+			});
+		</script>
+	</body>
+</html>

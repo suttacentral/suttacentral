@@ -1,0 +1,25 @@
+<script>
+(function() {
+	'use strict';
+
+	/** @polymerBehavior */
+	var IconButtonBehavior = {
+
+		attached: function() {
+			this._observer = Polymer.dom(this).observeNodes(function() {
+				this.title = Polymer.dom(this).textContent.trim();
+			}.bind(this));
+		},
+
+		detached: function() {
+			Polymer.dom(this).unobserveNodes(this._observer);
+		}
+
+	};
+
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+	/** @polymerBehavior */
+	window.D2L.PolymerBehaviors.IconButtonBehavior = [IconButtonBehavior];
+})();
+</script>

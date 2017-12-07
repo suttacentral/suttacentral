@@ -1,0 +1,9 @@
+{
+    "sources": [
+        "*.html"
+    ],
+    "lint": {
+      "rules": ["polymer-2-hybrid"],
+      "ignoreWarnings": []
+    }
+}

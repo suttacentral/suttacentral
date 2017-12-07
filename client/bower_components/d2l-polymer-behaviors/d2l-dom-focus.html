@@ -1,0 +1,271 @@
+<link rel="import" href="d2l-dom.html">
+<link rel="import" href="d2l-dom-visibility.html">
+<script>
+(function() {
+	'use strict';
+
+	var Focus = {
+
+		_focusableElements: {
+			a: true,
+			body: true,
+			button: true,
+			frame: true,
+			iframe: true,
+			img: true,
+			input: true,
+			isindex: true,
+			object: true,
+			select: true,
+			textarea: true
+		},
+
+		getFirstFocusableDescendant: function(node, includeHidden) {
+
+			var composedChildren = D2L.Dom.getComposedChildren(node);
+
+			for (var i = 0; i < composedChildren.length; i++) {
+
+				if (this.isFocusable(composedChildren[i], includeHidden)) {
+					return composedChildren[i];
+				}
+
+				var focusable = this.getFirstFocusableDescendant(composedChildren[i], includeHidden);
+				if (focusable) {
+					return focusable;
+				}
+
+			}
+
+			return null;
+
+		},
+
+		getLastFocusableDescendant: function(node, includeHidden) {
+
+			var composedChildren = D2L.Dom.getComposedChildren(node);
+
+			for (var i = composedChildren.length - 1; i >= 0; i--) {
+
+				var focusable = this.getLastFocusableDescendant(composedChildren[i], includeHidden);
+				if (focusable) {
+					return focusable;
+				}
+
+				if (this.isFocusable(composedChildren[i], includeHidden)) {
+					return composedChildren[i];
+				}
+
+			}
+
+			return null;
+
+		},
+
+		getPreviousFocusable: function(node, includeHidden) {
+
+			if (!node) {
+				return null;
+			}
+
+			if (includeHidden === undefined) {
+				includeHidden = false;
+			}
+
+			var _getPreviousAncestorSibling = function(node) {
+
+				var parentNode = D2L.Dom.getComposedParent(node);
+				while (parentNode) {
+
+					var previousParentSibling = parentNode.previousElementSibling;
+					if (previousParentSibling) {
+						return previousParentSibling;
+					}
+
+					parentNode = D2L.Dom.getComposedParent(parentNode);
+				}
+
+				return null;
+
+			};
+
+			var _getPreviousFocusable = function(node, ignore, ignoreChildren) {
+
+				if (!ignore && this.isFocusable(node, includeHidden)) {
+					return node;
+				}
+
+				if (!ignoreChildren) {
+					var focusable = this.getLastFocusableDescendant(node, includeHidden);
+					if (focusable) {
+						return focusable;
+					}
+				}
+
+				var previousSibling = node.previousElementSibling;
+				if (previousSibling) {
+					var siblingFocusable = _getPreviousFocusable(previousSibling, false, false);
+					if (siblingFocusable) {
+						return siblingFocusable;
+					}
+
+					return null;
+				}
+
+				var previousAncestorSibling = _getPreviousAncestorSibling(node);
+				if (previousAncestorSibling) {
+					var parentSibingFocusable = _getPreviousFocusable(previousAncestorSibling, false, false);
+					if (parentSibingFocusable) {
+						return parentSibingFocusable;
+					}
+				}
+
+				return null;
+
+			}.bind(this);
+
+			var focusable = _getPreviousFocusable(node, true, true);
+			return focusable;
+
+		},
+
+		getNextFocusable: function(node, includeHidden) {
+
+			if (!node) {
+				return null;
+			}
+
+			if (includeHidden === undefined) {
+				includeHidden = false;
+			}
+
+			var _getNextAncestorSibling = function(node) {
+
+				var parentNode = D2L.Dom.getComposedParent(node);
+				while (parentNode) {
+
+					var nextParentSibling = parentNode.nextElementSibling;
+					if (nextParentSibling) {
+						return nextParentSibling;
+					}
+
+					parentNode = D2L.Dom.getComposedParent(parentNode);
+				}
+				return null;
+
+			};
+
+			var _getNextFocusable = function(node, ignore, ignoreChildren) {
+
+				if (!ignore && this.isFocusable(node, includeHidden)) {
+					return node;
+				}
+
+				if (!ignoreChildren) {
+					var focusable = this.getFirstFocusableDescendant(node, includeHidden);
+					if (focusable) {
+						return focusable;
+					}
+				}
+
+				var nextSibling = node.nextElementSibling;
+				if (nextSibling) {
+					var siblingFocusable = _getNextFocusable(nextSibling, false, false);
+					if (siblingFocusable) {
+						return siblingFocusable;
+					}
+
+					return null;
+				}
+
+				var nextParentSibling = _getNextAncestorSibling(node);
+				if (nextParentSibling) {
+					var parentSibingFocusable = _getNextFocusable(nextParentSibling, false, false);
+					if (parentSibingFocusable) {
+						return parentSibingFocusable;
+					}
+				}
+
+				return null;
+
+			}.bind(this);
+
+			var focusable = _getNextFocusable(node, true, false);
+			return focusable;
+
+		},
+
+		getPreviousFocusableAncestor: function(node, includeHidden, includeTabbablesOnly) {
+
+			if (!node) {
+				return null;
+			}
+
+			if (includeHidden === undefined) {
+				includeHidden = false;
+			}
+
+			if (includeTabbablesOnly === undefined) {
+				includeTabbablesOnly = true;
+			}
+
+			var parentNode = D2L.Dom.getComposedParent(node);
+
+			while (parentNode) {
+
+				if (this.isFocusable(parentNode, includeHidden, includeTabbablesOnly)) {
+					return parentNode;
+				}
+
+				parentNode = D2L.Dom.getComposedParent(parentNode);
+			}
+
+			return null;
+
+		},
+
+		isFocusable: function(node, includeHidden, includeTabbablesOnly) {
+
+			if (!node || node.nodeType !== 1 || node.disabled) {
+				return false;
+			}
+
+			if (includeTabbablesOnly === undefined) {
+				includeTabbablesOnly = true;
+			}
+
+			var _isFocusable;
+			var _minTabIndex = includeTabbablesOnly ? 0 : -1;
+
+			// IE treats all nodes without tabindex explicitly set as having tabindex=0
+			if (node.getAttributeNode) {
+				var tabIndexAttr = node.getAttributeNode('tabindex');
+				if (tabIndexAttr && tabIndexAttr.specified) {
+					_isFocusable = (tabIndexAttr.value >= _minTabIndex);
+				}
+			}
+
+			if (_isFocusable === undefined) {
+				var nodeName = node.nodeName.toLowerCase();
+				_isFocusable = this._focusableElements[nodeName];
+			}
+
+			if (_isFocusable && !includeHidden) {
+				// only perform visibility check if absolutely necessary
+				if (!D2L.Dom.Visibility.isVisible(node)) {
+					return false;
+				}
+			}
+
+			return _isFocusable;
+
+		}
+
+	};
+
+	window.D2L = window.D2L || {};
+	window.D2L.Dom = window.D2L.Dom || {};
+	window.D2L.Dom.Focus = Focus;
+
+})();
+</script>

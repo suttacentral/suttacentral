@@ -1,0 +1,17 @@
+@mixin d2l-offscreen() {
+
+	$offset: -10000px;
+
+	position: absolute !important;
+	left: $offset;
+	overflow: hidden;
+	width: 1px;
+	height: 1px;
+	white-space: nowrap;
+
+	[dir="rtl"] & {
+		left: auto;
+		right: $offset;
+	}
+
+}

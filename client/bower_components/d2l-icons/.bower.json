@@ -1,0 +1,66 @@
+{
+  "name": "d2l-icons",
+  "description": "SVGs, Polymer web components, iron-iconset collections and SASS mixins for D2L icons",
+  "main": [
+    "d2l-icons.html",
+    "icons.scss"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "d2l",
+    "ui",
+    "icons",
+    "scss",
+    "sass",
+    "mixins",
+    "polymer",
+    "iconset"
+  ],
+  "ignore": [
+    "cli",
+    "demo",
+    ".csslintrc",
+    ".editorconfig",
+    ".gitattributes",
+    ".gitignore",
+    ".travis.yml",
+    "package.json"
+  ],
+  "dependencies": {
+    "d2l-colors": "^2.4.0 || ^3.1.0",
+    "d2l-offscreen": "^2.2.4 || ^3.0.1",
+    "iron-iconset-svg": "polymerelements/iron-iconset-svg#1 - 2",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "d2l-demo-template": "^0.0.12 || ^1.0.2",
+    "iron-test-helpers": "PolymerElements/iron-test-helpers#1 - 2",
+    "web-component-tester": "^6.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "d2l-colors": "^2.4.0",
+        "d2l-offscreen": "^2.2.4",
+        "iron-iconset-svg": "polymerelements/iron-iconset-svg#^1.0.0",
+        "polymer": "Polymer/polymer#^1.9.1"
+      },
+      "devDependencies": {
+        "d2l-demo-template": "^0.0.12",
+        "iron-test-helpers": "PolymerElements/iron-test-helpers#1.4.1",
+        "web-component-tester": "^5.0.0"
+      }
+    }
+  },
+  "homepage": "https://github.com/BrightspaceUI/icons",
+  "version": "4.5.0",
+  "_release": "4.5.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v4.5.0",
+    "commit": "e14b08720a87f32f4dcf6c5ffa52555d54e0586d"
+  },
+  "_source": "https://github.com/BrightspaceUI/icons.git",
+  "_target": "^3.6.0 || ^4.4.0",
+  "_originalSource": "d2l-icons"
+}

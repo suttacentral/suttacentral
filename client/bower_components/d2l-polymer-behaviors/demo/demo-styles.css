@@ -1,0 +1,13 @@
+@import 'https://fonts.googleapis.com/css?family=Lato:400,300';
+html {
+	color: #565a5c;
+	font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+	font-weight: 300;
+	font-size: 20px;
+}
+body {
+	margin: 40px 20px;
+}
+button {
+	font-size: 0.7rem;
+}

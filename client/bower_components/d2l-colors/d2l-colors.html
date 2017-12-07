@@ -1,0 +1,125 @@
+<link rel="import" href="../polymer/polymer.html">
+<custom-style>
+	<style is="custom-style">
+		html {
+			/* basic grays (lightest to darkest) */
+			--d2l-color-regolith: #f9fafb;
+			--d2l-color-sylvite: #f2f3f5;
+			--d2l-color-gypsum: #e6eaf0;
+			--d2l-color-mica: #d3d9e3;
+			--d2l-color-corundum: #b9c2d0;
+			--d2l-color-galena: #7c8695;
+			--d2l-color-tungsten: #72777a;
+			--d2l-color-ferrite: #565a5c;
+
+			/* zircon */
+			--d2l-color-zircon-plus-2: #bbf1fa;
+			--d2l-color-zircon-plus-1: #00bddd;
+			--d2l-color-zircon: #00849c;
+			--d2l-color-zircon-minus-1: #005b6b;
+
+			/* celestine */
+			--d2l-color-celestine-plus-2: #e8f2f9;
+			--d2l-color-celestine-plus-1: #29a6ff;
+			--d2l-color-celestine: #006fbf;
+			--d2l-color-celestine-minus-1: #005694;
+
+			/* amethyst */
+			--d2l-color-amethyst-plus-2: #e9e6ff;
+			--d2l-color-amethyst-plus-1: #afa1ff;
+			--d2l-color-amethyst: #7862f0;
+			--d2l-color-amethyst-minus-1: #4c3f99;
+
+			/* fluorite */
+			--d2l-color-fluorite-plus-2: #f6e1fa;
+			--d2l-color-fluorite-plus-1: #ea82ff;
+			--d2l-color-fluorite: #b24ac7;
+			--d2l-color-fluorite-minus-1: #7e358c;
+
+			/* tourmaline */
+			--d2l-color-tourmaline-plus-2: #fae1ed;
+			--d2l-color-tourmaline-plus-1: #ff389b;
+			--d2l-color-tourmaline: #bf2a75;
+			--d2l-color-tourmaline-minus-1: #96215c;
+
+			/* cinnabar */
+			--d2l-color-cinnabar-plus-2: #fae1e2;
+			--d2l-color-cinnabar-plus-1: #ff6b70;
+			--d2l-color-cinnabar: #cd2026;
+			--d2l-color-cinnabar-minus-1: #a1191d;
+
+			/* carnelian */
+			--d2l-color-carnelian-plus-1: #fae3cf;
+			--d2l-color-carnelian: #e87511;
+			--d2l-color-carnelian-minus-1: #a6540d;
+			--d2l-color-carnelian-minus-2: #804008;
+
+			/* citrine */
+			--d2l-color-citrine-plus-1: #fae5c8;
+			--d2l-color-citrine: #ffba59;
+			--d2l-color-citrine-minus-1: #a87b3b;
+			--d2l-color-citrine-minus-2: #694b25;
+
+			/* topaz */
+			--d2l-color-topaz-plus-1: #fffbb2;
+			--d2l-color-topaz: #f5ec5a;
+			--d2l-color-topaz-minus-1: #a69f21;
+			--d2l-color-topaz-minus-2: #635f15;
+
+			/* peridot */
+			--d2l-color-peridot-plus-1: #cdf2b1;
+			--d2l-color-peridot: #8ccd5a;
+			--d2l-color-peridot-minus-1: #59823a;
+			--d2l-color-peridot-minus-2: #3d5926;
+
+			/* olivine */
+			--d2l-color-olivine-plus-1: #a5fabd;
+			--d2l-color-olivine: #46a661;
+			--d2l-color-olivine-minus-1: #327846;
+			--d2l-color-olivine-minus-2: #275c36;
+
+			/* malachite */
+			--d2l-color-malachite-plus-1: #a1f7f4;
+			--d2l-color-malachite: #00afaa;
+			--d2l-color-malachite-minus-1: #017d79;
+			--d2l-color-malachite-minus-2: #005e5b;
+
+			/* primary accent */
+			--d2l-color-primary-accent-action: var(--d2l-color-celestine);
+			--d2l-color-primary-accent-indicator: var(--d2l-color-carnelian);
+
+			/* feedback */
+			--d2l-color-feedback-error: var(--d2l-color-cinnabar);
+			--d2l-color-feedback-warning: var(--d2l-color-citrine);
+			--d2l-color-feedback-success: var(--d2l-color-olivine);
+			--d2l-color-feedback-action: var(--d2l-color-celestine-plus-1);
+
+			/* deprecated */
+			--d2l-color-white: #fff;
+			--d2l-color-woolonardo: var(--d2l-color-sylvite);
+			--d2l-color-titanius: var(--d2l-color-mica);
+			--d2l-color-pressicus: var(--d2l-color-corundum);
+			--d2l-color-violettine: var(--d2l-color-amethyst-minus-1);
+			--d2l-color-panthera: var(--d2l-color-tourmaline-plus-1);
+			--d2l-color-koolaudica: var(--d2l-color-peridot);
+			--d2l-color-deephonica: var(--d2l-color-malachite);
+			--d2l-color-lurite: var(--d2l-color-topaz);
+			--d2l-color-buttonic: linear-gradient(to bottom, var(--d2l-color-regolith) 0%, var(--d2l-color-gypsum) 100%);
+			--d2l-color-meglor: linear-gradient(to bottom, var(--d2l-color-corundum) 0%, var(--d2l-color-tungsten) 100%);
+			--d2l-color-trancition: linear-gradient(to bottom, #fff 0%, var(--d2l-color-regolith) 100%);
+			--d2l-color-trixon: linear-gradient(to bottom, var(--d2l-color-regolith) 0%, var(--d2l-color-sylvite) 100%);
+			--d2l-color-azurite: var(--d2l-color-zircon-plus-1);
+			--d2l-color-celestuba: var(--d2l-color-celestine-minus-1);
+			--d2l-color-gravah: var(--d2l-color-amethyst-minus-1);
+			--d2l-color-saphirella: var(--d2l-color-zircon-plus-1);
+			--d2l-color-chartronic: var(--d2l-color-topaz);
+			--d2l-color-celestine-light-1: var(--d2l-color-celestine-plus-2);
+			--d2l-color-celestine-light-2: var(--d2l-color-celestine-plus-1);
+			--d2l-color-olivine-light-1: var(--d2l-color-olivine-plus-1);
+			--d2l-color-olivine-light-2: var(--d2l-color-olivine);
+			--d2l-color-zircon-light-1: var(--d2l-color-zircon-plus-2);
+			--d2l-color-zircon-light-2: var(--d2l-color-zircon-plus-2);
+
+		}
+	</style>
+</custom-style>

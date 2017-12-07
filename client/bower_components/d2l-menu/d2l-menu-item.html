@@ -1,0 +1,57 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-icons/tier1-icons.html">
+<link rel="import" href="../d2l-icons/d2l-icon.html">
+<link rel="import" href="d2l-menu-item-styles.html">
+<link rel="import" href="d2l-menu-item-behavior.html">
+
+<dom-module id="d2l-menu-item">
+
+	<template>
+		<style include="d2l-menu-item-styles">
+
+			:host {
+				display: flex;
+				padding: 0.75rem 1rem;
+			}
+
+			:host > span {
+				flex: auto;
+				line-height: 1rem;
+				overflow-x: hidden;
+				overflow-y: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			:host > d2l-icon {
+				flex: none;
+				margin-top: 0.1rem;
+			}
+
+		</style>
+		<span>[[text]]</span>
+		<slot></slot>
+	</template>
+
+	<script>
+		Polymer({
+			is: 'd2l-menu-item',
+
+			behaviors: [
+				window.D2L.PolymerBehaviors.MenuItemBehavior
+			],
+
+			_initialize: function() {
+				if (this.hasChildView && !this.$$('d2l-icon')) {
+					var icon = document.createElement('d2l-icon');
+					Polymer.dom(icon).setAttribute('icon', 'd2l-tier1:chevron-right');
+					Polymer.dom(this.root).insertBefore(
+						icon, this.$$('slot')
+					);
+				}
+			}
+
+		});
+	</script>
+
+</dom-module>

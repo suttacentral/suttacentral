@@ -1,0 +1,82 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-icons/tier1-icons.html">
+<link rel="import" href="../d2l-icons/d2l-icon.html">
+<link rel="import" href="d2l-menu-item-styles.html">
+<link rel="import" href="d2l-menu-item-behavior.html">
+<link rel="import" href="d2l-menu-item-localize-behavior.html">
+
+<dom-module id="d2l-menu-item-return">
+
+	<template>
+		<style include="d2l-menu-item-styles">
+
+			:host {
+				display: flex;
+				padding: 0.75rem 1rem;
+			}
+
+			:host > span {
+				flex: auto;
+				line-height: 1rem;
+				overflow-x: hidden;
+				overflow-y: hidden;
+				text-decoration: none;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			:host > d2l-icon {
+				flex: none;
+				margin-right: 1rem;
+				margin-top: 0.1rem;
+			}
+
+			:host-context([dir="rtl"]) > d2l-icon {
+				margin-right: 0;
+				margin-left: 1rem;
+			}
+
+			/* Duplicated because some browsers ignore CSS block for any invalid selector */
+			:host(:dir(rtl)) > d2l-icon {
+				margin-right: 0;
+				margin-left: 1rem;
+			}
+
+		</style>
+		<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>
+		<span aria-hidden>[[text]]</span>
+		<slot></slot>
+	</template>
+
+	<script>
+		Polymer({
+			is: 'd2l-menu-item-return',
+
+			properties: {
+				'aria-label': {
+					type: String,
+					reflectToAttribute: true
+				},
+				text: {
+					type: String,
+					observer: '_textChanged'
+				}
+			},
+
+			ready: function() {
+				this['aria-label'] = this.localize('return');
+			},
+
+			_textChanged: function() {
+				this['aria-label'] = this.localize('returnCurrentlyShowing', 'menuTitle', this.text);
+			},
+
+			behaviors: [
+				window.D2L.PolymerBehaviors.MenuItemBehavior,
+				window.D2L.PolymerBehaviors.MenuItemLocalizeBehavior
+			]
+
+		});
+	</script>
+
+</dom-module>

@@ -1,0 +1,98 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="d2l-menu-item-styles.html">
+<link rel="import" href="d2l-menu-item-behavior.html">
+
+<dom-module id="d2l-menu-item-link">
+
+	<template>
+		<style include="d2l-menu-item-styles">
+
+			:host {
+				display: block;
+				padding: 0;
+			}
+
+			:host > a {
+				color: inherit;
+				display: block;
+				line-height: 1rem;
+				outline: none;
+				overflow-x: hidden;
+				padding: 0.75rem 1rem;
+				text-decoration: none;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+		</style>
+		<a href$="[[href]]" target$=[[target]] tabindex="-1">[[text]]</a>
+	</template>
+
+	<script>
+		Polymer({
+			is: 'd2l-menu-item-link',
+
+			behaviors: [
+				window.D2L.PolymerBehaviors.MenuItemBehavior
+			],
+
+			properties: {
+				href: String,
+				preventDefault: {
+					type: Boolean,
+					reflectToAttribute: true
+				},
+				target: String
+			},
+
+			attached: function() {
+				Polymer.RenderStatus.afterNextRender(this, function() {
+					this.listen(this, 'keydown', '_onKeyDown');
+					this.listen(this.$$('a'), 'click', '_onClick');
+				}.bind(this));
+			},
+
+			detached: function() {
+				this.unlisten(this, 'keydown', '_onKeyDown');
+				this.unlisten(this.$$('a'), 'click', '_onClick');
+			},
+
+			_getTarget: function() {
+				if (this.target && this.target !== '') {
+					return this.target;
+				}
+				var base = document.getElementsByTagName('base');
+				if (base && base.length > 0) {
+					base = base[0];
+					return base.getAttribute('target');
+				}
+				return null;
+			},
+
+			_onClick: function(e) {
+				if (this.preventDefault) {
+					e.preventDefault();
+				}
+			},
+
+			_onKeyDown: function(e) {
+				if (this.preventDefault) {
+					e.preventDefault();
+					return;
+				}
+				if (e.keyCode === this.__keyCodes.ENTER || e.keyCode === this.__keyCodes.SPACE) {
+					var target = this._getTarget();
+					if (target === '_parent') {
+						window.parent.location.assign(this.href);
+					} else if (target === '_top') {
+						window.top.location.assign(this.href);
+					} else {
+						window.location.assign(this.href);
+					}
+				}
+			}
+
+		});
+	</script>
+
+</dom-module>

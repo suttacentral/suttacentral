@@ -1,0 +1,24 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="d2l-hierarchical-view-behavior.html">
+
+<dom-module id="d2l-hierarchical-view">
+
+	<template>
+		<style include="d2l-hierarchical-view-styles"></style>
+		<div class="d2l-hierarchical-view-content">
+			<slot></slot>
+		</div>
+	</template>
+
+	<script>
+		Polymer({
+			is: 'd2l-hierarchical-view',
+
+			behaviors: [
+				window.D2L.PolymerBehaviors.HierarchicalViewBehavior
+			]
+
+		});
+	</script>
+
+</dom-module>

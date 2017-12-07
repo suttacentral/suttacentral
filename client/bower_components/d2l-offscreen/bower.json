@@ -1,0 +1,47 @@
+{
+  "name": "d2l-offscreen",
+  "description": "Polymer web component and Sass mixin for positioning elements offscreen",
+  "main": [
+    "d2l-offscreen.html",
+    "offscreen.scss"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "d2l",
+    "ui",
+    "offscreen",
+    "scss",
+    "sass",
+    "mixins",
+    "polymer",
+    "web component"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "d2l-demo-template": "0.0.12 - 1.0.1",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#1.9"
+      },
+      "devDependencies": {
+        "d2l-demo-template": "^0.0.12",
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  },
+  "ignore": [
+    ".editorconfig",
+    ".eslintrc",
+    ".gitignore",
+    ".travis.yml",
+    "package.json"
+  ]
+}

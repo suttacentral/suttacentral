@@ -1,0 +1,117 @@
+// basic grays (lightest to darkest)
+$d2l-color-regolith: #f9fafb !default;
+$d2l-color-sylvite: #f2f3f5 !default;
+$d2l-color-gypsum: #e6eaf0 !default;
+$d2l-color-mica: #d3d9e3 !default;
+$d2l-color-corundum: #b9c2d0 !default;
+$d2l-color-galena: #7c8695 !default;
+$d2l-color-tungsten: #72777a !default;
+$d2l-color-ferrite: #565a5c !default;
+
+// zircon
+$d2l-color-zircon-plus-2: #bbf1fa !default;
+$d2l-color-zircon-plus-1: #00bddd !default;
+$d2l-color-zircon: #00849c !default;
+$d2l-color-zircon-minus-1: #005b6b !default;
+
+// celestine
+$d2l-color-celestine-plus-2: #e8f2f9 !default;
+$d2l-color-celestine-plus-1: #29a6ff !default;
+$d2l-color-celestine: #006fbf !default;
+$d2l-color-celestine-minus-1: #005694 !default;
+
+// amethyst
+$d2l-color-amethyst-plus-2: #e9e6ff !default;
+$d2l-color-amethyst-plus-1: #afa1ff !default;
+$d2l-color-amethyst: #7862f0 !default;
+$d2l-color-amethyst-minus-1: #4c3f99 !default;
+
+// fluorite
+$d2l-color-fluorite-plus-2: #f6e1fa !default;
+$d2l-color-fluorite-plus-1: #ea82ff !default;
+$d2l-color-fluorite: #b24ac7 !default;
+$d2l-color-fluorite-minus-1: #7e358c !default;
+
+// tourmaline
+$d2l-color-tourmaline-plus-2: #fae1ed !default;
+$d2l-color-tourmaline-plus-1: #ff389b !default;
+$d2l-color-tourmaline: #bf2a75 !default;
+$d2l-color-tourmaline-minus-1: #96215c !default;
+
+// cinnabar
+$d2l-color-cinnabar-plus-2: #fae1e2 !default;
+$d2l-color-cinnabar-plus-1: #ff6b70 !default;
+$d2l-color-cinnabar: #cd2026 !default;
+$d2l-color-cinnabar-minus-1: #a1191d !default;
+
+// carnelian
+$d2l-color-carnelian-plus-1: #fae3cf !default;
+$d2l-color-carnelian: #e87511 !default;
+$d2l-color-carnelian-minus-1: #a6540d !default;
+$d2l-color-carnelian-minus-2: #804008 !default;
+
+// citrine
+$d2l-color-citrine-plus-1: #fae5c8 !default;
+$d2l-color-citrine: #ffba59 !default;
+$d2l-color-citrine-minus-1: #a87b3b !default;
+$d2l-color-citrine-minus-2: #694b25 !default;
+
+// topaz
+$d2l-color-topaz-plus-1: #fffbb2 !default;
+$d2l-color-topaz: #f5ec5a !default;
+$d2l-color-topaz-minus-1: #a69f21 !default;
+$d2l-color-topaz-minus-2: #635f15 !default;
+
+// peridot
+$d2l-color-peridot-plus-1: #cdf2b1 !default;
+$d2l-color-peridot: #8ccd5a !default;
+$d2l-color-peridot-minus-1: #59823a !default;
+$d2l-color-peridot-minus-2: #3d5926 !default;
+
+// olivine
+$d2l-color-olivine-plus-1: #a5fabd !default;
+$d2l-color-olivine: #46a661 !default;
+$d2l-color-olivine-minus-1: #327846 !default;
+$d2l-color-olivine-minus-2: #275c36 !default;
+
+// malachite
+$d2l-color-malachite-plus-1: #a1f7f4 !default;
+$d2l-color-malachite: #00afaa !default;
+$d2l-color-malachite-minus-1: #017d79 !default;
+$d2l-color-malachite-minus-2: #005e5b !default;
+
+// primary accent
+$d2l-color-primary-accent-action: $d2l-color-celestine !default;
+$d2l-color-primary-accent-indicator: $d2l-color-carnelian !default;
+
+// feedback
+$d2l-color-feedback-error: $d2l-color-cinnabar !default;
+$d2l-color-feedback-warning: $d2l-color-citrine !default;
+$d2l-color-feedback-success: $d2l-color-olivine !default;
+$d2l-color-feedback-action: $d2l-color-celestine-plus-1 !default;
+
+// deprecated
+$d2l-color-woolonardo: $d2l-color-sylvite !default;
+$d2l-color-titanius: $d2l-color-mica !default;
+$d2l-color-pressicus: $d2l-color-corundum !default;
+$d2l-color-white: #fff !default;
+$d2l-color-violettine: $d2l-color-amethyst-minus-1 !default;
+$d2l-color-panthera: $d2l-color-tourmaline-plus-1 !default;
+$d2l-color-koolaudica: $d2l-color-peridot !default;
+$d2l-color-deephonica: $d2l-color-malachite !default;
+$d2l-color-lurite: $d2l-color-topaz !default;
+$d2l-color-buttonic: linear-gradient(to bottom, $d2l-color-regolith 0%, $d2l-color-gypsum 100%) !default;
+$d2l-color-meglor: linear-gradient(to bottom, $d2l-color-corundum 0%, $d2l-color-tungsten 100%) !default;
+$d2l-color-trancition: linear-gradient(to bottom, #fff 0%, $d2l-color-regolith 100%) !default;
+$d2l-color-trixon: linear-gradient(to bottom, $d2l-color-regolith 0%, $d2l-color-sylvite 100%) !default;
+$d2l-color-azurite: $d2l-color-zircon-plus-1 !default;
+$d2l-color-celestuba: $d2l-color-celestine-minus-1 !default;
+$d2l-color-gravah: $d2l-color-amethyst-minus-1 !default;
+$d2l-color-saphirella: $d2l-color-zircon-plus-1 !default;
+$d2l-color-chartronic: $d2l-color-topaz !default;
+$d2l-color-celestine-light-1: $d2l-color-celestine-plus-2 !default;
+$d2l-color-celestine-light-2: $d2l-color-celestine-plus-1 !default;
+$d2l-color-olivine-light-1: $d2l-color-olivine-plus-1 !default;
+$d2l-color-olivine-light-2: $d2l-color-olivine !default;
+$d2l-color-zircon-light-1: $d2l-color-zircon-plus-2 !default;
+$d2l-color-zircon-light-2: $d2l-color-zircon-plus-2 !default;

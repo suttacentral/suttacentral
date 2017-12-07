@@ -1,0 +1,62 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="d2l-icon.html">
+<link rel="import" href="d2l-icon-button-shared-styles.html">
+<link rel="import" href="d2l-icon-button-behavior.html">
+
+<dom-module id="d2l-icon-link">
+	<template strip-whitespace>
+		<style include="d2l-icon-button-shared-styles">
+			:host {
+				display: inline-block;
+			}
+		</style>
+		<a class="d2l-icon-button"
+			title=[[title]]
+			download=[[download]]
+			href=[[href]]
+			hreflang=[[hreflang]]
+			rel=[[rel]]
+			target=[[target]]
+			type=[[type]]
+		>
+			<d2l-icon icon="[[icon]]"></d2l-icon>
+			<span><slot></slot></span>
+		</a>
+	</template>
+	<script>
+		Polymer({
+			is: 'd2l-icon-link',
+
+			behaviors: [window.D2L.PolymerBehaviors.IconButtonBehavior],
+
+			properties: {
+				icon: String,
+				download: {
+					type: String,
+					reflectToAttribute: true
+				},
+				href: {
+					type: String,
+					reflectToAttribute: true
+				},
+				hreflang: {
+					type: String,
+					reflectToAttribute: true
+				},
+				rel: {
+					type: String,
+					reflectToAttribute: true
+				},
+				target: {
+					type: String,
+					reflectToAttribute: true
+				},
+				type: {
+					type: String,
+					reflectToAttribute: true
+				}
+			}
+
+		});
+	</script>
+</dom-module>
