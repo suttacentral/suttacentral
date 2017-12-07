@@ -25,8 +25,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 </head>
 <body>
-  <!-- Issue: web-component-tester/issues/505 -->
-  <script>void(0)</script>
 
   <test-fixture id="trivialList">
     <template>
@@ -172,6 +170,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         list.splice('items', 0, setSize, buildItem(phrase));
         PolymerFlush();
         assert.equal(list.items.length, 1);
+        assert.equal(getFirstItemFromList(list).textContent, phrase);
+      });
+
+      test('Issue #496: handle addedCount of splice', function() {
+        var phrase = 'It works!'
+        list.items = buildDataSet(100);
+        list.scrollToIndex(45);
+        PolymerFlush();
+        assert.equal(getFirstItemFromList(list).textContent, '45');
+        var spliceItems = new Array(50).fill(buildItem(phrase));
+        list.splice.apply(list, ['items', 0, 50].concat(spliceItems));
+        PolymerFlush();
         assert.equal(getFirstItemFromList(list).textContent, phrase);
       });
 
@@ -325,6 +335,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         PolymerFlush();
         assert.equal(getFirstItemFromList(list).textContent, 'correct');
       });
+
+      test('should update correct item on screen', function() {
+        container.set('data', buildDataSet(3));
+        PolymerFlush();
+        container.splice('data', 0, 1);
+        PolymerFlush();
+        container.set('data.0.index', 'correct');
+        PolymerFlush();
+        assert.equal(getFirstItemFromList(list).textContent, 'correct');
+        container.splice('data', 0, 1);
+        PolymerFlush();
+        container.set('data.0.index', 'correct again');
+        PolymerFlush();
+        assert.equal(getFirstItemFromList(list).textContent, 'correct again');
+      });
+
     });
 
     suite('mutableData', function() {

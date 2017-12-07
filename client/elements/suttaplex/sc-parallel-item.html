@@ -116,7 +116,7 @@ It is in effect a miniature version of the suttaplex-card
     <div class="parallel-item d-flex justify-content-space-between" style="flex-wrap: wrap">
 
       <div class="parallel-item-main-info-container">
-        <div class="parallel-item-title vertical-margin-xs">[[_computeTitle()]]</div>
+        <div class="parallel-item-title vertical-margin-xs">[[_computeTitle(parallelItem.*)]]</div>
 
         <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
           <template is="dom-if" if="[[_getAcronymOrId(parallelItem)]]">
@@ -165,7 +165,7 @@ It is in effect a miniature version of the suttaplex-card
       <template is="dom-if" if="[[_shouldShowLanguageDropdown()]]">
         <div class="parallel-item-language-dropdown d-flex align-items-center flex-1">
           <language-menu language-choice="[[parallelItem.translations]]"
-                         title-label="[[_computeLanguageDropdownTitle()]]"
+                         title-label="[[_computeLanguageDropdownTitle(parallelItem.*)]]"
                          original-language="[[parallelItem.root_lang]]"
                          input-language=""
                          root-id="[[_computeParallelUrl()]]"

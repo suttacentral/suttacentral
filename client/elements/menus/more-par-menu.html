@@ -13,11 +13,6 @@ Menu on top of the suttaplex parallel's list for copying information from parall
   <template>
     <style is="custom-style">
 
-      paper-item iron-icon {
-        margin-right: var(--sc-size-md);
-        color: var(--disabled-text-color);
-      }
-
       .button-text {
         color: var(--sc-primary-text-color);
       }
@@ -39,6 +34,11 @@ Menu on top of the suttaplex parallel's list for copying information from parall
       .table-element .grey-icon {
         color: var(--sc-disabled-text-color);
       }
+
+      .grey-icon {
+        margin-right: var(--sc-size-md);
+        color: var(--sc-disabled-text-color);
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -49,15 +49,15 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                loading="{{loadingParallels}}"
                last-response="{{parallels}}"></iron-ajax>
 
-    <paper-item class="table-element button-text" on-tap="_copyLink" title="[[_computeLink()]]">
+    <paper-item class="table-element button-text" on-tap="_copyLink" title="[[_computeLink(item)]]">
       <iron-icon class="grey-icon" icon="link"></iron-icon>
       Copy link
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="{{areParallelsAvailable}}">
+    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="[[areParallelsAvailable]]">
       <iron-icon class="grey-icon" icon="content-copy"></iron-icon>
       Copy table
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="{{areParallelsAvailable}}">
+    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="[[areParallelsAvailable]]">
       <iron-icon class="grey-icon" icon="editor:format-quote"></iron-icon>
       Cite
     </paper-item>

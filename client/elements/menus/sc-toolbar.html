@@ -12,15 +12,6 @@
 
 <!--
 Base toolbar that appears on the top right in the header of every page. This toolbar is called from the page-selector.
-
-Issues:
-  - The paper badge that appears only on text-pages next to the link to the Discourse forum now only shows
-    the number 20 but it should show the correct search results instead.
-  - The paper badge has the annoying habit of occasionally disappearing for no apparent reason.
-    It seems that it calculates the position too far to the right so as to go off the screen.
-    `this.shadowRoot.querySelector('paper-badge').updatePosition();` does not seem to work to rectify this. It seems to also
-    show this behavior here: https://github.com/PolymerElements/paper-badge/pull/12 and briefly show in
-    the correct position but then disappear to the right.
 -->
 <dom-module id="sc-toolbar">
   <template>
