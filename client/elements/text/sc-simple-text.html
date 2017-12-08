@@ -104,6 +104,9 @@
                   author: {
                       type: String
                   },
+                  error: {
+                      type: Object
+                  },
                   lang: {
                       type: String
                   },
@@ -915,7 +918,7 @@
           }
 
           _shouldDisplayError() {
-              return !(this.sutta && this.sutta.text);
+              return !(this.sutta && this.sutta.text) || this.error;
           }
 
       }
