@@ -9,16 +9,10 @@
       .content {
         display: grid;
         grid-auto-flow: row;
-        grid-template-columns: 10% 80% 10%;
+        grid-template-columns: 2% 96% 2%;
         grid-row-gap: 80px;
         margin-top: 60px;
         margin-bottom: 20px;
-      }
-
-      @media (min-width: 1200px) {
-        .content {
-          grid-template-columns: 15% 70% 15%;
-        }
       }
 
       .row {
@@ -31,36 +25,57 @@
         font-size: 1.1em;
       }
 
+      .text-card {
+        width: 100%;
+        background-color: var(--sc-secondary-background-color);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      }
+
       .card {
         width: 100%;
         min-height: 180px;
         display: flex;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        flex-flow: column;
       }
 
       .card-heading {
-        width: 25%;
+        width: 100%;
         background-color: var(--sc-primary-color);
         color: var(--sc-tertiary-text-color);
         font-size: 2em;
         font-weight: bold;
-        padding: var(--sc-size-lg);
         line-height: 100%;
         text-align: right;
       }
 
       .card-content {
-        width: 75%;
+        width: 100%;
         background-color: var(--sc-secondary-background-color);
-        padding: 12px;
         display: flex;
         align-items: center;
         flex-direction: column;
         justify-content: space-evenly;
       }
 
+      .card-content-text {
+        padding: 16px; 
+      }
+
+      .card-heading-text {
+        padding: var(--sc-size-lg);
+      }
+
+      .card-content-video {
+        width: 100%;
+        padding: 0;
+      }
+
+      .new-line {
+        display: none;
+      }
+
       .card-text {
-        font-size: 1.5em;
+        font-size: 1.1em;
         font-style: italic;
       }
 
@@ -77,28 +92,34 @@
         width: 50px;
       }
 
-      .cards {
-        display: grid;
-        justify-content: space-between;
-        grid-auto-flow: row;
-        grid-template-columns: 1fr 1fr;
-        grid-column-gap: 10px
-      }
-
       .two-paper-cards {
         width: 100%;
-        box-shadow: none;
-
-        --paper-card-background-color: var(--sc-primary-background-color);
       }
 
-      .two-paper-cards .image-card-text {
+      .paper-cards-no-background {
+        --paper-card-background-color: var(--sc-primary-background-color);
+        box-shadow: none;        
+      }
+
+      .card-content-wrapper {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        padding: var(--sc-size-md-larger);
+        height: calc(100% - 2 * var(--sc-size-md-larger));
+      }
+
+      .transparent-card-content-wrapper {
+        padding-top: var(--sc-size-md-larger);
+      }
+
+      .image-card-text,
+      .text-card-text {
         margin-top: 1em;
       }
 
       .card-title-text {
         font-size: 1.1em;
-        margin-top: 1.5em;
       }
 
       .why-we-read {
@@ -121,32 +142,131 @@
 
       .three-baskets-grid {
         display: grid;
-        grid-template-columns: 3fr 2fr;
-        grid-template-rows: 1fr 1fr;
         grid-gap: 10px;
-      }
-
-
-      .three-baskets-big {
-        grid-column-start: 1;
-        grid-row-start: 1;
-        grid-row-end: span 2;
-      }
-
-      .three-baskets-small {
-        grid-column-start: 2;        
-      }
-
-      .three-baskets-first-small {
-        grid-row-start: 1;
-      }
-
-      .three-baskets-second-small {
-        grid-row-start: 2;
       }
 
       .full-height {
         height: 100%;
+      }
+
+      .embed-container { 
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0; 
+        overflow: hidden; 
+        width: 100%; 
+      }
+
+      .embed-container iframe,
+      .embed-container object,
+      .embed-container embed { 
+        position: absolute; 
+        top: 0; 
+        left: 0;
+        width: 100%; 
+        height: 100%; 
+      }
+
+      paper-card {
+        width: 100%;
+      }
+
+      .cards {
+        display: grid;
+        justify-content: space-between;
+        grid-template-columns: 1fr;
+        grid-auto-flow: row;
+        grid-gap: var(--sc-size-lg);
+      }
+
+      .first-card {
+        grid-row-start: 1;
+      }
+
+      .first-card-button {
+        grid-row-start: 2;
+      }
+
+      .second-card {
+        grid-row-start: 3;
+      }
+
+      .second-card-button {
+        grid-row-start: 4;
+      }
+
+      .three-baskets-title {
+        font-size: 1.5em;
+        margin-bottom: .3em;
+      }
+
+      .center-text {
+        text-align: center;
+      }
+
+      @media (min-width: 1200px) {
+        .content {
+          grid-template-columns: 15% 70% 15%;
+        }
+
+        .card {
+          flex-flow: unset;
+        }
+
+        .card-content-video,
+        .card-content {
+          width: 75%;
+        }
+
+        .card-heading {
+          width: 25%;
+        }
+
+        .new-line {
+          display: unset;
+        }
+
+        .three-baskets-grid {
+          grid-template-rows: 1fr 1fr;
+          grid-template-columns: 3fr 2fr;
+          grid-gap: var(--sc-size-lg);
+        }
+
+        .three-baskets-big {
+          grid-column-start: 1;
+          grid-row-start: 1;
+          grid-row-end: span 2;
+        }
+  
+        .three-baskets-small {
+          grid-column-start: 2;    
+          grid-row-start: unset;    
+        }
+  
+        .three-baskets-first-small {
+          grid-row-start: 1;
+        }
+  
+        .three-baskets-second-small {
+          grid-row-start: 2;
+        }
+
+        .cards {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .second-card {
+          grid-row-start: 1;
+        }
+
+        .first-card-button{
+          grid-row-start: 2;
+        }
+
+        .second-card-button {
+          grid-row-start: 2;
+        }
+  
       }
 
     </style>
@@ -154,44 +274,74 @@
       <div class="content">
 
         <div class="row introduction">
-          <p>The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br>
+          <p>The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br class="new-line">
             Many of these scriptures have now been translated into the world’s languages.</p>
-          <p>SuttaCentral brings these together and makes them freely available. <br>
+          <p>SuttaCentral brings these together and makes them freely available. <br class="new-line">
             Setting aside the boundaries of language and tradition, we let the Buddha speak for himself.</p>
         </div>
 
         <div class="row">
-          <div class="card">
-            <div class="card-heading">
-              The<br>
-              Buddha's<br>
-              words
+          <paper-card>
+            <div class="card">
+              <div class="card-heading">
+                <div class="card-heading-text">
+                  The<br class="new-line">
+                  Buddha's<br class="new-line">
+                  words
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="card-content-text">
+                  <div class="card-text center-text">I understood: ‘Rebirth is ended; the spiritual journey has been completed; 
+                    what had to be done has been done; there is no return to any state of existence.’</div>
+                  <paper-button class="button horizontal-center">READ THIS SUTTA</paper-button>
+                </div>
+              </div>
             </div>
-            <div class="card-content">
-                <div class="card-text">The mind is the forerunner of all things</div>
-                <paper-button class="button">READ THIS SUTTA</paper-button>
-            </div>
-          </div>
+          </paper-card>
         </div>
 
         <div class="row cards">
-          <paper-card class="two-paper-cards first-column" image="../../img/home-page/53.jpg">
-            <div class="card-title-text">What's here</div>
-            <div class="image-card-text">
-              SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. 
-              This is a large collection of teachings attributed to the Buddha or his earliest disciples, 
-              who were teaching in India around 2500 years ago. 
-              They are regarded as sacred canon in all schools of Buddhism.</div>
+          <paper-card class="two-paper-cards paper-cards-no-background first-card" image="../../img/home-page/53.jpg">
+            <div class="transparent-card-content-wrapper">
+              <div class="card-title-text">What's here</div>
+              <div class="image-card-text">
+                SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. 
+                This is a large collection of teachings attributed to the Buddha or his earliest disciples, 
+                who were teaching in India around 2500 years ago. 
+                They are regarded as sacred canon in all schools of Buddhism.</div>
+              </div>
             </paper-card>
-            <paper-card class="two-paper-cards second-column" image="../../img/home-page/52.jpg">
+            <paper-card class="two-paper-cards paper-cards-no-background second-card" image="../../img/home-page/52.jpg">
+              <div class="transparent-card-content-wrapper">
               <div class="card-title-text">Where to begin</div>
               <div class="image-card-text">
                 There are thousands of early Buddhist texts, and they’re not organized for easy reading. 
                 But here’s the good news: you are not alone. We’ve been down this road ourselves, 
                 and have tried to make it a little easier for you. Here’s some things you can try.</div>
+                </div>
             </paper-card>
-            <paper-button class="button first-column horizontal-center">INTRODUCTION</paper-button>
-            <paper-button class="button second-column horizontal-center">GET STARTED</paper-button>
+            <paper-button class="button first-card-button">INTRODUCTION</paper-button>
+            <paper-button class="button second-card-button">GET STARTED</paper-button>
+        </div>
+
+        <div class="row">
+          <paper-card>
+          <div class="card">
+              <div class="card-heading">
+                <div class="card-heading-text">
+                  The<br class="new-line">
+                  Buddha's<br class="new-line">
+                  words
+                </div>
+              </div>
+              <div class="card-content-video">
+                <div class='embed-container'>
+                  <iframe src='https://player.vimeo.com/video/125746164?color=ce8400' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                </div>
+              </div>
+            </div>
+          </paper-card>
         </div>
 
         <div class="row">
@@ -199,79 +349,90 @@
               Tipiṭaka—the three baskets
           </div>
           <div class="three-baskets-grid">
-            <div class="three-baskets-big">
-              <paper-card image="../../img/home-page/14.jpg">
+            <paper-card class="three-baskets-big" image="../../img/home-page/14.jpg">
+              <div class="card-content-wrapper">
                 <div class="card-title-text">Where to begin</div>
                 <div class="image-card-text">
                   There are thousands of early Buddhist texts, and they’re not organized for easy reading. 
                   But here’s the good news: you are not alone. We’ve been down this road ourselves, 
                   and have tried to make it a little easier for you. Here’s some things you can try.</div>
-              </paper-card>
-            </div>
-            <div class="three-baskets-small three-baskets-first-small">
-              <paper-card class="full-height">
+                <paper-button class="button">MORE ...</paper-button>
+              </div>
+            </paper-card>
+            <paper-card class="three-baskets-small three-baskets-first-small full-height">
+              <div class="card-content-wrapper">
                 <div class="card-title-text">
                     Monastic Law                    
                 </div>
-                <div class="image-card-text">
+                <div class="text-card-text">
                   The texts on Monastic Law (vinaya) detail the lifestyle, rules,
                   and procedures for Buddhist monks and nuns. 
                   They provide the guidelines for Buddhist monastics to this day, and in addition,
                   paint a detailed and vivid picture of everyday life in ancient India.
                 </div>
-              </paper-card>
-            </div>
-            <div class="three-baskets-small three-baskets-second-small">
-                <paper-card class="full-height">
-                    <div class="card-title-text">
-                        Monastic Law                    
-                    </div>
-                    <div class="image-card-text">
-                      The texts on Monastic Law (vinaya) detail the lifestyle, rules,
-                      and procedures for Buddhist monks and nuns. 
-                      They provide the guidelines for Buddhist monastics to this day, and in addition,
-                      paint a detailed and vivid picture of everyday life in ancient India.
-                    </div>
-                  </paper-card>
-            </div>
+                <paper-button class="button">MORE ...</paper-button>
+              </div>
+            </paper-card>
+            <paper-card class="three-baskets-small three-baskets-second-small full-height">
+              <div class="card-content-wrapper">
+                <div class="card-title-text">
+                    Abhidhamma                    
+                </div>
+                <div class="image-card-text">
+                    Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses.
+                    The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.
+                </div>
+                <paper-button class="button">MORE ...</paper-button>
+              </div>
+            </paper-card>
           </div>
         </div>
 
         <div class="row">
+          <paper-card>
             <div class="card">
               <div class="card-heading">
-                Why<br>
-                we<br>
-                read
+                <div class="card-heading-text">
+                  Why<br class="new-line">
+                  we<br class="new-line">
+                  read
+                </div>
               </div>
               <div class="card-content">
+                <div class="card-content-text">
                   <div class="why-we-read">When I began to experience the peace of meditation, 
                     I needed to understand more deeply what I was going through. 
                     I found out there were real teachings from the Buddha himself, and felt drawn to them.
                     For over twenty years now, they have been a constant companion and guide, a friend in times of need,
                     and an unending well of wisdom and inspiration.</div>
-                  <paper-button class="button">TELL US WHY YOU READ</paper-button>
+                  <paper-button class="button horizontal-center">TELL US WHY YOU READ</paper-button>
+                </div>
               </div>
             </div>
+          </paper-card>
         </div>
 
         <div class="row cards">
-            <paper-card class="two-paper-cards first-column" image="../../img/home-page/51.jpg">
-              <div class="card-title-text">What's here</div>
-              <div class="image-card-text">
-                SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. 
-                This is a large collection of teachings attributed to the Buddha or his earliest disciples, 
-                who were teaching in India around 2500 years ago. 
-                They are regarded as sacred canon in all schools of Buddhism.</div>
-                <paper-button class="button">GET STARTED</paper-button>
-              </paper-card>
-              <paper-card class="two-paper-cards second-column" image="../../img/home-page/mn-pt-cover-MOCKUP.jpg">
-                <div class="card-title-text">Where to begin</div>
+            <paper-card class="two-paper-cards first-card" image="../../img/home-page/51.jpg">
+              <div class="card-content-wrapper">
+                <div class="card-title-text">What's here</div>
                 <div class="image-card-text">
-                  There are thousands of early Buddhist texts, and they’re not organized for easy reading. 
-                  But here’s the good news: you are not alone. We’ve been down this road ourselves, 
-                  and have tried to make it a little easier for you. Here’s some things you can try.</div>
-                  <paper-button class="button">INTRODUCTION</paper-button>
+                  SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. 
+                  This is a large collection of teachings attributed to the Buddha or his earliest disciples, 
+                  who were teaching in India around 2500 years ago. 
+                  They are regarded as sacred canon in all schools of Buddhism.</div>
+                  <paper-button class="button">GET STARTED</paper-button>
+                </div>
+              </paper-card>
+              <paper-card class="two-paper-cards second-card" image="../../img/home-page/mn-pt-cover-MOCKUP.jpg">
+                <div class="card-content-wrapper">                    
+                  <div class="card-title-text">Where to begin</div>
+                  <div class="image-card-text">
+                    There are thousands of early Buddhist texts, and they’re not organized for easy reading. 
+                    But here’s the good news: you are not alone. We’ve been down this road ourselves, 
+                    and have tried to make it a little easier for you. Here’s some things you can try.</div>
+                    <paper-button class="button">INTRODUCTION</paper-button>
+                  </div>
                 </paper-card>
               </div>
       </div>
