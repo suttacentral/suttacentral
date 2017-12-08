@@ -163,8 +163,25 @@
       }
 
       .dialog-section {
+        @apply --sc-sans-font;
         margin-top: var(--sc-size-lg);
         color: var(--sc-primary-text-color);
+      }
+
+      .dialog-section .author {
+        @apply --sc-all-small-caps;
+      }
+
+      .dialog-section .editor {
+        font-style: inherit;
+      }
+
+      .dialog-section .book {
+        font-style: italic;
+      }
+
+      .dialog-section .article {
+        font-style: normal;
       }
 
       .close-dialog-icon {
