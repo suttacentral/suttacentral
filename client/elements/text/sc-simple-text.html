@@ -58,7 +58,7 @@
     <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[sutta.text]]"
          hidden$="[[isTextViewHidden]]"></div>
 
-    <template is="dom-if" if="[[!sutta.text]]">
+    <template is="dom-if" if="[[_shouldDisplayError(sutta.*)]]">
       <div class="text-center margin-top-xl">
         <h2>Error</h2>
         <h3>Could not find the sutta text.</h3>
@@ -104,15 +104,15 @@
                   author: {
                       type: String
                   },
+                  error: {
+                      type: Object
+                  },
                   lang: {
                       type: String
                   },
                   isLoading: {
                       type: Boolean,
                       observer: '_loadingChanged'
-                  },
-                  error: {
-                      type: Object
                   },
                   isTextViewHidden: {
                       type: Boolean,
@@ -149,66 +149,66 @@
                   textualInfoClassTitles: {
                       type: Object,
                       value: {
-                          "gloss":"Definition of term.",
-                          "add":"Text added by the editor or translator for clarification",
-                          "supplied":"Text hypothetically reconstructed by the editor or translator.",
-                          "supplied2":"Text hypothetically reconstructed by the editor or translator.",
-                          "expanded":"Text expanded by editor or translator although elided in original.",
-                          "surplus":"Text present in the source which the editor believes to be superfluous or redundant.",
-                          "del":"Text deleted by the editor as superfluous",
-                          "del-scribe":"Text deleted by the scribe as superfluous",
-                          "corrected":"Corrected reading."
+                          'gloss': 'Definition of term.',
+                          'add': 'Text added by the editor or translator for clarification',
+                          'supplied': 'Text hypothetically reconstructed by the editor or translator.',
+                          'supplied2': 'Text hypothetically reconstructed by the editor or translator.',
+                          'expanded': 'Text expanded by editor or translator although elided in original.',
+                          'surplus': 'Text present in the source which the editor believes to be superfluous or redundant.',
+                          'del': 'Text deleted by the editor as superfluous',
+                          'del-scribe': 'Text deleted by the scribe as superfluous',
+                          'corrected': 'Corrected reading.'
                       }
                   },
                   classTitles: {
                       type: Object,
                       value: {
-                          "gap":"Gap in the manuscript.",
-                          "t-gaiji": "Chinese characters not in Unicode.",
-                          "term":"Defined term.",
-                          "pe":"Instructions for expanding text supplied by the editor or translator.",
-                          "unclear":"Unclear reading.",
-                          "scribe":"Note of attribution by the scribe of the manuscript.",
-                          "suppliedmetre":"Metre reconstructed by the editor."
+                          'gap': 'Gap in the manuscript.',
+                          't-gaiji': 'Chinese characters not in Unicode.',
+                          'term': 'Defined term.',
+                          'pe': 'Instructions for expanding text supplied by the editor or translator.',
+                          'unclear': 'Unclear reading.',
+                          'scribe': 'Note of attribution by the scribe of the manuscript.',
+                          'suppliedmetre': 'Metre reconstructed by the editor.'
                       }
                   },
                   editionsExpansionData: {
                       type: Object,
                       value: {
-                          'sī1': "Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)",
-                          'c-a': "Chaṭṭhasaṅgīti Piṭakaṃ Atthakathā",
-                          'c1': "Chaṭṭhasaṅgīti Piṭakaṃ 2496–2499 (1952–1955)",
-                          'c2': "Chaṭṭhasaṅgīti Piṭakaṃ 2nd ed. 2500–2506 (1956–1962)",
-                          'c3': "Chaṭṭhasaṅgīti Piṭakaṃ (1997)",
-                          'cha1': "Chaṭṭhasaṅgīti Piṭakaṃ 2496–2499 (1952–1955)",
-                          'cha2': "Chaṭṭhasaṅgīti Piṭakaṃ 2nd ed. 2500–2506 (1956–1962)",
-                          'cha3': "Chaṭṭhasaṅgīti Piṭakaṃ (1997)",
-                          'mr': "Maramma Tipiṭaka 2541 (1997)",
-                          'ka-ma': "Maramma Tipiṭaka 2541 (1997)",
-                          'si': "Sinhala Tipiṭaka 2501 (1957)",
-                          'ka-sī': "Sinhala Tipiṭaka 2501 (1957)",
-                          'km': "Phratraipiṭakapāḷi 2501–2512 (1958–1969)",
-                          'maku': "Mahāmakurājāvidyālai 2466 (1923)",
-                          'ms': "Mūlasarvāstivādavinayavastu, part 1-4",
-                          'dutt': "Mūlasarvāstivādavinayavastu, part 1-4, Dutt (1939-1959)",
-                          'divy': "Divyāvadāna (1886)",
-                          'ms84': "Mūlasarvāstivādavinayavastu, part 1-4, (1984)",
-                          'pts-a': "Pali Text Society Atthakathā",
-                          'pts1': "Pali Text Society 1st ed. 2424–2535 (1881–1992)",
-                          'pts2': "Pali Text Society 2nd ed. 2517–2541 (1974–1998)",
-                          'pā1': "Pali Text Society 1st ed. 2424–2535 (1881–1992)",
-                          'pā2': "Pali Text Society 2nd ed. 2517–2541 (1974–1998)",
-                          's-a': "Syāmaraṭṭhassa Tepiṭakaṃ Atthakathā",
-                          's1': "Chulachomklao Pāḷi Tipiṭaka 2436 (1893)",
-                          's2': "Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928)",
-                          's3': "Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)",
-                          's1-3': "Chulachomklao Pāḷi Tipiṭaka 2436 (1893), Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928) & 2538 (1995)",
-                          'syā1-3': "Chulachomklao Pāḷi Tipiṭaka 2436 (1893), Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928) & 2538 (1995)", 
-                          'syā1': "Chulachomklao Pāḷi Tipiṭaka 2436 (1893)",
-                          'syā2': "Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928)",
-                          'syā3': "Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)", 
-                          'bj': "Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)",
-                          'bj-a': "Buddhajayantītripiṭakagranthamālā Atthakathā)"
+                          'sī1': 'Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)',
+                          'c-a': 'Chaṭṭhasaṅgīti Piṭakaṃ Atthakathā',
+                          'c1': 'Chaṭṭhasaṅgīti Piṭakaṃ 2496–2499 (1952–1955)',
+                          'c2': 'Chaṭṭhasaṅgīti Piṭakaṃ 2nd ed. 2500–2506 (1956–1962)',
+                          'c3': 'Chaṭṭhasaṅgīti Piṭakaṃ (1997)',
+                          'cha1': 'Chaṭṭhasaṅgīti Piṭakaṃ 2496–2499 (1952–1955)',
+                          'cha2': 'Chaṭṭhasaṅgīti Piṭakaṃ 2nd ed. 2500–2506 (1956–1962)',
+                          'cha3': 'Chaṭṭhasaṅgīti Piṭakaṃ (1997)',
+                          'mr': 'Maramma Tipiṭaka 2541 (1997)',
+                          'ka-ma': 'Maramma Tipiṭaka 2541 (1997)',
+                          'si': 'Sinhala Tipiṭaka 2501 (1957)',
+                          'ka-sī': 'Sinhala Tipiṭaka 2501 (1957)',
+                          'km': 'Phratraipiṭakapāḷi 2501–2512 (1958–1969)',
+                          'maku': 'Mahāmakurājāvidyālai 2466 (1923)',
+                          'ms': 'Mūlasarvāstivādavinayavastu, part 1-4',
+                          'dutt': 'Mūlasarvāstivādavinayavastu, part 1-4, Dutt (1939-1959)',
+                          'divy': 'Divyāvadāna (1886)',
+                          'ms84': 'Mūlasarvāstivādavinayavastu, part 1-4, (1984)',
+                          'pts-a': 'Pali Text Society Atthakathā',
+                          'pts1': 'Pali Text Society 1st ed. 2424–2535 (1881–1992)',
+                          'pts2': 'Pali Text Society 2nd ed. 2517–2541 (1974–1998)',
+                          'pā1': 'Pali Text Society 1st ed. 2424–2535 (1881–1992)',
+                          'pā2': 'Pali Text Society 2nd ed. 2517–2541 (1974–1998)',
+                          's-a': 'Syāmaraṭṭhassa Tepiṭakaṃ Atthakathā',
+                          's1': 'Chulachomklao Pāḷi Tipiṭaka 2436 (1893)',
+                          's2': 'Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928)',
+                          's3': 'Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)',
+                          's1-3': 'Chulachomklao Pāḷi Tipiṭaka 2436 (1893), Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928) & 2538 (1995)',
+                          'syā1-3': 'Chulachomklao Pāḷi Tipiṭaka 2436 (1893), Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928) & 2538 (1995)',
+                          'syā1': 'Chulachomklao Pāḷi Tipiṭaka 2436 (1893)',
+                          'syā2': 'Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928)',
+                          'syā3': 'Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)',
+                          'bj': 'Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)',
+                          'bj-a': 'Buddhajayantītripiṭakagranthamālā Atthakathā)'
                       }
                   }
               }
@@ -250,23 +250,25 @@
           }
 
           _updateToolbar() {
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
               if (!this.sutta || !this.sutta.text) {
+                  this.dispatch('changeToolbarTitle', 'Sutta not found');
                   return;
               }
-              this.dispatch('changeSuttaMetaText', this._computeMeta());
               const title = this.author ? `${this.suttaTitle} – ${this.author}` : `${this.suttaTitle}`;
               this.dispatch('changeToolbarTitle', title);
           }
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              const matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
-              let metaText;
+              let metaText = '';
+              let matches = [];
+              if (this.sutta && this.sutta.text) {
+                  matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              }
               try {
-                  if (matches && matches.length > 0) {
+                  if (matches.length > 0) {
                       metaText = matches[1];
-                  } else {
-                      metaText = '';
                   }
               } catch (e) {
                   console.error(e);
@@ -277,9 +279,10 @@
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
               this._setTextualInformationVisible(this.showParagraphs);
+              if (!this.sutta || !this.sutta.uid) {
+                  return;
+              }
               const divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
-              const paragraphsAdded =
-                  this.$.simple_text_content.querySelector('.textual-info-paragraph') !== null;
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
@@ -342,34 +345,34 @@
                       const classRefs = textElement.querySelectorAll(`.${key}`);
                       Array.from(classRefs).forEach(item => item.title = this.classTitles[key]);
                   }
-                  for (let key in this.textualInfoClassTitles){
+                  for (let key in this.textualInfoClassTitles) {
                       const textualInfoClassRefs = textElement.querySelectorAll(`.${key}`);
                       if (visible) {
                           Array.from(textualInfoClassRefs).forEach(item => item.title = this.textualInfoClassTitles[key]);
                       } else {
-                          Array.from(textualInfoClassRefs).forEach(item => item.title = "");
+                          Array.from(textualInfoClassRefs).forEach(item => item.title = '');
                       }
                   }
                   const varElements = textElement.querySelectorAll('.var');
                   if (varElements[0] && varElements[0].innerHTML.indexOf('class="varnote"') === -1) {
-                    Array.from(varElements).forEach((item) => { 
-                        item.innerHTML = this._markupVarNote(item.title,item.innerHTML);
-                        item.title = '';
+                      Array.from(varElements).forEach((item) => {
+                          item.innerHTML = this._markupVarNote(item.title, item.innerHTML);
+                          item.title = '';
                       });
                   }
                   const corrElements = textElement.querySelectorAll('.corr');
                   for (let key in corrElements) {
-                    const item = corrElements[key];
-                    if (item.title) {
-                      item.innerHTML = this._markupCorrComment(item.title,item.innerHTML);
-                      item.title = '';
-                    }
+                      const item = corrElements[key];
+                      if (item.title) {
+                          item.innerHTML = this._markupCorrComment(item.title, item.innerHTML);
+                          item.title = '';
+                      }
                   }
               }
           }
 
           _loadingChanged() {
-              this.isTextViewHidden = !!(this.isLoading);
+              this.isTextViewHidden = this.isLoading || this._shouldDisplayError();
           }
 
           _processHighlightAndScroll(sectionId, isSmooth) {
@@ -538,9 +541,9 @@
               }
               this.shadowRoot.querySelectorAll('.textual-info-paragraph').forEach(item => {
                   item.addEventListener('click', () => {
-                    this._scrollToSection(item.id, true, 0);
+                      this._scrollToSection(item.id, true, 0);
+                  });
               });
-            });
           }
 
           _putSegmentIntoSpans(segment, unit, that) {
@@ -839,7 +842,7 @@
               }
           }
 
-          _markupVarNote(noteData,referenceText) {
+          _markupVarNote(noteData, referenceText) {
               const noteItems = noteData.split(/ \| /);
               let noteText = `
                                 ${referenceText}
@@ -848,29 +851,29 @@
               let out = '';
 
               for (let item in noteItems) {
-                let m = noteItems[item].match(/^(\(.*?\)|[^\(]+)(.*)/),
-                  variant = m[1],
-                  comment = m[2];
-                if (variant && !comment) {
-                    // In some cases there is no variant, it's simply a comment
-                    // In this case, the comment takes the entire line.
-                    out = `
+                  let m = noteItems[item].match(/^(\(.*?\)|[^\(]+)(.*)/),
+                      variant = m[1],
+                      comment = m[2];
+                  if (variant && !comment) {
+                      // In some cases there is no variant, it's simply a comment
+                      // In this case, the comment takes the entire line.
+                      out = `
                             <tr><td colspan=2>
                               ${this._markupComment(variant)}
                             </td></tr>
                           `;
-                } else {
-                    // The normal case is a variant and a comment or qualification
-                    // pertaining to that variant reading.
-                   out = `
+                  } else {
+                      // The normal case is a variant and a comment or qualification
+                      // pertaining to that variant reading.
+                      out = `
                           <tr><td>
                             ${variant}
                           </td><td>
                             ${this._markupComment(comment)}
                           </td></tr>
                          `;
-                }
-                noteText += out;
+                  }
+                  noteText += out;
               }
               return `
                         ${noteText}
@@ -878,33 +881,33 @@
                      `;
           }
 
-          _markupComment(comment){
+          _markupComment(comment) {
               comment = comment.replace('(', '').replace(')', '');
               const commentParts = comment.split(/,/);
               let commentText = '';
               for (let item in commentParts) {
-                const checkItem = this.editionsExpansionData[commentParts[item].replace(' ','')];
-                if (checkItem) {
-                    commentText += `${checkItem}<br>`;
-                } else {
-                    commentText += `${commentParts[item]}<br>`;
-                }
+                  const checkItem = this.editionsExpansionData[commentParts[item].replace(' ', '')];
+                  if (checkItem) {
+                      commentText += `${checkItem}<br>`;
+                  } else {
+                      commentText += `${commentParts[item]}<br>`;
+                  }
               }
               return commentText;
           }
 
-          _markupCorrComment(comment,referenceText){
+          _markupCorrComment(comment, referenceText) {
               comment = comment.replace('[', '').replace(']', '');
               const commentParts = comment.split(/→/);
               let tooltipText = '';
               if (commentParts[1]) {
-                tooltipText = `
+                  tooltipText = `
                                 ${commentParts[0]}
                                 has been corrected to
                                 ${commentParts[1]}
                               `;
               } else {
-                tooltipText = commentParts[0];
+                  tooltipText = commentParts[0];
               }
               return `
                         ${referenceText}
@@ -912,6 +915,10 @@
                         ${tooltipText}
                       </paper-tooltip>
                      `;
+          }
+
+          _shouldDisplayError() {
+              return !(this.sutta && this.sutta.text) || this.error;
           }
 
       }

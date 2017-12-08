@@ -57,7 +57,9 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
     <div class="container">
       <div class="heading">
-        <paper-icon-button id="text_info_button" icon="info" on-tap="_openInfoDialog"></paper-icon-button>
+        <template is="dom-if" if="[[metaArea]]">
+          <paper-icon-button id="text_info_button" icon="info" on-tap="_openInfoDialog"></paper-icon-button>
+        </template>
         <paper-icon-button id="text_settings_button" icon="settings" on-tap="_openSettingsDialog"></paper-icon-button>
         <paper-icon-button id="suttaplex_button" icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
 
