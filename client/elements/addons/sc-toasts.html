@@ -63,7 +63,7 @@
               toast.text = e.detail.message;
               toast.duration = e.detail.duration || this.defaultDuration;
               requestAnimationFrame(() => {
-                  toast.open()
+                  toast.open();
               });
           }
 
