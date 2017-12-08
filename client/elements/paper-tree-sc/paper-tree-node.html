@@ -3,12 +3,15 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/d2l-menu/d2l-menu.html">
+<link rel="import" href="../../bower_components/d2l-menu/d2l-menu-item.html">
 
 <dom-module id="paper-tree-node">
   <template>
     <style>
       :host(.selected) > .node-container > .node-row {
-        background: linear-gradient(to right, var(--sc-primary-color) 4px, white 4px);
+        background: linear-gradient(to right, var(--sc-primary-color) var(--sc-size-xs),
+        var(--sc-primary-background-color) var(--sc-size-xs));
       }
 
       :host(.selected) > .node-container > .node-row > #actions {
@@ -81,54 +84,71 @@
     </style>
 
     <div class="node-container">
-      <div class="node-row">
 
-        <template is="dom-if" if="[[data.icon]]">
-          <iron-icon class="paper-tree-icon" icon="[[data.icon]]"></iron-icon>
-        </template>
+      <template is="dom-if" if="[[_isChildMenuContainer(data.type)]]">
+        <d2l-menu label="[[data.name]]">
+          <d2l-menu-item text="[[data.name]]">
+            <d2l-menu>
+              <template is="dom-repeat" items="[[data.children]]">
+                <paper-tree-node data="[[item]]" is-wide="[[isWide]]"></paper-tree-node>
+              </template>
+            </d2l-menu>
+          </d2l-menu-item>
+        </d2l-menu>
+      </template>
 
-        <template is="dom-if" if="[[data.children]]">
-          <paper-icon-button class="paper-tree-toggle-button" icon="[[_computeIcon(data.*)]]"
-                             on-tap="toggleChildren"></paper-icon-button>
-        </template>
+      <template is="dom-if" if="[[!_isChildMenuContainer(data.type)]]">
 
-        <template is="dom-if" if="[[_computeClickable(data.uid)]]">
-          <a class="paper-tree-link" href$="[[_computeLink(data.uid)]]">
+        <div class="node-row">
+
+          <template is="dom-if" if="[[data.icon]]">
+            <iron-icon class="paper-tree-icon" icon="[[data.icon]]"></iron-icon>
+          </template>
+
+          <template is="dom-if" if="[[data.children]]">
+            <paper-icon-button class="paper-tree-toggle-button" icon="[[_computeIcon(data.*)]]"
+                               on-tap="toggleChildren"></paper-icon-button>
+          </template>
+
+          <template is="dom-if" if="[[_computeClickable(data.uid)]]">
+            <a class="paper-tree-link" href$="[[_computeLink(data.uid)]]">
             <span class="node-name">
               <span class="data-name">[[data.name]]
                 <span class="data-lang">[[data.lang]]</span>
               </span>
             </span>
-          </a>
-        </template>
+            </a>
+          </template>
 
-        <template is="dom-if" if="[[!_computeClickable(data.uid)]]">
+          <template is="dom-if" if="[[!_computeClickable(data.uid)]]">
           <span class="node-name" on-tap="_select">
             <span class$="data-name [[_computeFontWeight(data.uid)]]" inner-h-t-m-l="[[data.name]]">
               <span class="data-lang">[[data.lang]]
               </span>
             </span>
           </span>
-        </template>
-
-      </div>
-
-      <iron-collapse opened="[[data.open]]">
-        <template is="dom-if" if="[[data.open]]">
-          <template is="dom-repeat" items="[[data.children]]">
-            <paper-tree-node data="[[item]]" is-wide="[[isWide]]"></paper-tree-node>
           </template>
-        </template>
 
-        <!--Dummy element that enables rolldown animation with iron-collapse-->
-        <template is="dom-if" if="[[!data.open]]">
-          <template is="dom-if" if="[[data.children]]">
-            <div class="full-height"></div>
+        </div>
+
+        <iron-collapse opened="[[data.open]]">
+          <template is="dom-if" if="[[data.open]]">
+            <template is="dom-repeat" items="[[data.children]]">
+              <paper-tree-node data="[[item]]" is-wide="[[isWide]]"></paper-tree-node>
+            </template>
           </template>
-        </template>
-      </iron-collapse>
+
+          <!--Dummy element that enables rolldown animation with iron-collapse-->
+          <template is="dom-if" if="[[!data.open]]">
+            <template is="dom-if" if="[[data.children]]">
+              <div class="full-height"></div>
+            </template>
+          </template>
+        </iron-collapse>
+      </template>
 
     </div>
+
   </template>
 
   <script>
@@ -241,6 +261,10 @@
               this.opened = !this.opened;
               this.dispatchEvent(new CustomEvent('toggle', { detail: this }));
               this.set('data.open', !this.data.open && this.data.children && this.data.children.length);
+          }
+
+          _isChildMenuContainer(type) {
+              return (this.data.type === 'division' || this.data.type === 'div');
           }
 
       }
