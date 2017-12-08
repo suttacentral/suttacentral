@@ -10,8 +10,15 @@
         color: var(--sc-paper-tooltip-text-color);
         --paper-toast-background-color: var(--sc-paper-tooltip-color);
         text-align: center;
-        margin-left: calc(50vw + var(--app-drawer-width) / 2);
+        margin-left: calc(50vw);
         transform: translateX(-50%);
+      }
+
+      /* 841px: width at which the persistent sidebar appears*/
+      @media screen and (min-width: 841px) {
+        .toast {
+          margin-left: calc(50vw + var(--app-drawer-width) / 2);
+        }
       }
 
       .success-toast {
@@ -23,9 +30,9 @@
       }
     </style>
 
-    <paper-toast id="error_toast" class="toast error-toast"></paper-toast>
-    <paper-toast id="success_toast" class="toast success-toast"></paper-toast>
-    <paper-toast id="info_toast" class="toast"></paper-toast>
+    <paper-toast id="error_toast" class="toast error-toast" allow-click-through></paper-toast>
+    <paper-toast id="success_toast" class="toast success-toast" allow-click-through></paper-toast>
+    <paper-toast id="info_toast" class="toast" allow-click-through></paper-toast>
   </template>
 
   <script>
@@ -48,16 +55,16 @@
 
           ready() {
               super.ready();
-              this.parentNode.addEventListener('show-sc-toast', (e) => {
-                  let toast = this._getToast(e.detail.toastType);
-                  toast.text = e.detail.message;
-                  toast.duration = e.detail.duration || this.defaultDuration;
-                  requestAnimationFrame(() => {
-                      toast.refit();
-                      toast.open()
-                  });
-              })
+              this.parentNode.addEventListener('show-sc-toast', (e) => { this._displayToast(e); });
+          }
 
+          _displayToast(e) {
+              let toast = this._getToast(e.detail.toastType);
+              toast.text = e.detail.message;
+              toast.duration = e.detail.duration || this.defaultDuration;
+              requestAnimationFrame(() => {
+                  toast.open();
+              });
           }
 
           _getToast(toastType) {
