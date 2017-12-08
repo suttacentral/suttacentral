@@ -166,32 +166,6 @@
         color: var(--sc-primary-text-color);
       }
 
-      .success, .error {
-        @apply --sc-skolar-font-size-s;
-        display: none;
-      }
-
-      .success.visible, .error.visible {
-        display: inline;
-      }
-
-      .error {
-        color: #E4584C;
-      }
-
-      .error-bar {
-        border-bottom: 2px solid #E4584C;
-      }
-
-      .success {
-        color: #43a047;
-      }
-
-      .success .token {
-        @apply --sc-skolar-font-size-s;
-        font-weight: 500;
-      }
-
       .spinner {
         position: absolute;
         left: 50%;
@@ -212,15 +186,6 @@
         height: 100%;
         opacity: 1;
         z-index: 100;
-      }
-
-      .toast {
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-xl;
-        color: var(--sc-tertiary-text-color);
-        --paper-toast-color: var(--sc-paper-tooltip-color);
-        text-align: center;
-        margin-left: calc(50vw - 150px);
       }
 
       .sans-font {
@@ -461,10 +426,10 @@
               });
           }
 
-          _paymentFinished(event) {
+          _paymentFinished() {
               this.processingPayment = false;
-              this._showToast('success',
-                  'Sadhu! Your payment has been completed successfully. You will be redirected to the homepage in 5 seconds.');
+              this._showToast('success', 'Sadhu! Your payment has been completed successfully. ' +
+                  'You will be redirected to the homepage in 5 seconds.');
               setTimeout(() => {
                   this.$.submitButton.disabled = false;
                   this.$.donation_form.reset();
