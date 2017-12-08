@@ -57,22 +57,12 @@ This is the base language menu that determines the language of the site.
         cursor: pointer;
       }
 
-      .iso-code {
-        padding-right: var(--sc-size-sm);
-        margin-top: var(--sc-size-xs);
-      }
-
       .iso-code-image {
         fill: var(--sc-disabled-text-color);
-      }
-
-      /* remove this after ISO icons are finalized */
-      #ca .iso-code-image,
-      #af .iso-code-image,
-      #ar .iso-code-image,
-      #cs .iso-code-image,
-      #lzh .iso-code-image {
+        margin-top: var(--sc-size-xs);
+        padding-right: var(--sc-size-sm);
         width: 19px;
+        height: 19px;
       }
 
     </style>
@@ -89,9 +79,7 @@ This is the base language menu that determines the language of the site.
       <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNr}}">
         <template is="dom-repeat" items="{{lastResponse}}" as="language">
           <paper-item class="language-menu-paper-item" id='[[language.uid]]'>
-            <div class="iso-code">
-              <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
-            </div>
+            <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
             <paper-item-body>
               [[language.name]]
             </paper-item-body>
