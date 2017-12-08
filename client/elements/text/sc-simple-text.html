@@ -247,23 +247,25 @@
           }
 
           _updateToolbar() {
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
               if (!this.sutta || !this.sutta.text) {
+                  this.dispatch('changeToolbarTitle', 'Sutta not found');
                   return;
               }
-              this.dispatch('changeSuttaMetaText', this._computeMeta());
               const title = this.author ? `${this.suttaTitle} – ${this.author}` : `${this.suttaTitle}`;
               this.dispatch('changeToolbarTitle', title);
           }
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              const matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
-              let metaText;
+              let metaText = '';
+              let matches = [];
+              if (this.sutta && this.sutta.text) {
+                  matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+              }
               try {
-                  if (matches && matches.length > 0) {
+                  if (matches.length > 0) {
                       metaText = matches[1];
-                  } else {
-                      metaText = '';
                   }
               } catch (e) {
                   console.error(e);
