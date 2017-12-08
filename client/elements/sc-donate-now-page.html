@@ -65,7 +65,8 @@
       .frequency-checkbox {
         --paper-checkbox-checked-color: var(--sc-primary-accent-color);
         --paper-checkbox-unchecked-color: var(--sc-disabled-text-color);
-        --paper-checkbox-label-color: var(--sc-disabled-text-color);
+        --paper-checkbox-label-color: var(--sc-secondary-text-color);
+        --paper-checkbox-label-checked-color: var(--sc-primary-text-color);
         margin-right: 1em;
       }
 
@@ -242,18 +243,10 @@
         margin-right: 0.5em;
       }
 
-      .success-toast {
-        --paper-toast-background-color: var(--sc-toast-success-color);
-      }
-
-      .error-toast {
-        --paper-toast-background-color: var(--sc-toast-error-color);
-      }
-
     </style>
     <iron-ajax
-        id='currency_ajax'
         auto
+        id='currency_ajax'
         url="/api/currencies"
         handle-as="json"
         last-response="{{ responseData }}"
@@ -337,8 +330,6 @@
         </div>
       </section>
     </div>
-    <paper-toast class="toast error-toast" text="[[errorMessage]]" duration=5000></paper-toast>
-    <paper-toast class="toast success-toast" text="[[successMessage]]" duration=5000></paper-toast>
     <template is="dom-if" if="{{processingPayment}}">
       <div class="blocker"></div>
       <div class="spinner">
@@ -389,10 +380,6 @@
                   processingPayment: {
                       type: Boolean
                   },
-                  errorMessage: {
-                      type: String,
-                      value: 'Error!'
-                  },
                   isStripeValid: {
                       type: Boolean,
                       value: false
@@ -405,10 +392,6 @@
                           2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
                           3: 'Your card was declined.'
                       }
-                  },
-                  successMessage: {
-                      type: String,
-                      value: 'Sadhu! Your payment has been completed successfully. You will be redirected in 5 seconds.'
                   }
               }
           }
@@ -480,22 +463,21 @@
 
           _paymentFinished(event) {
               this.processingPayment = false;
-              let successToast = this.shadowRoot.querySelector('.success-toast');
-              successToast.open();
+              this._showToast('success',
+                  'Sadhu! Your payment has been completed successfully. You will be redirected to the homepage in 5 seconds.');
               setTimeout(() => {
                   this.$.submitButton.disabled = false;
                   this.$.donation_form.reset();
                   this.shadowRoot.querySelector('.amount-input').value = undefined;
                   this.set('path', '/');
-              }, successToast.duration + 500);
+              }, 5000);
           }
 
-          _paymentError(event) {
+          _paymentError() {
               this.$.submitButton.disabled = false;
-              let errCode = this.donationResponseError.response['err_code']
-              this.errorMessage = this.errorMessages[errCode];
+              let errCode = this.donationResponseError.response['err_code'];
               this.processingPayment = false;
-              this.shadowRoot.querySelector('.error-toast').open();
+              this._showToast('error', this.errorMessages[errCode]);
           }
 
           _getFormData() {
@@ -515,19 +497,15 @@
               return data;
           }
 
-          _getIconColor() {
-              const bodyStyle = window.getComputedStyle(document.body);
-              return bodyStyle.getPropertyValue('--sc-disabled-text-color');
-          }
-
-          _getErrorColor() {
-              const bodyStyle = window.getComputedStyle(document.body);
-              return bodyStyle.getPropertyValue('--sc-toast-error-color');
-          }
-
-          _getPlaceholderColor() {
-              const bodyStyle = window.getComputedStyle(document.body);
-              return bodyStyle.getPropertyValue('--sc-secondary-text-color');
+          _showToast(toastType, text) {
+              this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                  detail: {
+                      toastType: toastType,
+                      message: text
+                  },
+                  bubbles: true,
+                  composed: true
+              }));
           }
       }
 
