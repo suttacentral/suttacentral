@@ -29,7 +29,8 @@ FOR pit IN pitaka
                     [p.type]: {
                         name: p.name,
                         uid: p._id,
-                        num: p.num
+                        num: p.num,
+                        type: p.type
                     }
                 }
             )
@@ -40,7 +41,8 @@ FOR pit IN pitaka
                     from: d_edge._from,
                     name: d.name,
                     uid: d._id,
-                    num: d.num
+                    num: d.num,
+                    type: d.type
                 }
             )
         
