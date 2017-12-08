@@ -46,6 +46,8 @@ This is the base language menu that determines the language of the site.
       .language-menu-paper-item {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
+        display: flex;
+        align-items: center;
         color: var(--sc-primary-text-color);
         text-transform: capitalize;
         padding-left: var(--sc-size-sm);
@@ -81,7 +83,7 @@ This is the base language menu that determines the language of the site.
           <paper-item class="language-menu-paper-item" id='[[language.uid]]'>
             <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
             <paper-item-body>
-              [[language.name]]
+              <div>[[language.name]]</div>
             </paper-item-body>
           </paper-item>
         </template>
