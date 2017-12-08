@@ -5,9 +5,9 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
@@ -18,11 +18,12 @@
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="../styles/static-styles.html">
+<link rel="import" href="../styles/sc-scrollbar-style.html">
 <link rel="import" href="./stripe-card.html">
 
 <dom-module id="sc-donate-now-page">
   <template>
-    <style include="static-styles">
+    <style include="static-styles sc-scrollbar-style">
       #page-wrap {
         @apply --sc-sans-font;
       }
@@ -140,16 +141,16 @@
       }
 
       .field {
-        padding-bottom: var(--sc-size-xs);
-        background: transparent;
-        font-weight: 300;
         border: 0;
-        color: var(--sc-tertiary-text-color);
-        outline: none;
-        cursor: text;
-        display: block;
         width: 100%;
-        line-height: 32px;
+        cursor: text;
+        outline: none;
+        display: block;
+        font-weight: 300;
+        background: transparent;
+        line-height: var(--sc-size-lg);
+        padding-bottom: var(--sc-size-xs);
+        color: var(--sc-tertiary-text-color);
         transition: opacity 200ms ease-in-out;
       }
 
@@ -179,13 +180,13 @@
       }
 
       .blocker {
-        position: fixed;
         top: 0;
         left: 0;
+        opacity: 1;
         width: 100%;
         height: 100%;
-        opacity: 1;
         z-index: 100;
+        position: fixed;
       }
 
       .sans-font {
@@ -208,13 +209,26 @@
         margin-right: 0.5em;
       }
 
+      .sc-tooltip {
+        @apply --sc-sans-font;
+        --paper-tooltip-opacity: 0.98;
+        --paper-tooltip-background: var(--sc-paper-tooltip-color);
+        --paper-tooltip: {
+          @apply --sc-skolar-font-size-xs;
+          line-height: var(--sc-size-md);
+          padding: var(--sc-size-sm) var(--sc-size-md);
+          text-shadow: 0 0 var(--sc-secondary-background-color);
+          white-space: normal;
+        }
+      }
+
     </style>
     <iron-ajax
         auto
         id='currency_ajax'
         url="/api/currencies"
         handle-as="json"
-        last-response="{{ responseData }}"
+        last-response="{{responseData}}"
         on-response="_handleResponse"></iron-ajax>
 
     <iron-ajax
@@ -222,9 +236,9 @@
         url="/api/donate"
         handle-as="json"
         method="post"
-        body="{{ formData }}"
-        last-response="{{ donationResponseData }}"
-        last-error="{{ donationResponseError}}"
+        body="{{formData}}"
+        last-response="{{donationResponseData}}"
+        last-error="{{donationResponseError}}"
         on-error="_paymentError"
         on-response="_paymentFinished"></iron-ajax>
 
@@ -235,16 +249,17 @@
         <iron-form id="donation_form" class="payment-iron-form">
           <form class="payment-form">
             <div class="flex-row">
-              <paper-dropdown-menu class="currency-dropdown data-input" title="Select currency"
+              <paper-dropdown-menu class="currency-dropdown data-input" aria-label="Select currency"
                                    dynamic-align label="Currency" always-float-label>
                 <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
                                selected="[[default_currency_index]]">
-                  <template is="dom-repeat" items="{{ currencies }}">
-                    <paper-item class="currency-menu-item" title="[[item.name]]">
-                      <paper-item-body>
-                        [[item.symbol]]
-                      </paper-item-body>
+                  <template is="dom-repeat" items="[[currencies]]">
+                    <paper-item id$="[[item.symbol]]" class="currency-menu-item">
+                      [[item.symbol]]
                     </paper-item>
+                    <paper-tooltip for="[[item.symbol]]" class="sc-tooltip" animation-delay="100">
+                      [[item.name]]
+                    </paper-tooltip>
                   </template>
                 </paper-listbox>
               </paper-dropdown-menu>
@@ -295,7 +310,7 @@
         </div>
       </section>
     </div>
-    <template is="dom-if" if="{{processingPayment}}">
+    <template is="dom-if" if="[[processingPayment]]">
       <div class="blocker"></div>
       <div class="spinner">
         <paper-spinner active></paper-spinner>
