@@ -3,9 +3,11 @@
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
+<link rel="import" href="../../styles/sc-scrollbar-style.html">
+
 <dom-module id="sc-navigation-menu">
   <template>
-    <style>
+    <style include="sc-scrollbar-style">
       .sc-nav {
         @apply --sc-sans-font;
       }
@@ -47,10 +49,6 @@
         color: var(--sc-disabled-text-color);
         margin-left: var(--sc-size-sm);
         margin-top: var(--sc-size-xxs);
-      }
-
-      .grey-icon {
-        fill: var(--sc-disabled-text-color);
       }
 
       .sc-swap-section {
@@ -96,8 +94,54 @@
         z-index: 1;
       }
 
+      .sc-nav-menu-item {
+        list-style-type: none;
+        margin: 0 0 10px;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .sc-nav-list {
+        list-style-type: none;
+        margin: 0;
+        overflow-y: scroll;
+        padding: 16px 0;
+        height: 100% !important;
+      }
+
+      .sc-nav-link {
+        @apply --sc-skolar-font-size-md;
+        color: var(--sc-primary-text-color);
+        text-transform: uppercase;
+        display: block;
+        font-weight: 600;
+        letter-spacing: .24px;
+        padding: 5px 20px;
+        text-decoration: none;
+        transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
+        -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
+      }
+
+      .sc-nav-menu-item.selected {
+        background: var(--sc-primary-accent-color-almost-transparent);
+        color: var(--sc-primary-color-dark);
+      }
+
+      .sc-menu-icon {
+        fill: var(--sc-disabled-text-color);
+        padding: 5px;
+        display: inline-block;
+      }
+
+      .sc-nav-menu-item.selected .sc-menu-icon {
+        background-color: var(--sc-secondary-text-color);
+      }
+
       #sc-main-navigation {
-        margin-top: calc(var(--sc-size-xl) * -1);
+        margin-top: -85px;
+        height: auto;
       }
 
     </style>
@@ -124,38 +168,38 @@
 
       <nav class="sc-nav">
         <div>
-          <a class="sc-nav-back-button sc-swap-section sc-up sc-active">
-            <iron-icon icon="arrow-back" class="grey-icon"></iron-icon>
+          <a class="sc-nav-back-button sc-swap-section sc-up">
+            <iron-icon icon="arrow-back" class="sc-menu-icon"></iron-icon>
             <span class="sc-nav-back-title">Child title</span>
           </a>
 
           <!-- Sub nav menu -->
-          <div id="sc-sub-navigation" class="sc-nav-sub sc-swap-section sc-right">
+          <div id="sc-sub-navigation" class="sc-nav-sub sc-scrollbar sc-swap-section sc-right">
             <ul id="sub-nav">
               <li class="nav-section">
                 <div class="nav-section-header">
-                  <a href="/">Creative Vision</a>
-                  <iron-icon icon="expand-more"></iron-icon>
+                  <a class="sc-nav-link" href="/">Creative Vision</a>
+                  <iron-icon icon="expand-more" class="sc-menu-icon"></iron-icon>
                 </div>
               </li>
               <li class="nav-section">
                 <div class="nav-section-header">
-                  <a href="/">Second sub thing</a>
-                  <iron-icon icon="expand-more"></iron-icon>
+                  <a class="sc-nav-link" href="/">Second sub thing</a>
+                  <iron-icon icon="expand-more" class="sc-menu-icon"></iron-icon>
                 </div>
               </li>
             </ul>
           </div>
 
           <!-- Main nav menu -->
-          <ul id="sc-main-navigation" class="sc-nav-list sc-swap-section sc-left sc-active">
+          <ul id="sc-main-navigation" class="sc-nav-list sc-scrollbar sc-swap-section sc-left sc-active">
             <li class="sc-nav-menu-item">
-              <a class="sc-nav-menu-link" href="/">Home</a>
-              <iron-icon icon="expand-more"></iron-icon>
+              <a class="sc-nav-link" href="/">Home</a>
+              <iron-icon icon="expand-more" class="sc-menu-icon"></iron-icon>
             </li>
             <li class="sc-nav-menu-item">
-              <a class="sc-nav-menu-link" href="/">Design</a>
-              <iron-icon icon="arrow-forward"></iron-icon>
+              <a class="sc-nav-link" href="/">Design</a>
+              <iron-icon icon="arrow-forward" class="sc-menu-icon"></iron-icon>
             </li>
           </ul>
 
