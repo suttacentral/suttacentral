@@ -5,9 +5,10 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
@@ -18,11 +19,12 @@
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="../styles/static-styles.html">
+<link rel="import" href="../styles/sc-scrollbar-style.html">
 <link rel="import" href="./stripe-card.html">
 
 <dom-module id="sc-donate-now-page">
   <template>
-    <style include="static-styles">
+    <style include="static-styles sc-scrollbar-style">
       #page-wrap {
         @apply --sc-sans-font;
       }
@@ -65,7 +67,8 @@
       .frequency-checkbox {
         --paper-checkbox-checked-color: var(--sc-primary-accent-color);
         --paper-checkbox-unchecked-color: var(--sc-disabled-text-color);
-        --paper-checkbox-label-color: var(--sc-disabled-text-color);
+        --paper-checkbox-label-color: var(--sc-secondary-text-color);
+        --paper-checkbox-label-checked-color: var(--sc-primary-text-color);
         margin-right: 1em;
       }
 
@@ -139,16 +142,16 @@
       }
 
       .field {
-        padding-bottom: var(--sc-size-xs);
-        background: transparent;
-        font-weight: 300;
         border: 0;
-        color: var(--sc-tertiary-text-color);
-        outline: none;
-        cursor: text;
-        display: block;
         width: 100%;
-        line-height: 32px;
+        cursor: text;
+        outline: none;
+        display: block;
+        font-weight: 300;
+        background: transparent;
+        line-height: var(--sc-size-lg);
+        padding-bottom: var(--sc-size-xs);
+        color: var(--sc-tertiary-text-color);
         transition: opacity 200ms ease-in-out;
       }
 
@@ -165,32 +168,6 @@
         color: var(--sc-primary-text-color);
       }
 
-      .success, .error {
-        @apply --sc-skolar-font-size-s;
-        display: none;
-      }
-
-      .success.visible, .error.visible {
-        display: inline;
-      }
-
-      .error {
-        color: #E4584C;
-      }
-
-      .error-bar {
-        border-bottom: 2px solid #E4584C;
-      }
-
-      .success {
-        color: #43a047;
-      }
-
-      .success .token {
-        @apply --sc-skolar-font-size-s;
-        font-weight: 500;
-      }
-
       .spinner {
         position: absolute;
         left: 50%;
@@ -204,22 +181,13 @@
       }
 
       .blocker {
-        position: fixed;
         top: 0;
         left: 0;
+        opacity: 1;
         width: 100%;
         height: 100%;
-        opacity: 1;
         z-index: 100;
-      }
-
-      .toast {
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-xl;
-        color: var(--sc-tertiary-text-color);
-        --paper-toast-color: var(--sc-paper-tooltip-color);
-        text-align: center;
-        margin-left: calc(50vw - 150px);
+        position: fixed;
       }
 
       .sans-font {
@@ -242,21 +210,26 @@
         margin-right: 0.5em;
       }
 
-      .success-toast {
-        --paper-toast-background-color: var(--sc-toast-success-color);
-      }
-
-      .error-toast {
-        --paper-toast-background-color: var(--sc-toast-error-color);
+      .sc-tooltip {
+        @apply --sc-sans-font;
+        --paper-tooltip-opacity: 0.98;
+        --paper-tooltip-background: var(--sc-paper-tooltip-color);
+        --paper-tooltip: {
+          @apply --sc-skolar-font-size-xs;
+          line-height: var(--sc-size-md);
+          padding: var(--sc-size-sm) var(--sc-size-md);
+          text-shadow: 0 0 var(--sc-secondary-background-color);
+          white-space: normal;
+        }
       }
 
     </style>
     <iron-ajax
-        id='currency_ajax'
         auto
+        id='currency_ajax'
         url="/api/currencies"
         handle-as="json"
-        last-response="{{ responseData }}"
+        last-response="{{responseData}}"
         on-response="_handleResponse"></iron-ajax>
 
     <iron-ajax
@@ -264,9 +237,9 @@
         url="/api/donate"
         handle-as="json"
         method="post"
-        body="{{ formData }}"
-        last-response="{{ donationResponseData }}"
-        last-error="{{ donationResponseError}}"
+        body="{{formData}}"
+        last-response="{{donationResponseData}}"
+        last-error="{{donationResponseError}}"
         on-error="_paymentError"
         on-response="_paymentFinished"></iron-ajax>
 
@@ -277,16 +250,17 @@
         <iron-form id="donation_form" class="payment-iron-form">
           <form class="payment-form">
             <div class="flex-row">
-              <paper-dropdown-menu class="currency-dropdown data-input" title="Select currency"
+              <paper-dropdown-menu class="currency-dropdown data-input" aria-label="Select currency"
                                    dynamic-align label="Currency" always-float-label>
                 <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
                                selected="[[default_currency_index]]">
-                  <template is="dom-repeat" items="{{ currencies }}">
-                    <paper-item class="currency-menu-item" title="[[item.name]]">
-                      <paper-item-body>
-                        [[item.symbol]]
-                      </paper-item-body>
+                  <template is="dom-repeat" items="[[currencies]]">
+                    <paper-item id$="[[item.symbol]]" class="currency-menu-item">
+                      [[item.symbol]]
                     </paper-item>
+                    <paper-tooltip for="[[item.symbol]]" class="sc-tooltip" animation-delay="100">
+                      [[item.name]]
+                    </paper-tooltip>
                   </template>
                 </paper-listbox>
               </paper-dropdown-menu>
@@ -337,9 +311,7 @@
         </div>
       </section>
     </div>
-    <paper-toast class="toast error-toast" text="[[errorMessage]]" duration=5000></paper-toast>
-    <paper-toast class="toast success-toast" text="[[successMessage]]" duration=5000></paper-toast>
-    <template is="dom-if" if="{{processingPayment}}">
+    <template is="dom-if" if="[[processingPayment]]">
       <div class="blocker"></div>
       <div class="spinner">
         <paper-spinner active></paper-spinner>
@@ -389,10 +361,6 @@
                   processingPayment: {
                       type: Boolean
                   },
-                  errorMessage: {
-                      type: String,
-                      value: 'Error!'
-                  },
                   isStripeValid: {
                       type: Boolean,
                       value: false
@@ -405,10 +373,6 @@
                           2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
                           3: 'Your card was declined.'
                       }
-                  },
-                  successMessage: {
-                      type: String,
-                      value: 'Sadhu! Your payment has been completed successfully. You will be redirected in 5 seconds.'
                   }
               }
           }
@@ -478,24 +442,23 @@
               });
           }
 
-          _paymentFinished(event) {
+          _paymentFinished() {
               this.processingPayment = false;
-              let successToast = this.shadowRoot.querySelector('.success-toast');
-              successToast.open();
+              this._showToast('success', 'Sadhu! Your payment has been completed successfully. ' +
+                  'You will be redirected to the homepage in 5 seconds.');
               setTimeout(() => {
                   this.$.submitButton.disabled = false;
                   this.$.donation_form.reset();
                   this.shadowRoot.querySelector('.amount-input').value = undefined;
                   this.set('path', '/');
-              }, successToast.duration + 500);
+              }, 5000);
           }
 
-          _paymentError(event) {
+          _paymentError() {
               this.$.submitButton.disabled = false;
-              let errCode = this.donationResponseError.response['err_code']
-              this.errorMessage = this.errorMessages[errCode];
+              let errCode = this.donationResponseError.response['err_code'];
               this.processingPayment = false;
-              this.shadowRoot.querySelector('.error-toast').open();
+              this._showToast('error', this.errorMessages[errCode]);
           }
 
           _getFormData() {
@@ -515,19 +478,15 @@
               return data;
           }
 
-          _getIconColor() {
-              const bodyStyle = window.getComputedStyle(document.body);
-              return bodyStyle.getPropertyValue('--sc-disabled-text-color');
-          }
-
-          _getErrorColor() {
-              const bodyStyle = window.getComputedStyle(document.body);
-              return bodyStyle.getPropertyValue('--sc-toast-error-color');
-          }
-
-          _getPlaceholderColor() {
-              const bodyStyle = window.getComputedStyle(document.body);
-              return bodyStyle.getPropertyValue('--sc-secondary-text-color');
+          _showToast(toastType, text) {
+              this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                  detail: {
+                      toastType: toastType,
+                      message: text
+                  },
+                  bubbles: true,
+                  composed: true
+              }));
           }
       }
 

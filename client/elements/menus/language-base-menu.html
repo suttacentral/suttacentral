@@ -86,8 +86,8 @@ This is the base language menu that determines the language of the site.
         last-response="{{lastResponse}}"></iron-ajax>
 
     <paper-dropdown-menu class="language-menu-dropdown" label="Language" title="Select the site in another language">
-      <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNr}}">
-        <template is="dom-repeat" items="{{lastResponse}}" as="language">
+      <paper-listbox class="language-menu-list sc-scrollbar" slot="dropdown-content" selected="{{selectedLanguageNr}}">
+        <template is="dom-repeat" items="[[lastResponse]]" as="language">
           <paper-item class="language-menu-paper-item" id='[[language.uid]]'>
             <div class="iso-code">
               <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
