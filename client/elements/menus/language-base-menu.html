@@ -65,6 +65,10 @@ This is the base language menu that determines the language of the site.
         cursor: pointer;
       }
 
+      .language-name {
+        padding-top: var(--sc-size-xxs);
+      }
+
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -81,7 +85,7 @@ This is the base language menu that determines the language of the site.
           <paper-icon-item class="language-menu-paper-item" id='[[language.uid]]'>
             <iron-icon class="iso-code-image" slot="item-icon" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
             <paper-item-body>
-              <div>[[language.name]]</div>
+              <div class="language-name">[[language.name]]</div>
             </paper-item-body>
           </paper-icon-item>
         </template>

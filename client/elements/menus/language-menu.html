@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
@@ -45,7 +45,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
       .language-menu-listbox {
         background-color: var(--sc-secondary-background-color);
-        width: 220px;
+        width: 230px;
       }
 
       .language-menu-url {
@@ -54,10 +54,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
       .language-menu-item {
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-md;
         color: var(--sc-primary-text-color);
-        padding-left: var(--sc-size-sm);
-        padding-right: var(--sc-size-sm);
-        text-transform: capitalize;
+        /*19px for the icon, 16px for the margin */
+        --paper-item-icon-width: calc(19px + 16px);
       }
 
       .root-lang-menu-item {
@@ -73,13 +74,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         outline: none;
       }
 
-      .iso-code {
-        padding-right: var(--sc-size-sm);
-        margin-top: var(--sc-size-xs);
-      }
-
       .iso-code-image {
         fill: var(--sc-disabled-text-color);
+        margin-top: var(--sc-size-xs);
+        width: 19px;
+        height: 19px;
       }
 
       .language-choice-box {
@@ -102,22 +101,21 @@ Language-menu used in the suttaplex card for denoting which translations exist o
     </style>
     <template is="dom-if" if="[[_shouldShowMenu(languageChoice)]]">
       <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
-                          title="Select a language" id="paper_dropdown_menu" dynamic-align=true>
+                           title="Select a language" id="paper_dropdown_menu" dynamic-align=true>
         <paper-listbox class="language-menu-listbox" slot="dropdown-content">
 
           <template is="dom-repeat" items="[[languageChoice]]" as="language">
             <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
               <section class$="{{_rootLanguageClassOrStandard(language)}} no-outline">
                 <a class="language-menu-url"
-                  href="/[[rootId]]/[[language.lang]]/[[language.author]][[_getParagraphRange()]]">
-                  <paper-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
-                    <div class="iso-code">
-                      <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.lang)]]"></iron-icon>
-                    </div>
+                   href="/[[rootId]]/[[language.lang]]/[[language.author]][[_getParagraphRange()]]">
+                  <paper-icon-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
+                    <iron-icon class="iso-code-image" slot="item-icon"
+                               icon="[[_getLanguageIconName(language.lang)]]"></iron-icon>
                     <paper-item-body>
-                    [[_computeAuthorForList(language.author)]]
+                      [[_computeAuthorForList(language.author)]]
                     </paper-item-body>
-                  </paper-item>
+                  </paper-icon-item>
                 </a>
               </section>
             </template>
@@ -164,7 +162,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                       }
                   },
                   to: {
-                    type: String
+                      type: String
                   }
               }
           }
@@ -188,7 +186,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _shouldShowMenu(languageChoice) {
-            return languageChoice.some(item =>  item.lang !== this.inputLanguage);
+              return languageChoice.some(item => item.lang !== this.inputLanguage);
           }
 
           _computeAuthor(author) {
@@ -214,20 +212,20 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           _getLanguageIconName(isoCode) {
               return `sc-language-icons:${isoCode}`;
           }
-          
+
           _getParagraphRange() {
-            if(!this.to) {
-              return '';
-            }
-            const ids = this.to.split(/#(.*)/)[1];
-            if(!ids) {
-              return '';
-            }
-            if(ids.includes('-')) {
-              const [id1, id2] = ids.split('-#');
-              return `#${id1}-${id2}`;
-            }
-            return `#${ids}`;
+              if (!this.to) {
+                  return '';
+              }
+              const ids = this.to.split(/#(.*)/)[1];
+              if (!ids) {
+                  return '';
+              }
+              if (ids.includes('-')) {
+                  const [id1, id2] = ids.split('-#');
+                  return `#${id1}-${id2}`;
+              }
+              return `#${ids}`;
           }
       }
 
