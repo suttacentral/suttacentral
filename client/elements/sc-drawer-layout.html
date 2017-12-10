@@ -18,8 +18,7 @@
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
 <!--
-  The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates
-  this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**).
+  This is the base layout element of the application. It contains the sidebar and the main content container.
 
   Issue:
     For the grayed out backdrop, the sutta text dialogs must be placed outside the text-view itself because of a
@@ -29,7 +28,7 @@
     https://github.com/PolymerElements/paper-dialog-behavior/issues/78
     https://github.com/PolymerElements/paper-dialog/issues/44#issuecomment-172013206
 -->
-<dom-module id="sc-navdrawer">
+<dom-module id="sc-drawer-layout">
   <template>
     <style include="sc-scrollbar-style">
       :host {
@@ -215,9 +214,9 @@
   </template>
 
   <script>
-      class SCNavdrawer extends ReduxMixin(Polymer.Element) {
+      class SCDrawerLayout extends ReduxMixin(Polymer.Element) {
           static get is() {
-              return 'sc-navdrawer';
+              return 'sc-drawer-layout';
           }
 
           static get properties() {
@@ -270,6 +269,6 @@
           }
       }
 
-      customElements.define(SCNavdrawer.is, SCNavdrawer);
+      customElements.define(SCDrawerLayout.is, SCDrawerLayout);
   </script>
 </dom-module>
