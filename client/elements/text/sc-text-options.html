@@ -97,7 +97,7 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
   </template>
 
   <script>
-      class SCTextOptions extends Polymer.Element {
+      class SCTextOptions extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-text-options';
           }
@@ -112,7 +112,10 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
                       type: Object
                   },
                   opened: Boolean,
-                  metaArea: String
+                  metaArea: {
+                      type: String,
+                      statePath: 'suttaMetaText'
+                  }
               }
           }
 
