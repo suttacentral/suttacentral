@@ -38,11 +38,11 @@
         @apply --sc-skolar-font-size-l;
         background-color: var(--sc-paper-tooltip-color);
         border-top: 1px solid var(--sc-disabled-text-color);
+        padding: var(--sc-size-sm);
         display: flex;
         align-items: center;
         font-weight: 600;
         margin: 0;
-        padding: 10px 20px;
         z-index: 1;
       }
 
@@ -95,10 +95,6 @@
         width: auto;
       }
 
-      .nav-sub {
-        z-index: 1;
-      }
-
       .nav-menu-item {
         list-style-type: none;
         margin: 0 0 var(--sc-size-sm);
@@ -107,12 +103,15 @@
         align-items: center;
       }
 
-      .nav-list {
+      .nav-list, .sub-nav {
         list-style-type: none;
         margin: 0;
-        overflow-y: scroll;
-        padding: 16px 0;
+        padding: var(--sc-size-md) 0;
         height: 100% !important;
+      }
+
+      .sub-nav-container {
+        z-index: 1;
       }
 
       .nav-link {
@@ -165,6 +164,7 @@
       .nav-tertiary .nav-link {
         text-transform: none;
         letter-spacing: 0;
+        font-weight: 300;
         color: var(--sc-primary-accent-color);
       }
 
@@ -179,8 +179,15 @@
       }
 
       #main-navigation {
-        margin-top: -85px;
+        margin-top: -77px;
         height: auto;
+      }
+
+      #back-arrow {
+        fill: var(--sc-disabled-text-color);
+        cursor: pointer;
+        width: var(--sc-size-lg);
+        height: var(--sc-size-lg);
       }
 
     </style>
@@ -207,15 +214,15 @@
 
       <nav class="sc-nav">
         <div>
-          <a class="nav-back-button swap-section up">
-            <iron-icon icon="arrow-back" class="menu-icon"></iron-icon>
+          <a id="sub-navigation-header" class="nav-back-button swap-section up">
+            <iron-icon id="back-arrow" icon="arrow-back" on-tap="_closeChildMenu"></iron-icon>
             <span class="nav-back-title">Digha Nikaya</span>
           </a>
 
           <!-- Sub nav menu -->
-          <div id="sub-navigation" class="nav-sub sc-scrollbar swap-section right">
-            <ul id="sub-nav">
-              <li class="nav-section">
+          <div id="sub-navigation" class="sub-nav-container swap-section right">
+            <ul class="sub-nav nav-tertiary sc-scrollbar">
+              <li class="nav-menu-item">
                 <div class="nav-section-header">
                   <a class="nav-link" href="/">Chapter on Ethics</a>
                   <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
@@ -250,7 +257,7 @@
                   <ul class="nav-tertiary open">
                     <li class="nav-menu-item">
                       <a class="nav-link">Digha Nikaya</a>
-                      <iron-icon icon="arrow-forward" class="menu-icon"></iron-icon>
+                      <iron-icon icon="arrow-forward" class="menu-icon" on-tap="_openChildMenu"></iron-icon>
                     </li>
                   </ul>
 
@@ -306,6 +313,18 @@
                   childMenu.classList.add('open');
                   icon.classList.add('open');
               }
+          }
+
+          _openChildMenu() {
+              this.shadowRoot.querySelector('#main-navigation').classList.remove('active');
+              this.shadowRoot.querySelector('#sub-navigation').classList.add('active');
+              this.shadowRoot.querySelector('#sub-navigation-header').classList.add('active');
+          }
+
+          _closeChildMenu() {
+              this.shadowRoot.querySelector('#sub-navigation').classList.remove('active');
+              this.shadowRoot.querySelector('#sub-navigation-header').classList.remove('active');
+              this.shadowRoot.querySelector('#main-navigation').classList.add('active');
           }
 
           // Open the first two tiers of the sidebar menu and add icons
