@@ -28,25 +28,34 @@
       }
 
       .sc-nav-back-button {
-        background-color: var(--sc-disabled-text-color);
+        @apply --sc-skolar-font-size-l;
+        background-color: var(--sc-paper-tooltip-color);
+        border-top: 1px solid var(--sc-disabled-text-color);
         display: flex;
         align-items: center;
-        font-weight: 500;
-        font-size: 18px;
-        height: 45px;
-        left: 0;
+        font-weight: 600;
         margin: 0;
         padding: 10px 20px;
-        right: 0;
-        top: 0;
         z-index: 1;
       }
 
+      .sc-nav-back-button.sc-swap-section {
+        height: var(--sc-size-xl);
+      }
+
+      .sc-nav-back-title {
+        color: var(--sc-disabled-text-color);
+        margin-left: var(--sc-size-sm);
+        margin-top: var(--sc-size-xxs);
+      }
+
+      .grey-icon {
+        fill: var(--sc-disabled-text-color);
+      }
+
       .sc-swap-section {
-        left: 0;
+        height: 0;
         opacity: 0;
-        top: 0;
-        width: 100%;
         transition: opacity 1s, transform .5s;
         -webkit-transition: opacity 1s, -webkit-transform .5s;
       }
@@ -87,6 +96,10 @@
         z-index: 1;
       }
 
+      #sc-main-navigation {
+        margin-top: calc(var(--sc-size-xl) * -1);
+      }
+
     </style>
 
     <iron-ajax
@@ -109,14 +122,15 @@
         <iron-icon class="network-error-icon icon-middle" title="Network error" src="img/nonetwork.svg"></iron-icon>
       </template>
 
-      <!-- The navigation menu: -->
       <nav class="sc-nav">
-        <div data-swap-container>
-          <a class="sc-nav-back-button sc-swap-section sc-up">
-            <iron-icon icon="arrow-back"></iron-icon>
-            <span class="sc-nav-back-title">Home</span>
+        <div>
+          <a class="sc-nav-back-button sc-swap-section sc-up sc-active">
+            <iron-icon icon="arrow-back" class="grey-icon"></iron-icon>
+            <span class="sc-nav-back-title">Child title</span>
           </a>
-          <div id="sc-sub-navigation" class="sc-nav-sub sc-swap-section sc-right sc-active">
+
+          <!-- Sub nav menu -->
+          <div id="sc-sub-navigation" class="sc-nav-sub sc-swap-section sc-right">
             <ul id="sub-nav">
               <li class="nav-section">
                 <div class="nav-section-header">
@@ -132,6 +146,8 @@
               </li>
             </ul>
           </div>
+
+          <!-- Main nav menu -->
           <ul id="sc-main-navigation" class="sc-nav-list sc-swap-section sc-left sc-active">
             <li class="sc-nav-menu-item">
               <a class="sc-nav-menu-link" href="/">Home</a>
@@ -142,6 +158,7 @@
               <iron-icon icon="arrow-forward"></iron-icon>
             </li>
           </ul>
+
         </div>
       </nav>
 
