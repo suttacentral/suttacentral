@@ -13,7 +13,7 @@
       }
 
       .paper-spinner {
-        --paper-spinner-color: var(--sc-primary-color);
+        --paper-spinner-color: var(--primary-color);
       }
 
       .icon-middle {
@@ -29,7 +29,7 @@
         height: var(--sc-size-xxl);
       }
 
-      .sc-nav-back-button {
+      .nav-back-button {
         @apply --sc-skolar-font-size-l;
         background-color: var(--sc-paper-tooltip-color);
         border-top: 1px solid var(--sc-disabled-text-color);
@@ -41,47 +41,47 @@
         z-index: 1;
       }
 
-      .sc-nav-back-button.sc-swap-section {
+      .nav-back-button.swap-section {
         height: var(--sc-size-xl);
       }
 
-      .sc-nav-back-title {
+      .nav-back-title {
         color: var(--sc-disabled-text-color);
         margin-left: var(--sc-size-sm);
         margin-top: var(--sc-size-xxs);
       }
 
-      .sc-swap-section {
+      .swap-section {
         height: 0;
         opacity: 0;
         transition: opacity 1s, transform .5s;
         -webkit-transition: opacity 1s, -webkit-transform .5s;
       }
 
-      .sc-nav .sc-swap-section {
+      .nav .swap-section {
         transition-duration: .3s;
         -webkit-transition-duration: .3s;
       }
 
-      .sc-swap-section.sc-up {
+      .swap-section.up {
         transform: translateY(-100%);
         -webkit-transform: translateY(-100%);
         -ms-transform: translateY(-100%);
       }
 
-      .sc-swap-section.sc-right {
+      .swap-section.right {
         transform: translateX(100%);
         -webkit-transform: translateX(100%);
         -ms-transform: translateX(100%);
       }
 
-      .sc-swap-section.sc-left {
+      .swap-section.left {
         transform: translateX(-100%);
         -webkit-transform: translateX(-100%);
         -ms-transform: translateX(-100%);
       }
 
-      .sc-swap-section.sc-active {
+      .swap-section.active {
         opacity: 1;
         position: relative;
         -webkit-transform: translate(0, 0);
@@ -90,11 +90,11 @@
         width: auto;
       }
 
-      .sc-nav-sub {
+      .nav-sub {
         z-index: 1;
       }
 
-      .sc-nav-menu-item {
+      .nav-menu-item {
         list-style-type: none;
         margin: 0 0 10px;
         position: relative;
@@ -103,7 +103,7 @@
         align-items: center;
       }
 
-      .sc-nav-list {
+      .nav-list {
         list-style-type: none;
         margin: 0;
         overflow-y: scroll;
@@ -111,7 +111,7 @@
         height: 100% !important;
       }
 
-      .sc-nav-link {
+      .nav-link {
         @apply --sc-skolar-font-size-md;
         color: var(--sc-primary-text-color);
         text-transform: uppercase;
@@ -124,22 +124,22 @@
         -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
       }
 
-      .sc-nav-menu-item.selected {
+      .nav-menu-item.selected {
         background: var(--sc-primary-accent-color-almost-transparent);
         color: var(--sc-primary-color-dark);
       }
 
-      .sc-menu-icon {
+      .menu-icon {
         fill: var(--sc-disabled-text-color);
         padding: 5px;
         display: inline-block;
       }
 
-      .sc-nav-menu-item.selected .sc-menu-icon {
+      .nav-menu-item.selected .menu-icon {
         background-color: var(--sc-secondary-text-color);
       }
 
-      #sc-main-navigation {
+      #main-navigation {
         margin-top: -85px;
         height: auto;
       }
@@ -168,38 +168,38 @@
 
       <nav class="sc-nav">
         <div>
-          <a class="sc-nav-back-button sc-swap-section sc-up">
-            <iron-icon icon="arrow-back" class="sc-menu-icon"></iron-icon>
-            <span class="sc-nav-back-title">Child title</span>
+          <a class="nav-back-button swap-section up">
+            <iron-icon icon="arrow-back" class="menu-icon"></iron-icon>
+            <span class="nav-back-title">Child title</span>
           </a>
 
           <!-- Sub nav menu -->
-          <div id="sc-sub-navigation" class="sc-nav-sub sc-scrollbar sc-swap-section sc-right">
+          <div id="sub-navigation" class="nav-sub sc-scrollbar swap-section right">
             <ul id="sub-nav">
               <li class="nav-section">
                 <div class="nav-section-header">
-                  <a class="sc-nav-link" href="/">Creative Vision</a>
-                  <iron-icon icon="expand-more" class="sc-menu-icon"></iron-icon>
+                  <a class="nav-link" href="/">Creative Vision</a>
+                  <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
                 </div>
               </li>
               <li class="nav-section">
                 <div class="nav-section-header">
-                  <a class="sc-nav-link" href="/">Second sub thing</a>
-                  <iron-icon icon="expand-more" class="sc-menu-icon"></iron-icon>
+                  <a class="nav-link" href="/">Second sub thing</a>
+                  <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
                 </div>
               </li>
             </ul>
           </div>
 
           <!-- Main nav menu -->
-          <ul id="sc-main-navigation" class="sc-nav-list sc-scrollbar sc-swap-section sc-left sc-active">
-            <li class="sc-nav-menu-item">
-              <a class="sc-nav-link" href="/">Home</a>
-              <iron-icon icon="expand-more" class="sc-menu-icon"></iron-icon>
+          <ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
+            <li class="nav-menu-item">
+              <a class="nav-link" href="/">Home</a>
+              <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
             </li>
-            <li class="sc-nav-menu-item">
-              <a class="sc-nav-link" href="/">Design</a>
-              <iron-icon icon="arrow-forward" class="sc-menu-icon"></iron-icon>
+            <li class="nav-menu-item">
+              <a class="nav-link" href="/">Design</a>
+              <iron-icon icon="arrow-forward" class="menu-icon"></iron-icon>
             </li>
           </ul>
 
