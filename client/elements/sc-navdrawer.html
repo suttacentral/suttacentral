@@ -1,15 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 
-<link rel="import" href="../elements/paper-tree-sc/paper-tree.html">
 <link rel="import" href="../elements/page-selector.html">
 <link rel="import" href="../elements/addons/sc-toasts.html">
+<link rel="import" href="../elements/sc-navigation-menu.html">
 <link rel="import" href="../styles/sc-scrollbar-style.html">
 
 <!-- Imports for the sutta text dialogs: -->
@@ -35,20 +33,7 @@
   <template>
     <style include="sc-scrollbar-style">
       :host {
-        background-color: grey;
         --app-drawer-width: 300px;
-      }
-
-      :host([is-wide]) {
-        --app-drawer-width: 360px;
-      }
-
-      .sc-paper-tree {
-        @apply --sc-sans-font;
-      }
-
-      .nav-list-container {
-        padding-top: 1em;
       }
 
       .nav-wheel-icon {
@@ -67,7 +52,6 @@
         @apply --sc-skolar-font-size-static-subtitle;
         background-color: var(--sc-secondary-text-color);
         padding-bottom: var(--sc-size-xs);
-        color: white;
         font-weight: normal;
         margin: 0;
         white-space: nowrap;
@@ -76,7 +60,6 @@
       }
 
       .nav-home-link {
-        color: white;
         text-decoration: none;
         background: none;
       }
@@ -94,23 +77,6 @@
         background-color: var(--sc-secondary-background-color);
         overflow: auto;
         height: 100%;
-      }
-
-      .paper-spinner {
-        --paper-spinner-color: var(--sc-primary-color);
-      }
-
-      .icon-middle {
-        position: absolute;
-        margin: 0;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      .network-error-icon {
-        width: var(--sc-size-xxl);
-        height: var(--sc-size-xxl);
       }
 
       /* styles for the text dialogs: */
@@ -197,15 +163,6 @@
 
     <iron-media-query query="(min-width: 992px)" query-matches="{{wideScreen}}"></iron-media-query>
 
-    <iron-ajax
-        auto
-        url="[[_getMenuUrl()]]"
-        handle-as="json"
-        loading="{{loading}}"
-        last-error="{{error}}"
-        last-response="{{navList}}"
-    ></iron-ajax>
-
     <app-drawer-layout fullbleed responsive-width="840px">
 
       <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer">
@@ -216,23 +173,7 @@
               <span class="nav-home-title-text">&nbsp;SuttaCentral</span>
             </a>
           </div>
-          <div id="container" class="nav-list-container">
-            <template is="dom-if" if="[[_shouldShowLoadingIndicator(loading, error)]]">
-              <div class="loading-indicator">
-                <paper-spinner-lite class="paper-spinner icon-middle" active="[[loading]]"></paper-spinner-lite>
-              </div>
-            </template>
-
-            <template is="dom-if" if="[[error]]">
-              <iron-icon class="network-error-icon icon-middle" title="Network error"
-                         src="img/nonetwork.svg"></iron-icon>
-            </template>
-
-            <template is="dom-repeat" items="[[navList]]">
-              <paper-tree class="sc-paper-tree" data='[[item]]' is-wide="[[wideScreen]]"></paper-tree>
-            </template>
-
-          </div>
+          <sc-navigation-menu></sc-navigation-menu>
         </div>
       </app-drawer>
 
@@ -285,18 +226,6 @@
                       type: String,
                       notify: true
                   },
-                  category: {
-                      type: String,
-                      notify: true
-                  },
-                  wideScreen: {
-                      type: Boolean,
-                      observer: '_screenWidthChanged'
-                  },
-                  navList: {
-                      type: Array,
-                      observer: '_parseNavList'
-                  },
                   infoDialogMetaArea: {
                       type: String,
                       statePath: 'suttaMetaText'
@@ -315,42 +244,9 @@
               this._addScrollLockListeners();
           }
 
-          // Set the width of the nav drawer
-          _screenWidthChanged() {
-              const hostAttributes = this.$.container.__dataHost.attributes;
-              if (this.wideScreen) {
-                  hostAttributes.setNamedItem(document.createAttribute('is-wide'));
-              }
-              else if (hostAttributes.getNamedItem('is-wide')) {
-                  hostAttributes.removeNamedItem('is-wide');
-              }
-          }
-
-          // Open the first two tiers of the sidebar menu and add icons
-          _parseNavList() {
-              this.navList[0].open = true;
-              if (!this.navList[0].children) {
-                  return;
-              }
-              this.navList[0].children.forEach((item) => {
-                  item.open = true;
-                  item.icon = 'trending-flat';
-                  if (!item.children) {
-                      return;
-                  }
-                  item.children.forEach((subItem) => {
-                      subItem.icon = 'turned-in';
-                  })
-              });
-          }
-
           // opens the app-drawer when it is not visible.
           _toggleDrawer(event) {
               return this.shadowRoot.querySelector('app-drawer').setAttribute('opened', event.detail.togdraw);
-          }
-
-          _getMenuUrl() {
-              return `${this._getApiUrl()}/menu`;
           }
 
           // Locks scroll on text dialogs:
@@ -366,10 +262,6 @@
               let infoDialog = this.$.info_dialog;
               settingsDialog.addEventListener('opened-changed', () => { scrollLockListener(settingsDialog) });
               infoDialog.addEventListener('opened-changed', () => { scrollLockListener(infoDialog) });
-          }
-
-          _shouldShowLoadingIndicator(loading, error) {
-              return !!(loading && !error);
           }
 
           _getApiUrl() {

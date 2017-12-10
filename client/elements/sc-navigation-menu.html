@@ -1,0 +1,114 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
+<link rel="import" href="../elements/paper-tree-sc/paper-tree.html">
+
+<dom-module id="sc-navigation-menu">
+  <template>
+    <style>
+      .nav-list-container {
+        padding-top: var(--sc-size-md);
+      }
+
+      .sc-paper-tree {
+        @apply --sc-sans-font;
+      }
+
+      .paper-spinner {
+        --paper-spinner-color: var(--sc-primary-color);
+      }
+
+      .icon-middle {
+        position: absolute;
+        margin: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .network-error-icon {
+        width: var(--sc-size-xxl);
+        height: var(--sc-size-xxl);
+      }
+
+    </style>
+
+    <iron-ajax
+        auto
+        url="[[_getMenuUrl()]]"
+        handle-as="json"
+        loading="{{loading}}"
+        last-error="{{error}}"
+        last-response="{{navList}}">
+    </iron-ajax>
+
+    <div id="container" class="nav-list-container">
+      <template is="dom-if" if="[[_shouldShowLoadingIndicator(loading, error)]]">
+        <div class="loading-indicator">
+          <paper-spinner-lite class="paper-spinner icon-middle" active="[[loading]]"></paper-spinner-lite>
+        </div>
+      </template>
+
+      <template is="dom-if" if="[[error]]">
+        <iron-icon class="network-error-icon icon-middle" title="Network error"
+                   src="img/nonetwork.svg"></iron-icon>
+      </template>
+
+      <template is="dom-repeat" items="[[navList]]">
+        <paper-tree class="sc-paper-tree" data='[[item]]' is-wide="[[wideScreen]]"></paper-tree>
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+      class SCNavigationMenu extends Polymer.Element {
+          static get is() {
+              return 'sc-navigation-menu';
+          }
+
+          static get properties() {
+              return {
+                  navList: {
+                      type: Array,
+                      observer: '_parseNavList'
+                  }
+              }
+          }
+
+          // Open the first two tiers of the sidebar menu and add icons
+          _parseNavList() {
+              this.navList[0].open = true;
+              if (!this.navList[0].children) {
+                  return;
+              }
+              this.navList[0].children.forEach((item) => {
+                  item.open = true;
+                  item.icon = 'trending-flat';
+                  if (!item.children) {
+                      return;
+                  }
+                  item.children.forEach((subItem) => {
+                      subItem.icon = 'turned-in';
+                  })
+              });
+          }
+
+          _shouldShowLoadingIndicator(loading, error) {
+              return !!(loading && !error);
+          }
+
+          _getMenuUrl() {
+              return `${this._getApiUrl()}/menu`;
+          }
+
+          _getApiUrl() {
+              let currentUrl = window.location;
+              return `${currentUrl.protocol}//${currentUrl.host}/api`;
+          }
+      }
+
+      customElements.define(SCNavigationMenu.is, SCNavigationMenu);
+  </script>
+</dom-module>
