@@ -98,7 +98,6 @@
         list-style-type: none;
         margin: 0 0 10px;
         position: relative;
-        display: flex;
         justify-content: space-between;
         align-items: center;
       }
@@ -131,12 +130,33 @@
 
       .menu-icon {
         fill: var(--sc-disabled-text-color);
-        padding: 5px;
         display: inline-block;
+        position: absolute;
+        right: var(--sc-size-sm);
+        top: 0;
       }
 
       .nav-menu-item.selected .menu-icon {
         background-color: var(--sc-secondary-text-color);
+      }
+
+      .nav-secondary {
+        margin: 0;
+        list-style-type: none;
+        padding-left: var(--sc-size-md);
+      }
+
+      .nav-secondary .nav-link {
+        @apply --sc-skolar-font-size-s;
+        font-weight: 300;
+      }
+
+      .nav-secondary.open {
+        display: block;
+      }
+
+      .nav-secondary.closed {
+        display: none;
       }
 
       #main-navigation {
@@ -193,14 +213,27 @@
 
           <!-- Main nav menu -->
           <ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
+
             <li class="nav-menu-item">
               <a class="nav-link" href="/">Home</a>
-              <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
+              <iron-icon icon="expand-more" class="menu-icon" on-tap="_toggleOpenDropdownMenu"></iron-icon>
+
+              <ul class="nav-secondary open">
+                <li class="nav-menu-item">
+                  <a class="nav-link">Child 1</a>
+                </li>
+                <li class="nav-menu-item">
+                  <a class="nav-link">Child 2</a>
+                </li>
+              </ul>
+
             </li>
+
             <li class="nav-menu-item">
               <a class="nav-link" href="/">Design</a>
               <iron-icon icon="arrow-forward" class="menu-icon"></iron-icon>
             </li>
+
           </ul>
 
         </div>
@@ -222,6 +255,23 @@
                       type: Array,
                       observer: '_parseNavList'
                   }
+              }
+          }
+
+          _toggleOpenDropdownMenu(e) {
+              // TODO change to [2] after adding iso code svg
+              // TODO or use for="uid" attribute in icon element
+              const icon = e.path[0];
+              const container = e.path[1];
+              const childMenu = container.querySelector('ul');
+              if (childMenu.classList.contains('open')) {
+                  childMenu.classList.remove('open');
+                  childMenu.classList.add('closed');
+                  icon.setAttribute('icon', 'expand-more');
+              } else if (childMenu.classList.contains('closed')) {
+                  childMenu.classList.remove('closed');
+                  childMenu.classList.add('open');
+                  icon.setAttribute('icon', 'expand-less');
               }
           }
 
