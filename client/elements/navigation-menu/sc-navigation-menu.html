@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="../../styles/sc-scrollbar-style.html">
 
@@ -10,6 +11,10 @@
     <style include="sc-scrollbar-style">
       .sc-nav {
         @apply --sc-sans-font;
+        user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
       }
 
       .paper-spinner {
@@ -96,7 +101,7 @@
 
       .nav-menu-item {
         list-style-type: none;
-        margin: 0 0 10px;
+        margin: 0 0 var(--sc-size-sm);
         position: relative;
         justify-content: space-between;
         align-items: center;
@@ -133,17 +138,23 @@
         display: inline-block;
         position: absolute;
         right: var(--sc-size-sm);
-        top: 0;
+        top: var(--sc-size-xxs);
+        transition: .3s ease all;
+        cursor: pointer;
+      }
+
+      .menu-icon.open {
+        transform: rotateZ(180deg);
       }
 
       .nav-menu-item.selected .menu-icon {
         background-color: var(--sc-secondary-text-color);
       }
 
-      .nav-secondary {
-        margin: 0;
+      .nav-secondary, .nav-tertiary {
+        margin: var(--sc-size-sm) 0;
         list-style-type: none;
-        padding-left: var(--sc-size-md);
+        padding-left: var(--sc-size-sm);
       }
 
       .nav-secondary .nav-link {
@@ -151,11 +162,19 @@
         font-weight: 300;
       }
 
-      .nav-secondary.open {
+      .nav-tertiary .nav-link {
+        text-transform: none;
+        letter-spacing: 0;
+        color: var(--sc-primary-accent-color);
+      }
+
+      .nav-secondary.open,
+      .nav-tertiary.open {
         display: block;
       }
 
-      .nav-secondary.closed {
+      .nav-secondary.closed,
+      .nav-tertiary.closed {
         display: none;
       }
 
@@ -190,7 +209,7 @@
         <div>
           <a class="nav-back-button swap-section up">
             <iron-icon icon="arrow-back" class="menu-icon"></iron-icon>
-            <span class="nav-back-title">Child title</span>
+            <span class="nav-back-title">Digha Nikaya</span>
           </a>
 
           <!-- Sub nav menu -->
@@ -198,14 +217,16 @@
             <ul id="sub-nav">
               <li class="nav-section">
                 <div class="nav-section-header">
-                  <a class="nav-link" href="/">Creative Vision</a>
+                  <a class="nav-link" href="/">Chapter on Ethics</a>
                   <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
                 </div>
               </li>
               <li class="nav-section">
                 <div class="nav-section-header">
-                  <a class="nav-link" href="/">Second sub thing</a>
-                  <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
+                  <a class="nav-link" href="/">Second Vagga</a>
+                  <paper-icon-button>
+                    <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
+                  </paper-icon-button>
                 </div>
               </li>
             </ul>
@@ -215,23 +236,32 @@
           <ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
 
             <li class="nav-menu-item">
-              <a class="nav-link" href="/">Home</a>
-              <iron-icon icon="expand-more" class="menu-icon" on-tap="_toggleOpenDropdownMenu"></iron-icon>
+              <span class="nav-link" href="/">Sutta</span>
+              <iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>
 
               <ul class="nav-secondary open">
                 <li class="nav-menu-item">
-                  <a class="nav-link">Child 1</a>
+                  <span class="nav-link">Long</span>
                 </li>
                 <li class="nav-menu-item">
-                  <a class="nav-link">Child 2</a>
+                  <span class="nav-link">Short</span>
+                  <iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>
+
+                  <ul class="nav-tertiary open">
+                    <li class="nav-menu-item">
+                      <a class="nav-link">Digha Nikaya</a>
+                      <iron-icon icon="arrow-forward" class="menu-icon"></iron-icon>
+                    </li>
+                  </ul>
+
                 </li>
               </ul>
 
             </li>
 
             <li class="nav-menu-item">
-              <a class="nav-link" href="/">Design</a>
-              <iron-icon icon="arrow-forward" class="menu-icon"></iron-icon>
+              <span class="nav-link" href="/">Vinaya</span>
+              <iron-icon icon="expand-more" class="menu-icon" on-tap="_toggleOpenDropdownMenu"></iron-icon>
             </li>
 
           </ul>
@@ -264,14 +294,17 @@
               const icon = e.path[0];
               const container = e.path[1];
               const childMenu = container.querySelector('ul');
+              if (!childMenu) {
+                  return;
+              }
               if (childMenu.classList.contains('open')) {
                   childMenu.classList.remove('open');
                   childMenu.classList.add('closed');
-                  icon.setAttribute('icon', 'expand-more');
+                  icon.classList.remove('open');
               } else if (childMenu.classList.contains('closed')) {
                   childMenu.classList.remove('closed');
                   childMenu.classList.add('open');
-                  icon.setAttribute('icon', 'expand-less');
+                  icon.classList.add('open');
               }
           }
 
