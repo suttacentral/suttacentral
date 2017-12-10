@@ -72,10 +72,14 @@
       }
 
       .nav-drawer-box {
-        @apply --shadow-elevation-16dp;
+        @apply --shadow-elevation-8dp;
         background-color: var(--sc-secondary-background-color);
         overflow: auto;
         height: 100%;
+      }
+
+      .nav-home-title-text {
+        color: var(--sc-tertiary-text-color);
       }
 
       /* styles for the text dialogs: */
@@ -135,24 +139,6 @@
       .close-dialog-icon {
         color: var(--sc-tertiary-text-color);
         margin: var(--sc-size-sm);
-      }
-
-      .nav-home-title-text {
-        color: var(--sc-tertiary-text-color);
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-        background: linear-gradient(to top, var(--sc-primary-color-transparent) 1.5px, var(--sc-primary-color) 1.5px, var(--sc-primary-color) 2.5px, var(--sc-primary-color-transparent) 2.5px);
-      }
-
-      a:hover {
-        background: linear-gradient(to top, var(--sc-primary-color-transparent) 1px, var(--sc-primary-color) 1px, var(--sc-primary-color) 3px, var(--sc-primary-color-transparent) 3px);
-      }
-
-      a:visited {
-        background: linear-gradient(to top, var(--sc-primary-color-darkest-transparent) 1px, var(--sc-primary-color-darkest) 1px, var(--sc-primary-color-darkest) 3px, var(--sc-primary-color-darkest-transparent) 3px);
       }
 
     </style>
