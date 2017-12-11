@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
@@ -36,20 +36,28 @@ This is the base language menu that determines the language of the site.
           --paper-input-container-color: var(--sc-secondary-text-color);
         };
         background-color: var(--sc-secondary-background-color);
+        --paper-menu-button-dropdown: {
+          width: 180px;
+        };
       }
 
       .language-menu-list {
-        @apply --shadow-elevation-8dp;
         background-color: var(--sc-secondary-background-color);
+      }
+
+      .iso-code-image {
+        fill: var(--sc-disabled-text-color);
+        margin-top: var(--sc-size-xs);
+        width: 19px;
+        height: 19px;
       }
 
       .language-menu-paper-item {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
         color: var(--sc-primary-text-color);
-        text-transform: capitalize;
-        padding-left: var(--sc-size-sm);
-        width: 180px;
+        /*19px for the icon, 16px for the margin */
+        --paper-item-icon-width: calc(19px + 16px);
       }
 
       .language-menu-paper-item:hover {
@@ -57,13 +65,8 @@ This is the base language menu that determines the language of the site.
         cursor: pointer;
       }
 
-      .iso-code {
-        padding-right: var(--sc-size-sm);
-        margin-top: var(--sc-size-xs);
-      }
-
-      .iso-code-image {
-        fill: var(--sc-disabled-text-color);
+      .language-name {
+        padding-top: var(--sc-size-xxs);
       }
 
     </style>
@@ -78,15 +81,13 @@ This is the base language menu that determines the language of the site.
 
     <paper-dropdown-menu class="language-menu-dropdown" label="Language" title="Select the site in another language">
       <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNr}}">
-        <template is="dom-repeat" items="{{lastResponse}}" as="language">
-          <paper-item class="language-menu-paper-item" id='[[language.uid]]'>
-            <div class="iso-code">
-              <iron-icon class="iso-code-image" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
-            </div>
+        <template is="dom-repeat" items="[[lastResponse]]" as="language">
+          <paper-icon-item class="language-menu-paper-item" id='[[language.uid]]'>
+            <iron-icon class="iso-code-image" slot="item-icon" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
             <paper-item-body>
-              [[language.name]]
+              <div class="language-name">[[language.name]]</div>
             </paper-item-body>
-          </paper-item>
+          </paper-icon-item>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
