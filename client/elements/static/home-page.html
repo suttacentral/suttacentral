@@ -71,7 +71,8 @@
       }
 
       .card-heading-text {
-        font-size: 2vw;
+        @apply --sc-sans-font;
+        font-size: 1.8vw;
         padding: var(--sc-size-lg);
         text-align: center;
       }
@@ -92,6 +93,7 @@
 
       .button {
         @apply --sc-skolar-font-size-s;
+        @apply --sc-sans-font;
         width: fit-content;
         margin-top: var(--sc-size-md);
         background-color: var(--sc-primary-accent-color);
@@ -237,7 +239,7 @@
         @apply --sc-skolar-font-size-md;
         font-weight: normal;
         line-height: 1em;
-        margin: var(--sc-size-sm);
+        margin: var(--sc-size-md-larger);
         text-align: justify;
       }
 
@@ -378,7 +380,7 @@
             <a class="button-link first-card-button grid-button" href="">
               <paper-button class="button">INTRODUCTION</paper-button>
             </a>
-            <a class="button-link second-card-button grid-button">
+            <a class="button-link second-card-button grid-button" href="">
               <paper-button class="button">GET STARTED</paper-button>
             </a>            
         </div>
