@@ -108,7 +108,6 @@
         list-style-type: none;
         margin: 0;
         padding: var(--sc-size-md) 0;
-        height: 100% !important;
       }
 
       .sub-nav-container {
@@ -155,6 +154,12 @@
         margin: var(--sc-size-sm) 0;
         list-style-type: none;
         padding-left: var(--sc-size-sm);
+        -webkit-transition: max-height ease-in-out .3s;
+        -moz-transition: max-height ease-in-out .3s;
+        -ms-transition: max-height ease-in-out .3s;
+        -o-transition: max-height ease-in-out .3s;
+        transition: max-height ease-in-out .3s;
+        overflow: hidden;
       }
 
       .nav-secondary .nav-link {
@@ -171,12 +176,13 @@
 
       .nav-secondary.open,
       .nav-tertiary.open {
-        display: block;
+        max-height: 300px;
       }
 
       .nav-secondary.closed,
       .nav-tertiary.closed {
-        display: none;
+        /*display: none;*/
+        max-height: 0;
       }
 
       #main-navigation {
@@ -222,7 +228,7 @@
 
           <!-- Sub nav menu -->
           <div id="sub-navigation" class="sub-nav-container swap-section right">
-            <ul class="sub-nav nav-tertiary sc-scrollbar">
+            <ul class="sub-nav nav-tertiary open sc-scrollbar">
               <li class="nav-menu-item">
                 <div class="nav-section-header">
                   <a class="nav-link" href="/">Chapter on Ethics</a>
