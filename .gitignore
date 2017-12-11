@@ -12,3 +12,4 @@ client/data/
 .DS_Store
 /client/node_modules/
 package-lock.json
+client/build/
