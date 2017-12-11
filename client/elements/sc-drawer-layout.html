@@ -135,8 +135,25 @@
       }
 
       .dialog-section {
+        @apply --sc-sans-font;
         margin-top: var(--sc-size-lg);
         color: var(--sc-primary-text-color);
+      }
+
+      .dialog-section .author {
+        @apply --sc-all-small-caps;
+      }
+
+      .dialog-section .editor {
+        font-style: inherit;
+      }
+
+      .dialog-section .book {
+        font-style: italic;
+      }
+
+      .dialog-section .article {
+        font-style: normal;
       }
 
       .close-dialog-icon {
@@ -167,11 +184,13 @@
 
     </app-drawer-layout>
 
+    <sc-toasts></sc-toasts>
+
     <!--
       The dialogs for the sutta text view:
     -->
 
-    <isw-dialog id="settings_dialog" name="settings_dialog" class="dialog" with-backdrop="true"
+    <isw-dialog id="settings_dialog" name="settings_dialog" class="dialog" with-backdrop
                 entry-animation="fade-in-animation" exit-animation="fade-out-animation">
       <div class="buttons-bar green-bg">
         <h2 class="dialog-header green-bg">Text settings</h2>
@@ -195,8 +214,6 @@
         </div>
       </paper-dialog-scrollable>
     </isw-dialog>
-
-    <sc-toasts></sc-toasts>
 
   </template>
 

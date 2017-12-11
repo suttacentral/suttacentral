@@ -150,7 +150,8 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         translated_title: translated_titles,
         translations: filtered_translations,
         parallel_count: parallel_count,
-        biblio: biblio
+        biblio: biblio,
+        num: v.num
     }
 '''
 

@@ -173,9 +173,13 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
             try:
                 entry['num'] = ordering_data[uid]
             except KeyError:
-                if number_reg.match(uid):
-                    num = number_reg.match(uid).group(1)
-                    entry['num'] = int(num)
+                if 'num' not in entry:
+                    m = number_reg.match(uid)
+                    if m:
+                        num = m.group(1)
+                        entry['num'] = int(num)
+                    else:
+                        entry['num'] = i
 
             for data_name in ['volpage', 'biblio_uid', 'acronym']:
                 try:

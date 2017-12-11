@@ -90,7 +90,7 @@
         text-indent: initial;
       }
 
-      /* These rules always apply */
+      /*Descriptions of all classes below can be found in zz1 and zz3 test files*/
 
       .infomode .term,
       .infomode .gloss {
@@ -103,7 +103,8 @@
 
       .suttainfo,
       .xu,
-      .w {
+      .w,
+      .colophon {
         @apply --paper-font-body1;
         @apply --sc-sans-font;
         @apply --padding-md;
@@ -117,7 +118,8 @@
 
       .suttainfo p,
       .xu p,
-      .w p {
+      .w p,
+      .colophon p {
         margin-bottom: 0;
       }
 
@@ -161,17 +163,6 @@
         padding-left: 32px;
       }
 
-      .uddanagatha,
-      .vagguddanagatha {
-        font-style: italic;
-        display: table;
-        width: auto;
-        margin: 0 auto;
-        color: var(--sc-secondary-text-color);
-      }
-
-      .endsutta,
-      .endvagga,
       .endsection,
       .end,
       .endsubsection {
@@ -180,31 +171,32 @@
         color: var(--sc-secondary-text-color);
       }
 
-      .uddana {
-        margin-bottom: 32px;
-        color: var(--sc-secondary-text-color);
+      .endsutta {
+        font-weight: bold;
+        text-align: center;
+        color: var(--sc-secondary-text-color);        
       }
 
-      .endbook {
+      .uddana {
+        color: var(--sc-secondary-text-color);
+        font-size: 0.8rem;
+      }
+
+      .uddana-intro {
+        font-weight: bold;
+        color: var(--sc-secondary-text-color);  
+      }
+
+      .endbook,
+      .endvagga {
         text-align: center;
         color: var(--sc-secondary-text-color);
-        font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 0.1em;
       }
 
-      /*This is used for names in the dictionaries. They're marked with <i> to represented a foreign labguage, but should be displayed upright.*/
-
-      .name {
-        font-style: normal
-      }
-
-      .tri {
-        display: inline;
-      }
-
-      h1 .t-note {
-        display: none
+      .endbook {
+        font-weight: bold;
       }
 
       .surplus {
@@ -216,29 +208,13 @@
         color: var(--sc-secondary-text-color);
       }
 
-      /*For Mahaparinirvana text, marks apparently random phrases that are marked in bold in GRETIL.
-
-      TITLE: Surplus text.
-      */
-
       .infomode .supplied {
         color: var(--sc-primary-color)
       }
 
-      /*In almost all Sanskrit texts, there is reconstruction by the editor. These are marked <span class="supplied"></span>. In CSS this should by default display normally, and optionally, use color
-
-
-      TITLE: Text hypothetically reconstructed by the editor or translator.
-      */
-
       .infomode .supplied2 {
         color: var(--sc-primary-color-dark);
       }
-
-      /*In some cases there are two forms of supplied text, usually differentiated in the original by () and []. This difference is retained by using supplied2 for the []. Actually these should be marked more clearly to differentiate them, but this will differ according to the various publications, which I don't have. So for now let them behave as for .supplied, except use
-
-      TITLE: Text hypothetically reconstructed by the editor or translator.
-      */
 
       #text:lang(pgd) .add,
       #text:lang(pli) .add,
@@ -251,15 +227,6 @@
         color: var(--sc-secondary-text-color);
         @apply --sc-sans-font;
       }
-
-      p .author {
-        @apply --sc-all-small-caps;
-      }
-
-      /*There are some editorial additions marked <span class="add"></span>. Previously these were hidden by default, but they are now visible by default.
-
-      TITLE: Text added by the editor or translator for clarification.
-      */
 
       .pe {
         font-style: italic;
@@ -276,7 +243,7 @@
       .infomode .metre {
         @apply --sc-skolar-font-size-xxs;
         color: var(--sc-primary-accent-color);
-        display: block;
+        display: inline-block;
         position: absolute;
         margin-top: -11px;
         letter-spacing: 0.2em;
@@ -290,47 +257,40 @@
         color: var(--sc-secondary-text-color);
       }
 
-      /*This is for cases where the editor has "filled in the blanks" (hence "supplied") with metrical notation (hence "metre").
-
-      TITLE: Metre reconstructed by the editor.
-      */
-
       .gap {
         color: var(--sc-secondary-text-color)
       }
-
-      /*For marking gaps in the text, which are filled in with + or the like.  In IB Horner's translation, deliberate gaps were marked by the translator with an *. Accidental omissions are marked with +.
-
-      TITLE: Gap in the manuscript.
-      */
 
       .infomode .var {
         color: var(--sc-secondary-accent-color)
       }
 
-      .textable {
+      .text-table {
         margin: var(--sc-size-xl) auto;
         border-collapse: collapse;
       }
 
-      .textable td {
+      .text-table td {
         padding: 12px var(--sc-size-md-larger) 12px var(--sc-size-md-larger);
         vertical-align: text-top;
         border-top: 1px solid var(--sc-tertiary-background-color);
         border-bottom: 1px solid var(--sc-tertiary-background-color);
       }
 
-      .textable li {
+      .text-table li {
         padding: var(--sc-size-xs) 0;
       }
 
-      .textable ul {
+      .text-table ul {
         padding-left: var(--sc-size-xl);
       }
 
       .varnote,
       .corrnote {
         display: none;
+        --paper-tooltip: {
+          max-width: 100% !important;
+        };
       }
 
       .infomode .varnote,
@@ -358,35 +318,10 @@
         font-size: 0.8rem;
       }
 
-      /*indicates a variant reading. Similar to TEI rdg, except that refers only to a single reading, whereas for us var is used a little more loosely*/
-
       .infomode .corr,
       .infomode .corrected {
         color: var(--sc-primary-accent-color)
       }
-
-      /*indicates a corrected reading. There are some whith and some without a title. The ones with a title show the correction from→to in the title.*/
-
-
-      cite.book {
-        font-style: italic;
-      }
-
-      /*A book title.*/
-
-      cite.article {
-        font-style: normal
-      }
-
-      /*An article title.*/
-
-      .gatha-number {
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-s;
-        color: var(--sc-secondary-text-color);
-      }
-
-      /*As it says.*/
 
       .del, .del-scribe {
         display: none
@@ -397,54 +332,18 @@
         display: inline
       }
 
-      /*(deletion) contains a letter, word, or passage deleted, marked as deleted, or otherwise indicated as superfluous or spurious in the copy text by an author, scribe, annotator, or corrector.
-
-      TITLE: Text deleted by the editor as superfluous.
-      */
-
       .unclear {
         color: var(--sc-secondary-text-color);
       }
-
-      /*Text marked as uncertain, usually with a "?", in the transcribed text.
-
-      TITLE: Unclear reading.
-      */
-
-      .namo {
-        text-align: center;
-      }
-
-      .namo {
-        font-style: italic;
-      }
-
-      /*dedication at the start of texts*/
 
       .scribe {
         font-style: italic;
       }
 
-      /*note in the text recording who copied the text*/
-
       hr {
         width: 33%;
         margin: 1.45rem auto
       }
-
-      .rule {
-        font-weight: bold
-      }
-
-      /*text in vibhanga, etc., of the rule itself.*/
-      /*CBETA tags
-
-      Generally, eliminate inline styles, and retain semantic markup. Transform all classes inherited from CBETA by prefixing with t-. This is to avoid clashing with SC classes, and also to clarify the source of the markup.. NEED TO CHANGE PREVIOUS HANDLING OF CBETA TAGS*/
-
-      .t-note {
-      }
-
-      /*= .note in CBETA text. Changed to avoid confusion with SC's .note. Indicates usually bracketed note or comment in the text. No need to indicate.*/
 
       .t-gaiji {
         color: var(--sc-primary-accent-color);
@@ -452,7 +351,6 @@
 
       a.cr {
         color: inherit;
-        text-decoration: none;
         background: linear-gradient(to top, var(--sc-primary-color-transparent) 1.5px, var(--sc-primary-color) 1.5px, var(--sc-primary-color) 2.5px, var(--sc-primary-color-transparent) 2.5px);
       }
 
@@ -463,6 +361,60 @@
       a.cr:visited {
         background: linear-gradient(to top, var(--sc-primary-color-darkest-transparent) 1px, var(--sc-primary-color-darkest) 1px, var(--sc-primary-color-darkest) 3px, var(--sc-primary-color-darkest-transparent) 3px);
       }
+
+      .hidden,
+      .alt-title {
+        display: none;
+      }
+
+      .allowance,
+      .kamma {
+        font-weight: bold;
+      }
+
+      .nipata,
+      .pannasa,
+      .t-byline,
+      .t-headname,
+      .t-juanname,
+      .uddanagatha {
+        font-style: inherit;
+      }
+
+      .evam {
+        @apply --sc-all-small-caps;
+      }
+
+      .namo {
+        text-align: center;
+        font-style: italic;
+        color: var(--sc-primary-text-color);
+      }
+
+      .rightview,
+      .wrongview,
+      .rule-number,
+      .t-note,
+      .vagga-number {
+        color: var(--sc-secondary-text-color);
+      }
+
+      .rule,
+      .subrule {
+        font-weight: bold;
+      }
+
+      .speaker {
+        font-style: italic;
+      }
+
+      .counter,
+      .t-counter {
+        @apply --sc-sans-font;
+        color: var(--sc-secondary-text-color);
+        font-size: 0.8rem;
+      }
+
 
     </style>
   </template>

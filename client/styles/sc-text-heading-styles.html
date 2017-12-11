@@ -59,14 +59,24 @@
         margin-top: 12px
       }
 
+
       .hgroup p.subheading {
         @apply --sc-serif-font;
-        @apply --sc-skolar-font-size-l;
         font-style: italic;
-        margin: -20px 0 44px 0;
+        padding-bottom: var(--sc-size-md-larger);
         text-transform: none;
         font-feature-settings: normal
       }
+
+
+      .hgroup .collection,
+      .hgroup .division,
+      .hgroup .subdivision,
+      .hgroup .subsubdivision,
+      .hgroup .vagga {
+        font-style: inherit;
+      }
+
 
       /*bilingual headings*/
       .mirror {

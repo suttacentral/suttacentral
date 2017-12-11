@@ -269,8 +269,8 @@ Custom property | Description | Default
         this.toggleClass('hidden', false, this.$.tooltip);
         this.updatePosition();
 
-        this.animationConfig.entry[0].timing = this.animationConfig.entry[0].timing || {};
-        this.animationConfig.entry[0].timing.delay = this.animationDelay;
+        this.animationConfig['entry'][0].timing = this.animationConfig['entry'][0].timing || {};
+        this.animationConfig['entry'][0].timing.delay = this.animationDelay;
         this._animationPlaying = true;
         this.playAnimation('entry');
       },
