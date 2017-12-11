@@ -29,8 +29,7 @@ FOR pit IN pitaka
                     [p.type]: {
                         name: p.name,
                         uid: p._id,
-                        num: p.num,
-                        type: p.type
+                        num: p.num
                     }
                 }
             )
@@ -46,9 +45,8 @@ FOR pit IN pitaka
                 }
             )
         
-        RETURN MERGE({uid: div._id, name: div.name, num: div.num}, {descendents: descendents, parents: parents})
+        RETURN MERGE({uid: div._id, name: div.name, num: div.num, type: div.type}, {descendents: descendents, parents: parents})
 '''
-
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
@@ -278,7 +276,6 @@ LET legacy = (
     LET additional_info = KEEP(DOCUMENT(CONCAT('root/', chosen.uid)), ['name', 'acronym'])
     RETURN MERGE(chosen, {original_title: additional_info.name, acronym: additional_info.acronym})
 '''
-
 
 SUTTA_VIEW = '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
