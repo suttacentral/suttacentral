@@ -234,7 +234,7 @@ class SuttaplexList(Resource):
                 except KeyError:
                     parent['children'] = [result]
 
-        recursive_sort(data, 'uid', key=uid_sort_key)  # Sorts data inplace
+        recursive_sort(data, 'num')  # Sorts data inplace
 
         data = flat_tree(data)
 
