@@ -84,28 +84,28 @@ class Menu(Resource):
         data = self.groupby_parents(divisions, ['pitaka'])
 
         for pitaka in data:
-            children = pitaka.pop('children')
             uid = pitaka['uid']
+            children = pitaka.pop('children')
             if uid == 'pitaka/su':
                 pitaka['children'] = self.groupby_parents(children, ['grouping'])
             else:
                 pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
-        
-        self.recursive_cleanup(data, depth=0, mapping={})
-        
+
+        self.recursive_cleanup(data, depth=-1, mapping={})
+
         return data, 200
-        
+
     @staticmethod
     def num_sort_key(entry):
         return entry.get('num') or -1
-        
+
     @staticmethod
     def groupby_parent_property(entries, prop):
-        return ( (json.loads(key), list(group)) 
-                 for key, group 
-                 in groupby_unsorted(entries, lambda d: json.dumps(d['parents'].get(prop), sort_keys=True))
+        return ((json.loads(key), list(group))
+                for key, group
+                in groupby_unsorted(entries, lambda d: json.dumps(d['parents'].get(prop), sort_keys=True))
                 )
-    
+
     def groupby_parents(self, entries, props):
         out = []
         prop = props[0]
@@ -125,7 +125,7 @@ class Menu(Resource):
             else:
                 parent['children'] = children
         return sorted(out, key=self.num_sort_key)
-    
+
     def recursive_cleanup(self, menu_entries, depth, mapping):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
@@ -142,8 +142,9 @@ class Menu(Resource):
             if 'parents' in menu_entry:
                 del menu_entry['parents']
             if 'children' in menu_entry:
-                children = menu_entry['children'] 
-                self.recursive_cleanup(children, depth=depth+1, mapping=mapping)
+                children = menu_entry['children']
+                self.recursive_cleanup(children, depth=depth + 1, mapping=mapping)
+
 
 class SuttaplexList(Resource):
     def get(self, uid):
