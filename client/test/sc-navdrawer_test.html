@@ -10,24 +10,23 @@
   <script src="/bower_components/test-fixture/test-fixture-mocha.js"></script>
 
   <!--Import the element to test -->
-  <link rel="import" href="/sc-drawer-layout.html">
 
 </head>
 
 <body>
 
-<test-fixture id="navdrawer">
+<test-fixture id="drawer-layout">
   <template>
-    <sc-navdrawer></sc-navdrawer>
+    <sc-drawer-layout></sc-drawer-layout>
   </template>
 </test-fixture>
 
 <script>
-    suite('<sc-navdrawer>', () => {
+    suite('<sc-drawer-layout>', () => {
         let basic;
 
         setup(() => {
-            basic = fixture('navdrawer');
+            basic = fixture('drawer-layout');
         });
 
         test('Should display title', (done) => {
