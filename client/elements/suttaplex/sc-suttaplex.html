@@ -229,6 +229,19 @@
         @apply --sc-skolar-font-size-md;
       }
 
+      .sc-tooltip {
+        @apply --sc-sans-font;
+        --paper-tooltip-opacity: 0.98;
+        --paper-tooltip-background: var(--sc-paper-tooltip-color);
+        --paper-tooltip: {
+          @apply --sc-skolar-font-size-xs;
+          line-height: var(--sc-size-md);
+          padding: var(--sc-size-sm) var(--sc-size-md);
+          text-shadow: 0 0 var(--sc-secondary-background-color);
+          white-space: normal;
+        };
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]">
@@ -236,11 +249,13 @@
 
         <div class="suttaplex-head-container">
           <h3 class="suttaplex-heading">[[_computeMainHeading(item)]]</h3>
-          <div class$="difficulty-icon [[_computeDifficultyLevelName(item.difficulty)]]"
-               title="Recommended for [[_computeDifficultyLevelName(item.difficulty)]] students">
-            <iron-icon class="primary-accent-icon"
-                       icon="[[_computeDifficultyLevelName(item.difficulty)]]"></iron-icon>
+          <div class$="difficulty-icon">
+            <iron-icon id="difficulty_icon" class="primary-accent-icon"
+                       icon="[[_computeDifficultyLevelName(item.difficulty, 'sc-svg-icons:')]]"></iron-icon>
           </div>
+          <paper-tooltip for="difficulty_icon" offset="0" class="sc-tooltip">
+            Recommended for [[_computeDifficultyLevelName(item.difficulty, '')]] students
+          </paper-tooltip>
         </div>
 
         <div class="suttaplex-nerdy-row">
@@ -444,14 +459,14 @@
           }
 
           // adds the 'tree'-icons to denote difficulty level if any.
-          _computeDifficultyLevelName(level) {
+          _computeDifficultyLevelName(level, namespace) {
               if (!level) return;
               if (level.name) {
-                  return `sc-svg-icons:${level.name}`;
+                  return `${namespace}${level.name}`;
               }
               else {
                   const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
-                  return `sc-svg-icons:${levels[level]}`;
+                  return `${namespace}${levels[level]}`;
               }
           }
 

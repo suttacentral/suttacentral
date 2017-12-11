@@ -55,7 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <demo-snippet>
     <template>
       <button onclick="backdrop.open()">Overlay with backdrop</button>
-      <simple-overlay id="backdrop" with-backdrop>
+      <simple-overlay id="backdrop" with-backdrop scroll-action="lock">
         <p>Hello world!</p>
         <button>Button</button>
         <button onclick="backdrop.close()">Close</button>
@@ -140,7 +140,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </custom-style>
       <button onclick="scrolling.open()">Scrolling overlay</button>
 
-      <simple-overlay id="scrolling" class="with-margin scrollable" tabindex=-1>
+      <simple-overlay id="scrolling" class="with-margin scrollable" tabindex=-1 scroll-action="lock">
         <h2>This overlay scrolls internally.</h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -205,7 +205,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <button onclick="scrolling2.open()">Scrolling content</button>
 
-      <simple-overlay id="scrolling2" class="with-margin" tabindex=-1>
+      <simple-overlay id="scrolling2" class="with-margin" tabindex=-1 scroll-action="lock">
         <h2>This overlay has a scrolling child.</h2>
         <p class="scrollable">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -272,6 +272,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // .scrollable is the element that determines the size of the overlay.
         scrolling2.sizingTarget = scrolling2.querySelector('.scrollable');
       </script>
+    </template>
+  </demo-snippet>
+
+  <h3>Use <code>allow-click-through</code> to allow click events to be handled by overlays below the top overlay.</h3>
+  <demo-snippet>
+    <template>
+      <button onclick="plain.open();toast.open()">Overlay that allows click through</button>
+      <simple-overlay id="toast" allow-click-through no-cancel-on-outside-click horizontal-align="left" vertical-align="bottom" no-auto-focus>
+        <span>This overlay allows click-through which can close overlays below it.</span>
+        <button onclick="toast.close()">Close</button>
+      </simple-overlay>
     </template>
   </demo-snippet>
 

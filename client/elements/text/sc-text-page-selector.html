@@ -17,7 +17,7 @@
   <!-- Import the transliteration module for changing the script of the Pali texts -->
   <script src="transliterator.js"></script>
 
-  <template> 
+  <template>
     <style>
       .loading-indicator {
         @apply --sc-skolar-font-size-s;
@@ -29,7 +29,7 @@
       .text-options {
         padding: var(--sc-size-lg);
       }
-      
+
       .wrapper {
         min-height: calc(100% - var(--sc-size-xxl) * 2.5);
       }
@@ -47,29 +47,29 @@
         last-response="{{responseData}}"></iron-ajax>
 
     <div class="wrapper">
-        <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+      <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
 
-        <div class="loading-indicator" hidden$="[[!isLoading]]">
+      <div class="loading-indicator" hidden$="[[!isLoading]]">
         <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
-        </div>
+      </div>
 
-        <template is="dom-if" if="[[!_shouldHideSimpleText(isSegmentedText, isLoading)]]">
-            <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
-                            hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
-            </sc-simple-text>
-        </template>
+      <template is="dom-if" if="[[!_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+        <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]"
+                        hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+        </sc-simple-text>
+      </template>
 
-        <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]" restamp>
-            <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
-                                translated-sutta="[[translatedSutta]]" root-lang="[[responseData.root_text.lang]]"
-                                is-loading="{{isLoading}}" error="[[lastError]]"
-                                hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
-            </sc-segmented-text>
-        </template>
+      <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]" restamp>
+        <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]"
+                           translated-sutta="[[translatedSutta]]" root-lang="[[responseData.root_text.lang]]"
+                           is-loading="{{isLoading}}" error="[[lastError]]"
+                           hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
+        </sc-segmented-text>
+      </template>
     </div>
 
     <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, neighbours)]]">
-        <sc-stepper next="[[neighbours.next]]" previous="[[neighbours.previous]]" lang="[[langIsoCode]]"></sc-stepper>
+      <sc-stepper next="[[neighbours.next]]" previous="[[neighbours.previous]]" lang="[[langIsoCode]]"></sc-stepper>
     </template>
 
     <sc-image id="sc_image"></sc-image>
