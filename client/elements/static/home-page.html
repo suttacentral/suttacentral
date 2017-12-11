@@ -62,7 +62,12 @@
       .card-content-text {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
-        padding: var(--sc-size-md-larger); 
+        padding: var(--sc-size-md-larger);
+        text-align: center;
+      }
+
+      .button-link {
+        background: none !important;
       }
 
       .card-heading-text {
@@ -141,11 +146,6 @@
 
       .second-row {
         grid-column-start: 2;
-      }
-
-      .horizontal-center {
-        margin-left: 50%;
-        transform: translate(-50%, 0);
       }
 
       .three-elements-grid {
@@ -344,7 +344,9 @@
                 <div class="card-content-text">
                   <div class="card-text center-text">I understood: ‘Rebirth is ended; the spiritual journey has been completed; 
                     what had to be done has been done; there is no return to any state of existence.’</div>
-                  <paper-button class="button horizontal-center">READ THIS SUTTA</paper-button>
+                  <a class="button-link" href="">
+                    <paper-button class="button">READ THIS SUTTA</paper-button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -373,8 +375,12 @@
                 and have tried to make it a little easier for you. Here’s some things you can try.</div>
                 </div>
             </paper-card>
-            <paper-button class="button first-card-button grid-button">INTRODUCTION</paper-button>
-            <paper-button class="button second-card-button grid-button">GET STARTED</paper-button>
+            <a class="button-link first-card-button grid-button" href="">
+              <paper-button class="button">INTRODUCTION</paper-button>
+            </a>
+            <a class="button-link second-card-button grid-button">
+              <paper-button class="button">GET STARTED</paper-button>
+            </a>            
         </div>
 
         <div class="row">
@@ -411,7 +417,9 @@
                   But here’s the good news: you are not alone. We’ve been down this road ourselves, 
                   and have tried to make it a little easier for you. Here’s some things you can try.</div>
                 </div>
-                <paper-button class="button card-button">MORE ...</paper-button>
+                <a class="button-link" href="">
+                  <paper-button class="button card-button">MORE ...</paper-button>
+                </a>
             </paper-card>
             <paper-card class="three-elements-small three-elements-first-small full-height paper-card-with-button">
               <div class="card-content-wrapper no-bottom-padding">
@@ -425,7 +433,9 @@
                   paint a detailed and vivid picture of everyday life in ancient India.
                 </div>
               </div>
-              <paper-button class="button card-button">MORE ...</paper-button>
+              <a class="button-link" href="">
+                <paper-button class="button card-button">MORE ...</paper-button>
+              </a>
             </paper-card>
             <paper-card class="three-elements-small three-elements-second-small full-height paper-card-with-button">
               <div class="card-content-wrapper no-bottom-padding">
@@ -437,7 +447,9 @@
                     The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.
                 </div>
               </div>
-              <paper-button class="button card-button">MORE ...</paper-button>
+              <a class="button-link" href="">
+                <paper-button class="button card-button">MORE ...</paper-button>
+              </a>
             </paper-card>
           </div>
         </div>
@@ -459,7 +471,9 @@
                     I found out there were real teachings from the Buddha himself, and felt drawn to them.
                     For over twenty years now, they have been a constant companion and guide, a friend in times of need,
                     and an unending well of wisdom and inspiration.</div>
-                  <paper-button class="button horizontal-center">TELL US WHY YOU READ</paper-button>
+                  <a class="button-link" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747">
+                    <paper-button class="button">TELL US WHY YOU READ</paper-button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -469,14 +483,18 @@
         <div class="row cards">
             <paper-card class="two-paper-cards first-card paper-card-with-button" image="../../img/home-page/51.jpg">
               <div class="card-content-wrapper">
-                <div class="card-title-text">What's here</div>
-                <div class="image-card-text">
-                  SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. 
-                  This is a large collection of teachings attributed to the Buddha or his earliest disciples, 
-                  who were teaching in India around 2500 years ago. 
-                  They are regarded as sacred canon in all schools of Buddhism.</div>
+                <div class="card-title-text">SuttaCentral—a new beginning</div>
+                  <div class="image-card-text">
+                    We’re proud to share with you the new SuttaCentral. 
+                    The team has been working on it for over two years, and we think it’s something special. 
+                    The new site features an entirely new translation of the four Pali nikāyas, 
+                    prepared specially for SuttaCentral by Bhante Sujato. 
+                    And the whole site has been re-built to be faster, clearer, and more flexible.
+                  </div>
                 </div>
-                <paper-button class="button card-button">GET STARTED</paper-button>
+                <a class="button-link" href="">
+                  <paper-button class="button card-button">GET STARTED</paper-button>
+                </a>                
               </paper-card>
               <paper-card class="two-paper-cards second-card paper-card-with-button" 
                           image="../../img/home-page/mn-pt-cover-MOCKUP.jpg">
@@ -487,7 +505,9 @@
                     Our printed editions feature a special “infinite” power feature. With this breakthrough innovation,
                     you never have to charge your book—ever!</div>
                   </div>
-                  <paper-button class="button card-button">INTRODUCTION</paper-button>
+                  <a class="button-link" href="">                      
+                    <paper-button class="button card-button">INTRODUCTION</paper-button>
+                  </a>
                 </paper-card>
               </div>
       </div>
