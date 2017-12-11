@@ -403,3 +403,17 @@ FOR image IN images
     RETURN {name: image.name,
             pageNumber: image.page_number}
 '''
+
+EPIGRAPHS = '''
+FOR epigraph IN epigraphs
+    SORT RAND()
+    LIMIT @number
+    RETURN KEEP(epigraph, ['uid', 'epigraph'])
+'''
+
+WHY_WE_READ = '''
+FOR text IN why_we_read
+    SORT RAND()
+    LIMIT @number
+    RETURN text.text
+'''

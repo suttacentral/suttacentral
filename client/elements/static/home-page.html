@@ -2,6 +2,7 @@
 <link rel="import" href="../../styles/static-styles.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="home-page">
   <template>
@@ -240,6 +241,7 @@
         font-weight: normal;
         line-height: 1em;
         margin: var(--sc-size-md-larger);
+        margin-top: 0;
         text-align: justify;
       }
 
@@ -322,6 +324,13 @@
       }
 
     </style>
+
+    <iron-ajax
+      id="epigraphs-ajax"
+      handle-as="json"
+      loading="{{loadingEpigraphs}}"
+      last-response="{{epigraphsData}}"></iron-ajax>
+
     <div id="page-wrap">
       <div class="content">
 
@@ -518,9 +527,20 @@
 
   <script>
       class SCHomePage extends Polymer.Element {
-          static get is() {
-             return 'home-page';
+        static get is() {
+            return 'home-page';
+        }
+
+        static get properties() {
+          return {
+            loadingEpigraphs: {
+              type: Boolean
+            },
+            epigraphsData: {
+              type: Object
+            }
           }
+        }
       }
       customElements.define(SCHomePage.is, SCHomePage);
   </script>
