@@ -141,6 +141,9 @@ class Menu(Resource):
                     parent['children'].append(descendent)
             if 'parents' in menu_entry:
                 del menu_entry['parents']
+            if 'type' in menu_entry and menu_entry['type'] in ('div', 'division'):
+                if 'children' in menu_entry:
+                    del menu_entry['children']
             if 'children' in menu_entry:
                 children = menu_entry['children']
                 self.recursive_cleanup(children, depth=depth + 1, mapping=mapping)
