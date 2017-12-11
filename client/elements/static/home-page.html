@@ -21,8 +21,9 @@
       }
 
       .introduction {
+        @apply --sc-skolar-font-size-xl;
+        color: var(--sc-primary-text-color);
         text-align: center;
-        font-size: 1.1em;
       }
 
       .text-card {
@@ -32,6 +33,7 @@
       }
 
       .card {
+        background-color: var(--sc-secondary-background-color);        
         width: 100%;
         min-height: 180px;
         display: flex;
@@ -59,6 +61,7 @@
 
       .card-content-text {
         @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-md;
         padding: var(--sc-size-md-larger); 
       }
 
@@ -73,27 +76,23 @@
         padding: 0;
       }
 
-      .new-line {
+      .d-none {
         display: none;
       }
 
       .card-text {
-        font-size: 1.1em;
+        @apply --sc-skolar-font-size-l;
         font-style: italic;
       }
 
       .button {
+        @apply --sc-skolar-font-size-s;
         width: fit-content;
-        margin-top: 15px;
+        margin-top: var(--sc-size-md);
         background-color: var(--sc-primary-accent-color);
-        color: white;
-        font-size: 14px;
+        color: var(--sc-tertiary-text-color);
         font-weight: bold;
         text-align: center;        
-      }
-
-      .separator {
-        width: 50px;
       }
 
       .two-paper-cards {
@@ -113,7 +112,7 @@
         height: calc(100% - 2 * var(--sc-size-md-larger));
       }
 
-      .paper-card-with-button .card-content-wrapper {
+      .no-bottom-padding {
         padding-bottom: 0;
       }
 
@@ -128,7 +127,7 @@
       }
 
       .card-title-text {
-        font-size: 1.1em;
+        @apply --sc-skolar-font-size-l;
       }
 
       .why-we-read {
@@ -149,7 +148,7 @@
         transform: translate(-50%, 0);
       }
 
-      .three-baskets-grid {
+      .three-elements-grid {
         display: grid;
         grid-gap: var(--sc-size-lg);
       }
@@ -181,7 +180,12 @@
       }
 
       paper-card {
+        background-color: var(--sc-secondary-background-color);
         width: 100%;
+      }
+
+      .transparent-card {
+        background-color: var(--sc-primary-background-color);
       }
 
       .cards {
@@ -208,8 +212,8 @@
         grid-row-start: 4;
       }
 
-      .three-baskets-title {
-        font-size: 1.5em;
+      .big-card-title {
+        @apply --sc-skolar-font-size-static-subtitle;
         margin-bottom: .3em;
       }
 
@@ -230,10 +234,10 @@
 
       .card-heading-subtext {
         @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-md;
         font-weight: normal;
-        font-size: var(--sc-size-md);
         line-height: 1em;
-        margin: 8px;
+        margin: var(--sc-size-sm);
         text-align: justify;
       }
 
@@ -255,31 +259,31 @@
           width: 25%;
         }
 
-        .new-line {
+        .d-none {
           display: unset;
         }
 
-        .three-baskets-grid {
+        .three-elements-grid {
           grid-template-rows: 1fr 1fr;
           grid-template-columns: 3fr 2fr;
         }
 
-        .three-baskets-big {
+        .three-elements-big {
           grid-column-start: 1;
           grid-row-start: 1;
           grid-row-end: span 2;
         }
   
-        .three-baskets-small {
+        .three-elements-small {
           grid-column-start: 2;    
           grid-row-start: unset;    
         }
   
-        .three-baskets-first-small {
+        .three-elements-first-small {
           grid-row-start: 1;
         }
   
-        .three-baskets-second-small {
+        .three-elements-second-small {
           grid-row-start: 2;
         }
 
@@ -320,9 +324,9 @@
       <div class="content">
 
         <div class="row introduction">
-          <p>The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br class="new-line">
+          <p>The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br class="d-none">
             Many of these scriptures have now been translated into the world’s languages.</p>
-          <p>SuttaCentral brings these together and makes them freely available. <br class="new-line">
+          <p>SuttaCentral brings these together and makes them freely available. <br class="d-none">
             Setting aside the boundaries of language and tradition, we let the Buddha speak for himself.</p>
         </div>
 
@@ -331,8 +335,8 @@
             <div class="card">
               <div class="card-heading">
                 <div class="card-heading-text">
-                  The<br class="new-line">
-                  Buddha's<br class="new-line">
+                  The<br class="d-none">
+                  Buddha's<br class="d-none">
                   words
                 </div>
               </div>
@@ -348,7 +352,8 @@
         </div>
 
         <div class="row cards">
-          <paper-card class="two-paper-cards paper-cards-no-background first-card" image="../../img/home-page/53.jpg">
+          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card"
+                      image="../../img/home-page/53.jpg">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">What's here</div>
               <div class="image-card-text">
@@ -358,7 +363,8 @@
                 They are regarded as sacred canon in all schools of Buddhism.</div>
               </div>
             </paper-card>
-            <paper-card class="two-paper-cards paper-cards-no-background second-card" image="../../img/home-page/52.jpg">
+            <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card"
+                        image="../../img/home-page/52.jpg">
               <div class="transparent-card-content-wrapper">
               <div class="card-title-text">Where to begin</div>
               <div class="image-card-text">
@@ -376,7 +382,7 @@
           <div class="card">
               <div class="card-heading">
                 <div class="card-heading-text">
-                  Meet<br class="new-line">
+                  Meet<br class="d-none">
                   SuttaCentral
                 </div>
                 <div class="card-heading-subtext">
@@ -393,12 +399,12 @@
         </div>
 
         <div class="row">
-          <div class="three-baskets-title">
+          <div class="big-card-title">
               Tipiṭaka—the three baskets
           </div>
-          <div class="three-baskets-grid">
-            <paper-card class="three-baskets-big paper-card-with-button" image="../../img/home-page/14.jpg">
-              <div class="card-content-wrapper">
+          <div class="three-elements-grid">
+            <paper-card class="three-elements-big paper-card-with-button" image="../../img/home-page/14.jpg">
+              <div class="card-content-wrapper no-bottom-padding">
                 <div class="card-title-text">Where to begin</div>
                 <div class="image-card-text">
                   There are thousands of early Buddhist texts, and they’re not organized for easy reading. 
@@ -407,8 +413,8 @@
                 </div>
                 <paper-button class="button card-button">MORE ...</paper-button>
             </paper-card>
-            <paper-card class="three-baskets-small three-baskets-first-small full-height paper-card-with-button">
-              <div class="card-content-wrapper">
+            <paper-card class="three-elements-small three-elements-first-small full-height paper-card-with-button">
+              <div class="card-content-wrapper no-bottom-padding">
                 <div class="card-title-text">
                     Monastic Law                    
                 </div>
@@ -421,8 +427,8 @@
               </div>
               <paper-button class="button card-button">MORE ...</paper-button>
             </paper-card>
-            <paper-card class="three-baskets-small three-baskets-second-small full-height paper-card-with-button">
-              <div class="card-content-wrapper">
+            <paper-card class="three-elements-small three-elements-second-small full-height paper-card-with-button">
+              <div class="card-content-wrapper no-bottom-padding">
                 <div class="card-title-text">
                     Abhidhamma                    
                 </div>
@@ -441,8 +447,8 @@
             <div class="card">
               <div class="card-heading">
                 <div class="card-heading-text">
-                  Why<br class="new-line">
-                  we<br class="new-line">
+                  Why<br class="d-none">
+                  we<br class="d-none">
                   read
                 </div>
               </div>
