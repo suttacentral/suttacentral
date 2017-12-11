@@ -112,7 +112,7 @@ class Menu(Resource):
         remaining_props = props[1:]
         for parent, children in self.groupby_parent_property(entries, prop):
             if parent is None:
-                # This intentially looks as bad as possible in the menu
+                # This intentionally looks as bad as possible in the menu
                 # it's a "hey classify me!"
                 parent = {
                     'uid': f'{prop}/none',
