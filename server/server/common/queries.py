@@ -33,19 +33,8 @@ FOR pit IN pitaka
                     }
                 }
             )
-        LET descendents = (
-            FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
-                FILTER d_edge.type != 'text'
-                RETURN {
-                    from: d_edge._from,
-                    name: d.name,
-                    uid: d._id,
-                    num: d.num,
-                    type: d.type
-                }
-            )
         
-        RETURN MERGE({uid: div._id, name: div.name, num: div.num, type: div.type}, {descendents: descendents, parents: parents})
+        RETURN MERGE({uid: div._id, name: div.name, num: div.num, type: div.type, parents: parents})
 '''
 
 # Takes 2 bind_vars: `language` and `uid` of root element

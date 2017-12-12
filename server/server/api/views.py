@@ -131,19 +131,17 @@ class Menu(Resource):
         for menu_entry in menu_entries:
             menu_entry['depth'] = depth + 1
             mapping[menu_entry['uid']] = menu_entry
-            if 'descendents' in menu_entry:
-                descendents = menu_entry.pop('descendents')
-                mapping.update({d['uid']: d for d in descendents})
-                for descendent in descendents:
-                    parent = mapping[descendent.pop('from')]
-                    if not 'children' in parent:
-                        parent['children'] = []
-                    parent['children'].append(descendent)
+            # TODO cleanup
+            # if 'descendents' in menu_entry:
+            #     descendents = menu_entry.pop('descendents')
+            #     mapping.update({d['uid']: d for d in descendents})
+            #     for descendent in descendents:
+            #         parent = mapping[descendent.pop('from')]
+            #         if not 'children' in parent:
+            #             parent['children'] = []
+            #         parent['children'].append(descendent)
             if 'parents' in menu_entry:
                 del menu_entry['parents']
-            if 'type' in menu_entry and menu_entry['type'] in ('div', 'division'):
-                if 'children' in menu_entry:
-                    del menu_entry['children']
             if 'children' in menu_entry:
                 children = menu_entry['children']
                 self.recursive_cleanup(children, depth=depth + 1, mapping=mapping)
