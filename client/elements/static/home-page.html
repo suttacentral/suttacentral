@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 
 <dom-module id="home-page">
   <template>
@@ -326,10 +327,22 @@
     </style>
 
     <iron-ajax
+      auto
+      url="[[_computeUrl('epigraphs')]]"
       id="epigraphs-ajax"
       handle-as="json"
       loading="{{loadingEpigraphs}}"
       last-response="{{epigraphsData}}"></iron-ajax>
+
+    <iron-ajax
+      auto
+      url="[[_computeUrl('whyweread')]]"
+      id="why-we-read-ajax"
+      handle-as="json"
+      loading="{{loadingWhyWeRead}}"
+      last-response="{{whyWeReadData}}"></iron-ajax>
+
+      <iron-meta id="meta"></iron-meta>      
 
     <div id="page-wrap">
       <div class="content">
@@ -386,10 +399,10 @@
                 and have tried to make it a little easier for you. Here’s some things you can try.</div>
                 </div>
             </paper-card>
-            <a class="button-link first-card-button grid-button" href="">
+            <a class="button-link first-card-button grid-button" href="/introduction">
               <paper-button class="button">INTRODUCTION</paper-button>
             </a>
-            <a class="button-link second-card-button grid-button" href="">
+            <a class="button-link second-card-button grid-button" href="/start">
               <paper-button class="button">GET STARTED</paper-button>
             </a>            
         </div>
@@ -428,7 +441,7 @@
                   But here’s the good news: you are not alone. We’ve been down this road ourselves, 
                   and have tried to make it a little easier for you. Here’s some things you can try.</div>
                 </div>
-                <a class="button-link" href="">
+                <a class="button-link" href="/sutta">
                   <paper-button class="button card-button">MORE ...</paper-button>
                 </a>
             </paper-card>
@@ -444,7 +457,7 @@
                   paint a detailed and vivid picture of everyday life in ancient India.
                 </div>
               </div>
-              <a class="button-link" href="">
+              <a class="button-link" href="/vinaya">
                 <paper-button class="button card-button">MORE ...</paper-button>
               </a>
             </paper-card>
@@ -458,7 +471,7 @@
                     The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.
                 </div>
               </div>
-              <a class="button-link" href="">
+              <a class="button-link" href="/abhidhamma">
                 <paper-button class="button card-button">MORE ...</paper-button>
               </a>
             </paper-card>
@@ -477,11 +490,9 @@
               </div>
               <div class="card-content">
                 <div class="card-content-text">
-                  <div class="why-we-read">When I began to experience the peace of meditation, 
-                    I needed to understand more deeply what I was going through. 
-                    I found out there were real teachings from the Buddha himself, and felt drawn to them.
-                    For over twenty years now, they have been a constant companion and guide, a friend in times of need,
-                    and an unending well of wisdom and inspiration.</div>
+                  <div class="why-we-read">
+                    [[_getWhyWeRead(loadingWhyWeRead)]]
+                  </div>
                   <a class="button-link" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747">
                     <paper-button class="button">TELL US WHY YOU READ</paper-button>
                   </a>
@@ -503,8 +514,8 @@
                     And the whole site has been re-built to be faster, clearer, and more flexible.
                   </div>
                 </div>
-                <a class="button-link" href="">
-                  <paper-button class="button card-button">GET STARTED</paper-button>
+                <a class="button-link" href="/a-new-beginning">
+                  <paper-button class="button card-button">WHAT’S NEW IN 2018</paper-button>
                 </a>                
               </paper-card>
               <paper-card class="two-paper-cards second-card paper-card-with-button" 
@@ -517,7 +528,7 @@
                     you never have to charge your book—ever!</div>
                   </div>
                   <a class="button-link" href="">                      
-                    <paper-button class="button card-button">INTRODUCTION</paper-button>
+                    <paper-button class="button card-button">ORDER BOOKS</paper-button>
                   </a>
                 </paper-card>
               </div>
@@ -527,20 +538,43 @@
 
   <script>
       class SCHomePage extends Polymer.Element {
-        static get is() {
-            return 'home-page';
-        }
+          static get is() {
+              return 'home-page';
+          }
 
-        static get properties() {
-          return {
-            loadingEpigraphs: {
-              type: Boolean
-            },
-            epigraphsData: {
-              type: Object
+          static get properties() {
+              return {
+                  loadingEpigraphs: {
+                      type: Boolean
+                  },
+                  epigraphsData: {
+                      type: Object
+                  },
+                  loadingWhyWeRead: {
+                      type: Boolean
+                  },
+                  whyWeReadData: {
+                      type: Object
+                  },
+                  currentWhyWeReadIndex: {
+                      type: Number,
+                      value: 0
+                  }
+              }
+          }
+
+          _computeUrl(resource) {
+            const apiRoot = this.$.meta.byKey('API_ROOT');
+            return `${apiRoot}/${resource}`;
+          }
+
+          _getWhyWeRead() {
+            try {
+                return this.whyWeReadData[this.currentWhyWeReadIndex]
+            } catch (err) {
+              return 'LOADING';
             }
           }
-        }
       }
       customElements.define(SCHomePage.is, SCHomePage);
   </script>
