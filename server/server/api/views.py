@@ -134,15 +134,14 @@ class Menu(Resource):
         for menu_entry in menu_entries:
             menu_entry['depth'] = depth + 1
             mapping[menu_entry['uid']] = menu_entry
-            # TODO cleanup
-            # if 'descendents' in menu_entry:
-            #     descendents = menu_entry.pop('descendents')
-            #     mapping.update({d['uid']: d for d in descendents})
-            #     for descendent in descendents:
-            #         parent = mapping[descendent.pop('from')]
-            #         if not 'children' in parent:
-            #             parent['children'] = []
-            #         parent['children'].append(descendent)
+            if 'descendents' in menu_entry:
+                descendents = menu_entry.pop('descendents')
+                mapping.update({d['uid']: d for d in descendents})
+                for descendent in descendents:
+                    parent = mapping[descendent.pop('from')]
+                    if 'children' not in parent:
+                        parent['children'] = []
+                    parent['children'].append(descendent)
             if 'type' in menu_entry:
                 if menu_entry['type'] in ('div', 'division'):
                     del menu_entry['uid']
