@@ -135,7 +135,7 @@
         color: var(--sc-primary-color-dark);
       }
 
-      .menu-icon {
+      .menu-dropdown-icon {
         fill: var(--sc-disabled-text-color);
         display: inline-block;
         position: absolute;
@@ -145,11 +145,11 @@
         cursor: pointer;
       }
 
-      .menu-icon.open {
+      .menu-dropdown-icon.open {
         transform: rotateZ(180deg);
       }
 
-      .nav-menu-item.selected .menu-icon {
+      .nav-menu-item.selected .menu-dropdown-icon {
         background-color: var(--sc-secondary-text-color);
       }
 
@@ -209,7 +209,7 @@
         loading="{{loading}}"
         last-error="{{error}}"
         last-response="{{mainMenuResponse}}"
-        on-response="_generateMenuMarkup">
+        on-response="_generateMainMenu">
     </iron-ajax>
 
     <div id="container" class="nav-list-container">
@@ -236,14 +236,14 @@
               <li class="nav-menu-item">
                 <div class="nav-section-header">
                   <a class="nav-link" href="/">Chapter on Ethics</a>
-                  <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
+                  <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
                 </div>
               </li>
               <li class="nav-section">
                 <div class="nav-section-header">
                   <a class="nav-link" href="/">Second Vagga</a>
                   <paper-icon-button>
-                    <iron-icon icon="expand-more" class="menu-icon"></iron-icon>
+                    <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
                   </paper-icon-button>
                 </div>
               </li>
@@ -259,7 +259,7 @@
 
             <!--<li class="nav-menu-item">-->
               <!--<span class="nav-link">Sutta</span>-->
-              <!--<iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
+              <!--<iron-icon icon="expand-more" class="menu-dropdown-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
 
               <!--<ul class="nav-secondary open">-->
                 <!--<li class="nav-menu-item">-->
@@ -267,12 +267,12 @@
                 <!--</li>-->
                 <!--<li class="nav-menu-item">-->
                   <!--<span class="nav-link">Short</span>-->
-                  <!--<iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
+                  <!--<iron-icon icon="expand-more" class="menu-dropdown-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
 
                   <!--<ul class="nav-tertiary open">-->
                     <!--<li class="nav-menu-item">-->
                       <!--<a class="nav-link">Digha Nikaya</a>-->
-                      <!--<iron-icon icon="arrow-forward" class="menu-icon" on-tap="_openChildMenu"></iron-icon>-->
+                      <!--<iron-icon icon="arrow-forward" class="menu-dropdown-icon" on-tap="_openChildMenu"></iron-icon>-->
                     <!--</li>-->
                   <!--</ul>-->
 
@@ -283,7 +283,7 @@
 
             <!--<li class="nav-menu-item">-->
               <!--<span class="nav-link" href="/">Vinaya</span>-->
-              <!--<iron-icon icon="expand-more" class="menu-icon" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
+              <!--<iron-icon icon="expand-more" class="menu-dropdown-icon" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
             <!--</li>-->
 
           <!--</ul>-->
@@ -314,20 +314,25 @@
               }
           }
 
-          _generateMenuMarkup() {
+          _generateMainMenu() {
               console.dir(this.mainMenuResponse);
               this.$.main_menu_container.innerHTML = `
 <ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
   ${this.mainMenuResponse.map(item => `
     <li class="nav-menu-item">
       <span class="nav-link">${item.name}</span>
-      <iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>
+      <iron-icon icon="expand-more" class="menu-dropdown-icon ${item.name === 'Sutta' ? 'open' : ''}" on-tap="_toggleOpenDropdownMenu"></iron-icon>
     </li>`)}
-</ul>`
+</ul>`;
+
+              Array.from(this.shadowRoot.querySelectorAll('.menu-dropdown-icon')).forEach((dropdownItem) => {
+                  dropdownItem.addEventListener('click', this._toggleOpenDropdownMenu);
+              });
           }
 
 
           _toggleOpenDropdownMenu(e) {
+              console.log('tap dropdown')
               // TODO change to [2] after adding iso code svg
               // TODO or use for="uid" attribute in icon element
               const icon = e.path[0];
