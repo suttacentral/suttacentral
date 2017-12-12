@@ -208,7 +208,8 @@
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
-        last-response="{{navList}}">
+        last-response="{{mainMenuResponse}}"
+        on-response="_generateMenuMarkup">
     </iron-ajax>
 
     <div id="container" class="nav-list-container">
@@ -250,38 +251,42 @@
           </div>
 
           <!-- Main nav menu -->
-          <ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
+          <div id="main_menu_container">
 
-            <li class="nav-menu-item">
-              <span class="nav-link" href="/">Sutta</span>
-              <iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>
+          </div>
 
-              <ul class="nav-secondary open">
-                <li class="nav-menu-item">
-                  <span class="nav-link">Long</span>
-                </li>
-                <li class="nav-menu-item">
-                  <span class="nav-link">Short</span>
-                  <iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>
+          <!--<ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">-->
 
-                  <ul class="nav-tertiary open">
-                    <li class="nav-menu-item">
-                      <a class="nav-link">Digha Nikaya</a>
-                      <iron-icon icon="arrow-forward" class="menu-icon" on-tap="_openChildMenu"></iron-icon>
-                    </li>
-                  </ul>
+            <!--<li class="nav-menu-item">-->
+              <!--<span class="nav-link">Sutta</span>-->
+              <!--<iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
 
-                </li>
-              </ul>
+              <!--<ul class="nav-secondary open">-->
+                <!--<li class="nav-menu-item">-->
+                  <!--<span class="nav-link">Long</span>-->
+                <!--</li>-->
+                <!--<li class="nav-menu-item">-->
+                  <!--<span class="nav-link">Short</span>-->
+                  <!--<iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
 
-            </li>
+                  <!--<ul class="nav-tertiary open">-->
+                    <!--<li class="nav-menu-item">-->
+                      <!--<a class="nav-link">Digha Nikaya</a>-->
+                      <!--<iron-icon icon="arrow-forward" class="menu-icon" on-tap="_openChildMenu"></iron-icon>-->
+                    <!--</li>-->
+                  <!--</ul>-->
 
-            <li class="nav-menu-item">
-              <span class="nav-link" href="/">Vinaya</span>
-              <iron-icon icon="expand-more" class="menu-icon" on-tap="_toggleOpenDropdownMenu"></iron-icon>
-            </li>
+                <!--</li>-->
+              <!--</ul>-->
 
-          </ul>
+            <!--</li>-->
+
+            <!--<li class="nav-menu-item">-->
+              <!--<span class="nav-link" href="/">Vinaya</span>-->
+              <!--<iron-icon icon="expand-more" class="menu-icon" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
+            <!--</li>-->
+
+          <!--</ul>-->
 
         </div>
       </nav>
@@ -301,9 +306,26 @@
                   navList: {
                       type: Array,
                       observer: '_parseNavList'
+                  },
+                  mainMenuResponse: {
+                      type: Array,
+                      value: []
                   }
               }
           }
+
+          _generateMenuMarkup() {
+              console.dir(this.mainMenuResponse);
+              this.$.main_menu_container.innerHTML = `
+<ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
+  ${this.mainMenuResponse.map(item => `
+    <li class="nav-menu-item">
+      <span class="nav-link">${item.name}</span>
+      <iron-icon icon="expand-more" class="menu-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>
+    </li>`)}
+</ul>`
+          }
+
 
           _toggleOpenDropdownMenu(e) {
               // TODO change to [2] after adding iso code svg
