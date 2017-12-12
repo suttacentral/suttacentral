@@ -81,18 +81,19 @@ class Menu(Resource):
         db = get_db()
         if submenu_id:
             divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id})
+            data = list(divisions)
         else:
             divisions = db.aql.execute(MENU)
-
-        data = self.groupby_parents(divisions, ['pitaka'])
+            data = self.groupby_parents(divisions, ['pitaka'])
 
         for pitaka in data:
-            uid = pitaka['uid']
-            children = pitaka.pop('children')
-            if uid == 'pitaka/su':
-                pitaka['children'] = self.groupby_parents(children, ['grouping'])
-            else:
-                pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
+            if 'children' in pitaka:
+                uid = pitaka['uid']
+                children = pitaka.pop('children')
+                if uid == 'pitaka/su':
+                    pitaka['children'] = self.groupby_parents(children, ['grouping'])
+                else:
+                    pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
 
         self.recursive_cleanup(data, depth=-1, mapping={})
 
@@ -137,6 +138,7 @@ class Menu(Resource):
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
                 mapping.update({d['uid']: d for d in descendents})
+                del menu_entry['uid']
                 for descendent in descendents:
                     parent = mapping[descendent.pop('from')]
                     if 'children' not in parent:
