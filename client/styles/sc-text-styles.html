@@ -266,11 +266,11 @@
       }
 
       .gap {
-        color: var(--sc-secondary-text-color)
+        color: var(--sc-secondary-text-color);
       }
 
       .infomode .var {
-        color: var(--sc-secondary-accent-color)
+        color: var(--sc-secondary-accent-color);
       }
 
       .text-table {
@@ -295,19 +295,20 @@
 
       .varnote,
       .corrnote {
-        display: none;
+        @apply --sc-sans-font;
+        --paper-tooltip-opacity: 0.98;
+        --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
+          @apply --sc-skolar-font-size-xs;
+          line-height: var(--sc-size-md);
+          padding: var(--sc-size-sm) var(--sc-size-md);
+          text-shadow: 0 0 var(--sc-secondary-background-color);
+          white-space: normal;
           max-width: 100% !important;
-        };
-      }
-
-      .infomode .varnote,
-      .infomode .corrnote {
-        display: block;
+        }
       }
 
       .varnote table {
-        @apply --sc-sans-font;
         color: var(--sc-paper-tooltip-text-color);
       }
 
