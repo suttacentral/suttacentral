@@ -8,8 +8,8 @@ from flask_restful import Resource
 from sortedcontainers import SortedListWithKey, SortedDict
 
 from common.arangodb import get_db
-from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST, \
-    IMAGES
+from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, \
+    SUTTAPLEX_LIST, IMAGES
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
     sort_parallels_type_key, groupby_unsorted
 
@@ -48,7 +48,7 @@ class Languages(Resource):
 
 
 class Menu(Resource):
-    def get(self):
+    def get(self, submenu_id=None):
         """
         Send Menu structure
         ---
@@ -79,7 +79,10 @@ class Menu(Resource):
                         type: number
         """
         db = get_db()
-        divisions = db.aql.execute(MENU)
+        if submenu_id:
+            divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id})
+        else:
+            divisions = db.aql.execute(MENU)
 
         data = self.groupby_parents(divisions, ['pitaka'])
 
@@ -140,6 +143,9 @@ class Menu(Resource):
             #         if not 'children' in parent:
             #             parent['children'] = []
             #         parent['children'].append(descendent)
+            if 'type' in menu_entry:
+                if menu_entry['type'] in ('div', 'division'):
+                    del menu_entry['uid']
             if 'parents' in menu_entry:
                 del menu_entry['parents']
             if 'children' in menu_entry:

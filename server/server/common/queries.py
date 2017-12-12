@@ -34,7 +34,11 @@ FOR pit IN pitaka
                 }
             )
         
-        RETURN MERGE({uid: div._id, name: div.name, num: div.num, type: div.type, parents: parents})
+        RETURN MERGE({uid: div._id, name: div.name, num: div.num, id: div.uid, type: div.type, parents: parents})
+'''
+
+SUBMENU = '''
+
 '''
 
 # Takes 2 bind_vars: `language` and `uid` of root element
