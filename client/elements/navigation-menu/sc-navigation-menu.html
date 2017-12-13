@@ -343,14 +343,19 @@
           }
 
           _generateDeepMainMenuLevels(item, generatedMarkup, isOpen) {
-              console.log(item.children);
+              const listType = ['div', 'division'].indexOf(item.children[0].type) === -1 ? 'nav-secondary' : 'nav-tertiary';
               return `
-                <ul class="nav-tertiary ${isOpen ? "open" : "closed"}"></ul>
+                <ul class="${listType} ${isOpen ? 'open' : 'closed'}">
+                  ${item.children.map(childItem => `
+                    <li>
+                      <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
+                    </li>
+                  `).join('')}
+                </ul>
               `;
           }
 
           _toggleOpenDropdownMenu(e) {
-              console.log(e);
               const icon = e.path[0];
               const container = e.path[1];
               const childMenu = container.querySelector('ul');
@@ -403,12 +408,16 @@
           }
 
           _getMenuUrl() {
-              return `${this._getApiUrl()}/menu`;
+              return `${this._getBaseUrl()}/api/menu`;
           }
 
-          _getApiUrl() {
+          _getSuttaplexUrl(uid) {
+              return `${this._getBaseUrl()}/${uid}`;
+          }
+
+          _getBaseUrl() {
               let currentUrl = window.location;
-              return `${currentUrl.protocol}//${currentUrl.host}/api`;
+              return `${currentUrl.protocol}//${currentUrl.host}`;
           }
       }
 
