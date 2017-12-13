@@ -179,12 +179,11 @@
 
       .nav-secondary.open,
       .nav-tertiary.open {
-        max-height: 300px;
+        max-height: 800px;
       }
 
       .nav-secondary.closed,
       .nav-tertiary.closed {
-        /*display: none;*/
         max-height: 0;
       }
 
@@ -259,7 +258,8 @@
 
             <!--<li class="nav-menu-item">-->
               <!--<span class="nav-link">Sutta</span>-->
-              <!--<iron-icon icon="expand-more" class="menu-dropdown-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
+              <!--<iron-icon icon="expand-more" class="menu-dropdown-icon open"-->
+                         <!--on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
 
               <!--<ul class="nav-secondary open">-->
                 <!--<li class="nav-menu-item">-->
@@ -267,7 +267,8 @@
                 <!--</li>-->
                 <!--<li class="nav-menu-item">-->
                   <!--<span class="nav-link">Short</span>-->
-                  <!--<iron-icon icon="expand-more" class="menu-dropdown-icon open" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
+                  <!--<iron-icon icon="expand-more" class="menu-dropdown-icon open"-->
+                             <!--on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
 
                   <!--<ul class="nav-tertiary open">-->
                     <!--<li class="nav-menu-item">-->
@@ -315,18 +316,20 @@
           }
 
           _generateMainMenu() {
-              console.dir(this.mainMenuResponse);
               const mainMenuMarkup = `
 <ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
-  ${this.mainMenuResponse.map(item => `
+  ${this.mainMenuResponse.map(topLevelItem => `
     <li class="nav-menu-item">
-      <span class="nav-link">${item.name}</span>
-      <iron-icon icon="expand-more" class="menu-dropdown-icon ${item.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
-      <ul class="nav-secondary ${item.name === 'Sutta' ? 'open' : 'closed'}">
-      ${item.children.map(grouping => `
+      <span class="nav-link">${topLevelItem.name}</span>
+      <iron-icon icon="expand-more" class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+      <ul class="nav-secondary ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
+      ${topLevelItem.children.map(groupingLevelItem => `
         <li class="nav-menu-item">
-          <span class="nav-link">${grouping.name}</span>
-          <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
+          <span class="nav-link">${groupingLevelItem.name}</span>
+          ${groupingLevelItem.children.length > 0 ? `
+            <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
+            ${this._generateDeepMainMenuLevels(groupingLevelItem, '', (topLevelItem.name === 'Sutta'))}
+            ` : ''}
         </li>
       `).join('')}
       </ul>
@@ -339,8 +342,15 @@
               });
           }
 
+          _generateDeepMainMenuLevels(item, generatedMarkup, isOpen) {
+              console.log(item.children);
+              return `
+                <ul class="nav-tertiary ${isOpen ? "open" : "closed"}"></ul>
+              `;
+          }
 
           _toggleOpenDropdownMenu(e) {
+              console.log(e);
               const icon = e.path[0];
               const container = e.path[1];
               const childMenu = container.querySelector('ul');
