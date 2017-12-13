@@ -4,6 +4,9 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<link rel="import" href="../../elements/addons/text-carusel.html">
 
 <dom-module id="home-page">
   <template>
@@ -53,18 +56,20 @@
       }
 
       .card-content {
+        position: relative;
         width: 100%;
         background-color: var(--sc-secondary-background-color);
         display: flex;
         align-items: center;
         flex-direction: column;
         justify-content: space-evenly;
+        padding-bottom: var(--sc-size-xxl);
       }
 
       .card-content-text {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
-        padding: var(--sc-size-md-larger);
+        padding: var(--sc-size-lg);
         text-align: center;
       }
 
@@ -74,7 +79,6 @@
 
       .card-heading-text {
         @apply --sc-sans-font;
-        font-size: 1.8vw;
         padding: var(--sc-size-lg);
         text-align: center;
       }
@@ -246,26 +250,19 @@
         text-align: justify;
       }
 
+      .spinner {
+        --paper-spinner-color: var(--sc-primary-color);
+        }
+
+      .card-button-middle {
+        position: absolute;
+        transform: translate(-50%);
+        bottom: var(--sc-size-md-larger);
+        }
+
       @media (min-width: 1200px) {
         .content {
-          grid-template-columns: 15% 70% 15%;
-        }
-
-        .card {
-          flex-flow: unset;
-        }
-
-        .card-content-video,
-        .card-content {
-          width: 75%;
-        }
-
-        .card-heading {
-          width: 25%;
-        }
-
-        .d-none {
-          display: unset;
+          grid-template-columns: 5% 90% 5%;
         }
 
         .three-elements-grid {
@@ -321,7 +318,29 @@
         .grid-button {
           justify-self: start;
         }
+      }
+
+      @media (min-width: 1600px) {
+        .content {
+          grid-template-columns: 15% 70% 15%;
+        }
   
+        .card {
+          flex-flow: unset;
+      }
+
+        .card-content-video,
+        .card-content {
+          width: 75%;
+      }
+
+        .card-heading {
+          width: 25%;
+        }
+
+        .d-none {
+          display: unset;
+        }
       }
 
     </style>
@@ -369,7 +388,7 @@
                   <div class="card-text center-text">I understood: ‘Rebirth is ended; the spiritual journey has been completed; 
                     what had to be done has been done; there is no return to any state of existence.’</div>
                   <a class="button-link" href="">
-                    <paper-button class="button">READ THIS SUTTA</paper-button>
+                    <paper-button class="button card-button-middle">READ THIS SUTTA</paper-button>
                   </a>
                 </div>
               </div>
@@ -488,14 +507,19 @@
                   read
                 </div>
               </div>
-              <div class="card-content">
+              <div class="card-content">                  
                 <div class="card-content-text">
+                  <template is="dom-if" if="[[loadingWhyWeRead]]">
+                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                  </template>
+                  <template is="dom-if" if="[[!loadingWhyWeRead]]">
                   <div class="why-we-read">
-                    [[_getWhyWeRead(loadingWhyWeRead)]]
+                      <sc-text-carusel elements="[[whyWeReadData]]"></sc-text-carusel>                                            
                   </div>
                   <a class="button-link" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747">
-                    <paper-button class="button">TELL US WHY YOU READ</paper-button>
+                      <paper-button class="button card-button-middle">TELL US WHY YOU READ</paper-button>
                   </a>
+                  </template>                
                 </div>
               </div>
             </div>
@@ -555,10 +579,6 @@
                   },
                   whyWeReadData: {
                       type: Object
-                  },
-                  currentWhyWeReadIndex: {
-                      type: Number,
-                      value: 0
                   }
               }
           }
@@ -566,14 +586,6 @@
           _computeUrl(resource) {
             const apiRoot = this.$.meta.byKey('API_ROOT');
             return `${apiRoot}/${resource}`;
-          }
-
-          _getWhyWeRead() {
-            try {
-                return this.whyWeReadData[this.currentWhyWeReadIndex]
-            } catch (err) {
-              return 'LOADING';
-            }
           }
       }
       customElements.define(SCHomePage.is, SCHomePage);

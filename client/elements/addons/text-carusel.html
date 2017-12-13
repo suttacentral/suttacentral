@@ -1,0 +1,107 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+<!--
+  Badge element
+-->
+<dom-module id="sc-text-carusel">
+  <template>
+    <style>
+        
+        .chevron {
+            display: flex;
+            flex-flow: column;
+            justify-content: space-around;
+            will-change: transform;
+            position: absolute;
+            top: 50%;
+            height: 100%;
+            width: var(--sc-size-lg);
+            transform: translate(0, -50%);
+            --iron-icon-width: var(--sc-size-md-larger);
+            --iron-icon-height: var(--sc-size-md-larger);
+        }
+
+        .chevron:hover {
+            cursor: pointer;
+            background-color: var(--sc-disabled-text-color-opaque); 
+            --iron-icon-width: calc(var(--sc-size-md-larger) * 1.15);
+            --iron-icon-height: calc(var(--sc-size-md-larger) * 1.15);
+        }
+
+        .next {
+            right: 0;
+        }
+
+        .previous {
+            left: 0;
+        }
+    </style>
+
+    <div class="container">
+        <div id="previous_button" class="chevron previous" on-click="_previousItem">
+            <iron-icon icon="chevron-left"></iron-icon>                
+        </div>
+            [[_getItemToShow(selectedItemIndex)]]
+        <div id="next_button" class="chevron next" on-click="_nextItem">
+            <iron-icon icon="chevron-right"></iron-icon>                
+        </div>
+    </div>
+
+  </template>
+
+  <script>
+      class SCTextCarusel extends Polymer.Element {
+          static get is() {
+              return 'sc-text-carusel';
+          }
+
+          static get properties() {
+              return {
+                  elements: {
+                      type: Array
+                  },
+                  display: {
+                      type: Text
+                  },
+                  link: {
+                      type: Text
+                  },
+                  selectedItemIndex: {
+                      type: Number,
+                      value: 0,
+                  }
+              }
+          }
+
+          read() {
+            super.ready();
+            setInterval(() => {
+                this._nextItem();
+            }, 3000);
+          }
+
+          _nextItem() {
+              this.selectedItemIndex = (this.selectedItemIndex + 1) % this.elements.length;
+          }
+
+          _previousItem() {
+              if(this.selectedItemIndex === 0) {
+                  this.selectedItemIndex = this.elements.length - 1;
+              } else {
+                  this.selectedItemIndex = (this.selectedItemIndex - 1) % this.elements.length;
+              }
+          }
+
+          _getItemToShow(index) {
+                let item = this.elements[this.selectedItemIndex];
+                if(this.display) {
+                    item = item[this.display];
+                }
+                return item;
+          }
+      }
+
+      customElements.define(SCTextCarusel.is, SCTextCarusel);
+  </script>
+</dom-module>
