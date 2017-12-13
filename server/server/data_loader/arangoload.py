@@ -132,7 +132,7 @@ def process_menu_ordering(structure_dir):
     return data
 
 
-def process_root_files(docs, edges, mapping, root_files, root_languages, structure_dir):
+def process_division_files(docs, edges, mapping, division_files, root_languages, structure_dir):
     with open(structure_dir / 'sutta.json', 'r') as f:
         sutta_file = json.load(f)
 
@@ -143,8 +143,8 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
 
     reg = regex.compile(r'^\D+')
     number_reg = regex.compile(r'.*?([0-9]+)$')
-    for root_file in root_files:
-        with root_file.open('r', encoding='utf8') as f:
+    for division_file in division_files:
+        with division_file.open('r', encoding='utf8') as f:
             entries = json.load(f)
         
         for i, entry in enumerate(entries):
@@ -152,7 +152,6 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
             mapping[path] = entry
             
             uid = path.parts[-1]
-
             entry['_key'] = uid
             entry['uid'] = uid
             base_uid = reg.match(uid)[0]
@@ -250,15 +249,15 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     docs = []
     edges = []
     mapping = {}
-    root_files = sorted((structure_dir / 'division').glob('**/*.json'))
+    division_files = sorted((structure_dir / 'division').glob('**/*.json'))
     category_files = sorted(structure_dir.glob('*.json'))
 
     root_languages = process_root_languages(structure_dir)
 
-    if change_tracker.is_any_file_new_or_changed(root_files + category_files):
+    if change_tracker.is_any_file_new_or_changed(division_files + category_files):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
-        process_root_files(docs, edges, mapping, root_files, root_languages, structure_dir)
+        process_division_files(docs, edges, mapping, division_files, root_languages, structure_dir)
 
         process_category_files(category_files, db, edges, mapping)
 
