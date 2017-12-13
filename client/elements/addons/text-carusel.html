@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="imoprt" href="../../bower_components/paper-button/paper-button.html">
+
 
 <!--
   Badge element
@@ -7,7 +9,27 @@
 <dom-module id="sc-text-carusel">
   <template>
     <style>
-        
+        .button {
+            @apply --sc-skolar-font-size-s;
+            @apply --sc-sans-font;
+            width: fit-content;
+            margin-top: var(--sc-size-md);
+            background-color: var(--sc-primary-accent-color);
+            color: var(--sc-tertiary-text-color);
+            font-weight: bold;
+            text-align: center;        
+        }
+
+        .card-button-middle {
+            position: absolute;
+            transform: translate(-50%);
+            bottom: var(--sc-size-md-larger);
+        }
+
+        .button-link {
+            background: none !important;
+        }    
+
         .chevron {
             display: flex;
             flex-flow: column;
@@ -39,11 +61,16 @@
     </style>
 
     <div class="container">
-        <div id="previous_button" class="chevron previous" on-click="_previousItem">
+        <div id="previous_button" class="chevron previous" on-tap="_previousItem">
             <iron-icon icon="chevron-left"></iron-icon>                
         </div>
-            [[_getItemToShow(selectedItemIndex)]]
-        <div id="next_button" class="chevron next" on-click="_nextItem">
+            <div>[[_getItemToShow(selectedItemIndex)]]</div>
+            <template is="dom-if" if="link">
+                <a class="button-link" href="[[_computeUrl(selectedItemIndex)]]">
+                    <paper-button class="button card-button-middle">READ THIS SUTTA</paper-button>
+                </a>
+            </template>
+        <div id="next_button" class="chevron next" on-tap="_nextItem">
             <iron-icon icon="chevron-right"></iron-icon>                
         </div>
     </div>
@@ -74,18 +101,18 @@
               }
           }
 
-          read() {
+          ready() {
             super.ready();
             setInterval(() => {
                 this._nextItem();
-            }, 3000);
+            }, 10000);
           }
 
-          _nextItem() {
+          _nextItem(e) {
               this.selectedItemIndex = (this.selectedItemIndex + 1) % this.elements.length;
           }
 
-          _previousItem() {
+          _previousItem(e) {
               if(this.selectedItemIndex === 0) {
                   this.selectedItemIndex = this.elements.length - 1;
               } else {
@@ -99,6 +126,10 @@
                     item = item[this.display];
                 }
                 return item;
+          }
+
+          _computeUrl(selectedItemIndex) {
+            return `/${this.elements[selectedItemIndex][this.link]}`;
           }
       }
 

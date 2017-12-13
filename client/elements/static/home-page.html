@@ -385,11 +385,14 @@
               </div>
               <div class="card-content">
                 <div class="card-content-text">
-                  <div class="card-text center-text">I understood: ‘Rebirth is ended; the spiritual journey has been completed; 
-                    what had to be done has been done; there is no return to any state of existence.’</div>
-                  <a class="button-link" href="">
-                    <paper-button class="button card-button-middle">READ THIS SUTTA</paper-button>
-                  </a>
+                  <template is="dom-if" if="[[loadingEpigraphs]]">
+                      <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                    </template>
+                    <template is="dom-if" if="[[!loadingEpigraphs]]">
+                    <div class="card-text center-text">
+                        <sc-text-carusel elements="[[epigraphsData]]" display="epigraph" link="uid"></sc-text-carusel>                                            
+                    </div>
+                    </template>
                 </div>
               </div>
             </div>
