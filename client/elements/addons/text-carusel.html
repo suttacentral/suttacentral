@@ -34,7 +34,8 @@
             display: flex;
             flex-flow: column;
             justify-content: space-around;
-            will-change: transform;
+            background: none;
+            border: none;
             position: absolute;
             top: 50%;
             height: 100%;
@@ -42,6 +43,10 @@
             transform: translate(0, -50%);
             --iron-icon-width: var(--sc-size-md-larger);
             --iron-icon-height: var(--sc-size-md-larger);
+        }
+
+        .chevron:focus {
+            outline: none;
         }
 
         .chevron:hover {
@@ -58,21 +63,35 @@
         .previous {
             left: 0;
         }
+
+        .text {
+            position: relative;
+            top: 50%;
+            transform: translate(0, -50%);
+            will-change: opacity;
+            opacity: 1;
+            transition: all .3s ease;
+        }
+
+        .transparent {
+            opacity: 0;
+        }
+
     </style>
 
-    <div class="container">
-        <div id="previous_button" class="chevron previous" on-tap="_previousItem">
+    <div id="container" class="container">
+        <button id="previous_button" class="chevron previous" on-tap="_previousItemClick">
             <iron-icon icon="chevron-left"></iron-icon>                
-        </div>
-            <div>[[_getItemToShow(selectedItemIndex)]]</div>
-            <template is="dom-if" if="link">
+        </button>
+            <div id="text" class="text"><span id="text_span"></span></div>
+            <template is="dom-if" if="[[link]]">
                 <a class="button-link" href="[[_computeUrl(selectedItemIndex)]]">
                     <paper-button class="button card-button-middle">READ THIS SUTTA</paper-button>
                 </a>
             </template>
-        <div id="next_button" class="chevron next" on-tap="_nextItem">
+        <button id="next_button" class="chevron next" on-tap="_nextItemClick">
             <iron-icon icon="chevron-right"></iron-icon>                
-        </div>
+        </button>
     </div>
 
   </template>
@@ -97,22 +116,49 @@
                   selectedItemIndex: {
                       type: Number,
                       value: 0,
+                      observer: '_itemChanged'
+                  },
+                  timer: {
+                      type: Object
+                  },
+                  firstItem: {
+                      type: Boolean,
+                      value: true
                   }
               }
           }
 
           ready() {
             super.ready();
-            setInterval(() => {
-                this._nextItem();
-            }, 10000);
+            this._setInterval();
           }
 
-          _nextItem(e) {
+          _setInterval() {
+                this.timer = setInterval(() => {
+                    this._nextItem();
+                }, 30000);
+          }
+
+          _nextItemClick(e) {
+              this._resetInterval();
+              this._nextItem();
+          }
+
+          _previousItemClick(e) {
+            this._resetInterval();
+            this._previousItem();
+        }
+
+        _resetInterval() {
+            clearInterval(this.timer);
+            this._setInterval();
+        }
+
+          _nextItem() {
               this.selectedItemIndex = (this.selectedItemIndex + 1) % this.elements.length;
           }
 
-          _previousItem(e) {
+          _previousItem() {
               if(this.selectedItemIndex === 0) {
                   this.selectedItemIndex = this.elements.length - 1;
               } else {
@@ -121,11 +167,33 @@
           }
 
           _getItemToShow(index) {
-                let item = this.elements[this.selectedItemIndex];
+                let  item;
+                if(this.firstItem) {
+                    item = this._getLongestItem();
+                    requestAnimationFrame(() => {
+                        this.$.container.style.height = window.getComputedStyle(this.$.container).height;
+                    })
+                    this.firstItem = false;
+                } else { 
+                    item = this.elements[this.selectedItemIndex];
+                }
                 if(this.display) {
                     item = item[this.display];
                 }
                 return item;
+          }
+
+          _getLongestItem() {
+              return this.elements.reduce((a, b) => a.length > b.length ? a : b);
+          }
+
+          _itemChanged() {
+              this.$.text.classList.add('transparent');
+              setTimeout(() => {
+                let item = this._getItemToShow(this.selectedItemIndex);
+                this.$.text.classList.remove('transparent');
+                this.$.text_span.innerText = item;
+              }, 300);
           }
 
           _computeUrl(selectedItemIndex) {
