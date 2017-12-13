@@ -148,6 +148,8 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
             entries = json.load(f)
         
         for i, entry in enumerate(entries):
+            if i == 0:
+                entry['type'] = 'division'
             path = pathlib.PurePath(entry['_path'])
             mapping[path] = entry
             
