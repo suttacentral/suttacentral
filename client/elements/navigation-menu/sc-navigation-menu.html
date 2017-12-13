@@ -316,14 +316,23 @@
 
           _generateMainMenu() {
               console.dir(this.mainMenuResponse);
-              this.$.main_menu_container.innerHTML = `
+              const mainMenuMarkup = `
 <ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
   ${this.mainMenuResponse.map(item => `
     <li class="nav-menu-item">
       <span class="nav-link">${item.name}</span>
-      <iron-icon icon="expand-more" class="menu-dropdown-icon ${item.name === 'Sutta' ? 'open' : ''}" on-tap="_toggleOpenDropdownMenu"></iron-icon>
-    </li>`)}
+      <iron-icon icon="expand-more" class="menu-dropdown-icon ${item.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+      <ul class="nav-secondary ${item.name === 'Sutta' ? 'open' : 'closed'}">
+      ${item.children.map(grouping => `
+        <li class="nav-menu-item">
+          <span class="nav-link">${grouping.name}</span>
+          <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
+        </li>
+      `).join('')}
+      </ul>
+    </li>`).join('')}
 </ul>`;
+              this.$.main_menu_container.innerHTML = mainMenuMarkup;
 
               Array.from(this.shadowRoot.querySelectorAll('.menu-dropdown-icon')).forEach((dropdownItem) => {
                   dropdownItem.addEventListener('click', this._toggleOpenDropdownMenu);
@@ -332,9 +341,6 @@
 
 
           _toggleOpenDropdownMenu(e) {
-              console.log('tap dropdown')
-              // TODO change to [2] after adding iso code svg
-              // TODO or use for="uid" attribute in icon element
               const icon = e.path[0];
               const container = e.path[1];
               const childMenu = container.querySelector('ul');
