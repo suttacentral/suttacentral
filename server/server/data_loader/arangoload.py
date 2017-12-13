@@ -146,17 +146,12 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
     for root_file in root_files:
         with root_file.open('r', encoding='utf8') as f:
             entries = json.load(f)
-        unique_counter = Counter(entry['_path'].split('/')[-1] for entry in entries)
-
+        
         for i, entry in enumerate(entries):
             path = pathlib.PurePath(entry['_path'])
             mapping[path] = entry
-
+            
             uid = path.parts[-1]
-            if unique_counter[uid] > 1 or uid.startswith('vagga'):
-                # uid is the end of path, unless it is non-unique in which case
-                # combine with the second to last part of path
-                uid = '-'.join(entry['_path'].split('/')[-2:])
 
             entry['_key'] = uid
             entry['uid'] = uid
