@@ -51,6 +51,9 @@
 
         .chevron:hover {
             cursor: pointer;
+        }
+
+        .chevron-active {
             background-color: var(--sc-disabled-text-color-opaque); 
             --iron-icon-width: calc(var(--sc-size-md-larger) * 1.15);
             --iron-icon-height: calc(var(--sc-size-md-larger) * 1.15);
@@ -70,7 +73,7 @@
             transform: translate(0, -50%);
             will-change: opacity;
             opacity: 1;
-            transition: all .3s ease;
+            transition: all .4s ease;
         }
 
         .transparent {
@@ -80,7 +83,7 @@
     </style>
 
     <div id="container" class="container">
-        <button id="previous_button" class="chevron previous" on-tap="_previousItemClick">
+        <button id="previous_button" class="chevron previous" on-click="_previousItemClick" type="button">
             <iron-icon icon="chevron-left"></iron-icon>                
         </button>
             <div id="text" class="text"><span id="text_span"></span></div>
@@ -89,7 +92,7 @@
                     <paper-button class="button card-button-middle">READ THIS SUTTA</paper-button>
                 </a>
             </template>
-        <button id="next_button" class="chevron next" on-tap="_nextItemClick">
+        <button id="next_button" class="chevron next" on-click="_nextItemClick">
             <iron-icon icon="chevron-right"></iron-icon>                
         </button>
     </div>
@@ -131,6 +134,48 @@
           ready() {
             super.ready();
             this._setInterval();
+            window.addEventListener('resize', e => {
+                this._debouncer = Polymer.Debouncer.debounce(
+                    this._debouncer,
+                    Polymer.Async.timeOut.after(200),
+                    () => {
+                        requestAnimationFrame(() => {
+                            this.$.container.style.height = 'unset'
+                            this.firstItem = true;
+                            this._getItemToShow(this.selectedItemIndex);
+                        })
+                    }
+                )
+            });
+            this.shadowRoot.querySelectorAll('.chevron').forEach(button => {
+                button.addEventListener('touchstart', () => {
+                    button.classList.add('chevron-active');
+                });
+                button.addEventListener('mouseenter', () => {
+                    button.classList.add('chevron-active');
+                });
+                button.addEventListener('touchend', () => {
+                    this._removeActiveChevronClass(button, 100);
+                });
+                button.addEventListener('touchcancel', () => {
+                    this._removeActiveChevronClass(button, 100);
+                });
+                button.addEventListener('mouseout', e => {this._handleMouseOut(button, e)});
+            })
+          }
+
+          _handleMouseOut(button, e) {
+              const element = e.toElement || e.relatedTarget;
+              if (element.parentNode == button || element == button){
+                  return;
+              }
+              this._removeActiveChevronClass(button, 10);
+          }
+
+          _removeActiveChevronClass(button, timeout) {
+            setTimeout(() => {
+                button.classList.remove('chevron-active');
+            }, timeout);
           }
 
           _setInterval() {
@@ -193,7 +238,7 @@
                 let item = this._getItemToShow(this.selectedItemIndex);
                 this.$.text.classList.remove('transparent');
                 this.$.text_span.innerText = item;
-              }, 300);
+              }, 400);
           }
 
           _computeUrl(selectedItemIndex) {
