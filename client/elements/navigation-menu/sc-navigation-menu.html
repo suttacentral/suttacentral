@@ -9,8 +9,6 @@
 
 <!--
   This is a custom sidebar menu navigation element.
-  One thing to keep in mind if you're restyling the individual items:
-    if you change the item height, remember to update the max-height value in _getMaxHeightStyle() below.
 -->
 
 <dom-module id="sc-navigation-menu">
@@ -148,9 +146,18 @@
         display: inline-block;
         position: absolute;
         right: var(--sc-size-sm);
-        top: var(--sc-size-xxs);
+        top: 0;
         transition: .3s ease all;
         cursor: pointer;
+        width: 32px;
+        height: 32px;
+      }
+
+      .child-menu-arrow-icon {
+        width: 22px;
+        height: 22px;
+        right: 13px;
+        top: var(--sc-size-xs);
       }
 
       .menu-dropdown-icon.open {
@@ -164,10 +171,6 @@
       .nav-secondary, .nav-tertiary {
         list-style-type: none;
         padding-left: var(--sc-size-sm);
-        -webkit-transition: max-height cubic-bezier(0,1,0,1) .6s;
-        -moz-transition: max-height cubic-bezier(0,1,0,1) .6s;
-        -ms-transition: max-height cubic-bezier(0,1,0,1) .6s;
-        -o-transition: max-height cubic-bezier(0,1,0,1) .6s;
         transition: max-height cubic-bezier(0,1,0,1) .6s;
         overflow: hidden;
       }
@@ -208,8 +211,8 @@
       }
 
       #back_arrow {
-        fill: var(--sc-disabled-text-color);
         cursor: pointer;
+        fill: var(--sc-disabled-text-color);
         width: var(--sc-size-lg);
         height: var(--sc-size-lg);
       }
@@ -222,8 +225,18 @@
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
-        last-response="{{mainMenuResponse}}"
+        last-response="{{mainMenuData}}"
         on-response="_generateMainMenu">
+    </iron-ajax>
+
+    <iron-ajax
+        id="submenu_ajax"
+        url="[[_getSubMenuUrl(submenuId)]]"
+        handle-as="json"
+        loading="{{loading}}"
+        last-error="{{error}}"
+        last-response="{{subMenuData}}"
+        on-response="_generateSubMenu">
     </iron-ajax>
 
     <div id="container" class="nav-list-container">
@@ -282,9 +295,17 @@
 
           static get properties() {
               return {
-                  mainMenuResponse: {
+                  mainMenuData: {
                       type: Array,
                       value: []
+                  },
+                  subMenuData: {
+                      type: Array,
+                      value: []
+                  },
+                  subMenuId: {
+                      type: String,
+                      value: 'none'
                   },
                   headerTitle: {
                       type: String,
@@ -296,13 +317,13 @@
           _generateMainMenu() {
               const mainMenuMarkup = `
                 <ul id="main_navigation" class="nav-list sc-scrollbar swap-section left active">
-                  ${this.mainMenuResponse.map(topLevelItem => `
+                  ${this.mainMenuData.map(topLevelItem => `
                     <li class="nav-menu-item">
                       <span class="nav-link">${topLevelItem.name}</span>
                       <iron-icon icon="expand-more"
-                      class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                        class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
                       <ul class="nav-secondary ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
-                      ${topLevelItem.children.map(groupingLevelItem => `
+                        ${topLevelItem.children.map(groupingLevelItem => `
                         <li class="nav-menu-item">
                           <span class="nav-link">${groupingLevelItem.name}</span>
                           ${groupingLevelItem.children.length > 0 ? `
@@ -334,7 +355,7 @@
                       `<iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
                        ${this._generateDeepMainMenuLevels(childItem, false)}`
                       :
-                      `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-icon"></iron-icon>`
+                      `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon"></iron-icon>`
                     }
                     </li>
                   `).join('')}
@@ -346,14 +367,14 @@
               Array.from(this.shadowRoot.querySelectorAll('.menu-dropdown-icon')).forEach((dropdownIcon) => {
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
-              Array.from(this.shadowRoot.querySelectorAll('.child-menu-icon')).forEach((childMenuIcon) => {
+              Array.from(this.shadowRoot.querySelectorAll('.child-menu-arrow-icon')).forEach((childMenuIcon) => {
                   childMenuIcon.addEventListener('click', this._openChildMenu.bind(this));
               });
           }
 
           _toggleOpenDropdownMenu(e) {
-              const icon = e.path[0];
-              const container = e.path[1];
+              const icon = e.composedPath()[0];
+              const container = e.composedPath()[1];
               const childMenu = container.querySelector('ul');
               if (!childMenu) {
                   return;
@@ -370,13 +391,17 @@
           }
 
           _openChildMenu(e) {
-              this.headerTitle = e.path[1].innerText;
-              const submenuId = e.path[1].dataset.uid;
-              const submenuMarkup = `<ul class="sub-nav nav-tertiary open sc-scrollbar">${submenuId}</ul>`;
-              this.$.sub_navigation.innerHTML = submenuMarkup;
+              this.headerTitle = e.composedPath()[1].innerText;
+              this.subMenuId = e.composedPath()[1].dataset.uid;
+              this.$.submenu_ajax.generateRequest();
               this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
+          }
+
+          _generateSubMenu() {
+              const subMenuMarkup = `<ul class="sub-nav nav-tertiary open sc-scrollbar">${this.subMenuId}</ul>`;
+              this.$.sub_navigation.innerHTML = this.subMenuData[0].name;
           }
 
           _closeChildMenu() {
@@ -385,15 +410,15 @@
               this.shadowRoot.querySelector('#main_navigation').classList.add('active');
           }
 
-          // The max-height property is added here to achieve a smooth dropdown animation.
+          // The max-height property is calculated here to achieve a smooth dropdown animation.
           // This only works for elements that have no grandchildren, and therefore no embedded dropdowns of their own.
+          // Otherwise a more generally universal, but not as smooth dropdown animation is used.
           _getMaxHeightStyle(element) {
               const hasGrandchildren = element.children.some(child => child.children && child.children.length > 0);
               if (!hasGrandchildren) {
-                const elemHeight = 41;
-                return `max-height: ${elemHeight * element.children.length}px;
-                        transition: max-height ease .6s; -webkit-transition: max-height ease .6s;
-                        -webkit-transition: max-height ease .6s; -moz-transition: max-height ease .6s;`;
+                const elemHeight = 39;
+                const elemMaxHeight = elemHeight * element.children.length;
+                return `max-height: ${elemMaxHeight}px; transition: max-height ease-in-out .5s;`;
               }
               else return '';
           }
@@ -404,6 +429,10 @@
 
           _getMenuUrl() {
               return `${this._getBaseUrl()}/api/menu`;
+          }
+
+          _getSubMenuUrl(uid) {
+              return `${this._getBaseUrl()}/api/menu/${uid}`;
           }
 
           _getSuttaplexUrl(uid) {
