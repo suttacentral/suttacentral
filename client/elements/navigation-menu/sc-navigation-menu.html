@@ -7,6 +7,12 @@
 
 <link rel="import" href="../../styles/sc-scrollbar-style.html">
 
+<!--
+  This is a custom sidebar menu navigation element.
+  One thing to keep in mind if you're restyling the individual items:
+    if you change the item height, remember to update the max-height value in _getMaxHeightStyle() below.
+-->
+
 <dom-module id="sc-navigation-menu">
   <template>
     <style include="sc-scrollbar-style">
@@ -125,6 +131,7 @@
         font-weight: 600;
         letter-spacing: .24px;
         padding: 5px 20px;
+        margin: var(--sc-size-sm) 0;
         text-decoration: none;
         transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
         -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
@@ -154,14 +161,13 @@
       }
 
       .nav-secondary, .nav-tertiary {
-        margin: var(--sc-size-sm) 0;
         list-style-type: none;
         padding-left: var(--sc-size-sm);
-        -webkit-transition: max-height ease-in-out .3s;
-        -moz-transition: max-height ease-in-out .3s;
-        -ms-transition: max-height ease-in-out .3s;
-        -o-transition: max-height ease-in-out .3s;
-        transition: max-height ease-in-out .3s;
+        -webkit-transition: max-height cubic-bezier(0,1,0,1) .6s;
+        -moz-transition: max-height cubic-bezier(0,1,0,1) .6s;
+        -ms-transition: max-height cubic-bezier(0,1,0,1) .6s;
+        -o-transition: max-height cubic-bezier(0,1,0,1) .6s;
+        transition: max-height cubic-bezier(0,1,0,1) .6s;
         overflow: hidden;
       }
 
@@ -179,17 +185,20 @@
 
       .nav-secondary.open,
       .nav-tertiary.open {
-        max-height: 800px;
+        max-height: 9999px;
+        transition: max-height cubic-bezier(1,0,1,0) .6s;
       }
 
       .nav-secondary.closed,
       .nav-tertiary.closed {
-        max-height: 0;
+        max-height: 0 !important;
       }
 
       #main-navigation {
         margin-top: -77px;
-        height: auto;
+        height: 88%;
+        overflow-y: scroll;
+        padding-bottom: 10em;
       }
 
       #back-arrow {
@@ -304,10 +313,6 @@
 
           static get properties() {
               return {
-                  navList: {
-                      type: Array,
-                      observer: '_parseNavList'
-                  },
                   mainMenuResponse: {
                       type: Array,
                       value: []
@@ -317,24 +322,26 @@
 
           _generateMainMenu() {
               const mainMenuMarkup = `
-<ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
-  ${this.mainMenuResponse.map(topLevelItem => `
-    <li class="nav-menu-item">
-      <span class="nav-link">${topLevelItem.name}</span>
-      <iron-icon icon="expand-more" class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
-      <ul class="nav-secondary ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
-      ${topLevelItem.children.map(groupingLevelItem => `
-        <li class="nav-menu-item">
-          <span class="nav-link">${groupingLevelItem.name}</span>
-          ${groupingLevelItem.children.length > 0 ? `
-            <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
-            ${this._generateDeepMainMenuLevels(groupingLevelItem, '', (topLevelItem.name === 'Sutta'))}
-            ` : ''}
-        </li>
-      `).join('')}
-      </ul>
-    </li>`).join('')}
-</ul>`;
+                <ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
+                  ${this.mainMenuResponse.map(topLevelItem => `
+                    <li class="nav-menu-item">
+                      <span class="nav-link">${topLevelItem.name}</span>
+                      <iron-icon icon="expand-more"
+                      class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                      <ul class="nav-secondary ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
+                      ${topLevelItem.children.map(groupingLevelItem => `
+                        <li class="nav-menu-item">
+                          <span class="nav-link">${groupingLevelItem.name}</span>
+                          ${groupingLevelItem.children.length > 0 ? `
+                            <iron-icon icon="expand-more"
+                            class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                            ${this._generateDeepMainMenuLevels(groupingLevelItem, '', (topLevelItem.name === 'Sutta'))}
+                            ` : ''}
+                        </li>
+                      `).join('')}
+                      </ul>
+                    </li>`).join('')}
+                </ul>`;
               this.$.main_menu_container.innerHTML = mainMenuMarkup;
 
               Array.from(this.shadowRoot.querySelectorAll('.menu-dropdown-icon')).forEach((dropdownItem) => {
@@ -345,10 +352,13 @@
           _generateDeepMainMenuLevels(item, generatedMarkup, isOpen) {
               const listType = ['div', 'division'].indexOf(item.children[0].type) === -1 ? 'nav-secondary' : 'nav-tertiary';
               return `
-                <ul class="${listType} ${isOpen ? 'open' : 'closed'}">
+                <ul class="${listType} ${isOpen ? 'open' : 'closed'}" style="${this._getMaxHeightStyle(item)}">
                   ${item.children.map(childItem => `
                     <li>
-                      <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
+                    ${listType === 'nav-secondary' ?
+                      `<span class="nav-link">${childItem.name}</span>`
+                      :
+                      `<a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>`}
                     </li>
                   `).join('')}
                 </ul>
@@ -385,22 +395,17 @@
               this.shadowRoot.querySelector('#main-navigation').classList.add('active');
           }
 
-          // Open the first two tiers of the sidebar menu and add icons
-          _parseNavList() {
-              this.navList[0].open = true;
-              if (!this.navList[0].children) {
-                  return;
+          // The max-height property is added here to achieve a smooth dropdown animation.
+          // This only works for elements that have no grandchildren, and therefore no embedded dropdowns of their own.
+          _getMaxHeightStyle(element) {
+              const hasGrandchildren = element.children.some(child => child.children && child.children.length > 0);
+              if (!hasGrandchildren) {
+                const elemHeight = 41;
+                return `max-height: ${elemHeight * element.children.length}px;
+                        transition: max-height ease .6s; -webkit-transition: max-height ease .6s;
+                        -webkit-transition: max-height ease .6s; -moz-transition: max-height ease .6s;`;
               }
-              this.navList[0].children.forEach((item) => {
-                  item.open = true;
-                  item.icon = 'trending-flat';
-                  if (!item.children) {
-                      return;
-                  }
-                  item.children.forEach((subItem) => {
-                      subItem.icon = 'turned-in';
-                  })
-              });
+              else return '';
           }
 
           _shouldShowLoadingIndicator(loading, error) {
