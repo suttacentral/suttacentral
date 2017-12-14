@@ -1,11 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="../styles/sc-dict-styles.html">
 
@@ -109,21 +109,16 @@ Issues:
         border-bottom: var(--sc-border);
       }
 
-
+      paper-spinner-lite {
+        --paper-spinner-color: var(--sc-primary-color);
+        left: 50%;
+        top: 50px;
+      }
     </style>
 
-<iron-meta id="meta"></iron-meta>
-
-<!--     <iron-ajax
-        id="ajax"
-        handle-as="json"
-        loading="{{loadingDict}}"
-        last-response="{{dictData}}"></iron-ajax> -->
-<p>Some text</p>
-
-    <iron-ajax auto url=[[_computeUrl()]] handle-as="json" loading="{{loadingResults}}"
+    <iron-ajax auto url="../data/dictionaries/cped.json" handle-as="json" loading="{{loadingResults}}"
                last-response="{{cpedResult}}"></iron-ajax>
-<!--     <iron-ajax auto url="../data/dictionaries/dhammika.json" handle-as="json" loading="{{loadingResults}}"
+    <iron-ajax auto url="../data/dictionaries/dhammika.json" handle-as="json" loading="{{loadingResults}}"
                last-response="{{dhammikaResult}}"></iron-ajax>
     <iron-ajax auto url="../data/dictionaries/ncped.json" handle-as="json" loading="{{loadingResults}}"
                last-response="{{ncpedResult}}"></iron-ajax>
@@ -132,10 +127,13 @@ Issues:
     <iron-ajax auto url="../data/dictionaries/pts.json" handle-as="json" loading="{{loadingResults}}"
                last-response="{{ptsResult}}"></iron-ajax>
     <iron-ajax auto url="../data/dictionaries/related.json" handle-as="json" loading="{{loadingResults}}"
-               last-response="{{relatedItems}}"></iron-ajax> -->
+               last-response="{{relatedItems}}"></iron-ajax>
 
+    <div class="loadingIndicator">
+      <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
+    </div>
 
-<!--     <div class="divisioncontent">
+    <div class="divisioncontent">
       <main>
         <div class="results-head">
           <h1><span class="result-description">Definitions for</span> <span
@@ -173,10 +171,10 @@ Issues:
               <div class="pts-entry" inner-h-t-m-l="[[ptsItem.text]]"></div>
             </div>
           </template>
-        </div> -->
+        </div>
 
         <!--The below is complete mockup. The real related and similar terms to be displayed will have to be calculated-->
-<!--         <app-drawer id="drawer" align="right" swipe-open>
+        <app-drawer id="drawer" align="right" swipe-open>
           <div class="related-terms">
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
@@ -195,108 +193,90 @@ Issues:
               </template>
             </ul>
           </div>
-        </app-drawer> -->
+        </app-drawer>
       </main>
     </div>
   </template>
 
   <script>
-      class SCPageDictionary extends ReduxMixin(Polymer.Element) {
-          static get is() {
-              return 'sc-page-dictionary';
-          }
+      Polymer({
+          is: 'sc-page-dictionary',
+          properties: {
+              dictionaryItem: {
+                  type: String,
+                  notify: true
+              },
+              cpedResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              ncpedResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              dhammikaResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              dppnResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              ptsResult: {
+                  type: Object,
+                  notify: true,
+                  value: function() {
+                      return {}
+                  }
+              },
+              inputLanguage: String,
 
-          static get properties() {
-              return {
-                dictionaryItem: {
-                    type: String,
-                    notify: true
-                },
-                cpedResult: {
-                    type: Object,
-                    notify: true,
-                    value: function() {
-                        return {}
-                    }
-                },
-                ncpedResult: {
-                    type: Object,
-                    notify: true,
-                    value: function() {
-                        return {}
-                    }
-                },
-                dhammikaResult: {
-                    type: Object,
-                    notify: true,
-                    value: function() {
-                        return {}
-                    }
-                },
-                dppnResult: {
-                    type: Object,
-                    notify: true,
-                    value: function() {
-                        return {}
-                    }
-                },
-                ptsResult: {
-                    type: Object,
-                    notify: true,
-                    value: function() {
-                        return {}
-                    }
-                },
-                inputLanguage: String
-
-                // checks if item is found in any of the 5 dictionaries
-                // cpedItem: {
-                //     type: String,
-                //     computed: '_checkDictionaryEntry(cpedResult, dictionaryItem)'
-                // },
-                // ncpedItem: {
-                //     type: String,
-                //     computed: '_checkDictionaryEntry(ncpedResult, dictionaryItem)'
-                // },
-                // dhammikaItem: {
-                //     type: String,
-                //     computed: '_checkDictionaryEntry(dhammikaResult, dictionaryItem)'
-                // },
-                // ptsItem: {
-                //     type: String,
-                //     computed: '_checkDictionaryEntry(ptsResult, dictionaryItem)'
-                // },
-                // dppnItem: {
-                //     type: String,
-                //     computed: '_checkDictionaryEntry(dppnResult, dictionaryItem)'
-                // }
+              // checks if item is found in any of the 5 dictionaries
+              cpedItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(cpedResult, dictionaryItem)'
+              },
+              ncpedItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(ncpedResult, dictionaryItem)'
+              },
+              dhammikaItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(dhammikaResult, dictionaryItem)'
+              },
+              ptsItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(ptsResult, dictionaryItem)'
+              },
+              dppnItem: {
+                  type: String,
+                  computed: '_checkDictionaryEntry(dppnResult, dictionaryItem)'
               }
-          }
+          },
           // checks if item is found in this specific dictionary and returns the result.
-          _checkDictionaryEntry(dictResult, dictionaryItem) {
+          _checkDictionaryEntry: function(dictResult, dictionaryItem) {
               if (dictResult[dictionaryItem.toLowerCase()]) {
                   return dictResult[dictionaryItem.toLowerCase()];
               } else if (dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)]) {
                   return dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)];
               }
-          }
+          },
           // toggles the drawer on the right to show the related/similar items.
-          _toggleDrawer() {
+          _toggleDrawer: function() {
               this.$.drawer.toggle();
           }
-
-
-          getNewDict() {
-              this.$.ajax.url = this._computeUrl();
-              this.loadedLanguage = this.toLang;
-              return this.$.ajax.generateRequest();
-          }
-
-          _computeUrl() {
-            console.log(`${this.$.meta.byKey('API_ROOT')}/dictionaries/en/cped.json`);
-            return `${this.$.meta.byKey('API_ROOT')}/dictionaries/en/cped.json`;
-          }
-      }
-      customElements.define(SCPageDictionary.is, SCPageDictionary);
+      });
   </script>
 </dom-module>
