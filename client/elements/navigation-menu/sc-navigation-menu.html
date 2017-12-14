@@ -176,11 +176,12 @@
         font-weight: 400;
       }
 
-      .nav-tertiary .nav-link {
+      .nav-tertiary a {
         text-transform: none;
         letter-spacing: 0;
         font-weight: 400;
         color: var(--sc-primary-accent-color);
+        text-decoration: none;
       }
 
       .nav-secondary.open,
@@ -194,14 +195,14 @@
         max-height: 0 !important;
       }
 
-      #main-navigation {
+      #main_navigation {
         margin-top: -77px;
         height: 88%;
         overflow-y: scroll;
         padding-bottom: 10em;
       }
 
-      #back-arrow {
+      #back_arrow {
         fill: var(--sc-disabled-text-color);
         cursor: pointer;
         width: var(--sc-size-lg);
@@ -233,13 +234,13 @@
 
       <nav class="sc-nav">
         <div>
-          <a id="sub-navigation-header" class="nav-back-button swap-section up">
-            <iron-icon id="back-arrow" icon="arrow-back" on-tap="_closeChildMenu"></iron-icon>
-            <span class="nav-back-title">Digha Nikaya</span>
+          <a id="sub_navigation_header" class="nav-back-button swap-section up">
+            <iron-icon id="back_arrow" icon="arrow-back" on-tap="_closeChildMenu"></iron-icon>
+            <span class="nav-back-title">[[headerTitle]]</span>
           </a>
 
           <!-- Sub nav menu -->
-          <div id="sub-navigation" class="sub-nav-container swap-section right">
+          <div id="sub_navigation" class="sub-nav-container swap-section right">
             <ul class="sub-nav nav-tertiary open sc-scrollbar">
               <li class="nav-menu-item">
                 <div class="nav-section-header">
@@ -263,7 +264,7 @@
 
           </div>
 
-          <!--<ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">-->
+          <!--<ul id="main_navigation" class="nav-list sc-scrollbar swap-section left active">-->
 
             <!--<li class="nav-menu-item">-->
               <!--<span class="nav-link">Sutta</span>-->
@@ -316,13 +317,17 @@
                   mainMenuResponse: {
                       type: Array,
                       value: []
+                  },
+                  headerTitle: {
+                      type: String,
+                      value: "Division title"
                   }
               }
           }
 
           _generateMainMenu() {
               const mainMenuMarkup = `
-                <ul id="main-navigation" class="nav-list sc-scrollbar swap-section left active">
+                <ul id="main_navigation" class="nav-list sc-scrollbar swap-section left active">
                   ${this.mainMenuResponse.map(topLevelItem => `
                     <li class="nav-menu-item">
                       <span class="nav-link">${topLevelItem.name}</span>
@@ -343,10 +348,7 @@
                     </li>`).join('')}
                 </ul>`;
               this.$.main_menu_container.innerHTML = mainMenuMarkup;
-
-              Array.from(this.shadowRoot.querySelectorAll('.menu-dropdown-icon')).forEach((dropdownItem) => {
-                  dropdownItem.addEventListener('click', this._toggleOpenDropdownMenu);
-              });
+              this._addButtonEventListeners();
           }
 
           _generateDeepMainMenuLevels(item, isOpen) {
@@ -358,18 +360,28 @@
                     ${listType === 'nav-secondary' ?
                       `<span class="nav-link">${childItem.name}</span>`
                       :
-                      `<a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>`
+                      `<span class="nav-link"><a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a></span>`
                     }
                     ${childItem.children && childItem.children.length > 0 ?
                       `<iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
                        ${this._generateDeepMainMenuLevels(childItem, false)}`
                       :
-                      ''
+                      `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-icon"></iron-icon>`
                     }
                     </li>
                   `).join('')}
                 </ul>
               `;
+          }
+
+          _addButtonEventListeners() {
+              Array.from(this.shadowRoot.querySelectorAll('.menu-dropdown-icon')).forEach((dropdownIcon) => {
+                  dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
+              });
+              Array.from(this.shadowRoot.querySelectorAll('.child-menu-icon')).forEach((childMenuIcon) => {
+                  console.dir(childMenuIcon);
+                  childMenuIcon.addEventListener('click', this._openChildMenu.bind(this));
+              });
           }
 
           _toggleOpenDropdownMenu(e) {
@@ -390,16 +402,17 @@
               }
           }
 
-          _openChildMenu() {
-              this.shadowRoot.querySelector('#main-navigation').classList.remove('active');
-              this.shadowRoot.querySelector('#sub-navigation').classList.add('active');
-              this.shadowRoot.querySelector('#sub-navigation-header').classList.add('active');
+          _openChildMenu(e) {
+              console.dir(e);
+              this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
+              this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
+              this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
           }
 
           _closeChildMenu() {
-              this.shadowRoot.querySelector('#sub-navigation').classList.remove('active');
-              this.shadowRoot.querySelector('#sub-navigation-header').classList.remove('active');
-              this.shadowRoot.querySelector('#main-navigation').classList.add('active');
+              this.shadowRoot.querySelector('#sub_navigation').classList.remove('active');
+              this.shadowRoot.querySelector('#sub_navigation_header').classList.remove('active');
+              this.shadowRoot.querySelector('#main_navigation').classList.add('active');
           }
 
           // The max-height property is added here to achieve a smooth dropdown animation.
