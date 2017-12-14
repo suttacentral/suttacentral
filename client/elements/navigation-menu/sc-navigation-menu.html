@@ -128,7 +128,7 @@
         text-transform: uppercase;
         display: block;
         font-weight: 600;
-        letter-spacing: .24px;
+        letter-spacing: 1px;
         padding: 5px 20px;
         margin: var(--sc-size-xs) 0;
         text-decoration: none;
@@ -171,7 +171,7 @@
       .nav-secondary, .nav-tertiary {
         list-style-type: none;
         padding-left: var(--sc-size-sm);
-        transition: max-height cubic-bezier(0,1,0,1) .6s;
+        transition: max-height cubic-bezier(0, 1, 0, 1) .6s;
         overflow: hidden;
       }
 
@@ -191,7 +191,7 @@
       .nav-secondary.open,
       .nav-tertiary.open {
         max-height: 9999px;
-        transition: max-height cubic-bezier(1,0,1,0) .6s;
+        transition: max-height cubic-bezier(1, 0, 1, 0) .6s;
       }
 
       .nav-secondary.closed,
@@ -231,7 +231,7 @@
 
     <iron-ajax
         id="submenu_ajax"
-        url="[[_getSubMenuUrl(submenuId)]]"
+        url="[[_getSubMenuUrl()]]"
         handle-as="json"
         loading="{{loading}}"
         last-error="{{error}}"
@@ -257,7 +257,6 @@
             <span class="nav-back-title">[[headerTitle]]</span>
           </a>
 
-          <!-- Sub nav menu -->
           <!--<div id="sub_navigation" class="sub-nav-container swap-section right">-->
             <!--<ul class="sub-nav nav-tertiary open sc-scrollbar">-->
               <!--<li class="nav-menu-item">-->
@@ -309,7 +308,7 @@
                   },
                   headerTitle: {
                       type: String,
-                      value: "Division title"
+                      value: 'Division title'
                   }
               }
           }
@@ -341,8 +340,11 @@
           }
 
           _generateDeepMainMenuLevels(item, isOpen) {
-              const listType = item.children.some(child => ['div', 'division'].indexOf(child.type) !== -1) ? 'nav-tertiary' : 'nav-secondary';
-              return `
+              const listType =
+                  item.children && item.children.some(child => ['div', 'division'].indexOf(child.type) !== -1) ?
+                      'nav-tertiary' : 'nav-secondary';
+              if (item.children) {
+                  return `
                 <ul class="${listType} ${isOpen ? 'open' : 'closed'}" style="${this._getMaxHeightStyle(item)}">
                   ${item.children.map(childItem => `
                     <li class="nav-menu-item" data-uid="${childItem.id}">
@@ -350,17 +352,18 @@
                       `<span class="nav-link">${childItem.name}</span>`
                       :
                       `<span class="nav-link"><a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a></span>`
-                    }
+                      }
                     ${childItem.children && childItem.children.length > 0 ?
                       `<iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
                        ${this._generateDeepMainMenuLevels(childItem, false)}`
                       :
                       `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon"></iron-icon>`
-                    }
+                      }
                     </li>
                   `).join('')}
                 </ul>
               `;
+              }
           }
 
           _addButtonEventListeners() {
@@ -392,19 +395,45 @@
 
           _openChildMenu(e) {
               this.headerTitle = e.composedPath()[1].innerText;
-              this.subMenuId = e.composedPath()[1].dataset.uid;
+              const subMenuId = e.composedPath()[1].dataset.uid;
+              this.$.submenu_ajax.url = this._getSubMenuUrl(subMenuId);
               this.$.submenu_ajax.generateRequest();
+              this.dispatchEvent(new CustomEvent('childMenuOpened', { composed: true, bubbles: true }));
               this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
           }
 
           _generateSubMenu() {
-              const subMenuMarkup = `<ul class="sub-nav nav-tertiary open sc-scrollbar">${this.subMenuId}</ul>`;
-              this.$.sub_navigation.innerHTML = this.subMenuData[0].name;
+              const subMenuMarkup = this._generateSubMenuMarkup(this.subMenuData[0]);
+              this.$.sub_navigation.innerHTML = subMenuMarkup;
+              this.$.sub_navigation.querySelectorAll('.menu-dropdown-icon').forEach((dropdownIcon) => {
+                  dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
+              });
+          }
+
+          _generateSubMenuMarkup(menuItem) {
+              console.dir(menuItem);
+              return !menuItem.children ? '' : `
+                <ul class="sub-nav nav-tertiary open sc-scrollbar">
+                  ${menuItem.children.map(childItem => `
+                    <li class="nav-menu-item">
+                      <span class="nav-link">
+                        <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
+                      </span>
+                    ${childItem.children && childItem.children.length > 0 ? `
+                      <iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
+                       ${this._generateSubMenuMarkup(childItem)}`
+                       :
+                       ''}
+                    </li>
+                  `).join('')}
+                </ul>
+              `
           }
 
           _closeChildMenu() {
+              this.dispatchEvent(new CustomEvent('childMenuClosed', { composed: true, bubbles: true }));
               this.shadowRoot.querySelector('#sub_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.remove('active');
               this.shadowRoot.querySelector('#main_navigation').classList.add('active');
@@ -414,11 +443,11 @@
           // This only works for elements that have no grandchildren, and therefore no embedded dropdowns of their own.
           // Otherwise a more generally universal, but not as smooth dropdown animation is used.
           _getMaxHeightStyle(element) {
-              const hasGrandchildren = element.children.some(child => child.children && child.children.length > 0);
-              if (!hasGrandchildren) {
-                const elemHeight = 39;
-                const elemMaxHeight = elemHeight * element.children.length;
-                return `max-height: ${elemMaxHeight}px; transition: max-height ease-in-out .5s;`;
+              const hasGrandchildren = element.children && element.children.some(child => child.children && child.children.length > 0);
+              if (element.children && !hasGrandchildren) {
+                  const elemHeight = 39;
+                  const elemMaxHeight = elemHeight * element.children.length;
+                  return `max-height: ${elemMaxHeight}px; transition: max-height ease-in-out .5s;`;
               }
               else return '';
           }

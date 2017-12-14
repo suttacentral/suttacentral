@@ -58,6 +58,7 @@
         white-space: nowrap;
         height: 60px;
         line-height: 1.4;
+        transition: opacity .5s;
       }
 
       .nav-home-link {
@@ -161,6 +162,10 @@
         margin: var(--sc-size-sm);
       }
 
+      .transparent {
+        opacity: 0;
+      }
+
     </style>
 
     <iron-meta id="meta" key="API_ROOT" value="{{_getApiUrl()}}"></iron-meta>
@@ -245,6 +250,10 @@
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
               // Lock scroll for the text dialogs:
               this._addScrollLockListeners();
+              // this.addEventListener('childMenuOpened', () =>
+                  // this.shadowRoot.querySelector('.nav-home-title').classList.add('transparent'));
+              // this.addEventListener('childMenuClosed', () =>
+                  // this.shadowRoot.querySelector('.nav-home-title').classList.remove('transparent'));
           }
 
           // opens the app-drawer when it is not visible.
