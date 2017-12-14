@@ -203,6 +203,10 @@
         padding-bottom: 10em;
       }
 
+      #main_navigation:not(.active)::-webkit-scrollbar-thumb {
+        background-color: transparent;
+      }
+
       #back_arrow {
         fill: var(--sc-disabled-text-color);
         cursor: pointer;
@@ -241,64 +245,27 @@
           </a>
 
           <!-- Sub nav menu -->
-          <div id="sub_navigation" class="sub-nav-container swap-section right">
-            <ul class="sub-nav nav-tertiary open sc-scrollbar">
-              <li class="nav-menu-item">
-                <div class="nav-section-header">
-                  <a class="nav-link" href="/">Chapter on Ethics</a>
-                  <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
-                </div>
-              </li>
-              <li class="nav-section">
-                <div class="nav-section-header">
-                  <a class="nav-link" href="/">Second Vagga</a>
-                  <paper-icon-button>
-                    <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
-                  </paper-icon-button>
-                </div>
-              </li>
-            </ul>
-          </div>
+          <!--<div id="sub_navigation" class="sub-nav-container swap-section right">-->
+            <!--<ul class="sub-nav nav-tertiary open sc-scrollbar">-->
+              <!--<li class="nav-menu-item">-->
+                <!--<div class="nav-section-header">-->
+                  <!--<a class="nav-link" href="/">Chapter on Ethics</a>-->
+                  <!--<iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>-->
+                <!--</div>-->
+              <!--</li>-->
+              <!--<li class="nav-section">-->
+                <!--<div class="nav-section-header">-->
+                  <!--<a class="nav-link" href="/">Second Vagga</a>-->
+                  <!--<paper-icon-button>-->
+                    <!--<iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>-->
+                  <!--</paper-icon-button>-->
+                <!--</div>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</div>-->
 
-          <!-- Main nav menu -->
-          <div id="main_menu_container">
-
-          </div>
-
-          <!--<ul id="main_navigation" class="nav-list sc-scrollbar swap-section left active">-->
-
-            <!--<li class="nav-menu-item">-->
-              <!--<span class="nav-link">Sutta</span>-->
-              <!--<iron-icon icon="expand-more" class="menu-dropdown-icon open"-->
-                         <!--on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
-
-              <!--<ul class="nav-secondary open">-->
-                <!--<li class="nav-menu-item">-->
-                  <!--<span class="nav-link">Long</span>-->
-                <!--</li>-->
-                <!--<li class="nav-menu-item">-->
-                  <!--<span class="nav-link">Short</span>-->
-                  <!--<iron-icon icon="expand-more" class="menu-dropdown-icon open"-->
-                             <!--on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
-
-                  <!--<ul class="nav-tertiary open">-->
-                    <!--<li class="nav-menu-item">-->
-                      <!--<a class="nav-link">Digha Nikaya</a>-->
-                      <!--<iron-icon icon="arrow-forward" class="menu-dropdown-icon" on-tap="_openChildMenu"></iron-icon>-->
-                    <!--</li>-->
-                  <!--</ul>-->
-
-                <!--</li>-->
-              <!--</ul>-->
-
-            <!--</li>-->
-
-            <!--<li class="nav-menu-item">-->
-              <!--<span class="nav-link" href="/">Vinaya</span>-->
-              <!--<iron-icon icon="expand-more" class="menu-dropdown-icon" on-tap="_toggleOpenDropdownMenu"></iron-icon>-->
-            <!--</li>-->
-
-          <!--</ul>-->
+          <div id="sub_navigation" class="sub-nav-container swap-section right"></div>
+          <div id="main_menu_container"></div>
 
         </div>
       </nav>
@@ -357,7 +324,7 @@
               return `
                 <ul class="${listType} ${isOpen ? 'open' : 'closed'}" style="${this._getMaxHeightStyle(item)}">
                   ${item.children.map(childItem => `
-                    <li class="nav-menu-item">
+                    <li class="nav-menu-item" data-uid="${childItem.id}">
                     ${listType === 'nav-secondary' ?
                       `<span class="nav-link">${childItem.name}</span>`
                       :
@@ -380,7 +347,6 @@
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
               Array.from(this.shadowRoot.querySelectorAll('.child-menu-icon')).forEach((childMenuIcon) => {
-                  console.dir(childMenuIcon);
                   childMenuIcon.addEventListener('click', this._openChildMenu.bind(this));
               });
           }
@@ -404,8 +370,10 @@
           }
 
           _openChildMenu(e) {
-              console.dir(e);
               this.headerTitle = e.path[1].innerText;
+              const submenuId = e.path[1].dataset.uid;
+              const submenuMarkup = `<ul class="sub-nav nav-tertiary open sc-scrollbar">${submenuId}</ul>`;
+              this.$.sub_navigation.innerHTML = submenuMarkup;
               this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
