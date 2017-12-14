@@ -10,5 +10,6 @@ class SecondMigration(Migration):
         db = get_db()
 
         dictionary_full = db.create_collection('dictionary_full')
+        dictionary_full.add_hash_index(fields=['dict'], unique=True)
         dictionary_full.add_hash_index(fields=['word'], unique=False)
 
