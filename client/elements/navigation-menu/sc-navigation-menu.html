@@ -131,7 +131,7 @@
         font-weight: 600;
         letter-spacing: .24px;
         padding: 5px 20px;
-        margin: var(--sc-size-sm) 0;
+        margin: var(--sc-size-xs) 0;
         text-decoration: none;
         transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
         -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
@@ -335,7 +335,7 @@
                           ${groupingLevelItem.children.length > 0 ? `
                             <iron-icon icon="expand-more"
                             class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
-                            ${this._generateDeepMainMenuLevels(groupingLevelItem, '', (topLevelItem.name === 'Sutta'))}
+                            ${this._generateDeepMainMenuLevels(groupingLevelItem, (topLevelItem.name === 'Sutta'))}
                             ` : ''}
                         </li>
                       `).join('')}
@@ -349,16 +349,23 @@
               });
           }
 
-          _generateDeepMainMenuLevels(item, generatedMarkup, isOpen) {
-              const listType = ['div', 'division'].indexOf(item.children[0].type) === -1 ? 'nav-secondary' : 'nav-tertiary';
+          _generateDeepMainMenuLevels(item, isOpen) {
+              const listType = item.children.some(child => ['div', 'division'].indexOf(child.type) !== -1) ? 'nav-tertiary' : 'nav-secondary';
               return `
                 <ul class="${listType} ${isOpen ? 'open' : 'closed'}" style="${this._getMaxHeightStyle(item)}">
                   ${item.children.map(childItem => `
-                    <li>
+                    <li class="nav-menu-item">
                     ${listType === 'nav-secondary' ?
                       `<span class="nav-link">${childItem.name}</span>`
                       :
-                      `<a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>`}
+                      `<a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>`
+                    }
+                    ${childItem.children && childItem.children.length > 0 ?
+                      `<iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
+                       ${this._generateDeepMainMenuLevels(childItem, false)}`
+                      :
+                      ''
+                    }
                     </li>
                   `).join('')}
                 </ul>
