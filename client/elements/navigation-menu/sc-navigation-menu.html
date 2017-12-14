@@ -58,9 +58,10 @@
       }
 
       .nav-back-title {
-        color: var(--sc-disabled-text-color);
+        @apply --sc-skolar-font-size-xl;
+        color: var(--sc-tertiary-background-color);
         margin-left: var(--sc-size-sm);
-        margin-top: var(--sc-size-xxs);
+        margin-top: calc(var(--sc-size-xs) * -1);
       }
 
       .swap-section {
@@ -404,6 +405,7 @@
 
           _openChildMenu(e) {
               console.dir(e);
+              this.headerTitle = e.path[1].innerText;
               this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
