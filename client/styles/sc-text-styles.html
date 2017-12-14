@@ -40,6 +40,14 @@
         @apply --sc-sans-font;
       }
 
+      .original-text:not([lang='pli-Latn']) {
+        font-style: normal;
+      }
+
+      .html-text-content:not(.latin-script) .word {
+        font-style: normal;
+      }
+
       [lang='pli-Latn'] .original-text {
         @apply --sc-serif-font;
       }
@@ -375,8 +383,13 @@
 
       .t-byline,
       .t-headname,
-      .t-juanname,
+      .t-juanname {
+        font-style: inherit;
+      }
+
       .uddanagatha {
+        color: var(--sc-secondary-text-color);
+        font-size: 0.8rem;
         font-style: inherit;
       }
 
@@ -413,7 +426,6 @@
         color: var(--sc-secondary-text-color);
         font-size: 0.8rem;
       }
-
 
     </style>
   </template>
