@@ -9,7 +9,9 @@ def load_dictionary_full(db, dictionaries_dir):
     docs = []
     for dictionary in tqdm(dictionary_full):
         with dictionary_full.open('r', encoding='utf-8') as f:
-            data = json.load(f)
-            docs.append(data)
+
+		for entry in json.load(f):
+		    docs.append({'dict': file_name, **entry})
+
 
     dictionary_full_collection.import_bulk(docs)
