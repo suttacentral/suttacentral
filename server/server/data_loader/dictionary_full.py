@@ -1,6 +1,6 @@
 import json
-
 from tqdm import tqdm
+
 
 def load_dictionary_full(db, dictionaries_dir):
     print('Loading dictionary_full')
@@ -8,10 +8,11 @@ def load_dictionary_full(db, dictionaries_dir):
     dictionary_full_collection = db['dictionary_full']
     docs = []
     for dictionary in tqdm(dictionary_full):
-        with dictionary_full.open('r', encoding='utf-8') as f:
+        with dictionary.open('r', encoding='utf-8') as f:
 
-		for entry in json.load(f):
-		    docs.append({'dict': file_name, **entry})
+            for entry in json.load(f):
+            	file_name = dictionary.parts[-1]
+                docs.append({'dict': file_name, **entry})
 
 
     dictionary_full_collection.import_bulk(docs)
