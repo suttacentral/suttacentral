@@ -41,10 +41,10 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       }
 
       .sc-tooltip {
-        @apply --sc-sans-font;
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
+          @apply --sc-sans-font;
           @apply --sc-skolar-font-size-xs;
           line-height: var(--sc-size-md);
           padding: var(--sc-size-sm) var(--sc-size-md);
@@ -59,17 +59,16 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       <div class="heading">
         <template is="dom-if" if="[[metaArea]]">
           <paper-icon-button id="text_info_button" icon="info" on-tap="_openInfoDialog"></paper-icon-button>
+          <paper-tooltip class="sc-tooltip" for="text_info_button" offset="0">
+          Information
+        </paper-tooltip>
         </template>
         <paper-icon-button id="text_settings_button" icon="settings" on-tap="_openSettingsDialog"></paper-icon-button>
-        <paper-icon-button id="suttaplex_button" icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
-
-        <paper-tooltip class="sc-tooltip" for="text_info_button" offset="0">
-          View publication details
-        </paper-tooltip>
         <paper-tooltip class="sc-tooltip" for="text_settings_button" offset="0">
-          Open text settings
+          Text settings
         </paper-tooltip>
-        <paper-tooltip class="sc-tooltip" for="suttaplex_button" offset="0">
+        <paper-icon-button id="suttaplex_button" icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
+        <paper-tooltip class="sc-tooltip" for="suttaplex_button" offset="0" fit-to-visible-bounds>
           View Parallels &amp; References
         </paper-tooltip>
       </div>
