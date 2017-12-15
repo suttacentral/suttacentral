@@ -8,33 +8,57 @@
   <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <script src="/bower_components/web-component-tester/browser.js"></script>
   <script src="/bower_components/test-fixture/test-fixture-mocha.js"></script>
+  <script src="/bower_components/iron-ajax/iron-ajax.html"></script>
 
   <!--Import the element to test -->
-  <link rel="import" href="/elements/sc-navdrawer.html">
+  <link rel="import" href="/elements/sc-drawer-layout.html">
 
 </head>
 
 <body>
 
-<test-fixture id="navdrawer">
+<test-fixture id="drawer-layout">
   <template>
-    <sc-navdrawer></sc-navdrawer>
+    <iron-ajax url="/menu"></iron-ajax>
+    <sc-drawer-layout></sc-drawer-layout>
   </template>
 </test-fixture>
 
 <script>
-    suite('<sc-navdrawer>', () => {
-        let basic;
+    suite('<iron-ajax>', () => {
+        let request;
+        let server;
+        let responseHeaders = {
+            json: { 'Content-Type': 'application/json' }
+        };
 
         setup(() => {
-            basic = fixture('navdrawer');
+            server = sinon.fakeServer.create();
+            server.respondWith(
+                'GET',
+                /\/menu.*/, [
+                    200,
+                    responseHeaders.json,
+                    '{"success":true}'
+                ]
+            );
         });
 
-        test('Should display title', (done) => {
-            flush(() => {
-                let title = basic.shadowRoot.querySelector('.nav-home-title-text');
-                assert.equal(title.innerHTML, '&nbsp;SuttaCentral');
-                done();
+        teardown(() => server.restore());
+
+        suite('<sc-drawer-layout>', () => {
+            let basic;
+            setup(() => {
+                basic = fixture('drawer-layout');
+            });
+
+            test('Should display title', (done) => {
+              server.respond();
+                flush(() => {
+                    let title = basic.shadowRoot.querySelector('.nav-home-title-text');
+                    assert.equal(title.innerHTML, '&nbsp;SuttaCentral');
+                    done();
+                });
             });
         });
     });

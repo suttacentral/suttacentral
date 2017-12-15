@@ -12,5 +12,4 @@ def load_dictionary_full(db, dictionaries_dir):
             for entry in json.load(f):
                 docs.append({'dictname': dictionary.stem, **entry})
 
-
     dictionary_full_collection.import_bulk(docs)

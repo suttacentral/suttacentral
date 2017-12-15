@@ -215,7 +215,7 @@ I have not been very consistent with the "notify: true" and with the function na
 The main issues for the backend would involve the suttaplex-card and -view, which is discussed under the relevant section below.
 
 ### sc-navdrawer.html
-Is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**), parses the route through `app-route` and feeds all information through to the **page-selector.html**.
+Is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates this with the menu-tree through `sc-navigation-menu` (**sc-navigation-menu.html**) parses the route through `app-route` and feeds all information through to the **page-selector.html**.
 
 ### app-drawer
 The `app-drawer` is populated with data from ../data/menu/discoursetree.json. This is just mockup data and not the real data.

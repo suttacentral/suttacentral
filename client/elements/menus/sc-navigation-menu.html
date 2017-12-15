@@ -1,0 +1,484 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../../styles/sc-scrollbar-style.html">
+
+<!--
+  This is a custom sidebar menu navigation element.
+-->
+
+<dom-module id="sc-navigation-menu">
+  <template>
+    <style include="sc-scrollbar-style">
+      .sc-nav {
+        @apply --sc-sans-font;
+        user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+      }
+
+      .paper-spinner {
+        --paper-spinner-color: var(--primary-color);
+      }
+
+      .icon-middle {
+        position: absolute;
+        margin: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .network-error-icon {
+        width: var(--sc-size-xxl);
+        height: var(--sc-size-xxl);
+      }
+
+      .nav-back-button {
+        @apply --sc-skolar-font-size-l;
+        background-color: var(--sc-paper-tooltip-color);
+        border-top: 1px solid var(--sc-disabled-text-color);
+        padding: var(--sc-size-sm);
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        margin: 0;
+        z-index: 1;
+      }
+
+      .nav-back-button.swap-section {
+        height: var(--sc-size-xl);
+      }
+
+      .nav-back-title {
+        @apply --sc-skolar-font-size-xl;
+        color: var(--sc-tertiary-text-color);
+        margin-left: var(--sc-size-sm);
+        text-decoration: none;
+      }
+
+      .nav-back-title:hover {
+        color: var(--sc-primary-color-light);
+      }
+
+      .swap-section {
+        height: 0;
+        opacity: 0;
+        transition: opacity 1s, transform .5s;
+        -webkit-transition: opacity 1s, -webkit-transform .5s;
+      }
+
+      .nav .swap-section {
+        transition-duration: .3s;
+        -webkit-transition-duration: .3s;
+      }
+
+      .swap-section.up {
+        will-change: transform;
+        transform: translateY(-100%);
+        -webkit-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
+      }
+
+      .swap-section.right {
+        will-change: transform;
+        transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+      }
+
+      .swap-section.left {
+        will-change: transform;
+        transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
+        -ms-transform: translateX(-100%);
+      }
+
+      .swap-section.active {
+        opacity: 1;
+        position: relative;
+        -webkit-transform: translate(0, 0);
+        -ms-transform: translate(0, 0);
+        transform: translate(0, 0);
+        width: auto;
+      }
+
+      .nav-menu-item {
+        list-style-type: none;
+        margin: 0 0 var(--sc-size-sm);
+        position: relative;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-list, .sub-nav {
+        list-style-type: none;
+        margin: 0;
+        padding: var(--sc-size-md) 0;
+      }
+
+      .sub-nav-container {
+        z-index: 1;
+      }
+
+      .nav-link {
+        @apply --sc-skolar-font-size-md;
+        color: var(--sc-primary-text-color);
+        text-transform: uppercase;
+        display: block;
+        font-weight: 600;
+        letter-spacing: 1px;
+        padding: 5px var(--sc-size-md);
+        margin: var(--sc-size-xs) 0;
+        text-decoration: none;
+        transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
+        -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
+      }
+
+      .nav-menu-item.selected {
+        background: var(--sc-primary-accent-color-almost-transparent);
+        color: var(--sc-primary-color-dark);
+      }
+
+      .menu-dropdown-icon {
+        fill: var(--sc-disabled-text-color);
+        display: inline-block;
+        position: absolute;
+        right: var(--sc-size-sm);
+        top: 0;
+        transition: .3s ease all;
+        cursor: pointer;
+      }
+
+      .child-menu-arrow-icon {
+        top: var(--sc-size-xs);
+      }
+
+      .menu-dropdown-icon.open {
+        transform: rotateZ(180deg);
+      }
+
+      .nav-menu-item.selected .menu-dropdown-icon {
+        background-color: var(--sc-secondary-text-color);
+      }
+
+      .nav-secondary, .nav-tertiary {
+        list-style-type: none;
+        padding-left: var(--sc-size-sm);
+        transition: max-height cubic-bezier(0, 1, 0, 1) .6s;
+        overflow: hidden;
+      }
+
+      .nav-secondary .nav-link,
+      .nav-tertiary .nav-link {
+        @apply --sc-skolar-font-size-s;
+        font-weight: 400;
+      }
+
+      .nav-tertiary a {
+        text-transform: none;
+        letter-spacing: 0;
+        font-weight: 400;
+        color: var(--sc-primary-accent-color);
+        text-decoration: none;
+      }
+
+      .nav-secondary.open,
+      .nav-tertiary.open {
+        max-height: 9999px;
+        transition: max-height cubic-bezier(1, 0, 1, 0) .6s;
+      }
+
+      .nav-secondary.closed,
+      .nav-tertiary.closed {
+        max-height: 0 !important;
+      }
+
+      #sub_navigation_header {
+        display: flex;
+        align-items: center;
+      }
+
+      #sub_navigation .nav-tertiary {
+        padding-left: 0;
+      }
+
+      #sub_navigation .sub-nav {
+        height: 86vh;
+        overflow-y: auto;
+      }
+
+      #sub_navigation .sub-nav-child {
+        padding-left: var(--sc-size-sm);
+      }
+
+      #main_navigation {
+        margin-top: -77px;
+        height: 92%;
+        overflow-y: scroll;
+      }
+
+      #main_navigation:not(.active)::-webkit-scrollbar-thumb {
+        background-color: transparent;
+      }
+
+      #back_arrow {
+        cursor: pointer;
+        fill: var(--sc-tertiary-text-color);
+        width: var(--sc-size-lg);
+        height: var(--sc-size-lg);
+      }
+
+    </style>
+
+    <iron-ajax
+        auto
+        url="[[_getMenuUrl()]]"
+        handle-as="json"
+        loading="{{loading}}"
+        last-error="{{error}}"
+        last-response="{{mainMenuData}}"
+        on-response="_generateMainMenu">
+    </iron-ajax>
+
+    <iron-ajax
+        id="submenu_ajax"
+        url="[[_getSubMenuUrl()]]"
+        handle-as="json"
+        loading="{{loading}}"
+        last-error="{{error}}"
+        last-response="{{subMenuData}}"
+        on-response="_createChildMenu">
+    </iron-ajax>
+
+    <div id="container" class="nav-list-container">
+      <template is="dom-if" if="[[_shouldShowLoadingIndicator(loading, error)]]">
+        <div class="loading-indicator">
+          <paper-spinner-lite class="paper-spinner icon-middle" active="[[loading]]"></paper-spinner-lite>
+        </div>
+      </template>
+
+      <template is="dom-if" if="[[error]]">
+        <iron-icon class="network-error-icon icon-middle" title="Network error" src="img/nonetwork.svg"></iron-icon>
+      </template>
+
+      <nav class="sc-nav">
+        <div>
+          <div id="sub_navigation_header" class="nav-back-button swap-section up">
+            <iron-icon id="back_arrow" icon="arrow-back" on-tap="_closeChildMenu"></iron-icon>
+            <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
+          </div>
+
+          <div id="sub_navigation" class="sub-nav-container swap-section right"></div>
+          <div id="main_menu_container"></div>
+
+        </div>
+      </nav>
+
+    </div>
+
+  </template>
+
+  <script>
+      class SCNavigationMenu extends Polymer.Element {
+          static get is() {
+              return 'sc-navigation-menu';
+          }
+
+          static get properties() {
+              return {
+                  mainMenuData: {
+                      type: Array,
+                      value: []
+                  },
+                  subMenuData: {
+                      type: Array,
+                      value: []
+                  },
+                  subMenuId: {
+                      type: String,
+                      value: 'none'
+                  },
+                  headerTitle: {
+                      type: String,
+                      value: 'Division title'
+                  },
+                  headerHref: {
+                      type: String,
+                      value: '#'
+                  }
+              }
+          }
+
+          _generateMainMenu() {
+              const mainMenuMarkup = `
+                <ul id="main_navigation" class="nav-list sc-scrollbar swap-section left active">
+                  ${this.mainMenuData.map(topLevelItem => `
+                    <li class="nav-menu-item">
+                      <span class="nav-link">${topLevelItem.name}</span>
+                      <iron-icon icon="expand-more"
+                        class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                      <ul class="nav-secondary ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
+                        ${topLevelItem.children.map(groupingLevelItem => `
+                        <li class="nav-menu-item">
+                          <span class="nav-link">${groupingLevelItem.name}</span>
+                          ${groupingLevelItem.children.length > 0 ? `
+                            <iron-icon icon="expand-more"
+                            class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                            ${this._generateDeepMainMenuLevels(groupingLevelItem, (topLevelItem.name === 'Sutta'))}
+                            ` : ''}
+                        </li>
+                      `).join('')}
+                      </ul>
+                    </li>`).join('')}
+                </ul>`;
+              this.$.main_menu_container.innerHTML = mainMenuMarkup;
+              this._addButtonEventListeners();
+          }
+
+          _generateDeepMainMenuLevels(item, isOpen) {
+              const listType =
+                  item.children && item.children.some(child => ['div', 'division'].indexOf(child.type) !== -1) ?
+                      'nav-tertiary' : 'nav-secondary';
+              if (item.children) {
+                  return `
+                <ul class="${listType} ${isOpen ? 'open' : 'closed'}" style="${this._getMaxHeightStyle(item)}">
+                  ${item.children.map(childItem => `
+                    <li class="nav-menu-item" data-uid="${childItem.id}">
+                    ${listType === 'nav-secondary' ?
+                      `<span class="nav-link">${childItem.name}</span>`
+                      :
+                      `<span class="nav-link"><a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a></span>`
+                      }
+                    ${childItem.children && childItem.children.length > 0 ?
+                      `<iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
+                       ${this._generateDeepMainMenuLevels(childItem, false)}`
+                      :
+                      childItem.has_children ?
+                          `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon"></iron-icon>`
+                          : ''
+                      }
+                    </li>
+                  `).join('')}
+                </ul>
+              `;
+              }
+          }
+
+          _createChildMenu() {
+              const subMenuMarkup = this._generateChildMenu(this.subMenuData[0], true);
+              this.$.sub_navigation.innerHTML = subMenuMarkup;
+              this.$.sub_navigation.querySelectorAll('.menu-dropdown-icon').forEach((dropdownIcon) => {
+                  dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
+              });
+          }
+
+          _generateChildMenu(menuItem, isRootElement) {
+              return !menuItem.children ? '' : `
+                <ul class="${isRootElement ? 'sub-nav sc-scrollbar' : 'sub-nav-child'} nav-tertiary
+                  open" style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
+                  ${menuItem.children.map(childItem => `
+                    <li class="nav-menu-item">
+                      <span class="nav-link">
+                        <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
+                      </span>
+                    ${childItem.children && childItem.children.length > 0 ? `
+                      <iron-icon icon="expand-more" class="menu-dropdown-icon open"></iron-icon>
+                       ${this._generateChildMenu(childItem, false)}`
+                  :
+                  ''}
+                    </li>
+                  `).join('')}
+                </ul>
+              `;
+          }
+
+          _addButtonEventListeners() {
+              Array.from(this.shadowRoot.querySelectorAll('.menu-dropdown-icon')).forEach((dropdownIcon) => {
+                  dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
+              });
+              Array.from(this.shadowRoot.querySelectorAll('.child-menu-arrow-icon')).forEach((childMenuIcon) => {
+                  childMenuIcon.addEventListener('click', this._openChildMenu.bind(this));
+              });
+          }
+
+          _toggleOpenDropdownMenu(e) {
+              const icon = e.composedPath()[0];
+              const container = e.composedPath()[1];
+              const childMenu = container.querySelector('ul');
+              if (!childMenu) {
+                  return;
+              }
+              if (childMenu.classList.contains('open')) {
+                  childMenu.classList.remove('open');
+                  childMenu.classList.add('closed');
+                  icon.classList.remove('open');
+              } else if (childMenu.classList.contains('closed')) {
+                  childMenu.classList.remove('closed');
+                  childMenu.classList.add('open');
+                  icon.classList.add('open');
+              }
+          }
+
+          _openChildMenu(e) {
+              this.headerTitle = e.composedPath()[1].innerText;
+              this.headerHref = this._getSuttaplexUrl(e.composedPath()[1].dataset.uid);
+              const subMenuId = e.composedPath()[1].dataset.uid;
+              this.$.submenu_ajax.url = this._getSubMenuUrl(subMenuId);
+              this.$.submenu_ajax.generateRequest();
+              this.dispatchEvent(new CustomEvent('childMenuOpened', { composed: true, bubbles: true }));
+              this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
+              this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
+              this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
+          }
+
+          _closeChildMenu() {
+              this.dispatchEvent(new CustomEvent('childMenuClosed', { composed: true, bubbles: true }));
+              this.shadowRoot.querySelector('#sub_navigation').classList.remove('active');
+              this.shadowRoot.querySelector('#sub_navigation_header').classList.remove('active');
+              this.shadowRoot.querySelector('#main_navigation').classList.add('active');
+          }
+
+          // The max-height property is calculated here to achieve a smooth dropdown animation.
+          // This only works for elements that have no grandchildren, and therefore no embedded dropdowns of their own.
+          // Otherwise a more generally universal, but not as smooth dropdown animation is used.
+          _getMaxHeightStyle(element) {
+              const hasGrandchildren = element.children && element.children.some(child => child.children && child.children.length > 0);
+              if (element.children && !hasGrandchildren) {
+                  const elemHeight = 39;
+                  const elemMaxHeight = elemHeight * element.children.length;
+                  return `max-height: ${elemMaxHeight}px; transition: max-height ease-in-out .5s;`;
+              }
+              else return '';
+          }
+
+          _shouldShowLoadingIndicator(loading, error) {
+              return !!(loading && !error);
+          }
+
+          _getMenuUrl() {
+              return `${this._getBaseUrl()}/api/menu`;
+          }
+
+          _getSubMenuUrl(uid) {
+              return `${this._getBaseUrl()}/api/menu/${uid}`;
+          }
+
+          _getSuttaplexUrl(uid) {
+              return `${this._getBaseUrl()}/${uid}`;
+          }
+
+          _getBaseUrl() {
+              let currentUrl = window.location;
+              return `${currentUrl.protocol}//${currentUrl.host}`;
+          }
+      }
+
+      customElements.define(SCNavigationMenu.is, SCNavigationMenu);
+  </script>
+</dom-module>
