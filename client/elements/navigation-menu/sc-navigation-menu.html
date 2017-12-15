@@ -258,7 +258,7 @@
         loading="{{loading}}"
         last-error="{{error}}"
         last-response="{{subMenuData}}"
-        on-response="_generateSubMenu">
+        on-response="_createChildMenu">
     </iron-ajax>
 
     <div id="container" class="nav-list-container">
@@ -373,6 +373,35 @@
               }
           }
 
+          _createChildMenu() {
+              const subMenuMarkup = this._generateChildMenu(this.subMenuData[0], true);
+              this.$.sub_navigation.innerHTML = subMenuMarkup;
+              this.$.sub_navigation.querySelectorAll('.menu-dropdown-icon').forEach((dropdownIcon) => {
+                  dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
+              });
+          }
+
+          _generateChildMenu(menuItem, isRootElement) {
+              return !menuItem.children ? '' : `
+                <ul class="${isRootElement ? 'sub-nav sc-scrollbar' : 'sub-nav-child'} nav-tertiary
+                  ${isRootElement ? 'open' : 'closed'}" sc-scrollbar"
+                    style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
+                  ${menuItem.children.map(childItem => `
+                    <li class="nav-menu-item">
+                      <span class="nav-link">
+                        <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
+                      </span>
+                    ${childItem.children && childItem.children.length > 0 ? `
+                      <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
+                       ${this._generateChildMenu(childItem, false)}`
+                  :
+                  ''}
+                    </li>
+                  `).join('')}
+                </ul>
+              `;
+          }
+
           _addButtonEventListeners() {
               Array.from(this.shadowRoot.querySelectorAll('.menu-dropdown-icon')).forEach((dropdownIcon) => {
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
@@ -410,34 +439,6 @@
               this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
-          }
-
-          _generateSubMenu() {
-              const subMenuMarkup = this._generateSubMenuMarkup(this.subMenuData[0], true);
-              this.$.sub_navigation.innerHTML = subMenuMarkup;
-              this.$.sub_navigation.querySelectorAll('.menu-dropdown-icon').forEach((dropdownIcon) => {
-                  dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
-              });
-          }
-
-          _generateSubMenuMarkup(menuItem, isRootElement) {
-              return !menuItem.children ? '' : `
-                <ul class="${isRootElement ? 'sub-nav sc-scrollbar' : 'sub-nav-child'} nav-tertiary
-                  ${isRootElement ? 'open' : 'closed'}" sc-scrollbar" style="${this._getMaxHeightStyle(menuItem)}">
-                  ${menuItem.children.map(childItem => `
-                    <li class="nav-menu-item">
-                      <span class="nav-link">
-                        <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
-                      </span>
-                    ${childItem.children && childItem.children.length > 0 ? `
-                      <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
-                       ${this._generateSubMenuMarkup(childItem, false)}`
-                  :
-                  ''}
-                    </li>
-                  `).join('')}
-                </ul>
-              `;
           }
 
           _closeChildMenu() {
