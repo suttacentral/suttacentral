@@ -59,7 +59,6 @@
         @apply --sc-skolar-font-size-xl;
         color: var(--sc-tertiary-background-color);
         margin-left: var(--sc-size-sm);
-        margin-top: calc(var(--sc-size-xs) * -1);
       }
 
       .swap-section {
@@ -129,7 +128,7 @@
         display: block;
         font-weight: 600;
         letter-spacing: 1px;
-        padding: 5px 20px;
+        padding: 5px var(--sc-size-md);
         margin: var(--sc-size-xs) 0;
         text-decoration: none;
         transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
@@ -175,7 +174,8 @@
         overflow: hidden;
       }
 
-      .nav-secondary .nav-link {
+      .nav-secondary .nav-link,
+      .nav-tertiary .nav-link {
         @apply --sc-skolar-font-size-s;
         font-weight: 400;
       }
@@ -197,6 +197,19 @@
       .nav-secondary.closed,
       .nav-tertiary.closed {
         max-height: 0 !important;
+      }
+
+      #sub_navigation_header {
+        display: flex;
+        align-items: center;
+      }
+
+      #sub_navigation .nav-tertiary {
+        padding-left: 0;
+      }
+
+      #sub_navigation .sub-nav-child {
+        padding-left: var(--sc-size-sm);
       }
 
       #main_navigation {
@@ -405,25 +418,25 @@
           }
 
           _generateSubMenu() {
-              const subMenuMarkup = this._generateSubMenuMarkup(this.subMenuData[0]);
+              const subMenuMarkup = this._generateSubMenuMarkup(this.subMenuData[0], true);
               this.$.sub_navigation.innerHTML = subMenuMarkup;
               this.$.sub_navigation.querySelectorAll('.menu-dropdown-icon').forEach((dropdownIcon) => {
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
           }
 
-          _generateSubMenuMarkup(menuItem) {
+          _generateSubMenuMarkup(menuItem, isRootElement) {
               console.dir(menuItem);
               return !menuItem.children ? '' : `
-                <ul class="sub-nav nav-tertiary open sc-scrollbar">
+                <ul class="${isRootElement ? 'sub-nav' : 'sub-nav-child'} nav-tertiary ${isRootElement ? 'open' : 'closed'}" sc-scrollbar" style="${this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
                     <li class="nav-menu-item">
                       <span class="nav-link">
                         <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
                       </span>
                     ${childItem.children && childItem.children.length > 0 ? `
-                      <iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
-                       ${this._generateSubMenuMarkup(childItem)}`
+                      <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
+                       ${this._generateSubMenuMarkup(childItem, false)}`
                        :
                        ''}
                     </li>
