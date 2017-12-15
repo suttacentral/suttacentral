@@ -364,7 +364,9 @@
                       `<iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
                        ${this._generateDeepMainMenuLevels(childItem, false)}`
                       :
-                      `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon"></iron-icon>`
+                      childItem.has_children ?
+                          `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon"></iron-icon>`
+                          : ''
                       }
                     </li>
                   `).join('')}
