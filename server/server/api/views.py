@@ -70,13 +70,20 @@ class Menu(Resource):
                     name:
                         type: string
                     uid:
+                        required: false
                         type: string
+                    id:
+                        required: false
+                        type: string
+                    num:
+                        type: number
                     children:
                         type: array
                         items:
                             type: MenuItem
-                    depth:
-                        type: number
+                    has_children:
+                        required: false
+                        type: boolean
         """
         db = get_db()
         if submenu_id:
@@ -95,7 +102,7 @@ class Menu(Resource):
                 else:
                     pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
 
-        self.recursive_cleanup(data, depth=-1, mapping={})
+        self.recursive_cleanup(data, mapping={})
 
         return data, 200
 
@@ -130,10 +137,9 @@ class Menu(Resource):
                 parent['children'] = children
         return sorted(out, key=self.num_sort_key)
 
-    def recursive_cleanup(self, menu_entries, depth, mapping):
+    def recursive_cleanup(self, menu_entries, mapping):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
-            menu_entry['depth'] = depth + 1
             mapping[menu_entry['uid']] = menu_entry
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
@@ -151,7 +157,7 @@ class Menu(Resource):
                 del menu_entry['parents']
             if 'children' in menu_entry:
                 children = menu_entry['children']
-                self.recursive_cleanup(children, depth=depth + 1, mapping=mapping)
+                self.recursive_cleanup(children, mapping=mapping)
 
 
 class SuttaplexList(Resource):
