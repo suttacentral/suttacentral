@@ -9,7 +9,7 @@ from sortedcontainers import SortedListWithKey, SortedDict
 
 from common.arangodb import get_db
 from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST, \
-    IMAGES, DICTIONARY_FULL
+    IMAGES, DICTIONARYFULL
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
     sort_parallels_type_key, groupby_unsorted
 
@@ -544,14 +544,14 @@ class Paragraphs(Resource):
 
         return data.batch(), 200
 
-class Dictionary_Full(Resource):
+class DictionaryFull(Resource):
     def get(self):
         """
 
         """
         db = get_db()
 
-        data = db.aql.execute(DICTIONARY_FULL, bind_vars={'dict': dict, 'word': word})
+        data = db.aql.execute(DICTIONARYFULL)
 
         return data.batch(), 200
 

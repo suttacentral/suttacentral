@@ -7,7 +7,7 @@ from flask_cors import CORS
 from flask_restful import Api
 
 from api.views import (Currencies, Donations, Languages, LookupDictionaries, Menu, Paragraphs, Parallels, Sutta,
-                       SuttaplexList, Images, Dictionary_Full)
+                       SuttaplexList, Images, DictionaryFull)
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
@@ -22,7 +22,7 @@ def app_factory() -> Tuple[Api, Flask]:
 
     api.add_resource(Languages, '/languages')
     api.add_resource(Search, '/search')
-    api.add_resource(Dictionary_Full, '/dictionary_full')
+    api.add_resource(DictionaryFull, '/dictionary_full')
     api.add_resource(Menu, '/menu')
     api.add_resource(SuttaplexList, '/suttaplex/<path:uid>')
     api.add_resource(Parallels, '/parallels/<path:uid>')

@@ -99,14 +99,6 @@
 
     </style>
 
-<!--     <iron-ajax id="ajax"
-               url="[[_getUrl()]]"
-               params='[[searchParams]]'
-               handle-as="json"
-               loading="{{loadingResults}}"
-               last-response="{{responseData}}"
-               on-response="_didRespond"></iron-ajax> -->
-
     <iron-ajax
         id="ajax"
         url="[[_computeUrl()]]"
@@ -175,10 +167,6 @@
                   loadingDict: {
                       type: Boolean,
                       value: true
-                  },
-                  findWord: {
-                      type: String,
-                      value: "dhamma"
                   },
                   dictionaryParams: {
                       type: Object,

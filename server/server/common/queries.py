@@ -396,10 +396,10 @@ FOR paragraph IN paragraphs
     }
 '''
 
-DICTIONARY_FULL = '''
+DICTIONARYFULL = '''
 FOR dictionary IN dictionary_full
     RETURN {
-        dict: dictionary.dict,
+        dictname: dictionary.dictname,
         word: dictionary.word,
         text: dictionary.text
     }
