@@ -143,6 +143,8 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
 
     reg = regex.compile(r'^\D+')
     number_reg = regex.compile(r'.*?([0-9]+)$')
+    
+    uids_seen = defaultdict(list)
     for division_file in division_files:
         with division_file.open('r', encoding='utf8') as f:
             entries = json.load(f)
@@ -154,6 +156,7 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
             mapping[path] = entry
             
             uid = path.parts[-1]
+            uids_seen[uid].append(entry['_path'])
             entry['_key'] = uid
             entry['uid'] = uid
             base_uid = reg.match(uid)[0]
@@ -191,7 +194,11 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
             if parent:
                 edges.append({'_from': 'root/' + parent['_key'], '_to': 'root/' + entry['_key'],
                               'type': edge_type})
-
+    for uid, paths in uids_seen.items():
+        if len(paths) == 1:
+            continue
+        logging.error(f'{uid} appears {len(paths)} times: {",".join(paths)}')
+            
 
 def process_category_files(category_files, db, edges, mapping):
     for category_file in category_files:
