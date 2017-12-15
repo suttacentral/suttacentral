@@ -57,7 +57,7 @@
 
       .nav-back-title {
         @apply --sc-skolar-font-size-xl;
-        color: var(--sc-tertiary-background-color);
+        color: var(--sc-tertiary-text-color);
         margin-left: var(--sc-size-sm);
         text-decoration: none;
       }
@@ -229,7 +229,7 @@
 
       #back_arrow {
         cursor: pointer;
-        fill: var(--sc-disabled-text-color);
+        fill: var(--sc-tertiary-text-color);
         width: var(--sc-size-lg);
         height: var(--sc-size-lg);
       }
@@ -381,14 +381,14 @@
           _generateChildMenu(menuItem, isRootElement) {
               return !menuItem.children ? '' : `
                 <ul class="${isRootElement ? 'sub-nav sc-scrollbar' : 'sub-nav-child'} nav-tertiary
-                  ${isRootElement ? 'open' : 'closed'}" style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
+                  open" style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
                     <li class="nav-menu-item">
                       <span class="nav-link">
                         <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
                       </span>
                     ${childItem.children && childItem.children.length > 0 ? `
-                      <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
+                      <iron-icon icon="expand-more" class="menu-dropdown-icon open"></iron-icon>
                        ${this._generateChildMenu(childItem, false)}`
                   :
                   ''}
