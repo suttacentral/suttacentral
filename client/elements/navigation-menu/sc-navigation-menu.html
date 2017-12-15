@@ -59,6 +59,11 @@
         @apply --sc-skolar-font-size-xl;
         color: var(--sc-tertiary-background-color);
         margin-left: var(--sc-size-sm);
+        text-decoration: none;
+      }
+
+      .nav-back-title:hover {
+        color: var(--sc-primary-color-light);
       }
 
       .swap-section {
@@ -210,7 +215,7 @@
 
       #sub_navigation .sub-nav {
         height: 86vh;
-        overflow-y: scroll;
+        overflow-y: auto;
       }
 
       #sub_navigation .sub-nav-child {
@@ -269,10 +274,10 @@
 
       <nav class="sc-nav">
         <div>
-          <a id="sub_navigation_header" class="nav-back-button swap-section up">
+          <div id="sub_navigation_header" class="nav-back-button swap-section up">
             <iron-icon id="back_arrow" icon="arrow-back" on-tap="_closeChildMenu"></iron-icon>
-            <span class="nav-back-title">[[headerTitle]]</span>
-          </a>
+            <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
+          </div>
 
           <div id="sub_navigation" class="sub-nav-container swap-section right"></div>
           <div id="main_menu_container"></div>
@@ -307,6 +312,10 @@
                   headerTitle: {
                       type: String,
                       value: 'Division title'
+                  },
+                  headerHref: {
+                      type: String,
+                      value: '#'
                   }
               }
           }
@@ -393,6 +402,7 @@
 
           _openChildMenu(e) {
               this.headerTitle = e.composedPath()[1].innerText;
+              this.headerHref = this._getSuttaplexUrl(e.composedPath()[1].dataset.uid);
               const subMenuId = e.composedPath()[1].dataset.uid;
               this.$.submenu_ajax.url = this._getSubMenuUrl(subMenuId);
               this.$.submenu_ajax.generateRequest();
@@ -422,8 +432,8 @@
                     ${childItem.children && childItem.children.length > 0 ? `
                       <iron-icon icon="expand-more" class="menu-dropdown-icon"></iron-icon>
                        ${this._generateSubMenuMarkup(childItem, false)}`
-                      :
-                      ''}
+                  :
+                  ''}
                     </li>
                   `).join('')}
                 </ul>
