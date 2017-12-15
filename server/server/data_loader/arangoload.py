@@ -159,6 +159,7 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
             uids_seen[uid].append(entry['_path'])
             entry['_key'] = uid
             entry['uid'] = uid
+
             base_uid = reg.match(uid)[0]
             while base_uid:
                 try:
@@ -185,7 +186,8 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
                     entry[data_name] = sutta_data[uid][data_name]
                 except KeyError:
                     pass
-
+            if entry['uid'].startswith('thag-'):
+                logging.error(f'Whats going on here! {uid}: {entry}')
             docs.append(entry)
 
             # find the parent
@@ -244,6 +246,7 @@ def process_category_files(category_files, db, edges, mapping):
         collection.truncate()
         collection.import_bulk(category_docs)
 
+def perform_update_queries(db):
     # add root language uid to everything.
     db.aql.execute('''
     FOR lang IN language
@@ -280,7 +283,8 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
         db['root'].import_bulk(docs)
         db['root_edges'].truncate()
         db['root_edges'].import_bulk(edges)
-
+        
+        perform_update_queries(db)
 
 def get_true_uids(uid: str, all_uids: Set[str]) -> List[str]:
     """Extract list of indexes out of our range notation.
