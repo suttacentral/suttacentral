@@ -384,8 +384,7 @@
           _generateChildMenu(menuItem, isRootElement) {
               return !menuItem.children ? '' : `
                 <ul class="${isRootElement ? 'sub-nav sc-scrollbar' : 'sub-nav-child'} nav-tertiary
-                  ${isRootElement ? 'open' : 'closed'}" sc-scrollbar"
-                    style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
+                  ${isRootElement ? 'open' : 'closed'}" style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
                     <li class="nav-menu-item">
                       <span class="nav-link">
