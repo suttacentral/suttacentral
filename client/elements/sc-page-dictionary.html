@@ -116,12 +116,12 @@
           <span class="termsbutton" title="Related terms"><paper-icon-button icon="menu">
         </div>
         <div class="dictionary-entries">
-          <template is="dom-repeat" items="[[dictionaryResults]]" as="result">
+<!--           <template is="dom-repeat" items="[[dictionaryResults]]" as="result">
             <div class="dictionary-book-entry">
               <div class="dictionary-source">[[_getDictionaryTitle(result.dict)]]</div>
               <div class="dictionary-text" inner-h-t-m-l="[[result.text]]"></div>
             </div>
-          </template>
+          </template> -->
         </div>
 
         <!--The below is complete mockup. The real related and similar terms to be displayed will have to be calculated-->
@@ -169,6 +169,9 @@
                   dictionaryParams: {
                       type: Object,
                       statePath: 'dictionaryParams'
+                  },
+                  dictionaryResults: {
+                      type: Object
                   },
                   dictionaryTitles: {
                       type: Object,
