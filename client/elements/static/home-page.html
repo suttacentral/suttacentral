@@ -6,7 +6,7 @@
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 
-<link rel="import" href="../../elements/addons/text-carusel.html">
+<link rel="import" href="../../elements/addons/text-carousel.html">
 
 <dom-module id="home-page">
   <template>
@@ -100,7 +100,6 @@
       .button {
         @apply --sc-skolar-font-size-s;
         @apply --sc-sans-font;
-        width: fit-content;
         margin-top: var(--sc-size-md);
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
@@ -390,7 +389,7 @@
                     </template>
                     <template is="dom-if" if="[[!loadingEpigraphs]]">
                     <div class="card-text center-text">
-                        <sc-text-carusel elements="[[epigraphsData]]" display="epigraph" link="uid"></sc-text-carusel>                                            
+                        <sc-text-carousel elements="[[epigraphsData]]" display="epigraph" link="uid"></sc-text-carousel>                                            
                     </div>
                     </template>
                 </div>
@@ -517,7 +516,7 @@
                   </template>
                   <template is="dom-if" if="[[!loadingWhyWeRead]]">
                   <div class="why-we-read">
-                      <sc-text-carusel elements="[[whyWeReadData]]"></sc-text-carusel>                                            
+                      <sc-text-carousel elements="[[whyWeReadData]]"></sc-text-carousel>                                            
                   </div>
                   <a class="button-link" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747">
                       <paper-button class="button card-button-middle" raised>TELL US WHY YOU READ</paper-button>

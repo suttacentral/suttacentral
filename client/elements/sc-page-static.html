@@ -55,6 +55,7 @@
         text-align: left;
         margin-bottom: .75em;
         margin-top: 0;
+        text-align: center;
       }
 
       .title {
@@ -63,7 +64,16 @@
       }
 
       .title-text {
+        text-align: center;
         color: var(--sc-tertiary-text-color);
+      }
+
+      .title-text::before {
+        content: "☸";
+        font-size: 1.5em;
+        margin-right: var(--sc-size-sm);
+        line-height: 0.1;
+        vertical-align: middle;
       }
 
       .page-not-found-container {
