@@ -1,13 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
-
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-
 <link rel="import" href="../styles/sc-dict-styles.html">
 
 <dom-module id="sc-page-dictionary">
@@ -195,18 +193,14 @@
               console.log(this.dictData);
           }
 
-          _generateRequest() {
-              this.shadowRoot.querySelector('#ajax').generateRequest();
-          }
-
           _getDictionaryTitle(dict) {
               return this.dictionaryTitles[dict];
           }
 
           // toggles the drawer on the right to show the related/similar items.
-          _toggleDrawer() {
-              this.$.drawer.toggle();
-          }
+          // _toggleDrawer() {
+          //     this.$.drawer.toggle();
+          // }
         
       }
 
