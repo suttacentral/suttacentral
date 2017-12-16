@@ -846,7 +846,7 @@
               const noteItems = noteData.split(/ \| /);
               let noteText = `
                                 ${referenceText}
-                              <paper-tooltip class="varnote"><table><tbody>
+                              <paper-tooltip class="varnote" fit-to-visible-bounds><table><tbody>
                              `;
               let out = '';
 
@@ -903,7 +903,7 @@
               if (commentParts[1]) {
                   tooltipText = `
                                 ${commentParts[0]}
-                                has been corrected to
+                                has&nbsp;been&nbsp;corrected&nbsp;to
                                 ${commentParts[1]}
                               `;
               } else {
@@ -911,7 +911,7 @@
               }
               return `
                         ${referenceText}
-                      <paper-tooltip class="corrnote">
+                      <paper-tooltip fit-to-visible-bounds class="corrnote">
                         ${tooltipText}
                       </paper-tooltip>
                      `;

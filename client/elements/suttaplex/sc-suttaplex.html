@@ -230,16 +230,19 @@
       }
 
       .sc-tooltip {
-        @apply --sc-sans-font;
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
+          @apply --sc-sans-font;
           @apply --sc-skolar-font-size-xs;
           line-height: var(--sc-size-md);
           padding: var(--sc-size-sm) var(--sc-size-md);
           text-shadow: 0 0 var(--sc-secondary-background-color);
           white-space: normal;
+          max-width: 100% !important;
         };
+      }
+
       }
 
     </style>
@@ -253,7 +256,7 @@
             <iron-icon id="difficulty_icon" class="primary-accent-icon"
                        icon="[[_computeDifficultyLevelName(item.difficulty, 'sc-svg-icons:')]]"></iron-icon>
           </div>
-          <paper-tooltip for="difficulty_icon" offset="0" class="sc-tooltip">
+          <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds class="sc-tooltip">
             Recommended for [[_computeDifficultyLevelName(item.difficulty, '')]] students
           </paper-tooltip>
         </div>
@@ -335,6 +338,7 @@
                 </paper-icon-button>
                 <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
               </div>
+              <paper-tooltip for="parallels_toggle" offset="-1" fit-to-visible-bounds class="sc-tooltip">This&nbsp;text&nbsp;has&nbsp;[[item.parallel_count]]&nbsp;parallels</paper-tooltip>
             </template>
           </div>
         </div>

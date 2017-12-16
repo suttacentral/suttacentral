@@ -30,9 +30,30 @@ FOR pit IN pitaka
                         name: p.name,
                         uid: p._id,
                         num: p.num
-                    }
                 }
-            )
+            }
+        )
+        LET descendant = (
+            FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
+                FILTER d_edge.type != 'text'
+                LIMIT 1
+                RETURN d.uid
+        )[0]
+        RETURN {
+            uid: div._id, 
+            has_children: descendant != null,
+            name: div.name, 
+            num: div.num, 
+            id: div.uid, 
+            type: div.type, 
+            parents: parents
+        }
+'''
+
+SUBMENU = '''
+FOR pit IN pitaka
+    FOR div, edge, path IN 1..1 OUTBOUND pit `root_edges` OPTIONS {bfs: false}
+        FILTER div.uid == @submenu_id
         LET descendents = (
             FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
                 FILTER d_edge.type != 'text'
@@ -40,13 +61,24 @@ FOR pit IN pitaka
                     from: d_edge._from,
                     name: d.name,
                     uid: d._id,
-                    num: d.num
+                    num: d.num,
+                    type: d.type,
+                    id: d.uid
+            }
+        )
+        LET parents = MERGE(
+            FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+                RETURN {
+                    [p.type]: {
+                        name: p.name,
+                        uid: p._id,
+                        num: p.num,
+                        type: p.type
                 }
-            )
-        
-        RETURN MERGE({uid: div._id, name: div.name, num: div.num}, {descendents: descendents, parents: parents})
-'''
-
+            }
+        )
+    
+        RETURN {name: div.name, num: div.num, id: div.uid, uid: div._id, descendents: descendents, parents: parents}'''
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
@@ -276,7 +308,6 @@ LET legacy = (
     LET additional_info = KEEP(DOCUMENT(CONCAT('root/', chosen.uid)), ['name', 'acronym'])
     RETURN MERGE(chosen, {original_title: additional_info.name, acronym: additional_info.acronym})
 '''
-
 
 SUTTA_VIEW = '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
