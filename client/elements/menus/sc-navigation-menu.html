@@ -320,6 +320,10 @@
                       type: String,
                       statePath: 'selectedNavigationMenuItemId',
                       observer: '_selectedMenuItemChanged'
+                  },
+                  previouslySelectedItemId: {
+                      type: String,
+                      value: ''
                   }
               }
           }
@@ -348,6 +352,7 @@
                 </ul>`;
               this.$.main_menu_container.innerHTML = mainMenuMarkup;
               this._addButtonEventListeners();
+              this._selectedMenuItemChanged();
           }
 
           _generateDeepMainMenuLevels(item, isOpen) {
@@ -380,8 +385,7 @@
           }
 
           _createChildMenu() {
-              const subMenuMarkup = this._generateChildMenu(this.subMenuData[0], true);
-              this.$.sub_navigation.innerHTML = subMenuMarkup;
+              this.$.sub_navigation.innerHTML = this._generateChildMenu(this.subMenuData[0], true);
               this.$.sub_navigation.querySelectorAll('.menu-dropdown-icon').forEach((dropdownIcon) => {
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
@@ -420,8 +424,18 @@
               if (!this.currentlySelectedItemId) {
                   return;
               }
-              console.log('menu item changed: ');
-              console.dir(this.currentlySelectedItemId);
+              const selectedMenuItem = this.shadowRoot.querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
+              if (selectedMenuItem) {
+                  console.dir(selectedMenuItem);
+                  selectedMenuItem.classList.add('selected');
+              }
+              if (this.previouslySelectedItemId) {
+                  const prevItem = this.shadowRoot.querySelector(`[data-uid='${this.previouslySelectedItemId}']`);
+                  if (prevItem) {
+                      prevItem.classList.remove('selected');
+                  }
+              }
+              this.previouslySelectedItemId = this.currentlySelectedItemId;
           }
 
           _toggleOpenDropdownMenu(e) {
