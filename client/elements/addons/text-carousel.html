@@ -138,7 +138,7 @@
               super.ready();
               this._setInterval();
               this._resizeContainerOnWindowResize();
-              this._addChevronHighlihtListeners();
+              this._addChevronHighlightListeners();
           }
 
           _resizeContainerOnWindowResize() {
@@ -157,7 +157,7 @@
               });
           }
 
-          _addChevronHighlihtListeners() {
+          _addChevronHighlightListeners() {
               this.shadowRoot.querySelectorAll('.chevron').forEach(button => {
                   button.addEventListener('touchstart', () => {
                       button.classList.add('chevron-active');
@@ -176,7 +176,6 @@
                   });
               })
           }
-
 
           _handleMouseOut(button, e) {
               const element = e.toElement || e.relatedTarget;
