@@ -73,13 +73,13 @@
       .swap-section {
         height: 0;
         opacity: 0;
-        transition: opacity 1s, transform .5s;
-        -webkit-transition: opacity 1s, -webkit-transform .5s;
+        transition: opacity .5s, transform 375ms;
+        -webkit-transition: opacity .5s, -webkit-transform 375ms;
       }
 
       .nav .swap-section {
-        transition-duration: .3s;
-        -webkit-transition-duration: .3s;
+        transition-duration: 225ms;
+        -webkit-transition-duration: 225ms;
       }
 
       .swap-section.up {
@@ -154,7 +154,7 @@
         position: absolute;
         right: var(--sc-size-sm);
         top: -4px;
-        transition: .3s ease all;
+        transition: .225s ease-out all;
         cursor: pointer;
       }
 
@@ -202,6 +202,10 @@
       #sub_navigation .sub-nav {
         height: 86vh;
         overflow-y: auto;
+      }
+
+      .sub-nav {
+        padding-left: 0;
       }
 
       .sub-nav a {
@@ -494,7 +498,7 @@
               if (element.children && !hasGrandchildren) {
                   const elemHeight = 39;
                   const elemMaxHeight = elemHeight * element.children.length;
-                  return `max-height: ${elemMaxHeight}px; transition: max-height ease-in-out .5s;`;
+                  return `max-height: ${elemMaxHeight}px; transition: max-height ease-out 225ms;`;
               }
               else return '';
           }
