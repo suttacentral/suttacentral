@@ -97,7 +97,7 @@ class Menu(Resource):
             if 'children' in pitaka:
                 uid = pitaka['uid']
                 children = pitaka.pop('children')
-                if uid == 'pitaka/su':
+                if uid == 'pitaka/sutta':
                     pitaka['children'] = self.groupby_parents(children, ['grouping'])
                 else:
                     pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
