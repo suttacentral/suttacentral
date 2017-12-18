@@ -229,59 +229,59 @@
   <script>
     class SCPageStatic extends ReduxMixin(Polymer.Element) {
       static get is() {
-        return 'sc-page-static';
+          return 'sc-page-static';
       }
 
       static get properties() {
-        return {
-          selectedPage: {
-            type: String,
-            observer: '_changeView',
-            statePath: 'currentRoute.name'
-          },
-          pages: {
-            type: String,
-            value: 'HOME'
-          },
-        }
+          return {
+              selectedPage: {
+                  type: String,
+                  observer: '_changeView',
+                  statePath: 'currentRoute.name'
+              },
+              pages: {
+                  type: String,
+                  value: 'HOME'
+              }
+          }
       }
 
       ready() {
-        super.ready();
-        this._addLinkClickHandlers();
+          super.ready();
+          this._addLinkClickHandlers();
       }
 
       _selectNavbarLink() {
-        const tabs = this.$.nav_tabs.querySelectorAll('paper-tab');
-        for(let i = 0; i < tabs.length; i++) {
-          if(tabs[i].dataset.name === this.selectedPage) {
-            this.$.nav_tabs.selectIndex(i);
-            return;
+          const tabs = this.$.nav_tabs.querySelectorAll('paper-tab');
+          for (let i = 0; i < tabs.length; i++) {
+              if (tabs[i].dataset.name === this.selectedPage) {
+                  this.$.nav_tabs.selectIndex(i);
+                  return;
+              }
           }
-        }
-        this.$.nav_tabs.selectIndex(-1);
+          this.$.nav_tabs.selectIndex(-1);
       }
 
       _addLinkClickHandlers() {
-        this.$.nav_tabs.addEventListener('selected-item-changed', e => {
-          let target = e.detail.value;
-          if (!target) {
-            return;
-          }
-          target.querySelector('.hidden-link').click();
-        });
+          this.$.nav_tabs.addEventListener('selected-item-changed', e => {
+              let target = e.detail.value;
+              if (!target) {
+                  return;
+              }
+              target.querySelector('.hidden-link').click();
+          });
       }
 
       connectedCallback() {
-        super.connectedCallback();
-        this.shadowRoot.querySelectorAll('.link-text').forEach(link => {
-          link.style.width = window.getComputedStyle(link).width;
-        });
+          super.connectedCallback();
+          this.shadowRoot.querySelectorAll('.link-text').forEach(link => {
+              link.style.width = window.getComputedStyle(link).width;
+          });
       }
 
       _changeView() {
-        this.$.pages.selected = this.selectedPage;
-        this._selectNavbarLink();
+          this.$.pages.selected = this.selectedPage;
+          this._selectNavbarLink();
       }
     }
 
