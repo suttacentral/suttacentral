@@ -188,6 +188,10 @@
         text-decoration: none;
       }
 
+      .nav-link.selected {
+        background: linear-gradient(to right, var(--sc-primary-color) 4px, var(--sc-primary-color-transparent) 4px);
+      }
+
       .nav-secondary.open,
       .nav-tertiary.open {
         max-height: 9999px;
@@ -285,7 +289,7 @@
   </template>
 
   <script>
-      class SCNavigationMenu extends Polymer.Element {
+      class SCNavigationMenu extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-navigation-menu';
           }
@@ -311,6 +315,11 @@
                   headerHref: {
                       type: String,
                       value: '#'
+                  },
+                  currentlySelectedItemId: {
+                      type: String,
+                      statePath: 'selectedNavigationMenuItemId',
+                      observer: '_selectedMenuItemChanged'
                   }
               }
           }
@@ -405,6 +414,14 @@
               Array.from(this.shadowRoot.querySelectorAll('.child-menu-arrow-icon')).forEach((childMenuIcon) => {
                   childMenuIcon.addEventListener('click', this._openChildMenu.bind(this));
               });
+          }
+
+          _selectedMenuItemChanged() {
+              if (!this.currentlySelectedItemId) {
+                  return;
+              }
+              console.log('menu item changed: ');
+              console.dir(this.currentlySelectedItemId);
           }
 
           _toggleOpenDropdownMenu(e) {
