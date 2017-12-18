@@ -2,6 +2,11 @@
 <link rel="import" href="../../styles/static-styles.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<link rel="import" href="../../elements/addons/text-carousel.html">
 
 <dom-module id="home-page">
   <template>
@@ -12,7 +17,7 @@
         grid-template-columns: 2% 96% 2%;
         grid-row-gap: 80px;
         margin-top: 60px;
-        margin-bottom: 20px;
+        margin-bottom: var(--sc-size-xl);
       }
 
       .row {
@@ -51,22 +56,29 @@
       }
 
       .card-content {
+        position: relative;
         width: 100%;
         background-color: var(--sc-secondary-background-color);
         display: flex;
         align-items: center;
         flex-direction: column;
         justify-content: space-evenly;
+        padding-bottom: var(--sc-size-xxl);
       }
 
       .card-content-text {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
-        padding: var(--sc-size-md-larger); 
+        padding: var(--sc-size-lg);
+        text-align: center;
+      }
+
+      .button-link {
+        background: none !important;
       }
 
       .card-heading-text {
-        font-size: 2vw;
+        @apply --sc-sans-font;
         padding: var(--sc-size-lg);
         text-align: center;
       }
@@ -87,7 +99,7 @@
 
       .button {
         @apply --sc-skolar-font-size-s;
-        width: fit-content;
+        @apply --sc-sans-font;
         margin-top: var(--sc-size-md);
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
@@ -141,11 +153,6 @@
 
       .second-row {
         grid-column-start: 2;
-      }
-
-      .horizontal-center {
-        margin-left: 50%;
-        transform: translate(-50%, 0);
       }
 
       .three-elements-grid {
@@ -237,30 +244,24 @@
         @apply --sc-skolar-font-size-md;
         font-weight: normal;
         line-height: 1em;
-        margin: var(--sc-size-sm);
+        margin: var(--sc-size-md-larger);
+        margin-top: 0;
         text-align: justify;
       }
 
-      @media (min-width: 1200px) {
+      .spinner {
+        --paper-spinner-color: var(--sc-primary-color);
+        }
+
+      .card-button-middle {
+        position: absolute;
+        transform: translate(-50%);
+        bottom: var(--sc-size-md-larger);
+        }
+
+      @media (min-width: 1280px) {
         .content {
-          grid-template-columns: 15% 70% 15%;
-        }
-
-        .card {
-          flex-flow: unset;
-        }
-
-        .card-content-video,
-        .card-content {
-          width: 75%;
-        }
-
-        .card-heading {
-          width: 25%;
-        }
-
-        .d-none {
-          display: unset;
+          grid-template-columns: 5% 90% 5%;
         }
 
         .three-elements-grid {
@@ -316,10 +317,51 @@
         .grid-button {
           justify-self: start;
         }
+      }
+
+      @media (min-width: 1600px) {
+        .content {
+          grid-template-columns: 15% 70% 15%;
+        }
   
+        .card {
+          flex-flow: unset;
+      }
+
+        .card-content-video,
+        .card-content {
+          width: 75%;
+      }
+
+        .card-heading {
+          width: 25%;
+        }
+
+        .d-none {
+          display: unset;
+        }
       }
 
     </style>
+
+    <iron-ajax
+      auto
+      url="[[_computeUrl('epigraphs')]]"
+      id="epigraphs-ajax"
+      handle-as="json"
+      loading="{{loadingEpigraphs}}"
+      last-response="{{epigraphsData}}"></iron-ajax>
+
+    <iron-ajax
+      auto
+      url="[[_computeUrl('whyweread')]]"
+      id="why-we-read-ajax"
+      handle-as="json"
+      loading="{{loadingWhyWeRead}}"
+      last-response="{{whyWeReadData}}"></iron-ajax>
+
+      <iron-meta id="meta"></iron-meta>      
+
     <div id="page-wrap">
       <div class="content">
 
@@ -342,9 +384,14 @@
               </div>
               <div class="card-content">
                 <div class="card-content-text">
-                  <div class="card-text center-text">I understood: ‘Rebirth is ended; the spiritual journey has been completed; 
-                    what had to be done has been done; there is no return to any state of existence.’</div>
-                  <paper-button class="button horizontal-center">READ THIS SUTTA</paper-button>
+                  <template is="dom-if" if="[[loadingEpigraphs]]">
+                      <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                    </template>
+                    <template is="dom-if" if="[[!loadingEpigraphs]]">
+                    <div class="card-text center-text">
+                        <sc-text-carousel elements="[[epigraphsData]]" display="epigraph" link="uid"></sc-text-carousel>                                            
+                    </div>
+                    </template>
                 </div>
               </div>
             </div>
@@ -373,8 +420,12 @@
                 and have tried to make it a little easier for you. Here’s some things you can try.</div>
                 </div>
             </paper-card>
-            <paper-button class="button first-card-button grid-button">INTRODUCTION</paper-button>
-            <paper-button class="button second-card-button grid-button">GET STARTED</paper-button>
+            <a class="button-link first-card-button grid-button" href="/introduction">
+              <paper-button class="button">INTRODUCTION</paper-button>
+            </a>
+            <a class="button-link second-card-button grid-button" href="/start">
+              <paper-button class="button">GET STARTED</paper-button>
+            </a>            
         </div>
 
         <div class="row">
@@ -411,7 +462,9 @@
                   But here’s the good news: you are not alone. We’ve been down this road ourselves, 
                   and have tried to make it a little easier for you. Here’s some things you can try.</div>
                 </div>
-                <paper-button class="button card-button">MORE ...</paper-button>
+                <a class="button-link" href="/sutta">
+                  <paper-button class="button card-button" raised>MORE ...</paper-button>
+                </a>
             </paper-card>
             <paper-card class="three-elements-small three-elements-first-small full-height paper-card-with-button">
               <div class="card-content-wrapper no-bottom-padding">
@@ -425,7 +478,9 @@
                   paint a detailed and vivid picture of everyday life in ancient India.
                 </div>
               </div>
-              <paper-button class="button card-button">MORE ...</paper-button>
+              <a class="button-link" href="/vinaya">
+                <paper-button class="button card-button" raised>MORE ...</paper-button>
+              </a>
             </paper-card>
             <paper-card class="three-elements-small three-elements-second-small full-height paper-card-with-button">
               <div class="card-content-wrapper no-bottom-padding">
@@ -437,7 +492,9 @@
                     The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.
                 </div>
               </div>
-              <paper-button class="button card-button">MORE ...</paper-button>
+              <a class="button-link" href="/abhidhamma">
+                <paper-button class="button card-button" raised>MORE ...</paper-button>
+              </a>
             </paper-card>
           </div>
         </div>
@@ -452,14 +509,19 @@
                   read
                 </div>
               </div>
-              <div class="card-content">
+              <div class="card-content">                  
                 <div class="card-content-text">
-                  <div class="why-we-read">When I began to experience the peace of meditation, 
-                    I needed to understand more deeply what I was going through. 
-                    I found out there were real teachings from the Buddha himself, and felt drawn to them.
-                    For over twenty years now, they have been a constant companion and guide, a friend in times of need,
-                    and an unending well of wisdom and inspiration.</div>
-                  <paper-button class="button horizontal-center">TELL US WHY YOU READ</paper-button>
+                  <template is="dom-if" if="[[loadingWhyWeRead]]">
+                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                  </template>
+                  <template is="dom-if" if="[[!loadingWhyWeRead]]">
+                  <div class="why-we-read">
+                      <sc-text-carousel elements="[[whyWeReadData]]"></sc-text-carousel>                                            
+                  </div>
+                  <a class="button-link" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747">
+                      <paper-button class="button card-button-middle" raised>TELL US WHY YOU READ</paper-button>
+                  </a>
+                  </template>                
                 </div>
               </div>
             </div>
@@ -469,14 +531,18 @@
         <div class="row cards">
             <paper-card class="two-paper-cards first-card paper-card-with-button" image="../../img/home-page/51.jpg">
               <div class="card-content-wrapper">
-                <div class="card-title-text">What's here</div>
-                <div class="image-card-text">
-                  SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. 
-                  This is a large collection of teachings attributed to the Buddha or his earliest disciples, 
-                  who were teaching in India around 2500 years ago. 
-                  They are regarded as sacred canon in all schools of Buddhism.</div>
+                <div class="card-title-text">SuttaCentral—a new beginning</div>
+                  <div class="image-card-text">
+                    We’re proud to share with you the new SuttaCentral. 
+                    The team has been working on it for over two years, and we think it’s something special. 
+                    The new site features an entirely new translation of the four Pali nikāyas, 
+                    prepared specially for SuttaCentral by Bhante Sujato. 
+                    And the whole site has been re-built to be faster, clearer, and more flexible.
+                  </div>
                 </div>
-                <paper-button class="button card-button">GET STARTED</paper-button>
+                <a class="button-link" href="/a-new-beginning">
+                  <paper-button class="button card-button" raised>WHAT’S NEW IN 2018</paper-button>
+                </a>                
               </paper-card>
               <paper-card class="two-paper-cards second-card paper-card-with-button" 
                           image="../../img/home-page/mn-pt-cover-MOCKUP.jpg">
@@ -487,7 +553,9 @@
                     Our printed editions feature a special “infinite” power feature. With this breakthrough innovation,
                     you never have to charge your book—ever!</div>
                   </div>
-                  <paper-button class="button card-button">INTRODUCTION</paper-button>
+                  <a class="button-link" href="">                      
+                    <paper-button class="button card-button" raised>ORDER BOOKS</paper-button>
+                  </a>
                 </paper-card>
               </div>
       </div>
@@ -497,7 +565,29 @@
   <script>
       class SCHomePage extends Polymer.Element {
           static get is() {
-             return 'home-page';
+              return 'home-page';
+          }
+
+          static get properties() {
+              return {
+                  loadingEpigraphs: {
+                      type: Boolean
+                  },
+                  epigraphsData: {
+                      type: Object
+                  },
+                  loadingWhyWeRead: {
+                      type: Boolean
+                  },
+                  whyWeReadData: {
+                      type: Object
+                  }
+              }
+          }
+
+          _computeUrl(resource) {
+            const apiRoot = this.$.meta.byKey('API_ROOT');
+            return `${apiRoot}/${resource}`;
           }
       }
       customElements.define(SCHomePage.is, SCHomePage);

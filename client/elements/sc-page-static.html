@@ -15,6 +15,12 @@
 <link rel="import" href="../elements/static/acknowledgments-page.html">
 <link rel="import" href="../elements/static/licensing-page.html">
 <link rel="import" href="../elements/static/about-page.html">
+<link rel="import" href="../elements/static/introduction.html">
+<link rel="import" href="../elements/static/start.html">
+<link rel="import" href="../elements/static/discourses.html">
+<link rel="import" href="../elements/static/vinaya.html">
+<link rel="import" href="../elements/static/abhidhamma.html">
+<link rel="import" href="../elements/static/a-new-beginning.html">
 
 <dom-module id="sc-page-static">
   <template>
@@ -49,6 +55,7 @@
         text-align: left;
         margin-bottom: .75em;
         margin-top: 0;
+        text-align: center;
       }
 
       .title {
@@ -57,7 +64,16 @@
       }
 
       .title-text {
+        text-align: center;
         color: var(--sc-tertiary-text-color);
+      }
+
+      .title-text::before {
+        content: "☸";
+        font-size: 1.5em;
+        margin-right: var(--sc-size-sm);
+        line-height: 0.1;
+        vertical-align: middle;
       }
 
       .page-not-found-container {
@@ -137,6 +153,24 @@
       </div>
       <div name="ABOUT">
         <sc-about-page></sc-about-page>
+      </div>
+      <div name="INTRODUCTION">
+        <sc-introduction></sc-introduction>
+      </div>
+      <div name="START">
+        <sc-start></sc-start>
+      </div>
+      <div name="DISCOURSES">
+        <sc-discourses></sc-discourses>
+      </div>
+      <div name="VINAYA">
+        <sc-vinaya></sc-vinaya>
+      </div>
+      <div name="ABHIDHAMMA">
+        <sc-abhidhamma></sc-abhidhamma>
+      </div>
+      <div name="A-NEW-BEGINNING">
+        <sc-a-new-beginning></sc-a-new-beginni>
       </div>
       <div name="NOT-FOUND">
         <div class="page-not-found-container">
