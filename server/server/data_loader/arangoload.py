@@ -12,7 +12,7 @@ from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
-from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, divisions, images_files
+from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, divisions, images_files, homepage
 
 
 class ChangeTracker:
@@ -568,5 +568,9 @@ def run():
     biblio.load_biblios(db, additional_info_dir)
 
     divisions.load_divisions(db, structure_dir)
+
+    homepage.load_epigraphs(db, additional_info_dir)
+
+    homepage.load_why_we_read(db, additional_info_dir)
 
     change_tracker.update_mtimes()
