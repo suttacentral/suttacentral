@@ -20,16 +20,15 @@ FOR text IN html_text
 _MAX_NESTING_LEVEL = '5'
 
 MENU = '''
-FOR pit IN pitaka
-    FOR div, edge, path IN 1..1 OUTBOUND pit `root_edges` OPTIONS {bfs: false}
-        FILTER IS_SAME_COLLECTION('root', div)
-        LET parents = MERGE(
-            FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
-                RETURN {
-                    [p.type]: {
-                        name: p.name,
-                        uid: p._id,
-                        num: p.num
+FOR div IN root
+    FILTER div.type == 'division'
+    LET parents = MERGE(
+        FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+            RETURN {
+                [p.type]: {
+                    name: p.name,
+                    uid: p._id,
+                    num: p.num
                 }
             }
         )
@@ -51,34 +50,33 @@ FOR pit IN pitaka
 '''
 
 SUBMENU = '''
-FOR pit IN pitaka
-    FOR div, edge, path IN 1..1 OUTBOUND pit `root_edges` OPTIONS {bfs: false}
-        FILTER div.uid == @submenu_id
-        LET descendents = (
-            FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
-                FILTER d_edge.type != 'text'
-                RETURN {
-                    from: d_edge._from,
-                    name: d.name,
-                    uid: d._id,
-                    num: d.num,
-                    type: d.type,
-                    id: d.uid
-            }
-        )
-        LET parents = MERGE(
-            FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
-                RETURN {
-                    [p.type]: {
-                        name: p.name,
-                        uid: p._id,
-                        num: p.num,
-                        type: p.type
-                }
-            }
-        )
-    
-        RETURN {name: div.name, num: div.num, id: div.uid, uid: div._id, descendents: descendents, parents: parents}'''
+LET div = DOCUMENT('root', @submenu_id)
+LET descendents = (
+    FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
+        FILTER d_edge.type != 'text'
+        RETURN {
+            from: d_edge._from,
+            name: d.name,
+            uid: d._id,
+            num: d.num,
+            type: d.type,
+            id: d.uid
+    }
+)
+LET parents = MERGE(
+    FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+        RETURN {
+            [p.type]: {
+                name: p.name,
+                uid: p._id,
+                num: p.num,
+                type: p.type
+        }
+    }
+)
+
+RETURN {name: div.name, num: div.num, id: div.uid, uid: div._id, descendents: descendents, parents: parents}
+'''
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
@@ -424,6 +422,15 @@ FOR paragraph IN paragraphs
     RETURN {
         uid: paragraph.uid,
         description: paragraph.description
+    }
+'''
+
+DICTIONARYFULL = '''
+FOR dictionary IN dictionary_full
+    RETURN {
+        dictname: dictionary.dictname,
+        word: dictionary.word,
+        text: dictionary.text
     }
 '''
 
