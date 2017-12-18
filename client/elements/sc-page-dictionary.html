@@ -98,6 +98,7 @@
     </style>
 
     <iron-ajax
+        auto
         id="ajax"
         url="[[_computeUrl()]]"
         params='[[dictionaryParams]]'
@@ -115,14 +116,14 @@
               class="dictionary-results-term">[[dictionaryParams]]</span></h1>
           <span class="termsbutton" title="Related terms"><paper-icon-button icon="menu">
         </div>
-        <div class="dictionary-entries">
-<!--           <template is="dom-repeat" items="[[dictionaryResults]]" as="result">
+<!--         <div class="dictionary-entries">
+          <template is="dom-repeat" items="[[dictionaryResults]]" as="result">
             <div class="dictionary-book-entry">
               <div class="dictionary-source">[[_getDictionaryTitle(result.dict)]]</div>
               <div class="dictionary-text" inner-h-t-m-l="[[result.text]]"></div>
             </div>
-          </template> -->
-        </div>
+          </template>
+        </div> -->
 
         <!--The below is complete mockup. The real related and similar terms to be displayed will have to be calculated-->
 <!--         <app-drawer id="drawer" align="right" swipe-open>
@@ -167,8 +168,8 @@
                       value: true
                   },
                   dictionaryParams: {
-                      type: Object,
-                      statePath: 'dictionaryParams'
+                      type: String,
+                      value: "dhamma"
                   },
                   dictionaryResults: {
                       type: Object
@@ -188,12 +189,12 @@
 
           _computeUrl() {
               console.log("compute URL");
-              return `${this.$.meta.byKey('API_ROOT')}/dictionary_full`;
+              return `${this.$.meta.byKey('API_ROOT')}/dictionary_full/word==${this.dictionaryParams}`;
           }
 
           _didRespond() {
               console.log("Ajax has responded");
-              console.log(this.dictData);
+              console.log(this.dictData)
           }
 
           _getDictionaryTitle(dict) {
