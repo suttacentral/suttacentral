@@ -425,6 +425,15 @@ FOR paragraph IN paragraphs
     }
 '''
 
+DICTIONARYFULL = '''
+FOR dictionary IN dictionary_full
+    RETURN {
+        dictname: dictionary.dictname,
+        word: dictionary.word,
+        text: dictionary.text
+    }
+'''
+
 IMAGES = '''
 FOR image IN images
     FILTER image.division == @division AND image.vol == @vol
