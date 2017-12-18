@@ -34,6 +34,10 @@
         transform: translate(-50%, -50%);
       }
 
+      .icon-button {
+        position: relative;
+      }
+
       .network-error-icon {
         width: var(--sc-size-xxl);
         height: var(--sc-size-xxl);
@@ -145,17 +149,13 @@
       }
 
       .menu-dropdown-icon {
-        fill: var(--sc-disabled-text-color);
+        color: var(--sc-disabled-text-color);
         display: inline-block;
         position: absolute;
         right: var(--sc-size-sm);
-        top: 0;
+        top: -4px;
         transition: .3s ease all;
         cursor: pointer;
-      }
-
-      .child-menu-arrow-icon {
-        top: var(--sc-size-xs);
       }
 
       .menu-dropdown-icon.open {
@@ -224,9 +224,13 @@
 
       #back_arrow {
         cursor: pointer;
-        fill: var(--sc-tertiary-text-color);
-        width: var(--sc-size-lg);
-        height: var(--sc-size-lg);
+        color: var(--sc-tertiary-text-color);
+      }
+
+      paper-icon-button {
+        --iron-icon: {
+          pointer-events: none;
+        }
       }
 
     </style>
@@ -265,7 +269,7 @@
       <nav class="sc-nav">
         <div>
           <div id="sub_navigation_header" class="nav-back-button swap-section up">
-            <iron-icon id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></iron-icon>
+            <paper-icon-button id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></paper-icon-button>
             <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
           </div>
 
@@ -325,15 +329,17 @@
                   ${this.mainMenuData.map(topLevelItem => `
                     <li class="nav-menu-item">
                       <span class="nav-link">${topLevelItem.name}</span>
-                      <iron-icon icon="expand-more"
-                        class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                      <paper-icon-button icon="expand-more"
+                        class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
+                      </paper-icon-button>
                       <ul class="nav-secondary ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
                         ${topLevelItem.children.map(groupingLevelItem => `
                         <li class="nav-menu-item">
                           <span class="nav-link">${groupingLevelItem.name}</span>
                           ${groupingLevelItem.children.length > 0 ? `
-                            <iron-icon icon="expand-more"
-                            class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                            <paper-icon-button icon="expand-more" class="menu-dropdown-icon
+                              ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
+                            </paper-icon-button>
                             ${this._generateDeepMainMenuLevels(groupingLevelItem, (topLevelItem.name === 'Sutta'))}
                             ` : ''}
                         </li>
@@ -358,14 +364,17 @@
                     ${listType === 'nav-secondary' ?
                       `<span class="nav-link">${childItem.name}</span>`
                       :
-                      `<span class="nav-link"><a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a></span>`
+                      `<span class="nav-link">
+                        <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
+                       </span>`
                       }
                     ${childItem.children && childItem.children.length > 0 ?
-                      `<iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
+                      `<paper-icon-button icon="expand-more" class="menu-dropdown-icon closed"></paper-icon-button>
                        ${this._generateDeepMainMenuLevels(childItem, false)}`
                       :
                       childItem.has_children ?
-                          `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon"></iron-icon>`
+                          `<paper-icon-button icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon">
+                          </paper-icon-button>`
                           : ''
                       }
                     </li>
@@ -392,7 +401,7 @@
                         <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
                       </span>
                     ${childItem.children && childItem.children.length > 0 ? `
-                      <iron-icon icon="expand-more" class="menu-dropdown-icon open"></iron-icon>
+                      <paper-icon-button icon="expand-more" class="menu-dropdown-icon open"></paper-icon-button>
                        ${this._generateChildMenu(childItem, false)}`
                   :
                   ''}
