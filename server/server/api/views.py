@@ -8,11 +8,12 @@ from flask_restful import Resource
 from sortedcontainers import SortedDict
 
 from common.arangodb import get_db
-from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, \
-    SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ
-from common.utils import flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key, \
-    groupby_unsorted
 
+from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, \
+    SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL
+
+from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
+    sort_parallels_type_key, groupby_unsorted
 
 class Languages(Resource):
     """
@@ -97,7 +98,7 @@ class Menu(Resource):
             if 'children' in pitaka:
                 uid = pitaka['uid']
                 children = pitaka.pop('children')
-                if uid == 'pitaka/su':
+                if uid == 'pitaka/sutta':
                     pitaka['children'] = self.groupby_parents(children, ['grouping'])
                 else:
                     pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
@@ -559,6 +560,16 @@ class Paragraphs(Resource):
 
         return data.batch(), 200
 
+class DictionaryFull(Resource):
+    def get(self):
+        """
+
+        """
+        db = get_db()
+
+        data = db.aql.execute(DICTIONARYFULL)
+
+        return data.batch(), 200
 
 class Donations(Resource):
     def post(self):
