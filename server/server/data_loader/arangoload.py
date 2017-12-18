@@ -150,8 +150,6 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
             entries = json.load(f)
         
         for i, entry in enumerate(entries):
-            if i == 0:
-                entry['type'] = 'division'
             path = pathlib.PurePath(entry['_path'])
             mapping[path] = entry
             
@@ -186,8 +184,6 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
                     entry[data_name] = sutta_data[uid][data_name]
                 except KeyError:
                     pass
-            if entry['uid'].startswith('thag-'):
-                logging.error(f'Whats going on here! {uid}: {entry}')
             docs.append(entry)
 
             # find the parent
