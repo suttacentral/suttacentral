@@ -141,8 +141,7 @@
       }
 
       .nav-menu-item.selected {
-        background: var(--sc-primary-accent-color-almost-transparent);
-        color: var(--sc-primary-color-dark);
+        background: linear-gradient(to right, var(--sc-primary-color) 4px, var(--sc-primary-color-transparent) 4px);
       }
 
       .menu-dropdown-icon {
@@ -161,10 +160,6 @@
 
       .menu-dropdown-icon.open {
         transform: rotateZ(180deg);
-      }
-
-      .nav-menu-item.selected .menu-dropdown-icon {
-        background-color: var(--sc-secondary-text-color);
       }
 
       .nav-secondary, .nav-tertiary {
@@ -186,10 +181,6 @@
         font-weight: 400;
         color: var(--sc-primary-accent-color);
         text-decoration: none;
-      }
-
-      .nav-link.selected {
-        background: linear-gradient(to right, var(--sc-primary-color) 4px, var(--sc-primary-color-transparent) 4px);
       }
 
       .nav-secondary.open,
@@ -421,21 +412,19 @@
           }
 
           _selectedMenuItemChanged() {
-              if (!this.currentlySelectedItemId) {
-                  return;
-              }
-              const selectedMenuItem = this.shadowRoot.querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
-              if (selectedMenuItem) {
-                  console.dir(selectedMenuItem);
-                  selectedMenuItem.classList.add('selected');
-              }
+              // deselect the previous item
               if (this.previouslySelectedItemId) {
                   const prevItem = this.shadowRoot.querySelector(`[data-uid='${this.previouslySelectedItemId}']`);
                   if (prevItem) {
                       prevItem.classList.remove('selected');
                   }
               }
-              this.previouslySelectedItemId = this.currentlySelectedItemId;
+              const selectedMenuItem = this.shadowRoot.querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
+              // select the current item
+              if (selectedMenuItem) {
+                  selectedMenuItem.classList.add('selected');
+                  this.previouslySelectedItemId = this.currentlySelectedItemId;
+              }
           }
 
           _toggleOpenDropdownMenu(e) {
