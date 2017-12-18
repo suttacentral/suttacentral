@@ -50,34 +50,33 @@ FOR div IN root
 '''
 
 SUBMENU = '''
-FOR pit IN pitaka
-    FOR div, edge, path IN 1..1 OUTBOUND pit `root_edges` OPTIONS {bfs: false}
-        FILTER div.uid == @submenu_id
-        LET descendents = (
-            FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
-                FILTER d_edge.type != 'text'
-                RETURN {
-                    from: d_edge._from,
-                    name: d.name,
-                    uid: d._id,
-                    num: d.num,
-                    type: d.type,
-                    id: d.uid
-            }
-        )
-        LET parents = MERGE(
-            FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
-                RETURN {
-                    [p.type]: {
-                        name: p.name,
-                        uid: p._id,
-                        num: p.num,
-                        type: p.type
-                }
-            }
-        )
-    
-        RETURN {name: div.name, num: div.num, id: div.uid, uid: div._id, descendents: descendents, parents: parents}'''
+LET div = DOCUMENT('root', @submenu_id)
+LET descendents = (
+    FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
+        FILTER d_edge.type != 'text'
+        RETURN {
+            from: d_edge._from,
+            name: d.name,
+            uid: d._id,
+            num: d.num,
+            type: d.type,
+            id: d.uid
+    }
+)
+LET parents = MERGE(
+    FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+        RETURN {
+            [p.type]: {
+                name: p.name,
+                uid: p._id,
+                num: p.num,
+                type: p.type
+        }
+    }
+)
+
+RETURN {name: div.name, num: div.num, id: div.uid, uid: div._id, descendents: descendents, parents: parents}
+'''
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
