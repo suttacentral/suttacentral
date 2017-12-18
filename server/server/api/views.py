@@ -5,16 +5,15 @@ import re
 import stripe
 from flask import current_app, request
 from flask_restful import Resource
-from sortedcontainers import SortedListWithKey, SortedDict
+from sortedcontainers import SortedDict
 
 from common.arangodb import get_db
 
 from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, \
-    SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, DICTIONARYFULL
+    SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL
 
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
     sort_parallels_type_key, groupby_unsorted
-
 
 class Languages(Resource):
     """
@@ -99,7 +98,7 @@ class Menu(Resource):
             if 'children' in pitaka:
                 uid = pitaka['uid']
                 children = pitaka.pop('children')
-                if uid == 'pitaka/su':
+                if uid == 'pitaka/sutta':
                     pitaka['children'] = self.groupby_parents(children, ['grouping'])
                 else:
                     pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
@@ -687,5 +686,60 @@ class Images(Resource):
         db = get_db()
 
         data = db.aql.execute(IMAGES, bind_vars={'division': division, 'vol': vol})
+
+        return data.batch(), 200
+
+
+class Epigraphs(Resource):
+    def get(self):
+        """
+        Send list of random epigraphs
+        ---
+        responses:
+            200:
+                schema:
+                    id: epigraphs
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            uid:
+                                type: string
+                            epigraph:
+                                type: string
+        """
+        db = get_db()
+
+        try:
+            limit = int(request.args.get('limit', '10'))
+        except ValueError:
+            limit = 10
+
+        data = db.aql.execute(EPIGRAPHS, bind_vars={'number': limit})
+
+        return data.batch(), 200
+
+
+class WhyWeRead(Resource):
+    def get(self):
+        """
+        Send list of random why_we_read quotes.
+        ---
+        responses:
+            200:
+                schema:
+                    id: why_we_read
+                    type: array
+                    items:
+                        type: string
+        """
+        db = get_db()
+
+        try:
+            limit = int(request.args.get('limit', '10'))
+        except ValueError:
+            limit = 10
+
+        data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit})
 
         return data.batch(), 200

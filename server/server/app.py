@@ -7,7 +7,7 @@ from flask_cors import CORS
 from flask_restful import Api
 
 from api.views import (Currencies, Donations, Languages, LookupDictionaries, Menu, Paragraphs, Parallels, Sutta,
-                       SuttaplexList, Images, DictionaryFull)
+                       SuttaplexList, Images, Epigraphs, WhyWeRead, DictionaryFull)
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
@@ -32,6 +32,8 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Donations, '/donate')
     api.add_resource(Paragraphs, '/paragraphs')
     api.add_resource(Images, '/images/<string:division>/<int:vol>')
+    api.add_resource(Epigraphs, '/epigraphs')
+    api.add_resource(WhyWeRead, '/whyweread')
 
     app.register_blueprint(api_bp)
     return api, app
