@@ -5,13 +5,13 @@ import re
 import stripe
 from flask import current_app, request
 from flask_restful import Resource
-from sortedcontainers import SortedListWithKey, SortedDict
+from sortedcontainers import SortedDict
 
 from common.arangodb import get_db
-from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, SUTTAPLEX_LIST, \
-    IMAGES
-from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
-    sort_parallels_type_key, groupby_unsorted
+from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, SUTTA_VIEW, \
+    SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ
+from common.utils import flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key, \
+    groupby_unsorted
 
 
 class Languages(Resource):
@@ -48,7 +48,7 @@ class Languages(Resource):
 
 
 class Menu(Resource):
-    def get(self):
+    def get(self, submenu_id=None):
         """
         Send Menu structure
         ---
@@ -70,49 +70,60 @@ class Menu(Resource):
                     name:
                         type: string
                     uid:
+                        required: false
                         type: string
+                    id:
+                        required: false
+                        type: string
+                    num:
+                        type: number
                     children:
                         type: array
                         items:
                             type: MenuItem
-                    depth:
-                        type: number
+                    has_children:
+                        required: false
+                        type: boolean
         """
         db = get_db()
-        divisions = db.aql.execute(MENU)
-
-        data = self.groupby_parents(divisions, ['pitaka'])
+        if submenu_id:
+            divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id})
+            data = list(divisions)
+        else:
+            divisions = db.aql.execute(MENU)
+            data = self.groupby_parents(divisions, ['pitaka'])
 
         for pitaka in data:
-            children = pitaka.pop('children')
-            uid = pitaka['uid']
-            if uid == 'pitaka/su':
-                pitaka['children'] = self.groupby_parents(children, ['grouping'])
-            else:
-                pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
-        
-        self.recursive_cleanup(data, depth=0, mapping={})
-        
+            if 'children' in pitaka:
+                uid = pitaka['uid']
+                children = pitaka.pop('children')
+                if uid == 'pitaka/su':
+                    pitaka['children'] = self.groupby_parents(children, ['grouping'])
+                else:
+                    pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
+
+        self.recursive_cleanup(data, mapping={})
+
         return data, 200
-        
+
     @staticmethod
     def num_sort_key(entry):
         return entry.get('num') or -1
-        
+
     @staticmethod
     def groupby_parent_property(entries, prop):
-        return ( (json.loads(key), list(group)) 
-                 for key, group 
-                 in groupby_unsorted(entries, lambda d: json.dumps(d['parents'].get(prop), sort_keys=True))
+        return ((json.loads(key), list(group))
+                for key, group
+                in groupby_unsorted(entries, lambda d: json.dumps(d['parents'].get(prop), sort_keys=True))
                 )
-    
+
     def groupby_parents(self, entries, props):
         out = []
         prop = props[0]
         remaining_props = props[1:]
         for parent, children in self.groupby_parent_property(entries, prop):
             if parent is None:
-                # This intentially looks as bad as possible in the menu
+                # This intentionally looks as bad as possible in the menu
                 # it's a "hey classify me!"
                 parent = {
                     'uid': f'{prop}/none',
@@ -125,25 +136,29 @@ class Menu(Resource):
             else:
                 parent['children'] = children
         return sorted(out, key=self.num_sort_key)
-    
-    def recursive_cleanup(self, menu_entries, depth, mapping):
+
+    def recursive_cleanup(self, menu_entries, mapping):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
-            menu_entry['depth'] = depth + 1
             mapping[menu_entry['uid']] = menu_entry
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
                 mapping.update({d['uid']: d for d in descendents})
+                del menu_entry['uid']
                 for descendent in descendents:
                     parent = mapping[descendent.pop('from')]
-                    if not 'children' in parent:
+                    if 'children' not in parent:
                         parent['children'] = []
                     parent['children'].append(descendent)
+            if 'type' in menu_entry:
+                if menu_entry['type'] in ('div', 'division'):
+                    del menu_entry['uid']
             if 'parents' in menu_entry:
                 del menu_entry['parents']
             if 'children' in menu_entry:
-                children = menu_entry['children'] 
-                self.recursive_cleanup(children, depth=depth+1, mapping=mapping)
+                children = menu_entry['children']
+                self.recursive_cleanup(children, mapping=mapping)
+
 
 class SuttaplexList(Resource):
     def get(self, uid):
@@ -660,5 +675,60 @@ class Images(Resource):
         db = get_db()
 
         data = db.aql.execute(IMAGES, bind_vars={'division': division, 'vol': vol})
+
+        return data.batch(), 200
+
+
+class Epigraphs(Resource):
+    def get(self):
+        """
+        Send list of random epigraphs
+        ---
+        responses:
+            200:
+                schema:
+                    id: epigraphs
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            uid:
+                                type: string
+                            epigraph:
+                                type: string
+        """
+        db = get_db()
+
+        try:
+            limit = int(request.args.get('limit', '10'))
+        except ValueError:
+            limit = 10
+
+        data = db.aql.execute(EPIGRAPHS, bind_vars={'number': limit})
+
+        return data.batch(), 200
+
+
+class WhyWeRead(Resource):
+    def get(self):
+        """
+        Send list of random why_we_read quotes.
+        ---
+        responses:
+            200:
+                schema:
+                    id: why_we_read
+                    type: array
+                    items:
+                        type: string
+        """
+        db = get_db()
+
+        try:
+            limit = int(request.args.get('limit', '10'))
+        except ValueError:
+            limit = 10
+
+        data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit})
 
         return data.batch(), 200

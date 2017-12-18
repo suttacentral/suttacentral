@@ -32,20 +32,52 @@ FOR div IN root
                 }
             }
         )
-    LET descendents = (
-        FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
-            FILTER d_edge.type != 'text'
-            RETURN {
-                from: d_edge._from,
-                name: d.name,
-                uid: d._id,
-                num: d.num
+        LET descendant = (
+            FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
+                FILTER d_edge.type != 'text'
+                LIMIT 1
+                RETURN d.uid
+        )[0]
+        RETURN {
+            uid: div._id, 
+            has_children: descendant != null,
+            name: div.name, 
+            num: div.num, 
+            id: div.uid, 
+            type: div.type, 
+            parents: parents
+        }
+'''
+
+SUBMENU = '''
+FOR pit IN pitaka
+    FOR div, edge, path IN 1..1 OUTBOUND pit `root_edges` OPTIONS {bfs: false}
+        FILTER div.uid == @submenu_id
+        LET descendents = (
+            FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
+                FILTER d_edge.type != 'text'
+                RETURN {
+                    from: d_edge._from,
+                    name: d.name,
+                    uid: d._id,
+                    num: d.num,
+                    type: d.type,
+                    id: d.uid
+            }
+        )
+        LET parents = MERGE(
+            FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+                RETURN {
+                    [p.type]: {
+                        name: p.name,
+                        uid: p._id,
+                        num: p.num,
+                        type: p.type
+                }
             }
         )
     
-    RETURN MERGE({uid: div._id, name: div.name, num: div.num}, {descendents: descendents, parents: parents})
-'''
-
+        RETURN {name: div.name, num: div.num, id: div.uid, uid: div._id, descendents: descendents, parents: parents}'''
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
@@ -276,7 +308,6 @@ LET legacy = (
     RETURN MERGE(chosen, {original_title: additional_info.name, acronym: additional_info.acronym})
 '''
 
-
 SUTTA_VIEW = '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
 
@@ -401,4 +432,18 @@ FOR image IN images
     SORT image.page
     RETURN {name: image.name,
             pageNumber: image.page_number}
+'''
+
+EPIGRAPHS = '''
+FOR epigraph IN epigraphs
+    SORT RAND()
+    LIMIT @number
+    RETURN KEEP(epigraph, ['uid', 'epigraph'])
+'''
+
+WHY_WE_READ = '''
+FOR text IN why_we_read
+    SORT RAND()
+    LIMIT @number
+    RETURN text.text
 '''
