@@ -239,12 +239,13 @@
         overflow-y: scroll;
       }
 
-      #main_navigation .nav-secondary {
+      #main_navigation .nav-secondary,
+      #main_navigation .nav-tertiary {
         padding-left: 0;
       }
 
       /* Padding for ISO code icons (19px for the icon + 16px for the icon padding) */
-      #main_navigation .nav-tertiary {
+      #main_navigation .nav-tertiary > .nav-menu-item {
         padding-left: 35px;
       }
 
@@ -263,7 +264,7 @@
         height: 19px;
         position: absolute;
         display: inline-block;
-        left: -19px;
+        left: var(--sc-size-md);
         top: var(--sc-size-sm);
       }
 
