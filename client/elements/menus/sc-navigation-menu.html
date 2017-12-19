@@ -34,6 +34,10 @@
         transform: translate(-50%, -50%);
       }
 
+      .icon-button {
+        position: relative;
+      }
+
       .network-error-icon {
         width: var(--sc-size-xxl);
         height: var(--sc-size-xxl);
@@ -69,13 +73,13 @@
       .swap-section {
         height: 0;
         opacity: 0;
-        transition: opacity 1s, transform .5s;
-        -webkit-transition: opacity 1s, -webkit-transform .5s;
+        transition: opacity .5s, transform 375ms;
+        -webkit-transition: opacity .5s, -webkit-transform 375ms;
       }
 
       .nav .swap-section {
-        transition-duration: .3s;
-        -webkit-transition-duration: .3s;
+        transition-duration: 225ms;
+        -webkit-transition-duration: 225ms;
       }
 
       .swap-section.up {
@@ -141,36 +145,27 @@
       }
 
       .nav-menu-item.selected {
-        background: var(--sc-primary-accent-color-almost-transparent);
-        color: var(--sc-primary-color-dark);
+        background: linear-gradient(to right, var(--sc-primary-color) 4px, var(--sc-primary-color-transparent) 4px);
       }
 
       .menu-dropdown-icon {
-        fill: var(--sc-disabled-text-color);
+        color: var(--sc-disabled-text-color);
         display: inline-block;
         position: absolute;
         right: var(--sc-size-sm);
-        top: 0;
-        transition: .3s ease all;
+        top: -4px;
+        transition: .225s ease-out all;
         cursor: pointer;
-      }
-
-      .child-menu-arrow-icon {
-        top: var(--sc-size-xs);
       }
 
       .menu-dropdown-icon.open {
         transform: rotateZ(180deg);
       }
 
-      .nav-menu-item.selected .menu-dropdown-icon {
-        background-color: var(--sc-secondary-text-color);
-      }
-
       .nav-secondary, .nav-tertiary {
         list-style-type: none;
         padding-left: var(--sc-size-sm);
-        transition: max-height cubic-bezier(0, 1, 0, 1) .6s;
+        transition: max-height cubic-bezier(0, 1, 0, 1) .3s;
         overflow: hidden;
       }
 
@@ -191,7 +186,7 @@
       .nav-secondary.open,
       .nav-tertiary.open {
         max-height: 9999px;
-        transition: max-height cubic-bezier(1, 0, 1, 0) .6s;
+        transition: max-height cubic-bezier(1, 0, 1, 0) .3s;
       }
 
       .nav-secondary.closed,
@@ -204,17 +199,29 @@
         align-items: center;
       }
 
-      #sub_navigation .nav-tertiary {
-        padding-left: 0;
-      }
-
       #sub_navigation .sub-nav {
-        height: 86vh;
+        height: 84vh;
         overflow-y: auto;
       }
 
-      #sub_navigation .sub-nav-child {
-        padding-left: var(--sc-size-sm);
+      .sub-nav {
+        padding-left: 0;
+      }
+
+      .sub-nav a {
+        font-weight: 700;
+      }
+
+      .sub-nav-child a {
+        font-weight: 400;
+      }
+
+      .sub-nav .sub-nav-child {
+        padding-left: 0;
+      }
+
+      .sub-nav-child .sub-nav-child {
+        padding-left: var(--sc-size-md);
       }
 
       #main_navigation {
@@ -223,15 +230,24 @@
         overflow-y: scroll;
       }
 
+      #main_navigation .nav-secondary,
+      #main_navigation .nav-tertiary {
+        padding-left: 0;
+      }
+
       #main_navigation:not(.active)::-webkit-scrollbar-thumb {
         background-color: transparent;
       }
 
       #back_arrow {
         cursor: pointer;
-        fill: var(--sc-tertiary-text-color);
-        width: var(--sc-size-lg);
-        height: var(--sc-size-lg);
+        color: var(--sc-tertiary-text-color);
+      }
+
+      paper-icon-button {
+        --iron-icon: {
+          pointer-events: none;
+        }
       }
 
     </style>
@@ -270,7 +286,7 @@
       <nav class="sc-nav">
         <div>
           <div id="sub_navigation_header" class="nav-back-button swap-section up">
-            <iron-icon id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></iron-icon>
+            <paper-icon-button id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></paper-icon-button>
             <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
           </div>
 
@@ -285,7 +301,7 @@
   </template>
 
   <script>
-      class SCNavigationMenu extends Polymer.Element {
+      class SCNavigationMenu extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-navigation-menu';
           }
@@ -311,6 +327,15 @@
                   headerHref: {
                       type: String,
                       value: '#'
+                  },
+                  currentlySelectedItemId: {
+                      type: String,
+                      statePath: 'selectedNavigationMenuItemId',
+                      observer: '_selectedMenuItemChanged'
+                  },
+                  previouslySelectedItemId: {
+                      type: String,
+                      value: ''
                   }
               }
           }
@@ -321,15 +346,17 @@
                   ${this.mainMenuData.map(topLevelItem => `
                     <li class="nav-menu-item">
                       <span class="nav-link">${topLevelItem.name}</span>
-                      <iron-icon icon="expand-more"
-                        class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                      <paper-icon-button icon="expand-more"
+                        class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
+                      </paper-icon-button>
                       <ul class="nav-secondary ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
                         ${topLevelItem.children.map(groupingLevelItem => `
                         <li class="nav-menu-item">
                           <span class="nav-link">${groupingLevelItem.name}</span>
                           ${groupingLevelItem.children.length > 0 ? `
-                            <iron-icon icon="expand-more"
-                            class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                            <paper-icon-button icon="expand-more" class="menu-dropdown-icon
+                              ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
+                            </paper-icon-button>
                             ${this._generateDeepMainMenuLevels(groupingLevelItem, (topLevelItem.name === 'Sutta'))}
                             ` : ''}
                         </li>
@@ -339,6 +366,7 @@
                 </ul>`;
               this.$.main_menu_container.innerHTML = mainMenuMarkup;
               this._addButtonEventListeners();
+              this._selectedMenuItemChanged();
           }
 
           _generateDeepMainMenuLevels(item, isOpen) {
@@ -353,14 +381,17 @@
                     ${listType === 'nav-secondary' ?
                       `<span class="nav-link">${childItem.name}</span>`
                       :
-                      `<span class="nav-link"><a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a></span>`
+                      `<span class="nav-link">
+                        <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
+                       </span>`
                       }
                     ${childItem.children && childItem.children.length > 0 ?
-                      `<iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
+                      `<paper-icon-button icon="expand-more" class="menu-dropdown-icon closed"></paper-icon-button>
                        ${this._generateDeepMainMenuLevels(childItem, false)}`
                       :
                       childItem.has_children ?
-                          `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon"></iron-icon>`
+                          `<paper-icon-button icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon">
+                          </paper-icon-button>`
                           : ''
                       }
                     </li>
@@ -371,8 +402,7 @@
           }
 
           _createChildMenu() {
-              const subMenuMarkup = this._generateChildMenu(this.subMenuData[0], true);
-              this.$.sub_navigation.innerHTML = subMenuMarkup;
+              this.$.sub_navigation.innerHTML = this._generateChildMenu(this.subMenuData[0], true);
               this.$.sub_navigation.querySelectorAll('.menu-dropdown-icon').forEach((dropdownIcon) => {
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
@@ -380,15 +410,15 @@
 
           _generateChildMenu(menuItem, isRootElement) {
               return !menuItem.children ? '' : `
-                <ul class="${isRootElement ? 'sub-nav sc-scrollbar' : 'sub-nav-child'} nav-tertiary
-                  open" style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
+                <ul class="nav-tertiary ${isRootElement ? 'sub-nav sc-scrollbar open' : 'sub-nav-child closed'}"
+                  style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
                     <li class="nav-menu-item">
                       <span class="nav-link">
                         <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
                       </span>
                     ${childItem.children && childItem.children.length > 0 ? `
-                      <iron-icon icon="expand-more" class="menu-dropdown-icon open"></iron-icon>
+                      <paper-icon-button icon="expand-more" class="menu-dropdown-icon"></paper-icon-button>
                        ${this._generateChildMenu(childItem, false)}`
                   :
                   ''}
@@ -405,6 +435,22 @@
               Array.from(this.shadowRoot.querySelectorAll('.child-menu-arrow-icon')).forEach((childMenuIcon) => {
                   childMenuIcon.addEventListener('click', this._openChildMenu.bind(this));
               });
+          }
+
+          _selectedMenuItemChanged() {
+              // deselect the previous item
+              if (this.previouslySelectedItemId) {
+                  const prevItem = this.shadowRoot.querySelector(`[data-uid='${this.previouslySelectedItemId}']`);
+                  if (prevItem) {
+                      prevItem.classList.remove('selected');
+                  }
+              }
+              const selectedMenuItem = this.shadowRoot.querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
+              // select the current item
+              if (selectedMenuItem) {
+                  selectedMenuItem.classList.add('selected');
+                  this.previouslySelectedItemId = this.currentlySelectedItemId;
+              }
           }
 
           _toggleOpenDropdownMenu(e) {
@@ -452,7 +498,7 @@
               if (element.children && !hasGrandchildren) {
                   const elemHeight = 39;
                   const elemMaxHeight = elemHeight * element.children.length;
-                  return `max-height: ${elemMaxHeight}px; transition: max-height ease-in-out .5s;`;
+                  return `max-height: ${elemMaxHeight}px; transition: max-height ease-out 225ms;`;
               }
               else return '';
           }
