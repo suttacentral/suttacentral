@@ -167,6 +167,16 @@
         transform: rotateZ(180deg);
       }
 
+      .iso-code-image {
+        fill: var(--sc-disabled-text-color);
+        width: 19px;
+        height: 19px;
+        position: absolute;
+        display: inline-block;
+        left: var(--sc-size-md);
+        top: var(--sc-size-sm);
+      }
+
       .menu-dropdown-icon,
       .nav-back-button {
         --iron-icon: {
@@ -207,36 +217,6 @@
         max-height: 0 !important;
       }
 
-      #sub_navigation_header {
-        display: flex;
-        align-items: center;
-      }
-
-      #sub_navigation .sub-nav {
-        height: 84vh;
-        overflow-y: auto;
-      }
-
-      .sub-nav {
-        padding-left: 0;
-      }
-
-      .sub-nav a {
-        font-weight: 700;
-      }
-
-      .sub-nav-child a {
-        font-weight: 400;
-      }
-
-      .sub-nav .sub-nav-child {
-        padding-left: 0;
-      }
-
-      .sub-nav-child .sub-nav-child {
-        padding-left: var(--sc-size-md);
-      }
-
       #main_navigation {
         margin-top: -77px;
         height: 92%;
@@ -262,14 +242,38 @@
         color: var(--sc-tertiary-text-color);
       }
 
-      .iso-code-image {
-        fill: var(--sc-disabled-text-color);
-        width: 19px;
-        height: 19px;
-        position: absolute;
-        display: inline-block;
-        left: var(--sc-size-md);
-        top: var(--sc-size-sm);
+      #sub_navigation_header {
+        display: flex;
+        align-items: center;
+      }
+
+      #sub_navigation .sub-nav {
+        height: 84vh;
+        overflow-y: auto;
+      }
+
+      #sub_navigation .nav-link:focus {
+        background-color: blue;
+      }
+
+      .sub-nav {
+        padding-left: 0;
+      }
+
+      .sub-nav a {
+        font-weight: 700;
+      }
+
+      .sub-nav-child a {
+        font-weight: 400;
+      }
+
+      .sub-nav .sub-nav-child {
+        padding-left: 0;
+      }
+
+      .sub-nav-child .sub-nav-child {
+        padding-left: var(--sc-size-md);
       }
 
     </style>
@@ -309,7 +313,7 @@
         <div>
           <div id="sub_navigation_header" class="nav-back-button swap-section up">
             <paper-icon-button id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></paper-icon-button>
-            <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
+            <a class="nav-back-title" href="[[headerHref]]" data-uid="[[parentMenuId]]">[[headerTitle]]</a>
           </div>
 
           <div id="sub_navigation" class="sub-nav-container swap-section right"></div>
@@ -350,14 +354,14 @@
                       type: String,
                       value: '#'
                   },
+                  parentId: {
+                      type: String,
+                      value: ''
+                  },
                   currentlySelectedItemId: {
                       type: String,
                       statePath: 'selectedNavigationMenuItemId',
                       observer: '_selectedMenuItemChanged'
-                  },
-                  previouslySelectedItemId: {
-                      type: String,
-                      value: ''
                   }
               }
           }
@@ -437,7 +441,7 @@
                 <ul class="nav-tertiary ${isRootElement ? 'sub-nav sc-scrollbar open' : 'sub-nav-child closed'}"
                   style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
-                    <li class="nav-menu-item">
+                    <li class="nav-menu-item" data-uid="${childItem.id}">
                       <span class="nav-link">
                         <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
                       </span>
@@ -463,17 +467,33 @@
 
           _selectedMenuItemChanged() {
               // deselect the previous item
-              if (this.previouslySelectedItemId) {
-                  const prevItem = this.shadowRoot.querySelector(`[data-uid='${this.previouslySelectedItemId}']`);
-                  if (prevItem) {
-                      prevItem.classList.remove('selected');
-                  }
+              const prevItem = this.$.main_menu_container.querySelector(`.nav-menu-item.selected`);
+              if (prevItem) {
+                  prevItem.classList.remove('selected');
               }
-              const selectedMenuItem = this.shadowRoot.querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
+              const selectedParentMenuItem = this.$.main_menu_container
+                  .querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
               // select the current item
-              if (selectedMenuItem) {
-                  selectedMenuItem.classList.add('selected');
-                  this.previouslySelectedItemId = this.currentlySelectedItemId;
+              if (selectedParentMenuItem) {
+                  selectedParentMenuItem.classList.add('selected');
+              } else {
+                  this._selectSubmenuItemAndParent();
+              }
+          }
+
+          _selectSubmenuItemAndParent() {
+              const prevSubmenuItem = this.$.sub_navigation.querySelector(`.nav-menu-item.selected`);
+              if (prevSubmenuItem) {
+                  prevSubmenuItem.classList.remove('selected');
+              }
+              const selectedSubmenuItem = this.$.sub_navigation
+                  .querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
+              if (selectedSubmenuItem) {
+                  selectedSubmenuItem.classList.add('selected');
+                  const selectedItemParent = this.$.main_menu_container.querySelector(`[data-uid='${this.parentId}']`);
+                  if (selectedItemParent) {
+                      selectedItemParent.classList.add('selected');
+                  }
               }
           }
 
@@ -496,19 +516,19 @@
           }
 
           _openChildMenuWithEvent(e) {
-              this.headerTitle = e.composedPath()[1].innerText;
-              this.headerHref = this._getSuttaplexUrl(e.composedPath()[1].dataset.uid);
-              const subMenuId = e.composedPath()[1].dataset.uid;
-              this.$.submenu_ajax.url = this._getSubMenuUrl(subMenuId);
-              this._openChildMenu();
-          }
-
-          _openChildMenuWithIDontKnowWhat(sectionTitle, sectionId, subMenuId) {
+              const clickedElement = e.composedPath()[1];
+              this.headerTitle = clickedElement.innerText;
+              this.parentId = clickedElement.dataset.uid;
+              this.headerHref = this._getSuttaplexUrl(clickedElement.dataset.uid);
+              const subMenuUrl = this._getSubMenuUrl(clickedElement.dataset.uid);
+              if (this.$.submenu_ajax.url !== subMenuUrl) {
+                  this.$.submenu_ajax.url = subMenuUrl;
+                  this.$.submenu_ajax.generateRequest();
+              }
               this._openChildMenu();
           }
 
           _openChildMenu() {
-              this.$.submenu_ajax.generateRequest();
               this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
