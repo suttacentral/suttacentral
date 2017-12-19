@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="../../styles/sc-scrollbar-style.html">
+<link rel="import" href="../../img/sc-language-icons.html">
 
 <!--
   This is a custom sidebar menu navigation element.
@@ -162,6 +163,13 @@
         transform: rotateZ(180deg);
       }
 
+      .menu-dropdown-icon,
+      .nav-back-button {
+        --iron-icon: {
+          pointer-events: none;
+        }
+      }
+
       .nav-secondary, .nav-tertiary {
         list-style-type: none;
         padding-left: var(--sc-size-sm);
@@ -231,9 +239,13 @@
         overflow-y: scroll;
       }
 
-      #main_navigation .nav-secondary,
-      #main_navigation .nav-tertiary {
+      #main_navigation .nav-secondary {
         padding-left: 0;
+      }
+
+      /* Padding for ISO code icons (19px for the icon + 16px for the icon padding) */
+      #main_navigation .nav-tertiary {
+        padding-left: 35px;
       }
 
       #main_navigation:not(.active)::-webkit-scrollbar-thumb {
@@ -245,10 +257,14 @@
         color: var(--sc-tertiary-text-color);
       }
 
-      paper-icon-button {
-        --iron-icon: {
-          pointer-events: none;
-        }
+      .iso-code-image {
+        fill: var(--sc-disabled-text-color);
+        width: 19px;
+        height: 19px;
+        position: absolute;
+        display: inline-block;
+        left: -19px;
+        top: var(--sc-size-sm);
       }
 
     </style>
@@ -384,7 +400,9 @@
                       :
                       `<span class="nav-link">
                         <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
-                       </span>`
+                       </span>
+                       <iron-icon class="iso-code-image" slot="item-icon"
+                        icon="${this._getLanguageIconName(childItem.lang)}"></iron-icon>`
                       }
                     ${childItem.children && childItem.children.length > 0 ?
                       `<paper-icon-button icon="expand-more" class="menu-dropdown-icon closed"></paper-icon-button>
@@ -523,6 +541,10 @@
           _getBaseUrl() {
               let currentUrl = window.location;
               return `${currentUrl.protocol}//${currentUrl.host}`;
+          }
+
+          _getLanguageIconName(isoCode) {
+              return `sc-language-icons:${isoCode}`;
           }
       }
 
