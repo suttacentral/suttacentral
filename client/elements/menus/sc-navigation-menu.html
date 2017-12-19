@@ -149,11 +149,15 @@
         background: linear-gradient(to right, var(--sc-primary-color) 4px, var(--sc-primary-color-transparent) 4px);
       }
 
+      .nav-menu-item.selected a {
+        color: var(--sc-primary-color);
+      }
+
       .menu-dropdown-icon {
         color: var(--sc-disabled-text-color);
         display: inline-block;
         position: absolute;
-        right: var(--sc-size-sm);
+        right: 0;
         top: -4px;
         transition: .225s ease-out all;
         cursor: pointer;
@@ -453,7 +457,7 @@
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
               Array.from(this.shadowRoot.querySelectorAll('.child-menu-arrow-icon')).forEach((childMenuIcon) => {
-                  childMenuIcon.addEventListener('click', this._openChildMenu.bind(this));
+                  childMenuIcon.addEventListener('click', this._openChildMenuWithEvent.bind(this));
               });
           }
 
@@ -491,20 +495,26 @@
               }
           }
 
-          _openChildMenu(e) {
+          _openChildMenuWithEvent(e) {
               this.headerTitle = e.composedPath()[1].innerText;
               this.headerHref = this._getSuttaplexUrl(e.composedPath()[1].dataset.uid);
               const subMenuId = e.composedPath()[1].dataset.uid;
               this.$.submenu_ajax.url = this._getSubMenuUrl(subMenuId);
+              this._openChildMenu();
+          }
+
+          _openChildMenuWithIDontKnowWhat(sectionTitle, sectionId, subMenuId) {
+              this._openChildMenu();
+          }
+
+          _openChildMenu() {
               this.$.submenu_ajax.generateRequest();
-              this.dispatchEvent(new CustomEvent('childMenuOpened', { composed: true, bubbles: true }));
               this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
           }
 
           _closeChildMenu() {
-              this.dispatchEvent(new CustomEvent('childMenuClosed', { composed: true, bubbles: true }));
               this.shadowRoot.querySelector('#sub_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.remove('active');
               this.shadowRoot.querySelector('#main_navigation').classList.add('active');
