@@ -159,7 +159,6 @@
                           const newWidth = window.innerWidth;
                           if(this.previousWidth !== newWidth) {
                             requestAnimationFrame(() => {
-                                console.log('resize');
                                 this.$.container.style.height = 'unset';
                                 this.firstItem = true;
                                 this._getItemToShow(this.selectedItemIndex);
