@@ -18,10 +18,12 @@
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
+        font-style: normal;
         text-align: center;
       }
 
       .card-button-middle {
+        width: auto;
         position: absolute;
         transform: translate(-50%);
         bottom: var(--sc-size-md-larger);
@@ -50,6 +52,11 @@
         outline: none;
       }
 
+      .chevron::-moz-focus-inner {
+        border: 0;
+        outline: none;
+      }
+
       .chevron:hover {
         cursor: pointer;
       }
@@ -75,6 +82,7 @@
         will-change: opacity;
         opacity: 1;
         transition: all .4s ease;
+        line-height: 1.1em;
       }
 
       .transparent {
@@ -130,6 +138,9 @@
                   firstItem: {
                       type: Boolean,
                       value: true
+                  },
+                  previousWidth: {
+                      type: Number
                   }
               }
           }
@@ -147,11 +158,15 @@
                       this._debouncer,
                       Polymer.Async.timeOut.after(200),
                       () => {
-                          requestAnimationFrame(() => {
-                              this.$.container.style.height = 'unset';
-                              this.firstItem = true;
-                              this._getItemToShow(this.selectedItemIndex);
-                          })
+                          const newWidth = window.innerWidth;
+                          if(this.previousWidth !== newWidth) {
+                            requestAnimationFrame(() => {
+                                this.$.container.style.height = 'unset';
+                                this.firstItem = true;
+                                this._getItemToShow(this.selectedItemIndex);
+                                this.previousWidth = newWidth;
+                            })
+                        }
                       }
                   )
               });
@@ -179,7 +194,7 @@
 
           _handleMouseOut(button, e) {
               const element = e.toElement || e.relatedTarget;
-              if (element.parentNode == button || element == button) {
+              if (element && (element.parentNode == button || element == button)) {
                   return;
               }
               this._removeActiveChevronClass(button, 10);
@@ -250,12 +265,14 @@
               setTimeout(() => {
                   let item = this._getItemToShow(this.selectedItemIndex);
                   this.$.text.classList.remove('transparent');
-                  this.$.text_span.innerText = item;
+                  this.$.text_span.innerHTML = item;
               }, 400);
           }
 
           _computeUrl(selectedItemIndex) {
-              return `/${this.elements[selectedItemIndex][this.link]}`;
+              let uid = this.elements[selectedItemIndex][this.link];
+              uid = uid.split('#')[0];
+              return `/${uid}`;
           }
       }
 
