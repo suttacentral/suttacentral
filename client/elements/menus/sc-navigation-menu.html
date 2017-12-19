@@ -466,14 +466,9 @@
           }
 
           _selectedMenuItemChanged() {
-              // deselect the previous item
-              const prevItem = this.$.main_menu_container.querySelector(`.nav-menu-item.selected`);
-              if (prevItem) {
-                  prevItem.classList.remove('selected');
-              }
+              this._deselectMenuItems();
               const selectedParentMenuItem = this.$.main_menu_container
                   .querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
-              // select the current item
               if (selectedParentMenuItem) {
                   selectedParentMenuItem.classList.add('selected');
               } else {
@@ -482,10 +477,6 @@
           }
 
           _selectSubmenuItemAndParent() {
-              const prevSubmenuItem = this.$.sub_navigation.querySelector(`.nav-menu-item.selected`);
-              if (prevSubmenuItem) {
-                  prevSubmenuItem.classList.remove('selected');
-              }
               const selectedSubmenuItem = this.$.sub_navigation
                   .querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
               if (selectedSubmenuItem) {
@@ -494,6 +485,17 @@
                   if (selectedItemParent) {
                       selectedItemParent.classList.add('selected');
                   }
+              }
+          }
+
+          _deselectMenuItems() {
+              const mainMenuItem = this.$.main_menu_container.querySelector(`.nav-menu-item.selected`);
+              if (mainMenuItem) {
+                  mainMenuItem.classList.remove('selected');
+              }
+              const submenuItem = this.$.sub_navigation.querySelector(`.nav-menu-item.selected`);
+              if (submenuItem) {
+                  submenuItem.classList.remove('selected');
               }
           }
 
