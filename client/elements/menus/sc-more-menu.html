@@ -43,6 +43,15 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         fill: var(--sc-primary-color);
       }
 
+      .separator {
+        background-color: var(--sc-border-color);
+        width: 100%;
+        overflow: hidden;
+        height: 1px;
+        margin-top: var(--sc-size-xxs);
+        margin-bottom: var(--sc-size-xxs);
+      }
+
     </style>
 
     <paper-item class="more-menu-paper-item language-choice-box">
@@ -62,6 +71,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         Use Offline
       </paper-item>
     </a>
+    <div class="separator"></div>
     <a class="more-menu-link" href="/numbering">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="editor:format-list-numbered"></iron-icon>

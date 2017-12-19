@@ -17,7 +17,10 @@
         grid-template-columns: 2% 96% 2%;
         grid-row-gap: 80px;
         margin-top: 60px;
-        margin-bottom: var(--sc-size-xl);
+      }
+
+      .bottom-space {
+        margin-bottom: var(--sc-size-xl) !important;        
       }
 
       .row {
@@ -117,11 +120,7 @@
       }
 
       .card-content-wrapper {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
         padding: var(--sc-size-md-larger);
-        height: calc(100% - 2 * var(--sc-size-md-larger));
       }
 
       .no-bottom-padding {
@@ -362,7 +361,7 @@
 
       <iron-meta id="meta"></iron-meta>      
 
-    <div id="page-wrap">
+    <div id="page-wrap" class="bottom-space">
       <div class="content">
 
         <div class="row introduction">

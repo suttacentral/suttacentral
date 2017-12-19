@@ -50,6 +50,11 @@
         outline: none;
       }
 
+      .chevron::-moz-focus-inner {
+        border: 0;
+        outline: none;
+      }
+
       .chevron:hover {
         cursor: pointer;
       }
@@ -130,6 +135,9 @@
                   firstItem: {
                       type: Boolean,
                       value: true
+                  },
+                  previousWidth: {
+                      type: Number
                   }
               }
           }
@@ -147,11 +155,16 @@
                       this._debouncer,
                       Polymer.Async.timeOut.after(200),
                       () => {
-                          requestAnimationFrame(() => {
-                              this.$.container.style.height = 'unset';
-                              this.firstItem = true;
-                              this._getItemToShow(this.selectedItemIndex);
-                          })
+                          const newWidth = window.innerWidth;
+                          if(this.previousWidth !== newWidth) {
+                            requestAnimationFrame(() => {
+                                console.log('resize');
+                                this.$.container.style.height = 'unset';
+                                this.firstItem = true;
+                                this._getItemToShow(this.selectedItemIndex);
+                                this.previousWidth = newWidth;
+                            })
+                        }
                       }
                   )
               });
@@ -179,7 +192,7 @@
 
           _handleMouseOut(button, e) {
               const element = e.toElement || e.relatedTarget;
-              if (element.parentNode == button || element == button) {
+              if (element && (element.parentNode == button || element == button)) {
                   return;
               }
               this._removeActiveChevronClass(button, 10);
@@ -255,7 +268,9 @@
           }
 
           _computeUrl(selectedItemIndex) {
-              return `/${this.elements[selectedItemIndex][this.link]}`;
+              let uid = this.elements[selectedItemIndex][this.link];
+              uid = uid.split('#')[0];
+              return `/${uid}`;
           }
       }
 
