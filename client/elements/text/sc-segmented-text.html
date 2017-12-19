@@ -604,6 +604,11 @@
           }
 
           _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
+            const paddingBottom = window.getComputedStyle(section).paddingBottom;
+              if (paddingBottom && paddingBottom !== '0px') {
+                  section.style.paddingBottom = '0';
+                  section.style.marginBottom = paddingBottom;
+              }
               if (idFrom.includes('.') || (idTo && idTo.includes('.'))) {
                   let newSection = section.nextElementSibling;
                   if (isSideBySideView && !wrapperAlreadyExists) {
@@ -612,13 +617,6 @@
                   section = newSection;
                   if (!isSideBySideView) {
                       section.classList.add('highlight');
-                  }
-                  const padding = window.getComputedStyle(section).padding;
-                  if (padding && padding !== '0px') {
-                      requestAnimationFrame(() => {
-                          section.style.padding = '0';
-                          section.style.margin = padding;
-                      })
                   }
                   if (isSideBySideView && !wrapperAlreadyExists) {
                       wrapper.appendChild(section.cloneNode(true));
@@ -684,10 +682,8 @@
                       this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists);
                       break;
                   } else if (margin && margin !== '0px') {
-                      requestAnimationFrame(() => {
-                          section.style.margin = '0';
-                          section.style.padding = margin;
-                      })
+                      section.style.margin = '0';
+                      section.style.padding = margin;
                   }
 
                   if (section.nextElementSibling === null && section.parentNode.nodeName === 'P') {

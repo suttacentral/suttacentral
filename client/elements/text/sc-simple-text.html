@@ -391,12 +391,11 @@
               }
               while (section) {
                   section.classList.add('highlight');
-                  const margin = window.getComputedStyle(section).margin;
-                  requestAnimationFrame(() => {
-                      section.style.margin = '0';
-                      section.style.padding = margin;
-                  })
+                  this._marginToPadding(section)
                   let nextSection = section.nextElementSibling;
+                  if (!nextSection) {
+                      return firstSection;
+                  }
                   let sectionLink = nextSection.querySelector('.textual-info-paragraph');
                   if (sectionLink) {
                       if (last) {
@@ -413,6 +412,21 @@
                   section = nextSection;
               }
               return firstSection;
+          }
+
+          _marginToPadding(section) {
+            const marginBottom = window.getComputedStyle(section).marginBottom;
+            const paddingBottom = window.getComputedStyle(section).paddingBottom;
+            section.style.marginBottom = '0';
+            section.style.paddingBottom = this._getBigger(marginBottom, paddingBottom);
+            const marginTop = window.getComputedStyle(section).marginTop;
+            const paddingTop = window.getComputedStyle(section).paddingTop;
+            section.style.marginTop = '0';
+            section.style.paddingTop = this._getBigger(marginTop, paddingTop);
+          }
+
+          _getBigger(a, b) {
+              return parseFloat(a) > parseFloat(b) ? a : b;
           }
 
           _removeHighlights() {
