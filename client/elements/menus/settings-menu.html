@@ -462,6 +462,8 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
               this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
+              const dictName = targetDictRepr.replace('→', 'to');
+              this._showToast(dictName);
           }
 
           _findPaliLookupLanguageIndex(languageName) {
@@ -477,6 +479,8 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
               this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
+              const dictName = targetDictRepr.replace('→', 'to');
+              this._showToast(dictName);
           }
 
           _findChineseLookupLanguageIndex(languageName) {
@@ -510,6 +514,19 @@ type of view for segmented pages (showing pali next to translated text), lookup 
 
           _findPaliScriptIndex(paliScript) {
               return this.paliScripts.findIndex(i => i.script === paliScript);
+          }
+
+          _showToast(dictName) {
+              if (dictName !== "None") {
+                  this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                      detail: {
+                          toastType: 'info',
+                          message: `The ${dictName} lookup dictionary is now enabled.`
+                      },
+                      bubbles: true,
+                      composed: true
+                  }));
+              }
           }
       }
 
