@@ -580,7 +580,7 @@ class DictionaryFull(Resource):
                         type: string
 
         """
-        if (word != None):
+        if (word is not None):
             word = word.lower()
 
         db = get_db()
