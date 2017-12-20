@@ -652,7 +652,7 @@
           }
 
           _processHighlightAndScroll(sectionId, isSmooth) {
-              let [idFrom, idTo] = sectionId.split('-');
+              let [idFrom, idTo] = sectionId.split('--');
               idFrom = this._generateId(idFrom);
               idTo = this._generateId(idTo);
               let firstSection = this.shadowRoot.getElementById(idFrom);
