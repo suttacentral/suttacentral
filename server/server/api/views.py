@@ -150,9 +150,9 @@ class Menu(Resource):
         for menu_entry in menu_entries:
             mapping[menu_entry['uid']] = menu_entry
             if 'id' in menu_entry:
-                display_num = self.num_regex.match(menu_entry['id'])
-                if display_num:
-                    menu_entry['display_num'] = display_num
+                num_matches = self.num_regex.match(menu_entry['id'])
+                if num_matches:
+                    menu_entry['display_num'] = num_matches[1]
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
                 mapping.update({d['uid']: d for d in descendents})
