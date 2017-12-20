@@ -49,6 +49,10 @@ class Languages(Resource):
 
 
 class Menu(Resource):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.r = re.compile(r'^[^\d]*?([\d]+)$')
+
     def get(self, submenu_id=None):
         """
         Send Menu structure
@@ -142,14 +146,11 @@ class Menu(Resource):
         return sorted(out, key=self.num_sort_key)
 
     def recursive_cleanup(self, menu_entries, mapping):
-        r = re.compile(r'^.*?(\d+)$')
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
             mapping[menu_entry['uid']] = menu_entry
-            display_num_match = r.match(menu_entry['id'])
-            print('match: ', display_num_match)
-            if display_num_match:
-                menu_entry['display_num'] = display_num_match[1]
+            if 'id' in menu_entry and self.r.match(menu_entry['id']):
+                menu_entry['display_num'] = self.r.match(menu_entry['id'])[1]
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
                 mapping.update({d['uid']: d for d in descendents})
