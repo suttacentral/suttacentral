@@ -41,7 +41,8 @@ FOR div IN root
         RETURN {
             uid: div._id, 
             has_children: descendant != null,
-            name: div.name, 
+            name: div.name,
+            lang: div.root_lang,
             num: div.num, 
             id: div.uid, 
             type: div.type, 
