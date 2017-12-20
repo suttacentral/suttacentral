@@ -21,6 +21,7 @@
         -moz-user-select: none;
         -ms-user-select: none;
         -webkit-user-select: none;
+        height: 100%;
       }
 
       .paper-spinner {
@@ -42,6 +43,10 @@
       .network-error-icon {
         width: var(--sc-size-xxl);
         height: var(--sc-size-xxl);
+      }
+
+      .nav-list-container {
+        height: calc(100% - var(--sc-size-xxl));
       }
 
       .nav-back-button {
@@ -124,7 +129,7 @@
       .nav-list, .sub-nav {
         list-style-type: none;
         margin: 0;
-        padding: var(--sc-size-md) 0;
+        padding: 0;
       }
 
       .sub-nav-container {
@@ -218,9 +223,7 @@
       }
 
       #main_navigation {
-        /*  65px is the height of the back arrow header element */
-        margin-top: -65px;
-        height: 91%;
+        height: 100%;
         overflow-y: scroll;
       }
 
@@ -273,6 +276,11 @@
         padding-left: var(--sc-size-md);
       }
 
+      #main_menu_container {
+        /*  65px is the height of the back arrow header element */
+        margin-top: -65px;
+      }
+
     </style>
 
     <iron-ajax
@@ -307,7 +315,6 @@
       </template>
 
       <nav class="sc-nav">
-        <div>
           <div id="sub_navigation_header" class="nav-back-button swap-section up">
             <paper-icon-button id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></paper-icon-button>
             <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
@@ -316,7 +323,6 @@
           <div id="sub_navigation" class="sub-nav-container swap-section right"></div>
           <div id="main_menu_container"></div>
 
-        </div>
       </nav>
 
     </div>
