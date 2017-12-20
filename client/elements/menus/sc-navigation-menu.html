@@ -218,8 +218,8 @@
       }
 
       #main_navigation {
-        margin-top: -77px;
-        height: 92%;
+        margin-top: -65px;
+        height: 91%;
         overflow-y: scroll;
       }
 
@@ -250,10 +250,6 @@
       #sub_navigation .sub-nav {
         height: 84vh;
         overflow-y: auto;
-      }
-
-      #sub_navigation .nav-link:focus {
-        background-color: blue;
       }
 
       .sub-nav {
@@ -461,7 +457,7 @@
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
               Array.from(this.shadowRoot.querySelectorAll('.child-menu-arrow-icon')).forEach((childMenuIcon) => {
-                  childMenuIcon.addEventListener('click', this._openChildMenuWithEvent.bind(this));
+                  childMenuIcon.addEventListener('click', this._setHeaderParamsAndOpenChildMenu.bind(this));
               });
           }
 
@@ -517,7 +513,7 @@
               }
           }
 
-          _openChildMenuWithEvent(e) {
+          _setHeaderParamsAndOpenChildMenu(e) {
               const clickedElement = e.composedPath()[1];
               this.headerTitle = clickedElement.innerText;
               this.parentId = clickedElement.dataset.uid;
