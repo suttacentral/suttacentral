@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="../../styles/sc-scrollbar-style.html">
+<link rel="import" href="../../img/sc-language-icons.html">
 
 <!--
   This is a custom sidebar menu navigation element.
@@ -32,6 +33,10 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+      }
+
+      .icon-button {
+        position: relative;
       }
 
       .network-error-icon {
@@ -69,13 +74,13 @@
       .swap-section {
         height: 0;
         opacity: 0;
-        transition: opacity 1s, transform .5s;
-        -webkit-transition: opacity 1s, -webkit-transform .5s;
+        transition: opacity .5s, transform 375ms;
+        -webkit-transition: opacity .5s, -webkit-transform 375ms;
       }
 
       .nav .swap-section {
-        transition-duration: .3s;
-        -webkit-transition-duration: .3s;
+        transition-duration: 225ms;
+        -webkit-transition-duration: 225ms;
       }
 
       .swap-section.up {
@@ -141,37 +146,50 @@
       }
 
       .nav-menu-item.selected {
-        background: var(--sc-primary-accent-color-almost-transparent);
-        color: var(--sc-primary-color-dark);
+        background: linear-gradient(to right, var(--sc-primary-color) 4px, var(--sc-primary-color-transparent) 4px);
+      }
+
+      .nav-menu-item.selected a {
+        color: var(--sc-primary-color);
       }
 
       .menu-dropdown-icon {
-        fill: var(--sc-disabled-text-color);
+        color: var(--sc-disabled-text-color);
         display: inline-block;
         position: absolute;
-        right: var(--sc-size-sm);
-        top: 0;
-        transition: .3s ease all;
+        right: 0;
+        top: -4px;
+        transition: .225s ease-out all;
         cursor: pointer;
-      }
-
-      .child-menu-arrow-icon {
-        top: var(--sc-size-xs);
       }
 
       .menu-dropdown-icon.open {
         transform: rotateZ(180deg);
       }
 
-      .nav-menu-item.selected .menu-dropdown-icon {
-        background-color: var(--sc-secondary-text-color);
+      .iso-code-image {
+        fill: var(--sc-disabled-text-color);
+        width: var(--sc-size-language-icon);
+        height: var(--sc-size-language-icon);
+        position: absolute;
+        display: inline-block;
+        left: var(--sc-size-md);
+        top: var(--sc-size-sm);
+      }
+
+      .menu-dropdown-icon,
+      .nav-back-button {
+        --iron-icon: {
+          pointer-events: none;
+        }
       }
 
       .nav-secondary, .nav-tertiary {
         list-style-type: none;
         padding-left: var(--sc-size-sm);
-        transition: max-height cubic-bezier(0, 1, 0, 1) .6s;
+        transition: max-height cubic-bezier(0, 1, 0, 1) .3s;
         overflow: hidden;
+        will-change: transform;
       }
 
       .nav-secondary .nav-link,
@@ -191,7 +209,7 @@
       .nav-secondary.open,
       .nav-tertiary.open {
         max-height: 9999px;
-        transition: max-height cubic-bezier(1, 0, 1, 0) .6s;
+        transition: max-height cubic-bezier(1, 0, 1, 0) .3s;
       }
 
       .nav-secondary.closed,
@@ -199,28 +217,21 @@
         max-height: 0 !important;
       }
 
-      #sub_navigation_header {
-        display: flex;
-        align-items: center;
+      #main_navigation {
+        /*  65px is the height of the back arrow header element */
+        margin-top: -65px;
+        height: 91%;
+        overflow-y: scroll;
       }
 
-      #sub_navigation .nav-tertiary {
+      #main_navigation .nav-secondary,
+      #main_navigation .nav-tertiary {
         padding-left: 0;
       }
 
-      #sub_navigation .sub-nav {
-        height: 86vh;
-        overflow-y: auto;
-      }
-
-      #sub_navigation .sub-nav-child {
-        padding-left: var(--sc-size-sm);
-      }
-
-      #main_navigation {
-        margin-top: -77px;
-        height: 92%;
-        overflow-y: scroll;
+      /* Padding for ISO code icons (19px for the icon + 16px for the icon padding) */
+      #main_navigation .nav-tertiary > .nav-menu-item {
+        padding-left: 35px;
       }
 
       #main_navigation:not(.active)::-webkit-scrollbar-thumb {
@@ -229,9 +240,37 @@
 
       #back_arrow {
         cursor: pointer;
-        fill: var(--sc-tertiary-text-color);
-        width: var(--sc-size-lg);
-        height: var(--sc-size-lg);
+        color: var(--sc-tertiary-text-color);
+      }
+
+      #sub_navigation_header {
+        display: flex;
+        align-items: center;
+      }
+
+      #sub_navigation .sub-nav {
+        height: 84vh;
+        overflow-y: auto;
+      }
+
+      .sub-nav {
+        padding-left: 0;
+      }
+
+      .sub-nav a {
+        font-weight: 700;
+      }
+
+      .sub-nav-child a {
+        font-weight: 400;
+      }
+
+      .sub-nav .sub-nav-child {
+        padding-left: 0;
+      }
+
+      .sub-nav-child .sub-nav-child {
+        padding-left: var(--sc-size-md);
       }
 
     </style>
@@ -270,7 +309,7 @@
       <nav class="sc-nav">
         <div>
           <div id="sub_navigation_header" class="nav-back-button swap-section up">
-            <iron-icon id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></iron-icon>
+            <paper-icon-button id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></paper-icon-button>
             <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
           </div>
 
@@ -285,7 +324,7 @@
   </template>
 
   <script>
-      class SCNavigationMenu extends Polymer.Element {
+      class SCNavigationMenu extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-navigation-menu';
           }
@@ -311,6 +350,15 @@
                   headerHref: {
                       type: String,
                       value: '#'
+                  },
+                  parentId: {
+                      type: String,
+                      value: ''
+                  },
+                  currentlySelectedItemId: {
+                      type: String,
+                      statePath: 'selectedNavigationMenuItemId',
+                      observer: '_selectedMenuItemChanged'
                   }
               }
           }
@@ -321,15 +369,17 @@
                   ${this.mainMenuData.map(topLevelItem => `
                     <li class="nav-menu-item">
                       <span class="nav-link">${topLevelItem.name}</span>
-                      <iron-icon icon="expand-more"
-                        class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                      <paper-icon-button icon="expand-more"
+                        class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
+                      </paper-icon-button>
                       <ul class="nav-secondary ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
                         ${topLevelItem.children.map(groupingLevelItem => `
                         <li class="nav-menu-item">
                           <span class="nav-link">${groupingLevelItem.name}</span>
                           ${groupingLevelItem.children.length > 0 ? `
-                            <iron-icon icon="expand-more"
-                            class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}"></iron-icon>
+                            <paper-icon-button icon="expand-more" class="menu-dropdown-icon
+                              ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
+                            </paper-icon-button>
                             ${this._generateDeepMainMenuLevels(groupingLevelItem, (topLevelItem.name === 'Sutta'))}
                             ` : ''}
                         </li>
@@ -339,6 +389,7 @@
                 </ul>`;
               this.$.main_menu_container.innerHTML = mainMenuMarkup;
               this._addButtonEventListeners();
+              this._selectedMenuItemChanged();
           }
 
           _generateDeepMainMenuLevels(item, isOpen) {
@@ -353,14 +404,19 @@
                     ${listType === 'nav-secondary' ?
                       `<span class="nav-link">${childItem.name}</span>`
                       :
-                      `<span class="nav-link"><a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a></span>`
+                      `<span class="nav-link">
+                        <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
+                       </span>
+                       <iron-icon class="iso-code-image" slot="item-icon"
+                        icon="${this._getLanguageIconName(childItem.lang)}"></iron-icon>`
                       }
                     ${childItem.children && childItem.children.length > 0 ?
-                      `<iron-icon icon="expand-more" class="menu-dropdown-icon closed"></iron-icon>
+                      `<paper-icon-button icon="expand-more" class="menu-dropdown-icon closed"></paper-icon-button>
                        ${this._generateDeepMainMenuLevels(childItem, false)}`
                       :
                       childItem.has_children ?
-                          `<iron-icon icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon"></iron-icon>`
+                          `<paper-icon-button icon="arrow-forward" class="menu-dropdown-icon child-menu-arrow-icon">
+                          </paper-icon-button>`
                           : ''
                       }
                     </li>
@@ -371,8 +427,7 @@
           }
 
           _createChildMenu() {
-              const subMenuMarkup = this._generateChildMenu(this.subMenuData[0], true);
-              this.$.sub_navigation.innerHTML = subMenuMarkup;
+              this.$.sub_navigation.innerHTML = this._generateChildMenu(this.subMenuData[0], true);
               this.$.sub_navigation.querySelectorAll('.menu-dropdown-icon').forEach((dropdownIcon) => {
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
@@ -380,15 +435,15 @@
 
           _generateChildMenu(menuItem, isRootElement) {
               return !menuItem.children ? '' : `
-                <ul class="${isRootElement ? 'sub-nav sc-scrollbar' : 'sub-nav-child'} nav-tertiary
-                  open" style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
+                <ul class="nav-tertiary ${isRootElement ? 'sub-nav sc-scrollbar open' : 'sub-nav-child closed'}"
+                  style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
-                    <li class="nav-menu-item">
+                    <li class="nav-menu-item" data-uid="${childItem.id}">
                       <span class="nav-link">
                         <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
                       </span>
                     ${childItem.children && childItem.children.length > 0 ? `
-                      <iron-icon icon="expand-more" class="menu-dropdown-icon open"></iron-icon>
+                      <paper-icon-button icon="expand-more" class="menu-dropdown-icon"></paper-icon-button>
                        ${this._generateChildMenu(childItem, false)}`
                   :
                   ''}
@@ -403,8 +458,42 @@
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
               Array.from(this.shadowRoot.querySelectorAll('.child-menu-arrow-icon')).forEach((childMenuIcon) => {
-                  childMenuIcon.addEventListener('click', this._openChildMenu.bind(this));
+                  childMenuIcon.addEventListener('click', this._setHeaderParamsAndOpenChildMenu.bind(this));
               });
+          }
+
+          _selectedMenuItemChanged() {
+              this._deselectMenuItems();
+              const selectedParentMenuItem = this.$.main_menu_container
+                  .querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
+              if (selectedParentMenuItem) {
+                  selectedParentMenuItem.classList.add('selected');
+              } else {
+                  this._selectSubmenuItemAndParent();
+              }
+          }
+
+          _selectSubmenuItemAndParent() {
+              const selectedSubmenuItem = this.$.sub_navigation
+                  .querySelector(`[data-uid='${this.currentlySelectedItemId}']`);
+              if (selectedSubmenuItem) {
+                  selectedSubmenuItem.classList.add('selected');
+                  const selectedItemParent = this.$.main_menu_container.querySelector(`[data-uid='${this.parentId}']`);
+                  if (selectedItemParent) {
+                      selectedItemParent.classList.add('selected');
+                  }
+              }
+          }
+
+          _deselectMenuItems() {
+              const mainMenuItem = this.$.main_menu_container.querySelector(`.nav-menu-item.selected`);
+              if (mainMenuItem) {
+                  mainMenuItem.classList.remove('selected');
+              }
+              const submenuItem = this.$.sub_navigation.querySelector(`.nav-menu-item.selected`);
+              if (submenuItem) {
+                  submenuItem.classList.remove('selected');
+              }
           }
 
           _toggleOpenDropdownMenu(e) {
@@ -425,20 +514,26 @@
               }
           }
 
-          _openChildMenu(e) {
-              this.headerTitle = e.composedPath()[1].innerText;
-              this.headerHref = this._getSuttaplexUrl(e.composedPath()[1].dataset.uid);
-              const subMenuId = e.composedPath()[1].dataset.uid;
-              this.$.submenu_ajax.url = this._getSubMenuUrl(subMenuId);
-              this.$.submenu_ajax.generateRequest();
-              this.dispatchEvent(new CustomEvent('childMenuOpened', { composed: true, bubbles: true }));
+          _setHeaderParamsAndOpenChildMenu(e) {
+              const clickedElement = e.composedPath()[1];
+              this.headerTitle = clickedElement.innerText;
+              this.parentId = clickedElement.dataset.uid;
+              this.headerHref = this._getSuttaplexUrl(clickedElement.dataset.uid);
+              const subMenuUrl = this._getSubMenuUrl(clickedElement.dataset.uid);
+              if (this.$.submenu_ajax.url !== subMenuUrl) {
+                  this.$.submenu_ajax.url = subMenuUrl;
+                  this.$.submenu_ajax.generateRequest();
+              }
+              this._openChildMenu();
+          }
+
+          _openChildMenu() {
               this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
           }
 
           _closeChildMenu() {
-              this.dispatchEvent(new CustomEvent('childMenuClosed', { composed: true, bubbles: true }));
               this.shadowRoot.querySelector('#sub_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.remove('active');
               this.shadowRoot.querySelector('#main_navigation').classList.add('active');
@@ -452,7 +547,7 @@
               if (element.children && !hasGrandchildren) {
                   const elemHeight = 39;
                   const elemMaxHeight = elemHeight * element.children.length;
-                  return `max-height: ${elemMaxHeight}px; transition: max-height ease-in-out .5s;`;
+                  return `max-height: ${elemMaxHeight}px; transition: max-height ease-out 225ms;`;
               }
               else return '';
           }
@@ -476,6 +571,10 @@
           _getBaseUrl() {
               let currentUrl = window.location;
               return `${currentUrl.protocol}//${currentUrl.host}`;
+          }
+
+          _getLanguageIconName(isoCode) {
+              return `sc-language-icons:${isoCode}`;
           }
       }
 
