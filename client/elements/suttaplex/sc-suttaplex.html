@@ -58,11 +58,16 @@
       .suttaplex-nerdy-row {
         @apply --paper-font-body2;
         color: var(--sc-secondary-text-color);
-        display: flex;
-        flex-wrap: wrap;
         font-weight: normal;
         white-space: nowrap;
         overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .suttaplex-nerdy-row:hover {
+          text-overflow: clip;
+          white-space: normal;
+          word-break: break-all;
       }
 
       .nerdy-row-element {
@@ -267,12 +272,10 @@
           </span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
-              <div>
-                <span class="book no-margin">
-                  <iron-icon class="grey-icon" icon="book"></iron-icon>
-                </span>
-                <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
-              </div>
+              <span class="book no-margin">
+                <iron-icon class="grey-icon" icon="book"></iron-icon>
+              </span>
+              <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
             </template>
             <template is="dom-if" if=[[item.biblio]]>
               <div>

@@ -123,11 +123,6 @@
                       statePath: 'textOptions.paliLookupActivated',
                       observer: '_paliLookupStateChanged'
                   },
-                  paliLookupTargetDictRepr: {
-                      type: String,
-                      statePath: 'textOptions.paliLookupTargetDictRepr',
-                      observer: '_paliLookupTargetDictReprChanged'
-                  },
                   tooltipCount: {
                       type: Number,
                       value: 0
@@ -140,11 +135,6 @@
                       type: Boolean,
                       statePath: 'textOptions.chineseLookupActivated',
                       observer: '_chineseLookupStateChanged'
-                  },
-                  chineseLookupTargetDictRepr: {
-                      type: String,
-                      statePath: 'textOptions.chineseLookupTargetDictRepr',
-                      observer: '_chineseLookupTargetDictReprChanged'
                   },
                   textualInfoClassTitles: {
                       type: Object,
@@ -816,31 +806,6 @@
                   if (!this.spansForGraphsGenerated) {
                       this._conditionallyPutIntoSpans('lzh');
                   }
-              }
-          }
-
-          _showToast(dictName) {
-              this.dispatchEvent(new CustomEvent('show-sc-toast', {
-                  detail: {
-                      toastType: 'info',
-                      message: `The ${dictName} lookup dictionary is now enabled.`
-                  },
-                  bubbles: true,
-                  composed: true
-              }));
-          }
-
-          _paliLookupTargetDictReprChanged() {
-              if (this.isPaliLookupEnabled) {
-                  const dictName = this.paliLookupTargetDictRepr.replace('→', 'to');
-                  this._showToast(dictName);
-              }
-          }
-
-          _chineseLookupTargetDictReprChanged() {
-              if (this.isChineseLookupEnabled) {
-                  const dictName = this.chineseLookupTargetDictRepr.replace('→', 'to');
-                  this._showToast(dictName);
               }
           }
 
