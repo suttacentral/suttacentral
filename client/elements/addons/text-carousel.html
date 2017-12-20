@@ -18,6 +18,7 @@
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
+        font-style: normal;
         text-align: center;
       }
 
@@ -77,10 +78,10 @@
       .text {
         position: relative;
         top: 50%;
-        transform: translate(0, -50%);
         will-change: opacity;
         opacity: 1;
         transition: all .4s ease;
+        line-height: 1.1em;
       }
 
       .transparent {
@@ -263,7 +264,7 @@
               setTimeout(() => {
                   let item = this._getItemToShow(this.selectedItemIndex);
                   this.$.text.classList.remove('transparent');
-                  this.$.text_span.innerText = item;
+                  this.$.text_span.innerHTML = item;
               }, 400);
           }
 

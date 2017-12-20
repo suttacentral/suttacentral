@@ -107,7 +107,7 @@
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
-        text-align: center;        
+        text-align: center;    
       }
 
       .two-paper-cards {
@@ -138,7 +138,8 @@
       }
 
       .card-title-text {
-        @apply --sc-skolar-font-size-l;
+        @apply --paper-font-headline;
+        @apply --sc-serif-font;
       }
 
       .why-we-read {
@@ -186,6 +187,7 @@
       }
 
       paper-card {
+        overflow: hidden;
         background-color: var(--sc-secondary-background-color);
         width: 100%;
       }
@@ -245,7 +247,7 @@
         line-height: 1em;
         margin: var(--sc-size-md-larger);
         margin-top: 0;
-        text-align: justify;
+        text-align: right;
       }
 
       .spinner {
@@ -256,7 +258,11 @@
         position: absolute;
         transform: translate(-50%);
         bottom: var(--sc-size-md-larger);
-        }
+      }
+
+      .buddhas-words-text {
+        @apply --sc-skolar-font-size-static-subtitle;
+      }
 
       @media (min-width: 1280px) {
         .content {
@@ -377,7 +383,7 @@
               <div class="card-heading">
                 <div class="card-heading-text">
                   The<br class="d-none">
-                  Buddha's<br class="d-none">
+                  Buddha’s<br class="d-none">
                   words
                 </div>
               </div>
@@ -387,7 +393,7 @@
                       <paper-spinner-lite active class="spinner"></paper-spinner-lite>
                     </template>
                     <template is="dom-if" if="[[!loadingEpigraphs]]">
-                    <div class="card-text center-text">
+                    <div class="card-text center-text buddhas-words-text">
                         <sc-text-carousel elements="[[epigraphsData]]" display="epigraph" link="uid"></sc-text-carousel>                                            
                     </div>
                     </template>
@@ -401,7 +407,7 @@
           <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card"
                       image="../../img/home-page/53.jpg">
             <div class="transparent-card-content-wrapper">
-              <div class="card-title-text">What's here</div>
+              <div class="card-title-text">What’s here</div>
               <div class="image-card-text">
                 SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. 
                 This is a large collection of teachings attributed to the Buddha or his earliest disciples, 
