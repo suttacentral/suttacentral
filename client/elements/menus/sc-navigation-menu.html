@@ -169,8 +169,8 @@
 
       .iso-code-image {
         fill: var(--sc-disabled-text-color);
-        width: 19px;
-        height: 19px;
+        width: var(--sc-size-language-icon);
+        height: var(--sc-size-language-icon);
         position: absolute;
         display: inline-block;
         left: var(--sc-size-md);
@@ -218,6 +218,7 @@
       }
 
       #main_navigation {
+        /*  65px is the height of the back arrow header element */
         margin-top: -65px;
         height: 91%;
         overflow-y: scroll;

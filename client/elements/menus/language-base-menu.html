@@ -48,8 +48,8 @@ This is the base language menu that determines the language of the site.
       .iso-code-image {
         fill: var(--sc-disabled-text-color);
         margin-top: var(--sc-size-xs);
-        width: 19px;
-        height: 19px;
+        width: var(--sc-size-language-icon);
+        height: var(--sc-size-language-icon);
       }
 
       .language-menu-paper-item {
@@ -57,7 +57,7 @@ This is the base language menu that determines the language of the site.
         @apply --sc-skolar-font-size-md;
         color: var(--sc-primary-text-color);
         /*19px for the icon, 16px for the margin */
-        --paper-item-icon-width: calc(19px + 16px);
+        --paper-item-icon-width: calc(var(--sc-size-language-icon) + 16px);
       }
 
       .language-menu-paper-item:hover {
