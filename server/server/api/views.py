@@ -85,6 +85,9 @@ class Menu(Resource):
                     has_children:
                         required: false
                         type: boolean
+                    lang:
+                        required: false
+                        type: string
         """
         db = get_db()
         if submenu_id:

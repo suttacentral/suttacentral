@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-lazy-pages/iron-lazy-pages.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 
 <link rel="import" href="../elements/static/home-page.html">
 <link rel="import" href="../elements/static/donations-page.html">
@@ -33,6 +34,7 @@
       #lasttoolbar {
         @apply --shadow-elevation-8dp;
         z-index: -1;
+        padding-bottom: var(--sc-size-lg);
       }
 
       h1 {
@@ -48,7 +50,6 @@
       }
 
       .subtitle {
-        @apply --sc-sans-font;
         @apply --sc-skolar-font-size-static-subtitle;
         color: var(--sc-tertiary-text-color);
         font-style: italic;
@@ -59,7 +60,6 @@
       }
 
       .title {
-        margin-left: var(--sc-size-xxl);
         overflow: hidden;
       }
 
@@ -70,7 +70,6 @@
 
       .title-text::before {
         content: "☸";
-        font-size: 1.5em;
         margin-right: var(--sc-size-sm);
         line-height: 0.1;
         vertical-align: middle;
@@ -80,6 +79,35 @@
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-static-subtitle;
         margin: 38px;
+      }
+
+      #nav_tabs {
+        width: 100%;
+        --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
+      }
+
+      .nav-link {
+        @apply --sc-sans-font;
+        color: var(--sc-tertiary-text-color);
+        --paper-tab-ink: var(--sc-primary-color-light);
+        padding-left: 10px;
+        padding-right: 10px;
+        letter-spacing: .02em;
+      }
+
+      #nav_toolbar {
+        background-color: var(--sc-primary-color-dark);
+        height: auto;
+      }
+
+      .link-anchor {
+        text-align: center;
+        text-decoration: none;
+        outline: none !important;
+        color: var(--sc-tertiary-text-color);
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
       }
 
       @media (max-width: 925px) {
@@ -109,12 +137,43 @@
     </style>
 
     <app-toolbar>
-      <div class="title" main-title><h1 class="title-text">SuttaCentral</h1></div>
+      <div class="title" main-title>
+        <h1 class="title-text">SuttaCentral</h1>
+      </div>
     </app-toolbar>
     <app-toolbar id="lasttoolbar">
       <div class="title" main-title>
         <p class="subtitle">Early Buddhist texts, translations, and parallels</p>
       </div>
+    </app-toolbar>
+    <app-toolbar id="nav_toolbar" bottom-item>
+      <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tab class="nav-link" data-name="HOME" link>
+          <a class="link-anchor" href="/home" tabindex="-1">
+            <div>HOME</div>
+          </a>
+        </paper-tab>
+        <paper-tab class="nav-link" data-name="INTRODUCTION" link>
+          <a class="link-anchor" href="/introduction" tabindex="-1">
+            <div>INTRODUCTION</div>
+          </a>
+        </paper-tab>
+        <paper-tab class="nav-link" data-name="DONATIONS" link>
+          <a class="link-anchor" href="/donations" tabindex="-1">
+            <div>DONATIONS</div>
+          </a>
+        </paper-tab>
+        <paper-tab class="nav-link" data-name="OFFLINE" link>
+          <a class="link-anchor" href="/offline" tabindex="-1">
+            <div>USE OFFLINE</div>
+          </a>
+        </paper-tab>
+        <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW" link>
+          <a class="link-anchor" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank">
+            <div>WHAT'S NEW</div>
+          </a>
+        </paper-tab>
+      </paper-tabs>
     </app-toolbar>
 
     <iron-lazy-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
@@ -182,30 +241,49 @@
   </template>
 
   <script>
-      class SCPageStatic extends ReduxMixin(Polymer.Element) {
-          static get is() {
-              return 'sc-page-static';
-          }
+    class SCPageStatic extends ReduxMixin(Polymer.Element) {
+      static get is() {
+          return 'sc-page-static';
+      }
 
-          static get properties() {
-              return {
-                  selectedPage: {
-                      type: String,
-                      observer: '_changeView',
-                      statePath: 'currentRoute.name'
-                  },
-                  pages: {
-                      type: String,
-                      value: 'HOME'
-                  }
+      static get properties() {
+          return {
+              selectedPage: {
+                  type: String,
+                  observer: '_changeView',
+                  statePath: 'currentRoute.name'
+              },
+              pages: {
+                  type: String,
+                  value: 'HOME'
               }
-          }
-
-          _changeView() {
-              this.$.pages.selected = this.selectedPage;
           }
       }
 
-      customElements.define(SCPageStatic.is, SCPageStatic);
+      _selectNavbarLink() {
+          const tabs = this.$.nav_tabs.querySelectorAll('paper-tab');
+          for (let i = 0; i < tabs.length; i++) {
+              if (tabs[i].dataset.name === this.selectedPage) {
+                  this.$.nav_tabs.selectIndex(i);
+                  return;
+              }
+          }
+          this.$.nav_tabs.selectIndex(-1);
+      }
+
+      connectedCallback() {
+          super.connectedCallback();
+          this.$.nav_tabs.querySelectorAll('paper-tab').forEach(link => {
+              link.style.width = window.getComputedStyle(link).width;
+          });
+      }
+
+      _changeView() {
+          this.$.pages.selected = this.selectedPage;
+          this._selectNavbarLink();
+      }
+    }
+
+    customElements.define(SCPageStatic.is, SCPageStatic);
   </script>
 </dom-module>

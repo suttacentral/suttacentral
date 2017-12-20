@@ -56,7 +56,8 @@
     "paper-checkbox": "^2.0.1",
     "paper-toast": "^2.0.0",
     "iron-lazy-pages": "TimvdLippe/iron-lazy-pages#^2.1.0",
-    "isw-dialog": "IswPolymerElements/isw-dialog#^1.0.3"
+    "isw-dialog": "IswPolymerElements/isw-dialog#^1.0.3",
+    "paper-tabs": "^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^6.2.0"

@@ -17,7 +17,10 @@
         grid-template-columns: 2% 96% 2%;
         grid-row-gap: 80px;
         margin-top: 60px;
-        margin-bottom: var(--sc-size-xl);
+      }
+
+      .bottom-space {
+        margin-bottom: var(--sc-size-xl) !important;        
       }
 
       .row {
@@ -48,7 +51,7 @@
       .card-heading {
         @apply --sc-skolar-font-size-xxl;
         width: 100%;
-        background-color: var(--sc-primary-color);
+        background-color: var(--sc-primary-color-medium);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
         line-height: 100%;
@@ -104,7 +107,7 @@
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
-        text-align: center;        
+        text-align: center;    
       }
 
       .two-paper-cards {
@@ -117,11 +120,7 @@
       }
 
       .card-content-wrapper {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
         padding: var(--sc-size-md-larger);
-        height: calc(100% - 2 * var(--sc-size-md-larger));
       }
 
       .no-bottom-padding {
@@ -139,7 +138,8 @@
       }
 
       .card-title-text {
-        @apply --sc-skolar-font-size-l;
+        @apply --paper-font-headline;
+        @apply --sc-serif-font;
       }
 
       .why-we-read {
@@ -187,6 +187,7 @@
       }
 
       paper-card {
+        overflow: hidden;
         background-color: var(--sc-secondary-background-color);
         width: 100%;
       }
@@ -246,7 +247,7 @@
         line-height: 1em;
         margin: var(--sc-size-md-larger);
         margin-top: 0;
-        text-align: justify;
+        text-align: right;
       }
 
       .spinner {
@@ -257,7 +258,11 @@
         position: absolute;
         transform: translate(-50%);
         bottom: var(--sc-size-md-larger);
-        }
+      }
+
+      .buddhas-words-text {
+        @apply --sc-skolar-font-size-static-subtitle;
+      }
 
       @media (min-width: 1280px) {
         .content {
@@ -362,7 +367,7 @@
 
       <iron-meta id="meta"></iron-meta>      
 
-    <div id="page-wrap">
+    <div id="page-wrap" class="bottom-space">
       <div class="content">
 
         <div class="row introduction">
@@ -378,7 +383,7 @@
               <div class="card-heading">
                 <div class="card-heading-text">
                   The<br class="d-none">
-                  Buddha's<br class="d-none">
+                  Buddha’s<br class="d-none">
                   words
                 </div>
               </div>
@@ -388,7 +393,7 @@
                       <paper-spinner-lite active class="spinner"></paper-spinner-lite>
                     </template>
                     <template is="dom-if" if="[[!loadingEpigraphs]]">
-                    <div class="card-text center-text">
+                    <div class="card-text center-text buddhas-words-text">
                         <sc-text-carousel elements="[[epigraphsData]]" display="epigraph" link="uid"></sc-text-carousel>                                            
                     </div>
                     </template>
@@ -402,7 +407,7 @@
           <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card"
                       image="../../img/home-page/53.jpg">
             <div class="transparent-card-content-wrapper">
-              <div class="card-title-text">What's here</div>
+              <div class="card-title-text">What’s here</div>
               <div class="image-card-text">
                 SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. 
                 This is a large collection of teachings attributed to the Buddha or his earliest disciples, 
@@ -456,13 +461,14 @@
           <div class="three-elements-grid">
             <paper-card class="three-elements-big paper-card-with-button" image="../../img/home-page/14.jpg">
               <div class="card-content-wrapper no-bottom-padding">
-                <div class="card-title-text">Where to begin</div>
+                <div class="card-title-text">Discourses</div>
                 <div class="image-card-text">
-                  There are thousands of early Buddhist texts, and they’re not organized for easy reading. 
-                  But here’s the good news: you are not alone. We’ve been down this road ourselves, 
-                  and have tried to make it a little easier for you. Here’s some things you can try.</div>
+                  These are our primary sources for understanding what the Buddha taught.
+                    They record the Buddha’s teachings and conversations on specific occasions
+                    with a diverse range of people. Discourses are called sutta in Pali, which is
+                    spelled sūtra in Sanskrit.</div>
                 </div>
-                <a class="button-link" href="/sutta">
+                <a class="button-link" href="/discourses">
                   <paper-button class="button card-button" raised>MORE ...</paper-button>
                 </a>
             </paper-card>
