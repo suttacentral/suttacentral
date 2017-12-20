@@ -101,10 +101,8 @@
         auto
         id="ajax"
         url="[[_computeUrl()]]"
-        params='[[dictionaryParams]]'
         handle-as="json"
-        loading="{{loadingDict}}"
-        last-response="{{dictData}}"
+        last-response="{{dictionaryReturns}}"
         on-response="_didRespond"></iron-ajax>
 
     <iron-meta id="meta"></iron-meta>
@@ -113,17 +111,17 @@
       <main class="dictionary-results-main">
         <div class="dictionary-results-head">
           <h1><span class="dictionary-results-description">Definitions for</span> <span
-              class="dictionary-results-term">[[dictionaryParams]]</span></h1>
+              class="dictionary-results-term">[[dictionaryWord]]</span></h1>
           <span class="termsbutton" title="Related terms"><paper-icon-button icon="menu">
         </div>
-<!--         <div class="dictionary-entries">
+        <div class="dictionary-entries">
           <template is="dom-repeat" items="[[dictionaryResults]]" as="result">
             <div class="dictionary-book-entry">
-              <div class="dictionary-source">[[_getDictionaryTitle(result.dict)]]</div>
+              <div class="dictionary-source">[[_getDictionaryTitle(result.dictname)]]</div>
               <div class="dictionary-text" inner-h-t-m-l="[[result.text]]"></div>
             </div>
           </template>
-        </div> -->
+        </div>
 
         <!--The below is complete mockup. The real related and similar terms to be displayed will have to be calculated-->
 <!--         <app-drawer id="drawer" align="right" swipe-open>
@@ -160,17 +158,13 @@
 
           static get properties() {
               return {
-                  dictData: {
-                      type: Object
-                  },
-                  loadingDict: {
-                      type: Boolean,
-                      value: true
-                  },
-                  dictionaryParams: String,
                   dictionaryResults: {
-                      type: Object
+                      type: Array
                   },
+                  dictionaryReturns: {
+                      type: Array
+                  },
+                  dictionaryWord: String,
                   dictionaryTitles: {
                       type: Object,
                       value: {
@@ -185,17 +179,31 @@
           }
 
           _computeUrl() {
-              console.log("compute URL");
-              return `${this.$.meta.byKey('API_ROOT')}/dictionary_full/word==${this.dictionaryParams}`;
+              return `${this.$.meta.byKey('API_ROOT')}/dictionary_full/${this.dictionaryWord}`;
           }
 
           _didRespond() {
-              console.log("Ajax has responded");
-              console.log(this.dictData)
+              let dictsUsed = {};
+              let finalResults = [];
+              for (let key in this.dictionaryTitles) {
+                  dictsUsed = this._sortDictionaryResults(key);
+                  if (dictsUsed) {
+                      finalResults.push(dictsUsed);
+                  }
+              }
+              this.dictionaryResults = finalResults;
           }
 
-          _getDictionaryTitle(dict) {
-              return this.dictionaryTitles[dict];
+          _sortDictionaryResults(dictionary) {
+              for (let item in this.dictionaryReturns) {
+                  if (this.dictionaryReturns[item].dictname == dictionary) {
+                    return this.dictionaryReturns[item];
+                  }
+              }
+          } 
+
+          _getDictionaryTitle(dictname) {
+              return this.dictionaryTitles[dictname];
           }
 
           // toggles the drawer on the right to show the related/similar items.

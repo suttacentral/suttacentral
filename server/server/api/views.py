@@ -561,7 +561,7 @@ class Paragraphs(Resource):
         return data.batch(), 200
 
 class DictionaryFull(Resource):
-    def get(self):
+    def get(self, word=None):
         """
         Sends list of dictionary entries to dictionary view
         ---
@@ -577,7 +577,8 @@ class DictionaryFull(Resource):
                         type: string
 
         """
-        word = word.lower()
+        if (word != None):
+            word = word.lower()
 
         db = get_db()
 
