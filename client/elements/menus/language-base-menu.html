@@ -140,7 +140,7 @@ This is the base language menu that determines the language of the site.
               try {
                   // When selecting a language from the array of all languages, we're dividing by two.
                   // That's because of the ISO codes inside our list which paper-listbox treats as separate elements.
-                  const languageIsoCode = this.lastResponse[this.selectedLanguageNr / 2].iso_code;
+                  const languageIsoCode = this.lastResponse[this.selectedLanguageNr].iso_code;
                   this.dispatch('changeLanguage', languageIsoCode);
               } catch (e) {
                   console.error(e);
@@ -150,7 +150,7 @@ This is the base language menu that determines the language of the site.
           // Listens to changes in the global redux app state and updates the language chosen in the list dropdown.
           _computeSelectedLanguageNr(chosenLanguageIsoCode) {
               try {
-                  return this.isoCodes.indexOf(chosenLanguageIsoCode) * 2;
+                  return this.isoCodes.indexOf(chosenLanguageIsoCode);
               } catch (e) {
                   console.error(e);
                   return 0;
