@@ -384,16 +384,13 @@
                   this._marginToPadding(section)
                   let nextSection = section.nextElementSibling;
                   if (!nextSection) {
-                      return firstSection;
+                      this._paddingToMargin(section);
+                      break;
                   }
                   let sectionLink = nextSection.querySelector('.textual-info-paragraph');
                   if (sectionLink) {
                       if (last) {
-                          const marginBottom = window.getComputedStyle(section).paddingBottom;
-                          requestAnimationFrame(() => {
-                              section.style.marginBottom = marginBottom;
-                              section.style.paddingBottom = '0';
-                          })
+                          this._paddingToMargin(section.nodeName === "A" ? section.previousElementSibling : section);
                           break;
                       } else if (sectionLink.id === idTo) {
                           last = true;
@@ -404,15 +401,21 @@
               return firstSection;
           }
 
+          _paddingToMargin(section) {
+            const margin = window.getComputedStyle(section).padding;
+            requestAnimationFrame(() => {
+                section.style.margin = margin;
+                section.style.padding = '0';
+            })
+          }
+
           _marginToPadding(section) {
-            const marginBottom = window.getComputedStyle(section).marginBottom;
-            const paddingBottom = window.getComputedStyle(section).paddingBottom;
-            section.style.marginBottom = '0';
-            section.style.paddingBottom = this._getBigger(marginBottom, paddingBottom);
-            const marginTop = window.getComputedStyle(section).marginTop;
-            const paddingTop = window.getComputedStyle(section).paddingTop;
-            section.style.marginTop = '0';
-            section.style.paddingTop = this._getBigger(marginTop, paddingTop);
+            for(let pos of ['Top', 'Bottom', 'Left', "Right"]) {
+                const margin = window.getComputedStyle(section)[`margin${pos}`];
+                const padding = window.getComputedStyle(section)[`padding${pos}`];
+                section.style[`margin${pos}`] = '0';
+                section.style[`padding${pos}`] = this._getBigger(margin, padding);
+            }
           }
 
           _getBigger(a, b) {
