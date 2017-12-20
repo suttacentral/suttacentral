@@ -77,11 +77,11 @@
 
       .text {
         position: relative;
+        transform: translate(0, -50%);
         top: 50%;
         will-change: opacity;
         opacity: 1;
         transition: all .4s ease;
-        line-height: 1.1em;
       }
 
       .transparent {
@@ -208,7 +208,7 @@
           _setInterval() {
               this.timer = setInterval(() => {
                   this._nextItem();
-              }, 30000);
+              }, 300000000);
           }
 
           _loadNextItem(e) {
