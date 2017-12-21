@@ -88,6 +88,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             FILTER text.uid == v.uid
             LET res = {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang RETURN lang.name)[0],
                 author: text.author,
                 id: text._key,
                 segmented: false
@@ -104,6 +105,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             SORT text.lang
             RETURN {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang RETURN lang.name)[0],
                 author: text.author,
                 id: text._key,
                 segmented: true,
