@@ -366,7 +366,7 @@
           }
 
           _processHighlightAndScroll(sectionId, isSmooth) {
-              let [idFrom, idTo] = sectionId.split('-');
+              let [idFrom, idTo] = sectionId.split('--');
               let firstSection = this.shadowRoot.getElementById(idFrom);
               if (!firstSection) {
                   return;
@@ -381,20 +381,16 @@
               }
               while (section) {
                   section.classList.add('highlight');
-                  const margin = window.getComputedStyle(section).margin;
-                  requestAnimationFrame(() => {
-                      section.style.margin = '0';
-                      section.style.padding = margin;
-                  })
+                  this.__changeMarginToPadding(section)
                   let nextSection = section.nextElementSibling;
+                  if (!nextSection) {
+                      this._changePaddingToMargin(section);
+                      break;
+                  }
                   let sectionLink = nextSection.querySelector('.textual-info-paragraph');
                   if (sectionLink) {
                       if (last) {
-                          const marginBottom = window.getComputedStyle(section).paddingBottom;
-                          requestAnimationFrame(() => {
-                              section.style.marginBottom = marginBottom;
-                              section.style.paddingBottom = '0';
-                          })
+                          this._changePaddingToMargin(section.nodeName === "A" ? section.previousElementSibling : section);
                           break;
                       } else if (sectionLink.id === idTo) {
                           last = true;
@@ -403,6 +399,27 @@
                   section = nextSection;
               }
               return firstSection;
+          }
+
+          _changePaddingToMargin(section) {
+            const margin = window.getComputedStyle(section).padding;
+            requestAnimationFrame(() => {
+                section.style.margin = margin;
+                section.style.padding = '0';
+            })
+          }
+
+          __changeMarginToPadding(section) {
+            const styles = window.getComputedStyle(section);
+            let values = {};
+            for(let pos of ['Top', 'Bottom', 'Left', "Right"]) {
+                section.style[`margin${pos}`] = '0';
+                section.style[`padding${pos}`] = this._getBigger(styles[`margin${pos}`], styles[`padding${pos}`]);
+            }
+          }
+
+          _getBigger(a, b) {
+              return parseFloat(a) > parseFloat(b) ? a : b;
           }
 
           _removeHighlights() {

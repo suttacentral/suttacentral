@@ -21,6 +21,7 @@
         -moz-user-select: none;
         -ms-user-select: none;
         -webkit-user-select: none;
+        height: 100%;
       }
 
       .paper-spinner {
@@ -42,6 +43,10 @@
       .network-error-icon {
         width: var(--sc-size-xxl);
         height: var(--sc-size-xxl);
+      }
+
+      .nav-list-container {
+        height: calc(100% - var(--sc-size-xxl));
       }
 
       .nav-back-button {
@@ -124,14 +129,14 @@
       .nav-list, .sub-nav {
         list-style-type: none;
         margin: 0;
-        padding: var(--sc-size-md) 0;
+        padding: 0;
       }
 
       .sub-nav-container {
         z-index: 1;
       }
 
-      .nav-link {
+      .nav-link-container {
         @apply --sc-skolar-font-size-md;
         color: var(--sc-primary-text-color);
         text-transform: uppercase;
@@ -149,8 +154,12 @@
         background: linear-gradient(to right, var(--sc-primary-color) 4px, var(--sc-primary-color-transparent) 4px);
       }
 
-      .nav-menu-item.selected a {
+      .nav-menu-item.selected > .nav-link-container > .nav-link {
         color: var(--sc-primary-color);
+      }
+
+      .nav-menu-item.selected > .open {
+        background: var(--sc-tertiary-background-color);
       }
 
       .menu-dropdown-icon {
@@ -192,13 +201,13 @@
         will-change: transform;
       }
 
-      .nav-secondary .nav-link,
-      .nav-tertiary .nav-link {
+      .nav-secondary .nav-link-container,
+      .nav-tertiary .nav-link-container {
         @apply --sc-skolar-font-size-s;
         font-weight: 400;
       }
 
-      .nav-tertiary a {
+      .nav-tertiary .nav-link {
         text-transform: none;
         letter-spacing: 0;
         font-weight: 400;
@@ -218,9 +227,7 @@
       }
 
       #main_navigation {
-        /*  65px is the height of the back arrow header element */
-        margin-top: -65px;
-        height: 91%;
+        height: 100%;
         overflow-y: scroll;
       }
 
@@ -232,6 +239,14 @@
       /* Padding for ISO code icons (19px for the icon + 16px for the icon padding) */
       #main_navigation .nav-tertiary > .nav-menu-item {
         padding-left: 35px;
+      }
+
+      #main_navigation .nav-link-container {
+        padding-left: calc(35px + var(--sc-size-md));
+      }
+
+      #main_navigation .nav-tertiary .nav-link-container {
+        padding: 5px var(--sc-size-md);
       }
 
       #main_navigation:not(.active)::-webkit-scrollbar-thumb {
@@ -248,8 +263,13 @@
         align-items: center;
       }
 
+      #sub_navigation {
+        height: calc(100% - 65px);
+        width: 100%;
+      }
+
       #sub_navigation .sub-nav {
-        height: 84vh;
+        height: 100%;
         overflow-y: auto;
       }
 
@@ -257,11 +277,11 @@
         padding-left: 0;
       }
 
-      .sub-nav a {
+      .sub-nav .nav-link {
         font-weight: 700;
       }
 
-      .sub-nav-child a {
+      .sub-nav-child .nav-link {
         font-weight: 400;
       }
 
@@ -271,6 +291,14 @@
 
       .sub-nav-child .sub-nav-child {
         padding-left: var(--sc-size-md);
+      }
+
+      #main_menu_container {
+        transform: translateY(-100%);
+      }
+
+      .top-menu-item:first-of-type {
+        margin-top: var(--sc-size-md);
       }
 
     </style>
@@ -307,7 +335,6 @@
       </template>
 
       <nav class="sc-nav">
-        <div>
           <div id="sub_navigation_header" class="nav-back-button swap-section up">
             <paper-icon-button id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></paper-icon-button>
             <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
@@ -316,7 +343,6 @@
           <div id="sub_navigation" class="sub-nav-container swap-section right"></div>
           <div id="main_menu_container"></div>
 
-        </div>
       </nav>
 
     </div>
@@ -367,15 +393,15 @@
               const mainMenuMarkup = `
                 <ul id="main_navigation" class="nav-list sc-scrollbar swap-section left active">
                   ${this.mainMenuData.map(topLevelItem => `
-                    <li class="nav-menu-item">
-                      <span class="nav-link">${topLevelItem.name}</span>
+                    <li class="nav-menu-item top-menu-item">
+                      <span class="nav-link-container">${topLevelItem.name}</span>
                       <paper-icon-button icon="expand-more"
                         class="menu-dropdown-icon ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
                       </paper-icon-button>
                       <ul class="nav-secondary ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
                         ${topLevelItem.children.map(groupingLevelItem => `
                         <li class="nav-menu-item">
-                          <span class="nav-link">${groupingLevelItem.name}</span>
+                          <span class="nav-link-container">${groupingLevelItem.name}</span>
                           ${groupingLevelItem.children.length > 0 ? `
                             <paper-icon-button icon="expand-more" class="menu-dropdown-icon
                               ${topLevelItem.name === 'Sutta' ? 'open' : 'closed'}">
@@ -402,13 +428,13 @@
                   ${item.children.map(childItem => `
                     <li class="nav-menu-item" data-uid="${childItem.id}">
                     ${listType === 'nav-secondary' ?
-                      `<span class="nav-link">${childItem.name}</span>`
+                      `<span class="nav-link-container">${childItem.name}</span>`
                       :
-                      `<span class="nav-link">
-                        <a href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
+                      `<span class="nav-link-container">
+                        <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
                        </span>
-                       <iron-icon class="iso-code-image" slot="item-icon"
-                        icon="${this._getLanguageIconName(childItem.lang)}"></iron-icon>`
+                       <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
+                        icon="${this._getLanguageIconName(childItem.lang_iso)}"></iron-icon>`
                       }
                     ${childItem.children && childItem.children.length > 0 ?
                       `<paper-icon-button icon="expand-more" class="menu-dropdown-icon closed"></paper-icon-button>
@@ -438,9 +464,11 @@
                 <ul class="nav-tertiary ${isRootElement ? 'sub-nav sc-scrollbar open' : 'sub-nav-child closed'}"
                   style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
-                    <li class="nav-menu-item" data-uid="${childItem.id}">
-                      <span class="nav-link">
-                        <a href="${this._getSuttaplexUrl(childItem.id)}">${this._getPrefixedItemName(childItem.name, childItem.display_num)}</a>
+                    <li class="nav-menu-item ${isRootElement ? 'top-menu-item' : ''}" data-uid="${childItem.id}">
+                      <span class="nav-link-container">
+                        <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">
+                          ${this._getPrefixedItemName(childItem.name, childItem.display_num)}
+                        </a>
                       </span>
                     ${childItem.children && childItem.children.length > 0 ? `
                       <paper-icon-button icon="expand-more" class="menu-dropdown-icon"></paper-icon-button>

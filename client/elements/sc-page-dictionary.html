@@ -95,6 +95,12 @@
         border-bottom: var(--sc-border);
       }
 
+      #drawer {
+        --app-drawer-content-container: {
+          overflow-y: scroll;
+        }
+      }
+
     </style>
 
     <iron-ajax
@@ -124,7 +130,7 @@
         </div>
 
         <app-drawer id="drawer" align="right" class="sc-scrollbar" swipe-open>
-          <div class="related-terms">
+          <div class="related-terms sc-scrollbar">
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
               <template is="dom-repeat" items="[[dictonaryAdjacent]]">
