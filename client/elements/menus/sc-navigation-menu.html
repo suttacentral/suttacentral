@@ -433,8 +433,8 @@
                       `<span class="nav-link-container">
                         <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
                        </span>
-                       <iron-icon class="iso-code-image" slot="item-icon"
-                        icon="${this._getLanguageIconName(childItem.lang)}"></iron-icon>`
+                       <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
+                        icon="${this._getLanguageIconName(childItem.lang_iso)}"></iron-icon>`
                       }
                     ${childItem.children && childItem.children.length > 0 ?
                       `<paper-icon-button icon="expand-more" class="menu-dropdown-icon closed"></paper-icon-button>
