@@ -564,13 +564,28 @@ class Paragraphs(Resource):
         return data.batch(), 200
 
 class DictionaryFull(Resource):
-    def get(self):
+    def get(self, word=None):
         """
+        Sends list of dictionary entries to dictionary view
+        ---
+        responses:
+            dictionary_full:
+                type: array
+                properties:
+                    dictname:
+                        type: string
+                    word:
+                        type: string
+                    text:
+                        type: string
 
         """
+        if word is not None:
+            word = word.lower()
+
         db = get_db()
 
-        data = db.aql.execute(DICTIONARYFULL)
+        data = db.aql.execute(DICTIONARYFULL, bind_vars={'word': word})
 
         return data.batch(), 200
 
