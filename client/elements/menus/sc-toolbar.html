@@ -8,10 +8,8 @@
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../../bower_components/iron-location/iron-location.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../../elements/menus/sc-more-menu.html">
-<link rel="import" href="../../elements/addons/sc-badge.html">
 
 <!--
 Base toolbar that appears on the top right in the header of every page. This toolbar is called from the page-selector.
@@ -98,12 +96,6 @@ Base toolbar that appears on the top right in the header of every page. This too
       }
     </style>
 
-    <iron-ajax
-      id="discourse_ajax"
-      handle-as="json"
-      loading="{{loadingDiscourseData}}"
-      last-response="{{DiscourseData}}"></iron-ajax>
-
     <iron-location path="{{path}}" query="{{query}}"></iron-location>
 
     <div id="tools_menu">
@@ -120,7 +112,6 @@ Base toolbar that appears on the top right in the header of every page. This too
          title="[[_computeDiscourseTitle(mode)]]">
         <paper-icon-button id="discoursebutton" class="white-icon"
                            icon="communication:forum"></paper-icon-button>
-        <sc-badge number="12" class="absolute-position"></sc-badge>
       </a>
 
       <!-- Menu for more options like language and other static pages -->
@@ -151,16 +142,6 @@ Base toolbar that appears on the top right in the header of every page. This too
                   mode: {
                     type: String,
                     statePath: 'toolbarOptions.mode'             
-                  },
-                  mentioned: {
-                    type: Number,
-                    value: -1
-                  },
-                  loadingDiscourseData: {
-                    type: Boolean
-                  },
-                  DiscourseData: {
-                    type: Object
                   }
               }
           }
@@ -224,7 +205,8 @@ Base toolbar that appears on the top right in the header of every page. This too
 
           _computeDiscourseUrl(mode) {
             if (mode === 'text-mode'){
-              return 'https://discourse.suttacentral.net';
+              const sutta_id = window.location.pathname.split('/')[1];
+              return `https://discourse.suttacentral.net/search?q=${sutta_id}`;
             } else {
               return 'https://discourse.suttacentral.net';
             }
@@ -232,7 +214,7 @@ Base toolbar that appears on the top right in the header of every page. This too
 
           _computeDiscourseTitle(mode) {
               if (mode === 'text-mode'){
-                return `This text has been mentioned ${this.mentioned} times on our forum. Join the discussion.`
+                return `Join the discussion about this sutta.`
               } else {
                 return 'Discuss the suttas on our forum';
               }
