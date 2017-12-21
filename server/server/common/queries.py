@@ -460,3 +460,11 @@ FOR text IN why_we_read
     LIMIT @number
     RETURN text.text
 '''
+
+GLOSSARY = '''
+FOR gloss IN glossary
+    RETURN {
+        glossword: gloss.glossword,
+        description: gloss.description
+    }
+'''
