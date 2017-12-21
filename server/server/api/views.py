@@ -49,6 +49,10 @@ class Languages(Resource):
 
 
 class Menu(Resource):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.num_regex = re.compile(r'^[^\d]*?([\d]+)$')
+
     def get(self, submenu_id=None):
         """
         Send Menu structure
@@ -145,6 +149,10 @@ class Menu(Resource):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
             mapping[menu_entry['uid']] = menu_entry
+            if 'id' in menu_entry:
+                num_matches = self.num_regex.match(menu_entry['id'])
+                if num_matches:
+                    menu_entry['display_num'] = num_matches[1]
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
                 mapping.update({d['uid']: d for d in descendents})
