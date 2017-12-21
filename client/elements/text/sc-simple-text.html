@@ -401,7 +401,7 @@
               return firstSection;
           }
 
-          _paddingToMargin(section) {
+          _changePaddingToMargin(section) {
             const margin = window.getComputedStyle(section).padding;
             requestAnimationFrame(() => {
                 section.style.margin = margin;
@@ -409,12 +409,12 @@
             })
           }
 
-          _marginToPadding(section) {
+          __changeMarginToPadding(section) {
+            const styles = window.getComputedStyle(section);
+            let values = {};
             for(let pos of ['Top', 'Bottom', 'Left', "Right"]) {
-                const margin = window.getComputedStyle(section)[`margin${pos}`];
-                const padding = window.getComputedStyle(section)[`padding${pos}`];
                 section.style[`margin${pos}`] = '0';
-                section.style[`padding${pos}`] = this._getBigger(margin, padding);
+                section.style[`padding${pos}`] = this._getBigger(styles[`margin${pos}`], styles[`padding${pos}`]);
             }
           }
 
