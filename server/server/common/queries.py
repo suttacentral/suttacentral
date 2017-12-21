@@ -428,6 +428,7 @@ FOR paragraph IN paragraphs
 
 DICTIONARYFULL = '''
 FOR dictionary IN dictionary_full
+    FILTER dictionary.word == @word
     RETURN {
         dictname: dictionary.dictname,
         word: dictionary.word,
