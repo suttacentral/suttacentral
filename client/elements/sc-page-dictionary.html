@@ -3,14 +3,14 @@
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+
 <link rel="import" href="../styles/sc-dict-styles.html">
+<link rel="import" href="../styles/sc-scrollbar-style.html">
 
 <dom-module id="sc-page-dictionary">
   <template>
-    <style is="custom-style" include="sc-dict-styles">
+    <style include="sc-dict-styles sc-scrollbar-style">
       .dictionary-results-container, .related-terms {
         @apply --sc-sans-font;
         padding: var(--sc-size-xxl) 0;
@@ -98,9 +98,7 @@
     </style>
 
     <iron-ajax
-        auto
         id="ajax"
-        url="[[_computeUrl()]]"
         handle-as="json"
         last-response="{{dictionaryReturns}}"
         on-response="_didRespond"></iron-ajax>
@@ -112,7 +110,7 @@
         <div class="dictionary-results-head">
           <h1><span class="dictionary-results-description">Definitions for</span> <span
               class="dictionary-results-term">[[dictionaryWord]]</span></h1>
-          <span class="termsbutton" title="Related terms"><paper-icon-button icon="menu">
+          <span class="termsbutton" title="Related terms" ><paper-icon-button icon="menu" on-tap="_toggleDrawer"></paper-icon-button></span>
         </div>
         <div class="dictionary-entries">
           <template is="dom-repeat" items="[[dictionaryResults]]" as="result">
@@ -123,27 +121,26 @@
           </template>
         </div>
 
-        <!--The below is complete mockup. The real related and similar terms to be displayed will have to be calculated-->
-<!--         <app-drawer id="drawer" align="right" swipe-open>
+        <app-drawer id="drawer" align="right" class="sc-scrollbar" swipe-open>
           <div class="related-terms">
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
-              <template is="dom-repeat" items="[[relatedItems.adjacent]]">
-                <li><a href="/define/[[item.word]]">[[item.word]]</a>
-                  <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
+              <template is="dom-repeat" items="[[dictonaryAdjacent]]">
+                <li><a href="/define/[[item]]">[[item]]</a>
+                  <!-- <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template> -->
                 </li>
               </template>
             </ul>
             <h3>Similar Spelling</h3>
             <ul class="fuzzy-terms">
-              <template is="dom-repeat" items="[[relatedItems.similar]]">
-                <li><a href="/define/[[item.word]]">[[item.word]]</a>
-                  <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
-                </li>
+              <template is="dom-repeat" items="[[dictionarySimilar]]">
+                <li><a href="/define/[[item]]">[[item]]</a>
+<!--               <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
+ -->            </li>
               </template>
             </ul>
           </div>
-        </app-drawer> -->
+        </app-drawer>
 
       </main>
     </div>
@@ -160,7 +157,10 @@
               return {
                   dictionaryResults: Array,
                   dictionaryReturns: Array,
-                  dictionaryWord: String,
+                  dictionaryWord: {
+                      type: String,
+                      observer: '_loadNewResult'
+                  },
                   dictionaryTitles: {
                       type: Object,
                       value: {
@@ -170,12 +170,28 @@
                           'dppn': 'Pali Proper Names',
                           'pts': 'PTS Pali English Dictionary'
                       }
+                  },
+                  // The below two arrays are just temporary mockups.
+                  dictonaryAdjacent: {
+                      type: Array,
+                      value: ['dhamita','dhamitvā','dhameti','dhamenta','dhamesi',
+                      'dhamma','dhammakathā','dhammakathika','dhammakamma','dhammakaraka']
+                  },
+                  dictionarySimilar: {
+                      type: Array,
+                      value: ['dhamma','dhammā','adhamma','dhamman','dhammī','ghamma',
+                      'dhama','damma','uddhamma','opamma']
                   }
               }
           }
 
           _computeUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/dictionary_full/${this.dictionaryWord}`;
+          }
+
+          _loadNewResult() {
+              this.$.ajax.url = this._computeUrl();
+              return this.$.ajax.generateRequest();
           }
 
           _didRespond() {
@@ -203,10 +219,10 @@
           }
 
           // toggles the drawer on the right to show the related/similar items.
-          // _toggleDrawer() {
-          //     this.$.drawer.toggle();
-          // }
-        
+          _toggleDrawer() {
+              this.$.drawer.toggle();
+          }
+
       }
 
       customElements.define(SCPageDictionary.is, SCPageDictionary);
