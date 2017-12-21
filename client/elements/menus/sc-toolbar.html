@@ -11,6 +11,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../../elements/menus/sc-more-menu.html">
+<link rel="import" href="../../elements/addons/sc-badge.html">
 
 <!--
 Base toolbar that appears on the top right in the header of every page. This toolbar is called from the page-selector.
@@ -87,6 +88,14 @@ Base toolbar that appears on the top right in the header of every page. This too
           max-width: 100% !important;
         };
       }
+
+      .absolute-position {
+        position: absolute;
+      }
+
+      .discourses-link {
+        position: relative;
+      }
     </style>
 
     <iron-ajax
@@ -107,10 +116,11 @@ Base toolbar that appears on the top right in the header of every page. This too
       <paper-tooltip for="search_icon" class="sc-tooltip">Search</paper-tooltip>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
-      <a class="toolbar-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]" 
+      <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]" 
          title="[[_computeDiscourseTitle(mode)]]">
         <paper-icon-button id="discoursebutton" class="white-icon"
                            icon="communication:forum"></paper-icon-button>
+        <sc-badge number="12" class="absolute-position"></sc-badge>
       </a>
 
       <!-- Menu for more options like language and other static pages -->
