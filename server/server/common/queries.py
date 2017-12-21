@@ -43,7 +43,7 @@ FOR div IN root
             has_children: descendant != null,
             name: div.name,
             lang_iso: div.root_lang,
-            lang_name: (FOR lang in language FILTER lang.uid == div.root_lang RETURN lang.name)[0],
+            lang_name: (FOR lang in language FILTER lang.uid == div.root_lang LIMIT 1 RETURN lang.name)[0],
             num: div.num, 
             id: div.uid, 
             type: div.type, 
@@ -88,7 +88,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             FILTER text.uid == v.uid
             LET res = {
                 lang: text.lang,
-                lang_name: (FOR lang in language FILTER lang.uid == text.lang RETURN lang.name)[0],
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 id: text._key,
                 segmented: false
@@ -105,7 +105,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             SORT text.lang
             RETURN {
                 lang: text.lang,
-                lang_name: (FOR lang in language FILTER lang.uid == text.lang RETURN lang.name)[0],
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 id: text._key,
                 segmented: true,
