@@ -8,6 +8,8 @@
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../../bower_components/iron-location/iron-location.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
 <link rel="import" href="../../elements/menus/sc-more-menu.html">
 
 <!--
@@ -87,6 +89,12 @@ Base toolbar that appears on the top right in the header of every page. This too
       }
     </style>
 
+    <iron-ajax
+      id="discourse_ajax"
+      handle-as="json"
+      loading="{{loadingDiscourseData}}"
+      last-response="{{DiscourseData}}"></iron-ajax>
+
     <iron-location path="{{path}}" query="{{query}}"></iron-location>
 
     <div id="tools_menu">
@@ -99,8 +107,8 @@ Base toolbar that appears on the top right in the header of every page. This too
       <paper-tooltip for="search_icon" class="sc-tooltip">Search</paper-tooltip>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
-      <a class="toolbar-link" tabindex="-1" target="_blank" href="https://discourse.suttacentral.net" 
-         title="Discuss the suttas on our forum">
+      <a class="toolbar-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]" 
+         title="[[_computeDiscourseTitle(mode)]]">
         <paper-icon-button id="discoursebutton" class="white-icon"
                            icon="communication:forum"></paper-icon-button>
       </a>
@@ -124,8 +132,26 @@ Base toolbar that appears on the top right in the header of every page. This too
 
           static get properties() {
               return {
-                  path: String,
-                  query: String
+                  path: {
+                    type: String
+                  },
+                  query: {
+                    type: String
+                  },
+                  mode: {
+                    type: String,
+                    statePath: 'toolbarOptions.mode'             
+                  },
+                  mentioned: {
+                    type: Number,
+                    value: -1
+                  },
+                  loadingDiscourseData: {
+                    type: Boolean
+                  },
+                  DiscourseData: {
+                    type: Object
+                  }
               }
           }
 
@@ -184,6 +210,22 @@ Base toolbar that appears on the top right in the header of every page. This too
               const searchQuery = this.$.search_input.value;
               this.set('path', '/search');
               this.set('query', `query=${searchQuery}`);
+          }
+
+          _computeDiscourseUrl(mode) {
+            if (mode === 'text-mode'){
+              return 'https://discourse.suttacentral.net';
+            } else {
+              return 'https://discourse.suttacentral.net';
+            }
+          }
+
+          _computeDiscourseTitle(mode) {
+              if (mode === 'text-mode'){
+                return `This text has been mentioned ${this.mentioned} times on our forum. Join the discussion.`
+              } else {
+                return 'Discuss the suttas on our forum';
+              }
           }
 
       }
