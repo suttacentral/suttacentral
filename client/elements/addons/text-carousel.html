@@ -162,7 +162,7 @@
                             requestAnimationFrame(() => {
                                 this.$.container.style.height = 'unset';
                                 this.firstItem = true;
-                                this._getItemToShow(this.selectedItemIndex);
+                                this.$.text_span.innerHTML = this._getItemToShow(this.selectedItemIndex);
                                 this.previousWidth = newWidth;
                             })
                         }
