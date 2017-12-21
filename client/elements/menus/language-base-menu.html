@@ -83,7 +83,8 @@ This is the base language menu that determines the language of the site.
       <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNr}}">
         <template is="dom-repeat" items="[[lastResponse]]" as="language">
           <paper-icon-item class="language-menu-paper-item" id='[[language.uid]]'>
-            <iron-icon class="iso-code-image" slot="item-icon" icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
+            <iron-icon class="iso-code-image" title="[[language.name]]" slot="item-icon"
+                       icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
             <paper-item-body>
               <div class="language-name">[[language.name]]</div>
             </paper-item-body>
