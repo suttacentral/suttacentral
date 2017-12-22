@@ -58,7 +58,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
         @apply --sc-skolar-font-size-md;
         color: var(--sc-primary-text-color);
         /*19px for the icon, 16px for the margin */
-        --paper-item-icon-width: calc(19px + 16px);
+        --paper-item-icon-width: calc(var(--sc-size-language-icon) + 16px);
       }
 
       .root-lang-menu-item {
@@ -77,8 +77,8 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       .iso-code-image {
         fill: var(--sc-disabled-text-color);
         margin-top: var(--sc-size-xs);
-        width: 19px;
-        height: 19px;
+        width: var(--sc-size-language-icon);
+        height: var(--sc-size-language-icon);
       }
 
       .language-choice-box {
@@ -110,7 +110,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                 <a class="language-menu-url"
                    href="/[[rootId]]/[[language.lang]]/[[language.author]][[_getParagraphRange()]]">
                   <paper-icon-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
-                    <iron-icon class="iso-code-image" slot="item-icon"
+                    <iron-icon class="iso-code-image" slot="item-icon" title="[[language.lang_name]]"
                                icon="[[_getLanguageIconName(language.lang)]]"></iron-icon>
                     <paper-item-body>
                       [[_computeAuthorForList(language.author)]]

@@ -1,41 +1,27 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="../styles/sc-dict-styles.html">
+<link rel="import" href="../styles/sc-scrollbar-style.html">
 
-<!--
-The dictionary results page shows the results found in all dictionaries of a specific word.
-The route `/define/dictionaryterm`shows which terms is searched for. All dictionaries are ready and
-in `../data/dictionaries` accept the pts-dictionary, which is still being edited by Bhante Sujato.
-
-Related items are in a drawer on the right, which can be opened from a menu-item at the top-right.
-------
-Issues:
-    - Bhante Sujato to fix the pts-dictionary and Ayya Vimala to jsonify it.
-    - The related items are now loaded straight from a mockup file in `../data/dictionaries/related.json`.
-    This will have to be changed to relevant terms. Check on the live SC site how adjacent and similar terms
-    are calculated and create a function to do this.
--->
 <dom-module id="sc-page-dictionary">
   <template>
-    <style is="custom-style" include="sc-dict-styles">
-      .divisioncontent, .related-terms {
+    <style include="sc-dict-styles sc-scrollbar-style">
+      .dictionary-results-container, .related-terms {
         @apply --sc-sans-font;
         padding: var(--sc-size-xxl) 0;
       }
 
-      main {
+      .dictionary-results-main {
         max-width: 720px;
         margin: 0 auto;
       }
 
-      .results-head {
+      .dictionary-results-head {
         display: flex;
         justify-content: space-between;
         padding: 0;
@@ -48,7 +34,7 @@ Issues:
         margin: 0 0 0 -2px;
       }
 
-      .result-term {
+      .dictionary-results-term {
         @apply --sc-serif-font;
         font-weight: bold;
         color: var(--sc-primary-accent-color);
@@ -77,7 +63,7 @@ Issues:
         font-weight: bold;
       }
 
-      .entries {
+      .dictionary-entries {
         padding: 0;
       }
 
@@ -97,7 +83,7 @@ Issues:
         color: var(--sc-primary-text-color);
       }
 
-      .source {
+      .dictionary-source {
         @apply --paper-font-body1;
         color: var(--sc-secondary-text-color);
         margin: var(--sc-size-sm) 0 var(--sc-size-md);
@@ -105,178 +91,148 @@ Issues:
         @apply --sc-serif-font;
       }
 
-      .book-entry {
+      .dictionary-book-entry {
         border-bottom: var(--sc-border);
       }
 
-      paper-spinner-lite {
-        --paper-spinner-color: var(--sc-primary-color);
-        left: 50%;
-        top: 50px;
+      #drawer {
+        --app-drawer-content-container: {
+          overflow-y: scroll;
+        }
       }
+
     </style>
 
-    <iron-ajax auto url="../data/dictionaries/cped.json" handle-as="json" loading="{{loadingResults}}"
-               last-response="{{cpedResult}}"></iron-ajax>
-    <iron-ajax auto url="../data/dictionaries/dhammika.json" handle-as="json" loading="{{loadingResults}}"
-               last-response="{{dhammikaResult}}"></iron-ajax>
-    <iron-ajax auto url="../data/dictionaries/ncped.json" handle-as="json" loading="{{loadingResults}}"
-               last-response="{{ncpedResult}}"></iron-ajax>
-    <iron-ajax auto url="../data/dictionaries/dppn.json" handle-as="json" loading="{{loadingResults}}"
-               last-response="{{dppnResult}}"></iron-ajax>
-    <iron-ajax auto url="../data/dictionaries/pts.json" handle-as="json" loading="{{loadingResults}}"
-               last-response="{{ptsResult}}"></iron-ajax>
-    <iron-ajax auto url="../data/dictionaries/related.json" handle-as="json" loading="{{loadingResults}}"
-               last-response="{{relatedItems}}"></iron-ajax>
+    <iron-ajax
+        id="ajax"
+        handle-as="json"
+        last-response="{{dictionaryReturns}}"
+        on-response="_didRespond"></iron-ajax>
 
-    <div class="loadingIndicator">
-      <paper-spinner-lite active="{{loadingResults}}"></paper-spinner-lite>
-    </div>
+    <iron-meta id="meta"></iron-meta>
 
-    <div class="divisioncontent">
-      <main>
-        <div class="results-head">
-          <h1><span class="result-description">Definitions for</span> <span
-              class="result-term">[[dictionaryItem]]</span></h1>
-          <span class="termsbutton" title="Related terms"><paper-icon-button icon="menu"
+    <div class="dictionary-results-container">
+      <main class="dictionary-results-main">
+        <div class="dictionary-results-head">
+          <h1><span class="dictionary-results-description">Definitions for</span> <span
+              class="dictionary-results-term">[[dictionaryWord]]</span></h1>
+          <span class="termsbutton" title="Related terms" >
+            <paper-icon-button icon="menu" on-tap="_toggleDrawer"></paper-icon-button>
+          </span>
         </div>
-        <div class="entries">
-          <template is="dom-if" if="[[ncpedItem]]">
-            <div class="book-entry">
-              <div class="source">New Concise Pali English Dictionary</div>
-              <div class="ncped-entry" inner-h-t-m-l="[[ncpedItem.text]]"></div>
-            </div>
-          </template>
-          <template is="dom-if" if="[[cpedItem]]">
-            <div class="book-entry">
-              <div class="source">Concise Pali English Dictionary</div>
-              <div class="cped-entry" inner-h-t-m-l="[[cpedItem.text]]"></div>
-            </div>
-          </template>
-          <template is="dom-if" if="[[dhammikaItem]]">
-            <div class="book-entry">
-              <div class="source">Nature and the Environment in Early Buddhism by S. Dhammika</div>
-              <div class="dhammika-entry" inner-h-t-m-l="[[dhammikaItem.text]]"></div>
-            </div>
-          </template>
-          <template is="dom-if" if="[[dppnItem]]">
-            <div class="book-entry">
-              <div class="source">Pali Proper Names</div>
-              <div class="dppn-entry" inner-h-t-m-l="[[dppnItem.text]]"></div>
-            </div>
-          </template>
-          <template is="dom-if" if="[[ptsItem]]">
-            <div class="book-entry">
-              <div class="source">PTS Pali English Dictionary</div>
-              <div class="pts-entry" inner-h-t-m-l="[[ptsItem.text]]"></div>
+        <div class="dictionary-entries">
+          <template is="dom-repeat" items="[[dictionaryResults]]" as="result">
+            <div class="dictionary-book-entry">
+              <div class="dictionary-source">[[_getDictionaryTitle(result.dictname)]]</div>
+              <div class="dictionary-text" inner-h-t-m-l="[[result.text]]"></div>
             </div>
           </template>
         </div>
 
-        <!--The below is complete mockup. The real related and similar terms to be displayed will have to be calculated-->
-        <app-drawer id="drawer" align="right" swipe-open>
-          <div class="related-terms">
+        <app-drawer id="drawer" align="right" class="sc-scrollbar" swipe-open>
+          <div class="related-terms sc-scrollbar">
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
-              <template is="dom-repeat" items="[[relatedItems.adjacent]]">
-                <li><a href="/define/[[item.word]]">[[item.word]]</a>
-                  <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
+              <template is="dom-repeat" items="[[dictonaryAdjacent]]">
+                <li><a href="/define/[[item]]">[[item]]</a>
+                  <!-- <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template> -->
                 </li>
               </template>
             </ul>
             <h3>Similar Spelling</h3>
             <ul class="fuzzy-terms">
-              <template is="dom-repeat" items="[[relatedItems.similar]]">
-                <li><a href="/define/[[item.word]]">[[item.word]]</a>
-                  <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
-                </li>
+              <template is="dom-repeat" items="[[dictionarySimilar]]">
+                <li><a href="/define/[[item]]">[[item]]</a>
+<!--               <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
+ -->            </li>
               </template>
             </ul>
           </div>
         </app-drawer>
+
       </main>
     </div>
+
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-page-dictionary',
-          properties: {
-              dictionaryItem: {
-                  type: String,
-                  notify: true
-              },
-              cpedResult: {
-                  type: Object,
-                  notify: true,
-                  value: function() {
-                      return {}
-                  }
-              },
-              ncpedResult: {
-                  type: Object,
-                  notify: true,
-                  value: function() {
-                      return {}
-                  }
-              },
-              dhammikaResult: {
-                  type: Object,
-                  notify: true,
-                  value: function() {
-                      return {}
-                  }
-              },
-              dppnResult: {
-                  type: Object,
-                  notify: true,
-                  value: function() {
-                      return {}
-                  }
-              },
-              ptsResult: {
-                  type: Object,
-                  notify: true,
-                  value: function() {
-                      return {}
-                  }
-              },
-              inputLanguage: String,
+      class SCPageDictionary extends ReduxMixin(Polymer.Element) {
+          static get is() {
+              return 'sc-page-dictionary';
+          }
 
-              // checks if item is found in any of the 5 dictionaries
-              cpedItem: {
-                  type: String,
-                  computed: '_checkDictionaryEntry(cpedResult, dictionaryItem)'
-              },
-              ncpedItem: {
-                  type: String,
-                  computed: '_checkDictionaryEntry(ncpedResult, dictionaryItem)'
-              },
-              dhammikaItem: {
-                  type: String,
-                  computed: '_checkDictionaryEntry(dhammikaResult, dictionaryItem)'
-              },
-              ptsItem: {
-                  type: String,
-                  computed: '_checkDictionaryEntry(ptsResult, dictionaryItem)'
-              },
-              dppnItem: {
-                  type: String,
-                  computed: '_checkDictionaryEntry(dppnResult, dictionaryItem)'
+          static get properties() {
+              return {
+                  dictionaryResults: Array,
+                  dictionaryReturns: Array,
+                  dictionaryWord: {
+                      type: String,
+                      observer: '_loadNewResult'
+                  },
+                  dictionaryTitles: {
+                      type: Object,
+                      value: {
+                          'ncped': 'New Concise Pali English Dictionary',
+                          'cped': 'Concise Pali English Dictionary',
+                          'dhammika': 'Nature and the Environment in Early Buddhism by S. Dhammika',
+                          'dppn': 'Pali Proper Names',
+                          'pts': 'PTS Pali English Dictionary'
+                      }
+                  },
+                  // The below two arrays are just temporary mockups.
+                  dictonaryAdjacent: {
+                      type: Array,
+                      value: ['dhamita','dhamitvā','dhameti','dhamenta','dhamesi',
+                      'dhamma','dhammakathā','dhammakathika','dhammakamma','dhammakaraka']
+                  },
+                  dictionarySimilar: {
+                      type: Array,
+                      value: ['dhamma','dhammā','adhamma','dhamman','dhammī','ghamma',
+                      'dhama','damma','uddhamma','opamma']
+                  }
               }
-          },
-          // checks if item is found in this specific dictionary and returns the result.
-          _checkDictionaryEntry: function(dictResult, dictionaryItem) {
-              if (dictResult[dictionaryItem.toLowerCase()]) {
-                  return dictResult[dictionaryItem.toLowerCase()];
-              } else if (dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)]) {
-                  return dictResult[dictionaryItem.charAt(0).toUpperCase() + dictionaryItem.slice(1)];
+          }
+
+          _computeUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/dictionary_full/${this.dictionaryWord}`;
+          }
+
+          _loadNewResult() {
+              this.$.ajax.url = this._computeUrl();
+              return this.$.ajax.generateRequest();
+          }
+
+          _didRespond() {
+              let dictsUsed = {};
+              let finalResults = [];
+              for (let key in this.dictionaryTitles) {
+                  dictsUsed = this._sortDictionaryResults(key);
+                  if (dictsUsed) {
+                      finalResults.push(dictsUsed);
+                  }
               }
-          },
+              this.dictionaryResults = finalResults;
+          }
+
+          _sortDictionaryResults(dictionary) {
+              for (let item in this.dictionaryReturns) {
+                  if (this.dictionaryReturns[item].dictname == dictionary) {
+                    return this.dictionaryReturns[item];
+                  }
+              }
+          } 
+
+          _getDictionaryTitle(dictname) {
+              return this.dictionaryTitles[dictname];
+          }
+
           // toggles the drawer on the right to show the related/similar items.
-          _toggleDrawer: function() {
+          _toggleDrawer() {
               this.$.drawer.toggle();
           }
-      });
+
+      }
+
+      customElements.define(SCPageDictionary.is, SCPageDictionary);
   </script>
 </dom-module>

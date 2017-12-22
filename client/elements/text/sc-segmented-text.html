@@ -184,20 +184,10 @@
                       type: Boolean,
                       value: false
                   },
-                  paliLookupTargetDictRepr: {
-                      type: String,
-                      statePath: 'textOptions.paliLookupTargetDictRepr',
-                      observer: '_paliLookupTargetDictReprChanged'
-                  },
                   isChineseLookupEnabled: {
                       type: Boolean,
                       statePath: 'textOptions.chineseLookupActivated',
                       observer: '_chineseLookupStateChanged'
-                  },
-                  chineseLookupTargetDictRepr: {
-                      type: String,
-                      statePath: 'textOptions.chineseLookupTargetDictRepr',
-                      observer: '_chineseLookupTargetDictReprChanged'
                   },
                   scriptIsoCodes: {
                       type: Object,
@@ -439,9 +429,6 @@
 
           // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
           _computeParagraphs() {
-              if (!this.paragraphs || this.paragraphs.length === 0) {
-                  return;
-              }
               const uid = (this.rootSutta || this.translatedSutta).uid;
               const divisionId = /^[a-z]+/.exec(uid)[0];
               this._setParagraphsVisible(this.showParagraphs);
@@ -604,6 +591,11 @@
           }
 
           _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
+            const paddingBottom = window.getComputedStyle(section).paddingBottom;
+              if (paddingBottom && paddingBottom !== '0px') {
+                  section.style.paddingBottom = '0';
+                  section.style.marginBottom = paddingBottom;
+              }
               if (idFrom.includes('.') || (idTo && idTo.includes('.'))) {
                   let newSection = section.nextElementSibling;
                   if (isSideBySideView && !wrapperAlreadyExists) {
@@ -612,13 +604,6 @@
                   section = newSection;
                   if (!isSideBySideView) {
                       section.classList.add('highlight');
-                  }
-                  const padding = window.getComputedStyle(section).padding;
-                  if (padding && padding !== '0px') {
-                      requestAnimationFrame(() => {
-                          section.style.padding = '0';
-                          section.style.margin = padding;
-                      })
                   }
                   if (isSideBySideView && !wrapperAlreadyExists) {
                       wrapper.appendChild(section.cloneNode(true));
@@ -654,7 +639,7 @@
           }
 
           _processHighlightAndScroll(sectionId, isSmooth) {
-              let [idFrom, idTo] = sectionId.split('-');
+              let [idFrom, idTo] = sectionId.split('--');
               idFrom = this._generateId(idFrom);
               idTo = this._generateId(idTo);
               let firstSection = this.shadowRoot.getElementById(idFrom);
@@ -684,10 +669,8 @@
                       this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists);
                       break;
                   } else if (margin && margin !== '0px') {
-                      requestAnimationFrame(() => {
-                          section.style.margin = '0';
-                          section.style.padding = margin;
-                      })
+                      section.style.margin = '0';
+                      section.style.padding = margin;
                   }
 
                   if (section.nextElementSibling === null && section.parentNode.nodeName === 'P') {
@@ -1147,31 +1130,6 @@
                   if (this.shadowRoot.querySelector('.original-text')) {
                       this._putWordsIntoSpans('.original-text');
                   }
-              }
-          }
-
-          _showToast(dictName) {
-              this.dispatchEvent(new CustomEvent('show-sc-toast', {
-                  detail: {
-                      toastType: 'info',
-                      message: `The ${dictName} lookup dictionary is now enabled.`
-                  },
-                  bubbles: true,
-                  composed: true
-              }));
-          }
-
-          _paliLookupTargetDictReprChanged() {
-              if (this.isPaliLookupEnabled) {
-                  const dictName = this.paliLookupTargetDictRepr.replace('→', 'to');
-                  this._showToast(dictName);
-              }
-          }
-
-          _chineseLookupTargetDictReprChanged() {
-              if (this.isChineseLookupEnabled) {
-                  const dictName = this.chineseLookupTargetDictRepr.replace('→', 'to');
-                  this._showToast(dictName);
               }
           }
 

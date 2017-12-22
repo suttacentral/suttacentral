@@ -12,7 +12,7 @@ from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
-from . import biblio, currencies, dictionaries, paragraphs, po, textdata, divisions, images_files
+from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, divisions, images_files, homepage
 
 
 class ChangeTracker:
@@ -132,7 +132,7 @@ def process_menu_ordering(structure_dir):
     return data
 
 
-def process_root_files(docs, edges, mapping, root_files, root_languages, structure_dir):
+def process_division_files(docs, edges, mapping, division_files, root_languages, structure_dir):
     with open(structure_dir / 'sutta.json', 'r') as f:
         sutta_file = json.load(f)
 
@@ -143,23 +143,21 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
 
     reg = regex.compile(r'^\D+')
     number_reg = regex.compile(r'.*?([0-9]+)$')
-    for root_file in root_files:
-        with root_file.open('r', encoding='utf8') as f:
+    
+    uids_seen = defaultdict(list)
+    for division_file in division_files:
+        with division_file.open('r', encoding='utf8') as f:
             entries = json.load(f)
-        unique_counter = Counter(entry['_path'].split('/')[-1] for entry in entries)
-
+        
         for i, entry in enumerate(entries):
             path = pathlib.PurePath(entry['_path'])
             mapping[path] = entry
-
+            
             uid = path.parts[-1]
-            if unique_counter[uid] > 1 or uid.startswith('vagga'):
-                # uid is the end of path, unless it is non-unique in which case
-                # combine with the second to last part of path
-                uid = '-'.join(entry['_path'].split('/')[-2:])
-
+            uids_seen[uid].append(entry['_path'])
             entry['_key'] = uid
             entry['uid'] = uid
+
             base_uid = reg.match(uid)[0]
             while base_uid:
                 try:
@@ -186,7 +184,6 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
                     entry[data_name] = sutta_data[uid][data_name]
                 except KeyError:
                     pass
-
             docs.append(entry)
 
             # find the parent
@@ -195,7 +192,11 @@ def process_root_files(docs, edges, mapping, root_files, root_languages, structu
             if parent:
                 edges.append({'_from': 'root/' + parent['_key'], '_to': 'root/' + entry['_key'],
                               'type': edge_type})
-
+    for uid, paths in uids_seen.items():
+        if len(paths) == 1:
+            continue
+        logging.error(f'{uid} appears {len(paths)} times: {",".join(paths)}')
+            
 
 def process_category_files(category_files, db, edges, mapping):
     for category_file in category_files:
@@ -241,6 +242,7 @@ def process_category_files(category_files, db, edges, mapping):
         collection.truncate()
         collection.import_bulk(category_docs)
 
+def perform_update_queries(db):
     # add root language uid to everything.
     db.aql.execute('''
     FOR lang IN language
@@ -255,15 +257,15 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     docs = []
     edges = []
     mapping = {}
-    root_files = sorted((structure_dir / 'division').glob('**/*.json'))
+    division_files = sorted((structure_dir / 'division').glob('**/*.json'))
     category_files = sorted(structure_dir.glob('*.json'))
 
     root_languages = process_root_languages(structure_dir)
 
-    if change_tracker.is_any_file_new_or_changed(root_files + category_files):
+    if change_tracker.is_any_file_new_or_changed(division_files + category_files):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
-        process_root_files(docs, edges, mapping, root_files, root_languages, structure_dir)
+        process_division_files(docs, edges, mapping, division_files, root_languages, structure_dir)
 
         process_category_files(category_files, db, edges, mapping)
 
@@ -277,7 +279,8 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
         db['root'].import_bulk(docs)
         db['root_edges'].truncate()
         db['root_edges'].import_bulk(edges)
-
+        
+        perform_update_queries(db)
 
 def get_true_uids(uid: str, all_uids: Set[str]) -> List[str]:
     """Extract list of indexes out of our range notation.
@@ -559,6 +562,8 @@ def run():
 
     dictionaries.load_dictionaries(db, dictionaries_dir)
 
+    dictionary_full.load_dictionary_full(db, dictionaries_dir)
+
     currencies.load_currencies(db, additional_info_dir)
 
     paragraphs.load_paragraphs(db, additional_info_dir)
@@ -566,5 +571,9 @@ def run():
     biblio.load_biblios(db, additional_info_dir)
 
     divisions.load_divisions(db, structure_dir)
+
+    homepage.load_epigraphs(db, additional_info_dir)
+
+    homepage.load_why_we_read(db, additional_info_dir)
 
     change_tracker.update_mtimes()

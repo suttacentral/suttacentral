@@ -1,15 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 
-<link rel="import" href="../elements/paper-tree-sc/paper-tree.html">
 <link rel="import" href="../elements/page-selector.html">
 <link rel="import" href="../elements/addons/sc-toasts.html">
+<link rel="import" href="../elements/menus/sc-navigation-menu.html">
 <link rel="import" href="../styles/sc-scrollbar-style.html">
 
 <!-- Imports for the sutta text dialogs: -->
@@ -20,8 +18,7 @@
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
 <!--
-  The navdrawer is the first element that is called and it loads the navigation-drawer (`app-drawer`) and populates
-  this with the menu-tree through `paper-tree-sc` (**paper-tree.html** and **paper-tree-node.html**).
+  This is the base layout element of the application. It contains the sidebar and the main content container.
 
   Issue:
     For the grayed out backdrop, the sutta text dialogs must be placed outside the text-view itself because of a
@@ -31,24 +28,11 @@
     https://github.com/PolymerElements/paper-dialog-behavior/issues/78
     https://github.com/PolymerElements/paper-dialog/issues/44#issuecomment-172013206
 -->
-<dom-module id="sc-navdrawer">
+<dom-module id="sc-drawer-layout">
   <template>
     <style include="sc-scrollbar-style">
       :host {
-        background-color: grey;
         --app-drawer-width: 300px;
-      }
-
-      :host([is-wide]) {
-        --app-drawer-width: 360px;
-      }
-
-      .sc-paper-tree {
-        @apply --sc-sans-font;
-      }
-
-      .nav-list-container {
-        padding-top: 1em;
       }
 
       .nav-wheel-icon {
@@ -65,18 +49,19 @@
         @apply --sc-serif-font;
         @apply --sc-mixed-small-caps;
         @apply --sc-skolar-font-size-static-subtitle;
+        position: relative;
+        z-index: 100;
         background-color: var(--sc-secondary-text-color);
         padding-bottom: var(--sc-size-xs);
-        color: white;
         font-weight: normal;
         margin: 0;
         white-space: nowrap;
         height: 60px;
         line-height: 1.4;
+        transition: opacity .5s;
       }
 
       .nav-home-link {
-        color: white;
         text-decoration: none;
         background: none;
       }
@@ -90,27 +75,15 @@
       }
 
       .nav-drawer-box {
-        @apply --shadow-elevation-16dp;
-        background-color: var(--sc-secondary-background-color);
-        overflow: auto;
+        @apply --shadow-elevation-8dp;
+        background-color: var(--sc-primary-background-color);
+        overflow: hidden;
+        z-index: 60;
         height: 100%;
       }
 
-      .paper-spinner {
-        --paper-spinner-color: var(--sc-primary-color);
-      }
-
-      .icon-middle {
-        position: absolute;
-        margin: 0;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      .network-error-icon {
-        width: var(--sc-size-xxl);
-        height: var(--sc-size-xxl);
+      .nav-home-title-text {
+        color: var(--sc-tertiary-text-color);
       }
 
       /* styles for the text dialogs: */
@@ -189,39 +162,18 @@
         margin: var(--sc-size-sm);
       }
 
-      .nav-home-title-text {
-        color: var(--sc-tertiary-text-color);
+      .navigation-menu {
+        height: 100%;
       }
 
-      a {
-        color: inherit;
-        text-decoration: none;
-        background: linear-gradient(to top, var(--sc-primary-color-transparent) 1.5px, var(--sc-primary-color) 1.5px, var(--sc-primary-color) 2.5px, var(--sc-primary-color-transparent) 2.5px);
-      }
-
-      a:hover {
-        background: linear-gradient(to top, var(--sc-primary-color-transparent) 1px, var(--sc-primary-color) 1px, var(--sc-primary-color) 3px, var(--sc-primary-color-transparent) 3px);
-      }
-
-      a:visited {
-        background: linear-gradient(to top, var(--sc-primary-color-darkest-transparent) 1px, var(--sc-primary-color-darkest) 1px, var(--sc-primary-color-darkest) 3px, var(--sc-primary-color-darkest-transparent) 3px);
+      .transparent {
+        opacity: 0;
       }
 
     </style>
 
     <iron-meta id="meta" key="API_ROOT" value="{{_getApiUrl()}}"></iron-meta>
     <iron-meta id="meta" key="IMAGES_ROOT" value="https://suttacentral.net/text_images"></iron-meta>
-
-    <iron-media-query query="(min-width: 992px)" query-matches="{{wideScreen}}"></iron-media-query>
-
-    <iron-ajax
-        auto
-        url="[[_getMenuUrl()]]"
-        handle-as="json"
-        loading="{{loading}}"
-        last-error="{{error}}"
-        last-response="{{navList}}"
-    ></iron-ajax>
 
     <app-drawer-layout fullbleed responsive-width="840px">
 
@@ -233,22 +185,7 @@
               <span class="nav-home-title-text">&nbsp;SuttaCentral</span>
             </a>
           </div>
-          <div id="container" class="nav-list-container">
-            <template is="dom-if" if="{{_shouldShowLoadingIndicator(loading, error)}}">
-              <div class="loading-indicator">
-                <paper-spinner-lite class="paper-spinner icon-middle" active="{{loading}}"></paper-spinner-lite>
-              </div>
-            </template>
-
-            <template is="dom-if" if="{{error}}">
-              <iron-icon class="network-error-icon icon-middle" title="Network error"
-                         src="img/nonetwork.svg"></iron-icon>
-            </template>
-
-            <template is="dom-repeat" items="{{navList}}">
-              <paper-tree class="sc-paper-tree" data='{{item}}' is-wide="[[wideScreen]]"></paper-tree>
-            </template>
-          </div>
+          <sc-navigation-menu class="navigation-menu"></sc-navigation-menu>
         </div>
       </app-drawer>
 
@@ -290,9 +227,9 @@
   </template>
 
   <script>
-      class SCNavdrawer extends ReduxMixin(Polymer.Element) {
+      class SCDrawerLayout extends ReduxMixin(Polymer.Element) {
           static get is() {
-              return 'sc-navdrawer';
+              return 'sc-drawer-layout';
           }
 
           static get properties() {
@@ -300,18 +237,6 @@
                   inputLanguage: {
                       type: String,
                       notify: true
-                  },
-                  category: {
-                      type: String,
-                      notify: true
-                  },
-                  wideScreen: {
-                      type: Boolean,
-                      observer: '_screenWidthChanged'
-                  },
-                  navList: {
-                      type: Array,
-                      observer: '_parseNavList'
                   },
                   infoDialogMetaArea: {
                       type: String,
@@ -331,42 +256,9 @@
               this._addScrollLockListeners();
           }
 
-          // Set the width of the nav drawer
-          _screenWidthChanged() {
-              const hostAttributes = this.$.container.__dataHost.attributes;
-              if (this.wideScreen) {
-                  hostAttributes.setNamedItem(document.createAttribute('is-wide'));
-              }
-              else if (hostAttributes.getNamedItem('is-wide')) {
-                  hostAttributes.removeNamedItem('is-wide');
-              }
-          }
-
-          // Open the first two tiers of the sidebar menu and add icons
-          _parseNavList() {
-              this.navList[0].open = true;
-              if (!this.navList[0].children) {
-                  return;
-              }
-              this.navList[0].children.forEach((item) => {
-                  item.open = true;
-                  item.icon = 'trending-flat';
-                  if (!item.children) {
-                      return;
-                  }
-                  item.children.forEach((subItem) => {
-                      subItem.icon = 'turned-in';
-                  })
-              });
-          }
-
           // opens the app-drawer when it is not visible.
           _toggleDrawer(event) {
               return this.shadowRoot.querySelector('app-drawer').setAttribute('opened', event.detail.togdraw);
-          }
-
-          _getMenuUrl() {
-              return `${this._getApiUrl()}/menu`;
           }
 
           // Locks scroll on text dialogs:
@@ -384,16 +276,12 @@
               infoDialog.addEventListener('opened-changed', () => { scrollLockListener(infoDialog) });
           }
 
-          _shouldShowLoadingIndicator(loading, error) {
-              return !!(loading && !error);
-          }
-
           _getApiUrl() {
               let currentUrl = window.location;
               return `${currentUrl.protocol}//${currentUrl.host}/api`;
           }
       }
 
-      customElements.define(SCNavdrawer.is, SCNavdrawer);
+      customElements.define(SCDrawerLayout.is, SCDrawerLayout);
   </script>
 </dom-module>

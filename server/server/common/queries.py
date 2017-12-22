@@ -20,33 +20,65 @@ FOR text IN html_text
 _MAX_NESTING_LEVEL = '5'
 
 MENU = '''
-FOR pit IN pitaka
-    FOR div, edge, path IN 1..1 OUTBOUND pit `root_edges` OPTIONS {bfs: false}
-        FILTER IS_SAME_COLLECTION('root', div)
-        LET parents = MERGE(
-            FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
-                RETURN {
-                    [p.type]: {
-                        name: p.name,
-                        uid: p._id,
-                        num: p.num
-                    }
+FOR div IN root
+    FILTER div.type == 'division'
+    LET parents = MERGE(
+        FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+            RETURN {
+                [p.type]: {
+                    name: p.name,
+                    uid: p._id,
+                    num: p.num
                 }
-            )
-        LET descendents = (
-            FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
+            }
+        )
+        LET descendant = (
+            FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
                 FILTER d_edge.type != 'text'
-                RETURN {
-                    from: d_edge._from,
-                    name: d.name,
-                    uid: d._id,
-                    num: d.num
-                }
-            )
-        
-        RETURN MERGE({uid: div._id, name: div.name, num: div.num}, {descendents: descendents, parents: parents})
+                LIMIT 1
+                RETURN d.uid
+        )[0]
+        RETURN {
+            uid: div._id, 
+            has_children: descendant != null,
+            name: div.name,
+            lang_iso: div.root_lang,
+            lang_name: (FOR lang in language FILTER lang.uid == div.root_lang LIMIT 1 RETURN lang.name)[0],
+            num: div.num, 
+            id: div.uid, 
+            type: div.type, 
+            parents: parents
+        }
 '''
 
+SUBMENU = '''
+LET div = DOCUMENT('root', @submenu_id)
+LET descendents = (
+    FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
+        FILTER d_edge.type != 'text'
+        RETURN {
+            from: d_edge._from,
+            name: d.name,
+            uid: d._id,
+            num: d.num,
+            type: d.type,
+            id: d.uid
+    }
+)
+LET parents = MERGE(
+    FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+        RETURN {
+            [p.type]: {
+                name: p.name,
+                uid: p._id,
+                num: p.num,
+                type: p.type
+        }
+    }
+)
+
+RETURN {name: div.name, num: div.num, id: div.uid, uid: div._id, descendents: descendents, parents: parents}
+'''
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
@@ -56,6 +88,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             FILTER text.uid == v.uid
             LET res = {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 id: text._key,
                 segmented: false
@@ -72,6 +105,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             SORT text.lang
             RETURN {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 id: text._key,
                 segmented: true,
@@ -143,7 +177,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         difficulty: difficulty,
         original_title: v.name,
         root_lang: v.root_lang,
-        type: e.type ? e.type : v.type ? 'grouping' : 'text',
+        type: e.type ? e.type : (v.type ? v.type : 'text'),
         from: e._from,
         translated_title: translated_titles,
         translations: filtered_translations,
@@ -277,7 +311,6 @@ LET legacy = (
     RETURN MERGE(chosen, {original_title: additional_info.name, acronym: additional_info.acronym})
 '''
 
-
 SUTTA_VIEW = '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
 
@@ -396,10 +429,34 @@ FOR paragraph IN paragraphs
     }
 '''
 
+DICTIONARYFULL = '''
+FOR dictionary IN dictionary_full
+    FILTER dictionary.word == @word
+    RETURN {
+        dictname: dictionary.dictname,
+        word: dictionary.word,
+        text: dictionary.text
+    }
+'''
+
 IMAGES = '''
 FOR image IN images
     FILTER image.division == @division AND image.vol == @vol
     SORT image.page
     RETURN {name: image.name,
             pageNumber: image.page_number}
+'''
+
+EPIGRAPHS = '''
+FOR epigraph IN epigraphs
+    SORT RAND()
+    LIMIT @number
+    RETURN KEEP(epigraph, ['uid', 'epigraph'])
+'''
+
+WHY_WE_READ = '''
+FOR text IN why_we_read
+    SORT RAND()
+    LIMIT @number
+    RETURN text.text
 '''

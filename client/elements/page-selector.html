@@ -125,7 +125,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         </template>
 
         <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp>
-          <sc-page-dictionary></sc-page-dictionary>
+          <sc-page-dictionary dictionary-word="[[dictionaryWord]]"></sc-page-dictionary>
         </template>
 
       </app-header-layout>
@@ -142,6 +142,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           static get properties() {
               return {
                   route: Object,
+                  dictionaryWord: String,
                   queryParams: {
                       type: Object,
                       notify: true
@@ -151,7 +152,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   staticPages: {
                       type: Array,
                       value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
-                          'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGMENTS', 'LICENSING']
+                          'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGMENTS', 'LICENSING', 'INTRODUCTION',
+                          'START', 'DISCOURSES', 'VINAYA', 'ABHIDHAMMA', 'A-NEW-BEGINNING']
                   },
                   allIsoCodes: {
                       type: Array,
@@ -216,6 +218,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                           type: 'CHANGE_TOOLBAR_MODE',
                           mode: mode
                       };
+                  },
+                  selectNavigationMenuItem(id) {
+                      return {
+                          type: 'SELECT_NAVIGATION_MENU_ITEM',
+                          id: id
+                      }
                   }
               }
           }
@@ -247,12 +255,14 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
               else if (this._isDictionaryPage()) {
+                  this.set('dictionaryWord', this._getDictionaryParams());
                   this.dispatch('changeToolbarMode', 'dictionary-mode');
                   this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
               else if (this._isSuttaplexListPage()) {
                   this.dispatch('changeToolbarMode', 'list-mode');
+                  this.dispatch('selectNavigationMenuItem', this._getPathParamNumber(1));
                   this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
               }
               else if (this._isSuttaTextPage()) {
@@ -280,7 +290,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _isDictionaryPage() {
-              return this.route.path === '/define';
+              return this.route.path.split('/')[1] === 'define';
           }
 
           // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).
@@ -318,6 +328,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   langIsoCode: this._getPathParamNumber(2),
                   authorName: this._getPathParamNumber(3)
               };
+          }
+
+          _getDictionaryParams() {
+              return this.route.path.split('/')[2];
           }
 
           // Returns the main path category (first path param). Normalized by converting to upper case.
