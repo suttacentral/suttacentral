@@ -463,17 +463,5 @@ FOR text IN why_we_read
 
 GLOSSARY = '''
 FOR gloss IN glossary
-    RETURN {
-        glossword: gloss.glossword,
-        description: gloss.description
-    }
-'''
-
-ADJACENT = '''
-LET adjacent = (
-    FOR dictionary IN dictionary_full
-        RETURN dictionary.word
-    )
-
-RETURN UNIQUE (adjacent)
+    RETURN KEEP(gloss, ['glossword', 'description'])
 '''
