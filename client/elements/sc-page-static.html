@@ -102,13 +102,9 @@
       }
 
       .link-anchor {
-        text-align: center;
-        text-decoration: none;
-        outline: none !important;
-        color: var(--sc-tertiary-text-color);
-        display: flex;
-        flex-flow: column;
-        justify-content: center;
+        position: absolute;
+        width: calc(100% + 20px);
+        height: 100%;
       }
 
       @media (max-width: 925px) {
@@ -149,29 +145,25 @@
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item>
       <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
-        <paper-tab class="nav-link" data-name="HOME" link>
-          <a class="link-anchor" href="/home" tabindex="-1">
-            <div>HOME</div>
-          </a>
+        <paper-tab class="nav-link" data-name="HOME">
+          <div>HOME</div>
+          <a class="link-anchor" href="/home"></a>
         </paper-tab>
-        <paper-tab class="nav-link" data-name="INTRODUCTION" link>
-          <a class="link-anchor" href="/introduction" tabindex="-1">
-            <div>INTRODUCTION</div>
-          </a>
+        <paper-tab class="nav-link" data-name="INTRODUCTION">
+          <div>INTRODUCTION</div>
+          <a class="link-anchor" href="/introduction" tabindex="-1"></a>
         </paper-tab>
-        <paper-tab class="nav-link" data-name="DONATIONS" link>
-          <a class="link-anchor" href="/donations" tabindex="-1">
-            <div>DONATIONS</div>
-          </a>
+        <paper-tab class="nav-link" data-name="DONATIONS">
+          <div>DONATIONS</div>
+          <a class="link-anchor" href="/donations" tabindex="-1"></a>
         </paper-tab>
-        <paper-tab class="nav-link" data-name="OFFLINE" link>
-          <a class="link-anchor" href="/offline" tabindex="-1">
-            <div>USE OFFLINE</div>
-          </a>
+        <paper-tab class="nav-link" data-name="OFFLINE">
+          <div>USE OFFLINE</div>
+          <a class="link-anchor" href="/offline" tabindex="-1"></a>
         </paper-tab>
-        <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW" link>
+        <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW">
+          <div>WHAT'S NEW</div>
           <a class="link-anchor" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank">
-            <div>WHAT'S NEW</div>
           </a>
         </paper-tab>
       </paper-tabs>
