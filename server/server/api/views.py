@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from collections import defaultdict
 
 import stripe
 from flask import current_app, request
@@ -108,8 +109,8 @@ class Menu(Resource):
                 if uid == 'pitaka/sutta':
                     pitaka['children'] = self.groupby_parents(children, ['grouping'])
                 else:
-                    children_by_sect = self.groupby_parents(children, ['sect'])
-                    pitaka['children'] = self.group_by_language(children_by_sect)
+                    pitaka['children'] = self.groupby_parents(children, ['sect'])
+                    self.group_by_language(pitaka)
 
         self.recursive_cleanup(data, mapping={})
 
@@ -146,8 +147,18 @@ class Menu(Resource):
                 parent['children'] = children
         return sorted(out, key=self.num_sort_key)
 
-    def group_by_language(self, entries):
-        return entries
+    def group_by_language(self, pitaka):
+        i = 0
+        while i < len(pitaka['children']):
+            child = pitaka['children'][i]
+            new_data = defaultdict(list)
+            for sub_child in child['children']:
+                iso = sub_child.pop('lang_iso')
+                new_data[iso].append(sub_child)
+            child.pop('children')
+            new_data = [{**child, 'iso_code': iso, 'children': children} for iso, children in new_data.items()]
+            pitaka['children'] = pitaka['children'][:i] + new_data + pitaka['children'][i+1:]
+            i += len(new_data)
 
     def recursive_cleanup(self, menu_entries, mapping):
         menu_entries.sort(key=self.num_sort_key)
