@@ -468,3 +468,12 @@ FOR gloss IN glossary
         description: gloss.description
     }
 '''
+
+ADJACENT = '''
+LET adjacent = (
+    FOR dictionary IN dictionary_full
+        RETURN dictionary.word
+    )
+
+RETURN UNIQUE (adjacent)
+'''

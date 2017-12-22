@@ -38,6 +38,9 @@
       }
 
       .currency-dropdown {
+        --paper-menu-button-content: {
+          display: flex;
+        };
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-dropdown-menu-icon: {
           color: var(--sc-disabled-text-color);
@@ -257,10 +260,10 @@
                   <template is="dom-repeat" items="[[currencies]]">
                     <paper-item id$="[[item.symbol]]" class="currency-menu-item">
                       [[item.symbol]]
+                      <paper-tooltip class="sc-tooltip" animation-delay="100">
+                        [[item.name]]
+                      </paper-tooltip>
                     </paper-item>
-                    <paper-tooltip for="[[item.symbol]]" class="sc-tooltip" animation-delay="100">
-                      [[item.name]]
-                    </paper-tooltip>
                   </template>
                 </paper-listbox>
               </paper-dropdown-menu>
