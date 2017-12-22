@@ -3,7 +3,7 @@ from migrations.base import Migration
 
 
 class SecondMigration(Migration):
-    migration_id = 'add_dictionary_full_collection_012'
+    migration_id = 'add_dictionary_full_collection_015'
     tasks = ['create_collection']
 
     def create_collection(self):
