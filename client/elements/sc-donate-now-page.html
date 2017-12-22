@@ -260,13 +260,16 @@
                   <template is="dom-repeat" items="[[currencies]]">
                     <paper-item id$="[[item.symbol]]" class="currency-menu-item">
                       [[item.symbol]]
-                      <paper-tooltip class="sc-tooltip" animation-delay="100">
-                        [[item.name]]
-                      </paper-tooltip>
                     </paper-item>
                   </template>
                 </paper-listbox>
               </paper-dropdown-menu>
+
+              <template is="dom-repeat" items="[[currencies]]">
+                <paper-tooltip for="[[item.symbol]]" position="right" class="sc-tooltip" animation-delay="100">
+                  [[item.name]]
+                </paper-tooltip>
+              </template>
 
               <paper-input label="Amount" class="data-input amount-input" auto-validate
                            pattern="^[+]?(\d+[.,]?\d{0,2})$"
