@@ -381,16 +381,16 @@
               }
               while (section) {
                   section.classList.add('highlight');
-                  this._marginToPadding(section)
+                  this._changeMarginToPadding(section)
                   let nextSection = section.nextElementSibling;
                   if (!nextSection) {
-                      this._paddingToMargin(section);
+                      this._changePaddingToMargin(section);
                       break;
                   }
                   let sectionLink = nextSection.querySelector('.textual-info-paragraph');
                   if (sectionLink) {
                       if (last) {
-                          this._paddingToMargin(section.nodeName === "A" ? section.previousElementSibling : section);
+                          this._changePaddingToMargin(section.nodeName === "A" ? section.previousElementSibling : section);
                           break;
                       } else if (sectionLink.id === idTo) {
                           last = true;
@@ -401,7 +401,7 @@
               return firstSection;
           }
 
-          _paddingToMargin(section) {
+          _changePaddingToMargin(section) {
             const margin = window.getComputedStyle(section).padding;
             requestAnimationFrame(() => {
                 section.style.margin = margin;
@@ -409,7 +409,7 @@
             })
           }
 
-          _marginToPadding(section) {
+          _changeMarginToPadding(section) {
             for(let pos of ['Top', 'Bottom', 'Left', "Right"]) {
                 const margin = window.getComputedStyle(section)[`margin${pos}`];
                 const padding = window.getComputedStyle(section)[`padding${pos}`];
