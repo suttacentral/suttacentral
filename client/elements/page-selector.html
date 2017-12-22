@@ -75,6 +75,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         margin-right: var(--sc-size-md);
       }
 
+      #header.drawer-closed {
+        left: 0 !important;
+      }
+
       @media screen and (max-width: 450px) {
         #toolbar_title {
           font-size: calc(var(--sc-size-md) * var(--sc-skolar-font-scale));
@@ -354,6 +358,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
           _toggleDrawer() {
               this.dispatchEvent(new CustomEvent('toggleDrawer', { composed: true, bubbles: true } ));
+              this.$.header.classList.toggle('drawer-closed');
           }
 
           _scrollToTop() {
