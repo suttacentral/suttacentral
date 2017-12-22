@@ -381,7 +381,7 @@
               }
               while (section) {
                   section.classList.add('highlight');
-                  this.__changeMarginToPadding(section)
+                  this._changeMarginToPadding(section)
                   let nextSection = section.nextElementSibling;
                   if (!nextSection) {
                       this._changePaddingToMargin(section);
@@ -409,12 +409,12 @@
             })
           }
 
-          __changeMarginToPadding(section) {
-            const styles = window.getComputedStyle(section);
-            let values = {};
+          _changeMarginToPadding(section) {
             for(let pos of ['Top', 'Bottom', 'Left', "Right"]) {
+                const margin = window.getComputedStyle(section)[`margin${pos}`];
+                const padding = window.getComputedStyle(section)[`padding${pos}`];
                 section.style[`margin${pos}`] = '0';
-                section.style[`padding${pos}`] = this._getBigger(styles[`margin${pos}`], styles[`padding${pos}`]);
+                section.style[`padding${pos}`] = this._getBigger(margin, padding);
             }
           }
 
