@@ -5,6 +5,7 @@ def load_dictionary_full(db, dictionaries_dir):
     print('Loading dictionary_full')
     dictionary_full = (dictionaries_dir / 'en').glob('*.json')
     dictionary_full_collection = db['dictionary_full']
+    db['dictionary_full'].truncate()
     docs = []
     for dictionary in tqdm(dictionary_full):
         with dictionary.open('r', encoding='utf-8') as f:

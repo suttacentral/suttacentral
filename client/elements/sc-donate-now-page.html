@@ -260,6 +260,9 @@
                   <template is="dom-repeat" items="[[currencies]]">
                     <paper-item id$="[[item.symbol]]" class="currency-menu-item">
                       [[item.symbol]]
+                      <paper-tooltip class="sc-tooltip" animation-delay="100">
+                        [[item.name]]
+                      </paper-tooltip>
                     </paper-item>
                   </template>
                 </paper-listbox>
