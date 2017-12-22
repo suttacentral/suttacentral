@@ -258,18 +258,21 @@
 
           // opens the app-drawer when it is not visible.
           _toggleDrawer() {
-              const contentContainer = this.shadowRoot.querySelector('#drawer_layout')
-                  .shadowRoot.querySelector('#contentContainer');
-              if (this.shadowRoot.querySelector('.sc-app-drawer').hasAttribute('opened')) {
-                  requestAnimationFrame(() => {
-                      contentContainer.removeAttribute('drawer-position');
-                  })
-              } else {
-                  requestAnimationFrame(() => {
-                      contentContainer.setAttribute('drawer-position', 'left');
-                  });
+              const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
+              const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
+              const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
+              if (!isNarrowScreen) {
+                  if (this.shadowRoot.querySelector('.sc-app-drawer').hasAttribute('opened')) {
+                      requestAnimationFrame(() => {
+                          contentContainer.removeAttribute('drawer-position');
+                      })
+                  } else {
+                      requestAnimationFrame(() => {
+                          contentContainer.setAttribute('drawer-position', 'left');
+                      });
+                  }
               }
-              return this.shadowRoot.querySelector('app-drawer').toggle();
+              this.shadowRoot.querySelector('app-drawer').toggle();
           }
 
           // Locks scroll on text dialogs:
