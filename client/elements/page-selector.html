@@ -125,7 +125,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         </template>
 
         <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp>
-          <sc-page-dictionary></sc-page-dictionary>
+          <sc-page-dictionary dictionary-word="[[dictionaryWord]]"></sc-page-dictionary>
         </template>
 
       </app-header-layout>
@@ -142,6 +142,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           static get properties() {
               return {
                   route: Object,
+                  dictionaryWord: String,
                   queryParams: {
                       type: Object,
                       notify: true
@@ -254,6 +255,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
               else if (this._isDictionaryPage()) {
+                  this.set('dictionaryWord', this._getDictionaryParams());
                   this.dispatch('changeToolbarMode', 'dictionary-mode');
                   this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
@@ -288,7 +290,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _isDictionaryPage() {
-              return this.route.path === '/define';
+              return this.route.path.split('/')[1] === 'define';
           }
 
           // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).
@@ -326,6 +328,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   langIsoCode: this._getPathParamNumber(2),
                   authorName: this._getPathParamNumber(3)
               };
+          }
+
+          _getDictionaryParams() {
+              return this.route.path.split('/')[2];
           }
 
           // Returns the main path category (first path param). Normalized by converting to upper case.

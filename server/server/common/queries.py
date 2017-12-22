@@ -42,7 +42,8 @@ FOR div IN root
             uid: div._id, 
             has_children: descendant != null,
             name: div.name,
-            lang: div.root_lang,
+            lang_iso: div.root_lang,
+            lang_name: (FOR lang in language FILTER lang.uid == div.root_lang LIMIT 1 RETURN lang.name)[0],
             num: div.num, 
             id: div.uid, 
             type: div.type, 
@@ -87,6 +88,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             FILTER text.uid == v.uid
             LET res = {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 id: text._key,
                 segmented: false
@@ -103,6 +105,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             SORT text.lang
             RETURN {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 id: text._key,
                 segmented: true,
@@ -174,7 +177,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         difficulty: difficulty,
         original_title: v.name,
         root_lang: v.root_lang,
-        type: e.type ? e.type : v.type ? 'grouping' : 'text',
+        type: e.type ? e.type : (v.type ? v.type : 'text'),
         from: e._from,
         translated_title: translated_titles,
         translations: filtered_translations,
@@ -428,6 +431,7 @@ FOR paragraph IN paragraphs
 
 DICTIONARYFULL = '''
 FOR dictionary IN dictionary_full
+    FILTER dictionary.word == @word
     RETURN {
         dictname: dictionary.dictname,
         word: dictionary.word,
