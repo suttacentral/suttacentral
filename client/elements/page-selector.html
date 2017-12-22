@@ -72,17 +72,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       #drawertoggle {
         z-index: 1;
         color: var(--sc-tertiary-text-color);
+        margin-right: var(--sc-size-md);
       }
 
       @media screen and (max-width: 450px) {
         #toolbar_title {
           font-size: calc(var(--sc-size-md) * var(--sc-skolar-font-scale));
-        }
-      }
-
-      @media screen and (min-width: 841px) {
-        #drawertoggle {
-          display: none;
         }
       }
 
@@ -358,11 +353,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
           _toggleDrawer() {
-              this.dispatchEvent(new CustomEvent('toggleDrawer', {
-                  detail: { togdraw: 'opened' },
-                  composed: true,
-                  bubbles: true
-              }));
+              this.dispatchEvent(new CustomEvent('toggleDrawer', { composed: true, bubbles: true } ));
           }
 
           _scrollToTop() {

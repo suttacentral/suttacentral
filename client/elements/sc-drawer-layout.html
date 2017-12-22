@@ -257,8 +257,8 @@
           }
 
           // opens the app-drawer when it is not visible.
-          _toggleDrawer(event) {
-              return this.shadowRoot.querySelector('app-drawer').setAttribute('opened', event.detail.togdraw);
+          _toggleDrawer() {
+              return this.shadowRoot.querySelector('app-drawer').toggle();
           }
 
           // Locks scroll on text dialogs:
