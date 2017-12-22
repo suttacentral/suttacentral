@@ -261,8 +261,14 @@
       }
 
       .buddhas-words-text {
-        @apply --sc-skolar-font-size-static-subtitle;
+        @apply --sc-skolar-font-size-xl;
         line-height: 1.1;
+      }
+
+      @media (min-width: 960px) {
+        .buddhas-words-text {
+          @apply --sc-skolar-font-size-static-subtitle;
+        }
       }
 
       @media (min-width: 1280px) {
