@@ -108,7 +108,8 @@ class Menu(Resource):
                 if uid == 'pitaka/sutta':
                     pitaka['children'] = self.groupby_parents(children, ['grouping'])
                 else:
-                    pitaka['children'] = self.groupby_parents(children, ['sect'])
+                    children_by_sect = self.groupby_parents(children, ['sect'])
+                    pitaka['children'] = self.group_by_language(children_by_sect)
 
         self.recursive_cleanup(data, mapping={})
 
@@ -144,6 +145,9 @@ class Menu(Resource):
             else:
                 parent['children'] = children
         return sorted(out, key=self.num_sort_key)
+
+    def group_by_language(self, entries):
+        return entries
 
     def recursive_cleanup(self, menu_entries, mapping):
         menu_entries.sort(key=self.num_sort_key)
