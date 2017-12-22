@@ -109,6 +109,18 @@
         last-response="{{dictionaryReturns}}"
         on-response="_didRespond"></iron-ajax>
 
+    <iron-ajax
+        id="adjacent_ajax"
+        handle-as="json"
+        last-response="{{adjacentReturns}}"
+        on-response="_adjacentLoaded"></iron-ajax>
+
+    <iron-ajax
+        id="glossary_ajax"
+        handle-as="json"
+        last-response="{{glossaryReturns}}"
+        on-response="_glossaryLoaded"></iron-ajax>
+
     <iron-meta id="meta"></iron-meta>
 
     <div class="dictionary-results-container">
@@ -134,7 +146,8 @@
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
               <template is="dom-repeat" items="[[dictonaryAdjacent]]">
-                <li><a href="/define/[[item]]">[[item]]</a>
+                <li>
+                  <a href="/define/[[item]]">[[item]]</a>
                   <!-- <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template> -->
                 </li>
               </template>
@@ -142,7 +155,8 @@
             <h3>Similar Spelling</h3>
             <ul class="fuzzy-terms">
               <template is="dom-repeat" items="[[dictionarySimilar]]">
-                <li><a href="/define/[[item]]">[[item]]</a>
+                <li>
+                  <a href="/define/[[item]]">[[item]]</a>
 <!--               <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
  -->            </li>
               </template>
@@ -165,6 +179,8 @@
               return {
                   dictionaryResults: Array,
                   dictionaryReturns: Array,
+                  glossaryReturns: Array,
+                  adjacentReturns: Array,
                   dictionaryWord: {
                       type: String,
                       observer: '_loadNewResult'
@@ -212,6 +228,8 @@
                   }
               }
               this.dictionaryResults = finalResults;
+              this._loadAdjacent();
+              // this._loadGlossary();
           }
 
           _sortDictionaryResults(dictionary) {
@@ -224,6 +242,42 @@
 
           _getDictionaryTitle(dictname) {
               return this.dictionaryTitles[dictname];
+          }
+
+          // Adding Adjacent Terms
+          _computeAdjacentUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/adjacent`;
+          }
+
+          _loadAdjacent() {
+              this.$.adjacent_ajax.url = this._computeAdjacentUrl();
+              return this.$.adjacent_ajax.generateRequest();
+          }
+
+          _adjacentLoaded() {
+              console.log("loaded Adjacent");
+              console.log(this.AdjacentReturns);
+          }
+
+          // Adding glossary results to related items drawer
+          _computeGlossaryUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/glossary`;
+          }
+
+          _loadGlossary() {
+              this.$.glossary_ajax.url = this._computeGlossaryUrl();
+              return this.$.glossary_ajax.generateRequest();
+          }
+
+          _glossaryLoaded() {
+              console.log("loaded Glossary");
+              console.log(this._getGlossaryDescription("dhamma"));
+              console.log(this.glossaryReturns);
+          }
+
+          _getGlossaryDescription(glossword) {
+              console.log(this.glossaryReturns(glossword));
+              return this.glossaryReturns(glossword);
           }
 
           // toggles the drawer on the right to show the related/similar items.
