@@ -3,7 +3,7 @@ from migrations.base import Migration
 
 
 class InitialMigration(Migration):
-    migration_id = 'add_type_index_012'
+    migration_id = 'add_type_index_014'
     tasks = ['add_type_index']
 
     def add_type_index(self):
