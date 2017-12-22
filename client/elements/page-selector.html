@@ -87,6 +87,22 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         }
       }
 
+      .toast {
+        @apply --sc-skolar-font-size-xl;
+        @apply --sc-sans-font;
+        --paper-toast-color: var(--sc-tertiary-text-color);
+        text-align: center;
+        margin-left: calc(50vw - 150px);
+      }
+
+      .success-toast {
+        --paper-toast-background-color: var(--sc-primary-accent-color);
+      }
+
+      .error-toast {
+        --paper-toast-background-color: var(--sc-toast-error-color);
+      }
+
     </style>
 
     <app-location route={{route}}></app-location>
@@ -128,6 +144,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp>
           <sc-page-dictionary dictionary-word="[[dictionaryWord]]"></sc-page-dictionary>
         </template>
+
+        <paper-toast id="success_toast" class="toast success-toast" text="[[toastMessage]]" duration=3000></paper-toast>
+        <paper-toast id="error_toast" class="toast error-toast" text="[[toastMessage]]" duration=3000></paper-toast>
 
       </app-header-layout>
 
@@ -227,6 +246,19 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       }
                   }
               }
+          }
+
+          ready() {
+              super.ready();
+              this.addEventListener('par-menu-copied', (e) => {
+                  this.toastMessage = e.detail.message;
+                  const success = e.detail.success;
+                  if (success) {
+                      this.$.success_toast.open();
+                  } else {
+                      this.$.error_toast.open();
+                  }
+              });
           }
 
           _recalculateView() {
