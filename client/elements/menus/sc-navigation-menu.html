@@ -431,7 +431,11 @@
                   ${item.children.map(childItem => `
                     <li class="nav-menu-item" data-uid="${childItem.id}">
                     ${listType === 'nav-secondary' ?
-                      `<span class="nav-link-container">${childItem.name}</span>`
+                      `<span class="nav-link-container">${childItem.name}</span>
+                        ${childItem.lang_iso ? `
+                        <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
+                        icon="${this._getLanguageIconName(childItem.lang_iso)}"></iron-icon>` : ''}
+                       `
                       :
                       `<span class="nav-link-container">
                         <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>

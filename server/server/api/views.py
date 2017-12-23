@@ -156,7 +156,7 @@ class Menu(Resource):
                 iso = sub_child.pop('lang_iso')
                 new_data[iso].append(sub_child)
             child.pop('children')
-            new_data = [{**child, 'iso_code': iso, 'children': children} for iso, children in new_data.items()]
+            new_data = [{**child, 'lang_iso': iso, 'children': children} for iso, children in new_data.items()]
             pitaka['children'] = pitaka['children'][:i] + new_data + pitaka['children'][i+1:]
             i += len(new_data)
 
