@@ -243,7 +243,8 @@
               if (this.firstItem) {
                   item = this._getLongestItem();
                   requestAnimationFrame(() => {
-                      this.$.container.style.height = window.getComputedStyle(this.$.container).height;
+                      const height = window.getComputedStyle(this.$.container).height;
+                      this.$.container.style.height = `calc(${height} + 32px)`;
                   })
                   this.firstItem = false;
               } else {
