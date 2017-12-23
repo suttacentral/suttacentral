@@ -41,7 +41,7 @@
         color: var(--sc-primary-accent-color);
       }
 
-      .termsbutton {
+      .terms-button {
         color: var(--sc-disabled-text-color);
       }
 
@@ -121,7 +121,6 @@
 
       .selected-terms-item > a {
           color: var(--sc-primary-color);
-
       }
     </style>
 
@@ -150,9 +149,9 @@
         <div class="dictionary-results-head">
           <h1><span class="dictionary-results-description">Definitions for</span> <span
               class="dictionary-results-term">[[dictionaryWord]]</span></h1>
-          <span class="termsbutton">
-            <paper-icon-button icon="menu" id="menu-icon" on-tap="_toggleDrawer"></paper-icon-button>
-            <paper-tooltip for="menu-icon" class="sc-tooltip" fit-to-visible-bounds>Related Items</paper-tooltip>
+          <span class="terms-button">
+            <paper-icon-button icon="menu" id="menu_icon" on-tap="_toggleDrawer"></paper-icon-button>
+            <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds>Related Items</paper-tooltip>
           </span>
         </div>
         <div class="dictionary-entries">
@@ -283,7 +282,7 @@
           }
 
           _calculateClass(item) {
-              return (item == this.dictionaryWord) ? 'selected-terms-item' : '';
+              return (item === this.dictionaryWord) ? 'selected-terms-item' : '';
           }
 
           // Adding glossary results to related items drawer
