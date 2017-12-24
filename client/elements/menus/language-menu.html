@@ -101,7 +101,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
     </style>
     <template is="dom-if" if="[[_shouldShowMenu(languageChoice)]]">
       <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
-                           title="Select a language" id="paper_dropdown_menu" dynamic-align=true>
+                           title="Select a language" id="paper_dropdown_menu">
         <paper-listbox class="language-menu-listbox" slot="dropdown-content">
 
           <template is="dom-repeat" items="[[languageChoice]]" as="language">
