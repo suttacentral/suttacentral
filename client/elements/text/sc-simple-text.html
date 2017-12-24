@@ -737,7 +737,7 @@
                   isTooltipShown: false
               };
               word.addEventListener('mouseover', (e) => {
-                  if (this.isPaliLookupEnabled || this.isChineseLookupEnabled) {
+                  if ((this.isPaliLookupEnabled && lang === 'pli') || (this.isChineseLookupEnabled && lang === 'lzh')) {
                       word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                       states.isWordHovered = true;
                       that._addTooltip(word, tooltip, lookup, states, e, lang);
