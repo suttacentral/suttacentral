@@ -175,7 +175,7 @@
     <iron-meta id="meta" key="API_ROOT" value="{{_getApiUrl()}}"></iron-meta>
     <iron-meta id="meta" key="IMAGES_ROOT" value="https://suttacentral.net/text_images"></iron-meta>
 
-    <app-drawer-layout fullbleed responsive-width="840px">
+    <app-drawer-layout id="drawer_layout" fullbleed responsive-width="840px">
 
       <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer">
         <div class="nav-drawer-box sc-scrollbar">
@@ -257,8 +257,22 @@
           }
 
           // opens the app-drawer when it is not visible.
-          _toggleDrawer(event) {
-              return this.shadowRoot.querySelector('app-drawer').setAttribute('opened', event.detail.togdraw);
+          _toggleDrawer() {
+              const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
+              const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
+              const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
+              if (!isNarrowScreen) {
+                  if (this.shadowRoot.querySelector('.sc-app-drawer').hasAttribute('opened')) {
+                      requestAnimationFrame(() => {
+                          contentContainer.removeAttribute('drawer-position');
+                      })
+                  } else {
+                      requestAnimationFrame(() => {
+                          contentContainer.setAttribute('drawer-position', 'left');
+                      });
+                  }
+              }
+              this.shadowRoot.querySelector('app-drawer').toggle();
           }
 
           // Locks scroll on text dialogs:

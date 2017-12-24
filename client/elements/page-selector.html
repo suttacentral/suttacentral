@@ -72,17 +72,18 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       #drawertoggle {
         z-index: 1;
         color: var(--sc-tertiary-text-color);
+        margin-right: var(--sc-size-md);
       }
 
-      @media screen and (max-width: 450px) {
-        #toolbar_title {
-          font-size: calc(var(--sc-size-md) * var(--sc-skolar-font-scale));
+      @media screen and (min-width: 840px) {
+        #header.drawer-closed {
+          left: 0 !important;
         }
       }
 
-      @media screen and (min-width: 841px) {
-        #drawertoggle {
-          display: none;
+      @media screen and (max-width: 600px) {
+        #toolbar_title {
+          @apply(--sc-skolar-font-size-md);
         }
       }
 
@@ -187,7 +188,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   shouldShowSuttaplexListPage: Boolean,
                   shouldShowSearchPage: Boolean,
                   shouldShowSuttaTextPage: Boolean,
-                  shouldShowDictionaryPage: Boolean
+                  shouldShowDictionaryPage: Boolean,
               }
           }
 
@@ -226,6 +227,26 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       }
                   }
               }
+          }
+
+          ready() {
+              super.ready();
+              this.addEventListener('par-menu-copied', (e) => {
+                  let success = '';
+                  if (e.detail.success) {
+                    success = 'success';
+                  } else {
+                    success = 'error';
+                  }
+                  this._showToast(success, e.detail.message);
+              });
+              this.addEventListener('dropdown-toggled', (event) => {
+                  if (event.detail.open) {
+                      this.$.header.style.zIndex = '0';
+                  } else {
+                      this.$.header.style.zIndex = '1';
+                  }
+              })
           }
 
           _recalculateView() {
@@ -358,17 +379,24 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
           _toggleDrawer() {
-              this.dispatchEvent(new CustomEvent('toggleDrawer', {
-                  detail: { togdraw: 'opened' },
-                  composed: true,
-                  bubbles: true
-              }));
+              this.dispatchEvent(new CustomEvent('toggleDrawer', { composed: true, bubbles: true }));
+              this.$.header.classList.toggle('drawer-closed');
           }
 
           _scrollToTop() {
               window.scroll(0, 0);
           }
 
+          _showToast(toastType, text) {
+              this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                  detail: {
+                      toastType: toastType,
+                      message: text
+                  },
+                  bubbles: true,
+                  composed: true
+              }));
+          }
       }
 
       customElements.define(SCPageSelector.is, SCPageSelector);

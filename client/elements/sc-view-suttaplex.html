@@ -65,21 +65,6 @@
         height: 100vh; /* don't use % values unless the parent element is sized. */
       }
 
-      .toast {
-        @apply --sc-skolar-font-size-xl;
-        @apply --sc-sans-font;
-        --paper-toast-color: var(--sc-tertiary-text-color);
-        text-align: center;
-        margin-left: calc(50vw - 150px);
-      }
-
-      .success-toast {
-        --paper-toast-background-color: var(--sc-primary-accent-color);
-      }
-
-      .error-toast {
-        --paper-toast-background-color: var(--sc-toast-error-color);
-      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -114,8 +99,6 @@
       </iron-list>
 
     </div>
-    <paper-toast id="success_toast" class="toast success-toast" text="[[toastMessage]]" duration=3000></paper-toast>
-    <paper-toast id="error_toast" class="toast error-toast" text="[[toastMessage]]" duration=3000></paper-toast>
   </template>
 
   <script>
@@ -137,9 +120,6 @@
                   },
                   item: {
                       type: Object
-                  },
-                  toastMessage: {
-                      type: String
                   }
               }
           }
@@ -153,19 +133,6 @@
                       };
                   }
               }
-          }
-
-          ready() {
-              super.ready();
-              this.addEventListener('par-menu-copied', (e) => {
-                  this.toastMessage = e.detail.message;
-                  const success = e.detail.success;
-                  if (success) {
-                      this.$.success_toast.open();
-                  } else {
-                      this.$.error_toast.open();
-                  }
-              });
           }
 
           _categoryChanged() {

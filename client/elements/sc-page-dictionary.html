@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 
 <link rel="import" href="../styles/sc-dict-styles.html">
 <link rel="import" href="../styles/sc-scrollbar-style.html">
@@ -40,7 +41,7 @@
         color: var(--sc-primary-accent-color);
       }
 
-      .termsbutton {
+      .terms-button {
         color: var(--sc-disabled-text-color);
       }
 
@@ -95,6 +96,32 @@
         border-bottom: var(--sc-border);
       }
 
+      #drawer {
+        --app-drawer-content-container: {
+          overflow-y: scroll;
+        }
+      }
+
+      .sc-tooltip {
+        --paper-tooltip-opacity: 0.98;
+        --paper-tooltip-background: var(--sc-paper-tooltip-color);
+        --paper-tooltip: {
+          @apply --sc-sans-font;
+          @apply --sc-skolar-font-size-xs;
+          line-height: var(--sc-size-md);
+          padding: var(--sc-size-sm) var(--sc-size-md);
+          text-shadow: 0 0 var(--sc-secondary-background-color);
+          white-space: normal;
+        }
+      }
+
+      .selected-terms-item {
+        background: linear-gradient(to right, var(--sc-primary-color) 4px, var(--sc-primary-color-transparent) 4px);
+      }
+
+      .selected-terms-item > a {
+          color: var(--sc-primary-color);
+      }
     </style>
 
     <iron-ajax
@@ -103,6 +130,18 @@
         last-response="{{dictionaryReturns}}"
         on-response="_didRespond"></iron-ajax>
 
+    <iron-ajax
+        id="adjacent_ajax"
+        handle-as="json"
+        last-response="{{adjacentReturns}}"
+        on-response="_adjacentLoaded"></iron-ajax>
+
+    <iron-ajax
+        id="glossary_ajax"
+        handle-as="json"
+        last-response="{{glossaryReturns}}"
+        on-response="_glossaryLoaded"></iron-ajax>
+
     <iron-meta id="meta"></iron-meta>
 
     <div class="dictionary-results-container">
@@ -110,8 +149,9 @@
         <div class="dictionary-results-head">
           <h1><span class="dictionary-results-description">Definitions for</span> <span
               class="dictionary-results-term">[[dictionaryWord]]</span></h1>
-          <span class="termsbutton" title="Related terms" >
-            <paper-icon-button icon="menu" on-tap="_toggleDrawer"></paper-icon-button>
+          <span class="terms-button">
+            <paper-icon-button icon="menu" id="menu_icon" on-tap="_toggleDrawer"></paper-icon-button>
+            <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds>Related Items</paper-tooltip>
           </span>
         </div>
         <div class="dictionary-entries">
@@ -124,11 +164,12 @@
         </div>
 
         <app-drawer id="drawer" align="right" class="sc-scrollbar" swipe-open>
-          <div class="related-terms">
+          <div class="related-terms sc-scrollbar">
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
               <template is="dom-repeat" items="[[dictonaryAdjacent]]">
-                <li><a href="/define/[[item]]">[[item]]</a>
+                <li class$="[[_calculateClass(item)]]">
+                  <a href="/define/[[item]]">[[item]]</a>
                   <!-- <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template> -->
                 </li>
               </template>
@@ -136,7 +177,8 @@
             <h3>Similar Spelling</h3>
             <ul class="fuzzy-terms">
               <template is="dom-repeat" items="[[dictionarySimilar]]">
-                <li><a href="/define/[[item]]">[[item]]</a>
+                <li class$="[[_calculateClass(item)]]">
+                  <a href="/define/[[item]]">[[item]]</a>
 <!--               <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
  -->            </li>
               </template>
@@ -159,6 +201,8 @@
               return {
                   dictionaryResults: Array,
                   dictionaryReturns: Array,
+                  glossaryReturns: Array,
+                  adjacentReturns: Array,
                   dictionaryWord: {
                       type: String,
                       observer: '_loadNewResult'
@@ -206,6 +250,8 @@
                   }
               }
               this.dictionaryResults = finalResults;
+              this._loadAdjacent();
+              // this._loadGlossary();
           }
 
           _sortDictionaryResults(dictionary) {
@@ -218,6 +264,46 @@
 
           _getDictionaryTitle(dictname) {
               return this.dictionaryTitles[dictname];
+          }
+
+          // Adding Adjacent Terms
+          _computeAdjacentUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/adjacent`;
+          }
+
+          _loadAdjacent() {
+              this.$.adjacent_ajax.url = this._computeAdjacentUrl();
+              return this.$.adjacent_ajax.generateRequest();
+          }
+
+          _adjacentLoaded() {
+              console.log("loaded Adjacent");
+              console.log(this.AdjacentReturns);
+          }
+
+          _calculateClass(item) {
+              return (item === this.dictionaryWord) ? 'selected-terms-item' : '';
+          }
+
+          // Adding glossary results to related items drawer
+          _computeGlossaryUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/glossary`;
+          }
+
+          _loadGlossary() {
+              this.$.glossary_ajax.url = this._computeGlossaryUrl();
+              return this.$.glossary_ajax.generateRequest();
+          }
+
+          _glossaryLoaded() {
+              console.log("loaded Glossary");
+              console.log(this._getGlossaryDescription("dhamma"));
+              console.log(this.glossaryReturns);
+          }
+
+          _getGlossaryDescription(glossword) {
+              console.log(this.glossaryReturns(glossword));
+              return this.glossaryReturns(glossword);
           }
 
           // toggles the drawer on the right to show the related/similar items.
