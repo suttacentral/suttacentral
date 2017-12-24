@@ -7,7 +7,6 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../../bower_components/iron-location/iron-location.html">
-<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 
 <link rel="import" href="../../elements/menus/sc-more-menu.html">
 
@@ -73,20 +72,6 @@ Base toolbar that appears on the top right in the header of every page. This too
         background-color: var(--sc-secondary-background-color);
       }
 
-      .sc-tooltip {
-        --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--sc-paper-tooltip-color);
-        --paper-tooltip: {
-          @apply --sc-sans-font;
-          @apply --sc-skolar-font-size-xs;
-          line-height: var(--sc-size-md);
-          padding: var(--sc-size-sm) var(--sc-size-md);
-          text-shadow: 0 0 var(--sc-secondary-background-color);
-          white-space: normal;
-          max-width: 100% !important;
-        };
-      }
-
       .absolute-position {
         position: absolute;
       }
@@ -101,11 +86,10 @@ Base toolbar that appears on the top right in the header of every page. This too
     <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
       <iron-a11y-keys target="search_input" keys="enter" on-keys-pressed="startSearch"></iron-a11y-keys>
-      <paper-icon-button icon="search" id="search_icon" class="white-icon" on-tap="openSearch"></paper-icon-button>
+      <paper-icon-button icon="search" title="Search SuttaCentral" class="white-icon" on-tap="openSearch"></paper-icon-button>
       <paper-input class="toolbar-input" label="Search" no-label-float id="search_input"></paper-input>
       <paper-icon-button icon="close" class="white-icon" id="close_button"
                          on-tap="closeSearch"></paper-icon-button>
-      <paper-tooltip for="search_icon" class="sc-tooltip">Search</paper-tooltip>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
       <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]" 
