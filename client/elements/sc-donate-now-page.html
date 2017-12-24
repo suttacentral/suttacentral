@@ -254,7 +254,7 @@
           <form class="payment-form">
             <div class="flex-row">
               <paper-dropdown-menu class="currency-dropdown data-input" aria-label="Select currency"
-                                   dynamic-align label="Currency" opened="{{currencyDropdownOpened}}" always-float-label>
+                                   label="Currency" always-float-label>
                 <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
                                selected="[[default_currency_index]]">
                   <template is="dom-repeat" items="[[currencies]]">
@@ -379,10 +379,6 @@
                           2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
                           3: 'Your card was declined.'
                       }
-                  },
-                  currencyDropdownOpened: {
-                      type: Boolean,
-                      observer: '_currencyOpenedChanged'
                   }
               }
           }
@@ -429,14 +425,6 @@
           _handleResponse() {
               this.currencies = this.responseData.currencies;
               this.default_currency_index = this.responseData.default_currency_index;
-          }
-
-          _currencyOpenedChanged() {
-              this.dispatchEvent(new CustomEvent('dropdown-toggled', {
-                  detail: {open: this.currencyDropdownOpened},
-                  bubbles: true,
-                  composed: true
-              }));
           }
 
           _makeDonation(e) {
