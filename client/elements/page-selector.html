@@ -240,13 +240,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   }
                   this._showToast(success, e.detail.message);
               });
-              this.addEventListener('dropdown-toggled', (event) => {
-                  if (event.detail.open) {
-                      this.$.header.style.zIndex = '0';
-                  } else {
-                      this.$.header.style.zIndex = '1';
-                  }
-              })
           }
 
           _recalculateView() {
