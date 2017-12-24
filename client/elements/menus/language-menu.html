@@ -101,7 +101,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
     </style>
     <template is="dom-if" if="[[_shouldShowMenu(languageChoice)]]">
       <paper-dropdown-menu vertical-align="top" class="language-menu-dropdown custom" label="[[titleLabel]]"
-                           title="Select a language" id="paper_dropdown_menu" opened="{{languageDropdownOpened}}" dynamic-align=true>
+                           title="Select a language" id="paper_dropdown_menu" dynamic-align=true>
         <paper-listbox class="language-menu-listbox" slot="dropdown-content">
 
           <template is="dom-repeat" items="[[languageChoice]]" as="language">
@@ -163,10 +163,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   },
                   to: {
                       type: String
-                  },
-                  languageDropdownOpened: {
-                      type: Boolean,
-                      observer: '_languageOpenedChanged'
                   }
               }
           }
@@ -230,14 +226,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   return `#${id1}-${id2}`;
               }
               return `#${ids}`;
-          }
-
-          _languageOpenedChanged() {
-              this.dispatchEvent(new CustomEvent('dropdown-toggled', {
-                  detail: {open: this.languageDropdownOpened},
-                  bubbles: true,
-                  composed: true
-              }));
           }
       }
 
