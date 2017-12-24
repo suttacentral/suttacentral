@@ -188,7 +188,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   shouldShowSuttaplexListPage: Boolean,
                   shouldShowSearchPage: Boolean,
                   shouldShowSuttaTextPage: Boolean,
-                  shouldShowDictionaryPage: Boolean
+                  shouldShowDictionaryPage: Boolean,
               }
           }
 
@@ -227,6 +227,19 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       }
                   }
               }
+          }
+
+          ready() {
+              super.ready();
+              this.addEventListener('par-menu-copied', (e) => {
+                  let success = '';
+                  if (e.detail.success) {
+                    success = 'success';
+                  } else {
+                    success = 'error';
+                  }
+                  this._showToast(success, e.detail.message);
+              });
           }
 
           _recalculateView() {
@@ -367,6 +380,16 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               window.scroll(0, 0);
           }
 
+          _showToast(toastType, text) {
+              this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                  detail: {
+                      toastType: toastType,
+                      message: text
+                  },
+                  bubbles: true,
+                  composed: true
+              }));
+          }
       }
 
       customElements.define(SCPageSelector.is, SCPageSelector);
