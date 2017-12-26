@@ -34,7 +34,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Images, '/images/<string:division>/<int:vol>')
     api.add_resource(Epigraphs, '/epigraphs')
     api.add_resource(WhyWeRead, '/whyweread')
-    api.add_resource(Glossary, '/glossary/<string:glossword>')
+    api.add_resource(Glossary, '/glossary')
 
     app.register_blueprint(api_bp)
     return api, app

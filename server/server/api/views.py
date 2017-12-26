@@ -578,11 +578,11 @@ class Glossary(Resource):
         ---
         responses:
             glossary:
-                type: object
+                type: array
                 properties:
-                    glossword:
+                    word:
                         type: string
-                    description:
+                    text:
                         type: string
         """
         db = get_db()

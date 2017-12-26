@@ -434,7 +434,6 @@ FOR dictionary IN dictionary_full
     FILTER dictionary.word == @word
     RETURN {
         dictname: dictionary.dictname,
-        word: dictionary.word,
         text: dictionary.text
     }
 '''
@@ -462,6 +461,11 @@ FOR text IN why_we_read
 '''
 
 GLOSSARY = '''
-FOR gloss IN glossary
-    RETURN KEEP(gloss, ['glossword', 'description'])
+LET glossaryitem = (
+    FOR dictionary IN dictionary_full
+        FILTER dictionary.dictname == "gloss"
+        RETURN KEEP(dictionary, "word", "text")
+    )
+    
+RETURN glossaryitem
 '''
