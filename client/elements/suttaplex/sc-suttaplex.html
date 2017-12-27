@@ -24,18 +24,10 @@
 <dom-module id="sc-suttaplex" attributes="open url">
   <template>
     <style include="sc-suttaplex-styles">
-      .heading {
-        cursor: pointer;
-      }
-
       .suttaplex-head-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
-
-      h1, h2, h3 {
-        margin: 0;
       }
 
       .suttaplex {
@@ -53,6 +45,7 @@
       .suttaplex-heading {
         @apply --paper-font-headline;
         @apply --sc-serif-font;
+        margin: 0;
       }
 
       .suttaplex-nerdy-row {
