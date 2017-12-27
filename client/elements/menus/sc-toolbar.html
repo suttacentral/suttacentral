@@ -24,6 +24,9 @@ Base toolbar that appears on the top right in the header of every page. This too
         --paper-menu-button-dropdown: {
           max-width: 100%;
         };
+        --paper-menu-button-content: {
+          @apply --shadow-elevation-8dp;
+        };
       }
 
       .toolbar-input {
@@ -86,13 +89,14 @@ Base toolbar that appears on the top right in the header of every page. This too
     <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
       <iron-a11y-keys target="search_input" keys="enter" on-keys-pressed="startSearch"></iron-a11y-keys>
-      <paper-icon-button icon="search" title="Search SuttaCentral" class="white-icon" on-tap="openSearch"></paper-icon-button>
+      <paper-icon-button icon="search" title="Search SuttaCentral" class="white-icon"
+                         on-tap="openSearch"></paper-icon-button>
       <paper-input class="toolbar-input" label="Search" no-label-float id="search_input"></paper-input>
       <paper-icon-button icon="close" class="white-icon" id="close_button"
                          on-tap="closeSearch"></paper-icon-button>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
-      <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]" 
+      <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]"
          title="[[_computeDiscourseTitle(mode)]]">
         <paper-icon-button id="discoursebutton" class="white-icon"
                            icon="communication:forum"></paper-icon-button>
@@ -118,14 +122,14 @@ Base toolbar that appears on the top right in the header of every page. This too
           static get properties() {
               return {
                   path: {
-                    type: String
+                      type: String
                   },
                   query: {
-                    type: String
+                      type: String
                   },
                   mode: {
-                    type: String,
-                    statePath: 'toolbarOptions.mode'             
+                      type: String,
+                      statePath: 'toolbarOptions.mode'
                   }
               }
           }
@@ -188,19 +192,19 @@ Base toolbar that appears on the top right in the header of every page. This too
           }
 
           _computeDiscourseUrl(mode) {
-            if (mode === 'text-mode'){
-              const sutta_id = window.location.pathname.split('/')[1];
-              return `https://discourse.suttacentral.net/search?q="${sutta_id}%20"`;
-            } else {
-              return 'https://discourse.suttacentral.net';
-            }
+              if (mode === 'text-mode') {
+                  const sutta_id = window.location.pathname.split('/')[1];
+                  return `https://discourse.suttacentral.net/search?q="${sutta_id}%20"`;
+              } else {
+                  return 'https://discourse.suttacentral.net';
+              }
           }
 
           _computeDiscourseTitle(mode) {
-              if (mode === 'text-mode'){
-                return `Join the discussion about this sutta.`
+              if (mode === 'text-mode') {
+                  return `Join the discussion about this sutta.`
               } else {
-                return 'Discuss the suttas on our forum';
+                  return 'Discuss the suttas on our forum';
               }
           }
 
