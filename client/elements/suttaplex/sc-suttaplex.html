@@ -38,14 +38,14 @@
         margin: 0;
       }
 
-      paper-card.suttaplex {
+      .suttaplex {
         background-color: var(--sc-secondary-background-color);
         margin-top: var(--sc-size-md);
         border-radius: var(--sc-size-xxs);
         display: block;
       }
 
-      paper-card.suttaplex .card-content {
+      .suttaplex .card-content {
         padding-top: var(--sc-size-md-larger);
         padding-bottom: 1px;
       }
@@ -110,7 +110,6 @@
       }
 
       .vert-menu {
-        display: inline-block;
         --paper-listbox-background-color: var(--sc-secondary-background-color);
       }
 
@@ -124,15 +123,15 @@
         visibility: hidden;
       }
 
-      summary::-webkit-details-marker {
+      .volpage-biblio-info-summary::-webkit-details-marker {
         color: var(--sc-paper-tooltip-color);
       }
 
-      details {
+      .suttaplex-details {
         display: inline-block;
       }
 
-      details p {
+      .suttaplex-details .volpage-biblio-info {
         @apply --paper-font-body1;
         position: absolute;
         z-index: 200;
@@ -143,8 +142,13 @@
         white-space: normal;
       }
 
-      paper-menu-button {
+      #copy_menu {
         padding: 0;
+      }
+
+      .more-par-listbox:focus,
+      #more_par_menu:focus {
+        outline: none;
       }
 
       .notfound {
@@ -279,7 +283,7 @@
             </template>
             <template is="dom-if" if=[[item.biblio]]>
               <div>
-                <details class="display-inline">
+                <details class="suttaplex-details display-inline">
                   <summary class="volpage-biblio-info-summary">
                     <span class="book no-margin">
                       <iron-icon class="grey-icon" icon="book"></iron-icon>
@@ -324,8 +328,7 @@
                                  vertical-align="top" aria-disabled="false">
                 <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:more-vert"
                                    role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
-                <div slot="dropdown-content"></div>
-                <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
+                <paper-listbox class="more-par-listbox" slot="dropdown-content" tabindex="0" role="listbox">
                   <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
                   </more-par-menu>
                 </paper-listbox>
