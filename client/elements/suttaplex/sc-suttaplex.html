@@ -72,7 +72,7 @@
         overflow: hidden;
       }
 
-      paper-card.suttaplex .card-actions {
+      .suttaplex .card-actions {
         padding: 0 var(--sc-size-md) var(--sc-size-sm);
         display: flex;
         flex-flow: wrap;
@@ -87,7 +87,7 @@
         align-self: flex-start;
       }
 
-      .card-actions-left paper-button:first-of-type {
+      .card-actions-left .author-button:first-of-type {
         margin-left: -2px;
       }
 
@@ -135,17 +135,16 @@
         white-space: normal;
       }
 
-      #copy_menu {
+      .more-par-menu-button {
         padding: 0;
+        --paper-menu-button-dropdown: {
+          @apply --shadow-elevation-8dp;
+        };
       }
 
       .more-par-listbox:focus,
       #more_par_menu:focus {
         outline: none;
-      }
-
-      .notfound {
-        @apply --paper-font-display1;
       }
 
       .hide-element {
@@ -316,17 +315,15 @@
           </div>
 
           <div class="right-elements">
-            <div class="vert-menu">
-              <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true"
-                                 vertical-align="top" aria-disabled="false">
-                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:more-vert"
-                                   role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
-                <paper-listbox class="more-par-listbox" slot="dropdown-content" tabindex="0" role="listbox">
-                  <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
-                  </more-par-menu>
-                </paper-listbox>
-              </paper-menu-button>
-            </div>
+            <paper-menu-button id="copy_menu" class="more-par-menu-button" horizontal-align="right" role="group"
+                               aria-haspopup="true" aria-disabled="false" vertical-align="auto">
+              <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:more-vert"
+                                 role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
+              <paper-listbox class="more-par-listbox" slot="dropdown-content" tabindex="0" role="listbox">
+                <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
+                </more-par-menu>
+              </paper-listbox>
+            </paper-menu-button>
 
             <template is="dom-if" if="[[item.parallel_count]]">
               <div class="parallels-toggle-div">
@@ -335,7 +332,9 @@
                 </paper-icon-button>
                 <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
               </div>
-              <paper-tooltip for="parallels_toggle" offset="-1" fit-to-visible-bounds class="sc-tooltip">This&nbsp;text&nbsp;has&nbsp;[[item.parallel_count]]&nbsp;parallels</paper-tooltip>
+              <paper-tooltip for="parallels_toggle" offset="-1" fit-to-visible-bounds class="sc-tooltip">
+                This&nbsp;text&nbsp;has&nbsp;[[item.parallel_count]]&nbsp;parallels
+              </paper-tooltip>
             </template>
           </div>
         </div>
