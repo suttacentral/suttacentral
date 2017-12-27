@@ -10,7 +10,7 @@ from sortedcontainers import SortedDict
 from common.arangodb import get_db
 
 from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, \
-    SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY
+    SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY, ADJACENT
 
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
     sort_parallels_type_key, groupby_unsorted
@@ -588,6 +588,25 @@ class Glossary(Resource):
         db = get_db()
 
         data = db.aql.execute(GLOSSARY)
+
+        return data.batch(), 200
+
+class Adjacent(Resource):
+    def get(self, word=None):
+        """
+        Send list of adjacent terms to dictionary search word
+        ---
+        responses:
+            glossary:
+                type: array
+                properties:
+                    word:
+                        type: string
+
+        """
+        db = get_db()
+
+        data = db.aql.execute(ADJACENT, bind_vars={'word': word})
 
         return data.batch(), 200
 

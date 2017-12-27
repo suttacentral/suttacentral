@@ -236,6 +236,7 @@
           }
 
           _loadNewResult() {
+              this._loadAdjacent();
               this.$.ajax.url = this._computeUrl();
               return this.$.ajax.generateRequest();
           }
@@ -266,7 +267,7 @@
 
           // Adding Adjacent Terms
           _computeAdjacentUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/adjacent`;
+              return `${this.$.meta.byKey('API_ROOT')}/adjacent/${this.dictionaryWord}`;
           }
 
           _loadAdjacent() {
@@ -279,6 +280,7 @@
               console.log(this.AdjacentReturns);
           }
 
+          // Calculating if the current item is selected
           _calculateClass(item) {
               return (item === this.dictionaryWord) ? 'selected-terms-item' : '';
           }

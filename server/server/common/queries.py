@@ -469,3 +469,29 @@ LET glossaryitem = (
     
 RETURN glossaryitem
 '''
+
+ADJACENT = '''
+LET allitems = (
+    FOR dictionary IN dictionary_full
+        RETURN (dictionary.word)
+    )
+
+LET uniqueterms = (
+    RETURN UNIQUE(allitems)
+    )
+
+LET sorteditem = (
+    FOR items in uniqueterms[0]
+        SORT items ASC
+        RETURN (items)
+    )
+
+LET searchword = (
+    RETURN POSITION(sorteditem, @word, true)
+    )
+
+FOR selected in sorteditem
+    FILTER selected < sorteditem[searchword[0]+5]
+    FILTER selected > sorteditem[searchword[0]-5]
+    RETURN selected
+'''
