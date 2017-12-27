@@ -58,9 +58,9 @@
       }
 
       .suttaplex-nerdy-row:hover {
-          text-overflow: clip;
-          white-space: normal;
-          word-break: break-all;
+        text-overflow: clip;
+        white-space: normal;
+        word-break: break-all;
       }
 
       .nerdy-row-element {
@@ -311,7 +311,7 @@
           <div class="languagedrop">
             <language-menu language-choice="[[item.translations]]" title-label="More"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
-                           root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndex"
+                           root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndexWithTimeout"
                            on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></language-menu>
           </div>
 
@@ -402,16 +402,27 @@
               this.addEventListener('par-menu-copied', (e) => {
                   this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
               });
+              this.$.copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
+          }
 
-              this.$.copy_menu.addEventListener('opened-changed', (e) => {
-                  const open = e.detail.value;
-                  if (open) {
-                      this.$.more_par_menu._sendRequest();
-                  }
-                  const type = open ? 'open' : 'close';
-                  const event_mock = { type: type };
+          _moreMenuOpenedChanged(e) {
+              const open = e.detail.value;
+              if (open) {
+                  this.$.more_par_menu._sendRequest();
+              }
+              const type = open ? 'open' : 'close';
+              const event_mock = { type: type };
+              if (type === 'open') {
                   this._changeItemZIndex(event_mock);
-              })
+              } else {
+                  this._changeItemZIndexWithTimeout(event_mock);
+              }
+          }
+
+          _changeItemZIndexWithTimeout(e) {
+              setTimeout(() => {
+                  this._changeItemZIndex(e);
+              }, 200)
           }
 
           _changeItemZIndex(e) {
@@ -430,10 +441,6 @@
               const type = e ? 'open' : 'close';
               const event_mock = { type: type };
               this._changeItemZIndex(event_mock);
-          }
-
-          _shouldPullRight(parallelsOpened) {
-              return parallelsOpened ? 'pull-right' : '';
           }
 
           // general function to hide or display various elements.
