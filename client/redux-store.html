@@ -8,6 +8,10 @@
  Polymer-redux docs: https://tur-nr.github.io/polymer-redux/
  -->
 <script>
+    const browserLanguage = navigator.languages && navigator.languages[0] ||
+        navigator.language ||
+        navigator.userLanguage;
+
     const initialState = {
         currentRoute: {
             name: 'HOME',
@@ -15,7 +19,7 @@
             prefix: '',
             __queryParams: {}
         },
-        siteLanguage: 'en',
+        siteLanguage: browserLanguage,
         toolbarOptions: {
             title: '',
             mode: ''
@@ -95,7 +99,7 @@
 
     // Before creating the store, check if it's saved in LocalStorage:
     const persistedState = localStorage.getItem('reduxState');
-    const rememberButtonEnabled = localStorage.getItem('rememberTextSettings');
+    const rememberButtonEnabled = localStorage.getItem('rememberTextSettings') === 'true';
     if (rememberButtonEnabled === 'false') {
         localStorage.removeItem('rememberTextSettings');
     }
