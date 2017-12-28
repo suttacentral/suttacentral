@@ -289,10 +289,6 @@
         padding-left: 0;
       }
 
-      .sub-nav-child .sub-nav-child {
-        padding-left: var(--sc-size-md);
-      }
-
       #main_menu_container {
         transform: translateY(-100%);
       }
@@ -461,32 +457,39 @@
           }
 
           _createChildMenu() {
-              this.$.sub_navigation.innerHTML = this._generateChildMenu(this.subMenuData[0], true);
+              this.$.sub_navigation.innerHTML = this._generateChildMenu(this.subMenuData[0], 0);
               this.$.sub_navigation.querySelectorAll('.menu-dropdown-icon').forEach((dropdownIcon) => {
                   dropdownIcon.addEventListener('click', this._toggleOpenDropdownMenu);
               });
           }
 
-          _generateChildMenu(menuItem, isRootElement) {
+          _generateChildMenu(menuItem, menuLevel) {
+              const isRootElement = menuLevel === 0;
               return !menuItem.children ? '' : `
                 <ul class="nav-tertiary ${isRootElement ? 'sub-nav sc-scrollbar open' : 'sub-nav-child closed'}"
                   style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
                     <li class="nav-menu-item ${isRootElement ? 'top-menu-item' : ''}" data-uid="${childItem.id}">
-                      <span class="nav-link-container">
+                      <span class="nav-link-container" style="${this._calculateSubmenuChildrenStyle(menuLevel)}">
                         <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">
                           ${this._getPrefixedItemName(childItem.name, childItem.display_num)}
                         </a>
                       </span>
                     ${childItem.children && childItem.children.length > 0 ? `
                       <paper-icon-button icon="expand-more" class="menu-dropdown-icon"></paper-icon-button>
-                       ${this._generateChildMenu(childItem, false)}`
+                       ${this._generateChildMenu(childItem, menuLevel + 1)}`
                   :
                   ''}
                     </li>
                   `).join('')}
                 </ul>
               `;
+          }
+
+          _calculateSubmenuChildrenStyle(menuLevel) {
+              const paddingSizePx = getComputedStyle(this).getPropertyValue('--sc-size-md');
+              const calculatedPadding = (menuLevel + 1) * parseInt(paddingSizePx);
+              return `padding-left: ${calculatedPadding}px`;
           }
 
           _addButtonEventListeners() {
