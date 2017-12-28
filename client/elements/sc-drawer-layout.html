@@ -234,29 +234,24 @@
               this._addScrollLockListeners();
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              // close the drawer on page load
-              this._toggleDrawer();
-          }
-
           // opens the app-drawer when it is not visible.
           _toggleDrawer() {
               const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
               const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
               const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
-              const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
-              if (!isNarrowScreen) {
-                  if (appDrawer.hasAttribute('opened')) {
-                      // hide drawer
-                      console.log('closing drawer');
-                      contentContainer.removeAttribute('drawer-position');
-                  } else {
-                      // show drawer
-                      contentContainer.setAttribute('drawer-position', 'left');
+              requestAnimationFrame(() => {
+                  const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
+                  if (!isNarrowScreen) {
+                      if (appDrawer.hasAttribute('opened')) {
+                          // hide drawer
+                          contentContainer.removeAttribute('drawer-position');
+                      } else {
+                          // show drawer
+                          contentContainer.setAttribute('drawer-position', 'left');
+                      }
                   }
-              }
-              appDrawer.toggle();
+                  appDrawer.toggle();
+              });
           }
 
           // Locks scroll on text dialogs:
