@@ -99,7 +99,7 @@
     if (rememberButtonEnabled === 'false') {
         localStorage.removeItem('rememberTextSettings');
     }
-    const state = (persistedState && rememberButtonEnabled === 'true') ? parsePersistedState(persistedState) : initialState;
+    const state = (persistedState && rememberButtonEnabled) ? parsePersistedState(persistedState) : initialState;
 
     const store = Redux.createStore(
         reducer,
