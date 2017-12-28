@@ -76,7 +76,7 @@
 
       .nav-drawer-box {
         @apply --shadow-elevation-8dp;
-        background-color: var(--sc-primary-background-color);
+        background-color: var(--sc-secondary-background-color);
         overflow: hidden;
         z-index: 60;
         height: 100%;
@@ -177,7 +177,7 @@
 
     <app-drawer-layout id="drawer_layout" fullbleed responsive-width="840px">
 
-      <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer">
+      <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer" persistent="[[false]]">
         <div class="nav-drawer-box sc-scrollbar">
           <div class="nav-home-title">
             <a class="nav-home-link" href="/">
@@ -268,6 +268,7 @@
 
           // opens the app-drawer when it is not visible.
           _toggleDrawer() {
+              console.log('toggling drawer');
               const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
               const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
               const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
