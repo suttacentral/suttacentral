@@ -189,7 +189,7 @@
         </div>
       </app-drawer>
 
-      <page-selector></page-selector>
+      <page-selector id="page_selector"></page-selector>
 
     </app-drawer-layout>
 
@@ -244,6 +244,9 @@
                   },
                   item: {
                       type: Object
+                  },
+                  isDrawerOpen: {
+                      type: Boolean,
                   }
               }
           }
@@ -256,23 +259,27 @@
               this._addScrollLockListeners();
           }
 
+          connectedCallback() {
+              super.connectedCallback();
+              requestAnimationFrame(() => {
+                  this.$.page_selector._toggleDrawer();
+              })
+          }
+
           // opens the app-drawer when it is not visible.
           _toggleDrawer() {
               const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
+              const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
               const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
               const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
               if (!isNarrowScreen) {
-                  if (this.shadowRoot.querySelector('.sc-app-drawer').hasAttribute('opened')) {
-                      requestAnimationFrame(() => {
-                          contentContainer.removeAttribute('drawer-position');
-                      })
+                  if (appDrawer.hasAttribute('opened')) {
+                      contentContainer.removeAttribute('drawer-position');
                   } else {
-                      requestAnimationFrame(() => {
-                          contentContainer.setAttribute('drawer-position', 'left');
-                      });
+                      contentContainer.setAttribute('drawer-position', 'left');
                   }
               }
-              this.shadowRoot.querySelector('app-drawer').toggle();
+              appDrawer.toggle();
           }
 
           // Locks scroll on text dialogs:
