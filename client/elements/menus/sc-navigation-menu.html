@@ -488,8 +488,9 @@
 
           _calculateSubmenuChildrenStyle(menuLevel) {
               const paddingSizePx = getComputedStyle(this).getPropertyValue('--sc-size-md');
-              const calculatedPadding = (menuLevel + 1) * parseInt(paddingSizePx);
-              return `padding-left: ${calculatedPadding}px`;
+              // rule: the first child item should not have any padding (the font-weight acts as a visual contrast)
+              const calculatedMenuLevel = menuLevel > 1 ? menuLevel : 1;
+              return `padding-left: ${calculatedMenuLevel * parseInt(paddingSizePx)}px`;
           }
 
           _addButtonEventListeners() {
