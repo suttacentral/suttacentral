@@ -244,6 +244,11 @@
                   },
                   item: {
                       type: Object
+                  },
+                  siteLanguage: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: "_setSiteLanguage"
                   }
               }
           }
@@ -293,6 +298,11 @@
           _getApiUrl() {
               let currentUrl = window.location;
               return `${currentUrl.protocol}//${currentUrl.host}/api`;
+          }
+
+          _setSiteLanguage() {
+              // main_menu_root is defined in index.html
+              document.getElementById('main_html_root').lang = this.siteLanguage;
           }
       }
 
