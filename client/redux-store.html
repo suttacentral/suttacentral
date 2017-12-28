@@ -8,10 +8,6 @@
  Polymer-redux docs: https://tur-nr.github.io/polymer-redux/
  -->
 <script>
-    const browserLanguage = navigator.languages && navigator.languages[0] ||
-        navigator.language ||
-        navigator.userLanguage;
-
     const initialState = {
         currentRoute: {
             name: 'HOME',
@@ -19,7 +15,7 @@
             prefix: '',
             __queryParams: {}
         },
-        siteLanguage: browserLanguage,
+        siteLanguage: (navigator.language || navigator.languages && navigator.languages[0]).split('-')[0],
         toolbarOptions: {
             title: '',
             mode: ''
