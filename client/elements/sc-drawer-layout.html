@@ -105,11 +105,6 @@
         }
       }
 
-      .menu-content {
-        margin-top: var(--sc-size-lg);
-        margin-bottom: var(--sc-size-lg);
-      }
-
       .dialog-header {
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-dialog-header;
@@ -141,22 +136,6 @@
         color: var(--sc-primary-text-color);
       }
 
-      .dialog-section .author {
-        @apply --sc-all-small-caps;
-      }
-
-      .dialog-section .editor {
-        font-style: inherit;
-      }
-
-      .dialog-section .book {
-        font-style: italic;
-      }
-
-      .dialog-section .article {
-        font-style: normal;
-      }
-
       .close-dialog-icon {
         color: var(--sc-tertiary-text-color);
         margin: var(--sc-size-sm);
@@ -166,10 +145,6 @@
         height: 100%;
       }
 
-      .transparent {
-        opacity: 0;
-      }
-
     </style>
 
     <iron-meta id="meta" key="API_ROOT" value="{{_getApiUrl()}}"></iron-meta>
@@ -177,7 +152,7 @@
 
     <app-drawer-layout id="drawer_layout" fullbleed responsive-width="840px">
 
-      <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer" persistent="[[false]]">
+      <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer" persistent="[[false]]" opened="{{isDrawerOpened}}">
         <div class="nav-drawer-box sc-scrollbar">
           <div class="nav-home-title">
             <a class="nav-home-link" href="/">
@@ -189,7 +164,7 @@
         </div>
       </app-drawer>
 
-      <page-selector id="page_selector"></page-selector>
+      <page-selector id="page_selector" is-drawer-open="[[isDrawerOpened]]"></page-selector>
 
     </app-drawer-layout>
 
@@ -245,8 +220,8 @@
                   item: {
                       type: Object
                   },
-                  isDrawerOpen: {
-                      type: Boolean,
+                  isDrawerOpened: {
+                      type: Boolean
                   }
               }
           }
@@ -261,22 +236,23 @@
 
           connectedCallback() {
               super.connectedCallback();
-              requestAnimationFrame(() => {
-                  this.$.page_selector._toggleDrawer();
-              })
+              // close the drawer on page load
+              this._toggleDrawer();
           }
 
           // opens the app-drawer when it is not visible.
           _toggleDrawer() {
-              console.log('toggling drawer');
               const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
-              const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
               const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
+              const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
               const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
               if (!isNarrowScreen) {
                   if (appDrawer.hasAttribute('opened')) {
+                      // hide drawer
+                      console.log('closing drawer');
                       contentContainer.removeAttribute('drawer-position');
                   } else {
+                      // show drawer
                       contentContainer.setAttribute('drawer-position', 'left');
                   }
               }
