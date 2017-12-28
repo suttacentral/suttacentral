@@ -7,6 +7,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../../bower_components/iron-location/iron-location.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../elements/menus/sc-more-menu.html">
 
@@ -86,14 +87,15 @@ Base toolbar that appears on the top right in the header of every page. This too
     <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
       <iron-a11y-keys target="search_input" keys="enter" on-keys-pressed="startSearch"></iron-a11y-keys>
-      <paper-icon-button icon="search" title="Search SuttaCentral" class="white-icon" on-tap="openSearch"></paper-icon-button>
+      <paper-icon-button icon="search" title="{{localize('searchTooltip')}}" class="white-icon"
+                         on-tap="openSearch"></paper-icon-button>
       <paper-input class="toolbar-input" label="Search" no-label-float id="search_input"></paper-input>
       <paper-icon-button icon="close" class="white-icon" id="close_button"
                          on-tap="closeSearch"></paper-icon-button>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
-      <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]" 
-         title="[[_computeDiscourseTitle(mode)]]">
+      <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]"
+         title="[[_computeDiscourseTitle(mode, language)]]">
         <paper-icon-button id="discoursebutton" class="white-icon"
                            icon="communication:forum"></paper-icon-button>
       </a>
@@ -110,7 +112,7 @@ Base toolbar that appears on the top right in the header of every page. This too
   </template>
 
   <script>
-      class SCToolbar extends ReduxMixin(Polymer.Element) {
+      class SCToolbar extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-toolbar'
           }
@@ -118,14 +120,35 @@ Base toolbar that appears on the top right in the header of every page. This too
           static get properties() {
               return {
                   path: {
-                    type: String
+                      type: String
                   },
                   query: {
-                    type: String
+                      type: String
                   },
                   mode: {
-                    type: String,
-                    statePath: 'toolbarOptions.mode'             
+                      type: String,
+                      statePath: 'toolbarOptions.mode'
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage'
+                  },
+
+                  resources: {
+                      value() {
+                          return {
+                              'en': {
+                                  'searchTooltip': 'Search SuttaCentral',
+                                  'joinDiscussion': 'Join the discussion about this sutta.',
+                                  'discussSuttas': 'Discuss the suttas on our forum'
+                              },
+                              'pl': {
+                                  'searchTooltip': 'Wyszukaj w SuttaCentral',
+                                  'joinDiscussion': 'Dołącz do dyskusji o tej sutrze.',
+                                  'discussSuttas': 'Podyskutuj o sutrach na naszym forum'
+                              },
+                          }
+                      }
                   }
               }
           }
@@ -188,19 +211,19 @@ Base toolbar that appears on the top right in the header of every page. This too
           }
 
           _computeDiscourseUrl(mode) {
-            if (mode === 'text-mode'){
-              const sutta_id = window.location.pathname.split('/')[1];
-              return `https://discourse.suttacentral.net/search?q="${sutta_id}%20"`;
-            } else {
-              return 'https://discourse.suttacentral.net';
-            }
+              if (mode === 'text-mode') {
+                  const sutta_id = window.location.pathname.split('/')[1];
+                  return `https://discourse.suttacentral.net/search?q="${sutta_id}%20"`;
+              } else {
+                  return 'https://discourse.suttacentral.net';
+              }
           }
 
           _computeDiscourseTitle(mode) {
-              if (mode === 'text-mode'){
-                return `Join the discussion about this sutta.`
+              if (mode === 'text-mode') {
+                  return this.localize('joinDiscussion')
               } else {
-                return 'Discuss the suttas on our forum';
+                  return this.localize('discussSuttas');
               }
           }
 
