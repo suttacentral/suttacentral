@@ -1,0 +1,10 @@
+{
+  "en": {
+    "browseTooltip": "Browse the site in another language",
+    "languageLabel": "Language"
+  },
+  "pl": {
+    "browseTooltip": "Przeglądaj stronę w innym języku",
+    "languageLabel": "Język"
+  }
+}
