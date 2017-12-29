@@ -95,7 +95,7 @@ Base toolbar that appears on the top right in the header of every page. This too
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
       <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]"
-         title="[[_computeDiscourseTitle(mode, language)]]">
+         title="{{localize(_computeDiscourseTitle(mode))}}">
         <paper-icon-button id="discoursebutton" class="white-icon"
                            icon="communication:forum"></paper-icon-button>
       </a>
@@ -209,9 +209,9 @@ Base toolbar that appears on the top right in the header of every page. This too
 
           _computeDiscourseTitle(mode) {
               if (mode === 'text-mode') {
-                  return this.localize('joinDiscussion')
+                  return '\'joinDiscussion\'';
               } else {
-                  return this.localize('discussSuttas');
+                  return '\'discussSuttas\'';
               }
           }
 
