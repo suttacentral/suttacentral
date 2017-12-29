@@ -240,12 +240,15 @@
           }
 
           // opens the app-drawer when it is not visible.
-          _toggleDrawer() {
+          _toggleDrawer(e) {
               const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
               const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
               const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
               requestAnimationFrame(() => {
                   const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
+                  if (e.detail.largeScreenOnly && isNarrowScreen) {
+                      return;
+                  }
                   if (!isNarrowScreen) {
                       if (appDrawer.hasAttribute('opened')) {
                           // hide drawer
