@@ -93,6 +93,10 @@ type of view for segmented pages (showing pali next to translated text), lookup 
           --paper-input-container-input-color: var(--sc-primary-text-color);
           --paper-input-container-color: var(--sc-secondary-text-color);
         };
+        --paper-menu-button-dropdown: {
+          @apply --shadow-elevation-8dp;
+          background-color: var(--sc-secondary-background-color);
+        };
         background-color: var(--sc-secondary-background-color);
         width: 200px;
       }
@@ -181,7 +185,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
         <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid
           only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="pali_lookup_menu">
+        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="pali_lookup_menu" vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliLookupSelected}}">
             <template is="dom-repeat" items="[[paliLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>

@@ -24,28 +24,20 @@
 <dom-module id="sc-suttaplex" attributes="open url">
   <template>
     <style include="sc-suttaplex-styles">
-      .heading {
-        cursor: pointer;
-      }
-
       .suttaplex-head-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
 
-      h1, h2, h3 {
-        margin: 0;
-      }
-
-      paper-card.suttaplex {
+      .suttaplex {
         background-color: var(--sc-secondary-background-color);
         margin-top: var(--sc-size-md);
         border-radius: var(--sc-size-xxs);
         display: block;
       }
 
-      paper-card.suttaplex .card-content {
+      .suttaplex .card-content {
         padding-top: var(--sc-size-md-larger);
         padding-bottom: 1px;
       }
@@ -53,6 +45,7 @@
       .suttaplex-heading {
         @apply --paper-font-headline;
         @apply --sc-serif-font;
+        margin: 0;
       }
 
       .suttaplex-nerdy-row {
@@ -65,21 +58,21 @@
       }
 
       .suttaplex-nerdy-row:hover {
-          text-overflow: clip;
-          white-space: normal;
-          word-break: break-all;
+        text-overflow: clip;
+        white-space: normal;
+        word-break: break-all;
       }
 
       .nerdy-row-element {
         margin-right: var(--sc-size-md-larger);
       }
 
-      .suttaplex-description {
+      .suttaplex-blurb {
         @apply --sc-paper-font-body;
         overflow: hidden;
       }
 
-      paper-card.suttaplex .card-actions {
+      .suttaplex .card-actions {
         padding: 0 var(--sc-size-md) var(--sc-size-sm);
         display: flex;
         flex-flow: wrap;
@@ -94,7 +87,7 @@
         align-self: flex-start;
       }
 
-      .card-actions-left paper-button:first-of-type {
+      .card-actions-left .author-button:first-of-type {
         margin-left: -2px;
       }
 
@@ -110,7 +103,6 @@
       }
 
       .vert-menu {
-        display: inline-block;
         --paper-listbox-background-color: var(--sc-secondary-background-color);
       }
 
@@ -124,15 +116,15 @@
         visibility: hidden;
       }
 
-      summary::-webkit-details-marker {
+      .volpage-biblio-info-summary::-webkit-details-marker {
         color: var(--sc-paper-tooltip-color);
       }
 
-      details {
+      .suttaplex-details {
         display: inline-block;
       }
 
-      details p {
+      .suttaplex-details .volpage-biblio-info {
         @apply --paper-font-body1;
         position: absolute;
         z-index: 200;
@@ -143,12 +135,16 @@
         white-space: normal;
       }
 
-      paper-menu-button {
+      .more-par-menu-button {
         padding: 0;
+        --paper-menu-button-dropdown: {
+          @apply --shadow-elevation-8dp;
+        };
       }
 
-      .notfound {
-        @apply --paper-font-display1;
+      .more-par-listbox:focus,
+      #more_par_menu:focus {
+        outline: none;
       }
 
       .hide-element {
@@ -250,10 +246,9 @@
         };
       }
 
-
     </style>
 
-    <paper-card class="suttaplex" id="[[item.uid]]">
+    <paper-card class="suttaplex" id="[[item.uid]]" elevation="2">
       <div class="card-content">
 
         <div class="suttaplex-head-container">
@@ -282,7 +277,7 @@
             </template>
             <template is="dom-if" if=[[item.biblio]]>
               <div>
-                <details class="display-inline">
+                <details class="suttaplex-details display-inline">
                   <summary class="volpage-biblio-info-summary">
                     <span class="book no-margin">
                       <iron-icon class="grey-icon" icon="book"></iron-icon>
@@ -296,8 +291,7 @@
           </template>
         </div>
 
-        <p class$="suttaplex-description [[_computeHide(item.blurb)]]" title="Description"
-           inner-h-t-m-l="[[item.blurb]]"></p>
+        <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="Blurb" inner-h-t-m-l="[[item.blurb]]"></p>
       </div>
 
       <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
@@ -317,22 +311,22 @@
           <div class="languagedrop">
             <language-menu language-choice="[[item.translations]]" title-label="More"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
-                           root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndex"
+                           root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndexWithTimeout"
                            on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></language-menu>
           </div>
 
           <div class="right-elements">
-            <div class="vert-menu">
-              <paper-menu-button id="copy_menu" horizontal-align="right" role="group" aria-haspopup="true"
-                                 vertical-align="top" aria-disabled="false">
-                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
-                <div slot="dropdown-content"></div>
-                <paper-listbox slot="dropdown-content" tabindex="0" role="listbox">
+            <paper-menu-button id="copy_menu" class="more-par-menu-button" horizontal-align="right" role="group" aria-haspopup="true"
+                                  aria-disabled="false"vertical-align="auto">
+                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
+                                   role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
+
+                <paper-listbox class="more-par-listbox"slot="dropdown-content" tabindex="0" role="listbox">
                   <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
                   </more-par-menu>
                 </paper-listbox>
               </paper-menu-button>
-            </div>
+
 
             <template is="dom-if" if="[[item.parallel_count]]">
               <div class="parallels-toggle-div">
@@ -341,7 +335,9 @@
                 </paper-icon-button>
                 <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
               </div>
-              <paper-tooltip for="parallels_toggle" offset="-1" fit-to-visible-bounds class="sc-tooltip">This&nbsp;text&nbsp;has&nbsp;[[item.parallel_count]]&nbsp;parallels</paper-tooltip>
+              <paper-tooltip for="parallels_toggle" offset="-1" fit-to-visible-bounds class="sc-tooltip">
+                This&nbsp;text&nbsp;has&nbsp;[[item.parallel_count]]&nbsp;parallels
+              </paper-tooltip>
             </template>
           </div>
         </div>
@@ -408,16 +404,27 @@
               this.addEventListener('par-menu-copied', (e) => {
                   this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
               });
+              this.$.copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
+          }
 
-              this.$.copy_menu.addEventListener('opened-changed', (e) => {
-                  const open = e.detail.value;
-                  if (open) {
-                      this.$.more_par_menu._sendRequest();
-                  }
-                  const type = open ? 'open' : 'close';
-                  const event_mock = { type: type };
+          _moreMenuOpenedChanged(e) {
+              const open = e.detail.value;
+              if (open) {
+                  this.$.more_par_menu._sendRequest();
+              }
+              const type = open ? 'open' : 'close';
+              const event_mock = { type: type };
+              if (type === 'open') {
                   this._changeItemZIndex(event_mock);
-              })
+              } else {
+                  this._changeItemZIndexWithTimeout(event_mock);
+              }
+          }
+
+          _changeItemZIndexWithTimeout(e) {
+              setTimeout(() => {
+                  this._changeItemZIndex(e);
+              }, 200)
           }
 
           _changeItemZIndex(e) {
@@ -436,10 +443,6 @@
               const type = e ? 'open' : 'close';
               const event_mock = { type: type };
               this._changeItemZIndex(event_mock);
-          }
-
-          _shouldPullRight(parallelsOpened) {
-              return parallelsOpened ? 'pull-right' : '';
           }
 
           // general function to hide or display various elements.
