@@ -75,8 +75,8 @@
       }
 
       .nav-drawer-box {
-        @apply --shadow-elevation-8dp;
-        background-color: var(--sc-primary-background-color);
+        @apply --shadow-elevation-16dp;
+        background-color: var(--sc-secondary-background-color);
         overflow: hidden;
         z-index: 60;
         height: 100%;
@@ -103,11 +103,6 @@
         .dialog {
           left: 0;
         }
-      }
-
-      .menu-content {
-        margin-top: var(--sc-size-lg);
-        margin-bottom: var(--sc-size-lg);
       }
 
       .dialog-header {
@@ -141,22 +136,6 @@
         color: var(--sc-primary-text-color);
       }
 
-      .dialog-section .author {
-        @apply --sc-all-small-caps;
-      }
-
-      .dialog-section .editor {
-        font-style: inherit;
-      }
-
-      .dialog-section .book {
-        font-style: italic;
-      }
-
-      .dialog-section .article {
-        font-style: normal;
-      }
-
       .close-dialog-icon {
         color: var(--sc-tertiary-text-color);
         margin: var(--sc-size-sm);
@@ -166,10 +145,6 @@
         height: 100%;
       }
 
-      .transparent {
-        opacity: 0;
-      }
-
     </style>
 
     <iron-meta id="meta" key="API_ROOT" value="{{_getApiUrl()}}"></iron-meta>
@@ -177,7 +152,7 @@
 
     <app-drawer-layout id="drawer_layout" fullbleed responsive-width="840px">
 
-      <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer">
+      <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer" persistent="[[false]]" opened="{{isDrawerOpened}}">
         <div class="nav-drawer-box sc-scrollbar">
           <div class="nav-home-title">
             <a class="nav-home-link" href="/">
@@ -189,7 +164,7 @@
         </div>
       </app-drawer>
 
-      <page-selector></page-selector>
+      <page-selector id="page_selector" is-drawer-open="[[isDrawerOpened]]"></page-selector>
 
     </app-drawer-layout>
 
@@ -244,6 +219,14 @@
                   },
                   item: {
                       type: Object
+                  },
+                  siteLanguage: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: "_setSiteLanguage"
+                  },
+                  isDrawerOpened: {
+                      type: Boolean
                   }
               }
           }
@@ -260,19 +243,20 @@
           _toggleDrawer() {
               const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
               const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
-              const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
-              if (!isNarrowScreen) {
-                  if (this.shadowRoot.querySelector('.sc-app-drawer').hasAttribute('opened')) {
-                      requestAnimationFrame(() => {
+              const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
+              requestAnimationFrame(() => {
+                  const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
+                  if (!isNarrowScreen) {
+                      if (appDrawer.hasAttribute('opened')) {
+                          // hide drawer
                           contentContainer.removeAttribute('drawer-position');
-                      })
-                  } else {
-                      requestAnimationFrame(() => {
+                      } else {
+                          // show drawer
                           contentContainer.setAttribute('drawer-position', 'left');
-                      });
+                      }
                   }
-              }
-              this.shadowRoot.querySelector('app-drawer').toggle();
+                  appDrawer.toggle();
+              });
           }
 
           // Locks scroll on text dialogs:
@@ -293,6 +277,11 @@
           _getApiUrl() {
               let currentUrl = window.location;
               return `${currentUrl.protocol}//${currentUrl.host}/api`;
+          }
+
+          _setSiteLanguage() {
+              // main_menu_root is defined in index.html
+              document.getElementById('main_html_root').lang = this.siteLanguage;
           }
       }
 
