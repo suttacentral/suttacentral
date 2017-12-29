@@ -40,6 +40,7 @@
       .currency-dropdown {
         --paper-menu-button-content: {
           display: flex;
+          @apply --shadow-elevation-8dp;
         };
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-dropdown-menu-icon: {
@@ -254,7 +255,7 @@
           <form class="payment-form">
             <div class="flex-row">
               <paper-dropdown-menu class="currency-dropdown data-input" aria-label="Select currency"
-                                   dynamic-align label="Currency" always-float-label>
+                                   label="Currency" always-float-label>
                 <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
                                selected="[[default_currency_index]]">
                   <template is="dom-repeat" items="[[currencies]]">
