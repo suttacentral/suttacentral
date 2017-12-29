@@ -103,7 +103,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
         <app-header id="header" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
-            <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
+            <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer(false)"></paper-icon-button>
 
             <div main-title id="toolbar_title_box">
               <p id="toolbar_title">[[toolbarTitle]]</p>
@@ -253,9 +253,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           connectedCallback() {
               super.connectedCallback();
-              requestAnimationFrame(() => {
-                  this._toggleDrawer();
-              })
+              requestAnimationFrame(() => { this._toggleDrawer(true); });
           }
 
           _recalculateView() {
@@ -387,8 +385,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
-          _toggleDrawer() {
-              this.dispatchEvent(new CustomEvent('toggleDrawer', { composed: true, bubbles: true }));
+          _toggleDrawer(largeScreenOnly) {
+              this.dispatchEvent(new CustomEvent('toggleDrawer', {
+                  detail: { largeScreenOnly: largeScreenOnly },
+                  composed: true,
+                  bubbles: true
+              }));
           }
 
           _drawerOpenStateChanged() {
