@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../img/sc-language-icons.html">
 <link rel="import" href="../../redux-store.html">
@@ -79,13 +80,14 @@ This is the base language menu that determines the language of the site.
         auto
         url='[[_getUrl()]]'
         handle-as="json"
-        last-response="{{lastResponse}}"
+        last-response="{{languageListResponse}}"
         on-response="_languageListDownloaded"
     ></iron-ajax>
 
-    <paper-dropdown-menu class="language-menu-dropdown" label="Language" title="Select the site in another language">
+    <paper-dropdown-menu class="language-menu-dropdown" label="{{localize('languageLabel')}}"
+                         title="{{localize('browseTooltip')}}">
       <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNum}}">
-        <template is="dom-repeat" items="[[lastResponse]]" as="language">
+        <template is="dom-repeat" items="[[languageListResponse]]" as="language">
           <paper-icon-item class="language-menu-paper-item" id='[[language.uid]]'>
             <iron-icon class="iso-code-image" title="[[language.name]]" slot="item-icon"
                        icon="[[_getLanguageIconName(language.iso_code)]]"></iron-icon>
@@ -99,22 +101,26 @@ This is the base language menu that determines the language of the site.
   </template>
 
   <script>
-      class LanguageBaseMenu extends ReduxMixin(Polymer.Element) {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class LanguageBaseMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'language-base-menu';
           }
 
           static get properties() {
               return {
-                  lastResponse: {
+                  languageListResponse: {
                       type: Array,
                       value: () => { return []; }
                   },
                   selectedLanguageNum: {
                       type: Number,
-                      observer: '_selectedLanguageNumChanged',
+                      observer: '_selectedLanguageNumChanged'
                   },
-                  siteLanguage: {
+                  language: {
                       type: String,
                       statePath: 'siteLanguage'
                   }
@@ -133,15 +139,20 @@ This is the base language menu that determines the language of the site.
               }
           }
 
+          connectedCallback() {
+              super.connectedCallback();
+              this.loadResources(this.resolveUrl('../../localization/language-base-menu.json'));
+          }
+
           // Is invoked when a language is chosen from the list.
           _selectedLanguageNumChanged() {
-              if (!this.lastResponse || this.lastResponse.length === 0 || !this.selectedLanguageNum) {
+              if (!this.languageListResponse || this.languageListResponse.length === 0 || !this.selectedLanguageNum) {
                   return;
               }
               try {
                   // When selecting a language from the array of all languages, we're dividing by two.
                   // That's because of the ISO codes inside our list which paper-listbox treats as separate elements.
-                  const languageIsoCode = this.lastResponse[this.selectedLanguageNum].iso_code;
+                  const languageIsoCode = this.languageListResponse[this.selectedLanguageNum].iso_code;
                   this.dispatch('changeLanguage', languageIsoCode);
               } catch (e) {
                   console.error(e);
@@ -149,7 +160,7 @@ This is the base language menu that determines the language of the site.
           }
 
           _languageListDownloaded() {
-              this.selectedLanguageNum = this._findChosenLanguageIndex(this.lastResponse, this.siteLanguage);
+              this.selectedLanguageNum = this._findChosenLanguageIndex(this.languageListResponse, this.language);
           }
 
           // Listens to changes in the global redux app state and updates the language chosen in the list dropdown.
