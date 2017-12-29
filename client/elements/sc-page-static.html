@@ -140,29 +140,29 @@
     </app-toolbar>
     <app-toolbar id="lasttoolbar">
       <div class="title" main-title>
-        <p class="subtitle">Early Buddhist texts, translations, and parallels</p>
+        <p class="subtitle">{{localize('pageSubtitle')}}</p>
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item>
       <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
         <paper-tab class="nav-link" data-name="HOME">
-          <div>HOME</div>
+          <div>{{localize('HOME')}}</div>
           <a class="link-anchor" href="/home"></a>
         </paper-tab>
         <paper-tab class="nav-link" data-name="INTRODUCTION">
-          <div>INTRODUCTION</div>
+          <div>{{localize('INTRODUCTION')}}</div>
           <a class="link-anchor" href="/introduction" tabindex="-1"></a>
         </paper-tab>
         <paper-tab class="nav-link" data-name="DONATIONS">
-          <div>DONATIONS</div>
+          <div>{{localize('DONATIONS')}}</div>
           <a class="link-anchor" href="/donations" tabindex="-1"></a>
         </paper-tab>
         <paper-tab class="nav-link" data-name="OFFLINE">
-          <div>USE OFFLINE</div>
+          <div>{{localize('USEOFFLINE')}}</div>
           <a class="link-anchor" href="/offline" tabindex="-1"></a>
         </paper-tab>
         <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW">
-          <div>WHAT'S NEW</div>
+          <div>{{localize('WHATSNEW')}}</div>
           <a class="link-anchor" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank">
           </a>
         </paper-tab>
@@ -222,19 +222,23 @@
         <sc-abhidhamma></sc-abhidhamma>
       </div>
       <div name="A-NEW-BEGINNING">
-        <sc-a-new-beginning></sc-a-new-beginni>
+        <sc-a-new-beginning></sc-a-new-beginning>
       </div>
       <div name="NOT-FOUND">
         <div class="page-not-found-container">
-          <h2>Error 404</h2>
-          <h3>Page not found</h3>
+          <h2>{{localize('error404')}}</h2>
+          <h3>{{localize('pageNotFound')}}</h3>
         </div>
       </div>
     </iron-lazy-pages>
   </template>
 
   <script>
-    class SCPageStatic extends ReduxMixin(Polymer.Element) {
+   /**
+    * @extends {Polymer.Element}
+    * @appliesMixin Polymer.AppLocalizeBehavior
+    */
+    class SCPageStatic extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
       static get is() {
           return 'sc-page-static';
       }
@@ -249,8 +253,17 @@
               pages: {
                   type: String,
                   value: 'HOME'
+              },
+              language: {
+                  type: String,
+                  statePath: 'siteLanguage'
               }
           }
+      }
+
+      connectedCallback() {
+          super.connectedCallback();
+          this.loadResources(this.resolveUrl('../localization/sc-page-static.json'));
       }
 
       _selectNavbarLink() {
@@ -262,13 +275,6 @@
               }
           }
           this.$.nav_tabs.selectIndex(-1);
-      }
-
-      connectedCallback() {
-          super.connectedCallback();
-          this.$.nav_tabs.querySelectorAll('paper-tab').forEach(link => {
-              link.style.width = window.getComputedStyle(link).width;
-          });
       }
 
       _changeView() {
