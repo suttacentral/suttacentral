@@ -167,13 +167,13 @@
           <div class="related-terms sc-scrollbar">
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
-              <template is="dom-repeat" items="{{dictionaryAdjacentArray}}">
+              <template is="dom-repeat" items="[[dictionaryAdjacentArray]]">
                 <li class$="[[_calculateClass(item.glossword)]]" inner-h-t-m-l="[[item.glosstext]]"></li>
               </template>
             </ul>
             <h3>Similar Spelling</h3>
             <ul class="fuzzy-terms">
-              <template is="dom-repeat" items="{{dictionarySimilarArray}}">
+              <template is="dom-repeat" items="[[dictionarySimilarArray]]">
                 <li class$="[[_calculateClass(item.glossword)]]" inner-h-t-m-l="[[item.glosstext]]"></li>
               </template>
             </ul>
@@ -226,6 +226,7 @@
                   dictionarySimilarArray: Array
               }
           }
+
           ready() {
               super.ready();
               this._loadGlossary();
@@ -267,7 +268,7 @@
 
           // Adding Adjacent Terms
           _computeAdjacentUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/adjacent/${this.dictionaryWord}`;
+              return `${this.$.meta.byKey('API_ROOT')}/dictionary_adjacent/${this.dictionaryWord}`;
           }
 
           _loadAdjacent() {
@@ -297,37 +298,33 @@
 
           _glossaryLoaded() {
               let result = {};
-              for (let i=0; i<this.glossaryReturns[0].length; i++) {
-                  result[this.glossaryReturns[0][i].word] = this.glossaryReturns[0][i].text;
-              }
+              this.glossaryReturns[0].forEach((item) => result[item.word] = item.text);
               this._getGlossaryItems(result);
           }
 
           _getGlossaryItems(result) {
               let glossary = [];
-              let glossaryobject = {};
-              let glosstext = '';
-              for (let glossword in this.dictionaryAdjacent) {
-                  let glosslookup = this.dictionaryAdjacent[glossword];
-                  glosstext = `<a href="/define/${glosslookup}">${glosslookup}</a>`
-                  if (result[glosslookup]){
-                      glosstext += `<em> (${result[glosslookup]})</em>`
+              let glossaryObject = {};
+              let glossText = '';
+              for (let glossWord in this.dictionaryAdjacent) {
+                  let glossLookup = this.dictionaryAdjacent[glossWord];
+                  glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
+                  if (result[glossLookup]){
+                      glossText += `<em> (${result[glossLookup]})</em>`
                   }
-                  glossaryobject = {"glossword": glosslookup, "glosstext": glosstext};
-                  glossary.push(glossaryobject);
-
+                  glossaryObject = {"glossword": glossLookup, "glosstext": glossText};
+                  glossary.push(glossaryObject);
               }
               this.dictionaryAdjacentArray = glossary;
               glossary = [];
-              for (let glossword in this.dictionarySimilar) {
-                  let glosslookup = this.dictionarySimilar[glossword];
-                  glosstext = `<a href="/define/${glosslookup}">${glosslookup}</a>`
-                  if (result[glosslookup]){
-                      glosstext += `<em> (${result[glosslookup]})</em>`
+              for (let glossWord in this.dictionarySimilar) {
+                  let glossLookup = this.dictionarySimilar[glossWord];
+                  glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
+                  if (result[glossLookup]){
+                      glossText += `<em> (${result[glossLookup]})</em>`
                   }
-                  glossaryobject = {"glossword": glosslookup, "glosstext": glosstext};
-                  glossary.push(glossaryobject);
-
+                  glossaryObject = {"glossword": glossLookup, "glosstext": glossText};
+                  glossary.push(glossaryObject);
               }
               this.dictionarySimilarArray = glossary;
           }
