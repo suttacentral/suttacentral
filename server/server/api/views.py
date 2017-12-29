@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from collections import defaultdict
 
 import stripe
 from flask import current_app, request
@@ -14,6 +15,7 @@ from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, P
 
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
     sort_parallels_type_key, groupby_unsorted
+
 
 class Languages(Resource):
     """
@@ -99,16 +101,17 @@ class Menu(Resource):
             data = list(divisions)
         else:
             divisions = db.aql.execute(MENU)
-            data = self.groupby_parents(divisions, ['pitaka'])
+            data = self.group_by_parents(divisions, ['pitaka'])
 
         for pitaka in data:
             if 'children' in pitaka:
                 uid = pitaka['uid']
                 children = pitaka.pop('children')
                 if uid == 'pitaka/sutta':
-                    pitaka['children'] = self.groupby_parents(children, ['grouping'])
+                    pitaka['children'] = self.group_by_parents(children, ['grouping'])
                 else:
-                    pitaka['children'] = self.groupby_parents(children, ['sect', 'language'])
+                    pitaka['children'] = self.group_by_parents(children, ['sect'])
+                    self.group_by_language(pitaka)
 
         self.recursive_cleanup(data, mapping={})
 
@@ -119,17 +122,17 @@ class Menu(Resource):
         return entry.get('num') or -1
 
     @staticmethod
-    def groupby_parent_property(entries, prop):
+    def group_by_parent_property(entries, prop):
         return ((json.loads(key), list(group))
                 for key, group
                 in groupby_unsorted(entries, lambda d: json.dumps(d['parents'].get(prop), sort_keys=True))
                 )
 
-    def groupby_parents(self, entries, props):
+    def group_by_parents(self, entries, props):
         out = []
         prop = props[0]
         remaining_props = props[1:]
-        for parent, children in self.groupby_parent_property(entries, prop):
+        for parent, children in self.group_by_parent_property(entries, prop):
             if parent is None:
                 # This intentionally looks as bad as possible in the menu
                 # it's a "hey classify me!"
@@ -140,10 +143,28 @@ class Menu(Resource):
                 }
             out.append(parent)
             if remaining_props:
-                parent['children'] = self.groupby_parents(children, remaining_props)
+                parent['children'] = self.group_by_parents(children, remaining_props)
             else:
                 parent['children'] = children
         return sorted(out, key=self.num_sort_key)
+
+    @staticmethod
+    def group_by_language(pitaka):
+        i = 0
+        while i < len(pitaka['children']):
+            child = pitaka['children'][i]
+            new_data = defaultdict(list)
+            for sub_child in child['children']:
+                iso = sub_child.pop('lang_iso')
+                new_data[iso].append(sub_child)
+            child.pop('children')
+            new_data = [{**child, 'lang_iso': iso, 'lang_name': children[0]['lang_name'], 'children': children} for
+                        iso, children in new_data.items()]
+            for data_item in new_data:
+                for child in data_item['children']:
+                    del child['lang_name']
+            pitaka['children'] = pitaka['children'][:i] + new_data + pitaka['children'][i + 1:]
+            i += len(new_data)
 
     def recursive_cleanup(self, menu_entries, mapping):
         menu_entries.sort(key=self.num_sort_key)
@@ -571,6 +592,7 @@ class Paragraphs(Resource):
 
         return data.batch(), 200
 
+
 class Glossary(Resource):
     def get(self):
         """
@@ -634,6 +656,7 @@ class DictionaryFull(Resource):
         data = db.aql.execute(DICTIONARYFULL, bind_vars={'word': word})
 
         return data.batch(), 200
+
 
 class Donations(Resource):
     def post(self):
