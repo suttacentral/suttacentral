@@ -2,11 +2,13 @@
   "en": {
     "searchTooltip": "Search SuttaCentral",
     "joinDiscussion": "Join the discussion about this sutta.",
-    "discussSuttas": "Discuss the suttas on our forum"
+    "discussSuttas": "Discuss the suttas on our forum",
+    "search": "search"
   },
   "pl": {
     "searchTooltip": "Wyszukaj w SuttaCentral",
     "joinDiscussion": "Dołącz do dyskusji o tej sutrze.",
-    "discussSuttas": "Podyskutuj o sutrach na naszym forum"
+    "discussSuttas": "Podyskutuj o sutrach na naszym forum",
+    "search": "Szukaj"
   }
 }
