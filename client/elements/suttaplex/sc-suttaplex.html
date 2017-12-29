@@ -67,7 +67,7 @@
         margin-right: var(--sc-size-md-larger);
       }
 
-      .suttaplex-description {
+      .suttaplex-blurb {
         @apply --sc-paper-font-body;
         overflow: hidden;
       }
@@ -291,8 +291,7 @@
           </template>
         </div>
 
-        <p class$="suttaplex-description [[_computeHide(item.blurb)]]" title="Description"
-           inner-h-t-m-l="[[item.blurb]]"></p>
+        <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="Blurb" inner-h-t-m-l="[[item.blurb]]"></p>
       </div>
 
       <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
