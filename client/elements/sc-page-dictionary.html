@@ -125,6 +125,14 @@
     </style>
 
     <iron-ajax
+        auto
+        id="glossary_ajax"
+        url="/api/glossary"
+        handle-as="json"
+        last-response="{{glossaryReturns}}"
+        on-response="_glossaryLoaded"></iron-ajax>
+
+    <iron-ajax
         id="ajax"
         handle-as="json"
         last-response="{{dictionaryReturns}}"
@@ -135,11 +143,10 @@
         handle-as="json"
         last-response="{{adjacentReturns}}"></iron-ajax>
 
-    <iron-ajax
-        id="glossary_ajax"
+<!--     <iron-ajax
+        id="similar_ajax"
         handle-as="json"
-        last-response="{{glossaryReturns}}"
-        on-response="_glossaryLoaded"></iron-ajax>
+        last-response="{{similarReturns}}"></iron-ajax> -->
 
     <iron-meta id="meta"></iron-meta>
 
@@ -216,7 +223,7 @@
                   },
                   glossaryList: Object,
                   dictionaryAdjacent: Array,
-                  // The below array is just a temporary mockup.
+                  // The below array is just a temporary mockup and can be deleted once similar can be loaded through ajax.
                   dictionarySimilarArray: {
                       type: Array,
                       value: ['dhamma','dhammā','adhamma','dhamman','dhammī','ghamma',
@@ -231,11 +238,6 @@
                   '_getGlossaryItems(glossaryList,adjacentReturns,adjacent)',
                   '_getGlossaryItems(glossaryList,dictionarySimilarArray)'
               ];
-          }
-
-          ready() {
-              super.ready();
-              this._loadGlossary();
           }
 
           _computeUrl() {
@@ -287,16 +289,7 @@
               return (item === this.dictionaryWord) ? 'selected-terms-item' : '';
           }
 
-          // creating glossary results object
-          _computeGlossaryUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/glossary`;
-          }
-
-          _loadGlossary() {
-              this.$.glossary_ajax.url = this._computeGlossaryUrl();
-              return this.$.glossary_ajax.generateRequest();
-          }
-
+          // Converts glossary output to object
           _glossaryLoaded() {
               let result = {};
               this.glossaryReturns[0].forEach((item) => result[item.word] = item.text);
