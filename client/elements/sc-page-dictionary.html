@@ -133,8 +133,7 @@
     <iron-ajax
         id="adjacent_ajax"
         handle-as="json"
-        last-response="{{adjacentReturns}}"
-        on-response="_adjacentLoaded"></iron-ajax>
+        last-response="{{adjacentReturns}}"></iron-ajax>
 
     <iron-ajax
         id="glossary_ajax"
@@ -167,13 +166,13 @@
           <div class="related-terms sc-scrollbar">
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
-              <template is="dom-repeat" items="[[dictionaryAdjacentArray]]">
+              <template is="dom-repeat" items="[[dictionaryAdjacent]]">
                 <li class$="[[_calculateClass(item.glossword)]]" inner-h-t-m-l="[[item.glosstext]]"></li>
               </template>
             </ul>
             <h3>Similar Spelling</h3>
             <ul class="fuzzy-terms">
-              <template is="dom-repeat" items="[[dictionarySimilarArray]]">
+              <template is="dom-repeat" items="[[dictionarySimilar]]">
                 <li class$="[[_calculateClass(item.glossword)]]" inner-h-t-m-l="[[item.glosstext]]"></li>
               </template>
             </ul>
@@ -211,20 +210,27 @@
                           'pts': 'PTS Pali English Dictionary'
                       }
                   },
-                  // The below two arrays are just temporary mockups.
-                  dictionaryAdjacent: {
-                      type: Array,
-                      value: ['dhamita','dhamitvā','dhameti','dhamenta','dhamesi',
-                      'dhamma','dhammakathā','dhammakathika','dhammakamma','dhammakaraka']
+                  adjacent: {
+                      type: Boolean,
+                      value: true
                   },
-                  dictionaryAdjacentArray: Array,
-                  dictionarySimilar: {
+                  glossaryList: Object,
+                  dictionaryAdjacent: Array,
+                  // The below array is just a temporary mockup.
+                  dictionarySimilarArray: {
                       type: Array,
                       value: ['dhamma','dhammā','adhamma','dhamman','dhammī','ghamma',
                       'dhama','damma','uddhamma','opamma']
                   },
-                  dictionarySimilarArray: Array
+                  dictionarySimilar: Array
               }
+          }
+
+          static get observers() {
+              return [
+                  '_getGlossaryItems(glossaryList,adjacentReturns,adjacent)',
+                  '_getGlossaryItems(glossaryList,dictionarySimilarArray)'
+              ];
           }
 
           ready() {
@@ -276,17 +282,12 @@
               return this.$.adjacent_ajax.generateRequest();
           }
 
-          _adjacentLoaded() {
-              console.log("loaded Adjacent");
-              console.log(this.AdjacentReturns);
-          }
-
           // Calculating if the current item is selected
           _calculateClass(item) {
               return (item === this.dictionaryWord) ? 'selected-terms-item' : '';
           }
 
-          // Adding glossary results to related items drawer
+          // creating glossary results object
           _computeGlossaryUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/glossary`;
           }
@@ -299,34 +300,25 @@
           _glossaryLoaded() {
               let result = {};
               this.glossaryReturns[0].forEach((item) => result[item.word] = item.text);
-              this._getGlossaryItems(result);
+              this.glossaryList = result;
           }
 
-          _getGlossaryItems(result) {
+          _getGlossaryItems(glossaryList, inputArray, adjacent=false) {
               let glossary = [];
               let glossaryObject = {};
               let glossText = '';
-              for (let glossWord in this.dictionaryAdjacent) {
-                  let glossLookup = this.dictionaryAdjacent[glossWord];
-                  glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
-                  if (result[glossLookup]){
-                      glossText += `<em> (${result[glossLookup]})</em>`
+              if (glossaryList) {
+                  for (let glossWord in inputArray) {
+                      let glossLookup = inputArray[glossWord];
+                      glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
+                      if (glossaryList[glossLookup]){
+                          glossText += `<em> (${glossaryList[glossLookup]})</em>`
+                      }
+                      glossaryObject = {"glossword": glossLookup, "glosstext": glossText};
+                      glossary.push(glossaryObject);
                   }
-                  glossaryObject = {"glossword": glossLookup, "glosstext": glossText};
-                  glossary.push(glossaryObject);
+                  return (adjacent) ? this.dictionaryAdjacent = glossary : this.dictionarySimilar = glossary;
               }
-              this.dictionaryAdjacentArray = glossary;
-              glossary = [];
-              for (let glossWord in this.dictionarySimilar) {
-                  let glossLookup = this.dictionarySimilar[glossWord];
-                  glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
-                  if (result[glossLookup]){
-                      glossText += `<em> (${result[glossLookup]})</em>`
-                  }
-                  glossaryObject = {"glossword": glossLookup, "glosstext": glossText};
-                  glossary.push(glossaryObject);
-              }
-              this.dictionarySimilarArray = glossary;
           }
 
           // toggles the drawer on the right to show the related/similar items.
