@@ -434,7 +434,6 @@ FOR dictionary IN dictionary_full
     FILTER dictionary.word == @word
     RETURN {
         dictname: dictionary.dictname,
-        word: dictionary.word,
         text: dictionary.text
     }
 '''
@@ -462,6 +461,37 @@ FOR text IN why_we_read
 '''
 
 GLOSSARY = '''
-FOR gloss IN glossary
-    RETURN KEEP(gloss, ['glossword', 'description'])
+LET glossary_item = (
+    FOR dictionary IN dictionary_full
+        FILTER dictionary.dictname == "gloss"
+        RETURN KEEP(dictionary, "word", "text")
+    )
+    
+RETURN glossary_item
+'''
+
+DICTIONARY_ADJACENT = '''
+LET all_items = (
+    FOR dictionary IN dictionary_full
+        RETURN dictionary.word
+    )
+
+LET unique_terms = (
+    RETURN UNIQUE(all_items)
+    )
+
+LET sorted_items = (
+    FOR items in unique_terms[0]
+        SORT items ASC
+        RETURN items
+    )
+
+LET search_word_position = (
+    RETURN POSITION(sorted_items, @word, true)
+    )
+
+FOR selected in sorted_items
+    FILTER selected < sorted_items[search_word_position[0]+5]
+    FILTER selected > sorted_items[search_word_position[0]-5]
+    RETURN selected
 '''
