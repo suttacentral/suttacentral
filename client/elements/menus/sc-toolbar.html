@@ -132,23 +132,6 @@ Base toolbar that appears on the top right in the header of every page. This too
                   language: {
                       type: String,
                       statePath: 'siteLanguage'
-                  },
-
-                  resources: {
-                      value() {
-                          return {
-                              'en': {
-                                  'searchTooltip': 'Search SuttaCentral',
-                                  'joinDiscussion': 'Join the discussion about this sutta.',
-                                  'discussSuttas': 'Discuss the suttas on our forum'
-                              },
-                              'pl': {
-                                  'searchTooltip': 'Wyszukaj w SuttaCentral',
-                                  'joinDiscussion': 'Dołącz do dyskusji o tej sutrze.',
-                                  'discussSuttas': 'Podyskutuj o sutrach na naszym forum'
-                              },
-                          }
-                      }
                   }
               }
           }
@@ -158,6 +141,11 @@ Base toolbar that appears on the top right in the header of every page. This too
               this.$.more_menu.addEventListener('item-selected', (e) => {
                   this.$.more_vert_button.close();
               })
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.loadResources(this.resolveUrl('../../localization/sc-toolbar.json'));
           }
 
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
