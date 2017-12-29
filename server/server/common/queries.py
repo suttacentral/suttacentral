@@ -465,3 +465,9 @@ GLOSSARY = '''
 FOR gloss IN glossary
     RETURN KEEP(gloss, ['glossword', 'description'])
 '''
+
+BIBLIOGRAPHY = '''
+FOR biblio IN biblios
+    SORT biblio.name
+    RETURN biblio.text
+'''

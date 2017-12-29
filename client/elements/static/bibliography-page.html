@@ -1,0 +1,48 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../styles/static-styles.html">
+
+<dom-module id="sc-bibliography-page">
+  <template>
+    <style include="static-styles">
+      .author {
+        @apply --sc-mixed-small-caps;
+      }
+    </style>
+
+    <iron-ajax
+        auto
+        id="ajax"
+        url="/api/bibliography"
+        handle-as="json"
+        last-response="{{bibliographyReturns}}"></iron-ajax>
+
+    <div id="page-wrap">
+      <main>
+        <section>
+          <article>
+            <h1>Bibliography</h1>
+            <template is="dom-repeat" items="[[bibliographyReturns]]">
+              <p inner-h-t-m-l="[[item]]"></p>
+            </template>
+          </article>
+        </section>
+      </main>
+    </div>
+  </template>
+
+  <script>
+      class SCBibliographyPage extends Polymer.Element {
+          static get is() {
+              return 'sc-bibliography-page';
+          }
+
+          static get properties() {
+              return {
+                  bibliographyReturns: Array,
+              }
+          }
+      }
+
+      customElements.define(SCBibliographyPage.is, SCBibliographyPage);
+  </script>
+</dom-module>
