@@ -45,12 +45,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         white-space: nowrap;
       }
 
-      .list-mode #sc_toolbar, .list-mode .toolbar-header {
-        background-color: var(--sc-primary-accent-color);
-      }
-
-      .search-mode #sc_toolbar, .search-mode .toolbar-header,
-      .dictionary-mode #sc_toolbar, .dictionary-mode .toolbar-header {
+      [mode="search-mode"] #sc_toolbar,
+      [mode="search-mode"] .toolbar-header,
+      [mode="dictionary-mode"] #sc_toolbar,
+      [mode="dictionary-mode"] .toolbar-header,
+      [mode="list-mode"] #sc_toolbar,
+      [mode="list-mode"] .toolbar-header {
         background-color: var(--sc-primary-accent-color);
       }
 
@@ -65,7 +65,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         color: var(--sc-tertiary-text-color);
       }
 
-      .search-mode #toolbar_title, .dictionary-mode #toolbar_title {
+      [mode="search-mode"] #toolbar_title,
+      [mode="dictionary-mode"] #toolbar_title {
         text-transform: none;
       }
 
@@ -78,6 +79,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       @media screen and (min-width: 840px) {
         #header.drawer-closed {
           left: 0 !important;
+        }
+
+        #header {
+          left: var(--app-drawer-width) !important;
         }
       }
 
@@ -96,9 +101,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     <div class="container">
       <app-header-layout>
 
-        <app-header id="header" condenses reveals effects="waterfall" slot="header" class$="[[toolbarMode]]">
+        <app-header id="header" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
-            <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
+            <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer(false)"></paper-icon-button>
 
             <div main-title id="toolbar_title_box">
               <p id="toolbar_title">[[toolbarTitle]]</p>
@@ -189,6 +194,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   shouldShowSearchPage: Boolean,
                   shouldShowSuttaTextPage: Boolean,
                   shouldShowDictionaryPage: Boolean,
+                  isDrawerOpen: {
+                      type: Boolean,
+                      observer: '_drawerOpenStateChanged'
+                  }
               }
           }
 
@@ -234,12 +243,17 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.addEventListener('par-menu-copied', (e) => {
                   let success = '';
                   if (e.detail.success) {
-                    success = 'success';
+                      success = 'success';
                   } else {
-                    success = 'error';
+                      success = 'error';
                   }
                   this._showToast(success, e.detail.message);
               });
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              requestAnimationFrame(() => { this._toggleDrawer(true); });
           }
 
           _recalculateView() {
@@ -371,9 +385,20 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
-          _toggleDrawer() {
-              this.dispatchEvent(new CustomEvent('toggleDrawer', { composed: true, bubbles: true }));
-              this.$.header.classList.toggle('drawer-closed');
+          _toggleDrawer(largeScreenOnly) {
+              this.dispatchEvent(new CustomEvent('toggleDrawer', {
+                  detail: { largeScreenOnly: largeScreenOnly },
+                  composed: true,
+                  bubbles: true
+              }));
+          }
+
+          _drawerOpenStateChanged() {
+              if (this.isDrawerOpen) {
+                  this.$.header.classList.remove('drawer-closed');
+              } else {
+                  this.$.header.classList.add('drawer-closed');
+              }
           }
 
           _scrollToTop() {
