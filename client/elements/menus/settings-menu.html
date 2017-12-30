@@ -370,7 +370,11 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                   showLoadingSpinner: {
                       type: Boolean,
                       value: false
-                  }
+                  },
+                  currentReduxState: {
+                      type: Object,
+                      computed: '_findCurrentReduxState()'
+                  },
               }
           }
 
@@ -457,6 +461,10 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               }
           }
 
+          _findCurrentReduxState(){
+              return JSON.parse(localStorage.getItem('reduxState')).textOptions;
+          }
+
           _paliLookupChanged(lookupLanguage) {
               if (!lookupLanguage) {
                   return;
@@ -465,9 +473,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const target = this.paliLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
               const dictName = targetDictRepr.replace('→', 'to');
-              this._showToast(dictName);
+              const currentDict = this.currentReduxState.paliLookupTargetDictRepr;
+              if (currentDict !== targetDictRepr) {
+                  this._showToast(dictName);
+              };
+              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
           }
 
           _findPaliLookupLanguageIndex(languageName) {
@@ -482,9 +493,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const target = this.chineseLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
               const dictName = targetDictRepr.replace('→', 'to');
-              this._showToast(dictName);
+              const currentDict = this.currentReduxState.chineseLookupTargetDictRepr;
+              if (currentDict !== targetDictRepr) {
+                  this._showToast(dictName);
+              };
+              this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
           }
 
           _findChineseLookupLanguageIndex(languageName) {
