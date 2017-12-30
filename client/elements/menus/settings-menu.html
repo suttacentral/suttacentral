@@ -374,7 +374,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                   currentReduxState: {
                       type: Object,
                       computed: '_findCurrentReduxState()'
-                  },
+                  }
               }
           }
 
@@ -461,7 +461,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               }
           }
 
-          _findCurrentReduxState(){
+          _findCurrentReduxState() {
               return JSON.parse(localStorage.getItem('reduxState')).textOptions;
           }
 
