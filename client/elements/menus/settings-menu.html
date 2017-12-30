@@ -371,9 +371,13 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                       type: Boolean,
                       value: false
                   },
-                  currentReduxState: {
-                      type: Object,
-                      computed: '_findCurrentReduxState()'
+                  paliSelectedItemChanged: {
+                      type: Boolean,
+                      value: false
+                  },
+                  chineseSelectedItemChanged: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -388,6 +392,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               });
               this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('value-changed', (e) => {
                   this._chineseLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('selected-item-changed', () => {
+                  this.paliSelectedItemChanged = true;
+              });
+              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('selected-item-changed', () => {
+                  this.chineseSelectedItemChanged = true;
               });
               this.shadowRoot.querySelector('#pali_script_menu').addEventListener('value-changed', (e) => {
                   this._changeScript(e.detail.value);
@@ -461,10 +471,6 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               }
           }
 
-          _findCurrentReduxState() {
-              return JSON.parse(localStorage.getItem('reduxState')).textOptions;
-          }
-
           _paliLookupChanged(lookupLanguage) {
               if (!lookupLanguage) {
                   return;
@@ -474,11 +480,11 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
               const dictName = targetDictRepr.replace('→', 'to');
-              const currentDict = this.currentReduxState.paliLookupTargetDictRepr;
-              if (currentDict !== targetDictRepr) {
+              if (this.paliSelectedItemChanged) {
                   this._showToast(dictName);
               };
               this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
+              this.paliSelectedItemChanged = false;
           }
 
           _findPaliLookupLanguageIndex(languageName) {
@@ -494,11 +500,11 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
               const dictName = targetDictRepr.replace('→', 'to');
-              const currentDict = this.currentReduxState.chineseLookupTargetDictRepr;
-              if (currentDict !== targetDictRepr) {
+              if (this.chineseSelectedItemChanged) {
                   this._showToast(dictName);
               };
               this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
+              this.chineseSelectedItemChanged = false;
           }
 
           _findChineseLookupLanguageIndex(languageName) {
