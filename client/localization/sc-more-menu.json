@@ -1,0 +1,24 @@
+{
+  "en": {
+    "Donations": "Donations",
+    "UseOffline": "UseOffline",
+    "Numbering": "Numbering",
+    "Abbreviations": "Abbreviations",
+    "Methodology": "Methodology",
+    "Acknowledgments": "Acknowledgments",
+    "Downloads": "Downloads",
+    "Licensing": "Licensing",
+    "About": "About"
+  },
+  "pl": {
+    "Donations": "Dotacje",
+    "UseOffline": "Używaj offline",
+    "Numbering": "Numeracja",
+    "Abbreviations": "Skróty",
+    "Methodology": "Metodologia",
+    "Acknowledgments": "Podziękowania",
+    "Downloads": "Pobieranie",
+    "Licensing": "Licencjonowanie",
+    "About": "O nas"
+  }
+}
