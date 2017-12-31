@@ -42,7 +42,7 @@
       }
 
       .highlight {
-        background-color: var(--sc-disabled-text-color-opaque);
+        background-color: var(--sc-primary-color-almost-transparent);
       }
 
       article p,
@@ -381,7 +381,9 @@
               }
               while (section) {
                   section.classList.add('highlight');
-                  this._changeMarginToPadding(section)
+                  if (section.tagName !== 'HR') {
+                      this._changeMarginToPadding(section);
+                  }
                   let nextSection = section.nextElementSibling;
                   if (!nextSection) {
                       this._changePaddingToMargin(section);
