@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
@@ -36,7 +37,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         background-color: unset;
       }
 
-      language-base-menu:after {
+      #language_menu:after {
         content: "   ";
       }
 
@@ -51,6 +52,14 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         height: 1px;
         margin-top: var(--sc-size-xxs);
         margin-bottom: var(--sc-size-xxs);
+      }
+
+      .toggle-button {
+        --paper-toggle-button-unchecked-bar-color: var(--sc-secondary-text-color);
+        --paper-toggle-button-checked-bar-color: var(--sc-primary-accent-color-light);
+        --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
+        --paper-toggle-button-checked-ink-color: var(--sc-primary-accent-color-dark);
+        margin-left: calc(var(--sc-size-xs) * -1);
       }
 
     </style>
@@ -72,6 +81,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         {{localize('UseOffline')}}
       </paper-item>
     </a>
+    <paper-item class="more-menu-paper-item">
+      <paper-toggle-button id="theme_toggler" class="toggle-button" checked="{{darkThemeChosen}}"></paper-toggle-button>
+      {{localize('DarkTheme')}}
+    </paper-item>
     <div class="separator"></div>
     <a class="more-menu-link" href="/numbering">
       <paper-item class="more-menu-paper-item">
@@ -136,8 +149,27 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                   language: {
                       type: String,
                       statePath: 'siteLanguage'
+                  },
+                  appTheme: {
+                      type: String,
+                      statePath: 'colorTheme'
+                  },
+                  darkThemeChosen: {
+                      type: Boolean,
+                      computed: '_isDarkThemeChosen(appTheme)'
                   }
               };
+          }
+
+          static get actions() {
+              return {
+                  changeAppTheme(theme) {
+                      return {
+                          type: "CHANGE_COLOR_THEME",
+                          theme: theme
+                      }
+                  }
+              }
           }
 
           ready() {
@@ -147,6 +179,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
 
           connectedCallback() {
               super.connectedCallback();
+              this.$.theme_toggler.addEventListener('checked-changed', () => {
+                  const newTheme = this.darkThemeChosen ? 'light' : 'dark';
+                  this.dispatch('changeAppTheme', newTheme);
+              });
               this.loadResources(this.resolveUrl('../../localization/sc-more-menu.json'));
           }
 
@@ -166,6 +202,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
 
           _dispatchItemSelectedEvent() {
               this.dispatchEvent(new CustomEvent('item-selected'));
+          }
+
+          _isDarkThemeChosen() {
+              return this.appTheme === 'dark';
           }
       }
 

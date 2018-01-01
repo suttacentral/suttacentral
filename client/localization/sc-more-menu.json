@@ -1,14 +1,15 @@
 {
   "en": {
     "Donations": "Donations",
-    "UseOffline": "UseOffline",
+    "UseOffline": "Use offline",
     "Numbering": "Numbering",
     "Abbreviations": "Abbreviations",
     "Methodology": "Methodology",
     "Acknowledgments": "Acknowledgments",
     "Downloads": "Downloads",
     "Licensing": "Licensing",
-    "About": "About"
+    "About": "About",
+    "DarkTheme": "Use dark theme"
   },
   "pl": {
     "Donations": "Dotacje",
@@ -19,6 +20,7 @@
     "Acknowledgments": "Podziękowania",
     "Downloads": "Pobieranie",
     "Licensing": "Licencjonowanie",
-    "About": "O nas"
+    "About": "O nas",
+    "DarkTheme": "Ciemna szata graficzna"
   }
 }
