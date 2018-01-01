@@ -381,7 +381,9 @@
               }
               while (section) {
                   section.classList.add('highlight');
-                  this._changeMarginToPadding(section)
+                  if (section.tagName !== 'HR') {
+                      this._changeMarginToPadding(section);
+                  }
                   let nextSection = section.nextElementSibling;
                   if (!nextSection) {
                       this._changePaddingToMargin(section);
