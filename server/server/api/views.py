@@ -11,7 +11,7 @@ from sortedcontainers import SortedDict
 from common.arangodb import get_db
 
 from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, \
-    SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY, BIBLIOGRAPHY
+    SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY
 
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
     sort_parallels_type_key, groupby_unsorted
@@ -811,25 +811,5 @@ class WhyWeRead(Resource):
             limit = 10
 
         data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit})
-
-        return data.batch(), 200
-
-class Bibliography(Resource):
-    def get(self):
-        """
-        Send list of bibliographies for static page
-        ---
-        responses:
-            bibliography:
-                type: object
-                properties:
-                    name:
-                        type: string
-                    text:
-                        type: string
-        """
-        db = get_db()
-
-        data = db.aql.execute(BIBLIOGRAPHY)
 
         return data.batch(), 200
