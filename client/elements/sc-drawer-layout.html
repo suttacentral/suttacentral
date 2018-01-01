@@ -150,6 +150,12 @@
     <iron-meta id="meta" key="API_ROOT" value="{{_getApiUrl()}}"></iron-meta>
     <iron-meta id="meta" key="IMAGES_ROOT" value="https://suttacentral.net/text_images"></iron-meta>
 
+    <iron-ajax
+        id="colorsAjax"
+        handle-as="json"
+        last-response="{{colorsResponse}}"
+        on-response="_colorsResponseReceived"></iron-ajax>
+
     <app-drawer-layout id="drawer_layout" fullbleed responsive-width="840px">
 
       <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer" persistent="[[false]]" opened="{{isDrawerOpened}}">
@@ -220,13 +226,21 @@
                   item: {
                       type: Object
                   },
+                  colorsResponse: {
+                      type: Object
+                  },
                   siteLanguage: {
                       type: String,
                       statePath: 'siteLanguage',
-                      observer: "_setSiteLanguage"
+                      observer: '_setSiteLanguage'
                   },
                   isDrawerOpened: {
                       type: Boolean
+                  },
+                  appColorTheme: {
+                      type: String,
+                      statePath: 'colorTheme',
+                      observer: '_colorThemeChanged'
                   }
               }
           }
@@ -237,6 +251,10 @@
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
               // Lock scroll for the text dialogs:
               this._addScrollLockListeners();
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
           }
 
           // opens the app-drawer when it is not visible.
@@ -280,6 +298,20 @@
           _getApiUrl() {
               let currentUrl = window.location;
               return `${currentUrl.protocol}//${currentUrl.host}/api`;
+          }
+
+          _colorThemeChanged() {
+              this.$.colorsAjax.url = `../styles/sc-colors-${this.appColorTheme}.json`;
+              this.$.colorsAjax.generateRequest();
+          }
+
+          _colorsResponseReceived() {
+              // set the css color variables:
+              for (const key in this.colorsResponse) {
+                  if (!this.colorsResponse.hasOwnProperty(key)) continue;
+                  console.log(`setting ${key} to ${this.colorsResponse[key]}`);
+                  document.body.style.setProperty(key, this.colorsResponse[key]);
+              }
           }
 
           _setSiteLanguage() {
