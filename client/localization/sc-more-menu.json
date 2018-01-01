@@ -1,7 +1,7 @@
 {
   "en": {
     "Donations": "Donations",
-    "UseOffline": "UseOffline",
+    "UseOffline": "Use offline",
     "Numbering": "Numbering",
     "Abbreviations": "Abbreviations",
     "Methodology": "Methodology",
@@ -9,7 +9,7 @@
     "Downloads": "Downloads",
     "Licensing": "Licensing",
     "About": "About",
-    "DarkTheme": "Dark theme"
+    "DarkTheme": "Use dark theme"
   },
   "pl": {
     "Donations": "Dotacje",

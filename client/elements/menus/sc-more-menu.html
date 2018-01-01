@@ -59,7 +59,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         --paper-toggle-button-checked-bar-color: var(--sc-primary-accent-color-light);
         --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
         --paper-toggle-button-checked-ink-color: var(--sc-primary-accent-color-dark);
-        margin-left: var(--sc-size-md);
+        margin-left: calc(var(--sc-size-xs) * -1);
       }
 
     </style>
@@ -81,6 +81,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         {{localize('UseOffline')}}
       </paper-item>
     </a>
+    <paper-item class="more-menu-paper-item">
+      <paper-toggle-button id="theme_toggler" class="toggle-button" checked="{{darkThemeChosen}}"></paper-toggle-button>
+      {{localize('DarkTheme')}}
+    </paper-item>
     <div class="separator"></div>
     <a class="more-menu-link" href="/numbering">
       <paper-item class="more-menu-paper-item">
@@ -124,12 +128,6 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         {{localize('About')}}
       </paper-item>
     </a>
-    <div class="separator"></div>
-    <paper-item class="more-menu-paper-item">
-      {{localize('DarkTheme')}}
-      <paper-toggle-button id="theme_toggler" class="toggle-button" checked="{{darkThemeChosen}}"></paper-toggle-button>
-    </paper-item>
-
   </template>
 
   <script>
