@@ -178,7 +178,7 @@
         <sc-donations-page></sc-donations-page>
       </div>
       <div name="DONATE-NOW">
-        <sc-donate-now-page></sc-donate-now-page>
+        <sc-donate-now-page id="donate"></sc-donate-now-page>
       </div>
       <div name="DOWNLOADS">
         <downloads-page></downloads-page>
@@ -279,6 +279,7 @@
       }
 
       _changeView() {
+          this.$.donate.resetForm();
           this.$.pages.selected = this.selectedPage;
           this._selectNavbarLink();
       }
