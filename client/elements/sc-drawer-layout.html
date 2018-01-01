@@ -301,7 +301,7 @@
           }
 
           _colorThemeChanged() {
-              this.$.colorsAjax.url = `../styles/sc-colors-${this.appColorTheme}.json`;
+              this.$.colorsAjax.url = `/styles/sc-colors-${this.appColorTheme}.json`;
               this.$.colorsAjax.generateRequest();
           }
 
@@ -309,7 +309,6 @@
               // set the css color variables:
               for (const key in this.colorsResponse) {
                   if (!this.colorsResponse.hasOwnProperty(key)) continue;
-                  console.log(`setting ${key} to ${this.colorsResponse[key]}`);
                   document.body.style.setProperty(key, this.colorsResponse[key]);
               }
           }
