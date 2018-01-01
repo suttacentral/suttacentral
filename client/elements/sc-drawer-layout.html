@@ -253,10 +253,6 @@
               this._addScrollLockListeners();
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-          }
-
           // opens the app-drawer when it is not visible.
           _toggleDrawer(e) {
               const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
