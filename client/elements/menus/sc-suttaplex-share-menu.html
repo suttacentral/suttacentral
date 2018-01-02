@@ -8,7 +8,7 @@
 <!--
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
 -->
-<dom-module id="more-par-menu">
+<dom-module id="sc-suttaplex-share-menu">
   <template>
     <style is="custom-style">
 
@@ -65,9 +65,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
   </template>
 
   <script>
-      class SCMoreParMenu extends Polymer.Element {
+      class SCSuttaplexShareMenu extends Polymer.Element {
           static get is() {
-              return 'more-par-menu';
+              return 'sc-suttaplex-share-menu';
           }
 
           static get properties() {
@@ -284,6 +284,6 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           }
       }
 
-      customElements.define(SCMoreParMenu.is, SCMoreParMenu);
+      customElements.define(SCSuttaplexShareMenu.is, SCSuttaplexShareMenu);
   </script>
 </dom-module>
