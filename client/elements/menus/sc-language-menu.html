@@ -105,19 +105,20 @@ Language-menu used in the suttaplex card for denoting which translations exist o
     </style>
     <template is="dom-if" if="[[_shouldShowMenu(languageChoice)]]">
       <paper-dropdown-menu class="language-menu-dropdown custom" label="[[titleLabel]]"
-                           title="Select a language" id="paper_dropdown_menu" vertical-align="auto">
+                           title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="auto">
         <paper-listbox class="language-menu-listbox" slot="dropdown-content">
 
-          <template is="dom-repeat" items="[[languageChoice]]" as="language">
-            <template is="dom-if" if="[[!_otherLanguage(language, inputLanguage)]]">
-              <section class$="{{_rootLanguageClassOrStandard(language)}} no-outline">
+          <template is="dom-repeat" items="[[languageChoice]]" as="translation">
+            <template is="dom-if" if="[[!_otherLanguage(translation, inputLanguage)]]">
+              <section class$="{{_rootLanguageClassOrStandard(translation)}} no-outline">
                 <a class="language-menu-url"
-                   href="/[[rootId]]/[[language.lang]]/[[language.author]][[_getParagraphRange()]]">
-                  <paper-icon-item class="language-menu-item" id='[[language.id]]' title="[[_languageTitle(language)]]">
-                    <iron-icon class="iso-code-image" slot="item-icon" title="[[language.lang_name]]"
-                               icon="[[_getLanguageIconName(language.lang)]]"></iron-icon>
+                   href="/[[rootId]]/[[translation.lang]]/[[translation.author]][[_getParagraphRange()]]">
+                  <paper-icon-item class="language-menu-item" id='[[translation.id]]'
+                                   title="{{localize('selectTranslation', 'lang', translation.lang_name, 'author', translation.author)}}">
+                    <iron-icon class="iso-code-image" slot="item-icon" title="[[translation.lang_name]]"
+                               icon="[[_getLanguageIconName(translation.lang)]]"></iron-icon>
                     <paper-item-body>
-                      [[_computeAuthorForList(language.author)]]
+                      [[_computeAuthorForList(translation.author)]]
                     </paper-item-body>
                   </paper-icon-item>
                 </a>
@@ -132,7 +133,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
   </template>
 
   <script>
-      class SCLanguageMenu extends Polymer.Element {
+      class SCLanguageMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-language-menu';
           }
@@ -165,10 +166,19 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                           'kho': 'Khotanese'
                       }
                   },
-                  to: {
+                  parallelTo: {
                       type: String
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-menu/${this.language}.json`));
           }
 
           // does not list items that are from the inputLanguage because those are listed elsewhere.
@@ -194,15 +204,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _computeAuthor(author) {
-              return author ? author : 'Anonym';
+              return author ? author : this.localize('anonym');
           }
 
           _computeAuthorForList(author) {
               return this._shortenAuthor(this._computeAuthor(author));
-          }
-
-          _languageTitle(language) {
-              return `Select '${language.lang}' translation by ${this._computeAuthor(language.author)}`;
           }
 
           _computeFullLanguageName(isoCode) {
@@ -218,10 +224,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _getParagraphRange() {
-              if (!this.to) {
+              if (!this.parallelTo) {
                   return '';
               }
-              const ids = this.to.split(/#(.*)/)[1];
+              const ids = this.parallelTo.split(/#(.*)/)[1];
               if (!ids) {
                   return '';
               }

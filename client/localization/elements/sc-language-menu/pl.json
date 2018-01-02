@@ -1,8 +1,7 @@
 {
   "pl": {
-    "searchTooltip": "Wyszukaj w SuttaCentral",
-    "joinDiscussion": "Dołącz do dyskusji o tej sutrze.",
-    "discussSuttas": "Podyskutuj o sutrach na naszym forum",
-    "Search": "Szukaj"
+    "selectLanguage": "Wybierz język",
+    "anonym": "Anonim",
+    "selectTranslation": "Wybierz tłumaczenie w języku {lang} autorstwa {author}."
   }
 }

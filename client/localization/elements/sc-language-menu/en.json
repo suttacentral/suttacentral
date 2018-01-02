@@ -1,8 +1,7 @@
 {
   "en": {
-    "searchTooltip": "Search SuttaCentral",
-    "joinDiscussion": "Join the discussion about this sutta.",
-    "discussSuttas": "Discuss the suttas on our forum",
-    "Search": "Search"
+    "selectLanguage": "Select a language",
+    "anonym": "Anonym",
+    "selectTranslation": "Select {lang} translation by {author}."
   }
 }
