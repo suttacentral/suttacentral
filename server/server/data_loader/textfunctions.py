@@ -19,22 +19,22 @@ del char_in_order
 def pali_sort_key(string):
     """sorts strings into pali alphabetical order"""
     
-    vals = []
+    values = []
     i = 0
     while i < len(string):
-        c1 = string[i]
-        c2 = string[i:i+2]
-        if c2 in _char_value:
-            val = _char_value[c2]
+        char = string[i]
+        multi_char = string[i:i+2]
+        if multi_char in _char_value:
+            value = _char_value[multi_char]
             i += 1 # advance an extra character
-        elif c1 in _char_value:
-            val = _char_value[c1]
+        elif char in _char_value:
+            value = _char_value[char]
         else:
-            val = 0
-        vals.append(val)    
+            value = 0
+        values.append(value)    
         i += 1
     
-    return tuple(vals)
+    return tuple(values)
 
 def asciify_roman(string):
     out = unicodedata.normalize('NFD', string)
