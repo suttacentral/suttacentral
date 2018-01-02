@@ -5,8 +5,6 @@
   "--sc-disabled-text-color": "#9a9a9a",
   "--sc-disabled-text-color-opaque": "rgba(158, 158, 158, .3)",
   "--sc-primary-color": "#ffcb61",
-  "--sc-primary-color-transparent": "rgba(206, 132, 0, 0)",
-  "--sc-primary-color-almost-transparent": "rgba(206, 132, 0, .1)",
   "--sc-primary-color-light": "#ffcb61",
   "--sc-primary-color-medium": "#f6b735",
   "--sc-primary-color-dark": "#b37800",
