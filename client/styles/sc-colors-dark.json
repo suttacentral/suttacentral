@@ -10,19 +10,16 @@
   "--sc-primary-color-dark": "#b37800",
   "--sc-primary-color-darkest": "#8a5d00",
   "--sc-primary-accent-color": "#8ace8d",
-  "--sc-primary-accent-color-almost-transparent": "rgba(67, 160, 71, .1)",
   "--sc-primary-accent-color-light": "#98e29b",
   "--sc-primary-accent-color-dark": "#74af76",
   "--sc-secondary-accent-color": "#9c27b0",
   "--sc-primary-background-color": "#414141",
   "--sc-secondary-background-color": "#515151",
   "--sc-tertiary-background-color": "rgba(243, 243, 243, .2)",
-  "--sc-tertiary-background-color-opaque": "rgba(243, 243, 243, .5)",
   "--sc-paper-tooltip-color": "#E2E2E2",
   "--sc-paper-tooltip-text-color": "#212121",
   "--sc-border-color": "rgba(0, 0, 0, 0.12)",
   "--sc-textual-info-background-color": "#515151",
   "--sc-toast-error-color": "#f44336",
-  "--sc-toast-success-color": "#43a047",
-  "--sc-disabled-text-color-darker": "#888888"
+  "--sc-toast-success-color": "#43a047"
 }
