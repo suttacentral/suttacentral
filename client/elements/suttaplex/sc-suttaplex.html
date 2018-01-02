@@ -14,7 +14,7 @@
 <link rel="import" href="../../img/sc-svg-icons.html">
 <link rel="import" href="../../elements/addons/sc-sutta-note.html">
 <link rel="import" href="../menus/sc-language-menu.html">
-<link rel="import" href="../../elements/menus/more-par-menu.html">
+<link rel="import" href="../menus/sc-suttaplex-share-menu.html">
 <link rel="import" href="../../elements/suttaplex/sc-view-parallels.html">
 <link rel="import" href="../../elements/addons/sc-badge.html">
 
@@ -132,7 +132,7 @@
         display: inline-block;
       }
 
-      .more-par-menu-button {
+      .share-menu-button {
         padding: 0;
         --paper-menu-button-dropdown: {
           @apply --shadow-elevation-8dp;
@@ -298,12 +298,12 @@
           </div>
 
           <div class="right-elements">
-            <paper-menu-button id="copy_menu" class="more-par-menu-button" horizontal-align="right" role="group"
+            <paper-menu-button id="copy_menu" class="share-menu-button" horizontal-align="right" role="group"
                                aria-haspopup="true" aria-disabled="false" vertical-align="auto">
               <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
                                  role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
               <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
-                <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]"></more-par-menu>
+                <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
               </paper-listbox>
             </paper-menu-button>
 
