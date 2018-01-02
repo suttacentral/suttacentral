@@ -13,7 +13,7 @@
 
 <link rel="import" href="../../img/sc-svg-icons.html">
 <link rel="import" href="../../elements/addons/sc-sutta-note.html">
-<link rel="import" href="../../elements/menus/language-menu.html">
+<link rel="import" href="../menus/sc-language-menu.html">
 <link rel="import" href="../../elements/menus/more-par-menu.html">
 <link rel="import" href="../../elements/suttaplex/sc-view-parallels.html">
 <link rel="import" href="../../elements/addons/sc-badge.html">
@@ -291,10 +291,10 @@
         </div>
         <div class="flex-div">
           <div class="languagedrop">
-            <language-menu language-choice="[[item.translations]]" title-label="{{localize('more')}}"
+            <sc-language-menu language-choice="[[item.translations]]" title-label="{{localize('more')}}"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
                            root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndexWithTimeout"
-                           on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></language-menu>
+                           on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></sc-language-menu>
           </div>
 
           <div class="right-elements">
