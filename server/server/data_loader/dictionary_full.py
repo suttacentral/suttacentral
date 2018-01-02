@@ -19,25 +19,27 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
     words_seen = Counter()    
     ids_seen = Counter()
     for dictionary in tqdm(dictionary_full_files):
-        with dictionary.open('r', encoding='utf-8') as f:    
-            for entry in json.load(f):
-                word = entry['word'].lower()
-                words_seen[word] += 1
-                
-                # create a meaningful id
-                _id = asciify_roman(word)
-                if _id in ids_seen:
-                    _id += str(ids_seen[_id])
-                ids_seen[_id] += 1
-                words_seen[word] += 1
-                
-                doc = {'_id': _id,
-                       'dictname': dictionary.stem,
-                       'lang_to': lang_to,
-                       'lang_from': lang_from,
-                       **entry}
-                doc['word'] = word
-                docs.append(doc)
+        with dictionary.open('r', encoding='utf-8') as f:
+            entries = json.load(f)
+        for entry in entries:
+            word = entry['word'].lower()
+            words_seen[word] += 1
+            
+            # create a meaningful id
+            _id = asciify_roman(word)
+            if _id in ids_seen:
+                _id += str(ids_seen[_id])
+            ids_seen[_id] += 1
+            words_seen[word] += 1
+            
+            doc = {'_id': _id,
+                   'dictname': dictionary.stem,
+                   'lang_to': lang_to,
+                   'lang_from': lang_from,
+                   **entry,
+                   'word': word
+                   }
+            docs.append(doc)
     
     words_sorted = sorted(words_seen, key=pali_sort_key)
     word_number = {w: i for i, w in enumerate(words_sorted)}

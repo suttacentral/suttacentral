@@ -1,5 +1,7 @@
 from collections import defaultdict, Counter
 
+from typing import Tuple, Set, Iterable, List
+
 class FuzzyMatcher:
     """
     
@@ -16,8 +18,10 @@ class FuzzyMatcher:
     # Future Improvements that aren't a huge deal but would be nice:
     # 1. Certain combinations like kh, dh etc are actually a single
     #    letter and should be treated as such.
+    # 2. Instead of using "stopword" style pruning, instead
+    #    reduce the weight of common n-grams.
     
-    def __init__(self, words, threshold=0.0):
+    def __init__(self, words:Iterable[str], threshold:float=0.0):
         """
         Add words to be matched against
         
@@ -37,17 +41,25 @@ class FuzzyMatcher:
             if len(v) > max_count:
                 del self.ngram_mapping[k]                    
         
-    def make_ngrams(self, word, length=4):
+    def _make_ngrams(self, word:str, length:int=4) -> Set[str]:
         return {word[i:i+length] for i in range(0, len(word) - length + 1)}
     
-    def add(self, word):
-        ngrams = self.make_ngrams(word)
+    def add(self, word:str):
+        ngrams = self._make_ngrams(word)
         for ngram in ngrams:
             self.ngram_mapping[ngram].add(word)
     
-    def search(self, word, n=5, include_original=False):
+    @staticmethod
+    def _length_ratio(word:str, other_word:str) -> float:
+        "Returns a value between 0 and 1"
+        try:
+            return min(len(word) / len(other_word), len(other_word) / len(word))
+        except DivisionByZero:
+            return 0.0
+    
+    def search(self, word:str, n=5, include_original=False) -> List[Tuple[str, float]]:
         " Return similiar words with a similiarity metric "
-        ngrams = self.make_ngrams(word)
+        ngrams = self._make_ngrams(word)
         results = Counter()
         for ngram in ngrams:
             results.update(self.ngram_mapping[ngram])
@@ -59,8 +71,7 @@ class FuzzyMatcher:
         lower_threshold = len(ngrams) * 0.5
         close_matches = [t for t in results.items() if t[1] >= lower_threshold]
         # similarity is based on both the number of ngrams in common and the relative lengths
-        # (this code was tuned a little to make it run faster)
-        ratios = [(other_word, count / len(ngrams) / (1 + abs(len(word) - len(other_word)) / len(word)) ) 
+        ratios = [(other_word, count / len(ngrams) * self._length_ratio(word, other_word) ) 
                   for other_word, count 
                   in close_matches]
         # Sort by ratio and alphabetical order: the latter is only to 
