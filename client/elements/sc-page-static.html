@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="../elements/static/home-page.html">
 <link rel="import" href="../elements/static/donations-page.html">
@@ -70,11 +71,11 @@
         color: var(--sc-tertiary-text-color);
       }
 
-      .title-text::before {
-        content: "☸";
+      .nav-wheel-icon {
         margin-right: var(--sc-size-sm);
-        vertical-align: middle;
-        font-size: 1.5em;
+        vertical-align: bottom;
+        height: var(--sc-size-xxl);
+        width: var(--sc-size-xxl);
       }
 
       .page-not-found-container {
@@ -136,7 +137,7 @@
 
     <app-toolbar>
       <div class="title" main-title>
-        <h1 class="title-text">SuttaCentral</h1>
+        <h1 class="title-text"><iron-icon class="nav-wheel-icon" icon="sc-svg-icons:lotus"></iron-icon>SuttaCentral</h1>
       </div>
     </app-toolbar>
     <app-toolbar id="lasttoolbar">
