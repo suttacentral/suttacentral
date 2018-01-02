@@ -1,9 +1,8 @@
 {
   "pl": {
     "more": "Więcej",
-    "recommendedFor": "Rekomendowane dla {level} studentów",
-    "beginner": "początkujących",
-    "intermediate": "średiozaawansowanych",
-    "advanced": "zaawansowanych"
+    "beginner": "Rekomendowane dla początkujących studentów",
+    "intermediate": "Rekomendowane dla średniozaawansowanych studentów",
+    "advanced": "Rekomendowane dla zaawansowanych studentów"
   }
 }

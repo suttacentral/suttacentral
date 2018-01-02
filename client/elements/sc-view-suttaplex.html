@@ -85,7 +85,8 @@
         <template>
           <div>
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
-              <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]"></sc-suttaplex>
+              <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]"
+                            difficulty="[[_computeItemDifficulty(item.difficulty)]]"></sc-suttaplex>
             </template>
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
@@ -161,6 +162,16 @@
           // Close parallels when navigating to new page
           _areParallelsOpen(item) {
               return false;
+          }
+
+          _computeItemDifficulty(difficulty) {
+              if (difficulty.name) {
+                  return difficulty.name;
+              }
+              else {
+                  const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
+                  return levels[difficulty];
+              }
           }
       }
 

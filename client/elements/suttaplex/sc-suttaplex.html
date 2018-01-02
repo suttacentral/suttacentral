@@ -234,7 +234,7 @@
           <iron-icon id="difficulty_icon" class="primary-accent-icon"
                      icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
           <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds class="sc-tooltip">
-            {{localize('recommendedFor', 'level', difficultyLevel)}}
+            {{localize(difficulty)}}
           </paper-tooltip>
         </div>
 
@@ -377,6 +377,9 @@
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  difficulty: {
+                      type: String
                   }
               }
           }
@@ -454,27 +457,8 @@
               return opened ? '' : 'moremenu';
           }
 
-          // adds the 'tree'-icons to denote difficulty level if any.
-          _computeDifficultyLevelName() {
-              if (!this.item.difficulty) return;
-              console.log(this.localize(this.item.difficulty.name));
-              if (this.item.difficulty.name) {
-                  return this.localize(this.item.difficulty.name);
-              }
-              else {
-                  const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
-                  return this.localize(levels[this.item.difficulty]);
-              }
-          }
-
-          _computeDifficultyLevelIconName(level) {
-              if (level.name) {
-                  return `sc-svg-icons:${level.name}`;
-              }
-              else {
-                  const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
-                  return `sc-svg-icons:${levels[level]}`;
-              }
+          _computeDifficultyLevelIconName() {
+              return `sc-svg-icons:${this.difficulty}`;
           }
 
           // Computes API endpoint URL for given translation
