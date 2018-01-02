@@ -621,7 +621,7 @@
               const margin = window.getComputedStyle(paragraph).margin;
               requestAnimationFrame(() => {
                   paragraph.style.margin = '0';
-              })
+              });
               if (isSideBySideView && !wrapperAlreadyExists) {
                   requestAnimationFrame(() => {
                       wrapper.style.padding = margin;
@@ -664,15 +664,26 @@
 
                   const wrapperAlreadyExists = !wrapper;
 
-                  const margin = window.getComputedStyle(section).margin;
+                  const computedStyle = window.getComputedStyle(section);
+                  const margin = computedStyle.margin;
+                  const marginBottom = computedStyle.marginBottom;
+                  const marginTop = computedStyle.marginTop;
                   if (section === toSection || !toSection) {
                       this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists);
                       break;
                   } else if (margin && margin !== '0px') {
                       section.style.margin = '0';
                       section.style.padding = margin;
+                  } else {
+                    if (marginBottom && marginBottom !== '0px') {
+                      section.style.marginBottom = '0';
+                      section.style.paddingBottom = marginBottom;
+                    }
+                    if (marginTop && marginTop !== '0px') {
+                        section.style.marginTop = '0';
+                        section.style.paddingTop = marginTop;       
+                    }
                   }
-
                   if (section.nextElementSibling === null && section.parentNode.nodeName === 'P') {
                       section = this._processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper);
                   } else {
