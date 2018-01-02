@@ -51,21 +51,21 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 
     <paper-item class="table-element button-text" on-tap="_copyLink" title="[[_computeLink(item)]]">
       <iron-icon class="grey-icon" icon="link"></iron-icon>
-      Copy link
+      {{localize('copyLink')}}
     </paper-item>
     <paper-item class="table-element button-text" on-tap="_copyContent" disabled="[[areParallelsAvailable]]">
       <iron-icon class="grey-icon" icon="content-copy"></iron-icon>
-      Copy table
+      {{localize('copyTable')}}
     </paper-item>
     <paper-item class="table-element button-text" on-tap="_copyCite" disabled="[[areParallelsAvailable]]">
       <iron-icon class="grey-icon" icon="editor:format-quote"></iron-icon>
-      Cite
+      {{localize('cite')}}
     </paper-item>
 
   </template>
 
   <script>
-      class SCSuttaplexShareMenu extends Polymer.Element {
+      class SCSuttaplexShareMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-suttaplex-share-menu';
           }
@@ -89,8 +89,17 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                       type: Boolean,
                       value: false,
                       computed: '_setAreParallelsAvaiable(loadingParallels)'
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex-share-menu/${this.language}.json`));
           }
 
           _notifyCopy(message, success) {
@@ -113,9 +122,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               try {
                   const copyTextarea = this._computeCopyTable();
                   this._copyToClipboard(copyTextarea);
-                  this._notifyCopy('Parallels table copied!', true);
+                  this._notifyCopy(this.localize('tableCopied'), true);
               } catch (err) {
-                  this._notifyCopy('Error!', false);
+                  this._notifyCopy(this.localize('error'), false);
                   console.error(err);
               }
           }
@@ -133,7 +142,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               try {
                   return `${baseUrl}/${this.item.uid}`;
               } catch (err) {
-                  this._notifyCopy('Error!', false);
+                  this._notifyCopy(this.localize('error'), false);
               }
           }
 
@@ -142,9 +151,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               try {
                   const link = this._computeLink();
                   this._copyToClipboard(link);
-                  this._notifyCopy('Link copied!', true);
+                  this._notifyCopy(this.localize('linkCopied'), true);
               } catch (err) {
-                  this._notifyCopy('Error!', false);
+                  this._notifyCopy(this.localize('error'), false);
                   console.error(err);
               }
           }
@@ -155,9 +164,9 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               try {
                   const copyTextarea = this._computeCiteData();
                   this._copyToClipboard(copyTextarea);
-                  this._notifyCopy('Cite copied!', true);
+                  this._notifyCopy(this.localize('citeCopied'), true);
               } catch (err) {
-                  this._notifyCopy('Error!', false);
+                  this._notifyCopy(this.localize('error'), false);
                   console.error(err);
               }
           }
@@ -232,7 +241,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                       result += `(${this.item.volpages[0]})`;
                   }
                   result = this._strip(result, ' ');
-                  result += ': '
+                  result += ': ';
                   for (let parallel of this.parallels[section]) {
                       result += this._generateAcronymUid(parallel.to.acronym, parallel.to.to);
                       result += ' ';
@@ -275,8 +284,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           _getTextFromHtml(htmlString) {
               let tmp = document.createElement('div');
               tmp.innerHTML = htmlString;
-              let text = tmp.textContent;
-              return text;
+              return tmp.textContent;
           }
 
           _getAPIEndpoint(item) {
