@@ -120,19 +120,24 @@
         color: var(--sc-paper-tooltip-color);
       }
 
-      .suttaplex-details {
-        display: inline-block;
+      .volpage-biblio-info-summary {
+        outline: none;
+        cursor: pointer;
       }
 
-      .suttaplex-details .volpage-biblio-info {
+      .volpage-biblio-info {
         @apply --paper-font-body1;
         position: absolute;
         z-index: 200;
-        background-color: #fff;
+        background-color: var(--sc-tertiary-background-color);
         padding: 12px;
         border-top: var(--sc-border);
         margin: 0 var(--sc-size-xl) 0 0;
         white-space: normal;
+      }
+
+      .suttaplex-details {
+        display: inline-block;
       }
 
       .more-par-menu-button {
@@ -179,22 +184,6 @@
 
       .display-inline {
         display: inline-block;
-      }
-
-      .volpage-biblio-info-summary {
-        outline: none;
-        cursor: pointer;
-      }
-
-      .volpage-biblio-info {
-        @apply --paper-font-body1;
-        position: absolute;
-        z-index: 200;
-        background-color: #fff;
-        padding: 12px;
-        border-top: var(--sc-border);
-        margin: 0 var(--sc-size-xl) 0 0;
-        white-space: normal;
       }
 
       .scrollable-dialog {
@@ -265,10 +254,10 @@
           <h3 class="suttaplex-heading">[[_computeMainHeading(item)]]</h3>
           <div class$="difficulty-icon">
             <iron-icon id="difficulty_icon" class="primary-accent-icon"
-                       icon="[[_computeDifficultyLevelName(item.difficulty, 'sc-svg-icons:')]]"></iron-icon>
+                       icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
           </div>
           <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds class="sc-tooltip">
-            Recommended for [[_computeDifficultyLevelName(item.difficulty, '')]] students
+            {{localize('recommendedFor', 'level', difficultyLevel)}}
           </paper-tooltip>
         </div>
 
@@ -319,23 +308,24 @@
         </div>
         <div class="flex-div">
           <div class="languagedrop">
-            <language-menu language-choice="[[item.translations]]" title-label="More"
+            <language-menu language-choice="[[item.translations]]" title-label="{{localize('more')}}"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
                            root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndexWithTimeout"
                            on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></language-menu>
           </div>
 
           <div class="right-elements">
-            <paper-menu-button id="copy_menu" class="more-par-menu-button" horizontal-align="right" role="group" aria-haspopup="true"
-                                  aria-disabled="false"vertical-align="auto">
-                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
-                                   role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
+            <paper-menu-button id="copy_menu" class="more-par-menu-button" horizontal-align="right" role="group"
+                               aria-haspopup="true"
+                               aria-disabled="false" vertical-align="auto">
+              <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
+                                 role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
 
-                <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
-                  <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
-                  </more-par-menu>
-                </paper-listbox>
-              </paper-menu-button>
+              <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
+                <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
+                </more-par-menu>
+              </paper-listbox>
+            </paper-menu-button>
 
 
             <template is="dom-if" if="[[item.parallel_count]]">
@@ -365,7 +355,7 @@
   </template>
 
   <script>
-      class SCSuttaplex extends Polymer.Element {
+      class SCSuttaplex extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-suttaplex';
           }
@@ -405,6 +395,15 @@
                   },
                   toastMessage: {
                       type: String
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  },
+                  difficultyLevel: {
+                      type: String,
+                      computed: '_computeDifficultyLevelName(item.language)'
                   }
               }
           }
@@ -415,6 +414,10 @@
                   this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
               });
               this.$.copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.language}.json`));
           }
 
           _moreMenuOpenedChanged(e) {
@@ -479,14 +482,25 @@
           }
 
           // adds the 'tree'-icons to denote difficulty level if any.
-          _computeDifficultyLevelName(level, namespace) {
-              if (!level) return;
-              if (level.name) {
-                  return `${namespace}${level.name}`;
+          _computeDifficultyLevelName() {
+              if (!this.item.difficulty) return;
+              console.log(this.localize(this.item.difficulty.name));
+              if (this.item.difficulty.name) {
+                  return this.localize(this.item.difficulty.name);
               }
               else {
                   const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
-                  return `${namespace}${levels[level]}`;
+                  return this.localize(levels[this.item.difficulty]);
+              }
+          }
+
+          _computeDifficultyLevelIconName(level) {
+              if (level.name) {
+                  return `sc-svg-icons:${level.name}`;
+              }
+              else {
+                  const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
+                  return `sc-svg-icons:${levels[level]}`;
               }
           }
 
