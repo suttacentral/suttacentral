@@ -378,6 +378,11 @@
               if (toSection) {
                   last = false;
               }
+              this._processSections(section, idTo, last);
+              return firstSection;
+          }
+
+          _processSections(section, idTo, last) {
               while (section) {
                   section.classList.add('highlight');
                   if (section.tagName !== 'HR') {
@@ -399,7 +404,6 @@
                   }
                   section = nextSection;
               }
-              return firstSection;
           }
 
           _changePaddingToMargin(section) {
