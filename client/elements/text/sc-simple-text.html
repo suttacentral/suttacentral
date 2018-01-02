@@ -381,7 +381,9 @@
               }
               while (section) {
                   section.classList.add('highlight');
-                  this._changeMarginToPadding(section)
+                  if (section.tagName !== 'HR') {
+                      this._changeMarginToPadding(section);
+                  }
                   let nextSection = section.nextElementSibling;
                   if (!nextSection) {
                       this._changePaddingToMargin(section);
@@ -737,7 +739,7 @@
                   isTooltipShown: false
               };
               word.addEventListener('mouseover', (e) => {
-                  if (this.isPaliLookupEnabled || this.isChineseLookupEnabled) {
+                  if ((this.isPaliLookupEnabled && lang === 'pli') || (this.isChineseLookupEnabled && lang === 'lzh')) {
                       word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                       states.isWordHovered = true;
                       that._addTooltip(word, tooltip, lookup, states, e, lang);

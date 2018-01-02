@@ -15,7 +15,7 @@
             prefix: '',
             __queryParams: {}
         },
-        siteLanguage: 'en',
+        siteLanguage: (navigator.language || navigator.languages && navigator.languages[0]).split('-')[0],
         toolbarOptions: {
             title: '',
             mode: ''
@@ -35,6 +35,7 @@
             chineseLookupTargetDictRepr: 'None',
             chineseLookupTargetLanguage: ''
         },
+        colorTheme: 'light',
         selectedNavigationMenuItemId: ''
     };
 
@@ -88,6 +89,8 @@
                 });
             case 'SELECT_NAVIGATION_MENU_ITEM':
                 return Object.assign({}, state, { selectedNavigationMenuItemId: action.id });
+            case 'CHANGE_COLOR_THEME':
+                return Object.assign({}, state, { colorTheme: action.theme });
             default:
                 return state;
         }
@@ -95,11 +98,11 @@
 
     // Before creating the store, check if it's saved in LocalStorage:
     const persistedState = localStorage.getItem('reduxState');
-    const rememberButtonEnabled = localStorage.getItem('rememberTextSettings');
+    const rememberButtonEnabled = localStorage.getItem('rememberTextSettings') === 'true';
     if (rememberButtonEnabled === 'false') {
         localStorage.removeItem('rememberTextSettings');
     }
-    const state = (persistedState && rememberButtonEnabled === 'true') ? parsePersistedState(persistedState) : initialState;
+    const state = (persistedState && rememberButtonEnabled) ? parsePersistedState(persistedState) : initialState;
 
     const store = Redux.createStore(
         reducer,

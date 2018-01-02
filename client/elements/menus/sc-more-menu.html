@@ -1,7 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../elements/menus/language-base-menu.html">
 
@@ -35,7 +37,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         background-color: unset;
       }
 
-      language-base-menu:after {
+      #language_menu:after {
         content: "   ";
       }
 
@@ -52,6 +54,14 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         margin-bottom: var(--sc-size-xxs);
       }
 
+      .toggle-button {
+        --paper-toggle-button-unchecked-bar-color: var(--sc-secondary-text-color);
+        --paper-toggle-button-checked-bar-color: var(--sc-primary-accent-color-light);
+        --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
+        --paper-toggle-button-checked-ink-color: var(--sc-primary-accent-color-dark);
+        margin-left: calc(var(--sc-size-xs) * -1);
+      }
+
     </style>
 
     <paper-item class="more-menu-paper-item language-choice-box">
@@ -62,78 +72,118 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
     <a class="more-menu-link" href="/donations">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" src="/img/pray.png"></iron-icon>
-        Donations
+        {{localize('Donations')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/offline">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon pwa-icon" icon="sc-svg-icons:pwa"></iron-icon>
-        Use Offline
+        {{localize('UseOffline')}}
       </paper-item>
     </a>
+    <paper-item class="more-menu-paper-item">
+      <paper-toggle-button id="theme_toggler" class="toggle-button" checked="{{darkThemeChosen}}"></paper-toggle-button>
+      {{localize('DarkTheme')}}
+    </paper-item>
     <div class="separator"></div>
     <a class="more-menu-link" href="/numbering">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="editor:format-list-numbered"></iron-icon>
-        Numbering
+        {{localize('Numbering')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/abbreviations">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="sc-svg-icons:abbreviations"></iron-icon>
-        Abbreviations
+        {{localize('Abbreviations')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/methodology">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="sc-svg-icons:school"></iron-icon>
-        Methodology
+        {{localize('Methodology')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/acknowledgments">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="sc-svg-icons:people"></iron-icon>
-        Acknowledgments
+        {{localize('Acknowledgments')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/downloads">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="file-download"></iron-icon>
-        Downloads
+        {{localize('Downloads')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/licensing">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="icons:copyright"></iron-icon>
-        Licensing
+        {{localize('Licensing')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/about">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="icons:info"></iron-icon>
-        About
+        {{localize('About')}}
       </paper-item>
     </a>
   </template>
 
   <script>
-      class SCMoreMenu extends ReduxMixin(Polymer.Element) {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCMoreMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-more-menu';
           };
 
           static get properties() {
               return {
-                  created: {
+                  menuCreated: {
                       type: Boolean,
                       value: false
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage'
+                  },
+                  appTheme: {
+                      type: String,
+                      statePath: 'colorTheme'
+                  },
+                  darkThemeChosen: {
+                      type: Boolean,
+                      computed: '_isDarkThemeChosen(appTheme)'
                   }
               };
+          }
+
+          static get actions() {
+              return {
+                  changeAppTheme(theme) {
+                      return {
+                          type: "CHANGE_COLOR_THEME",
+                          theme: theme
+                      }
+                  }
+              }
           }
 
           ready() {
               super.ready();
               this._initializeListeners();
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.$.theme_toggler.addEventListener('checked-changed', () => {
+                  const newTheme = this.darkThemeChosen ? 'light' : 'dark';
+                  this.dispatch('changeAppTheme', newTheme);
+              });
+              this.loadResources(this.resolveUrl('../../localization/sc-more-menu.json'));
           }
 
           _initializeListeners() {
@@ -143,15 +193,19 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                   });
               });
               this.$.language_menu.addEventListener('iron-select', (e) => {
-                  if (this.created) {
+                  if (this.menuCreated) {
                       this._dispatchItemSelectedEvent();
                   }
-                  this.created = true;
+                  this.menuCreated = true;
               });
           }
 
           _dispatchItemSelectedEvent() {
               this.dispatchEvent(new CustomEvent('item-selected'));
+          }
+
+          _isDarkThemeChosen() {
+              return this.appTheme === 'dark';
           }
       }
 

@@ -93,6 +93,10 @@ type of view for segmented pages (showing pali next to translated text), lookup 
           --paper-input-container-input-color: var(--sc-primary-text-color);
           --paper-input-container-color: var(--sc-secondary-text-color);
         };
+        --paper-menu-button-dropdown: {
+          @apply --shadow-elevation-8dp;
+          background-color: var(--sc-secondary-background-color);
+        };
         background-color: var(--sc-secondary-background-color);
         width: 200px;
       }
@@ -181,7 +185,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
         <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid
           only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="pali_lookup_menu">
+        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="pali_lookup_menu" vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliLookupSelected}}">
             <template is="dom-repeat" items="[[paliLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
@@ -366,6 +370,14 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                   showLoadingSpinner: {
                       type: Boolean,
                       value: false
+                  },
+                  paliSelectedItemChanged: {
+                      type: Boolean,
+                      value: false
+                  },
+                  chineseSelectedItemChanged: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -380,6 +392,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               });
               this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('value-changed', (e) => {
                   this._chineseLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('selected-item-changed', () => {
+                  this.paliSelectedItemChanged = true;
+              });
+              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('selected-item-changed', () => {
+                  this.chineseSelectedItemChanged = true;
               });
               this.shadowRoot.querySelector('#pali_script_menu').addEventListener('value-changed', (e) => {
                   this._changeScript(e.detail.value);
@@ -461,9 +479,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const target = this.paliLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
               const dictName = targetDictRepr.replace('→', 'to');
-              this._showToast(dictName);
+              if (this.paliSelectedItemChanged) {
+                  this._showToast(dictName);
+              };
+              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
+              this.paliSelectedItemChanged = false;
           }
 
           _findPaliLookupLanguageIndex(languageName) {
@@ -478,9 +499,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const target = this.chineseLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
               const dictName = targetDictRepr.replace('→', 'to');
-              this._showToast(dictName);
+              if (this.chineseSelectedItemChanged) {
+                  this._showToast(dictName);
+              };
+              this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
+              this.chineseSelectedItemChanged = false;
           }
 
           _findChineseLookupLanguageIndex(languageName) {
