@@ -270,7 +270,7 @@ FOR dict IN dictionaries
 _NEIGHBOURS_SUBQUERY = '''
 LET legacy = (
     FOR html IN html_text
-        FILTER html.uid == uid.uid AND html.lang == @language
+        FILTER html.uid == uid AND html.lang == @language
         SORT html.author
         RETURN MERGE(KEEP(html, ['author', 'uid']), {'title': html.name})
     )
@@ -367,7 +367,7 @@ LET translated_po_obj = (
 LET neighbours = (
     LET current = (
         FOR text_division IN text_divisions
-            FILTER text_division.uid == root_text.uid
+            FILTER LIKE(text_division.uid, CONCAT('%', root_text.uid))
             LIMIT 1
             RETURN KEEP(text_division, ['num', 'division'])
     )[0]
@@ -375,17 +375,17 @@ LET neighbours = (
     LET next_uids = (
         FOR text_division IN text_divisions
             FILTER text_division.division == current.division AND text_division.num > current.num
-                   AND text_division.type == null
+                   AND text_division.type == 'text'
             SORT text_division.num
-            RETURN KEEP(text_division, ['uid'])
+            RETURN LAST(SPLIT(text_division.uid, '/'))
     )
 
     LET previous_uids = (
         FOR text_division IN text_divisions
             FILTER text_division.division == current.division AND text_division.num < current.num
-                   AND text_division.type == null
+                   AND text_division.type == 'text'
             SORT text_division.num DESC
-            RETURN KEEP(text_division, ['uid'])
+            RETURN LAST(SPLIT(text_division.uid, '/'))
     )
     
     LET next = (
