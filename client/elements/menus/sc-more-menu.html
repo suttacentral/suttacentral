@@ -148,7 +148,8 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                   },
                   language: {
                       type: String,
-                      statePath: 'siteLanguage'
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   },
                   appTheme: {
                       type: String,
@@ -183,7 +184,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                   const newTheme = this.darkThemeChosen ? 'light' : 'dark';
                   this.dispatch('changeAppTheme', newTheme);
               });
-              this.loadResources(this.resolveUrl('/localization/elements/sc-more-menu.json'));
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`));
           }
 
           _initializeListeners() {
