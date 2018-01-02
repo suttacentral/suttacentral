@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="sc-page-selector.html">
 <link rel="import" href="../elements/addons/sc-toasts.html">
@@ -36,13 +37,11 @@
       }
 
       .nav-wheel-icon {
-        @apply --sc-serif-font;
         margin-left: var(--sc-size-md);
-        color: var(--sc-tertiary-text-color);
-        margin-top: 5px;
-        font-size: 45px;
-        display: inline-block;
+        margin-top: var(--sc-size-md);
         vertical-align: sub;
+        width: var(--sc-size-lg);
+        height: var(--sc-size-lg);
       }
 
       .nav-home-title {
@@ -162,7 +161,7 @@
         <div class="nav-drawer-box sc-scrollbar">
           <div class="nav-home-title">
             <a class="nav-home-link" href="/">
-              <div class="nav-wheel-icon">☸</div>
+              <iron-icon class="nav-wheel-icon" icon="sc-svg-icons:lotus"></iron-icon>
               <span class="nav-home-title-text">&nbsp;SuttaCentral</span>
             </a>
           </div>
