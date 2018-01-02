@@ -3,6 +3,12 @@
     "more": "More",
     "beginner": "Recommended for beginner students",
     "intermediate": "Recommended for intermediate students",
-    "advanced": "Recommended for advanced students"
+    "advanced": "Recommended for advanced students",
+    "originalTitle": "Original title",
+    "suttaCentralID": "SuttaCentral ID",
+    "volumeAndPage": "Volume and page",
+    "blurb": "Blurb",
+    "goToTranslation": "Go to a translation by {author}",
+    "hasParallels": "This text has {num} parallels."
   }
 }

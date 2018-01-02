@@ -239,17 +239,20 @@
         </div>
 
         <div class="suttaplex-nerdy-row">
-          <span title="Original title" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
+          <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
             [[item.original_title]]
           </span>
-          <span title="SuttaCentral ID" class$="[[_computeHideUID(item)]] nerdy-row-element">[[_getAcronymOrUid(item)]]
+          <span title="{{localize('suttaCentralID')}}" class$="[[_computeHideUID(item)]] nerdy-row-element">
+            [[_getAcronymOrUid(item)]]
           </span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
               <span class="book no-margin">
                 <iron-icon class="grey-icon" icon="book"></iron-icon>
               </span>
-              <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
+              <span class="vol-page nerdy-row-element" title="{{localize('volumeAndPage')}}">
+                [[item.volpages]]
+              </span>
             </template>
             <template is="dom-if" if=[[item.biblio]]>
               <div>
@@ -258,7 +261,9 @@
                     <span class="book no-margin">
                       <iron-icon class="grey-icon" icon="book"></iron-icon>
                     </span>
-                    <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
+                    <span class="vol-page nerdy-row-element" title="{{localize('volumeAndPage')}}">
+                      [[item.volpages]]
+                    </span>
                   </summary>
                   <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
                 </details>
@@ -267,7 +272,8 @@
           </template>
         </div>
 
-        <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="Blurb" inner-h-t-m-l="[[item.blurb]]"></p>
+        <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="{{localize('blurb')}}"
+           inner-h-t-m-l="[[item.blurb]]"></p>
       </div>
 
       <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
@@ -275,7 +281,7 @@
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button class="author-button" flat
-                            title$="Go to a translation by [[_capitalize(translation.author)]]">
+                            title$="{{localize('goToTranslation', 'author', translation.author)}}">
                 <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
                   [[translation.author]]
                 </a>
@@ -293,17 +299,13 @@
 
           <div class="right-elements">
             <paper-menu-button id="copy_menu" class="more-par-menu-button" horizontal-align="right" role="group"
-                               aria-haspopup="true"
-                               aria-disabled="false" vertical-align="auto">
+                               aria-haspopup="true" aria-disabled="false" vertical-align="auto">
               <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
                                  role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
-
               <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
-                <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
-                </more-par-menu>
+                <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]"></more-par-menu>
               </paper-listbox>
             </paper-menu-button>
-
 
             <template is="dom-if" if="[[item.parallel_count]]">
               <div class="parallels-toggle-div">
@@ -312,8 +314,9 @@
                 </paper-icon-button>
                 <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
               </div>
-              <paper-tooltip for="parallels_toggle" offset="-1" fit-to-visible-bounds class="sc-tooltip">
-                This&nbsp;text&nbsp;has&nbsp;[[item.parallel_count]]&nbsp;parallels
+              <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1" fit-to-visible-bounds
+                             position="right">
+                {{localize('hasParallels', 'num', item.parallel_count)}}
               </paper-tooltip>
             </template>
           </div>
