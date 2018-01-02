@@ -72,16 +72,6 @@
         overflow: hidden;
       }
 
-      .suttaplex .card-actions {
-        padding: 0 var(--sc-size-md) var(--sc-size-sm);
-        display: flex;
-        flex-flow: wrap;
-        flex-grow: 1;
-        justify-content: space-between;
-        align-items: baseline;
-        border-top: 0;
-      }
-
       .card-actions-left {
         display: inline-block;
         align-self: flex-start;
@@ -102,18 +92,10 @@
         flex: 1;
       }
 
-      .vert-menu {
-        --paper-listbox-background-color: var(--sc-secondary-background-color);
-      }
-
       .languagedrop {
         display: inline-block;
         vertical-align: middle;
         margin: -18px var(--sc-size-xs) 0;
-      }
-
-      #moremenu {
-        visibility: hidden;
       }
 
       .volpage-biblio-info-summary::-webkit-details-marker {
@@ -156,10 +138,6 @@
         display: none;
       }
 
-      .difficulty-icon {
-        padding-right: var(--sc-size-sm);
-      }
-
       .toggle-button {
         min-width: 40px;
         align-self: flex-end;
@@ -177,17 +155,8 @@
         margin-top: var(--sc-size-xs);
       }
 
-      .paper-badge {
-        --paper-badge-margin-left: -15px;
-        --paper-badge-margin-bottom: -10px;
-      }
-
       .display-inline {
         display: inline-block;
-      }
-
-      .scrollable-dialog {
-        margin: 0;
       }
 
       .parallels-toggle-div {
@@ -252,10 +221,8 @@
 
         <div class="suttaplex-head-container">
           <h3 class="suttaplex-heading">[[_computeMainHeading(item)]]</h3>
-          <div class$="difficulty-icon">
-            <iron-icon id="difficulty_icon" class="primary-accent-icon"
-                       icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
-          </div>
+          <iron-icon id="difficulty_icon" class="primary-accent-icon"
+                     icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
           <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds class="sc-tooltip">
             {{localize('recommendedFor', 'level', difficultyLevel)}}
           </paper-tooltip>
@@ -400,10 +367,6 @@
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
-                  },
-                  difficultyLevel: {
-                      type: String,
-                      computed: '_computeDifficultyLevelName(item.language)'
                   }
               }
           }
@@ -464,11 +427,11 @@
           }
 
           _computeHideUID(item) {
-              return (item.translated_title || item.original_title) ? '' : 'hide-element'
+              return (item.translated_title || item.original_title) ? '' : 'hide-element';
           }
 
           _computeHideOriginalTitle(item) {
-              return item.translated_title ? '' : 'hide-element'
+              return item.translated_title ? '' : 'hide-element';
           }
 
           // returns the relevant icon for the expander
