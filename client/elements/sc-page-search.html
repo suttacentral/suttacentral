@@ -146,7 +146,7 @@ than ten results in total, a dropdown selection menu appears at the top.
         <div class="search-result-head">
           <h1 class="search-result-header">
             <span class="search-result-number">[[_calculateResultCount(responseData)]]</span>
-            <span class="search-result-description">results for</span>
+            <span class="search-result-description">{{localize('resultsFor')}}</span>
             <span class="search-result-term">[[searchQuery]]</span>
           </h1>
           <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
@@ -182,7 +182,7 @@ than ten results in total, a dropdown selection menu appears at the top.
     </div>
   </template>
   <script>
-      class SCPageSearch extends ReduxMixin(Polymer.Element) {
+      class SCPageSearch extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-page-search';
           }
@@ -263,7 +263,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
           }
 
-          __siteLanguageChanged() {
+          _siteLanguageChanged() {
               this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.language}.json`));
           }
 
