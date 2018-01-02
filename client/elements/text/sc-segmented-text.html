@@ -638,7 +638,7 @@
               return newSection;
           }
 
-          _processHighlightAndScroll(sectionId, isSmooth) {
+          _processHighlightAndScroll(sectionId) {
               let [idFrom, idTo] = sectionId.split('--');
               idFrom = this._generateId(idFrom);
               idTo = this._generateId(idTo);
@@ -760,11 +760,13 @@
               }
               setTimeout(() => {
                   const firstSection = this._processHighlightAndScroll(sectionId);
-                  firstSection.scrollIntoView({
-                      behavior: isSmooth ? 'smooth' : 'instant',
-                      block: 'start',
-                      inline: 'nearest'
-                  });
+                  if(firstSection) {
+                      firstSection.scrollIntoView({
+                          behavior: isSmooth ? 'smooth' : 'instant',
+                          block: 'start',
+                          inline: 'nearest'
+                      });
+                  }
               }, delay);
           }
 
