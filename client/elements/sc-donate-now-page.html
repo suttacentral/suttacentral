@@ -455,8 +455,7 @@
                   'You will be redirected to the homepage in 5 seconds.');
               setTimeout(() => {
                   this.$.submitButton.disabled = false;
-                  this.$.donation_form.reset();
-                  this.shadowRoot.querySelector('.amount-input').value = undefined;
+                  this.resetForm();
                   this.set('path', '/');
               }, 5000);
           }
@@ -483,6 +482,16 @@
               data.email = form.querySelector('.email-input').value;
               data.message = form.querySelector('.message-input').value;
               return data;
+          }
+
+          resetForm() {
+              this.$.donation_form.reset();
+              this.shadowRoot.querySelector('.amount-input').value = undefined;
+              this.shadowRoot.querySelector('.one-time-donation').checked = true;
+              this.shadowRoot.querySelector('.monthly-donation').checked = false;
+              this.shadowRoot.querySelector('.name-input').value = undefined;
+              this.shadowRoot.querySelector('.email-input').value = undefined;
+              this.shadowRoot.querySelector('.message-input').value = undefined;
           }
 
           _showToast(toastType, text) {

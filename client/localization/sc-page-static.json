@@ -1,0 +1,22 @@
+{
+  "en": {
+    "pageSubtitle": "Early Buddhist texts, translations, and parallels",
+    "HOME": "HOME",
+    "INTRODUCTION": "INTRODUCTION",
+    "DONATIONS": "DONATIONS",
+    "USEOFFLINE": "USE OFFLINE",
+    "WHATSNEW": "WHAT'S NEW",
+    "error404": "Error 404",
+    "pageNotFound": "Page not found"
+  },
+  "pl": {
+    "pageSubtitle": "Teksty, tłumaczenia i analogie z okresu wczesnego Buddyzmu",
+    "HOME": "STRONA GŁÓWNA",
+    "INTRODUCTION": "WPROWADZENIE",
+    "DONATIONS": "DOTACJE",
+    "USEOFFLINE": "UŻYWAJ OFFLINE",
+    "WHATSNEW": "CO NOWEGO",
+    "error404": "Błąd 404",
+    "pageNotFound": "Nie znaleziono strony"
+  }
+}
