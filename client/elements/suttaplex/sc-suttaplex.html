@@ -246,6 +246,16 @@
         };
       }
 
+      .menu-listbox {
+        --paper-input-container-focus-color: var(--sc-primary-accent-color);
+        --paper-input-container-color: var(--sc-secondary-text-color);
+        --paper-input-container-input-color: var(--sc-secondary-text-color);
+        --paper-dropdown-menu-icon: {
+          color: var(--sc-disabled-text-color);
+        };
+        background-color: var(--sc-secondary-background-color);
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]" elevation="2">
@@ -321,7 +331,7 @@
                 <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
                                    role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
 
-                <paper-listbox class="more-par-listbox"slot="dropdown-content" tabindex="0" role="listbox">
+                <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
                   <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
                   </more-par-menu>
                 </paper-listbox>
