@@ -10,11 +10,12 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../img/sc-svg-icons.html">
 <link rel="import" href="../../elements/addons/sc-sutta-note.html">
-<link rel="import" href="../../elements/menus/language-menu.html">
-<link rel="import" href="../../elements/menus/more-par-menu.html">
+<link rel="import" href="../menus/sc-language-menu.html">
+<link rel="import" href="../menus/sc-suttaplex-share-menu.html">
 <link rel="import" href="../../elements/suttaplex/sc-view-parallels.html">
 <link rel="import" href="../../elements/addons/sc-badge.html">
 
@@ -102,40 +103,37 @@
         flex: 1;
       }
 
-      .vert-menu {
-        --paper-listbox-background-color: var(--sc-secondary-background-color);
-      }
-
       .languagedrop {
         display: inline-block;
         vertical-align: middle;
         margin: -18px var(--sc-size-xs) 0;
       }
 
-      #moremenu {
-        visibility: hidden;
-      }
-
       .volpage-biblio-info-summary::-webkit-details-marker {
         color: var(--sc-paper-tooltip-color);
       }
 
-      .suttaplex-details {
-        display: inline-block;
+      .volpage-biblio-info-summary {
+        outline: none;
+        cursor: pointer;
       }
 
-      .suttaplex-details .volpage-biblio-info {
+      .volpage-biblio-info {
         @apply --paper-font-body1;
         position: absolute;
         z-index: 200;
-        background-color: #fff;
+        background-color: var(--sc-tertiary-background-color);
         padding: 12px;
         border-top: var(--sc-border);
         margin: 0 var(--sc-size-xl) 0 0;
         white-space: normal;
       }
 
-      .more-par-menu-button {
+      .suttaplex-details {
+        display: inline-block;
+      }
+
+      .share-menu-button {
         padding: 0;
         --paper-menu-button-dropdown: {
           @apply --shadow-elevation-8dp;
@@ -149,10 +147,6 @@
 
       .hide-element {
         display: none;
-      }
-
-      .difficulty-icon {
-        padding-right: var(--sc-size-sm);
       }
 
       .toggle-button {
@@ -172,33 +166,8 @@
         margin-top: var(--sc-size-xs);
       }
 
-      .paper-badge {
-        --paper-badge-margin-left: -15px;
-        --paper-badge-margin-bottom: -10px;
-      }
-
       .display-inline {
         display: inline-block;
-      }
-
-      .volpage-biblio-info-summary {
-        outline: none;
-        cursor: pointer;
-      }
-
-      .volpage-biblio-info {
-        @apply --paper-font-body1;
-        position: absolute;
-        z-index: 200;
-        background-color: #fff;
-        padding: 12px;
-        border-top: var(--sc-border);
-        margin: 0 var(--sc-size-xl) 0 0;
-        white-space: normal;
-      }
-
-      .scrollable-dialog {
-        margin: 0;
       }
 
       .parallels-toggle-div {
@@ -263,27 +232,28 @@
 
         <div class="suttaplex-head-container">
           <h3 class="suttaplex-heading">[[_computeMainHeading(item)]]</h3>
-          <div class$="difficulty-icon">
-            <iron-icon id="difficulty_icon" class="primary-accent-icon"
-                       icon="[[_computeDifficultyLevelName(item.difficulty, 'sc-svg-icons:')]]"></iron-icon>
-          </div>
+          <iron-icon id="difficulty_icon" class="primary-accent-icon"
+                     icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
           <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds class="sc-tooltip">
-            Recommended for [[_computeDifficultyLevelName(item.difficulty, '')]] students
+            {{localize(difficulty)}}
           </paper-tooltip>
         </div>
 
         <div class="suttaplex-nerdy-row">
-          <span title="Original title" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
+          <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
             [[item.original_title]]
           </span>
-          <span title="SuttaCentral ID" class$="[[_computeHideUID(item)]] nerdy-row-element">[[_getAcronymOrUid(item)]]
+          <span title="{{localize('suttaCentralID')}}" class$="[[_computeHideUID(item)]] nerdy-row-element">
+            [[_getAcronymOrUid(item)]]
           </span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
               <span class="book no-margin">
                 <iron-icon class="grey-icon" icon="book"></iron-icon>
               </span>
-              <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
+              <span class="vol-page nerdy-row-element" title="{{localize('volumeAndPage')}}">
+                [[item.volpages]]
+              </span>
             </template>
             <template is="dom-if" if=[[item.biblio]]>
               <div>
@@ -292,7 +262,9 @@
                     <span class="book no-margin">
                       <iron-icon class="grey-icon" icon="book"></iron-icon>
                     </span>
-                    <span class="vol-page nerdy-row-element" title="Volume and page">[[item.volpages]]</span>
+                    <span class="vol-page nerdy-row-element" title="{{localize('volumeAndPage')}}">
+                      [[item.volpages]]
+                    </span>
                   </summary>
                   <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
                 </details>
@@ -301,7 +273,8 @@
           </template>
         </div>
 
-        <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="Blurb" inner-h-t-m-l="[[item.blurb]]"></p>
+        <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="{{localize('blurb')}}"
+           inner-h-t-m-l="[[item.blurb]]"></p>
       </div>
 
       <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
@@ -309,7 +282,7 @@
           <template is="dom-repeat" items="[[item.translations]]" as="translation">
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button class="author-button" flat
-                            title$="Go to a translation by [[_capitalize(translation.author)]]">
+                            title$="{{localize('goToTranslation', 'author', translation.author)}}">
                 <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
                   [[translation.author]]
                 </a>
@@ -319,24 +292,21 @@
         </div>
         <div class="flex-div">
           <div class="languagedrop">
-            <language-menu language-choice="[[item.translations]]" title-label="More"
+            <sc-language-menu language-choice="[[item.translations]]" title-label="{{localize('more')}}"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
                            root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndexWithTimeout"
-                           on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></language-menu>
+                           on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></sc-language-menu>
           </div>
 
           <div class="right-elements">
-            <paper-menu-button id="copy_menu" class="more-par-menu-button" horizontal-align="right" role="group" aria-haspopup="true"
-                                  aria-disabled="false"vertical-align="auto">
-                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
-                                   role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
-
-                <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
-                  <more-par-menu id="more_par_menu" tabindex="0" item="[[item]]">
-                  </more-par-menu>
-                </paper-listbox>
-              </paper-menu-button>
-
+            <paper-menu-button id="copy_menu" class="share-menu-button" horizontal-align="right" role="group"
+                               aria-haspopup="true" aria-disabled="false" vertical-align="auto">
+              <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
+                                 role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
+              <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
+                <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
+              </paper-listbox>
+            </paper-menu-button>
 
             <template is="dom-if" if="[[item.parallel_count]]">
               <div class="parallels-toggle-div">
@@ -345,8 +315,9 @@
                 </paper-icon-button>
                 <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
               </div>
-              <paper-tooltip for="parallels_toggle" offset="-1" fit-to-visible-bounds class="sc-tooltip">
-                This&nbsp;text&nbsp;has&nbsp;[[item.parallel_count]]&nbsp;parallels
+              <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1" fit-to-visible-bounds
+                             position="right">
+                {{localize('hasParallels', 'num', item.parallel_count)}}
               </paper-tooltip>
             </template>
           </div>
@@ -365,7 +336,11 @@
   </template>
 
   <script>
-      class SCSuttaplex extends Polymer.Element {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCSuttaplex extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-suttaplex';
           }
@@ -405,6 +380,14 @@
                   },
                   toastMessage: {
                       type: String
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  },
+                  difficulty: {
+                      type: String
                   }
               }
           }
@@ -415,6 +398,10 @@
                   this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
               });
               this.$.copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.language}.json`));
           }
 
           _moreMenuOpenedChanged(e) {
@@ -461,11 +448,11 @@
           }
 
           _computeHideUID(item) {
-              return (item.translated_title || item.original_title) ? '' : 'hide-element'
+              return (item.translated_title || item.original_title) ? '' : 'hide-element';
           }
 
           _computeHideOriginalTitle(item) {
-              return item.translated_title ? '' : 'hide-element'
+              return item.translated_title ? '' : 'hide-element';
           }
 
           // returns the relevant icon for the expander
@@ -478,16 +465,8 @@
               return opened ? '' : 'moremenu';
           }
 
-          // adds the 'tree'-icons to denote difficulty level if any.
-          _computeDifficultyLevelName(level, namespace) {
-              if (!level) return;
-              if (level.name) {
-                  return `${namespace}${level.name}`;
-              }
-              else {
-                  const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
-                  return `${namespace}${levels[level]}`;
-              }
+          _computeDifficultyLevelIconName() {
+              return `sc-svg-icons:${this.difficulty}`;
           }
 
           // Computes API endpoint URL for given translation
