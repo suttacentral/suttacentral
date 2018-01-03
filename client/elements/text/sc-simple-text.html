@@ -365,7 +365,7 @@
               this.isTextViewHidden = this.isLoading || this._shouldDisplayError();
           }
 
-          _processHighlightAndScroll(sectionId, isSmooth) {
+          _processHighlightAndScroll(sectionId) {
               let [idFrom, idTo] = sectionId.split('--');
               let firstSection = this.shadowRoot.getElementById(idFrom);
               if (!firstSection) {
@@ -376,9 +376,13 @@
               let toSection = this.shadowRoot.getElementById(idTo);
               let last = true;
               if (toSection) {
-                  toSection = this._getElementToHighlight(toSection);
                   last = false;
               }
+              this._processSections(section, idTo, last);
+              return firstSection;
+          }
+
+          _processSections(section, idTo, last) {
               while (section) {
                   section.classList.add('highlight');
                   if (section.tagName !== 'HR') {
@@ -400,7 +404,6 @@
                   }
                   section = nextSection;
               }
-              return firstSection;
           }
 
           _changePaddingToMargin(section) {
@@ -443,14 +446,15 @@
               if (!sectionId) return;
               try {
                   this._removeHighlights();
-                  const section = this.shadowRoot.getElementById(sectionId);
                   setTimeout(() => {
                       const firstSection = this._processHighlightAndScroll(sectionId);
-                      firstSection.scrollIntoView({
-                          behavior: isSmooth ? 'smooth' : 'instant',
-                          block: 'start',
-                          inline: 'nearest'
-                      });
+                      if(firstSection) {
+                          firstSection.scrollIntoView({
+                              behavior: isSmooth ? 'smooth' : 'instant',
+                              block: 'start',
+                              inline: 'nearest'
+                          });
+                      }
                   }, delay);
               } catch (e) {
                   console.error(e);
