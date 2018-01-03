@@ -591,7 +591,7 @@
           }
 
           _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
-            const paddingBottom = window.getComputedStyle(section).paddingBottom;
+              const paddingBottom = window.getComputedStyle(section).paddingBottom;
               if (paddingBottom && paddingBottom !== '0px') {
                   section.style.paddingBottom = '0';
                   section.style.marginBottom = paddingBottom;
@@ -728,7 +728,7 @@
               this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
                   v.classList.remove('highlight');
                   v.classList.remove('last-highlight');
-              })
+              });
               this.shadowRoot.querySelectorAll('.highlight-wrapper-highlighted').forEach(v => {
                   v.classList.remove('highlight-wrapper-highlighted');
               })
@@ -753,11 +753,13 @@
               }
               setTimeout(() => {
                   const firstSection = this._processHighlightAndScroll(sectionId);
-                  firstSection.scrollIntoView({
-                      behavior: isSmooth ? 'smooth' : 'instant',
-                      block: 'start',
-                      inline: 'nearest'
-                  });
+                  if (firstSection) {
+                      firstSection.scrollIntoView({
+                          behavior: isSmooth ? 'smooth' : 'instant',
+                          block: 'start',
+                          inline: 'nearest'
+                      });
+                  }
               }, delay);
           }
 
