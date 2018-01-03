@@ -56,7 +56,6 @@
         @apply --sc-skolar-font-size-static-subtitle;
         color: var(--sc-tertiary-text-color);
         font-style: italic;
-        text-align: left;
         margin-bottom: .75em;
         margin-top: 0;
         text-align: center;
@@ -71,8 +70,7 @@
         color: var(--sc-tertiary-text-color);
       }
 
-      .nav-wheel-icon {
-        margin-right: var(--sc-size-sm);
+      .title-logo-icon {
         vertical-align: bottom;
         height: var(--sc-size-xxl);
         width: var(--sc-size-xxl);
@@ -137,7 +135,10 @@
 
     <app-toolbar>
       <div class="title" main-title>
-        <h1 class="title-text"><iron-icon class="nav-wheel-icon" icon="sc-svg-icons:lotus"></iron-icon>SuttaCentral</h1>
+        <h1 class="title-text">
+          <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
+          SuttaCentral
+        </h1>
       </div>
     </app-toolbar>
     <app-toolbar id="lasttoolbar">
@@ -258,15 +259,15 @@
               },
               language: {
                   type: String,
-                  statePath: 'siteLanguage'
+                  statePath: 'siteLanguage',
+                  observer: '_siteLanguageChanged'
               }
           }
       }
 
-      connectedCallback() {
-          super.connectedCallback();
-          this.loadResources(this.resolveUrl('../localization/sc-page-static.json'));
-      }
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`));
+          }
 
       _selectNavbarLink() {
           const tabs = this.$.nav_tabs.querySelectorAll('paper-tab');

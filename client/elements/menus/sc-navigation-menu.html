@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../styles/sc-scrollbar-style.html">
 <link rel="import" href="../../img/sc-language-icons.html">
@@ -345,6 +346,10 @@
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCNavigationMenu extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-navigation-menu';

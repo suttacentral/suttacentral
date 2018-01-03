@@ -6,7 +6,7 @@
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
-<link rel="import" href="../elements/page-selector.html">
+<link rel="import" href="sc-page-selector.html">
 <link rel="import" href="../elements/addons/sc-toasts.html">
 <link rel="import" href="../elements/menus/sc-navigation-menu.html">
 <link rel="import" href="../styles/sc-scrollbar-style.html">
@@ -36,10 +36,10 @@
         --app-drawer-width: 300px;
       }
 
-      .nav-wheel-icon {
+      .nav-logo-icon {
         margin-left: var(--sc-size-md);
         margin-top: var(--sc-size-md);
-        vertical-align: sub;
+        vertical-align: text-bottom;
         width: var(--sc-size-lg);
         height: var(--sc-size-lg);
       }
@@ -63,6 +63,7 @@
       .nav-home-link {
         text-decoration: none;
         background: none;
+        color: var(--sc-tertiary-text-color);
       }
 
       .nav-home-link:hover {
@@ -79,10 +80,6 @@
         overflow: hidden;
         z-index: 60;
         height: 100%;
-      }
-
-      .nav-home-title-text {
-        color: var(--sc-tertiary-text-color);
       }
 
       /* styles for the text dialogs: */
@@ -161,15 +158,15 @@
         <div class="nav-drawer-box sc-scrollbar">
           <div class="nav-home-title">
             <a class="nav-home-link" href="/">
-              <iron-icon class="nav-wheel-icon" icon="sc-svg-icons:lotus"></iron-icon>
-              <span class="nav-home-title-text">&nbsp;SuttaCentral</span>
+              <iron-icon class="nav-logo-icon" icon="sc-svg-icons:sc-logo-bw"></iron-icon>
+              <span class="nav-home-title-text">SuttaCentral</span>
             </a>
           </div>
           <sc-navigation-menu class="navigation-menu"></sc-navigation-menu>
         </div>
       </app-drawer>
 
-      <page-selector id="page_selector" is-drawer-open="[[isDrawerOpened]]"></page-selector>
+      <sc-page-selector id="page_selector" is-drawer-open="[[isDrawerOpened]]"></sc-page-selector>
 
     </app-drawer-layout>
 
