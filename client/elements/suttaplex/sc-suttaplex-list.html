@@ -154,6 +154,7 @@
           }
 
           _computeItemDifficulty(difficulty) {
+              if (!difficulty) return;
               if (difficulty.name) {
                   return difficulty.name;
               }
