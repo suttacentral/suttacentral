@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <!--
 This dropdown for the search pages is normally hidden, and only shows when necessary.
@@ -65,6 +66,10 @@ The two necessary conditions are:
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCSearchFilterMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-search-filter-menu';
@@ -87,7 +92,6 @@ The two necessary conditions are:
 
           _siteLanguageChanged() {
               this.loadResources(this.resolveUrl(`/localization/elements/sc-search-filter-menu/${this.language}.json`));
-              this.$.filter_dropdown
           }
 
           // Fires resulting choice to search page, where it is converted to a selection of the relevant items.

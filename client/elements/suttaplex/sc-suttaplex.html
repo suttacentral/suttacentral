@@ -10,6 +10,7 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../img/sc-svg-icons.html">
 <link rel="import" href="../../elements/addons/sc-sutta-note.html">
@@ -335,6 +336,10 @@
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCSuttaplex extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-suttaplex';

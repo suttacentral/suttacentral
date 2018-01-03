@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <!--
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
@@ -65,6 +66,10 @@ Menu on top of the suttaplex parallel's list for copying information from parall
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCSuttaplexShareMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-suttaplex-share-menu';

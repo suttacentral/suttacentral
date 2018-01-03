@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../img/sc-svg-icons.html">
 <link rel="import" href="../../img/sc-language-icons.html">
@@ -133,6 +134,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCLanguageMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-language-menu';

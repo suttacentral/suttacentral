@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../menus/sc-language-menu.html">
 <link rel="import" href="../../elements/addons/sc-sutta-note.html">
@@ -178,6 +179,10 @@ It is in effect a miniature version of the suttaplex-card
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCParallelItem extends Polymer.Element {
           static get is() {
               return 'sc-parallel-item';

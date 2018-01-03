@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../elements/menus/sc-toolbar.html">
 <link rel="import" href="../elements/sc-page-static.html">
@@ -141,6 +142,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCPageSelector extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-page-selector';

@@ -13,6 +13,7 @@
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <!--
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
@@ -233,6 +234,10 @@ type of view for segmented pages (showing pali next to translated text), lookup 
 
   </template>
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCSettingsMenu extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'settings-menu';
