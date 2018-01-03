@@ -562,7 +562,7 @@ def run():
 
     dictionaries.load_dictionaries(db, dictionaries_dir)
 
-    dictionary_full.load_dictionary_full(db, dictionaries_dir)
+    dictionary_full.load_dictionary_full(db, dictionaries_dir, change_tracker)
 
     currencies.load_currencies(db, additional_info_dir)
 
