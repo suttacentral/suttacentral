@@ -231,7 +231,7 @@ These parse the url given but at the moment only deal with the following url:
   - url with one or two terms i.e. `/`, `/donations`, `/dn`, `/dn/vagga1`, `/mn123/sujato', `/define/dictionaryterm`, etc. but not with more than 2 terms.
 
 Issues that need to be fixed:
-  - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1` but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and the **sc-view-suttaplex.html**.
+  - It should be possible to parse longer url with more terms. This depends on the various possibilities in the new menu with real data.  For instance, it should be able to parse something like `/sn/vagga1/samyutta1/pannasa1/vagga1` but this is to be discussed with Bhante Sujato. This also has an effect on the **page-selector.html** and the **sc-suttaplex-list.html**.
 
 
 ### page-selector.html
@@ -243,10 +243,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
   - dictionary page: **sc-page-dictionary.html**
   - normal html text pages: **sc-simple-text.html**
   - segmented text pages from pootle output: **sc-segmented-text.html**
-  - suttaplex list: **sc-view-suttaplex.html**
+  - suttaplex list: **sc-suttaplex-list.html**
 
 Issues that need to be fixed:
-  - Right now it is only possible to parse routes with only 2 terms. It should be possible to parse longer routes (see description under **sc-navdrawer.html**). This is probably only important for the suttaplex list so if a longer route exists, it might be sufficient to just forward that to **sc-view-suttaplex.html** and parse it there further.
+  - Right now it is only possible to parse routes with only 2 terms. It should be possible to parse longer routes (see description under **sc-navdrawer.html**). This is probably only important for the suttaplex list so if a longer route exists, it might be sufficient to just forward that to **sc-suttaplex-list.html** and parse it there further.
 
 
 ### sc-page-static.html
@@ -303,7 +303,7 @@ Issues that need to be fixed:
   - Only sujato is recognised as an author so that might have to change. It also only works for the pali right now if a translated file for Sujato exists too.
 
 
-### sc-view-suttaplex.html
+### sc-suttaplex-list.html
 This element displays a range of suttaplex cards or just one, depending on the route chosen. 
 It loads a (mockup) file from `../data/list`which lists the relevant Nikaya's name in pali, in various translations and the descriptions in various translations. It also lists which vaggas are part of this (with translated names and descriptions) and which suttas are part of which vagga.
 
@@ -328,7 +328,7 @@ The **sc-suttaplex.html** loads a file for the relevant sutta from `../data/sutt
 This element then also loads the **sc-parallel-list.html**, which is the outline of the parallels-table.
 This parallels-table is further populated with the additional info for each relevant parallel sutta, which is loaded from `../data/suttas` in **sc-parallels.html**.
 
-If a card in the list is opened, this info is fired back to the `sc-view-suttaplex.html`.
+If a card in the list is opened, this info is fired back to the `sc-suttaplex-list.html`.
 
 
 ## Other elements

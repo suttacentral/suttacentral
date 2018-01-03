@@ -1,15 +1,15 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/iron-list/iron-list.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
 
-<link rel="import" href="../elements/suttaplex/sc-title.html">
-<link rel="import" href="../elements/suttaplex/sc-suttaplex.html">
+<link rel="import" href="sc-suttaplex-section-title.html">
+<link rel="import" href="sc-suttaplex.html">
 
-<dom-module id="sc-view-suttaplex">
+<dom-module id="sc-suttaplex-list">
   <template>
     <style>
       .division-content {
@@ -20,21 +20,6 @@
       .main {
         margin: var(--sc-size-md-larger) auto;
         max-width: 720px;
-      }
-
-      .suttalist {
-        margin: 0 auto;
-        max-width: 720px;
-        transition: margin-top 0.3s, margin-bottom 0.3s;
-      }
-
-      .title {
-        margin-left: 64px;
-      }
-
-      .expandeditem {
-        margin-top: 20px;
-        margin-bottom: 20px;
       }
 
       .node {
@@ -91,8 +76,8 @@
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
               <section class$="[[_calculateClass(item.type)]]">
-                <sc-title input-title="[[item.original_title]]" input-text="[[item.blurb]]" input-type="[[item.type]]">
-                </sc-title>
+                <sc-suttaplex-section-title input-title="[[item.original_title]]" input-text="[[item.blurb]]"
+                                            input-type="[[item.type]]"></sc-suttaplex-section-title>
               </section>
             </template>
           </div>
@@ -107,9 +92,9 @@
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCViewSuttaplex extends ReduxMixin(Polymer.Element) {
+      class SCSuttaplexList extends ReduxMixin(Polymer.Element) {
           static get is() {
-              return 'sc-view-suttaplex';
+              return 'sc-suttaplex-list';
           }
 
           static get properties() {
@@ -179,7 +164,7 @@
           }
       }
 
-      customElements.define(SCViewSuttaplex.is, SCViewSuttaplex);
+      customElements.define(SCSuttaplexList.is, SCSuttaplexList);
   </script>
 </dom-module>
 
