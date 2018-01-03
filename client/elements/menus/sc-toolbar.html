@@ -93,8 +93,7 @@ Base toolbar that appears on the top right in the header of every page. This too
       <paper-icon-button icon="search" title="{{localize('searchTooltip')}}" class="white-icon"
                          on-tap="openSearch"></paper-icon-button>
       <paper-input class="toolbar-input" label="{{localize('Search')}}" no-label-float id="search_input"></paper-input>
-      <paper-icon-button icon="close" class="white-icon" id="close_button"
-                         on-tap="_closeSearch"></paper-icon-button>
+      <paper-icon-button icon="close" class="white-icon" id="close_button" on-tap="_closeSearch"></paper-icon-button>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
       <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]"
@@ -138,7 +137,8 @@ Base toolbar that appears on the top right in the header of every page. This too
                   },
                   language: {
                       type: String,
-                      statePath: 'siteLanguage'
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   },
                   discourseIconTooltip: {
                       type: String,
@@ -154,9 +154,8 @@ Base toolbar that appears on the top right in the header of every page. This too
               })
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              this.loadResources(this.resolveUrl('../../localization/sc-toolbar.json'));
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.language}.json`));
           }
 
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.

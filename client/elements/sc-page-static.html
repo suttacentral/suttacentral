@@ -56,7 +56,6 @@
         @apply --sc-skolar-font-size-static-subtitle;
         color: var(--sc-tertiary-text-color);
         font-style: italic;
-        text-align: left;
         margin-bottom: .75em;
         margin-top: 0;
         text-align: center;
@@ -260,15 +259,15 @@
               },
               language: {
                   type: String,
-                  statePath: 'siteLanguage'
+                  statePath: 'siteLanguage',
+                  observer: '_siteLanguageChanged'
               }
           }
       }
 
-      connectedCallback() {
-          super.connectedCallback();
-          this.loadResources(this.resolveUrl('../localization/sc-page-static.json'));
-      }
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`));
+          }
 
       _selectNavbarLink() {
           const tabs = this.$.nav_tabs.querySelectorAll('paper-tab');
