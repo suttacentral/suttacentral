@@ -9,7 +9,7 @@
 <link rel="import" href="../elements/suttaplex/sc-title.html">
 <link rel="import" href="../elements/suttaplex/sc-suttaplex.html">
 
-<dom-module id="sc-view-suttaplex" attributes="divisionTitle">
+<dom-module id="sc-view-suttaplex">
   <template>
     <style>
       .division-content {
@@ -72,8 +72,8 @@
     <iron-ajax
         id="ajax"
         handle-as="json"
-        loading="{{ loadingResults }}"
-        last-response="{{ responseData }}"></iron-ajax>
+        loading="{{loadingResults}}"
+        last-response="{{responseData}}"></iron-ajax>
 
     <div class="division-content main">
 
@@ -103,6 +103,10 @@
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCViewSuttaplex extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'sc-view-suttaplex';

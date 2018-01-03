@@ -1,0 +1,9 @@
+{
+  "pl": {
+    "cardNumber": "Numer karty",
+    "ZIP": "Kod pocztowy",
+    "CVC": "Kod CVC",
+    "year": "YY",
+    "month": "MM"
+  }
+}

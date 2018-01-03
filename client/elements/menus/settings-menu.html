@@ -387,28 +387,6 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               }
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('active-changed', (e) => {
-                  this._textualInfoToggleStateChanged(e.detail.value);
-              });
-              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
-                  this._paliLookupChanged(e.detail.value);
-              });
-              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('value-changed', (e) => {
-                  this._chineseLookupChanged(e.detail.value);
-              });
-              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('selected-item-changed', () => {
-                  this.paliSelectedItemChanged = true;
-              });
-              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('selected-item-changed', () => {
-                  this.chineseSelectedItemChanged = true;
-              });
-              this.shadowRoot.querySelector('#pali_script_menu').addEventListener('value-changed', (e) => {
-                  this._changeScript(e.detail.value);
-              });
-          }
-
           static get actions() {
               return {
                   toggleTextualInfo(enabled) {
@@ -454,6 +432,28 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               }
           }
 
+          connectedCallback() {
+              super.connectedCallback();
+              this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('active-changed', (e) => {
+                  this._textualInfoToggleStateChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
+                  this._paliLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('value-changed', (e) => {
+                  this._chineseLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('selected-item-changed', () => {
+                  this.paliSelectedItemChanged = true;
+              });
+              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('selected-item-changed', () => {
+                  this.chineseSelectedItemChanged = true;
+              });
+              this.shadowRoot.querySelector('#pali_script_menu').addEventListener('value-changed', (e) => {
+                  this._changeScript(e.detail.value);
+              });
+          }
+
           _textualInfoToggleStateChanged(toggleChecked) {
               if (this.textualParagraphs && toggleChecked) {
                   this.showLoadingSpinner = true;
@@ -487,7 +487,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const dictName = targetDictRepr.replace('→', 'to');
               if (this.paliSelectedItemChanged) {
                   this._showToast(dictName);
-              };
+              }
               this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
               this.paliSelectedItemChanged = false;
           }
@@ -507,7 +507,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const dictName = targetDictRepr.replace('→', 'to');
               if (this.chineseSelectedItemChanged) {
                   this._showToast(dictName);
-              };
+              }
               this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
               this.chineseSelectedItemChanged = false;
           }
