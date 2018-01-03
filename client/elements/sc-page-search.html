@@ -6,8 +6,9 @@
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 
-<link rel="import" href="../elements/menus/search-filter-menu.html">
+<link rel="import" href="menus/sc-search-filter-menu.html">
 
 <!--
 The search page opens when a search string is typed into the search-input-box in the toolbar.
@@ -62,7 +63,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
       .search-result-item:focus {
         outline: 0;
-        background: linear-gradient(to right, rgba(67, 160, 7, 1) 4px, rgba(67, 160, 7, 0) 4px);
+        background: linear-gradient(to right, var(--sc-primary-accent-color) 4px, transparent 4px);
       }
 
       .padded-container {
@@ -146,7 +147,7 @@ than ten results in total, a dropdown selection menu appears at the top.
         <div class="search-result-head">
           <h1 class="search-result-header">
             <span class="search-result-number">[[_calculateResultCount(responseData)]]</span>
-            <span class="search-result-description">results for</span>
+            <span class="search-result-description">{{localize('resultsFor')}}</span>
             <span class="search-result-term">[[searchQuery]]</span>
           </h1>
           <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
@@ -182,7 +183,11 @@ than ten results in total, a dropdown selection menu appears at the top.
     </div>
   </template>
   <script>
-      class SCPageSearch extends ReduxMixin(Polymer.Element) {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCPageSearch extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-page-search';
           }
@@ -235,7 +240,14 @@ than ten results in total, a dropdown selection menu appears at the top.
                       type: Number,
                       value: 170
                   },
-                  totalLoadedResults: Number
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  },
+                  totalLoadedResults: {
+                      type: Number
+                  }
               }
           }
 
@@ -254,6 +266,10 @@ than ten results in total, a dropdown selection menu appears at the top.
               super.ready();
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
               this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.language}.json`));
           }
 
           // After results have been loaded into memory, pushes items to an array.

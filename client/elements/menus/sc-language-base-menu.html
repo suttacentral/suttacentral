@@ -16,7 +16,7 @@
 <!--
 This is the base language menu that determines the language of the site.
 -->
-<dom-module id="language-base-menu" attributes="Language">
+<dom-module id="sc-language-base-menu" attributes="Language">
   <template>
     <style include="sc-scrollbar-style">
       :host {
@@ -107,7 +107,7 @@ This is the base language menu that determines the language of the site.
        */
       class LanguageBaseMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
-              return 'language-base-menu';
+              return 'sc-language-base-menu';
           }
 
           static get properties() {
@@ -122,7 +122,8 @@ This is the base language menu that determines the language of the site.
                   },
                   language: {
                       type: String,
-                      statePath: 'siteLanguage'
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               };
           }
@@ -139,9 +140,8 @@ This is the base language menu that determines the language of the site.
               }
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              this.loadResources(this.resolveUrl('../../localization/language-base-menu.json'));
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.language}.json`));
           }
 
           // Is invoked when a language is chosen from the list.

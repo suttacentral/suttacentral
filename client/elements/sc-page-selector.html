@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../elements/menus/sc-toolbar.html">
 <link rel="import" href="../elements/sc-page-static.html">
@@ -27,7 +28,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     - segmented text pages from pootle output: **sc-segmented-text.html**
     - suttaplex list: **sc-view-suttaplex.html**
 -->
-<dom-module id="page-selector" attributes="togdraw">
+<dom-module id="sc-page-selector" attributes="togdraw">
   <template>
     <style>
       :host {
@@ -103,10 +104,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
         <app-header id="header" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
-            <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"></paper-icon-button>
+            <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"
+                               title="{{localize('menu')}}"></paper-icon-button>
 
             <div main-title id="toolbar_title_box">
-              <p id="toolbar_title">[[toolbarTitle]]</p>
+              <p id="toolbar_title">{{_getToolbarTitle(toolbarTitle)}}</p>
             </div>
 
             <sc-toolbar id="sc_toolbar"></sc-toolbar>
@@ -140,9 +142,13 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
   </template>
 
   <script>
-      class SCPageSelector extends ReduxMixin(Polymer.Element) {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCPageSelector extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
-              return 'page-selector';
+              return 'sc-page-selector';
           }
 
           static get properties() {
@@ -197,6 +203,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   isDrawerOpen: {
                       type: Boolean,
                       observer: '_drawerOpenStateChanged'
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
           }
@@ -251,6 +262,18 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               });
           }
 
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`));
+          }
+
+          _getToolbarTitle() {
+              if (['searchResults', 'dictionaryResults'].includes(this.toolbarTitle)) {
+                  return this.localize(this.toolbarTitle);
+              } else {
+                  return this.toolbarTitle;
+              }
+          }
+
           connectedCallback() {
               super.connectedCallback();
               requestAnimationFrame(() => { this._toggleDrawer(true); });
@@ -278,14 +301,14 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
               else if (this._isSearchPage()) {
-                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Search results');
+                  this.dispatch('changeToolbarTitle', 'searchResults');
                   this.dispatch('changeToolbarMode', 'search-mode');
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
               else if (this._isDictionaryPage()) {
                   this.set('dictionaryWord', this._getDictionaryParams());
                   this.dispatch('changeToolbarMode', 'dictionary-mode');
-                  this.dispatch('changeToolbarTitle', 'SuttaCentral — Dictionary results');
+                  this.dispatch('changeToolbarTitle', 'dictionaryResults');
                   this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
               }
               else if (this._isSuttaplexListPage()) {
