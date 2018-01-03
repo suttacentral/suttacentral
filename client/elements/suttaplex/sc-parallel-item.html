@@ -7,7 +7,7 @@
 <link rel="import" href="../../elements/addons/sc-sutta-note.html">
 
 <!--
-This element loads additional info for each relevant parallel sutta, which is then used in sc-view-parallels.html.
+This element loads additional info for each relevant parallel sutta, which is then used in sc-parallel-list.html.
 It is in effect a miniature version of the suttaplex-card
 -->
 <dom-module id="sc-parallel-item">
@@ -34,7 +34,7 @@ It is in effect a miniature version of the suttaplex-card
         border-top: var(--sc-border);
         position: absolute;
         z-index: 200;
-        background-color: #fff;
+        background-color: var(--sc-secondary-background-color);
         padding: 12px;
         margin: 0 var(--sc-size-xl) 0 0;
         white-space: normal;

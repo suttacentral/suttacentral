@@ -1,4 +1,6 @@
 {
   "pl": {
+    "networkError": "Błąd sieci",
+    "goBack": "Powrót do poprzedniego menu"
   }
 }

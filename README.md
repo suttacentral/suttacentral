@@ -322,10 +322,10 @@ Issues that need to be fixed:
   - Instead of a `dom-repeat` of the suttaplex-cards in the array, it might be better to use an `iron-list` because for some of these there are thousands of cards so it might become too slow otherwise.
 
 ### suttaplex-card (`/suttaplex`)
-The suttaplex-card consists of 3 elements. **sc-suttaplex.html**, **sc-view-parallels.html** and **sc-parallels.html**.
+The suttaplex-card consists of 3 elements. **sc-suttaplex.html**, **sc-parallel-list.html** and **sc-parallels.html**.
 
 The **sc-suttaplex.html** loads a file for the relevant sutta from `../data/suttas`. Each sutta has it's own file here but this might have to be structured better. This is the actual outline of the card, including various titles and info in the relevant chosen site-language if it exists. 
-This element then also loads the **sc-view-parallels.html**, which is the outline of the parallels-table.
+This element then also loads the **sc-parallel-list.html**, which is the outline of the parallels-table.
 This parallels-table is further populated with the additional info for each relevant parallel sutta, which is loaded from `../data/suttas` in **sc-parallels.html**.
 
 If a card in the list is opened, this info is fired back to the `sc-view-suttaplex.html`.

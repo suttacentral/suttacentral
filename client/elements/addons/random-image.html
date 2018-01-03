@@ -17,19 +17,23 @@ Used on the homepage in static view.
       }
 
       .is-circle {
-        border: 1px solid grey;
+        border: var(--sc-border-color);
         border-radius: 50%;
-        box-shadow: 0 5px 10px #CCC;
+        box-shadow: 0 5px 10px var(--sc-border-color);
+      }
+
+      .image {
+        width:640px;
+        height:360px;
+        z-index:-1;
       }
     </style>
 
-    <iron-image style="width:640px; height:360px;z-index:-1;" class$="{{mode}}" sizing="contain" src$="{{imgSrc}}"
-                title="{{imgTitle}}"></iron-image>
+    <iron-image class$="image {{mode}}" sizing="contain" src$="{{imgSrc}}" title="{{imgTitle}}"></iron-image>
   </template>
 
   <script>
       Polymer({
-
           is: 'random-image',
 
           properties: {
@@ -66,8 +70,6 @@ Used on the homepage in static view.
               let randomPos = this._pickRandomProperty(this.imagesList);
               this.imgSrc = this.imagesList[randomPos].path;
               this.imgTitle = this.imagesList[randomPos].title;
-
-              // this.mode = 'is-circle';
           }
       });
   </script>
