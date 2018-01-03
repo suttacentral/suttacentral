@@ -19,7 +19,7 @@
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
 type of view for segmented pages (showing pali next to translated text), lookup tools and publication details .
 -->
-<dom-module id="settings-menu" attributes="selectedView textInfo scriptchoice">
+<dom-module id="sc-settings-menu" attributes="selectedView textInfo scriptchoice">
   <template>
     <style is="custom-style">
       :host {
@@ -152,41 +152,40 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">View textual information</h3>
-        <div class="nerdy-row">Displays information such as volume/page references, variant readings, etc.</div>
+        <h3 class="menu-item-title">{{localize('viewTextualInfo')}}</h3>
+        <div class="nerdy-row">{{localize('displaysInfo')}}</div>
         <paper-toggle-button id="textual_info_toggle_button"
                              class="menu-toggle-button" active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">View original text with translation</h3>
-        <div class="nerdy-row">This only works with certain texts, which include translations by Sujato and Brahmali.
-        </div>
+        <h3 class="menu-item-title">{{localize('viewOriginal')}}</h3>
+        <div class="nerdy-row">{{localize('onlyWorks')}}</div>
         <paper-radio-group selected="{{selectedTextView}}">
           <paper-radio-button name="none" class="menu-option">
-            None
+            {{localize('none')}}
           </paper-radio-button>
           <paper-radio-button id="sides" name="sidebyside" class="menu-option">
             <iron-icon class="menu-icon" icon="view-column"></iron-icon>
-            Side by side
+            {{localize('sideBySide')}}
           </paper-radio-button>
           <paper-radio-button name="linebyline" class="menu-option">
             <iron-icon class="menu-icon" icon="view-headline"></iron-icon>
-            Line by line
+            {{localize('lineByLine')}}
           </paper-radio-button>
           <paper-radio-button name="popup" class="menu-option">
             <iron-icon class="menu-icon" icon="editor:insert-comment"></iron-icon>
-            Pop-up
+            {{localize('popUp')}}
           </paper-radio-button>
         </paper-radio-group>
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">Activate Pali word lookup</h3>
-        <div class="nerdy-row">Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid
-          only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.
+        <h3 class="menu-item-title">{{localize('activatePaliLookup')}}</h3>
+        <div class="nerdy-row">
+          {{localize('activatePaliDescription')}}
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="pali_lookup_menu" vertical-align="auto">
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="pali_lookup_menu" vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliLookupSelected}}">
             <template is="dom-repeat" items="[[paliLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
@@ -196,11 +195,11 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">Activate Chinese word lookup</h3>
-        <div class="nerdy-row">This enables word lookup for ancient Chinese texts. Word meanings are from the Digital
-          Dictionary of Buddhism.
+        <h3 class="menu-item-title">{{localize('activateChineseLookup')}}</h3>
+        <div class="nerdy-row">
+          {{localize('activateChineseDescription')}}
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="Lookup" id="chinese_lookup_menu">
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="chinese_lookup_menu">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{chineseLookupSelected}}">
             <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
@@ -210,9 +209,9 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">Change the script of the Pali text</h3>
-        <div class="nerdy-row">This enables you to read the Pali text in various scripts.</div>
-        <paper-dropdown-menu class="menu-dropdown" label="Script" id="pali_script_menu">
+        <h3 class="menu-item-title">{{localize('changePaliScript')}}</h3>
+        <div class="nerdy-row">{{localize('changePaliScriptDescription')}}</div>
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('changePaliScriptLabel')}}" id="pali_script_menu">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliScriptSelected}}">
             <template is="dom-repeat" items="[[paliScripts]]" as="script">
               <paper-item class="menu-item">[[script.language]]</paper-item>
@@ -222,8 +221,8 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">Remember settings</h3>
-        <h3 class="nerdy-row">Select this to remember these settings next time you visit SuttaCentral.</h3>
+        <h3 class="menu-item-title">{{localize('rememberSettings')}}</h3>
+        <h3 class="nerdy-row">{{localize('rememberSettingsDescription')}}</h3>
         <paper-toggle-button class="menu-toggle-button" noink checked
                              active="{{rememberSettings}}"></paper-toggle-button>
       </div>
@@ -238,9 +237,9 @@ type of view for segmented pages (showing pali next to translated text), lookup 
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCSettingsMenu extends ReduxMixin(Polymer.Element) {
+      class SCSettingsMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
-              return 'settings-menu';
+              return 'sc-settings-menu';
           }
 
           static get properties() {
@@ -383,6 +382,11 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                   chineseSelectedItemChanged: {
                       type: Boolean,
                       value: false
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
           }
@@ -452,6 +456,10 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               this.shadowRoot.querySelector('#pali_script_menu').addEventListener('value-changed', (e) => {
                   this._changeScript(e.detail.value);
               });
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-settings-menu/${this.language}.json`));
           }
 
           _textualInfoToggleStateChanged(toggleChecked) {

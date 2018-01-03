@@ -1,0 +1,22 @@
+{
+  "en": {
+    "viewTextualInfo": "View textual information",
+    "displaysInfo": "Displays information such as volume/page references, variant readings, etc.",
+    "viewOriginal": "View original text with translation",
+    "onlyWorks": "This only works with certain texts, which include translations by Sujato and Brahmali.",
+    "none": "None",
+    "sideBySide": "Side by side",
+    "lineByLine": "Line by line",
+    "popUp": "Pop-up",
+    "lookup": "Lookup",
+    "activatePaliLookup": "Activate Pali word lookup",
+    "activatePaliDescription": "Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.",
+    "activateChineseLookup": "Activate Chinese word lookup",
+    "activateChineseDescription": "This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.",
+    "changePaliScript": "Change the script of the Pali text",
+    "changePaliScriptLabel": "Script",
+    "changePaliScriptDescription": "This enables you to read the Pali text in various scripts.",
+    "rememberSettings": "Remember settings",
+    "rememberSettingsDescription": "Select this to remember these settings next time you visit SuttaCentral."
+  }
+}

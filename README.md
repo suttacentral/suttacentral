@@ -277,7 +277,7 @@ This element loads the plain html pages which are at the moment defined as all p
 
 The relevant suttaplex card is shown at the top, hidden behind a dropdown (`text/sc-text-options.html`).
 
-Via the settings-menu in the toolbar, paragraph numbers can be displayed or hidden as requested.
+Via the settings-menu, paragraph numbers can be displayed or hidden as requested.
 
 Title, full Author name and Meta data are fired back to the page-selector for use in the toolbar.
 
@@ -299,7 +299,7 @@ Title, full Author name and Meta data are fired back to the page-selector for us
 
 Issues that need to be fixed:
   - Right now it only works for the segmented translations by Sujato and for the pali thereof and only for the files I have for that with is all AN, SN, MN1-123. DN is not yet in there so the DN file that is shown in the menu under DN1 is actually MN1 just to try things out but will need to be replaced.
-  - The pali lookup tool does not yet work. See remarks below under `settings-menu.html`.
+  - The pali lookup tool does not yet work. See remarks below under `sc-settings-menu.html`.
   - Only sujato is recognised as an author so that might have to change. It also only works for the pali right now if a translated file for Sujato exists too.
 
 
@@ -336,7 +336,7 @@ Other elements should be self-explanatory. Just some issues that need to be fixe
 
 ### menus/sc-toolbar.html
 
-### menus/settings-menu.html and addons/sc-dictionary-lookup.html
+### menus/sc-settings-menu.html and addons/sc-dictionary-lookup.html
 Issues: 
     -The dictionary lookup does not work yet. There are two of them: Pali to various languages and Chinese to English. A mockup dictionary is in `data/dictionaries/pli2en.json` but this is not the latest version, only for testing. The matching should be fuzzy so no direct word-to-word lookup.
   - The repository with the basic code for this tool is https://github.com/blake-sc/palilookup but is broken.
