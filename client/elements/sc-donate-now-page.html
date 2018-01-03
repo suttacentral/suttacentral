@@ -106,82 +106,12 @@
         margin-top: 1.5em;
       }
 
-      .card-first-span {
-        line-height: var(--sc-size-lg);
-        color: var(--sc-secondary-text-color);
-        border-bottom: 1px solid #586A82;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        font-weight: 300;
-        transition: border-bottom-color 200ms ease-in-out;
-        cursor: text;
-        pointer-events: none;
-      }
-
-      .card-second-span {
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform-origin: 0 50%;
-        transition: transform 200ms ease-in-out;
-        cursor: text;
-      }
-
-      label .field:not(.is-empty) + span span {
-        transform: scale(0.70) translateY(-36px);
-        cursor: default;
-        opacity: 1;
-      }
-
-      label .field.is-focused + span span {
-        color: var(--sc-primary-accent-color);
-      }
-
-      label .field.is-focused + span {
-        border-bottom: var(--sc-border);
-      }
-
-      .field {
-        border: 0;
-        width: 100%;
-        cursor: text;
-        outline: none;
-        display: block;
-        font-weight: 300;
-        background: transparent;
-        line-height: var(--sc-size-lg);
-        padding-bottom: var(--sc-size-xs);
-        color: var(--sc-tertiary-text-color);
-        transition: opacity 200ms ease-in-out;
-      }
-
-      .field::-webkit-input-placeholder {
-        color: var(--sc-primary-text-color);
-      }
-
-      .field::-moz-placeholder {
-        color: var(--sc-primary-text-color);
-      }
-
-      /* IE doesn't show placeholders when empty+focused */
-      .field:-ms-input-placeholder {
-        color: var(--sc-primary-text-color);
-      }
-
       .spinner {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translateY(-50%);
         z-index: 101;
-      }
-
-      .no-d {
-        display: none;
       }
 
       .blocker {
