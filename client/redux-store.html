@@ -35,6 +35,7 @@
             chineseLookupTargetDictRepr: 'None',
             chineseLookupTargetLanguage: ''
         },
+        colorTheme: 'light',
         selectedNavigationMenuItemId: ''
     };
 
@@ -88,6 +89,8 @@
                 });
             case 'SELECT_NAVIGATION_MENU_ITEM':
                 return Object.assign({}, state, { selectedNavigationMenuItemId: action.id });
+            case 'CHANGE_COLOR_THEME':
+                return Object.assign({}, state, { colorTheme: action.theme });
             default:
                 return state;
         }

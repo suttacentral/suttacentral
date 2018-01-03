@@ -13,6 +13,7 @@
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <!--
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
@@ -233,6 +234,10 @@ type of view for segmented pages (showing pali next to translated text), lookup 
 
   </template>
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCSettingsMenu extends ReduxMixin(Polymer.Element) {
           static get is() {
               return 'settings-menu';
@@ -370,6 +375,14 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                   showLoadingSpinner: {
                       type: Boolean,
                       value: false
+                  },
+                  paliSelectedItemChanged: {
+                      type: Boolean,
+                      value: false
+                  },
+                  chineseSelectedItemChanged: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -384,6 +397,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               });
               this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('value-changed', (e) => {
                   this._chineseLookupChanged(e.detail.value);
+              });
+              this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('selected-item-changed', () => {
+                  this.paliSelectedItemChanged = true;
+              });
+              this.shadowRoot.querySelector('#chinese_lookup_menu').addEventListener('selected-item-changed', () => {
+                  this.chineseSelectedItemChanged = true;
               });
               this.shadowRoot.querySelector('#pali_script_menu').addEventListener('value-changed', (e) => {
                   this._changeScript(e.detail.value);
@@ -465,9 +484,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const target = this.paliLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
               const dictName = targetDictRepr.replace('→', 'to');
-              this._showToast(dictName);
+              if (this.paliSelectedItemChanged) {
+                  this._showToast(dictName);
+              };
+              this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
+              this.paliSelectedItemChanged = false;
           }
 
           _findPaliLookupLanguageIndex(languageName) {
@@ -482,9 +504,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const target = this.chineseLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
               const dictName = targetDictRepr.replace('→', 'to');
-              this._showToast(dictName);
+              if (this.chineseSelectedItemChanged) {
+                  this._showToast(dictName);
+              };
+              this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
+              this.chineseSelectedItemChanged = false;
           }
 
           _findChineseLookupLanguageIndex(languageName) {
@@ -499,7 +524,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               }, 0);
           }
 
-          // Fires the choice of pali script to page-selector.html and from there to the segmented text pages.
+          // Fires the choice of pali script to sc-page-selector.html and from there to the segmented text pages.
           _changeScript(language) {
               if (!language) {
                   return;

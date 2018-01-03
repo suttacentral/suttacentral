@@ -1,0 +1,445 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+
+<link rel="import" href="../elements/menus/sc-toolbar.html">
+<link rel="import" href="../elements/sc-page-static.html">
+<link rel="import" href="../elements/sc-view-suttaplex.html">
+<link rel="import" href="../elements/text/sc-simple-text.html">
+<link rel="import" href="../elements/text/sc-segmented-text.html">
+<link rel="import" href="../elements/sc-page-search.html">
+<link rel="import" href="../elements/sc-page-dictionary.html">
+<link rel="import" href="../elements/text/sc-text-page-selector.html">
+
+<!--
+The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
+the header will have a different appearance and different items in the toolbar.
+
+The page-selector also parses the input-data and loads one of 6 possible page-views depending on the input given:
+    - static pages: **sc-page-static.html**
+    - search page: **sc-page-search.html**
+    - dictionary page: **sc-page-dictionary.html**
+    - normal html text pages: **sc-simple-text.html**
+    - segmented text pages from pootle output: **sc-segmented-text.html**
+    - suttaplex list: **sc-view-suttaplex.html**
+-->
+<dom-module id="sc-page-selector" attributes="togdraw">
+  <template>
+    <style>
+      :host {
+        --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
+        display: block;
+        box-sizing: border-box;
+      }
+
+      .container {
+        position: relative;
+      }
+
+      .toolbar-header, #sc_toolbar {
+        background-color: var(--sc-primary-color);
+        white-space: nowrap;
+      }
+
+      [mode="search-mode"] #sc_toolbar,
+      [mode="search-mode"] .toolbar-header,
+      [mode="dictionary-mode"] #sc_toolbar,
+      [mode="dictionary-mode"] .toolbar-header,
+      [mode="list-mode"] #sc_toolbar,
+      [mode="list-mode"] .toolbar-header {
+        background-color: var(--sc-primary-accent-color);
+      }
+
+      #toolbar_title_box {
+        width: 1px;
+        z-index: -10;
+      }
+
+      #toolbar_title {
+        @apply --sc-sans-font;
+        text-transform: capitalize;
+        color: var(--sc-tertiary-text-color);
+      }
+
+      [mode="search-mode"] #toolbar_title,
+      [mode="dictionary-mode"] #toolbar_title {
+        text-transform: none;
+      }
+
+      #drawertoggle {
+        z-index: 1;
+        color: var(--sc-tertiary-text-color);
+        margin-right: var(--sc-size-md);
+      }
+
+      @media screen and (min-width: 840px) {
+        #header.drawer-closed {
+          left: 0 !important;
+        }
+
+        #header {
+          left: var(--app-drawer-width) !important;
+        }
+      }
+
+      @media screen and (max-width: 600px) {
+        #toolbar_title {
+          @apply(--sc-skolar-font-size-md);
+        }
+      }
+
+    </style>
+
+    <app-location route={{route}}></app-location>
+
+    <iron-meta id="meta"></iron-meta>
+
+    <div class="container">
+      <app-header-layout>
+
+        <app-header id="header" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
+          <app-toolbar class="toolbar-header">
+            <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"
+                               title="{{localize('menu')}}"></paper-icon-button>
+
+            <div main-title id="toolbar_title_box">
+              <p id="toolbar_title">{{_getToolbarTitle(toolbarTitle)}}</p>
+            </div>
+
+            <sc-toolbar id="sc_toolbar"></sc-toolbar>
+          </app-toolbar>
+        </app-header>
+
+        <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
+          <sc-page-static></sc-page-static>
+        </template>
+
+        <template is="dom-if" if="[[shouldShowSuttaplexListPage]]" restamp>
+          <sc-view-suttaplex></sc-view-suttaplex>
+        </template>
+
+        <template is="dom-if" if="[[shouldShowSearchPage]]" restamp>
+          <sc-page-search></sc-page-search>
+        </template>
+
+        <template is="dom-if" if="[[shouldShowSuttaTextPage]]" restamp>
+          <sc-text-page-selector author="[[suttaAuthor]]" sutta-id="[[suttaId]]"
+                                 lang-iso-code="[[langIsoCode]]"></sc-text-page-selector>
+        </template>
+
+        <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp>
+          <sc-page-dictionary dictionary-word="[[dictionaryWord]]"></sc-page-dictionary>
+        </template>
+
+      </app-header-layout>
+
+    </div>
+  </template>
+
+  <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCPageSelector extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-page-selector';
+          }
+
+          static get properties() {
+              return {
+                  route: Object,
+                  dictionaryWord: String,
+                  queryParams: {
+                      type: Object,
+                      notify: true
+                  },
+                  // Defines all the available static pate routes.
+                  // See <sc-page-static.html>.
+                  staticPages: {
+                      type: Array,
+                      value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
+                          'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGMENTS', 'LICENSING', 'INTRODUCTION',
+                          'START', 'DISCOURSES', 'VINAYA', 'ABHIDHAMMA', 'A-NEW-BEGINNING']
+                  },
+                  allIsoCodes: {
+                      type: Array,
+                      value: ['af', 'ar', 'ca', 'cs', 'lzh', 'de', 'en', 'es', 'fa', 'fr', 'pgd', 'he', 'id', 'it',
+                          'la', 'hu', 'nl', 'no', 'ot', 'pli', 'pl', 'pt', 'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct',
+                          'xto', 'vn', 'uig', 'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh']
+                  },
+                  selectedPage: {
+                      type: String,
+                      statePath: 'currentRoute.name',
+                      observer: '_recalculateView'
+                  },
+                  currentPath: {
+                      type: String,
+                      statePath: 'currentRoute.path'
+                  },
+                  // Class set on the class on the header depending on the chosen page.
+                  toolbarMode: {
+                      type: String,
+                      statePath: 'toolbarOptions.mode'
+                  },
+                  toolbarTitle: {
+                      type: String,
+                      statePath: 'toolbarOptions.title'
+                  },
+                  suttaId: String,
+                  suttaAuthor: String,
+                  langIsoCode: String,
+                  // Variables that control the <dom-if> elements in the template:
+                  shouldShowStaticPage: Boolean,
+                  shouldShowSuttaplexListPage: Boolean,
+                  shouldShowSearchPage: Boolean,
+                  shouldShowSuttaTextPage: Boolean,
+                  shouldShowDictionaryPage: Boolean,
+                  isDrawerOpen: {
+                      type: Boolean,
+                      observer: '_drawerOpenStateChanged'
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          static get observers() {
+              return [
+                  '_scrollToTop(route)',
+                  '_changeView(route)',
+                  '_handleRouteChange(route.*)'
+              ];
+          }
+
+          static get actions() {
+              return {
+                  changeRoute(route) {
+                      return {
+                          type: 'CHANGE_ROUTE',
+                          route: route
+                      };
+                  },
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
+                  changeToolbarMode(mode) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_MODE',
+                          mode: mode
+                      };
+                  },
+                  selectNavigationMenuItem(id) {
+                      return {
+                          type: 'SELECT_NAVIGATION_MENU_ITEM',
+                          id: id
+                      }
+                  }
+              }
+          }
+
+          ready() {
+              super.ready();
+              this.addEventListener('par-menu-copied', (e) => {
+                  let success = '';
+                  if (e.detail.success) {
+                      success = 'success';
+                  } else {
+                      success = 'error';
+                  }
+                  this._showToast(success, e.detail.message);
+              });
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`));
+          }
+
+          _getToolbarTitle() {
+              if (['searchResults', 'dictionaryResults'].includes(this.toolbarTitle)) {
+                  return this.localize(this.toolbarTitle);
+              } else {
+                  return this.toolbarTitle;
+              }
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              requestAnimationFrame(() => { this._toggleDrawer(true); });
+          }
+
+          _recalculateView() {
+              this.shouldShowStaticPage = this._isStaticPage(this.selectedPage);
+              this.shouldShowSuttaplexListPage = this._isSuttaplexListPage();
+              this.shouldShowSearchPage = this._isSearchPage();
+              this.shouldShowSuttaTextPage = this._isSuttaTextPage();
+              this.shouldShowDictionaryPage = this._isDictionaryPage();
+          }
+
+          // Dispatches the CHANGE_ROUTE action and sets the toolbar attributes.
+          _handleRouteChange() {
+              const routeName = this._getBaseRouteName();
+              if (routeName === '') {
+                  this.dispatch('changeToolbarTitle', '');
+                  this.dispatch('changeToolbarMode', '');
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'HOME' }));
+              }
+              else if (this._isStaticPage(routeName)) {
+                  this.dispatch('changeToolbarMode', '');
+                  this.dispatch('changeToolbarTitle', '');
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
+              }
+              else if (this._isSearchPage()) {
+                  this.dispatch('changeToolbarTitle', 'searchResults');
+                  this.dispatch('changeToolbarMode', 'search-mode');
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
+              }
+              else if (this._isDictionaryPage()) {
+                  this.set('dictionaryWord', this._getDictionaryParams());
+                  this.dispatch('changeToolbarMode', 'dictionary-mode');
+                  this.dispatch('changeToolbarTitle', 'dictionaryResults');
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
+              }
+              else if (this._isSuttaplexListPage()) {
+                  this.dispatch('changeToolbarMode', 'list-mode');
+                  this.dispatch('selectNavigationMenuItem', this._getPathParamNumber(1));
+                  this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
+              }
+              else if (this._isSuttaTextPage()) {
+                  const suttaRouteParams = this._getSuttaRouteParams();
+                  this.set('suttaId', suttaRouteParams.suttaId);
+                  this.set('langIsoCode', suttaRouteParams.langIsoCode);
+                  this.set('suttaAuthor', suttaRouteParams.authorName);
+                  this.dispatch('changeToolbarMode', 'text-mode');
+                  this.dispatch('changeRoute', Object.assign({}, this.route, suttaRouteParams));
+              }
+              else {
+                  this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
+              }
+          }
+
+          _isStaticPage(pageName) {
+              if (!pageName) {
+                  return;
+              }
+              return this.staticPages.includes(pageName.toUpperCase());
+          }
+
+          _isSearchPage() {
+              return (this.route.path === '/search');
+          }
+
+          _isDictionaryPage() {
+              return this.route.path.split('/')[1] === 'define';
+          }
+
+          // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).
+          _isSuttaplexListPage() {
+              const idParam = this._getPathParamNumber(1);
+              // Static sites and the search page also only has one path parameter, so we need additional checks here:
+              if (this._isStaticPage(idParam) || this._isSearchPage()) {
+                  return false;
+              }
+              return idParam && !this._getPathParamNumber(2);
+          }
+
+          // returns true if the path has three path parameters or - (for suttas with no author) if the second param
+          // is an iso code
+          _isSuttaTextPage() {
+              if (this._isStaticPage(this._getPathParamNumber(1))) {
+                  return false;
+              }
+              const pathIsoCode = this._getPathParamNumber(2);
+              const pathAuthor = this._getPathParamNumber(3);
+              return (!!(pathIsoCode && pathAuthor) || this.allIsoCodes.indexOf(pathIsoCode) !== -1);
+          }
+
+          _getSuttaplexRouteParams() {
+              return {
+                  name: 'SUTTAPLEX',
+                  categoryId: this._getPathParamNumber(1)
+              };
+          }
+
+          _getSuttaRouteParams() {
+              return {
+                  name: 'SUTTA',
+                  suttaId: this._getPathParamNumber(1),
+                  langIsoCode: this._getPathParamNumber(2),
+                  authorName: this._getPathParamNumber(3)
+              };
+          }
+
+          _getDictionaryParams() {
+              return this.route.path.split('/')[2];
+          }
+
+          // Returns the main path category (first path param). Normalized by converting to upper case.
+          _getBaseRouteName() {
+              return this.route.path.split('\/')[1].toUpperCase();
+          }
+
+          // Returns a nested path parameter.
+          // Example:
+          // if path = "http://suttacentral.net/sutta/dn1/sujato", _getPathParamNumber(1) returns "dn1".
+          _getPathParamNumber(number) {
+              try {
+                  return this.route.path.split('\/')[number];
+              } catch (e) {
+                  console.error(e);
+                  return '';
+              }
+          }
+
+          // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
+          _changeView() {
+              this.$.sc_toolbar._closeSearch();
+          }
+
+          // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
+          _toggleDrawer(largeScreenOnly) {
+              this.dispatchEvent(new CustomEvent('toggleDrawer', {
+                  detail: { largeScreenOnly: largeScreenOnly },
+                  composed: true,
+                  bubbles: true
+              }));
+          }
+
+          _drawerOpenStateChanged() {
+              if (this.isDrawerOpen) {
+                  this.$.header.classList.remove('drawer-closed');
+              } else {
+                  this.$.header.classList.add('drawer-closed');
+              }
+          }
+
+          _scrollToTop() {
+              window.scroll(0, 0);
+          }
+
+          _showToast(toastType, text) {
+              this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                  detail: {
+                      toastType: toastType,
+                      message: text
+                  },
+                  bubbles: true,
+                  composed: true
+              }));
+          }
+      }
+
+      customElements.define(SCPageSelector.is, SCPageSelector);
+  </script>
+</dom-module>

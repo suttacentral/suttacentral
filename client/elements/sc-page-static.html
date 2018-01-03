@@ -3,6 +3,8 @@
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="../elements/static/home-page.html">
 <link rel="import" href="../elements/static/donations-page.html">
@@ -54,7 +56,6 @@
         @apply --sc-skolar-font-size-static-subtitle;
         color: var(--sc-tertiary-text-color);
         font-style: italic;
-        text-align: left;
         margin-bottom: .75em;
         margin-top: 0;
         text-align: center;
@@ -69,11 +70,10 @@
         color: var(--sc-tertiary-text-color);
       }
 
-      .title-text::before {
-        content: "☸";
-        margin-right: var(--sc-size-sm);
-        vertical-align: middle;
-        font-size: 1.5em;
+      .title-logo-icon {
+        vertical-align: bottom;
+        height: var(--sc-size-xxl);
+        width: var(--sc-size-xxl);
       }
 
       .page-not-found-container {
@@ -135,34 +135,37 @@
 
     <app-toolbar>
       <div class="title" main-title>
-        <h1 class="title-text">SuttaCentral</h1>
+        <h1 class="title-text">
+          <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
+          SuttaCentral
+        </h1>
       </div>
     </app-toolbar>
     <app-toolbar id="lasttoolbar">
       <div class="title" main-title>
-        <p class="subtitle">Early Buddhist texts, translations, and parallels</p>
+        <p class="subtitle">{{localize('pageSubtitle')}}</p>
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item>
       <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
         <paper-tab class="nav-link" data-name="HOME">
-          <div>HOME</div>
+          <div>{{localize('HOME')}}</div>
           <a class="link-anchor" href="/home"></a>
         </paper-tab>
         <paper-tab class="nav-link" data-name="INTRODUCTION">
-          <div>INTRODUCTION</div>
+          <div>{{localize('INTRODUCTION')}}</div>
           <a class="link-anchor" href="/introduction" tabindex="-1"></a>
         </paper-tab>
         <paper-tab class="nav-link" data-name="DONATIONS">
-          <div>DONATIONS</div>
+          <div>{{localize('DONATIONS')}}</div>
           <a class="link-anchor" href="/donations" tabindex="-1"></a>
         </paper-tab>
         <paper-tab class="nav-link" data-name="OFFLINE">
-          <div>USE OFFLINE</div>
+          <div>{{localize('USEOFFLINE')}}</div>
           <a class="link-anchor" href="/offline" tabindex="-1"></a>
         </paper-tab>
         <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW">
-          <div>WHAT'S NEW</div>
+          <div>{{localize('WHATSNEW')}}</div>
           <a class="link-anchor" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank">
           </a>
         </paper-tab>
@@ -177,7 +180,7 @@
         <sc-donations-page></sc-donations-page>
       </div>
       <div name="DONATE-NOW">
-        <sc-donate-now-page></sc-donate-now-page>
+        <sc-donate-now-page id="donate"></sc-donate-now-page>
       </div>
       <div name="DOWNLOADS">
         <downloads-page></downloads-page>
@@ -222,19 +225,23 @@
         <sc-abhidhamma></sc-abhidhamma>
       </div>
       <div name="A-NEW-BEGINNING">
-        <sc-a-new-beginning></sc-a-new-beginni>
+        <sc-a-new-beginning></sc-a-new-beginning>
       </div>
       <div name="NOT-FOUND">
         <div class="page-not-found-container">
-          <h2>Error 404</h2>
-          <h3>Page not found</h3>
+          <h2>{{localize('error404')}}</h2>
+          <h3>{{localize('pageNotFound')}}</h3>
         </div>
       </div>
     </iron-lazy-pages>
   </template>
 
   <script>
-    class SCPageStatic extends ReduxMixin(Polymer.Element) {
+   /**
+    * @extends {Polymer.Element}
+    * @appliesMixin Polymer.AppLocalizeBehavior
+    */
+    class SCPageStatic extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
       static get is() {
           return 'sc-page-static';
       }
@@ -249,9 +256,18 @@
               pages: {
                   type: String,
                   value: 'HOME'
+              },
+              language: {
+                  type: String,
+                  statePath: 'siteLanguage',
+                  observer: '_siteLanguageChanged'
               }
           }
       }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`));
+          }
 
       _selectNavbarLink() {
           const tabs = this.$.nav_tabs.querySelectorAll('paper-tab');
@@ -264,14 +280,8 @@
           this.$.nav_tabs.selectIndex(-1);
       }
 
-      connectedCallback() {
-          super.connectedCallback();
-          this.$.nav_tabs.querySelectorAll('paper-tab').forEach(link => {
-              link.style.width = window.getComputedStyle(link).width;
-          });
-      }
-
       _changeView() {
+          this.$.donate.resetForm();
           this.$.pages.selected = this.selectedPage;
           this._selectNavbarLink();
       }
