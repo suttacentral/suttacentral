@@ -638,7 +638,7 @@
               return newSection;
           }
 
-          _processHighlightAndScroll(sectionId, isSmooth) {
+          _processHighlightAndScroll(sectionId) {
               let [idFrom, idTo] = sectionId.split('--');
               idFrom = this._generateId(idFrom);
               idTo = this._generateId(idTo);
@@ -653,6 +653,11 @@
                   toSection = this._getElementToHighlight(toSection);
               }
               const isSideBySideView = !!(this.chosenTextView === 'isSideBySideView' && this.translatedSutta)
+              this._processSections(section, isSideBySideView, toSection, idFrom, idTo);
+              return firstSection;
+          }
+
+          _processSections(section, isSideBySideView, toSection, idFrom, idTo) {
               while (section) {
                   let wrapper;
 
@@ -686,7 +691,6 @@
                       this._addInlineParagraphListeners(wrapper);
                   }
               }
-              return firstSection;
           }
 
           _previousElementIsNotFullWrapper(section) {
