@@ -73,6 +73,117 @@
       ul {
         padding-left: var(--sc-size-xl);
       }
+
+      body {
+        max-width: 720px;
+        margin: 0 auto;
+        background: rgb(245, 245, 245);
+        color: rgb(33, 33, 33);
+      }
+
+      dt {
+        margin-top: 16px;
+        font-family: serif;
+        font-weight: bold;
+      }
+
+      h1, h2 {
+        color: rgb(115, 115, 115);
+      }
+
+      .description {
+        color: rgb(115, 115, 115);
+        margin-bottom: 8px;
+        font-style: italic;
+      }
+
+      .type {
+        margin-bottom: 8px;
+
+      }
+
+      .life-events {
+        margin-top: 8px;
+        color: rgb(115, 115, 115);
+        font-style: italic;
+      }
+
+      .translation {
+
+        font-family: serif;
+
+      }
+
+      .ref {
+        color: rgb(115, 115, 115);
+        background: #ddd;
+        border-radius: 2px;
+        padding: 0.3em;
+        white-space: nowrap;
+        font-style: normal;
+      }
+
+      .entry-list {
+        margin: 64px 0;
+        padding: 0px;
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        border-radius: 2px;
+        border-left: 4px solid #F6C200;
+        text-align: center;
+      }
+
+      .entry-list a {
+        padding: 8px 0;
+        display: inline-block;
+        margin: 8px;
+        text-decoration: none;
+        border-radius: 2px;
+        width: 64px;
+      }
+
+      .entry-list a:hover {
+        background-color: #eee
+      }
+
+      .subject {
+        font-style: italic;
+        color: rgb(115, 115, 115)
+      }
+
+      .subject:before {
+        content: "("
+      }
+
+      .subject:after {
+        content: ")"
+      }
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: #F6C200;
+        text-decoration-skip: ink;
+      }
+
+      a:hover {
+        color: #F6C200;
+      }
+
+      a.ref {
+        text-decoration: none;
+      }
+
+      .static-copyright {
+        color: rgb(115, 115, 115);
+        font-size: 0.8em;
+        margin-top: 64px;
+        background: #eee;
+        padding: 16px 32px;
+      }
     </style>
   </template>
 </dom-module>
