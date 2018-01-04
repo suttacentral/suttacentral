@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../elements/text/sc-text-options.html">
 <link rel="import" href="../../styles/sc-text-styles.html">
@@ -71,7 +72,11 @@
   </template>
 
   <script>
-      class SCSimpleText extends ReduxMixin(Polymer.Element) {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCSimpleText extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-simple-text';
           }
@@ -199,6 +204,11 @@
                           'syā3': 'Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)',
                           'bj': 'Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)',
                           'bj-a': 'Buddhajayantītripiṭakagranthamālā Atthakathā)'
+                      },
+                      language: {
+                          type: String,
+                          statePath: 'siteLanguage',
+                          observer: '_siteLanguageChanged'
                       }
                   }
               }
@@ -219,6 +229,10 @@
                       }
                   }
               }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`));
           }
 
           _updateView() {
@@ -242,7 +256,7 @@
           _updateToolbar() {
               this.dispatch('changeSuttaMetaText', this._computeMeta());
               if (!this.sutta || !this.sutta.text) {
-                  this.dispatch('changeToolbarTitle', 'Sutta not found');
+                  this.dispatch('changeToolbarTitle', 'Sutta not found.');
                   return;
               }
               const title = this.author ? `${this.suttaTitle} — ${this.author}` : `${this.suttaTitle}`;
@@ -298,22 +312,24 @@
               }
               vol = Number(vol);
 
-              item.innerHTML = `
-                                <div class="image-link" title="View page image">
-                                    <span>${prefix.toUpperCase()} ${suffix}</span>
-                                    <iron-icon class="image-book-link" icon="sc-svg-icons:book">
-                                    </iron-icon>
-                                </div>
-                            `;
-              item.classList.add('image-book-link');
-              item.classList.add('textual-info-paragraph');
-              item.addEventListener('click', () => {
-                  this.dispatchEvent(new CustomEvent('show-image', {
-                      detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
-                      bubbles: true,
-                      composed: true
-                  }));
-              });
+              setTimeout(() => {
+                  item.innerHTML = `
+                                    <div class="image-link" title="${this.localize('viewImage')}">
+                                        <span>${prefix.toUpperCase()} ${suffix}</span>
+                                        <iron-icon class="image-book-link" icon="sc-svg-icons:book">
+                                        </iron-icon>
+                                    </div>
+                                `;
+                  item.classList.add('image-book-link');
+                  item.classList.add('textual-info-paragraph');
+                  item.addEventListener('click', () => {
+                      this.dispatchEvent(new CustomEvent('show-image', {
+                          detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
+                          bubbles: true,
+                          composed: true
+                      }));
+                  });
+              }, 500);
           }
 
           _addParagraphData(item, data) {
@@ -396,7 +412,7 @@
                   let sectionLink = nextSection.querySelector('.textual-info-paragraph');
                   if (sectionLink) {
                       if (last) {
-                          this._changePaddingToMargin(section.nodeName === "A" ? section.previousElementSibling : section);
+                          this._changePaddingToMargin(section.nodeName === 'A' ? section.previousElementSibling : section);
                           break;
                       } else if (sectionLink.id === idTo) {
                           last = true;
@@ -407,20 +423,20 @@
           }
 
           _changePaddingToMargin(section) {
-            const margin = window.getComputedStyle(section).padding;
-            requestAnimationFrame(() => {
-                section.style.margin = margin;
-                section.style.padding = '0';
-            })
+              const margin = window.getComputedStyle(section).padding;
+              requestAnimationFrame(() => {
+                  section.style.margin = margin;
+                  section.style.padding = '0';
+              })
           }
 
           _changeMarginToPadding(section) {
-            for(let pos of ['Top', 'Bottom', 'Left', "Right"]) {
-                const margin = window.getComputedStyle(section)[`margin${pos}`];
-                const padding = window.getComputedStyle(section)[`padding${pos}`];
-                section.style[`margin${pos}`] = '0';
-                section.style[`padding${pos}`] = this._getBigger(margin, padding);
-            }
+              for (let pos of ['Top', 'Bottom', 'Left', 'Right']) {
+                  const margin = window.getComputedStyle(section)[`margin${pos}`];
+                  const padding = window.getComputedStyle(section)[`padding${pos}`];
+                  section.style[`margin${pos}`] = '0';
+                  section.style[`padding${pos}`] = this._getBigger(margin, padding);
+              }
           }
 
           _getBigger(a, b) {
@@ -448,7 +464,7 @@
                   this._removeHighlights();
                   setTimeout(() => {
                       const firstSection = this._processHighlightAndScroll(sectionId);
-                      if(firstSection) {
+                      if (firstSection) {
                           firstSection.scrollIntoView({
                               behavior: isSmooth ? 'smooth' : 'instant',
                               block: 'start',
@@ -511,7 +527,6 @@
           }
 
           setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
-              const childNodes = elem.childNodes;
               Array.from(elem.querySelectorAll('.word')).forEach(word => {
                   word.dataset.latin_text = word.innerHTML;
                   word.innerHTML = transliterator[scriptFunctionName](word.innerHTML);

@@ -1,0 +1,9 @@
+{
+  "en": {
+    "cardNumber": "Card number",
+    "ZIP": "ZIP code",
+    "CVC": "CVC code",
+    "year": "RR",
+    "month": "MM"
+  }
+}

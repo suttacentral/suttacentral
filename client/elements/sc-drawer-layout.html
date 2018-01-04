@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="sc-page-selector.html">
 <link rel="import" href="../elements/addons/sc-toasts.html">
@@ -85,7 +86,7 @@
       /* styles for the text dialogs: */
 
       .dialog {
-        left: var(--app-drawer-width);
+        left: 0;
         background-color: var(--sc-secondary-background-color);
         white-space: initial;
         max-width: 630px;
@@ -179,18 +180,18 @@
     <isw-dialog id="settings_dialog" name="settings_dialog" class="dialog" with-backdrop
                 entry-animation="fade-in-animation" exit-animation="fade-out-animation">
       <div class="buttons-bar green-bg">
-        <h2 class="dialog-header green-bg">Text settings</h2>
+        <h2 class="dialog-header green-bg">{{localize('textSettings')}}</h2>
         <paper-icon-button class="close-dialog-icon" icon="close" dialog-confirm></paper-icon-button>
       </div>
       <paper-dialog-scrollable class="scrollable-dialog">
-        <settings-menu></settings-menu>
+        <sc-settings-menu></sc-settings-menu>
       </paper-dialog-scrollable>
     </isw-dialog>
 
     <isw-dialog id="info_dialog" name="info_dialog" class="dialog" with-backdrop="true" data="{{infoDialogMetaArea}}"
                 entry-animation="fade-in-animation" exit-animation="fade-out-animation">
       <div class="buttons-bar green-bg">
-        <h2 class="dialog-header green-bg">Publication details</h2>
+        <h2 class="dialog-header green-bg">{{localize('publicationDetails')}}</h2>
         <paper-icon-button class="close-dialog-icon" icon="close" dialog-confirm></paper-icon-button>
       </div>
       <paper-dialog-scrollable class="scrollable-dialog">
@@ -204,7 +205,11 @@
   </template>
 
   <script>
-      class SCDrawerLayout extends ReduxMixin(Polymer.Element) {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCDrawerLayout extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-drawer-layout';
           }
@@ -237,6 +242,11 @@
                       type: String,
                       statePath: 'colorTheme',
                       observer: '_colorThemeChanged'
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
           }
@@ -247,6 +257,10 @@
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
               // Lock scroll for the text dialogs:
               this._addScrollLockListeners();
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.language}.json`));
           }
 
           // opens the app-drawer when it is not visible.

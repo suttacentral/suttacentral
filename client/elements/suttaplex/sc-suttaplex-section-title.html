@@ -2,13 +2,9 @@
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 
-<dom-module id="sc-title">
+<dom-module id="sc-suttaplex-section-title">
   <template>
     <style>
-      .scrollable-dialog {
-        margin: 0;
-      }
-
       .node-head-container {
         display: flex;
         justify-content: space-between;
@@ -57,9 +53,9 @@
   </template>
 
   <script>
-      class SCTitle extends Polymer.Element {
+      class SCSuttaplexSectionTitle extends Polymer.Element {
           static get is() {
-              return 'sc-title';
+              return 'sc-suttaplex-section-title';
           }
 
           static get properties() {
@@ -103,7 +99,7 @@
 
       }
 
-      customElements.define(SCTitle.is, SCTitle);
+      customElements.define(SCSuttaplexSectionTitle.is, SCSuttaplexSectionTitle);
   </script>
 </dom-module>
 
