@@ -7,6 +7,9 @@
     "USEOFFLINE": "USE OFFLINE",
     "WHATSNEW": "WHAT'S NEW",
     "error404": "Error 404",
-    "pageNotFound": "Page not found"
+    "pageNotFound": "Page not found",
+    "TERMINOLOGY": "TERMINOLOGY",
+    "SIMILES": "SIMILES",
+    "SUBJECTS": "SUBJECTS"
   }
 }

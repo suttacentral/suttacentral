@@ -9,7 +9,7 @@
 
 <link rel="import" href="../elements/menus/sc-toolbar.html">
 <link rel="import" href="../elements/sc-page-static.html">
-<link rel="import" href="../elements/sc-view-suttaplex.html">
+<link rel="import" href="../elements/suttaplex/sc-suttaplex-list.html">
 <link rel="import" href="../elements/text/sc-simple-text.html">
 <link rel="import" href="../elements/text/sc-segmented-text.html">
 <link rel="import" href="../elements/sc-page-search.html">
@@ -26,7 +26,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     - dictionary page: **sc-page-dictionary.html**
     - normal html text pages: **sc-simple-text.html**
     - segmented text pages from pootle output: **sc-segmented-text.html**
-    - suttaplex list: **sc-view-suttaplex.html**
+    - suttaplex list: **sc-suttaplex-list.html**
 -->
 <dom-module id="sc-page-selector" attributes="togdraw">
   <template>
@@ -77,6 +77,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         margin-right: var(--sc-size-md);
       }
 
+      #header {
+        transition: left 200ms ease-in-out !important;
+      }
+
       @media screen and (min-width: 840px) {
         #header.drawer-closed {
           left: 0 !important;
@@ -120,7 +124,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         </template>
 
         <template is="dom-if" if="[[shouldShowSuttaplexListPage]]" restamp>
-          <sc-view-suttaplex></sc-view-suttaplex>
+          <sc-suttaplex-list></sc-suttaplex-list>
         </template>
 
         <template is="dom-if" if="[[shouldShowSearchPage]]" restamp>
@@ -165,7 +169,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: Array,
                       value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
                           'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGMENTS', 'LICENSING', 'INTRODUCTION',
-                          'START', 'DISCOURSES', 'VINAYA', 'ABHIDHAMMA', 'A-NEW-BEGINNING']
+                          'START', 'DISCOURSES', 'VINAYA', 'ABHIDHAMMA', 'A-NEW-BEGINNING', 'SUBJECTS', 'SIMILES',
+                          'NAMES', 'TERMINOLOGY']
                   },
                   allIsoCodes: {
                       type: Array,
@@ -276,7 +281,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           connectedCallback() {
               super.connectedCallback();
-              requestAnimationFrame(() => { this._toggleDrawer(true); });
+              requestAnimationFrame(() => {
+                  this._toggleDrawer(true);
+              });
           }
 
           _recalculateView() {

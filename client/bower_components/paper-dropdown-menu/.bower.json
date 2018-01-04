@@ -1,6 +1,6 @@
 {
   "name": "paper-dropdown-menu",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "An element that works similarly to a native browser select",
   "authors": [
     "The Polymer Authors"
@@ -79,14 +79,13 @@
   "resolutions": {
     "webcomponentsjs": "^1.0.0"
   },
-  "_release": "2.0.0",
+  "_release": "2.0.1",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.0",
-    "commit": "1d77306c804367449578e5bdb5a1240c5a50485b"
+    "tag": "v2.0.1",
+    "commit": "efd89f99710ebb3e548ce9b82ee00c6b96366842"
   },
   "_source": "https://github.com/PolymerElements/paper-dropdown-menu.git",
   "_target": "^2.0.0",
-  "_originalSource": "PolymerElements/paper-dropdown-menu",
-  "_direct": true
+  "_originalSource": "PolymerElements/paper-dropdown-menu"
 }
