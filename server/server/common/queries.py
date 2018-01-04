@@ -471,27 +471,29 @@ RETURN glossary_item
 '''
 
 DICTIONARY_ADJACENT = '''
-LET all_items = (
+LET word_number = (
     FOR dictionary IN dictionary_full
-        RETURN dictionary.word
-    )
+        FILTER dictionary.word == @word
+        RETURN dictionary.num
+    )[0]
 
-LET unique_terms = (
-    RETURN UNIQUE(all_items)
+LET adjacent_words = (
+    FOR selected IN dictionary_full
+        FILTER selected.num < word_number+6
+        FILTER selected.num > word_number-6
+        SORT selected.num
+        RETURN selected.word
     )
+    
+RETURN UNIQUE(adjacent_words)
+'''
 
-LET sorted_items = (
-    FOR items in unique_terms[0]
-        SORT items ASC
-        RETURN items
-    )
-
-LET search_word_position = (
-    RETURN POSITION(sorted_items, @word, true)
-    )
-
-FOR selected in sorted_items
-    FILTER selected < sorted_items[search_word_position[0]+5]
-    FILTER selected > sorted_items[search_word_position[0]-5]
-    RETURN selected
+DICTIONARY_SIMILAR = '''
+LET similar_words = (
+    FOR dictionary IN dictionary_full
+        FILTER dictionary.word == @word
+        RETURN dictionary.similar
+    )[0]
+    
+RETURN similar_words
 '''

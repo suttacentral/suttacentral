@@ -143,10 +143,10 @@
         handle-as="json"
         last-response="{{adjacentReturns}}"></iron-ajax>
 
-<!--     <iron-ajax
+    <iron-ajax
         id="similar_ajax"
         handle-as="json"
-        last-response="{{similarReturns}}"></iron-ajax> -->
+        last-response="{{similarReturns}}"></iron-ajax>
 
     <iron-meta id="meta"></iron-meta>
 
@@ -203,6 +203,7 @@
                   dictionaryReturns: Array,
                   glossaryReturns: Array,
                   adjacentReturns: Array,
+                  similarReturns: Array,
                   dictionaryWord: {
                       type: String,
                       observer: '_loadNewResult'
@@ -223,12 +224,6 @@
                   },
                   glossaryList: Object,
                   dictionaryAdjacent: Array,
-                  // The below array is just a temporary mockup and can be deleted once similar can be loaded through ajax.
-                  dictionarySimilarArray: {
-                      type: Array,
-                      value: ['dhamma','dhammā','adhamma','dhamman','dhammī','ghamma',
-                      'dhama','damma','uddhamma','opamma']
-                  },
                   dictionarySimilar: Array
               }
           }
@@ -236,7 +231,7 @@
           static get observers() {
               return [
                   '_getGlossaryItems(glossaryList,adjacentReturns,adjacent)',
-                  '_getGlossaryItems(glossaryList,dictionarySimilarArray)'
+                  '_getGlossaryItems(glossaryList,similarReturns)'
               ];
           }
 
@@ -246,6 +241,7 @@
 
           _loadNewResult() {
               this._loadAdjacent();
+              this._loadSimilar();
               this.$.ajax.url = this._computeUrl();
               return this.$.ajax.generateRequest();
           }
@@ -284,6 +280,16 @@
               return this.$.adjacent_ajax.generateRequest();
           }
 
+          // Adding Similar Terms
+          _computeSimilarUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/dictionary_similar/${this.dictionaryWord}`;
+          }
+
+          _loadSimilar() {
+              this.$.similar_ajax.url = this._computeSimilarUrl();
+              return this.$.similar_ajax.generateRequest();
+          }
+
           // Calculating if the current item is selected
           _calculateClass(item) {
               return (item === this.dictionaryWord) ? 'selected-terms-item' : '';
@@ -297,21 +303,23 @@
           }
 
           _getGlossaryItems(glossaryList, inputArray, adjacent=false) {
-              let glossary = [];
-              let glossaryObject = {};
-              let glossText = '';
-              if (glossaryList) {
-                  for (let glossWord in inputArray) {
-                      let glossLookup = inputArray[glossWord];
-                      glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
-                      if (glossaryList[glossLookup]){
-                          glossText += `<em> (${glossaryList[glossLookup]})</em>`
+              if (inputArray) {
+                  let glossary = [];
+                  let glossaryObject = {};
+                  let glossText = '';
+                  if (glossaryList) {
+                      for (let glossWord in inputArray[0]) {
+                          let glossLookup = inputArray[0][glossWord];
+                          glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
+                          if (glossaryList[glossLookup]){
+                              glossText += `<em> (${glossaryList[glossLookup]})</em>`
+                          }
+                          glossaryObject = {"glossword": glossLookup, "glosstext": glossText};
+                          glossary.push(glossaryObject);
                       }
-                      glossaryObject = {"glossword": glossLookup, "glosstext": glossText};
-                      glossary.push(glossaryObject);
-                  }
-                  return (adjacent) ? this.dictionaryAdjacent = glossary : this.dictionarySimilar = glossary;
-              }
+                      return (adjacent) ? this.dictionaryAdjacent = glossary : this.dictionarySimilar = glossary;
+                }
+            }
           }
 
           // toggles the drawer on the right to show the related/similar items.
