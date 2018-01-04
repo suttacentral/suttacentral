@@ -1,6 +1,6 @@
 {
   "en": {
-    "Error": "Error",
+    "error": "Error",
     "couldNotFind": "Could not find the sutta text.",
     "viewImage": "View page image",
     "suttaNotFound": "Sutta not found.",

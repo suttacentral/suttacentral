@@ -86,7 +86,7 @@
     <template is="dom-if" if="[[_shouldShowError(rootSutta, translatedSutta)]]">
       <div class="text-center margin-top-xl">
         <h2>{{localize('error')}}</h2>
-        <h3>{{localize('couldNotFindText')}}</h3>
+        <h3>{{localize('couldNotFind')}}</h3>
       </div>
     </template>
 
@@ -241,6 +241,11 @@
                       }
                   }
               }
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`));
           }
 
           _siteLanguageChanged() {
