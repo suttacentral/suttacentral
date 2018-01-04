@@ -5,7 +5,7 @@
 <link rel="import" href="../../elements/text/sc-viewer-import.html">
 <link href="../../node_modules/viewerjs/dist/viewer.min.css" rel="stylesheet">
 
-<dom-module id="sc-image">
+<dom-module id="sc-text-image">
   <template>
 
     <style>
@@ -34,9 +34,9 @@
   </template>
 
   <script>
-      class SCImage extends Polymer.Element {
+      class SCTextImage extends Polymer.Element {
           static get is() {
-              return 'sc-image';
+              return 'sc-text-image';
           }
 
           static get properties() {
@@ -101,6 +101,6 @@
           }
       }
 
-      customElements.define(SCImage.is, SCImage);
+      customElements.define(SCTextImage.is, SCTextImage);
   </script>
 </dom-module>

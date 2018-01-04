@@ -37,10 +37,6 @@
         transform: translate(-50%, -50%);
       }
 
-      .icon-button {
-        position: relative;
-      }
-
       .network-error-icon {
         width: var(--sc-size-xxl);
         height: var(--sc-size-xxl);
@@ -327,11 +323,12 @@
       </template>
 
       <template is="dom-if" if="[[error]]">
-        <iron-icon class="network-error-icon icon-middle" title="Network error" src="img/nonetwork.svg"></iron-icon>
+        <iron-icon class="network-error-icon icon-middle" title="{{localize('networkError')}}"
+                   src="img/nonetwork.svg"></iron-icon>
       </template>
 
       <nav class="sc-nav">
-        <div id="sub_navigation_header" class="nav-back-button swap-section up">
+        <div id="sub_navigation_header" class="nav-back-button swap-section up" title="{{localize('goBack')}}">
           <paper-icon-button id="back_arrow" icon="arrow-back" on-click="_closeChildMenu"></paper-icon-button>
           <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
         </div>
@@ -350,7 +347,7 @@
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCNavigationMenu extends ReduxMixin(Polymer.Element) {
+      class SCNavigationMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-navigation-menu';
           }
@@ -385,12 +382,17 @@
                       type: String,
                       statePath: 'selectedNavigationMenuItemId',
                       observer: '_selectedMenuItemChanged'
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
           }
 
           _generateMainMenu() {
-              const mainMenuMarkup = `
+              this.$.main_menu_container.innerHTML = `
                 <ul id="main_navigation" class="nav-list sc-scrollbar swap-section left active">
                   ${this.mainMenuData.map(topLevelItem => `
                     <li class="nav-menu-item top-menu-item">
@@ -416,9 +418,12 @@
                       </ul>
                     </li>`).join('')}
                 </ul>`;
-              this.$.main_menu_container.innerHTML = mainMenuMarkup;
               this._addButtonEventListeners();
               this._selectedMenuItemChanged();
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.language}.json`));
           }
 
           _generateDeepMainMenuLevels(item, isOpen) {

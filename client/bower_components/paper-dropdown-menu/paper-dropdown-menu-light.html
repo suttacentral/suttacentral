@@ -139,9 +139,7 @@ To style it:
         @apply --paper-dropdown-menu-input;
       }
 
-      /* Keep :host-context() to make it work where :dir doesn't exist */
-      :host(:dir(rtl)) #input,
-      :host-context([dir="rtl"]) #input {
+      #input:dir(rtl) {
         padding-right: 0px;
         padding-left: 20px;
       }
@@ -181,9 +179,7 @@ To style it:
         @apply --paper-dropdown-menu-label;
       }
 
-      /* Keep :host-context() to make it work where :dir doesn't exist */
-      :host(:dir(rtl)) label,
-      :host-context([dir="rtl"]) label {
+      label:dir(rtl) {
         padding-right: 0px;
         padding-left: 20px;
       }
@@ -253,9 +249,7 @@ To style it:
         @apply --paper-dropdown-menu-icon;
       }
 
-      /* Keep :host-context() to make it work where :dir doesn't exist */
-      :host(:dir(rtl)) iron-icon,
-      :host-context([dir="rtl"]) iron-icon {
+      iron-icon:dir(rtl) {
         left: 0;
         right: auto;
       }

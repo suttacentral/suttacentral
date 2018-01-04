@@ -14,7 +14,7 @@ This is the outline of the parallels-table which is used in sc-suttaplex.html.
 This parallels-table is further populated with the additional info for each relevant parallel sutta,
 which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 -->
-<dom-module id="sc-view-parallels">
+<dom-module id="sc-parallel-list">
   <template>
     <style include="sc-suttaplex-styles">
       .parallels-table {
@@ -111,7 +111,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                          title$="[[_getFirstParallelIconTitle(rootId)]]"></iron-icon>
             </td>
             <td class="parallels-parallel-cell paper-lift white-bg">
-              <sc-parallel-item parallel-item="[[_getFirstParallelItem(rootId)]]" 
+              <sc-parallel-item parallel-item="[[_getFirstParallelItem(rootId)]]"
                                 remark="[[_getFirstParallelRemark(rootId)]]"></sc-parallel-item>
             </td>
           </tr>
@@ -135,9 +135,13 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
   </template>
 
   <script>
-      class SCParallels extends Polymer.Element {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCParallels extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
-              return 'sc-view-parallels'
+              return 'sc-parallel-list'
           }
 
           static get properties() {
@@ -173,6 +177,11 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                   error: Boolean,
                   rootText: {
                       type: Object
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
           }
@@ -180,6 +189,10 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           ready() {
               super.ready();
               this.addEventListener('loading-results-changed', this._resizeParentList);
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.language}.json`));
           }
 
           _itemUidChanged() {
