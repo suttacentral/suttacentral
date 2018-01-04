@@ -7,12 +7,12 @@
 <link rel="import" href="../../elements/addons/sc-sutta-note.html">
 
 <!--
-This element loads additional info for each relevant parallel sutta, which is then used in sc-view-parallels.html.
+This element loads additional info for each relevant parallel sutta, which is then used in sc-parallel-list.html.
 It is in effect a miniature version of the suttaplex-card
 -->
 <dom-module id="sc-parallel-item">
   <template>
-    <style include="sc-suttaplex-styles" attributes="partitle volumepage biblio">
+    <style include="sc-suttaplex-styles">
       :host {
         --language-menu-dropdown-width: 150px;
       }
@@ -34,7 +34,7 @@ It is in effect a miniature version of the suttaplex-card
         border-top: var(--sc-border);
         position: absolute;
         z-index: 200;
-        background-color: #fff;
+        background-color: var(--sc-secondary-background-color);
         padding: 12px;
         margin: 0 var(--sc-size-xl) 0 0;
         white-space: normal;
@@ -108,13 +108,17 @@ It is in effect a miniature version of the suttaplex-card
         display: flex;
       }
 
+      .parallel-item {
+        flex-wrap: wrap;
+      }
+
       .no-padding {
         padding: 0;
       }
 
     </style>
 
-    <div class="parallel-item d-flex justify-content-space-between" style="flex-wrap: wrap">
+    <div class="parallel-item d-flex justify-content-space-between">
 
       <div class="parallel-item-main-info-container">
         <div class="parallel-item-title vertical-margin-xs">[[_computeTitle(parallelItem.*)]]</div>
@@ -122,7 +126,7 @@ It is in effect a miniature version of the suttaplex-card
         <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
           <template is="dom-if" if="[[_getAcronymOrId(parallelItem)]]">
             <div class$="parallel-item-id [[_computeRootIdVisibility()]]">
-              <div title="SuttaCentral ID">[[_getAcronymOrId(parallelItem)]]</div>
+              <div title="{{localize('suttaCentralID')}}">[[_getAcronymOrId(parallelItem)]]</div>
             </div>
           </template>
 
@@ -135,16 +139,16 @@ It is in effect a miniature version of the suttaplex-card
                       <span class="book scrollable-dialog">
                         <iron-icon icon="book"></iron-icon>
                       </span>
-                      <span class="vol-page" title="Volume and page number">[[parallelItem.volpages]]</span>
+                      <span class="vol-page" title="{{localize('volAndPageNum')}}">[[parallelItem.volpages]]</span>
                     </summary>
                     <p class="parallel-item-biblio-info" inner-h-t-m-l="[[parallelItem.bib]]"></p>
                   </details>
                 </template>
                 <template is="dom-if" if="[[!parallelItem.bib]]">
-                  <span class="book scrollable-dialog" title="Volume and page number">
+                  <span class="book scrollable-dialog" title="{{localize('volAndPageNum')}}">
                     <iron-icon icon="book"></iron-icon>
                   </span>
-                  <span class="vol-page" title="Volume and page number">[[parallelItem.volpages]]</span>
+                  <span class="vol-page" title="{{localize('volAndPageNum')}}">[[parallelItem.volpages]]</span>
                 </template>
               </div>
             </template>
@@ -166,7 +170,7 @@ It is in effect a miniature version of the suttaplex-card
       <template is="dom-if" if="[[_shouldShowLanguageDropdown()]]">
         <div class="parallel-item-language-dropdown d-flex align-items-center flex-1">
           <sc-language-menu language-choice="[[parallelItem.translations]]"
-                         title-label="[[_computeLanguageDropdownTitle(parallelItem.*)]]"
+                         title-label="[[languageDropdownLabel]]"
                          original-language="[[parallelItem.root_lang]]"
                          input-language=""
                          root-id="[[_computeParallelUrl()]]"
@@ -183,7 +187,7 @@ It is in effect a miniature version of the suttaplex-card
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCParallelItem extends Polymer.Element {
+      class SCParallelItem extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-parallel-item';
           }
@@ -210,8 +214,21 @@ It is in effect a miniature version of the suttaplex-card
                           'xto': 'TocharianA',
                           'kho': 'Khotanese'
                       }
+                  },
+                  languageDropdownLabel: {
+                      type: String,
+                      computed: "_computeLanguageDropdownTitle(localize, parallel.item.root_lang, language)"
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.language}.json`));
           }
 
           // returns the relevant header, either the title in the translated language,
@@ -241,12 +258,12 @@ It is in effect a miniature version of the suttaplex-card
               return this.rootLangMappings[isoCode];
           }
 
-          _computeLanguageDropdownTitle() {
+          _computeLanguageDropdownTitle(localize) {
               if (this.parallelItem.root_lang) {
                   return this._computeFullLangName(this.parallelItem.root_lang);
               }
               else {
-                  return 'Translations';
+                  return localize('translations');
               }
           }
 

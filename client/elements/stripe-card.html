@@ -1,6 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
-
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
@@ -100,20 +100,20 @@
       <form>
         <div class="horizontal wrap">
           <paper-input class="data-input large" id="cardNumber" type="tel" allowed-pattern="[0-9 ]" maxlength="19"
-                       name="number" label="Card number" auto-validate required on-value-changed="_maskCard">
+                       name="number" label="{{localize('cardNumber')}}" auto-validate required on-value-changed="_maskCard">
             <iron-icon icon="icons:credit-card" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>
           <div class="horizontal data-input">
-            <paper-input class="small" type="tel" name="exp_month" label="MM" min="1" max="12" maxlength="2"
+            <paper-input class="small" type="tel" name="exp_month" label="{{localize('month')}}" min="1" max="12" maxlength="2"
                          auto-validate required></paper-input>
             <div class="date-separator">/</div>
-            <paper-input class="small" type="tel" name="exp_year" label="YY" maxlength="2" auto-validate required>
+            <paper-input class="small" type="tel" name="exp_year" label="{{localize('year')}}" maxlength="2" auto-validate required>
             </paper-input>
           </div>
-          <paper-input class="medium data-input data-input-last" type="tel" name="cvc" label="CVC" maxlength="4"
+          <paper-input class="medium data-input data-input-last" type="tel" name="cvc" label="{{localize('CVC')}}" maxlength="4"
                        auto-validate required></paper-input>
           <template is="dom-if" if="[[ !hideZip ]]">
-            <paper-input class="medium data-input" type="text" name="address_zip" label="ZIP">
+            <paper-input class="medium data-input" type="text" name="address_zip" label="{{localize('ZIP')}}">
             </paper-input>
           </template>
         </div>
@@ -127,8 +127,9 @@
        * @customElement
        * @polymer
        * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class StripeCard extends Polymer.Element {
+      class StripeCard extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'stripe-card';
           }
@@ -192,7 +193,16 @@
                       value: false,
                       notify: true,
                   },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
               };
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/stripe-card/${this.language}.json`));
           }
 
           // request token, returns a promise
@@ -206,7 +216,6 @@
                           type: 'form_validation',
                       });
                   }
-                  ;
                   let payload = {
                       'key': this.publishableKey,
                       'payment_user_agent': this._apiVersion,
@@ -255,7 +264,6 @@
               if (!this.maskCard) {
                   return;
               }
-              ;
               let input = event.composedPath()[0]._focusableElement;
               let value = input.value;
               let cursor = input.selectionStart;
@@ -264,7 +272,6 @@
               if (!value) {
                   return
               }
-              ;
               value = value
               // remove all masking characters
                   .replace(new RegExp(this.maskChar, 'g'), '')

@@ -17,6 +17,7 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/iron-location/iron-location.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../styles/static-styles.html">
 <link rel="import" href="../styles/sc-scrollbar-style.html">
@@ -106,82 +107,12 @@
         margin-top: 1.5em;
       }
 
-      .card-first-span {
-        line-height: var(--sc-size-lg);
-        color: var(--sc-secondary-text-color);
-        border-bottom: 1px solid #586A82;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        font-weight: 300;
-        transition: border-bottom-color 200ms ease-in-out;
-        cursor: text;
-        pointer-events: none;
-      }
-
-      .card-second-span {
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform-origin: 0 50%;
-        transition: transform 200ms ease-in-out;
-        cursor: text;
-      }
-
-      label .field:not(.is-empty) + span span {
-        transform: scale(0.70) translateY(-36px);
-        cursor: default;
-        opacity: 1;
-      }
-
-      label .field.is-focused + span span {
-        color: var(--sc-primary-accent-color);
-      }
-
-      label .field.is-focused + span {
-        border-bottom: var(--sc-border);
-      }
-
-      .field {
-        border: 0;
-        width: 100%;
-        cursor: text;
-        outline: none;
-        display: block;
-        font-weight: 300;
-        background: transparent;
-        line-height: var(--sc-size-lg);
-        padding-bottom: var(--sc-size-xs);
-        color: var(--sc-tertiary-text-color);
-        transition: opacity 200ms ease-in-out;
-      }
-
-      .field::-webkit-input-placeholder {
-        color: var(--sc-primary-text-color);
-      }
-
-      .field::-moz-placeholder {
-        color: var(--sc-primary-text-color);
-      }
-
-      /* IE doesn't show placeholders when empty+focused */
-      .field:-ms-input-placeholder {
-        color: var(--sc-primary-text-color);
-      }
-
       .spinner {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translateY(-50%);
         z-index: 101;
-      }
-
-      .no-d {
-        display: none;
       }
 
       .blocker {
@@ -255,7 +186,7 @@
           <form class="payment-form">
             <div class="flex-row">
               <paper-dropdown-menu class="currency-dropdown data-input" aria-label="Select currency"
-                                   label="Currency" always-float-label>
+                                   label="{{localize('currency')}}" always-float-label>
                 <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
                                selected="[[default_currency_index]]">
                   <template is="dom-repeat" items="[[currencies]]">
@@ -272,15 +203,18 @@
                 </paper-tooltip>
               </template>
 
-              <paper-input label="Amount" class="data-input amount-input" auto-validate
+              <paper-input label="{{localize('amount')}}" class="data-input amount-input" auto-validate
                            pattern="^[+]?(\d+[.,]?\d{0,2})$"
-                           allowed-pattern="[0-9.,]" error-message="Invalid value" required maxlength=20></paper-input>
+                           allowed-pattern="[0-9.,]" error-message="{{localize('invalidValue')}}" required
+                           maxlength=20></paper-input>
             </div>
 
-            <p class="explanation">You can make a one-time donation or a monthly donation.</p>
+            <p class="explanation">{{localize('chooseFrequency')}}</p>
             <div class="flex-row">
-              <paper-checkbox class="sans-font frequency-checkbox one-time-donation" checked>One time</paper-checkbox>
-              <paper-checkbox class="sans-font frequency-checkbox monthly-donation">Monthly</paper-checkbox>
+              <paper-checkbox class="sans-font frequency-checkbox one-time-donation" checked>{{localize('oneTime')}}
+              </paper-checkbox>
+              <paper-checkbox class="sans-font frequency-checkbox monthly-donation">{{localize('monthly')}}
+              </paper-checkbox>
             </div>
 
             <stripe-card id="stripe_card" class="card-row" publishable-key="pk_test_vFqwBPDW08c5AKXMGLKaeJaB"
@@ -291,18 +225,18 @@
               <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
             </paper-input>
 
-            <paper-input label="Email (optional)" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
-                         error-message="Invalid email" maxlength=200>
+            <paper-input label="{{localize('email')}}" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
+                         error-message="{{localize('invalidEmail')}}" maxlength=200>
               <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
             </paper-input>
 
-            <paper-textarea label="Message (optional)" class="data-input message-input" rows=2 maxlength=200
+            <paper-textarea label="{{localize('message')}}" class="data-input message-input" rows=2 maxlength=200
                             char-counter>
             </paper-textarea>
 
             <div class="flex-row submit">
               <paper-button id="submitButton" on-tap="_makeDonation" class="submit-button" raised>
-                <div class="sans-font">PAY WITH CARD</div>
+                <div class="sans-font">{{localize('payWithCard')}}</div>
               </paper-button>
             </div>
           </form>
@@ -310,11 +244,8 @@
 
         <div class="legal-information">
           <iron-icon icon="icons:info-outline" class="form-prefix"></iron-icon>
-          <p>SuttaCentral does not handle or store your credit card details.
-            All credit card transactions are handled securely by <a href="https://stripe.com" target="blank">Stripe</a>.
-          </p>
-          <p>The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards,
-            and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable.</p>
+          <p inner-h-t-m-l="{{localize('storageDisclaimer')}}"></p>
+          <p>{{localize('feeDisclaimer')}}</p>
         </div>
       </section>
     </div>
@@ -328,7 +259,11 @@
   </template>
 
   <script>
-      class SCDonateNow extends Polymer.Element {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCDonateNow extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-donate-now-page';
           }
@@ -380,6 +315,11 @@
                           2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
                           3: 'Your card was declined.'
                       }
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
           }
@@ -421,6 +361,10 @@
                       e.preventDefault();
                   }
               })
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.language}.json`));
           }
 
           _handleResponse() {
