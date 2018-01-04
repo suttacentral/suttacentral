@@ -16,7 +16,7 @@
 <link rel="import" href="../../elements/addons/sc-sutta-note.html">
 <link rel="import" href="../menus/sc-language-menu.html">
 <link rel="import" href="../menus/sc-suttaplex-share-menu.html">
-<link rel="import" href="../../elements/suttaplex/sc-view-parallels.html">
+<link rel="import" href="sc-parallel-list.html">
 <link rel="import" href="../../elements/addons/sc-badge.html">
 
 <!--
@@ -326,9 +326,9 @@
 
       <template is="dom-if" if="[[parallelsOpened]]">
         <iron-collapse id="collapse" opened="[[parallelsOpened]]">
-          <sc-view-parallels root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"
+          <sc-parallel-list root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"
                              root-text="[[_getRootText(item.*)]]">
-          </sc-view-parallels>
+          </sc-parallel-list>
         </iron-collapse>
       </template>
 

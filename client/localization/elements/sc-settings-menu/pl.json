@@ -1,0 +1,22 @@
+{
+  "pl": {
+    "viewTextualInfo": "Pokaż dodatkowe informacje",
+    "displaysInfo": "Pokazuje informacje, takie jak referencje do wolumenów/stron, odmienne czytania tekstów, itp.",
+    "viewOriginal": "Pokaż oryginalny tekst i tłumaczenie",
+    "onlyWorks": "Ta opcja działa tylko z niektórymi tekstami, między innymi z tłumaczeniami autorstwa Sujato oraz Brahmali.",
+    "none": "Wyłączone",
+    "sideBySide": "Obok",
+    "lineByLine": "Linia pod linią",
+    "popUp": "W oknie",
+    "lookup": "Słownik",
+    "activatePaliLookup": "Aktywuj spoglądanie do słownika Pali",
+    "activatePaliDescription": "Analizuje tekst w Pali w celu odnalezienia znaczenia słów. Ta funkcja to jedynie pomoc, a wyświetlane znaczenia są czasami niedokładne. Znaczenia słów pochodzą ze słownika \"New Concise Pali English\".",
+    "activateChineseLookup": "Aktywuj spoglądanie do słownika Chińskiego",
+    "activateChineseDescription": "Analizuje starożytne teksty w języku chińskim i wyświetla znaczenia słów. Znaczenia słów pochodzą z \"Cyfrowego Słownika Buddyzmu\".",
+    "changePaliScript": "Zmień skrypt tekstu Pali.",
+    "changePaliScriptLabel": "Skrypt",
+    "changePaliScriptDescription": "Ta funkcja pozwala czytać Palijskie teksty w różnych skryptach.",
+    "rememberSettings": "Zapamiętaj ustawienia",
+    "rememberSettingsDescription": "Zaznacz tą opcję, a Twoje ustawienia zostaną zapamiętane następnym razem, gdy odwiedzisz SuttaCentral."
+  }
+}

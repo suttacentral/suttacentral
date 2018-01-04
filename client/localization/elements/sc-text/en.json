@@ -1,0 +1,10 @@
+{
+  "en": {
+    "Error": "Error",
+    "couldNotFind": "Could not find the sutta text.",
+    "viewImage": "View page image",
+    "suttaNotFound": "Sutta not found.",
+    "noMetadata": "No metadata available.",
+    "segmentNumber": "SuttaCentral segment number"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "en": {
+    "currency": "Currency",
+    "amount": "Amount",
+    "invalidValue": "Invalid value",
+    "chooseFrequency": "You can make a one-time donation or a monthly donation:",
+    "oneTime": "One time",
+    "monthly": "Monthly",
+    "email": "Email (optional)",
+    "invalidEmail": "Invalid email",
+    "message": "Message (optional)",
+    "payWithCard": "PAY WITH CARD",
+    "storageDisclaimer": "SuttaCentral does not handle or store your credit card details. All credit card transactions are handled securely by <a href='https://stripe.com' target='blank'>Stripe</a>.",
+    "feeDisclaimer": "The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards, and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable."
+  }
+}

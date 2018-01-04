@@ -109,11 +109,11 @@
 
               //First we try to match the word as-is
               let m = this.matchComplete(word, { 'ti': this.isTi });
-              if (!m || m.length == 0) {
-                  if (word.search(/^an|^a(.)\1/) != -1) {
+              if (!m || m.length === 0) {
+                  if (word.search(/^an|^a(.)\1/) !== -1) {
                       unword = word.substring(2, word.length);
                   }
-                  else if (word.search(/^a/) != -1) {
+                  else if (word.search(/^a/) !== -1) {
                       unword = word.substring(1, word.length);
                   }
 
@@ -157,7 +157,7 @@
                       let starts = [firstchar, '', sandhi + firstchar];
                       let vowels = ['a', 'ā', 'i', 'ī', 'u', 'ū', 'o', 'e'];
                       //As a rule sandhi doesn't shortern vowels
-                      if (sandhi == 'a' || sandhi == 'i' || sandhi == 'u') {
+                      if (sandhi === 'a' || sandhi === 'i' || sandhi === 'u') {
                           vowels = ['a', 'i', 'u'];
                       }
                       for (let i in vowels) {
@@ -174,11 +174,10 @@
                           if (m) {
                               break
                           }
-                          ;
                       }
                       if (!m) {
                           let base = firstchar + leftover;
-                          if (base != 'ṃ') {
+                          if (base !== 'ṃ') {
                               allMatches.push({ 'base': base, 'meaning': '?' });
                           }
                           break;
@@ -202,7 +201,7 @@
                               wordp = wordp.replace(/ī$/, 'i').replace(/ā$/, 'i').replace(/ū$/, 'i').replace(/n$/, '').replace(/n$/, 'ṃ');
                           }
                           if (pi) {
-                              if (wordp.search(/pi$/) == -1) {
+                              if (wordp.search(/pi$/) === -1) {
                                   continue;
                               }
                               wordp = wordp.replace(/pi$/, '');
@@ -282,7 +281,7 @@
                   return;
               }
               let target = this.dictData.dictionary[word];
-              if (typeof(target) == 'object') {
+              if (typeof(target) === 'object') {
                   let meaning = '';
                   if (target[1] === undefined) {
                       meaning = target[0];
@@ -300,7 +299,7 @@
                   if (word.length > end[i][2] && word.substring(word.length - end[i][0].length, word.length) === end[i][0]) {
                       let orig = word.substring(0, word.length - end[i][0].length + end[i][1]) + end[i][3];
                       let target = this.dictData.dictionary[orig];
-                      if (typeof(target) == 'object') {
+                      if (typeof(target) === 'object') {
                           let meaning = '';
                           if (target[1] === undefined) {
                               meaning = target[0];
