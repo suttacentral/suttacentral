@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <!--
 This dropdown for the search pages is normally hidden, and only shows when necessary.
@@ -52,20 +53,24 @@ The two necessary conditions are:
 
     </style>
 
-    <paper-dropdown-menu class="filter-dropdown" title="Select search scope" vertical-align="auto">
+    <paper-dropdown-menu id="filter_dropdown" class="filter-dropdown" title="Select search scope" vertical-align="auto"
+    label="{{localize('filter')}}">
       <paper-listbox class="filter-menu-items" slot="dropdown-content" selected="{{searchSelected}}">
-        <paper-item class="filter-menu-item" id="all">All</paper-item>
-        <paper-item class="filter-menu-item" id="root-texts">Root texts</paper-item>
-        <paper-item class="filter-menu-item" id="translations">Translations</paper-item>
-        <!-- TODO add dictionaries category -->
-        <!--<paper-item id="dictionaries">Dictionaries</paper-item>-->
+        <paper-item class="filter-menu-item" id="all">{{localize('all')}}</paper-item>
+        <paper-item class="filter-menu-item" id="root-texts">{{localize('rootTexts')}}</paper-item>
+        <paper-item class="filter-menu-item" id="translations">{{localize('translations')}}</paper-item>
+        <paper-item class="filter-menu-item" id="dictionaries">{{localize('dictionaries')}}</paper-item>
       </paper-listbox>
     </paper-dropdown-menu>
 
   </template>
 
   <script>
-      class SCSearchFilterMenu extends Polymer.Element {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCSearchFilterMenu extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-search-filter-menu';
           }
@@ -76,8 +81,17 @@ The two necessary conditions are:
                       type: String,
                       value: '0',
                       observer: '_searchChanged'
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-search-filter-menu/${this.language}.json`));
           }
 
           // Fires resulting choice to search page, where it is converted to a selection of the relevant items.

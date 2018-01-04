@@ -145,6 +145,8 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
     number_reg = regex.compile(r'.*?([0-9]+)$')
     
     uids_seen = defaultdict(list)
+    # Sort the division folders to process subdirectories later
+    division_files.sort(key=lambda path: len(path.parts))
     for division_file in division_files:
         with division_file.open('r', encoding='utf8') as f:
             entries = json.load(f)
@@ -562,7 +564,7 @@ def run():
 
     dictionaries.load_dictionaries(db, dictionaries_dir)
 
-    dictionary_full.load_dictionary_full(db, dictionaries_dir)
+    dictionary_full.load_dictionary_full(db, dictionaries_dir, change_tracker)
 
     currencies.load_currencies(db, additional_info_dir)
 

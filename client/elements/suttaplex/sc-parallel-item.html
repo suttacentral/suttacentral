@@ -1,8 +1,9 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
-<link rel="import" href="../../elements/menus/language-menu.html">
+<link rel="import" href="../menus/sc-language-menu.html">
 <link rel="import" href="../../elements/addons/sc-sutta-note.html">
 
 <!--
@@ -164,13 +165,13 @@ It is in effect a miniature version of the suttaplex-card
 
       <template is="dom-if" if="[[_shouldShowLanguageDropdown()]]">
         <div class="parallel-item-language-dropdown d-flex align-items-center flex-1">
-          <language-menu language-choice="[[parallelItem.translations]]"
+          <sc-language-menu language-choice="[[parallelItem.translations]]"
                          title-label="[[_computeLanguageDropdownTitle(parallelItem.*)]]"
                          original-language="[[parallelItem.root_lang]]"
                          input-language=""
                          root-id="[[_computeParallelUrl()]]"
                          class="no-padding"
-                         to="[[parallelItem.to]]"></language-menu>
+                         parallel-to="[[parallelItem.to]]"></sc-language-menu>
         </div>
       </template>
 
@@ -178,6 +179,10 @@ It is in effect a miniature version of the suttaplex-card
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCParallelItem extends Polymer.Element {
           static get is() {
               return 'sc-parallel-item';
