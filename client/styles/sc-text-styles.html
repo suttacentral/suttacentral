@@ -6,6 +6,9 @@
         text-decoration: none;
       }
 
+      /* Firefox & Safari use the font-synthesis property
+      to remove italics, etc. that do not appear in the script 
+      not yet implemented for other browsers */
       [lang="ar"],
       [lang="si"],
       [lang="fa"],
@@ -23,7 +26,7 @@
       [lang="ko"] {
         font-synthesis: none;
       }
-      
+
       .sutta {
         @apply --sc-serif-font;
         @apply --sc-paper-font-body;
@@ -60,6 +63,7 @@
 
       .original-text:not([lang='pli-Latn']) {
         font-style: normal;
+        font-synthesis: none;
       }
 
       .html-text-content:not(.latin-script) .word {
