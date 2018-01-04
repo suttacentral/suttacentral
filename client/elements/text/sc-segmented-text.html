@@ -85,8 +85,8 @@
 
     <template is="dom-if" if="[[_shouldShowError(rootSutta, translatedSutta)]]">
       <div class="text-center margin-top-xl">
-        <h2>Error</h2>
-        <h3>Could not find the sutta text.</h3>
+        <h2>{{localize('error')}}</h2>
+        <h3>{{localize('couldNotFindText')}}</h3>
       </div>
     </template>
 
@@ -244,7 +244,7 @@
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-segmented-text/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`));
           }
 
           _updateView() {
@@ -296,6 +296,12 @@
           }
 
           _updateToolbar() {
+              if (!this.translatedSutta && !this.rootSutta) {
+                  setTimeout(() => {
+                      this.dispatch('changeToolbarTitle', this.localize('suttaNotFound'));
+                  }, 500);
+                  return;
+              }
               this.dispatch('changeToolbarTitle',
                   `${this.translatedTitle || this.rootTitle} – ${this.translationAuthor || this.rootAuthor}`);
           }
@@ -303,9 +309,9 @@
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
               if (this.translatedSutta) {
-                  return this.translatedSutta.author_blurb[this.translationLang] || 'No metadata available.';
+                  return this.translatedSutta.author_blurb[this.translationLang] || this.localize('noMetadata');
               } else {
-                  return 'No metadata available.';
+                  return this.localize('noMetadata');
               }
           }
 
@@ -479,22 +485,24 @@
               }
               vol = Number(vol);
 
-              item.innerHTML = `
-                                <div class="image-link" title="View page image">
+              setTimeout(() => {
+                  item.innerHTML = `
+                                <div class="image-link" title="${this.localize('viewImage')}">
                                     <span>${prefix.toUpperCase()} ${suffix}</span>
                                     <iron-icon class="image-book-link" icon="sc-svg-icons:book">
                                     </iron-icon>
                                 </div>
                             `;
-              item.classList.add('image-book-link');
-              item.classList.add('textual-info-paragraph');
-              item.addEventListener('click', () => {
-                  this.dispatchEvent(new CustomEvent('show-image', {
-                      detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
-                      bubbles: true,
-                      composed: true
-                  }));
-              });
+                  item.classList.add('image-book-link');
+                  item.classList.add('textual-info-paragraph');
+                  item.addEventListener('click', () => {
+                      this.dispatchEvent(new CustomEvent('show-image', {
+                          detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
+                          bubbles: true,
+                          composed: true
+                      }));
+                  });
+              }, 500);
           }
 
           _addSegmentedTextualInfoElements() {
@@ -521,7 +529,7 @@
               inlineParagraph.id = `${parId}_inline`;
               inlineParagraph.innerText = parId;
               inlineParagraph.href = `#${parId}`;
-              inlineParagraph.title = 'SuttaCentral segment number';
+              inlineParagraph.title = this.localize('segmentNumber');
               inlineParagraph.addEventListener('click', () => {
                   this._scrollToSection(inlineParagraph.id, true, 0)
               });
