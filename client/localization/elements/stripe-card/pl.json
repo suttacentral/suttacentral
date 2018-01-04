@@ -3,7 +3,7 @@
     "cardNumber": "Numer karty",
     "ZIP": "Kod pocztowy",
     "CVC": "Kod CVC",
-    "year": "YY",
+    "year": "RR",
     "month": "MM"
   }
 }
