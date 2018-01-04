@@ -86,7 +86,7 @@ def function_source(function):
     return ''.join(inspect.getsourcelines(function)[0])
 
 def who_is_calling(depth=2):
-    """Return the object for the executing function at given stack depth
+    """Return the calling function at given stack depth
     
     adapted from https://stackoverflow.com/a/4506081/4092906
     """
@@ -106,4 +106,5 @@ def who_is_calling(depth=2):
     return funcs[0] if funcs else None
 
 def whoami():
+    "Returns the function that calls it"
     return who_is_calling(depth=2)
