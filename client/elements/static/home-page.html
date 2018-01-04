@@ -84,6 +84,7 @@
         @apply --sc-sans-font;
         padding: var(--sc-size-lg);
         text-align: center;
+        direction: rtl;
       }
 
       .card-content-video {
@@ -201,7 +202,7 @@
         justify-content: space-between;
         grid-template-columns: 1fr;
         grid-auto-flow: row;
-        grid-gap: calc(var(--sc-size-lg) / 2);
+        grid-gap: var(--sc-size-lg);
       }
 
       .first-card {
@@ -222,7 +223,7 @@
 
       .big-card-title {
         @apply --sc-skolar-font-size-static-subtitle;
-        margin-bottom: .3em;
+        margin-bottom: var(--sc-size-md);
       }
 
       .center-text {
@@ -349,8 +350,18 @@
           width: 25%;
         }
 
+        .smaller-title {
+          @apply --sc-skolar-font-size-dialog-header;
+        }
+
         .d-none {
           display: unset;
+        }
+      }
+
+      @media (min-width: 1680px) {
+        .smaller-title {
+          @apply --sc-skolar-font-size-xxl;
         }
       }
 
@@ -444,7 +455,7 @@
           <paper-card elevation="2">
           <div class="card">
               <div class="card-heading">
-                <div class="card-heading-text">
+                <div class="card-heading-text smaller-title">
                   Meet<br class="d-none">
                   SuttaCentral
                 </div>
