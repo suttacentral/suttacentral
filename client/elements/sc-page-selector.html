@@ -78,7 +78,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       }
 
       #header {
-        transition: left 100ms ease-in-out !important;
+        transition: left 200ms !important;
       }
 
       @media screen and (min-width: 840px) {
@@ -98,12 +98,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       }
 
       .header-backdrop-full-width-bar {
-        position: var(--layout-fixed-top_-_position);
-        top: var(--layout-fixed-top_-_top);
+        position: absolute;
+        top: 0;
         height: var(--sc-size-xxl);
         width: 100%;
         background-color: var(--sc-primary-color);
-        z-index: 100;
       }
 
     </style>
