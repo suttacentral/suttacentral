@@ -24,6 +24,10 @@
 <link rel="import" href="../elements/static/vinaya.html">
 <link rel="import" href="../elements/static/abhidhamma.html">
 <link rel="import" href="../elements/static/a-new-beginning.html">
+<link rel="import" href="../elements/static/subjects.html">
+<link rel="import" href="../elements/static/similes.html">
+<link rel="import" href="../elements/static/names.html">
+<link rel="import" href="../elements/static/terminology.html">
 
 <dom-module id="sc-page-static">
   <template>
@@ -147,29 +151,51 @@
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item>
-      <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
-        <paper-tab class="nav-link" data-name="HOME">
-          <div>{{localize('HOME')}}</div>
-          <a class="link-anchor" href="/home"></a>
-        </paper-tab>
-        <paper-tab class="nav-link" data-name="INTRODUCTION">
-          <div>{{localize('INTRODUCTION')}}</div>
-          <a class="link-anchor" href="/introduction" tabindex="-1"></a>
-        </paper-tab>
-        <paper-tab class="nav-link" data-name="DONATIONS">
-          <div>{{localize('DONATIONS')}}</div>
-          <a class="link-anchor" href="/donations" tabindex="-1"></a>
-        </paper-tab>
-        <paper-tab class="nav-link" data-name="OFFLINE">
-          <div>{{localize('USEOFFLINE')}}</div>
-          <a class="link-anchor" href="/offline" tabindex="-1"></a>
-        </paper-tab>
-        <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW">
-          <div>{{localize('WHATSNEW')}}</div>
-          <a class="link-anchor" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank">
-          </a>
-        </paper-tab>
-      </paper-tabs>
+      <template is="dom-if" if="[[!shouldShowSecondToolbar]]">
+        <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
+          <paper-tab class="nav-link" data-name="HOME">
+            <div>{{localize('HOME')}}</div>
+            <a class="link-anchor" href="/home"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="INTRODUCTION">
+            <div>{{localize('INTRODUCTION')}}</div>
+            <a class="link-anchor" href="/introduction" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="DONATIONS">
+            <div>{{localize('DONATIONS')}}</div>
+            <a class="link-anchor" href="/donations" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="OFFLINE">
+            <div>{{localize('USEOFFLINE')}}</div>
+            <a class="link-anchor" href="/offline" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW">
+            <div>{{localize('WHATSNEW')}}</div>
+            <a class="link-anchor" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank">
+            </a>
+          </paper-tab>
+        </paper-tabs>
+      </template>
+      <template is="dom-if" if="[[shouldShowSecondToolbar]]">
+        <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
+          <paper-tab class="nav-link" data-name="HOME">
+            <div>{{localize('HOME')}}</div>
+            <a class="link-anchor" href="/home"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="SUBJECTS">
+            <div>{{localize('SUBJECTS')}}</div>
+            <a class="link-anchor" href="/subjects" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="SIMILES">
+            <div>{{localize('SIMILES')}}</div>
+            <a class="link-anchor" href="/similes" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="TERMINOLOGY">
+            <div>{{localize('TERMINOLOGY')}}</div>
+            <a class="link-anchor" href="/terminology" tabindex="-1"></a>
+          </paper-tab>
+        </paper-tabs>
+      </template>
     </app-toolbar>
 
     <iron-lazy-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
@@ -227,6 +253,18 @@
       <div name="A-NEW-BEGINNING">
         <sc-a-new-beginning></sc-a-new-beginning>
       </div>
+      <div name="SUBJECTS">
+        <sc-subjects-page></sc-subjects-page>
+      </div>
+      <div name="SIMILES">
+        <sc-similes-page></sc-similes-page>
+      </div>
+      <div name="NAMES">
+        <sc-names-page></sc-names-page>
+      </div>
+      <div name="TERMINOLOGY">
+        <sc-terminology-page></sc-terminology-page>
+      </div>
       <div name="NOT-FOUND">
         <div class="page-not-found-container">
           <h2>{{localize('error404')}}</h2>
@@ -261,29 +299,34 @@
                   type: String,
                   statePath: 'siteLanguage',
                   observer: '_siteLanguageChanged'
+              },
+              shouldShowSecondToolbar: {
+                  type: Boolean,
+                  value: false
               }
           }
       }
 
-          _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`));
-          }
+      _siteLanguageChanged() {
+          this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`));
+      }
 
       _selectNavbarLink() {
-          const tabs = this.$.nav_tabs.querySelectorAll('paper-tab');
+          const tabs = this.shadowRoot.querySelector('#nav_tabs').querySelectorAll('paper-tab');
           for (let i = 0; i < tabs.length; i++) {
               if (tabs[i].dataset.name === this.selectedPage) {
-                  this.$.nav_tabs.selectIndex(i);
+                  this.shadowRoot.querySelector('#nav_tabs').selectIndex(i);
                   return;
               }
           }
-          this.$.nav_tabs.selectIndex(-1);
+          this.shadowRoot.querySelector('#nav_tabs').selectIndex(-1);
       }
 
       _changeView() {
+          this.shouldShowSecondToolbar = ['SUBJECTS', 'SIMILES', 'NAMES', 'TERMINOLOGY'].includes(this.selectedPage);
           this.$.donate.resetForm();
           this.$.pages.selected = this.selectedPage;
-          this._selectNavbarLink();
+          requestAnimationFrame(() => {this._selectNavbarLink()});
       }
     }
 
