@@ -474,8 +474,9 @@ DICTIONARY_ADJACENT = '''
 LET word_number = (
     FOR dictionary IN dictionary_full
         FILTER dictionary.word == @word
+        LIMIT 1
         RETURN dictionary.num
-    )[0]
+    )
 
 LET adjacent_words = (
     FOR selected IN dictionary_full
