@@ -1,0 +1,40 @@
+{
+  "model": {},
+  "text": "fr  outermost text at the beginning ",
+  "h1_3": "fr outermost header 1",
+  "text_4": "fr  outermost text in the middle ",
+  "span_5": "fr simple text without id",
+  "span_6": "fr simple text without id 2",
+  "label-1": "fr simple text with id",
+  "label-2": "fr simple text with id 2",
+  "div_9:span": "fr simple text within div",
+  "div_9:span_1": "fr simple text within div 2",
+  "div_9:div_2:div": "fr great grandchild text within div",
+  "div_10:text": "fr  simple text as the first element in div ",
+  "div_10:span_1": "fr simple text within div",
+  "div_10:text_2": "fr  simple text in the middle of div ",
+  "div_10:span_3": "fr simple text within div 2",
+  "div_10:div_4:div": "fr great grandchild text within div",
+  "div_10:text_5": "fr  simple text at the last element in div ",
+  "toplevel-div:span": "fr simple text within div",
+  "toplevel-div:span_1": "fr simple text within div 2",
+  "third-level-div": "fr great grandchild text within div",
+  "second-level-div:div_1": "fr great grandchild text within div without id",
+  "div_12:ul:li": "fr line item without id 1",
+  "div_12:ul:li_1": "fr line item without id 2",
+  "div_12:ul:li_2": "fr line item without id 3",
+  "line-items:li": "fr line item with id 1",
+  "line-items:li_1": "fr line item with id 2",
+  "line-items:li_2": "fr line item with id 3",
+  "p_13": [
+    "fr A paragraph with {1} is converted to {2}.",
+    "fr parameters",
+    "fr <i18n-format>"
+  ],
+  "paragraph": [
+    "fr A paragraph with {1} is converted to {2}.",
+    "fr id",
+    "fr <i18n-format>"
+  ],
+  "text_15": "fr  outermost text at the end "
+}

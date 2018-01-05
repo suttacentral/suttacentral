@@ -1,0 +1,523 @@
+<!--
+@license https://github.com/t2ym/i18n-behavior/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+-->
+<html lang="en" preferred locales-path="locales">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script>
+/*!
+ * @license https://github.com/t2ym/i18n-behavior/blob/master/LICENSE.md
+ * Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+ */
+    </script>
+
+    <script src="../../../webcomponentsjs/webcomponents.min.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="fake-server.js"></script>
+    <script src="test-runner.js"></script>
+
+    <link rel="import" href="../../../promise-polyfill/promise-polyfill-lite.html">
+    <link rel="import" href="../../i18n-behavior.html">
+    <link rel="import" href="edge-case/empty-element.html">
+    <link rel="import" href="edge-case/no-template-element.html">
+    <link rel="import" href="edge-case/complex-compound-binding-element.html">
+    <link rel="import" href="edge-case/advanced-binding-element.html">
+    <style>
+    .test-container.running-test {
+      display: block;
+    }
+    .test-container:not(.running-test) { 
+      display: none;
+    }
+    </style>
+  </head>
+  <body>
+    <h2 id="test-name"></h2>
+
+    <test-fixture class="test-container" id="empty-element-fixture">
+      <template>
+        <empty-element></empty-element>
+      </template>
+    </test-fixture>
+
+    <test-fixture class="test-container" id="bound-empty-element-fixture">
+      <template is="dom-template">
+        <empty-element
+          lang="{{lang}}"
+          observe-html-lang="{{observeHtmlLang}}"></empty-element>
+      </template>
+    </test-fixture>
+
+    <test-fixture class="test-container" id="no-template-element-fixture">
+      <template>
+        <no-template-element></no-template-element>
+      </template>
+    </test-fixture>
+
+    <test-fixture class="test-container" id="complex-compound-binding-element-fixture">
+      <template is="dom-template">
+        <complex-compound-binding-element
+          lang="{{lang}}"
+          observe-html-lang="{{observeHtmlLang}}"></complex-compound-binding-element>
+      </template>
+    </test-fixture>
+
+    <test-fixture class="test-container" id="advanced-binding-element-fixture">
+      <template is="dom-template">
+        <advanced-binding-element
+          lang="{{lang}}"
+          observe-html-lang="{{observeHtmlLang}}"
+          status="{{status}}"
+          value="{{value}}"
+          parameter="{{parameter}}"></advanced-binding-element>
+      </template>
+    </test-fixture>
+
+    <div class="test-container">
+      <template id="edge-case-dom-bind"
+        is="i18n-dom-bind">
+        name = {{text.name}}
+        <i18n-number>1</i18n-number>
+        <i18n-format>
+          <json-data>{{text.format}}</json-data>
+          <i18n-number offset="">1</i18n-number>
+        </i18n-format>
+        <i18n-format>
+          <span>format</span>
+          <br>
+        </i18n-format>
+        <span>{{tr('key')}}</span>
+        <span>{{tr('key',text.table)}}</span>
+        <span>{{tr('key','string')}}</span>
+        <input placeholder="{ invalid: json }">
+        <p>hello <br><span></span> <span> </span> world</p>
+        <p>hello<template is="dom-repeat" items="[0,1]"><br></template>world</p>
+        hello <br><span></span> <span> </span> world
+      </template>
+        <template>
+          <json-data text-id="target" data="{}"></json-data>
+          <json-data id="func">{
+            "func": or
+          }</json-data>
+          <json-data text-id="format">{
+            "other": "other format"
+          }</json-data>
+          <json-data text-id="table">{
+            "message-id": "message 1"
+          }</json-data>
+          <span text-id="name">John</span>
+        </template>
+      </template>
+    </div>
+    <i18n-preference></i18n-preference>
+
+    <script>
+suite('I18nBehavior with ' + 
+  (window.location.href.indexOf('?dom=Shadow') >= 0 ? 'Shadow DOM' : 'Shady DOM'), 
+  function () {
+
+  var lang0 = '';
+  var lang1 = 'en';
+  var lang2 = 'fr';
+  var lang3 = 'ja';
+  var lang4 = 'fr-CA';
+  var lang5 = 'zh-Hans-CN';
+  var lang6 = 'ru';
+  var lang7 = 'zh-yue-Hans-CN';
+  var lang8 = 'zh-CN';
+  var lang9 = 'zh-TW';
+  var lang10 = 'zh-Hans-CN-x-Linux';
+  var text_complex_compound_binding = {
+    'model': {},
+    'item-update': [
+      'updated: {1}, by: \n      {2}\n      xxx\n      {3}\n      {4}\n      {5}\n      hello\n      \n      {6}\n      {7} ',
+      '{{text.updated}}',
+      '  {{item.name}}  ',
+      'IF CONTENT',
+      'abc',
+      'IF CONTENT 2',
+      '<template>',
+      '{{text.updated}}'
+    ],
+    'item-update2:text': [
+      'updated: {1}, by: ',
+      '{{text.updated}}'
+    ],
+    'item-update2:text_2': ' xxx ',
+    'item-update2:template_3:span:b': 'IF CONTENT',
+    'item-update2:b_4': 'abc',
+    'item-update2:template_5:text': 'IF CONTENT 2',
+    'item-update2:text_6': ' hello ',
+    'item-update3:text': [
+      'updated: {1}, by: ',
+      '{{text.updated}}'
+    ],
+    'item-update3:text_2': ' xxx ',
+    'item-update3:template_3:b': 'IF',
+    'item-update3:template_3:b_1': 'CONTENT',
+    'item-update3:b_4': 'abc',
+    'item-update3:template_5:text': 'IF CONTENT 2',
+    'item-update3:text_6': ' hello ',
+    'item-update4:text': [
+      'updated: {1}, by: ',
+      '{{text.updated}}'
+    ],
+    'item-update4:template_1:text': [
+      ' {1} = {2} ',
+      '{{item.name}}',
+      '{{text.updated}}'
+    ],
+    'item-update4:text_2': ' xxx ',
+    'item-update4:template_3:b': 'IF CONTENT',
+    'item-update4:b_4': 'abc',
+    'item-update4:template_5:text': 'IF CONTENT 2',
+    'item-update4:text_6': ' hello ',
+    'paragraph': [
+      'A paragraph with \n      {1}\n      is converted to \n      {2}. ',
+      '{{item}} ',
+      '<i18n-format>'
+    ],
+    'paragraph2:text': 'A paragraph with deep ',
+    'paragraph2:text_2': ' is ',
+    'paragraph2:b_3': 'not',
+    'paragraph2:text_4': ' converted to ',
+    'paragraph2:code_5': '<i18n-format>',
+    'paragraph2:text_6': '. ',
+    'authors': [
+      {
+        'name': 'Joe'
+      },
+      {
+        'name': 'Alice'
+      }
+    ],
+    'updated': 'Jan 1st, 2016',
+    'parameters': [
+      'parameter 1',
+      'parameter 2'
+    ]
+  };
+  var localDOM_complex_compound_binding = [
+    { select: '[id="item-update"] i18n-format',
+      'PolymerDom.childNodes.nonWS.0.textContent': text_complex_compound_binding['item-update'][0],
+      'root.PolymerDom.effectiveChildNodes.nonWS.1.textContent.trim': text_complex_compound_binding.updated,
+      'root.PolymerDom.effectiveChildNodes.nonWS.2.textContent.raw': ', by: ',
+      'root.PolymerDom.effectiveChildNodes.nonWS.3.textContent.trim': text_complex_compound_binding.authors[0].name,
+      'root.PolymerDom.effectiveChildNodes.nonWS.4.textContent.trim': text_complex_compound_binding.authors[1].name,
+      'root.PolymerDom.effectiveChildNodes.nonWS.5.tagName': 'TEMPLATE',
+      'root.PolymerDom.effectiveChildNodes.nonWS.6.textContent.raw': ' xxx ',
+      'root.PolymerDom.effectiveChildNodes.nonWS.7.textContent.trim': text_complex_compound_binding['item-update'][3],
+      'root.PolymerDom.effectiveChildNodes.nonWS.8.tagName': 'TEMPLATE',
+      'root.PolymerDom.effectiveChildNodes.nonWS.9.textContent.trim': text_complex_compound_binding['item-update'][4],
+      'root.PolymerDom.effectiveChildNodes.nonWS.10.textContent.trim': text_complex_compound_binding['item-update'][5],
+      'root.PolymerDom.effectiveChildNodes.nonWS.11.tagName': 'TEMPLATE',
+      'root.PolymerDom.effectiveChildNodes.nonWS.12.textContent.raw': ' hello '
+    },
+    { select: '[id="item-update2"] i18n-format',
+      'PolymerDom.childNodes.nonWS.0.textContent': text_complex_compound_binding['item-update2:text'][0],
+      'root.PolymerDom.effectiveChildNodes.nonWS.1.textContent.trim': text_complex_compound_binding.updated,
+      'root.PolymerDom.effectiveChildNodes.nonWS.2.textContent.raw': ', by: '
+    },
+    { select: '[id="item-update2"]',
+      'PolymerDom.childNodes.nonWS.1.data.trim': text_complex_compound_binding.authors[0].name,
+      'PolymerDom.childNodes.nonWS.2.data.trim': text_complex_compound_binding.authors[1].name,
+      'PolymerDom.childNodes.nonWS.3.tagName': 'TEMPLATE',
+      'PolymerDom.childNodes.nonWS.4.textContent': text_complex_compound_binding['item-update2:text_2'],
+      'PolymerDom.childNodes.nonWS.5.childNodes.nonWS.0.textContent.trim': text_complex_compound_binding['item-update2:template_3:span:b'],
+      'PolymerDom.childNodes.nonWS.6.tagName': 'TEMPLATE',
+      'PolymerDom.childNodes.nonWS.7.textContent.trim': text_complex_compound_binding['item-update2:b_4'],
+      'PolymerDom.childNodes.nonWS.8.data': text_complex_compound_binding['item-update2:template_5:text'],
+      'PolymerDom.childNodes.nonWS.9.tagName': 'TEMPLATE',
+      'PolymerDom.childNodes.nonWS.10.data': ' hello '
+    },
+    { select: '[id="item-update3"]',
+      'PolymerDom.childNodes.nonWS.1.data.trim': text_complex_compound_binding.authors[0].name,
+      'PolymerDom.childNodes.nonWS.2.data.trim': text_complex_compound_binding.authors[1].name,
+      'PolymerDom.childNodes.nonWS.3.tagName': 'TEMPLATE',
+      'PolymerDom.childNodes.nonWS.4.textContent': text_complex_compound_binding['item-update3:text_2'],
+      'PolymerDom.childNodes.nonWS.5.childNodes.nonWS.0.textContent.trim': text_complex_compound_binding['item-update3:template_3:b'],
+      'PolymerDom.childNodes.nonWS.6.childNodes.nonWS.0.textContent.trim': text_complex_compound_binding['item-update3:template_3:b_1'],
+      'PolymerDom.childNodes.nonWS.7.tagName': 'TEMPLATE',
+      'PolymerDom.childNodes.nonWS.8.textContent.trim': text_complex_compound_binding['item-update3:b_4'],
+      'PolymerDom.childNodes.nonWS.9.data': text_complex_compound_binding['item-update2:template_5:text'],
+      'PolymerDom.childNodes.nonWS.10.tagName': 'TEMPLATE',
+      'PolymerDom.childNodes.nonWS.11.data': ' hello '
+    },
+    { select: '[id="item-update4"] i18n-format',
+      'PolymerDom.childNodes.nonWS.0.textContent': text_complex_compound_binding['item-update4:text'][0],
+      'root.PolymerDom.effectiveChildNodes.nonWS.1.textContent.trim': text_complex_compound_binding.updated,
+      'root.PolymerDom.effectiveChildNodes.nonWS.2.textContent.raw': ', by: '
+    },
+    { select: '[id="item-update4"] i18n-format +i18n-format',
+      'PolymerDom.childNodes.nonWS.0.textContent': text_complex_compound_binding['item-update4:template_1:text'][0],
+      'PolymerDom.childNodes.nonWS.1.textContent.trim': text_complex_compound_binding.authors[0].name,
+      'PolymerDom.childNodes.nonWS.2.textContent.trim': text_complex_compound_binding.updated
+    },
+    { select: '[id="item-update4"] i18n-format +i18n-format +i18n-format',
+      'PolymerDom.childNodes.nonWS.0.textContent': text_complex_compound_binding['item-update4:template_1:text'][0],
+      'PolymerDom.childNodes.nonWS.1.textContent.trim': text_complex_compound_binding.authors[1].name,
+      'PolymerDom.childNodes.nonWS.2.textContent.trim': text_complex_compound_binding.updated
+    },
+    { select: '[id="item-update4"] template',
+      'is': [ 'dom-repeat', 'dom-if', 'dom-if' ]
+    },
+    { select: '[id="item-update4"] template[is="dom-repeat"]',
+      'nextTextSibling.data': text_complex_compound_binding['item-update4:text_2']
+    },
+    { select: '[id="item-update4"] b',
+      'PolymerDom.textContent': [ text_complex_compound_binding['item-update4:template_3:b'],
+                                  text_complex_compound_binding['item-update4:b_4'] ]
+    },
+    { select: '[id="item-update4"]',
+      'PolymerDom.childNodes.nonWS.8.data': text_complex_compound_binding['item-update4:template_5:text'],
+      'PolymerDom.childNodes.nonWS.10.data': ' hello '
+    },
+    { select: '[id="paragraph"] i18n-format',
+      'PolymerDom.childNodes.nonWS.0.textContent': text_complex_compound_binding['paragraph'][0],
+      'root.PolymerDom.effectiveChildNodes.nonWS.1.textContent.trim': text_complex_compound_binding.parameters[0],
+      'root.PolymerDom.effectiveChildNodes.nonWS.2.textContent.trim': text_complex_compound_binding.parameters[1],
+    },
+    { select: '[id="paragraph"] i18n-format [param="2"]',
+      'tagName': 'CODE',
+      'textContent': text_complex_compound_binding['paragraph'][2]
+    },
+    { select: '[id="paragraph2"]',
+      'PolymerDom.childNodes.nonWS.0.data': text_complex_compound_binding['paragraph2:text']
+    },
+    { select: '[id="paragraph2"] span i',
+      'textContent': text_complex_compound_binding.parameters
+    },
+    { select: '[id="paragraph2"] b',
+      'textContent': text_complex_compound_binding['paragraph2:b_3'],
+      'previousTextSibling.data': text_complex_compound_binding['paragraph2:text_2'],
+      'nextTextSibling.data': text_complex_compound_binding['paragraph2:text_4']
+    },
+    { select: '[id="paragraph2"] code',
+      'textContent': text_complex_compound_binding['paragraph2:code_5'],
+      'nextTextSibling.data': text_complex_compound_binding['paragraph2:text_6']
+    },
+  ];
+  var text_advanced_binding = {
+    'meta': {},
+    'model': {
+      'aria-attributes': {
+        'title': 'tooltip text',
+        'aria-label': 'aria label text',
+        'aria-valuetext': 'aria value text'
+      }
+    },
+    'annotated-format': [
+      '{{tr(status,text.statusMessageFormats)}}',
+      '{{parameter}}',
+      'string parameter'
+    ],
+    'span_5': [
+      '{1} {2}',
+      '{{text.defaultValue}}',
+      '{{text.defaultValue}}'
+    ],
+    'statusMessages': {
+      'ok': 'healthy status',
+      'busy': 'busy status',
+      'error': 'error status',
+      'default': 'unknown status'
+    },
+    'defaultValue': 'default value',
+    'statusMessageFormats': {
+      'ok': 'healthy status',
+      'busy': 'busy status with {2}',
+      'error': 'error status with {1} and {2}',
+      'default': 'unknown status'
+    },
+    'nodefault': {
+      'ok': 'ok status'
+    }
+  };
+  var localDOM_advanced_binding_1 = [
+    { select: '[id="status"]', textContent: 'healthy status' },
+    { select: '[id="default"]', 'textContent.raw': 'initial value' },
+    { select: '[id="annotated-format"]',
+      'root.PolymerDom.textContent': 'healthy status' },
+    { select: '[id="aria-attributes"]',
+      'attributes.title.value.text': 'tooltip text',
+      'attributes.aria-label.value.text': 'aria label text',
+      'attributes.aria-valuetext.value.text': 'aria value text',
+      'bindValue.raw': 'initial value' }
+  ];
+  var localDOM_advanced_binding_2 = [
+    { select: '[id="status"]', textContent: 'busy status' },
+    { select: '[id="default"]', textContent: 'default value' },
+    { select: '[id="annotated-format"]',
+      'root.PolymerDom.effectiveChildNodes.nonWS.0.textContent': 'busy status with ',
+      'root.PolymerDom.effectiveChildNodes.nonWS.1.textContent': 'string parameter' },
+    { select: '[id="aria-attributes"]',
+      'attributes.title.value.text': 'tooltip text',
+      'attributes.aria-label.value.text': 'aria label text',
+      'attributes.aria-valuetext.value.text': 'aria value text',
+      'bindValue.raw': '' }
+  ];
+  var localDOM_advanced_binding_3 = [
+    { select: '[id="status"]', textContent: 'error status' },
+    { select: '[id="default"]', textContent: 'default value' },
+    { select: '[id="annotated-format"]',
+      'root.PolymerDom.effectiveChildNodes.nonWS.0.textContent': 'error status with ',
+      'root.PolymerDom.effectiveChildNodes.nonWS.1.textContent.raw': 'parameter text',
+      'root.PolymerDom.effectiveChildNodes.nonWS.2.textContent.raw': ' and ',
+      'root.PolymerDom.effectiveChildNodes.nonWS.3.textContent': 'string parameter' },
+    { select: '[id="aria-attributes"]',
+      'attributes.title.value.text': 'tooltip text',
+      'attributes.aria-label.value.text': 'aria label text',
+      'attributes.aria-valuetext.value.text': 'aria value text',
+      'bindValue.raw': null }
+  ];
+  var localDOM_advanced_binding_4 = [
+    { select: '[id="status"]', textContent: 'unknown status' },
+    { select: '[id="default"]', textContent: 'default value' },
+    { select: '[id="annotated-format"]',
+      'root.PolymerDom.effectiveChildNodes.nonWS.0.textContent': 'unknown status' },
+    { select: '[id="aria-attributes"]',
+      'attributes.title.value.text': 'tooltip text',
+      'attributes.aria-label.value.text': 'aria label text',
+      'attributes.aria-valuetext.value.text': 'aria value text',
+      'bindValue.raw': '' }
+  ];
+
+  var suites = [
+    s('empty element', null, {
+      fixture: 'empty-element-fixture', 
+      fixtureModel: undefined,
+      assign: undefined,
+      lang: lang1,
+      effectiveLang: lang1,
+      templateDefaultLang: lang1,
+      observeHtmlLang: true,
+      text: { model: {} },
+      model: {},
+      localDOM: undefined,
+      lightDOM: undefined
+    }),
+    s(lang2 + ' empty element', 'empty element', {
+      fixture: 'bound-empty-element-fixture',
+      fixtureModel: { observeHtmlLang: false, lang: lang1 },
+      assign: { lang: lang2 },
+      event: 'lang-updated',
+      lang: lang2,
+      effectiveLang: lang2,
+      observeHtmlLang: false
+    }),
+    s('no template element', 'empty element', {
+      fixture: 'no-template-element-fixture'
+    }),
+    s('complex compound binding element', 'empty element', {
+      setup: true,
+      fixture: 'complex-compound-binding-element-fixture',
+      fixtureModel: { observeHtmlLang: false, lang: lang0 },
+      assign: { lang: lang1 },
+      event: 'local-dom-ready',
+      lang: lang1,
+      effectiveLang: lang1,
+      observeHtmlLang: false,
+      text: text_complex_compound_binding,
+      localDOM: localDOM_complex_compound_binding
+    }),
+    s(lang2 + ' complex compound binding element', 'complex compound binding element', {
+      assign: { lang: lang2 },
+      lang: lang2,
+      effectiveLang: lang2
+    }),
+    s('advanced binding element', 'empty element', {
+      setup: true,
+      fixture: 'advanced-binding-element-fixture',
+      fixtureModel: {
+        observeHtmlLang: false,
+        lang: lang0,
+        status: 'ok',
+        value: 'initial value',
+        parameter: 'parameter text'
+      },
+      assign: { lang: lang1 },
+      event: 'local-dom-ready',
+      lang: lang1,
+      effectiveLang: lang1,
+      observeHtmlLang: false,
+      text: text_advanced_binding,
+      model: text_advanced_binding.model,
+      localDOM: localDOM_advanced_binding_1
+    }),
+    s('advanced binding element 2', 'advanced binding element', {
+      fixtureModel: {
+        observeHtmlLang: false,
+        lang: lang0,
+        status: 'busy',
+        value: '',
+        parameter: 'parameter text'
+      },
+      localDOM: localDOM_advanced_binding_2
+    }),
+    s('advanced binding element 3', 'advanced binding element', {
+      fixtureModel: {
+        observeHtmlLang: false,
+        lang: lang0,
+        status: 'error',
+        value: null,
+        parameter: 'parameter text'
+      },
+      localDOM: localDOM_advanced_binding_3
+    }),
+    s('advanced binding element 4', 'advanced binding element', {
+      fixtureModel: {
+        observeHtmlLang: false,
+        lang: lang0,
+        status: null,
+        value: undefined,
+        parameter: 'parameter text'
+      },
+      localDOM: localDOM_advanced_binding_4
+    }),
+    s(lang2 + ' advanced binding element', 'advanced binding element', {
+      assign: { lang: lang2 },
+      lang: lang2,
+      effectiveLang: lang2
+    }),
+    s(lang2 + ' advanced binding element 2', 'advanced binding element 2', {
+      assign: { lang: lang2 },
+      lang: lang2,
+      effectiveLang: lang2
+    }),
+    s(lang2 + ' advanced binding element 3', 'advanced binding element 3', {
+      assign: { lang: lang2 },
+      lang: lang2,
+      effectiveLang: lang2
+    }),
+    s(lang2 + ' advanced binding element 4', 'advanced binding element 4', {
+      assign: { lang: lang2 },
+      lang: lang2,
+      effectiveLang: lang2
+    }),
+    s(lang7 + ' fallback', 'advanced binding element 4', {
+      timeout: 60000,
+      assign: { lang: lang7 },
+      lang: lang0,
+      effectiveLang: lang0
+    }),
+    s(lang8 + ' fallback', lang7 + ' fallback', {
+      assign: { lang: lang8 }
+    }),
+    s(lang9 + ' fallback', lang7 + ' fallback', {
+      assign: { lang: lang9 }
+    }),
+    s(lang10 + ' fallback', lang7 + ' fallback', {
+      assign: { lang: lang10 }
+    }),
+  ];
+
+  suitesRunner(suites);
+
+});
+    </script>
+
+  </body>
+</html>

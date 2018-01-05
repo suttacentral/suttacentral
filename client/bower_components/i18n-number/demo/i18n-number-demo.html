@@ -1,0 +1,388 @@
+<!--
+@license https://github.com/t2ym/i18n-number/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+-->
+<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../iron-collapse/iron-collapse.html">
+<link rel="import" href="../../paper-input/paper-input.html">
+<link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../paper-menu/paper-menu.html">
+<link rel="import" href="../../paper-item/paper-item.html">
+<link rel="import" href="../../paper-styles/demo-pages.html">
+<link rel="import" href="../i18n-number.html">
+<link rel="import" href="currency-list.html">
+<dom-module id="i18n-number-demo">
+  <template>
+    <style>
+    .number {
+      font-size: 18px;
+    }
+    .input {
+      display: inline-block;
+      width: 200px;
+    }
+    .dropdown-menu {
+      display: inline-block;
+      width: 200px;
+    }
+    .parameter-button {
+      margin: 16px 0 0 0;
+      display: block;
+      text-transform: none;
+    }
+    .parameters-panel {
+      padding: 15px;
+      border-top: none;
+      overflow-y: hidden;
+      @apply(--shadow-elevation-2dp);              
+    }
+    .parameters-content {
+    }
+    .parameters {
+      padding: 0 8px 0 8px;
+      margin: 4px 0px 4px 0px;
+      @apply(--shadow-elevation-2dp);              
+    }
+    .subhead {
+      margin: 8px 0 0 0;
+    }
+    </style>
+    <i18n-number id="number" class="number" lang="{{lang}}" options="{{options}}" offset="{{offset}}">{{raw}}</i18n-number>
+
+    <paper-button class="parameter-button" raised on-tap="_toggleParameters">Parameters Control Panel
+      <iron-icon suffix
+              id="down"
+              class="icon-button"
+              icon="{{_iconName(opened)}}" alt="Parameters" title="Parameters">
+      </iron-icon>
+    </paper-button>
+    <iron-collapse id="parameters" class="parameters-panel" opened="{{opened}}">
+      <div class="parameters-content">
+        <h4 class="subhead">content</h4>
+
+        <paper-input id="raw"
+                    class="input"
+                    label="Raw number input"
+                    auto-validate
+                    pattern="[0-9]*([.][0-9]*)?"
+                    error-message="Number only!"
+                    value="{{raw}}"></paper-input>
+
+        <h4 class="subhead">attributes</h4>
+
+        <paper-dropdown-menu id="lang"
+                            label="lang"
+                            class="dropdown-menu">
+          <paper-menu class="dropdown-content"
+                      selected="{{lang}}"
+                      attr-for-selected="name">
+            <template is="dom-repeat" items="{{langList}}">
+              <paper-item name="{{item.value}}">{{item.label}}</paper-item>
+            </template>
+          </paper-menu>
+        </paper-dropdown-menu>
+
+        <paper-input id="offset"
+              class="input"
+              type="number"
+              min="0"
+              label="offset"
+              auto-validate
+              error-message="Expecting 0 or a positive integer"
+              value="{{offset}}"></paper-input>
+
+        <h4 class="subhead">options</h4>
+        <div class="parameters">
+
+          <paper-dropdown-menu id="localeMatcher"
+                              label="localeMatcher"
+                              class="dropdown-menu">
+            <paper-menu class="dropdown-content"
+                        selected="{{rawOptions.localeMatcher}}"
+                        attr-for-selected="name">
+              <template is="dom-repeat" items='[ "", "lookup", "best fit" ]'>
+                <paper-item name="{{item}}">{{item}}</paper-item>
+              </template>
+            </paper-menu>
+          </paper-dropdown-menu>
+
+          <paper-dropdown-menu id="style"
+                              label="style"
+                              class="dropdown-menu">
+            <paper-menu class="dropdown-content"
+                        selected="{{rawOptions.style}}"
+                        attr-for-selected="name">
+              <template is="dom-repeat" items='[ "", "decimal", "currency", "percent" ]'>
+                <paper-item name="{{item}}">{{item}}</paper-item>
+              </template>
+            </paper-menu>
+          </paper-dropdown-menu>
+
+          <paper-dropdown-menu id="currency"
+                              label="currency"
+                              class="dropdown-menu"
+                              disabled="{{_currencyOptionsDisabled(rawOptions.style)}}">
+            <paper-menu class="dropdown-content"
+                        selected="{{rawOptions.currency}}"
+                        attr-for-selected="name">
+              <template is="dom-repeat" items="{{currencyList}}" sort="_compareCurrency">
+                <paper-item name="{{item.value}}">{{item.label}}</paper-item>
+              </template>
+            </paper-menu>
+          </paper-dropdown-menu>
+
+          <paper-dropdown-menu id="currencyDislplay"
+                              label="currencyDisplay"
+                              class="dropdown-menu"
+                              disabled="{{_currencyOptionsDisabled(rawOptions.style)}}">
+            <paper-menu class="dropdown-content"
+                        selected="{{rawOptions.currencyDisplay}}"
+                        attr-for-selected="name">
+              <template is="dom-repeat" items='[ "", "symbol", "name" ]'>
+                <paper-item name="{{item}}">{{item}}</paper-item>
+              </template>
+            </paper-menu>
+          </paper-dropdown-menu>
+
+          <paper-dropdown-menu id="useGrouping"
+                              label="useGrouping"
+                              class="dropdown-menu">
+            <paper-menu class="dropdown-content"
+                        selected="{{rawOptions.useGrouping}}"
+                        attr-for-selected="name">
+              <template is="dom-repeat" items='[ "", "true", "false" ]'>
+                <paper-item name="{{item}}">{{item}}</paper-item>
+              </template>
+            </paper-menu>
+          </paper-dropdown-menu>
+
+          <paper-input id="minimumIntegerDigits"
+                      class="input"
+                      type="number"
+                      min="1"
+                      max="21"
+                      label="minimumIntegerDigits"
+                      auto-validate
+                      error-message="Expecting 1-21"
+                      value="{{rawOptions.minimumIntegerDigits}}"></paper-input>
+
+          <paper-input id="minimumFractionDigits"
+                      class="input"
+                      type="number"
+                      min="0"
+                      max="20"
+                      label="minimumFractionDigits"
+                      auto-validate
+                      error-message="Expecting 0-20"
+                      value="{{rawOptions.minimumFractionDigits}}"></paper-input>
+
+          <paper-input id="maximumFractionDigits"
+                      class="input"
+                      type="number"
+                      min="0"
+                      max="20"
+                      label="maximumFractionDigits"
+                      auto-validate
+                      error-message="Expecting 0-20"
+                      value="{{rawOptions.maximumFractionDigits}}"></paper-input>
+
+          <paper-input id="minimumSignificantDigits"
+                      class="input"
+                      type="number"
+                      min="1"
+                      max="21"
+                      label="minimumSignificantDigits"
+                      auto-validate
+                      error-message="Expecting 1-21"
+                      value="{{rawOptions.minimumSignificantDigits}}"></paper-input>
+
+          <paper-input id="maximumSignificantDigits"
+                      class="input"
+                      type="number"
+                      min="1"
+                      max="21"
+                      label="maximumSignificantDigits"
+                      auto-validate
+                      error-message="Expecting 1-21"
+                      value="{{rawOptions.maximumSignificantDigits}}"></paper-input>
+
+        </div>
+      </div>
+    </iron-collapse>
+
+  </template>
+  <script>
+    var currencyList = document.createElement('currency-list');
+    Polymer({
+      is: 'i18n-number-demo',
+      properties: {
+        lang: {
+          type: String,
+          value: 'fr'
+        },
+        raw: {
+          type: String,
+          value: '123456.78'
+        },
+        offset: {
+          type: String,
+          value: ''
+        },
+        rawOptions: {
+          type: Object,
+          value: {
+            localeMatcher: '',
+            style: 'currency',
+            currency: 'USD',
+            currencyDisplay: 'name',
+            useGrouping: '',
+            minimumIntegerDigits: '',
+            minimumFractionDigits: '',
+            maximumFractionDigits: '',
+            minimumSignificantDigits: '',
+            maximumSignificantDigits: ''
+          }
+        },
+        options: {
+          type: Object
+        },
+        currencyList: {
+          type: Array,
+          value: currencyList.labelList
+        },
+        langList: {
+          type: Array,
+          value: [
+            { value: '', label: '' },
+            { value: 'en', label: 'en (English (US))' },
+            { value: 'en-GB', label: 'en-GB (English (UK))' },
+            { value: 'de', label: 'de (German)' },
+            { value: 'es', label: 'es (Spanish)' },
+            { value: 'fr', label: 'fr (French)' },
+            { value: 'ja', label: 'ja (Japanese)' },
+            { value: 'zh-Hans', label: 'zh-Hans (Simplified Chinese)' },
+            { value: 'zh-Hant', label: 'zh-Hant (Traditional Chinese)' },
+            { value: 'ru', label: 'ru (Russian)' }
+          ]
+        },
+        markdown: {
+          type: String,
+          notify: true,
+          value: '',
+          observer: '_markdownChanged'
+        }
+      },
+
+      observers: [
+        '_parameterChanged(raw,lang,offset)',
+        '_optionsChanged(rawOptions.*)',
+      ],
+
+      attached: function () {
+        this.fire('markdown-changed', { markdown: this.markdown });
+      },
+
+      _parameterChanged: function () {
+        this._update();
+      },
+
+      _optionsChanged: function () {
+        this._update();
+      },
+
+      _update: function () {
+        this.options = this._normalizeOptions(this.rawOptions);
+        this.markdown = this._getMarkDown();
+      },
+
+      _markdownChanged: function (markdown) {
+        this.fire('markdown-changed', { markdown: markdown });
+      },
+
+      _getMarkDown: function () {
+        var stringifiedOptions = JSON.stringify(this._normalizeOptions(this.rawOptions),null,4);
+        var markdown = '```\n\n' +
+          '<i18n-number \n' + 
+          (this.lang ? 
+          '  lang="' + this.lang + '"\n' : '' ) +
+          (stringifiedOptions === '{}' ? '' : (
+          '  options=\'' +
+          stringifiedOptions.replace('}', '  }') + '\'\n' ) ) + 
+          (this.offset !== '' ? ('  offset="' + this.offset + '"\n') : '') +
+          '>' + this.raw + '</i18n-number>\n' +
+          '\n```';
+        return markdown;
+      },
+
+      _normalizeOptions: function (rawOptions) {
+        var options = {};
+        if (!rawOptions) {
+          return options;
+        }
+        if (rawOptions.localeMatcher) {
+          options.localeMatcher = rawOptions.localeMatcher;
+        }
+        if (rawOptions.style) {
+          options.style = rawOptions.style;
+        }
+        if (options.style === 'currency') {
+          options.currency = rawOptions.currency;
+          if (rawOptions.currencyDisplay !== '') {
+            options.currencyDisplay = rawOptions.currencyDisplay;
+          }
+        }
+        switch (rawOptions.useGrouping) {
+        case '':
+        default:
+          break;
+        case 'true':
+          options.useGrouping = true;
+          break;
+        case 'false':
+          options.useGrouping = false;
+          break;
+        }
+        if (!this.$.minimumIntegerDigits.invalid &&
+            rawOptions.minimumIntegerDigits) {
+          options.minimumIntegerDigits = new Number(rawOptions.minimumIntegerDigits);
+        }
+        if (!this.$.minimumFractionDigits.invalid &&
+            rawOptions.minimumFractionDigits) {
+          options.minimumFractionDigits = new Number(rawOptions.minimumFractionDigits);
+        }
+        if (!this.$.maximumFractionDigits.invalid &&
+            rawOptions.maximumFractionDigits) {
+          options.maximumFractionDigits = new Number(rawOptions.maximumFractionDigits);
+        }
+        if (!this.$.minimumSignificantDigits.invalid &&
+            rawOptions.minimumSignificantDigits) {
+          options.minimumSignificantDigits = new Number(rawOptions.minimumSignificantDigits);
+        }
+        if (!this.$.maximumSignificantDigits.invalid &&
+            rawOptions.maximumSignificantDigits) {
+          options.maximumSignificantDigits = new Number(rawOptions.maximumSignificantDigits);
+        }
+
+        return options;
+      },
+
+      _currencyOptionsDisabled: function (style) {
+        return style !== 'currency';
+      },
+
+      _compareCurrency: function (a, b) {
+        var la = a ? a.label : '';
+        var lb = b ? b.label : '';
+        return la.localeCompare(lb);
+      },
+
+      _toggleParameters: function () {
+        this.$.parameters.opened = !this.$.parameters.opened;
+      },
+
+      _iconName: function (opened) {
+        return opened ? 'arrow-drop-up' : 'arrow-drop-down';
+      }
+    });
+  </script>
+</dom-module>

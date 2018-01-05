@@ -1,0 +1,21 @@
+{
+  "model": {
+    "input": {
+      "placeholder": "Placeholder Label"
+    }
+  },
+  "label": "UI Text Label",
+  "ul_1:li_2": [
+    "lang = {1} (This item is automatically converted to {2})",
+    "{{lang}}",
+    "<i18n-format>"
+  ],
+  "ul_1:li_3:pre": [
+    "text = {1}",
+    "{{serialize(text)}}"
+  ],
+  "fallback": [
+    "This item and the previous one are missing in {1} and falls back to English",
+    "ja"
+  ]
+}

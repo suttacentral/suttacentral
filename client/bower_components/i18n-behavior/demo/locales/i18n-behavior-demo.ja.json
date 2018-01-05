@@ -1,0 +1,70 @@
+{
+  "model": {
+    "simple-input": {
+      "placeholder": "プレースホルダー文字列"
+    },
+    "data": {
+      "sender": {
+        "name": "ジョー",
+        "gender": "male"
+      },
+      "recipients": [
+        {
+          "name": "アリス",
+          "gender": "female"
+        },
+        {
+          "name": "ボブ",
+          "gender": "male"
+        },
+        {
+          "name": "ヨーダ",
+          "gender": "other"
+        }
+      ]
+    }
+  },
+  "h2_1": "単純な文字列",
+  "simple": "UI テキスト文字列",
+  "h2_3": "単純な属性",
+  "h2_5": "自動フォーマット",
+  "example-sentence": [
+    "{2}この{1}は、自動的に {3} タグへ変換され、パラメータを任意の順序にして全体を翻訳することができます。",
+    "例文",
+    "パラメータや埋め込みタグのある",
+    "<i18n-format>"
+  ],
+  "h2_7": "<i18n-format> タグによる複合フォーマット",
+  "compound-format-text": [
+    {
+      "0": "あなた ({3}) は、何も{5}をしませんでした。",
+      "1": "あなた ({3}) は、 {4} に{5}をしました。",
+      "one": "あなた ({3}) は、 {4} ともう一人に{5}をしました。",
+      "other": "あなた ({3}) は、 {4} と他の {1} 人に{5}をしました。"
+    },
+    "{{recipients.length - 1}}",
+    "{{recipients.0.gender}}",
+    "{{model.data.sender.name}}",
+    "{{recipients.0.name}}",
+    "贈り物"
+  ],
+  "h2_9": "パラメータ",
+  "pre_10": [
+    "lang = {1} ({2})",
+    "{{effectiveLang}}",
+    "{{_getLangName(effectiveLang,text.langNames)}}"
+  ],
+  "pre_11": [
+    "sender = {1}",
+    "{{_getStringifiedUser(model.data.sender)}}"
+  ],
+  "pre_12": [
+    "recipients = {1}",
+    "{{_getStringifiedRecipients(recipients)}}"
+  ],
+  "langNames": {
+    "en": "英語",
+    "ja": "日本語",
+    "fr": "フランス語"
+  }
+}

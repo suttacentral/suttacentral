@@ -1,0 +1,78 @@
+{
+  "model": {
+    "simple-input": {
+      "placeholder": "texte d'espace réservé"
+    },
+    "data": {
+      "sender": {
+        "name": "Joseph",
+        "gender": "male"
+      },
+      "recipients": [
+        {
+          "name": "Alis",
+          "gender": "female"
+        },
+        {
+          "name": "Robert",
+          "gender": "male"
+        },
+        {
+          "name": "Yoda",
+          "gender": "other"
+        }
+      ]
+    }
+  },
+  "h2_1": "Texte simple",
+  "simple": "UI texte",
+  "h2_3": "Attribut simple",
+  "h2_5": "Format automatique",
+  "example-sentence": [
+    "Cette {1} avec {2} est automatiquement converti en {3} pour qu'il soit traduit dans son ensemble à un ordre de paramètre.",
+    "phrase d'exemple",
+    "des paramètres ou des balises embarquées",
+    "<i18n-format>"
+  ],
+  "h2_7": "Composé Format avec <i18n-format>",
+  "compound-format-text": [
+    {
+      "0": "Vous ({3}) avez pas de cadeau.",
+      "1": {
+        "male": "Vous ({3}) lui a donné ({4}) {5}.",
+        "female": "Vous ({3}) lui avez donné ({4}) {5}.",
+        "other": "Vous ({3}) leur a donné ({4}) {5}."
+      },
+      "one": {
+        "male": "Vous ({3}) lui a donné ({4}) et une autre personne {5}.",
+        "female": "Vous ({3}) lui avez donné ({4}) et une autre personne {5}.",
+        "other": "Vous ({3}) leur a donné ({4}) et une autre personne {5}."
+      },
+      "other": "Vous ({3}) leur a donné ({4}) et {1} autres cadeaux personnes."
+    },
+    "{{recipients.length - 1}}",
+    "{{recipients.0.gender}}",
+    "{{model.data.sender.name}}",
+    "{{recipients.0.name}}",
+    "un cadeau"
+  ],
+  "h2_9": "Paramètres",
+  "pre_10": [
+    "lang = {1} ({2})",
+    "{{effectiveLang}}",
+    "{{_getLangName(effectiveLang,text.langNames)}}"
+  ],
+  "pre_11": [
+    "sender = {1}",
+    "{{_getStringifiedUser(model.data.sender)}}"
+  ],
+  "pre_12": [
+    "recipients = {1}",
+    "{{_getStringifiedRecipients(recipients)}}"
+  ],
+  "langNames": {
+    "en": "anglais",
+    "ja": "japonais",
+    "fr": "français"
+  }
+}

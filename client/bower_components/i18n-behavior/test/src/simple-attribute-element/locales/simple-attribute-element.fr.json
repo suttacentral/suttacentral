@@ -1,0 +1,143 @@
+{
+  "model": {
+    "standard-input": {
+      "placeholder": "fr standard HTML5 attribute"
+    },
+    "outer-div:input_2": {
+      "placeholder": "fr standard HTML5 attribute without id"
+    },
+    "paper-input-element": {
+      "label": "fr paper-input label",
+      "error-message": "fr paper-input error message",
+      "placeholder": "fr paper-input placeholder"
+    },
+    "outer-div:paper-input_4": {
+      "label": "fr paper-input label without id",
+      "error-message": "fr paper-input error message without id",
+      "placeholder": "fr paper-input placeholder without id"
+    },
+    "pie-chart": {
+      "options": {
+        "title": "fr Distribution of days in 2001H1"
+      },
+      "cols": [
+        {
+          "label": "fr Month",
+          "type": "string"
+        },
+        {
+          "label": "fr Days",
+          "type": "number"
+        }
+      ],
+      "rows": [
+        [
+          "fr Jan",
+          31
+        ],
+        [
+          "fr Feb",
+          28
+        ],
+        [
+          "fr Mar",
+          31
+        ],
+        [
+          "fr Apr",
+          30
+        ],
+        [
+          "fr May",
+          31
+        ],
+        [
+          "fr Jun",
+          30
+        ]
+      ]
+    },
+    "column-chart": {
+      "options": {
+        "title": "fr Inventory"
+      },
+      "data": [
+        [
+          "fr Year",
+          "fr Things",
+          "fr Stuff"
+        ],
+        [
+          "2004",
+          1000,
+          400
+        ],
+        [
+          "2005",
+          1170,
+          460
+        ],
+        [
+          "2006",
+          660,
+          1120
+        ],
+        [
+          "2007",
+          1030,
+          540
+        ]
+      ]
+    },
+    "custom-attr": {
+      "custom-text-attr1": "fr custom text attribute 1",
+      "custom-text-attr2": "fr custom text attribute 2",
+      "custom-text-attr3": "fr custom text attribute 3"
+    },
+    "selective-attr": {
+      "custom-text-attr4": [
+        "fr {1} custom-text-attr4 attribute with param {2} and param {3} {4}",
+        "{{text.ordinary-div}}",
+        "{{text.ordinary-div}}",
+        "[[text.ordinary-div]]",
+        "{{text.ordinary-div}}"
+      ],
+      "custom-text-attr5": [
+        "[[text.ordinary-div]]",
+        "fr  custom-text-attr5 attribute with param ",
+        "{{or('',text.ordinary-div)}}",
+        "fr  and param ",
+        "[[text.ordinary-div]]"
+      ],
+      "i18n-target": [
+        "fr i18n-target attribute with param {1} and param {2}",
+        "{{text.ordinary-div}}",
+        "[[text.ordinary-div]]"
+      ],
+      "i18n-target2": [
+        "fr i18n-target2 attribute with param ",
+        "{{or('',text.ordinary-div)}}",
+        "fr  and param ",
+        "[[text.ordinary-div]]"
+      ]
+    },
+    "selective-attr2": {
+      "i18n-target": "fr i18n-target attribute 2"
+    },
+    "selective-attr3": {
+      "i18n-target6": "fr i18n-target6 attribute 2"
+    },
+    "selective-attr4": {
+      "i18n-target6": "fr i18n-target6 attribute 3"
+    },
+    "json-data-id": {
+      "attr1": "fr this attr1 is extracted",
+      "i18n-target-attr": "fr this attribute is also extracted"
+    },
+    "template_2:json-data_1": {
+      "attr1": "fr this attr1 without id is extracted",
+      "i18n-target-attr": "fr this attribute without id is also extracted"
+    }
+  },
+  "ordinary-div": "fr text 1"
+}

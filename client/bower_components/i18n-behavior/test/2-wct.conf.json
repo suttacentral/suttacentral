@@ -1,0 +1,30 @@
+{
+  "plugins": {
+    "local": {
+      "browsers": []
+    },
+    "sauce": {
+      "disabled": false,
+      "browsers": [
+        {
+          "browserName":  "microsoftedge",
+          "platform":     "Windows 10",
+          "version":      ""
+        }
+      ]
+    },
+    "istanbul": {
+      "dir": "test/coverage-report-2",
+      "reporters": ["text-summary", "lcov"],
+      "include": [
+        "**/i18n-behavior.html",
+        "**/i18n-attr-repo.html",
+        "**/i18n-preference.html"
+      ],
+      "exclude": [
+        "/bower_components/**/*",
+        "/test/**/*"
+      ]
+    }
+  }
+}

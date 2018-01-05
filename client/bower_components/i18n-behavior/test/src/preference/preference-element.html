@@ -1,0 +1,34 @@
+<!--
+@license https://github.com/t2ym/i18n-behavior/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+-->
+<link rel="import" href="../../../i18n-behavior.html">
+
+<dom-module id="preference-element">
+  <template>
+    <span id="oldLang"></span>
+  </template>
+  <script>
+    Polymer({
+      is: 'preference-element',
+      behaviors: [
+        BehaviorsStore.I18nBehavior
+      ],
+
+      listeners: {
+        'lang-updated': '_langUpdated'
+      },
+
+      _langUpdated: function (e) {
+        if (Polymer.dom(e).rootTarget === this) {
+          console.log(e.detail);
+          console.log('navigator.language = ' + navigator.language);
+          if (e.detail.lastLang === 'en') {
+            this.$.oldLang.lang = e.detail.oldLang;
+            this.fire('local-dom-ready');
+          }
+        }
+      }
+    });
+  </script>
+</dom-module>

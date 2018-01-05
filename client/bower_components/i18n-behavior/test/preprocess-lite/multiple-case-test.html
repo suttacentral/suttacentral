@@ -1,0 +1,87 @@
+<!--
+@license https://github.com/t2ym/i18n-behavior/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+--><html lang="en" preferred="" debug=""><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script>
+/*!
+ * @license https://github.com/t2ym/i18n-behavior/blob/master/LICENSE.md
+ * Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+ */
+    </script>
+
+    <script src="../../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="fake-server.js"></script>
+    <script src="test-runner.js"></script>
+
+    <link rel="import" href="../../../promise-polyfill/promise-polyfill-lite.html">
+    <link rel="import" href="../../i18n-behavior.html">
+    <link rel="import" href="multiple-case/multiple-element.html">
+    <style>
+    .test-container.running-test {
+      display: block;
+    }
+    .test-container:not(.running-test) { 
+      display: none;
+    }
+    </style>
+  </head>
+  <body>
+    <h2 id="test-name"></h2>
+
+    <test-fixture class="test-container" id="multiple-element-fixture">
+      <template is="dom-template">
+        <multiple-element lang="{{lang}}" observe-html-lang="{{observeHtmlLang}}" count="{{count}}"></multiple-element>
+      </template>
+    </test-fixture>
+
+    <script>
+suite('I18nBehavior with ' + 
+  (window.location.href.indexOf('?dom=Shadow') >= 0 ? 'Shadow DOM' : 'Shady DOM'), 
+  function () {
+
+  var lang0 = '';
+  var lang1 = 'en';
+  var lang2 = 'fr';
+  var lang3 = 'ja';
+  var lang4 = 'fr-CA';
+  var lang5 = 'zh-Hans-CN';
+  var count1 = 100;
+
+  var localDOM_multiple_element = [
+    { select: 'div item-element', '$.label.textContent': 'A' }
+  ];
+
+  var suites = [
+    s('multiple element', null, {
+      fixture: 'multiple-element-fixture', 
+      fixtureModel: { observeHtmlLang: false, lang: lang0, count: count1 },
+      assign: { lang: lang1 },
+      lang: lang1,
+      effectiveLang: lang1,
+      templateDefaultLang: lang1,
+      observeHtmlLang: false,
+      event: 'local-dom-ready',
+      text: { model: {} },
+      model: {},
+      localDOM: localDOM_multiple_element,
+      lightDOM: undefined
+    }),
+    s(lang2 + ' multiple element', 'multiple element', {
+      assign: { lang: lang2 },
+      lang: lang2,
+      effectiveLang: lang2
+    })
+  ];
+
+  suitesRunner(suites);
+
+});
+    </script>
+
+  
+
+</body></html>

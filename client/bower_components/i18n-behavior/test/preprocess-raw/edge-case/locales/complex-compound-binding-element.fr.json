@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "todo": []
+  },
+  "model": {},
+  "item-update2:text": [
+    "fr updated: {1}, by: ",
+    "{{text.updated}}"
+  ],
+  "item-update2:text_2": "fr  xxx ",
+  "item-update2:template_3:span:b": "fr IF CONTENT",
+  "item-update2:b_4": "fr abc",
+  "item-update2:template_5:text": "fr IF CONTENT 2",
+  "item-update2:text_6": "fr  hello ",
+  "item-update": [
+    "fr updated: {1}, by: \n      {2}\n      xxx\n      {3}\n      {4}\n      {5}\n      hello\n      \n      {6}\n      {7} ",
+    "{{text.updated}}",
+    "  {{item.name}}  ",
+    "fr IF CONTENT",
+    "fr abc",
+    "fr IF CONTENT 2",
+    "<template>",
+    "{{text.updated}}"
+  ],
+  "item-update3:text": [
+    "fr updated: {1}, by: ",
+    "{{text.updated}}"
+  ],
+  "item-update3:text_2": "fr  xxx ",
+  "item-update3:template_3:b": "fr IF",
+  "item-update3:template_3:b_1": "fr CONTENT",
+  "item-update3:b_4": "fr abc",
+  "item-update3:template_5:text": "fr IF CONTENT 2",
+  "item-update3:text_6": "fr  hello ",
+  "item-update4:text": [
+    "fr updated: {1}, by: ",
+    "{{text.updated}}"
+  ],
+  "item-update4:template_1:text": [
+    "fr  {1} = {2} ",
+    "{{item.name}}",
+    "{{text.updated}}"
+  ],
+  "item-update4:text_2": "fr  xxx ",
+  "item-update4:template_3:b": "fr IF CONTENT",
+  "item-update4:b_4": "fr abc",
+  "item-update4:template_5:text": "fr IF CONTENT 2",
+  "item-update4:text_6": "fr  hello ",
+  "paragraph": [
+    "fr A paragraph with \n      {1}\n      is converted to \n      {2}. ",
+    "{{item}} ",
+    "fr <i18n-format>"
+  ],
+  "paragraph2:text": "fr A paragraph with deep ",
+  "paragraph2:text_2": "fr  is ",
+  "paragraph2:b_3": "fr not",
+  "paragraph2:text_4": "fr  converted to ",
+  "paragraph2:code_5": "fr <i18n-format>",
+  "paragraph2:text_6": "fr . ",
+  "authors": [
+    {
+      "name": "fr Joe"
+    },
+    {
+      "name": "fr Alice"
+    }
+  ],
+  "updated": "fr Jan 1st, 2016",
+  "parameters": [
+    "fr parameter 1",
+    "fr parameter 2"
+  ]
+}

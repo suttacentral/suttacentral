@@ -1,0 +1,65 @@
+{
+  "name": "i18n-behavior",
+  "version": "2.0.0-develop",
+  "authors": [
+    "Tetsuya Mori <t2y3141592@gmail.com>"
+  ],
+  "description": "Instant and Modular I18N for Polymer",
+  "main": "i18n-behavior.html",
+  "keywords": [
+    "polymer",
+    "polymer2",
+    "web-component",
+    "web-components",
+    "i18n",
+    "internationalization",
+    "l10n",
+    "localization",
+    "format",
+    "ES6",
+    "ES2015"
+  ],
+  "license": "BSD-2-Clause",
+  "homepage": "https://t2ym.github.io/i18n-behavior/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "polymer": "#2.0-preview",
+    "deepcopy": "^0.6.3",
+    "iron-localstorage": "PolymerElements/iron-localstorage#^1.0.6",
+    "iron-ajax": "PolymerElements/iron-ajax#2.0-preview",
+    "i18n-number": "#2.0-develop",
+    "i18n-format": "#2.0-develop"
+  },
+  "devDependencies": {
+    "web-component-tester": "4.2.2",
+    "es6-shim": "^0.35.1",
+    "get-own-property-symbols": "es-shims/get-own-property-symbols#^0.9.2",
+    "iron-component-page": "PolymerElements/iron-component-page#2.0-preview",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#2.0-preview",
+    "paper-input": "PolymerElements/paper-input#2.0-preview",
+    "paper-button": "PolymerElements/paper-button#2.0-preview",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#2.0-preview",
+    "paper-styles": "PolymerElements/paper-styles#2.0-preview",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#2.0-preview",
+    "paper-menu": "PolymerElements/paper-menu#^1.2.2",
+    "paper-item": "PolymerElements/paper-item#2.0-preview",
+    "test-fixture": "PolymerElements/test-fixture#safari9-constructor"
+  },
+  "resolutions": {
+    "polymer": "2.0-preview",
+    "webcomponentsjs": "v1",
+    "test-fixture": "safari9-constructor",
+    "i18n-number": "2.0-develop",
+    "iron-ajax": "2.0-preview",
+    "iron-flex-layout": "2.0-preview",
+    "paper-styles": "2.0-preview",
+    "iron-behaviors": "2.0-preview",
+    "iron-a11y-keys-behavior": "2.0-preview",
+    "iron-selector": "2.0-preview",
+    "iron-resizable-behavior": "2.0-preview"
+  }
+}

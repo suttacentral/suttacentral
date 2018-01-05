@@ -1,0 +1,26 @@
+{
+  "model": {},
+  "text": "fr-CA  outermost text at the beginning ",
+  "h1_3": "fr-CA outermost header 1",
+  "text_4": "fr-CA  outermost text in the middle ",
+  "span_5": "fr-CA simple text without id",
+  "span_6": "fr-CA simple text without id 2",
+  "label-1": "fr-CA simple text with id",
+  "label-2": "fr-CA simple text with id 2",
+  "div_10:span_1": "fr-CA simple text within div",
+  "toplevel-div:span": "fr-CA simple text within div",
+  "toplevel-div:span_1": "fr-CA simple text within div 2",
+  "third-level-div": "fr-CA great grandchild text within div",
+  "second-level-div:div_1": "fr-CA great grandchild text within div without id",
+  "p_13": [
+    "fr-CA A paragraph with {1} is converted to {2}.",
+    "fr-CA parameters",
+    "fr-CA <i18n-format>"
+  ],
+  "paragraph": [
+    "fr-CA A paragraph with {1} is converted to {2}.",
+    "fr-CA id",
+    "fr-CA <i18n-format>"
+  ],
+  "text_15": "fr-CA  outermost text at the end "
+}

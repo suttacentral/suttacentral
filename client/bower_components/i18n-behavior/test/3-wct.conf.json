@@ -1,0 +1,30 @@
+{
+  "plugins": {
+    "local": {
+      "browsers": []
+    },
+    "sauce": {
+      "disabled": false,
+      "browsers": [
+        {
+          "browserName":  "internet explorer",
+          "platform":     "Windows 8.1",
+          "version":      "11"
+        }
+      ]
+    },
+    "istanbul": {
+      "dir": "test/coverage-report-3",
+      "reporters": ["text-summary", "lcov"],
+      "include": [
+        "**/i18n-behavior.html",
+        "**/i18n-attr-repo.html",
+        "**/i18n-preference.html"
+      ],
+      "exclude": [
+        "/bower_components/**/*",
+        "/test/**/*"
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "todo": []
+  },
+  "model": {},
+  "compound-format-text": [
+    {
+      "0": "fr You ({3}) gave no gifts.",
+      "1": {
+        "male": "fr You ({3}) gave him ({4}) {5}.",
+        "female": "fr You ({3}) gave her ({4}) {5}.",
+        "other": "fr You ({3}) gave them ({4}) {5}."
+      },
+      "one": {
+        "male": "fr You ({3}) gave him ({4}) and one other person {5}.",
+        "female": "fr You ({3}) gave her ({4}) and one other person {5}.",
+        "other": "fr You ({3}) gave them ({4}) and one other person {5}."
+      },
+      "other": "fr You ({3}) gave them ({4}) and {1} other people gifts."
+    },
+    "{{recipients.length - 1}}",
+    "{{recipients.0.gender}}",
+    "{{sender.name}}",
+    "{{recipients.0.name}}",
+    "fr a gift"
+  ]
+}

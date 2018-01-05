@@ -1,0 +1,67 @@
+{
+  "name": "i18n-format",
+  "version": "2.0.0",
+  "authors": [
+    "Tetsuya Mori <t2y3141592@gmail.com>"
+  ],
+  "description": "Text formatter with Unicode CLDR Plural Rules and choices support",
+  "main": "i18n-format.html",
+  "keywords": [
+    "polymer",
+    "web-component",
+    "web-components",
+    "i18n",
+    "internationalization",
+    "l10n",
+    "localization",
+    "format",
+    "pluralization",
+    "cldr"
+  ],
+  "license": "BSD-2-Clause",
+  "homepage": "https://t2ym.github.io/i18n-format/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "make-plural": "^3.0.3",
+    "i18n-number": "1 - 2"
+  },
+  "devDependencies": {
+    "web-component-tester": "t2ym/web-component-tester#wct6-plugin",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#1 - 2",
+    "paper-input": "PolymerElements/paper-input#1 - 2",
+    "paper-button": "PolymerElements/paper-button#1 - 2",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#1 - 2",
+    "paper-styles": "PolymerElements/paper-styles#1 - 2",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#1 - 2",
+    "paper-item": "PolymerElements/paper-item#1 - 2",
+    "promise-polyfill": "t2ym/promise-polyfill#2.0-preview"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "^1.9.1",
+        "make-plural": "^3.0.3",
+        "i18n-number": "^1.0.2"
+      },
+      "devDependencies": {
+        "web-component-tester": "t2ym/web-component-tester#wct6-plugin",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.1.2",
+        "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.3",
+        "paper-input": "PolymerElements/paper-input#^1.1.5",
+        "paper-button": "PolymerElements/paper-button#^1.0.11",
+        "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.2",
+        "paper-styles": "PolymerElements/paper-styles#^1.1.2",
+        "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.1.2",
+        "paper-menu": "PolymerElements/paper-menu#^1.2.2",
+        "paper-item": "PolymerElements/paper-item#^1.1.3",
+        "promise-polyfill": "polymerlabs/promise-polyfill#^1.0.0"
+      }
+    }
+  }
+}

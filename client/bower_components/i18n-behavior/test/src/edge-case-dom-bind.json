@@ -1,0 +1,29 @@
+{
+  "meta": {},
+  "model": {},
+  "text": [
+    " name = {1} ",
+    "{{text.name}}"
+  ],
+  "i18n-number_1": "1",
+  "i18n-format_2": [
+    "{{text.format}}",
+    "1"
+  ],
+  "i18n-format_3": [
+    "format",
+    ""
+  ],
+  "p_8": [
+    "hello {1}{2} {3} world",
+    "<br>",
+    "<span>",
+    "<span>"
+  ],
+  "p_9": [
+    "hello{1}world",
+    "<br>"
+  ],
+  "text_10": " hello ",
+  "text_14": " world "
+}

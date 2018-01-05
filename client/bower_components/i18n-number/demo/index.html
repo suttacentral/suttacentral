@@ -1,0 +1,414 @@
+<!--
+@license https://github.com/t2ym/i18n-number/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>i18n-number Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+    <link rel="import" href="../../paper-input/paper-input.html">
+    <link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
+    <link rel="import" href="../../paper-item/paper-item.html">
+    <link rel="import" href="../../paper-styles/demo-pages.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../i18n-number.html">
+    <!-- <link rel="import" href="editable-dropdown-menu.html"> -->
+    <link rel="import" href="nano-calc.html">
+    <!-- <link rel="import" href="i18n-number-demo.html"> -->
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .vertical-section-container {
+        max-width: 768px;
+      }
+
+      @media (max-width: 640px) {
+
+        body {
+          font-size: 14px;
+          margin: 0;
+          padding: 4px;
+          background-color: var(--paper-grey-50);
+        }
+
+        .horizontal-section {
+          background-color: white;
+          padding: 8px;
+          margin-right: 4px;
+          min-width: 200px;
+
+          @apply(--shadow-elevation-2dp);
+        }
+
+        .vertical-section {
+          background-color: white;
+          padding: 8px;
+          margin: 0 4px 8px 4px;
+
+          @apply(--shadow-elevation-2dp);
+        }
+
+      }
+    </style>
+    <style is="custom-style">
+      --demo-snippet-code {
+        @apply(--paper-font-code1);
+      }
+  
+      paper-item {
+        display: block;
+      }
+
+      code {
+        font-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;
+        color: black;
+      }
+
+      .input {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        border-width: 0px;
+        outline-width: 0px;
+      }
+
+      .select {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        outline-width: 0px;
+        border-width: 0px;
+        background-color: rgba(255,255,255,0.0);
+      }
+
+      option {
+        position: relative;
+        top: -1;
+        color: black;
+        outline-width: 0px;
+        border-width: 0px;
+      }
+
+      .dropdown {
+        --editable-dropdown-menu: {
+          display: inline-block;
+          margin-right: 8px;
+          text-align: left;
+          width: 180px;
+        };
+      }
+
+      .demo-paper-dropdown-menu {
+        font-family: 'Roboto', 'Noto', Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        text-align: left;
+        margin: auto;
+        width: 180px;
+      }
+
+      @media (max-width: 640px) {
+
+        body {
+          font-size: 14px;
+          margin: 0;
+          padding: 4px;
+          background-color: var(--paper-grey-50);
+        }
+
+        .horizontal-section {
+          background-color: white;
+          padding: 8px;
+          margin-right: 4px;
+          min-width: 200px;
+
+          @apply(--shadow-elevation-2dp);
+        }
+
+        .vertical-section {
+          background-color: white;
+          padding: 8px;
+          margin: 0 4px 8px 4px;
+
+          @apply(--shadow-elevation-2dp);
+        }
+
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <div class="vertical-section-container centered">
+
+      <h1><code>&lt;i18n-number&gt;</code> Demo</h1>
+
+      <div class="vertical-section-container">
+        <h2>Number in English (en) locale</h2>
+        <demo-snippet class="centered-demo">
+          <template>
+            <i18n-number lang="en">123456.78</i18n-number>
+          </template>
+          <script type="text/markdown">
+            <i18n-number lang="en">123456.78</i18n-number>
+          </script>
+        </demo-snippet>
+
+        <h2>Currency - USD in English (en) locale</h2>
+        <demo-snippet class="centered-demo">
+          <template>
+            <i18n-number 
+              lang="en"
+              options='{ "style": "currency", "currency": "USD" }' 
+              >123456.78</i18n-number>
+          </template>
+          <script type="text/markdown">
+            <i18n-number 
+              lang="en"
+              options='{ "style": "currency", "currency": "USD" }' 
+              >123456.78</i18n-number>
+          </script>
+        </demo-snippet>
+
+        <!--
+        <h2><code>&lt;i18n-number&gt;</code> with different parameters</h2>
+        <demo-snippet id="demo-snippet" class="left-aligned-demo" _markdown="{{markdown}}">
+          <template>
+            <i18n-number-demo id="i18n-number-demo"></i18n-number-demo>
+          </template>
+        </demo-snippet>
+        -->
+
+        <h2>Digits display for <code>&lt;nano-calc&gt;</code></h2>
+        <demo-snippet class="centered-demo">
+          <template>
+            <nano-calc x="123456.789"></nano-calc>
+          </template>
+          <script type="text/markdown">
+            <dom-module id="nano-calc">
+              <template>
+                ...
+                <span class="layout horizontal digits-display">
+                  <span class="flex"></span>
+                  <i18n-number id="value" 
+                    formatted="{{value}}"
+                    options='{ "maximumFractionDigits": 16 }'
+                    >{{pickDisplayValue(x,y,op)}}</i18n-number>
+                  </span>
+                </span>
+                ...
+              </template>
+              ...
+            </dom-module> 
+          </script>
+        </demo-snippet>
+
+        <script>
+          window.addEventListener('WebComponentsReady', function () {
+            var demoSnippets = document.querySelectorAll('demo-snippet');
+            Array.prototype.forEach.call(demoSnippets, function (demo) {
+              var script = Polymer.dom(demo).queryDistributedElements('script[type="text/markdown"]')[0];
+
+              if (!script) {
+                return;
+              }
+
+              var snippet = script.innerHTML;
+              var match = snippet.match(/\n([ ]*)/);
+              if (match && match[1]) {
+                var lines = snippet.split(/\n/);
+                snippet = 
+                  lines.map(function (line) {
+                    if (line.indexOf(match[1]) === 0) {
+                      line = line.slice(match[1].length);               
+                    }
+                    return line;
+                  }).join('\n');
+              }
+
+              snippet = '```\n' + snippet + '\n```';
+              snippet = snippet.replace(/=""/g, '');
+
+              demo._markdown = snippet;
+            });
+          });
+          var demoSnippet = document.querySelector('demo-snippet#demo-snippet');
+          demoSnippet.addEventListener('markdown-changed', function (e) {
+            demoSnippet._markdown = e.detail.markdown;
+          });
+        </script>
+
+<!--
+        <div class="vertical-section">
+          <template is="dom-bind" id="demox">
+            <h2>Output<h2>
+            <i18n-number class="number" lang="{{lang}}" options="{{options}}">{{raw}}</i18n-number>
+
+            <h2>Parameters<h2>
+            <h3>raw</h3>
+            <div>
+              <select class="select">
+                <option value="123456.789">123456.789</option>
+                <option value="Not a number">Not a number</option>
+                <option value="ABC">ABC</option>
+              </select>
+              <input id="raw" class="input" is="iron-input" list="dlist" autocomplete bind-value="{{raw}}">
+              <datalist id="dlist">
+                <option value="123456.789">
+                <option value="Not a number">
+                <option value="ABC">
+              </datalist>
+            </div>
+
+
+            <h3>lang</h3>
+            
+
+
+            <paper-input label="Raw number input" 
+                        auto-validate
+                        pattern="[0-9]*([.][0-9]*)?"
+                        error-message="Number only!"
+                        value="{{rawNumber}}"></paper-input>
+            <h3>Language</h3>
+            <editable-dropdown-menu id="lang-attr"
+                                label="lang"
+                                class="dropdown"
+                                pattern="[a-zA-Z][a-zA-Z-]*"
+                                error-message="locale name expected!"
+                                items="{{parameterValues.lang}}"
+                                value="{{lang}}"
+                                editable
+                                default-value="{{parameterValues.lang.0.value}}">
+            </editable-dropdown-menu>
+            <h3>Options</h3>
+            <editable-dropdown-menu id="style-option"
+                                label="style"
+                                class="dropdown"
+                                pattern="[a-zA-Z]*"
+                                items="{{parameterValues.style}}"
+                                value="{{options.style}}"
+                                default-value="{{parameterValues.style.0.value}}">
+            </editable-dropdown-menu>
+            <editable-dropdown-menu id="currency-option"
+                                label="currency"
+                                class="dropdown"
+                                pattern="[a-zA-Z]*"
+                                items="{{parameterValues.currency}}"
+                                value="{{options.currency}}"
+                                default-value="USD"
+                                editable
+                                disabled="{{_disableCurrencyOptions(options.style)}}">
+            </editable-dropdown-menu>
+
+            <paper-input-autocomplete id="currency-display-option"
+              label="currencyDisplay"
+              class="demo-paper-dropdown-menu"
+              source="{{parameterValues.currencyDisplay}}"
+              value="{{_currencyDisplayObject}}"
+              search-property="label"
+              suggestions-in-overlay>
+            </paper-input-autocomplete>
+          </template>
+          <script>
+          /*
+            function mixin (base, extend) {
+              for (var i in extend) {
+                base[i] = extend[i];
+              }
+            }
+
+            mixin(demo, {
+              properties: {
+                raw: {
+                  type: String,
+                  value: '123456.789'
+                },
+                options: {
+                  type: Object,
+                  value: function () { 
+                    return { 
+                      style: 'decimal', 
+                      currency: 'USD', 
+                      currencyDisplay: 'symbol' 
+                    };
+                  }
+                },
+                lang: {
+                  type: String,
+                  value: 'en',
+                  observer: 'langChanged'
+                },
+                _currencyDisplayObject: {
+                  type: Object,
+                  observer: '_currencyDisplayObjectChanged'
+                },
+                parameterValues: {
+                  type: Object,
+                  value: function () {
+                    return {
+                      lang: [
+                        { value: 'en', label: 'en English (US)' },
+                        { value: 'en-GB', label: 'en-GB English (UK)' },
+                        { value: 'ja', label: 'ja Japanese' },
+                        { value: 'fr', label: 'fr French' }
+                      ],
+                      style: [
+                        { value: 'decimal', label: 'decimal' },
+                        { value: 'currency', label: 'currency' },
+                        { value: 'percent', label: 'percent' }
+                      ],
+                      currency: labelList,
+                      currencyDisplay: [
+                        { value: 'symbol', label: 'symbol' },
+                        { value: 'name', label: 'name' }
+                      ]
+                    };
+                  }
+                }
+              },
+
+              observers: [
+              ],
+
+              listeners: {
+                'dom-change': 'domChanged'
+              },
+
+              _disableCurrencyOptions: function (style) {
+                return style !== 'currency';
+              },
+
+              behaviors: [
+                {
+                  attached: function () {
+                    console.log('demo: attached lang = ' + demo.lang);
+                  }
+                }
+              ],
+
+              langChanged: function (v) {
+                console.log('langChanged: lang = ' + v);
+              },
+
+              domChanged: function () {
+                
+                demo.parameterValues.currency = currencyList.labelList;
+                demo.parameterValues.currency.push({ value: '+', label: 'New...' });
+                demo.notifyPath('parameterValues', demo.parameterValues, true);
+                this.unlisten('dom-change', this.domChanged);
+              },
+
+              _currencyDisplayObjectChanged: function (obj) {
+                demo.options.currencyDisplay = obj.value;
+                demo.notifyPath('options', demo.options, true);
+              }
+
+            });
+          */
+          </script>
+        </div>
+      </div>
+    </div>
+-->
+  </body>
+</html>

@@ -1,0 +1,202 @@
+<!--
+@license https://github.com/t2ym/i18n-number/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+-->
+<link rel="import" href="../../paper-input/paper-input.html">
+<link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../paper-menu/paper-menu.html">
+<link rel="import" href="../../paper-item/paper-item.html">
+<link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+
+<dom-module id="editable-dropdown-menu">
+  <template>
+    <style>
+      :host {
+        @apply(--editable-dropdown-menu);
+      }
+
+      .dropdown-menu {
+      }
+
+      .icon-button {
+        width: 24px;
+        height: 24px;
+        padding: 0px;
+        color: var(--disabled-text-color);
+        margin: auto;
+
+        @apply(--paper-dropdown-menu-icon);
+      }
+
+      .invisible {
+        display: none;
+      }
+    </style>
+    
+
+
+    
+    <paper-input id="input"
+                label="[[label]]"
+                type="text"
+                auto-validate
+                pattern="[[pattern]]"
+                error-message="[[errorMessage]]"
+                class="dropdown-menu invisible"
+                value="{{newValue}}"
+                disabled="{{disabled}}">
+      <paper-icon-button suffix
+              id="add"
+              class="icon-button" 
+              icon="add" alt="add" title="add">
+      </paper-icon-button>
+    </paper-input>
+    <paper-dropdown-menu id="dropdown"
+                        label="[[label]]"
+                        class="dropdown-menu"
+                        selected-item="{{selectedItem}}"
+                        disabled="{{disabled}}">
+      <paper-menu id="list"
+                  class="dropdown-content"
+                  selected="{{selected}}"
+                  attr-for-selected="name">
+        <template is="dom-repeat" items="{{items}}">
+          <paper-item name="{{item.value}}">{{item.label}}</paper-item>
+        </template>
+        <template is="dom-if" if="{{editable}}">
+          <paper-item name="+">
+            <paper-icon-button class="icon-button" icon="add" alt="add" title="add">
+            </paper-icon-button>
+          </paper-item>
+        </template>
+      </paper-menu>
+    </paper-dropdown-menu>
+  </template>
+  <script>
+  Polymer({
+    is: 'editable-dropdown-menu',
+
+    properties: {
+      label: {
+        type: String
+      },
+      value: {
+        type: String,
+        notify: true
+      },
+      defaultValue: {
+        type: String,
+        value: ''
+      },
+      pattern: {
+        type: String,
+        value: '.*'
+      },
+      errorMessage: {
+        type: String,
+        value: 'Invalid value'
+      },
+      items: {
+        type: Array
+      },
+      selectedItem: {
+        type: Object
+      },
+      isEditing: {
+        type: Boolean,
+        value: false
+      },
+      disabled: {
+        type: Boolean
+      },
+      editable: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    observers: [
+      'onEditingChanged(isEditing)',
+      'onItemsChanged(items.splices)',
+      'onValueChanged(value)'
+    ],
+
+    listeners: {
+      'list.selected-changed': 'onSelectedChanged',
+      'add.click': 'addValue'
+    },
+
+    ready: function () {
+      console.log('ready: value = ' + this.value);
+    },
+
+    attached: function () {
+      console.log('attached: value = ' + this.value);
+    },
+
+    onValueChanged: function (value, oldValue) {
+      console.log('onValueChanged: new = ' + value + ' old = ' + oldValue);
+    },
+
+    onSelectedChanged: function (e) {
+      console.log('onSelectedChanged');
+      console.log(JSON.stringify(e));
+      if (this.editable &&
+          e.detail.value === '+') {
+        this.isEditing = true;
+        this.$.input.focus();
+      }
+      else {
+        this.value = e.detail.value;
+      }
+    },
+
+    onItemsChanged: function (change) {
+      console.log('onItemsChanged', JSON.stringify(change));
+      if (change && change.indexSplices) {
+        this.notifyPath('items', this.items, true);
+        this.$.list.select(this.items[change.indexSplices[0].index]);
+      }
+      else {
+        if (this.defaultValue) {
+          this.notifyPath('items', this.items, true);
+          this.$.list.select(this.defaultValue);
+        }
+      }
+    },
+
+    onEditingChanged: function (isEditing) {
+      if (isEditing) {
+        this.classFollows('invisible', this.$.dropdown, this.$.input);
+      }
+      else {
+        this.classFollows('invisible', this.$.input, this.$.dropdown);
+      }
+    },
+
+    addValue: function (e) {
+      this.newValue = this.newValue.trim();
+      if (this.newValue) {
+        var item = Polymer.dom(this.$.list).querySelector('paper-item[name="' + this.newValue + '"]');
+        if (!item) {
+          this.push('items', 
+            {
+              value: this.newValue, 
+              label: this.newValue 
+            }
+          );
+          this.$.list.select(this.newValue);
+        }
+        else {
+          this.$.list.select(this.newValue);
+        }
+      }
+      else {
+        this.$.list.select(this.defaultValue);
+      }
+      this.newValue = '';
+      this.isEditing = false;
+    }
+  });
+  </script>
+</dom-module>

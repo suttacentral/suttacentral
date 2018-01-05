@@ -1,0 +1,49 @@
+<!--
+@license https://github.com/t2ym/i18n-behavior/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+-->
+<link rel="import" href="../../../i18n-behavior.html">
+
+  <template id="empty-element">
+  </template>
+<dom-module id="empty-element">
+  <template>
+  </template>
+</dom-module>
+<script>
+  switch (syntax) {
+  default:
+  case 'mixin':
+    {
+      class EmptyElement extends Mixins.Localizable(Polymer.LegacyElement) {
+        static get is() { return 'empty-element' }
+      }
+      customElements.define(EmptyElement.is, EmptyElement);
+    }
+    break;
+  case 'base-element':
+    {
+      class EmptyElement extends BaseElements.I18nElement {
+        static get is() { return 'empty-element' }
+      }
+      customElements.define(EmptyElement.is, EmptyElement);
+    }
+    break;
+  case 'thin':
+    {
+      Define = class EmptyElement extends BaseElements.I18nElement {
+      }
+    }
+    break;
+  case 'legacy':
+    {
+      Polymer({
+        is: 'empty-element',
+        behaviors: [
+          BehaviorsStore.I18nBehavior
+        ]
+      });
+    }
+    break;
+  }
+</script>

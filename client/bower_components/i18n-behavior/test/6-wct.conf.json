@@ -1,0 +1,30 @@
+{
+  "plugins": {
+    "local": {
+      "browsers": []
+    },
+    "sauce": {
+      "disabled": false,
+      "browsers": [
+        {
+          "browserName":  "safari",
+          "platform":     "OS X 10.10",
+          "version":      "8"
+        }
+      ]
+    },
+    "istanbul": {
+      "dir": "test/coverage-report-6",
+      "reporters": ["text-summary", "lcov"],
+      "include": [
+        "**/i18n-behavior.html",
+        "**/i18n-attr-repo.html",
+        "**/i18n-preference.html"
+      ],
+      "exclude": [
+        "/bower_components/**/*",
+        "/test/**/*"
+      ]
+    }
+  }
+}

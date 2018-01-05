@@ -1,0 +1,107 @@
+<!--
+@license https://github.com/t2ym/i18n-behavior/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script>
+/*!
+ * @license https://github.com/t2ym/i18n-behavior/blob/master/LICENSE.md
+ * Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+ */
+    </script>
+
+    <script src="../../../webcomponentsjs/webcomponents.min.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="fake-server.js"></script>
+    <script src="test-runner.js"></script>
+
+    <link rel="import" href="../../../promise-polyfill/promise-polyfill-lite.html">
+    <link rel="import" href="../../i18n-behavior.html">
+    <link rel="import" href="preference/preference-element.html">
+    <style>
+    .test-container.running-test {
+      display: block;
+    }
+    .test-container:not(.running-test) { 
+      display: none;
+    }
+    </style>
+  </head>
+  <body>
+    <h2 id="test-name"></h2>
+
+    <test-fixture class="test-container" id="preference-element-fixture">
+      <template>
+        <preference-element></preference-element>
+      </template>
+    </test-fixture>
+
+    <i18n-preference></i18n-preference>
+
+    <script>
+suite('I18nBehavior with ' + 
+  (window.location.href.indexOf('?dom=Shadow') >= 0 ? 'Shadow DOM' : 'Shady DOM'), 
+  function () {
+
+  var lang0 = '';
+  var lang1 = 'en';
+  var lang2 = 'fr';
+  var lang3 = 'ja';
+  var lang4 = 'fr-CA';
+  var lang5 = 'zh-Hans-CN';
+  var lang6 = 'ru';
+  var lang7 = 'zh-yue-Hans-CN';
+  var lang8 = 'zh-CN';
+  var lang9 = 'zh-TW';
+  var lang10 = 'zh-Hans-CN-x-Linux';
+  var navigatorLanguage = navigator.language || navigator.browserLanguage;
+  var isNavigatorLanguageEn = navigatorLanguage.match(/^en/);
+
+  var suites = [
+    s('preference', null, {
+      fixture: 'preference-element-fixture', 
+      fixtureModel: undefined,
+      assign: undefined,
+      lang: isNavigatorLanguageEn ? lang1 : lang0,
+      effectiveLang: isNavigatorLanguageEn ? lang1 : lang0,
+      templateDefaultLang: lang1,
+      observeHtmlLang: true,
+      event: 'local-dom-ready',
+      text: { model: {} },
+      model: {},
+      localDOM: [
+        { select: 'span#oldLang', 'lang.raw': navigatorLanguage }
+      ],
+      lightDOM: undefined
+    })
+  ];
+
+  suitesRunner(suites);
+
+  suite('change persist', function () {
+    test('persist true', function (done) {
+      var p = document.querySelector('i18n-preference');
+      p.persist = true;
+      assert.equal(p.persist, true, 'persist is true');
+      done();
+    });
+  });
+
+  suite('detech preference', function () {
+    test('detach', function (done) {
+      var p = document.querySelector('i18n-preference');
+      p.parentNode.removeChild(p);
+      assert.equal(p.persist, true, 'persist is true');
+      done();
+    });
+  });
+
+});
+    </script>
+
+  </body>
+</html>

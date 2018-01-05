@@ -1,0 +1,5 @@
+build/deepcopy.js
+build/deepcopy.min.js
+index.js
+lib/
+webpack.config.js

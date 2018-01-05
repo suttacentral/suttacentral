@@ -1,0 +1,69 @@
+{
+  "meta": {},
+  "model": {},
+  "item-update2:text": [
+    "updated: {1}, by: ",
+    "{{text.updated}}"
+  ],
+  "item-update2:text_2": " xxx ",
+  "item-update2:dom-if_3:template:span:b": "IF CONTENT",
+  "item-update2:b_4": "abc",
+  "item-update2:dom-if_5:template:text": "IF CONTENT 2",
+  "item-update2:text_6": " hello ",
+  "item-update:text": [
+    "updated: {1}, by: ",
+    "{{text.updated}}"
+  ],
+  "item-update:text_2": " xxx ",
+  "item-update:dom-if_3:template:b": "IF CONTENT",
+  "item-update:b_4": "abc",
+  "item-update:dom-if_5:template:text": "IF CONTENT 2",
+  "item-update:text_6": " hello ",
+  "item-update3:text": [
+    "updated: {1}, by: ",
+    "{{text.updated}}"
+  ],
+  "item-update3:text_2": " xxx ",
+  "item-update3:dom-if_3:template:b": "IF",
+  "item-update3:dom-if_3:template:b_1": "CONTENT",
+  "item-update3:b_4": "abc",
+  "item-update3:dom-if_5:template:text": "IF CONTENT 2",
+  "item-update3:text_6": " hello ",
+  "item-update4:text": [
+    "updated: {1}, by: ",
+    "{{text.updated}}"
+  ],
+  "item-update4:dom-repeat_1:template:text": [
+    " {1} = {2} ",
+    "{{item.name}}",
+    "{{text.updated}}"
+  ],
+  "item-update4:text_2": " xxx ",
+  "item-update4:dom-if_3:template:b": "IF CONTENT",
+  "item-update4:b_4": "abc",
+  "item-update4:dom-if_5:template:text": "IF CONTENT 2",
+  "item-update4:text_6": " hello ",
+  "paragraph:text": "A paragraph with ",
+  "paragraph:text_2": " is converted to ",
+  "paragraph:code_3": "<i18n-format>",
+  "paragraph:text_4": ". ",
+  "paragraph2:text": "A paragraph with deep ",
+  "paragraph2:text_2": " is ",
+  "paragraph2:b_3": "not",
+  "paragraph2:text_4": " converted to ",
+  "paragraph2:code_5": "<i18n-format>",
+  "paragraph2:text_6": ". ",
+  "authors": [
+    {
+      "name": "Joe"
+    },
+    {
+      "name": "Alice"
+    }
+  ],
+  "updated": "Jan 1st, 2016",
+  "parameters": [
+    "parameter 1",
+    "parameter 2"
+  ]
+}

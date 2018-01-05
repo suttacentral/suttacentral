@@ -1,0 +1,36 @@
+{
+  "plugins": {
+    "local": {
+      "browsers": [
+      ]
+    },
+    "sauce": {
+      "disabled": false,
+      "browsers": [
+        {
+          "browserName":  "chrome",
+          "platform":     "Windows 10",
+          "version":      ""
+        },
+        {
+          "browserName":  "firefox",
+          "platform":     "Windows 10",
+          "version":      ""
+        }
+      ]
+    },
+    "istanbul": {
+      "dir": "test/coverage-report2",
+      "reporters": ["text-summary", "lcov"],
+      "include": [
+        "**/i18n-behavior.html",
+        "**/i18n-attr-repo.html",
+        "**/i18n-preference.html"
+      ],
+      "exclude": [
+        "/bower_components/**/*",
+        "/test/**/*"
+      ]
+    }
+  }
+}

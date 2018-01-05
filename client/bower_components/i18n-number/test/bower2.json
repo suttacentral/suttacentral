@@ -1,0 +1,53 @@
+{
+  "name": "i18n-number",
+  "version": "2.0.0",
+  "authors": [
+    "Tetsuya Mori <t2y3141592@gmail.com>"
+  ],
+  "description": "Wrapper element for Intl.NumberFormat",
+  "main": "i18n-number.html",
+  "keywords": [
+    "polymer",
+    "web-component",
+    "web-components",
+    "i18n",
+    "internationalization"
+  ],
+  "license": "BSD-2-Clause",
+  "homepage": "https://t2ym.github.io/i18n-number/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "polymer": "2.0.0-rc.1",
+    "intl": "^1.1.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "t2ym/web-component-tester#wct6-plugin",
+    "iron-component-page": "PolymerElements/iron-component-page#2.0-preview",
+    "iron-selector": "PolymerElements/iron-selector#2.0-preview",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#2.0-preview",
+    "paper-input": "PolymerElements/paper-input#2.0-preview",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#2.0-preview",
+    "paper-menu": "PolymerElements/paper-menu#^1.2.2",
+    "paper-item": "PolymerElements/paper-item#2.0-preview",
+    "paper-icon-button": "PolymerElements/paper-icon-button#2.0-preview",
+    "marked-element": "PolymerElements/marked-element#2.0-preview",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#2.0-preview",
+    "iron-collapse": "PolymerElements/iron-collapse#2.0-preview",
+    "promise-polyfill": "polymerlabs/promise-polyfill#^1.0.0"
+  },
+  "resolutions": {
+    "iron-collapse": "2.0-preview",
+    "iron-flex-layout": "2.0-preview",
+    "polymer": "2.0.0-rc.1",
+    "iron-selector": "2.0-preview",
+    "iron-behaviors": "2.0-preview",
+    "paper-styles": "2.0-preview",
+    "iron-resizable-behavior": "2.0-preview",
+    "iron-a11y-keys-behavior": "2.0-preview",
+    "webcomponentsjs": "v1.0.0-rc.4"
+  }
+}

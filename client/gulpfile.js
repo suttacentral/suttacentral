@@ -1,19 +1,18 @@
 const gulp = require('gulp');
 const i18nPreprocess = require('gulp-i18n-preprocess');
 
-gulp.task('preprocess', function () {
-    const options = {
-        replacingText: false, // does not replace strings with {{annotations}}
-        jsonSpace: 2, // JSON stringification parameter for formatting
-        srcPath: 'app', // base source path
-        force: false, // does not force preprocessing when i18n-behavior.html is not imported
-        dropHtml: false, // does not drop the preprocessed HTML for output
-        dropJson: false, // does not drop the extracted JSON files for output
-        constructAttributesRepository: false, // does not construct localizable attributes repository
-        attributesRepositoryPath: null // does not specify the path to i18n-attr-repo.html
-    };
+// Global object to store localizable attributes repository
+let attributesRepository; // constructed attributes repository
 
-    return gulp.src([ 'app/elements/**/*.html' ])
-    .pipe(i18nPreprocess(options))
-    .pipe(gulp.dest('dist/elements'));
+// Other standard pipes such as crisper / minification / uglification are omitted for explanation
+gulp.task('preprocess', function () {
+    const elements = gulp.src(['elements/static/**/*.html']) // input custom element HTMLs
+        .pipe(i18nPreprocess({
+            replacingText: true, // replace UI texts with {{annotations}}
+            jsonSpace: 2, // JSON format with 2 spaces
+            attributesRepository: attributesRepository // input attributes repository
+        }))
+        .pipe(gulp.dest('localization/i18nOutput')); // output preprocessed HTMLs and default JSON files to dist
+
+    return elements;
 });

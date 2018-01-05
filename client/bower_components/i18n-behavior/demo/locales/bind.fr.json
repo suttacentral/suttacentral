@@ -1,0 +1,13 @@
+{
+  "model": {
+    "input": {
+      "placeholder": "étiquette d'espace réservé"
+    }
+  },
+  "label": "UI étiquette texte",
+  "ul_1:li_2": [
+    "lang = {1} (Cet article est automatiquement converti en {2})",
+    "{{lang}}",
+    "<i18n-format>"
+  ]
+}

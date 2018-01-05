@@ -1,0 +1,36 @@
+{
+  "meta": {},
+  "model": {
+    "aria-attributes": {
+      "title": "tooltip text",
+      "aria-label": "aria label text",
+      "aria-valuetext": "aria value text"
+    }
+  },
+  "annotated-format": [
+    "{{tr(status,text.statusMessageFormats)}}",
+    "{{parameter}}",
+    "string parameter"
+  ],
+  "span_5": [
+    "{1} {2}",
+    "{{text.defaultValue}}",
+    "{{text.defaultValue}}"
+  ],
+  "statusMessages": {
+    "ok": "healthy status",
+    "busy": "busy status",
+    "error": "error status",
+    "default": "unknown status"
+  },
+  "defaultValue": "default value",
+  "statusMessageFormats": {
+    "ok": "healthy status",
+    "busy": "busy status with {2}",
+    "error": "error status with {1} and {2}",
+    "default": "unknown status"
+  },
+  "nodefault": {
+    "ok": "ok status"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "i18n-number",
+  "version": "2.0.2",
+  "description": "Wrapper element for Intl.NumberFormat",
+  "main": "i18n-number.html",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "wct && if [ \"${TRAVIS_BRANCH}\" != \"\" ]; then coveralls <./test/coverage-report/lcov.info; fi",
+    "clean": "rm -rvf ./test/coverage-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t2ym/i18n-number.git"
+  },
+  "keywords": [
+    "polymer",
+    "web-component",
+    "web-components",
+    "i18n",
+    "internationalization",
+    "intl",
+    "numberformat"
+  ],
+  "author": "Tetsuya Mori <t2y3141592@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/t2ym/i18n-number/issues"
+  },
+  "homepage": "https://github.com/t2ym/i18n-number#readme",
+  "devDependencies": {
+    "coveralls": "^2.11.8",
+    "lcov-result-merger": "^1.2.0",
+    "web-component-tester": "t2ym/web-component-tester#wct6-plugin",
+    "web-component-tester-istanbul": "t2ym/web-component-tester-istanbul#0.10.1-wct6.11"
+  }
+}

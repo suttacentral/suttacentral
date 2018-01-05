@@ -1,0 +1,1220 @@
+<!--
+@license https://github.com/t2ym/i18n-format/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../promise-polyfill/promise-polyfill-lite.html">
+    <link rel="import" href="../i18n-format.html">
+    <link rel="import" href="bound-i18n-format.html">
+  </head>
+  <body>
+
+    <test-fixture id="default">
+      <template is="dom-template">
+        <i18n-format></i18n-format>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="static">
+      <template is="dom-template">
+        <i18n-format lang="en">
+          <span>Parameter {1} and {2} are rendered.</span>
+          <b>A</b>
+          <i>B</i>
+        </i18n-format>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="non-default-attributes">
+      <template is="dom-template">
+        <i18n-format lang="fr" param-attribute="parameter" param-format="%n%">
+          <span>Parameter %1% and %2% are rendered.</span>
+          <b>A</b>
+          <i>B</i>
+        </i18n-format>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="bound">
+      <template is="dom-template" id="bound-template">
+        <i18n-format lang="{{lang}}">
+          <span>{{text.0}}</span>
+          <b>{{text.1}}</b>
+          <i>{{text.2}}</i>
+        </i18n-format>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="compound-static">
+      <template is="dom-template">
+        <i18n-format lang="en">
+          <json-data>{
+            "0": "You ({3}) gave no gifts.",
+            "1": {
+              "male": "You ({3}) gave him ({4}) {5}.",
+              "female": "You ({3}) gave her ({4}) {5}.",
+              "other": "You ({3}) gave them ({4}) {5}."
+            },
+            "one": {
+              "male": "You ({3}) gave him ({4}) and one other person {5}.",
+              "female": "You ({3}) gave her ({4}) and one other person {5}.",
+              "other": "You ({3}) gave them ({4}) and one other person {5}."
+            },
+            "other": "You ({3}) gave them ({4}) and {1} other people gifts."
+          }</json-data>
+          <i18n-number lang="en" offset="1">2</i18n-number>
+          <span>female</span>
+          <span>Joe</span>
+          <span>Alice</span>
+          <span>a gift</span>
+          <span>{{dummy}}</span>
+        </i18n-format>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="bound-and-wrapped">
+      <template is="dom-template" id="bound-and-wrapped-template">
+        <bound-i18n-format 
+          locale="{{lang}}"
+          text="{{text}}"
+          param-format="{{paramFormat}}"
+          compound-text="{{compoundText}}"
+          recipients="{{recipients}}"
+          sender="{{sender}}"></bound-i18n-format>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="json-error-static">
+      <template is="dom-template">
+        <i18n-format>
+          <json-data>ERROR</json-data>
+        </i18n-format>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="no-template-found-static">
+      <template is="dom-template">
+        <i18n-format lang="en">
+          <json-data>{
+            "male": "He ({2}) is {1}.",
+            "female": "She ({2}) is {1}."
+          }</json-data>
+          <span>unknown</span>
+          <span>Yoda</span>
+        </i18n-format>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="default-number-category-static">
+      <template is="dom-template">
+        <i18n-format lang="en">
+          <json-data>{
+            "other": "Default number for {1}."
+          }</json-data>
+          <i18n-number lang="en" offset="0">1</i18n-number>
+        </i18n-format>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="invalid-template-static">
+      <template is="dom-template">
+        <i18n-format lang="en">
+          <json-data>{
+            "other": 1
+          }</json-data>
+          <i18n-number lang="en" offset="0">1</i18n-number>
+        </i18n-format>
+      </template>
+    </test-fixture>
+
+    <script>
+addEventListener('WebComponentsReady', function () {  
+  function getFixture(name, model, event) {
+    return new Promise(function (resolve, reject) {
+      var template = document.querySelector('#' + name);
+      var innerTemplate;
+      var domBind;
+      var container;
+      var content;
+      var element;
+      var bound;
+      if (template) {
+        if (Polymer.LegacyElementMixin) {
+          // Polymer 2.x
+          if (!window.FixtureWrapper) {
+            window.FixtureWrapper = class FixtureWrapper extends Polymer.Element { };
+            customElements.define('fixture-wrapper', FixtureWrapper);
+          }
+
+          if (model) {
+            // emulate <template is="dom-template">
+            // Note: Limitation: the first call must contain all the instance properties in model
+            var f = document.querySelector('test-fixture[id=' + name + ']');
+            var t = f.querySelector('template[is=dom-template]');
+            if (t) {
+              bound = t;
+              var instanceProps = {};
+              var p;
+              for (p in model) {
+                instanceProps[p] = true;
+              }
+              var self = new FixtureWrapper();
+              t.__templatizeOwner = undefined;
+              t._ctor = Polymer.Templatize.templatize(t, self, {
+                instanceProps: instanceProps,
+                forwardHostProp: function(prop, value) {
+                  if (self._instance) {
+                    self._instance.forwardHostProp(prop, value);
+                  }
+                }
+              });
+              t.stamp = function (model) {
+                var _instance = new this._ctor(model);
+                console.log(t.id + ' stamped with ', model, JSON.stringify(_instance.children[1].__data, null, 2));
+                return _instance.root;
+              }.bind(t);
+            }
+          }
+        }
+        if (event) {
+          var resolved = false;
+          var onEvent;
+          template.addEventListener(event, onEvent = function (e) {
+            var target = isV2 ? e.composedPath()[0] : Polymer.dom(e).rootTarget;
+            //console.log('getFixture: received event ' + event + ' from ', e);
+            if (target.parentNode === template) {
+              template.removeEventListener(event, onEvent);
+              if (!resolved) {
+                if (typeof element === 'object') {
+                  resolved = true;
+                  console.log('getFixture ' + name + ' resolved on event ' + event);
+                  resolve({ element: element, fixture: template, boundTemplate: template.querySelector('template[is=dom-template]'), event: e });
+                }
+              }
+            }
+          });
+          setTimeout(function () {
+            if (!resolved) {
+              if (typeof element === 'object') {
+                template.removeEventListener(event, onEvent);
+                resolved = true;
+                //console.log('getFixture ' + name + ' resolved on time out in 1000ms');
+                resolve({ element: element, fixture: template, boundTemplate: template.querySelector('template[is=dom-template]'), event: null });
+              }
+            }
+          }, 1000);
+          element = fixture(name, model);
+          //console.log('fixture returned');
+          if (!resolved) {
+            template.removeEventListener(event, onEvent);
+            resolved = true;
+            resolve({ element: element, fixture: template, boundTemplate: template.querySelector('template[is=dom-template]') });
+          }
+        }
+        else {
+          element = fixture(name, model);
+          resolve({ element: element, fixture: template, boundTemplate: template.querySelector('template[is=dom-template]') });
+        }
+      }
+      else {
+        throw new Error('Could not find test fixture ' + name);
+      }    
+    });
+  }
+  var defaultParamAttribute = Polymer.ElementMixin ? 'slot' : 'param';
+  var defaultSlotElement = Polymer.ElementMixin ? 'SLOT' : 'CONTENT';
+  var defaultSlotAttribute = Polymer.ElementMixin ? 'name' : 'param';
+  var isV2 = !!Polymer.ElementMixin;
+
+  suite('<i18n-format>', function () {
+
+    suite('default values', function () {
+      var el;
+
+      suiteSetup(function () {
+        return getFixture('default').then(function (result) {
+          el = result.element;
+        });
+      });
+
+      test('default lang property', function () {
+        assert.equal(el.lang, 'en', 'default lang is en');
+      });
+
+      test('DEFAULT_LANG property', function () {
+        assert.equal(el.DEFAULT_LANG, 'en', 'DEFAULT_LANG is en');
+      });
+
+      test('default paramAttribute property', function () {
+        assert.equal(el.paramAttribute, defaultParamAttribute, 'default paramAttribute is ' + defaultParamAttribute);
+      });
+
+      test('default paramFormat property', function () {
+        assert.equal(el.paramFormat, '{n}', 'default paramFormat is {n}');
+      });
+
+      test('default observeParams property', function () {
+        assert.isBoolean(el.observeParams, 'observeParams is a Boolean');
+        assert.equal(el.observeParams, true, 'default observeParams is true');
+      });
+
+      test('default textContent is empty', function () {
+        assert.equal(Polymer.dom(el.root).textContent, '', 'textContent is empty');
+      });
+
+      suiteTeardown(function () {
+        el = undefined;
+        var f = document.querySelector('test-fixture#default');
+        if (f && typeof f.restore === 'function') {
+          f.restore();
+        }
+      });
+
+    });
+
+    if (!Number.isNaN) {
+      // polyfill Number.isNaN for IE11
+      Number.isNaN = function (value) {
+        return typeof value === 'number' && isNaN(value);
+      };
+    }
+    var lang1 = 'en';
+    var lang2 = 'fr';
+    var lang3 = 'ja';
+    var lang4 = 'xx';
+    var lang5 = '';
+    var paramAttribute1 = defaultParamAttribute;
+    var paramAttribute2 = 'parameter';
+    var paramFormat1 = '{n}';
+    var paramFormat2 = '%n%';
+
+    var suites = [
+      { 
+        suite: 'static compound template', 
+        fixture: 'compound-static', 
+        model: { dummy: 'dummy' },
+        delay: 1000,
+        assign: { dummy: 'dummy' },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'You (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '3' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'3\']' },
+          { nodeName: '#text', data: ') gave her (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '4' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'4\']' },
+          { nodeName: '#text', data: ') and one other person ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '5' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'5\']' },
+          { nodeName: '#text', data: '.' }
+        ],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: 1, formatted: '1', 'root.PolymerDom.children.0.textContent': '1' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: 'female' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: 'Alice' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: 'a gift' }
+        ]
+      },
+      { 
+        suite: 'static values', 
+        fixture: 'static', 
+        model: undefined, 
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'Parameter ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '1' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'1\']' },
+          { nodeName: '#text', data: ' and ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '2' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'2\']' },
+          { nodeName: '#text', data: ' are rendered.' }
+        ],
+        parameters: [
+          { select: 'b[' + defaultParamAttribute + '=\'1\']', textContent: 'A' },
+          { select: 'i[' + defaultParamAttribute + '=\'2\']', textContent: 'B' }
+        ]
+      },
+      {
+        skip: isV2,
+        suite: 'non-default static parameters', 
+        fixture: 'non-default-attributes', 
+        model: undefined, 
+        lang: lang2,
+        paramAttribute: paramAttribute2,
+        paramFormat: paramFormat2,
+        childNodes: [
+          { nodeName: '#text', data: 'Parameter ' },
+          { nodeName: defaultSlotElement, select: '[parameter=\'1\']' },
+          { nodeName: '#text', data: ' and ' },
+          { nodeName: defaultSlotElement, select: '[parameter=\'2\']' },
+          { nodeName: '#text', data: ' are rendered.' }
+        ],
+        parameters: [
+          { select: 'b[parameter=\'1\']', textContent: 'A' },
+          { select: 'i[parameter=\'2\']', textContent: 'B' }
+        ]
+      },
+      { 
+        suite: 'static bound values', 
+        fixture: 'bound', 
+        model: {
+          lang: 'en',
+          text: [
+            'Parameter {1} and {2} are rendered.',
+            'A',
+            'B'
+          ]
+        }, 
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'Parameter ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '1' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'1\']' },
+          { nodeName: '#text', data: ' and ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '2' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'2\']' },
+          { nodeName: '#text', data: ' are rendered.' }
+        ],
+        parameters: [
+          { select: 'b[' + defaultParamAttribute + '=\'1\']', textContent: 'A' },
+          { select: 'i[' + defaultParamAttribute + '=\'2\']', textContent: 'B' }
+        ]
+      },
+      { 
+        suite: 'json error', 
+        fixture: 'json-error-static', 
+        model: undefined,
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1
+      },
+      { 
+        suite: 'no template found', 
+        fixture: 'no-template-found-static', 
+        model: undefined,
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1
+      },
+      { 
+        suite: 'default number category', 
+        fixture: 'default-number-category-static', 
+        model: undefined,
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1
+      },
+      { 
+        suite: 'invalid template', 
+        fixture: 'invalid-template-static', 
+        model: undefined,
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1
+      }
+    ];
+
+    var updateProperty = function (element, properties) {
+      for (var name in properties) {
+        var path = name.split(/[.]/);
+        if (path.length === 1) {
+          element[name] = properties[name];
+        }
+        else {
+          var cursor = element;
+          var p = path.shift();
+          while (p) {
+            if (path.length < 1) {
+              cursor[p] = properties[name];
+              element.notifyPath(name, properties[name], true);
+              break;
+            }
+            else if (p === 'PolymerDom') {
+              cursor = Polymer.dom(cursor);
+            }
+            else {
+              cursor = cursor[p];
+            }
+            p = path.shift();
+          }
+        }
+      }
+    };
+
+    var updateModel = function (element, model) {
+      for (var name in model) {
+        var path = name.split(/[.]/);
+        if (path.length === 1) {
+          if (name === 'lang' && element.is === 'bound-i18n-format') {
+            element.locale = model.lang;
+          }
+          else {
+            element[name] = model[name];
+          }
+          //console.log('updateModel: notifyPath: name = ' + name);
+          //element.notifyPath(name, model[name], true);
+        }
+        else {
+          var cursor = element;
+          var p = path.shift();
+          while (p) {
+            if (path.length < 1) {
+              cursor[p] = model[name];
+              element.notifyPath(name, model[name], true);
+              break;
+            }
+            else if (p === 'PolymerDom') {
+              cursor = Polymer.dom(cursor);
+            }
+            else {
+              cursor = cursor[p];
+            }
+            p = path.shift();
+          }
+        }
+      }
+    };
+
+    var getProperty = function (target, name) {
+      var path = name.split(/[.]/);
+      if (path.length === 1) {
+        return target[name];
+      }
+      else {
+        var cursor = target;
+        var p = path.shift();
+        while (p) {
+          if (path.length < 1) {
+            return cursor[p];
+          }
+          else if (p === 'PolymerDom') {
+            cursor = Polymer.dom(cursor);
+          }
+          else {
+            cursor = cursor[p];
+          }
+          p = path.shift();
+        }
+      }
+    };
+
+    suites.forEach(function (params) {
+      suite(params.suite, function () {
+        if (params.skip) {
+          return;
+        }
+        var el;
+        var boundTemplate;
+        var rawValue = params.rawValue;
+        var fixtureElement;
+        var lang = params.assign && params.assign.lang ? params.assign.lang : 'en';
+
+        suiteSetup(function () {
+          return getFixture(params.fixture, params.model, 'rendered').then(function (result) {
+            el = result.element;
+            boundTemplate = result.boundTemplate;
+            fixtureElement = result.fixture;
+            return new Promise(function (resolve) {
+              var resolved = false;
+              var onRendered;
+              if (params.assign) {
+                onRendered = function onRendered(e) {
+                  var target = isV2 ? e.composedPath()[0] : Polymer.dom(e).rootTarget;
+                  console.log('received rendered event in suiteSetup');
+                  if (target === el) {
+                    console.log('handling rendered in setup');
+                    el.removeEventListener('rendered', onRendered);
+                    resolved = true;
+                    resolve();
+                  }
+                };
+                if (params.delay) {
+                  setTimeout(function () {
+                    el.addEventListener('rendered', onRendered);
+                  }, params.delay);
+                }
+                else {
+                  el.addEventListener('rendered', onRendered);
+                }
+                setTimeout(function () {
+                  if (!resolved) {
+                    el.removeEventListener('rendered', onRendered);
+                    resolve();
+                  }
+                }, 1000);
+                updateProperty(el, params.assign);
+              }
+              else {
+                resolve();
+              }
+            })
+          });
+        });
+
+        test('lang property from attribute', function () {
+          assert.equal(el.lang, params.lang, 'lang is set');
+        });
+
+        test('paramAttribute property is set as ' + params.paramAttribute, function () {
+          assert.isString(el.paramAttribute, 'paramAttribute property is a string');
+          assert.equal(el.paramAttribute, params.paramAttribute, 'paramAttribute property is set');
+        });
+
+        test('paramFormat property is set as ' + params.paramFormat, function () {
+          assert.isString(el.paramFormat, 'paramFormat property is a string');
+          assert.equal(el.paramFormat, params.paramFormat, 'paramForamt property is set');
+        });
+
+        if (params.childNodes) {
+          test('childNodes are set as ' + JSON.stringify(params.childNodes), function (done) {
+            var childNodes = Polymer.dom(el.root).childNodes;
+            var i;
+            for (i = 0; i < params.childNodes.length; i++) {
+              for (var p in params.childNodes[i]) {
+                assert.equal(childNodes[i][p] || childNodes[i].getAttribute(p), params.childNodes[i][p], p + ' is set as ' + params.childNodes[i][p]);
+              }
+            }
+            done();
+          });
+        }
+
+        if (params.parameters) {
+          test('parameters are set as ' + JSON.stringify(params.parameters), function (done) {
+            updateProperty(el, params.assign);
+            var i;
+            for (i = 0; i < params.parameters.length; i++) {
+              var node = Polymer.dom(el).querySelector(params.parameters[i].select);
+              assert.isDefined(node, params.parameters[i].select + ' is defined');
+              for (var p in params.parameters[i]) {
+                if (p === 'select') {
+                  continue;
+                }
+                assert.equal(getProperty(node, p), params.parameters[i][p], p + ' is set as ' + params.parameters[i][p]);
+              }
+            }
+            done();
+          });
+        }
+
+        suiteTeardown(function () {
+          el = undefined;
+          var f = document.querySelector('test-fixture#' + params.fixture);
+          if (f && typeof f.restore === 'function') {
+            f.restore();
+          }
+        });
+
+      });
+    });
+
+    var boundSuites = [
+      { 
+        suite: 'change bound text values', 
+        fixture: 'bound-and-wrapped',
+        target: 'simple',
+        model: {
+          locale: lang1,
+          lang: lang1,
+          text: [
+            'Parameter {1} and {2} are rendered.',
+            'A',
+            'B'
+          ],
+          paramFormat: '{n}',
+          paramAttribute: defaultParamAttribute,
+          compoundText: [
+            {
+              '0': 'You ({3}) gave no gifts.',
+              '1': {
+                'male': 'You ({3}) gave him ({4}) {5}.',
+                'female': 'You ({3}) gave her ({4}) {5}.',
+                'other': 'You ({3}) gave them ({4}) {5}.'
+              },
+              'one': {
+                'male': 'You ({3}) gave him ({4}) and one other person {5}.',
+                'female': 'You ({3}) gave her ({4}) and one other person {5}.',
+                'other': 'You ({3}) gave them ({4}) and one other person {5}.'
+              },
+              'other': 'You ({3}) gave them ({4}) and {1} other people gifts.'
+            },
+            '{{recipients.length}}', // dummy
+            '{{recipients.0.gender}}', // dummy
+            '{{sender.name}}', // dummy
+            '{{recipients.0.name}}', // dummy
+            'a gift'
+          ],
+          offset: 1,
+          recipients: [
+            { name: 'Alice', gender: 'female' },
+            { name: 'Bob', gender: 'male' },
+            { name: 'Yoda', gender: 'other' }
+          ],
+          sender: { name: 'Joe', genger: 'male' }
+        }, 
+        assign: { 
+          text: [
+            'Param {2} and {1} are re-rendered.',
+            'AAA',
+            'BBB'
+          ]
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'Param ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '2' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'2\']' },
+          { nodeName: '#text', data: ' and ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '1' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'1\']' },
+          { nodeName: '#text', data: ' are re-rendered.' }
+        ],
+        parameters: [
+          { select: 'b[' + defaultParamAttribute + '=\'1\']', textContent: 'AAA' },
+          { select: 'i[' + defaultParamAttribute + '=\'2\']', textContent: 'BBB' }
+        ]
+      },
+      { 
+        suite: 'plural category other', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+          recipients: []
+        },
+        assign: { 
+          recipients: [
+            { name: 'Alice', gender: 'female' },
+            { name: 'Bob', gender: 'male' },
+            { name: 'Yoda', gender: 'other' }
+          ]
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'You (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '3' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'3\']' },
+          { nodeName: '#text', data: ') gave them (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '4' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'4\']' },
+          { nodeName: '#text', data: ') and ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '1' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'1\']' },
+          { nodeName: '#text', data: ' other people gifts.' }
+        ],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: 2, formatted: '2', 'root.PolymerDom.children.0.textContent': '2' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: 'female' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: 'Alice' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: 'a gift' }
+        ]
+      },
+      { 
+        suite: 'plural category one', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+          recipients: []
+        },
+        assign: { 
+          recipients: [
+            { name: 'Alice', gender: 'female' },
+            { name: 'Bob', gender: 'male' }
+          ]
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'You (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '3' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'3\']' },
+          { nodeName: '#text', data: ') gave her (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '4' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'4\']' },
+          { nodeName: '#text', data: ') and one other person ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '5' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'5\']' },
+          { nodeName: '#text', data: '.' }
+        ],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: 1, formatted: '1', 'root.PolymerDom.children.0.textContent': '1' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: 'female' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: 'Alice' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: 'a gift' }
+        ]
+      },
+      { 
+        skip: isV2,
+        suite: 'plural category 0', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+          recipients: [
+            { name: 'Alice', gender: 'female' },
+            { name: 'Bob', gender: 'male' }
+          ]
+        },
+        assign: { 
+          recipients: []
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'You (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '3' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'3\']' },
+          { nodeName: '#text', data: ') gave no gifts.' }
+        ],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: -1, formatted: '-1', rawNumber: 0, 'root.PolymerDom.children.0.textContent': '-1' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: '' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: '' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: 'a gift' }
+        ]
+      },
+      { 
+        suite: 'plural category 1', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+          recipients: [
+            { name: 'Alice', gender: 'female' },
+            { name: 'Bob', gender: 'male' }
+          ]
+        },
+        assign: { 
+          recipients: [
+            { name: 'Alice', gender: 'female' },
+          ]
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'You (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '3' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'3\']' },
+          { nodeName: '#text', data: ') gave her (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '4' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'4\']' },
+          { nodeName: '#text', data: ') ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '5' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'5\']' },
+          { nodeName: '#text', data: '.' }
+        ],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: 0, formatted: '0', rawNumber: 1, 'root.PolymerDom.children.0.textContent': '0' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: 'female' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: 'Alice' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: 'a gift' }
+        ]
+      },
+      { 
+        suite: 'gender category default', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+          recipients: []
+        },
+        assign: { 
+          recipients: [
+            { name: 'Yoda', gender: 'unknown' },
+            { name: 'Alice', gender: 'female' }
+          ]
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'You (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '3' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'3\']' },
+          { nodeName: '#text', data: ') gave them (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '4' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'4\']' },
+          { nodeName: '#text', data: ') and one other person ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '5' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'5\']' },
+          { nodeName: '#text', data: '.' }
+        ],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: 1, formatted: '1', 'root.PolymerDom.children.0.textContent': '1' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: 'unknown' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: 'Yoda' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: 'a gift' }
+        ]
+      },
+      { 
+        suite: 'update lang and re-render', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        delay: 10,
+        model: {
+          lang: lang1,
+          recipients: [
+            { name: 'Alice', gender: 'female' },
+            { name: 'Bob', gender: 'male' }
+          ]
+        },
+        assign: { 
+          lang: lang3 // 'ja' -> plural category 'other'
+        },
+        lang: lang3,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'You (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '3' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'3\']' },
+          { nodeName: '#text', data: ') gave them (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '4' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'4\']' },
+          { nodeName: '#text', data: ') and ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '1' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'1\']' },
+          { nodeName: '#text', data: ' other people gifts.' }
+        ],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: 1, formatted: '1', 'root.PolymerDom.children.0.textContent': '1' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: 'female' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: 'Alice' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: 'a gift' }
+        ]
+      },
+      { 
+        suite: 'unknown lang and re-render', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+          locale: lang1,
+          lang: lang1,
+          recipients: []
+        },
+        assign: { 
+          lang: lang4 // 'xx' -> fallback to 'en'
+        },
+        lang: lang4,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1
+      },
+      { 
+        suite: 'null lang and re-render', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+          locale: lang1,
+          lang: lang1,
+          recipients: []
+        },
+        assign: { 
+          lang: lang5 // 'xx' -> fallback to 'en'
+        },
+        lang: lang5,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1
+      },
+      { 
+        suite: 'empty text', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+        },
+        assign: { 
+          compoundText: []
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: 2, formatted: '2', 'root.PolymerDom.children.0.textContent': '2' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: 'female' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: 'Alice' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: '' }
+        ]
+      },
+      { 
+        suite: 'illegal compound template', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+        },
+        assign: { 
+          compoundText: [
+            { 'illegal': 'illegal compound template' }
+          ]
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat1,
+        childNodes: [],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: 2, formatted: '2', 'root.PolymerDom.children.0.textContent': '2' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: 'female' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: 'Alice' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: '' }
+        ]
+      },
+      { 
+        suite: 'change paramFormat', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+          compoundText: [
+            {
+              '0': 'You (%3%) gave no gifts.',
+              '1': {
+                'male': 'You (%3%) gave him (%4%) %5%.',
+                'female': 'You (%3%) gave her (%4%) %5%.',
+                'other': 'You (%3%) gave them (%4%) %5%.'
+              },
+              'one': {
+                'male': 'You (%3%) gave him (%4%) and one other person %5%.',
+                'female': 'You (%3%) gave her (%4%) and one other person %5%.',
+                'other': 'You (%3%) gave them (%4%) and one other person %5%.'
+              },
+              'other': 'You (%3%) gave them (%4%) and %1% other people gifts.'
+            },
+            '{{recipients.length}}', // dummy
+            '{{recipients.0.gender}}', // dummy
+            '{{sender.name}}', // dummy
+            '{{recipients.0.name}}', // dummy
+            'a gift'
+          ],
+          recipients: [
+            { name: 'Alice', gender: 'female' },
+            { name: 'Bob', gender: 'male' }
+          ]
+        },
+        assign: {
+          paramFormat: paramFormat2
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute1,
+        paramFormat: paramFormat2,
+        childNodes: [
+          { nodeName: '#text', data: 'You (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '3' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'3\']' },
+          { nodeName: '#text', data: ') gave her (' },
+          isV2 ? { nodeName: defaultSlotElement, name: '4' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'4\']' },
+          { nodeName: '#text', data: ') and one other person ' },
+          isV2 ? { nodeName: defaultSlotElement, name: '5' }
+               : { nodeName: defaultSlotElement, select: '[' + defaultSlotAttribute + '=\'5\']' },
+          { nodeName: '#text', data: '.' }
+        ],
+        parameters: [
+          { select: 'i18n-number[' + defaultParamAttribute + '=\'1\']', number: 1, formatted: '1', 'root.PolymerDom.children.0.textContent': '1' },
+          { select: 'span[' + defaultParamAttribute + '=\'2\']', textContent: 'female' },
+          { select: 'span[' + defaultParamAttribute + '=\'3\']', textContent: 'Joe' },
+          { select: 'span[' + defaultParamAttribute + '=\'4\']', textContent: 'Alice' },
+          { select: 'span[' + defaultParamAttribute + '=\'5\']', textContent: 'a gift' }
+        ]
+      },
+      {
+        skip: isV2,
+        suite: 'change paramAttribute', 
+        fixture: 'bound-and-wrapped',
+        target: 'compound',
+        model: {
+          recipients: [
+            { name: 'Alice', gender: 'female' },
+            { name: 'Bob', gender: 'male' }
+          ]
+        },
+        assign: {
+          paramAttribute: paramAttribute2
+        },
+        lang: lang1,
+        paramAttribute: paramAttribute2,
+        paramFormat: paramFormat1,
+        childNodes: [
+          { nodeName: '#text', data: 'You (' },
+          { nodeName: defaultSlotElement, select: '[parameter=\'3\']' },
+          { nodeName: '#text', data: ') gave her (' },
+          { nodeName: defaultSlotElement, select: '[parameter=\'4\']' },
+          { nodeName: '#text', data: ') and one other person ' },
+          { nodeName: defaultSlotElement, select: '[parameter=\'5\']' },
+          { nodeName: '#text', data: '.' }
+        ],
+        parameters: [
+          { select: 'i18n-number[parameter=\'1\']', number: 1, formatted: '1', 'root.PolymerDom.children.0.textContent': '1' },
+          { select: 'span[parameter=\'2\']', textContent: 'female' },
+          { select: 'span[parameter=\'3\']', textContent: 'Joe' },
+          { select: 'span[parameter=\'4\']', textContent: 'Alice' },
+          { select: 'span[parameter=\'5\']', textContent: 'a gift' }
+        ]
+      }
+    ];
+
+    suite('bound in a local DOM', function () {
+      var wrapper;
+      var el;
+      var boundTemplate;
+
+      var reattach = function (placeholder) {
+        var simple = Polymer.dom(placeholder).querySelector('#simple');
+        var compound = Polymer.dom(placeholder).querySelector('#compound');
+        Polymer.dom(placeholder).removeChild(simple);
+        Polymer.dom(placeholder).appendChild(simple);
+        Polymer.dom(placeholder).removeChild(compound);
+        Polymer.dom(placeholder).appendChild(compound);
+      };
+
+      boundSuites.forEach(function (params) {
+
+        [ false, true ].forEach(function (isReattach) {
+
+          suite(params.suite + (isReattach ? ' with reattaching' : ''), function () {
+            if (params.skip) {
+              return;
+            }
+
+            suiteSetup(function () {
+              return getFixture(params.fixture, params.model, 'rendered').then(function (result) {
+                wrapper = result.element;
+                params.wrapper = wrapper;
+                boundTemplate = result.boundTemplate;
+                fixtureElement = result.fixture;
+                el = wrapper.$[params.target];
+                return new Promise(function (resolve) {
+                  var resolved = false;
+                  var onRendered;
+                  if (params.assign) {
+                    onRendered = function (e) {
+                      var target = isV2 ? e.composedPath()[0] : Polymer.dom(e).rootTarget;
+                      //console.log('received rendered event in suiteSetup');
+                      if (target === wrapper || target === el) {
+                        //console.log('handling rendered in setup');
+                        el.removeEventListener('rendered', onRendered);
+                        resolved = true;
+                        //console.log('suiteSetup resolved on event rendered');
+                        resolve();
+                      }
+                      else {
+                        //console.log('skipping rendered event from ', target);
+                      }
+                    };
+                    if (params.delay) {
+                      setTimeout(function () {
+                        wrapper.addEventListener('rendered', onRendered);
+                      }, params.delay);
+                    }
+                    else {
+                      wrapper.addEventListener('rendered', onRendered);
+                    }
+                    setTimeout(function () {
+                      if (!resolved) {
+                        wrapper.removeEventListener('rendered', onRendered);
+                        //console.log('suiteSetup resolved on time out');
+                        resolve();
+                      }
+                    }, 5000);
+                    if (params.assign && params.assign.lang === 'xx') {
+                      el.lastTemplateText = undefined;
+                    }
+                    //console.log('suiteSetup updateModel params.assign');
+                    updateModel(wrapper, params.assign);
+                  }
+                  else {
+                    //console.log('suiteSetup resolved immediately');
+                    resolve();
+                  }
+                })
+              });
+            });
+
+            test('lang property is ' + params.lang, function () {
+              assert.equal(el.lang, params.lang, 'lang is ' + params.lang);
+            });
+
+            test('paramAttribute property is ' + params.paramAttribute, function () {
+              assert.equal(el.paramAttribute, params.paramAttribute, 'paramAttribute is ' + params.paramAttribute);
+            });
+
+            test('paramFormat property is ' + params.paramFormat, function () {
+              assert.equal(el.paramFormat, params.paramFormat, 'paramFormat is ' + params.paramFormat);
+            });
+
+            if (params.childNodes) {
+              test('updated childNodes are ' + JSON.stringify(params.childNodes), function (done) {
+                var childNodes = Polymer.dom(el.root).childNodes;
+                var i;
+                for (i = 0; i < params.childNodes.length; i++) {
+                  for (var p in params.childNodes[i]) {
+                    assert.equal(childNodes[i][p] || childNodes[i].getAttribute(p), params.childNodes[i][p], p + ' is set as ' + params.childNodes[i][p]);
+                  }
+                }
+                done();
+              });
+            }
+
+            if (params.parameters) {
+              test('updated parameters are ' + JSON.stringify(params.parameters), function (done) {
+                var i;
+                for (i = 0; i < params.parameters.length; i++) {
+                  var node = Polymer.dom(el).querySelector(params.parameters[i].select);
+                  assert.isDefined(node, params.parameters[i].select + ' is defined');
+                  for (var p in params.parameters[i]) {
+                    if (p === 'select') {
+                      continue;
+                    }
+                    try {
+                      assert.equal(getProperty(node, p), params.parameters[i][p], p + ' is set as ' + params.parameters[i][p]);
+                    }
+                    catch (e) {
+                      debugger;
+                      throw e;
+                    }
+                  }
+                }
+                done();
+              });
+            }
+
+            suiteTeardown(function () {
+              el = undefined;
+              var f = document.querySelector('test-fixture#' + params.fixture);
+              if (f && typeof f.restore === 'function') {
+                f.restore();
+              }
+            });
+
+          });
+        });
+      });
+    });
+
+  });
+});
+    </script>
+
+  </body>
+</html>

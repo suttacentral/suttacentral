@@ -1,0 +1,43 @@
+{
+  "name": "make-plural",
+  "main": "make-plural.js",
+  "homepage": "https://github.com/eemeli/make-plural.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eemeli/make-plural.js.git"
+  },
+  "authors": [
+    "Eemeli Aro <eemeli@gmail.com>"
+  ],
+  "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "unicode",
+    "cldr",
+    "i18n",
+    "pluralization"
+  ],
+  "license": "ISC",
+  "ignore": [
+    ".*",
+    "Makefile",
+    "package.json",
+    "src/",
+    "test/"
+  ],
+  "version": "3.0.6",
+  "_release": "3.0.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.0.6",
+    "commit": "62bf9e42d4d7873aafeb1cd86c218d143dd71286"
+  },
+  "_source": "https://github.com/eemeli/make-plural.js.git",
+  "_target": "^3.0.3",
+  "_originalSource": "make-plural"
+}

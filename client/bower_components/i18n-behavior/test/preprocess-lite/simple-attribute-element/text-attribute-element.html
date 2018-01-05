@@ -1,0 +1,122 @@
+<!--
+@license https://github.com/t2ym/i18n-behavior/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+--><html><head><link rel="import" href="../../../i18n-behavior.html">
+
+</head><body><i18n-attr-repo>
+  <template id="custom">
+    <text-attribute-element custom-text-attr2=""></text-attribute-element>
+    <text-attribute-element custom-text-attr4="$"></text-attribute-element>
+    <text-attribute-element custom-text-attr5="$"></text-attribute-element>
+    <text-attribute-element i18n-target=""></text-attribute-element>
+    <text-attribute-element i18n-target="boolean-attr,!boolean-attr2,string-attr=abc|def,empty-attr=,type1"></text-attribute-element>
+    <text-attribute-element i18n-target="boolean-attr,boolean-attr2,string-attr=aaa,type2"></text-attribute-element>
+    <text-attribute-element i18n-target="string-attr=aaa,string-attr2=bbb,type3"></text-attribute-element>
+    <text-attribute-element i18n-target="boolean-attr=,type4"></text-attribute-element>
+    <text-attribute-element i18n-target2="boolean-attr,!boolean-attr2,string-attr=abc|def,empty-attr=,type1"></text-attribute-element>
+    <text-attribute-element i18n-target2="boolean-attr,boolean-attr2,,string-attr=aaa,,type2"></text-attribute-element>
+    <text-attribute-element i18n-target2="string-attr=aaa,string-attr2=bbb,type3"></text-attribute-element>
+    <text-attribute-element i18n-target2="boolean-attr=,type4"></text-attribute-element>
+    <text-attribute-element i18n-target2="type5"></text-attribute-element>
+    <text-attribute-element i18n-target3="string-attr=aaa,type1"></text-attribute-element>
+    <text-attribute-element i18n-target3=""></text-attribute-element>
+    <text-attribute-element i18n-target4=""></text-attribute-element>
+    <text-attribute-element i18n-target4="string-attr=aaa,type1"></text-attribute-element>
+    <text-attribute-element i18n-target5=""></text-attribute-element>
+    <text-attribute-element i18n-target5="type1"></text-attribute-element>
+    <text-attribute-element i18n-target="boolean-attr=,type4"></text-attribute-element>
+    <text-attribute-element i18n-target="string-attr=aaa,string-attr2=bbb,type3"></text-attribute-element>
+    <text-attribute-element i18n-target="boolean-attr,,boolean-attr2,,string-attr=aaa"></text-attribute-element>
+    <text-attribute-element i18n-target="boolean-attr,!boolean-attr2,string-attr=abc|def,empty-attr=,type1"></text-attribute-element>
+    <text-attribute-element i18n-target=""></text-attribute-element>
+    <text-attribute-element i18n-target2="type5"></text-attribute-element>
+    <text-attribute-element i18n-target2="boolean-attr="></text-attribute-element>
+    <text-attribute-element i18n-target2="string-attr=aaa,string-attr2=bbb,type3"></text-attribute-element>
+    <text-attribute-element i18n-target2="boolean-attr,!boolean-attr2,,string-attr=abc|def,,empty-attr=,type1"></text-attribute-element>
+    <text-attribute-element i18n-target2="boolean-attr,,boolean-attr2,,string-attr=aaa,type2"></text-attribute-element>
+    <text-attribute-element i18n-target3="string-attr=aaa,type1"></text-attribute-element>
+    <text-attribute-element i18n-target3=""></text-attribute-element>
+    <text-attribute-element i18n-target4=""></text-attribute-element>
+    <text-attribute-element i18n-target4="string-attr=aaa,type1"></text-attribute-element>
+    <text-attribute-element i18n-target5=""></text-attribute-element>
+    <text-attribute-element i18n-target5="type1"></text-attribute-element>
+    <text-attribute-element i18n-target6="type5"></text-attribute-element>
+    <text-attribute-element i18n-target6="boolean-attr="></text-attribute-element>
+    <text-attribute-element i18n-target6="boolean-attr,boolean-attr2,type1"></text-attribute-element>
+    <text-attribute-element i18n-target6="boolean-attr,boolean-attr2,string-attr=aaa,type2"></text-attribute-element>
+    <text-attribute-element i18n-target7="string-attr=aaa,type1"></text-attribute-element>
+    <text-attribute-element i18n-target7="invalid!attr=aaa,typeX"></text-attribute-element>
+  </template>
+</i18n-attr-repo>
+<dom-module id="text-attribute-element">
+  <template text-attr="custom-text-attr1 custom-text-attr3" localizable-text="embedded">
+    <span id="attr1">{{customTextAttr1}}</span>
+    <span id="attr2">{{customTextAttr2}}</span>
+    <span id="attr3">{{customTextAttr3}}</span>
+    <span id="attr4">{{outOfScopeAttr}}</span>
+    <span>{{text.span_4}}</span>
+  <template id="localizable-text">
+<json-data>
+{
+  "meta": {},
+  "model": {},
+  "span_4": "text"
+}
+</json-data>
+</template>
+</template>
+  <script>
+    Polymer({
+      is: 'text-attribute-element',
+
+      behaviors: [
+        BehaviorsStore.I18nBehavior
+      ],
+
+      properties: {
+        customTextAttr1: {
+          type: String,
+          reflectToAttribute: true
+        },
+        customTextAttr2: {
+          type: String,
+          reflectToAttribute: true
+        },
+        customTextAttr3: {
+          type: String,
+          reflectToAttribute: true
+        },
+        outOfScopeAttr: {
+          type: String,
+          reflectToAttribute: true
+        },
+        i18nTarget: {
+          type: String
+        },
+        i18nTarget2: {
+          type: String
+        }
+      },
+
+      observers: [
+      ],
+
+      listeners: {
+        'lang-updated': '_langUpdated'
+      },
+
+      ready: function () {
+        //this.observeHtmlLang = false;
+      },
+
+      attached: function () {
+      },
+
+      _langUpdated: function () {
+        this.model = deepcopy(this.text.model);
+      }
+
+    });
+  </script>
+</dom-module>
+</body></html>

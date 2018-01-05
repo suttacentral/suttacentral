@@ -1,0 +1,891 @@
+<!--
+@license https://github.com/t2ym/i18n-number/blob/master/LICENSE.md
+Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../promise-polyfill/promise-polyfill-lite.html">
+    <link rel="import" href="../i18n-number.html">
+    <link rel="import" href="bound-i18n-number.html">
+  </head>
+  <body>
+
+    <test-fixture id="default">
+      <template>
+        <i18n-number></i18n-number>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="static">
+      <template>
+        <i18n-number lang="en" options="{}" offset="1">123456.789</i18n-number>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="bound">
+      <template is="dom-template">
+        <i18n-number lang="en" options="{}" offset="1">{{number}}</i18n-number>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="bound-default-options">
+      <template is="dom-template">
+        <i18n-number lang="en" offset="1">{{number}}</i18n-number>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="bound-currency-options">
+      <template is="dom-template">
+        <i18n-number lang="en" options='{ "style": "currency", "currency": "USD" }' offset="1">{{number}}</i18n-number>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="bound-and-wrapped">
+      <template is="dom-template">
+        <bound-i18n-number></bound-i18n-number>
+      </template>
+    </test-fixture>
+
+    <script>
+function getFixture(name, model) {
+  return new Promise(function (resolve, reject) {
+    var template = document.querySelector('#' + name);
+    var innerTemplate;
+    var domBind;
+    var container;
+    var content;
+    var element;
+    var bound;
+    if (template) {
+      if (Polymer.LegacyElementMixin) {
+        // Polymer 2.x
+        if (!window.FixtureWrapper) {
+          window.FixtureWrapper = class FixtureWrapper extends Polymer.Element { };
+          customElements.define('fixture-wrapper', FixtureWrapper);
+        }
+
+        if (model) {
+          var f = document.querySelector('test-fixture[id=' + name + ']');
+          var t = f.querySelector('template[is=dom-template]');
+          if (t) {
+            var instanceProps = {};
+            var p;
+            for (p in model) {
+              instanceProps[p] = true;
+            }
+            var self = new FixtureWrapper();
+            t.__templatizeOwner = undefined;
+            t._ctor = Polymer.Templatize.templatize(t, self, {
+              instanceProps: instanceProps,
+              forwardHostProp: function(prop, value) {
+                if (self._instance) {
+                  self._instance.forwardHostProp(prop, value);
+                }
+              }
+            });
+            t.stamp = function (model) {
+              var _instance = new this._ctor(model);
+              return _instance.root;
+            }.bind(t);
+          }
+        }
+        element = fixture(name, model);
+        resolve({ element: element });
+      }
+      else {
+        // Polymer 1.x
+        element = fixture(name, model);
+        resolve({ element: element });
+      }
+    }
+    else {
+      throw new Error('Could not find test fixture ' + name);
+    }    
+  });
+}
+
+suite('<i18n-number>', function () {
+
+  suite('default values', function () {
+    var el;
+
+    suiteSetup(function () {
+      return getFixture('default').then(function (result) {
+        el = result.element;
+      });
+    });
+
+    test('default lang property', function () {
+      assert.equal(el.lang, 'en', 'default lang is en');
+    });
+
+    test('default options property', function () {
+      assert.isUndefined(el.options, 'default options is undefined');
+    });
+
+    test('default raw property', function () {
+      assert.equal(el.raw, '', 'default raw is a null string');
+    });
+
+    test('default offset property', function () {
+      assert.isNumber(el.offset, 'offset is a number');
+      assert.equal(el.offset, 0, 'default offset is 0');
+    });
+
+    test('default rawNumber property', function () {
+      assert.isUndefined(el.rawNumber, 'rawNumber is undefined when raw is null');
+    });
+
+    test('default number property', function () {
+      assert.isUndefined(el.number, 'number is undefined when raw is null');
+    });
+
+    test('default formatted property', function () {
+      assert.isUndefined(el.formatted, 'formatted is undefined when raw is null');
+    });
+  });
+
+  if (!Number.isNaN) {
+    // polyfill Number.isNaN for IE11
+    Number.isNaN = function (value) {
+      return typeof value === 'number' && isNaN(value);
+    };
+  }
+  var rawValue1 = '123456.789';
+  var rawNumber1 = Number(rawValue1);
+  var rawValueInvalid = 'ABC';
+  var rawNumberInvalid = Number(rawValueInvalid);
+  var offset1 = 1;
+  var offset2 = 2;
+  var offsetInvalid = 'ABCD';
+  var number1 = rawNumber1 - offset1;
+  var number2 = rawNumber1 - offset2;
+  var formatted1_en = '123,455.789';
+  var formatted1_fr = '123\u00A0455,789';
+  var formatted1_ja = '123,455.789';
+  var formatted1_de_BE = '123.455,789';
+  var formatted1_USD = '$123,455.79';
+  var formatted1_JPY = '¥123,456';
+  var formatted1_offset = '123,454.789';
+  var langs = [ 'fr', 'ja', 'zh-Hans-CN-x-linux', 'ru', 'zh-yue-Hans-CN', 'zh-CN', 'zh-TW', 'zh-CHS', 'zh-Hans-CN', '' ];
+  var formatted = [
+    formatted1_fr,
+    formatted1_ja,
+    formatted1_en,
+    formatted1_fr,
+    formatted1_en,
+    formatted1_en,
+    formatted1_en,
+    formatted1_en,
+    formatted1_en,
+    formatted1_en
+  ];
+  var suites = [
+    { 
+      suite: 'static value', 
+      fixture: 'static', 
+      model: undefined, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      formatted: formatted1_en
+    },
+    { 
+      suite: 'bound value', 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: undefined,
+      formatted: formatted1_en
+    },
+    { 
+      suite: 'change raw value', 
+      fixture: 'bound', 
+      model: { number: '987654.321' }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { raw: rawValue1 },
+      formatted: formatted1_en
+    },
+    { 
+      suite: 'change lang value', 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: 'fr' },
+      formatted: formatted1_fr
+    },
+    { 
+      suite: 'change options object value', 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: { 'style': 'currency', 'currency': 'USD' },
+      assign: { options: { 'style': 'currency', 'currency': 'USD' } },
+      formatted: formatted1_USD
+    },
+    { 
+      suite: 'change options property values', 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: { 'style': 'currency', 'currency': 'USD' },
+      assign: { 'options': {}, 'options.style': 'currency', 'options.currency': 'USD' },
+      formatted: formatted1_USD
+    },
+    { 
+      suite: 'change currency options object value', 
+      fixture: 'bound-currency-options', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: { 'style': 'currency', 'currency': 'JPY' },
+      assign: { options: { 'style': 'currency', 'currency': 'JPY' } },
+      formatted: formatted1_JPY
+    },
+    { 
+      suite: 'change currency options property values', 
+      fixture: 'bound-currency-options', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: { 'style': 'currency', 'currency': 'JPY' },
+      assign: { 'options.currency': 'JPY' },
+      formatted: formatted1_JPY
+    },
+    { 
+      suite: 'default options object value', 
+      fixture: 'bound-default-options', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: undefined,
+      formatted: formatted1_en
+    },
+    { 
+      suite: 'change options object value from default options', 
+      fixture: 'bound-default-options', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: { 'style': 'currency', 'currency': 'USD' },
+      assign: { options: { 'style': 'currency', 'currency': 'USD' } },
+      formatted: formatted1_USD
+    },
+    { 
+      suite: 'change options property values from default options', 
+      fixture: 'bound-default-options', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: { 'style': 'currency', 'currency': 'USD' },
+      assign: { 'options': {}, 'options.style': 'currency', 'options.currency': 'USD' },
+      formatted: formatted1_USD
+    },
+    { 
+      suite: 'change offset value', 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset2,
+      rawNumber: rawNumber1,
+      number: number2,
+      options: {},
+      assign: { offset: offset2 },
+      formatted: formatted1_offset
+    },
+    { 
+      suite: 'invalid value', 
+      fixture: 'bound', 
+      model: { number: rawValueInvalid }, 
+      rawValue: rawValueInvalid,
+      offset: offset1,
+      rawNumber: NaN,
+      number: NaN,
+      options: {},
+      formatted: 'NaN'
+    },
+    { 
+      suite: 'invalid offset value', 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offsetInvalid,
+      rawNumber: rawValue1,
+      number: NaN,
+      options: {},
+      assign: { offset: offsetInvalid },
+      formatted: 'NaN'
+    },
+    { 
+      suite: 'invalid lang value', 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: 'xx' },
+      formatted: formatted1_en
+    },
+    { 
+      suite: 'case insensitive lang value', 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: 'De-bE' },
+      formatted: formatted1_de_BE
+    },
+    { 
+      suite: 'fallback lang value', 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: 'ja-CA' },
+      formatted: formatted1_ja
+    },
+    { 
+      suite: 'lang value ' + langs[0], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[0] },
+      formatted: formatted[0]
+    },
+    { 
+      suite: 'lang value ' + langs[1], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[1] },
+      formatted: formatted[1]
+    },
+    { 
+      suite: 'lang value ' + langs[2], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[2] },
+      formatted: formatted[2]
+    },
+    { 
+      suite: 'lang value ' + langs[3], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[3] },
+      formatted: formatted[3]
+    },
+    { 
+      suite: 'lang value ' + langs[4], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[4] },
+      formatted: formatted[4]
+    },
+    { 
+      suite: 'lang value ' + langs[5], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[5] },
+      formatted: formatted[5]
+    },
+    { 
+      suite: 'lang value ' + langs[6], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[6] },
+      formatted: formatted[6]
+    },
+    { 
+      suite: 'lang value ' + langs[7], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[7] },
+      formatted: formatted[7]
+    },
+    { 
+      suite: 'lang value ' + langs[8], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[8] },
+      formatted: formatted[8]
+    },
+    { 
+      suite: 'lang value ' + langs[9], 
+      fixture: 'bound', 
+      model: { number: rawValue1 }, 
+      rawValue: rawValue1,
+      offset: offset1,
+      rawNumber: rawNumber1,
+      number: number1,
+      options: {},
+      assign: { lang: langs[9] },
+      formatted: formatted[9]
+    }
+  ];
+
+  suites.forEach(function (params) {
+
+    suite(params.suite, function () {
+      var el;
+      var boundTemplate;
+      var rawValue = params.rawValue;
+      var fixtureElement;
+      var lang = params.assign && params.assign.lang ? params.assign.lang : 'en';
+      var updateModel = function (element, model) {
+        for (var name in model) {
+          var path = name.split(/[.]/);
+          if (path.length === 1) {
+            element[name] = model[name];
+          }
+          else {
+            var cursor = element;
+            var p = path.shift();
+            while (p) {
+              if (path.length < 1) {
+                cursor[p] = model[name];
+                element.notifyPath(name, model[name], true);
+                break;
+              }
+              else {
+                cursor = cursor[p];
+              }
+              p = path.shift();
+            }
+          }
+        }
+      };
+
+      setup(function () {
+        return getFixture(params.fixture, params.model).then(function (result) {
+          el = result.element;
+          boundTemplate = result.boundTemplate;
+        });
+      });
+
+      test('lang property from attribute', function (done) {
+        var doneCalled = false;
+        var langPropertyFromAttribute;
+        if (params.assign && typeof params.assign.lang !== 'undefined') {
+          el.addEventListener('rendered', langPropertyFromAttribute = function (e) {
+            if (!doneCalled) {
+              el.removeEventListener('rendered', langPropertyFromAttribute);
+              assert.equal(el.lang, lang, 'lang is set');
+              doneCalled = true;
+              done();
+            }
+            return false;
+          });
+          updateModel(el, params.assign);          
+        }
+        else {
+          updateModel(el, params.assign);          
+          assert.equal(el.lang, lang, 'lang is set');
+          done();      
+        }
+      });
+
+      test('options property from attribute is set as ' 
+          + JSON.stringify(params.options), function () {
+        updateModel(el, params.assign);
+        assert.deepEqual(el.options, params.options, 'options is set');
+      });
+
+      test('textContent is set as ' + rawValue, function () {
+        updateModel(el, params.assign);
+        assert.equal(Polymer.dom(el).textContent, rawValue, 'textContent is ' + rawValue);
+      });
+
+      test('raw property is set as ' + rawValue, function () {
+        updateModel(el, params.assign);
+        assert.isString(el.raw, 'raw property is a string');
+        assert.equal(el.raw, rawValue, 'raw property is set as the raw value');
+      });
+
+      test('offset property from attribute is set as ' + params.offset, function () {
+        updateModel(el, params.assign);
+        if (typeof params.offset === 'number') {
+          assert.isNumber(el.offset, 'offset is a number');
+        }
+        if (Number.isNaN(params.offset)) {
+          assert.ok(Number.isNaN(el.offset), 'offset is NaN');
+        }
+        else {
+          assert.equal(el.offset, params.offset, 'offset is ' + params.offset);
+        }
+      });
+
+      test('rawNumber property is set as ' + params.rawNumber, function () {
+        updateModel(el, params.assign);
+        assert.isNumber(el.rawNumber, 'rawNumber is a number');
+        if (Number.isNaN(params.rawNumber)) {
+          assert.ok(Number.isNaN(el.rawNumber), 'rawNumber is NaN');
+        }
+        else {
+          assert.equal(el.rawNumber, params.rawNumber, 'rawNumber is set');
+        }
+      });
+
+      test('number property is set as ' + params.number, function () {
+        updateModel(el, params.assign);
+        assert.isNumber(el.number, 'number is a number');
+        if (Number.isNaN(params.number)) {
+          assert.ok(Number.isNaN(el.number), 'number is NaN');
+        }
+        else {
+          assert.equal(el.number, params.number, 'number is set');
+        }
+      });
+
+      test('formatted property is set as ' + params.formatted, function (done) {
+        var doneCalled = false;
+        if (params.assign || typeof el.formatted === 'undefined') {
+          el.addEventListener('rendered', function formattedRendered (e) {
+            if (!doneCalled && typeof el.formatted !== 'undefined') {
+              assert.isString(el.formatted, 'formatted is a string');
+              assert.equal(el.formatted, params.formatted);
+              el.removeEventListener('rendered', formattedRendered);
+              doneCalled = true;
+              done();
+            }
+            return false;
+          });
+          updateModel(el, params.assign);
+        }
+        else {
+          assert.isString(el.formatted, 'formatted is a string');
+          assert.equal(el.formatted, params.formatted);
+          done();
+        }
+      });
+
+      test('renders the formatted number ' + params.formatted, function (done) {
+        var doneCalled = false;
+        if (params.assign || typeof el.formatted === 'undefined') {
+          el.addEventListener('rendered', function textContentRendered (e) {
+            if (!doneCalled && typeof el.formatted !== 'undefined') {
+              assert.equal(el.$.number.textContent, params.formatted);
+              el.removeEventListener('rendered', textContentRendered);
+              doneCalled = true;
+              done();
+            }
+            return false;
+          });
+          updateModel(el, params.assign);
+        }
+        else {
+          assert.equal(el.$.number.textContent, params.formatted);
+          done();
+        }
+      });
+
+      teardown(function () {
+        el = undefined;
+        var f = document.querySelector('test-fixture#' + params.fixture);
+        if (f && typeof f.restore === 'function') {
+          f.restore();
+        }
+      });
+    });
+  });
+
+  suite('bound in a local DOM', function () {
+    var wrapper;
+    var el;
+
+    var reattach = function (placeholder) {
+      var num = Polymer.dom(placeholder).querySelector('#num');
+      var empty = Polymer.dom(placeholder).querySelector('#empty');
+      Polymer.dom(placeholder).removeChild(num);
+      Polymer.dom(placeholder).removeChild(empty);
+      Polymer.dom(placeholder).appendChild(num);
+      Polymer.dom(placeholder).appendChild(empty);
+    };
+
+    var updateModel = function (element, model) {
+      for (var name in model) {
+        var path = name.split(/[.]/);
+        if (path.length === 1) {
+          element[name] = model[name];
+        }
+        else {
+          var cursor = element;
+          var p = path.shift();
+          while (p) {
+            if (path.length < 1) {
+              cursor[p] = model[name];
+              element.notifyPath(name, model[name], true);
+              break;
+            }
+            else {
+              cursor = cursor[p];
+            }
+            p = path.shift();
+          }
+        }
+      }
+    };
+
+    [ false, true ].forEach(function (isReattach) {
+
+      setup(function () {
+        wrapper = fixture('bound-and-wrapped');
+        if (isReattach) {
+          reattach(wrapper.$.placeholder);
+        }
+      });
+
+      suite('bound and wrapped' + (isReattach ? ' with reattaching' : ''), function () {
+        setup(function () {
+          el = wrapper.$.num;
+        });
+
+        test('default lang property is en', function () {
+          assert.equal(el.lang, 'en', 'default lang is en');
+        });
+
+        test('default options property is undefined', function () {
+          assert.isUndefined(el.options, 'default options is undefined');
+        });
+
+        test('empty raw property', function () {
+          assert.isString(el.raw, 'empty raw is a string');
+          assert.equal(el.raw, '', 'empty raw is a null string');
+        });
+
+        test('default offset property is 0', function () {
+          assert.isNumber(el.offset, 'offset is a number');
+          assert.equal(el.offset, 0, 'default offset is 0');
+        });
+
+        test('default rawNumber property is undefined', function () {
+          assert.isUndefined(el.rawNumber, 'rawNumber is undefined when raw is null');
+        });
+
+        test('default number property is undefined', function () {
+          assert.isUndefined(el.number, 'number is undefined when raw is null');
+        });
+
+        test('default formatted property is undefined', function () {
+          assert.isUndefined(el.formatted, 'formatted is undefined when raw is null');
+        });
+
+        test('renders a null string', function () {
+          assert.equal(el.$.number.textContent, '', 'textContent is empty');
+        });
+      });
+
+      suite('bound value changed' 
+            + (isReattach ? ' with reattaching' : ''), function () {
+        setup(function () {
+          el = wrapper.$.num;
+        });
+
+        test('change bound value to ' + rawNumber1, function (done) {
+          el.addEventListener('rendered', function changeBoundValue (e) {
+            if (el.$.number.textContent) {
+              assert.equal(el.$.number.textContent, '123,456.789', 
+                          'renders the formatted number');    
+              el.removeEventListener('rendered', changeBoundValue);
+              done();
+            }
+          });
+          wrapper.number = rawNumber1;
+        });
+
+      });
+
+      suite('bound value emptied' 
+            + (isReattach ? ' with reattaching' : ''), function () {
+        setup(function () {
+          el = wrapper.$.num2;
+        });
+
+        test('change bound value to empty', function (done) {
+          el.addEventListener('rendered', function changeBoundValueToEmpty (e) {
+            assert.equal(el.$.number.textContent, '', 
+                        'renders the formatted number');    
+            el.removeEventListener('rendered', changeBoundValueToEmpty);
+            done();
+          });
+          wrapper.number2 = '';
+        });
+
+      });
+
+      suite('non-bound empty textContent changed' 
+            + (isReattach ? ' with reattaching' : ''), function () {
+        setup(function () {
+          el = wrapper.$.empty;
+        });
+
+        test('change empty textContent value to ' + rawNumber1, function (done) {
+          el.addEventListener('rendered', function changeEmptyTextContentValue (e) {
+            if (el.$.number.textContent) {
+              assert.equal(el.$.number.textContent, '123,456.789', 
+                          'renders the formatted number');
+              el.removeEventListener('rendered', changeEmptyTextContentValue);
+              done();
+            }
+          });
+          Polymer.dom(el).textContent = rawNumber1;
+        });
+
+      });
+
+      suite('currency options value changed' 
+            + (isReattach ? ' with reattaching' : ''), function () {
+        setup(function () {
+          el = wrapper.$.currency;
+        });
+
+        test('change currency options value to JPY', function (done) {
+          el.addEventListener('rendered', function changeCurrencyOptionsValueToJPY (e) {
+            if (el.$.number.textContent) {
+              assert.equal(el.$.number.textContent, '¥123,457', 
+                          'renders the formatted currency');
+              el.removeEventListener('rendered', changeCurrencyOptionsValueToJPY);
+              done();
+            }
+          });
+          wrapper.options.currency = 'JPY';
+          wrapper.notifyPath('options.currency', wrapper.options.currency, true);
+        });
+
+      });
+
+      suite('currency options value changed' 
+            + (isReattach ? ' with reattaching' : ''), function () {
+        setup(function () {
+          el = wrapper.$.currency;
+        });
+
+        test('change currency options value to JPY and render()', function (done) {
+          el.addEventListener('rendered', function changeCurrencyOptionsValueToJPYAndRender (e) {
+            if (el.$.number.textContent) {
+              assert.equal(el.$.number.textContent, '¥123,457', 
+                          'renders the formatted currency');
+              el.removeEventListener('rendered', changeCurrencyOptionsValueToJPYAndRender);
+              done();
+            }
+          });
+          wrapper.options.currency = 'JPY';
+          el.render();
+        });
+
+      });
+
+      suite('bound currency options value changed' 
+            + (isReattach ? ' with reattaching' : ''), function () {
+        setup(function () {
+          el = wrapper.$.currency;
+        });
+
+        test('change bound currency options value to JPY', function (done) {
+          el.addEventListener('rendered', function changeBoundCurrencyOptionsValueToJPY (e) {
+            if (el.$.number.textContent) {              
+              assert.equal(el.$.number.textContent, '¥123,457', 
+                          'renders the formatted currency');
+              el.removeEventListener('rendered', changeBoundCurrencyOptionsValueToJPY);
+              done();
+            }
+          });
+          wrapper.$.currencySelector.select('JPY');
+          //wrapper.notifyPath('options.currency', wrapper.options.currency, true);
+        });
+
+      });
+    });    
+  });
+
+});
+    </script>
+
+  </body>
+</html>

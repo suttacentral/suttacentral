@@ -1,0 +1,78 @@
+{
+  "model": {
+    "simple-input": {
+      "placeholder": "Placeholder String"
+    },
+    "data": {
+      "sender": {
+        "name": "Joe",
+        "gender": "male"
+      },
+      "recipients": [
+        {
+          "name": "Alice",
+          "gender": "female"
+        },
+        {
+          "name": "Bob",
+          "gender": "male"
+        },
+        {
+          "name": "Yoda",
+          "gender": "other"
+        }
+      ]
+    }
+  },
+  "h2_1": "Simple String",
+  "simple": "UI Text String",
+  "h2_3": "Simple Attribute",
+  "h2_5": "Automatic Format",
+  "example-sentence": [
+    "This {1} with {2} is automatically converted to {3} to translate it as a whole with any parameter order.",
+    "example sentence",
+    "some parameters or embedded tags",
+    "<i18n-format>"
+  ],
+  "h2_7": "Compound Format with <i18n-format>",
+  "compound-format-text": [
+    {
+      "0": "You ({3}) gave no gifts.",
+      "1": {
+        "male": "You ({3}) gave him ({4}) {5}.",
+        "female": "You ({3}) gave her ({4}) {5}.",
+        "other": "You ({3}) gave them ({4}) {5}."
+      },
+      "one": {
+        "male": "You ({3}) gave him ({4}) and one other person {5}.",
+        "female": "You ({3}) gave her ({4}) and one other person {5}.",
+        "other": "You ({3}) gave them ({4}) and one other person {5}."
+      },
+      "other": "You ({3}) gave them ({4}) and {1} other people gifts."
+    },
+    "{{recipients.length - 1}}",
+    "{{recipients.0.gender}}",
+    "{{model.data.sender.name}}",
+    "{{recipients.0.name}}",
+    "a gift"
+  ],
+  "h2_9": "Parameters",
+  "pre_10": [
+    "lang = {1} ({2})",
+    "{{effectiveLang}}",
+    "{{_getLangName(effectiveLang,text.langNames)}}"
+  ],
+  "pre_11": [
+    "sender = {1}",
+    "{{_getStringifiedUser(model.data.sender)}}"
+  ],
+  "pre_12": [
+    "recipients = {1}",
+    "{{_getStringifiedRecipients(recipients)}}"
+  ],
+  "langNames": {
+    "en": "English",
+    "ja": "Japanese",
+    "fr": "French"
+  }
+}

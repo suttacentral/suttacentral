@@ -1,0 +1,114 @@
+{
+  "input": {
+    "placeholder": true,
+    "value": {
+      "type=button|submit": true
+    }
+  },
+  "any-elements": {
+    "title": true,
+    "aria-label": "$",
+    "aria-valuetext": "$"
+  },
+  "paper-input": {
+    "label": true,
+    "error-message": true,
+    "placeholder": true
+  },
+  "paper-textarea": {
+    "label": true,
+    "error-message": true,
+    "placeholder": true
+  },
+  "paper-dropdown-menu": {
+    "label": true
+  },
+  "paper-toast": {
+    "text": true
+  },
+  "paper-badge": {
+    "label": true
+  },
+  "google-chart": {
+    "options": true,
+    "cols": true,
+    "rows": true,
+    "data": true
+  },
+  "google-signin": {
+    "label-signin": true,
+    "label-signout": true,
+    "label-additional": true
+  },
+  "platinum-push-messaging": {
+    "title": true,
+    "message": true
+  },
+  "json-data": {
+    "any-attributes": true
+  },
+  "text-attribute-element": {
+    "custom-text-attr2": true,
+    "custom-text-attr4": "$",
+    "custom-text-attr5": "$",
+    "i18n-target": {
+      "": true,
+      "boolean-attr": {
+        "!boolean-attr2": {
+          "empty-attr": {
+            "string-attr=abc|def": "type1"
+          }
+        },
+        "boolean-attr2": {
+          "string-attr=aaa": true
+        },
+        "": "type4"
+      },
+      "string-attr=aaa": {
+        "string-attr2=bbb": "type3"
+      }
+    },
+    "i18n-target2": {
+      "boolean-attr": {
+        "!boolean-attr2": {
+          "empty-attr": {
+            "string-attr=abc|def": "type1"
+          }
+        },
+        "boolean-attr2": {
+          "string-attr=aaa": "type2"
+        },
+        "": true
+      },
+      "string-attr=aaa": {
+        "string-attr2=bbb": "type3"
+      },
+      "": "type5"
+    },
+    "i18n-target3": {
+      "string-attr=aaa": "type1",
+      "": true
+    },
+    "i18n-target4": {
+      "": true,
+      "string-attr=aaa": "type1"
+    },
+    "i18n-target5": "type1",
+    "i18n-target6": {
+      "": "type5",
+      "boolean-attr": {
+        "": true,
+        "boolean-attr2": {
+          "": "type1",
+          "string-attr=aaa": "type2"
+        }
+      }
+    },
+    "i18n-target7": {
+      "string-attr=aaa": "type1",
+      "invalid!attr=aaa": "typeX"
+    },
+    "custom-text-attr1": true,
+    "custom-text-attr3": true
+  }
+}

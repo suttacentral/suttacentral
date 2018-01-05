@@ -1,0 +1,1032 @@
+{
+  "compound-binding-dom-bind": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "text": [
+      "fr  outermost text at the beginning with compound {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "h1_3": [
+      "fr outermost header 1 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "text_4": [
+      "fr  outermost text in the middle with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "span_5": [
+      "fr simple text without id with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "span_6": [
+      "fr simple text without id 2 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "label-1": [
+      "fr simple text with id and {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "label-2": [
+      "fr simple text with id and {1} and {2} variables 2",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_9:span": [
+      "fr simple text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_9:span_1": [
+      "fr simple text within div with {1} and {2} variables 2",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_9:div_2:div": [
+      "fr great grandchild text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:text": [
+      "fr  simple text as the first element in div with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:span_1": [
+      "fr simple text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:text_2": [
+      "fr  simple text in the middle of div with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:span_3": [
+      "fr simple text within div with {1} and {2} variables 2",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:div_4:div": [
+      "fr great grandchild text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:text_5": [
+      "fr  simple text at the last element in div with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "toplevel-div:span": [
+      "fr simple text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "toplevel-div:span_1": [
+      "fr simple text within div 2 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "third-level-div": [
+      "fr great grandchild text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "second-level-div:div_1": [
+      "fr great grandchild text within div without id with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_12:ul:li": [
+      "fr line item without id 1 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_12:ul:li_1": [
+      "fr line item without id 2 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_12:ul:li_2": [
+      "fr line item without id 3 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "line-items:li": [
+      "fr line item with id 1 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "line-items:li_1": [
+      "fr line item with id 2 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "line-items:li_2": [
+      "fr line item with id 3 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "p_13": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "paragraph": [
+      "fr A paragraph with {1}, {2}, and {3} is converted to {4}.",
+      "fr id",
+      "{{param1}}",
+      "{{param2}}",
+      "fr <i18n-format>"
+    ],
+    "text_15": [
+      "fr  outermost text at the end with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ]
+  },
+  "simple-attribute-dom-bind": {
+    "meta": {
+      "todo": []
+    },
+    "model": {
+      "standard-input": {
+        "placeholder": "fr standard HTML5 attribute"
+      },
+      "outer-div:input_2": {
+        "placeholder": "fr standard HTML5 attribute without id"
+      },
+      "paper-input-element": {
+        "label": "fr paper-input label",
+        "error-message": "fr paper-input error message",
+        "placeholder": "fr paper-input placeholder"
+      },
+      "outer-div:paper-input_4": {
+        "label": "fr paper-input label without id",
+        "error-message": "fr paper-input error message without id",
+        "placeholder": "fr paper-input placeholder without id"
+      },
+      "pie-chart": {
+        "options": {
+          "title": "fr Distribution of days in 2001H1"
+        },
+        "cols": [
+          {
+            "label": "fr Month",
+            "type": "string"
+          },
+          {
+            "label": "fr Days",
+            "type": "number"
+          }
+        ],
+        "rows": [
+          [
+            "fr Jan",
+            31
+          ],
+          [
+            "fr Feb",
+            28
+          ],
+          [
+            "fr Mar",
+            31
+          ],
+          [
+            "fr Apr",
+            30
+          ],
+          [
+            "fr May",
+            31
+          ],
+          [
+            "fr Jun",
+            30
+          ]
+        ]
+      },
+      "column-chart": {
+        "options": {
+          "title": "fr Inventory"
+        },
+        "data": [
+          [
+            "fr Year",
+            "fr Things",
+            "fr Stuff"
+          ],
+          [
+            "2004",
+            1000,
+            400
+          ],
+          [
+            "2005",
+            1170,
+            460
+          ],
+          [
+            "2006",
+            660,
+            1120
+          ],
+          [
+            "2007",
+            1030,
+            540
+          ]
+        ]
+      },
+      "custom-attr": {
+        "custom-text-attr1": "fr custom text attribute 1",
+        "custom-text-attr2": "fr custom text attribute 2",
+        "custom-text-attr3": "fr custom text attribute 3"
+      },
+      "selective-attr": {
+        "custom-text-attr4": [
+          "fr {1} custom-text-attr4 attribute with param {2} and param {3} {4}",
+          "{{text.ordinary-div}}",
+          "{{text.ordinary-div}}",
+          "[[text.ordinary-div]]",
+          "{{text.ordinary-div}}"
+        ],
+        "custom-text-attr5": [
+          "[[text.ordinary-div]]",
+          "fr  custom-text-attr5 attribute with param ",
+          "{{or('',text.ordinary-div)}}",
+          "fr  and param ",
+          "[[text.ordinary-div]]"
+        ],
+        "i18n-target": [
+          "fr i18n-target attribute with param {1} and param {2}",
+          "{{text.ordinary-div}}",
+          "[[text.ordinary-div]]"
+        ],
+        "i18n-target2": [
+          "fr i18n-target2 attribute with param ",
+          "{{or('',text.ordinary-div)}}",
+          "fr  and param ",
+          "[[text.ordinary-div]]"
+        ]
+      },
+      "selective-attr2": {
+        "i18n-target": "fr i18n-target attribute 2"
+      },
+      "selective-attr3": {
+        "i18n-target6": "fr i18n-target6 attribute 2"
+      },
+      "selective-attr4": {
+        "i18n-target6": "fr i18n-target6 attribute 3"
+      },
+      "json-data-id": {
+        "attr1": "fr this attr1 is extracted",
+        "i18n-target-attr": "fr this attribute is also extracted"
+      },
+      "template_2:json-data_1": {
+        "attr1": "fr this attr1 without id is extracted",
+        "i18n-target-attr": "fr this attribute without id is also extracted"
+      }
+    },
+    "ordinary-div": "fr text 1"
+  },
+  "simple-text-dom-bind": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "text": "fr  outermost text at the beginning ",
+    "h1_3": "fr outermost header 1",
+    "text_4": "fr  outermost text in the middle ",
+    "span_5": "fr simple text without id",
+    "span_6": "fr simple text without id 2",
+    "label-1": "fr simple text with id",
+    "label-2": "fr simple text with id 2",
+    "div_9:span": "fr simple text within div",
+    "div_9:span_1": "fr simple text within div 2",
+    "div_9:div_2:div": "fr great grandchild text within div",
+    "div_10:text": "fr  simple text as the first element in div ",
+    "div_10:span_1": "fr simple text within div",
+    "div_10:text_2": "fr  simple text in the middle of div ",
+    "div_10:span_3": "fr simple text within div 2",
+    "div_10:div_4:div": "fr great grandchild text within div",
+    "div_10:text_5": "fr  simple text at the last element in div ",
+    "toplevel-div:span": "fr simple text within div",
+    "toplevel-div:span_1": "fr simple text within div 2",
+    "third-level-div": "fr great grandchild text within div",
+    "second-level-div:div_1": "fr great grandchild text within div without id",
+    "div_12:ul:li": "fr line item without id 1",
+    "div_12:ul:li_1": "fr line item without id 2",
+    "div_12:ul:li_2": "fr line item without id 3",
+    "line-items:li": "fr line item with id 1",
+    "line-items:li_1": "fr line item with id 2",
+    "line-items:li_2": "fr line item with id 3",
+    "p_13": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr parameters",
+      "fr <i18n-format>"
+    ],
+    "paragraph": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr id",
+      "fr <i18n-format>"
+    ],
+    "text_15": "fr  outermost text at the end "
+  },
+  "commented-simple-text-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "text": "fr  outermost text at the beginning ",
+    "h1_3": "fr outermost header 1",
+    "text_4": "fr  outermost text in the middle ",
+    "span_5": "fr simple text without id",
+    "span_6": "fr simple text without id 2",
+    "label-1": "fr simple text with id",
+    "label-2": "fr simple text with id 2",
+    "div_9:span": "fr simple text within div",
+    "div_9:span_1": "fr simple text within div 2",
+    "div_9:div_2:div": "fr great grandchild text within div",
+    "div_10:text": "fr  simple text as the first element in div ",
+    "div_10:span_1": "fr simple text within div",
+    "div_10:text_2": "fr  simple text in the middle of div ",
+    "div_10:span_3": "fr simple text within div 2",
+    "div_10:div_4:div": "fr great grandchild text within div",
+    "div_10:text_5": "fr  simple text at the last element in div ",
+    "toplevel-div:span": "fr simple text within div",
+    "toplevel-div:span_1": "fr simple text within div 2",
+    "third-level-div": "fr great grandchild text within div",
+    "second-level-div:div_1": "fr great grandchild text within div without id",
+    "div_12:ul:li": "fr line item without id 1",
+    "div_12:ul:li_1": "fr line item without id 2",
+    "div_12:ul:li_2": "fr line item without id 3",
+    "line-items:li": "fr line item with id 1",
+    "line-items:li_1": "fr line item with id 2",
+    "line-items:li_2": "fr line item with id 3",
+    "p_13": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr parameters",
+      "fr <i18n-format>"
+    ],
+    "paragraph": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr id",
+      "fr <i18n-format>"
+    ],
+    "text_15": "fr  outermost text at the end "
+  },
+  "compound-binding-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "text": [
+      "fr  outermost text at the beginning with compound {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "h1_3": [
+      "fr outermost header 1 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "text_4": [
+      "fr  outermost text in the middle with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "span_5": [
+      "fr simple text without id with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "span_6": [
+      "fr simple text without id 2 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "label-1": [
+      "fr simple text with id and {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "label-2": [
+      "fr simple text with id and {1} and {2} variables 2",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_9:span": [
+      "fr simple text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_9:span_1": [
+      "fr simple text within div with {1} and {2} variables 2",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_9:div_2:div": [
+      "fr great grandchild text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:text": [
+      "fr  simple text as the first element in div with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:span_1": [
+      "fr simple text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:text_2": [
+      "fr  simple text in the middle of div with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:span_3": [
+      "fr simple text within div with {1} and {2} variables 2",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:div_4:div": [
+      "fr great grandchild text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_10:text_5": [
+      "fr  simple text at the last element in div with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "toplevel-div:span": [
+      "fr simple text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "toplevel-div:span_1": [
+      "fr simple text within div 2 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "third-level-div": [
+      "fr great grandchild text within div with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "second-level-div:div_1": [
+      "fr great grandchild text within div without id with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_12:ul:li": [
+      "fr line item without id 1 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_12:ul:li_1": [
+      "fr line item without id 2 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "div_12:ul:li_2": [
+      "fr line item without id 3 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "line-items:li": [
+      "fr line item with id 1 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "line-items:li_1": [
+      "fr line item with id 2 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "line-items:li_2": [
+      "fr line item with id 3 with {1} and {2} variables",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "p_13": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "{{param1}}",
+      "{{param2}}"
+    ],
+    "paragraph": [
+      "fr A paragraph with {1}, {2}, and {3} is converted to {4}.",
+      "fr id",
+      "{{param1}}",
+      "{{param2}}",
+      "fr <i18n-format>"
+    ],
+    "text_15": [
+      "fr  outermost text at the end with {1} and {2} variables ",
+      "{{param1}}",
+      "{{param2}}"
+    ]
+  },
+  "advanced-binding-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {
+      "aria-attributes": {
+        "title": "fr tooltip text",
+        "aria-label": "fr aria label text",
+        "aria-valuetext": "fr aria value text"
+      }
+    },
+    "annotated-format": [
+      "{{tr(status,text.statusMessageFormats)}}",
+      "{{parameter}}",
+      "fr string parameter"
+    ],
+    "span_5": [
+      "fr {1} {2}",
+      "{{text.defaultValue}}",
+      "{{text.defaultValue}}"
+    ],
+    "statusMessages": {
+      "ok": "fr healthy status",
+      "busy": "fr busy status",
+      "error": "fr error status",
+      "default": "fr unknown status"
+    },
+    "defaultValue": "fr default value",
+    "statusMessageFormats": {
+      "ok": "fr healthy status",
+      "busy": "fr busy status with {2}",
+      "error": "fr error status with {1} and {2}",
+      "default": "fr unknown status"
+    },
+    "nodefault": {
+      "ok": "fr ok status"
+    }
+  },
+  "complex-compound-binding-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "item-update2:text": [
+      "fr updated: {1}, by: ",
+      "{{text.updated}}"
+    ],
+    "item-update2:text_2": "fr  xxx ",
+    "item-update2:template_3:span:b": "fr IF CONTENT",
+    "item-update2:b_4": "fr abc",
+    "item-update2:template_5:text": "fr IF CONTENT 2",
+    "item-update2:text_6": "fr  hello ",
+    "item-update": [
+      "fr updated: {1}, by: \n      {2}\n      xxx\n      {3}\n      {4}\n      {5}\n      hello\n      \n      {6}\n      {7} ",
+      "{{text.updated}}",
+      "  {{item.name}}  ",
+      "fr IF CONTENT",
+      "fr abc",
+      "fr IF CONTENT 2",
+      "<template>",
+      "{{text.updated}}"
+    ],
+    "item-update3:text": [
+      "fr updated: {1}, by: ",
+      "{{text.updated}}"
+    ],
+    "item-update3:text_2": "fr  xxx ",
+    "item-update3:template_3:b": "fr IF",
+    "item-update3:template_3:b_1": "fr CONTENT",
+    "item-update3:b_4": "fr abc",
+    "item-update3:template_5:text": "fr IF CONTENT 2",
+    "item-update3:text_6": "fr  hello ",
+    "item-update4:text": [
+      "fr updated: {1}, by: ",
+      "{{text.updated}}"
+    ],
+    "item-update4:template_1:text": [
+      "fr  {1} = {2} ",
+      "{{item.name}}",
+      "{{text.updated}}"
+    ],
+    "item-update4:text_2": "fr  xxx ",
+    "item-update4:template_3:b": "fr IF CONTENT",
+    "item-update4:b_4": "fr abc",
+    "item-update4:template_5:text": "fr IF CONTENT 2",
+    "item-update4:text_6": "fr  hello ",
+    "paragraph": [
+      "fr A paragraph with \n      {1}\n      is converted to \n      {2}. ",
+      "{{item}} ",
+      "fr <i18n-format>"
+    ],
+    "paragraph2:text": "fr A paragraph with deep ",
+    "paragraph2:text_2": "fr  is ",
+    "paragraph2:b_3": "fr not",
+    "paragraph2:text_4": "fr  converted to ",
+    "paragraph2:code_5": "fr <i18n-format>",
+    "paragraph2:text_6": "fr . ",
+    "authors": [
+      {
+        "name": "fr Joe"
+      },
+      {
+        "name": "fr Alice"
+      }
+    ],
+    "updated": "fr Jan 1st, 2016",
+    "parameters": [
+      "fr parameter 1",
+      "fr parameter 2"
+    ]
+  },
+  "empty-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {}
+  },
+  "fallback-text-element": {
+    "meta": {
+      "todo": [
+        {
+          "op": "add",
+          "path": "/div_9:span",
+          "value": "simple text within div"
+        },
+        {
+          "op": "add",
+          "path": "/div_9:span_1",
+          "value": "simple text within div 2"
+        },
+        {
+          "op": "add",
+          "path": "/div_9:div_2:div",
+          "value": "great grandchild text within div"
+        },
+        {
+          "op": "add",
+          "path": "/div_10:text",
+          "value": " simple text as the first element in div "
+        },
+        {
+          "op": "add",
+          "path": "/div_10:span_1",
+          "value": "simple text within div"
+        },
+        {
+          "op": "add",
+          "path": "/div_10:text_2",
+          "value": " simple text in the middle of div "
+        },
+        {
+          "op": "add",
+          "path": "/div_10:span_3",
+          "value": "simple text within div 2"
+        },
+        {
+          "op": "add",
+          "path": "/div_10:div_4:div",
+          "value": "great grandchild text within div"
+        },
+        {
+          "op": "add",
+          "path": "/div_10:text_5",
+          "value": " simple text at the last element in div "
+        }
+      ]
+    },
+    "model": {},
+    "text": "fr  outermost text at the beginning ",
+    "h1_3": "fr outermost header 1",
+    "text_4": "fr  outermost text in the middle ",
+    "span_5": "fr simple text without id",
+    "span_6": "fr simple text without id 2",
+    "label-1": "fr simple text with id",
+    "label-2": "fr simple text with id 2",
+    "div_9:span": "simple text within div",
+    "div_9:span_1": "simple text within div 2",
+    "div_9:div_2:div": "great grandchild text within div",
+    "div_10:text": " simple text as the first element in div ",
+    "div_10:span_1": "simple text within div",
+    "div_10:text_2": " simple text in the middle of div ",
+    "div_10:span_3": "simple text within div 2",
+    "div_10:div_4:div": "great grandchild text within div",
+    "div_10:text_5": " simple text at the last element in div ",
+    "toplevel-div:span": "fr simple text within div",
+    "toplevel-div:span_1": "fr simple text within div 2",
+    "third-level-div": "fr great grandchild text within div",
+    "second-level-div:div_1": "fr great grandchild text within div without id",
+    "div_12:ul:li": "fr line item without id 1",
+    "div_12:ul:li_1": "fr line item without id 2",
+    "div_12:ul:li_2": "fr line item without id 3",
+    "line-items:li": "fr line item with id 1",
+    "line-items:li_1": "fr line item with id 2",
+    "line-items:li_2": "fr line item with id 3",
+    "p_13": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr parameters",
+      "fr <i18n-format>"
+    ],
+    "paragraph": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr id",
+      "fr <i18n-format>"
+    ],
+    "text_15": "fr  outermost text at the end "
+  },
+  "item-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "label": "fr A"
+  },
+  "multiple-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {}
+  },
+  "plural-gender-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "compound-format-text": [
+      {
+        "0": "fr You ({3}) gave no gifts.",
+        "1": {
+          "male": "fr You ({3}) gave him ({4}) {5}.",
+          "female": "fr You ({3}) gave her ({4}) {5}.",
+          "other": "fr You ({3}) gave them ({4}) {5}."
+        },
+        "one": {
+          "male": "fr You ({3}) gave him ({4}) and one other person {5}.",
+          "female": "fr You ({3}) gave her ({4}) and one other person {5}.",
+          "other": "fr You ({3}) gave them ({4}) and one other person {5}."
+        },
+        "other": "fr You ({3}) gave them ({4}) and {1} other people gifts."
+      },
+      "{{recipients.length - 1}}",
+      "{{recipients.0.gender}}",
+      "{{sender.name}}",
+      "{{recipients.0.name}}",
+      "fr a gift"
+    ]
+  },
+  "simple-attribute-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {
+      "standard-input": {
+        "placeholder": "fr standard HTML5 attribute"
+      },
+      "outer-div:input_2": {
+        "placeholder": "fr standard HTML5 attribute without id"
+      },
+      "paper-input-element": {
+        "label": "fr paper-input label",
+        "error-message": "fr paper-input error message",
+        "placeholder": "fr paper-input placeholder"
+      },
+      "outer-div:paper-input_4": {
+        "label": "fr paper-input label without id",
+        "error-message": "fr paper-input error message without id",
+        "placeholder": "fr paper-input placeholder without id"
+      },
+      "pie-chart": {
+        "options": {
+          "title": "fr Distribution of days in 2001H1"
+        },
+        "cols": [
+          {
+            "label": "fr Month",
+            "type": "string"
+          },
+          {
+            "label": "fr Days",
+            "type": "number"
+          }
+        ],
+        "rows": [
+          [
+            "fr Jan",
+            31
+          ],
+          [
+            "fr Feb",
+            28
+          ],
+          [
+            "fr Mar",
+            31
+          ],
+          [
+            "fr Apr",
+            30
+          ],
+          [
+            "fr May",
+            31
+          ],
+          [
+            "fr Jun",
+            30
+          ]
+        ]
+      },
+      "column-chart": {
+        "options": {
+          "title": "fr Inventory"
+        },
+        "data": [
+          [
+            "fr Year",
+            "fr Things",
+            "fr Stuff"
+          ],
+          [
+            "2004",
+            1000,
+            400
+          ],
+          [
+            "2005",
+            1170,
+            460
+          ],
+          [
+            "2006",
+            660,
+            1120
+          ],
+          [
+            "2007",
+            1030,
+            540
+          ]
+        ]
+      },
+      "custom-attr": {
+        "custom-text-attr1": "fr custom text attribute 1",
+        "custom-text-attr2": "fr custom text attribute 2",
+        "custom-text-attr3": "fr custom text attribute 3"
+      },
+      "selective-attr": {
+        "custom-text-attr4": [
+          "fr {1} custom-text-attr4 attribute with param {2} and param {3} {4}",
+          "{{text.ordinary-div}}",
+          "{{text.ordinary-div}}",
+          "[[text.ordinary-div]]",
+          "{{text.ordinary-div}}"
+        ],
+        "custom-text-attr5": [
+          "[[text.ordinary-div]]",
+          "fr  custom-text-attr5 attribute with param ",
+          "{{or('',text.ordinary-div)}}",
+          "fr  and param ",
+          "[[text.ordinary-div]]"
+        ],
+        "i18n-target": [
+          "fr i18n-target attribute with param {1} and param {2}",
+          "{{text.ordinary-div}}",
+          "[[text.ordinary-div]]"
+        ],
+        "i18n-target2": [
+          "fr i18n-target2 attribute with param ",
+          "{{or('',text.ordinary-div)}}",
+          "fr  and param ",
+          "[[text.ordinary-div]]"
+        ]
+      },
+      "selective-attr2": {
+        "i18n-target": "fr i18n-target attribute 2"
+      },
+      "selective-attr3": {
+        "i18n-target6": "fr i18n-target6 attribute 2"
+      },
+      "selective-attr4": {
+        "i18n-target6": "fr i18n-target6 attribute 3"
+      },
+      "json-data-id": {
+        "attr1": "fr this attr1 is extracted",
+        "i18n-target-attr": "fr this attribute is also extracted"
+      },
+      "template_2:json-data_1": {
+        "attr1": "fr this attr1 without id is extracted",
+        "i18n-target-attr": "fr this attribute without id is also extracted"
+      }
+    },
+    "ordinary-div": "fr text 1"
+  },
+  "text-attribute-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "span_4": "fr text"
+  },
+  "simple-text-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "text": "fr  outermost text at the beginning ",
+    "h1_3": "fr outermost header 1",
+    "text_4": "fr  outermost text in the middle ",
+    "span_5": "fr simple text without id",
+    "span_6": "fr simple text without id 2",
+    "label-1": "fr simple text with id",
+    "label-2": "fr simple text with id 2",
+    "div_9:span": "fr simple text within div",
+    "div_9:span_1": "fr simple text within div 2",
+    "div_9:div_2:div": "fr great grandchild text within div",
+    "div_10:text": "fr  simple text as the first element in div ",
+    "div_10:span_1": "fr simple text within div",
+    "div_10:text_2": "fr  simple text in the middle of div ",
+    "div_10:span_3": "fr simple text within div 2",
+    "div_10:div_4:div": "fr great grandchild text within div",
+    "div_10:text_5": "fr  simple text at the last element in div ",
+    "toplevel-div:span": "fr simple text within div",
+    "toplevel-div:span_1": "fr simple text within div 2",
+    "third-level-div": "fr great grandchild text within div",
+    "second-level-div:div_1": "fr great grandchild text within div without id",
+    "div_12:ul:li": "fr line item without id 1",
+    "div_12:ul:li_1": "fr line item without id 2",
+    "div_12:ul:li_2": "fr line item without id 3",
+    "line-items:li": "fr line item with id 1",
+    "line-items:li_1": "fr line item with id 2",
+    "line-items:li_2": "fr line item with id 3",
+    "p_13": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr parameters",
+      "fr <i18n-format>"
+    ],
+    "paragraph": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr id",
+      "fr <i18n-format>"
+    ],
+    "text_15": "fr  outermost text at the end "
+  },
+  "simple-text-id-element": {
+    "meta": {
+      "todo": []
+    },
+    "model": {},
+    "text": "fr  outermost text at the beginning ",
+    "h1_3": "fr outermost header 1",
+    "text_4": "fr  outermost text in the middle ",
+    "span_5": "fr simple text without id",
+    "span_6": "fr simple text without id 2",
+    "label-1": "fr simple text with id",
+    "label-2": "fr simple text with id 2",
+    "div_9:span": "fr simple text within div",
+    "div_9:span_1": "fr simple text within div 2",
+    "div_9:div_2:div": "fr great grandchild text within div",
+    "div_10:text": "fr  simple text as the first element in div ",
+    "div_10:span_1": "fr simple text within div",
+    "div_10:text_2": "fr  simple text in the middle of div ",
+    "div_10:span_3": "fr simple text within div 2",
+    "div_10:div_4:div": "fr great grandchild text within div",
+    "div_10:text_5": "fr  simple text at the last element in div ",
+    "toplevel-div:span": "fr simple text within div",
+    "toplevel-div:span_1": "fr simple text within div 2",
+    "second-level-div": [
+      "fr  {1}\n        {2} ",
+      "fr great grandchild text within div",
+      "fr great grandchild text within div without id"
+    ],
+    "div_12:ul:li": "fr line item without id 1",
+    "div_12:ul:li_1": "fr line item without id 2",
+    "div_12:ul:li_2": "fr line item without id 3",
+    "line-items": [
+      "fr  {1}\n        {2}\n        {3} ",
+      "fr line item with id 1",
+      "fr line item with id 2",
+      "fr line item with id 3"
+    ],
+    "p_13": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr parameters",
+      "fr <i18n-format>"
+    ],
+    "paragraph": [
+      "fr A paragraph with {1} is converted to {2}.",
+      "fr id",
+      "fr <i18n-format>"
+    ],
+    "text_15": "fr  outermost text at the end "
+  },
+  "bundle": true
+}
