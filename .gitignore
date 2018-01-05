@@ -13,3 +13,4 @@ client/data/
 /client/node_modules/
 package-lock.json
 client/build/
+/client/localization/prePootleFiles/
