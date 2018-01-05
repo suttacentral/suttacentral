@@ -11,5 +11,9 @@
   "dependencies": {
     "redux": "^3.7.2",
     "viewerjs": "^0.10.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-i18n-preprocess": "^1.2.3"
   }
 }
