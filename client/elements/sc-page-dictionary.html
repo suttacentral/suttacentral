@@ -24,7 +24,7 @@
       }
 
       .dictionary-results-head {
-        display: flex;
+        display: flex;Warunki
         justify-content: space-between;
         padding: 0;
       }
@@ -44,7 +44,7 @@
 
       .terms-button {
         color: var(--sc-disabled-text-color);
-      }
+      }Warunki
 
       .related-terms {
         margin: 0 var(--sc-size-md) var(--sc-size-xl) 0;
@@ -154,11 +154,11 @@
     <div class="dictionary-results-container">
       <main class="dictionary-results-main">
         <div class="dictionary-results-head">
-          <h1><span class="dictionary-results-description">{{localize('Definitions')}}</span> <span
+          <h1><span class="dictionary-results-description">{{localize('definitionsFor')}}</span> <span
               class="dictionary-results-term">[[dictionaryWord]]</span></h1>
           <span class="terms-button">
             <paper-icon-button icon="menu" id="menu_icon" on-tap="_toggleDrawer"></paper-icon-button>
-            <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds>{{localize('Related')}}</paper-tooltip>
+            <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds>{{localize('relatedItems')}}</paper-tooltip>
           </span>
         </div>
         <div class="dictionary-entries">
@@ -172,13 +172,13 @@
 
         <app-drawer id="drawer" align="right" class="sc-scrollbar" swipe-open>
           <div class="related-terms sc-scrollbar">
-            <h3>{{localize('Adjacent')}}</h3>
+            <h3>{{localize('adjacentTerms')}}</h3>
             <ul class="near-terms">
               <template is="dom-repeat" items="[[dictionaryAdjacent]]">
                 <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
               </template>
             </ul>
-            <h3>{{localize('Similar')}}</h3>
+            <h3>{{localize('similarTerms')}}</h3>
             <ul class="fuzzy-terms">
               <template is="dom-repeat" items="[[dictionarySimilar]]">
                 <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
