@@ -15,27 +15,27 @@ class ChangeTracker:
         
         # Extract the mtimes from arangodb
 
-        self.old_mtimes = old_mtimes = {entry['path']: entry['mtime'] for entry in db.aql.execute('''
+        self.old_mtimes = {entry['path']: entry['mtime'] for entry in db.aql.execute('''
         FOR entry in mtimes
             RETURN entry
         ''')}
 
         # Get the mtimes from the file system
 
-        self.new_mtimes = new_mtimes = {}
+        self.new_mtimes = {}
         for path in base_dir.glob('**/*'):
             if path.is_dir():
                 continue
-            new_mtimes[str(path.relative_to(base_dir))] = path.stat().st_mtime_ns
+            self.new_mtimes[str(path.relative_to(base_dir))] = path.stat().st_mtime_ns
 
-        self.deleted = deleted = set(old_mtimes).difference(new_mtimes)
-        self.changed_or_new = changed_or_new = {}
+        self.deleted = set(self.old_mtimes).difference(self.new_mtimes)
+        self.changed_or_new = {}
 
-        for path, mtime in new_mtimes.items():
-            if mtime != old_mtimes.get(path):
-                changed_or_new[path] = mtime
-        print(f'{len(changed_or_new)} files to be processed')
-        print(f'{len(deleted)} files to be deleted')
+        for path, mtime in self.new_mtimes.items():
+            if mtime != self.old_mtimes.get(path):
+                self.changed_or_new[path] = mtime
+        print(f'{len(self.changed_or_new)} files to be processed')
+        print(f'{len(self.deleted)} files to be deleted')
 
     def is_file_new_or_changed(self, path, check_calling_function=True):
         if check_calling_function:
@@ -79,8 +79,6 @@ class ChangeTracker:
              self.changed_or_new.items()], on_duplicate="replace")
         self.db['function_hashes'].truncate()
         self.db['function_hashes'].import_bulk([{'_key': k, 'hash': v} for k, v in self.new_function_hashes.items()])
-        
-
 
 def function_source(function):
     return ''.join(inspect.getsourcelines(function)[0])

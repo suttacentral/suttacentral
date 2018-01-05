@@ -1,15 +1,12 @@
 import json
+import regex
 import logging
 import pathlib
-
-
 
 from collections import Counter, defaultdict
 from itertools import product
 from pathlib import Path
 from typing import Any, List, Set
-
-import regex
 from arango import ArangoClient
 from flask import current_app
 from git import InvalidGitRepositoryError, Repo
