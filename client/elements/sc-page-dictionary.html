@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../styles/sc-dict-styles.html">
 <link rel="import" href="../styles/sc-scrollbar-style.html">
@@ -153,11 +154,11 @@
     <div class="dictionary-results-container">
       <main class="dictionary-results-main">
         <div class="dictionary-results-head">
-          <h1><span class="dictionary-results-description">Definitions for</span> <span
+          <h1><span class="dictionary-results-description">{{localize('Definitions')}}</span> <span
               class="dictionary-results-term">[[dictionaryWord]]</span></h1>
           <span class="terms-button">
             <paper-icon-button icon="menu" id="menu_icon" on-tap="_toggleDrawer"></paper-icon-button>
-            <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds>Related Items</paper-tooltip>
+            <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds>{{localize('Related')}}</paper-tooltip>
           </span>
         </div>
         <div class="dictionary-entries">
@@ -171,13 +172,13 @@
 
         <app-drawer id="drawer" align="right" class="sc-scrollbar" swipe-open>
           <div class="related-terms sc-scrollbar">
-            <h3>Adjacent Terms</h3>
+            <h3>{{localize('Adjacent')}}</h3>
             <ul class="near-terms">
               <template is="dom-repeat" items="[[dictionaryAdjacent]]">
                 <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
               </template>
             </ul>
-            <h3>Similar Spelling</h3>
+            <h3>{{localize('Similar')}}</h3>
             <ul class="fuzzy-terms">
               <template is="dom-repeat" items="[[dictionarySimilar]]">
                 <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
@@ -192,7 +193,7 @@
   </template>
 
   <script>
-      class SCPageDictionary extends ReduxMixin(Polymer.Element) {
+      class SCPageDictionary extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-page-dictionary';
           }
@@ -207,6 +208,11 @@
                   dictionaryWord: {
                       type: String,
                       observer: '_loadNewResult'
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   },
                   dictionaryTitles: {
                       type: Object,
@@ -233,6 +239,10 @@
                   '_getGlossaryItems(glossaryList,adjacentReturns,adjacent)',
                   '_getGlossaryItems(glossaryList,similarReturns)'
               ];
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-dictionary/${this.language}.json`));
           }
 
           _computeUrl() {
