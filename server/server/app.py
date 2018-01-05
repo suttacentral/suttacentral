@@ -36,8 +36,8 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Epigraphs, '/epigraphs')
     api.add_resource(WhyWeRead, '/whyweread')
     api.add_resource(Glossary, '/glossary')
-    api.add_resource(DictionaryAdjacent, '/dictionary_adjacent/<string:word>')
-    api.add_resource(DictionarySimilar, '/dictionary_similar/<string:word>')
+    api.add_resource(DictionaryAdjacent, '/dictionary_full/adjacent/<string:word>')
+    api.add_resource(DictionarySimilar, '/dictionary_full/similar/<string:word>')
 
     app.register_blueprint(api_bp)
     return api, app

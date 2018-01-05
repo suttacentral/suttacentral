@@ -174,13 +174,13 @@
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
               <template is="dom-repeat" items="[[dictionaryAdjacent]]">
-                <li class$="[[_calculateClass(item.glossword)]]" inner-h-t-m-l="[[item.glosstext]]"></li>
+                <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
               </template>
             </ul>
             <h3>Similar Spelling</h3>
             <ul class="fuzzy-terms">
               <template is="dom-repeat" items="[[dictionarySimilar]]">
-                <li class$="[[_calculateClass(item.glossword)]]" inner-h-t-m-l="[[item.glosstext]]"></li>
+                <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
               </template>
             </ul>
           </div>
@@ -272,7 +272,7 @@
 
           // Adding Adjacent Terms
           _computeAdjacentUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/dictionary_adjacent/${this.dictionaryWord}`;
+              return `${this.$.meta.byKey('API_ROOT')}/dictionary_full/adjacent/${this.dictionaryWord}`;
           }
 
           _loadAdjacent() {
@@ -282,7 +282,7 @@
 
           // Adding Similar Terms
           _computeSimilarUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/dictionary_similar/${this.dictionaryWord}`;
+              return `${this.$.meta.byKey('API_ROOT')}/dictionary_full/similar/${this.dictionaryWord}`;
           }
 
           _loadSimilar() {
@@ -314,12 +314,16 @@
                           if (glossaryList[glossLookup]){
                               glossText += `<em> (${glossaryList[glossLookup]})</em>`
                           }
-                          glossaryObject = {"glossword": glossLookup, "glosstext": glossText};
+                          glossaryObject = {"glossWord": glossLookup, "glossText": glossText};
                           glossary.push(glossaryObject);
                       }
-                      return (adjacent) ? this.dictionaryAdjacent = glossary : this.dictionarySimilar = glossary;
-                }
-            }
+                      if (adjacent) {
+                        return this.dictionaryAdjacent = glossary;
+                      } else {
+                        return this.dictionarySimilar = glossary;
+                      }
+                  }
+              }
           }
 
           // toggles the drawer on the right to show the related/similar items.

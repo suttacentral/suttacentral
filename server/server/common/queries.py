@@ -493,6 +493,7 @@ DICTIONARY_SIMILAR = '''
 LET similar_words = (
     FOR dictionary IN dictionary_full
         FILTER dictionary.word == @word
+        LIMIT 1
         RETURN dictionary.similar
     )[0]
     
