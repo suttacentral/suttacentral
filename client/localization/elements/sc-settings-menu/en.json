@@ -17,6 +17,7 @@
     "changePaliScriptLabel": "Script",
     "changePaliScriptDescription": "This enables you to read the Pali text in various scripts.",
     "rememberSettings": "Remember settings",
-    "rememberSettingsDescription": "Select this to remember these settings next time you visit SuttaCentral."
+    "rememberSettingsDescription": "Select this to remember these settings next time you visit SuttaCentral.",
+    "dictEnabled": "The {dictName} lookup dictionary is now enabled."
   }
 }

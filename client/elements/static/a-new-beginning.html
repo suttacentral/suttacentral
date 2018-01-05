@@ -1,9 +1,9 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
 <link rel="import" href="../../bower_components/i18n-behavior/i18n-behavior.html">
 
-<dom-module id="sc-a-new-beginning">
-  <template>
+</head><body><dom-module id="sc-a-new-beginning">
+  <template localizable-text="embedded">
     <style include="static-styles">
     </style>
 
@@ -11,28 +11,55 @@
       <main>
         <section>
             <article>
-                <h1>SuttaCentral 2018</h1>
-                <p>Welcome to the next generation of SuttaCentral! Our site has gone through a lot of changes since our humble beginnings in 2005. Here’s what’s new.</p>
-                        <p>The new site features a new translation of the four Pali <i>nikāyas</i>, prepared for SuttaCentral by Bhante Sujato. It’s a warm and lucid text, with an emphasis on accuracy and clarity. We believe it’s the first ever complete, consistent, and unified translation of the four <i>nikāyas</i> in any European language. SuttaCentral is proud to make it freely available without any copyright restrictions.</p>
-                                <p>The sutta translations are accompanied by an ongoing translation of the Pali Vinaya by Bhante Brahmali. The classic Vinaya translation by I.B. Horner has long been in need of an update. Bhante Brahmali’s new translation is clear and accessible, and stems from his long experience not only with Pali and the texts, but with living in a community that runs according to the Vinaya. This new translation is being progressively introduced to the site. </p>
-                                <p>Both these new translations are being implemented on a segmented basis. That means that each segment of the Pali text is matched with the corresponding translation. This allows us to display the original texts with translation segment by segment. It also gives us a way of reliably and consistently referencing the Pali text at a granular level, something that has never before been possible. These segmented texts use a software called Pootle which is designed to make translator’s jobs easier. They’re intended, not just as stand-alone translations, but as the basis for a new generation of translations into other languages.</p>
-                    <p>We’ve also completely rebuilt the site. All the old features are still here, but there’s lots that’s new.</p>
+                <h1>{{text.page-wrap:main:section:article:h1}}</h1>
+                <p>{{text.page-wrap:main:section:article:p_1}}</p>
+                        <p><i18n-format lang="{{effectiveLang}}"><span>{{text.page-wrap:main:section:article:p_2.0}}</span><i param="1">{{text.page-wrap:main:section:article:p_2.1}}</i><i param="2">{{text.page-wrap:main:section:article:p_2.2}}</i></i18n-format></p>
+                                <p>{{text.page-wrap:main:section:article:p_3}}</p>
+                                <p>{{text.page-wrap:main:section:article:p_4}}</p>
+                    <p>{{text.page-wrap:main:section:article:p_5}}</p>
                     <ul>
-                        <li>Open and inviting design, based on clear, considered, and familiar patterns.</li>
-                        <li>Side menu offers more detailed and flexible navigation. For the first time, our site navigation accurately reflects the traditional hierarchical structure of the texts.</li>
-                        <li>Descriptive summaries explain the texts and categories.</li>
-                        <li>Parallels show the relationships between texts more clearly.</li>
-                        <li>Thousands more parallels and connections.</li>
-                        <li>We now support multiple translations in the same language.</li>
-                        <li>The site is internationalized, so you can view it in a variety of languages. We’ll support more languages over time.</li>
-                        <li>Cutting-edge Progressive Web App technologies make the site available offline on supported systems. This is ideal for people out of internet range, or who have limited data plans.</li>
-                        <li>The translation software is integrated with the site, making it not just a place for presenting texts, but a publishing platform for translating suttas.</li>
+                        <li>{{text.page-wrap:main:section:article:ul_6:li}}</li>
+                        <li>{{text.page-wrap:main:section:article:ul_6:li_1}}</li>
+                        <li>{{text.page-wrap:main:section:article:ul_6:li_2}}</li>
+                        <li>{{text.page-wrap:main:section:article:ul_6:li_3}}</li>
+                        <li>{{text.page-wrap:main:section:article:ul_6:li_4}}</li>
+                        <li>{{text.page-wrap:main:section:article:ul_6:li_5}}</li>
+                        <li>{{text.page-wrap:main:section:article:ul_6:li_6}}</li>
+                        <li>{{text.page-wrap:main:section:article:ul_6:li_7}}</li>
+                        <li>{{text.page-wrap:main:section:article:ul_6:li_8}}</li>
                     </ul>
                 </article>
         </section>
       </main>
     </div>
-  </template>
+  <template id="localizable-text">
+<json-data>
+{
+  "meta": {},
+  "model": {},
+  "page-wrap:main:section:article:h1": "SuttaCentral 2018",
+  "page-wrap:main:section:article:p_1": "Welcome to the next generation of SuttaCentral! Our site has gone through a lot of changes since our humble beginnings in 2005. Here’s what’s new.",
+  "page-wrap:main:section:article:p_2": [
+    "The new site features a new translation of the four Pali {1}, prepared for SuttaCentral by Bhante Sujato. It’s a warm and lucid text, with an emphasis on accuracy and clarity. We believe it’s the first ever complete, consistent, and unified translation of the four {2} in any European language. SuttaCentral is proud to make it freely available without any copyright restrictions.",
+    "nikāyas",
+    "nikāyas"
+  ],
+  "page-wrap:main:section:article:p_3": "The sutta translations are accompanied by an ongoing translation of the Pali Vinaya by Bhante Brahmali. The classic Vinaya translation by I.B. Horner has long been in need of an update. Bhante Brahmali’s new translation is clear and accessible, and stems from his long experience not only with Pali and the texts, but with living in a community that runs according to the Vinaya. This new translation is being progressively introduced to the site. ",
+  "page-wrap:main:section:article:p_4": "Both these new translations are being implemented on a segmented basis. That means that each segment of the Pali text is matched with the corresponding translation. This allows us to display the original texts with translation segment by segment. It also gives us a way of reliably and consistently referencing the Pali text at a granular level, something that has never before been possible. These segmented texts use a software called Pootle which is designed to make translator’s jobs easier. They’re intended, not just as stand-alone translations, but as the basis for a new generation of translations into other languages.",
+  "page-wrap:main:section:article:p_5": "We’ve also completely rebuilt the site. All the old features are still here, but there’s lots that’s new.",
+  "page-wrap:main:section:article:ul_6:li": "Open and inviting design, based on clear, considered, and familiar patterns.",
+  "page-wrap:main:section:article:ul_6:li_1": "Side menu offers more detailed and flexible navigation. For the first time, our site navigation accurately reflects the traditional hierarchical structure of the texts.",
+  "page-wrap:main:section:article:ul_6:li_2": "Descriptive summaries explain the texts and categories.",
+  "page-wrap:main:section:article:ul_6:li_3": "Parallels show the relationships between texts more clearly.",
+  "page-wrap:main:section:article:ul_6:li_4": "Thousands more parallels and connections.",
+  "page-wrap:main:section:article:ul_6:li_5": "We now support multiple translations in the same language.",
+  "page-wrap:main:section:article:ul_6:li_6": "The site is internationalized, so you can view it in a variety of languages. We’ll support more languages over time.",
+  "page-wrap:main:section:article:ul_6:li_7": "Cutting-edge Progressive Web App technologies make the site available offline on supported systems. This is ideal for people out of internet range, or who have limited data plans.",
+  "page-wrap:main:section:article:ul_6:li_8": "The translation software is integrated with the site, making it not just a place for presenting texts, but a publishing platform for translating suttas."
+}
+</json-data>
+</template>
+</template>
 
   <script>
       Polymer({
@@ -43,3 +70,4 @@
       });
   </script>
 </dom-module>
+</body></html>

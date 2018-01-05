@@ -558,7 +558,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                   this.dispatchEvent(new CustomEvent('show-sc-toast', {
                       detail: {
                           toastType: 'info',
-                          message: `The ${dictName} lookup dictionary is now enabled.`
+                          message: this.localize('dictEnabled', 'dictName', dictName)
                       },
                       bubbles: true,
                       composed: true

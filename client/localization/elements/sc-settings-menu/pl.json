@@ -17,6 +17,7 @@
     "changePaliScriptLabel": "Skrypt",
     "changePaliScriptDescription": "Ta funkcja pozwala czytać Palijskie teksty w różnych skryptach.",
     "rememberSettings": "Zapamiętaj ustawienia",
-    "rememberSettingsDescription": "Zaznacz tą opcję, a Twoje ustawienia zostaną zapamiętane następnym razem, gdy odwiedzisz SuttaCentral."
+    "rememberSettingsDescription": "Zaznacz tą opcję, a Twoje ustawienia zostaną zapamiętane następnym razem, gdy odwiedzisz SuttaCentral.",
+    "dictEnabled": "The {dictName} askdhasddasoidhaiuw."
   }
 }
