@@ -125,6 +125,14 @@
     </style>
 
     <iron-ajax
+        auto
+        id="glossary_ajax"
+        url="/api/glossary"
+        handle-as="json"
+        last-response="{{glossaryReturns}}"
+        on-response="_glossaryLoaded"></iron-ajax>
+
+    <iron-ajax
         id="ajax"
         handle-as="json"
         last-response="{{dictionaryReturns}}"
@@ -133,14 +141,12 @@
     <iron-ajax
         id="adjacent_ajax"
         handle-as="json"
-        last-response="{{adjacentReturns}}"
-        on-response="_adjacentLoaded"></iron-ajax>
+        last-response="{{adjacentReturns}}"></iron-ajax>
 
     <iron-ajax
-        id="glossary_ajax"
+        id="similar_ajax"
         handle-as="json"
-        last-response="{{glossaryReturns}}"
-        on-response="_glossaryLoaded"></iron-ajax>
+        last-response="{{similarReturns}}"></iron-ajax>
 
     <iron-meta id="meta"></iron-meta>
 
@@ -167,20 +173,14 @@
           <div class="related-terms sc-scrollbar">
             <h3>Adjacent Terms</h3>
             <ul class="near-terms">
-              <template is="dom-repeat" items="[[dictonaryAdjacent]]">
-                <li class$="[[_calculateClass(item)]]">
-                  <a href="/define/[[item]]">[[item]]</a>
-                  <!-- <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template> -->
-                </li>
+              <template is="dom-repeat" items="[[dictionaryAdjacent]]">
+                <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
               </template>
             </ul>
             <h3>Similar Spelling</h3>
             <ul class="fuzzy-terms">
               <template is="dom-repeat" items="[[dictionarySimilar]]">
-                <li class$="[[_calculateClass(item)]]">
-                  <a href="/define/[[item]]">[[item]]</a>
-<!--               <template is="dom-if" if="[[item.trans]]"><em>([[item.trans]])</em></template>
- -->            </li>
+                <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
               </template>
             </ul>
           </div>
@@ -203,6 +203,7 @@
                   dictionaryReturns: Array,
                   glossaryReturns: Array,
                   adjacentReturns: Array,
+                  similarReturns: Array,
                   dictionaryWord: {
                       type: String,
                       observer: '_loadNewResult'
@@ -217,18 +218,21 @@
                           'pts': 'PTS Pali English Dictionary'
                       }
                   },
-                  // The below two arrays are just temporary mockups.
-                  dictonaryAdjacent: {
-                      type: Array,
-                      value: ['dhamita','dhamitvā','dhameti','dhamenta','dhamesi',
-                      'dhamma','dhammakathā','dhammakathika','dhammakamma','dhammakaraka']
+                  adjacent: {
+                      type: Boolean,
+                      value: true
                   },
-                  dictionarySimilar: {
-                      type: Array,
-                      value: ['dhamma','dhammā','adhamma','dhamman','dhammī','ghamma',
-                      'dhama','damma','uddhamma','opamma']
-                  }
+                  glossaryList: Object,
+                  dictionaryAdjacent: Array,
+                  dictionarySimilar: Array
               }
+          }
+
+          static get observers() {
+              return [
+                  '_getGlossaryItems(glossaryList,adjacentReturns,adjacent)',
+                  '_getGlossaryItems(glossaryList,similarReturns)'
+              ];
           }
 
           _computeUrl() {
@@ -236,6 +240,8 @@
           }
 
           _loadNewResult() {
+              this._loadAdjacent();
+              this._loadSimilar();
               this.$.ajax.url = this._computeUrl();
               return this.$.ajax.generateRequest();
           }
@@ -250,8 +256,6 @@
                   }
               }
               this.dictionaryResults = finalResults;
-              this._loadAdjacent();
-              // this._loadGlossary();
           }
 
           _sortDictionaryResults(dictionary) {
@@ -268,7 +272,7 @@
 
           // Adding Adjacent Terms
           _computeAdjacentUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/adjacent`;
+              return `${this.$.meta.byKey('API_ROOT')}/dictionary_full/adjacent/${this.dictionaryWord}`;
           }
 
           _loadAdjacent() {
@@ -276,34 +280,50 @@
               return this.$.adjacent_ajax.generateRequest();
           }
 
-          _adjacentLoaded() {
-              console.log("loaded Adjacent");
-              console.log(this.AdjacentReturns);
+          // Adding Similar Terms
+          _computeSimilarUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/dictionary_full/similar/${this.dictionaryWord}`;
           }
 
+          _loadSimilar() {
+              this.$.similar_ajax.url = this._computeSimilarUrl();
+              return this.$.similar_ajax.generateRequest();
+          }
+
+          // Calculating if the current item is selected
           _calculateClass(item) {
               return (item === this.dictionaryWord) ? 'selected-terms-item' : '';
           }
 
-          // Adding glossary results to related items drawer
-          _computeGlossaryUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/glossary`;
-          }
-
-          _loadGlossary() {
-              this.$.glossary_ajax.url = this._computeGlossaryUrl();
-              return this.$.glossary_ajax.generateRequest();
-          }
-
+          // Converts glossary output to object
           _glossaryLoaded() {
-              console.log("loaded Glossary");
-              console.log(this._getGlossaryDescription("dhamma"));
-              console.log(this.glossaryReturns);
+              let result = {};
+              this.glossaryReturns[0].forEach((item) => result[item.word] = item.text);
+              this.glossaryList = result;
           }
 
-          _getGlossaryDescription(glossword) {
-              console.log(this.glossaryReturns(glossword));
-              return this.glossaryReturns(glossword);
+          _getGlossaryItems(glossaryList, inputArray, adjacent=false) {
+              if (inputArray) {
+                  let glossary = [];
+                  let glossaryObject = {};
+                  let glossText = '';
+                  if (glossaryList) {
+                      for (let glossWord in inputArray[0]) {
+                          let glossLookup = inputArray[0][glossWord];
+                          glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
+                          if (glossaryList[glossLookup]){
+                              glossText += `<em> (${glossaryList[glossLookup]})</em>`
+                          }
+                          glossaryObject = {"glossWord": glossLookup, "glossText": glossText};
+                          glossary.push(glossaryObject);
+                      }
+                      if (adjacent) {
+                        return this.dictionaryAdjacent = glossary;
+                      } else {
+                        return this.dictionarySimilar = glossary;
+                      }
+                  }
+              }
           }
 
           // toggles the drawer on the right to show the related/similar items.

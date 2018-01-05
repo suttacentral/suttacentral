@@ -57,7 +57,7 @@ class FuzzyMatcher:
         except DivisionByZero:
             return 0.0
     
-    def search(self, word:str, n=5, include_original=False) -> List[Tuple[str, float]]:
+    def search(self, word:str, n=10, include_original=False) -> List[Tuple[str, float]]:
         " Return similiar words with a similiarity metric "
         ngrams = self._make_ngrams(word)
         results = Counter()
