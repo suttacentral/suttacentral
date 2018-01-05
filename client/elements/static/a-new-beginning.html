@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/i18n-behavior/i18n-behavior.html">
 
 <dom-module id="sc-a-new-beginning">
   <template>
@@ -34,12 +35,11 @@
   </template>
 
   <script>
-      class SCANewBeginning extends Polymer.Element {
-          static get is() {
-              return 'sc-a-new-beginning';
-          }
-      }
-
-      customElements.define(SCANewBeginning.is, SCANewBeginning);
+      Polymer({
+          is: 'sc-a-new-beginning',
+          behaviors: [
+              BehaviorsStore.I18nBehavior
+          ]
+      });
   </script>
 </dom-module>
