@@ -17,6 +17,14 @@
     "changePaliScriptLabel": "Script",
     "changePaliScriptDescription": "This enables you to read the Pali text in various scripts.",
     "rememberSettings": "Remember settings",
-    "rememberSettingsDescription": "Select this to remember these settings next time you visit SuttaCentral."
+    "rememberSettingsDescription": "Select this to remember these settings next time you visit SuttaCentral.",
+    "textualInformationEnabled": "Textual Information is now enabled.",
+    "textualInformationDisabled": "Textual Information is now disabled.",
+    "textViewEnabled": "{textView}-view is now enabled on applicable texts.",
+    "textViewDisabled": "Pali-English view is now disabled.",
+    "lookupDictionaryEnabled": "The {lookupDictionary} lookup dictionary is now enabled.",
+    "paliLookupDictionaryDisabled": "The Pali lookup dictionary is now disabled.",
+    "chineseLookupDictionaryDisabled": "The 汉语 lookup dictionary is now disabled.",
+    "scriptChanged": "Pali is now shown in {paliScript} script."
   }
 }
