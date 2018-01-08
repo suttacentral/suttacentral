@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
 <link rel="import" href="../../bower_components/i18n-behavior/i18n-behavior.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="sc-abbreviations-page">
   <template>
@@ -584,12 +585,9 @@
   </template>
 
   <script>
-      class SCAbbreviationsPage extends Polymer.Element {
-          static get is() {
-              return 'sc-abbreviations-page';
-          }
-      }
+      Polymer({
+          is: 'sc-abbreviations-page'
+      });
 
-      customElements.define(SCAbbreviationsPage.is, SCAbbreviationsPage);
   </script>
 </dom-module>

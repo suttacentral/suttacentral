@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
 <link rel="import" href="../../bower_components/i18n-behavior/i18n-behavior.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="sc-terminology-page">
   <template>
@@ -1029,12 +1030,12 @@
   </template>
 
   <script>
-      class SCTerminologyPage extends Polymer.Element {
-          static get is() {
-              return 'sc-terminology-page';
-          }
-      }
-
-      customElements.define(SCTerminologyPage.is, SCTerminologyPage);
+      Polymer({
+          is: 'sc-terminology-page',
+          behaviors: [
+              BehaviorsStore.I18nBehavior,
+              Polymer.AppLocalizeBehavior
+          ]
+      });
   </script>
 </dom-module>

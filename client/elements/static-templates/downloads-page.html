@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
 <link rel="import" href="../../bower_components/i18n-behavior/i18n-behavior.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="downloads-page">
   <template>
@@ -89,12 +90,12 @@
   </template>
 
   <script>
-      class SCDownloadsPage extends Polymer.Element {
-          static get is() {
-              return 'downloads-page';
-          }
-      }
-
-      customElements.define(SCDownloadsPage.is, SCDownloadsPage);
+      Polymer({
+          is: 'sc-downloads-page',
+          behaviors: [
+              BehaviorsStore.I18nBehavior,
+              Polymer.AppLocalizeBehavior
+          ]
+      });
   </script>
 </dom-module>

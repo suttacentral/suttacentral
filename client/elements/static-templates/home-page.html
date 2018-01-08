@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../elements/addons/text-carousel.html">
 <link rel="import" href="../../styles/static-styles.html">
@@ -370,20 +371,20 @@
     </style>
 
     <iron-ajax
-            auto
-            url="[[_computeUrl('epigraphs')]]"
-            id="epigraphs-ajax"
-            handle-as="json"
-            loading="{{ loadingEpigraphs }}"
-            last-response="{{ epigraphsData }}"></iron-ajax>
+        auto
+        url="[[_computeUrl('epigraphs')]]"
+        id="epigraphs-ajax"
+        handle-as="json"
+        loading="{{ loadingEpigraphs }}"
+        last-response="{{ epigraphsData }}"></iron-ajax>
 
     <iron-ajax
-            auto
-            url="[[_computeUrl('whyweread')]]"
-            id="why-we-read-ajax"
-            handle-as="json"
-            loading="{{ loadingWhyWeRead }}"
-            last-response="{{ whyWeReadData }}"></iron-ajax>
+        auto
+        url="[[_computeUrl('whyweread')]]"
+        id="why-we-read-ajax"
+        handle-as="json"
+        loading="{{ loadingWhyWeRead }}"
+        last-response="{{ whyWeReadData }}"></iron-ajax>
 
     <iron-meta id="meta"></iron-meta>
 
@@ -605,34 +606,33 @@
   </template>
 
   <script>
-      class SCHomePage extends Polymer.Element {
-          static get is() {
-              return 'home-page';
-          }
+      Polymer({
+          is: 'sc-a-new-beginning',
 
-          static get properties() {
-              return {
-                  loadingEpigraphs: {
-                      type: Boolean
-                  },
-                  epigraphsData: {
-                      type: Object
-                  },
-                  loadingWhyWeRead: {
-                      type: Boolean
-                  },
-                  whyWeReadData: {
-                      type: Object
-                  }
+          behaviors: [
+              BehaviorsStore.I18nBehavior,
+              Polymer.AppLocalizeBehavior
+          ],
+
+          properties: {
+              loadingEpigraphs: {
+                  type: Boolean
+              },
+              epigraphsData: {
+                  type: Object
+              },
+              loadingWhyWeRead: {
+                  type: Boolean
+              },
+              whyWeReadData: {
+                  type: Object
               }
-          }
+          },
 
-          _computeUrl(resource) {
+          _computeUrl: function(resource) {
               const apiRoot = this.$.meta.byKey('API_ROOT');
               return `${apiRoot}/${resource}`;
           }
-      }
-
-      customElements.define(SCHomePage.is, SCHomePage);
+      });
   </script>
 </dom-module>
