@@ -15,4 +15,4 @@ package-lock.json
 client/build/
 /client/localization/pootle/prePootleFiles/
 /client/localization/pootle/generatedPoFiles/
-/client/localization/i18nOutput/
+/client/localization/preprocessedStaticTemplates/

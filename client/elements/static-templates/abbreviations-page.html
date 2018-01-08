@@ -586,8 +586,11 @@
 
   <script>
       Polymer({
-          is: 'sc-abbreviations-page'
+          is: 'sc-abbreviations-page',
+          behaviors: [
+              BehaviorsStore.I18nBehavior,
+              Polymer.AppLocalizeBehavior
+          ]
       });
-
   </script>
 </dom-module>
