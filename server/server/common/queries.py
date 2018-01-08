@@ -177,7 +177,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         difficulty: difficulty,
         original_title: v.name,
         root_lang: v.root_lang,
-        type: e.type ? e.type : (v.type ? v.type : 'text'),
+        type: e.type ? e.type : (v.type ? (v.type == 'div_text' ? 'text' : v.type) : 'text'),
         from: e._from,
         translated_title: translated_titles,
         translations: filtered_translations,
