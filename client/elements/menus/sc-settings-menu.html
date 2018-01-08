@@ -161,7 +161,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       <div class="dialog-section">
         <h3 class="menu-item-title">{{localize('viewOriginal')}}</h3>
         <div class="nerdy-row">{{localize('onlyWorks')}}</div>
-        <paper-radio-group selected="{{selectedTextView}}">
+        <paper-radio-group id="text_view_menu" selected="{{selectedTextView}}">
           <paper-radio-button name="none" class="menu-option">
             {{localize('none')}}
           </paper-radio-button>
@@ -199,7 +199,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
         <div class="nerdy-row">
           {{localize('activateChineseDescription')}}
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="chinese_lookup_menu">
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="chinese_lookup_menu" vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{chineseLookupSelected}}">
             <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
@@ -211,7 +211,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       <div class="dialog-section">
         <h3 class="menu-item-title">{{localize('changePaliScript')}}</h3>
         <div class="nerdy-row">{{localize('changePaliScriptDescription')}}</div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('changePaliScriptLabel')}}" id="pali_script_menu">
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('changePaliScriptLabel')}}" id="pali_script_menu" vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliScriptSelected}}">
             <template is="dom-repeat" items="[[paliScripts]]" as="script">
               <paper-item class="menu-item">[[script.language]]</paper-item>
@@ -383,6 +383,14 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                       type: Boolean,
                       value: false
                   },
+                  paliScriptItemChanged: {
+                      type: Boolean,
+                      value: false
+                  },
+                  textViewItemChanged: {
+                      type: Boolean,
+                      value: false
+                  },
                   language: {
                       type: String,
                       statePath: 'siteLanguage',
@@ -441,6 +449,9 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('active-changed', (e) => {
                   this._textualInfoToggleStateChanged(e.detail.value);
               });
+              this.shadowRoot.querySelector('#text_view_menu').addEventListener('selected-item-changed', () => {
+                  this.textViewItemChanged = true;
+              });
               this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
                   this._paliLookupChanged(e.detail.value);
               });
@@ -456,6 +467,9 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               this.shadowRoot.querySelector('#pali_script_menu').addEventListener('value-changed', (e) => {
                   this._changeScript(e.detail.value);
               });
+              this.shadowRoot.querySelector('#pali_script_menu').addEventListener('selected-item-changed', () => {
+                  this.paliScriptItemChanged = true;
+              });
           }
 
           _siteLanguageChanged() {
@@ -463,14 +477,18 @@ type of view for segmented pages (showing pali next to translated text), lookup 
           }
 
           _textualInfoToggleStateChanged(toggleChecked) {
-              if (this.textualParagraphs && toggleChecked) {
-                  this.showLoadingSpinner = true;
-                  this.$.paragraphs_ajax.generateRequest().completes.then(() => {
-                      this.dispatch('toggleTextualInfo', true);
-                      this.showLoadingSpinner = false;
-                  });
-              } else {
-                  this.dispatch('toggleTextualInfo', false);
+              if (this.textualParagraphs) {
+                  if (toggleChecked) {
+                      this.showLoadingSpinner = true;
+                      this.$.paragraphs_ajax.generateRequest().completes.then(() => {
+                          this.dispatch('toggleTextualInfo', true);
+                          this.showLoadingSpinner = false;
+                      });
+                      this._showToast(this.localize('textualInformationEnabled'));
+                  } else {
+                      this.dispatch('toggleTextualInfo', false);
+                      this._showToast(this.localize('textualInformationDisabled'));
+                  }
               }
           }
 
@@ -492,12 +510,11 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const target = this.paliLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              const dictName = targetDictRepr.replace('→', 'to');
-              if (this.paliSelectedItemChanged) {
-                  this._showToast(dictName);
-              }
+              if (this. paliSelectedItemChanged) {
+                  this._showLookupToast(targetDictRepr, 'pli');
+                  this.paliSelectedItemChanged = false;
+              };
               this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
-              this.paliSelectedItemChanged = false;
           }
 
           _findPaliLookupLanguageIndex(languageName) {
@@ -512,12 +529,11 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const target = this.chineseLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              const dictName = targetDictRepr.replace('→', 'to');
               if (this.chineseSelectedItemChanged) {
-                  this._showToast(dictName);
-              }
+                  this._showLookupToast(targetDictRepr, 'lzh');
+                  this.chineseSelectedItemChanged = false;
+              };
               this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
-              this.chineseSelectedItemChanged = false;
           }
 
           _findChineseLookupLanguageIndex(languageName) {
@@ -526,6 +542,26 @@ type of view for segmented pages (showing pali next to translated text), lookup 
 
           _textViewChanged() {
               this.showLoadingSpinner = true;
+              if (this.textViewItemChanged) {
+                  if (this.selectedTextView !== 'none') {
+                      let textViewMessage = '';
+                      switch (this.selectedTextView) {
+                          case 'sidebyside':
+                              textViewMessage = this.localize('sideBySide');
+                              break;
+                          case 'linebyline':
+                              textViewMessage = this.localize('lineByLine');
+                              break;
+                          case 'popup':
+                              textViewMessage = this.localize('popUp');
+                              break;
+                      };
+                      this._showToast(this.localize('textViewEnabled', 'textView', textViewMessage));
+                  } else {
+                      this._showToast(this.localize('textViewDisabled'));
+                  }
+                  this.textViewItemChanged = false;
+              }
               setTimeout(() => {
                   this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
                   this.showLoadingSpinner = false;
@@ -537,6 +573,12 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               if (!language) {
                   return;
               }
+              if (this.paliScriptItemChanged) {
+                  const scriptName = language;
+                  const scriptChangeMessage = this.localize('scriptChanged', 'paliScript', scriptName);
+                  this._showToast(scriptChangeMessage);
+                  this.paliScriptItemChanged = false;
+              };
               const script = this.paliScripts.find(i => i.language === language).script;
               this.showLoadingSpinner = true;
               setTimeout(() => {
@@ -553,17 +595,28 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               return this.paliScripts.findIndex(i => i.script === paliScript);
           }
 
-          _showToast(dictName) {
-              if (dictName !== "None") {
-                  this.dispatchEvent(new CustomEvent('show-sc-toast', {
-                      detail: {
-                          toastType: 'info',
-                          message: this.localize('dictEnabled', 'dictName', dictName)
-                      },
-                      bubbles: true,
-                      composed: true
-                  }));
+          _showLookupToast(dictName, lang) {
+              if (dictName !== 'None') {
+                  const dictChangeMessage = this.localize('lookupDictionaryEnabled', 'lookupDictionary', dictName);
+                  this._showToast(dictChangeMessage);
+              } else {
+                  if (lang === 'pli') {
+                    this._showToast(this.localize('paliLookupDictionaryDisabled'));
+                  } else {
+                    this._showToast(this.localize('chineseLookupDictionaryDisabled'));
+                  }
               }
+          }
+
+          _showToast(inputMessage) {
+              this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                  detail: {
+                      toastType: 'info',
+                      message: inputMessage
+                  },
+                  bubbles: true,
+                  composed: true
+              }));
           }
       }
 
