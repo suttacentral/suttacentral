@@ -55,7 +55,7 @@ SUBMENU = '''
 LET div = DOCUMENT('root', @submenu_id)
 LET descendents = (
     FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
-        FILTER d_edge.type != 'text'
+        FILTER d_edge.type != 'text' OR LENGTH(d_path.vertices) <= 2
         RETURN {
             from: d_edge._from,
             name: d.name,
@@ -434,7 +434,6 @@ FOR dictionary IN dictionary_full
     FILTER dictionary.word == @word
     RETURN {
         dictname: dictionary.dictname,
-        word: dictionary.word,
         text: dictionary.text
     }
 '''
@@ -462,6 +461,41 @@ FOR text IN why_we_read
 '''
 
 GLOSSARY = '''
-FOR gloss IN glossary
-    RETURN KEEP(gloss, ['glossword', 'description'])
+LET glossary_item = (
+    FOR dictionary IN dictionary_full
+        FILTER dictionary.dictname == "gloss"
+        RETURN KEEP(dictionary, "word", "text")
+    )
+    
+RETURN glossary_item
+'''
+
+DICTIONARY_ADJACENT = '''
+LET word_number = (
+    FOR dictionary IN dictionary_full
+        FILTER dictionary.word == @word
+        LIMIT 1
+        RETURN dictionary.num
+    )
+
+LET adjacent_words = (
+    FOR selected IN dictionary_full
+        FILTER selected.num < word_number+6
+        FILTER selected.num > word_number-6
+        SORT selected.num
+        RETURN selected.word
+    )
+    
+RETURN UNIQUE(adjacent_words)
+'''
+
+DICTIONARY_SIMILAR = '''
+LET similar_words = (
+    FOR dictionary IN dictionary_full
+        FILTER dictionary.word == @word
+        LIMIT 1
+        RETURN dictionary.similar
+    )[0]
+    
+RETURN similar_words
 '''
