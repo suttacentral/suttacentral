@@ -55,7 +55,7 @@ SUBMENU = '''
 LET div = DOCUMENT('root', @submenu_id)
 LET descendents = (
     FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
-        FILTER d_edge.type != 'text'
+        FILTER d_edge.type != 'text' OR LENGTH(d_path.vertices) <= 2
         RETURN {
             from: d_edge._from,
             name: d.name,
