@@ -56,7 +56,7 @@
 
     </style>
 
-    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[sutta.text]]"
+    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[_extractSuttaText(sutta.text)]]"
          hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[_shouldDisplayError(sutta.*)]]">
@@ -261,6 +261,10 @@
               }
               const title = this.author ? `${this.suttaTitle} — ${this.author}` : `${this.suttaTitle}`;
               this.dispatch('changeToolbarTitle', title);
+          }
+
+          _extractSuttaText(suttaText) {
+              return suttaText.replace(/<head>((.|\n)*)<\/head>/,'');
           }
 
           // returns the meta-data from the loaded sutta text
