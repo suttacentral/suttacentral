@@ -199,7 +199,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
         <div class="nerdy-row">
           {{localize('activateChineseDescription')}}
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="chinese_lookup_menu">
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="chinese_lookup_menu" vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{chineseLookupSelected}}">
             <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
@@ -211,7 +211,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       <div class="dialog-section">
         <h3 class="menu-item-title">{{localize('changePaliScript')}}</h3>
         <div class="nerdy-row">{{localize('changePaliScriptDescription')}}</div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('changePaliScriptLabel')}}" id="pali_script_menu">
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('changePaliScriptLabel')}}" id="pali_script_menu" vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliScriptSelected}}">
             <template is="dom-repeat" items="[[paliScripts]]" as="script">
               <paper-item class="menu-item">[[script.language]]</paper-item>
