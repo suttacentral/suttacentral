@@ -55,7 +55,7 @@ SUBMENU = '''
 LET div = DOCUMENT('root', @submenu_id)
 LET descendents = (
     FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
-        FILTER d_edge.type != 'text'
+        FILTER d_edge.type != 'text' OR LENGTH(d_path.vertices) <= 2
         RETURN {
             from: d_edge._from,
             name: d.name,
@@ -177,7 +177,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         difficulty: difficulty,
         original_title: v.name,
         root_lang: v.root_lang,
-        type: e.type ? e.type : (v.type ? (v.type == 'div_text' ? 'text' : v.type) : 'text'),
+        type: e.type ? e.type : (v.type ? v.type : 'text'),
         from: e._from,
         translated_title: translated_titles,
         translations: filtered_translations,
