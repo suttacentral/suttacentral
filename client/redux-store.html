@@ -126,5 +126,31 @@
         return parsedState;
     }
 
+    const MixinFactory = PolymerRedux;
+    PolymerRedux = store => {
+        let curr;
+        const mixin = MixinFactory(store);
+        const base = mixin(class {
+            constructor() { return curr; }
+            connectedCallback() {}
+            disconnectedCallback() {}
+        });
+        const behavior = {
+            created() {
+                curr = this;
+                new base();
+                curr = null;
+            },
+            attached: base.prototype.connectedCallback,
+            detached: base.prototype.disconnectedCallback,
+            dispatch: base.prototype.dispatch,
+            getState: base.prototype.getState,
+            registered() {
+                this.constructor.actions = this.actions;
+            }
+        };
+        return Object.assign(mixin, behavior);
+    };
+
     ReduxMixin = PolymerRedux(store);
 </script>
