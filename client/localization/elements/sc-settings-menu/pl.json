@@ -18,7 +18,7 @@
     "changePaliScriptDescription": "Ta funkcja pozwala czytać Palijskie teksty w różnych skryptach.",
     "rememberSettings": "Zapamiętaj ustawienia",
     "rememberSettingsDescription": "Zaznacz tą opcję, a Twoje ustawienia zostaną zapamiętane następnym razem, gdy odwiedzisz SuttaCentral.",
-    "textualInformationEnabled": "Dodatkowe informacje są teraz uwzględnione.",
+    "textualInformationEnabled": "Dodatkowe informacje są teraz włączone.",
     "textualInformationDisabled": "Dodatkowe informacje są teraz wyłączone.",
     "textViewEnabled": "{textView}-widok jest teraz włączony w odpowiednich tekstach.",
     "textViewDisabled": "Widok Pali-English jest teraz wyłączony.",
