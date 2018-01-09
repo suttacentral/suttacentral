@@ -1,3 +1,0 @@
---compilers js:espower-babel/guess
---reporter spec
---ui bdd
