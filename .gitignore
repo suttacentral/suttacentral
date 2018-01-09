@@ -2,7 +2,7 @@
 __pycache__
 .python-version
 data/segmented_texts
-.vscode
+.vscode/
 *.sqlite3
 .idea
 .cache

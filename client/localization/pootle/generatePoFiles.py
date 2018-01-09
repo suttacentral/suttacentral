@@ -1,7 +1,8 @@
 import os
 import json
-import polib
 import datetime
+
+import polib
 
 
 def generate_po_file(element_name, file):
@@ -20,5 +21,6 @@ def generate_po_file(element_name, file):
     po.save('generatedPoFiles/{}.po'.format(element_name))
 
 
-for fileName in os.listdir('prePootleFiles'):
-    generate_po_file(fileName, open('prePootleFiles/{}'.format(fileName), 'r'))
+if __name__ == '__main__':
+    for fileName in os.listdir('prePootleFiles'):
+        generate_po_file(fileName, open('prePootleFiles/{}'.format(fileName), 'r'))
