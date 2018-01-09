@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+
 <link rel="import" href="../../styles/static-styles.html">
 
 <dom-module id="sc-abhidhamma">
@@ -234,12 +236,26 @@
   </template>
 
   <script>
-      class SCAbhidhamma extends Polymer.Element {
+      class Abhidhamma extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-abhidhamma';
           }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/abhidhamma/${this.language}.json`));
+          }
       }
 
-      customElements.define(SCAbhidhamma.is, SCAbhidhamma);
+      customElements.define(Abhidhamma.is, Abhidhamma);
   </script>
 </dom-module>

@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="sc-similes-page">
   <template>
@@ -2553,12 +2554,26 @@
   </template>
 
   <script>
-      class SCSimilesPage extends Polymer.Element {
+      class SCSimiles extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-similes-page';
           }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/similes/${this.language}.json`));
+          }
       }
 
-      customElements.define(SCSimilesPage.is, SCSimilesPage);
+      customElements.define(SCSimiles.is, SCSimiles);
   </script>
 </dom-module>
