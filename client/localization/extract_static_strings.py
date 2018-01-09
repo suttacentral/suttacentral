@@ -1,6 +1,7 @@
+from itertools import chain
+
 from lxml import etree
 from lxml.etree import tostring
-from itertools import chain
 
 templates_dir = '../elements/static-templates'
 

@@ -18,9 +18,9 @@ def generate_po_file(element_name, file):
             msgstr=file_data[key]
         )
         po.append(entry)
-    po.save('generatedPoFiles/{}.po'.format(element_name))
+    po.save(f'generatedPoFiles/{element_name}.po')
 
 
 if __name__ == '__main__':
     for fileName in os.listdir('prePootleFiles'):
-        generate_po_file(fileName, open('prePootleFiles/{}'.format(fileName), 'r'))
+        generate_po_file(fileName, open(f'prePootleFiles/{fileName}', 'r'))
