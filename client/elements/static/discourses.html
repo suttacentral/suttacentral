@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="sc-discourses">
   <template>
@@ -395,12 +396,26 @@
   </template>
 
   <script>
-      class SCDiscourses extends Polymer.Element {
+      class Discourses extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-discourses';
           }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/discourses/${this.language}.json`));
+          }
       }
 
-      customElements.define(SCDiscourses.is, SCDiscourses);
+      customElements.define(Discourses.is, Discourses);
   </script>
 </dom-module>

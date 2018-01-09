@@ -86,7 +86,7 @@
     <template is="dom-if" if="[[_shouldShowError(rootSutta, translatedSutta)]]">
       <div class="text-center margin-top-xl">
         <h2>{{localize('error')}}</h2>
-        <h3>{{localize('couldNotFindText')}}</h3>
+        <h3>{{localize('couldNotFind')}}</h3>
       </div>
     </template>
 
@@ -241,6 +241,11 @@
                       }
                   }
               }
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`));
           }
 
           _siteLanguageChanged() {
@@ -643,7 +648,7 @@
               const margin = window.getComputedStyle(paragraph).margin;
               requestAnimationFrame(() => {
                   paragraph.style.margin = '0';
-              })
+              });
               if (isSideBySideView && !wrapperAlreadyExists) {
                   requestAnimationFrame(() => {
                       wrapper.style.padding = margin;
@@ -1162,7 +1167,7 @@
           }
 
           _applyFirefoxShadyDomFix() {
-              if (navigator.userAgent.includes('Firefox')) {
+              if (navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Edge')) {
                   this.isTextViewHidden = true;
                   requestAnimationFrame(() => {
                       this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;

@@ -9,7 +9,6 @@
 <link rel="import" href="../elements/static/home-page.html">
 <link rel="import" href="../elements/static/donations-page.html">
 <link rel="import" href="../elements/static/downloads-page.html">
-<link rel="import" href="../elements/static/people-page.html">
 <link rel="import" href="../elements/sc-donate-now-page.html">
 <link rel="import" href="../elements/static/offline-page.html">
 <link rel="import" href="../elements/static/numbering-page.html">
@@ -18,12 +17,12 @@
 <link rel="import" href="../elements/static/acknowledgments-page.html">
 <link rel="import" href="../elements/static/licensing-page.html">
 <link rel="import" href="../elements/static/about-page.html">
-<link rel="import" href="../elements/static/introduction.html">
+<link rel="import" href="static/preamble.html">
 <link rel="import" href="../elements/static/start.html">
 <link rel="import" href="../elements/static/discourses.html">
 <link rel="import" href="../elements/static/vinaya.html">
 <link rel="import" href="../elements/static/abhidhamma.html">
-<link rel="import" href="../elements/static/a-new-beginning.html">
+<link rel="import" href="../elements/static/home-page.html">
 <link rel="import" href="../elements/static/subjects.html">
 <link rel="import" href="../elements/static/similes.html">
 <link rel="import" href="../elements/static/names.html">
@@ -66,7 +65,7 @@
       }
 
       .title {
-        ma-width: 100%;
+        max-width: 100%;
       }
 
       .title-text {
@@ -209,19 +208,13 @@
         <sc-donate-now-page id="donate"></sc-donate-now-page>
       </div>
       <div name="DOWNLOADS">
-        <downloads-page></downloads-page>
-      </div>
-      <div name="PEOPLE">
-        <people-page></people-page>
+        <sc-downloads-page></sc-downloads-page>
       </div>
       <div name="OFFLINE">
         <sc-offline-page></sc-offline-page>
       </div>
       <div name="NUMBERING">
         <sc-numbering-page></sc-numbering-page>
-      </div>
-      <div name="ABBREVIATIONS">
-        <sc-abbreviations-page></sc-abbreviations-page>
       </div>
       <div name="METHODOLOGY">
         <sc-methodology-page></sc-methodology-page>
@@ -236,7 +229,7 @@
         <sc-about-page></sc-about-page>
       </div>
       <div name="INTRODUCTION">
-        <sc-introduction></sc-introduction>
+        <sc-preamble></sc-preamble>
       </div>
       <div name="START">
         <sc-start></sc-start>
@@ -251,7 +244,7 @@
         <sc-abhidhamma></sc-abhidhamma>
       </div>
       <div name="A-NEW-BEGINNING">
-        <sc-a-new-beginning></sc-a-new-beginning>
+        <home-page></home-page>
       </div>
       <div name="SUBJECTS">
         <sc-subjects-page></sc-subjects-page>

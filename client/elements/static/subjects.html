@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="sc-subjects-page">
   <template>
@@ -3287,12 +3288,26 @@
   </template>
 
   <script>
-      class SCSubjectsPage extends Polymer.Element {
+      class SCSubjects extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-subjects-page';
           }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/subjects/${this.language}.json`));
+          }
       }
 
-      customElements.define(SCSubjectsPage.is, SCSubjectsPage);
+      customElements.define(SCSubjects.is, SCSubjects);
   </script>
 </dom-module>

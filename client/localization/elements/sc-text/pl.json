@@ -1,7 +1,10 @@
 {
   "pl": {
-    "Error": "Błąd",
+    "error": "Błąd",
     "couldNotFind": "Nie znaleziono szukanego tekstu.",
-    "viewImage": "Zobacz zdjęcie strony"
+    "viewImage": "Zobacz zdjęcie strony",
+    "suttaNotFound": "Nie znaleziono sutty.",
+    "noMetadata": "Brak metadanych.",
+    "segmentNumber": "Numer segmentu SuttaCentral."
   }
 }
