@@ -1,0 +1,81 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
+<dom-module id="sc-a-new-beginning-page">
+ <template>
+  <style include="static-styles">
+  </style>
+  <div id="page-wrap">
+   <main>
+    <section>
+     <article>
+      <h1 inner-h-t-m-l="{{localize('4e1776b6d0f3ec62485bd2f61ea7f101')}}">
+      </h1>
+      <p inner-h-t-m-l="{{localize('d04a1161f90ab33fc1f301fa1fe2f85c')}}">
+      </p>
+      <p>
+       The new site features a new translation of the four Pali
+       <i inner-h-t-m-l="{{localize('52cb435c01c3dfdfacad4034fdc10639')}}">
+       </i>
+       , prepared for SuttaCentral by
+              Bhante Sujato. It’s a warm and lucid text, with an emphasis on accuracy and clarity. We believe it’s the
+              first ever complete, consistent, and unified translation of the four
+       <i inner-h-t-m-l="{{localize('52cb435c01c3dfdfacad4034fdc10639')}}">
+       </i>
+       in any European
+              language. SuttaCentral is proud to make it freely available without any copyright restrictions.
+      </p>
+      <p inner-h-t-m-l="{{localize('26f2fbece49f2a97c5d3818f1089e712')}}">
+      </p>
+      <p inner-h-t-m-l="{{localize('f7a8b54d80948e2d0b95703fa810fc18')}}">
+      </p>
+      <p inner-h-t-m-l="{{localize('5b4c3bd7aa6c0dc3a01c86aa0d5be994')}}">
+      </p>
+      <ul>
+       <li inner-h-t-m-l="{{localize('20f5a30c59046da15a178ce024e48b84')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('a5157f7df058f3ff412e73e57b70baf4')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('d161d993274c6deb56f610e4807720f6')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('f287e4ad21bbff30cc2fdb99aa1b347a')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('252cec6fcbf59527091c13bf0dd03de3')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('d211abc376662619d2f8ac2c1d4747ab')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('0ad269886bf0c5502cc62a8c26b34926')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('d9917dbac2969d0ea8cc86298619c927')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('6576c009a48d554c33f85a6fd2405e8f')}}">
+       </li>
+      </ul>
+     </article>
+    </section>
+   </main>
+  </div>
+ </template>
+ <script>
+  class SCANewBeginning extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-a-new-beginning-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/static/a-new-beginning/${this.language}.json`));
+          }
+      }
+
+      customElements.define(SCANewBeginning.is, SCANewBeginning);
+ </script>
+</dom-module>
