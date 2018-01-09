@@ -96,7 +96,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             // Add title if it is in desired language
             LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
             // Add volpage info if it exists.
-            RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res
+            RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res2
         )
 
     LET po_translations = (
@@ -203,7 +203,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             // Add title if it is in desired language
             LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
             // Add volpage info if it exists.
-            RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res
+            RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res2
         )
 
     LET po_translations = (
