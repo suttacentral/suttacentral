@@ -1,6 +1,4 @@
-<html>
 <link rel="import" href="../../bower_components/polymer/polymer.html"/>
-<link rel="import" href="../../bower_components/i18n-behavior/i18n-behavior.html"/>
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html"/>
 
 <link rel="import" href="../../styles/static-styles.html"/>
@@ -50,13 +48,26 @@
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-about-page',
-          behaviors: [
-              BehaviorsStore.I18nBehavior,
-              Polymer.AppLocalizeBehavior
-          ]
-      });
+      class SCAboutPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-about-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/about-page/${this.language}.json`));
+          }
+      }
+
+      customElements.define(SCAboutPage.is, SCAboutPage);
   </script>
 </dom-module>
-</html>
