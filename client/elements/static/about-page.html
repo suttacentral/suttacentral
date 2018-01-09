@@ -1,5 +1,7 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html"/>
+
+<link rel="import" href="../../styles/static-styles.html"/>
 
 <dom-module id="sc-about-page">
   <template>
@@ -7,7 +9,7 @@
     </style>
 
     <div id="page-wrap">
-      <main>
+      <main>®
         <section>
 
           <article>
@@ -31,7 +33,7 @@
             <p>While the website is our main focus, we also publish some texts in book form.</p>
 
             <p>SuttaCentral is under constant development and updates are made regularly. To keep up with what’s new, <a
-                    href="https://discourse.suttacentral.net/c/meta/updates" target="_blank">check the Updates category
+                href="https://discourse.suttacentral.net/c/meta/updates" target="_blank">check the Updates category
               in our forum</a>.</p>
 
             <h2>Privacy and security</h2>
@@ -46,9 +48,23 @@
   </template>
 
   <script>
-      class SCAboutPage extends Polymer.Element {
+      class SCAboutPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-about-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/about-page/${this.language}.json`));
           }
       }
 

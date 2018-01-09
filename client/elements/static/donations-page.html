@@ -2,8 +2,9 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
-<link rel="import" href="/styles/static-styles.html">
+<link rel="import" href="../../styles/static-styles.html">
 
 <dom-module id="sc-donations-page">
   <template>
@@ -114,11 +115,26 @@
   </template>
 
   <script>
-      class SCDonationsPage extends Polymer.Element {
+      class SCDonationsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-donations-page';
           }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/donations-page/${this.language}.json`));
+          }
       }
+
       customElements.define(SCDonationsPage.is, SCDonationsPage);
   </script>
 </dom-module>
