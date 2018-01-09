@@ -25,6 +25,8 @@
     "lookupDictionaryEnabled": "The {lookupDictionary} lookup dictionary is now enabled.",
     "paliLookupDictionaryDisabled": "The Pali lookup dictionary is now disabled.",
     "chineseLookupDictionaryDisabled": "The 汉语 lookup dictionary is now disabled.",
-    "scriptChanged": "Pali is now shown in {paliScript} script."
+    "scriptChanged": "Pali is now shown in {paliScript} script.",
+    "rememberSettingsEnabled": "The settings you chose will be remembered next time you visit SuttaCentral.",
+    "rememberSettingsDisabled": "The settings you chose will not be remembered next time you visit SuttaCentral."
   }
 }
