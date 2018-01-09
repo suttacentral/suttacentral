@@ -1,5 +1,3 @@
-import json
-import os
 from lxml import etree
 from lxml.etree import tostring
 from itertools import chain
@@ -25,7 +23,5 @@ def stringify_children(node):
     return parts
 
 
-extract_strings_from_template(templates_dir + '/about-page.html')
-
-# for static_file in os.listdir(templates_dir):
-#     extract_strings_from_template(static_file)
+if __name__ == '__main__':
+    extract_strings_from_template(templates_dir + '/about-page.html')
