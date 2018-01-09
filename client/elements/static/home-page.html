@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/i18n-behavior/i18n-behavior.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
@@ -606,33 +605,43 @@
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-a-new-beginning',
+      class SCHomePage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-a-new-beginning';
+          }
 
-          behaviors: [
-              BehaviorsStore.I18nBehavior,
-              Polymer.AppLocalizeBehavior
-          ],
-
-          properties: {
-              loadingEpigraphs: {
-                  type: Boolean
-              },
-              epigraphsData: {
-                  type: Object
-              },
-              loadingWhyWeRead: {
-                  type: Boolean
-              },
-              whyWeReadData: {
-                  type: Object
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  },
+                  loadingEpigraphs: {
+                      type: Boolean
+                  },
+                  epigraphsData: {
+                      type: Object
+                  },
+                  loadingWhyWeRead: {
+                      type: Boolean
+                  },
+                  whyWeReadData: {
+                      type: Object
+                  }
               }
-          },
+          }
 
-          _computeUrl: function(resource) {
+          _computeUrl(resource) {
               const apiRoot = this.$.meta.byKey('API_ROOT');
               return `${apiRoot}/${resource}`;
           }
-      });
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/home-page/${this.language}.json`));
+          }
+      }
+
+      customElements.define(SCHomePage.is, SCHomePage);
   </script>
 </dom-module>

@@ -90,12 +90,26 @@
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-downloads-page',
-          behaviors: [
-              BehaviorsStore.I18nBehavior,
-              Polymer.AppLocalizeBehavior
-          ]
-      });
+      class SCDownloadsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-downloads-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/downloads-page/${this.language}.json`));
+          }
+      }
+
+      customElements.define(SCDownloadsPage.is, SCDownloadsPage);
   </script>
 </dom-module>

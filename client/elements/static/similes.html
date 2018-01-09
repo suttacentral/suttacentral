@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
-<link rel="import" href="../../bower_components/i18n-behavior/i18n-behavior.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="sc-similes-page">
@@ -2555,12 +2554,26 @@
   </template>
 
   <script>
-      Polymer({
-          is: 'sc-similes-page',
-          behaviors: [
-              BehaviorsStore.I18nBehavior,
-              Polymer.AppLocalizeBehavior
-          ]
-      });
+      class SCSimiles extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-similes-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/similes/${this.language}.json`));
+          }
+      }
+
+      customElements.define(SCSimiles.is, SCSimiles);
   </script>
 </dom-module>
