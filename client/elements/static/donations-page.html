@@ -1,15 +1,13 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
-
-<link rel="import" href="../../styles/static-styles.html">
-
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../bower_components/paper-button/paper-button.html" rel="import"/>
+<link href="../../bower_components/paper-dialog/paper-dialog.html" rel="import"/>
+<link href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html" rel="import"/>
+<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
 <dom-module id="sc-donations-page">
-  <template>
-    <style include="static-styles">
-      .donate-button {
+ <template>
+  <style include="static-styles">
+   .donate-button {
         @apply --sc-sans-font;
         background: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
@@ -33,89 +31,100 @@
       .account-data td {
         padding-right: var(--sc-size-md);
       }
-
-    </style>
-
-    <div id="page-wrap">
-      <main>
-        <section>
-          <article>
-            <h1>SuttaCentral Donations</h1>
-            <p>Your donation is greatly appreciated. It will support the ongoing development of SuttaCentral so
-              we can continue bring the Buddha’s word to people all around the world.</p>
-
-            <div class="donations-button">
-                <a href="/donate-now" class="donate-link">
-                  <paper-button raised class="donate-button">DONATE</paper-button>
-                </a>
-            </div>
-
-            <h2>What does SuttaCentral spend money on?</h2>
-            <ul>
-              <li>IT development: we employ professional programmers in addition to volunteers.</li>
-              <li>Servers: costs of servers and other infrastructure.</li>
-              <li>Hardware: computer and other hardware for workers on SC, especially monastics.</li>
-              <li>Other</li>
-            </ul>
-            <h2>Ethical banking</h2>
-            <p>SuttaCentral Development Trust uses <a href="https://www.communitysectorbanking.com.au/"
-                                                      target="_blank">Adelaide Bendigo community sector banking</a>,
-              which has ethical and green investment policies.
-              <a href="https://www.climatecouncil.org.au/what-you-need-to-know-about-fossil-fuel-divestment"
-                 target="_blank">Bendigo Bank has publicly divested from fossil fuels</a>.</p>
-            <table class="account-data">
-              <tr>
-                <td>Account name</td>
-                <td><strong>SuttaCentral Development Trust</strong></td>
-              </tr>
-              <tr>
-                <td>Bank name</td>
-                <td><strong>Adelaide Bendigo Community Sector Banking</strong></td>
-              </tr>
-              <tr>
-                <td>BSB</td>
-                <td><strong>633 000</strong></td>
-              </tr>
-              <tr>
-                <td>Account no.</td>
-                <td><strong>154500086</strong></td>
-              </tr>
-              <tr>
-                <td>Address</td>
-                <td><strong>1273 Pacific Highway, Turramurra NSW 2074</strong></td>
-              </tr>
-              <tr>
-                <td>Swift code</td>
-                <td><strong>BENDAU3B</strong></td>
-              </tr>
-            </table>
-
-            <p>For any questions, please contact our financial officer, Deepika Weerakoon
-              (suttacentraldevelopmenttrust@gmail.com).
-              Deepika manages the funds on behalf of SuttaCentral Development Trust.</p>
-
-            <h2>SuttaCentral Development Trust</h2>
-
-            <p>The SuttaCentral Development Trust is a charitable trust. The founding members of the trust are Bhante
-              Sujato, Bhante Brahmali, and John Kelly. The trust is managed by Deepika Weerakoon.</p>
-
-            <p>The accountants and auditors of the Trust are 
-              <a href="http://www.alwisco.com.au" target="_blank">Randolph Alwis & Co Pty Ltd</a>.
-              The <a href="https://abr.business.gov.au/SearchByAbn.aspx?SearchText=858%20188%2075744"
-                     target="_blank">ABN is 858 188 75744</a>.</p>
-
-            <p>Financial details of the trust are available if you have any inquiries. The Trust was created solely
-              to support the development of SuttaCentral. All funds in the Trust will be solely spent on SuttaCentral,
-              and none on trust administration, which is being managed by volunteers.</p>
-
-          </article>
-        </section>
-      </main>
-    </div>
-  </template>
-
-  <script>
-      class SCDonationsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+  </style>
+  <div id="page-wrap">
+   <main>
+    <section>
+     <article>
+      <h1 inner-h-t-m-l="{{localize('91aa88d8aaf128db44e4465b1926344d')}}">
+      </h1>
+      <p inner-h-t-m-l="{{localize('6a18d47e3f8d819ca21e9a0e136a3c68')}}">
+      </p>
+      <div class="donations-button" inner-h-t-m-l="{{localize('97d71c6585da8ff839b8b6f2c7e60cfc')}}">
+      </div>
+      <h2 inner-h-t-m-l="{{localize('89e1b8b5d1961ddedb63961b467c5756')}}">
+      </h2>
+      <ul>
+       <li inner-h-t-m-l="{{localize('78eeb1032ef25936c2acb349178acb6d')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('0422c737cfc8dd12be260a60c051da9f')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('24c4a19a8fbe617a2806d6385f42d8f0')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('6311ae17c1ee52b36e68aaf4ad066387')}}">
+       </li>
+      </ul>
+      <h2 inner-h-t-m-l="{{localize('dc89e11e7951289a50d52f79eb3bec99')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('e5f63e1a80d3dac5fb7576397cd41679')}}">
+      </p>
+      <table class="account-data">
+       <tr>
+        <td inner-h-t-m-l="{{localize('aa90c53280582695f3d4b8ac2ec17a8b')}}">
+        </td>
+        <td>
+         <strong inner-h-t-m-l="{{localize('c77979f688996d53dd7c4e152335d283')}}">
+         </strong>
+        </td>
+       </tr>
+       <tr>
+        <td inner-h-t-m-l="{{localize('984482eb9ff11e6310fef641d2268a2a')}}">
+        </td>
+        <td>
+         <strong inner-h-t-m-l="{{localize('e30c6d781b4215b400036d2f16de6ad8')}}">
+         </strong>
+        </td>
+       </tr>
+       <tr>
+        <td inner-h-t-m-l="{{localize('71a97b3fe90b01b307ae56f4a59e2dba')}}">
+        </td>
+        <td>
+         <strong inner-h-t-m-l="{{localize('4075c804052f1fad136ab55e7e0e03a9')}}">
+         </strong>
+        </td>
+       </tr>
+       <tr>
+        <td inner-h-t-m-l="{{localize('bce7114e8a26954326f6b566ab28ed38')}}">
+        </td>
+        <td>
+         <strong inner-h-t-m-l="{{localize('88757984a44e6727d5183432f99fc892')}}">
+         </strong>
+        </td>
+       </tr>
+       <tr>
+        <td inner-h-t-m-l="{{localize('dd7bf230fde8d4836917806aff6a6b27')}}">
+        </td>
+        <td>
+         <strong inner-h-t-m-l="{{localize('59e2184c40c55f371a244d81a832a319')}}">
+         </strong>
+        </td>
+       </tr>
+       <tr>
+        <td inner-h-t-m-l="{{localize('9d70167863e5cb3e0f90f864a183e0c3')}}">
+        </td>
+        <td>
+         <strong inner-h-t-m-l="{{localize('2b71acb2162032d3abd09de4ded89d7a')}}">
+         </strong>
+        </td>
+       </tr>
+      </table>
+      <p inner-h-t-m-l="{{localize('07ff6265d788cbc68fd4cd5f0a361abd')}}">
+      </p>
+      <h2 inner-h-t-m-l="{{localize('c77979f688996d53dd7c4e152335d283')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('12f7a47120262187200318d15e7cf9f9')}}">
+      </p>
+      <p inner-h-t-m-l="{{localize('3fc61b28309e3264debc2756d48676a3')}}">
+      </p>
+      <p inner-h-t-m-l="{{localize('adc0f2ba4b4715efdf170207895b8e13')}}">
+      </p>
+     </article>
+    </section>
+   </main>
+  </div>
+ </template>
+ <script>
+  class SCDonationsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-donations-page';
           }
@@ -131,10 +140,10 @@
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/donations-page/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/static/donations-page/${this.language}.json`));
           }
       }
 
       customElements.define(SCDonationsPage.is, SCDonationsPage);
-  </script>
+ </script>
 </dom-module>

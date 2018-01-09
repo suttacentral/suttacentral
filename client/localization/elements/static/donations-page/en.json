@@ -1,0 +1,30 @@
+{
+    "en": {
+        "91aa88d8aaf128db44e4465b1926344d": "SuttaCentral Donations",
+        "6a18d47e3f8d819ca21e9a0e136a3c68": "Your donation is greatly appreciated. It will support the ongoing development of SuttaCentral so we can continue bring the Buddha’s word to people all around the world.",
+        "97d71c6585da8ff839b8b6f2c7e60cfc": "<a class=\"donate-link\" href=\"/donate-now\"> <paper-button class=\"donate-button\" raised=\"\">DONATE</paper-button> </a>",
+        "89e1b8b5d1961ddedb63961b467c5756": "What does SuttaCentral spend money on?",
+        "78eeb1032ef25936c2acb349178acb6d": "IT development: we employ professional programmers in addition to volunteers.",
+        "0422c737cfc8dd12be260a60c051da9f": "Servers: costs of servers and other infrastructure.",
+        "24c4a19a8fbe617a2806d6385f42d8f0": "Hardware: computer and other hardware for workers on SC, especially monastics.",
+        "6311ae17c1ee52b36e68aaf4ad066387": "Other",
+        "dc89e11e7951289a50d52f79eb3bec99": "Ethical banking",
+        "e5f63e1a80d3dac5fb7576397cd41679": "SuttaCentral Development Trust uses <a href=\"https://www.communitysectorbanking.com.au/\" target=\"_blank\">Adelaide Bendigo community sector banking</a>, which has ethical and green investment policies. <a href=\"https://www.climatecouncil.org.au/what-you-need-to-know-about-fossil-fuel-divestment\" target=\"_blank\">Bendigo Bank has publicly divested from fossil fuels</a>.",
+        "aa90c53280582695f3d4b8ac2ec17a8b": "Account name",
+        "c77979f688996d53dd7c4e152335d283": "SuttaCentral Development Trust",
+        "984482eb9ff11e6310fef641d2268a2a": "Bank name",
+        "e30c6d781b4215b400036d2f16de6ad8": "Adelaide Bendigo Community Sector Banking",
+        "71a97b3fe90b01b307ae56f4a59e2dba": "BSB",
+        "4075c804052f1fad136ab55e7e0e03a9": "633 000",
+        "bce7114e8a26954326f6b566ab28ed38": "Account no.",
+        "88757984a44e6727d5183432f99fc892": "154500086",
+        "dd7bf230fde8d4836917806aff6a6b27": "Address",
+        "59e2184c40c55f371a244d81a832a319": "1273 Pacific Highway, Turramurra NSW 2074",
+        "9d70167863e5cb3e0f90f864a183e0c3": "Swift code",
+        "2b71acb2162032d3abd09de4ded89d7a": "BENDAU3B",
+        "07ff6265d788cbc68fd4cd5f0a361abd": "For any questions, please contact our financial officer, Deepika Weerakoon (suttacentraldevelopmenttrust@gmail.com). Deepika manages the funds on behalf of SuttaCentral Development Trust.",
+        "12f7a47120262187200318d15e7cf9f9": "The SuttaCentral Development Trust is a charitable trust. The founding members of the trust are Bhante Sujato, Bhante Brahmali, and John Kelly. The trust is managed by Deepika Weerakoon.",
+        "3fc61b28309e3264debc2756d48676a3": "The accountants and auditors of the Trust are <a href=\"http://www.alwisco.com.au\" target=\"_blank\">Randolph Alwis &amp; Co Pty Ltd</a>. The <a href=\"https://abr.business.gov.au/SearchByAbn.aspx?SearchText=858%20188%2075744\" target=\"_blank\">ABN is 858 188 75744</a>.",
+        "adc0f2ba4b4715efdf170207895b8e13": "Financial details of the trust are available if you have any inquiries. The Trust was created solely to support the development of SuttaCentral. All funds in the Trust will be solely spent on SuttaCentral, and none on trust administration, which is being managed by volunteers."
+    }
+}

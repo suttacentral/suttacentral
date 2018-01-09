@@ -1,0 +1,484 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+
+<dom-module id="sc-acknowledgments-page">
+  <template>
+    <style include="static-styles">
+    </style>
+    <div id="page-wrap">
+      <main>
+        <section>
+          <article>
+            <h1>Acknowledgments</h1>
+            <p>SuttaCentral was conceived by Venerable Anālayo (Germany), Rod Bucknell (Australia), and Bhante Sujato
+              (Australia), based on sutta correspondence tables compiled by Rod Bucknell and Ven. Anālayo. The site
+              founders are Rod Bucknell, Bhante Sujato, and John Kelly.</p>
+            <h2>Version 1—2005</h2>
+            <p>The initial launch of the site was in 2005. Key people involved with that launch were:</p>
+            <table>
+              <tr>
+                <td>Ong Yong Peng (Australia)</td>
+                <td>System, database and web design; web programming.</td>
+              </tr>
+              <tr>
+                <td>John Kelly (Australia)</td>
+                <td>Project coordination; system and database design; database and data administration; data entry.</td>
+              </tr>
+              <tr>
+                <td>Hugo Gayosso (USA), Chris Kang (Australia)</td>
+                <td>Data entry.</td>
+              </tr>
+            </table>
+            <h2>Version 2—2012</h2>
+            <p>In late 2012 we began a new redesign, with the core team being Rod Bucknell, John Kelly, and Bhante
+              Sujato. This was originally spurred by John Kelly’s work assisting Bhikkhu Bodhi on the Aṅguttara Nikāya
+              translation, which resulted in a number of new parallels being discovered. However we decided to go beyond
+              just making some additions, and have embarked on a complete redesign. While the data structure has been
+              retained with only incremental improvements, the entire code for the website has been rewritten. For this
+              new edition, the main team is as follows.</p>
+            <table>
+              <tr>
+                <td>Rod Bucknell</td>
+                <td>Lead researcher, parallels and references.</td>
+              </tr>
+              <tr>
+                <td>Bhante Sujato</td>
+                <td>Design; project coordination; text preparation; translation.</td>
+              </tr>
+              <tr>
+                <td>John Kelly</td>
+                <td>Project coordination; system and database design; database and data administration; data entry.</td>
+              </tr>
+              <tr>
+                <td>Blake Walsh (formerly Bhante Nandiya)</td>
+                <td>Chief developer, web programming, text preparation, general hacking.</td>
+              </tr>
+              <tr>
+                <td>Bhante Jhanarato (JR)</td>
+                <td>Web service scripting.</td>
+              </tr>
+            </table>
+            <h2>Version 3—2018</h2>
+            <p>While the 2012 rebuild has served us well, we have seen the need for a systematic upgrade. We have made a
+              series of incremental changes, each one of which must be added to the original structure somehow, and
+              things get a bit creaky after a while. At a certain point it’s better to rebuild in a cleaner and more
+              systematic way. We embarked on this process in 2017. Key underlying chages include internationalization,
+              integration of Sutta, Vinaya, and verse parallels, and addition of segmented translations. The core
+              development team for this process has been as follows.</p>
+            <table>
+              <tr>
+                <td>Bhante Sujato</td>
+                <td>Design; project coordination; text preparation; translation.</td>
+              </tr>
+              <tr>
+                <td>Ayya Vimala</td>
+                <td>Programming; text preparation; community coordination; preparation and integration of parallels.
+                </td>
+              </tr>
+              <tr>
+                <td>Blake Walsh</td>
+                <td>Lead programmer.</td>
+              </tr>
+            </table>
+            <p>The development was brought to completion thanks to the fine work of the team at STXNext: Małgorzata
+              Maksimczyk, Jakub Semik, Hubert Dworczynski, Wioletta Jaźwiecka, and Krzysiek Woźniak.</p>
+            <h2>SuttaCentral Development Trust</h2>
+            <p>In order to enable donations through the site, we set up a non-profit charity. This is incorporated in
+              Australia, and manages the finances for SuttaCentral. Special thanks to Deepika Weerakoon, who set it up
+              and acts as Financial Officer. Trustees are Bhante Sujato, Bhante Brahmali, and John Kelly.</p>
+            <h2>Our volunteers and helpers</h2>
+            <p>In addition, we express our grateful thanks to the following. SuttaCentral exists to draw together the
+              diverse strands of the early Buddhist tradition, and we can only do this through the help of many people.
+              This list is very incomplete, so please let us know if we missed anyone out.</p>
+            <table>
+              <tr>
+                <td>Akincano Marc Weber</td>
+                <td>German translations: consultation and advice.</td>
+              </tr>
+              <tr>
+                <td>Alain René Bernay</td>
+                <td>French translations: sourcing and text preparation.</td>
+              </tr>
+              <tr>
+                <td>Alex Genaud</td>
+                <td>Consultation.</td>
+              </tr>
+              <tr>
+                <td>Alexander баян купи-ка</td>
+                <td>Russian translations.</td>
+              </tr>
+              <tr>
+                <td>Alpesh Raval, Jatin, and the team at Hi-Tech</td>
+                <td>Typing and markup of several texts, including the English translations of the Pali Vinaya, Vibhaṅga,
+                  and Kathāvatthu, and several Hindi texts.
+                </td>
+              </tr>
+              <tr>
+                <td>Amaradasa Liyanagamage</td>
+                <td>Consultation and liason.</td>
+              </tr>
+              <tr>
+                <td>Andrew Glass</td>
+                <td>Advice regarding font encodings.</td>
+              </tr>
+              <tr>
+                <td>Antoni Baron</td>
+                <td>Spanish translations: consultation.</td>
+              </tr>
+              <tr>
+                <td>Ashok Tapase</td>
+                <td>Marathi translations.</td>
+              </tr>
+              <tr>
+                <td>Ayyā Agganyani</td>
+                <td>German translations: consultation and advice on Abhidhamma, text preparation.</td>
+              </tr>
+              <tr>
+                <td>Ayyā Araññadevī</td>
+                <td>English translations: corrections for dictionaries.</td>
+              </tr>
+              <tr>
+                <td>Ayyā Kathrin</td>
+                <td>German translations: text preparation.</td>
+              </tr>
+              <tr>
+                <td>Ben Arasu</td>
+                <td>Tamil translations.</td>
+              </tr>
+              <tr>
+                <td>Ben Mitchell of Rosetta Type</td>
+                <td>Help with fonts.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Anālayo</td>
+                <td>English translation of the Saṁyuktāgama, help with parallels.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Ānandajoti</td>
+                <td>Consultation and advice on texts and metres, translations and parallels.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Bodhi</td>
+                <td>English translations.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Brahmāli</td>
+                <td>English translation of the Pali Vinaya.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Dhammadāsa (AKA Brother Joe Smith)</td>
+                <td>English translations: text preparation.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Indacanda</td>
+                <td>Vietnamese translations.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Jaganātha</td>
+                <td>English translation: preparation of <em>The Book of the Discipline</em>.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Jodoshinshu</td>
+                <td>Japanese translations: permission to link to his site.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Karunabhanga</td>
+                <td>Bengali translations: support.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Khemacāro (박석현)</td>
+                <td>Korean translations.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Kheminda (Бхиккху Кхеминда)</td>
+                <td>Russian translations: support.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Mettavihāri</td>
+                <td>Sinhala translations: support.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Mettiko</td>
+                <td>German translation of the Majjhima Nikāya.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Ñāṇatusita</td>
+                <td>Permission to use Bhikkhu Bodhi’s Dīgha translations and John Ireland’s Udāna and Itivuttaka.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Pāsādika</td>
+                <td>English translation of the Ekottarikāgama.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Santuttho</td>
+                <td>German translations: consultation, advice and Pali→German dictionary.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhu Yuttadhammo</td>
+                <td>Pali-English dictionary, Pali lookup code, Pali transliteration code.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhunī Dhammadinnā</td>
+                <td>English translation of the Upāyikā.</td>
+              </tr>
+              <tr>
+                <td>Bhikkhunī Nibbidā</td>
+                <td>English translation: preparation of <em>The Book of the Discipline</em>.</td>
+              </tr>
+              <tr>
+                <td>Binh Anson</td>
+                <td>Vietnamese translations: text preparation.</td>
+              </tr>
+              <tr>
+                <td>Buddhist Library (Sydney)</td>
+                <td>Use of facilities.</td>
+              </tr>
+              <tr>
+                <td>Buddhist Society of WA</td>
+                <td>Use of facilities.</td>
+              </tr>
+              <tr>
+                <td>Buddhist Studies Review</td>
+                <td>Permission to use the English translation of the Ekottarikāgama.</td>
+              </tr>
+              <tr>
+                <td>Charles Muller</td>
+                <td>Digital Dictionary of Buddhism.</td>
+              </tr>
+              <tr>
+                <td>Dave Strandberg</td>
+                <td>SASS and JS enhancements.</td>
+              </tr>
+              <tr>
+                <td>David Březina of Rosetta Type</td>
+                <td>Help with fonts.</td>
+              </tr>
+              <tr>
+                <td>David Dargie and Michelle Styles-Williams</td>
+                <td>Transcription of Sanskrit texts.</td>
+              </tr>
+              <tr>
+                <td>Deepika Weerakoon</td>
+                <td>General support, Financial Officer for SuttaCentral Development Trust.</td>
+              </tr>
+              <tr>
+                <td>Dheerayupa Sukonthapanthu</td>
+                <td>Thai translations: coordination, consultation, and text preparation.</td>
+              </tr>
+              <tr>
+                <td>Dilbag Bhangu</td>
+                <td>Hindi translations: support.</td>
+              </tr>
+              <tr>
+                <td>Dr. Mark Allon</td>
+                <td>Consultation.</td>
+              </tr>
+              <tr>
+                <td>Dustin Cheah</td>
+                <td>General support.</td>
+              </tr>
+              <tr>
+                <td>Enzo Alfano</td>
+                <td>Italian translations.</td>
+              </tr>
+              <tr>
+                <td>G. Radhakrishnan</td>
+                <td>General support.</td>
+              </tr>
+              <tr>
+                <td>Gabriel Laera</td>
+                <td>Portuguese translations: preparation and creation of Pali→Portugese dictionary.</td>
+              </tr>
+              <tr>
+                <td>Gia Hieu Nguyen</td>
+                <td>General support.</td>
+              </tr>
+              <tr>
+                <td>Handaka Vijjananda</td>
+                <td>General support.</td>
+              </tr>
+              <tr>
+                <td>Hero Barua</td>
+                <td>Bengali translations: support.</td>
+              </tr>
+              <tr>
+                <td>Indra Anggara</td>
+                <td>Indonesian translations.</td>
+              </tr>
+              <tr>
+                <td>Jacqueline Rodgers</td>
+                <td>Japanese translations: support.</td>
+              </tr>
+              <tr>
+                <td>Janaka Liyanage</td>
+                <td>Sinhala translations: text preparation and support.</td>
+              </tr>
+              <tr>
+                <td>Jessica Hefes</td>
+                <td>French translations: text preparation.</td>
+              </tr>
+              <tr>
+                <td>John Nishinaga</td>
+                <td>Setting up VPS, managing shift from PHP to Python, IT consultant and technician.</td>
+              </tr>
+              <tr>
+                <td>Karel Chromovský</td>
+                <td>Czech translations.</td>
+              </tr>
+              <tr>
+                <td>Ken Yifer</td>
+                <td>Dharmapada parallels of the Taisho texts.</td>
+              </tr>
+              <tr>
+                <td>Kumārī Jayawardena</td>
+                <td>Sinhala translations: permission to use the work by her father, A.P. de Zoysa.</td>
+              </tr>
+              <tr>
+                <td>Kåre A. Lie</td>
+                <td>Norwegian translations.</td>
+              </tr>
+              <tr>
+                <td>Maithri Panagoda</td>
+                <td>Sinhala translations: support.</td>
+              </tr>
+              <tr>
+                <td>Manfred Wierich</td>
+                <td>German translations: text preparation and support.</td>
+              </tr>
+              <tr>
+                <td>Marco A. Montava Belda and friends at Buddhismo Theravada Hispano</td>
+                <td>Pali→Spanish Dictionary.</td>
+              </tr>
+              <tr>
+                <td>Marcus Bingenheimer</td>
+                <td>Permission to use translations of the shorter Saṁyuktāgama, consultation.</td>
+              </tr>
+              <tr>
+                <td>Maria Backes</td>
+                <td>German translations: text preparation and organisation of fund-raising events.</td>
+              </tr>
+              <tr>
+                <td>Michael Beisert</td>
+                <td>Portuguese translations.</td>
+              </tr>
+              <tr>
+                <td>Mukta Barua</td>
+                <td>Bengali translations: support.</td>
+              </tr>
+              <tr>
+                <td>Nathan Win</td>
+                <td>Burmese translations: support.</td>
+              </tr>
+              <tr>
+                <td>Patcharaporn Sahaponghirun</td>
+                <td>Thai translations: text preparation.</td>
+              </tr>
+              <tr>
+                <td>Penny Jordan</td>
+                <td>General text preparation.</td>
+              </tr>
+              <tr>
+                <td>Peter van Loosbroek</td>
+                <td>Dutch translations.</td>
+              </tr>
+              <tr>
+                <td>Piotr Marcinow</td>
+                <td>Polish translations: text preparation.</td>
+              </tr>
+              <tr>
+                <td>Premalal Mirihagalla</td>
+                <td>General support.</td>
+              </tr>
+              <tr>
+                <td>Prof. Kobus Kruger</td>
+                <td>Afrikaans translations.</td>
+              </tr>
+              <tr>
+                <td>Randolph Alwis</td>
+                <td>Legal advice.</td>
+              </tr>
+              <tr>
+                <td>Raimund Beyerlein and Verlag Beyerlein-Steinschulte</td>
+                <td>German translations: copyrights and advice.</td>
+              </tr>
+              <tr>
+                <td>Rémy Zins</td>
+                <td>French translations and text preparation.</td>
+              </tr>
+              <tr>
+                <td>Sarah “Samurai” Lappin</td>
+                <td>Japanese translations: support.</td>
+              </tr>
+              <tr>
+                <td>Seniya Ariyakumara</td>
+                <td>Indonesian translations.</td>
+              </tr>
+              <tr>
+                <td>Shai Schwartz</td>
+                <td>Hebrew translations.</td>
+              </tr>
+              <tr>
+                <td>Shikha Panjwani, Rahul Patel, and the team at Edatamine Services</td>
+                <td>Typing and markup of several Hindi texts.</td>
+              </tr>
+              <tr>
+                <td>Shisanu Tongchim</td>
+                <td>Thai translations: technical assistance.</td>
+              </tr>
+              <tr>
+                <td>Shravasti Dhammika</td>
+                <td>Geographic consultation, dictionary of nature and environment.</td>
+              </tr>
+              <tr>
+                <td>Sirisumana Godage</td>
+                <td>Sinhala translations: support.</td>
+              </tr>
+              <tr>
+                <td>Sister Uppalavanna</td>
+                <td>Draft English translations of most of the nikayas.</td>
+              </tr>
+              <tr>
+                <td>Štěpán Chromovský</td>
+                <td>Czech translations.</td>
+              </tr>
+              <tr>
+                <td>Udayan Barua</td>
+                <td>Bengali translations: support.</td>
+              </tr>
+              <tr>
+                <td>Vipassana Research Institute</td>
+                <td>Permission to use translations of the Mahā­satipaṭṭhāna Sutta.</td>
+              </tr>
+            </table>
+          </article>
+
+        </section>
+      </main>
+    </div>
+  </template>
+
+  <script>
+      class AcknowledgmentsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-acknowledgments-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/static/acknowledgments-page/${this.language}.json`));
+          }
+      }
+
+      customElements.define(AcknowledgmentsPage.is, AcknowledgmentsPage);
+  </script>
+</dom-module>
