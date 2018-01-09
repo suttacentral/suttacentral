@@ -58,8 +58,7 @@
     "iron-lazy-pages": "TimvdLippe/iron-lazy-pages#^2.1.0",
     "isw-dialog": "IswPolymerElements/isw-dialog#^1.0.3",
     "paper-tabs": "^2.0.0",
-    "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0",
-    "i18n-behavior": "^2.0.0"
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^6.2.0"
