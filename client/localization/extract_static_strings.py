@@ -12,7 +12,7 @@ TEMPLATE_DIR = '../elements/static-templates/'
 STATIC_DIR = '../elements/static/'
 LOCALIZATION_JSONS_DIR = '../localization/elements/static/'
 
-NON_BLOCK_ELEMENTS = ['a', 'span', '\n', 'code', 'br']
+NON_BLOCK_ELEMENTS = ['a', 'span', '\n', 'code', 'br', 'cite', 'strong', 'i']
 EXCLUDE_BLOCKS = ['style']
 
 
@@ -27,13 +27,18 @@ def recursive_traversal(element, data):
         for child in children:
             recursive_traversal(child, data)
     else:
+
         string = ''.join((str(child) for child in element.children))
         string = ' '.join(string.split())
 
         string_hash = hashlib.md5(string.encode()).hexdigest()
 
-        element.clear()
-        element['inner-h-t-m-l'] = f'{{{{localize(\'{string_hash}\')}}}}'
+        if isinstance(element, NavigableString) or all(isinstance(child, NavigableString) for child in element.children):
+            element.clear()
+            element['inner-text'] = f'{{{{localize(\'{string_hash}\')}}}}'
+        else:
+            element.clear()
+            element['inner-h-t-m-l'] = f'{{{{localize(\'{string_hash}\')}}}}'
         data[string_hash] = string
 
 

@@ -357,11 +357,11 @@
         }
       }
   </style>
-  <iron-ajax auto="" handle-as="json" id="epigraphs-ajax" inner-h-t-m-l="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ epigraphsData }}" loading="{{ loadingEpigraphs }}" url="[[_computeUrl('epigraphs')]]">
+  <iron-ajax auto="" handle-as="json" id="epigraphs-ajax" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ epigraphsData }}" loading="{{ loadingEpigraphs }}" url="[[_computeUrl('epigraphs')]]">
   </iron-ajax>
-  <iron-ajax auto="" handle-as="json" id="why-we-read-ajax" inner-h-t-m-l="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ whyWeReadData }}" loading="{{ loadingWhyWeRead }}" url="[[_computeUrl('whyweread')]]">
+  <iron-ajax auto="" handle-as="json" id="why-we-read-ajax" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ whyWeReadData }}" loading="{{ loadingWhyWeRead }}" url="[[_computeUrl('whyweread')]]">
   </iron-ajax>
-  <iron-meta id="meta" inner-h-t-m-l="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+  <iron-meta id="meta" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
   </iron-meta>
   <div class="bottom-space" id="page-wrap">
    <div class="content">
@@ -381,12 +381,12 @@
        <div class="card-content">
         <div class="card-content-text">
          <template if="[[loadingEpigraphs]]" is="dom-if">
-          <paper-spinner-lite active="" class="spinner" inner-h-t-m-l="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+          <paper-spinner-lite active="" class="spinner" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
           </paper-spinner-lite>
          </template>
          <template if="[[!loadingEpigraphs]]" is="dom-if">
           <div class="card-text center-text buddhas-words-text">
-           <sc-text-carousel display="epigraph" elements="[[epigraphsData]]" inner-h-t-m-l="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" link="uid">
+           <sc-text-carousel display="epigraph" elements="[[epigraphsData]]" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" link="uid">
            </sc-text-carousel>
           </div>
          </template>
@@ -398,17 +398,17 @@
     <div class="row cards">
      <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="../../img/home-page/becomingone-min.jpg">
       <div class="transparent-card-content-wrapper">
-       <div class="card-title-text" inner-h-t-m-l="{{localize('742e700832d62bb2f6a17592968b4dab')}}">
+       <div class="card-title-text" inner-text="{{localize('742e700832d62bb2f6a17592968b4dab')}}">
        </div>
-       <div class="image-card-text" inner-h-t-m-l="{{localize('075042e8f0218630c1c81f34bda77f67')}}">
+       <div class="image-card-text" inner-text="{{localize('075042e8f0218630c1c81f34bda77f67')}}">
        </div>
       </div>
      </paper-card>
      <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="../../img/home-page/contemplatingthemoon-min.jpg">
       <div class="transparent-card-content-wrapper">
-       <div class="card-title-text" inner-h-t-m-l="{{localize('a5172cf2c34de3fc8e2af331ac915ec9')}}">
+       <div class="card-title-text" inner-text="{{localize('a5172cf2c34de3fc8e2af331ac915ec9')}}">
        </div>
-       <div class="image-card-text" inner-h-t-m-l="{{localize('02e6b0e41516ae0677084bb23b60d3d9')}}">
+       <div class="image-card-text" inner-text="{{localize('02e6b0e41516ae0677084bb23b60d3d9')}}">
        </div>
       </div>
      </paper-card>
@@ -429,12 +429,12 @@
        <div class="card-heading">
         <div class="card-heading-text smaller-title" inner-h-t-m-l="{{localize('f51942f7ddc92c9756837ea0381a4697')}}">
         </div>
-        <div class="card-heading-subtext" inner-h-t-m-l="{{localize('84e1d6799debf209a5ce8267eaed74e9')}}">
+        <div class="card-heading-subtext" inner-text="{{localize('84e1d6799debf209a5ce8267eaed74e9')}}">
         </div>
        </div>
        <div class="card-content-video">
         <div class="embed-container">
-         <iframe allowfullscreen="" frameborder="0" inner-h-t-m-l="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" mozallowfullscreen="" src="https://player.vimeo.com/video/125746164?color=ce8400" webkitallowfullscreen="">
+         <iframe allowfullscreen="" frameborder="0" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" mozallowfullscreen="" src="https://player.vimeo.com/video/125746164?color=ce8400" webkitallowfullscreen="">
          </iframe>
         </div>
        </div>
@@ -442,14 +442,14 @@
      </paper-card>
     </div>
     <div class="row">
-     <div class="big-card-title" inner-h-t-m-l="{{localize('24cbc4d3253a2779ae4dab326e42659b')}}">
+     <div class="big-card-title" inner-text="{{localize('24cbc4d3253a2779ae4dab326e42659b')}}">
      </div>
      <div class="three-elements-grid">
       <paper-card class="three-elements-big paper-card-with-button" elevation="2" image="../../img/home-page/14.jpg">
        <div class="card-content-wrapper no-bottom-padding">
-        <div class="card-title-text" inner-h-t-m-l="{{localize('e30baf2773fd1ff10ac21a7ebd63198d')}}">
+        <div class="card-title-text" inner-text="{{localize('e30baf2773fd1ff10ac21a7ebd63198d')}}">
         </div>
-        <div class="image-card-text" inner-h-t-m-l="{{localize('31f31787de5aa09d662dfef82b0b686e')}}">
+        <div class="image-card-text" inner-text="{{localize('31f31787de5aa09d662dfef82b0b686e')}}">
         </div>
        </div>
        <a class="button-link" href="/discourses">
@@ -460,9 +460,9 @@
       </paper-card>
       <paper-card class="three-elements-small three-elements-first-small full-height paper-card-with-button" elevation="2">
        <div class="card-content-wrapper no-bottom-padding">
-        <div class="card-title-text" inner-h-t-m-l="{{localize('09c18e7d1f00a37ba925092e7a101a05')}}">
+        <div class="card-title-text" inner-text="{{localize('09c18e7d1f00a37ba925092e7a101a05')}}">
         </div>
-        <div class="text-card-text" inner-h-t-m-l="{{localize('45cc0214114c2d971cf2701f842f8926')}}">
+        <div class="text-card-text" inner-text="{{localize('45cc0214114c2d971cf2701f842f8926')}}">
         </div>
        </div>
        <a class="button-link" href="/vinaya">
@@ -473,9 +473,9 @@
       </paper-card>
       <paper-card class="three-elements-small three-elements-second-small full-height paper-card-with-button" elevation="2">
        <div class="card-content-wrapper no-bottom-padding">
-        <div class="card-title-text" inner-h-t-m-l="{{localize('ff9331ad058b3717457b73d2bdc51534')}}">
+        <div class="card-title-text" inner-text="{{localize('ff9331ad058b3717457b73d2bdc51534')}}">
         </div>
-        <div class="image-card-text" inner-h-t-m-l="{{localize('db01f7b42cfc777fd2f2a84d3a6787fa')}}">
+        <div class="image-card-text" inner-text="{{localize('db01f7b42cfc777fd2f2a84d3a6787fa')}}">
         </div>
        </div>
        <a class="button-link" href="/abhidhamma">
@@ -496,12 +496,12 @@
        <div class="card-content">
         <div class="card-content-text">
          <template if="[[loadingWhyWeRead]]" is="dom-if">
-          <paper-spinner-lite active="" class="spinner" inner-h-t-m-l="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+          <paper-spinner-lite active="" class="spinner" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
           </paper-spinner-lite>
          </template>
          <template if="[[!loadingWhyWeRead]]" is="dom-if">
           <div class="why-we-read">
-           <sc-text-carousel elements="[[whyWeReadData]]" inner-h-t-m-l="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+           <sc-text-carousel elements="[[whyWeReadData]]" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
            </sc-text-carousel>
           </div>
           <a class="button-link" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747" target="_blank">
@@ -518,9 +518,9 @@
     <div class="row cards">
      <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="../../img/home-page/noword-min.jpg">
       <div class="card-content-wrapper">
-       <div class="card-title-text" inner-h-t-m-l="{{localize('bb5566f11a6995bf929b51ece58274bc')}}">
+       <div class="card-title-text" inner-text="{{localize('bb5566f11a6995bf929b51ece58274bc')}}">
        </div>
-       <div class="image-card-text" inner-h-t-m-l="{{localize('08d18ae95254308908e1ec79dfd33748')}}">
+       <div class="image-card-text" inner-text="{{localize('08d18ae95254308908e1ec79dfd33748')}}">
        </div>
       </div>
       <a class="button-link" href="/a-new-beginning">
@@ -531,9 +531,9 @@
      </paper-card>
      <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="../../img/home-page/listeningtotherain-min.jpg">
       <div class="card-content-wrapper">
-       <div class="card-title-text" inner-h-t-m-l="{{localize('149842aa5477edb219ce272ec2aab269')}}">
+       <div class="card-title-text" inner-text="{{localize('149842aa5477edb219ce272ec2aab269')}}">
        </div>
-       <div class="image-card-text" inner-h-t-m-l="{{localize('70a49d1ca4c56cd629f76e90d6b6cc0f')}}">
+       <div class="image-card-text" inner-text="{{localize('70a49d1ca4c56cd629f76e90d6b6cc0f')}}">
        </div>
       </div>
       <a class="button-link" href="/subjects">
