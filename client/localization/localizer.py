@@ -1,15 +1,18 @@
 import sys
 
 from pootle import generate_po_files, generate_json_files
-import create_pre_pootle_files, extract_static_strings
+import create_pre_pootle_files
+import extract_static_strings
 
 
 def to_pootle():
-    pass
+    extract_static_strings.run()
+    create_pre_pootle_files.run()
+    generate_po_files.run()
 
 
 def from_pootle():
-    pass
+    generate_json_files.run()
 
 
 def print_help():
