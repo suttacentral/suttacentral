@@ -21,16 +21,8 @@ def process_file(file: Path):
 
 def process_files():
     Path(PRE_POOTLE_FILES_DIR).mkdir(parents=True, exist_ok=True)
-    for file in tqdm.tqdm(recursive_iter_files(Path('elements'))):
+    for file in tqdm.tqdm((Path('elements').rglob('en.json'))):
         process_file(file)
-
-
-def recursive_iter_files(path: Path) -> Path:
-    for sub in path.iterdir():
-        if sub.is_dir():
-            yield from recursive_iter_files(sub)
-        elif sub.stem == 'en':
-            yield sub
 
 
 if __name__ == '__main__':
