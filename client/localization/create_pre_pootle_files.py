@@ -3,7 +3,6 @@ from pathlib import Path
 
 import tqdm
 
-
 PRE_POOTLE_FILES_DIR = 'pootle/prePootleFiles/'
 
 
