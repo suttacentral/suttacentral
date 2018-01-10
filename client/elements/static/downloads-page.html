@@ -1,94 +1,63 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../styles/static-styles.html">
-<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
-
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
+<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
 <dom-module id="downloads-page">
-  <template>
-    <style include="static-styles">
-      img {
+ <template>
+  <style include="static-styles">
+   img {
         float: right;
         width: 50%;
       }
-    </style>
-
-    <div id="page-wrap">
-      <main>
-        <section>
-          <article>
-            <h1>Downloads</h1>
-
-            <h2>Raw Data and Texts</h2>
-            <p>All the raw SuttaCentral data (<code>json</code>, <code>html</code>, etc.) is
-              <a href="https://github.com/suttacentral/">available on
-                our GitHub repository</a>. </p>
-
-
-            <h2>The Book of the Discipline</h2>
-
-            <p>SuttaCentral is proud to offer the full text of <span class="author">I.B. Horner</span>’s translation of
-              the Pali Vinaya in six volumes. This is the first time that this classic of 20th century Buddhist
-              scholarship has been made available in a true digital edition. We are able to do this because the <a
-                      href="http://www.palitext.com/" target="_blank">Pali Text Society</a>, holders of the copyright,
-              kindly released the text under a <a href="http://creativecommons.org/licenses/by-nc/3.0/" target="_blank">Creative
-                Commons Attribution-NonCommercial 3.0</a> licence.</p>
-
-            <p>SuttaCentral exists to present the Buddhist texts, not people’s opinions about the texts, so our policy
-              is to exclude introductions, footnotes, and the like. On SuttaCentral, therefore, we have only the
-              translated text itself. However, in this case we felt that the scholarly apparatus was valuable enough to
-              put the considerable effort into creating a proper digital edition of the entire text. This is what we
-              offer in these downloads. These are, of course, covered by the same Creative Commons
-              Attribution-NonCommercial 3.0 licence. The text is presented in a number of formats, which are explained
-              below.</p>
-
-            <p>Further details on the process of creating these texts and on relevant changes are included in the
-              Preface to the SuttaCentral edition. All versions include such enhancements as clickable links for over
-              12,000 internal references, detailed tables of contents, and revised reference system.</p>
-
-            <table>
-              <tr>
-                <td><a class="file" href="/files/Book_of_the_Discipline.pdf">PDF</a> (9.8mb)</td>
-                <td> This is the entire six volumes in one <span class="smallcaps">pdf</span> file. The file was created
-                  in LaTeX, and is a high quality <span class="smallcaps">pdf</span> suitable for all devices as well as
-                  for printing. Under the licence terms it is permissible to publish a print edition for free
-                  distribution. If you are interested to do this, please contact us and we can help tailor the <span
-                          class="smallcaps">pdf</span> file to your needs.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <a class="file" href="/files/Book_of_the_Discipline.epub">EPUB</a> (3.0mb)<br>
-                  <a class="file" href="/files/Book_of_the_Discipline.mobi">MOBI</a> (5.6mb)
-                </td>
-                <td>
-                  E-book version suitable for use with e-readers. Mobi (Kindle) and ePub are the most common e-book
-                  formats, the Calibre software can convert to other formats.
-                </td>
-              </tr>
-              <tr>
-                <td><a class="file" href="/files/Book_of_the_Discipline_source.zip">ZIP</a> (3.6mb)</td>
-                <td> Source archive, contains the <span class="smallcaps">tex</span> source file suitable for compiling
-                  with LuaLatex, and the entire six volumes as one large <span class="smallcaps">html</span> file. These
-                  are the base files from which the other formats were derived.
-                </td>
-              </tr>
-            </table>
-
-            <h2>Sutta Nipāta by Laurence Mills</h2>
-            <p>The Sutta Nipāta is a well known and well loved early Buddhist text. It is a compilation of poems that
-              inspire, educate, and admonish. Touching devotion, profound philosophy, pragmatic ethics, and insights
-              into early Buddhist culture all find their place here. This translation expresses these teachings in a
-              poetic voice. The primary translator and commentator is the experienced Pali scholar Laurence Khantipalo
-              Mills, with portions by others including Bhikkhu Ñānamoli and Bhikkhu Sujato. Download the <a class="file"
-                                                                                                            href="/files/snp.pdf">PDF</a>
-              (0.8mb) here or you can order the paperback on Lulu.com.</p>
-          </article>
-        </section>
-      </main>
-    </div>
-  </template>
-
-  <script>
-      class SCDownloadsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+  </style>
+  <div id="page-wrap">
+   <main>
+    <section>
+     <article>
+      <h1 inner-text="{{localize('c20c35ef53bf1b70789ce94e66800147')}}">
+      </h1>
+      <h2 inner-text="{{localize('c1c1e70d557e9ba9b036ef879a504ce6')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('35f4da2c4213d5652d7e1059908487d9')}}">
+      </p>
+      <h2 inner-text="{{localize('62ff57d3bbb642c261331645599a1f56')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('5dd3a6f7ec98dcf0dad3e41518dbb754')}}">
+      </p>
+      <p inner-text="{{localize('ac389e41b6828374e621967357b6a4eb')}}">
+      </p>
+      <p inner-text="{{localize('b98f1fe799bdd20776773c1b76145dbd')}}">
+      </p>
+      <table>
+       <tr>
+        <td inner-h-t-m-l="{{localize('879782adf82e12c510e128c0eb3cc525')}}">
+        </td>
+        <td inner-h-t-m-l="{{localize('706ad432849394f0702d65b0bdecab4b')}}">
+        </td>
+       </tr>
+       <tr>
+        <td inner-h-t-m-l="{{localize('0e1732ff17027c54eb76ca81b7d19509')}}">
+        </td>
+        <td inner-text="{{localize('f455c862232872d2badece1044fad75f')}}">
+        </td>
+       </tr>
+       <tr>
+        <td inner-h-t-m-l="{{localize('590f040454784c1b97e37cd7e99ab7e2')}}">
+        </td>
+        <td inner-h-t-m-l="{{localize('a9f2623cf5b72eb09b1a2962e18955be')}}">
+        </td>
+       </tr>
+      </table>
+      <h2 inner-text="{{localize('aa9d1327240db97befef1e39dd7a3377')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('2a17349731a3a2aa4cd810e0caf8a731')}}">
+      </p>
+     </article>
+    </section>
+   </main>
+  </div>
+ </template>
+ <script>
+  class SCDownloadsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-downloads-page';
           }
@@ -104,10 +73,10 @@
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/downloads-page/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/static/downloads-page/${this.language}.json`));
           }
       }
 
       customElements.define(SCDownloadsPage.is, SCDownloadsPage);
-  </script>
+ </script>
 </dom-module>

@@ -1,19 +1,17 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
-<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
-
-<link rel="import" href="../../elements/addons/text-carousel.html">
-<link rel="import" href="../../styles/static-styles.html">
-
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../bower_components/paper-card/paper-card.html" rel="import"/>
+<link href="../../bower_components/paper-button/paper-button.html" rel="import"/>
+<link href="../../bower_components/iron-ajax/iron-ajax.html" rel="import"/>
+<link href="../../bower_components/iron-meta/iron-meta.html" rel="import"/>
+<link href="../../bower_components/paper-spinner/paper-spinner-lite.html" rel="import"/>
+<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
+<link href="../../elements/addons/text-carousel.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
 <dom-module id="home-page">
-  <template>
-    <style include="static-styles">
-      .content {
+ <template>
+  <style include="static-styles">
+   .content {
         display: grid;
         grid-auto-flow: row;
         grid-template-columns: 2% 96% 2%;
@@ -358,246 +356,198 @@
           @apply --sc-skolar-font-size-xxl;
         }
       }
-
-    </style>
-
-    <iron-ajax
-        auto
-        url="[[_computeUrl('epigraphs')]]"
-        id="epigraphs-ajax"
-        handle-as="json"
-        loading="{{ loadingEpigraphs }}"
-        last-response="{{ epigraphsData }}"></iron-ajax>
-
-    <iron-ajax
-        auto
-        url="[[_computeUrl('whyweread')]]"
-        id="why-we-read-ajax"
-        handle-as="json"
-        loading="{{ loadingWhyWeRead }}"
-        last-response="{{ whyWeReadData }}"></iron-ajax>
-
-    <iron-meta id="meta"></iron-meta>
-
-    <div id="page-wrap" class="bottom-space">
-      <div class="content">
-
-        <div class="row introduction">
-          <p>The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br>
-            Many of these scriptures have now been translated into the world’s languages.</p>
-          <p>SuttaCentral brings these together and makes them freely available. <br>
-            Setting aside the boundaries of language and tradition, we let the Buddha speak for himself.</p>
-        </div>
-
-        <div class="row">
-          <paper-card elevation="2">
-            <div class="card">
-              <div class="card-heading">
-                <div class="card-heading-text">
-                  The<br>
-                  Buddha’s<br>
-                  words
-                </div>
-              </div>
-              <div class="card-content">
-                <div class="card-content-text">
-                  <template is="dom-if" if="[[loadingEpigraphs]]">
-                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
-                  </template>
-                  <template is="dom-if" if="[[!loadingEpigraphs]]">
-                    <div class="card-text center-text buddhas-words-text">
-                      <sc-text-carousel elements="[[epigraphsData]]" display="epigraph" link="uid"></sc-text-carousel>
-                    </div>
-                  </template>
-                </div>
-              </div>
-            </div>
-          </paper-card>
-        </div>
-
-        <div class="row cards">
-          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card"
-                      image="../../img/home-page/becomingone-min.jpg" elevation="2">
-            <div class="transparent-card-content-wrapper">
-              <div class="card-title-text">What’s here</div>
-              <div class="image-card-text">
-                SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”.
-                This is a large collection of teachings attributed to the Buddha or his earliest disciples,
-                who were teaching in India around 2500 years ago.
-                They are regarded as sacred canon in all schools of Buddhism.
-              </div>
-            </div>
-          </paper-card>
-          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card"
-                      image="../../img/home-page/contemplatingthemoon-min.jpg" elevation="2">
-            <div class="transparent-card-content-wrapper">
-              <div class="card-title-text">Where to begin</div>
-              <div class="image-card-text">
-                There are thousands of early Buddhist texts, and they’re not organized for easy reading.
-                But here’s the good news: you are not alone. We’ve been down this road ourselves,
-                and have tried to make it a little easier for you. Here’s some things you can try.
-              </div>
-            </div>
-          </paper-card>
-          <a class="button-link first-card-button grid-button" href="/introduction">
-            <paper-button class="button" raised>INTRODUCTION</paper-button>
-          </a>
-          <a class="button-link second-card-button grid-button" href="/start">
-            <paper-button class="button" raised>GET STARTED</paper-button>
-          </a>
-        </div>
-
-        <div class="row">
-          <paper-card elevation="2">
-            <div class="card">
-              <div class="card-heading">
-                <div class="card-heading-text smaller-title">
-                  Meet<br>
-                  SuttaCentral
-                </div>
-                <div class="card-heading-subtext">
-                  When I began to experience the peace of meditation, I needed to understand more deeply what I was
-                  going through. I found out there were real teachings from the Buddha himself, and felt drawn to them.
-                  For over twenty years now,
-                </div>
-              </div>
-              <div class="card-content-video">
-                <div class='embed-container'>
-                  <iframe src='https://player.vimeo.com/video/125746164?color=ce8400' frameborder='0'
-                          webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-                </div>
-              </div>
-            </div>
-          </paper-card>
-        </div>
-
-        <div class="row">
-          <div class="big-card-title">
-            Tipiṭaka—the three baskets
-          </div>
-          <div class="three-elements-grid">
-            <paper-card class="three-elements-big paper-card-with-button" image="../../img/home-page/14.jpg"
-                        elevation="2">
-              <div class="card-content-wrapper no-bottom-padding">
-                <div class="card-title-text">Discourses</div>
-                <div class="image-card-text">
-                  These are our primary sources for understanding what the Buddha taught.
-                  They record the Buddha’s teachings and conversations on specific occasions
-                  with a diverse range of people. Discourses are called sutta in Pali, which is
-                  spelled sūtra in Sanskrit.
-                </div>
-              </div>
-              <a class="button-link" href="/discourses">
-                <paper-button class="button card-button" raised>MORE ...</paper-button>
-              </a>
-            </paper-card>
-            <paper-card class="three-elements-small three-elements-first-small full-height paper-card-with-button"
-                        elevation="2">
-              <div class="card-content-wrapper no-bottom-padding">
-                <div class="card-title-text">
-                  Monastic Law
-                </div>
-                <div class="text-card-text">
-                  The texts on Monastic Law (vinaya) detail the lifestyle, rules,
-                  and procedures for Buddhist monks and nuns.
-                  They provide the guidelines for Buddhist monastics to this day, and in addition,
-                  paint a detailed and vivid picture of everyday life in ancient India.
-                </div>
-              </div>
-              <a class="button-link" href="/vinaya">
-                <paper-button class="button card-button" raised>MORE ...</paper-button>
-              </a>
-            </paper-card>
-            <paper-card class="three-elements-small three-elements-second-small full-height paper-card-with-button"
-                        elevation="2">
-              <div class="card-content-wrapper no-bottom-padding">
-                <div class="card-title-text">
-                  Abhidhamma
-                </div>
-                <div class="image-card-text">
-                  Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier
-                  discourses.
-                  The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.
-                </div>
-              </div>
-              <a class="button-link" href="/abhidhamma">
-                <paper-button class="button card-button" raised>MORE ...</paper-button>
-              </a>
-            </paper-card>
-          </div>
-        </div>
-
-        <div class="row">
-          <paper-card elevation="2">
-            <div class="card">
-              <div class="card-heading">
-                <div class="card-heading-text">
-                  Why<br>
-                  we<br>
-                  read
-                </div>
-              </div>
-              <div class="card-content">
-                <div class="card-content-text">
-                  <template is="dom-if" if="[[loadingWhyWeRead]]">
-                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
-                  </template>
-                  <template is="dom-if" if="[[!loadingWhyWeRead]]">
-                    <div class="why-we-read">
-                      <sc-text-carousel elements="[[whyWeReadData]]"></sc-text-carousel>
-                    </div>
-                    <a class="button-link"
-                       href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"
-                       target="_blank">
-                      <paper-button class="button card-button-middle" raised>TELL US WHY YOU READ</paper-button>
-                    </a>
-                  </template>
-                </div>
-              </div>
-            </div>
-          </paper-card>
-        </div>
-
-        <div class="row cards">
-          <paper-card class="two-paper-cards first-card paper-card-with-button"
-                      image="../../img/home-page/noword-min.jpg"
-                      elevation="2">
-            <div class="card-content-wrapper">
-              <div class="card-title-text">SuttaCentral—a new beginning</div>
-              <div class="image-card-text">
-                We’re proud to share with you the new SuttaCentral.
-                The team has been working on it for over two years, and we think it’s something special.
-                The new site features an entirely new translation of the four Pali nikāyas,
-                prepared specially for SuttaCentral by Bhante Sujato.
-                And the whole site has been re-built to be faster, clearer, and more flexible.
-              </div>
-            </div>
-            <a class="button-link" href="/a-new-beginning">
-              <paper-button class="button card-button" raised>WHAT’S NEW IN 2018</paper-button>
-            </a>
-          </paper-card>
-          <paper-card class="two-paper-cards second-card paper-card-with-button"
-                      image="../../img/home-page/listeningtotherain-min.jpg" elevation="2">
-            <div class="card-content-wrapper">
-              <div class="card-title-text">Indexes and Terminology</div>
-              <div class="image-card-text">
-                Like any specialized field, Buddhist studies has it's own terminology and content. It's easy to get lost
-                or to miss references, so here we provide indexes of terms in the early texts sorted by subject, name
-                and simile, as well a glossary of important terms. These hand-curated lists offer another way to find
-                the sutta or passage that you're looking for.
-              </div>
-            </div>
-            <a class="button-link" href="/subjects">
-              <paper-button class="button card-button" raised>Indexes</paper-button>
-            </a>
-          </paper-card>
-        </div>
-      </div>
+  </style>
+  <iron-ajax auto="" handle-as="json" id="epigraphs-ajax" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ epigraphsData }}" loading="{{ loadingEpigraphs }}" url="[[_computeUrl('epigraphs')]]">
+  </iron-ajax>
+  <iron-ajax auto="" handle-as="json" id="why-we-read-ajax" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ whyWeReadData }}" loading="{{ loadingWhyWeRead }}" url="[[_computeUrl('whyweread')]]">
+  </iron-ajax>
+  <iron-meta id="meta" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+  </iron-meta>
+  <div class="bottom-space" id="page-wrap">
+   <div class="content">
+    <div class="row introduction">
+     <p inner-h-t-m-l="{{localize('2797e2ab111cd1d938bd327b38002092')}}">
+     </p>
+     <p inner-h-t-m-l="{{localize('9db604c6c61c4cb7431619341bc037bf')}}">
+     </p>
     </div>
-  </template>
-
-  <script>
-      class SCHomePage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+    <div class="row">
+     <paper-card elevation="2">
+      <div class="card">
+       <div class="card-heading">
+        <div class="card-heading-text" inner-h-t-m-l="{{localize('4aff61a76fd51dcfa35fd4286974a7d8')}}">
+        </div>
+       </div>
+       <div class="card-content">
+        <div class="card-content-text">
+         <template if="[[loadingEpigraphs]]" is="dom-if">
+          <paper-spinner-lite active="" class="spinner" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+          </paper-spinner-lite>
+         </template>
+         <template if="[[!loadingEpigraphs]]" is="dom-if">
+          <div class="card-text center-text buddhas-words-text">
+           <sc-text-carousel display="epigraph" elements="[[epigraphsData]]" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" link="uid">
+           </sc-text-carousel>
+          </div>
+         </template>
+        </div>
+       </div>
+      </div>
+     </paper-card>
+    </div>
+    <div class="row cards">
+     <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="../../img/home-page/becomingone-min.jpg">
+      <div class="transparent-card-content-wrapper">
+       <div class="card-title-text" inner-text="{{localize('742e700832d62bb2f6a17592968b4dab')}}">
+       </div>
+       <div class="image-card-text" inner-text="{{localize('075042e8f0218630c1c81f34bda77f67')}}">
+       </div>
+      </div>
+     </paper-card>
+     <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="../../img/home-page/contemplatingthemoon-min.jpg">
+      <div class="transparent-card-content-wrapper">
+       <div class="card-title-text" inner-text="{{localize('a5172cf2c34de3fc8e2af331ac915ec9')}}">
+       </div>
+       <div class="image-card-text" inner-text="{{localize('02e6b0e41516ae0677084bb23b60d3d9')}}">
+       </div>
+      </div>
+     </paper-card>
+     <a class="button-link first-card-button grid-button" href="/introduction">
+      <paper-button class="button" raised="">
+       INTRODUCTION
+      </paper-button>
+     </a>
+     <a class="button-link second-card-button grid-button" href="/start">
+      <paper-button class="button" raised="">
+       GET STARTED
+      </paper-button>
+     </a>
+    </div>
+    <div class="row">
+     <paper-card elevation="2">
+      <div class="card">
+       <div class="card-heading">
+        <div class="card-heading-text smaller-title" inner-h-t-m-l="{{localize('f51942f7ddc92c9756837ea0381a4697')}}">
+        </div>
+        <div class="card-heading-subtext" inner-text="{{localize('84e1d6799debf209a5ce8267eaed74e9')}}">
+        </div>
+       </div>
+       <div class="card-content-video">
+        <div class="embed-container">
+         <iframe allowfullscreen="" frameborder="0" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" mozallowfullscreen="" src="https://player.vimeo.com/video/125746164?color=ce8400" webkitallowfullscreen="">
+         </iframe>
+        </div>
+       </div>
+      </div>
+     </paper-card>
+    </div>
+    <div class="row">
+     <div class="big-card-title" inner-text="{{localize('24cbc4d3253a2779ae4dab326e42659b')}}">
+     </div>
+     <div class="three-elements-grid">
+      <paper-card class="three-elements-big paper-card-with-button" elevation="2" image="../../img/home-page/14.jpg">
+       <div class="card-content-wrapper no-bottom-padding">
+        <div class="card-title-text" inner-text="{{localize('e30baf2773fd1ff10ac21a7ebd63198d')}}">
+        </div>
+        <div class="image-card-text" inner-text="{{localize('31f31787de5aa09d662dfef82b0b686e')}}">
+        </div>
+       </div>
+       <a class="button-link" href="/discourses">
+        <paper-button class="button card-button" raised="">
+         MORE ...
+        </paper-button>
+       </a>
+      </paper-card>
+      <paper-card class="three-elements-small three-elements-first-small full-height paper-card-with-button" elevation="2">
+       <div class="card-content-wrapper no-bottom-padding">
+        <div class="card-title-text" inner-text="{{localize('09c18e7d1f00a37ba925092e7a101a05')}}">
+        </div>
+        <div class="text-card-text" inner-text="{{localize('45cc0214114c2d971cf2701f842f8926')}}">
+        </div>
+       </div>
+       <a class="button-link" href="/vinaya">
+        <paper-button class="button card-button" raised="">
+         MORE ...
+        </paper-button>
+       </a>
+      </paper-card>
+      <paper-card class="three-elements-small three-elements-second-small full-height paper-card-with-button" elevation="2">
+       <div class="card-content-wrapper no-bottom-padding">
+        <div class="card-title-text" inner-text="{{localize('ff9331ad058b3717457b73d2bdc51534')}}">
+        </div>
+        <div class="image-card-text" inner-text="{{localize('db01f7b42cfc777fd2f2a84d3a6787fa')}}">
+        </div>
+       </div>
+       <a class="button-link" href="/abhidhamma">
+        <paper-button class="button card-button" raised="">
+         MORE ...
+        </paper-button>
+       </a>
+      </paper-card>
+     </div>
+    </div>
+    <div class="row">
+     <paper-card elevation="2">
+      <div class="card">
+       <div class="card-heading">
+        <div class="card-heading-text" inner-h-t-m-l="{{localize('6cf39a262e6f744a3d919cd29c53ed7a')}}">
+        </div>
+       </div>
+       <div class="card-content">
+        <div class="card-content-text">
+         <template if="[[loadingWhyWeRead]]" is="dom-if">
+          <paper-spinner-lite active="" class="spinner" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+          </paper-spinner-lite>
+         </template>
+         <template if="[[!loadingWhyWeRead]]" is="dom-if">
+          <div class="why-we-read">
+           <sc-text-carousel elements="[[whyWeReadData]]" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+           </sc-text-carousel>
+          </div>
+          <a class="button-link" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747" target="_blank">
+           <paper-button class="button card-button-middle" raised="">
+            TELL US WHY YOU READ
+           </paper-button>
+          </a>
+         </template>
+        </div>
+       </div>
+      </div>
+     </paper-card>
+    </div>
+    <div class="row cards">
+     <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="../../img/home-page/noword-min.jpg">
+      <div class="card-content-wrapper">
+       <div class="card-title-text" inner-text="{{localize('bb5566f11a6995bf929b51ece58274bc')}}">
+       </div>
+       <div class="image-card-text" inner-text="{{localize('08d18ae95254308908e1ec79dfd33748')}}">
+       </div>
+      </div>
+      <a class="button-link" href="/a-new-beginning">
+       <paper-button class="button card-button" raised="">
+        WHAT’S NEW IN 2018
+       </paper-button>
+      </a>
+     </paper-card>
+     <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="../../img/home-page/listeningtotherain-min.jpg">
+      <div class="card-content-wrapper">
+       <div class="card-title-text" inner-text="{{localize('149842aa5477edb219ce272ec2aab269')}}">
+       </div>
+       <div class="image-card-text" inner-text="{{localize('70a49d1ca4c56cd629f76e90d6b6cc0f')}}">
+       </div>
+      </div>
+      <a class="button-link" href="/subjects">
+       <paper-button class="button card-button" raised="">
+        Indexes
+       </paper-button>
+      </a>
+     </paper-card>
+    </div>
+   </div>
+  </div>
+ </template>
+ <script>
+  class SCHomePage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'home-page';
           }
@@ -630,10 +580,10 @@
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/home-page/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.language}.json`));
           }
       }
 
       customElements.define(SCHomePage.is, SCHomePage);
-  </script>
+ </script>
 </dom-module>
