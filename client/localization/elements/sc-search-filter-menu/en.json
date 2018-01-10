@@ -1,9 +1,9 @@
 {
-  "en": {
-    "filter": "Filter",
-    "all": "All",
-    "rootTexts": "Root texts",
-    "translations": "Translations",
-    "dictionaries": "Dictionaries"
-  }
+    "en": {
+        "filter": "Filter",
+        "all": "All",
+        "rootTexts": "Root texts",
+        "translations": "Translations",
+        "dictionaries": "Dictionaries"
+    }
 }
