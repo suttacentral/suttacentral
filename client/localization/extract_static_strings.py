@@ -54,7 +54,7 @@ def extract_strings_from_template(file: pathlib.Path) -> Tuple[BeautifulSoup, di
     return soup, data
 
 
-def process_files():
+def run():
     # Ensure needed dirs exist.
     pathlib.Path(STATIC_DIR).mkdir(parents=True, exist_ok=True)
     pathlib.Path(LOCALIZATION_JSONS_DIR).mkdir(parents=True, exist_ok=True)
@@ -76,4 +76,4 @@ def process_files():
 
 
 if __name__ == '__main__':
-    process_files()
+    run()
