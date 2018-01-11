@@ -606,7 +606,7 @@
   </template>
 
   <script>
-      class SCHomePage extends Polymer.Element {
+      class SCHomePage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'home-page';
           }

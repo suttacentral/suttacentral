@@ -56,9 +56,23 @@
   </template>
 
   <script>
-      class SCANewBeginning extends Polymer.Element {
+      class SCANewBeginning extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-a-new-beginning';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/static/a-new-beginning/${this.language}.json`));
           }
       }
 

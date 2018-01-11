@@ -12,7 +12,7 @@ TEMPLATE_DIR = '../elements/static-templates/'
 STATIC_DIR = '../elements/static/'
 LOCALIZATION_JSONS_DIR = '../localization/elements/static/'
 
-NON_BLOCK_ELEMENTS = ['a', 'span', '\n', 'code', 'br', 'cite', 'strong', 'i', 'em', 'img']
+NON_BLOCK_ELEMENTS = ['a', 'span', '\n', 'code', 'br', 'cite', 'strong', 'i', 'em', 'img', 'paper-button']
 EXCLUDE_BLOCKS = ['style']
 
 
