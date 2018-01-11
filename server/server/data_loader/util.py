@@ -1,6 +1,6 @@
 import itertools
-
 import regex
+import json
 
 
 def numericsortkey(string, _split=regex.compile(r'(\d+)').split):
@@ -105,3 +105,12 @@ def iter_sub_dirs(path):
         if subdir.stem.startswith('.'):
             continue
         yield subdir
+        
+def json_load(path):
+    try:
+        with open(path, 'r', encoding='utf8') as f:
+            return json.load(f)
+    except (json.decoder.JSONDecodeError, FileNotFoundError) as e:
+        logging.error(f'{path}: {e}')
+        raise e
+
