@@ -613,6 +613,11 @@
 
           static get properties() {
               return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  },
                   loadingEpigraphs: {
                       type: Boolean
                   },
@@ -631,6 +636,10 @@
           _computeUrl(resource) {
               const apiRoot = this.$.meta.byKey('API_ROOT');
               return `${apiRoot}/${resource}`;
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/static/static/home-page/${this.language}.json`));
           }
       }
 
