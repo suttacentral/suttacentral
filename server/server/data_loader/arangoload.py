@@ -404,7 +404,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
     db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
 
 
-def load_html_texts(change_tracker, data_dir, db, html_dir):
+def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir):
     print('Loading HTML texts')
     # Load HTML texts
     languages = db.aql.execute('''/* return all language objects as a key: value mapping */
@@ -412,14 +412,24 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
             FOR l IN language
                 RETURN {[l.uid] : l} /* Set the key as the uid */
         )''').next()
-    authors = {}  # to do
+
+    author_file = additional_info_dir / 'author_edition.json'
+
+    with author_file.open('r', encoding='utf-8') as authorf:
+        authors = json.load(authorf)
+        
+    force = change_tracker.is_any_function_changed([textdata.TextInfoModel, textdata.ArangoTextInfoModel])
+    if force:
+        print('This might take a while')
+        db['html_text'].truncate()        
+    
     with textdata.ArangoTextInfoModel(db=db) as tim:
         for lang_dir in tqdm(html_dir.glob('*')):
             if not lang_dir.is_dir:
                 continue
-            tim.process_lang_dir(lang_dir=lang_dir, data_dir=data_dir,
+            tim.process_lang_dir(lang_dir=lang_dir, authors=authors, data_dir=data_dir,
                                  files_to_process=change_tracker.changed_or_new,
-                                 force=False)
+                                 force=force)
 
 
 def load_json_file(db, change_tracker, json_file):
@@ -501,7 +511,7 @@ def run():
 
     generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
 
-    load_html_texts(change_tracker, data_dir, db, html_dir)
+    load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
 
     process_blurbs(db, additional_info_dir)
 
