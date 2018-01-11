@@ -1,12 +1,10 @@
-import json
 from pathlib import Path
-
+from .util import json_load
 
 def load_biblios(db, additional_info_dir: Path):
     print('Loading biblio data')
 
     biblio_collection = db['biblios']
-    with open(f'{additional_info_dir}/biblio.json') as f:
-        data = json.load(f)
+    data = json_load(additional_info_dir / 'biblio.json')
 
     biblio_collection.import_bulk(data)
