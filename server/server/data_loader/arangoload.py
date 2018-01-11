@@ -12,6 +12,7 @@ from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
+from .util import json_load
 from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, divisions, images_files, homepage
 
@@ -62,9 +63,8 @@ def collect_data(repo_dir: Path, repo_addr: str):
 
 
 def process_root_languages(structure_dir):
-    file = structure_dir / 'language.json'
-    with file.open('r', encoding='utf-8') as f:
-        languages = json.load(f)
+    language_file = structure_dir / 'language.json'
+    languages = json_load(language_file)
     data = {}
     for lang in languages:
         uid = lang['uid']
@@ -74,8 +74,8 @@ def process_root_languages(structure_dir):
 
 
 def process_menu_ordering(structure_dir):
-    with open(structure_dir / 'menu-structure.json', 'r') as f:
-       raw_data = json.load(f)
+    raw_data = json_load(structure_dir / 'menu-structure.json')
+
     data = {}
     for level in raw_data:
         for i, sutta in enumerate(level):
@@ -84,8 +84,8 @@ def process_menu_ordering(structure_dir):
 
 
 def process_division_files(docs, edges, mapping, division_files, root_languages, structure_dir):
-    with open(structure_dir / 'sutta.json', 'r') as f:
-        sutta_file = json.load(f)
+    sutta_file = json_load(structure_dir / 'sutta.json')
+
 
     sutta_data = {}
     for sutta in sutta_file:
@@ -99,8 +99,7 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
     # Sort the division folders to process subdirectories later
     division_files.sort(key=lambda path: len(path.parts))
     for division_file in division_files:
-        with division_file.open('r', encoding='utf8') as f:
-            entries = json.load(f)
+        entries = json_load(division_file)
         
         for i, entry in enumerate(entries):
             path = pathlib.PurePath(entry['_path'])
@@ -158,9 +157,8 @@ def process_category_files(category_files, db, edges, mapping):
             continue
         collection = db[category_name]
         category_docs = []
-
-        with category_file.open('r', encoding='utf8') as f:
-            entries = json.load(f)
+        
+        entries = json_load(category_file)
 
         edge_type = category_file.stem
 
@@ -326,8 +324,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
     print('Generating Parallels')
     relationship_data = []
     for relationship_file in relationship_files:
-        with relationship_file.open('r', encoding='utf8') as f:
-            relationship_data.extend(json.load(f))
+        relationship_data.extend(json_load(relationship_file))
 
     all_uids = set(db.aql.execute('''
     FOR doc IN root
@@ -335,8 +332,8 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
         RETURN doc.uid
     '''))
 
-    with open(additional_info_dir / 'notes.json', 'r') as f:
-        remarks_data = json.load(f)
+    remarks_data = json_load(additional_info_dir / 'notes.json')
+
 
     remarks = defaultdict(dict)
 
@@ -440,8 +437,7 @@ def load_json_file(db, change_tracker, json_file):
         return
     collection_name = json_file.stem
 
-    with json_file.open() as f:
-        data = json.load(f)
+    data = json_load(json_file)
 
     if 'uid' in data[0]:
         for d in data:
@@ -452,11 +448,10 @@ def load_json_file(db, change_tracker, json_file):
 
 def process_blurbs(db, additional_info_dir):
     print('Loading blurbs')
-    file = (additional_info_dir / 'blurbs.json')
+    blurb_file = additional_info_dir / 'blurbs.json'
     collection_name = 'blurbs'
 
-    with file.open('r', encoding='utf-8') as f:
-        blurb_info = json.load(f)
+    blurb_info = json_load(blurb_file)
 
     docs = [{'uid': uid, 'lang': lang, 'blurb': blurb}
             for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in tqdm(suttas.items())]
@@ -467,11 +462,10 @@ def process_blurbs(db, additional_info_dir):
 
 def process_difficulty(db, additional_info_dir):
     print('Loading difficulties')
-    file = (additional_info_dir / 'difficulties.json')
+    difficulty_file = additional_info_dir / 'difficulties.json'
     collection_name = 'difficulties'
-
-    with file.open('r', encoding='utf-8') as f:
-        difficulty_info = json.load(f)
+    
+    difficulty_info = json_load(difficulty_file)
 
     docs = [{'uid': uid, 'difficulty': lvl}
             for x in difficulty_info.values() for uid, lvl in tqdm(x.items())]
@@ -501,10 +495,10 @@ def run():
 
     db_name = current_app.config.get('ARANGO_DB')
     db = conn.database(db_name)
-
+    
     collect_data(data_dir, current_app.config.get('DATA_REPO'))
     collect_data(po_dir, current_app.config.get('PO_REPO'))
-
+    
     images_files.load_images_links(db)
 
     change_tracker = ChangeTracker(data_dir, db)

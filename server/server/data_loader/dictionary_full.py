@@ -3,6 +3,7 @@ from tqdm import tqdm
 from collections import Counter
 from .textfunctions import asciify_roman, pali_sort_key
 from .fuzzymatcher import FuzzyMatcher
+from .util import json_load
 
 def load_dictionary_full(db, dictionaries_dir, change_tracker):
     print('Loading dictionary_full')
@@ -19,8 +20,7 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
     words_seen = Counter()    
     ids_seen = Counter()
     for dictionary in tqdm(dictionary_full_files):
-        with dictionary.open('r', encoding='utf-8') as f:
-            entries = json.load(f)
+        entries = json_load(dictionary)
         for entry in entries:
             word = entry['word'].lower()
             words_seen[word] += 1
