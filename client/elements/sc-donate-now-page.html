@@ -26,9 +26,6 @@
 <dom-module id="sc-donate-now-page">
   <template>
     <style include="static-styles sc-scrollbar-style">
-      #page-wrap {
-        @apply --sc-sans-font;
-      }
 
       .flex-row {
         display: flex;
@@ -80,6 +77,7 @@
 
       .explanation {
         color: var(--sc-secondary-text-color);
+        margin-bottom:8px;
       }
 
       .legal-information {
@@ -98,6 +96,7 @@
         background: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
+        @apply --sc-all-caps;
       }
 
       .submit-button[disabled] {
@@ -126,14 +125,7 @@
         position: fixed;
       }
 
-      .sans-font {
-        @apply --sc-sans-font;
-      }
-
       .data-input {
-        --paper-input-container: {
-          @apply --sc-sans-font;
-        };
         --paper-input-container-input: {
           color: var(--sc-primary-text-color);
         };
@@ -150,7 +142,6 @@
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
-          @apply --sc-sans-font;
           @apply --sc-skolar-font-size-xs;
           line-height: var(--sc-size-md);
           padding: var(--sc-size-sm) var(--sc-size-md);
@@ -212,9 +203,9 @@
 
             <p class="explanation">{{localize('chooseFrequency')}}</p>
             <div class="flex-row">
-              <paper-checkbox class="sans-font frequency-checkbox one-time-donation" checked>{{localize('oneTime')}}
+              <paper-checkbox class="frequency-checkbox one-time-donation" checked>{{localize('oneTime')}}
               </paper-checkbox>
-              <paper-checkbox class="sans-font frequency-checkbox monthly-donation">{{localize('monthly')}}
+              <paper-checkbox class="frequency-checkbox monthly-donation">{{localize('monthly')}}
               </paper-checkbox>
             </div>
 
@@ -237,7 +228,7 @@
 
             <div class="flex-row submit">
               <paper-button id="submitButton" on-tap="_makeDonation" class="submit-button" raised>
-                <div class="sans-font">{{localize('payWithCard')}}</div>
+                <div>{{localize('payWithCard')}}</div>
               </paper-button>
             </div>
           </form>

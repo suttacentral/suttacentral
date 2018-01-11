@@ -32,11 +32,11 @@ def generate_po_file(file_path: Path):
     po.save(f'{GENERATED_PO_FILES_DIR}/{element_path}')
 
 
-def process_files():
+def run():
     GENERATED_PO_FILES_DIR.mkdir(parents=True, exist_ok=True)
     for file_path in tqdm.tqdm(PRE_POOTLE_FILES_DIR.rglob('*.json')):
         generate_po_file(file_path)
 
 
 if __name__ == '__main__':
-    process_files()
+    run()

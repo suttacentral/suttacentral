@@ -1,14 +1,12 @@
 <dom-module id="sc-suttaplex-styles">
   <template>
     <style>
-      paper-button {
-        letter-spacing: .02em;
-      }
 
       paper-button a {
         color: var(--sc-primary-accent-color);
         text-decoration: none;
-
+        @apply --sc-all-caps;
+        font-weight:bold;
       }
 
       paper-button {
@@ -17,7 +15,7 @@
 
       paper-button.dense {
         @apply --sc-skolar-font-size-s;
-        padding-bottom: 0.6em;
+        padding-bottom: var(--sc-size-sm);
       }
 
       iron-icon,
