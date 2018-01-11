@@ -19,11 +19,11 @@ def process_file(file: Path):
         json.dump(output_data, f, indent=4, ensure_ascii=False)
 
 
-def process_files():
+def run():
     Path(PRE_POOTLE_FILES_DIR).mkdir(parents=True, exist_ok=True)
     for file in tqdm.tqdm((Path('elements').rglob('en.json'))):
         process_file(file)
 
 
 if __name__ == '__main__':
-    process_files()
+    run()

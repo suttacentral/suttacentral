@@ -30,10 +30,10 @@ def generate_json_file(file):
         json.dump({language: data}, f, indent=4, ensure_ascii=False)
 
 
-def process_files():
+def run():
     for file in tqdm.tqdm(POOTLE_FILES_DIR.rglob('*.po')):
         generate_json_file(file)
 
 
 if __name__ == '__main__':
-    process_files()
+    run()
