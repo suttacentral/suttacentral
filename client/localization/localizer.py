@@ -22,8 +22,7 @@ Available commands:')
 *  from_pootle
 
 example usage:
-python localizer.py to_pootle'''
-          )
+python localizer.py to_pootle''')
 
 
 if __name__ == '__main__':
