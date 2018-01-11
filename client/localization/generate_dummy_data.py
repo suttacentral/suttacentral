@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 ELEMENTS_DIR = Path('elements')
 
-LANGUAGES = {'de': 'de_DE', 'fr': 'fr_FR'}  # list of avaiable languages: https://github.com/joke2k/faker
+LANGUAGES = {'de': 'de_DE', 'fr': 'fr_FR'}  # list of available languages: https://github.com/joke2k/faker
 
 
 def generate_language(base_data: dict, folder: Path, faker: Faker, lang):
