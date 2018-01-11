@@ -17,12 +17,12 @@
   <template>
     <style include="sc-scrollbar-style">
       .sc-nav {
-        @apply --sc-sans-font;
         user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         -webkit-user-select: none;
         height: 100%;
+        @apply --paper-font-common-base;
       }
 
       .paper-spinner {
@@ -134,11 +134,10 @@
 
       .nav-link-container {
         @apply --sc-skolar-font-size-md;
+        @apply --sc-all-caps;
         color: var(--sc-primary-text-color);
-        text-transform: uppercase;
         display: block;
         font-weight: 600;
-        letter-spacing: 1px;
         padding: 5px var(--sc-size-md);
         margin: var(--sc-size-xs) 0;
         text-decoration: none;

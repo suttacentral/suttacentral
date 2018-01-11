@@ -1,7 +1,7 @@
 <link href="../../bower_components/polymer/polymer.html" rel="import"/>
 <link href="../../styles/static-styles.html" rel="import"/>
 <link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
-<dom-module id="sc-preamble">
+<dom-module id="sc-introduction">
  <template>
   <style include="static-styles">
   </style>
@@ -18,7 +18,7 @@
      </p>
      <p inner-text="{{localize('64cd2e478659db49f887dae97da862c3')}}">
      </p>
-     <img class="image-home-full" src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Life_of_Buddha_Burmese_Manuscript_22%2C_Volume_1_Wellcome_L0030750.jpg" title="Burmese sutta manuscript." width="640px"/>
+     <img class="image-home-full" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Life_of_Buddha_Burmese_Manuscript_22%2C_Volume_1_Wellcome_L0030750.jpg" title="Burmese sutta manuscript." width="640px"/>
      <h2 inner-text="{{localize('83915d1254927f41241e8630890bec6e')}}">
      </h2>
      <p inner-text="{{localize('15ffb98686cd6b652bfe8a518383ebb9')}}">
@@ -29,7 +29,18 @@
      </p>
      <h2 inner-text="{{localize('f15c1cae7882448b3fb0404682e17e61')}}">
      </h2>
-     <p inner-h-t-m-l="{{localize('112c18ab13ab85aae7d52c032fd49fea')}}">
+     <p>
+      <img alt="Buddhist manuscript from Gandhara." class="image-home" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" src="https://suttacentral.net/img/11.jpg" title="Buddhist manuscript from Gandhara."/>
+      Buddhist texts are traditionally classified as the “Three
+            Baskets”, spelled
+      <i lang="pli">
+       tipiṭaka
+      </i>
+      in Pali or
+      <i lang="san">
+       tripiṭaka
+      </i>
+      in Sanskrit. These are:
      </p>
      <ul>
       <li inner-h-t-m-l="{{localize('53cff04c72f60d7fcab44451d14c9e3a')}}">
@@ -70,7 +81,11 @@
      </ul>
      <h2 inner-text="{{localize('e109705703e0324d1a5de1d84a3a8951')}}">
      </h2>
-     <p inner-h-t-m-l="{{localize('1e9847da71c4791e590841d36023c28c')}}">
+     <p>
+      <img alt="The connections of the internet, visualized by the Opte project." class="image-home" href="http://www.opte.org/" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" src="https://suttacentral.net/img/14.jpg" target="_blank" title="The connections of the internet, visualized by the Opte project." width="640px"/>
+      Suttas aren’t independent entities. They form a vast interconnected web
+            of teachings. Often the key to understanding one passage lies in a different text. In this way, the Buddhist
+            canons are a little like the internet, with individual pages connected by a web of hidden links.
      </p>
      <p inner-h-t-m-l="{{localize('1d673754fe71e483a233c2614f52f840')}}">
      </p>
@@ -147,9 +162,9 @@
   </div>
  </template>
  <script>
-  class SCPreamble extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+  class SCIntroduction extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
-              return 'sc-preamble';
+              return 'sc-introduction';
           }
 
           static get properties() {
@@ -163,10 +178,10 @@
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/static/preamble/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/static/introduction/${this.language}.json`));
           }
       }
 
-      customElements.define(SCPreamble.is, SCPreamble);
+      customElements.define(SCIntroduction.is, SCIntroduction);
  </script>
 </dom-module>

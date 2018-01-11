@@ -14,13 +14,22 @@
   <template>
     <style include="sc-dict-styles sc-scrollbar-style">
       .dictionary-results-container, .related-terms {
-        @apply --sc-sans-font;
         padding: var(--sc-size-xxl) 0;
       }
 
       .dictionary-results-main {
         max-width: 720px;
         margin: 0 auto;
+      }
+
+      @media (max-width: 740px) {
+        .dictionary-results-main {
+          padding: 0 5%;
+        }
+      }
+
+      @media (max-width: 800px){
+        padding: 0 5%;
       }
 
       .dictionary-results-head {
@@ -49,7 +58,7 @@
       .related-terms {
         margin: 0 var(--sc-size-md) var(--sc-size-xl) 0;
         text-align: left;
-      }
+        }
 
       .related-terms ul {
         margin: var(--sc-size-sm) 0 0 0;
@@ -100,6 +109,7 @@
       #drawer {
         --app-drawer-content-container: {
           overflow-y: scroll;
+          background-color: var(--sc-secondary-background-color);
         }
       }
 
@@ -107,7 +117,6 @@
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
-          @apply --sc-sans-font;
           @apply --sc-skolar-font-size-xs;
           line-height: var(--sc-size-md);
           padding: var(--sc-size-sm) var(--sc-size-md);

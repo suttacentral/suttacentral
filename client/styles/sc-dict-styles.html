@@ -41,9 +41,10 @@
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-s;
         color: var(--sc-secondary-text-color);
-        background-color: var(--sc-tertiary-background-color);
+        background-color: var(--sc-textual-info-background-color);
         border-radius: var(--sc-size-xxs);
-        padding: var(--sc-size-xs) var(--sc-size-sm);
+        padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
+        white-space: nowrap;
       }
 
       dd .author {
@@ -73,7 +74,7 @@
         @apply --sc-sans-font;
         color: var(--sc-secondary-text-color);
         font-weight: bold;
-        padding: 0 0.5em;
+        padding: 0 8px;
       }
 
       dd .square {
@@ -184,25 +185,15 @@
       }
 
       dd a {
-        text-decoration: none;
-      }
-
-      dd a {
-        color: inherit;
-        text-decoration: none;
-        background: linear-gradient(to top, rgba(0, 230, 118, 0) 1.5px, rgba(0, 230, 118, 1) 1.5px, rgba(0, 230, 118, 1) 2.5px, rgba(0, 230, 118, 0) 2.5px);
+        @apply --sc-inline-link;
       }
 
       dd a:hover {
-        background: linear-gradient(to top, rgba(0, 230, 118, 0) 1px, rgba(0, 230, 118, 1) 1px, rgba(0, 230, 118, 1) 3px, rgba(0, 230, 118, 0) 3px);
-      }
-
-      dd a:active {
-        background-color: var(--sc-paper-tooltip-color);
+        @apply --sc-inline-link-hover;
       }
 
       dd a:visited {
-        background: linear-gradient(to top, rgba(102, 187, 106, 0) 1px, rgba(102, 187, 106, 1) 1px, rgba(102, 187, 106, 1) 3px, rgba(102, 187, 106, 0) 3px);
+        @apply --sc-inline-link-visited;
       }
     </style>
   </template>
