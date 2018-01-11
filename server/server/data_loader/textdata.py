@@ -261,7 +261,7 @@ class ArangoTextInfoModel(TextInfoModel):
     def add_document(self, doc):
         doc['_key'] = doc['path'].replace('/', '_')
         self.queue.append(doc)
-        if len(self.queue) > 50:
+        if len(self.queue) > 1000:
             self.flush_documents()
 
     def flush_documents(self):
@@ -278,13 +278,13 @@ class ArangoTextInfoModel(TextInfoModel):
                     for key in keys:
                         unicode_points[key].update(existing.get(key, []))
 
-                doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
-                doc['_key'] = lang_uid
+            doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
+            doc['_key'] = lang_uid
         except:
             print(unicode_points, key)
             raise
 
-        if existing:
+        if existing or force:
             self.db['unicode_points'].replace(doc)
         else:
             self.db['unicode_points'].insert(doc)
