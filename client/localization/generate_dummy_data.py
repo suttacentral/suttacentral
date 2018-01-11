@@ -1,4 +1,4 @@
-import json
+improvementtn
 from typing import Iterable
 from pathlib import Path
 
@@ -8,6 +8,8 @@ from tqdm import tqdm
 ELEMENTS_DIR = Path('elements')
 
 LANGUAGES = {'de': 'de_DE', 'fr': 'fr_FR'}  # list of available languages: https://github.com/joke2k/faker
+
+FORCE = False  # set to True to overwrite existing translations.
 
 
 def generate_language(base_data: dict, folder: Path, faker: Faker, lang):
@@ -31,7 +33,8 @@ def generate_languages(folder: Path):
         base_lang = current_languages[0]
 
     for lang in LANGUAGES:
-        generate_language(base_data[base_lang], folder, Faker(LANGUAGES[lang]), lang)
+        if FORCE or lang not in current_languages:
+            generate_language(base_data[base_lang], folder, Faker(LANGUAGES[lang]), lang)
 
 
 def run():
