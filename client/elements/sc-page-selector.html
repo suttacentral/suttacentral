@@ -61,14 +61,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       }
 
       #toolbar_title {
-        @apply --sc-sans-font;
-        text-transform: capitalize;
+        @apply --paper-font-common-base;
         color: var(--sc-tertiary-text-color);
-      }
-
-      [mode="search-mode"] #toolbar_title,
-      [mode="dictionary-mode"] #toolbar_title {
-        text-transform: none;
       }
 
       #drawertoggle {

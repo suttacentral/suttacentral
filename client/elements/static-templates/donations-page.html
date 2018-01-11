@@ -10,19 +10,16 @@
   <template>
     <style include="static-styles">
       .donate-button {
-        @apply --sc-sans-font;
         background: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
+        @apply --sc-all-caps;
       }
 
       .donate-link {
           background: none;
           margin: var(--sc-size-xxl) 0;
-      }
-
-      .donate-link:hover {
-          background: none;
+          text-decoration:none;
       }
 
       .donations-button {
