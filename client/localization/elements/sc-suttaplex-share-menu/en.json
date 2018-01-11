@@ -1,11 +1,11 @@
 {
-  "en": {
-    "cite": "Cite",
-    "copyTable": "Copy table",
-    "copyLink": "Copy link",
-    "tableCopied": "Parallels table copied to clipboard!",
-    "linkCopied": "Link copied to clipboard!",
-    "citeCopied": "Citation copied to clipboard!",
-    "error": "An error has occurred."
-  }
+    "en": {
+        "cite": "Cite",
+        "copyTable": "Copy table",
+        "copyLink": "Copy link",
+        "tableCopied": "Parallels table copied to clipboard!",
+        "linkCopied": "Link copied to clipboard!",
+        "citeCopied": "Citation copied to clipboard!",
+        "error": "An error has occurred."
+    }
 }
