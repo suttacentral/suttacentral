@@ -416,7 +416,7 @@ def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
                 RETURN {[l.uid] : l} /* Set the key as the uid */
         )''').next()
 
-    author_file = (additional_info_dir / 'author_edition.json')
+    author_file = additional_info_dir / 'author_edition.json'
 
     with author_file.open('r', encoding='utf-8') as authorf:
         authors = json.load(authorf)
