@@ -1,13 +1,11 @@
 <link href="../../bower_components/polymer/polymer.html" rel="import"/>
-<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
 <link href="../../bower_components/paper-card/paper-card.html" rel="import"/>
 <link href="../../bower_components/paper-button/paper-button.html" rel="import"/>
 <link href="../../bower_components/iron-ajax/iron-ajax.html" rel="import"/>
 <link href="../../bower_components/iron-meta/iron-meta.html" rel="import"/>
 <link href="../../bower_components/paper-spinner/paper-spinner-lite.html" rel="import"/>
-<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
 <link href="../../elements/addons/text-carousel.html" rel="import"/>
-<link href="../../styles/static-styles.html" rel="import"/>
 <dom-module id="home-page">
  <template>
   <style include="static-styles">
@@ -19,6 +17,10 @@
         margin-top: 60px;
       }
 
+      #page-wrap{
+        max-width: 2058px;
+      }
+
       .bottom-space {
         margin-bottom: var(--sc-size-xl) !important;
       }
@@ -28,7 +30,7 @@
         width: 100%;
       }
 
-      .introduction {
+      .preamble {
         @apply --sc-skolar-font-size-xl;
         color: var(--sc-primary-text-color);
         text-align: center;
@@ -70,7 +72,6 @@
       }
 
       .card-content-text {
-        @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
         padding: var(--sc-size-lg);
         text-align: center;
@@ -78,6 +79,7 @@
 
       .button-link {
         background: none !important;
+        text-decoration:none;
       }
 
       .card-heading-text {
@@ -92,6 +94,10 @@
         padding: 0;
       }
 
+      .d-none {
+        display: none;
+      }
+
       .card-text {
         @apply --sc-skolar-font-size-l;
         font-style: italic;
@@ -99,7 +105,6 @@
 
       .button {
         @apply --sc-skolar-font-size-s;
-        @apply --sc-sans-font;
         margin-top: var(--sc-size-md);
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
@@ -130,7 +135,6 @@
 
       .image-card-text,
       .text-card-text {
-        @apply --sc-sans-font;
         margin-top: 1em;
       }
 
@@ -238,7 +242,6 @@
       }
 
       .card-heading-subtext {
-        @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
         font-weight: normal;
         line-height: 1em;
@@ -349,6 +352,10 @@
         .smaller-title {
           @apply --sc-skolar-font-size-dialog-header;
         }
+
+        .d-none {
+          display: unset;
+        }
       }
 
       @media (min-width: 1680px) {
@@ -365,7 +372,7 @@
   </iron-meta>
   <div class="bottom-space" id="page-wrap">
    <div class="content">
-    <div class="row introduction">
+    <div class="row preamble">
      <p inner-h-t-m-l="{{localize('2797e2ab111cd1d938bd327b38002092')}}">
      </p>
      <p inner-h-t-m-l="{{localize('9db604c6c61c4cb7431619341bc037bf')}}">
@@ -375,7 +382,7 @@
      <paper-card elevation="2">
       <div class="card">
        <div class="card-heading">
-        <div class="card-heading-text" inner-h-t-m-l="{{localize('4aff61a76fd51dcfa35fd4286974a7d8')}}">
+        <div class="card-heading-text" inner-h-t-m-l="{{localize('ab29c73d3f06449e14fb4e95dd26ddba')}}">
         </div>
        </div>
        <div class="card-content">
@@ -427,7 +434,7 @@
      <paper-card elevation="2">
       <div class="card">
        <div class="card-heading">
-        <div class="card-heading-text smaller-title" inner-h-t-m-l="{{localize('f51942f7ddc92c9756837ea0381a4697')}}">
+        <div class="card-heading-text smaller-title" inner-h-t-m-l="{{localize('80c9f84bfa3911cda919d61934abc0a2')}}">
         </div>
         <div class="card-heading-subtext" inner-text="{{localize('84e1d6799debf209a5ce8267eaed74e9')}}">
         </div>
@@ -490,7 +497,7 @@
      <paper-card elevation="2">
       <div class="card">
        <div class="card-heading">
-        <div class="card-heading-text" inner-h-t-m-l="{{localize('6cf39a262e6f744a3d919cd29c53ed7a')}}">
+        <div class="card-heading-text" inner-h-t-m-l="{{localize('091d2f16e012dc0e2eb6db75d4f878c6')}}">
         </div>
        </div>
        <div class="card-content">

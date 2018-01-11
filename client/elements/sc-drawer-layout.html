@@ -104,9 +104,7 @@
       }
 
       .dialog-header {
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-dialog-header;
-        font-weight: 500;
+        @apply --paper-font-headline;
         padding: var(--sc-size-lg) 0;
         color: var(--sc-tertiary-text-color);
         margin: 0;
@@ -130,10 +128,25 @@
       }
 
       .dialog-section {
-        @apply --sc-sans-font;
         margin-top: var(--sc-size-lg);
         color: var(--sc-primary-text-color);
+        @apply --paper-font-body1;
       }
+
+        p a, li a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--sc-primary-color);
+        text-decoration-skip-ink: auto;
+    }
+
+    p a:hover, li a:hover {
+        color: var(--sc-primary-color);
+    }
+
+    p a:visited, li a:visited {
+        text-decoration-color: var(--sc-primary-color-dark);
+    }
 
       .close-dialog-icon {
         color: var(--sc-tertiary-text-color);
