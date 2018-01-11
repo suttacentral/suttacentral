@@ -1,0 +1,56 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
+<dom-module id="sc-about-page">
+ <template>
+  <style include="static-styles">
+  </style>
+  <div id="page-wrap">
+   <main>
+    <section>
+     <article>
+      <h1 inner-text="{{localize('55d139c73398413f27c7e15a4cad3a59')}}">
+      </h1>
+      <p inner-text="{{localize('81f99fc63b1b99385e27080e5c8a93fc')}}">
+      </p>
+      <p inner-text="{{localize('0e5c6c307a41274b2d6770164f0a82cb')}}">
+      </p>
+      <p inner-text="{{localize('484c3cf6e2e7bb3802e06ac5682a0ce3')}}">
+      </p>
+      <p inner-text="{{localize('2923d6f291c43d749c0476a7f1c6ab34')}}">
+      </p>
+      <p inner-h-t-m-l="{{localize('00b70de2f99ba39490a82aa3be585eb5')}}">
+      </p>
+      <h2 inner-text="{{localize('7d7ecfc5a78d4287f72b459e973c472c')}}">
+      </h2>
+      <p inner-text="{{localize('cf6137f06caf2b738caa0cd89612f3ec')}}">
+      </p>
+     </article>
+    </section>
+   </main>
+  </div>
+ </template>
+ <script>
+  class SCAboutPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-about-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/about-page/${this.language}.json`));
+          }
+      }
+
+      customElements.define(SCAboutPage.is, SCAboutPage);
+ </script>
+</dom-module>

@@ -1,0 +1,587 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
+<link href="../../bower_components/paper-card/paper-card.html" rel="import"/>
+<link href="../../bower_components/paper-button/paper-button.html" rel="import"/>
+<link href="../../bower_components/iron-ajax/iron-ajax.html" rel="import"/>
+<link href="../../bower_components/iron-meta/iron-meta.html" rel="import"/>
+<link href="../../bower_components/paper-spinner/paper-spinner-lite.html" rel="import"/>
+<link href="../../elements/addons/text-carousel.html" rel="import"/>
+<dom-module id="home-page">
+ <template>
+  <style include="static-styles">
+   .content {
+        display: grid;
+        grid-auto-flow: row;
+        grid-template-columns: 2% 96% 2%;
+        grid-row-gap: 80px;
+        margin-top: 60px;
+      }
+
+      #page-wrap{
+        max-width: 2058px;
+      }
+
+      .bottom-space {
+        margin-bottom: var(--sc-size-xl) !important;
+      }
+
+      .row {
+        grid-column-start: 2;
+        width: 100%;
+      }
+
+      .preamble {
+        @apply --sc-skolar-font-size-xl;
+        color: var(--sc-primary-text-color);
+        text-align: center;
+      }
+
+      .text-card {
+        width: 100%;
+        background-color: var(--sc-secondary-background-color);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      }
+
+      .card {
+        background-color: var(--sc-secondary-background-color);
+        width: 100%;
+        min-height: 180px;
+        display: flex;
+        flex-flow: column;
+      }
+
+      .card-heading {
+        @apply --sc-skolar-font-size-xxl;
+        width: 100%;
+        background-color: var(--sc-primary-color-medium);
+        color: var(--sc-tertiary-text-color);
+        font-weight: bold;
+        line-height: 100%;
+        text-align: right;
+      }
+
+      .card-content {
+        position: relative;
+        width: 100%;
+        background-color: var(--sc-secondary-background-color);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding-bottom: var(--sc-size-xxl);
+      }
+
+      .card-content-text {
+        @apply --sc-skolar-font-size-md;
+        padding: var(--sc-size-lg);
+        text-align: center;
+      }
+
+      .button-link {
+        background: none !important;
+        text-decoration:none;
+      }
+
+      .card-heading-text {
+        @apply --sc-sans-font;
+        padding: var(--sc-size-lg);
+        text-align: center;
+        direction: rtl;
+      }
+
+      .card-content-video {
+        width: 100%;
+        padding: 0;
+      }
+
+      .d-none {
+        display: none;
+      }
+
+      .card-text {
+        @apply --sc-skolar-font-size-l;
+        font-style: italic;
+      }
+
+      .button {
+        @apply --sc-skolar-font-size-s;
+        margin-top: var(--sc-size-md);
+        background-color: var(--sc-primary-accent-color);
+        color: var(--sc-tertiary-text-color);
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .two-paper-cards {
+        width: 100%;
+      }
+
+      .paper-cards-no-background {
+        --paper-card-background-color: var(--sc-primary-background-color);
+        box-shadow: none;
+      }
+
+      .card-content-wrapper {
+        padding: var(--sc-size-md-larger);
+      }
+
+      .no-bottom-padding {
+        padding-bottom: 0;
+      }
+
+      .transparent-card-content-wrapper {
+        padding-top: var(--sc-size-md-larger);
+      }
+
+      .image-card-text,
+      .text-card-text {
+        margin-top: 1em;
+      }
+
+      .card-title-text {
+        @apply --paper-font-headline;
+        @apply --sc-serif-font;
+      }
+
+      .why-we-read {
+        text-align: center;
+        font-style: italic;
+      }
+
+      .first-row {
+        grid-column-start: 1;
+      }
+
+      .second-row {
+        grid-column-start: 2;
+      }
+
+      .three-elements-grid {
+        display: grid;
+        grid-gap: var(--sc-size-lg);
+      }
+
+      .full-height {
+        height: 100%;
+      }
+
+      .embed-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        width: 100%;
+      }
+
+      .embed-container iframe,
+      .embed-container object,
+      .embed-container embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .paper-card-with-button {
+        padding-bottom: calc(var(--sc-size-md-larger) * 2 + 36px);
+      }
+
+      paper-card {
+        overflow: hidden;
+        background-color: var(--sc-secondary-background-color);
+        width: 100%;
+      }
+
+      .transparent-card {
+        background-color: var(--sc-primary-background-color);
+      }
+
+      .cards {
+        display: grid;
+        justify-content: space-between;
+        grid-template-columns: 1fr;
+        grid-auto-flow: row;
+        grid-gap: var(--sc-size-lg);
+      }
+
+      .first-card {
+        grid-row-start: 1;
+      }
+
+      .first-card-button {
+        grid-row-start: 2;
+      }
+
+      .second-card {
+        grid-row-start: 3;
+      }
+
+      .second-card-button {
+        grid-row-start: 4;
+      }
+
+      .big-card-title {
+        @apply --sc-skolar-font-size-static-subtitle;
+        margin-bottom: var(--sc-size-md);
+      }
+
+      .center-text {
+        text-align: center;
+      }
+
+      .card-button {
+        position: absolute;
+        right: var(--sc-size-md-larger);
+        bottom: var(--sc-size-md-larger);
+        margin-left: 0;
+      }
+
+      .grid-button {
+        justify-self: end;
+      }
+
+      .card-heading-subtext {
+        @apply --sc-skolar-font-size-md;
+        font-weight: normal;
+        line-height: 1em;
+        margin: var(--sc-size-md-larger);
+        margin-top: 0;
+        text-align: right;
+      }
+
+      .spinner {
+        --paper-spinner-color: var(--sc-primary-color);
+      }
+
+      .card-button-middle {
+        position: absolute;
+        transform: translate(-50%);
+        bottom: var(--sc-size-md-larger);
+      }
+
+      .buddhas-words-text {
+        @apply --sc-skolar-font-size-xl;
+        line-height: 1.1;
+      }
+
+      @media (min-width: 960px) {
+        .buddhas-words-text {
+          @apply --sc-skolar-font-size-static-subtitle;
+        }
+      }
+
+      @media (min-width: 1280px) {
+        .content {
+          grid-template-columns: 5% 90% 5%;
+        }
+
+        .three-elements-grid {
+          grid-template-rows: 1fr 1fr;
+          grid-template-columns: 3fr 2fr;
+        }
+
+        .three-elements-big {
+          grid-column-start: 1;
+          grid-row-start: 1;
+          grid-row-end: span 2;
+        }
+
+        .three-elements-small {
+          grid-column-start: 2;
+          grid-row-start: unset;
+        }
+
+        .three-elements-first-small {
+          grid-row-start: 1;
+        }
+
+        .three-elements-second-small {
+          grid-row-start: 2;
+        }
+
+        .cards {
+          grid-template-columns: 1fr 1fr;
+          grid-gap: var(--sc-size-lg);
+        }
+
+        .second-card {
+          grid-row-start: 1;
+        }
+
+        .first-card-button {
+          grid-row-start: 2;
+        }
+
+        .second-card-button {
+          grid-row-start: 2;
+        }
+
+        .card-heading-text {
+          text-align: unset;
+        }
+
+        .card-button {
+          right: unset;
+          left: var(--sc-size-md-larger);
+        }
+
+        .grid-button {
+          justify-self: start;
+        }
+      }
+
+      @media (min-width: 1600px) {
+        .content {
+          grid-template-columns: 15% 70% 15%;
+        }
+
+        .card {
+          flex-flow: unset;
+        }
+
+        .card-content-video,
+        .card-content {
+          width: 75%;
+        }
+
+        .card-heading {
+          width: 25%;
+        }
+
+        .smaller-title {
+          @apply --sc-skolar-font-size-dialog-header;
+        }
+
+        .d-none {
+          display: unset;
+        }
+      }
+
+      @media (min-width: 1680px) {
+        .smaller-title {
+          @apply --sc-skolar-font-size-xxl;
+        }
+      }
+  </style>
+  <iron-ajax auto="" handle-as="json" id="epigraphs-ajax" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ epigraphsData }}" loading="{{ loadingEpigraphs }}" url="[[_computeUrl('epigraphs')]]">
+  </iron-ajax>
+  <iron-ajax auto="" handle-as="json" id="why-we-read-ajax" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ whyWeReadData }}" loading="{{ loadingWhyWeRead }}" url="[[_computeUrl('whyweread')]]">
+  </iron-ajax>
+  <iron-meta id="meta" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+  </iron-meta>
+  <div class="bottom-space" id="page-wrap">
+   <div class="content">
+    <div class="row preamble">
+     <p inner-h-t-m-l="{{localize('2797e2ab111cd1d938bd327b38002092')}}">
+     </p>
+     <p inner-h-t-m-l="{{localize('9db604c6c61c4cb7431619341bc037bf')}}">
+     </p>
+    </div>
+    <div class="row">
+     <paper-card elevation="2">
+      <div class="card">
+       <div class="card-heading">
+        <div class="card-heading-text" inner-h-t-m-l="{{localize('ab29c73d3f06449e14fb4e95dd26ddba')}}">
+        </div>
+       </div>
+       <div class="card-content">
+        <div class="card-content-text">
+         <template if="[[loadingEpigraphs]]" is="dom-if">
+          <paper-spinner-lite active="" class="spinner" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+          </paper-spinner-lite>
+         </template>
+         <template if="[[!loadingEpigraphs]]" is="dom-if">
+          <div class="card-text center-text buddhas-words-text">
+           <sc-text-carousel display="epigraph" elements="[[epigraphsData]]" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" link="uid">
+           </sc-text-carousel>
+          </div>
+         </template>
+        </div>
+       </div>
+      </div>
+     </paper-card>
+    </div>
+    <div class="row cards">
+     <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="../../img/home-page/becomingone-min.jpg">
+      <div class="transparent-card-content-wrapper">
+       <div class="card-title-text" inner-text="{{localize('742e700832d62bb2f6a17592968b4dab')}}">
+       </div>
+       <div class="image-card-text" inner-text="{{localize('075042e8f0218630c1c81f34bda77f67')}}">
+       </div>
+      </div>
+     </paper-card>
+     <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="../../img/home-page/contemplatingthemoon-min.jpg">
+      <div class="transparent-card-content-wrapper">
+       <div class="card-title-text" inner-text="{{localize('a5172cf2c34de3fc8e2af331ac915ec9')}}">
+       </div>
+       <div class="image-card-text" inner-text="{{localize('02e6b0e41516ae0677084bb23b60d3d9')}}">
+       </div>
+      </div>
+     </paper-card>
+     <a class="button-link first-card-button grid-button" href="/introduction">
+      <paper-button class="button" raised="">
+       INTRODUCTION
+      </paper-button>
+     </a>
+     <a class="button-link second-card-button grid-button" href="/start">
+      <paper-button class="button" raised="">
+       GET STARTED
+      </paper-button>
+     </a>
+    </div>
+    <div class="row">
+     <paper-card elevation="2">
+      <div class="card">
+       <div class="card-heading">
+        <div class="card-heading-text smaller-title" inner-h-t-m-l="{{localize('80c9f84bfa3911cda919d61934abc0a2')}}">
+        </div>
+        <div class="card-heading-subtext" inner-text="{{localize('84e1d6799debf209a5ce8267eaed74e9')}}">
+        </div>
+       </div>
+       <div class="card-content-video">
+        <div class="embed-container">
+         <iframe allowfullscreen="" frameborder="0" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" mozallowfullscreen="" src="https://player.vimeo.com/video/125746164?color=ce8400" webkitallowfullscreen="">
+         </iframe>
+        </div>
+       </div>
+      </div>
+     </paper-card>
+    </div>
+    <div class="row">
+     <div class="big-card-title" inner-text="{{localize('24cbc4d3253a2779ae4dab326e42659b')}}">
+     </div>
+     <div class="three-elements-grid">
+      <paper-card class="three-elements-big paper-card-with-button" elevation="2" image="../../img/home-page/14.jpg">
+       <div class="card-content-wrapper no-bottom-padding">
+        <div class="card-title-text" inner-text="{{localize('e30baf2773fd1ff10ac21a7ebd63198d')}}">
+        </div>
+        <div class="image-card-text" inner-text="{{localize('31f31787de5aa09d662dfef82b0b686e')}}">
+        </div>
+       </div>
+       <a class="button-link" href="/discourses">
+        <paper-button class="button card-button" raised="">
+         MORE ...
+        </paper-button>
+       </a>
+      </paper-card>
+      <paper-card class="three-elements-small three-elements-first-small full-height paper-card-with-button" elevation="2">
+       <div class="card-content-wrapper no-bottom-padding">
+        <div class="card-title-text" inner-text="{{localize('09c18e7d1f00a37ba925092e7a101a05')}}">
+        </div>
+        <div class="text-card-text" inner-text="{{localize('45cc0214114c2d971cf2701f842f8926')}}">
+        </div>
+       </div>
+       <a class="button-link" href="/vinaya">
+        <paper-button class="button card-button" raised="">
+         MORE ...
+        </paper-button>
+       </a>
+      </paper-card>
+      <paper-card class="three-elements-small three-elements-second-small full-height paper-card-with-button" elevation="2">
+       <div class="card-content-wrapper no-bottom-padding">
+        <div class="card-title-text" inner-text="{{localize('ff9331ad058b3717457b73d2bdc51534')}}">
+        </div>
+        <div class="image-card-text" inner-text="{{localize('db01f7b42cfc777fd2f2a84d3a6787fa')}}">
+        </div>
+       </div>
+       <a class="button-link" href="/abhidhamma">
+        <paper-button class="button card-button" raised="">
+         MORE ...
+        </paper-button>
+       </a>
+      </paper-card>
+     </div>
+    </div>
+    <div class="row">
+     <paper-card elevation="2">
+      <div class="card">
+       <div class="card-heading">
+        <div class="card-heading-text" inner-h-t-m-l="{{localize('091d2f16e012dc0e2eb6db75d4f878c6')}}">
+        </div>
+       </div>
+       <div class="card-content">
+        <div class="card-content-text">
+         <template if="[[loadingWhyWeRead]]" is="dom-if">
+          <paper-spinner-lite active="" class="spinner" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+          </paper-spinner-lite>
+         </template>
+         <template if="[[!loadingWhyWeRead]]" is="dom-if">
+          <div class="why-we-read">
+           <sc-text-carousel elements="[[whyWeReadData]]" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+           </sc-text-carousel>
+          </div>
+          <a class="button-link" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747" target="_blank">
+           <paper-button class="button card-button-middle" raised="">
+            TELL US WHY YOU READ
+           </paper-button>
+          </a>
+         </template>
+        </div>
+       </div>
+      </div>
+     </paper-card>
+    </div>
+    <div class="row cards">
+     <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="../../img/home-page/noword-min.jpg">
+      <div class="card-content-wrapper">
+       <div class="card-title-text" inner-text="{{localize('bb5566f11a6995bf929b51ece58274bc')}}">
+       </div>
+       <div class="image-card-text" inner-text="{{localize('08d18ae95254308908e1ec79dfd33748')}}">
+       </div>
+      </div>
+      <a class="button-link" href="/a-new-beginning">
+       <paper-button class="button card-button" raised="">
+        WHAT’S NEW IN 2018
+       </paper-button>
+      </a>
+     </paper-card>
+     <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="../../img/home-page/listeningtotherain-min.jpg">
+      <div class="card-content-wrapper">
+       <div class="card-title-text" inner-text="{{localize('149842aa5477edb219ce272ec2aab269')}}">
+       </div>
+       <div class="image-card-text" inner-text="{{localize('70a49d1ca4c56cd629f76e90d6b6cc0f')}}">
+       </div>
+      </div>
+      <a class="button-link" href="/subjects">
+       <paper-button class="button card-button" raised="">
+        Indexes
+       </paper-button>
+      </a>
+     </paper-card>
+    </div>
+   </div>
+  </div>
+ </template>
+ <script>
+  class SCHomePage extends Polymer.Element {
+          static get is() {
+              return 'home-page';
+          }
+
+          static get properties() {
+              return {
+                  loadingEpigraphs: {
+                      type: Boolean
+                  },
+                  epigraphsData: {
+                      type: Object
+                  },
+                  loadingWhyWeRead: {
+                      type: Boolean
+                  },
+                  whyWeReadData: {
+                      type: Object
+                  }
+              }
+          }
+
+          _computeUrl(resource) {
+              const apiRoot = this.$.meta.byKey('API_ROOT');
+              return `${apiRoot}/${resource}`;
+          }
+      }
+
+      customElements.define(SCHomePage.is, SCHomePage);
+ </script>
+</dom-module>

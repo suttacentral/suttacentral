@@ -1,0 +1,110 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
+<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
+<dom-module id="sc-start">
+ <template>
+  <style include="static-styles">
+  </style>
+  <div id="page-wrap">
+   <main>
+    <section>
+     <article>
+      <h1 inner-text="{{localize('bf647454e36069fd16f1a7a35cf6a865')}}">
+      </h1>
+      <p inner-text="{{localize('0e677f2291e66778ca0e3ef7767d91a7')}}">
+      </p>
+      <blockquote class="gatha">
+       <p inner-h-t-m-l="{{localize('4fccb495669a0a17c771d89045caed40')}}">
+       </p>
+      </blockquote>
+      <p inner-text="{{localize('c193f00c4de6db3c1d7664e9803c366e')}}">
+      </p>
+      <h2 inner-text="{{localize('b7f4228ab13067f8e7d3b3f691c3a3ef')}}">
+      </h2>
+      <p inner-text="{{localize('a706650099f8891725187b81552aff39')}}">
+      </p>
+      <ul>
+       <li inner-h-t-m-l="{{localize('5ed71a854b40cf00cae5855b964e2072')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('a7464154644711a3364be35470434e8c')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('691d440f07b39a1670e36f0a1cf2434c')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('ac5eaf64321c4e6161a7072b82d7ee6c')}}">
+       </li>
+      </ul>
+      <h2 inner-text="{{localize('da486f01c76bee128fef5d5090168ce6')}}">
+      </h2>
+      <p inner-text="{{localize('207531706465e14033bb7388ea4f305f')}}">
+      </p>
+      <ul>
+       <li inner-h-t-m-l="{{localize('12f77f8bc2ca002e8479d3edfaeea538')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('98598a13a5619c483a7177e1292b4eaa')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('b85cbff7caf6097b21572c358b1eb8e4')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('295c1ca7987b7074d557f248a6e4d8dc')}}">
+       </li>
+      </ul>
+      <h2 inner-text="{{localize('7245023e107f7a6f2a625c1cdb388b63')}}">
+      </h2>
+      <p inner-text="{{localize('2d5ac0e1d879d50d69edbeac3cd150e8')}}">
+      </p>
+      <ul>
+       <li inner-h-t-m-l="{{localize('f8dd98f5755619fd92a49ebfb4385797')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('7b8c68ad9a5c2a638bfbc2c1e1861c2d')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('e684f0dd0efe2d83468646eb5a9ec666')}}">
+       </li>
+      </ul>
+      <h2 inner-text="{{localize('cd56198f0768e84cfc40a120e02f796d')}}">
+      </h2>
+      <p inner-text="{{localize('6f73eabae4d37563d42d1a02331afc54')}}">
+      </p>
+      <p inner-text="{{localize('481f9ed1b1450ec83d42f430e3e9f012')}}">
+      </p>
+      <h2 inner-text="{{localize('bdf47b4cb4954819d238f60ca2edb579')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('e3b5fa1c0e31fd9e733d406c94c44227')}}">
+      </p>
+      <h2 inner-text="{{localize('c5cf897ac4549f6a6e80900f52a0b13c')}}">
+      </h2>
+      <p inner-text="{{localize('bacd98544bd820c4e32e81797baa4621')}}">
+      </p>
+      <p inner-text="{{localize('32070e2961989210491f68c69ae90e71')}}">
+      </p>
+      <h2 inner-text="{{localize('ac703e1e04b5438e9a5c6d840fefa6e9')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('0347a15dce04ec8d96d882e55ea2f853')}}">
+      </p>
+     </article>
+    </section>
+   </main>
+  </div>
+ </template>
+ <script>
+  class SCStart extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-start';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/start/${this.language}.json`));
+          }
+      }
+
+      customElements.define(SCStart.is, SCStart);
+ </script>
+</dom-module>

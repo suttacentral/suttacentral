@@ -387,8 +387,7 @@
 
           _paymentFinished() {
               this.processingPayment = false;
-              this._showToast('success', 'Sadhu! Your payment has been completed successfully. ' +
-                  'You will be redirected to the homepage in 5 seconds.');
+              this._showToast('success', this.localize('paymentSuccessful') + this.localize('redirectNotice'));
               setTimeout(() => {
                   this.$.submitButton.disabled = false;
                   this.resetForm();

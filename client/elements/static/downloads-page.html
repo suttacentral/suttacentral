@@ -1,0 +1,82 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
+<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
+<dom-module id="downloads-page">
+ <template>
+  <style include="static-styles">
+   img {
+        float: right;
+        width: 50%;
+      }
+  </style>
+  <div id="page-wrap">
+   <main>
+    <section>
+     <article>
+      <h1 inner-text="{{localize('c20c35ef53bf1b70789ce94e66800147')}}">
+      </h1>
+      <h2 inner-text="{{localize('c1c1e70d557e9ba9b036ef879a504ce6')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('35f4da2c4213d5652d7e1059908487d9')}}">
+      </p>
+      <h2 inner-text="{{localize('62ff57d3bbb642c261331645599a1f56')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('5dd3a6f7ec98dcf0dad3e41518dbb754')}}">
+      </p>
+      <p inner-text="{{localize('ac389e41b6828374e621967357b6a4eb')}}">
+      </p>
+      <p inner-text="{{localize('b98f1fe799bdd20776773c1b76145dbd')}}">
+      </p>
+      <table>
+       <tr>
+        <td inner-h-t-m-l="{{localize('879782adf82e12c510e128c0eb3cc525')}}">
+        </td>
+        <td inner-h-t-m-l="{{localize('706ad432849394f0702d65b0bdecab4b')}}">
+        </td>
+       </tr>
+       <tr>
+        <td inner-h-t-m-l="{{localize('0e1732ff17027c54eb76ca81b7d19509')}}">
+        </td>
+        <td inner-text="{{localize('f455c862232872d2badece1044fad75f')}}">
+        </td>
+       </tr>
+       <tr>
+        <td inner-h-t-m-l="{{localize('590f040454784c1b97e37cd7e99ab7e2')}}">
+        </td>
+        <td inner-h-t-m-l="{{localize('a9f2623cf5b72eb09b1a2962e18955be')}}">
+        </td>
+       </tr>
+      </table>
+      <h2 inner-text="{{localize('aa9d1327240db97befef1e39dd7a3377')}}">
+      </h2>
+      <p inner-h-t-m-l="{{localize('2a17349731a3a2aa4cd810e0caf8a731')}}">
+      </p>
+     </article>
+    </section>
+   </main>
+  </div>
+ </template>
+ <script>
+  class SCDownloadsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-downloads-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/downloads-page/${this.language}.json`));
+          }
+      }
+
+      customElements.define(SCDownloadsPage.is, SCDownloadsPage);
+ </script>
+</dom-module>

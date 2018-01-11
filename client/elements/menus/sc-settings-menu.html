@@ -220,7 +220,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       <div class="dialog-section">
         <h3 class="menu-item-title">{{localize('rememberSettings')}}</h3>
         <div class="nerdy-row">{{localize('rememberSettingsDescription')}}</div>
-        <paper-toggle-button class="menu-toggle-button" noink checked
+        <paper-toggle-button id="remember_settings_button" class="menu-toggle-button" noink checked
                              active="{{rememberSettings}}"></paper-toggle-button>
       </div>
 
@@ -467,6 +467,9 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               this.shadowRoot.querySelector('#pali_script_menu').addEventListener('selected-item-changed', () => {
                   this.paliScriptItemChanged = true;
               });
+              this.shadowRoot.querySelector('#remember_settings_button').addEventListener('active-changed', (e) => {
+                  this._rememberSettingsChanged(e.detail.value);
+              });
           }
 
           _siteLanguageChanged() {
@@ -590,6 +593,14 @@ type of view for segmented pages (showing pali next to translated text), lookup 
 
           _findPaliScriptIndex(paliScript) {
               return this.paliScripts.findIndex(i => i.script === paliScript);
+          }
+
+          _rememberSettingsChanged(setting) {
+              if (setting) {
+                  this._showToast(this.localize('rememberSettingsEnabled'));
+              } else {
+                  this._showToast(this.localize('rememberSettingsDisabled'));
+              }
           }
 
           _showLookupToast(dictName, lang) {

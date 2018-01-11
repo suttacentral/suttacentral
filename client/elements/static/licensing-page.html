@@ -1,0 +1,70 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import"/>
+<link href="../../styles/static-styles.html" rel="import"/>
+<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
+<dom-module id="sc-licensing-page">
+ <template>
+  <style include="static-styles">
+  </style>
+  <div id="page-wrap">
+   <main>
+    <section>
+     <article>
+      <h1 inner-text="{{localize('0b9c6eef4e3d3a222eb04e910d252339')}}">
+      </h1>
+      <p inner-text="{{localize('053b98ba6c15ea01b8fbb888c1fbdc66')}}">
+      </p>
+      <p inner-h-t-m-l="{{localize('bb4c7c15610d3c0b1244cf0987819b4b')}}">
+      </p>
+      <p inner-h-t-m-l="{{localize('09b90b4e0f5f7934b630e5ce0c4bfcfa')}}">
+      </p>
+      <h3 inner-text="{{localize('c5b65db1204f647d44c40b7dc64c63b8')}}">
+      </h3>
+      <p inner-h-t-m-l="{{localize('3360188074451911ac8051e77bf6b41c')}}">
+      </p>
+      <p inner-text="{{localize('61925437a72b1d27717902963eff5d83')}}">
+      </p>
+      <p inner-text="{{localize('e0911b0aaa47ebc04531f501e65e39b2')}}">
+      </p>
+      <p inner-text="{{localize('a28be004e54b325437c5894a3c2e7eb0')}}">
+      </p>
+      <p inner-text="{{localize('84866c7e3410ef37a0d70dea7c5027ea')}}">
+      </p>
+      <h3 inner-text="{{localize('f6ac6c11c4a856d8596d313afa81983b')}}">
+      </h3>
+      <p inner-text="{{localize('9776367aa1a9fa1c60643ea584483c92')}}">
+      </p>
+      <h3 inner-text="{{localize('40c3ddd7137dc7ca82ecb89fdf7415e1')}}">
+      </h3>
+      <p inner-h-t-m-l="{{localize('b50e3082c0ff50f4b5681bd494947780')}}">
+      </p>
+      <p inner-text="{{localize('fb869e822a73d682c5b013f5338b95dd')}}">
+      </p>
+     </article>
+    </section>
+   </main>
+  </div>
+ </template>
+ <script>
+  class SCLicensingPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+          static get is() {
+              return 'sc-licensing-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/licensing-page/${this.language}.json`));
+          }
+      }
+
+      customElements.define(SCLicensingPage.is, SCLicensingPage);
+ </script>
+</dom-module>

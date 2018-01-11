@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../styles/sc-suttaplex-styles.html">
 <link rel="import" href="../menus/sc-settings-menu.html">
@@ -39,11 +40,6 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
         margin: 0 auto var(--sc-size-xxl);
       }
 
-      .margin-vertical-md {
-        margin-top: var(--sc-size-sm);
-        margin-bottom: var(--sc-size-sm);
-      }
-
       .sc-tooltip {
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
@@ -63,16 +59,16 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
         <template is="dom-if" if="[[metaArea]]">
           <paper-icon-button id="text_info_button" icon="info" on-tap="_openInfoDialog"></paper-icon-button>
           <paper-tooltip class="sc-tooltip" for="text_info_button" offset="0">
-            Information
+            {{localize('information')}}
           </paper-tooltip>
         </template>
         <paper-icon-button id="text_settings_button" icon="settings" on-tap="_openSettingsDialog"></paper-icon-button>
         <paper-tooltip class="sc-tooltip" for="text_settings_button" offset="0">
-          Text settings
+          {{localize('textSettings')}}
         </paper-tooltip>
         <paper-icon-button id="suttaplex_button" icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
         <paper-tooltip class="sc-tooltip" for="suttaplex_button" offset="0" fit-to-visible-bounds>
-          View Parallels &amp; References
+          {{localize('viewParallels')}}
         </paper-tooltip>
       </div>
 
@@ -99,7 +95,11 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
   </template>
 
   <script>
-      class SCTextOptions extends ReduxMixin(Polymer.Element) {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCTextOptions extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-text-options';
           }
@@ -117,8 +117,17 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
                   metaArea: {
                       type: String,
                       statePath: 'suttaMetaText'
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text-options/${this.language}.json`));
           }
 
           _toggleOpened() {
