@@ -59,7 +59,7 @@ class TextInfoModel:
             return True
         return False
 
-    def process_lang_dir(self, lang_dir, data_dir=None, files_to_process=None, force=False):
+    def process_lang_dir(self, lang_dir, authors, data_dir=None, files_to_process=None, force=False):
         # files_to_process is actually "files that may be processed" its
         # not the list of files to actually process
 
@@ -131,7 +131,8 @@ class TextInfoModel:
                             next_uid = None
 
                 author = self._get_author(root, lang_uid, uid)
-                author_uid = None
+                author_short = self._get_author_short(author, authors)
+                author_uid = self._get_author_uid(author, authors)
 
                 if uid == 'metadata':
                     if author is None:
@@ -174,6 +175,7 @@ class TextInfoModel:
                     "path": path,
                     "name": name,
                     "author": author,
+                    "author_short": author_short,
                     "author_uid": author_uid,
                     "volpage": volpage,
                     "prev_uid": prev_uid,
@@ -198,17 +200,26 @@ class TextInfoModel:
         if e:
             return e.attrib['author']
 
-        e = root.select_one('meta[data-author]')
-        if e:
-            return e.attrib['data-author']
-
-        e = root.select_one('meta[name=description]')
+        e = root.select_one('meta[name=author]')
         if e:
             return e.attrib['content']
 
-        e = root.select_one('#metaarea > .author')
-        if e:
-            return e.text
+        return None
+
+    def _get_author_short(self, author, authors):
+
+        for item in authors:
+            if (item['long_name'] == author): 
+                return item['short_name']
+
+        return None
+
+    def _get_author_uid(self, author, authors):
+
+        for item in authors:
+            if (item['long_name'] == author): 
+                return item['uid']
+
         return None
 
     def _get_name(self, root, lang_uid, uid):
@@ -250,7 +261,7 @@ class ArangoTextInfoModel(TextInfoModel):
     def add_document(self, doc):
         doc['_key'] = doc['path'].replace('/', '_')
         self.queue.append(doc)
-        if len(self.queue) > 50:
+        if len(self.queue) > 1000:
             self.flush_documents()
 
     def flush_documents(self):
@@ -267,13 +278,13 @@ class ArangoTextInfoModel(TextInfoModel):
                     for key in keys:
                         unicode_points[key].update(existing.get(key, []))
 
-                doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
-                doc['_key'] = lang_uid
+            doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
+            doc['_key'] = lang_uid
         except:
             print(unicode_points, key)
             raise
 
-        if existing:
+        if existing or force:
             self.db['unicode_points'].replace(doc)
         else:
             self.db['unicode_points'].insert(doc)
