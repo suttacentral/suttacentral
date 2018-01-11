@@ -5,5 +5,5 @@ def load_paragraphs(db, additional_info_dir: Path):
     print('Loading paragraphs')
 
     paragraphs_collection = db['paragraphs']
-    data = json_load(f'{additional_info_dir}/paragraphs.json')
+    data = json_load(additional_info_dir / 'paragraphs.json')
     paragraphs_collection.import_bulk(data)

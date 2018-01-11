@@ -438,7 +438,7 @@ def load_json_file(db, change_tracker, json_file):
 
 def process_blurbs(db, additional_info_dir):
     print('Loading blurbs')
-    blurb_file = (additional_info_dir / 'blurbs.json')
+    blurb_file = additional_info_dir / 'blurbs.json'
     collection_name = 'blurbs'
 
     blurb_info = json_load(blurb_file)
@@ -452,7 +452,7 @@ def process_blurbs(db, additional_info_dir):
 
 def process_difficulty(db, additional_info_dir):
     print('Loading difficulties')
-    difficulty_file = (additional_info_dir / 'difficulties.json')
+    difficulty_file = additional_info_dir / 'difficulties.json'
     collection_name = 'difficulties'
     
     difficulty_info = json_load(difficulty_file)
@@ -485,13 +485,10 @@ def run():
 
     db_name = current_app.config.get('ARANGO_DB')
     db = conn.database(db_name)
-    import git
-    try:
-        collect_data(data_dir, current_app.config.get('DATA_REPO'))
-        collect_data(po_dir, current_app.config.get('PO_REPO'))
-    except git.exc.GitCommandError:
-        pass
-
+    
+    collect_data(data_dir, current_app.config.get('DATA_REPO'))
+    collect_data(po_dir, current_app.config.get('PO_REPO'))
+    
     images_files.load_images_links(db)
 
     change_tracker = ChangeTracker(data_dir, db)
