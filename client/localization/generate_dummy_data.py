@@ -3,6 +3,7 @@ from typing import Iterable
 from pathlib import Path
 
 from faker import Faker
+from tqdm import tqdm
 
 ELEMENTS_DIR = Path('elements')
 
@@ -13,8 +14,10 @@ def generate_language(base_data: dict, folder: Path, faker: Faker, lang):
     new_data = {}
     for k, v in base_data.items():
         new_data[k] = faker.text()
-        if len(new_data[k]) > len(v):
-            new_data[k] = new_data[k][:len(v)]
+        while len(new_data[k]) < len(v) * 0.9:
+            if len(new_data[k]) > len(v) * 1.1:
+                new_data[k] = new_data[k][:len(v)]
+            new_data[k] += faker.text()
 
     with (folder / f'{lang}.json').open('w') as f:
         json.dump({lang: new_data}, f, indent=4, ensure_ascii=False)
@@ -32,7 +35,7 @@ def generate_languages(folder: Path):
 
 
 def run():
-    for folder in elements_folders_generator(ELEMENTS_DIR):
+    for folder in tqdm(elements_folders_generator(ELEMENTS_DIR)):
         generate_languages(folder)
 
 
