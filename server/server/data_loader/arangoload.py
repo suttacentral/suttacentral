@@ -12,17 +12,9 @@ from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
+from .util import json_load
 from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, divisions, images_files, homepage
-
-def json_load(path):
-    try:
-        with path.open('r', encoding='utf8') as f:
-            return json.load(f)
-    except json.decoder.JSONDecodeError as e:
-        logging.error(f'{path}: {e}')
-        raise e
-
 
 def update_data(repo: Repo, repo_addr: str):
     """Updates given git repo.
