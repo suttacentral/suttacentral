@@ -28,19 +28,19 @@
       }
 
       .sutta {
-        @apply --sc-serif-font;
-        @apply --sc-paper-font-body;
+      @apply --sc-paper-font-body;
+      @apply --sc-serif-font;
       }
 
       .html-text-content section {
         margin: 0 auto !important;
         padding: var(--sc-size-lg) 10% var(--sc-size-lg);
-        max-width: 40em;
+        max-width: 720px;
         display: block;
       }
 
       .html-text-content.side-by-side section {
-        max-width: 80em;
+        max-width: 1440px;
       }
 
       .html-text-content.side-by-side .sc-segmented-text {
@@ -155,14 +155,10 @@
 
       /* TEXT */
 
-      .sutta p {
-        margin: 0 0 12px 0;
-      }
-
       .sutta ul {
         list-style-type: none;
         padding: 0 0 12px 0;
-        margin: 0 0 0 32px;
+        margin-left: 32px;
       }
 
       .sutta ul li::before {
@@ -174,7 +170,7 @@
 
       .sutta ol {
         padding: 0 0 12px 0;
-        margin: 0 0 0 32px;
+        margin-left: 32px;
       }
 
       .sutta ol ol {
@@ -209,7 +205,7 @@
 
       .uddana {
         color: var(--sc-secondary-text-color);
-        font-size: 0.8rem;
+        @apply --paper-font-body1;
       }
 
       .uddana-intro {
@@ -221,8 +217,7 @@
       .endvagga {
         text-align: center;
         color: var(--sc-secondary-text-color);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
+        @apply --sc-all-caps;
       }
 
       .endbook {
@@ -346,7 +341,7 @@
       }
 
       .varnote td:last-child {
-        font-size: 0.8rem;
+        font-size: 14px;
       }
 
       .infomode .corr,
@@ -373,25 +368,27 @@
 
       hr {
         width: 33%;
-        margin: 1.45rem auto
+        margin: 1.5rem auto
       }
 
       .t-gaiji {
         color: var(--sc-primary-accent-color);
       }
-
+      
       a.cr {
         color: inherit;
-        background: linear-gradient(to top, transparent 1.5px, var(--sc-primary-color) 1.5px, var(--sc-primary-color) 2.5px, transparent 2.5px);
+        text-decoration: underline;
+        text-decoration-color: var(--sc-primary-color);
+        text-decoration-skip: ink;
       }
 
-      a.cr:hover {
-        background: linear-gradient(to top, transparent 1px, var(--sc-primary-color) 1px, var(--sc-primary-color) 3px, transparent 3px);
+      a.cr:hover  {
+        color: var(--sc-primary-color);
       }
 
-      a.cr:visited {
-        background: linear-gradient(to top, transparent 1px, var(--sc-primary-color-darkest) 1px, var(--sc-primary-color-darkest) 3px, var(--sc-primary-color-darkest-transparent) 3px);
-      }
+        a.cr:visited {
+          text-decoration-color: var(--sc-primary-color-dark);
+        }
 
       .hidden,
       .alt-title {
@@ -411,7 +408,7 @@
 
       .uddanagatha {
         color: var(--sc-secondary-text-color);
-        font-size: 0.8rem;
+        @apply --paper-font-body1;
         font-style: inherit;
       }
 
@@ -449,6 +446,13 @@
         font-size: 0.8rem;
       }
 
+         h1, h2, h3, h4, h5, h6, ul, ol, dd, p, figure, pre, table, fieldset, hr {
+         margin:1em 0 0 0;
+       }
+
+       .hgroup + p {
+        margin-top:3rem;
+      }
     </style>
   </template>
 </dom-module>

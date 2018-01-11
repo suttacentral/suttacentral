@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="sc-offline-page">
   <template>
@@ -11,27 +12,41 @@
         <section>
           <article>
             <h1>Using SuttaCentral offline</h1>
-            <p>SuttaCentral is a 
-              <a href="https://developers.google.com/web/progressive-web-apps/" target="_blank"> Progressive Web App</a>.
-               On supported devices, many features, including navigation and previously visited pages,
-              will continue to work even if you have no internet connection.</p>
-            <p>In addition, you can download texts in languages of your choosing and keep reading suttas even when offline
-              or with limited data. This is especially useful for users on mobiles with limited data,
-              or in regions with poor coverage. If your data is limited,
-              we recommend connecting to wifi before downloading large amounts of texts.</p>
+            <p>SuttaCentral is a <a href="https://developers.google.com/web/progressive-web-apps/" target="_blank">Progressive
+              Web App</a>. On supported devices, many features, including navigation and previously visited pages, will
+              continue to work even if you have no internet connection.</p>
+            <p>In addition, you can download texts in languages of your choosing and keep reading suttas even when
+              offline or with limited data. This is especially useful for users on mobiles with limited data, or in
+              regions with poor coverage. If your data is limited, we recommend connecting to wifi before downloading
+              large amounts of texts.</p>
             <button>Make available offline</button>
           </article>
         </section>
-        </main>
+      </main>
     </div>
   </template>
-  
+
   <script>
-      class SCOfflinePage extends Polymer.Element {
+      class SCOfflinePage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-offline-page';
           }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/offline-page/${this.language}.json`));
+          }
       }
+
       customElements.define(SCOfflinePage.is, SCOfflinePage);
   </script>
 </dom-module>

@@ -11,12 +11,18 @@
 <dom-module id="home-page">
   <template>
     <style include="static-styles">
+
+
       .content {
         display: grid;
         grid-auto-flow: row;
         grid-template-columns: 2% 96% 2%;
         grid-row-gap: 80px;
         margin-top: 60px;
+      }
+
+      #page-wrap{
+        max-width: 2058px;
       }
 
       .bottom-space {
@@ -28,7 +34,7 @@
         width: 100%;
       }
 
-      .introduction {
+      .preamble {
         @apply --sc-skolar-font-size-xl;
         color: var(--sc-primary-text-color);
         text-align: center;
@@ -70,7 +76,6 @@
       }
 
       .card-content-text {
-        @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
         padding: var(--sc-size-lg);
         text-align: center;
@@ -78,6 +83,7 @@
 
       .button-link {
         background: none !important;
+        text-decoration:none;
       }
 
       .card-heading-text {
@@ -103,7 +109,6 @@
 
       .button {
         @apply --sc-skolar-font-size-s;
-        @apply --sc-sans-font;
         margin-top: var(--sc-size-md);
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
@@ -134,7 +139,6 @@
 
       .image-card-text,
       .text-card-text {
-        @apply --sc-sans-font;
         margin-top: 1em;
       }
 
@@ -242,7 +246,6 @@
       }
 
       .card-heading-subtext {
-        @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
         font-weight: normal;
         line-height: 1em;
@@ -388,10 +391,10 @@
     <div id="page-wrap" class="bottom-space">
       <div class="content">
 
-        <div class="row introduction">
-          <p>The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br class="d-none">
+        <div class="row preamble">
+          <p>The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br>
             Many of these scriptures have now been translated into the world’s languages.</p>
-          <p>SuttaCentral brings these together and makes them freely available. <br class="d-none">
+          <p>SuttaCentral brings these together and makes them freely available. <br>
             Setting aside the boundaries of language and tradition, we let the Buddha speak for himself.</p>
         </div>
 

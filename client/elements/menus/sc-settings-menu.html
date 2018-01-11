@@ -28,12 +28,11 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       }
 
       .paper-dialogue-container {
-        max-width: 40em;
+        max-width: 720px;
       }
 
       .dialog-header {
         @apply --paper-font-title;
-        @apply --sc-sans-font;
         margin: 0
       }
 
@@ -46,19 +45,18 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       }
 
       .nerdy-row {
-        @apply --sc-paper-font-body;
-        @apply --sc-sans-font;
+        @apply --paper-font-body1;
         color: var(--sc-secondary-text-color);
+        margin-bottom:1em;
       }
 
       .menu-item-title {
         @apply --paper-font-title;
-        @apply --sc-sans-font;
         color: var(--sc-primary-text-color);
+        margin: 1em 0 0 0;
       }
 
       .menu-option {
-        @apply --sc-sans-font;
         --paper-radio-button-unchecked-color: var(--sc-disabled-text-color);
         --paper-radio-button-checked-color: var(--sc-primary-accent-color);
         --paper-radio-button-label-color: var(--sc-primary-text-color);
@@ -73,7 +71,6 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       }
 
       .menu-item {
-        @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
         color: var(--sc-primary-text-color);
         --paper-item-selected-weight: 500;
@@ -222,7 +219,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
 
       <div class="dialog-section">
         <h3 class="menu-item-title">{{localize('rememberSettings')}}</h3>
-        <h3 class="nerdy-row">{{localize('rememberSettingsDescription')}}</h3>
+        <div class="nerdy-row">{{localize('rememberSettingsDescription')}}</div>
         <paper-toggle-button class="menu-toggle-button" noink checked
                              active="{{rememberSettings}}"></paper-toggle-button>
       </div>

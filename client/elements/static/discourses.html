@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="sc-discourses">
   <template>
@@ -11,6 +12,18 @@
         <section>
           <h1>Discourses</h1>
           <p class="byline">Bhikkhu Sujato</p>
+                      <nav class="contents">
+              <ol>
+                <li><a href="#item1">Origins</a></li>
+                <li><a href="#item2">Transmission</a></li>
+                <li><a href="#item3">The Early Schools of Buddhism</a></li>
+                <li><a href="#item4">Structure</a></li>
+                <li><a href="#item5">Canonicity of the Suttas</a></li>
+                <li><a href="#item6">Suttas in the Buddhist Traditions</a></li>
+                <li><a href="#item7">Modern Reform and Postmodern Criticism</a></li>
+                <li><a href="#item8">Translations</a></li>
+              </ol>
+            </nav>
           <p>The most important body of sacred scripture in Buddhism is the Suttapiṭaka, the “basket of discourses”.
             This collection contains the teachings of the Buddha and his disciples, as collected and transmitted by the
             schools of early Buddhism. This is the well-spring of Dhamma, from which the teachings and practices of the
@@ -29,7 +42,7 @@
           <p>This article is a general overview, and more specific details may be found on the pages for each
             collection. Please note that this article deals with the history and nature of the textual collections, not
             with the content and themes.</p>
-          <h2>Origins</h2>
+          <h2 id="item1">Origins</h2>
           <p>The Buddha lived around the 5th century BCE, and lived and taught in the nations of the Ganges plain in
             northern India, especially the regions known today as Bihar and Uttar Pradesh. He had a long career, and was
             said to have taught for forty-five years. The canonical Vinaya texts relate how, after his passing towards
@@ -51,7 +64,7 @@
             central India for inscriptions, with a partial Sanskritization. Nevertheless, these languages differ mostly
             in phonology, and apart from a few edge cases, changes from one form to another do not affect the
             meaning.</p>
-          <h2>Transmission</h2>
+          <h2 id="item2">Transmission</h2>
           <p>For many years, the texts were passed down in an oral form. This was organized with groups of reciters, all
             reciting together the same text to ensure accuracy. We are often skeptical that an oral tradition can
             maintain texts accurately for a long time. This is our cultural bias, since all we’ve known are written
@@ -93,7 +106,7 @@
             Buddhist suttas are almost always minor variations on what we find in the Pali canon. They serve to indicate
             the spread and diversity of Buddhism, and offer clarification on many points of history and detail, but they
             do not radically revise our understanding of the teachings.</p>
-          <h2>The Early Schools of Buddhism</h2>
+          <h2 id="item3">The Early Schools of Buddhism</h2>
           <p>The century after the Buddha passed away witnessed a transformation in Indian political history. The 16
             nations of the Buddha’s time were amalgamated by the superior force of the Magadhan kingdom, which became an
             empire encompassing most of the Indian mainland. At the same time, the invasion by Alexander the Great
@@ -149,7 +162,7 @@
             differences are not small, and it is hard to generalize, it is clear that the early community saw their main
             task to preserve verbatim the words of the Buddha, especially the essential teachings, a task that they took
             very seriously.</p>
-          <h2>Structure</h2>
+          <h2 id="item4">Structure</h2>
           <p>In the Buddha’s forty-five years of teaching, he was mainly concerned to address the person or people he
             was with, to appease their suffering. Thus he was not concerned with creating a overarching canon of his
             teachings. However, he did give some indications of a broader system of classifying the teachings. Sometimes
@@ -243,7 +256,7 @@
             following the Buddha. These later texts include the extensive collections of Jātaka tales, found in Pali and
             other traditions. Note that in the Pali tradition, only the verses are canoncial, while the stories
             themselves are found in the commentary.</p>
-          <h2>Canonicity of the Suttas</h2>
+          <h2 id="item5">Canonicity of the Suttas</h2>
           <p>The early Discourses are regarded as canonical in all schools of Buddhism. They are considered to be
             Buddhavacana, the “words of the Buddha”, and are revered as sacred scripture. Each school, of course,
             accepts other texts as canonical also; but the Discourses, together with the Vinayas, are the main areas of
@@ -258,7 +271,7 @@
           </p>
           <p>So while we can say that the early Discourses are in principle considered canonical generally, for
             practical purposes each of the schools has a specific set of early Discourses found in their own canon.</p>
-          <h2>Suttas in the Buddhist Traditions</h2>
+          <h2 id="item6">Suttas in the Buddhist Traditions</h2>
           <p>In traditional Buddhist education, the Discourses have usually not been directly taught. Rather, the
             teachings and principles found in the Discourses have been assimilated and organized in later texts, which
             became the medium of education. In the Theravāda, Discourses were until recently passed down in Pali, and so
@@ -293,7 +306,7 @@
             nevertheless, possible to achieve in Tibetan. Even though full <i>āgama</i> texts are lacking, substantial
             passages from the early texts are found in the Upāyika, which is a compilation of passages referred to in
             the Abhidharmakoṣa, and in other scattered texts.</p>
-          <h2>Modern Reform and Postmodern Criticism</h2>
+          <h2 id="item7">Modern Reform and Postmodern Criticism</h2>
           <p>From the middle of the 19th Century, European and Asian scholars began to study the Buddhist texts on
             historical grounds. Whereas traditional scholarship remained within each school, interpreting them within
             their local contexts, the new scholarship aimed to locate the texts in historical time and place. This
@@ -366,7 +379,7 @@
             Buddha’s teaching was essentially rational. These arguments have been repeatedly criticized by experts in
             the field. The postmodern approach has has yet to produce constructive results comparable to those of
             modernism.</p>
-          <h2>Translations</h2>
+          <h2 id="item8">Translations</h2>
           <p>One of the most concrete outcomes of the modernist reforms has been the availability of translations of the
             early texts. Until now, almost all such translations have been from the Pali canon. But a few translations
             from the Chinese, Tibetan, and Sanskrit texts are now starting to appear.</p>
@@ -395,12 +408,26 @@
   </template>
 
   <script>
-      class SCDiscourses extends Polymer.Element {
+      class Discourses extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-discourses';
           }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/discourses/${this.language}.json`));
+          }
       }
 
-      customElements.define(SCDiscourses.is, SCDiscourses);
+      customElements.define(Discourses.is, Discourses);
   </script>
 </dom-module>

@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+
 <link rel="import" href="../../styles/static-styles.html">
 
 <dom-module id="sc-abbreviations-page">
@@ -120,7 +122,7 @@
                 <td>Dhammapada</td>
               </tr>
               <tr>
-                <td>Dhs</td>
+                <td>Ds</td>
                 <td>Dhammasaṅgaṇi</td>
               </tr>
               <tr>
@@ -583,9 +585,23 @@
   </template>
 
   <script>
-      class SCAbbreviationsPage extends Polymer.Element {
+      class SCAbbreviationsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-abbreviations-page';
+          }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/abbreviations-page/${this.language}.json`));
           }
       }
 

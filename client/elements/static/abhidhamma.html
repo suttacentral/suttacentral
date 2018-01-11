@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+
 <link rel="import" href="../../styles/static-styles.html">
 
 <dom-module id="sc-abhidhamma">
@@ -12,6 +14,20 @@
           <article>
             <h1>Abhidhamma</h1>
             <p class="byline">Bhikkhu Sujato</p>
+                        <nav class="contents">
+              <ol>
+                <li><a href="#item1">Origins</a></li>
+                <li><a href="#item2">The Books of the Theravāda Abhidhamma
+</a></li>
+                <li><a href="#item3">The Books of the Sarvāstivāda Abhidhamma
+</a></li>
+                <li><a href="#item4">The Dharmaguptaka Śāripūtrābhidharma
+</a></li>
+                <li><a href="#item5">Abhidhamma in Buddhist Traditions
+</a></li>
+                <li><a href="#item6">Criticism</a></li>
+              </ol>
+            </nav>
             <p>The Abhidhamma Piṭaka is the last of the three <i>piṭakas</i> (or “baskets”) in the canons of the early
               Buddhist schools. It takes the terms and ideas found in the Discourses, and organizes and analyzes them
               systematically. </p>
@@ -30,7 +46,7 @@
             <p>Despite their differences, however, it would be a mistake to see the canonical Abhidhamma texts as
               presenting strongly sectarian positions. Apart from the polemical works such as as Kathāvatthu, for the
               most part they focus on presenting the central ideas of the Dhamma in different ways.</p>
-            <h2>Origins</h2>
+            <h2 id="item1">Origins</h2>
             <p>The word <i>abhidhamma</i> is found occasionally in the early texts, usually alongside the parallel term
               <i>abhivinaya</i>. There is, of course, no body of texts called the <i>abhivinaya</i>, and these early
               uses of <i>abhidhamma</i> don’t refer to settled texts such as exist today. Rather, in this kind of
@@ -61,7 +77,7 @@
               lineages, or styles of learning, that reflected the specialties of the different masters. Over time, the
               explanations of various teachers became systematized and codified. The actual books as they exist today,
               however, are the products of schools, composed under the guidance of leading monks.</p>
-            <h2>The Books of the Theravāda Abhidhamma</h2>
+            <h2 id="item2">The Books of the Theravāda Abhidhamma</h2>
             <p>For the most part, the long and complex texts of the Theravāda Abhidhamma are concerned with analyzing
               and classifying material, not with explaining it. Presumably they would have been taught by experienced
               teachers in monasteries, who would have drawn out, explained, and illustrated the abstruse texts.
@@ -140,7 +156,7 @@
             <p>The Dhammasaṅgaṇī and the Paṭṭhāna bookend the Abhidhamma collection, the first dealing with phenomena,
               the latter with their relations. While method and the details have expanded considerably, the approach can
               be seen as a detailed application of the underlying principles of dependent origination.</p>
-            <h2>The Books of the Sarvāstivāda Abhidhamma</h2>
+            <h2 id="item3">The Books of the Sarvāstivāda Abhidhamma</h2>
             <p>While many, perhaps all, of the “eighteen” early schools would have had Abhidhamma texts of some sort,
               none were as famous as the Sarvāstivāda. The canonical texts mentioned here were supplemented or
               supplanted by the massively influential treatise <cite>Mahāvibhāṣa</cite>, which established the
@@ -185,12 +201,12 @@
               by Saṅghadeva and Zhu-fo-nian under the name 阿毘曇八犍度論 at T 1543. The largest of the Sarvāstivādin
               Abhidhamma books, this formed the basis for the later Sarvāstivāda treatises, and hence the modern study
               of Abhidharma especially in Tibetan Buddhism.</p>
-            <h2>The Dharmaguptaka Śāripūtrābhidharma</h2>
+            <h2 id="item4">The Dharmaguptaka Śāripūtrābhidharma</h2>
             <p>The only extant work of the Dharmaguptaka Abhidhamma, this was translated into Chinese by Dharmayaśas and
               Dharmagupta. It shares some content with the Vibhaṅga and Dharmaskandha, and other details with other
               texts. Whereas the other schools maintained multiple Abhidhamma texts, this single text covers much of the
               same ground, and seems to contain the entire Abhidhamma system of the Dharmaguptakas.</p>
-            <h2>Abhidhamma in Buddhist Traditions</h2>
+            <h2 id="item5">Abhidhamma in Buddhist Traditions</h2>
             <p>Throughout the years, the study of Abhidhamma has been held in high esteem by the Buddhist traditions.
               The Theravāda tradition developed a series of commentaries and treatises explaining the ideas of the
               Abhidhamma and extending them further. This is a living tradition, which boasts an unbroken series of
@@ -206,7 +222,7 @@
               taught to or by lay people, and is popular throughout Southeast Asia. In addition, Abhidhamma
               <i>mātikās</i> may form the basis for ceremonial recitation. In Thailand, the Dhammasaṅgaṇī
               <i>tikamātikā</i> and the 24 conditions of the Paṭṭhāna are used as funeral chants.</p>
-            <h2>Criticism</h2>
+            <h2 id="item6">Criticism</h2>
             <p>The Abhidhamma itself is a critical system, developed to clarify understanding of fundamental concepts
               and relations. Underlying this project is the assumption that such clarification is needed, which implies
               that not everyone understands things the same way. This critical aspect comes to the fore in works such as
@@ -234,12 +250,26 @@
   </template>
 
   <script>
-      class SCAbhidhamma extends Polymer.Element {
+      class Abhidhamma extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-abhidhamma';
           }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/abhidhamma/${this.language}.json`));
+          }
       }
 
-      customElements.define(SCAbhidhamma.is, SCAbhidhamma);
+      customElements.define(Abhidhamma.is, Abhidhamma);
   </script>
 </dom-module>

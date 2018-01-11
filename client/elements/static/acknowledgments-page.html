@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <dom-module id="sc-acknowledgments-page">
   <template>
@@ -9,7 +10,7 @@
       <main>
         <section>
           <article>
-            <h1>Acknowledgments</h1>
+            <h1>Acknowledgements</h1>
             <p>SuttaCentral was conceived by Venerable Anālayo (Germany), Rod Bucknell (Australia), and Bhante Sujato
               (Australia), based on sutta correspondence tables compiled by Rod Bucknell and Ven. Anālayo. The site
               founders are Rod Bucknell, Bhante Sujato, and John Kelly.</p>
@@ -17,15 +18,15 @@
             <p>The initial launch of the site was in 2005. Key people involved with that launch were:</p>
             <table>
               <tr>
-                <td>Ong Yong Peng (Australia)</td>
+                <td>Ong Yong Peng</td>
                 <td>System, database and web design; web programming.</td>
               </tr>
               <tr>
-                <td>John Kelly (Australia)</td>
+                <td>John Kelly</td>
                 <td>Project coordination; system and database design; database and data administration; data entry.</td>
               </tr>
               <tr>
-                <td>Hugo Gayosso (USA), Chris Kang (Australia)</td>
+                <td>Hugo Gayosso, Chris Kang</td>
                 <td>Data entry.</td>
               </tr>
             </table>
@@ -62,7 +63,7 @@
             <p>While the 2012 rebuild has served us well, we have seen the need for a systematic upgrade. We have made a
               series of incremental changes, each one of which must be added to the original structure somehow, and
               things get a bit creaky after a while. At a certain point it’s better to rebuild in a cleaner and more
-              systematic way. We embarked on this process in 2017. Key underlying chages include internationalization,
+              systematic way. We embarked on this process in 2017. Key underlying changes include internationalization,
               integration of Sutta, Vinaya, and verse parallels, and addition of segmented translations. The core
               development team for this process has been as follows.</p>
             <table>
@@ -451,19 +452,32 @@
               </tr>
             </table>
           </article>
-
         </section>
       </main>
     </div>
   </template>
 
   <script>
-      class SCAcknowledgmentsPage extends Polymer.Element {
+      class AcknowledgmentsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-acknowledgments-page';
           }
+
+          static get properties() {
+              return {
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  }
+              }
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/acknowledgments-page/${this.language}.json`));
+          }
       }
 
-      customElements.define(SCAcknowledgmentsPage.is, SCAcknowledgmentsPage);
+      customElements.define(AcknowledgmentsPage.is, AcknowledgmentsPage);
   </script>
 </dom-module>

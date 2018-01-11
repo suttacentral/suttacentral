@@ -29,6 +29,10 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
         justify-content: flex-end;
       }
 
+      .heading paper-icon-button{
+        margin-left:16px;
+      }
+
       .sutta-list {
         max-width: 720px;
         transition: margin-top 0.3s, margin-bottom 0.3s;
@@ -44,7 +48,6 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
-          @apply --sc-sans-font;
           @apply --sc-skolar-font-size-xs;
           line-height: var(--sc-size-md);
           padding: var(--sc-size-sm) var(--sc-size-md);
