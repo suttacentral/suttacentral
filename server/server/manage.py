@@ -41,8 +41,15 @@ def load_data():
     Loads data from the data repo to database.
     """
     from data_loader.arangoload import run
-    run()
+    run(pull=True)
 
+@manager.command
+def load_data_no_pull():
+    """
+    Loads data from the data dir to database, does not git pull
+    """
+    from data_loader.arangoload import run
+    run(pull=False)
 
 @manager.command
 def delete_db():

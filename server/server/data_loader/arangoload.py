@@ -474,7 +474,7 @@ def process_difficulty(db, additional_info_dir):
     db.collection('difficulties').import_bulk(docs)
 
 
-def run():
+def run(pull=True):
     """Runs data load.
 
     It will take data from nextdata repository and populate the database with it.
@@ -496,8 +496,9 @@ def run():
     db_name = current_app.config.get('ARANGO_DB')
     db = conn.database(db_name)
     
-    collect_data(data_dir, current_app.config.get('DATA_REPO'))
-    collect_data(po_dir, current_app.config.get('PO_REPO'))
+    if pull:
+        collect_data(data_dir, current_app.config.get('DATA_REPO'))
+        collect_data(po_dir, current_app.config.get('PO_REPO'))
     
     images_files.load_images_links(db)
 
