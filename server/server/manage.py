@@ -61,5 +61,11 @@ def generate_po_files():
     generate_pootle.run()
 
 
+@manager.command
+def load_po_files():
+    from internationalization import load_pootle
+    load_pootle.run()
+
+
 if __name__ == '__main__':
     manager.run()

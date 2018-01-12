@@ -184,3 +184,6 @@ run-preview-env-no-search:
 
 generate-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"
+
+load-server-po-files:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files"
