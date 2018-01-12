@@ -55,5 +55,11 @@ def index_elasticsearch():
     update()
 
 
+@manager.command
+def generate_po_files():
+    from internationalization import generate_pootle
+    generate_pootle.run()
+
+
 if __name__ == '__main__':
     manager.run()

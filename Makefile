@@ -181,3 +181,6 @@ run-preview-env-no-search:
 	@make load-data
 	@echo "\033[1;32mDONE!"
 	@make run-dev
+
+generate-server-po-files:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"
