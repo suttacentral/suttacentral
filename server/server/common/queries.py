@@ -113,13 +113,16 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             }
     )
     
-    LET blurb = (
+    LET blurbs_by_uid = (
         FOR blurb IN blurbs
-            FILTER blurb.uid == v.uid
-            LIMIT 1
-            RETURN blurb.blurb
-            
-    )[0]
+            FILTER blurb.uid == @uid AND (blurb.lang == @language OR blurb.lang == 'en')
+            LIMIT 2
+            RETURN blurb
+    )
+    LET blurb = (
+         RETURN LENGTH(blurbs_by_uid) == 2 ? 
+             (FOR blurb IN blurbs_by_uid FILTER blurb.lang == @language RETURN blurb.blurb)[0] : 
+             blurbs_by_uid[0].blurb
     
     LET legacy_volpages = (
         FOR text IN legacy_translations
