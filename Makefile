@@ -159,6 +159,9 @@ test-server:
 load-data:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
 
+load-data-no-pull:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data --no_pull"
+
 delete-database:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py delete_db"
 
