@@ -36,13 +36,12 @@ def list_routes():
 
 
 @manager.command
-def load_data():
+def load_data(no_pull=False):
     """
     Loads data from the data repo to database.
     """
     from data_loader.arangoload import run
-    run()
-
+    run(no_pull=no_pull)
 
 @manager.command
 def delete_db():
