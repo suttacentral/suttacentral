@@ -20,7 +20,7 @@ class Loader:
         self.counter_updated = 0
         self.counter_created = 0
 
-    def run(self, collection_name: str):
+    def run(self, collection_name: str, translated_field: str):
         print()
         print(f'LOADING {collection_name}')
         self._reset_counters()
@@ -28,28 +28,28 @@ class Loader:
         collection = self.db[collection_name]
         po_data = polib.pofile(str(GENERATED_PO_FILES_DIR / f'{collection_name}.po'))
 
-        self._process_entries(po_data, collection)
+        self._process_entries(po_data, collection, translated_field)
 
         print(f'UPDATED {self.counter_updated}; CREATED {self.counter_created}')
 
-    def _process_entries(self, po_data, collection):
+    def _process_entries(self, po_data, collection, translated_field):
         for entry in tqdm(po_data):
-            self._process_entry(entry, collection)
+            self._process_entry(entry, collection, translated_field)
 
-    def _process_entry(self, entry, collection):
+    def _process_entry(self, entry, collection, translated_field):
         uid = entry.msgid
-        blurb = entry.msgstr
+        field = entry.msgstr
         language = 'en'
         update = False
         try:
             document = collection.find({'uid': uid, 'lang': language}).batch()[0]
-            if document['blurb'] == blurb:
+            if document[translated_field] == field:
                 return
             update = True
         except IndexError:
             document = {'uid': uid, 'lang': language}
 
-        document['blurb'] = blurb
+        document[translated_field] = field
 
         self._affect_db(collection, update, document)
 
@@ -65,7 +65,7 @@ class Loader:
 def run():
     db = get_db()
     loader = Loader(db)
-    loader.run('blurbs')
+    loader.run('blurbs', 'blurb')
 
 
 if __name__ == '__main__':
