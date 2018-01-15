@@ -1,0 +1,8 @@
+{
+    "en": {
+        "18ad5254e5cb1f862f07f94c4bffe745": "Using SuttaCentral offline",
+        "2edf4e9170f941f6c5d2ed4584e64bfe": "SuttaCentral is a <a href=\"https://developers.google.com/web/progressive-web-apps/\" target=\"_blank\">Progressive Web App</a>. On supported devices, many features, including navigation and previously visited pages, will continue to work even if you have no internet connection.",
+        "5009ce19794384c5bc00e2483fbc2431": "In addition, you can download texts in languages of your choosing and keep reading suttas even when offline or with limited data. This is especially useful for users on mobiles with limited data, or in regions with poor coverage. If your data is limited, we recommend connecting to wifi before downloading large amounts of texts.",
+        "d8f8130539b70765974a39bf76f7fabb": "Make available offline"
+    }
+}

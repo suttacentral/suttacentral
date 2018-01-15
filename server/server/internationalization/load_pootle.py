@@ -6,8 +6,8 @@ from tqdm import tqdm
 
 from common.arangodb import get_db
 
-GENERATED_PO_FILES_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
-GENERATED_PO_FILES_DIR /= Path('generatedPoFiles')
+CURRENT_FILE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
+GENERATED_PO_FILES_DIR = CURRENT_FILE_DIR / Path('generatedPoFiles')
 
 
 class Loader:
@@ -26,20 +26,20 @@ class Loader:
         self._reset_counters()
 
         collection = self.db[collection_name]
-        po_data = polib.pofile(str(GENERATED_PO_FILES_DIR / f'{collection_name}.po'))
+        for file in tqdm(list((GENERATED_PO_FILES_DIR / collection_name).glob('*.po'))):
+            po_data = polib.pofile(str(file))
 
-        self._process_entries(po_data, collection, translated_field)
+            self._process_entries(po_data, collection, translated_field, file.stem)
 
         print(f'UPDATED {self.counter_updated}; CREATED {self.counter_created}')
 
-    def _process_entries(self, po_data, collection, translated_field):
-        for entry in tqdm(po_data):
-            self._process_entry(entry, collection, translated_field)
+    def _process_entries(self, po_data, collection, translated_field, lang):
+        for entry in po_data:
+            self._process_entry(entry, collection, translated_field, lang)
 
-    def _process_entry(self, entry, collection, translated_field):
+    def _process_entry(self, entry, collection, translated_field, language):
         uid = entry.msgid
         field = entry.msgstr
-        language = 'en'
         update = False
         try:
             document = collection.find({'uid': uid, 'lang': language}).batch()[0]
