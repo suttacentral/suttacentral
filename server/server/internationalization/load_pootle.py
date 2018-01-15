@@ -41,6 +41,9 @@ class Loader:
     def _process_entry(self, entry, collection, translated_field, language, in_lang):
         uid = entry.msgctxt
         field = entry.msgstr
+        if field == '':
+            return
+
         update = False
         try:
             document = in_lang[uid]

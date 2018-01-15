@@ -32,23 +32,24 @@ FOR div IN root
                 }
             }
         )
-        LET descendant = (
-            FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
-                FILTER d_edge.type != 'text'
-                LIMIT 1
-                RETURN d.uid
-        )[0]
-        RETURN {
-            uid: div._id, 
-            has_children: descendant != null,
-            name: div.name,
-            lang_iso: div.root_lang,
-            lang_name: (FOR lang in language FILTER lang.uid == div.root_lang LIMIT 1 RETURN lang.name)[0],
-            num: div.num, 
-            id: div.uid, 
-            type: div.type, 
-            parents: parents
-        }
+    LET descendant = (
+        FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
+            FILTER d_edge.type != 'text'
+            LIMIT 1
+            RETURN d.uid
+    )[0]
+    LET name = DOCUMENT(CONCAT('root_names/', div.uid, '_', @language))['name']
+    RETURN {
+        uid: div._id, 
+        has_children: descendant != null,
+        name: name ? name : DOCUMENT(CONCAT('root_names/', div.uid, '_', div.root_lang))['name'],
+        lang_iso: div.root_lang,
+        lang_name: (FOR lang in language FILTER lang.uid == div.root_lang LIMIT 1 RETURN lang.name)[0],
+        num: div.num, 
+        id: div.uid, 
+        type: div.type, 
+        parents: parents
+    }
 '''
 
 SUBMENU = '''
