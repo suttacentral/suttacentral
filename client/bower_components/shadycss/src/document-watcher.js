@@ -10,9 +10,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 'use strict';
 
-import {nativeShadow} from './style-settings.js'
-import StyleTransformer from './style-transformer.js'
-import {getIsExtends} from './style-util.js'
+import {nativeShadow} from './style-settings.js';
+import StyleTransformer from './style-transformer.js';
+import {getIsExtends} from './style-util.js';
 
 export let flush = function() {};
 
@@ -73,6 +73,12 @@ function handler(mxns) {
         }
         newScope = getIsExtends(host).is;
         if (currentScope === newScope) {
+          // make sure all the subtree elements are scoped correctly
+          let unscoped = window['ShadyDOM']['nativeMethods']['querySelectorAll'].call(
+            n, `:not(.${StyleTransformer.SCOPE_NAME})`);
+          for (let j = 0; j < unscoped.length; j++) {
+            StyleTransformer.element(unscoped[j], currentScope);
+          }
           continue;
         }
         if (currentScope) {
