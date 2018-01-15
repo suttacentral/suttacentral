@@ -71,10 +71,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 'use strict';
 
-import {forEachRule, processVariableAndFallback, rulesForStyle, toCssText} from './style-util.js'
-import {MIXIN_MATCH, VAR_ASSIGN} from './common-regex.js'
-import {detectMixin} from './common-utils.js'
-import {StyleNode} from './css-parse.js' // eslint-disable-line no-unused-vars
+import {forEachRule, processVariableAndFallback, rulesForStyle, toCssText, gatherStyleText} from './style-util.js';
+import {MIXIN_MATCH, VAR_ASSIGN} from './common-regex.js';
+import {detectMixin} from './common-utils.js';
+import {StyleNode} from './css-parse.js'; // eslint-disable-line no-unused-vars
 
 const APPLY_NAME_CLEAN = /;\s*/m;
 const INITIAL_INHERIT = /^\s*(initial)|(inherit)\s*$/;
@@ -151,19 +151,34 @@ class ApplyShim {
   detectMixin(cssText) {
     return detectMixin(cssText);
   }
+
+  /**
+   * Gather styles into one style for easier processing
+   * @param {!HTMLTemplateElement} template
+   * @return {HTMLStyleElement}
+   */
+  gatherStyles(template) {
+    const styleText = gatherStyleText(template.content);
+    if (styleText) {
+      const style = /** @type {!HTMLStyleElement} */(document.createElement('style'));
+      style.textContent = styleText;
+      template.content.insertBefore(style, template.content.firstChild);
+      return style;
+    }
+    return null;
+  }
   /**
    * @param {!HTMLTemplateElement} template
    * @param {string} elementName
    * @return {StyleNode}
    */
   transformTemplate(template, elementName) {
-    const style = /** @type {HTMLStyleElement} */(template.content.querySelector('style'));
-    /** @type {StyleNode} */
-    let ast = null;
-    if (style) {
-      ast = this.transformStyle(style, elementName);
+    if (template._gatheredStyle === undefined) {
+      template._gatheredStyle = this.gatherStyles(template);
     }
-    return ast;
+    /** @type {HTMLStyleElement} */
+    const style = template._gatheredStyle;
+    return style ? this.transformStyle(style, elementName) : null;
   }
   /**
    * @param {!HTMLStyleElement} style
