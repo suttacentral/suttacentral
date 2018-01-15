@@ -42,10 +42,53 @@ services:
     volumes:
       - nginx-data-volume:/opt/sc/logs/nginx
       - socket-volume:/opt/sc/sockets
+      - l10n-ter:/l10n_ter
+      - pootle-po:/srv/pootle/po
+      - pootle-git:/srv/pootle/git-clones
     ports:
       - '80:80'
     depends_on:
       - sc-flask
+      - sc-pootle
+    environment:
+      - VIRTUAL_HOST=pootle.docker
+      - VIRTUAL_PORT=80
+
+  sc-pootle:
+    build:
+      context: pootle
+      dockerfile: Dockerfile
+    container_name: 'sc-pootle'
+    labels:
+      application: 'sc-pootle'
+    depends_on:
+      - sc-pootle-redis
+      - sc-pootle-mysql
+    volumes:
+      - l10n-ter:/l10n_ter
+      - pootle-po:/srv/pootle/po
+      - pootle-git:/srv/pootle/git-clones
+    environment:
+      - SECRET_KEY=SET THIS TO A DJANGO SECRET KEY
+    env_file:
+      - pootle/environment.yml
+
+  sc-pootle-mysql:
+    image: mariadb:10
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+    container_name: 'sc-pootle-mysql'
+    labels:
+      application: 'sc-pootle-mysql'
+    volumes:
+      - pootle-mysql-data:/var/lib/mysql
+    env_file:
+      - pootle/environment.yml
+
+  sc-pootle-redis:
+    image: redis
+    container_name: 'sc-pootle-redis'
+    labels:
+      application: 'sc-pootle-redis'
 
   sc-elasticsearch:
     build:
@@ -85,8 +128,14 @@ services:
     labels:
       application: 'sc-frontend-builder'
 
+
+
 volumes:
   db-data-volume:
   nginx-data-volume:
   socket-volume:
   elasticsearch-data:
+  pootle-po:
+  pootle-git:
+  pootle-mysql-data:
+  l10n-ter:
