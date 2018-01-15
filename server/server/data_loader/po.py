@@ -149,13 +149,6 @@ def get_author(author_uid, authors):
 
     return None
 
-def insert_or_update(collection, doc):
-    try:
-        collection.insert(doc)
-    except DocumentInsertError as e:
-        collection.update(doc)
-
-
 def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
     """ Load strings and markup from po files into database
     
@@ -220,14 +213,20 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
                     'tr_lang': tr_lang,
                     'root_lang': root_lang
                 })
+                
+            markup_docs = []
+            string_docs = []
 
             for i, doc in enumerate(docs):
                 if 'markup' in doc:
                     doc['_key'] = f"{doc['uid']}_markup"
-                    collection = db.collection('po_markup')
-                    insert_or_update(collection, doc)
+                    markup_docs.append(doc)
 
                 else:
                     doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author"]}'
-                    collection = db.collection('po_strings')
-                    insert_or_update(collection, doc)
+                    string_docs.append(doc)
+            
+            db['po_markup'].import_bulk(markup_docs, on_duplicate='ignore')
+            db['po_strings'].import_bulk(string_docs, on_duplicate='error')
+                    
+            
