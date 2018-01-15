@@ -120,7 +120,8 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
                 name_docs.append({'name': entry.pop('name'),
                                   'uid': uid,
                                   'lang': root_languages[base_uid],
-                                  'root': True})
+                                  'root': True,
+                                  '_key': f'{uid}_{root_languages[base_uid]}'})
             except KeyError:
                 pass
 

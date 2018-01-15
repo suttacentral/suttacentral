@@ -44,11 +44,11 @@ class Loader:
         update = False
         try:
             document = in_lang[uid]
-            if document[translated_field] == field:
+            if document[translated_field] == field or document[translated_field] == '':
                 return
             update = True
         except KeyError:
-            document = {'uid': uid, 'lang': language}
+            document = {'uid': uid, 'lang': language, '_key': f'{uid}_{language}', 'root': False}
 
         document[translated_field] = field
 
@@ -58,7 +58,11 @@ class Loader:
         if update:
             self.counter_updated += 1
         else:
-            collection.insert(document)
+            try:
+                collection.insert(document)
+            except Exception as e:
+                print(document['_key'])
+                raise e
             self.counter_created += 1
 
 
