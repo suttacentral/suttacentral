@@ -272,11 +272,10 @@ class ArangoTextInfoModel(TextInfoModel):
         keys = ('normal', 'bold', 'italic')
         existing = None
         try:
-            if not force:
-                existing = self.db['unicode_points'].get(lang_uid)
-                if existing:
-                    for key in keys:
-                        unicode_points[key].update(existing.get(key, []))
+            existing = self.db['unicode_points'].get(lang_uid)
+            if existing and not force:
+                for key in keys:
+                    unicode_points[key].update(existing.get(key, []))
 
             doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
             doc['_key'] = lang_uid

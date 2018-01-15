@@ -227,7 +227,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       static _parseTemplateNode(node, templateInfo, nodeInfo) {
         let noted;
-        let element = /** @type Element */(node);
+        let element = /** @type {Element} */(node);
         if (element.localName == 'template' && !element.hasAttribute('preserve-content')) {
           noted = this._parseTemplateNestedTemplate(element, templateInfo, nodeInfo) || noted;
         } else if (element.localName === 'slot') {
@@ -254,8 +254,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Node} root Root node whose `childNodes` will be parsed
        * @param {!TemplateInfo} templateInfo Template metadata for current template
        * @param {!NodeInfo} nodeInfo Node metadata for current template.
+       * @return {void}
        */
       static _parseTemplateChildNodes(root, templateInfo, nodeInfo) {
+        if (root.localName === 'script' || root.localName === 'style') {
+          return;
+        }
         for (let node=root.firstChild, parentIndex=0, next; node; node=next) {
           // Wrap templates
           if (node.localName == 'template') {
@@ -418,7 +422,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         let templateInfo = this.constructor._parseTemplate(template);
         let nodeInfo = templateInfo.nodeInfoList;
         let content = templateInfo.content || template.content;
-        let dom = /** @type DocumentFragment */ (document.importNode(content, true));
+        let dom = /** @type {DocumentFragment} */ (document.importNode(content, true));
         // NOTE: ShadyDom optimization indicating there is an insertion point
         dom.__noInsertionPoint = !templateInfo.hasInsertionPoint;
         let nodes = dom.nodeList = new Array(nodeInfo.length);
@@ -429,7 +433,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           applyTemplateContent(this, node, info);
           applyEventListener(this, node, info);
         }
-        return /** @type {!StampedTemplate} */(dom);
+        dom = /** @type {!StampedTemplate} */(dom); // eslint-disable-line no-self-assign
+        return dom;
       }
 
       /**
@@ -458,6 +463,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Node} node Node to add event listener to
        * @param {string} eventName Name of event
        * @param {Function} handler Listener function to add
+       * @return {void}
        */
       _addEventListenerToNode(node, eventName, handler) {
         node.addEventListener(eventName, handler);
@@ -469,6 +475,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Node} node Node to remove event listener from
        * @param {string} eventName Name of event
        * @param {Function} handler Listener function to remove
+       * @return {void}
        */
       _removeEventListenerFromNode(node, eventName, handler) {
         node.removeEventListener(eventName, handler);
