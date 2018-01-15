@@ -1,5 +1,6 @@
 import logging
 import re
+import json
 from typing import List
 
 import polib
@@ -61,7 +62,7 @@ def extract_strings_from_po_file(po_file):
     }
 
 
-def process_dir(change_tracker, po_dir, info):
+def process_dir(change_tracker, po_dir, authors, info):
     """Process po files in folder
 
     Note that this function operates recursively, a file called "info.po"
@@ -87,12 +88,19 @@ def process_dir(change_tracker, po_dir, info):
         data = extract_strings_from_po_file(po_file)
         uid = remove_leading_zeros(po_file.stem)
 
+        root_author = get_author(info['root_author'], authors)
+        root_author_short = get_author_short(info['root_author'], authors)
+        author = get_author(info['author'], authors)
+        author_short = get_author_short(info['author'], authors)
+
         # This doc is for root strings
         yield {
             "uid": uid,
             "markup_uid": uid,
             "lang": info['root_lang'],
-            "author": info['root_author'],
+            "author": root_author,
+            "author_short": root_author_short,
+            "author_uid": info['root_author'],
             "author_blurb": {
                 info['tr_lang']: info['root_author_blurb']
                 # Note there might be blurbs in other languages
@@ -108,7 +116,9 @@ def process_dir(change_tracker, po_dir, info):
             "uid": uid,
             "markup_uid": uid,
             "lang": info['tr_lang'],
-            "author": info['author'],
+            "author": author,
+            "author_short": author_short,
+            "author_uid": info['author'],
             "author_blurb": {
                 info['tr_lang']: info['author_blurb']
             },
@@ -123,8 +133,21 @@ def process_dir(change_tracker, po_dir, info):
         }
 
     for sub_folder in po_dir.glob('*/'):
-        yield from process_dir(change_tracker, sub_folder, info=info)
+        yield from process_dir(change_tracker, sub_folder, authors, info=info)
 
+def get_author_short(author_uid, authors):
+    for item in authors:
+        if (item['uid'] == author_uid): 
+            return item['short_name']
+
+    return None
+
+def get_author(author_uid, authors):
+    for item in authors:
+        if (item['uid'] == author_uid): 
+            return item['long_name']
+
+    return None
 
 def insert_or_update(collection, doc):
     try:
@@ -133,7 +156,7 @@ def insert_or_update(collection, doc):
         collection.update(doc)
 
 
-def load_po_texts(change_tracker, po_dir, db):
+def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
     """ Load strings and markup from po files into database
     
     each strings entry looks like this:
@@ -159,6 +182,11 @@ def load_po_texts(change_tracker, po_dir, db):
     """
 
     print('Loading PO texts')
+
+    author_file = additional_info_dir / 'author_edition.json'
+
+    with author_file.open('r', encoding='utf-8') as authorf:
+        authors = json.load(authorf)
 
     # It's a little hard to properly manage deleted po files,
     # as it happens deletion is really rare: so if a deletion 
@@ -187,6 +215,7 @@ def load_po_texts(change_tracker, po_dir, db):
             docs = process_dir(
                 change_tracker,
                 tr_lang_dir,
+                authors,
                 info={
                     'tr_lang': tr_lang,
                     'root_lang': root_lang
