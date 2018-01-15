@@ -34,19 +34,20 @@ class Loader:
         print(f'UPDATED {self.counter_updated}; CREATED {self.counter_created}')
 
     def _process_entries(self, po_data, collection, translated_field, lang):
+        in_lang = {document['uid']: document for document in collection.find({'lang': lang})}
         for entry in po_data:
-            self._process_entry(entry, collection, translated_field, lang)
+            self._process_entry(entry, collection, translated_field, lang, in_lang)
 
-    def _process_entry(self, entry, collection, translated_field, language):
-        uid = entry.msgid
+    def _process_entry(self, entry, collection, translated_field, language, in_lang):
+        uid = entry.msgctxt
         field = entry.msgstr
         update = False
         try:
-            document = collection.find({'uid': uid, 'lang': language}).batch()[0]
+            document = in_lang[uid]
             if document[translated_field] == field:
                 return
             update = True
-        except IndexError:
+        except KeyError:
             document = {'uid': uid, 'lang': language}
 
         document[translated_field] = field
@@ -55,7 +56,6 @@ class Loader:
 
     def _affect_db(self, collection, update, document):
         if update:
-            collection.update(document)
             self.counter_updated += 1
         else:
             collection.insert(document)
@@ -66,6 +66,7 @@ def run():
     db = get_db()
     loader = Loader(db)
     loader.run('blurbs', 'blurb')
+    loader.run('root_names', 'name')
 
 
 if __name__ == '__main__':

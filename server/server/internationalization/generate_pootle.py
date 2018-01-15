@@ -38,6 +38,8 @@ def process_blurbs(db):
 def process_menu(db):
     print('PROCESSING MENU')
 
+    (GENERATED_PO_FILES_DIR / 'root_names').mkdir(parents=True, exist_ok=True)
+
     menu_names_collection = db['root_names']
 
     root_names = list(menu_names_collection.find({'root': True}))
@@ -48,38 +50,42 @@ def process_menu(db):
     for lang in languages:
         po = polib.POFile()
 
+        po.metadata = {
+            'POT-Creation-Date': str(datetime.datetime.now()),
+            'Content-Type': 'text/plain; charset=utf-8'
+        }
+
+        po_files[lang] = po
+
+    for lang, po_file in tqdm(po_files.items()):
         current_translation = get_current_translation('root_names', lang)
-
-        if current_translation is None:
-            po.metadata = {
-                'POT-Creation-Date': str(datetime.datetime.now()),
-                'Content-Type': 'text/plain; charset=utf-8'
-            }
-
-            po_files[lang] = po
-        else:
-            po_files[lang] = current_translation
-
-    for name in tqdm(root_names):
-        for lang, po_file in po_files.items():
+        for name in root_names:
             if lang == name['lang']:
-                entry = polib.POEntry(
-                    msgid=name['name'],
-                    msgstr=name['name'],
-                    msgctxt=name['uid']
-                )
+                msgstr = name['name']
+            elif name['name'] in current_translation:
+                msgstr = current_translation[name['name']]
             else:
-                entry = polib.POEntry(
-                    msgid=name['name'],
-                    msgstr='',
-                    msgctxt=name['uid']
-                )
+                msgstr = ''
+
+            entry = polib.POEntry(
+                msgid=name['name'],
+                msgstr=msgstr,
+                msgctxt=name['uid']
+            )
+
+            po_file.append(entry)
+
+        po_file.save(str(GENERATED_PO_FILES_DIR / 'root_names' / f'{lang}.po'))
 
     print('✓ FINISHED PROCESSING ROOT NAMES')
 
 
-def get_current_translation(collection_name, language):
-    pass
+def get_current_translation(collection_name, language) -> dict:
+    file = (GENERATED_PO_FILES_DIR / collection_name / f'{language}.po')
+    if file.exists():
+        return {x.msgid: x.msgstr for x in polib.pofile(str(file))}
+    else:
+        return {}
 
 
 def change_po_file_permissions():
