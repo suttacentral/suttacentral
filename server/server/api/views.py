@@ -101,7 +101,7 @@ class Menu(Resource):
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
 
         if submenu_id:
-            divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id})
+            divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id, 'language': language})
             data = list(divisions)
         else:
             divisions = db.aql.execute(MENU, bind_vars={'language': language})

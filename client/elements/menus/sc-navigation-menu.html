@@ -610,7 +610,7 @@
           }
 
           _getSubMenuUrl(uid) {
-              return `${this._getBaseUrl()}/api/menu/${uid}`;
+              return `${this._getBaseUrl()}/api/menu/${uid}?language=${this.language}`;
           }
 
           _getSuttaplexUrl(uid) {
