@@ -423,8 +423,15 @@ RETURN {
 CURRENCIES = '''
 FOR currency IN currencies
     FILTER currency.use == true
-    SORT currency.name
-    RETURN KEEP(currency, ['name', 'symbol', 'american_express', 'decimal'])
+    LET expected_name = DOCUMENT(CONCAT('currency_names/', currency.symbol, '_', @language)).name
+    LET name = expected_name ? expected_name : DOCUMENT(CONCAT('currency_names/', currency.symbol, '_', 'en')).name
+    SORT name
+    RETURN {
+        name: name,
+        symbol: currency.symbol,
+        american_express: currency.american_express,
+        decimal: currency.decimal
+    }
 '''
 
 PARAGRAPHS = '''

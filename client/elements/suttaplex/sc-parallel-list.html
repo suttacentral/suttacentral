@@ -96,11 +96,11 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
           <tr class="parallels-row">
             <td class="parallels-root-cell parallels-table-cell paper-lift white-bg" rowspan$="[[_getRowspan(rootId)]]">
-              <div class="parallels-root-id root" title="SuttaCentral ID">
+              <div class="parallels-root-id root" title="{{localize('SuttaCentralID')}}">
                 [[rootId]]
               </div>
               <template is="dom-if" if="[[rootText]]">
-                <paper-button flat class="dense" title="Go to text in original language">
+                <paper-button flat class="dense" title="{{localize('GoToTextInOriginalLanguage')}}">
                   <a href="[[_computeUrl(rootId)]]">[[_computeFullLangName(rootLang)]]</a>
                 </paper-button>
               </template>
@@ -264,13 +264,13 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               switch (item.type) {
                   case 'full':
                       if (item.resembling) {
-                          return 'Resembling parallel';
+                          return this.localize('ResemblingParallel');
                       }
-                      return 'Full parallel';
+                      return this.localize('FullParallel');
                   case 'retelling':
-                      return 'Retelling parallel';
+                      return this.localize('RetellingParallel');
                   case 'mention':
-                      return 'Mention';
+                      return this.localize('Mention');
               }
           }
 

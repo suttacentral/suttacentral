@@ -154,7 +154,7 @@
     <iron-ajax
         auto
         id='currency_ajax'
-        url="/api/currencies"
+        url="[[_computeCurrencyUrl]]"
         handle-as="json"
         last-response="{{responseData}}"
         on-response="_handleResponse"></iron-ajax>
@@ -302,10 +302,10 @@
                   errorMessages: {
                       type: Object,
                       value: {
-                          0: 'Unknown error',
-                          1: 'Amount cannot be less than $0.50 USD.',
-                          2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
-                          3: 'Your card was declined.'
+                          0: this.localize('UnknownError'),
+                          1: this.localize('AmountCannotBeLessThan'),
+                          2: this.localize('Due to Stripe limitations,  please make a direct payment, or else contact us for help.'),
+                          3: this.localize('cardDeclined')
                       }
                   },
                   language: {
@@ -427,6 +427,11 @@
               this.shadowRoot.querySelector('.name-input').value = undefined;
               this.shadowRoot.querySelector('.email-input').value = undefined;
               this.shadowRoot.querySelector('.message-input').value = undefined;
+          }
+
+          _computeCurrencyUrl() {
+              const apiRoot = this.$.meta.byKey('API_ROOT');
+              return `${apiRoot}/currencies?language=${this.language}`;
           }
 
           _showToast(toastType, text) {
