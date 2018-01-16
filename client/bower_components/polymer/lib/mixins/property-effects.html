@@ -42,7 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     PROPAGATE: '__propagateEffects',
     OBSERVE: '__observeEffects',
     READ_ONLY: '__readOnly'
-  }
+  };
 
   /**
    * @typedef {{
@@ -205,15 +205,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {Object} props Bag of current property changes
    * @param {Object} oldProps Bag of previous values for changed properties
    * @param {?} info Effect metadata
+   * @return {void}
    * @private
    */
   function runObserverEffect(inst, property, props, oldProps, info) {
-    let fn = inst[info.methodName];
+    let fn = typeof info.method === "string" ? inst[info.method] : info.method;
     let changedProp = info.property;
     if (fn) {
       fn.call(inst, inst.__data[changedProp], oldProps[changedProp]);
     } else if (!info.dynamicFn) {
-      console.warn('observer method `' + info.methodName + '` not defined');
+      console.warn('observer method `' + info.method + '` not defined');
     }
   }
 
@@ -232,6 +233,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {Object} props Bag of current property changes
    * @param {Object} oldProps Bag of previous values for changed properties
    * @param {boolean} hasPaths True with `props` contains one or more paths
+   * @return {void}
    * @private
    */
   function runNotifyEffects(inst, notifyProps, props, oldProps, hasPaths) {
@@ -287,6 +289,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {*} value The value of the changed property
    * @param {string | null | undefined} path If a sub-path of this property changed, the path
    *   that changed (optional).
+   * @return {void}
    * @private
    * @suppress {invalidCasts}
    */
@@ -313,6 +316,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {Object} oldProps Bag of previous values for changed properties
    * @param {?} info Effect metadata
    * @param {boolean} hasPaths True with `props` contains one or more paths
+   * @return {void}
    * @private
    */
   function runNotifyEffect(inst, property, props, oldProps, info, hasPaths) {
@@ -339,6 +343,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {string} fromProp Child element property that was bound
    * @param {string} toPath Host property/path that was bound
    * @param {boolean} negate Whether the binding was negated
+   * @return {void}
    * @private
    */
   function handleNotification(event, inst, fromProp, toPath, negate) {
@@ -370,6 +375,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {Object} props Bag of current property changes
    * @param {Object} oldProps Bag of previous values for changed properties
    * @param {?} info Effect metadata
+   * @return {void}
    * @private
    */
   function runReflectEffect(inst, property, props, oldProps, info) {
@@ -394,6 +400,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {!Object} changedProps Bag of changed properties
    * @param {!Object} oldProps Bag of previous values for changed properties
    * @param {boolean} hasPaths True with `props` contains one or more paths
+   * @return {void}
    * @private
    */
   function runComputedEffects(inst, changedProps, oldProps, hasPaths) {
@@ -419,6 +426,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {Object} props Bag of current property changes
    * @param {Object} oldProps Bag of previous values for changed properties
    * @param {?} info Effect metadata
+   * @return {void}
    * @private
    */
   function runComputedEffect(inst, property, props, oldProps, info) {
@@ -438,6 +446,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {!PropertyEffectsType} inst The instance whose props are changing
    * @param {string | !Array<(string|number)>} path Path that has changed
    * @param {*} value Value of changed path
+   * @return {void}
    * @private
    */
   function computeLinkedPaths(inst, path, value) {
@@ -473,6 +482,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {string=} literal Literal text surrounding binding parts (specified
    *   only for 'property' bindings, since these must be initialized as part
    *   of boot-up)
+   * @return {void}
    * @private
    */
   function addBinding(constructor, templateInfo, nodeInfo, kind, target, parts, literal) {
@@ -505,6 +515,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {!Binding} binding Binding metadata
    * @param {!BindingPart} part Binding part metadata
    * @param {number} index Index into `nodeInfoList` for this node
+   * @return {void}
    */
   function addEffectForBindingPart(constructor, templateInfo, binding, part, index) {
     if (!part.literal) {
@@ -546,6 +557,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {boolean} hasPaths True with `props` contains one or more paths
    * @param {Array} nodeList List of nodes associated with `nodeInfoList` template
    *   metadata
+   * @return {void}
    * @private
    */
   function runBindingEffect(inst, path, props, oldProps, info, hasPaths, nodeList) {
@@ -578,6 +590,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {!Binding} binding Binding metadata
    * @param {!BindingPart} part Binding part metadata
    * @param {*} value Value to set
+   * @return {void}
    * @private
    */
   function applyBindingValue(inst, node, binding, part, value) {
@@ -623,7 +636,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     if (binding.kind !== 'attribute') {
       // Some browsers serialize `undefined` to `"undefined"`
       if (binding.target === 'textContent' ||
-          (node.localName == 'input' && binding.target == 'value')) {
+          (binding.target === 'value' &&
+            (node.localName === 'input' || node.localName === 'textarea'))) {
         value = value == undefined ? '' : value;
       }
     }
@@ -657,6 +671,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    *
    * @param {!PropertyEffectsType} inst Instance that bas been previously bound
    * @param {TemplateInfo} templateInfo Template metadata
+   * @return {void}
    * @private
    */
   function setupBindings(inst, templateInfo) {
@@ -690,6 +705,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    *
    * @param {Node} node Bound node to initialize
    * @param {Binding} binding Binding metadata
+   * @return {void}
    * @private
    */
   function setupCompoundStorage(node, binding) {
@@ -718,6 +734,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {Object} node Child element to add listener to
    * @param {!PropertyEffectsType} inst Host element instance to handle notification event
    * @param {Binding} binding Binding metadata
+   * @return {void}
    * @private
    */
   function addNotifyListener(node, inst, binding) {
@@ -745,6 +762,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {boolean|Object=} dynamicFn Boolean or object map indicating whether
    *   method names should be included as a dependency to the effect. Note,
    *   defaults to true if the signature is static (sig.static is true).
+   * @return {void}
    * @private
    */
   function createMethodEffect(model, sig, type, effectFn, methodInfo, dynamicFn) {
@@ -1009,6 +1027,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {Array} array The array the mutations occurred on
    * @param {string} path The path to the array that was mutated
    * @param {Array} splices Array of splice records
+   * @return {void}
    * @private
    */
   function notifySplices(inst, array, path, splices) {
@@ -1031,6 +1050,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @param {number} index Index at which the array mutation occurred
    * @param {number} addedCount Number of added items
    * @param {Array} removed Array of removed items
+   * @return {void}
    * @private
    */
   function notifySplice(inst, array, path, index, addedCount, removed) {
@@ -1215,6 +1235,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} property Property that should trigger the effect
        * @param {string} type Effect type, from this.PROPERTY_EFFECT_TYPES
        * @param {Object=} effect Effect metadata object
+       * @return {void}
        * @protected
        */
       _addPropertyEffect(property, type, effect) {
@@ -1233,6 +1254,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} property Property the effect was associated with
        * @param {string} type Effect type, from this.PROPERTY_EFFECT_TYPES
        * @param {Object=} effect Effect metadata object to remove
+       * @return {void}
        */
       _removePropertyEffect(property, type, effect) {
         let effects = ensureOwnEffectMap(this, type)[property];
@@ -1386,6 +1408,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Node} node The node to set a property on
        * @param {string} prop The property to set
        * @param {*} value The value to set
+       * @return {void}
        * @protected
        */
       _setUnmanagedPropertyToNode(node, prop, value) {
@@ -1413,7 +1436,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * The dirty-check is important to prevent cycles due to two-way
        * notification, but paths and objects are only dirty checked against any
        * previous value set during this turn via a "temporary cache" that is
-       * cleared when the last `_propertiesChaged` exits. This is so:
+       * cleared when the last `_propertiesChanged` exits. This is so:
        * a. any cached array paths (e.g. 'array.3.prop') may be invalidated
        *    due to array mutations like shift/unshift/splice; this is fine
        *    since path changes are dirty-checked at user entry points like `set`
@@ -1496,6 +1519,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `_flushClients`.
        *
        * @param {Object} client PropertyEffects client to enqueue
+       * @return {void}
        * @protected
        */
       _enqueueClient(client) {
@@ -1509,6 +1533,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Flushes any clients previously enqueued via `_enqueueClient`, causing
        * their `_flushProperties` method to run.
        *
+       * @return {void}
        * @protected
        */
       _flushClients() {
@@ -1556,6 +1581,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `_flushProperties` call on client dom and before any element
        * observers are called.
        *
+       * @return {void}
        * @protected
        */
       _readyClients() {
@@ -1574,6 +1600,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {boolean=} setReadOnly When true, any private values set in
        *   `props` will be set. By default, `setProperties` will not set
        *   `readOnly: true` root properties.
+       * @return {void}
        * @public
        */
       setProperties(props, setReadOnly) {
@@ -1665,6 +1692,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Object} changedProps Bag of changed properties
        * @param {Object} oldProps Bag of previous values for changed properties
        * @param {boolean} hasPaths True with `props` contains one or more paths
+       * @return {void}
        * @protected
        */
       _propagatePropertyChanges(changedProps, oldProps, hasPaths) {
@@ -1685,6 +1713,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * @param {string | !Array<string|number>} to Target path to link.
        * @param {string | !Array<string|number>} from Source path to link.
+       * @return {void}
        * @public
        */
       linkPaths(to, from) {
@@ -1701,6 +1730,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * linking the paths.
        *
        * @param {string | !Array<string|number>} path Target path to unlink.
+       * @return {void}
        * @public
        */
       unlinkPaths(path) {
@@ -1720,7 +1750,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *     this.items.splice(1, 1, {name: 'Sam'});
        *     this.items.push({name: 'Bob'});
        *     this.notifySplices('items', [
-       *       { index: 1, removed: [{name: 'Todd'}], addedCount: 1, obect: this.items, type: 'splice' },
+       *       { index: 1, removed: [{name: 'Todd'}], addedCount: 1, object: this.items, type: 'splice' },
        *       { index: 3, removed: [], addedCount: 1, object: this.items, type: 'splice'}
        *     ]);
        *
@@ -1737,6 +1767,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *   Note that splice records _must_ be normalized such that they are
        *   reported in index order (raw results from `Object.observe` are not
        *   ordered and must be normalized/merged before notifying).
+       * @return {void}
        * @public
       */
       notifySplices(path, splices) {
@@ -1786,6 +1817,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {*} value Value to set at the specified path.
        * @param {Object=} root Root object from which the path is evaluated.
        *   When specified, no notification will occur.
+       * @return {void}
        * @public
       */
       set(path, value, root) {
@@ -1809,7 +1841,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * This method notifies other paths to the same array that a
        * splice occurred to the array.
        *
-       * @param {string} path Path to array.
+       * @param {string | !Array<string|number>} path Path to array.
        * @param {...*} items Items to push onto array
        * @return {number} New length of the array.
        * @public
@@ -1834,7 +1866,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * This method notifies other paths to the same array that a
        * splice occurred to the array.
        *
-       * @param {string} path Path to array.
+       * @param {string | !Array<string|number>} path Path to array.
        * @return {*} Item that was removed.
        * @public
        */
@@ -1859,7 +1891,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * This method notifies other paths to the same array that a
        * splice occurred to the array.
        *
-       * @param {string} path Path to array.
+       * @param {string | !Array<string|number>} path Path to array.
        * @param {number} start Index from which to start removing/inserting.
        * @param {number} deleteCount Number of items to remove.
        * @param {...*} items Items to insert into array.
@@ -1894,7 +1926,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * This method notifies other paths to the same array that a
        * splice occurred to the array.
        *
-       * @param {string} path Path to array.
+       * @param {string | !Array<string|number>} path Path to array.
        * @return {*} Item that was removed.
        * @public
        */
@@ -1918,7 +1950,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * This method notifies other paths to the same array that a
        * splice occurred to the array.
        *
-       * @param {string} path Path to array.
+       * @param {string | !Array<string|number>} path Path to array.
        * @param {...*} items Items to insert info array
        * @return {number} New length of the array.
        * @public
@@ -1943,6 +1975,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * @param {string} path Path that should be notified.
        * @param {*=} value Value at the path (optional).
+       * @return {void}
        * @public
       */
       notifyPath(path, value) {
@@ -1972,6 +2005,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} property Property name
        * @param {boolean=} protectedSetter Creates a custom protected setter
        *   when `true`.
+       * @return {void}
        * @protected
        */
       _createReadOnlyProperty(property, protectedSetter) {
@@ -1979,7 +2013,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (protectedSetter) {
           this['_set' + upper(property)] = /** @this {PropertyEffects} */function(value) {
             this._setProperty(property, value);
-          }
+          };
         }
       }
 
@@ -1989,19 +2023,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * full API docs.
        *
        * @param {string} property Property name
-       * @param {string} methodName Name of observer method to call
+       * @param {string|function(*,*)} method Function or name of observer method to call
        * @param {boolean=} dynamicFn Whether the method name should be included as
        *   a dependency to the effect.
+       * @return {void}
        * @protected
        */
-      _createPropertyObserver(property, methodName, dynamicFn) {
-        let info = { property, methodName, dynamicFn: Boolean(dynamicFn) };
+      _createPropertyObserver(property, method, dynamicFn) {
+        let info = { property, method, dynamicFn: Boolean(dynamicFn) };
         this._addPropertyEffect(property, TYPES.OBSERVE, {
           fn: runObserverEffect, info, trigger: {name: property}
         });
         if (dynamicFn) {
-          this._addPropertyEffect(methodName, TYPES.OBSERVE, {
-            fn: runObserverEffect, info, trigger: {name: methodName}
+          this._addPropertyEffect(method, TYPES.OBSERVE, {
+            fn: runObserverEffect, info, trigger: {name: method}
           });
         }
       }
@@ -2014,6 +2049,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} expression Method expression
        * @param {boolean|Object=} dynamicFn Boolean or object map indicating
        *   whether method names should be included as a dependency to the effect.
+       * @return {void}
        * @protected
        */
       _createMethodObserver(expression, dynamicFn) {
@@ -2030,6 +2066,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * full API docs.
        *
        * @param {string} property Property name
+       * @return {void}
        * @protected
        */
       _createNotifyingProperty(property) {
@@ -2048,13 +2085,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * full API docs.
        *
        * @param {string} property Property name
+       * @return {void}
        * @protected
        */
       _createReflectedProperty(property) {
         let attr = CaseMap.camelToDashCase(property);
         if (attr[0] === '-') {
           console.warn('Property ' + property + ' cannot be reflected to attribute ' +
-            attr + ' because "-" is not a valid starting attribute name. Use a lowercase first letter for the property thisead.');
+            attr + ' because "-" is not a valid starting attribute name. Use a lowercase first letter for the property instead.');
         } else {
           this._addPropertyEffect(property, TYPES.REFLECT, {
             fn: runReflectEffect,
@@ -2074,6 +2112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} expression Method expression
        * @param {boolean|Object=} dynamicFn Boolean or object map indicating
        *   whether method names should be included as a dependency to the effect.
+       * @return {void}
        * @protected
        */
       _createComputedProperty(property, expression, dynamicFn) {
@@ -2093,15 +2132,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * roughly corresponds to a phase in effect processing.  The effect
        * metadata should be in the following form:
        *
-       *   {
-       *     fn: effectFunction, // Reference to function to call to perform effect
-       *     info: { ... }       // Effect metadata passed to function
-       *     trigger: {          // Optional triggering metadata; if not provided
-       *       name: string      // the property is treated as a wildcard
-       *       structured: boolean
-       *       wildcard: boolean
+       *     {
+       *       fn: effectFunction, // Reference to function to call to perform effect
+       *       info: { ... }       // Effect metadata passed to function
+       *       trigger: {          // Optional triggering metadata; if not provided
+       *         name: string      // the property is treated as a wildcard
+       *         structured: boolean
+       *         wildcard: boolean
+       *       }
        *     }
-       *   }
        *
        * Effects are called from `_propertiesChanged` in the following order by
        * type:
@@ -2114,11 +2153,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * Effect functions are called with the following signature:
        *
-       *   effectFunction(inst, path, props, oldProps, info, hasPaths)
+       *     effectFunction(inst, path, props, oldProps, info, hasPaths)
        *
        * @param {string} property Property that should trigger the effect
        * @param {string} type Effect type, from this.PROPERTY_EFFECT_TYPES
        * @param {Object=} effect Effect metadata object
+       * @return {void}
        * @protected
        */
       static addPropertyEffect(property, type, effect) {
@@ -2129,24 +2169,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Creates a single-property observer for the given property.
        *
        * @param {string} property Property name
-       * @param {string} methodName Name of observer method to call
+       * @param {string|function(*,*)} method Function or name of observer method to call
        * @param {boolean=} dynamicFn Whether the method name should be included as
        *   a dependency to the effect.
+       * @return {void}
        * @protected
        */
-      static createPropertyObserver(property, methodName, dynamicFn) {
-        this.prototype._createPropertyObserver(property, methodName, dynamicFn);
+      static createPropertyObserver(property, method, dynamicFn) {
+        this.prototype._createPropertyObserver(property, method, dynamicFn);
       }
 
       /**
        * Creates a multi-property "method observer" based on the provided
-       * expression, which should be a string in the form of a normal Javascript
+       * expression, which should be a string in the form of a normal JavaScript
        * function signature: `'methodName(arg1, [..., argn])'`.  Each argument
        * should correspond to a property or path in the context of this
        * prototype (or instance), or may be a literal string or number.
        *
        * @param {string} expression Method expression
        * @param {boolean|Object=} dynamicFn Boolean or object map indicating
+       * @return {void}
        *   whether method names should be included as a dependency to the effect.
        * @protected
        */
@@ -2159,6 +2201,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * events to notify of changes to the property.
        *
        * @param {string} property Property name
+       * @return {void}
        * @protected
        */
       static createNotifyingProperty(property) {
@@ -2178,6 +2221,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} property Property name
        * @param {boolean=} protectedSetter Creates a custom protected setter
        *   when `true`.
+       * @return {void}
        * @protected
        */
       static createReadOnlyProperty(property, protectedSetter) {
@@ -2189,6 +2233,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * to a (dash-cased) attribute of the same name.
        *
        * @param {string} property Property name
+       * @return {void}
        * @protected
        */
       static createReflectedProperty(property) {
@@ -2199,13 +2244,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Creates a computed property whose value is set to the result of the
        * method described by the given `expression` each time one or more
        * arguments to the method changes.  The expression should be a string
-       * in the form of a normal Javascript function signature:
+       * in the form of a normal JavaScript function signature:
        * `'methodName(arg1, [..., argn])'`
        *
        * @param {string} property Name of computed property to set
        * @param {string} expression Method expression
        * @param {boolean|Object=} dynamicFn Boolean or object map indicating whether
        *   method names should be included as a dependency to the effect.
+       * @return {void}
        * @protected
        */
       static createComputedProperty(property, expression, dynamicFn) {
@@ -2287,6 +2333,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Object} templateInfo Template metadata to add effect to
        * @param {string} prop Property that should trigger the effect
        * @param {Object=} effect Effect metadata object
+       * @return {void}
        * @protected
        */
       static _addTemplatePropertyEffect(templateInfo, prop, effect) {
@@ -2350,6 +2397,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * @param {!StampedTemplate} dom DocumentFragment previously returned
        *   from `_stampTemplate` associated with the nodes to be removed
+       * @return {void}
        * @protected
        */
       _removeBoundDom(dom) {
@@ -2399,7 +2447,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if (parts) {
             // Initialize the textContent with any literal parts
             // NOTE: default to a space here so the textNode remains; some browsers
-            // (IE) evacipate an empty textNode following cloneNode/importNode.
+            // (IE) omit an empty textNode following cloneNode/importNode.
             node.textContent = literalFromParts(parts) || ' ';
             addBinding(this, templateInfo, nodeInfo, 'text', 'textContent', parts);
             noted = true;
@@ -2420,6 +2468,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Element} node Node to parse
        * @param {TemplateInfo} templateInfo Template metadata for current template
        * @param {NodeInfo} nodeInfo Node metadata for current template node
+       * @param {string} name Attribute name
+       * @param {string} value Attribute value
        * @return {boolean} `true` if the visited node added node-specific
        *   metadata to `nodeInfo`
        * @protected
@@ -2631,7 +2681,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   });
 
   /**
-   * Helper api for enqueing client dom created by a host element.
+   * Helper api for enqueuing client dom created by a host element.
    *
    * By default elements are flushed via `_flushProperties` when
    * `connectedCallback` is called. Elements attach their client dom to
@@ -2659,6 +2709,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     /**
      * @param {*} inst Instance to add to hostStack
+     * @return {void}
      * @this {hostStack}
      */
     registerHost(inst) {
@@ -2670,6 +2721,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     /**
      * @param {*} inst Instance to begin hosting
+     * @return {void}
      * @this {hostStack}
      */
     beginHosting(inst) {
@@ -2678,6 +2730,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     /**
      * @param {*} inst Instance to end hosting
+     * @return {void}
      * @this {hostStack}
      */
     endHosting(inst) {
@@ -2687,7 +2740,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     }
 
-  }
+  };
 
 })();
 </script>

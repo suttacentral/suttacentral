@@ -46,6 +46,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    *
    * @param {Object} model Prototype or instance
    * @param {string} property Name of property
+   * @return {void}
    * @private
    */
   function saveAccessorValue(model, property) {
@@ -79,8 +80,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * the standard `static get observedAttributes()`, implement `_propertiesChanged`
    * on the class, and then call `MyClass.createPropertiesForAttributes()` once
    * on the class to generate property accessors for each observed attribute
-   * prior to instancing.  Last, call `this._flushProperties()` once to enable
-   * the accessors.
+   * prior to instancing. Last, call `this._enableProperties()` in the element's
+   * `connectedCallback` to enable the accessors.
    *
    * Any `observedAttributes` will automatically be
    * deserialized via `attributeChangedCallback` and set to the associated
@@ -110,6 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Attribute names are mapped to property names using the `dash-case` to
        * `camelCase` convention
        *
+       * @return {void}
        */
       static createPropertiesForAttributes() {
         let a$ = this.observedAttributes;
@@ -165,6 +167,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Provided as an override point for performing any setup work prior
        * to initializing the property accessor system.
        *
+       * @return {void}
        * @protected
        */
       _initializeProperties() {
@@ -202,6 +205,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * @param {Object} props Bag of property values that were overwritten
        *   when creating property accessors.
+       * @return {void}
        * @protected
        */
       _initializeProtoProperties(props) {
@@ -220,6 +224,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * @param {Object} props Bag of property values that were overwritten
        *   when creating property accessors.
+       * @return {void}
        * @protected
        */
       _initializeInstanceProperties(props) {
@@ -233,6 +238,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * @param {string} attribute Name of attribute to ensure is set.
        * @param {string} value of the attribute.
+       * @return {void}
        */
       _ensureAttribute(attribute, value) {
         if (!this.hasAttribute(attribute)) {
@@ -249,6 +255,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} attribute Name of attribute to deserialize.
        * @param {?string} value of the attribute.
        * @param {*=} type type to deserialize to.
+       * @return {void}
        */
       _attributeToProperty(attribute, value, type) {
         // Don't deserialize back to property if currently reflecting
@@ -264,6 +271,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} property Property name to reflect.
        * @param {string=} attribute Attribute name to reflect.
        * @param {*=} value Property value to refect.
+       * @return {void}
        */
       _propertyToAttribute(property, attribute, value) {
         this.__serializing = true;
@@ -284,6 +292,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Element} node Element to set attribute to.
        * @param {*} value Value to serialize.
        * @param {string} attribute Attribute name to serialize to.
+       * @return {void}
        */
       _valueToNodeAttribute(node, value, attribute) {
         let str = this._serializeValue(value);
@@ -359,7 +368,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           case Object:
             try {
-              outValue = JSON.parse(/** @type string */(value));
+              outValue = JSON.parse(/** @type {string} */(value));
             } catch(x) {
               // allow non-JSON literals like Strings and Numbers
             }
@@ -367,7 +376,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           case Array:
             try {
-              outValue = JSON.parse(/** @type string */(value));
+              outValue = JSON.parse(/** @type {string} */(value));
             } catch(x) {
               outValue = null;
               console.warn(`Polymer::Attributes: couldn't decode Array as JSON: ${value}`);
@@ -375,6 +384,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             break;
 
           case Date:
+            value = isNaN(value) ? String(value) : Number(value);
             outValue = new Date(value);
             break;
 
@@ -407,6 +417,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} property Name of the property
        * @param {boolean=} readOnly When true, no setter is created; the
        *   protected `_setProperty` function must be used to set the property
+       * @return {void}
        * @protected
        */
       _createPropertyAccessor(property, readOnly) {
@@ -443,10 +454,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /**
        * Updates the local storage for a property (via `_setPendingProperty`)
-       * and enqueues a `_proeprtiesChanged` callback.
+       * and enqueues a `_propertiesChanged` callback.
        *
        * @param {string} property Name of the property
        * @param {*} value Value to set
+       * @return {void}
        * @protected
        */
       _setProperty(property, value) {
@@ -468,7 +480,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       _setPendingProperty(property, value) {
         let old = this.__data[property];
-        let changed = this._shouldPropertyChange(property, value, old)
+        let changed = this._shouldPropertyChange(property, value, old);
         if (changed) {
           if (!this.__dataPending) {
             this.__dataPending = {};
@@ -499,6 +511,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Marks the properties as invalid, and enqueues an async
        * `_propertiesChanged` callback.
        *
+       * @return {void}
        * @protected
        */
       _invalidateProperties() {
@@ -520,6 +533,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * For elements, generally `connectedCallback` is a normal spot to do so.
        * It is safe to call this method multiple times as it only turns on
        * property accessors once.
+       *
+       * @return {void}
        */
       _enableProperties() {
         if (!this.__dataEnabled) {
@@ -528,7 +543,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this._initializeInstanceProperties(this.__dataInstanceProps);
             this.__dataInstanceProps = null;
           }
-          this.ready()
+          this.ready();
         }
       }
 
@@ -538,7 +553,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * set), and resets the pending set of changes. Generally, this method
        * should not be called in user code.
        *
-       *
+       * @return {void}
        * @protected
        */
       _flushProperties() {
@@ -601,16 +616,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {*} value New property value
        * @param {*} old Previous property value
        * @return {boolean} Whether the property should be considered a change
-       *   and enqueue a `_proeprtiesChanged` callback
+       *   and enqueue a `_propertiesChanged` callback
        * @protected
        */
       _shouldPropertyChange(property, value, old) {
-        return (
-          // Strict equality check
-          (old !== value &&
-           // This ensures (old==NaN, value==NaN) always returns false
-           (old === old || value === value))
-        );
+        // check equality, and ensure (old == NaN, value == NaN) always returns false
+        return old !== value && (old === old || value === value);
       }
 
     }
