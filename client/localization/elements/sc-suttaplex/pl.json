@@ -6,7 +6,7 @@
     "advanced": "Rekomendowane dla zaawansowanych studentów",
     "originalTitle": "Oryginalny tytuł",
     "suttaCentralID": "Identyfikator SuttaCentral",
-    "alternativeText": "Numer alternatywny w wydaniu PTS:  {altNumber}",
+    "alternateText": "Numer alternatywny w wydaniu {book}:",
     "volumeAndPage": "Wolumen i strona",
     "blurb": "Wprowadzenie",
     "goToTranslation": "Idź do tłumaczenia autorstwa {author}",
