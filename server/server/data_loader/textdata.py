@@ -131,9 +131,7 @@ class TextInfoModel:
                             next_uid = None
 
                 author = self._get_author(root, lang_uid, uid)
-                author_data = self._get_author_data(author, authors)
-                author_uid = author_data[1]
-                author_short = author_data[0]
+                author_uid, author_short = self._get_author_data(author, authors)
 
                 if uid == 'metadata':
                     if author is None:
@@ -211,9 +209,9 @@ class TextInfoModel:
 
         for item in authors:
             if item['long_name'] == author: 
-                return (item['short_name'], item['uid'])
+                return item['short_name'], item['uid']
 
-        return (None, None)
+        return None, None
 
     def _get_name(self, root, lang_uid, uid):
         try:
