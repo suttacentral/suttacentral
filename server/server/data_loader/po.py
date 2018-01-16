@@ -88,18 +88,16 @@ def process_dir(change_tracker, po_dir, authors, info):
         data = extract_strings_from_po_file(po_file)
         uid = remove_leading_zeros(po_file.stem)
 
-        root_author = get_author(info['root_author'], authors)
-        root_author_short = get_author_short(info['root_author'], authors)
-        author = get_author(info['author'], authors)
-        author_short = get_author_short(info['author'], authors)
+        root_author_data = get_author(info['root_author'], authors)
+        author_data = get_author(info['author'], authors)
 
         # This doc is for root strings
         yield {
             "uid": uid,
             "markup_uid": uid,
             "lang": info['root_lang'],
-            "author": root_author,
-            "author_short": root_author_short,
+            "author": root_author_data[0],
+            "author_short": root_author_data[1],
             "author_uid": info['root_author'],
             "author_blurb": {
                 info['tr_lang']: info['root_author_blurb']
@@ -116,8 +114,8 @@ def process_dir(change_tracker, po_dir, authors, info):
             "uid": uid,
             "markup_uid": uid,
             "lang": info['tr_lang'],
-            "author": author,
-            "author_short": author_short,
+            "author": author_data[0],
+            "author_short": author_data[1],
             "author_uid": info['author'],
             "author_blurb": {
                 info['tr_lang']: info['author_blurb']
@@ -135,19 +133,12 @@ def process_dir(change_tracker, po_dir, authors, info):
     for sub_folder in po_dir.glob('*/'):
         yield from process_dir(change_tracker, sub_folder, authors, info=info)
 
-def get_author_short(author_uid, authors):
-    for item in authors:
-        if (item['uid'] == author_uid): 
-            return item['short_name']
-
-    return None
-
 def get_author(author_uid, authors):
     for item in authors:
-        if (item['uid'] == author_uid): 
-            return item['long_name']
+        if item['uid'] == author_uid: 
+            return (item['long_name'], item['short_name'])
 
-    return None
+    return (None,None)
 
 def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
     """ Load strings and markup from po files into database

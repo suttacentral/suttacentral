@@ -131,8 +131,9 @@ class TextInfoModel:
                             next_uid = None
 
                 author = self._get_author(root, lang_uid, uid)
-                author_short = self._get_author_short(author, authors)
-                author_uid = self._get_author_uid(author, authors)
+                author_data = self._get_author_data(author, authors)
+                author_uid = author_data[1]
+                author_short = author_data[0]
 
                 if uid == 'metadata':
                     if author is None:
@@ -206,21 +207,13 @@ class TextInfoModel:
 
         return None
 
-    def _get_author_short(self, author, authors):
+    def _get_author_data(self, author, authors):
 
         for item in authors:
             if (item['long_name'] == author): 
-                return item['short_name']
+                return (item['short_name'], item['uid'])
 
-        return None
-
-    def _get_author_uid(self, author, authors):
-
-        for item in authors:
-            if (item['long_name'] == author): 
-                return item['uid']
-
-        return None
+        return (None, None)
 
     def _get_name(self, root, lang_uid, uid):
         try:
