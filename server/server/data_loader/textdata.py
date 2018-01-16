@@ -210,7 +210,7 @@ class TextInfoModel:
     def _get_author_data(self, author, authors):
 
         for item in authors:
-            if (item['long_name'] == author): 
+            if item['long_name'] == author: 
                 return (item['short_name'], item['uid'])
 
         return (None, None)

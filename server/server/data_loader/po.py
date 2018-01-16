@@ -138,7 +138,7 @@ def get_author(author_uid, authors):
         if item['uid'] == author_uid: 
             return (item['long_name'], item['short_name'])
 
-    return (None,None)
+    return (None, None)
 
 def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
     """ Load strings and markup from po files into database
