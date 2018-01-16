@@ -8,13 +8,6 @@ echo "start rqworker"
 
 sleep 5
 
-echo "build assets"
-cd /usr/local/lib/python2.7/dist-packages/pootle/static/js && npm install
-cd ../../..
-pootle webpack
-pootle collectstatic --noinput
-pootle assets build
-
 if [ ! -f /root/.pootle/.migrate ]; then
     echo "run migrate"
     pootle migrate
@@ -23,6 +16,12 @@ if [ ! -f /root/.pootle/.migrate ]; then
     pootle verify_user "$POOTLE_ADMIN_NAME"
     touch /root/.pootle/.migrate
 fi
+
+echo "build assets"
+cd /usr/local/lib/python2.7/dist-packages/pootle/static/js && npm install
+pootle collectstatic --noinput
+pootle assets build
+pootle webpack
 
 echo "start pootle"
 pootle runserver --insecure 0.0.0.0:8000

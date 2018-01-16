@@ -51,12 +51,12 @@ services:
       - sc-flask
       - sc-pootle
     environment:
-      - VIRTUAL_HOST=pootle.docker
+      - VIRTUAL_HOST=sc-pootle.docker
       - VIRTUAL_PORT=80
 
   sc-pootle:
     build:
-      context: pootle
+      context: ./pootle
       dockerfile: Dockerfile
     container_name: 'sc-pootle'
     labels:
@@ -64,6 +64,8 @@ services:
     depends_on:
       - sc-pootle-redis
       - sc-pootle-mysql
+    expose:
+      - "8000"
     volumes:
       - l10n-ter:/l10n_ter
       - pootle-po:/srv/pootle/po

@@ -49,7 +49,6 @@ RUN mkdir -p /srv/pootle/po/.tmp
 
 WORKDIR /home/pootle
 
-EXPOSE 8000
 VOLUME ["/usr/local/lib/python2.7/dist-packages/pootle"]
 COPY pootle.sh /pootle.sh
 RUN chmod a+x /pootle.sh
