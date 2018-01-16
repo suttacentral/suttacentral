@@ -92,6 +92,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * sets any properties stored in `__hostProps`.
        * @private
        * @param {Object} props Object of property name-value pairs to set.
+       * @return {void}
        */
       _configureProperties(props) {
         let options = this.__templatizeOptions;
@@ -115,6 +116,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * @param {string} prop Property or path name
        * @param {*} value Value of the property to forward
+       * @return {void}
        */
       forwardHostProp(prop, value) {
         if (this._setPendingPropertyOrPath(prop, value, false, true)) {
@@ -147,6 +149,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * "shown."
        * @param {boolean} hide Set to true to hide the children;
        * set to false to show them.
+       * @return {void}
        * @protected
        */
       _showHideChildren(hide) {
@@ -203,12 +206,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         let model = this.__parentModel;
         if (!model) {
           let options;
-          model = this
+          model = this;
           do {
             // A template instance's `__dataHost` is a <template>
             // `model.__dataHost.__dataHost` is the template's host
             model = model.__dataHost.__dataHost;
-          } while ((options = model.__templatizeOptions) && !options.parentModel)
+          } while ((options = model.__templatizeOptions) && !options.parentModel);
           this.__parentModel = model;
         }
         return model;
@@ -255,7 +258,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @constructor
        * @extends {base}
        */
-      let klass = class extends base { }
+      let klass = class extends base { };
       klass.prototype.__templatizeOptions = options;
       klass.prototype._bindTemplate(template);
       addNotifyEffects(klass, template, templateInfo, options);
@@ -273,7 +276,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (!klass) {
           let base = options.mutableData ? MutableDataTemplate : DataTemplate;
           klass = templateInfo.templatizeTemplateClass =
-            class TemplatizedTemplate extends base {}
+            class TemplatizedTemplate extends base {};
           // Add template - >instances effects
           // and host <- template effects
           let hostProps = templateInfo.hostProps;
@@ -305,7 +308,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return function forwardHostProp(template, prop, props) {
         userForwardHostProp.call(template.__templatizeOwner,
           prop.substring('_host_'.length), props[prop]);
-      }
+      };
     }
 
     function addNotifyEffects(klass, template, templateInfo, options) {
@@ -323,7 +326,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         for (let hprop in hostProps) {
           klass.prototype._addPropertyEffect(hprop,
             klass.prototype.PROPERTY_EFFECT_TYPES.NOTIFY,
-            {fn: createNotifyHostPropEffect()})
+            {fn: createNotifyHostPropEffect()});
         }
       }
     }
@@ -332,13 +335,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return function notifyInstanceProp(inst, prop, props) {
         userNotifyInstanceProp.call(inst.__templatizeOwner,
           inst, prop, props[prop]);
-      }
+      };
     }
 
     function createNotifyHostPropEffect() {
       return function notifyHostProp(inst, prop, props) {
         inst.__dataHost._setPendingPropertyOrPath('_host_' + prop, props[prop], true, true);
-      }
+      };
     }
 
     /**
@@ -366,7 +369,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      * the host, and whether the instance should be decorated as a "parent model"
      * of any event handlers.
      *
-     *     // Customze property forwarding and event model decoration
+     *     // Customize property forwarding and event model decoration
      *     let TemplateClass = Polymer.Templatize.templatize(template, this, {
      *       parentModel: true,
      *       instanceProps: {...},
@@ -466,7 +469,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         klass.prototype.__dataHost = template;
         klass.prototype.__templatizeOwner = owner;
         klass.prototype.__hostProps = templateInfo.hostProps;
-        return /** @type {function(new:TemplateInstanceBase)} */(klass);
+        klass = /** @type {function(new:TemplateInstanceBase)} */(klass); //eslint-disable-line no-self-assign
+        return klass;
       },
 
       /**
@@ -512,7 +516,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         return null;
       }
-    }
+    };
 
     Polymer.Templatize = Templatize;
     Polymer.TemplateInstanceBase = TemplateInstanceBase;
