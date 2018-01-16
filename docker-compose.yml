@@ -68,6 +68,7 @@ services:
       - l10n-ter:/l10n_ter
       - pootle-po:/srv/pootle/po
       - pootle-git:/srv/pootle/git-clones
+      - ./pootle/mysql/:/var/run/mysqld
     environment:
       - SECRET_KEY=SET THIS TO A DJANGO SECRET KEY
     env_file:
@@ -81,6 +82,9 @@ services:
       application: 'sc-pootle-mysql'
     volumes:
       - pootle-mysql-data:/var/lib/mysql
+      - ./pootle/mysql/:/var/run/mysqld
+    ports:
+      - "3306:3306"
     env_file:
       - pootle/environment.yml
 
@@ -89,6 +93,8 @@ services:
     container_name: 'sc-pootle-redis'
     labels:
       application: 'sc-pootle-redis'
+    ports:
+      - "6379:6379"
 
   sc-elasticsearch:
     build:
