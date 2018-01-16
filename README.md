@@ -30,7 +30,7 @@ There are different modes available for our project. All of them can be run with
 #### Development
 In this mode server, nignx, client dirs are mounted in Docker's containers so that any local changes take place in the container as well.
 
-In addition `Uwsgi+Flask` expose port `5000` on local host, arangodb port `8529` and elasticsearch ports `9200` and `9300`.
+In addition `Uwsgi+Flask` expose port `5001` on local host, arangodb port `8529` and elasticsearch ports `9200` and `9300`.
 
 ## 1.5 Makefile
 There is a Makefile with following commands:
