@@ -154,7 +154,7 @@
     <iron-ajax
         auto
         id='currency_ajax'
-        url="[[_computeCurrencyUrl]]"
+        url="[[_computeCurrencyUrl()]]"
         handle-as="json"
         last-response="{{responseData}}"
         on-response="_handleResponse"></iron-ajax>
@@ -171,6 +171,7 @@
         on-response="_paymentFinished"></iron-ajax>
 
     <iron-location path="{{path}}"></iron-location>
+    <iron-meta id="meta"></iron-meta>
 
     <div id="page-wrap">
       <section>
@@ -301,12 +302,6 @@
                   },
                   errorMessages: {
                       type: Object,
-                      value: {
-                          0: this.localize('UnknownError'),
-                          1: this.localize('AmountCannotBeLessThan'),
-                          2: this.localize('Due to Stripe limitations,  please make a direct payment, or else contact us for help.'),
-                          3: this.localize('cardDeclined')
-                      }
                   },
                   language: {
                       type: String,
@@ -352,7 +347,18 @@
                       posiiton += 1;
                       e.preventDefault();
                   }
-              })
+              });
+
+              this._setErrorMessages();
+          }
+
+          _setErrorMessages() {
+              this.errorMessages = {
+                          0: this.localize('UnknownError'),
+                          1: this.localize('AmountCannotBeLessThan'),
+                          2: this.localize('Due to Stripe limitations,  please make a direct payment, or else contact us for help.'),
+                          3: this.localize('cardDeclined')
+                      }
           }
 
           _siteLanguageChanged() {
@@ -430,6 +436,7 @@
           }
 
           _computeCurrencyUrl() {
+              console.log('fksjdhfksf');
               const apiRoot = this.$.meta.byKey('API_ROOT');
               return `${apiRoot}/currencies?language=${this.language}`;
           }
