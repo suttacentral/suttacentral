@@ -243,7 +243,7 @@
           <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
             [[item.original_title]]
           </span>
-          <span title="{{localize('suttaCentralID')}}" class$="[[_computeHideUID(item)]] nerdy-row-element">
+          <span title="[[_getAcronymTitle(item)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
             [[_getAcronymOrUid(item)]]
           </span>
           <template is="dom-if" if="[[item.volpages]]">
@@ -506,7 +506,26 @@
           }
 
           _getAcronymOrUid(item) {
-              return item.acronym || item.uid;
+              let sc_acronym = item.acronym;
+              if (item.acronym) {
+                sc_acronym = item.acronym.split('//')[0];
+              }
+              return sc_acronym || item.uid;
+          }
+
+          _getAcronymTitle(item) {
+              let sc_acronym_title = "SuttaCentral ID";
+              if (item.acronym) {
+                const alt_number = item.acronym.split('//')[1];
+                if (alt_number) {
+                  if (alt_number[0] == 'T'){
+                    sc_acronym_title += `. Alternate number in Taishō edition: ${alt_number}`;
+                  } else {
+                    sc_acronym_title += `. Alternate number in PTS edition: ${alt_number}`;
+                  }
+                }
+              }
+              return sc_acronym_title;
           }
 
           _getRootText() {
