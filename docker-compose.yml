@@ -45,6 +45,7 @@ services:
       - l10n-ter:/l10n_ter
       - pootle-po:/srv/pootle/po
       - pootle-git:/srv/pootle/git-clones
+      - pootle-assets:/usr/local/lib/python2.7/dist-packages/pootle
     ports:
       - '80:80'
     depends_on:
@@ -71,6 +72,7 @@ services:
       - pootle-po:/srv/pootle/po
       - pootle-git:/srv/pootle/git-clones
       - pootle-mysql-socket:/var/run/mysqld
+      - pootle-assets:/usr/local/lib/python2.7/dist-packages/pootle
     environment:
       - SECRET_KEY=SET THIS TO A DJANGO SECRET KEY
     env_file:
@@ -147,4 +149,5 @@ volumes:
   pootle-git:
   pootle-mysql-data:
   pootle-mysql-socket:
+  pootle-assets:
   l10n-ter:
