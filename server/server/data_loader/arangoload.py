@@ -116,27 +116,22 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
 
             base_uid = reg.match(uid)[0]
 
-            if 'name' in entry:
-                try:
-                    if base_uid in root_languages:
-                        lang = root_languages[base_uid]
-                    else:
-                        lang = root_languages[uid]
-                except KeyError:
-                    lang = 'en'
+            lang = 'en'
 
+            while base_uid:
+                try:
+                    entry['root_lang'] = root_languages[base_uid]
+                    lang = root_languages[base_uid]
+                    break
+                except KeyError:
+                    base_uid = '-'.join(base_uid.split('-')[:-1])
+
+            if 'name' in entry:
                 name_docs.append({'name': entry.pop('name'),
                                   'uid': uid,
                                   'lang': lang,
                                   'root': True,
                                   '_key': f'{uid}_{lang}'})
-
-            while base_uid:
-                try:
-                    entry['root_lang'] = root_languages[base_uid]
-                    break
-                except KeyError:
-                    base_uid = '-'.join(base_uid.split('-')[:-1])
 
             del entry['_path']
             ordering_data = process_menu_ordering(structure_dir)
