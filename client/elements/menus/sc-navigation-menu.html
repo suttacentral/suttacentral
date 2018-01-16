@@ -606,7 +606,7 @@
           }
 
           _getMenuUrl() {
-              return `${this._getBaseUrl()}/api/menu`;
+              return `${this._getBaseUrl()}/api/menu?language=${this.language}`;
           }
 
           _getSubMenuUrl(uid) {

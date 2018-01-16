@@ -116,14 +116,20 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
 
             base_uid = reg.match(uid)[0]
 
-            try:
+            if 'name' in entry:
+                try:
+                    if base_uid in root_languages:
+                        lang = root_languages[base_uid]
+                    else:
+                        lang = root_languages[uid]
+                except KeyError:
+                    lang = 'en'
+
                 name_docs.append({'name': entry.pop('name'),
                                   'uid': uid,
-                                  'lang': root_languages[base_uid],
+                                  'lang': lang,
                                   'root': True,
-                                  '_key': f'{uid}_{root_languages[base_uid]}'})
-            except KeyError:
-                pass
+                                  '_key': f'{uid}_{lang}'})
 
             while base_uid:
                 try:
