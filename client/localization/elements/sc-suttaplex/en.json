@@ -6,6 +6,7 @@
         "advanced": "Recommended for advanced students",
         "originalTitle": "Original title",
         "suttaCentralID": "SuttaCentral ID",
+        "alternateText": "Alternate number in {book} edition:",
         "volumeAndPage": "Volume and page",
         "blurb": "Blurb",
         "goToTranslation": "Go to a translation by {author}",
