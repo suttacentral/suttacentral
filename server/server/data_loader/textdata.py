@@ -2,6 +2,7 @@ import json
 import logging
 
 import regex
+from arango.exceptions import DocumentReplaceError
 
 from . import sc_html, util
 
@@ -261,7 +262,7 @@ class ArangoTextInfoModel(TextInfoModel):
 
     def update_code_points(self, lang_uid, unicode_points, force=False):
         keys = ('normal', 'bold', 'italic')
-        existing = None
+        existing = False
         try:
             existing = self.db['unicode_points'].get(lang_uid)
             if existing and not force:
@@ -270,12 +271,15 @@ class ArangoTextInfoModel(TextInfoModel):
 
             doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
             doc['_key'] = lang_uid
-        except:
+        except Exception as e:
             print(unicode_points, key)
-            raise
+            raise e
 
         if existing or force:
-            self.db['unicode_points'].replace(doc)
+            try:
+                self.db['unicode_points'].replace(doc)
+            except DocumentReplaceError:
+                self.db['unicode_points'].insert(doc)
         else:
             self.db['unicode_points'].insert(doc)
 

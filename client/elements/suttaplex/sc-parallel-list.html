@@ -107,7 +107,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
             </td>
             <td class="parallels-relation-cell">
               <iron-icon class="grey-icon" icon$="[[_getFirstParallelIcon(rootId)]]"
-                         title$="[[_getFirstParallelIconTitle(rootId)]]"></iron-icon>
+                         title$="[[_getFirstParallelIconTitle(rootId, localize)]]"></iron-icon>
             </td>
             <td class="parallels-parallel-cell paper-lift white-bg">
               <sc-parallel-item parallel-item="[[_getFirstParallelItem(rootId)]]"
@@ -118,7 +118,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           <template is="dom-repeat" items="[[_getOtherParallels(rootId)]]" as="item">
             <tr>
               <td class="parallels-relation-cell">
-                <iron-icon class="grey-icon" icon="[[_getParallelIcon(item)]]" title="[[_computeIconTitle(item)]]"></iron-icon>
+                <iron-icon class="grey-icon" icon="[[_getParallelIcon(item)]]" title="[[_computeIconTitle(item, localize)]]"></iron-icon>
               </td>
               <td class="parallels-parallel-cell paper-lift white-bg">
                 <sc-parallel-item parallel-item="[[item.to]]" remark="[[item.remark]]"></sc-parallel-item>
@@ -191,7 +191,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.language}.json`));
           }
 
           _itemUidChanged() {
@@ -257,26 +257,29 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           }
 
           // returns the correct title for each type of parallel.
-          _computeIconTitle(item) {
+          _computeIconTitle(item, localize) {
+              
               if (!item) {
                   return;
               }
+              console.log(item.type);
+              console.log(localize);
               switch (item.type) {
                   case 'full':
                       if (item.resembling) {
-                          return this.localize('ResemblingParallel');
+                          return localize('ResemblingParallel');
                       }
-                      return this.localize('FullParallel');
+                      return localize('FullParallel');
                   case 'retelling':
-                      return this.localize('RetellingParallel');
+                      return localize('RetellingParallel');
                   case 'mention':
-                      return this.localize('Mention');
+                      return localize('Mention');
               }
           }
 
           // returns the title for the parallel icon with the given index.
-          _getFirstParallelIconTitle(rootId) {
-              return this._computeIconTitle(this._getItemAtIndex(rootId, 0));
+          _getFirstParallelIconTitle(rootId, localize) {
+              return this._computeIconTitle(this._getItemAtIndex(rootId, 0), localize);
           }
 
           // returns an array with the data for all other parallels than the first.
