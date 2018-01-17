@@ -312,11 +312,11 @@
 
       _siteLanguageChanged() {
           this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`));
-          this.shadowRoot.querySelector(this._get_nav_tabs_selector()).notifyResize();
+          this.shadowRoot.querySelector(this._getNavTabsSelector()).notifyResize();
       }
 
       _selectNavbarLink() {
-            const selector = this._get_nav_tabs_selector();
+            const selector = this._getNavTabsSelector();
             const tabs_element = this.shadowRoot.querySelector(selector);
             const tabs = tabs_element.querySelectorAll('paper-tab');
             for (let i = 0; i < tabs.length; i++) {
@@ -328,7 +328,7 @@
             tabs_element.selectIndex(-1);
       }
 
-      _get_nav_tabs_selector() {
+      _getNavTabsSelector() {
         let selector = '#nav_tabs';
         if( this.shouldShowSecondToolbar ) {
             selector = '#second_nav_tabs'
