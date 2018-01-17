@@ -86,7 +86,8 @@
         margin: 38px;
       }
 
-      #nav_tabs {
+      #nav_tabs,
+      #second_nav_tabs {
         width: 100%;
         --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
       }
@@ -181,7 +182,7 @@
         </paper-tabs>
       </template>
       <template is="dom-if" if="[[shouldShowSecondToolbar]]">
-        <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tabs id="second_nav_tabs" selected="0" scrollable hide-scroll-buttons>
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -314,14 +315,19 @@
       }
 
       _selectNavbarLink() {
-          const tabs = this.shadowRoot.querySelector('#nav_tabs').querySelectorAll('paper-tab');
-          for (let i = 0; i < tabs.length; i++) {
-              if (tabs[i].dataset.name === this.selectedPage) {
-                  this.shadowRoot.querySelector('#nav_tabs').selectIndex(i);
-                  return;
-              }
-          }
-          this.shadowRoot.querySelector('#nav_tabs').selectIndex(-1);
+            let selector = '#nav_tabs';
+            if( this.shouldShowSecondToolbar ) {
+                selector = '#second_nav_tabs'
+            }
+            const tabs_element = this.shadowRoot.querySelector(selector);
+            const tabs = tabs_element.querySelectorAll('paper-tab');
+            for (let i = 0; i < tabs.length; i++) {
+                if (tabs[i].dataset.name === this.selectedPage) {
+                    tabs_element.selectIndex(i);
+                    return;
+                }
+            }
+            tabs_element.selectIndex(-1);
       }
 
       _changeView() {
