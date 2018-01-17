@@ -226,6 +226,13 @@ class TextInfoModel:
         try:
             hgroup = root.select_one('.hgroup')
             h1 = hgroup.select_one('h1')
+            if lang_uid == 'lzh':
+                try:
+                    left_side = h1.select_one('.mirror-left')
+                    right_side = h1.select_one('.mirror-right')
+                    return right_side.text_content()+' ('+left_side.text_content()+')'
+                except:
+                    return regex.sub(r'^\P{alpha}*', '', h1.text_content())
             return regex.sub(r'^\P{alpha}*', '', h1.text_content())
         except Exception as e:
             logger.warn('Could not determine name for {}/{}'.format(lang_uid, uid))
