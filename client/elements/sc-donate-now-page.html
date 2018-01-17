@@ -154,7 +154,7 @@
     <iron-ajax
         auto
         id='currency_ajax'
-        url="[[_computeCurrencyUrl()]]"
+        url="[[_computeCurrencyUrl(language)]]"
         handle-as="json"
         last-response="{{responseData}}"
         on-response="_handleResponse"></iron-ajax>
@@ -348,8 +348,6 @@
                       e.preventDefault();
                   }
               });
-
-              this._setErrorMessages();
           }
 
           _setErrorMessages() {
@@ -363,6 +361,7 @@
 
           _siteLanguageChanged() {
               this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.language}.json`));
+              this._setErrorMessages();
           }
 
           _handleResponse() {
@@ -435,10 +434,9 @@
               this.shadowRoot.querySelector('.message-input').value = undefined;
           }
 
-          _computeCurrencyUrl() {
-              console.log('fksjdhfksf');
+          _computeCurrencyUrl(language) {
               const apiRoot = this.$.meta.byKey('API_ROOT');
-              return `${apiRoot}/currencies?language=${this.language}`;
+              return `${apiRoot}/currencies?language=${language}`;
           }
 
           _showToast(toastType, text) {
