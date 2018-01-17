@@ -507,16 +507,19 @@
           }
 
           _getAcronymOrUid(item, expansionData) {
-              console.log(expansionData);
               let sc_acronym = '';
               if (item.acronym) {
                 sc_acronym = item.acronym.split('//')[0];
               } else {
                 let uid_parts = item.uid.split('-');
-                uid_parts.forEach((item) => item = expansionData[item]);
-                let test = "pj19".match(/\d+/g)[0];
-                console.log(uid_parts);
-                sc_acronym = item.uid;
+                let tail = '';
+                for (let item in uid_parts) {
+                  if (!expansionData[uid_parts[item]]) {
+                      tail = uid_parts[item].match(/\d+/g)[0];
+                      uid_parts[item] = uid_parts[item].match(/[a-z]*/g)[0];
+                  }
+                  sc_acronym += `${expansionData[uid_parts[item]]} ${tail}`;
+                }
               }
               return sc_acronym;
           }
