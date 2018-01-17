@@ -209,7 +209,7 @@ class TextInfoModel:
 
         for item in authors:
             if item['long_name'] == author: 
-                return item['short_name'], item['uid']
+                return item['uid'], item['short_name']
 
         return None, None
 
