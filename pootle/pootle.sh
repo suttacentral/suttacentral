@@ -20,8 +20,8 @@ fi
 echo "build assets"
 cd /usr/local/lib/python2.7/dist-packages/pootle/static/js && npm install
 pootle collectstatic --noinput
-pootle assets build
 pootle webpack
+pootle assets build
 
 echo "start pootle"
 pootle runserver --insecure 0.0.0.0:8000
