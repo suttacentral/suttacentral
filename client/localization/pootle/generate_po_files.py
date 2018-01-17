@@ -25,7 +25,8 @@ def generate_po_file(file_path: Path):
         po.append(entry)
 
     path_parts = list(file_path.parts[1:])
-    path_parts[-1] = path_parts[-1].rstrip('json') + 'po'
+    path_parts[-1] = path_parts[-1].rstrip('.json')
+    path_parts.append('en.po')
     element_path = Path(*path_parts)
     if len(path_parts) > 1:
         Path(f'{GENERATED_PO_FILES_DIR}/{Path(*path_parts[:-1])}').mkdir(parents=True, exist_ok=True)

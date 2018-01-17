@@ -97,11 +97,14 @@ class Menu(Resource):
                         type: string
         """
         db = get_db()
+
+        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+
         if submenu_id:
-            divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id})
+            divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id, 'language': language})
             data = list(divisions)
         else:
-            divisions = db.aql.execute(MENU)
+            divisions = db.aql.execute(MENU, bind_vars={'language': language})
             data = self.group_by_parents(divisions, ['pitaka'])
 
         for pitaka in data:
