@@ -312,7 +312,10 @@
 
       _siteLanguageChanged() {
           this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`));
-          this.shadowRoot.querySelector(this._getNavTabsSelector()).notifyResize();
+          const tabs = this.shadowRoot.querySelector(this._getNavTabsSelector());
+          if (tabs) {
+            tabs.notifyResize();
+          }
       }
 
       _selectNavbarLink() {
