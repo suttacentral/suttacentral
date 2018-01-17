@@ -244,7 +244,7 @@
             [[item.original_title]]
           </span>
           <span title="[[_getAcronymTitle(item,localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
-            [[_getAcronymOrUid(item)]]
+            [[_getAcronymOrUid(item, expansionData)]]
           </span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
@@ -387,7 +387,8 @@
                   },
                   difficulty: {
                       type: String
-                  }
+                  },
+                  expansionData: Object
               }
           }
 
@@ -505,12 +506,19 @@
               return author.replace(/\b\w/g, l => l.toUpperCase());
           }
 
-          _getAcronymOrUid(item) {
-              let sc_acronym = item.acronym;
+          _getAcronymOrUid(item, expansionData) {
+              console.log(expansionData);
+              let sc_acronym = '';
               if (item.acronym) {
                 sc_acronym = item.acronym.split('//')[0];
+              } else {
+                let uid_parts = item.uid.split('-');
+                uid_parts.forEach((item) => item = expansionData[item]);
+                let test = "pj19".match(/\d+/g)[0];
+                console.log(uid_parts);
+                sc_acronym = item.uid;
               }
-              return sc_acronym || item.uid;
+              return sc_acronym;
           }
 
           _getAcronymTitle(item,localize) {
@@ -519,7 +527,7 @@
                 const alt_number = item.acronym.split('//')[1];
                 let book = '';
                 if (alt_number) {
-                  (alt_number[0] == 'T') ? book = 'Taishō' : book = 'PTS';
+                  (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
                   sc_acronym_title += `. ${localize('alternateText', 'book', book)} ${alt_number}`;
                 }
               }
