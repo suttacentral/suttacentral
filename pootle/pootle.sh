@@ -25,3 +25,9 @@ pootle assets build
 
 echo "start pootle"
 pootle runserver --insecure 0.0.0.0:8000
+
+echo "cloning repository to build more assets"
+git clone https://github.com/suttacentral/pootle.git
+cd pootle
+make assets
+echo "assets built"

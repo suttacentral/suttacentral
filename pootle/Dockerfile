@@ -39,13 +39,16 @@ RUN pip install -q virtualenv \
     m2crypto \
     wheel
 
+
 #Upgrade pip
 RUN pip install --upgrade pip
-# Install
-RUN pip install -I --process-dependency-links --pre git+https://github.com/suttacentral/pootle
+
+# Install pootle
+RUN pip install --process-dependency-links git+https://github.com/suttacentral/pootle.git
+
 # Configure pootle
-COPY pootle.conf /root/.pootle/pootle.conf 
-RUN mkdir -p /srv/pootle/po/.tmp   
+COPY pootle.conf /root/.pootle/pootle.conf
+RUN mkdir -p /srv/pootle/po/.tmp
 
 WORKDIR /home/pootle
 
