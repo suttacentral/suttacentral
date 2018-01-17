@@ -235,12 +235,12 @@ class TextInfoModel:
         if lang_uid == 'lzh':
             e = element.next_in_order()
             while e is not None:
-                if e.tag == 'a' and e.select_one('.t, .t-linehead'):
+                if e.tag == 'a' and e.select_one('.t'):
                     break
                 e = e.next_in_order()
             else:
                 return
-            return 'T {}'.format(e.attrib['id'])
+            return '{}'.format(e.attrib['id']).replace('t','T ')
         elif lang_uid == 'pli':
             ppn = self._ppn
             e = element.next_in_order()
