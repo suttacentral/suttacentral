@@ -20,7 +20,7 @@ class Loader:
         self.counter_updated = 0
         self.counter_created = 0
 
-    def run(self, collection_name: str, translated_field: str):
+    def run(self, collection_name: str, translated_field: str, uid_field='uid'):
         print()
         print(f'LOADING {collection_name}')
         self._reset_counters()
@@ -29,12 +29,12 @@ class Loader:
         for file in tqdm(list((GENERATED_PO_FILES_DIR / collection_name).glob('*.po'))):
             po_data = polib.pofile(str(file))
 
-            self._process_entries(po_data, collection, translated_field, file.stem)
+            self._process_entries(po_data, collection, translated_field, file.stem, uid_field)
 
         print(f'UPDATED {self.counter_updated}; CREATED {self.counter_created}')
 
-    def _process_entries(self, po_data, collection, translated_field, lang):
-        in_lang = {document['uid']: document for document in collection.find({'lang': lang})}
+    def _process_entries(self, po_data, collection, translated_field, lang, uid_field):
+        in_lang = {document[uid_field]: document for document in collection.find({'lang': lang})}
         for entry in po_data:
             self._process_entry(entry, collection, translated_field, lang, in_lang)
 
@@ -74,6 +74,7 @@ def run():
     loader = Loader(db)
     loader.run('blurbs', 'blurb')
     loader.run('root_names', 'name')
+    loader.run('currency_names', 'name', uid_field='symbol')
 
 
 if __name__ == '__main__':

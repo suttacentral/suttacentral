@@ -80,6 +80,29 @@ def process_menu(db):
     print('✓ FINISHED PROCESSING ROOT NAMES')
 
 
+def process_currencies(db):
+    print('PROCESSING CURRENCIES')
+
+    currency_names_collection = db['currency_names']
+    po = polib.POFile()
+    po.metadata = {
+        'POT-Creation-Date': str(datetime.datetime.now()),
+        'Content-Type': 'text/plain; charset=utf-8'
+    }
+    for name in tqdm(currency_names_collection.find({'lang': 'en'})):
+        entry = polib.POEntry(
+            msgid=name['name'],
+            msgstr=name['name'],
+            msgctxt=name['symbol']
+        )
+        po.append(entry)
+
+    (GENERATED_PO_FILES_DIR / 'currency_names').mkdir(parents=True, exist_ok=True)
+    po.save(str(GENERATED_PO_FILES_DIR / 'currency_names' / 'en.po'))
+
+    print('✓ FINISHED PROCESSING CURRENCIES')
+
+
 def get_current_translation(collection_name, language) -> dict:
     file = (GENERATED_PO_FILES_DIR / collection_name / f'{language}.po')
     if file.exists():
@@ -99,6 +122,7 @@ def run():
 
     process_blurbs(db)
     process_menu(db)
+    process_currencies(db)
 
     change_po_file_permissions()
 

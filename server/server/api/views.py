@@ -548,7 +548,9 @@ class Currencies(Resource):
         """
         db = get_db()
 
-        data = db.aql.execute(CURRENCIES)
+        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+
+        data = db.aql.execute(CURRENCIES, bind_vars={'language': language})
 
         currencies = []
         default_currency_index: int = None
