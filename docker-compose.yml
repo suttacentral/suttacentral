@@ -48,7 +48,7 @@ services:
       - pootle-assets:/usr/local/lib/python2.7/dist-packages/pootle
     ports:
       - '80:80'
-      - '81:81'
+      - '2052:2052'
     depends_on:
       - sc-flask
       - sc-pootle
