@@ -9,7 +9,7 @@ LOCALIZATION_FILES_DIR = Path('../elements/')
 
 
 def get_language(file):
-    return 'en'
+    return file.stem
 
 
 def generate_json_file(file):
@@ -20,7 +20,8 @@ def generate_json_file(file):
         data[entry.msgid] = entry.msgstr
 
     path_parts = list(file.parts[1:])
-    path_parts[-1] = path_parts[-1].rstrip('.po')
+    path_parts[-2] = path_parts[-2]
+    path_parts.pop(-1)
     element_path = Path(*path_parts)
     full_element_path = LOCALIZATION_FILES_DIR / element_path
 
