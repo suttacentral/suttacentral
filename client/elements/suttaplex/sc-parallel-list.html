@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../styles/sc-suttaplex-styles.html">
 <link rel="import" href="../../elements/suttaplex/sc-parallel-item.html">
@@ -96,7 +97,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
           <tr class="parallels-row">
             <td class="parallels-root-cell parallels-table-cell paper-lift white-bg" rowspan$="[[_getRowspan(rootId)]]">
-              <div class="parallels-root-id root" title="{{localize('SuttaCentralID')}}">
+              <div class="parallels-root-id root" title="{{localize('suttaCentralID')}}">
                 [[_transformId(rootId,expansionData)]]
               </div>
               <template is="dom-if" if="[[rootText]]">
@@ -324,7 +325,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               let tail = '';
               for (let i in uid_parts) {
                 if (!expansionData[0][uid_parts[i]]) {
-                    tail = uid_parts[i].match(/\d+/g)[0];
+                    tail = uid_parts[i].match(/\d+.*/g)[0];
                     uid_parts[i] = uid_parts[i].match(/[a-z]*/g)[0];
                 }
                 sc_acronym += `${expansionData[0][uid_parts[i]]} ${tail} `;
