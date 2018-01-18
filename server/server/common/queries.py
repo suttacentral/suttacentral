@@ -117,7 +117,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
     
     LET blurbs_by_uid = (
         FOR blurb IN blurbs
-            FILTER blurb.uid == @uid AND (blurb.lang == @language OR blurb.lang == 'en')
+            FILTER blurb.uid == v.uid AND (blurb.lang == @language OR blurb.lang == 'en')
             LIMIT 2
             RETURN blurb
     )
@@ -125,7 +125,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
          RETURN LENGTH(blurbs_by_uid) == 2 ? 
              (FOR blurb IN blurbs_by_uid FILTER blurb.lang == @language RETURN blurb.blurb)[0] : 
              blurbs_by_uid[0].blurb
-    )
+    )[0]
     
     LET legacy_volpages = (
         FOR text IN legacy_translations
@@ -181,7 +181,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         uid: v.uid,
         blurb: blurb,
         difficulty: difficulty,
-        original_title: v.name,
+        original_title: DOCUMENT(CONCAT('root_names/', v.uid, '_', v.lang)).name,
         root_lang: v.root_lang,
         type: e.type ? e.type : (v.type ? v.type : 'text'),
         from: e._from,
@@ -511,4 +511,13 @@ LET similar_words = (
     )[0]
     
 RETURN similar_words
+'''
+
+EXPANSION = '''
+LET expansion_item = (
+    FOR entry IN uid_expansion
+        RETURN { [ entry.uid ]: entry.acro }
+    )
+    
+RETURN MERGE(expansion_item)
 '''

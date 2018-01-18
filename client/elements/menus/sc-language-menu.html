@@ -104,9 +104,9 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
     </style>
     <template is="dom-if" if="[[_shouldShowMenu(languageChoice)]]">
-      <paper-dropdown-menu class="language-menu-dropdown custom" label="[[titleLabel]]"
+      <paper-dropdown-menu class="language-menu-dropdown custom" label="{{localize('more')}}"
                            title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="auto">
-        <paper-listbox class="language-menu-listbox" slot="dropdown-content">
+        <paper-listbox class="language-menu-listbox" slot="dropdown-content" selected="0">
 
           <template is="dom-repeat" items="[[languageChoice]]" as="translation">
             <template is="dom-if" if="[[!_otherLanguage(translation, inputLanguage)]]">
@@ -148,7 +148,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                       type: Array,
                       notify: true
                   },
-                  titleLabel: String,
                   inputLanguage: String,
                   originalLanguage: String,
                   rootId: String,

@@ -26,9 +26,6 @@ if [ ! -f /root/.pootle/.assets ]; then
     touch /root/.pootle/.assets
 fi
 
-echo "start pootle"
-pootle runserver --insecure 0.0.0.0:8000
-
 if [ ! -f /root/.pootle/.clonedAssets ]; then
     echo "cloning repository to build more assets"
     git clone https://github.com/suttacentral/pootle.git
@@ -37,3 +34,6 @@ if [ ! -f /root/.pootle/.clonedAssets ]; then
     echo "assets built"
     touch /root/.pootle/.clonedAssets
 fi
+
+echo "start pootle"
+pootle runserver --insecure 0.0.0.0:8000
