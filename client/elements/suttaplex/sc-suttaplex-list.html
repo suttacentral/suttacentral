@@ -55,8 +55,7 @@
         id="uid_expansion_ajax"
         url="/api/expansion"
         handle-as="json"
-        last-response="{{expansionReturns}}"
-        on-response="_expansionLoaded"></iron-ajax>
+        last-response="{{expansionReturns}}"></iron-ajax>
 
     <iron-ajax
         id="ajax"
@@ -76,7 +75,7 @@
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
               <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]"
                             difficulty="[[_computeItemDifficulty(item.difficulty)]]"
-                            expansion-data="[[expansionData]]"></sc-suttaplex>
+                            expansion-data="[[expansionReturns]]"></sc-suttaplex>
             </template>
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
@@ -112,8 +111,7 @@
                   item: {
                       type: Object
                   },
-                  expansionReturns: Array,
-                  expansionData: Object
+                  expansionReturns: Array
               }
           }
 
@@ -165,12 +163,6 @@
                   const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
                   return levels[difficulty];
               }
-          }
-
-          _expansionLoaded() {
-              let result = {};
-              this.expansionReturns[0].forEach((item) => result[item.uid] = item.acro);
-              this.expansionData = result;
           }
       }
 

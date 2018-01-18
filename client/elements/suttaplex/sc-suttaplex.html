@@ -522,11 +522,11 @@
                 let uid_parts = item.uid.split('-');
                 let tail = '';
                 for (let item in uid_parts) {
-                  if (!expansionData[uid_parts[item]]) {
+                  if (!expansionData[0][uid_parts[item]]) {
                       tail = uid_parts[item].match(/\d+/g)[0];
                       uid_parts[item] = uid_parts[item].match(/[a-z]*/g)[0];
                   }
-                  sc_acronym += `${expansionData[uid_parts[item]]} ${tail}`;
+                  sc_acronym += `${expansionData[0][uid_parts[item]]} ${tail}`;
                 }
               }
               return sc_acronym;
@@ -536,8 +536,8 @@
               let sc_acronym_title = localize('suttaCentralID');
               if (item.acronym) {
                 const alt_number = item.acronym.split('//')[1];
-                let book = '';
                 if (alt_number) {
+                  let book = '';
                   (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
                   sc_acronym_title += `.\n${localize('alternateText', 'book', book)} ${alt_number}`;
                 }
