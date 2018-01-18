@@ -106,7 +106,6 @@
                   language: {
                       type: String,
                       statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
                   }
               }
           }
@@ -123,15 +122,11 @@
           }
 
           _categoryChanged() {
-              if (!this.categoryId) {
+              if (!this.categoryId || !this.language) {
                   return;
               }
-              this.$.ajax.url = `${this.$.meta.byKey('API_ROOT')}\/suttaplex\/${this.categoryId}?language=${language}}`;
+              this.$.ajax.url = `${this.$.meta.byKey('API_ROOT')}\/suttaplex\/${this.categoryId}?language=${this.language}`;
               this.$.ajax.generateRequest();
-          }
-
-          _siteLanguageChanged() {
-              this._categoryChanged();
           }
 
           _responseDataChanged() {
