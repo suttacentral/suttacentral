@@ -32,23 +32,24 @@ FOR div IN root
                 }
             }
         )
-        LET descendant = (
-            FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
-                FILTER d_edge.type != 'text'
-                LIMIT 1
-                RETURN d.uid
-        )[0]
-        RETURN {
-            uid: div._id, 
-            has_children: descendant != null,
-            name: div.name,
-            lang_iso: div.root_lang,
-            lang_name: (FOR lang in language FILTER lang.uid == div.root_lang LIMIT 1 RETURN lang.name)[0],
-            num: div.num, 
-            id: div.uid, 
-            type: div.type, 
-            parents: parents
-        }
+    LET descendant = (
+        FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
+            FILTER d_edge.type != 'text'
+            LIMIT 1
+            RETURN d.uid
+    )[0]
+    LET name = DOCUMENT(CONCAT('root_names/', div.uid, '_', @language))['name']
+    RETURN {
+        uid: div._id, 
+        has_children: descendant != null,
+        name: name ? name : DOCUMENT(CONCAT('root_names/', div.uid, '_', div.root_lang))['name'],
+        lang_iso: div.root_lang,
+        lang_name: (FOR lang in language FILTER lang.uid == div.root_lang LIMIT 1 RETURN lang.name)[0],
+        num: div.num, 
+        id: div.uid, 
+        type: div.type, 
+        parents: parents
+    }
 '''
 
 SUBMENU = '''
@@ -56,9 +57,10 @@ LET div = DOCUMENT('root', @submenu_id)
 LET descendents = (
     FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
         FILTER d_edge.type != 'text' OR LENGTH(d_path.vertices) <= 2
+        LET name = DOCUMENT(CONCAT('root_names/', d.uid, '_', @language))['name']
         RETURN {
             from: d_edge._from,
-            name: d.name,
+            name: name ? name : DOCUMENT(CONCAT('root_names/', d.uid, '_', div.root_lang))['name'],
             uid: d._id,
             num: d.num,
             type: d.type,
@@ -113,13 +115,17 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             }
     )
     
-    LET blurb = (
+    LET blurbs_by_uid = (
         FOR blurb IN blurbs
-            FILTER blurb.uid == v.uid
-            LIMIT 1
-            RETURN blurb.blurb
-            
-    )[0]
+            FILTER blurb.uid == @uid AND (blurb.lang == @language OR blurb.lang == 'en')
+            LIMIT 2
+            RETURN blurb
+    )
+    LET blurb = (
+         RETURN LENGTH(blurbs_by_uid) == 2 ? 
+             (FOR blurb IN blurbs_by_uid FILTER blurb.lang == @language RETURN blurb.blurb)[0] : 
+             blurbs_by_uid[0].blurb
+    )
     
     LET legacy_volpages = (
         FOR text IN legacy_translations
@@ -417,8 +423,15 @@ RETURN {
 CURRENCIES = '''
 FOR currency IN currencies
     FILTER currency.use == true
-    SORT currency.name
-    RETURN KEEP(currency, ['name', 'symbol', 'american_express', 'decimal'])
+    LET expected_name = DOCUMENT(CONCAT('currency_names/', currency.symbol, '_', @language)).name
+    LET name = expected_name ? expected_name : DOCUMENT(CONCAT('currency_names/', currency.symbol, '_', 'en')).name
+    SORT name
+    RETURN {
+        name: name,
+        symbol: currency.symbol,
+        american_express: currency.american_express,
+        decimal: currency.decimal
+    }
 '''
 
 PARAGRAPHS = '''

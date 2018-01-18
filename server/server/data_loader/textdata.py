@@ -2,6 +2,7 @@ import json
 import logging
 
 import regex
+from arango.exceptions import DocumentReplaceError
 
 from . import sc_html, util
 
@@ -131,8 +132,7 @@ class TextInfoModel:
                             next_uid = None
 
                 author = self._get_author(root, lang_uid, uid)
-                author_short = self._get_author_short(author, authors)
-                author_uid = self._get_author_uid(author, authors)
+                author_uid, author_short = self._get_author_data(author, authors)
 
                 if uid == 'metadata':
                     if author is None:
@@ -206,21 +206,13 @@ class TextInfoModel:
 
         return None
 
-    def _get_author_short(self, author, authors):
+    def _get_author_data(self, author, authors):
 
         for item in authors:
-            if (item['long_name'] == author): 
-                return item['short_name']
+            if item['long_name'] == author: 
+                return item['uid'], item['short_name']
 
-        return None
-
-    def _get_author_uid(self, author, authors):
-
-        for item in authors:
-            if (item['long_name'] == author): 
-                return item['uid']
-
-        return None
+        return None, None
 
     def _get_name(self, root, lang_uid, uid):
         try:
@@ -277,7 +269,7 @@ class ArangoTextInfoModel(TextInfoModel):
 
     def update_code_points(self, lang_uid, unicode_points, force=False):
         keys = ('normal', 'bold', 'italic')
-        existing = None
+        existing = False
         try:
             existing = self.db['unicode_points'].get(lang_uid)
             if existing and not force:
@@ -286,12 +278,15 @@ class ArangoTextInfoModel(TextInfoModel):
 
             doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
             doc['_key'] = lang_uid
-        except:
+        except Exception as e:
             print(unicode_points, key)
-            raise
+            raise e
 
-        if existing:
-            self.db['unicode_points'].replace(doc)
+        if existing or force:
+            try:
+                self.db['unicode_points'].replace(doc)
+            except DocumentReplaceError:
+                self.db['unicode_points'].insert(doc)
         else:
             self.db['unicode_points'].insert(doc)
 
