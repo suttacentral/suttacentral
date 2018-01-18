@@ -477,10 +477,10 @@ GLOSSARY = '''
 LET glossary_item = (
     FOR dictionary IN dictionary_full
         FILTER dictionary.dictname == "gloss"
-        RETURN KEEP(dictionary, "word", "text")
+        RETURN { [ dictionary.word ]: dictionary.text }
     )
     
-RETURN glossary_item
+RETURN MERGE(glossary_item)
 '''
 
 DICTIONARY_ADJACENT = '''
