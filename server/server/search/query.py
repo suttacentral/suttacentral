@@ -1,4 +1,3 @@
-import json
 import logging
 from inspect import currentframe, getargvalues
 
@@ -7,7 +6,6 @@ import regex
 from search import es, util
 
 logger = logging.getLogger(__name__)
-
 
 
 def text_search(query, lang=None, **kwargs):
