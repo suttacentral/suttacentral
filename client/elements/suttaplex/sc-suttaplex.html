@@ -327,7 +327,7 @@
       <template is="dom-if" if="[[parallelsOpened]]">
         <iron-collapse id="collapse" opened="[[parallelsOpened]]">
           <sc-parallel-list root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"
-                             root-text="[[_getRootText(item.*)]]">
+                             root-text="[[_getRootText(item.*)]]" expansion-data="[[expansionData]]">
           </sc-parallel-list>
         </iron-collapse>
       </template>

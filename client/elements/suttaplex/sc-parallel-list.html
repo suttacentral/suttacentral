@@ -97,7 +97,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           <tr class="parallels-row">
             <td class="parallels-root-cell parallels-table-cell paper-lift white-bg" rowspan$="[[_getRowspan(rootId)]]">
               <div class="parallels-root-id root" title="{{localize('SuttaCentralID')}}">
-                [[rootId]]
+                [[_transformId(rootId,expansionData)]]
               </div>
               <template is="dom-if" if="[[rootText]]">
                 <paper-button flat class="dense" title="{{localize('GoToTextInOriginalLanguage')}}">
@@ -111,7 +111,8 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
             </td>
             <td class="parallels-parallel-cell paper-lift white-bg">
               <sc-parallel-item parallel-item="[[_getFirstParallelItem(rootId)]]"
-                                remark="[[_getFirstParallelRemark(rootId)]]"></sc-parallel-item>
+                                remark="[[_getFirstParallelRemark(rootId)]]"
+                                expansion-data="[[expansionData]]"></sc-parallel-item>
             </td>
           </tr>
 
@@ -121,7 +122,8 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                 <iron-icon class="grey-icon" icon="[[_getParallelIcon(item)]]" title="[[_computeIconTitle(item, localize)]]"></iron-icon>
               </td>
               <td class="parallels-parallel-cell paper-lift white-bg">
-                <sc-parallel-item parallel-item="[[item.to]]" remark="[[item.remark]]"></sc-parallel-item>
+                <sc-parallel-item parallel-item="[[item.to]]" remark="[[item.remark]]"
+                                  expansion-data="[[expansionData]]"></sc-parallel-item>
               </td>
             </tr>
           </template>
@@ -181,7 +183,8 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
-                  }
+                  },
+                  expansionData: Array
               }
           }
 
@@ -313,6 +316,21 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
             return `#${ids}`;
           }
 
+          _transformId(rootId, expansionData) {
+              let sc_acronym = '';
+              let id_part = this._getParagraphRange(rootId).replace('--','-');
+              let root_part = rootId.split('#')[0];
+              let uid_parts = root_part.split('-');
+              let tail = '';
+              for (let i in uid_parts) {
+                if (!expansionData[0][uid_parts[i]]) {
+                    tail = uid_parts[i].match(/\d+/g)[0];
+                    uid_parts[i] = uid_parts[i].match(/[a-z]*/g)[0];
+                }
+                sc_acronym += `${expansionData[0][uid_parts[i]]} ${tail} `;
+              }
+              return `${sc_acronym} ${id_part}`;
+          }
       }
 
       customElements.define(SCParallels.is, SCParallels);

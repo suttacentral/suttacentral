@@ -117,12 +117,12 @@ It is in effect a miniature version of the suttaplex-card
     <div class="parallel-item d-flex justify-content-space-between">
 
       <div class="parallel-item-main-info-container">
-        <div class="parallel-item-title vertical-margin-xs">[[_computeTitle(parallelItem.*)]]</div>
+        <div class="parallel-item-title vertical-margin-xs" title="[[_getHeadingTitle(parallelItem,localize)]]">[[_computeTitle(parallelItem.*)]]</div>
 
         <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
           <template is="dom-if" if="[[_getAcronymOrId(parallelItem)]]">
             <div class$="parallel-item-id [[_computeRootIdVisibility()]]">
-              <div title="{{localize('suttaCentralID')}}">[[_getAcronymOrId(parallelItem)]]</div>
+              <div title="[[_getAcronymTitle(parallelItem,localize)]]">[[_getAcronymOrUid(parallelItem,expansionData)]]</div>
             </div>
           </template>
 
@@ -214,7 +214,8 @@ It is in effect a miniature version of the suttaplex-card
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
-                  }
+                  },
+                  expansionData: Array
               }
           }
 
@@ -228,7 +229,15 @@ It is in effect a miniature version of the suttaplex-card
               if (this.parallelItem.original_title) {
                   return this.parallelItem.original_title;
               } else {
-                  return this.parallelItem.acronym ? this.parallelItem.acronym : this.parallelItem.uid;
+                  return this._getAcronymOrUid(this.parallelItem, this.expansionData);
+              }
+          }
+
+          _getHeadingTitle(item,localize) {
+              if (!item || item.translated_title || item.original_title) {
+                  return '';
+               } else {
+                  return this._getAcronymTitle(item,localize);
               }
           }
 
@@ -257,6 +266,37 @@ It is in effect a miniature version of the suttaplex-card
               if (this._computeTitle() === this.parallelItem.uid) {
                   return item.acronym ? item.acronym : item.uid;
               } else return '';
+          }
+
+          _getAcronymOrUid(item, expansionData) {
+              let sc_acronym = '';
+              if (item.acronym) {
+                sc_acronym = item.acronym.split('//')[0];
+              } else {
+                let uid_parts = item.uid.split('-');
+                let tail = '';
+                for (let i in uid_parts) {
+                  if (!expansionData[0][uid_parts[i]]) {
+                      tail = uid_parts[i].match(/\d+/g)[0];
+                      uid_parts[i] = uid_parts[i].match(/[a-z]*/g)[0];
+                  }
+                  sc_acronym += `${expansionData[0][uid_parts[i]]} ${tail}`;
+                }
+              }
+              return sc_acronym;
+          }
+
+          _getAcronymTitle(item,localize) {
+              let sc_acronym_title = localize('suttaCentralID');
+              if (item.acronym) {
+                const alt_number = item.acronym.split('//')[1];
+                if (alt_number) {
+                  let book = '';
+                  (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
+                  sc_acronym_title += `.\n${localize('alternateText', 'book', book)} ${alt_number}`;
+                }
+              }
+              return sc_acronym_title;
           }
       }
 
