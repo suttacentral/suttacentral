@@ -382,7 +382,7 @@
                   let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
                   ironAjax.generateRequest();
               }).catch(e => {
-                  console.error(e)
+                  console.error(e);
                   this._showToast('error', 'UnknownError');
               });
           }
