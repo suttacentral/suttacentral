@@ -11,13 +11,13 @@
     "message": "Wiadomość (opcjonalnie)",
     "payWithCard": "ZAPŁAĆ KARTĄ",
     "storageDisclaimer": "SuttaCentral nie obsługuje płatności ani nie przechowuje danych Twojej karty kredytowej. Wszystkie transakcje są obsługiwane bezpiecznie za pomocą <a href='https://stripe.com' target='blank'>Stripe</a>.",
-    "feeDisclaimer": "W zamian za obsługę transakcji Stripe pobiera opłatęw wysokości 1.75% + 30¢ dla Australijskich kart, oraz 2.9% + 30¢ dla międzynarodowych kart. W określonych przypadkach pobierana jest także opłata za konwersję walutową w wysokości 1.8% kwoty transakcji.",
+    "feeDisclaimer": "W zamian za obsługę transakcji Stripe pobiera opłatę w wysokości 1.75% + 30¢ dla Australijskich kart, oraz 2.9% + 30¢ dla międzynarodowych kart. W określonych przypadkach pobierana jest także opłata za konwersję walutową w wysokości 1.8% kwoty transakcji.",
     "paymentSuccessful": "Sadhu! Twoja wpłata przebiegła pomyślnie!",
     "redirectNotice": "Zostaniesz przekierowany na stronę startową za 5 sekund.",
     "Name (optional)": "Imię (opcjonalnie)",
     "UnknownError": "Nieznany błąd",
     "AmountCannotBeLessThan": "Wartość nie może być mniejsza $0.50 USD.",
-    "StripeLimitations": "Z powodu limitacji Strip-a,  dokonaj bezpośredniej płatności albo skontaktuj się z nami.",
+    "StripeLimitations": "Z powodu limitacji Strip'a, dokonaj bezpośredniej płatności albo skontaktuj się z nami.",
     "cardDeclined": "Twoja karta została odrzucona."
   }
 }
