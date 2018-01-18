@@ -8,7 +8,7 @@ from flask_restful import Api
 
 from api.views import (Currencies, Donations, Languages, LookupDictionaries, Menu, Paragraphs, Parallels, Sutta,
                        SuttaplexList, Images, Epigraphs, WhyWeRead, DictionaryFull, Glossary, DictionaryAdjacent,
-                       DictionarySimilar)
+                       DictionarySimilar, Expansion)
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
@@ -38,6 +38,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Glossary, '/glossary')
     api.add_resource(DictionaryAdjacent, '/dictionary_full/adjacent/<string:word>')
     api.add_resource(DictionarySimilar, '/dictionary_full/similar/<string:word>')
+    api.add_resource(Expansion, '/expansion')
 
     app.register_blueprint(api_bp)
     return api, app

@@ -218,6 +218,13 @@ class TextInfoModel:
         try:
             hgroup = root.select_one('.hgroup')
             h1 = hgroup.select_one('h1')
+            if lang_uid == 'lzh':
+                try:
+                    left_side = h1.select_one('.mirror-left')
+                    right_side = h1.select_one('.mirror-right')
+                    return right_side.text_content()+' ('+left_side.text_content()+')'
+                except:
+                    return regex.sub(r'^\P{alpha}*', '', h1.text_content())
             return regex.sub(r'^\P{alpha}*', '', h1.text_content())
         except Exception as e:
             logger.warn('Could not determine name for {}/{}'.format(lang_uid, uid))
@@ -227,12 +234,12 @@ class TextInfoModel:
         if lang_uid == 'lzh':
             e = element.next_in_order()
             while e is not None:
-                if e.tag == 'a' and e.select_one('.t, .t-linehead'):
+                if e.tag == 'a' and e.select_one('.t'):
                     break
                 e = e.next_in_order()
             else:
                 return
-            return 'T {}'.format(e.attrib['id'])
+            return '{}'.format(e.attrib['id']).replace('t','T ')
         elif lang_uid == 'pli':
             ppn = self._ppn
             e = element.next_in_order()

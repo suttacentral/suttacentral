@@ -12,7 +12,7 @@ from common.arangodb import get_db
 
 from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, \
     SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY, DICTIONARY_ADJACENT, \
-    DICTIONARY_SIMILAR
+    DICTIONARY_SIMILAR, EXPANSION
 
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
     sort_parallels_type_key, groupby_unsorted
@@ -852,5 +852,27 @@ class WhyWeRead(Resource):
             limit = 10
 
         data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit})
+
+        return data.batch(), 200
+
+class Expansion(Resource):
+    def get(self):
+        """
+        Send list of uid expansion results to suttaplex view
+        ---
+        responses:
+            expansion:
+                type: array
+                properties:
+                    uid:
+                        type: string
+                    acro:
+                        type: string
+                    name:
+                        type: string
+        """
+        db = get_db()
+
+        data = db.aql.execute(EXPANSION)
 
         return data.batch(), 200

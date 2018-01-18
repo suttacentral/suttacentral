@@ -51,6 +51,13 @@
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax
+        auto
+        id="uid_expansion_ajax"
+        url="/api/expansion"
+        handle-as="json"
+        last-response="{{expansionReturns}}"></iron-ajax>
+
+    <iron-ajax
         id="ajax"
         handle-as="json"
         loading="{{loadingResults}}"
@@ -67,7 +74,8 @@
           <div>
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
               <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]"
-                            difficulty="[[_computeItemDifficulty(item.difficulty)]]"></sc-suttaplex>
+                            difficulty="[[_computeItemDifficulty(item.difficulty)]]"
+                            expansion-data="[[expansionReturns]]"></sc-suttaplex>
             </template>
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
@@ -102,6 +110,12 @@
                   },
                   item: {
                       type: Object
+                  },
+                  expansionReturns: Array,
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
           }
@@ -121,8 +135,12 @@
               if (!this.categoryId) {
                   return;
               }
-              this.$.ajax.url = `${this.$.meta.byKey('API_ROOT')}\/suttaplex\/${this.categoryId}`;
+              this.$.ajax.url = `${this.$.meta.byKey('API_ROOT')}\/suttaplex\/${this.categoryId}?language=${language}}`;
               this.$.ajax.generateRequest();
+          }
+
+          _siteLanguageChanged() {
+              this._categoryChanged();
           }
 
           _responseDataChanged() {
