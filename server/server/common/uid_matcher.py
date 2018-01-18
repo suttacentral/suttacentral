@@ -1,29 +1,39 @@
 import regex
 import logging
+from collections import defaultdict
 from data_loader.util import humansortkey
+
 
 # This regex will identify a prefix and numerical ranges. Uses backreferences to be more magical.
 # can dn1, an1.1-10, an1.1-10
 decompose_rex = regex.compile(r'(?<prefix>[a-z]++.*?)(?<num_start>\d+)(?:-\1?(?<num_end>\d+))?$')
 
+# this regex deals with the rather insane case like an1.188-197-an1.219-234
+decompose_x_rex = regex.compile(r'(?<prefix>[a-z]++.*?)(?<num_start>\d+)(?:-\d+-\1\d+-(?<num_end>\d+))$')
+
 # If this regex matches the uid itself is probably bad
 duplicate_string_rex = regex.compile(r'(\b[a-z]++\d*\b).*\1')
 
+bookmark_stripper_rex = regex.compile(r'-?#[\w.]+(?:-\d+[.\d]*)?')
+
+def strip_bookmark(uid):
+    return bookmark_stripper_rex.sub('', uid)
+
 class UidMatcher:
-    def __init__(self, db):
-        self.db = db
-        self.coll = db['uids']
+    def __init__(self, all_uids):
+        self.populate(all_uids)            
+        self.all_uids = set(all_uids)
         
     def decompose(self, uid):
         num_start = None
         num_end = None
-        bookmark = None
         
-        if '#' in uid:
-            uid = regex.sub(r'-?#[\w.]+', '', uid)
-
         m = decompose_rex.match(uid)
         if m:
+            # Test for an edge case that is handled incorrectly
+            m2 = decompose_x_rex.match(uid)
+            if m2:
+                m = m2
             
             prefix = m['prefix']
             if duplicate_string_rex.match(prefix):
@@ -34,6 +44,8 @@ class UidMatcher:
             else:
                 num_start = int(m["num_start"])
                 num_end = int(m["num_end"]) if m["num_end"] else num_start
+                if num_end < num_start:
+                    logging.error(f'Uid {uid} appears to contain a range, but the {num_end} < {num_start}')
             prefix = prefix.rstrip('.')
         else:
             prefix = uid
@@ -45,31 +57,33 @@ class UidMatcher:
     
     def populate(self, uids):
         docs = [self.decompose(uid) for uid in uids]
-        self.coll.import_bulk(docs, overwrite='true')
-        
+        self.prefix_index = defaultdict(list)
+        for doc in docs:
+            if doc['num_start'] is None:
+                continue
+            self.prefix_index[doc['prefix']].append(doc)
+    
     def get_matching_uids(self, uid):
+        uid = strip_bookmark(uid)
+        if uid in self.all_uids:
+            return [uid]
         decomposed = self.decompose(uid)
-        r = self.query_arango(decomposed)
-        uids = sorted(r, key=humansortkey)
-        if not uids:
-            uids = list(self.query_arango_prefix(prefix=decomposed['prefix']))
-                
-        return uids
+        
+        matches = sorted(self.range_query(**decomposed), key=humansortkey)
+        if matches:
+            return matches
+        prefix = decomposed['prefix']
+        if prefix in self.all_uids:
+            return [prefix]
+        return self.prefix_query(prefix)
     
-    def query_arango(self, decomposed_uid):
-        del decomposed_uid['uid']
-        return self.db.aql.execute('''
-            FOR doc IN uids
-                FILTER doc.prefix == @prefix
-                FILTER (@num_start <= doc.num_end AND @num_end >= doc.num_start) OR 
-                       (doc.num_start <= @num_end AND doc.num_end >= @num_start)
-                
-                RETURN doc.uid
-    ''', bind_vars=decomposed_uid)
+    def range_query(self, prefix, num_start, num_end, uid):
+        candidates = self.prefix_index.get(prefix, [])
+        for doc in candidates:
+            if (num_start <= doc['num_end'] and num_end >= doc['num_start'] or
+                doc['num_start'] <= num_end and doc['num_end'] >= num_start):
+                    yield doc['uid']
     
-    def query_arango_prefix(self, prefix):
-        return self.db.aql.execute('''
-            FOR doc IN uids
-                FILTER doc.prefix == @prefix OR doc.uid == @prefix
-                RETURN doc.uid
-        ''', bind_vars={'prefix': prefix})
+    def prefix_query(self, prefix):
+        return [doc['uid'] for doc in self.prefix_index.get(prefix, [])]
+        

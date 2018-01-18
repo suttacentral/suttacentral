@@ -3,7 +3,7 @@ import itertools
 
 from common import arangodb
 from common.utils import app_context
-from common.uid_matcher import UidMatcher
+from common.uid_matcher import UidMatcher, strip_bookmark
 
 
 
@@ -24,20 +24,22 @@ decompose_test_data = [
         ('pi-tv-bu-vb-pj4', 'pi-tv-bu-vb-pj', 4, 4),
         ('pi-tv-bu-vb-sk1-10', 'pi-tv-bu-vb-sk', 1, 10),
         ('pi-tv-bu-vb-sk1-pi-tv-bu-vb-sk10', 'pi-tv-bu-vb-sk', 1, 10),
+        # the below should be considered a depreciated form, but check it works
+        ('an1.188-197-an1.219-234', 'an1', 188, 234),
         # The below are malformed, just check nothing crazy happens
         ('1df4', '1df4', None, None),
         ('42', '42', None, None),
     ]
 ]
 
-uids = list(itertools.chain(
-            (f'dn', 'an', 'sa', 'sa-2'),
-            (f'dn{i}' for i in range(1, 35)),
-            (f'an{i}' for i in range(1,12)),
-            (f'an1.{i*10+1}-{i*10+10}' for i in range(0,10)),
-            (f'sa{i}' for i in range(1,100)),
-            (f'sa-2.{i}' for i in range(1,100))
-        ))
+all_uids = list(itertools.chain(
+        (f'dn', 'an', 'sa', 'sa-2'),
+        (f'dn{i}' for i in range(1, 35)),
+        (f'an{i}' for i in range(1,12)),
+        (f'an1.{i*10+1}-{i*10+10}' for i in range(0,10)),
+        (f'sa{i}' for i in range(1,100)),
+        (f'sa-2.{i}' for i in range(1,100))
+    ))
 
 match_test_data = [
     ('dn', ['dn']),
@@ -62,20 +64,31 @@ match_test_data = [
     ('not-a-uid', []),
 ]
 
+# some of these cases probably shouldn't exist
+bookmark_strip_test_data = [
+    ('sa-2.100#100', 'sa-2.100'),
+    ('sa-2.100#100.1', 'sa-2.100'),
+    ('sa-2.100#100.1-100.2', 'sa-2.100'),
+    ('an1.1-10#1', 'an1.1-10'),
+    ('an1.1-10#5-an1.11-20#15', 'an1.1-10-an1.11-20'),
+    ('dn2#4-#5', 'dn2'),
+    ('dn2#4-5', 'dn2'),
+    ('dn2#foo', 'dn2'),
+    ('dn2#1z', 'dn2'),
+]
+
+@pytest.mark.parametrize("uid,expected", bookmark_strip_test_data)
+def test_strip_bookmark(uid, expected):
+    assert strip_bookmark(uid) == expected
+
 class TestUidMatcher:
     @pytest.fixture
-    @app_context
     def uid_matcher(self, app):
-        db = arangodb.get_db()
-        return UidMatcher(db=db)
+        return UidMatcher(all_uids)
     
     @pytest.mark.parametrize("uid,expected",  decompose_test_data)
     def test_decompose(self, uid_matcher, uid, expected):
         assert uid_matcher.decompose(uid) == expected
-    
-    def test_populate(self, uid_matcher):
-        uid_matcher.populate(uids)
-        # smoke test
     
     @pytest.mark.parametrize("uid,expected", match_test_data)
     def test_get_matching_uids(self, uid_matcher, uid, expected):
