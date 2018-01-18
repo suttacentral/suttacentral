@@ -243,7 +243,7 @@
           <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
             [[item.original_title]]
           </span>
-          <span title="[[_getAcronymTitle(item,localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
+          <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
             [[_getAcronymOrUid(item,expansionData)]]
           </span>
           <template is="dom-if" if="[[item.volpages]]">
@@ -502,7 +502,7 @@
               if (!item || item.translated_title || item.original_title) {
                   return '';
                } else {
-                  return this._getAcronymTitle(item,localize);
+                  return this._getAcronymTitle(item, localize);
               }
           }
 
@@ -532,9 +532,9 @@
               return sc_acronym;
           }
 
-          _getAcronymTitle(item,localize) {
+          _getAcronymTitle(item, localize) {
               let sc_acronym_title = localize('suttaCentralID');
-              if (item.acronym) {
+              if (item && item.acronym) {
                 const alt_number = item.acronym.split('//')[1];
                 if (alt_number) {
                   let book = '';
