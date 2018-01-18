@@ -7,11 +7,11 @@ from collections import Counter, defaultdict
 from itertools import product
 from pathlib import Path
 from typing import Any, List, Set
-from arango import ArangoClient
 from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
+from common import arangodb
 from .util import json_load
 from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
@@ -505,7 +505,7 @@ def run(no_pull=False):
     Args:
         force: Whether or not force clean db setup.
     """
-    conn = ArangoClient(**current_app.config.get('ARANGO_CLIENT'))
+    
 
     data_dir = current_app.config.get('BASE_DIR') / 'nextdata'
     html_dir = data_dir / 'html_text'
@@ -516,9 +516,9 @@ def run(no_pull=False):
     additional_info_dir = data_dir / 'additional-info'
     dictionaries_dir = data_dir / 'dictionaries'
 
-    db_name = current_app.config.get('ARANGO_DB')
-    db = conn.database(db_name)
-
+    
+    db = arangodb.get_db()
+    
     if not no_pull:
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
         collect_data(po_dir, current_app.config.get('PO_REPO'))
