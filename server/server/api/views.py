@@ -12,7 +12,7 @@ from common.arangodb import get_db
 
 from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, \
     SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY, DICTIONARY_ADJACENT, \
-    DICTIONARY_SIMILAR
+    DICTIONARY_SIMILAR, EXPANSION
 
 from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
     sort_parallels_type_key, groupby_unsorted
@@ -97,11 +97,14 @@ class Menu(Resource):
                         type: string
         """
         db = get_db()
+
+        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+
         if submenu_id:
-            divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id})
+            divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id, 'language': language})
             data = list(divisions)
         else:
-            divisions = db.aql.execute(MENU)
+            divisions = db.aql.execute(MENU, bind_vars={'language': language})
             data = self.group_by_parents(divisions, ['pitaka'])
 
         for pitaka in data:
@@ -545,7 +548,9 @@ class Currencies(Resource):
         """
         db = get_db()
 
-        data = db.aql.execute(CURRENCIES)
+        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+
+        data = db.aql.execute(CURRENCIES, bind_vars={'language': language})
 
         currencies = []
         default_currency_index: int = None
@@ -847,5 +852,27 @@ class WhyWeRead(Resource):
             limit = 10
 
         data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit})
+
+        return data.batch(), 200
+
+class Expansion(Resource):
+    def get(self):
+        """
+        Send list of uid expansion results to suttaplex view
+        ---
+        responses:
+            expansion:
+                type: array
+                properties:
+                    uid:
+                        type: string
+                    acro:
+                        type: string
+                    name:
+                        type: string
+        """
+        db = get_db()
+
+        data = db.aql.execute(EXPANSION)
 
         return data.batch(), 200

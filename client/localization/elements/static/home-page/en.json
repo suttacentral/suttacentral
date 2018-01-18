@@ -8,19 +8,27 @@
         "075042e8f0218630c1c81f34bda77f67": "SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. This is a large collection of teachings attributed to the Buddha or his earliest disciples, who were teaching in India around 2500 years ago. They are regarded as sacred canon in all schools of Buddhism.",
         "a5172cf2c34de3fc8e2af331ac915ec9": "Where to begin",
         "02e6b0e41516ae0677084bb23b60d3d9": "There are thousands of early Buddhist texts, and they’re not organized for easy reading. But here’s the good news: you are not alone. We’ve been down this road ourselves, and have tried to make it a little easier for you. Here’s some things you can try.",
+        "cb084786af2164b9b77d6d6c35d659a0": "<a class=\"button-link first-card-button grid-button\" href=\"/introduction\"> <paper-button class=\"button\" raised=\"\">INTRODUCTION</paper-button> </a>",
+        "b12f1da29ee701d750cb4d5580f6ff12": "<a class=\"button-link second-card-button grid-button\" href=\"/start\"> <paper-button class=\"button\" raised=\"\">GET STARTED</paper-button> </a>",
         "80c9f84bfa3911cda919d61934abc0a2": "Meet<br class=\"d-none\"/> SuttaCentral",
         "84e1d6799debf209a5ce8267eaed74e9": "When I began to experience the peace of meditation, I needed to understand more deeply what I was going through. I found out there were real teachings from the Buddha himself, and felt drawn to them. For over twenty years now,",
         "24cbc4d3253a2779ae4dab326e42659b": "Tipiṭaka—the three baskets",
         "e30baf2773fd1ff10ac21a7ebd63198d": "Discourses",
         "31f31787de5aa09d662dfef82b0b686e": "These are our primary sources for understanding what the Buddha taught. They record the Buddha’s teachings and conversations on specific occasions with a diverse range of people. Discourses are called sutta in Pali, which is spelled sūtra in Sanskrit.",
+        "3d9cb1688e0ea52d25903a681b97e433": "<a class=\"button-link\" href=\"/discourses\"> <paper-button class=\"button card-button\" raised=\"\">MORE ...</paper-button> </a>",
         "09c18e7d1f00a37ba925092e7a101a05": "Monastic Law",
         "45cc0214114c2d971cf2701f842f8926": "The texts on Monastic Law (vinaya) detail the lifestyle, rules, and procedures for Buddhist monks and nuns. They provide the guidelines for Buddhist monastics to this day, and in addition, paint a detailed and vivid picture of everyday life in ancient India.",
+        "e7286ed5372dab8bbe92e97a271db650": "<a class=\"button-link\" href=\"/vinaya\"> <paper-button class=\"button card-button\" raised=\"\">MORE ...</paper-button> </a>",
         "ff9331ad058b3717457b73d2bdc51534": "Abhidhamma",
         "db01f7b42cfc777fd2f2a84d3a6787fa": "Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses. The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.",
+        "8d3804209ab8b6177153a4315fc93a7e": "<a class=\"button-link\" href=\"/abhidhamma\"> <paper-button class=\"button card-button\" raised=\"\">MORE ...</paper-button> </a>",
         "091d2f16e012dc0e2eb6db75d4f878c6": "Why<br class=\"d-none\"/> we<br class=\"d-none\"/> read",
+        "3383951cea40c8afe97fa1871b07a1d3": "<a class=\"button-link\" href=\"https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747\" target=\"_blank\"> <paper-button class=\"button card-button-middle\" raised=\"\">TELL US WHY YOU READ</paper-button> </a>",
         "bb5566f11a6995bf929b51ece58274bc": "SuttaCentral—a new beginning",
         "08d18ae95254308908e1ec79dfd33748": "We’re proud to share with you the new SuttaCentral. The team has been working on it for over two years, and we think it’s something special. The new site features an entirely new translation of the four Pali nikāyas, prepared specially for SuttaCentral by Bhante Sujato. And the whole site has been re-built to be faster, clearer, and more flexible.",
+        "970494445b71db64bd003b47ccb035b1": "<a class=\"button-link\" href=\"/a-new-beginning\"> <paper-button class=\"button card-button\" raised=\"\">WHAT’S NEW IN 2018</paper-button> </a>",
         "149842aa5477edb219ce272ec2aab269": "Indexes and Terminology",
-        "70a49d1ca4c56cd629f76e90d6b6cc0f": "Like any specialized field, Buddhist studies has it's own terminology and content. It's easy to get lost or to miss references, so here we provide indexes of terms in the early texts sorted by subject, name and simile, as well a glossary of important terms. These hand-curated lists offer another way to find the sutta or passage that you're looking for."
+        "70a49d1ca4c56cd629f76e90d6b6cc0f": "Like any specialized field, Buddhist studies has it's own terminology and content. It's easy to get lost or to miss references, so here we provide indexes of terms in the early texts sorted by subject, name and simile, as well a glossary of important terms. These hand-curated lists offer another way to find the sutta or passage that you're looking for.",
+        "6eff00aea38733ff52246d2aa345be07": "<a class=\"button-link\" href=\"/subjects\"> <paper-button class=\"button card-button\" raised=\"\">Indexes</paper-button> </a>"
     }
 }

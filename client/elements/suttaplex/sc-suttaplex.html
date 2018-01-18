@@ -231,7 +231,7 @@
       <div class="card-content">
 
         <div class="suttaplex-head-container">
-          <h3 class="suttaplex-heading">[[_computeMainHeading(item)]]</h3>
+          <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item,localize)]]">[[_computeMainHeading(item)]]</h3>
           <iron-icon id="difficulty_icon" class="primary-accent-icon"
                      icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
           <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds class="sc-tooltip">
@@ -243,8 +243,8 @@
           <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
             [[item.original_title]]
           </span>
-          <span title="{{localize('suttaCentralID')}}" class$="[[_computeHideUID(item)]] nerdy-row-element">
-            [[_getAcronymOrUid(item)]]
+          <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
+            [[_getAcronymOrUid(item,expansionData)]]
           </span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
@@ -292,7 +292,7 @@
         </div>
         <div class="flex-div">
           <div class="languagedrop">
-            <sc-language-menu language-choice="[[item.translations]]" title-label="{{localize('more')}}"
+            <sc-language-menu language-choice="[[item.translations]]"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
                            root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndexWithTimeout"
                            on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></sc-language-menu>
@@ -387,7 +387,8 @@
                   },
                   difficulty: {
                       type: String
-                  }
+                  },
+                  expansionData: Object
               }
           }
 
@@ -493,7 +494,15 @@
               } else if (item.original_title) {
                   return item.original_title;
               } else {
-                  return item.acronym || item.uid;
+                  return this._getAcronymOrUid(item, this.expansionData);
+              }
+          }
+
+          _getMainHeadingTitle(item,localize) {
+              if (!item || item.translated_title || item.original_title) {
+                  return '';
+               } else {
+                  return this._getAcronymTitle(item, localize);
               }
           }
 
@@ -505,8 +514,35 @@
               return author.replace(/\b\w/g, l => l.toUpperCase());
           }
 
-          _getAcronymOrUid(item) {
-              return item.acronym || item.uid;
+          _getAcronymOrUid(item, expansionData) {
+              let sc_acronym = '';
+              if (item.acronym) {
+                sc_acronym = item.acronym.split('//')[0];
+              } else {
+                let uid_parts = item.uid.split('-');
+                let tail = '';
+                for (let item in uid_parts) {
+                  if (!expansionData[0][uid_parts[item]]) {
+                      tail = uid_parts[item].match(/\d+/g)[0];
+                      uid_parts[item] = uid_parts[item].match(/[a-z]*/g)[0];
+                  }
+                  sc_acronym += `${expansionData[0][uid_parts[item]]} ${tail}`;
+                }
+              }
+              return sc_acronym;
+          }
+
+          _getAcronymTitle(item, localize) {
+              let sc_acronym_title = localize('suttaCentralID');
+              if (item && item.acronym) {
+                const alt_number = item.acronym.split('//')[1];
+                if (alt_number) {
+                  let book = '';
+                  (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
+                  sc_acronym_title += `.\n${localize('alternateText', 'book', book)} ${alt_number}`;
+                }
+              }
+              return sc_acronym_title;
           }
 
           _getRootText() {

@@ -154,7 +154,7 @@
     <iron-ajax
         auto
         id='currency_ajax'
-        url="/api/currencies"
+        url="[[_computeCurrencyUrl(language)]]"
         handle-as="json"
         last-response="{{responseData}}"
         on-response="_handleResponse"></iron-ajax>
@@ -171,6 +171,7 @@
         on-response="_paymentFinished"></iron-ajax>
 
     <iron-location path="{{path}}"></iron-location>
+    <iron-meta id="meta"></iron-meta>
 
     <div id="page-wrap">
       <section>
@@ -302,11 +303,11 @@
                   errorMessages: {
                       type: Object,
                       value: {
-                          0: 'Unknown error',
-                          1: 'Amount cannot be less than $0.50 USD.',
-                          2: 'Due to Stripe limitations,  please make a direct payment, or else contact us for help.',
-                          3: 'Your card was declined.'
-                      }
+                        0: 'UnknownError',
+                        1: 'AmountCannotBeLessThan',
+                        2: 'StripeLimitations',
+                        3: 'cardDeclined'
+                    }
                   },
                   language: {
                       type: String,
@@ -352,7 +353,7 @@
                       posiiton += 1;
                       e.preventDefault();
                   }
-              })
+              });
           }
 
           _siteLanguageChanged() {
@@ -381,7 +382,8 @@
                   let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
                   ironAjax.generateRequest();
               }).catch(e => {
-                  console.error(e)
+                  console.error(e);
+                  this._showToast('error', 'UnknownError');
               });
           }
 
@@ -429,11 +431,16 @@
               this.shadowRoot.querySelector('.message-input').value = undefined;
           }
 
+          _computeCurrencyUrl(language) {
+              const apiRoot = this.$.meta.byKey('API_ROOT');
+              return `${apiRoot}/currencies?language=${language}`;
+          }
+
           _showToast(toastType, text) {
               this.dispatchEvent(new CustomEvent('show-sc-toast', {
                   detail: {
                       toastType: toastType,
-                      message: text
+                      message: this.localize(text)
                   },
                   bubbles: true,
                   composed: true

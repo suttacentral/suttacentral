@@ -1,11 +1,11 @@
 {
   "pl": {
-    "more": "Więcej",
     "beginner": "Rekomendowane dla początkujących studentów",
     "intermediate": "Rekomendowane dla średniozaawansowanych studentów",
     "advanced": "Rekomendowane dla zaawansowanych studentów",
     "originalTitle": "Oryginalny tytuł",
     "suttaCentralID": "Identyfikator SuttaCentral",
+    "alternateText": "Numer alternatywny w wydaniu {book}:",
     "volumeAndPage": "Wolumen i strona",
     "blurb": "Wprowadzenie",
     "goToTranslation": "Idź do tłumaczenia autorstwa {author}",
