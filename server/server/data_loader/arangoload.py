@@ -14,7 +14,9 @@ from tqdm import tqdm
 
 from .util import json_load
 from .change_tracker import ChangeTracker
-from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, divisions, images_files, homepage
+from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
+    divisions, images_files, homepage
+
 
 def update_data(repo: Repo, repo_addr: str):
     """Updates given git repo.
@@ -83,40 +85,53 @@ def process_menu_ordering(structure_dir):
     return data
 
 
-def process_division_files(docs, edges, mapping, division_files, root_languages, structure_dir):
+def process_division_files(docs, name_docs, edges, mapping, division_files, root_languages,
+                           structure_dir):
     sutta_file = json_load(structure_dir / 'sutta.json')
-
 
     sutta_data = {}
     for sutta in sutta_file:
         uid = sutta.pop('uid')
-        sutta_data[uid] = {'acronym': sutta['acronym'], 'biblio_uid': sutta['biblio_uid'], 'volpage': sutta['volpage']}
+        sutta_data[uid] = {'acronym': sutta['acronym'], 'biblio_uid': sutta['biblio_uid'],
+                           'volpage': sutta['volpage']}
 
     reg = regex.compile(r'^\D+')
     number_reg = regex.compile(r'.*?([0-9]+)$')
-    
+
     uids_seen = defaultdict(list)
     # Sort the division folders to process subdirectories later
     division_files.sort(key=lambda path: len(path.parts))
+
     for division_file in division_files:
         entries = json_load(division_file)
-        
+
         for i, entry in enumerate(entries):
             path = pathlib.PurePath(entry['_path'])
             mapping[path] = entry
-            
+
             uid = path.parts[-1]
             uids_seen[uid].append(entry['_path'])
             entry['_key'] = uid
             entry['uid'] = uid
 
             base_uid = reg.match(uid)[0]
+
+            lang = 'en'
+
             while base_uid:
                 try:
                     entry['root_lang'] = root_languages[base_uid]
+                    lang = root_languages[base_uid]
                     break
                 except KeyError:
                     base_uid = '-'.join(base_uid.split('-')[:-1])
+
+            if 'name' in entry:
+                name_docs.append({'name': entry.pop('name'),
+                                  'uid': uid,
+                                  'lang': lang,
+                                  'root': True,
+                                  '_key': f'{uid}_{lang}'})
 
             del entry['_path']
             ordering_data = process_menu_ordering(structure_dir)
@@ -148,7 +163,7 @@ def process_division_files(docs, edges, mapping, division_files, root_languages,
         if len(paths) == 1:
             continue
         logging.error(f'{uid} appears {len(paths)} times: {",".join(paths)}')
-            
+
 
 def process_category_files(category_files, db, edges, mapping):
     for category_file in category_files:
@@ -157,7 +172,7 @@ def process_category_files(category_files, db, edges, mapping):
             continue
         collection = db[category_name]
         category_docs = []
-        
+
         entries = json_load(category_file)
 
         edge_type = category_file.stem
@@ -193,6 +208,7 @@ def process_category_files(category_files, db, edges, mapping):
         collection.truncate()
         collection.import_bulk(category_docs)
 
+
 def perform_update_queries(db):
     # add root language uid to everything.
     db.aql.execute('''
@@ -206,6 +222,7 @@ def perform_update_queries(db):
 
 def add_root_docs_and_edges(change_tracker, db, structure_dir):
     docs = []
+    name_docs = []
     edges = []
     mapping = {}
     division_files = sorted((structure_dir / 'division').glob('**/*.json'))
@@ -216,7 +233,8 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     if change_tracker.is_any_file_new_or_changed(division_files + category_files):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
-        process_division_files(docs, edges, mapping, division_files, root_languages, structure_dir)
+        process_division_files(docs, name_docs, edges, mapping, division_files, root_languages,
+                               structure_dir)
 
         process_category_files(category_files, db, edges, mapping)
 
@@ -228,10 +246,13 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
         # make documents
         db['root'].truncate()
         db['root'].import_bulk(docs)
+        db['root_names'].truncate()
+        db['root_names'].import_bulk(name_docs)
         db['root_edges'].truncate()
         db['root_edges'].import_bulk(edges)
-        
+
         perform_update_queries(db)
+
 
 def get_true_uids(uid: str, all_uids: Set[str]) -> List[str]:
     """Extract list of indexes out of our range notation.
@@ -315,7 +336,7 @@ def print_once(msg: Any, antispam: Set):
     antispam.add(msg)
 
 
-def generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir,  db):
+def generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db):
     relationship_files = list(relationship_dir.glob('*.json'))
 
     if not change_tracker.is_any_file_new_or_changed(relationship_files):
@@ -333,7 +354,6 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
     '''))
 
     remarks_data = json_load(additional_info_dir / 'notes.json')
-
 
     remarks = defaultdict(dict)
 
@@ -374,7 +394,8 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                             true_to_uids = get_true_uids(to_uid, all_uids)
                             for true_from_uid in true_from_uids:
                                 for true_to_uid in true_to_uids:
-                                    remark = remarks.get(frozenset([true_from_uid, true_to_uid]), None)
+                                    remark = remarks.get(frozenset([true_from_uid, true_to_uid]),
+                                                         None)
                                     ll_edges.append({
                                         '_from': true_from_uid,
                                         '_to': true_to_uid,
@@ -417,12 +438,13 @@ def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
 
     with author_file.open('r', encoding='utf-8') as authorf:
         authors = json.load(authorf)
-        
-    force = change_tracker.is_any_function_changed([textdata.TextInfoModel, textdata.ArangoTextInfoModel])
+
+    force = change_tracker.is_any_function_changed(
+        [textdata.TextInfoModel, textdata.ArangoTextInfoModel])
     if force:
         print('This might take a while')
-        db['html_text'].truncate()        
-    
+        db['html_text'].truncate()
+
     with textdata.ArangoTextInfoModel(db=db) as tim:
         for lang_dir in tqdm(html_dir.glob('*')):
             if not lang_dir.is_dir:
@@ -454,7 +476,8 @@ def process_blurbs(db, additional_info_dir):
     blurb_info = json_load(blurb_file)
 
     docs = [{'uid': uid, 'lang': lang, 'blurb': blurb}
-            for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in tqdm(suttas.items())]
+            for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in
+            tqdm(suttas.items())]
 
     db.collection(collection_name).truncate()
     db.collection('blurbs').import_bulk(docs)
@@ -464,7 +487,7 @@ def process_difficulty(db, additional_info_dir):
     print('Loading difficulties')
     difficulty_file = additional_info_dir / 'difficulties.json'
     collection_name = 'difficulties'
-    
+
     difficulty_info = json_load(difficulty_file)
 
     docs = [{'uid': uid, 'difficulty': lvl}
@@ -495,11 +518,11 @@ def run(no_pull=False):
 
     db_name = current_app.config.get('ARANGO_DB')
     db = conn.database(db_name)
-    
+
     if not no_pull:
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
         collect_data(po_dir, current_app.config.get('PO_REPO'))
-    
+
     images_files.load_images_links(db)
 
     change_tracker = ChangeTracker(data_dir, db)
@@ -508,7 +531,7 @@ def run(no_pull=False):
 
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
-    po.load_po_texts(change_tracker, po_dir, db)
+    po.load_po_texts(change_tracker, po_dir, db, additional_info_dir)
 
     generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
 
