@@ -151,7 +151,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   languageMenu: {
                       type: Array,
                       notify: true,
-                      computed: '_computeLanguageMenu(languageChoice)'
+                      computed: '_computeLanguageMenu(languageChoice, rootLangMappings)'
                   },
                   inputLanguage: String,
                   originalLanguage: String,
@@ -189,16 +189,18 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               this.loadResources(this.resolveUrl(`/localization/elements/sc-language-menu/${this.language}.json`));
           }
 
-          _computeLanguageMenu() {
-            const languageMenu = [];
-            for (let item in this.languageChoice) {
-              if (this.languageChoice[item].lang in this.rootLangMappings) {
-                languageMenu.splice(0, 0, this.languageChoice[item]);
-              } else {
-                languageMenu.push(this.languageChoice[item]);
-              }
+          _computeLanguageMenu(languageChoice, rootLangMappings) {
+            if (languageChoice) {
+              const languageMenu = [];
+              languageChoice.forEach(item => {
+                  if (item.lang in rootLangMappings) {
+                      languageMenu.splice(0, 0, item);
+                  } else {
+                      languageMenu.push(item);
+                  }
+              });
+              return languageMenu;
             }
-            return languageMenu;
           }
 
           // does not list items that are from the inputLanguage because those are listed elsewhere.

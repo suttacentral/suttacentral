@@ -191,14 +191,18 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
-                  expansionData: Array
+                  expansionData: {
+                      type: Array
+                  }
               }
           }
 
           ready() {
               super.ready();
               this.addEventListener('loading-results-changed', this._resizeParentList);
-              if (!this.expansionData) {this.$.uid_expansion_ajax.generateRequest()};
+              if (!this.expansionData) {
+                this.$.uid_expansion_ajax.generateRequest()
+              }
           }
 
           _siteLanguageChanged() {

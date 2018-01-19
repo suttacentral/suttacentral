@@ -117,12 +117,12 @@ It is in effect a miniature version of the suttaplex-card
     <div class="parallel-item d-flex justify-content-space-between">
 
       <div class="parallel-item-main-info-container">
-        <div class="parallel-item-title vertical-margin-xs" title="[[_getHeadingTitle(parallelItem,localize)]]">[[_computeTitle(parallelItem.*)]]</div>
+        <div class="parallel-item-title vertical-margin-xs" title="[[_getHeadingTitle(parallelItem, localize)]]">[[_computeTitle(parallelItem.*)]]</div>
 
         <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
           <template is="dom-if" if="[[_getAcronymOrId(parallelItem)]]">
             <div class$="parallel-item-id [[_computeRootIdVisibility()]]">
-              <div title="[[_getAcronymTitle(parallelItem,localize)]]">[[_transformId(parallelItem.to,expansionData)]]</div>
+              <div title="[[_getAcronymTitle(parallelItem, localize)]]">[[_transformId(parallelItem.to, expansionData)]]</div>
             </div>
           </template>
 
@@ -215,7 +215,9 @@ It is in effect a miniature version of the suttaplex-card
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
-                  expansionData: Array
+                  expansionData: {
+                      type: Array
+                  }
               }
           }
 
@@ -237,7 +239,7 @@ It is in effect a miniature version of the suttaplex-card
               if (!item || item.translated_title || item.original_title) {
                   return '';
                } else {
-                  return this._getAcronymTitle(item,localize);
+                  return this._getAcronymTitle(item, localize);
               }
           }
 
@@ -268,7 +270,7 @@ It is in effect a miniature version of the suttaplex-card
               } else return '';
           }
 
-          _getAcronymTitle(item,localize) {
+          _getAcronymTitle(item, localize) {
               let sc_acronym_title = localize('suttaCentralID');
               if (item.acronym) {
                 const alt_number = item.acronym.split('//')[1];
@@ -293,6 +295,12 @@ It is in effect a miniature version of the suttaplex-card
             return `#${ids}`;
           }
 
+          // This function parses the input uid of the parallel and splits it into
+          // it's main document part (root_part) and the id (paragraphs) within the document (id_part)
+          // The root_part is then split into it's various elements which are then expanded
+          // according to the data in the expansion-table. 
+          // So f.i. 'an3.4#23-#25' becomes 'AN 3.4 #23-25' and 'lzh-sarv-bi-vb-np1' becomes
+          // 'Lzh Sarv Bi Vb NP 1'
           _transformId(rootId, expansionData) {
               rootId = rootId.replace('~','');
               let sc_acronym = '';
