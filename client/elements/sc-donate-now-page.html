@@ -389,7 +389,7 @@
 
           _paymentFinished() {
               this.processingPayment = false;
-              this._showToast('success', this.localize('paymentSuccessful') + this.localize('redirectNotice'));
+              this._showToast('success', `${this.localize('paymentSuccessful')} ${this.localize('redirectNotice')}`);
               setTimeout(() => {
                   this.$.submitButton.disabled = false;
                   this.resetForm();
@@ -437,10 +437,11 @@
           }
 
           _showToast(toastType, text) {
+              const localized = this.localize(text);
               this.dispatchEvent(new CustomEvent('show-sc-toast', {
                   detail: {
                       toastType: toastType,
-                      message: this.localize(text)
+                      message: localized ? localized : text
                   },
                   bubbles: true,
                   composed: true
