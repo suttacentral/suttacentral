@@ -59,6 +59,7 @@ class Loader:
 
     def _affect_db(self, collection, update, document):
         if update:
+            collection.update(document)
             self.counter_updated += 1
         else:
             try:
