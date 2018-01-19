@@ -1,6 +1,7 @@
 {
     "en": {
         "suttaCentralID": "SuttaCentral ID",
+        "alternateText": "Alternate number in {book} edition:",
         "volAndPageNum": "Volume and page number",
         "translations": "Translations"
     }
