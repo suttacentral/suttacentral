@@ -78,7 +78,6 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax
-        auto
         id="uid_expansion_ajax"
         url="/api/expansion"
         handle-as="json"
@@ -199,6 +198,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           ready() {
               super.ready();
               this.addEventListener('loading-results-changed', this._resizeParentList);
+              if (!this.expansionData) {this.$.uid_expansion_ajax.generateRequest()};
           }
 
           _siteLanguageChanged() {

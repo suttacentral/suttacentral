@@ -108,7 +108,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                            title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="auto">
         <paper-listbox class="language-menu-listbox" slot="dropdown-content" selected="0">
 
-          <template is="dom-repeat" items="[[languageChoice]]" as="translation">
+          <template is="dom-repeat" items="[[languageMenu]]" as="translation">
             <template is="dom-if" if="[[!_otherLanguage(translation, inputLanguage)]]">
               <section class$="{{_rootLanguageClassOrStandard(translation)}} no-outline">
                 <a class="language-menu-url"
@@ -148,6 +148,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                       type: Array,
                       notify: true
                   },
+                  languageMenu: {
+                      type: Array,
+                      notify: true,
+                      computed: '_computeLanguageMenu(languageChoice)'
+                  },
                   inputLanguage: String,
                   originalLanguage: String,
                   rootId: String,
@@ -182,6 +187,18 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
           _siteLanguageChanged() {
               this.loadResources(this.resolveUrl(`/localization/elements/sc-language-menu/${this.language}.json`));
+          }
+
+          _computeLanguageMenu() {
+            const languageMenu = [];
+            for (let item in this.languageChoice) {
+              if (this.languageChoice[item].lang in this.rootLangMappings) {
+                languageMenu.splice(0, 0, this.languageChoice[item]);
+              } else {
+                languageMenu.push(this.languageChoice[item]);
+              }
+            }
+            return languageMenu;
           }
 
           // does not list items that are from the inputLanguage because those are listed elsewhere.
