@@ -207,7 +207,7 @@ def process_category_files(category_files, db, edges, mapping):
 
             category_docs.append(entry)
         collection.truncate()
-        collection.import_bulk(category_docs)
+        collection.import_bulk(category_docs, halt_on_error=True)
 
 
 def perform_update_queries(db):
@@ -246,11 +246,11 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
 
         # make documents
         db['root'].truncate()
-        db['root'].import_bulk(docs)
+        db['root'].import_bulk(docs, halt_on_error=True)
         db['root_names'].truncate()
-        db['root_names'].import_bulk(name_docs)
+        db['root_names'].import_bulk(name_docs, halt_on_error=True)
         db['root_edges'].truncate()
-        db['root_edges'].import_bulk(edges)
+        db['root_edges'].import_bulk(edges, halt_on_error=True)
 
         perform_update_queries(db)
 
@@ -364,7 +364,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                             'remark': remark
                         })
     db['relationship'].truncate()
-    db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
+    db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/', halt_on_error=True)
 
 
 def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir):
@@ -407,7 +407,7 @@ def load_json_file(db, change_tracker, json_file):
         for d in data:
             d['_key'] = d['uid']
         db[collection_name].truncate()
-        db[collection_name].import_bulk(data)
+        db[collection_name].import_bulk(data, halt_on_error=True)
 
 
 def process_blurbs(db, additional_info_dir):
@@ -422,7 +422,7 @@ def process_blurbs(db, additional_info_dir):
             tqdm(suttas.items())]
 
     db.collection(collection_name).truncate()
-    db.collection('blurbs').import_bulk(docs)
+    db.collection('blurbs').import_bulk(docs, halt_on_error=True)
 
 
 def process_difficulty(db, additional_info_dir):
@@ -436,7 +436,7 @@ def process_difficulty(db, additional_info_dir):
             for x in difficulty_info.values() for uid, lvl in tqdm(x.items())]
 
     db.collection(collection_name).truncate()
-    db.collection('difficulties').import_bulk(docs)
+    db.collection('difficulties').import_bulk(docs, halt_on_error=True)
 
 
 def run(no_pull=False):

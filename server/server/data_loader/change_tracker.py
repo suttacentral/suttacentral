@@ -78,7 +78,7 @@ class ChangeTracker:
             [{'path': k, 'mtime': v, '_key': k.replace('/', '_')} for k, v in
              self.changed_or_new.items()], on_duplicate="replace")
         self.db['function_hashes'].truncate()
-        self.db['function_hashes'].import_bulk([{'_key': k, 'hash': v} for k, v in self.new_function_hashes.items()])
+        self.db['function_hashes'].import_bulk([{'_key': k, 'hash': v} for k, v in self.new_function_hashes.items()], halt_on_error=True)
 
 def function_source(function):
     return ''.join(inspect.getsourcelines(function)[0])

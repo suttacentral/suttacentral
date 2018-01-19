@@ -217,7 +217,7 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
                     doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author"]}'
                     string_docs.append(doc)
             
-            db['po_markup'].import_bulk(markup_docs, on_duplicate='ignore')
-            db['po_strings'].import_bulk(string_docs, on_duplicate='error')
+            db['po_markup'].import_bulk(markup_docs, on_duplicate='ignore', halt_on_error=True)
+            db['po_strings'].import_bulk(string_docs, on_duplicate='error', halt_on_error=True)
                     
             
