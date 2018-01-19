@@ -194,7 +194,7 @@ def search(query: str, highlight=True, offset=0, limit=10, language='en',
                 "query": inner_query,
                 "functions": [
                     {
-                        "weight": "20k",
+                        "weight": "20",
                         "filter": {
                             "term": {
                                 "lang": language
