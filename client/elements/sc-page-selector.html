@@ -161,8 +161,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           static get properties() {
               return {
-                  route: Object,
-                  dictionaryWord: String,
+                  route: {
+                      type: Object
+                  },
+                  dictionaryWord: {
+                      type: String
+                  },
                   queryParams: {
                       type: Object,
                       notify: true
@@ -200,15 +204,31 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: String,
                       statePath: 'toolbarOptions.title'
                   },
-                  suttaId: String,
-                  suttaAuthor: String,
-                  langIsoCode: String,
+                  suttaId: {
+                      type: String
+                  },
+                  suttaAuthor: {
+                      type: String
+                  },
+                  langIsoCode: {
+                      type: String
+                  },
                   // Variables that control the <dom-if> elements in the template:
-                  shouldShowStaticPage: Boolean,
-                  shouldShowSuttaplexListPage: Boolean,
-                  shouldShowSearchPage: Boolean,
-                  shouldShowSuttaTextPage: Boolean,
-                  shouldShowDictionaryPage: Boolean,
+                  shouldShowStaticPage: {
+                      type: Boolean
+                  },
+                  shouldShowSuttaplexListPage: {
+                      type: Boolean
+                  },
+                  shouldShowSearchPage: {
+                      type: Boolean
+                  },
+                  shouldShowSuttaTextPage: {
+                      type: Boolean
+                  },
+                  shouldShowDictionaryPage: {
+                      type: Boolean
+                  },
                   isDrawerOpen: {
                       type: Boolean,
                       observer: '_drawerOpenStateChanged'
@@ -291,7 +311,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _recalculateView() {
-              this.shouldShowStaticPage = this._isStaticPage(this.selectedPage);
+              this.shouldShowStaticPage = this._isStaticPage(this.selectedPage) || this.selectedPage === 'NOT-FOUND';
               this.shouldShowSuttaplexListPage = this._isSuttaplexListPage();
               this.shouldShowSearchPage = this._isSearchPage();
               this.shouldShowSuttaTextPage = this._isSuttaTextPage();
