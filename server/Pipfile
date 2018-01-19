@@ -1,0 +1,39 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+Flask = "*"
+"beautifulsoup4" = "*"
+Flask-RESTful = "*"
+uWSGI = "*"
+Flask-Script = "*"
+pytest = "*"
+pytest-flask = "*"
+python-arango = "*"
+flasgger = "*"
+Flask-Cors = "*"
+decorator = "*"
+regex = "*"
+lxml = "*"
+cssselect = "*"
+GitPython = "*"
+Sphinx = "*"
+Faker = "*"
+langid = "*"
+colorama = "*"
+elasticsearch = "*"
+polib = "*"
+tqdm = "*"
+pytest-sugar = "*"
+stripe = "*"
+sortedcontainers = "*"
+requests = "*"
+
+
+[dev-packages]
+
