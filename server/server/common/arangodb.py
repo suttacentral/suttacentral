@@ -4,8 +4,30 @@ from typing import Union
 
 from arango import ArangoClient
 from arango.database import Database
+from arango.collections.base import BaseCollection
 from flask import current_app, g
 
+import logging
+
+
+# python-arango import_bulk function is pretty dangerous to use
+# in current version unless you set "halt_on_error=True" it silently
+# ignores errors. But if you set "halt_on_error=True" you get an
+# exception but lose the response body containing the error details
+# so you have no idea what went wrong!
+# It's pretty much a no-win.
+# I expect this will be improved in the library in time but for now
+# I'm patching in a more sensible version which always logs errors
+# and can be told to raise an exception.
+def import_bulk_safe(self, *args, halt_on_error=False, **kwargs):
+    res = self.import_bulk(*args, **kwargs, halt_on_error=False)
+    if res['errors'] > 0:
+        for error in res['details']:
+            logging.error(f'{self.name}:{error}')
+        if halt_on_error:
+            raise arango.exception.DocumentInsertError()
+
+BaseCollection.import_bulk_safe = import_bulk_safe
 
 class ArangoDB:
     def __init__(self, app=None):
@@ -77,3 +99,4 @@ def get_db() -> Database:
 
 def delete_db(db: Database):
     get_client().delete_database(db.name)
+        
