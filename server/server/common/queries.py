@@ -60,7 +60,7 @@ LET descendents = (
         LET name = DOCUMENT(CONCAT('root_names/', d.uid, '_', @language))['name']
         RETURN {
             from: d_edge._from,
-            name: name ? name : DOCUMENT(CONCAT('root_names/', d.uid, '_', div.root_lang))['name'],
+            name: name ? name : DOCUMENT(CONCAT('root_names/', d.uid, '_', d.root_lang))['name'],
             uid: d._id,
             num: d.num,
             type: d.type,
