@@ -322,7 +322,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                 for from_uid in full:
                     true_from_uids = uid_matcher.get_matching_uids(from_uid)
                     if not true_from_uids:
-                        print_once(f'Could not find any uids for: {from_uid}', antispam)
+                        logging.error(f'Relationship uid could not be matched: {from_uid}')
                         continue
                     for to_uids, is_resembling in ((full, False), (partial, True)):
                         for to_uid in to_uids:
@@ -330,7 +330,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                                 continue
                             if not true_from_uids:
                                 if is_resembling:
-                                    print_once(f'Could not find any uids for: {to_uid}', antispam)
+                                    logging.error(f'Relationship uid could not be matched: {from_uid}')
                                 continue
 
                             true_to_uids = uid_matcher.get_matching_uids(to_uid)
