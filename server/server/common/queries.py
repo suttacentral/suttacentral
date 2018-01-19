@@ -60,7 +60,7 @@ LET descendents = (
         LET name = DOCUMENT(CONCAT('root_names/', d.uid, '_', @language))['name']
         RETURN {
             from: d_edge._from,
-            name: name ? name : DOCUMENT(CONCAT('root_names/', d.uid, '_', div.root_lang))['name'],
+            name: name ? name : DOCUMENT(CONCAT('root_names/', d.uid, '_', d.root_lang))['name'],
             uid: d._id,
             num: d.num,
             type: d.type,
@@ -477,10 +477,10 @@ GLOSSARY = '''
 LET glossary_item = (
     FOR dictionary IN dictionary_full
         FILTER dictionary.dictname == "gloss"
-        RETURN KEEP(dictionary, "word", "text")
+        RETURN { [ dictionary.word ]: dictionary.text }
     )
     
-RETURN glossary_item
+RETURN MERGE(glossary_item)
 '''
 
 DICTIONARY_ADJACENT = '''

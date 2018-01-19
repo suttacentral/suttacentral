@@ -138,7 +138,7 @@ def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
     return available
 
 
-def search(query: str, highlight=True, offset=0, limit=10,
+def search(query: str, highlight=True, offset=0, limit=10, language='en',
            lang=None, define=None, details=None):
     query.strip()
     indexes = []
@@ -194,10 +194,10 @@ def search(query: str, highlight=True, offset=0, limit=10,
                 "query": inner_query,
                 "functions": [
                     {
-                        "weight": "1.2",
+                        "weight": "20",
                         "filter": {
                             "term": {
-                                "lang": "en"
+                                "lang": language
                             }
                         }
                     },

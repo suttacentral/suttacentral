@@ -350,7 +350,7 @@
       <template is="dom-if" if="[[parallelsOpened]]">
         <iron-collapse id="collapse" opened="[[parallelsOpened]]">
           <sc-parallel-list root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"
-                            root-text="[[_getRootText(item.*)]]">
+                             root-text="[[_getRootText(item.*)]]" expansion-data="[[expansionData]]">
           </sc-parallel-list>
         </iron-collapse>
       </template>
@@ -412,7 +412,9 @@
                   difficulty: {
                       type: String
                   },
-                  expansionData: Object
+                  expansionData: {
+                      type: Array
+                  }
               }
           }
 
@@ -565,7 +567,7 @@
                   if (alt_number) {
                       let book = '';
                       (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
-                      sc_acronym_title += `.\n${localize('alternateText', 'book', book)} ${alt_number}`;
+                      sc_acronym_title += `\n${localize('alternateText', 'book', book)} ${alt_number}`;
                   }
               }
               return sc_acronym_title;

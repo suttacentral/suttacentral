@@ -139,8 +139,7 @@
         id="glossary_ajax"
         url="/api/glossary"
         handle-as="json"
-        last-response="{{glossaryReturns}}"
-        on-response="_glossaryLoaded"></iron-ajax>
+        last-response="{{glossaryReturns}}"></iron-ajax>
 
     <iron-ajax
         id="ajax"
@@ -241,7 +240,6 @@
                       type: Boolean,
                       value: true
                   },
-                  glossaryList: Object,
                   dictionaryAdjacent: Array,
                   dictionarySimilar: Array
               }
@@ -249,8 +247,8 @@
 
           static get observers() {
               return [
-                  '_getGlossaryItems(glossaryList,adjacentReturns,adjacent)',
-                  '_getGlossaryItems(glossaryList,similarReturns)'
+                  '_getGlossaryItems(glossaryReturns,adjacentReturns,adjacent)',
+                  '_getGlossaryItems(glossaryReturns,similarReturns)'
               ];
           }
 
@@ -318,24 +316,17 @@
               return (item === this.dictionaryWord) ? 'selected-terms-item' : '';
           }
 
-          // Converts glossary output to object
-          _glossaryLoaded() {
-              let result = {};
-              this.glossaryReturns[0].forEach((item) => result[item.word] = item.text);
-              this.glossaryList = result;
-          }
-
-          _getGlossaryItems(glossaryList, inputArray, adjacent=false) {
+          _getGlossaryItems(glossaryReturns, inputArray, adjacent=false) {
               if (inputArray) {
                   let glossary = [];
                   let glossaryObject = {};
                   let glossText = '';
-                  if (glossaryList) {
+                  if (glossaryReturns) {
                       for (let glossWord in inputArray[0]) {
                           let glossLookup = inputArray[0][glossWord];
                           glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
-                          if (glossaryList[glossLookup]){
-                              glossText += `<em> (${glossaryList[glossLookup]})</em>`
+                          if (glossaryReturns[0][glossLookup]){
+                              glossText += `<em> (${glossaryReturns[0][glossLookup]})</em>`
                           }
                           glossaryObject = {"glossWord": glossLookup, "glossText": glossText};
                           glossary.push(glossaryObject);

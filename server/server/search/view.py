@@ -1,7 +1,7 @@
 import json
 
 from elasticsearch import ConnectionError
-from flask import request
+from flask import request, current_app
 from flask_restful import Resource
 
 from search import query as query_search
@@ -98,12 +98,13 @@ class Search(Resource):
         limit = request.args.get('limit', 10)
         offset = request.args.get('offset', 0)
         query = request.args.get('query', None)
+        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
 
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
 
         try:
-            results = query_search.search(query, limit=limit, offset=offset)
+            results = query_search.search(query, limit=limit, offset=offset, language=language)
 
             # Insert dummy urls (to be changed when discussed with client)
             for entry in results['hits']['hits']:
