@@ -295,11 +295,15 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`));
           }
 
-          _getToolbarTitle() {
-              if (['searchResults', 'dictionaryResults'].includes(this.toolbarTitle)) {
-                  return this.localize(this.toolbarTitle);
-              } else {
-                  return this.toolbarTitle;
+          _getToolbarTitle(title) {
+              if (title === null) {
+                  return 'Page not found';
+              }
+              else if (['searchResults', 'dictionaryResults'].includes(title)) {
+                  return this.localize(title);
+              }
+              else {
+                  return title;
               }
           }
 
