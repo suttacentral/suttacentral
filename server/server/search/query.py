@@ -118,23 +118,22 @@ def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
     key = tuple(indexes)
 
     try:
-        available = _cache[key]
+        return _cache[key]
     except KeyError:
-        available = None
+        pass
 
-    if available is None:
-        available = []
-        for index in indexes:
-            try:
-                if es.cluster.health(index, timeout='100ms')['status'] in {'green', 'yellow'}:
-                    available.append(index)
-            except Exception as e:
-                logger.debug(
-                    'An exception occured while checking cluster health for index: {}'.format(
-                        index))
-                logger.exception(index)
-                pass
-        _cache[key] = available
+    available = []
+    for index in indexes:
+        try:
+            if es.cluster.health(index, timeout='100ms')['status'] in {'green', 'yellow'}:
+                available.append(index)
+        except Exception as e:
+            logger.debug(
+                'An exception occured while checking cluster health for index: {}'.format(
+                    index))
+            logger.exception(index)
+            pass
+    _cache[key] = available
     return available
 
 
@@ -150,7 +149,7 @@ def search(query: str, highlight=True, offset=0, limit=10, language='en',
         indexes.append(lang)
 
     if not indexes:
-        indexes = ['en', 'pli', 'suttas', 'en-dict']
+        indexes = [language, 'pli', 'suttas', 'en-dict']
 
     index_string = ','.join(get_available_indexes(indexes))
 
