@@ -294,8 +294,7 @@
           <div class="languagedrop">
             <sc-language-menu language-choice="[[item.translations]]"
                            input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
-                           root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndexWithTimeout"
-                           on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></sc-language-menu>
+                           root-id="[[item.uid]]" class="no-left-padding"></sc-language-menu>
           </div>
 
           <div class="right-elements">
@@ -353,8 +352,7 @@
                   },
                   parallelsOpened: {
                       type: Boolean,
-                      value: false,
-                      observer: '_parallelsOpenedChanged'
+                      value: false
                   },
                   opened: {
                       type: Boolean,
@@ -411,37 +409,6 @@
               if (open) {
                   this.$.more_par_menu._sendRequest();
               }
-              const type = open ? 'open' : 'close';
-              const event_mock = { type: type };
-              if (type === 'open') {
-                  this._changeItemZIndex(event_mock);
-              } else {
-                  this._changeItemZIndexWithTimeout(event_mock);
-              }
-          }
-
-          _changeItemZIndexWithTimeout(e) {
-              setTimeout(() => {
-                  this._changeItemZIndex(e);
-              }, 200)
-          }
-
-          _changeItemZIndex(e) {
-              let node = this.parentNode;
-              if (node.style === undefined) {
-                  return;
-              }
-              if (e.type.endsWith('open')) {
-                  node.style['z-index'] = 100;
-              } else if (node.style['z-index'] === '100') {
-                  node.style['z-index'] = 0;
-              }
-          }
-
-          _parallelsOpenedChanged(e) {
-              const type = e ? 'open' : 'close';
-              const event_mock = { type: type };
-              this._changeItemZIndex(event_mock);
           }
 
           // general function to hide or display various elements.
