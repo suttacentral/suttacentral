@@ -9,6 +9,7 @@
     "volumeAndPage": "Wolumen i strona",
     "blurb": "Wprowadzenie",
     "goToTranslation": "Idź do tłumaczenia autorstwa {author}",
-    "hasParallels": "Ten tekst posiada {num} analogii."
+    "hasParallels": "Ten tekst posiada {num} analogii.",
+    "itemNotFound": "Błąd 404: Nie znaleziono wpisu."
   }
 }
