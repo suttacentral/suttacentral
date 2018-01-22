@@ -38,10 +38,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           --paper-input-container-input-color: var(--sc-primary-text-color);
           --paper-input-container-color: var(--sc-secondary-text-color);
         };
-        --paper-menu-button-dropdown: {
-          @apply --shadow-elevation-8dp;
-          background-color: var(--sc-secondary-background-color);
-        };
       }
 
       .language-menu-dropdown:focus {
@@ -105,7 +101,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
     </style>
     <template is="dom-if" if="[[_shouldShowMenu(languageChoice)]]">
       <paper-dropdown-menu class="language-menu-dropdown custom" label="{{localize('more')}}"
-                           title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="auto">
+                           title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="top">
         <paper-listbox class="language-menu-listbox" slot="dropdown-content" selected="0">
 
           <template is="dom-repeat" items="[[languageMenu]]" as="translation">
