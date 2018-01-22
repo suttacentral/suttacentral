@@ -225,13 +225,21 @@
         background-color: var(--sc-secondary-background-color);
       }
 
+      .not-found-error {
+        @apply --sc-sans-font;
+        @apply --paper-font-title;
+        text-align: center;
+        color: var(--sc-secondary-text-color);
+      }
+
     </style>
 
     <paper-card class="suttaplex" id="[[item.uid]]" elevation="1">
       <div class="card-content">
 
         <div class="suttaplex-head-container">
-          <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item,localize)]]">[[_computeMainHeading(item)]]</h3>
+          <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item,localize)]]">
+            [[_computeMainHeading(item)]]</h3>
           <iron-icon id="difficulty_icon" class="primary-accent-icon"
                      icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
           <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds class="sc-tooltip">
@@ -273,8 +281,16 @@
           </template>
         </div>
 
-        <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="{{localize('blurb')}}"
-           inner-h-t-m-l="[[item.blurb]]"></p>
+        <template is="dom-if" if="[[item.uid]]">
+          <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="{{localize('blurb')}}"
+             inner-h-t-m-l="[[item.blurb]]">
+          </p>
+        </template>
+
+        <template is="dom-if" if="[[!item.uid]]">
+          <p class="not-found-error">{{localize('itemNotFound')}}</p>
+        </template>
+
       </div>
 
       <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
@@ -290,38 +306,44 @@
             </template>
           </template>
         </div>
-        <div class="flex-div">
-          <div class="languagedrop">
-            <sc-language-menu language-choice="[[item.translations]]"
-                           input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
-                           root-id="[[item.uid]]" on-paper-dropdown-close="_changeItemZIndexWithTimeout"
-                           on-paper-dropdown-open="_changeItemZIndex" class="no-left-padding"></sc-language-menu>
+
+        <template is="dom-if" if="[[item.uid]]">
+
+          <div class="flex-div">
+            <div class="languagedrop">
+              <sc-language-menu language-choice="[[item.translations]]"
+                                input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
+                                root-id="[[item.uid]]" class="no-left-padding"></sc-language-menu>
+            </div>
+
+            <div class="right-elements">
+              <paper-menu-button id="copy_menu" class="share-menu-button" horizontal-align="right" role="group"
+                                 aria-haspopup="true" aria-disabled="false" vertical-align="auto">
+                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
+                                   role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
+                <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0"
+                               role="listbox">
+                  <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
+                </paper-listbox>
+              </paper-menu-button>
+
+              <template is="dom-if" if="[[item.parallel_count]]">
+                <div class="parallels-toggle-div">
+                  <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]"
+                                     on-tap="_toggleParallelsOpened">
+                  </paper-icon-button>
+                  <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
+                </div>
+                <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1" fit-to-visible-bounds
+                               position="right">
+                  {{localize('hasParallels', 'num', item.parallel_count)}}
+                </paper-tooltip>
+              </template>
+            </div>
           </div>
 
-          <div class="right-elements">
-            <paper-menu-button id="copy_menu" class="share-menu-button" horizontal-align="right" role="group"
-                               aria-haspopup="true" aria-disabled="false" vertical-align="auto">
-              <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
-                                 role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
-              <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
-                <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
-              </paper-listbox>
-            </paper-menu-button>
+        </template>
 
-            <template is="dom-if" if="[[item.parallel_count]]">
-              <div class="parallels-toggle-div">
-                <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]"
-                                   on-tap="_toggleParallelsOpened">
-                </paper-icon-button>
-                <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
-              </div>
-              <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1" fit-to-visible-bounds
-                             position="right">
-                {{localize('hasParallels', 'num', item.parallel_count)}}
-              </paper-tooltip>
-            </template>
-          </div>
-        </div>
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
@@ -333,6 +355,7 @@
       </template>
 
     </paper-card>
+
   </template>
 
   <script>
@@ -353,8 +376,7 @@
                   },
                   parallelsOpened: {
                       type: Boolean,
-                      value: false,
-                      observer: '_parallelsOpenedChanged'
+                      value: false
                   },
                   opened: {
                       type: Boolean,
@@ -399,7 +421,9 @@
               this.addEventListener('par-menu-copied', (e) => {
                   this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
               });
-              this.$.copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
+              if (this.$.copy_menu) {
+                  this.$.copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
+              }
           }
 
           _siteLanguageChanged() {
@@ -411,37 +435,6 @@
               if (open) {
                   this.$.more_par_menu._sendRequest();
               }
-              const type = open ? 'open' : 'close';
-              const event_mock = { type: type };
-              if (type === 'open') {
-                  this._changeItemZIndex(event_mock);
-              } else {
-                  this._changeItemZIndexWithTimeout(event_mock);
-              }
-          }
-
-          _changeItemZIndexWithTimeout(e) {
-              setTimeout(() => {
-                  this._changeItemZIndex(e);
-              }, 200)
-          }
-
-          _changeItemZIndex(e) {
-              let node = this.parentNode;
-              if (node.style === undefined) {
-                  return;
-              }
-              if (e.type.endsWith('open')) {
-                  node.style['z-index'] = 100;
-              } else if (node.style['z-index'] === '100') {
-                  node.style['z-index'] = 0;
-              }
-          }
-
-          _parallelsOpenedChanged(e) {
-              const type = e ? 'open' : 'close';
-              const event_mock = { type: type };
-              this._changeItemZIndex(event_mock);
           }
 
           // general function to hide or display various elements.
@@ -500,10 +493,10 @@
               }
           }
 
-          _getMainHeadingTitle(item,localize) {
+          _getMainHeadingTitle(item, localize) {
               if (!item || item.translated_title || item.original_title) {
                   return '';
-               } else {
+              } else {
                   return this._getAcronymTitle(item, localize);
               }
           }

@@ -1,6 +1,6 @@
 {
   "pl": {
-    "error": "Błąd",
+    "error404": "Błąd 404",
     "couldNotFind": "Nie znaleziono szukanego tekstu.",
     "viewImage": "Zobacz zdjęcie strony",
     "suttaNotFound": "Nie znaleziono sutty.",
