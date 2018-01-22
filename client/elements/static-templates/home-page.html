@@ -21,7 +21,7 @@
         margin-top: 60px;
       }
 
-      #page-wrap{
+      #page-wrap {
         max-width: 2058px;
       }
 
@@ -83,7 +83,7 @@
 
       .button-link {
         background: none !important;
-        text-decoration:none;
+        text-decoration: none;
       }
 
       .card-heading-text {
@@ -371,20 +371,20 @@
     </style>
 
     <iron-ajax
-            auto
-            url="[[_computeUrl('epigraphs')]]"
-            id="epigraphs-ajax"
-            handle-as="json"
-            loading="{{ loadingEpigraphs }}"
-            last-response="{{ epigraphsData }}"></iron-ajax>
+        auto
+        url="[[_computeUrl('epigraphs')]]"
+        id="epigraphs-ajax"
+        handle-as="json"
+        loading="{{ loadingEpigraphs }}"
+        last-response="{{ epigraphsData }}"></iron-ajax>
 
     <iron-ajax
-            auto
-            url="[[_computeUrl('whyweread')]]"
-            id="why-we-read-ajax"
-            handle-as="json"
-            loading="{{ loadingWhyWeRead }}"
-            last-response="{{ whyWeReadData }}"></iron-ajax>
+        auto
+        url="[[_computeUrl('whyweread')]]"
+        id="why-we-read-ajax"
+        handle-as="json"
+        loading="{{ loadingWhyWeRead }}"
+        last-response="{{ whyWeReadData }}"></iron-ajax>
 
     <iron-meta id="meta"></iron-meta>
 
@@ -567,8 +567,8 @@
                     </div>
                     <div>
                       <a class="button-link"
-                        href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"
-                        target="_blank">
+                         href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"
+                         target="_blank">
                         <paper-button class="button card-button-middle" raised>TELL US WHY YOU READ</paper-button>
                       </a>
                     </div>
@@ -634,6 +634,10 @@
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   loadingEpigraphs: {
                       type: Boolean
                   },
@@ -649,13 +653,22 @@
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.fallbackLanguage}.json`));
+          }
+
           _computeUrl(resource) {
               const apiRoot = this.$.meta.byKey('API_ROOT');
               return `${apiRoot}/${resource}`;
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.language}.json`));
+              if (this.language !== this.fallbackLanguage) {
+                  this.loadResources(this.resolveUrl(
+                      `/localization/elements/static/home-page/${this.language}.json`), this.language, true
+                  );
+              }
           }
       }
 
