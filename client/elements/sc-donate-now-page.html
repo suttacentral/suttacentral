@@ -437,11 +437,11 @@
           }
 
           _showToast(toastType, text) {
-              const localized = this.localize(text);
+              const localizedText = this.localize(text);
               this.dispatchEvent(new CustomEvent('show-sc-toast', {
                   detail: {
                       toastType: toastType,
-                      message: localized ? localized : text
+                      message: localizedText ? localizedText : text
                   },
                   bubbles: true,
                   composed: true
