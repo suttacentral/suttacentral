@@ -17,7 +17,7 @@
         margin-top: 60px;
       }
 
-      #page-wrap{
+      #page-wrap {
         max-width: 2058px;
       }
 
@@ -79,7 +79,7 @@
 
       .button-link {
         background: none !important;
-        text-decoration:none;
+        text-decoration: none;
       }
 
       .card-heading-text {
@@ -245,7 +245,8 @@
         @apply --sc-skolar-font-size-md;
         font-weight: normal;
         line-height: 1em;
-        margin: 0 var(--sc-size-md-larger) var(--sc-size-md-larger);
+        margin: var(--sc-size-md-larger);
+        margin-top: 0;
         text-align: right;
       }
 
@@ -571,7 +572,9 @@
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.language}.json`), this.language, true);
+              if (this.language !== this.fallbackLanguage) {
+                  this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.language}.json`), this.language, true);
+              }
           }
       }
 
