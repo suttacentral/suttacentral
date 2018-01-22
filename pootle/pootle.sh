@@ -35,5 +35,6 @@ if [ ! -f /root/.pootle/.clonedAssets ]; then
     touch /root/.pootle/.clonedAssets
 fi
 
+pootle revision --restore
 echo "start pootle"
 pootle runserver --insecure 0.0.0.0:8000

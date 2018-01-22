@@ -45,6 +45,7 @@ RUN pip install --upgrade pip
 
 # Install pootle
 RUN pip install --process-dependency-links git+https://github.com/suttacentral/pootle.git
+RUN pip install django-tastypie
 
 # Configure pootle
 COPY pootle.conf /root/.pootle/pootle.conf
