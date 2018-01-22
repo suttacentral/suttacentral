@@ -60,22 +60,22 @@
     <iron-ajax
         id="ajax"
         handle-as="json"
-        loading="{{loadingResults}}"
-        last-response="{{responseData}}"></iron-ajax>
+        loading="{{suttaplexLoading}}"
+        last-response="{{suttaplexReturns}}"></iron-ajax>
 
     <div class="division-content main">
 
       <div class="loading-indicator">
-        <paper-spinner-lite class="loading-spinner" active="[[loadingResults]]"></paper-spinner-lite>
+        <paper-spinner-lite class="loading-spinner" active="[[suttaplexLoading]]"></paper-spinner-lite>
       </div>
 
-      <iron-list id="suttaplex_list" class="suttaplex-list" items="{{responseData}}" as="item" scroll-target="document">
+      <iron-list id="suttaplex_list" class="suttaplex-list" items="{{suttaplexReturns}}" as="item" scroll-target="document">
         <template>
-          <div>
+          <div style$="z-index: [[_getItemZIndex(suttaplexReturns, index)]];">
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
               <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]"
-                            difficulty="[[_computeItemDifficulty(item.difficulty)]]"
-                            expansion-data="[[expansionReturns]]"></sc-suttaplex>
+                            difficulty="[[_computeItemDifficulty(item.difficulty)]]" expansion-data="[[expansionReturns]]">
+              </sc-suttaplex>
             </template>
 
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
@@ -99,9 +99,9 @@
 
           static get properties() {
               return {
-                  responseData: {
+                  suttaplexReturns: {
                       type: Array,
-                      observer: '_responseDataChanged'
+                      observer: '_suttaplexReturnsChanged'
                   },
                   categoryId: {
                       type: String,
@@ -111,7 +111,9 @@
                   item: {
                       type: Object
                   },
-                  expansionReturns: Array,
+                  expansionReturns: {
+                      type: Array
+                  },
                   language: {
                       type: String,
                       statePath: 'siteLanguage',
@@ -138,11 +140,11 @@
               this.$.ajax.generateRequest();
           }
 
-          _responseDataChanged() {
-              if (!this.responseData) {
+          _suttaplexReturnsChanged() {
+              if (!this.suttaplexReturns) {
                   return;
               }
-              this.dispatch('changeToolbarTitle', this.responseData[0].original_title);
+              this.dispatch('changeToolbarTitle', this.suttaplexReturns[0].original_title);
           }
 
           _isSuttaplex(item) {
@@ -167,6 +169,12 @@
                   const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
                   return levels[difficulty];
               }
+          }
+
+          // this exists to solve an iron-list bug:
+          // https://github.com/PolymerElements/iron-list/issues/242#issuecomment-232450210
+          _getItemZIndex(allItems, index) {
+              return allItems.length - index;
           }
       }
 
