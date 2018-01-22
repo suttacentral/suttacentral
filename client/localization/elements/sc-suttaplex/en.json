@@ -1,14 +1,15 @@
 {
-    "en": {
-        "beginner": "Recommended for beginner students",
-        "intermediate": "Recommended for intermediate students",
-        "advanced": "Recommended for advanced students",
-        "originalTitle": "Original title",
-        "suttaCentralID": "SuttaCentral ID",
-        "alternateText": "Alternate number in {book} edition:",
-        "volumeAndPage": "Volume and page",
-        "blurb": "Blurb",
-        "goToTranslation": "Go to a translation by {author}",
-        "hasParallels": "This text has {num} parallels."
-    }
+  "en": {
+    "beginner": "Recommended for beginner students",
+    "intermediate": "Recommended for intermediate students",
+    "advanced": "Recommended for advanced students",
+    "originalTitle": "Original title",
+    "suttaCentralID": "SuttaCentral ID",
+    "alternateText": "Alternate number in {book} edition:",
+    "volumeAndPage": "Volume and page",
+    "blurb": "Blurb",
+    "goToTranslation": "Go to a translation by {author}",
+    "hasParallels": "This text has {num} parallels.",
+    "itemNotFound": "Error 404: Item not found."
+  }
 }

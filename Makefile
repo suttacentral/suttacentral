@@ -115,6 +115,8 @@ shell-swagger:
 	@docker exec -it sc-swagger
 shell-frontend-tester:
 	@docker exec -it sc-frontend-tester bash
+shell-pootle:
+	@docker exec -it sc-pootle bash
 
 #Logs
 logs:
