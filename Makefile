@@ -48,6 +48,7 @@ CONTS-NGINX=$(shell docker ps -a -q -f "name=sc-nginx")
 CONTS-ELASTICSEARCH=$(shell docker ps -a -q -f "name=sc-elasticsearch")
 CONTS-SWAGGER=$(shell docker ps -a -q -f "name=sc-swagger")
 CONTS-FRONTEND_TESTER=$(shell docker ps -a -q -f "name=sc-frontend-tester")
+CONTS-POOTLE=$(shell docker ps -a -q -f "name=sc-pootle")
 
 #stop docker containers
 stop-arangodb:
@@ -78,6 +79,8 @@ rm-swagger:
 	-@docker rm $(CONTS-SWAGGER)
 rm-frontend-tester:
 	-@docker rm $(CONTS-FRONTEND_TESTER)
+rm-pootle:
+	-@docker rm $(CONTS-POOTLE)
 rm: rm-arangodb rm-flask rm-nginx rm-elasticsearch rm-frontend-tester
 
 # Remove volumes
