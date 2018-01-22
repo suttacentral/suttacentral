@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../elements/text/sc-segmented-text.html">
 <link rel="import" href="../../elements/text/sc-simple-text.html">
@@ -18,7 +19,7 @@
   <script src="transliterator.js"></script>
 
   <template>
-    <style>
+    <style include="sc-text-heading-styles">
       .loading-indicator {
         @apply --sc-skolar-font-size-s;
         text-align: center;
@@ -32,6 +33,14 @@
 
       .wrapper {
         min-height: calc(100% - var(--sc-size-xxl) * 2.5);
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .margin-top-xl {
+        margin-top: var(--sc-size-xl);
       }
     </style>
 
@@ -66,6 +75,14 @@
                            hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
         </sc-segmented-text>
       </template>
+
+      <template is="dom-if" if="[[_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
+        <div class="text-center margin-top-xl">
+          <h2>{{localize('error404')}}</h2>
+          <h3>{{localize('couldNotFind')}}</h3>
+        </div>
+      </template>
+
     </div>
 
     <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, neighbours)]]">
@@ -77,7 +94,11 @@
   </template>
 
   <script>
-      class SCTextPageSelector extends ReduxMixin(Polymer.Element) {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCTextPageSelector extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-text-page-selector';
           }
@@ -120,6 +141,11 @@
                   },
                   neighbours: {
                       type: Object
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
                   }
               }
           }
@@ -159,6 +185,10 @@
               this.setProperties();
               this.shadowRoot.querySelector('#sutta_text_options')._closeSuttaplex();
               this.dispatch('downloadSuttaText', this.responseData);
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`));
           }
 
           setProperties() {
@@ -205,6 +235,10 @@
 
           _shouldDisplayStepper(isLoading, neighbours) {
               return !isLoading && (neighbours.next || neighbours.previous);
+          }
+
+          _shouldDisplayError(rootSutta, translatedSutta, networkError) {
+              return !(rootSutta && translatedSutta) || networkError;
           }
       }
 
