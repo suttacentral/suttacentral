@@ -49,5 +49,4 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
         doc['num'] = word_number[doc['word']]
         doc['similar'] = [t[0] for t in fm.search(doc['word'])]
     
-    dictionary_full_collection.truncate()
-    dictionary_full_collection.import_bulk(docs)
+    dictionary_full_collection.import_bulk_safe(docs, overwrite=True)
