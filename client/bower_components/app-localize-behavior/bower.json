@@ -22,7 +22,7 @@
   "ignore": [],
   "dependencies": {
     "iron-ajax": "PolymerElements/iron-ajax#1 - 2",
-    "intl-messageformat": "yahoo/intl-messageformat#^1.0.0",
+    "intl-messageformat": "yahoo/intl-messageformat#^2.2.0",
     "polymer": "Polymer/polymer#1.9 - 2"
   },
   "devDependencies": {

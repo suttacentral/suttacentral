@@ -13,31 +13,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../app-localize-behavior.html">
 <link rel="import" href="common-styles.html">
 
-<dom-module id="x-local-translate">
+<dom-module id="x-fallback">
   <template>
     <style include="common-styles"></style>
 
     <div class="lang">
-      <span title="english">🇬🇧 EN</span>qw
+      <span title="english">🇬🇧 EN</span>
       <paper-toggle-button on-change="_toggle" id="switch"></paper-toggle-button>
       <span title="french">FR 🇫🇷</span>
     </div>
 
-    <h4>This demo's resources are loaded statically, not from an external file.</h4>
-
+    <h4>This will fallback from FR to en_US and use this language, because there is no missing_translation key in french and fallbackLanguage is set to en_US</h4>
     <div class="snippet">
       <div class="demo">
-        <div>{{localize('greeting')}}</div>
+
+        <div>{{localize('missing_translation')}}</div>
       </div>
       <div class="code-container">
-        <code>localize('greeting')</code>
+        <code>localize('missing_translation')
+        </code>
       </div>
     </div>
+
   </template>
+
+
 
   <script>
     Polymer({
-      is: "x-local-translate",
+      is: "x-fallback",
 
       behaviors: [
         Polymer.AppLocalizeBehavior
@@ -49,31 +53,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: 'en',
           type: String
         },
-
-        /* Overriden from AppLocalizeBehavior */
-        formats: {
-          type: Object,
-          value: function() {
-            return {
-              number: { USD: { style: 'currency', currency: 'USD' } }
-            };
-          }
-        },
-
-        /* Overriden from AppLocalizeBehavior */
-        resources: {
-          type: Object,
-          value: function() {
-            return {
-              'en': {
-                'greeting': 'Hello!'
-              },
-              'fr' : {
-                'greeting': 'Bonjour!'
-              }
-            };
-          }
+        fallbackLanguage: {
+          value: 'en_US',
+          type: String
         }
+      },
+
+      attached: function() {
+        this.loadResources(this.resolveUrl('locales.json'));
       },
 
       _toggle: function() {

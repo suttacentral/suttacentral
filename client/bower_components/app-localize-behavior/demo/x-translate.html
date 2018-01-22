@@ -34,6 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
       <div class="code-container">
         <code>localize('greeting')</code>
+        <code>localize('missing_translation')</code>
         <code>localize('intro', 'name', 'Batman')</code>
         <code>localize('cats', 'numCats', 10000, 'pctBlack', 0.42)</code>
         <!-- Dates need to be a valid JavaScript object. For an example, we
@@ -55,6 +56,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <code>localize('bananas', 'name', 'Robin', 'gender', 'male', 'num', 1)</code>
         <code>localize('bananas', 'name', 'Robin', 'gender', 'female', 'num', 0)</code>
         <code>localize('bananas', 'name', 'Robin', 'gender', 'other', 'num', 4)</code>
+      </div>
+    </div>
+
+
+    <h4>Structured locales</h4>
+    <div class="snippet">
+      <div class="demo">
+        <div>{{localize('fruits:apple', 'num', 0)}} / {{localize('fruit', 'num', 1)}}/ {{localize('fruit', 'num', 3)}}</div>
+      </div>
+      <div class="code-container">
+        <code>localize('fruits:apple', 'num', 0) / localize('fruits:apple', 'num', 1) / localize('fruits:apple', 'num', 3)</code>
       </div>
     </div>
   </template>
