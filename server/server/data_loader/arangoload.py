@@ -58,7 +58,7 @@ def collect_data(repo_dir: Path, repo_addr: str):
         get_data(repo_dir, repo_addr)
     else:
         try:
-            repo = Repo(repo_dir)
+            repo = Repo(str(repo_dir))
         except InvalidGitRepositoryError:
             pass
         else:
