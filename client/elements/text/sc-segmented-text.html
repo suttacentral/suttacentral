@@ -18,7 +18,7 @@
 <dom-module id="sc-segmented-text">
 
   <template>
-    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles">
+    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles sc-utility-styles">
       :host {
         --iron-icon-fill-color: var(--sc-disabled-text-color);
         --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
@@ -85,7 +85,7 @@
 
     <template is="dom-if" if="[[_shouldShowError(rootSutta, translatedSutta)]]">
       <div class="text-center margin-top-xl">
-        <h2>{{localize('error')}}</h2>
+        <h2>{{localize('error404')}}</h2>
         <h3>{{localize('couldNotFind')}}</h3>
       </div>
     </template>

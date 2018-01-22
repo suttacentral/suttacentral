@@ -39,7 +39,7 @@
       }
 
       .margin-top-xl {
-        margin-top: 10vh;
+        margin-top: var(--sc-size-xl);
       }
 
       .highlight {
@@ -57,13 +57,6 @@
 
     <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[_extractSuttaText(sutta.text)]]"
          hidden$="[[isTextViewHidden]]"></div>
-
-    <template is="dom-if" if="[[_shouldDisplayError(sutta.*)]]">
-      <div class="text-center margin-top-xl">
-        <h2>{{localize('error')}}</h2>
-        <h3>{{localize('couldNotFind')}}</h3>
-      </div>
-    </template>
 
     <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
     <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
@@ -268,7 +261,9 @@
           }
 
           _extractSuttaText(suttaText) {
-              return suttaText.replace(/<head>((.|\n)*)<\/head>/,'');
+              if (suttaText) {
+                return suttaText.replace(/<head>((.|\n)*)<\/head>/,'');
+              }
           }
 
           // returns the meta-data from the loaded sutta text
@@ -387,6 +382,10 @@
 
           _loadingChanged() {
               this.isTextViewHidden = this.isLoading || this._shouldDisplayError();
+          }
+
+          _shouldDisplayError() {
+              return !(this.sutta && this.sutta.text) || this.error;
           }
 
           _processHighlightAndScroll(sectionId) {
@@ -717,7 +716,7 @@
               }
           }
 
-          _removeTooltip(v, tooltip, states, e) {
+          _removeTooltip(v, tooltip, states) {
               setTimeout(() => {
                   if (!states.isWordHovered && !states.isTooltipHovered) {
                       v.style.color = '';
@@ -790,7 +789,7 @@
               });
           }
 
-          _setTooltipOptions(tooltip, lang) {
+          _setTooltipOptions(tooltip) {
               tooltip.classList.add('lookup-tooltip');
               tooltip.animationDelay = 0;
               tooltip.position = 'top';
@@ -926,10 +925,6 @@
                         ${tooltipText}
                       </paper-tooltip>
                      `;
-          }
-
-          _shouldDisplayError() {
-              return !(this.sutta && this.sutta.text) || this.error;
           }
 
       }
