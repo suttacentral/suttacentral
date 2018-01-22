@@ -313,7 +313,7 @@ It is in effect a miniature version of the suttaplex-card
                     tail = item.match(/\d+.*/g)[0]+'–';
                     item = item.match(/[a-z]*/g)[0];
                 }
-                (item) ? sc_acronym += `${expansionData[0][item]} ${tail}` : `${tail}`;
+                item ? sc_acronym += `${expansionData[0][item]} ${tail}` : sc_acronym += tail;
               });
               sc_acronym = sc_acronym.replace(/–\s*$/, '');
               return `${sc_acronym} ${id_part}`;

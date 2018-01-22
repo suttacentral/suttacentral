@@ -521,16 +521,15 @@
               if (item.acronym) {
                 sc_acronym = item.acronym.split('//')[0];
               } else {
-                sc_acronum = this._transformId(item.uid, expansionData);
+                sc_acronym = this._transformId(item.uid, expansionData);
               }
               return sc_acronym;
           }
 
-          // This function parses the input uid of the parallel and splits it into
-          // it's main document part (root_part) and the id (paragraphs) within the document (id_part)
-          // The root_part is then split into it's various elements which are then expanded
+          // This function parses the input uid of the parallel
+          // It is then split into it's various elements which are then expanded
           // according to the data in the expansion-table. 
-          // So f.i. 'an3.4#23-#25' becomes 'AN 3.4 #23-25' and 'lzh-sarv-bi-vb-np1' becomes
+          // So f.i. 'an3.4' becomes 'AN 3.4' and 'lzh-sarv-bi-vb-np1' becomes
           // 'Lzh Sarv Bi Vb NP 1'
           _transformId(rootId, expansionData) {
               let sc_acronym = '';
@@ -542,7 +541,7 @@
                     tail = item.match(/\d+.*/g)[0]+'–';
                     item = item.match(/[a-z]*/g)[0];
                 }
-                (item) ? sc_acronym += `${expansionData[0][item]} ${tail}` : `${tail}`;
+                item ? sc_acronym += `${expansionData[0][item]} ${tail}` : sc_acronym += tail;
               });
               return sc_acronym.replace(/–\s*$/, '');
           }
