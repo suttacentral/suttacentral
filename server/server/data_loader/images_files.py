@@ -28,7 +28,7 @@ def load_images_links(db):
             })
 
     collection = db['images']
-    collection.import_bulk(entries)
+    collection.import_bulk_safe(entries)
 
 
 def get_data():

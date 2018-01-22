@@ -206,8 +206,7 @@ def process_category_files(category_files, db, edges, mapping):
                 del entry['grouping']
 
             category_docs.append(entry)
-        collection.truncate()
-        collection.import_bulk(category_docs)
+        collection.import_bulk_safe(category_docs, overwrite=True)
 
 
 def perform_update_queries(db):
@@ -245,12 +244,9 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
                     entry['grouping'] = 'other'
 
         # make documents
-        db['root'].truncate()
-        db['root'].import_bulk(docs)
-        db['root_names'].truncate()
-        db['root_names'].import_bulk(name_docs)
-        db['root_edges'].truncate()
-        db['root_edges'].import_bulk(edges)
+        db['root'].import_bulk_safe(docs, overwrite=True)
+        db['root_names'].import_bulk_safe(name_docs, overwrite=True)
+        db['root_edges'].import_bulk_safe(edges, overwrite=True)
 
         perform_update_queries(db)
 
@@ -363,8 +359,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                             'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
                             'remark': remark
                         })
-    db['relationship'].truncate()
-    db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/')
+    db['relationship'].import_bulk_safe(ll_edges, from_prefix='root/', to_prefix='root/', overwrite=True)
 
 
 def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir):
@@ -406,8 +401,7 @@ def load_json_file(db, change_tracker, json_file):
     if 'uid' in data[0]:
         for d in data:
             d['_key'] = d['uid']
-        db[collection_name].truncate()
-        db[collection_name].import_bulk(data)
+        db[collection_name].import_bulk_safe(data, overwrite=True)
 
 
 def process_blurbs(db, additional_info_dir):
@@ -420,23 +414,20 @@ def process_blurbs(db, additional_info_dir):
     docs = [{'uid': uid, 'lang': lang, 'blurb': blurb}
             for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in
             tqdm(suttas.items())]
-
-    db.collection(collection_name).truncate()
-    db.collection('blurbs').import_bulk(docs)
+    
+    db.collection('blurbs').import_bulk_safe(docs, overwrite=True)
 
 
 def process_difficulty(db, additional_info_dir):
     print('Loading difficulties')
     difficulty_file = additional_info_dir / 'difficulties.json'
-    collection_name = 'difficulties'
 
     difficulty_info = json_load(difficulty_file)
 
     docs = [{'uid': uid, 'difficulty': lvl}
             for x in difficulty_info.values() for uid, lvl in tqdm(x.items())]
 
-    db.collection(collection_name).truncate()
-    db.collection('difficulties').import_bulk(docs)
+    db.collection('difficulties').import_bulk_safe(docs, overwrite=True)
 
 
 def run(no_pull=False):
