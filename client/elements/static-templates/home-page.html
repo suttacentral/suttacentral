@@ -665,9 +665,7 @@
 
           _siteLanguageChanged() {
               if (this.language !== this.fallbackLanguage) {
-                  this.loadResources(this.resolveUrl(
-                      `/localization/elements/static/home-page/${this.language}.json`), this.language, true
-                  );
+                  this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.language}.json`), this.language, true);
               }
           }
       }
