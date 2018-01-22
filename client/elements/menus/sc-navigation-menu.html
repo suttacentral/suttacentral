@@ -246,7 +246,7 @@
       }
 
       #main_navigation .nav-tertiary .nav-link-container.link-text-ellipsis {
-        padding-right: 40px;
+        padding-right: calc(var(--sc-size-sm) + var(--sc-size-lg));
       }
 
       #main_navigation:not(.active)::-webkit-scrollbar-thumb {
@@ -302,7 +302,6 @@
         -ms-text-overflow: ellipsis;
         text-overflow: ellipsis;
         overflow: hidden;
-        padding-right: 36px !important;
       }
 
     </style>
