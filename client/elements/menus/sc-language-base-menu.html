@@ -122,6 +122,10 @@ This is the base language menu that determines the language of the site.
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               };
           }
@@ -138,8 +142,13 @@ This is the base language menu that determines the language of the site.
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.fallbackLanguage}.json`));
+          }
+
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.language}.json`), this.language, true);
           }
 
           // Is invoked when a language is chosen from the list.

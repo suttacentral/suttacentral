@@ -323,7 +323,7 @@ Polymer.AppLocalizeBehavior = {
                     break;
                 }
             }
-        } else {
+        } else if (resources[language]) {
             translatedValue = resources[language][key];
         }
         return translatedValue;

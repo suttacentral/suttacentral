@@ -85,12 +85,21 @@ The two necessary conditions are:
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-search-filter-menu/${this.fallbackLanguage}.json`));
+          }
+
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-search-filter-menu/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-search-filter-menu/${this.language}.json`), this.language, true);
           }
 
           // Fires resulting choice to search page, where it is converted to a selection of the relevant items.
