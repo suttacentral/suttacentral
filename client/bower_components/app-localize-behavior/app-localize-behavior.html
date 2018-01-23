@@ -282,10 +282,11 @@ Polymer.AppLocalizeBehavior = {
 
       // Cache the key/value pairs for the same language, so that we don't
       // do extra work if we're just reusing strings across an application.
-      var translatedValue = this.__findTranslatedValue(resources,language,key);
+      var translatedValue;
+      translatedValue = this.__findTranslatedValue(resources, language, key);
       //use fallback key if provided
       if(!translatedValue && fallbackLanguage){
-          translatedValue = this.__findTranslatedValue(resources,fallbackLanguage,key)
+          translatedValue = this.__findTranslatedValue(resources, fallbackLanguage, key)
       }
 
       if (!translatedValue) {
@@ -331,6 +332,9 @@ Polymer.AppLocalizeBehavior = {
   __onRequestResponse: function(event, language, merge) {
     var propertyUpdates = {};
     var newResources = event.response;
+    if (newResources[language]) {
+        newResources = newResources[language];
+    }
     if (merge) {
       if (language) {
         propertyUpdates.resources = Object.assign({}, this.resources || {});

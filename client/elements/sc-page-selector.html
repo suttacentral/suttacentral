@@ -237,6 +237,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
@@ -289,10 +293,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   }
                   this._showToast(success, e.detail.message);
               });
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`), this.language, true);
           }
 
           _getToolbarTitle(title) {

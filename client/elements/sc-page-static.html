@@ -329,8 +329,13 @@
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.fallbackLanguage}.json`));
+          }
+
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`), this.language, true);
               const tabs = this.shadowRoot.querySelector(this._getNavTabsSelector());
               if (tabs) {
                   tabs.notifyResize();

@@ -191,6 +191,10 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   expansionData: {
                       type: Array
                   }
@@ -203,10 +207,16 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               if (!this.expansionData) {
                 this.$.uid_expansion_ajax.generateRequest()
               }
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.language}.json`));
+              if (this.language !== this.fallbackLanguage) {
+                  if (this.resources && this.resources[this.language]) {
+                      return;
+                  }
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.language}.json`), this.language, true);
+              }
           }
 
           _itemUidChanged() {

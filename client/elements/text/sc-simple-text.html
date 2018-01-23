@@ -201,6 +201,10 @@
                           type: String,
                           statePath: 'siteLanguage',
                           observer: '_siteLanguageChanged'
+                      },
+                      fallbackLanguage: {
+                          type: String,
+                          value: 'en'
                       }
                   }
               }
@@ -229,7 +233,7 @@
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
           }
 
           _updateView() {
@@ -262,7 +266,7 @@
 
           _extractSuttaText(suttaText) {
               if (suttaText) {
-                return suttaText.replace(/<head>((.|\n)*)<\/head>/,'');
+                  return suttaText.replace(/<head>((.|\n)*)<\/head>/, '');
               }
           }
 
