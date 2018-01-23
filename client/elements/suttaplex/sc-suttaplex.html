@@ -447,7 +447,7 @@
           }
 
           _computeHideOriginalTitle(item) {
-              return item.translated_title ? '' : 'hide-element';
+              return item.translated_title && item.original_title ? '' : 'hide-element';
           }
 
           // returns the relevant icon for the expander
@@ -512,30 +512,42 @@
           _getAcronymOrUid(item, expansionData) {
               let sc_acronym = '';
               if (item.acronym) {
-                  sc_acronym = item.acronym.split('//')[0];
-              } else if (item.uid) {
-                  let uid_parts = item.uid.split('-');
-                  let tail = '';
-                  for (let item in uid_parts) {
-                      if (!expansionData[0][uid_parts[item]]) {
-                          tail = uid_parts[item].match(/\d+/g)[0];
-                          uid_parts[item] = uid_parts[item].match(/[a-z]*/g)[0];
-                      }
-                      sc_acronym += `${expansionData[0][uid_parts[item]]} ${tail}`;
-                  }
+                sc_acronym = item.acronym.split('//')[0];
+              } else {
+                sc_acronym = this._transformId(item.uid, expansionData);
               }
               return sc_acronym;
+          }
+
+          // This function parses the input uid of the parallel
+          // It is then split into it's various elements which are then expanded
+          // according to the data in the expansion-table. 
+          // So f.i. 'an3.4' becomes 'AN 3.4' and 'lzh-sarv-bi-vb-np1' becomes
+          // 'Lzh Sarv Bi Vb NP 1'
+          _transformId(rootId, expansionData) {
+              let sc_acronym = '';
+              const root_part = rootId.split('#')[0];
+              let uid_parts = root_part.split('-');
+              let tail = '';
+              uid_parts.forEach(item => {
+                if (!expansionData[0][item]) {
+                    tail = item.match(/\d+.*/g)[0]+'–';
+                    item = item.match(/[a-z]*/g)[0];
+                }
+                item ? sc_acronym += `${expansionData[0][item]} ${tail}` : sc_acronym += tail;
+              });
+              return sc_acronym.replace(/–\s*$/, '');
           }
 
           _getAcronymTitle(item, localize) {
               let sc_acronym_title = localize('suttaCentralID');
               if (item && item.acronym) {
-                  const alt_number = item.acronym.split('//')[1];
-                  if (alt_number) {
-                      let book = '';
-                      (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
-                      sc_acronym_title += `\n${localize('alternateText', 'book', book)} ${alt_number}`;
-                  }
+                const alt_number = item.acronym.split('//')[1];
+                if (alt_number) {
+                  let book = '';
+                  (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
+                  sc_acronym_title += `\n${localize('alternateText', 'book', book)} ${alt_number}`;
+                }
               }
               return sc_acronym_title;
           }
