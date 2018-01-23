@@ -1,14 +1,14 @@
 {
   "name": "intl-messageformat",
   "homepage": "https://github.com/yahoo/intl-messageformat",
-  "version": "1.3.0",
-  "_release": "1.3.0",
+  "version": "2.2.0",
+  "_release": "2.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "v1.3.0",
-    "commit": "2e2aaa803a53075de21bc1d7fd1fcd94d54e8686"
+    "tag": "v2.2.0",
+    "commit": "1246cceb3928c2d4a10500b9ac54c11f6451857b"
   },
   "_source": "https://github.com/yahoo/intl-messageformat.git",
-  "_target": "^1.0.0",
+  "_target": "^2.2.0",
   "_originalSource": "yahoo/intl-messageformat"
 }

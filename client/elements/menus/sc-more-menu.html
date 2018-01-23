@@ -151,6 +151,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   appTheme: {
                       type: String,
                       statePath: 'colorTheme'
@@ -176,7 +180,9 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           ready() {
               super.ready();
               this._initializeListeners();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.fallbackLanguage}.json`));
           }
+
 
           connectedCallback() {
               super.connectedCallback();
@@ -187,7 +193,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`), this.language, true);
           }
 
           _initializeListeners() {

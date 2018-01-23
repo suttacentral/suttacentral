@@ -242,6 +242,10 @@ than ten results in total, a dropdown selection menu appears at the top.
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   totalLoadedResults: {
                       type: Number
                   }
@@ -263,10 +267,11 @@ than ten results in total, a dropdown selection menu appears at the top.
               super.ready();
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
               this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.language}.json`), this.language, true);
           }
 
           // After results have been loaded into memory, pushes items to an array.

@@ -110,6 +110,26 @@ describe('IntlMessageFormat', function () {
 
             expect(output).to.equal('My name is Anthony Pipkin.');
         });
+
+        it('should not ignore zero values', function() {
+            var mf = new IntlMessageFormat('I am {age} years old.');
+            var output = mf.format({
+                age: 0
+            });
+
+            expect(output).to.equal('I am 0 years old.');
+        });
+
+        it('should ignore false, null, and undefined', function() {
+            var mf = new IntlMessageFormat('{a}{b}{c}');
+            var output = mf.format({
+                a: false,
+                b: null,
+                c: undefined
+            });
+
+            expect(output).to.equal('');
+        });
     });
 
     describe('and plurals under the Arabic locale', function () {
@@ -258,7 +278,8 @@ describe('IntlMessageFormat', function () {
                 ' published new books.',
 
             ru: '{COMPANY_COUNT, plural, ' +
-                    'one {Одна компания опубликовала}' +
+                    '=1 {Одна компания опубликовала}' +
+                    'one {# компания опубликовала}' +
                     'few {# компании опубликовали}' +
                     'many {# компаний опубликовали}' +
                     'other {# компаний опубликовали}}' +
@@ -283,6 +304,7 @@ describe('IntlMessageFormat', function () {
             expect(msgFmt.format({COMPANY_COUNT: 2})).to.equal('2 компании опубликовали новые книги.');
             expect(msgFmt.format({COMPANY_COUNT: 5})).to.equal('5 компаний опубликовали новые книги.');
             expect(msgFmt.format({COMPANY_COUNT: 10})).to.equal('10 компаний опубликовали новые книги.');
+            expect(msgFmt.format({COMPANY_COUNT: 21})).to.equal('21 компания опубликовала новые книги.');
         });
     });
 
@@ -295,6 +317,7 @@ describe('IntlMessageFormat', function () {
             it('should fail when the argument in the pattern is not provided', function () {
                 expect(msg.format).to.throwException(function (e) {
                     expect(e).to.be.an(Error);
+                    expect(e.message).to.match(/The intl string context variable 'STATE' was not provided to the string '{STATE}'/);
                 });
             });
 
@@ -305,6 +328,7 @@ describe('IntlMessageFormat', function () {
 
                 expect(formatWithValueNameTypo).to.throwException(function (e) {
                     expect(e).to.be.an(Error);
+                    expect(e.message).to.match(/The intl string context variable 'STATE' was not provided to the string '{STATE}'/);
                 });
             });
 
@@ -324,6 +348,7 @@ describe('IntlMessageFormat', function () {
 
                 expect(formatWithMissingValue).to.throwException(function (e) {
                     expect(e).to.be.an(Error);
+                    expect(e.message).to.match(/The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/);
                 });
             });
 
@@ -334,6 +359,7 @@ describe('IntlMessageFormat', function () {
 
                 expect(formatWithMissingValue).to.throwException(function (e) {
                     expect(e).to.be.an(Error);
+                    expect(e.message).to.match(/The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/);
                 });
             });
 

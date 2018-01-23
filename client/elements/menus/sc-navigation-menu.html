@@ -398,8 +398,21 @@
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
+          }
+
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`));
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.language}.json`), this.language, true);
           }
 
           _generateMainMenu() {
@@ -431,10 +444,6 @@
                 </ul>`;
               this._addButtonEventListeners();
               this._selectedMenuItemChanged();
-          }
-
-          _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.language}.json`));
           }
 
           _generateDeepMainMenuLevels(item, isOpen) {

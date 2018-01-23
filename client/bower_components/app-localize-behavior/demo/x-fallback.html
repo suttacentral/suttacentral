@@ -1,0 +1,71 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../app-localize-behavior.html">
+<link rel="import" href="common-styles.html">
+
+<dom-module id="x-fallback">
+  <template>
+    <style include="common-styles"></style>
+
+    <div class="lang">
+      <span title="english">🇬🇧 EN</span>
+      <paper-toggle-button on-change="_toggle" id="switch"></paper-toggle-button>
+      <span title="french">FR 🇫🇷</span>
+    </div>
+
+    <h4>This will fallback from FR to en_US and use this language, because there is no missing_translation key in french and fallbackLanguage is set to en_US</h4>
+    <div class="snippet">
+      <div class="demo">
+
+        <div>{{localize('missing_translation')}}</div>
+      </div>
+      <div class="code-container">
+        <code>localize('missing_translation')
+        </code>
+      </div>
+    </div>
+
+  </template>
+
+
+
+  <script>
+    Polymer({
+      is: "x-fallback",
+
+      behaviors: [
+        Polymer.AppLocalizeBehavior
+      ],
+
+      properties: {
+        /* Overriden from AppLocalizeBehavior */
+        language: {
+          value: 'en',
+          type: String
+        },
+        fallbackLanguage: {
+          value: 'en_US',
+          type: String
+        }
+      },
+
+      attached: function() {
+        this.loadResources(this.resolveUrl('locales.json'));
+      },
+
+      _toggle: function() {
+        this.language = this.$.switch.checked ? 'fr' : 'en';
+      }
+    });
+  </script>
+</dom-module>

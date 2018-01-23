@@ -146,6 +146,10 @@
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
@@ -176,6 +180,11 @@
               this.addEventListener('show-image', e => {
                   this.$.sc_image.showImage(e.detail);
               });
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.fallbackLanguage}.json`));
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
           }
 
           _onResponse() {
@@ -185,10 +194,6 @@
               this.setProperties();
               this.shadowRoot.querySelector('#sutta_text_options')._closeSuttaplex();
               this.dispatch('downloadSuttaText', this.responseData);
-          }
-
-          _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`));
           }
 
           setProperties() {

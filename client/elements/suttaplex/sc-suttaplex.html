@@ -407,6 +407,10 @@
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   difficulty: {
                       type: String
                   },
@@ -424,10 +428,16 @@
               if (this.$.copy_menu) {
                   this.$.copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
               }
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.language}.json`));
+              if (this.language !== this.fallbackLanguage) {
+                  if (this.resources && this.resources[this.language]) {
+                      return;
+                  }
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.language}.json`), this.language, true);
+              }
           }
 
           _moreMenuOpenedChanged(e) {
