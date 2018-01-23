@@ -296,6 +296,16 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.fallbackLanguage}.json`));
           }
 
+          connectedCallback() {
+              super.connectedCallback();
+              requestAnimationFrame(() => {
+                  this._toggleDrawer(true);
+              });
+              setTimeout(() => {
+                  this.shadowRoot.querySelector('.header-backdrop-full-width-bar').style.display = 'none';
+              }, 5000);
+          }
+
           _siteLanguageChanged() {
               this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`), this.language, true);
           }
@@ -310,13 +320,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               else {
                   return title;
               }
-          }
-
-          connectedCallback() {
-              super.connectedCallback();
-              requestAnimationFrame(() => {
-                  this._toggleDrawer(true);
-              });
           }
 
           _recalculateView() {
