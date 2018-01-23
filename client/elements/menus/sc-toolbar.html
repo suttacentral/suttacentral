@@ -140,6 +140,10 @@ Base toolbar that appears on the top right in the header of every page. This too
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   discourseIconTooltip: {
                       type: String,
                       computed: '_computeDiscourseTitle(mode, language)'
@@ -151,11 +155,12 @@ Base toolbar that appears on the top right in the header of every page. This too
               super.ready();
               this.$.more_menu.addEventListener('item-selected', (e) => {
                   this.$.more_vert_button.close();
-              })
+              });
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.language}.json`), this.language, true);
           }
 
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.

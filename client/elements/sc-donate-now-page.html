@@ -313,6 +313,10 @@
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
@@ -348,16 +352,17 @@
 
               amountInput.addEventListener('keydown', (e) => {
                   if (e.key === ',') {
-                      let posiiton = amountInput.$.nativeInput.selectionStart;
-                      amountInput.value = amountInput.value.slice(0, posiiton) + '.' + amountInput.value.slice(posiiton);
-                      posiiton += 1;
+                      let position = amountInput.$.nativeInput.selectionStart;
+                      amountInput.value = amountInput.value.slice(0, position) + '.' + amountInput.value.slice(position);
                       e.preventDefault();
                   }
               });
+
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.language}.json`), this.language, true);
           }
 
           _handleResponse() {

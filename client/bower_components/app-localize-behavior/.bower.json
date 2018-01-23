@@ -1,6 +1,6 @@
 {
   "name": "app-localize-behavior",
-  "version": "2.0.0",
+  "version": "2.0.0-fallbackLanguage",
   "description": "A behavior to help with internationalizating apps",
   "authors": [
     "The Polymer Authors"
@@ -22,7 +22,7 @@
   "ignore": [],
   "dependencies": {
     "iron-ajax": "PolymerElements/iron-ajax#1 - 2",
-    "intl-messageformat": "yahoo/intl-messageformat#^1.0.0",
+    "intl-messageformat": "yahoo/intl-messageformat#^2.2.0",
     "polymer": "Polymer/polymer#1.9 - 2"
   },
   "devDependencies": {
@@ -59,14 +59,14 @@
   "resolutions": {
     "webcomponentsjs": "^1.0.0"
   },
-  "_release": "2.0.0",
+  "_release": "2.0.0-fallbackLanguage",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.0",
-    "commit": "2306e2788d32ced042b24d1df5774fdada7cdf9d"
+    "tag": "2.0.0-fallbackLanguage",
+    "commit": "6e31b24b777d40f970a04542065584c962b8bc04"
   },
-  "_source": "https://github.com/PolymerElements/app-localize-behavior.git",
-  "_target": "^2.0.0",
-  "_originalSource": "PolymerElements/app-localize-behavior",
+  "_source": "git://github.com/suttacentral/app-localize-behavior.git",
+  "_target": "2.0.0-fallbackLanguage",
+  "_originalSource": "git://github.com/suttacentral/app-localize-behavior.git",
   "_direct": true
 }

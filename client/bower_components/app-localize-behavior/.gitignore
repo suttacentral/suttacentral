@@ -1,2 +1,4 @@
 bower_components*
 bower-1.x.json
+build/
+.idea

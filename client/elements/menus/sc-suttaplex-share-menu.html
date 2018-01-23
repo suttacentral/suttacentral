@@ -99,12 +99,21 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex-share-menu/${this.fallbackLanguage}.json`));
+          }
+
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex-share-menu/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex-share-menu/${this.language}.json`), this.language, true);
           }
 
           _notifyCopy(message, success) {

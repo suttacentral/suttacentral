@@ -26,9 +26,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script src="../../intl/locale-data/jsonp/fr.js"></script>
 
   <link rel="import" href="x-translate.html">
+  <link rel="import" href="x-translate-fallback.html">
   <link rel="import" href="x-translate2.html">
   <link rel="import" href="x-translate-only-imperative.html">
   <link rel="import" href="x-translate-l10n.html">
+  <link rel="import" href="x-translate-structured.html">
 
 </head>
 <body>
@@ -36,6 +38,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="basic">
     <template>
       <x-translate></x-translate>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="structured">
+    <template>
+      <x-translate-structured></x-translate-structured>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="fallback">
+    <template>
+      <x-translate-fallback></x-translate-fallback>
     </template>
   </test-fixture>
 
@@ -63,9 +77,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
   </test-fixture>
 
-   <test-fixture id="l10n">
+  <test-fixture id="l10n">
     <template>
       <x-translate-l10n></x-translate-l10n>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="structured">
+    <template>
+      <x-translate-structured></x-translate-structured>
     </template>
   </test-fixture>
 
@@ -86,7 +106,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       elem.constructor.prototype.__localizationCache.messages = {};
     }
 
+
+    suite('structured', function(){
+        test('can handle structured translations', function() {
+            var app = fixture('structured');
+
+            assert.equal(app.language, 'en');
+            assert.equal(app.$.output.innerHTML, 'my name is batman. i have 3 cats.');
+            assert.equal(app.$.missing.innerHTML, '');
+            assert.equal(app.$.multi.innerHTML, 'search:search in the website');
+
+            app.language = 'fr';
+            assert.equal(app.language, 'fr');
+            assert.equal(app.$.output.innerHTML, 'je m\'apelle batman. j\'ai 3 chats.');
+            assert.equal(app.$.missing.innerHTML, '');
+            assert.equal(app.$.multi.innerHTML, 'chercher:chercher sur le site');
+        });
+    });
+
+
+    suite('fallback', function(){
+        test('uses fallback language, if translation is missing', function() {
+            var app = fixture('fallback');
+            assert.equal(app.language, 'fr');
+            assert.equal(app.fallbackLanguage, 'en');
+            assert.equal(app.$.fallback.innerHTML, 'français hello');
+
+        });
+    });
+
     suite('basic', function() {
+
       test('can translate a basic string', function() {
         var app = fixture('basic');
 
@@ -98,6 +148,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         assert.equal(app.language, 'fr');
         assert.equal(app.$.output.innerHTML, 'bonjour');
       });
+
 
       test('can handle missing keys', function() {
         var app = fixture('missing');
@@ -238,10 +289,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         app1.loadResources(app1.resolveUrl('locales.json'));
         app2.loadResources(app2.resolveUrl('locales.json'));
       });
+
+      test('can call loadResources for a specific language in a flat json file', function(done) {
+        var app = fixture('basic');
+
+        app.addEventListener('app-localize-resources-loaded', function() {
+          assert.equal(app.language, 'en');
+          assert.equal(app.localize('farewell'), 'goodbye');
+          done();
+        });
+
+        app.loadResources(app.resolveUrl('fragment.en.json'), 'en');
+      });
+
+      test('can call loadResources with merge=true to merge into existing resources', function(done) {
+        var app = fixture('basic');
+
+        var fetchedSpanish, fetchedEnglish;
+
+        app.addEventListener('app-localize-resources-loaded', function(event) {
+          if (event.detail.url.indexOf('fragment.es.json') !== -1) {
+            fetchedSpanish = true;
+          } else if (event.detail.url.indexOf('fragment.en.json') !== -1) {
+            fetchedEnglish = true;
+          }
+          if (fetchedSpanish && fetchedEnglish) {
+            assert.equal(app.language, 'en');
+
+            // New resources have been loaded
+            assert.equal(app.localize('farewell'), 'goodbye');
+
+            // Old resources (inlined in x-translate.html) haven't been clobbered
+            assert.equal(app.localize('greeting'), 'hello');
+
+            // We can switch to Spanish and those have been merged in too
+            app.language = 'es';
+            assert.equal(app.localize('farewell'), 'chau');
+
+            done();
+          }
+        });
+        app.loadResources(app.resolveUrl('fragment.es.json'), 'es', true);
+        app.loadResources(app.resolveUrl('fragment.en.json'), 'en', true);
+      });
     });
 
     suite('json loading and caching', function() {
-      test('loads the same json only file once', function(done) {
+      test('loads the same json file only once', function(done) {
         // TL;DR: this test makes sure that objects of the same type, and of
         // different types play together in the same, nice, way.
         var app1 = fixture('basic');
