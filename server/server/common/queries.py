@@ -249,11 +249,11 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             RETURN translation.title
     )[0]
 
-    LET ortitle = (
-        FOR orname IN root_names
-            FILTER orname.uid == e.to
+    LET original_titles = (
+        FOR original_name IN root_names
+            FILTER original_name.uid == e.to
             LIMIT 1
-            RETURN orname.name
+            RETURN original_name.name
     )[0]
 
     RETURN {
@@ -264,7 +264,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             acronym: v.acronym,
             uid: v.uid,
             root_lang: v.root_lang,
-            original_title: ortitle,
+            original_title: original_titles,
             translated_title: translated_titles,
             type: e.type,
             from: e._from,
