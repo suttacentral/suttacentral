@@ -251,7 +251,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
 
     LET original_titles = (
         FOR original_name IN root_names
-            FILTER original_name.uid == e.to
+            FILTER original_name.uid == v.uid
             LIMIT 1
             RETURN original_name.name
     )[0]
