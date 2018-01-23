@@ -2311,6 +2311,9 @@
 
           _siteLanguageChanged() {
               if (this.language !== this.fallbackLanguage) {
+                  if (this.resources && this.resources[this.language]) {
+                      return;
+                  }
                   this.loadResources(this.resolveUrl(`/localization/elements/static/similes/${this.language}.json`), this.language, true);
               }
           }
