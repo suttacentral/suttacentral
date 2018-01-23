@@ -239,7 +239,23 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             LIMIT 1
             RETURN biblio.text
     )[0]
-        
+
+    LET translations = FLATTEN([po_translations, legacy_translations])
+
+    LET translated_titles = (
+        FOR translation IN translations
+            FILTER translation.lang == @language AND HAS(translation, 'title')
+            LIMIT 1
+            RETURN translation.title
+    )[0]
+
+    LET original_titles = (
+        FOR original_name IN root_names
+            FILTER original_name.uid == e.to
+            LIMIT 1
+            RETURN original_name.name
+    )[0]
+
     RETURN {
         from: e.from,
         to: {
@@ -248,11 +264,12 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             acronym: v.acronym,
             uid: v.uid,
             root_lang: v.root_lang,
-            original_title: v.name,
+            original_title: original_titles,
+            translated_title: translated_titles,
             type: e.type,
             from: e._from,
             biblio: biblio,
-            translations: FLATTEN([po_translations, legacy_translations])
+            translations: translations
         },
         type: e.type,
         remark: e.remark,

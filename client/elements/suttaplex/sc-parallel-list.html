@@ -344,20 +344,28 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               return `#${ids}`;
           }
 
+
+          // This function parses the input uid of the parallel and splits it into
+          // it's main document part (root_part) and the id (paragraphs) within the document (id_part)
+          // The root_part is then split into it's various elements which are then expanded
+          // according to the data in the expansion-table. 
+          // So f.i. 'an3.4#23-#25' becomes 'AN 3.4 #23-25' and 'lzh-sarv-bi-vb-np1' becomes
+          // 'Lzh Sarv Bi Vb NP 1'
           _transformId(rootId, expansionData) {
               let sc_acronym = '';
               let id_part = this._getParagraphRange(rootId).replace('--', '-');
               let root_part = rootId.split('#')[0];
               let uid_parts = root_part.split('-');
               let tail = '';
-              for (let i in uid_parts) {
-                  if (!expansionData[0][uid_parts[i]]) {
-                      tail = uid_parts[i].match(/\d+.*/g)[0];
-                      uid_parts[i] = uid_parts[i].match(/[a-z]*/g)[0];
-                  }
-                  (uid_parts[i]) ? sc_acronym += `${expansionData[0][uid_parts[i]]} ` : '';
-              }
-              return `${sc_acronym} ${tail} ${id_part}`;
+              uid_parts.forEach(item => {
+                if (!expansionData[0][item]) {
+                    tail = item.match(/\d+.*/g)[0]+'–';
+                    item = item.match(/[a-z]*/g)[0];
+                }
+                item ? sc_acronym += `${expansionData[0][item]} ${tail}` : sc_acronym += tail;
+              });
+              sc_acronym = sc_acronym.replace(/–\s*$/, '');
+              return `${sc_acronym} ${id_part}`;
           }
       }
 
