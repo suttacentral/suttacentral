@@ -110,8 +110,8 @@ services:
     labels:
       application: 'sc-pootle-pipeline'
     volumes:
-      - pootle-po:/srv/pootle/po
-      - server-po:/opt/sc/pootle_files/flask/
+      - pootle-po:/srv/pootle/po/
+      - server-po:/opt/sc/server/
       - ./client/:/opt/sc/frontend/
       - ./pootle_pipeline/:/opt/sc/po_files/
 
@@ -152,7 +152,6 @@ services:
     container_name: 'sc-frontend-builder'
     labels:
       application: 'sc-frontend-builder'
-
 
 
 volumes:

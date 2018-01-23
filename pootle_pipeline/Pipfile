@@ -7,7 +7,7 @@ name = "pypi"
 
 [packages]
 
-slumber = "*"
+selenium = "*"
 
 
 [dev-packages]

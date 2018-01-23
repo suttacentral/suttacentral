@@ -29,8 +29,8 @@ def process_blurbs(db):
             )
             po.append(entry)
 
-    (GENERATED_PO_FILES_DIR / 'blurbs').mkdir(parents=True, exist_ok=True)
-    po.save(str(GENERATED_PO_FILES_DIR / 'blurbs' / 'en.po'))
+    (GENERATED_PO_FILES_DIR / 'server_blurbs').mkdir(parents=True, exist_ok=True)
+    po.save(str(GENERATED_PO_FILES_DIR / 'server_blurbs' / 'en.po'))
 
     print('✓ FINISHED PROCESSING BLURBS')
 
@@ -38,7 +38,7 @@ def process_blurbs(db):
 def process_menu(db):
     print('PROCESSING MENU')
 
-    (GENERATED_PO_FILES_DIR / 'root_names').mkdir(parents=True, exist_ok=True)
+    (GENERATED_PO_FILES_DIR / 'server_root_names').mkdir(parents=True, exist_ok=True)
 
     menu_names_collection = db['root_names']
 
@@ -75,7 +75,7 @@ def process_menu(db):
 
             po_file.append(entry)
 
-        po_file.save(str(GENERATED_PO_FILES_DIR / 'root_names' / f'{lang}.po'))
+        po_file.save(str(GENERATED_PO_FILES_DIR / 'server_root_names' / f'{lang}.po'))
 
     print('✓ FINISHED PROCESSING ROOT NAMES')
 
@@ -97,8 +97,8 @@ def process_currencies(db):
         )
         po.append(entry)
 
-    (GENERATED_PO_FILES_DIR / 'currency_names').mkdir(parents=True, exist_ok=True)
-    po.save(str(GENERATED_PO_FILES_DIR / 'currency_names' / 'en.po'))
+    (GENERATED_PO_FILES_DIR / 'server_currency_names').mkdir(parents=True, exist_ok=True)
+    po.save(str(GENERATED_PO_FILES_DIR / 'server_currency_names' / 'en.po'))
 
     print('✓ FINISHED PROCESSING CURRENCIES')
 
