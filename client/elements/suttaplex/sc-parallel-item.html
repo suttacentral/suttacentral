@@ -47,9 +47,15 @@ It is in effect a miniature version of the suttaplex-card
       .parallel-item-details {
         @apply --paper-font-body2;
         color: var(--sc-secondary-text-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .parallel-item-details:hover {
+        text-overflow: clip;
         white-space: normal;
-        word-wrap: break-word;
-        flex-wrap: wrap;
+        word-break: break-all;
       }
 
       .parallel-item-details div:not(:last-child) {
@@ -249,7 +255,10 @@ It is in effect a miniature version of the suttaplex-card
           // returns the relevant header, either the title in the translated language,
           // otherwise in pali or otherwise just the ID.
           _computeTitle(item) {
-              if (item.translated_title) {
+              const uidLanguage = item.uid.substring(0, 3);
+              if (Object.keys(this.rootLangMappings).indexOf(uidLanguage) !== -1) {
+                return this._transformId(item.to, item.uid, this.expansionData, 1);
+              } else if (item.translated_title) {
                   return item.translated_title;
               } else if (item.original_title) {
                   return item.original_title;
@@ -264,10 +273,6 @@ It is in effect a miniature version of the suttaplex-card
                } else {
                   return this._getAcronymTitle(item, localize);
               }
-          }
-
-          _computeRootIdVisibility() {
-              return this.parallelItem.original_title ? '' : 'd-none';
           }
 
           _computeHideUID(item) {
@@ -328,7 +333,7 @@ It is in effect a miniature version of the suttaplex-card
                 const id_part = this._getParagraphRange(rootId);
                 return `${sc_acronym} ${id_part}`;
               } else {
-                sc_acronym = this._transformId(item.to, item.uid, expansionData);
+                sc_acronym = this._transformId(item.to, item.uid, expansionData, 0);
               }
               return sc_acronym;
           }
@@ -339,7 +344,7 @@ It is in effect a miniature version of the suttaplex-card
           // according to the data in the expansion-table. 
           // So f.i. 'an3.4#23-#25' becomes 'AN 3.4 #23-25' and 'lzh-sarv-bi-vb-np1' becomes
           // 'Lzh Sarv Bi Vb NP 1'
-          _transformId(rootId, uid, expansionData) {
+          _transformId(rootId, uid, expansionData, idOrName) {
               rootId = rootId.replace('~','');
               let id_part = this._getParagraphRange(rootId);
               let sc_acronym = '';
@@ -350,7 +355,7 @@ It is in effect a miniature version of the suttaplex-card
                     tail = item.match(/\d+.*/g)[0]+'–';
                     item = item.match(/[a-z]*/g)[0];
                 }
-                item ? sc_acronym += `${expansionData[0][item]} ${tail}` : sc_acronym += tail;
+                item ? sc_acronym += `${expansionData[0][item][idOrName]} ${tail}` : sc_acronym += tail;
               });
               sc_acronym = sc_acronym.replace(/–\s*$/, '');
               return `${sc_acronym} ${id_part}`;

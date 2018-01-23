@@ -362,7 +362,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                     tail = item.match(/\d+.*/g)[0]+'–';
                     item = item.match(/[a-z]*/g)[0];
                 }
-                item ? sc_acronym += `${expansionData[0][item]} ${tail}` : sc_acronym += tail;
+                item ? sc_acronym += `${expansionData[0][item][0]} ${tail}` : sc_acronym += tail;
               });
               sc_acronym = sc_acronym.replace(/–\s*$/, '');
               return `${sc_acronym} ${id_part}`;
