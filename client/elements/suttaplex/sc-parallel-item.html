@@ -228,7 +228,9 @@ It is in effect a miniature version of the suttaplex-card
           // returns the relevant header, either the title in the translated language,
           // otherwise in pali or otherwise just the ID.
           _computeTitle() {
-              if (this.parallelItem.original_title) {
+              if (this.parallelItem.translated_title) {
+                  return this.parallelItem.translated_title;
+              } else if (this.parallelItem.original_title) {
                   return this.parallelItem.original_title;
               } else {
                   return this._transformId(this.parallelItem.to, this.expansionData);
