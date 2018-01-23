@@ -26,7 +26,7 @@
       }
 
       .paper-spinner {
-        --paper-spinner-color: var(--primary-color);
+        --paper-spinner-color: var(--sc-primary-color);
       }
 
       .icon-middle {
@@ -245,6 +245,10 @@
         padding: 5px var(--sc-size-md);
       }
 
+      #main_navigation .nav-tertiary .nav-link-container.link-text-ellipsis {
+        padding-right: calc(var(--sc-size-sm) + var(--sc-size-lg));
+      }
+
       #main_navigation:not(.active)::-webkit-scrollbar-thumb {
         background-color: transparent;
       }
@@ -291,6 +295,13 @@
 
       .top-menu-item:first-of-type {
         margin-top: var(--sc-size-md);
+      }
+
+      .link-text-ellipsis {
+        white-space: nowrap;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
 
     </style>
@@ -451,9 +462,9 @@
                         icon="${this._getLanguageIconName(childItem.lang_iso)}"></iron-icon>` : ''}
                        `
                       :
-                      `<span class="nav-link-container">
+                      `<div class="nav-link-container link-text-ellipsis" title="${childItem.name}">
                         <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
-                       </span>
+                       </div>
                        ${childItem.lang_iso ? `
                         <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
                         icon="${this._getLanguageIconName(childItem.lang_iso)}"></iron-icon>` : ''}`
@@ -488,11 +499,12 @@
                   style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
                     <li class="nav-menu-item ${isRootElement ? 'top-menu-item' : ''}" data-uid="${childItem.id}">
-                      <span class="nav-link-container" style="${this._calculateSubmenuChildrenStyle(menuLevel)}">
+                      <div class="nav-link-container link-text-ellipsis" title="${childItem.name}"
+                        style="${this._calculateSubmenuChildrenStyle(menuLevel)}">
                         <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">
                           ${this._getPrefixedItemName(childItem.name, childItem.display_num)}
                         </a>
-                      </span>
+                      </div>
                     ${childItem.children && childItem.children.length > 0 ? `
                       <paper-icon-button icon="expand-more" class="menu-dropdown-icon"></paper-icon-button>
                        ${this._generateChildMenu(childItem, menuLevel + 1)}`

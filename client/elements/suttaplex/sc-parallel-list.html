@@ -23,14 +23,19 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
         border-spacing: 0 var(--sc-size-sm);
         margin: 0 auto;
         width: 90%;
-        max-width: 50vw;
+      }
+
+      @media screen and (min-width: 960px) {
+        .parallels-table {
+          max-width: 50vw;
+        }
       }
 
       .parallels-root-cell,
       .parallels-parallel-cell {
         padding: var(--sc-size-sm);
         border: var(--sc-border);
-        border-radius: 2px;
+        border-radius: var(--sc-size-xxs);
       }
 
       .parallels-parallel-cell {
@@ -48,7 +53,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
       .paper-spinner {
         --paper-spinner-color: var(--sc-primary-color);
-        margin-top: var(--sc-size-md);
+        margin: var(--sc-size-md) 0;
         left: 50%;
       }
 
@@ -84,12 +89,12 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
         last-response="{{expansionData}}"></iron-ajax>
 
     <iron-ajax
-            id="ajax"
-            url="[[_getAPIEndpoint(itemUid)]]"
-            handle-as="json"
-            loading="{{loadingResults}}"
-            last-response="{{responseData}}"
-            on-response="_didRespond"></iron-ajax>
+        id="ajax"
+        url="[[_getAPIEndpoint(itemUid)]]"
+        handle-as="json"
+        loading="{{loadingResults}}"
+        last-response="{{responseData}}"
+        on-response="_didRespond"></iron-ajax>
 
     <div class="parallels-expanded light-grey-bg">
 
@@ -126,7 +131,8 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           <template is="dom-repeat" items="[[_getOtherParallels(rootId)]]" as="item">
             <tr>
               <td class="parallels-relation-cell">
-                <iron-icon class="grey-icon" icon="[[_getParallelIcon(item)]]" title="[[_computeIconTitle(item, localize)]]"></iron-icon>
+                <iron-icon class="grey-icon" icon="[[_getParallelIcon(item)]]"
+                           title="[[_computeIconTitle(item, localize)]]"></iron-icon>
               </td>
               <td class="parallels-parallel-cell paper-lift white-bg">
                 <sc-parallel-item parallel-item="[[item.to]]" remark="[[item.remark]]"
@@ -205,7 +211,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               super.ready();
               this.addEventListener('loading-results-changed', this._resizeParentList);
               if (!this.expansionData) {
-                this.$.uid_expansion_ajax.generateRequest()
+                  this.$.uid_expansion_ajax.generateRequest()
               }
               this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.fallbackLanguage}.json`));
           }
@@ -283,7 +289,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
           // returns the correct title for each type of parallel.
           _computeIconTitle(item, localize) {
-              
+
               if (!item) {
                   return;
               }
@@ -323,33 +329,33 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           }
 
           _computeUrl(rootId) {
-            return `/${this.itemUid}/${this.rootLang}/${this.rootText.author}${this._getParagraphRange(rootId)}`
+              return `/${this.itemUid}/${this.rootLang}/${this.rootText.author}${this._getParagraphRange(rootId)}`
           }
 
           _getParagraphRange(rootId) {
-            const ids = rootId.split(/#(.*)/)[1];
-            if(!ids) {
-                return '';
-            }
-            if(ids.includes('-')) {
-              const [id1, id2] = ids.split('-#');
-              return `#${id1}--${id2}`;
-            }
-            return `#${ids}`;
+              const ids = rootId.split(/#(.*)/)[1];
+              if (!ids) {
+                  return '';
+              }
+              if (ids.includes('-')) {
+                  const [id1, id2] = ids.split('-#');
+                  return `#${id1}--${id2}`;
+              }
+              return `#${ids}`;
           }
 
           _transformId(rootId, expansionData) {
               let sc_acronym = '';
-              let id_part = this._getParagraphRange(rootId).replace('--','-');
+              let id_part = this._getParagraphRange(rootId).replace('--', '-');
               let root_part = rootId.split('#')[0];
               let uid_parts = root_part.split('-');
               let tail = '';
               for (let i in uid_parts) {
-                if (!expansionData[0][uid_parts[i]]) {
-                    tail = uid_parts[i].match(/\d+.*/g)[0];
-                    uid_parts[i] = uid_parts[i].match(/[a-z]*/g)[0];
-                }
-                (uid_parts[i]) ? sc_acronym += `${expansionData[0][uid_parts[i]]} ` : '';
+                  if (!expansionData[0][uid_parts[i]]) {
+                      tail = uid_parts[i].match(/\d+.*/g)[0];
+                      uid_parts[i] = uid_parts[i].match(/[a-z]*/g)[0];
+                  }
+                  (uid_parts[i]) ? sc_acronym += `${expansionData[0][uid_parts[i]]} ` : '';
               }
               return `${sc_acronym} ${tail} ${id_part}`;
           }
