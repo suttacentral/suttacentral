@@ -228,14 +228,28 @@ It is in effect a miniature version of the suttaplex-card
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   expansionData: {
                       type: Array
                   }
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.fallbackLanguage}.json`));
+          }
+
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.language}.json`));
+              if (this.language !== this.fallbackLanguage) {
+                  if (this.resources && this.resources[this.language]) {
+                      return;
+                  }
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.language}.json`), this.language, true);
+              }
           }
 
           // returns the relevant header, either the title in the translated language,

@@ -307,12 +307,26 @@
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/static/vinaya/${this.fallbackLanguage}.json`));
+          }
+
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/static/vinaya/${this.language}.json`));
+              if (this.language !== this.fallbackLanguage) {
+                  if (this.resources && this.resources[this.language]) {
+                      return;
+                  }
+                  this.loadResources(this.resolveUrl(`/localization/elements/static/vinaya/${this.language}.json`), this.language, true);
+              }
           }
       }
 

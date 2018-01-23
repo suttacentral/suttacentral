@@ -392,6 +392,10 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
@@ -441,6 +445,15 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-settings-menu/${this.fallbackLanguage}.json`));
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-settings-menu/${this.language}.json`), this.language, true);
+          }
+
           connectedCallback() {
               super.connectedCallback();
               this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('active-changed', (e) => {
@@ -470,10 +483,6 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               this.shadowRoot.querySelector('#remember_settings_button').addEventListener('active-changed', (e) => {
                   this._rememberSettingsChanged(e.detail.value);
               });
-          }
-
-          _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-settings-menu/${this.language}.json`));
           }
 
           _textualInfoToggleStateChanged(toggleChecked) {

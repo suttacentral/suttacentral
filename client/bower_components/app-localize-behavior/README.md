@@ -12,8 +12,13 @@ thing! https://github.com/PolymerLabs/tedium/issues
 
 -->
 
-[![Build status](https://travis-ci.org/PolymerElements/app-localize-behavior.svg?branch=master)](https://travis-ci.org/PolymerElements/app-localize-behavior)
+[![Build status](https://travis-ci.org/toshovski/app-localize-behavior.svg?branch=master)](https://travis-ci.org/PolymerElements/app-localize-behavior)
 
+
+This is a fork of the AppLocalizeBehavior. There are some improved features:
+
+  * Support of structured files
+  * fallback Language
 
 ## Polymer.AppLocalizeBehavior
 
