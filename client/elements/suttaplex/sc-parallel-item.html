@@ -310,8 +310,8 @@ It is in effect a miniature version of the suttaplex-card
               let sc_acronym = '';
               if (item.acronym) {
                 sc_acronym = item.acronym.split('//')[0];
-                let rootId = item.to.replace('~','');
-                let id_part = this._getParagraphRange(rootId);
+                const rootId = item.to.replace('~','');
+                const id_part = this._getParagraphRange(rootId);
                 return `${sc_acronym} ${id_part}`;
               } else {
                 sc_acronym = this._transformId(item.to, item.uid, expansionData);
@@ -329,7 +329,7 @@ It is in effect a miniature version of the suttaplex-card
               rootId = rootId.replace('~','');
               let id_part = this._getParagraphRange(rootId);
               let sc_acronym = '';
-              let uid_parts = uid.split('-');
+              const uid_parts = uid.split('-');
               let tail = '';
               uid_parts.forEach(item => {
                 if (!expansionData[0][item]) {

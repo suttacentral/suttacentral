@@ -526,7 +526,7 @@
           // 'Lzh Sarv Bi Vb NP 1'
           _transformId(rootId, expansionData) {
               let sc_acronym = '';
-              let root_part = rootId.split('#')[0];
+              const root_part = rootId.split('#')[0];
               let uid_parts = root_part.split('-');
               let tail = '';
               uid_parts.forEach(item => {
