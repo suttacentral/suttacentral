@@ -447,7 +447,7 @@
           }
 
           _computeHideOriginalTitle(item) {
-              return item.translated_title ? '' : 'hide-element';
+              return item.translated_title && item.original_title ? '' : 'hide-element';
           }
 
           // returns the relevant icon for the expander
