@@ -339,7 +339,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               }
               if (ids.includes('-')) {
                   const [id1, id2] = ids.split('-#');
-                  return `#${id1}–${id2}`;
+                  return `#${id1}--${id2}`;
               }
               return `#${ids}`;
           }
@@ -353,7 +353,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           // 'Lzh Sarv Bi Vb NP 1'
           _transformId(rootId, expansionData) {
               let sc_acronym = '';
-              let id_part = this._getParagraphRange(rootId);
+              let id_part = this._getParagraphRange(rootId).replace('--','–');
               let root_part = rootId.split('#')[0];
               let uid_parts = root_part.split('-');
               let tail = '';
