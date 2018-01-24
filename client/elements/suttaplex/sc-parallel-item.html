@@ -135,7 +135,7 @@ It is in effect a miniature version of the suttaplex-card
         <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
           <div class="parallel-item-volpages-container">
             <span title="{{localize('originalTitle')}}" class$="nerdy-row-element [[_computeHideOriginalTitle(parallelItem)]]">
-              [[_removeSuttaText(parallelItem.original_title)]]
+              [[_getTitleWithoutSuttaText(parallelItem.original_title)]]
             </span>
             <span class$="nerdy-row-element [[_computeHideUID(parallelItem)]]" title="[[_getAcronymTitle(parallelItem, localize)]]">
               [[_getAcronymOrUid(parallelItem, expansionData)]]
@@ -283,7 +283,7 @@ It is in effect a miniature version of the suttaplex-card
               return item.translated_title && item.original_title ? '' : 'hide-element';
           }
 
-          _removeSuttaText(item) {
+          _getTitleWithoutSuttaText(item) {
               return item.replace(' Sutta','');
           }
 
