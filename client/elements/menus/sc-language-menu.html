@@ -217,15 +217,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               return checkText ? checkText : 'd-none';
           }
 
-          // If author name is too long it looks really bad in paper-item so just cut it.
-          // _shortenAuthor(author) {
-          //     if (author.length > 16) {
-          //         return `${author.substring(0, 15)}...`;
-          //     } else {
-          //         return author;
-          //     }
-          // }
-
           _shouldShowMenu(languageChoice) {
               return languageChoice.some(item => item.lang !== this.inputLanguage);
           }
@@ -233,10 +224,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           _computeAuthor(author) {
               return author ? author : this.localize('anonym');
           }
-
-          // _computeAuthorForList(author) {
-          //     return this._computeAuthor(author);
-          // }
 
           _computeFullLanguageName(isoCode) {
               return this.rootLangMappings[isoCode];
