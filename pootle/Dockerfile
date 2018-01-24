@@ -34,6 +34,7 @@ RUN sudo apt-get install -y nodejs
 RUN pip install -q virtualenv \
     MySQL-python \
     flup \
+    elasticsearch \
     python-memcached \
     python-Levenshtein \
     m2crypto \
