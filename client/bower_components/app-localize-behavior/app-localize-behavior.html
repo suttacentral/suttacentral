@@ -274,6 +274,8 @@ Polymer.AppLocalizeBehavior = {
     }
     proto.__localizationCache.messages = {};
 
+    var that = this;
+
     return function() {
       var key = arguments[0];
       if (!key || !resources || !language || !resources[language])
@@ -283,10 +285,10 @@ Polymer.AppLocalizeBehavior = {
       // Cache the key/value pairs for the same language, so that we don't
       // do extra work if we're just reusing strings across an application.
       var translatedValue;
-      translatedValue = this.__findTranslatedValue(resources, language, key);
+      translatedValue = that.__findTranslatedValue(resources, language, key);
       //use fallback key if provided
       if(!translatedValue && fallbackLanguage){
-          translatedValue = this.__findTranslatedValue(resources, fallbackLanguage, key)
+          translatedValue = that.__findTranslatedValue(resources, fallbackLanguage, key)
       }
 
       if (!translatedValue) {
