@@ -135,7 +135,7 @@ It is in effect a miniature version of the suttaplex-card
         <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
           <div class="parallel-item-volpages-container">
             <span title="{{localize('originalTitle')}}" class$="nerdy-row-element [[_computeHideOriginalTitle(parallelItem)]]">
-              [[parallelItem.original_title]]
+              [[_getTitleWithoutSuttaText(parallelItem.original_title)]]
             </span>
             <span class$="nerdy-row-element [[_computeHideUID(parallelItem)]]" title="[[_getAcronymTitle(parallelItem, localize)]]">
               [[_getAcronymOrUid(parallelItem, expansionData)]]
@@ -283,6 +283,10 @@ It is in effect a miniature version of the suttaplex-card
               return item.translated_title && item.original_title ? '' : 'hide-element';
           }
 
+          _getTitleWithoutSuttaText(item) {
+              return item.replace(' Sutta','');
+          }
+
           // returns the URL for the parallel with the given index
           _computeParallelUrl() {
               return `${this.parallelItem.uid}`;
@@ -320,7 +324,7 @@ It is in effect a miniature version of the suttaplex-card
             }
             if(ids.includes('-')) {
               const [id1, id2] = ids.split('-#');
-              return `#${id1}-${id2}`;
+              return `#${id1}–${id2}`;
             }
             return `#${ids}`;
           }
@@ -331,7 +335,7 @@ It is in effect a miniature version of the suttaplex-card
                 sc_acronym = item.acronym.split('//')[0];
                 const rootId = item.to.replace('~','');
                 const id_part = this._getParagraphRange(rootId);
-                return `${sc_acronym} ${id_part}`;
+                return `${sc_acronym}${id_part}`;
               } else {
                 sc_acronym = this._transformId(item.to, item.uid, expansionData, 0);
               }
@@ -346,7 +350,7 @@ It is in effect a miniature version of the suttaplex-card
           // 'Lzh Sarv Bi Vb NP 1'
           _transformId(rootId, uid, expansionData, idOrName) {
               rootId = rootId.replace('~','');
-              let id_part = this._getParagraphRange(rootId);
+              let id_part = this._getParagraphRange(rootId).replace('-','–');
               let sc_acronym = '';
               const uid_parts = uid.split('-');
               let tail = '';
@@ -358,7 +362,7 @@ It is in effect a miniature version of the suttaplex-card
                 item ? sc_acronym += `${expansionData[0][item][idOrName]} ${tail}` : sc_acronym += tail;
               });
               sc_acronym = sc_acronym.replace(/–\s*$/, '');
-              return `${sc_acronym} ${id_part}`;
+              return `${sc_acronym}${id_part}`;
           }
       }
 
