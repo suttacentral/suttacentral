@@ -91,6 +91,7 @@ def process_dir(change_tracker, po_dir, authors, info):
         root_author_data = get_author(info['root_author'], authors)
         author_data = get_author(info['author'], authors)
 
+
         # This doc is for root strings
         yield {
             "uid": uid,
@@ -177,7 +178,7 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
     # does occur we just nuke and rebuild.
 
     deleted_po = [f for f in change_tracker.deleted if f.endswith('.po')]
-    if deleted_po:
+    if deleted_po or change_tracker.is_function_changed(load_po_texts):
         change_tracker = None
         db['po_markup'].truncate()
         db['po_strings'].truncate()
@@ -214,7 +215,7 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
                     markup_docs.append(doc)
 
                 else:
-                    doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author"]}'
+                    doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
                     string_docs.append(doc)
             
             db['po_markup'].import_bulk_safe(markup_docs, on_duplicate='ignore')
