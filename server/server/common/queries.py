@@ -386,7 +386,7 @@ LET root_po_obj = (
 
 LET translated_po_obj = (
     FOR object IN po_strings 
-        FILTER object.uid == @uid AND object.lang == @language AND LOWER(object.author) == @author
+        FILTER object.uid == @uid AND object.lang == @language AND object.author_uid == @author_uid
         LIMIT 1 
         RETURN {
             uid: object.uid,

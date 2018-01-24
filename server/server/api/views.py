@@ -500,8 +500,6 @@ class Sutta(Resource):
         """
         lang = request.args.get('lang', 'en')
 
-        author = author.lower()
-
         db = get_db()
 
         results = db.aql.execute(SUTTA_VIEW,
