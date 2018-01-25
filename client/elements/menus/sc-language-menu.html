@@ -102,9 +102,8 @@ Language-menu used in the suttaplex card for denoting which translations exist o
     <template is="dom-if" if="[[_shouldShowMenu(languageMenu)]]">
       <paper-dropdown-menu class="language-menu-dropdown custom" label="{{localize('more')}}"
                            title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="top">
-        <paper-listbox class="language-menu-listbox" id="listBox" slot="dropdown-content" selected="{{selectedItem}}">
-
-          <template is="dom-repeat" id="itemTemplate" items="[[languageMenu]]" as="translation">
+        <paper-listbox class="language-menu-listbox" slot="dropdown-content" selected="0">
+          <template is="dom-repeat" id="languageMenuTemplate" items="[[languageMenu]]" as="translation">
             <template is="dom-if" if="[[!_otherLanguage(translation, inputLanguage)]]">
               <section class$="{{_rootLanguageClassOrStandard(translation)}} no-outline">
                 <a class="language-menu-url"
@@ -146,17 +145,14 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   },
                   languageMenu: {
                       type: Array,
-                      computed: '_computeLanguageMenu(languageChoice, rootLangMappings)',
-                      observer: '_menuChanged'
-                  },
-                  selectedItem: {
-                      type: Number,
-                      value: 0,
-                      notify: true
+                      computed: '_computeLanguageMenu(languageChoice, rootLangMappings)'
                   },
                   inputLanguage: String,
                   originalLanguage: String,
-                  rootId: String,
+                  rootId: {
+                      type: String,
+                      observer: '_idChanged'
+                  },
                   newLanguage: {
                       type: String,
                       computed: '_otherLanguage(languageMenu, inputLanguage)'
@@ -195,24 +191,13 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               this.loadResources(this.resolveUrl(`/localization/elements/sc-language-menu/${this.fallbackLanguage}.json`));
           }
 
-          _menuChanged() {
-            console.log(this.shadowRoot);
-
-              // let selected = this.$.listBox.selected;
-              // // Clear the selection. If it's still valid, we'll reestablish it below.
-              // this.$.listBox.selected = -1;
-              // // Do we still have enough items that the current item can stay selected?
-              // if (selected < this.languageMenu.length) {
-              //     // Force an update to the listBox's `items` so when we select an item
-              //     // below, it will reflect the new content.
-              //     this.$.itemTemplate.render();
-              //     this.$.listBox.forceSynchronousItemUpdate();
-              //     // Force a refresh of the paper-dropdown-menu's value by reestablishing
-              //     // the selection, which will raise the iron-select event with the
-              //     // updated value.
-              //     this.$.listBox.selected = selected;
-              //   }
-
+          _idChanged() {
+              setTimeout(() => {
+                this.shadowRoot.querySelector('paper-listbox').selected = -1;
+                this.shadowRoot.querySelector('#languageMenuTemplate').render();
+                this.shadowRoot.querySelector('paper-listbox').forceSynchronousItemUpdate();
+                this.shadowRoot.querySelector('paper-listbox').selected = 0;
+              }, 0);
           }
 
           _siteLanguageChanged() {
