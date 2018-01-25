@@ -270,8 +270,8 @@
                     <span class="book no-margin">
                       <iron-icon class="grey-icon" icon="book"></iron-icon>
                     </span>
-                    <span class="vol-page nerdy-row-element" title="{{localize('volumeAndPage')}}">
-                      [[item.volpages]]
+                    <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                      [[_computeVolPage(item.volpages)]]
                     </span>
                   </summary>
                   <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>

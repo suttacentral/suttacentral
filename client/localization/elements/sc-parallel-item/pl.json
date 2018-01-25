@@ -3,7 +3,8 @@
     "originalTitle": "Oryginalny tytuł",
     "suttaCentralID": "Identyfikator SuttaCentral",
     "alternateText": "Numer alternatywny w wydaniu {book}:",
-    "volAndPageNum": "Wolumen i numer strony",
+    "volumeAndPage": "Wolumen i strona",
+    "volumeAndPagePTS1": "Wolumen i strona PTS:\nedycja 1 = {pts1}\nedycja 2 = {pts2}",
     "translations": "Tłumaczenia"
   }
 }
