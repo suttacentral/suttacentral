@@ -1234,7 +1234,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/methodology-page/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/static_methodology-page/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
@@ -1242,7 +1242,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/methodology-page/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_methodology-page/${this.language}.json`), this.language, true);
               }
           }
       }

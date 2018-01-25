@@ -625,13 +625,13 @@
       <h3 inner-text="{{localize('d48dc78e94c617f2afb5eefa8ee746b4')}}">
       </h3>
       <ul>
-       <li inner-h-t-m-l="{{localize('5fdd4bca02559f704c9c965db2d54da4')}}">
+       <li inner-h-t-m-l="{{localize('d5db9d8fcdcae4fe4087f1735d1e5361')}}">
        </li>
-       <li inner-h-t-m-l="{{localize('9513bce2f9122d2b88c1be09988ee47b')}}">
+       <li inner-h-t-m-l="{{localize('61986fff07e7b08a3d65a6fa31e2483e')}}">
        </li>
        <li inner-h-t-m-l="{{localize('455202a08aa4e84acc102607af114e73')}}">
        </li>
-       <li inner-h-t-m-l="{{localize('b6310132a011c07270c62c6c48ba0520')}}">
+       <li inner-h-t-m-l="{{localize('28c63e505c22158a765ebb184ccb0a96')}}">
        </li>
       </ul>
      </article>
@@ -661,7 +661,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/methodology-page/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/static_methodology-page/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
@@ -669,7 +669,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/methodology-page/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_methodology-page/${this.language}.json`), this.language, true);
               }
           }
       }
