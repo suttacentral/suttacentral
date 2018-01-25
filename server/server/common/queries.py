@@ -261,7 +261,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
         to: {
             to: e.to,
             volpages: v.volpage ? v.volpage : legacy_volpages,
-            acronym: v.acronym,
+            acronym: v.acronym ,
             uid: v.uid,
             root_lang: v.root_lang,
             original_title: original_titles,

@@ -355,6 +355,10 @@ class Parallels(Resource):
 
         data = SortedDict(sort_parallels_key)
         for result in results:
+            if result['to'].get('uid') == 'orphan':
+                for k in ('original_title', 'translated_title'):
+                    result['to'][k] = ''
+                result['to']['acronym'] = result['to']['to'].split('#')[0]
             _from = result.pop('from')
             try:
                 data[_from].append(result)
