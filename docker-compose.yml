@@ -15,7 +15,7 @@ services:
       - FLASK_APP=server/app.py
     volumes:
       - socket-volume:/opt/sc/sockets
-      - server-po:/opt/sc/sc-flask/server/internationalization/generatedPoFiles
+      - ./server/:/opt/sc/sc-flask
     expose:
       - '5000'
     depends_on:
@@ -112,7 +112,7 @@ services:
       application: 'sc-pootle-pipeline'
     volumes:
       - pootle-po:/srv/pootle/po/
-      - server-po:/opt/sc/server/
+      - ./server/server/:/opt/sc/server/
       - ./client/:/opt/sc/frontend/
       - ./pootle_pipeline/:/opt/sc/po_files/
 

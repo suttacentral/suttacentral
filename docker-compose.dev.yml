@@ -6,8 +6,6 @@ services:
     command: bash docker/entrypoint.dev.sh
     env_file:
       - server/env/.dev.env
-    volumes:
-      - ./server/:/opt/sc/sc-flask
     ports:
       - '5001:5000'
 

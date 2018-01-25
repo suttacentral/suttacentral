@@ -1,4 +1,5 @@
 import json
+import os
 import shutil
 from pathlib import Path
 
@@ -22,7 +23,8 @@ class SeleniumJobs:
 
     def get_existing_projects(self):
         self.driver.get(f'{BASE_POOTLE_URL}/xhr/admin/projects/')
-        return json.loads(self.driver.find_element_by_tag_name('pre').text)
+        data = json.loads(self.driver.find_element_by_tag_name('pre').text)['models']
+        return {entry['code'] for entry in data}
 
     def login(self):
         self.driver.get(f'{BASE_POOTLE_URL}/admin/projects/')
@@ -44,7 +46,9 @@ class SeleniumJobs:
 
         # File types select po/pot
         self.driver.find_element_by_xpath('//*[@id="item-form"]/div[1]/div[4]/div/div').click()
+        # Click select po/pot
         self.driver.find_element_by_xpath('//*[@id="item-form"]/div[1]/div[4]/div/div[2]/div/div[1]').click()
+        # Click
         self.driver.find_element_by_xpath('//*[@id="item-form"]/div[2]/input').click()
 
     def _init_selenium_driver(self):
@@ -60,7 +64,7 @@ class SeleniumJobs:
         self.login()
         existing_projects = self.get_existing_projects()
 
-        for project in self.projects:
+        for project in self.projects ^ existing_projects:
             self.create_project(project, project.replace('_', ' '))
 
         self.driver.close()
@@ -70,16 +74,20 @@ class SeleniumJobs:
 
 def copy_pootle_files(dirs):
     for directory in dirs:
-        shutil.copytree(directory, POOTLE_BASE_DIR)
+        copytree(directory, POOTLE_BASE_DIR)
+
+
+def copytree(src, dst):
+    pass
 
 
 def get_projects_names():
-    return [str(d) for d in Path(POOTLE_BASE_DIR).glob('*') if d.is_dir()]
+    return {str(d) for d in Path(POOTLE_BASE_DIR).glob('*') if d.is_dir()}
 
 
 def run():
     dirs = [Path(f'{CLIENT_DIR}/localization/pootle/generatedPoFiles/'),
-            Path(f'{SERVER_DIR}/server/internationalization/generatedPoFiles/')]
+            Path(f'{SERVER_DIR}/internationalization/generatedPoFiles/')]
     copy_pootle_files(dirs)
     projects = get_projects_names()
 
