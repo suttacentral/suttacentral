@@ -1,25 +1,12 @@
 {
-  "entrypoint": "index.html",
-  "shell": "elements/sc-drawer-layout.html",
-  "sources": [
-    "elements/**/*",
-    "files/**/*",
-    "img/**/*",
-    "localization/**/*",
-    "styles/**/*",
-    "redux-store.html",
-    "bower.json",
-    "package.json"
-  ],
   "lint": {
     "rules": ["polymer-2"]
   },
   "extraDependencies": [
-    "bower_components/webcomponentsjs/*.js",
-    "bower_components/polymer/**/*.html",
-    "bower_components/paper-styles/**/*.html",
-    "bower_components/polymer-redux/**/*.html",
-    "node_modules/redux/dist/*.js"
+    "localization/**/*.json",
+    "styles/**/*.json",
+    "img/**/*",
+    "files/**/*"
   ],
   "builds": [{
     "bundle": {
