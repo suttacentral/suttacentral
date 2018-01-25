@@ -7,7 +7,7 @@
     "suttaCentralID": "SuttaCentral ID",
     "alternateText": "Alternate number in {book} edition:",
     "volumeAndPage": "Volume and page",
-    "volumeAndPagePTS1": "Volume and page in PTS 1 edition:",
+    "volumeAndPagePTS1": "PTS volume and page:\n1st edition = {pts1}\n2nd edition = {pts2}",
     "blurb": "Blurb",
     "goToTranslation": "Go to a translation by {author}",
     "hasParallels": "This text has {num} parallels.",
