@@ -17,7 +17,7 @@ duplicate_string_rex = regex.compile(r'(\b[a-z]++\d*\b).*\1')
 bookmark_stripper_rex = regex.compile(r'-?#[\w.]+(?:-\d+[.\d]*)?')
 
 def strip_bookmark(uid):
-    return bookmark_stripper_rex.sub('', uid)
+    return bookmark_stripper_rex.sub('', uid).lstrip('~')
 
 class UidMatcher:
     def __init__(self, all_uids):
