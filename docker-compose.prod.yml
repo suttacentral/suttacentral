@@ -43,3 +43,5 @@ services:
     working_dir: /opt/sc/frontend
     volumes:
       - ./client/:/opt/sc/frontend
+    environment:
+      - NODE_ENV=production

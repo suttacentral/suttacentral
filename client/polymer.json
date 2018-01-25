@@ -19,7 +19,15 @@
     "bower_components/polymer-redux/**/*.html",
     "node_modules/redux/dist/*.js"
   ],
-  "builds": [
-    { "preset": "es6-unbundled" }
-  ]
+  "builds": [{
+    "bundle": {
+      "stripComments": true,
+      "inlineCss": false,
+      "sourcemaps": true
+    },
+    "js": {"compile": false, "minify": true},
+    "css": {"minify": true},
+    "html": {"minify": true},
+    "addServiceWorker": true
+  }]
 }
