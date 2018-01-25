@@ -99,12 +99,12 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
     </style>
-    <template is="dom-if" if="[[_shouldShowMenu(languageChoice)]]">
+    <template is="dom-if" if="[[_shouldShowMenu(languageMenu)]]">
       <paper-dropdown-menu class="language-menu-dropdown custom" label="{{localize('more')}}"
                            title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="top">
-        <paper-listbox class="language-menu-listbox" slot="dropdown-content" selected="0">
+        <paper-listbox class="language-menu-listbox" id="listBox" slot="dropdown-content" selected="{{selectedItem}}">
 
-          <template is="dom-repeat" items="[[languageMenu]]" as="translation">
+          <template is="dom-repeat" id="itemTemplate" items="[[languageMenu]]" as="translation">
             <template is="dom-if" if="[[!_otherLanguage(translation, inputLanguage)]]">
               <section class$="{{_rootLanguageClassOrStandard(translation)}} no-outline">
                 <a class="language-menu-url"
@@ -146,15 +146,20 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   },
                   languageMenu: {
                       type: Array,
-                      notify: true,
-                      computed: '_computeLanguageMenu(languageChoice, rootLangMappings)'
+                      computed: '_computeLanguageMenu(languageChoice, rootLangMappings)',
+                      observer: '_menuChanged'
+                  },
+                  selectedItem: {
+                      type: Number,
+                      value: 0,
+                      notify: true
                   },
                   inputLanguage: String,
                   originalLanguage: String,
                   rootId: String,
                   newLanguage: {
                       type: String,
-                      computed: '_otherLanguage(languageChoice, inputLanguage)'
+                      computed: '_otherLanguage(languageMenu, inputLanguage)'
                   },
                   rootLangMappings: {
                       type: Object,
@@ -190,6 +195,26 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               this.loadResources(this.resolveUrl(`/localization/elements/sc-language-menu/${this.fallbackLanguage}.json`));
           }
 
+          _menuChanged() {
+            console.log(this.shadowRoot);
+
+              // let selected = this.$.listBox.selected;
+              // // Clear the selection. If it's still valid, we'll reestablish it below.
+              // this.$.listBox.selected = -1;
+              // // Do we still have enough items that the current item can stay selected?
+              // if (selected < this.languageMenu.length) {
+              //     // Force an update to the listBox's `items` so when we select an item
+              //     // below, it will reflect the new content.
+              //     this.$.itemTemplate.render();
+              //     this.$.listBox.forceSynchronousItemUpdate();
+              //     // Force a refresh of the paper-dropdown-menu's value by reestablishing
+              //     // the selection, which will raise the iron-select event with the
+              //     // updated value.
+              //     this.$.listBox.selected = selected;
+              //   }
+
+          }
+
           _siteLanguageChanged() {
               this.loadResources(this.resolveUrl(`/localization/elements/sc-language-menu/${this.language}.json`), this.language, true);
           }
@@ -209,8 +234,8 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           // does not list items that are from the inputLanguage because those are listed elsewhere.
-          _otherLanguage(languageChoice, inputLanguage) {
-              return !!(languageChoice && languageChoice.lang === inputLanguage);
+          _otherLanguage(languageMenu, inputLanguage) {
+              return !!(languageMenu && languageMenu.lang === inputLanguage);
           }
 
           _computeHide(checkText) {
@@ -226,8 +251,8 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               }
           }
 
-          _shouldShowMenu(languageChoice) {
-              return languageChoice.some(item => item.lang !== this.inputLanguage);
+          _shouldShowMenu(languageMenu) {
+              return languageMenu.some(item => item.lang !== this.inputLanguage);
           }
 
           _computeAuthor(author) {
