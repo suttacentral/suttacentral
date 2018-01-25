@@ -107,13 +107,13 @@ Language-menu used in the suttaplex card for denoting which translations exist o
             <template is="dom-if" if="[[!_otherLanguage(translation, inputLanguage)]]">
               <section class$="{{_rootLanguageClassOrStandard(translation)}} no-outline">
                 <a class="language-menu-url"
-                   href="/[[rootId]]/[[translation.lang]]/[[translation.author]][[_getParagraphRange()]]">
+                   href="/[[rootId]]/[[translation.lang]]/[[translation.author_uid]][[_getParagraphRange()]]">
                   <paper-icon-item class="language-menu-item" id='[[translation.id]]'
                                    title="{{localize('selectTranslation', 'lang', translation.lang_name, 'author', translation.author)}}">
                     <iron-icon class="iso-code-image" slot="item-icon" title="[[translation.lang_name]]"
                                icon="[[_getLanguageIconName(translation.lang)]]"></iron-icon>
                     <paper-item-body>
-                      [[_computeAuthorForList(translation.author)]]
+                      [[_computeAuthor(translation.author_short)]]
                     </paper-item-body>
                   </paper-icon-item>
                 </a>
@@ -238,14 +238,11 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
           _shouldShowMenu(languageMenu) {
               return languageMenu.some(item => item.lang !== this.inputLanguage);
+
           }
 
           _computeAuthor(author) {
               return author ? author : this.localize('anonym');
-          }
-
-          _computeAuthorForList(author) {
-              return this._shortenAuthor(this._computeAuthor(author));
           }
 
           _computeFullLanguageName(isoCode) {
