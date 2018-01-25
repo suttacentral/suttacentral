@@ -84,6 +84,12 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
       <paper-toggle-button id="theme_toggler" class="toggle-button" checked="{{darkThemeChosen}}"></paper-toggle-button>
       {{localize('DarkTheme')}}
     </paper-item>
+    <a class="more-menu-link" href="/downloads">
+      <paper-item class="more-menu-paper-item">
+        <iron-icon class="more-menu-icon" icon="file-download"></iron-icon>
+        {{localize('Downloads')}}
+      </paper-item>
+    </a>
     <div class="separator"></div>
     <a class="more-menu-link" href="/numbering">
       <paper-item class="more-menu-paper-item">
@@ -103,16 +109,11 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
         {{localize('Methodology')}}
       </paper-item>
     </a>
+    <div class="separator"></div>
     <a class="more-menu-link" href="/acknowledgments">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="sc-svg-icons:people"></iron-icon>
         {{localize('Acknowledgments')}}
-      </paper-item>
-    </a>
-    <a class="more-menu-link" href="/downloads">
-      <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" icon="file-download"></iron-icon>
-        {{localize('Downloads')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/licensing">
@@ -150,6 +151,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   appTheme: {
                       type: String,
                       statePath: 'colorTheme'
@@ -175,7 +180,9 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           ready() {
               super.ready();
               this._initializeListeners();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.fallbackLanguage}.json`));
           }
+
 
           connectedCallback() {
               super.connectedCallback();
@@ -186,7 +193,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`), this.language, true);
           }
 
           _initializeListeners() {

@@ -226,6 +226,10 @@
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   dictionaryTitles: {
                       type: Object,
                       value: {
@@ -252,8 +256,13 @@
               ];
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-dictionary/${this.fallbackLanguage}.json`));
+          }
+
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-dictionary/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-dictionary/${this.language}.json`), this.language, true);
           }
 
           _computeUrl() {

@@ -58,9 +58,12 @@
     "iron-lazy-pages": "TimvdLippe/iron-lazy-pages#^2.1.0",
     "isw-dialog": "IswPolymerElements/isw-dialog#^1.0.3",
     "paper-tabs": "^2.0.0",
-    "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0"
+    "app-localize-behavior": "git://github.com/suttacentral/app-localize-behavior.git#2.0.0-fallbackLanguage-v3"
   },
   "devDependencies": {
     "web-component-tester": "^6.2.0"
+  },
+  "resolutions": {
+    "intl-messageformat": "^2.2.0"
   }
 }

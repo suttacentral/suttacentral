@@ -629,6 +629,10 @@
        </li>
        <li inner-h-t-m-l="{{localize('9513bce2f9122d2b88c1be09988ee47b')}}">
        </li>
+       <li inner-h-t-m-l="{{localize('455202a08aa4e84acc102607af114e73')}}">
+       </li>
+       <li inner-h-t-m-l="{{localize('b6310132a011c07270c62c6c48ba0520')}}">
+       </li>
       </ul>
      </article>
     </section>
@@ -647,12 +651,26 @@
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/static/methodology-page/${this.fallbackLanguage}.json`));
+          }
+
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/static_methodology-page/${this.language}.json`));
+              if (this.language !== this.fallbackLanguage) {
+                  if (this.resources && this.resources[this.language]) {
+                      return;
+                  }
+                  this.loadResources(this.resolveUrl(`/localization/elements/static/methodology-page/${this.language}.json`), this.language, true);
+              }
           }
       }
 

@@ -133,20 +133,20 @@
         @apply --paper-font-body1;
       }
 
-        p a, li a {
+      p a, li a {
         color: inherit;
         text-decoration: underline;
         text-decoration-color: var(--sc-primary-color);
         text-decoration-skip-ink: auto;
-    }
+      }
 
-    p a:hover, li a:hover {
+      p a:hover, li a:hover {
         color: var(--sc-primary-color);
-    }
+      }
 
-    p a:visited, li a:visited {
+      p a:visited, li a:visited {
         text-decoration-color: var(--sc-primary-color-dark);
-    }
+      }
 
       .close-dialog-icon {
         color: var(--sc-tertiary-text-color);
@@ -262,6 +262,10 @@
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
@@ -272,10 +276,11 @@
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
               // Lock scroll for the text dialogs:
               this._addScrollLockListeners();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.language}.json`), this.language, true);
           }
 
           // opens the app-drawer when it is not visible.

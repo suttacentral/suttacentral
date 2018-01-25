@@ -32,7 +32,7 @@
 
 <dom-module id="sc-page-static">
   <template>
-    <style include="sc-utility-styles">
+    <style>
       app-toolbar {
         background-color: var(--sc-primary-color);
         height: auto;
@@ -318,6 +318,10 @@
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   shouldShowSecondToolbar: {
                       type: Boolean,
                       value: false
@@ -325,8 +329,13 @@
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.fallbackLanguage}.json`));
+          }
+
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`), this.language, true);
               const tabs = this.shadowRoot.querySelector(this._getNavTabsSelector());
               if (tabs) {
                   tabs.notifyResize();

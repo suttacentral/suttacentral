@@ -17,7 +17,7 @@
         margin-top: 60px;
       }
 
-      #page-wrap{
+      #page-wrap {
         max-width: 2058px;
       }
 
@@ -79,7 +79,7 @@
 
       .button-link {
         background: none !important;
-        text-decoration:none;
+        text-decoration: none;
       }
 
       .card-heading-text {
@@ -542,6 +542,10 @@
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
                   loadingEpigraphs: {
                       type: Boolean
                   },
@@ -557,13 +561,23 @@
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.fallbackLanguage}.json`));
+          }
+
           _computeUrl(resource) {
               const apiRoot = this.$.meta.byKey('API_ROOT');
               return `${apiRoot}/${resource}`;
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/static_home-page/${this.language}.json`));
+              if (this.language !== this.fallbackLanguage) {
+                  if (this.resources && this.resources[this.language]) {
+                      return;
+                  }
+                  this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.language}.json`), this.language, true);
+              }
           }
       }
 

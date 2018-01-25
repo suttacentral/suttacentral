@@ -237,6 +237,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       type: String,
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
           }
@@ -289,10 +293,21 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   }
                   this._showToast(success, e.detail.message);
               });
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.fallbackLanguage}.json`));
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              requestAnimationFrame(() => {
+                  this._toggleDrawer(true);
+              });
+              setTimeout(() => {
+                  this.shadowRoot.querySelector('.header-backdrop-full-width-bar').style.display = 'none';
+              }, 5000);
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`), this.language, true);
           }
 
           _getToolbarTitle(title) {
@@ -305,13 +320,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               else {
                   return title;
               }
-          }
-
-          connectedCallback() {
-              super.connectedCallback();
-              requestAnimationFrame(() => {
-                  this._toggleDrawer(true);
-              });
           }
 
           _recalculateView() {
