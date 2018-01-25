@@ -1,12 +1,14 @@
 import json
 import datetime
+import os
 from pathlib import Path
 
 import polib
 import tqdm
 
-PRE_POOTLE_FILES_DIR = Path('prePootleFiles')
-GENERATED_PO_FILES_DIR = Path('generatedPoFiles')
+CURRENT_FILE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
+PRE_POOTLE_FILES_DIR = CURRENT_FILE_DIR / Path('prePootleFiles')
+GENERATED_PO_FILES_DIR = CURRENT_FILE_DIR / Path('generatedPoFiles')
 
 
 def generate_po_file(file_path: Path):
@@ -27,9 +29,9 @@ def generate_po_file(file_path: Path):
     path_parts = list(file_path.parts[1:])
     path_parts[-1] = path_parts[-1].rstrip('.json')
     path_parts.append('en.po')
-    element_path = Path(*path_parts)
+    element_path = Path(*path_parts[-2:])
     if len(path_parts) > 1:
-        Path(f'{GENERATED_PO_FILES_DIR}/{Path(*path_parts[:-1])}').mkdir(parents=True, exist_ok=True)
+        Path(f'{GENERATED_PO_FILES_DIR}/{Path(path_parts[-2])}').mkdir(parents=True, exist_ok=True)
     po.save(f'{GENERATED_PO_FILES_DIR}/{element_path}')
 
 

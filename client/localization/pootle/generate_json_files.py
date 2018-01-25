@@ -1,11 +1,13 @@
 import json
+import os
 from pathlib import Path
 
 import polib
 import tqdm
 
-POOTLE_FILES_DIR = Path('generatedPoFiles')
-LOCALIZATION_FILES_DIR = Path('../elements/')
+CURRENT_FILE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
+POOTLE_FILES_DIR = CURRENT_FILE_DIR / Path('generatedPoFiles')
+LOCALIZATION_FILES_DIR = CURRENT_FILE_DIR / Path('../elements/')
 
 
 def get_language(file):

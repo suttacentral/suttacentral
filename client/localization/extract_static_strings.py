@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 import pathlib
 from typing import Tuple
 
@@ -7,10 +8,10 @@ import tqdm
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 
-
-TEMPLATE_DIR = '../elements/static-templates/'
-STATIC_DIR = '../elements/static/'
-LOCALIZATION_JSONS_DIR = '../localization/elements/'
+CURRENT_FILE_DIR = pathlib.Path(os.path.dirname(os.path.realpath(__file__)))
+TEMPLATE_DIR = str(CURRENT_FILE_DIR / pathlib.Path('../elements/static-templates/'))
+STATIC_DIR = str(CURRENT_FILE_DIR / pathlib.Path('../elements/static/'))
+LOCALIZATION_JSONS_DIR = str(CURRENT_FILE_DIR / pathlib.Path('../localization/elements/'))
 
 NON_BLOCK_ELEMENTS = ['a', 'span', '\n', 'code', 'br', 'cite', 'strong', 'i', 'em', 'img', 'paper-button']
 EXCLUDE_BLOCKS = ['style', 'iframe']
@@ -64,10 +65,10 @@ def run():
     for file in tqdm.tqdm(files):
         soup, data = extract_strings_from_template(file)
 
-        with open(f'{STATIC_DIR}{file.name}', 'w') as f:
+        with open(f'{STATIC_DIR}/{file.name}', 'w') as f:
             f.write(soup.prettify())
 
-        element_dir = pathlib.Path(f'{LOCALIZATION_JSONS_DIR}static_{file.stem}')
+        element_dir = pathlib.Path(f'{LOCALIZATION_JSONS_DIR}/static_{file.stem}')
         element_dir.mkdir(parents=True, exist_ok=True)
 
         with (element_dir / 'en.json').open('w') as f:

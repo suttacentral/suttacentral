@@ -195,3 +195,6 @@ generate-server-po-files:
 
 load-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files"
+
+to-pootle:
+	@make generate-server-po-files

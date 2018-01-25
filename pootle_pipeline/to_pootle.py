@@ -1,5 +1,6 @@
 import json
 import shutil
+import subprocess
 from pathlib import Path
 
 from selenium import webdriver
@@ -58,7 +59,7 @@ class SeleniumJobs:
         options = Options()
         options.add_argument('--headless')
         options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome(executable_path='/home/kuba/temp/chromedriver', chrome_options=options)
+        self.driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', chrome_options=options)
         print(' ✓ Selenium driver initiated')
 
     def run(self):
@@ -95,11 +96,24 @@ def copytree(src, dst):
 def get_projects_names():
     print('GETTING PROJECT NAMES')
     names = {d.parts[-1] for d in Path(POOTLE_BASE_DIR).glob('*') if d.is_dir()}
-    print('DONE')
+    print('✓ DONE')
     return names
 
 
+def change_po_file_permissions(path):
+    subprocess.run(['chmod', '-R', 'a+rwX', str(path)])
+
+
+def generate_client_po_files():
+    print('GENERATING SERVER PO FILES')
+    subprocess.call('pipenv run python /opt/sc/frontend/localization/localizer.py to_pootle', shell=True)
+    change_po_file_permissions('/opt/sc/frontend/localization')
+    print('✓ DONE')
+
+
 def run():
+    generate_client_po_files()
+
     dirs = [Path(f'{CLIENT_DIR}/localization/pootle/generatedPoFiles/'),
             Path(f'{SERVER_DIR}/internationalization/generatedPoFiles/')]
     copy_pootle_files(dirs)
