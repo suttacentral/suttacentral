@@ -1,5 +1,4 @@
 import json
-import os
 import shutil
 from pathlib import Path
 
@@ -9,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from tqdm import tqdm
 
 BASE_POOTLE_URL = 'http://sc-pootle:8000'
 SERVER_DIR = '/opt/sc/server/'
@@ -27,6 +27,7 @@ class SeleniumJobs:
         return {entry['code'] for entry in data}
 
     def login(self):
+        print(' * logging')
         self.driver.get(f'{BASE_POOTLE_URL}/admin/projects/')
         self.driver.find_element_by_xpath('//*[@id="content"]/p[2]/a').click()
 
@@ -36,6 +37,7 @@ class SeleniumJobs:
         self.driver.find_element_by_id('id_password').send_keys('password', Keys.ENTER)
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, '#admin-page > div > div > div.module.admin-content > div > div.hd > button')))
+        print(' ✓ logged')
 
     def create_project(self, project_code, project_name):
         self.driver.get(f'{BASE_POOTLE_URL}/admin/projects')
@@ -52,37 +54,49 @@ class SeleniumJobs:
         self.driver.find_element_by_xpath('//*[@id="item-form"]/div[2]/input').click()
 
     def _init_selenium_driver(self):
+        print(' * Initiating selenium chrome driver')
         options = Options()
         options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
         self.driver = webdriver.Chrome(executable_path='/home/kuba/temp/chromedriver', chrome_options=options)
+        print(' ✓ Selenium driver initiated')
 
     def run(self):
-        options = Options()
-        options.add_argument('--headless')
+        print('RUNNING SELENIUM JOBS')
         self._init_selenium_driver()
 
         self.login()
         existing_projects = self.get_existing_projects()
 
-        for project in self.projects ^ existing_projects:
+        print(' * Creating projects')
+        for project in tqdm(self.projects ^ existing_projects):
             self.create_project(project, project.replace('_', ' '))
+        print(' ✓ Projects created')
 
         self.driver.close()
 
-        print(existing_projects)
+        print('✓ DONE')
 
 
 def copy_pootle_files(dirs):
+    print('COPING PO FILES')
     for directory in dirs:
-        copytree(directory, POOTLE_BASE_DIR)
+        copytree(directory, Path(POOTLE_BASE_DIR))
+    print('✓ DONE')
 
 
 def copytree(src, dst):
-    pass
+    for file in tqdm(x for x in src.rglob('*') if x.is_file()):
+        dst_file = dst / Path(str(file)[len(str(src)) + 1:])
+        dst_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(file, dst_file)
 
 
 def get_projects_names():
-    return {str(d) for d in Path(POOTLE_BASE_DIR).glob('*') if d.is_dir()}
+    print('GETTING PROJECT NAMES')
+    names = {d.parts[-1] for d in Path(POOTLE_BASE_DIR).glob('*') if d.is_dir()}
+    print('DONE')
+    return names
 
 
 def run():

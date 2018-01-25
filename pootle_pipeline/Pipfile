@@ -8,7 +8,7 @@ name = "pypi"
 [packages]
 
 selenium = "*"
-
+tqdm = "*"
 
 [dev-packages]
 
