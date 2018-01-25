@@ -16,6 +16,8 @@ services:
     volumes:
       - ./client/:/opt/sc/static
     command: bash entry-point.prod.sh
+    environment:
+      - NODE_ENV='production'
 
   sc-arangodb:
     env_file:
@@ -43,5 +45,3 @@ services:
     working_dir: /opt/sc/frontend
     volumes:
       - ./client/:/opt/sc/frontend
-    environment:
-      - NODE_ENV=production

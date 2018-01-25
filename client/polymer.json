@@ -16,6 +16,8 @@
   },
   "extraDependencies": [
     "bower_components/webcomponentsjs/*.js",
+    "bower_components/polymer/**/*.html",
+    "bower_components/paper-styles/**/*.html",
     "bower_components/polymer-redux/**/*.html",
     "node_modules/redux/dist/*.js"
   ],
@@ -25,7 +27,7 @@
       "inlineCss": false,
       "sourcemaps": true
     },
-    "js": {"compile": false, "minify": true},
+    "js": {"compile": true, "minify": true},
     "css": {"minify": true},
     "html": {"minify": true},
     "addServiceWorker": true
