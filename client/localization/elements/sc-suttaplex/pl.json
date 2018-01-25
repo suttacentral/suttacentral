@@ -7,6 +7,7 @@
     "suttaCentralID": "Identyfikator SuttaCentral",
     "alternateText": "Numer alternatywny w wydaniu {book}:",
     "volumeAndPage": "Wolumen i strona",
+    "volumeAndPagePTS1": "Wolumen i strona w wydaniu PTS 1:",
     "blurb": "Wprowadzenie",
     "goToTranslation": "Idź do tłumaczenia autorstwa {author}",
     "hasParallels": "Ten tekst posiada {num} analogii.",
