@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "BUILDING"
-npm install
+echo "BUILDING FRONTEND FOR PRODUCTION"
 npm install -g polymer-cli --unsafe-perm
-polymer build --preset es6-bundled
+polymer build
+npm install

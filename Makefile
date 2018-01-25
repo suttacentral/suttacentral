@@ -38,6 +38,9 @@ run-dev:
 run-dev-no-logs:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
+run-prod:
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+
 migrate:
 	@docker exec -t sc-flask python server/manage.py migrate
 
@@ -130,6 +133,8 @@ logs-swagger:
 	@docker logs -f sc-swagger
 logs-frontend-tester:
 	@docker logs -f sc-frontend-tester
+logs-pootle:
+	@docker logs -f sc-pootle
 
 # reloads
 # Only in dev mode local changes will be used after the reload
