@@ -29,6 +29,7 @@ decompose_test_data = [
         # The below are malformed, just check nothing crazy happens
         ('1df4', '1df4', None, None),
         ('42', '42', None, None),
+    
     ]
 ]
 
@@ -75,6 +76,8 @@ bookmark_strip_test_data = [
     ('dn2#4-5', 'dn2'),
     ('dn2#foo', 'dn2'),
     ('dn2#1z', 'dn2'),
+    ('~dn2', 'dn2'),
+    ('~dn2#42', 'dn2'),
 ]
 
 @pytest.mark.parametrize("uid,expected", bookmark_strip_test_data)
