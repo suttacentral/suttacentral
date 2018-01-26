@@ -109,7 +109,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                 <a class="language-menu-url"
                    href="/[[rootId]]/[[translation.lang]]/[[translation.author_uid]][[_getParagraphRange()]]">
                   <paper-icon-item class="language-menu-item" id='[[translation.id]]'
-                                   title="{{localize('selectTranslation', 'lang', translation.lang_name, 'author', translation.author)}}">
+                                   title="[[_getTranslationAuthorTitle(translation, localize)]]">
                     <iron-icon class="iso-code-image" slot="item-icon" title="[[translation.lang_name]]"
                                icon="[[_getLanguageIconName(translation.lang)]]"></iron-icon>
                     <paper-item-body>
@@ -270,6 +270,14 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   return `#${id1}–${id2}`;
               }
               return `#${ids}`;
+          }
+
+          _getTranslationAuthorTitle(translation, localize) {
+              if (Object.keys(this.rootLangMappings).indexOf(translation.lang) !== -1) {
+                  return localize('selectOriginal', 'lang', translation.lang_name, 'author', translation.author);
+              } else {
+                  return localize('selectTranslation', 'lang', translation.lang_name, 'author', translation.author);
+              }
           }
       }
 

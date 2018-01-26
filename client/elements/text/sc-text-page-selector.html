@@ -203,14 +203,16 @@
           }
 
           setProperties() {
-              this.isSegmentedText = !!(this.responseData.segmented);
-              this.suttaplex = this.responseData.suttaplex;
-              this.translatedSutta = this.responseData.translation;
-              this.rootSutta = this.responseData.root_text;
-              this.markup = this.responseData.markup;
-              this.neighbours = this.responseData.neighbours;
-              if (this.responseData.translation) {
-                  this.authorUid = this.responseData.translation.author_uid;
+              if (this.responseData) {
+                  this.isSegmentedText = !!(this.responseData.segmented);
+                  this.suttaplex = this.responseData.suttaplex;
+                  this.translatedSutta = this.responseData.translation;
+                  this.rootSutta = this.responseData.root_text;
+                  this.markup = this.responseData.markup;
+                  this.neighbours = this.responseData.neighbours;
+                  if (this.responseData.translation) {
+                      this.authorUid = this.responseData.translation.author_uid;
+                  }
               }
           }
 
