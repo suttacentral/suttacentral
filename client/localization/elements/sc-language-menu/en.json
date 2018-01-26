@@ -3,6 +3,7 @@
     "more": "More",
     "selectLanguage": "Select a language",
     "anonym": "Anonym",
-    "selectTranslation": "Select {lang} translation by {author}."
+    "selectTranslation": "Select {lang} translation by {author}.",
+    "selectOriginal": "Select {lang} text of {author}."
   }
 }

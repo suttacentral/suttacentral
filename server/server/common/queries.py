@@ -178,15 +178,22 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             LIMIT 1
             RETURN biblio.text
     )[0]
-        
+
+    LET original_titles = (
+        FOR original_name IN root_names
+            FILTER original_name.uid == v.uid
+            LIMIT 1
+            RETURN original_name.name
+    )[0]
+
     RETURN {
         acronym: v.acronym,
         volpages: v.volpage ? v.volpage : legacy_volpages[0],
         uid: v.uid,
         blurb: blurb,
         difficulty: difficulty,
-        original_title: DOCUMENT(CONCAT('root_names/', v.uid, '_', v.lang)).name,
-        root_lang: v.root_lang,
+        original_title: original_titles,
+        root_lang: v.root_lang ? v.root_lang : v.lang,
         type: e.type ? e.type : (v.type ? v.type : 'text'),
         from: e._from,
         translated_title: translated_titles,
@@ -206,6 +213,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             FILTER text.uid == target.uid
             LET res = {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 author_short: text.author_short,
                 author_uid: text.author_uid,
@@ -223,6 +231,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             FILTER text.uid == target.uid
             LET res = {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 author_short: text.author_short,
                 author_uid: text.author_uid,
