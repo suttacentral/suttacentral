@@ -86,15 +86,8 @@
         @apply --sc-skolar-font-size-static-subtitle;
         @apply --sc-sans-font;
         color: var(--sc-secondary-text-color);
-        margin: 38px;
-      }
-
-      .text-center {
+        margin-top: var(--sc-size-xxl);
         text-align: center;
-      }
-
-      .margin-top-xl {
-        margin-top: var(--sc-size-xl);
       }
 
       #nav_tabs,
@@ -284,7 +277,7 @@
         <sc-abbreviations-page></sc-abbreviations-page>
       </div>
       <div name="NOT-FOUND">
-        <div class="page-not-found-container text-center margin-top-xl">
+        <div class="page-not-found-container">
           <h2>{{localize('error404')}}</h2>
           <h3>{{localize('pageNotFound')}}</h3>
         </div>
