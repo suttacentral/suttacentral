@@ -161,7 +161,7 @@ test:
 	@make test-server
 
 test-client:
-	@docker exec -t sc-frontend-tester bash -c "echo 'Running client linter' && polymer lint && wct"
+	@docker exec -t sc-frontend-tester bash -c "tree && echo 'Running client linter' && polymer lint && wct"
 
 test-server:
 	@docker exec -t sc-flask pytest server/
