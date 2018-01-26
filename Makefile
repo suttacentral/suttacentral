@@ -199,4 +199,4 @@ load-server-po-files:
 to-pootle:
 	@make generate-server-po-files
 	@docker exec -t sc-pootle-pipeline pipenv run python to_pootle.py
-
+	@docker exec -t sc-pootle bash -c "pootle update_stores"
