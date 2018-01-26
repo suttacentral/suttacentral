@@ -573,7 +573,7 @@
 
           _getVolPageTitle(volPage, localize) {
               const volPages = volPage.split('//');
-              if (volPages[1] && volPages[0] !== volPages[1]) {
+              if (volPages[1] && (volPages[0] !== volPages[1])) {
                 return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
               } else {
                 return localize('volumeAndPage');
