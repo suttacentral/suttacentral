@@ -149,7 +149,7 @@ def search(query: str, highlight=True, offset=0, limit=10, language='en',
         indexes.append(lang)
 
     if not indexes:
-        indexes = [language, 'pli', 'suttas', 'en-dict']
+        indexes = [language, 'suttas', 'en-dict']
 
     index_string = ','.join(get_available_indexes(indexes))
 
