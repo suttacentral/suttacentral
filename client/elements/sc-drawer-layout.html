@@ -276,7 +276,7 @@
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
               // Lock scroll for the text dialogs:
               this._addScrollLockListeners();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {

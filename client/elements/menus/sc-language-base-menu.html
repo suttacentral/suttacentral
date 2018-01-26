@@ -144,7 +144,7 @@ This is the base language menu that determines the language of the site.
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {

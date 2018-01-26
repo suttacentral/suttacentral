@@ -213,7 +213,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               if (!this.expansionData) {
                   this.$.uid_expansion_ajax.generateRequest()
               }
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
