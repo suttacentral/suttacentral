@@ -426,7 +426,7 @@ class LookupDictionaries(Resource):
 
 
 class Sutta(Resource):
-    def get(self, uid, author=''):
+    def get(self, uid, author_uid=''):
         """
         Send Complete information set for sutta-view for given uid.
         ---
@@ -504,12 +504,10 @@ class Sutta(Resource):
         """
         lang = request.args.get('lang', 'en')
 
-        author = author.lower()
-
         db = get_db()
 
         results = db.aql.execute(SUTTA_VIEW,
-                                 bind_vars={'uid': uid, 'language': lang, 'author': author})
+                                 bind_vars={'uid': uid, 'language': lang, 'author_uid': author_uid})
         data: dict = results.next()
 
         r = re.compile(r'^[a-z\-]+')

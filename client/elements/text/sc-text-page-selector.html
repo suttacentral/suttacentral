@@ -150,12 +150,18 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  authorUid: {
+                      type: String
+                  },
+                  authorShort: {
+                      type: String
                   }
               }
           }
 
           static get observers() {
-              return ['_paramChanged(author, suttaId, langIsoCode)'];
+              return ['_paramChanged(authorUid, suttaId, langIsoCode)'];
           }
 
           static get actions() {
@@ -204,7 +210,7 @@
               this.markup = this.responseData.markup;
               this.neighbours = this.responseData.neighbours;
               if (this.responseData.translation) {
-                  this.author = this.responseData.translation.author;
+                  this.authorUid = this.responseData.translation.author_uid;
               }
           }
 
@@ -231,8 +237,8 @@
           }
 
           _getSuttaTextUrl() {
-              if (this.author) {
-                  return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}/${this.author}?lang=${this.langIsoCode}`;
+              if (this.authorUid) {
+                  return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
               } else {
                   return `${this.$.meta.byKey('API_ROOT')}/suttas/${this.suttaId}?lang=${this.langIsoCode}`;
               }

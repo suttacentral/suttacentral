@@ -299,8 +299,8 @@
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button class="author-button" flat
                             title$="{{localize('goToTranslation', 'author', translation.author)}}">
-                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
-                  [[translation.author]]
+                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
+                  [[translation.author_short]]
                 </a>
               </paper-button>
             </template>
@@ -475,10 +475,10 @@
           }
 
           // Computes API endpoint URL for given translation
-          _getSuttaTextUrl(uid, lang, author) {
+          _getSuttaTextUrl(uid, lang, author_uid) {
               const url = window.location;
               const baseUrl = url.protocol + '//' + url.host;
-              return `${baseUrl}/${uid}/${lang}/${author}`;
+              return `${baseUrl}/${uid}/${lang}/${author_uid}`;
           }
 
           _isChosenLang(lang) {

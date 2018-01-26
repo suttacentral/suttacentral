@@ -219,6 +219,6 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
                     string_docs.append(doc)
             
             db['po_markup'].import_bulk_safe(markup_docs, on_duplicate='ignore')
-            db['po_strings'].import_bulk_safe(string_docs, on_duplicate='error')
+            db['po_strings'].import_bulk_safe(string_docs, on_duplicate='ignore')
                     
             
