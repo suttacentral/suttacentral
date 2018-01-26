@@ -332,7 +332,8 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
                   offset: (this.currentPage * this.resultsPerLoad),
-                  query: this.searchQuery
+                  query: this.searchQuery,
+                  language: this.language
               });
               this._generateRequest();
           }
@@ -345,7 +346,8 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.clearSearchPage();
               this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
-                  query: this.searchQuery
+                  query: this.searchQuery,
+                  language: this.language
               });
               this._generateRequest();
           }
