@@ -416,6 +416,11 @@
               }
           }
 
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+          }
+
           connectedCallback() {
               super.connectedCallback();
               const copy_menu = this.shadowRoot.querySelector('#copy_menu');
@@ -425,7 +430,6 @@
               if (copy_menu) {
                   copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
               }
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
