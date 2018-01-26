@@ -238,7 +238,7 @@
       <div class="card-content">
 
         <div class="suttaplex-head-container">
-          <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item,localize)]]">
+          <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item, localize)]]">
             [[_computeMainHeading(item)]]</h3>
           <iron-icon id="difficulty_icon" class="primary-accent-icon"
                      icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
@@ -252,15 +252,15 @@
             [[item.original_title]]
           </span>
           <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
-            [[_getAcronymOrUid(item,expansionData)]]
+            [[_getAcronymOrUid(item, expansionData)]]
           </span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
               <span class="book no-margin">
                 <iron-icon class="grey-icon" icon="book"></iron-icon>
               </span>
-              <span class="vol-page nerdy-row-element" title="{{localize('volumeAndPage')}}">
-                [[item.volpages]]
+              <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                [[_computeVolPage(item.volpages)]]
               </span>
             </template>
             <template is="dom-if" if=[[item.biblio]]>
@@ -270,8 +270,8 @@
                     <span class="book no-margin">
                       <iron-icon class="grey-icon" icon="book"></iron-icon>
                     </span>
-                    <span class="vol-page nerdy-row-element" title="{{localize('volumeAndPage')}}">
-                      [[item.volpages]]
+                    <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                      [[_computeVolPage(item.volpages)]]
                     </span>
                   </summary>
                   <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
@@ -564,6 +564,20 @@
 
           _getRootText() {
               return this.item.translations.find(translation => translation.lang === this.item.root_lang);
+          }
+
+          _computeVolPage(volPage) {
+              const volPages = volPage.split('//');
+              return volPages[1] ? volPages[1] : volPage;
+          }
+
+          _getVolPageTitle(volPage, localize) {
+              const volPages = volPage.split('//');
+              if (volPages[1] && (volPages[0] !== volPages[1])) {
+                return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
+              } else {
+                return localize('volumeAndPage');
+              }
           }
       }
 
