@@ -19,20 +19,32 @@ def generate_po_file(file_path: Path):
         'POT-Creation-Date': str(datetime.datetime.now()),
         'Content-Type': 'text/plain; charset=utf-8'
     }
+    pot = polib.POFile()
+    pot.metadata = {
+        'POT-Creation-Date': str(datetime.datetime.now()),
+        'Content-Type': 'text/plain; charset=utf-8'
+    }
     for k, v in file_data.items():
         entry = polib.POEntry(
             msgid=k,
-            msgstr=v
         )
-        po.append(entry)
+        pot.append(entry)
+        po.append(polib.POEntry(
+            msgid=k,
+            msgstr=v
+        ))
 
     path_parts = list(file_path.parts[1:])
     path_parts[-1] = path_parts[-1].rstrip('.json')
+    if len(path_parts) > 0:
+        Path(f'{GENERATED_PO_FILES_DIR}/{Path(path_parts[-1])}').mkdir(parents=True, exist_ok=True)
     path_parts.append('en.po')
     element_path = Path(*path_parts[-2:])
-    if len(path_parts) > 1:
-        Path(f'{GENERATED_PO_FILES_DIR}/{Path(path_parts[-2])}').mkdir(parents=True, exist_ok=True)
     po.save(f'{GENERATED_PO_FILES_DIR}/{element_path}')
+    path_parts.pop(-1)
+    path_parts.append('templates.pot')
+    element_path = Path(*path_parts[-2:])
+    pot.save(f'{GENERATED_PO_FILES_DIR}/{element_path}')
 
 
 def run():

@@ -41,6 +41,9 @@ class SeleniumJobs:
         print(' ✓ logged')
 
     def create_project(self, project_code, project_name):
+        if project_code == '.tmp':
+            return
+        print('CREATING', project_code)
         self.driver.get(f'{BASE_POOTLE_URL}/admin/projects')
         self.driver.find_element_by_css_selector(
             '#admin-page > div > div > div.module.admin-content > div > div.hd > button').click()
@@ -89,6 +92,8 @@ def copy_pootle_files(dirs):
 def copytree(src, dst):
     for file in tqdm(x for x in src.rglob('*') if x.is_file()):
         dst_file = dst / Path(str(file)[len(str(src)) + 1:])
+        if dst_file.parent.parts[-1] == '.tmp':
+            continue
         dst_file.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(file, dst_file)
 

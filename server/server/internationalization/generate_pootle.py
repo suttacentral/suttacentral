@@ -21,16 +21,26 @@ def process_blurbs(db):
         'POT-Creation-Date': str(datetime.datetime.now()),
         'Content-Type': 'text/plain; charset=utf-8'
     }
+    pot = polib.POFile()
+    pot.metadata = {
+        'POT-Creation-Date': str(datetime.datetime.now()),
+        'Content-Type': 'text/plain; charset=utf-8'
+    }
     for blurb in tqdm(blurbs_collection.find({'lang': 'en'})):
-            entry = polib.POEntry(
-                msgid=blurb['blurb'],
-                msgstr=blurb['blurb'],
-                msgctxt=blurb['uid']
-            )
-            po.append(entry)
+        entry = polib.POEntry(
+            msgid=blurb['blurb'],
+            msgstr=blurb['blurb'],
+            msgctxt=blurb['uid']
+        )
+        po.append(entry)
+        pot.append(polib.POEntry(
+            msgid=blurb['blurb'],
+            msgctxt=blurb['uid']
+        ))
 
     (GENERATED_PO_FILES_DIR / 'server_blurbs').mkdir(parents=True, exist_ok=True)
     po.save(str(GENERATED_PO_FILES_DIR / 'server_blurbs' / 'en.po'))
+    # pot.save(str(GENERATED_PO_FILES_DIR / 'server_blurbs' / 'templates.po'))
 
     print('✓ FINISHED PROCESSING BLURBS')
 
@@ -89,6 +99,11 @@ def process_currencies(db):
         'POT-Creation-Date': str(datetime.datetime.now()),
         'Content-Type': 'text/plain; charset=utf-8'
     }
+    pot = polib.POFile()
+    pot.metadata = {
+        'POT-Creation-Date': str(datetime.datetime.now()),
+        'Content-Type': 'text/plain; charset=utf-8'
+    }
     for name in tqdm(currency_names_collection.find({'lang': 'en'})):
         entry = polib.POEntry(
             msgid=name['name'],
@@ -96,9 +111,14 @@ def process_currencies(db):
             msgctxt=name['symbol']
         )
         po.append(entry)
+        pot.append(polib.POEntry(
+            msgid=name['name'],
+            msgctxt=name['symbol']
+        ))
 
     (GENERATED_PO_FILES_DIR / 'server_currency_names').mkdir(parents=True, exist_ok=True)
     po.save(str(GENERATED_PO_FILES_DIR / 'server_currency_names' / 'en.po'))
+    # pot.save(str(GENERATED_PO_FILES_DIR / 'server_currency_names' / 'templates.pot'))
 
     print('✓ FINISHED PROCESSING CURRENCIES')
 
@@ -121,7 +141,7 @@ def run():
     Path(GENERATED_PO_FILES_DIR).mkdir(parents=True, exist_ok=True)
 
     process_blurbs(db)
-    process_menu(db)
+    # process_menu(db)
     process_currencies(db)
 
     change_po_file_permissions()
