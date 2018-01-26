@@ -3309,7 +3309,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/subjects/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/static/subjects/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {

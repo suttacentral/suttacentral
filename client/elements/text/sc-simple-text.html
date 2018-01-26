@@ -227,9 +227,9 @@
               }
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`));
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
