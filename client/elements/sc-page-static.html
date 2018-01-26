@@ -98,7 +98,10 @@
       }
 
       #nav_tabs,
-      #second_nav_tabs {
+      #second_nav_tabs,
+      #tipitaka_nav_tabs,
+      #academic_nav_tabs,
+      #organizational_nav_tabs {
         width: 100%;
         --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
       }
@@ -167,7 +170,7 @@
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item>
-      <template is="dom-if" if="[[!shouldShowSecondToolbar]]">
+      <template is="dom-if" if="[[noToolbarSelected]]">
         <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
@@ -217,6 +220,70 @@
           </paper-tab>
         </paper-tabs>
       </template>
+
+      <template is="dom-if" if="[[shouldShowTipitakaToolbar]]">
+        <paper-tabs id="tipitaka_nav_tabs" selected="0" scrollable hide-scroll-buttons>
+          <paper-tab class="nav-link" data-name="HOME">
+            <div>{{localize('HOME')}}</div>
+            <a class="link-anchor" href="/home"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="DISCOURSES">
+            <div>{{localize('DISCOURSES')}}</div>
+            <a class="link-anchor" href="/discourses" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="VINAYA">
+            <div>{{localize('VINAYA')}}</div>
+            <a class="link-anchor" href="/vinaya" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="ABHIDHAMMA">
+            <div>{{localize('ABHIDHAMMA')}}</div>
+            <a class="link-anchor" href="/abhidhamma" tabindex="-1"></a>
+          </paper-tab>
+        </paper-tabs>
+      </template>
+
+      <template is="dom-if" if="[[shouldShowAcademicToolbar]]">
+        <paper-tabs id="academic_nav_tabs" selected="0" scrollable hide-scroll-buttons>
+          <paper-tab class="nav-link" data-name="HOME">
+            <div>{{localize('HOME')}}</div>
+            <a class="link-anchor" href="/home"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="NUMBERING">
+            <div>{{localize('NUMBERING')}}</div>
+            <a class="link-anchor" href="/numbering" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="ABBREVIATIONS">
+            <div>{{localize('ABBREVIATIONS')}}</div>
+            <a class="link-anchor" href="/abbreviations" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="METHODOLOGY">
+            <div>{{localize('METHODOLOGY')}}</div>
+            <a class="link-anchor" href="/methodology" tabindex="-1"></a>
+          </paper-tab>
+        </paper-tabs>
+      </template>
+
+      <template is="dom-if" if="[[shouldShowOrganizationalToolbar]]">
+        <paper-tabs id="organizational_nav_tabs" selected="0" scrollable hide-scroll-buttons>
+          <paper-tab class="nav-link" data-name="HOME">
+            <div>{{localize('HOME')}}</div>
+            <a class="link-anchor" href="/home"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="ACKNOWLEDGMENTS">
+            <div>{{localize('ACKNOWLEDGMENTS')}}</div>
+            <a class="link-anchor" href="/acknowledgments" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="LICENSING">
+            <div>{{localize('LICENSING')}}</div>
+            <a class="link-anchor" href="/licensing" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="ABOUT">
+            <div>{{localize('ABOUT')}}</div>
+            <a class="link-anchor" href="/about" tabindex="-1"></a>
+          </paper-tab>
+        </paper-tabs>
+      </template>
+
     </app-toolbar>
 
     <iron-lazy-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
@@ -325,6 +392,22 @@
                   shouldShowSecondToolbar: {
                       type: Boolean,
                       value: false
+                  },
+                  shouldShowTipitakaToolbar: {
+                      type: Boolean,
+                      value: false
+                  },
+                  shouldShowAcademicToolbar: {
+                      type: Boolean,
+                      value: false
+                  },
+                  shouldShowOrganizationalToolbar: {
+                      type: Boolean,
+                      value: false
+                  },
+                  noToolbarSelected: {
+                      type: Boolean,
+                      value: true
                   }
               }
           }
@@ -359,12 +442,26 @@
               let selector = '#nav_tabs';
               if (this.shouldShowSecondToolbar) {
                   selector = '#second_nav_tabs'
+              } else if (this.shouldShowTipitakaToolbar) {
+                  selector = '#tipitaka_nav_tabs'
+              } else if (this.shouldShowAcademicToolbar) {
+                  selector = '#academic_nav_tabs'
+              } else if (this.shouldShowOrganizationalToolbar) {
+                  selector = '#organizational_nav_tabs'
               }
               return selector;
           }
 
           _changeView() {
               this.shouldShowSecondToolbar = ['SUBJECTS', 'SIMILES', 'NAMES', 'TERMINOLOGY'].includes(this.selectedPage);
+              this.shouldShowTipitakaToolbar = ['DISCOURSES', 'VINAYA', 'ABHIDHAMMA'].includes(this.selectedPage);
+              this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(this.selectedPage);
+              this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(this.selectedPage);
+              if (this.shouldShowSecondToolbar || this.shouldShowTipitakaToolbar || this.shouldShowAcademicToolbar || this.shouldShowOrganizationalToolbar) {
+                  this.noToolbarSelected = false;
+              } else {
+                  this.noToolbarSelected = true;
+              }
               this.$.donate.resetForm();
               this.$.pages.selected = this.selectedPage;
               requestAnimationFrame(() => {this._selectNavbarLink()});
