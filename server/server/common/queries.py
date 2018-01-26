@@ -213,6 +213,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             FILTER text.uid == target.uid
             LET res = {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 author_short: text.author_short,
                 author_uid: text.author_uid,
@@ -230,6 +231,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             FILTER text.uid == target.uid
             LET res = {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
                 author_short: text.author_short,
                 author_uid: text.author_uid,
