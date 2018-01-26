@@ -3,10 +3,10 @@ import regex
 import logging
 import pathlib
 
-from collections import Counter, defaultdict
+from collections import defaultdict
 from itertools import product
 from pathlib import Path
-from typing import Any, List, Set
+from typing import Any, Set
 from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
@@ -16,7 +16,7 @@ from common.uid_matcher import UidMatcher
 from .util import json_load
 from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
-    divisions, images_files, homepage
+    divisions, images_files, homepage, available_languages
 
 
 def update_data(repo: Repo, repo_addr: str):
@@ -455,7 +455,6 @@ def run(no_pull=False):
     additional_info_dir = data_dir / 'additional-info'
     dictionaries_dir = data_dir / 'dictionaries'
 
-    
     db = arangodb.get_db()
     
     if not no_pull:
@@ -471,7 +470,7 @@ def run(no_pull=False):
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir)
-    
+
     generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
 
     load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
@@ -495,5 +494,7 @@ def run(no_pull=False):
     homepage.load_epigraphs(db, additional_info_dir)
 
     homepage.load_why_we_read(db, additional_info_dir)
+
+    available_languages.load_available_languages(db, additional_info_dir)
 
     change_tracker.update_mtimes()
