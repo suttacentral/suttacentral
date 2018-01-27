@@ -97,11 +97,7 @@
         margin-top: var(--sc-size-xl);
       }
 
-      #nav_tabs,
-      #second_nav_tabs,
-      #tipitaka_nav_tabs,
-      #academic_nav_tabs,
-      #organizational_nav_tabs {
+      .navigation-tabs {
         width: 100%;
         --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
       }
@@ -170,8 +166,8 @@
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item>
-      <template is="dom-if" if="[[noToolbarSelected]]">
-        <paper-tabs id="nav_tabs" selected="0" scrollable hide-scroll-buttons>
+      <template is="dom-if" if="[[_isToolbarSelected(shouldShowTipitakaToolbar, shouldShowSecondToolbar, shouldShowOrganizationalToolbar, shouldShowAcademicToolbar)]]">
+        <paper-tabs id="nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -197,7 +193,7 @@
         </paper-tabs>
       </template>
       <template is="dom-if" if="[[shouldShowSecondToolbar]]">
-        <paper-tabs id="second_nav_tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tabs id="second_nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -222,7 +218,7 @@
       </template>
 
       <template is="dom-if" if="[[shouldShowTipitakaToolbar]]">
-        <paper-tabs id="tipitaka_nav_tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tabs id="tipitaka_nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -243,7 +239,7 @@
       </template>
 
       <template is="dom-if" if="[[shouldShowAcademicToolbar]]">
-        <paper-tabs id="academic_nav_tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tabs id="academic_nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -264,7 +260,7 @@
       </template>
 
       <template is="dom-if" if="[[shouldShowOrganizationalToolbar]]">
-        <paper-tabs id="organizational_nav_tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tabs id="organizational_nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -425,6 +421,10 @@
               }
           }
 
+          _isToolbarSelected(tipitakaToolbar, secondToolbar, organizationalToolbar, academicToolbar) {
+              return (secondToolbar || tipitakaToolbar || academicToolbar || organizationalToolbar) ? false : true;
+          }
+
           _selectNavbarLink() {
               const selector = this._getNavTabsSelector();
               const tabs_element = this.shadowRoot.querySelector(selector);
@@ -457,11 +457,6 @@
               this.shouldShowTipitakaToolbar = ['DISCOURSES', 'VINAYA', 'ABHIDHAMMA'].includes(this.selectedPage);
               this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(this.selectedPage);
               this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(this.selectedPage);
-              if (this.shouldShowSecondToolbar || this.shouldShowTipitakaToolbar || this.shouldShowAcademicToolbar || this.shouldShowOrganizationalToolbar) {
-                  this.noToolbarSelected = false;
-              } else {
-                  this.noToolbarSelected = true;
-              }
               this.$.donate.resetForm();
               this.$.pages.selected = this.selectedPage;
               requestAnimationFrame(() => {this._selectNavbarLink()});
