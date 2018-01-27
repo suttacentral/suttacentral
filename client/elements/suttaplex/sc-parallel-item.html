@@ -148,7 +148,9 @@ It is in effect a miniature version of the suttaplex-card
                       <span class="book scrollable-dialog">
                         <iron-icon icon="book"></iron-icon>
                       </span>
-                      <span class="vol-page" title="{{localize('volAndPageNum')}}">[[parallelItem.volpages]]</span>
+                      <span class="vol-page" title="[[_getVolPageTitle(parallelItem.volpages, localize)]]">
+                        [[_computeVolPage(parallelItem.volpages)]]
+                      </span>
                     </summary>
                     <p class="parallel-item-biblio-info" inner-h-t-m-l="[[parallelItem.bib]]"></p>
                   </details>
@@ -157,7 +159,9 @@ It is in effect a miniature version of the suttaplex-card
                   <span class="book scrollable-dialog" title="{{localize('volAndPageNum')}}">
                     <iron-icon icon="book"></iron-icon>
                   </span>
-                  <span class="vol-page" title="{{localize('volAndPageNum')}}">[[parallelItem.volpages]]</span>
+                  <span class="vol-page" title="[[_getVolPageTitle(parallelItem.volpages, localize)]]">
+                    [[_computeVolPage(parallelItem.volpages)]]
+                  </span>
                 </template>
               </div>
             </template>
@@ -240,7 +244,7 @@ It is in effect a miniature version of the suttaplex-card
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -363,6 +367,20 @@ It is in effect a miniature version of the suttaplex-card
               });
               sc_acronym = sc_acronym.replace(/–\s*$/, '');
               return `${sc_acronym}${id_part}`;
+          }
+
+          _computeVolPage(volPage) {
+              const volPages = volPage.split('//');
+              return volPages[1] ? volPages[1] : volPage;
+          }
+
+          _getVolPageTitle(volPage, localize) {
+              const volPages = volPage.split('//');
+              if (volPages[1] && (volPages[0] !== volPages[1])) {
+                return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
+              } else {
+                return localize('volumeAndPage');
+              }
           }
       }
 
