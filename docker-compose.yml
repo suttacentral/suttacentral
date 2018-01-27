@@ -132,8 +132,6 @@ services:
     container_name: 'sc-frontend-tester'
     labels:
       application: 'sc-frontend-tester'
-    depends_on:
-      - "sc-frontend-builder"
 
   sc-frontend-builder:
     image: node
