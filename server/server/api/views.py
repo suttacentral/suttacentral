@@ -47,8 +47,10 @@ class Languages(Resource):
                                     type: string
         """
         db = get_db()
-        languages = db.aql.execute(LANGUAGES)
-        return list(languages), 200
+        languages = list(db.aql.execute(LANGUAGES))
+        available_languages = [l['iso_code'] for l in db['available_languages'].all()]
+
+        return [l for l in languages if l['iso_code'] in available_languages], 200
 
 
 class Menu(Resource):
@@ -856,6 +858,7 @@ class WhyWeRead(Resource):
         data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit})
 
         return data.batch(), 200
+
 
 class Expansion(Resource):
     def get(self):
