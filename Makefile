@@ -152,7 +152,7 @@ install-requirements:
 # Tests.
 # Starts containers so that we are ready to run tests in them.
 prepare-tests:
-	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	@echo "waiting for all services to fully start"
 	@bash wait_for_flask.sh
 # Run tests
@@ -161,7 +161,7 @@ test:
 	@make test-server
 
 test-client:
-	@docker exec -t sc-frontend-tester bash -c "tree && echo 'Running client linter' && polymer lint && wct"
+	@docker exec -t sc-frontend-tester bash -c "echo 'Running client linter' && polymer lint && wct"
 
 test-server:
 	@docker exec -t sc-flask pytest server/
@@ -203,7 +203,6 @@ run-production-env:
 	@make index-elasticsearch
 	@echo "\033[1;32mDONE!"
 	@make run-prod
-
 
 generate-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"
