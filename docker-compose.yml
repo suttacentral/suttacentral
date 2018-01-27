@@ -139,7 +139,11 @@ services:
     labels:
       application: 'sc-frontend-builder'
 
-
+  sc-frontend-builder:
+    command: bash builder.sh
+    working_dir: /opt/sc/frontend
+    volumes:
+      - ./client/:/opt/sc/frontend
 
 volumes:
   db-data-volume:

@@ -33,15 +33,3 @@ services:
     ports:
     - '9200:9200'
     - '9300:9300'
-
-  sc-frontend-tester:
-    entrypoint: tail -f /dev/null
-    working_dir: /opt/sc/frontend
-    volumes:
-      - ./client/:/opt/sc/frontend
-
-  sc-frontend-builder:
-    command: bash builder.sh
-    working_dir: /opt/sc/frontend
-    volumes:
-      - ./client/:/opt/sc/frontend
