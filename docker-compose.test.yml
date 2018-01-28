@@ -23,3 +23,14 @@ services:
     working_dir: /opt/sc/frontend
     volumes:
       - ./client/:/opt/sc/frontend
+
+# Replace containers we're not testing with dummy ones for a faster build
+
+  sc-pootle:
+    image: hello-world
+
+  sc-pootle-mysql:
+    image: hello-world
+
+  sc-pootle-redis:
+    image: hello-world
