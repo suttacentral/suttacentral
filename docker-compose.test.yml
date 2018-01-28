@@ -31,6 +31,7 @@ services:
 
   sc-pootle-mysql:
     image: hello-world
+    command: echo hello > /dev/null
 
   sc-pootle-redis:
     image: hello-world
