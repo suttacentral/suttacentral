@@ -264,7 +264,7 @@
             <p>Text-critical information is marked in the files with classes such as “var” for variant readings,
               “supplied” for supplied text, and so on. Typically we indicate this visually with styles, and display a
               tooltip explaining the meaning. Most of this may be activated optionally.</p>
-            <p><a href="https://suttacentral.net/zz1/zz/test" title="Text-critical markup on SuttaCentral">See list of
+            <p><a href="/zz1/zz/test" title="Text-critical markup on SuttaCentral">See list of
               text-critical markup classes here</a>.</p>
             <h3>Structural and other</h3>
             <p>We use semantic markup with around a hundred different classes to indicate the detailed structure of
@@ -280,7 +280,7 @@
                 rather than the modern heading.
               </li>
             </ul>
-            <p><a href="https://suttacentral.net/zz3/zz/test" title="Structural and other markup on SuttaCentral">See
+            <p><a href="/zz3/zz/test" title="Structural and other markup on SuttaCentral">See
               list of structural and other markup classes here</a>.</p>
 
             <h2 id="item6">Bibliographies</h2>
@@ -1235,6 +1235,23 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/static/methodology-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.shadowRoot.querySelector('main').addEventListener('click', () => {
+                  setTimeout(() => {
+                      let idMatch = window.location.hash;
+                      if (idMatch) {
+                          this._scrollToSection(idMatch);
+                      }
+                  }, 0);
+              });
+          }
+
+          // Scrolls to the chosen section
+          _scrollToSection(sectionId) {
+              if (!sectionId) return;
+              const firstSection = this.shadowRoot.querySelector(sectionId);
+              if (firstSection) {
+                  firstSection.scrollIntoView();
+              }
           }
 
           _siteLanguageChanged() {

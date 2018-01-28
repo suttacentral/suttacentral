@@ -318,6 +318,23 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/static/vinaya/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.shadowRoot.querySelector('main').addEventListener('click', () => {
+                  setTimeout(() => {
+                      let idMatch = window.location.hash;
+                      if (idMatch) {
+                          this._scrollToSection(idMatch);
+                      }
+                  }, 0);
+              });
+          }
+
+          // Scrolls to the chosen section
+          _scrollToSection(sectionId) {
+              if (!sectionId) return;
+              const firstSection = this.shadowRoot.querySelector(sectionId);
+              if (firstSection) {
+                  firstSection.scrollIntoView();
+              }
           }
 
           _siteLanguageChanged() {
