@@ -250,6 +250,11 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
+              this.addEventListener('click', () => {
+                  setTimeout(() => {
+                      this._scrollToSection(window.location.hash.substr(1), true, 0);
+                  }, 0);
+              });
           }
 
           _siteLanguageChanged() {
