@@ -3615,20 +3615,24 @@
               this.loadResources(this.resolveUrl(`/localization/elements/static/subjects/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               this.shadowRoot.querySelector('main').addEventListener('click', () => {
                   setTimeout(() => {
-                      let idMatch = window.location.hash;
-                      if (idMatch) {
-                          this._scrollToSection(idMatch);
-                      }
+                      this._scrollToSection(window.location.hash, true);
                   }, 0);
               });
+              setTimeout(() => {
+                  this._scrollToSection(window.location.hash, false);
+              }, 1000);
           }
 
           // Scrolls to the chosen section
-          _scrollToSection(sectionId) {
+          _scrollToSection(sectionId, isSmooth) {
               if (!sectionId) return;
               const firstSection = this.shadowRoot.querySelector(sectionId);
               if (firstSection) {
-                  firstSection.scrollIntoView();
+                  firstSection.scrollIntoView({
+                      behavior: isSmooth ? 'smooth' : 'instant',
+                      block: 'start',
+                      inline: 'nearest'
+                  });
               }
           }
 
