@@ -88,8 +88,8 @@ services:
     volumes:
       - pootle-mysql-data:/var/lib/mysql
       - pootle-mysql-socket:/var/run/mysqld
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
     env_file:
       - pootle/environment.yml
 
