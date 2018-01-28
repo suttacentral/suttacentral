@@ -14,10 +14,10 @@ env:
   # explained in more detail below.
   - DOCKER_COMPOSE_VERSION=1.15.0
 
-before_script:
-  - sudo /etc/init.d/mysql stop
-
 before_install:
+  # We need to stop the travis mysql engine to free port 3306 for the pootle container
+  sudo service mysql stop
+
   # update is required to update the repositories to see the new packages for
   # Docker.
   - sudo apt-get update
