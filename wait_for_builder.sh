@@ -6,7 +6,6 @@ while [ ${status} != 0 ]; do
     if `docker-compose ps | grep sc-frontend-builder | grep -q 'Exit 0'`; then
         status=0
     else
-        echo "sleeping"
         sleep 0.5
     fi
 done
