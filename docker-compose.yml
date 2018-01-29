@@ -92,7 +92,7 @@ services:
     container_name: 'sc-frontend-builder'
     labels:
       application: 'sc-frontend-builder'
-    command: bash builder.sh
+    command: bash builder.sh &
     working_dir: /opt/sc/frontend
     volumes:
       - ./client/:/opt/sc/frontend
