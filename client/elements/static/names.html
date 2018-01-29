@@ -4906,7 +4906,7 @@
       <aside class="static-copyright">
        <p inner-text="{{localize('0efe06960d71afdb0add54d2b6bab04e')}}">
        </p>
-       <blockquote inner-h-t-m-l="{{localize('5888f64a9bc115584968b1bd1ecb3a3c')}}">
+       <blockquote inner-h-t-m-l="{{localize('80a732cb101208def3beb619cdcafb78')}}">
        </blockquote>
        <p inner-text="{{localize('e632e357ed59f513b589ae5baa3afb0e')}}">
        </p>
@@ -4938,7 +4938,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/names/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_names/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -4946,7 +4946,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/names/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_names/${this.language}.json`), this.language, true);
               }
           }
       }
