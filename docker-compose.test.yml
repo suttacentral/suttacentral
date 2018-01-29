@@ -19,6 +19,8 @@ services:
     working_dir: /opt/sc/frontend
     volumes:
       - ./client/:/opt/sc/frontend
+    depends_on:
+      - sc-frontend-builder
 
   # Dummy containers to override unneeded ones from the main docker-compose.yml file and speed up the build:
 
