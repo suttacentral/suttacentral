@@ -12,7 +12,6 @@
   <template>
     <style include="static-styles">
 
-
       .content {
         display: grid;
         grid-auto-flow: row;
@@ -38,12 +37,6 @@
         @apply --sc-skolar-font-size-xl;
         color: var(--sc-primary-text-color);
         text-align: center;
-      }
-
-      .text-card {
-        width: 100%;
-        background-color: var(--sc-secondary-background-color);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       }
 
       .card {
@@ -249,8 +242,7 @@
         @apply --sc-skolar-font-size-md;
         font-weight: normal;
         line-height: 1em;
-        margin: var(--sc-size-md-larger);
-        margin-top: 0;
+        margin: 0 var(--sc-size-md-larger) var(--sc-size-md-larger);
         text-align: right;
       }
 

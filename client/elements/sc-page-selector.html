@@ -374,9 +374,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           _isStaticPage(pageName) {
               if (!pageName) {
-                  return;
+                  return false;
               }
-              return this.staticPages.includes(pageName.toUpperCase()) ;
+              if (this.route.path.split('/').length !== 2 && pageName !== 'NOT-FOUND') {
+                  return false;
+              }
+              return this.staticPages.includes(pageName.toUpperCase());
           }
 
           _isSearchPage() {
