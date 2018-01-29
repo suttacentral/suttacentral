@@ -279,7 +279,7 @@ Polymer.AppLocalizeBehavior = {
     return function() {
       var key = arguments[0];
       if (!key || !resources || !language || !resources[language])
-        return;
+        return '';
 
 
       // Cache the key/value pairs for the same language, so that we don't
@@ -291,7 +291,7 @@ Polymer.AppLocalizeBehavior = {
           translatedValue = that.__findTranslatedValue(resources, fallbackLanguage, key)
       }
 
-      if (!translatedValue) {
+      if (!translatedValue && translatedValue !== "") {
         return this.useKeyIfMissing ? key : '';
       }
 

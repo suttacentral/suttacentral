@@ -4002,7 +4002,7 @@
               <p>The original source of this Index was released under the following terms:</p>
               <blockquote>© 2007 Access to Insight. The text of this page (“Index of proper Names”, by Access to
                 Insight) is licensed under a Creative Commons Attribution 4.0 International License. To view a copy of
-                the license, visit <a href="http://creativecommons.org/licenses/by/4.0/">This page</a>.
+                the license, visit <a href="http://creativecommons.org/licenses/by/4.0/">this page</a>.
               </blockquote>
               <p>The same license also applies to this modified version by SuttaCentral, 2018.</p>
             </aside>
@@ -4034,7 +4034,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/names/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/static/names/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {

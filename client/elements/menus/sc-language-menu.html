@@ -188,7 +188,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-menu/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _idChanged() {
