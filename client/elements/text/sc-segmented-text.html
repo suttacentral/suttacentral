@@ -220,6 +220,10 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  currentId: {
+                      type: String,
+                      value: ''
                   }
               }
           }
@@ -779,7 +783,7 @@
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
-              if (!sectionId) {
+              if (!sectionId || this.currentId === sectionId) {
                   return;
               }
               this._removeHighlights();
@@ -797,6 +801,7 @@
                       });
                   }
               }, delay);
+              this.currentId = sectionId;
           }
 
           _scrollToSectionInUrl() {
