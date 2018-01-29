@@ -401,6 +401,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           // returns true if the path has three path parameters or - (for suttas with no author) if the second param
           // is an iso code
           _isSuttaTextPage() {
+              // The sutta text endpoint has 4 parts (eg. http://host/dn1/en/sujato)
+              if (this.route.path.split('/').length !== 4) {
+                  return false;
+              }
               if (this._isStaticPage(this._getPathParamNumber(1))) {
                   return false;
               }
