@@ -1,5 +1,33 @@
 {
   "lint": {
-    "rules": ["polymer-2"]
-  }
+    "rules": [
+      "polymer-2"
+    ]
+  },
+  "extraDependencies": [
+    "localization/**/*.json",
+    "styles/**/*.json",
+    "img/**/*",
+    "files/**/*"
+  ],
+  "builds": [
+    {
+      "bundle": {
+        "stripComments": true,
+        "inlineCss": false,
+        "sourcemaps": true
+      },
+      "js": {
+        "compile": true,
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "addServiceWorker": true
+    }
+  ]
 }
