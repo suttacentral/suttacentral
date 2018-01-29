@@ -3309,7 +3309,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_subjects/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/static/subjects/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -3317,7 +3317,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_subjects/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static/subjects/${this.language}.json`), this.language, true);
               }
           }
       }

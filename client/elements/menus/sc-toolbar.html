@@ -156,7 +156,7 @@ Base toolbar that appears on the top right in the header of every page. This too
               this.$.more_menu.addEventListener('item-selected', (e) => {
                   this.$.more_vert_button.close();
               });
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {

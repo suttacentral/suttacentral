@@ -27,7 +27,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Menu, '/menu', '/menu/<path:submenu_id>')
     api.add_resource(SuttaplexList, '/suttaplex/<path:uid>')
     api.add_resource(Parallels, '/parallels/<path:uid>')
-    api.add_resource(Sutta, '/suttas/<string:uid>/<string:author>', '/suttas/<string:uid>')
+    api.add_resource(Sutta, '/suttas/<string:uid>/<string:author_uid>', '/suttas/<string:uid>')
     api.add_resource(LookupDictionaries, '/dictionaries/lookup')
     api.add_resource(Currencies, '/currencies')
     api.add_resource(Donations, '/donate')

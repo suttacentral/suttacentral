@@ -65,6 +65,10 @@
         @apply --sc-skolar-font-size-xl;
         color: var(--sc-tertiary-text-color);
         margin-left: var(--sc-size-sm);
+        padding-right: var(--sc-size-md);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
         text-decoration: none;
       }
 
@@ -199,6 +203,7 @@
       .nav-secondary .nav-link-container,
       .nav-tertiary .nav-link-container {
         @apply --sc-skolar-font-size-s;
+        padding-right: var(--sc-size-lg);
         font-weight: 400;
       }
 
@@ -255,6 +260,7 @@
 
       #back_arrow {
         cursor: pointer;
+        min-width: 40px;
         color: var(--sc-tertiary-text-color);
       }
 
@@ -408,7 +414,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {

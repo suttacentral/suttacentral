@@ -238,7 +238,7 @@
       <div class="card-content">
 
         <div class="suttaplex-head-container">
-          <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item,localize)]]">
+          <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item, localize)]]">
             [[_computeMainHeading(item)]]</h3>
           <iron-icon id="difficulty_icon" class="primary-accent-icon"
                      icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
@@ -252,15 +252,15 @@
             [[item.original_title]]
           </span>
           <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
-            [[_getAcronymOrUid(item,expansionData)]]
+            [[_getAcronymOrUid(item, expansionData)]]
           </span>
           <template is="dom-if" if="[[item.volpages]]">
             <template is="dom-if" if=[[!item.biblio]]>
               <span class="book no-margin">
                 <iron-icon class="grey-icon" icon="book"></iron-icon>
               </span>
-              <span class="vol-page nerdy-row-element" title="{{localize('volumeAndPage')}}">
-                [[item.volpages]]
+              <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                [[_computeVolPage(item.volpages)]]
               </span>
             </template>
             <template is="dom-if" if=[[item.biblio]]>
@@ -270,8 +270,8 @@
                     <span class="book no-margin">
                       <iron-icon class="grey-icon" icon="book"></iron-icon>
                     </span>
-                    <span class="vol-page nerdy-row-element" title="{{localize('volumeAndPage')}}">
-                      [[item.volpages]]
+                    <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                      [[_computeVolPage(item.volpages)]]
                     </span>
                   </summary>
                   <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
@@ -299,57 +299,53 @@
             <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
               <paper-button class="author-button" flat
                             title$="{{localize('goToTranslation', 'author', translation.author)}}">
-                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author)]]">
-                  [[translation.author]]
+                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
+                  [[translation.author_short]]
                 </a>
               </paper-button>
             </template>
           </template>
         </div>
 
-        <template is="dom-if" if="[[item.uid]]">
-
-          <div class="flex-div">
-            <div class="languagedrop">
-              <sc-language-menu language-choice="[[item.translations]]"
-                                input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
-                                root-id="[[item.uid]]" class="no-left-padding"></sc-language-menu>
-            </div>
-
-            <div class="right-elements">
-              <paper-menu-button id="copy_menu" class="share-menu-button" horizontal-align="right" role="group"
-                                 aria-haspopup="true" aria-disabled="false" vertical-align="auto">
-                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
-                                   role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
-                <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0"
-                               role="listbox">
-                  <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
-                </paper-listbox>
-              </paper-menu-button>
-
-              <template is="dom-if" if="[[item.parallel_count]]">
-                <div class="parallels-toggle-div">
-                  <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]"
-                                     on-tap="_toggleParallelsOpened">
-                  </paper-icon-button>
-                  <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
-                </div>
-                <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1" fit-to-visible-bounds
-                               position="right">
-                  {{localize('hasParallels', 'num', item.parallel_count)}}
-                </paper-tooltip>
-              </template>
-            </div>
+        <div class="flex-div">
+          <div class="languagedrop">
+            <sc-language-menu language-choice="[[item.translations]]"
+                              input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
+                              root-id="[[item.uid]]" class="no-left-padding"></sc-language-menu>
           </div>
 
-        </template>
+          <div class="right-elements">
+            <paper-menu-button id="copy_menu" class="share-menu-button" horizontal-align="right" role="group"
+                               aria-haspopup="true" aria-disabled="false" vertical-align="auto">
+              <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
+                                 role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
+              <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0"
+                             role="listbox">
+                <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
+              </paper-listbox>
+            </paper-menu-button>
+
+            <template is="dom-if" if="[[item.parallel_count]]">
+              <div class="parallels-toggle-div">
+                <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]"
+                                   on-tap="_toggleParallelsOpened">
+                </paper-icon-button>
+                <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
+              </div>
+              <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1" fit-to-visible-bounds
+                             position="right">
+                {{localize('hasParallels', 'num', item.parallel_count)}}
+              </paper-tooltip>
+            </template>
+          </div>
+        </div>
 
       </div>
 
       <template is="dom-if" if="[[parallelsOpened]]">
         <iron-collapse id="collapse" opened="[[parallelsOpened]]">
           <sc-parallel-list root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"
-                             root-text="[[_getRootText(item.*)]]" expansion-data="[[expansionData]]">
+                            root-text="[[_getRootText(item.*)]]" expansion-data="[[expansionData]]">
           </sc-parallel-list>
         </iron-collapse>
       </template>
@@ -422,13 +418,18 @@
 
           ready() {
               super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              const copy_menu = this.shadowRoot.querySelector('#copy_menu');
               this.addEventListener('par-menu-copied', (e) => {
-                  this.$.copy_menu.opened = false;  // Close dropdown after the copy action.
+                  copy_menu.opened = false;  // Close dropdown after the copy action.
               });
-              if (this.$.copy_menu) {
-                  this.$.copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
+              if (copy_menu) {
+                  copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
               }
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.fallbackLanguage}.json`));
           }
 
           _siteLanguageChanged() {
@@ -475,10 +476,10 @@
           }
 
           // Computes API endpoint URL for given translation
-          _getSuttaTextUrl(uid, lang, author) {
+          _getSuttaTextUrl(uid, lang, author_uid) {
               const url = window.location;
               const baseUrl = url.protocol + '//' + url.host;
-              return `${baseUrl}/${uid}/${lang}/${author}`;
+              return `${baseUrl}/${uid}/${lang}/${author_uid}`;
           }
 
           _isChosenLang(lang) {
@@ -522,9 +523,9 @@
           _getAcronymOrUid(item, expansionData) {
               let sc_acronym = '';
               if (item.acronym) {
-                sc_acronym = item.acronym.split('//')[0];
+                  sc_acronym = item.acronym.split('//')[0];
               } else {
-                sc_acronym = this._transformId(item.uid, expansionData);
+                  sc_acronym = this._transformId(item.uid, expansionData);
               }
               return sc_acronym;
           }
@@ -540,11 +541,11 @@
               let uid_parts = root_part.split('-');
               let tail = '';
               uid_parts.forEach(item => {
-                if (!expansionData[0][item]) {
-                    tail = item.match(/\d+.*/g)[0]+'–';
-                    item = item.match(/[a-z]*/g)[0];
-                }
-                item ? sc_acronym += `${expansionData[0][item][0]} ${tail}` : sc_acronym += tail;
+                  if (!expansionData[0][item]) {
+                      tail = item.match(/\d+.*/g)[0] + '–';
+                      item = item.match(/[a-z]*/g)[0];
+                  }
+                  item ? sc_acronym += `${expansionData[0][item][0]} ${tail}` : sc_acronym += tail;
               });
               return sc_acronym.replace(/–\s*$/, '');
           }
@@ -552,18 +553,32 @@
           _getAcronymTitle(item, localize) {
               let sc_acronym_title = localize('suttaCentralID');
               if (item && item.acronym) {
-                const alt_number = item.acronym.split('//')[1];
-                if (alt_number) {
-                  let book = '';
-                  (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
-                  sc_acronym_title += `\n${localize('alternateText', 'book', book)} ${alt_number}`;
-                }
+                  const alt_number = item.acronym.split('//')[1];
+                  if (alt_number) {
+                      let book = '';
+                      (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
+                      sc_acronym_title += `\n${localize('alternateText', 'book', book)} ${alt_number}`;
+                  }
               }
               return sc_acronym_title;
           }
 
           _getRootText() {
               return this.item.translations.find(translation => translation.lang === this.item.root_lang);
+          }
+
+          _computeVolPage(volPage) {
+              const volPages = volPage.split('//');
+              return volPages[1] ? volPages[1] : volPage;
+          }
+
+          _getVolPageTitle(volPage, localize) {
+              const volPages = volPage.split('//');
+              if (volPages[1] && (volPages[0] !== volPages[1])) {
+                return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
+              } else {
+                return localize('volumeAndPage');
+              }
           }
       }
 

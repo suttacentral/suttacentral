@@ -267,7 +267,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               super.ready();
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
               this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.fallbackLanguage}.json`));
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -332,7 +332,8 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
                   offset: (this.currentPage * this.resultsPerLoad),
-                  query: this.searchQuery
+                  query: this.searchQuery,
+                  language: this.language
               });
               this._generateRequest();
           }
@@ -345,7 +346,8 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.clearSearchPage();
               this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
-                  query: this.searchQuery
+                  query: this.searchQuery,
+                  language: this.language
               });
               this._generateRequest();
           }

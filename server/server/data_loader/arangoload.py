@@ -3,10 +3,10 @@ import regex
 import logging
 import pathlib
 
-from collections import Counter, defaultdict
+from collections import defaultdict
 from itertools import product
 from pathlib import Path
-from typing import Any, List, Set
+from typing import Any, Set
 from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
@@ -16,7 +16,7 @@ from common.uid_matcher import UidMatcher
 from .util import json_load
 from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
-    divisions, images_files, homepage
+    divisions, images_files, homepage, available_languages
 
 
 def update_data(repo: Repo, repo_addr: str):
@@ -116,7 +116,6 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
             entry['uid'] = uid
 
             base_uid = reg.match(uid)[0]
-
             lang = 'en'
 
             while base_uid:
@@ -164,6 +163,8 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
         if len(paths) == 1:
             continue
         logging.error(f'{uid} appears {len(paths)} times: {",".join(paths)}')
+    
+    docs.append({'uid': 'orphan', '_key': 'orphan'})
 
 
 def process_category_files(category_files, db, edges, mapping):
@@ -230,7 +231,8 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
 
     root_languages = process_root_languages(structure_dir)
 
-    if change_tracker.is_any_file_new_or_changed(division_files + category_files):
+    if (change_tracker.is_any_file_new_or_changed(division_files + category_files)
+     or change_tracker.is_any_function_changed([process_division_files, process_category_files, perform_update_queries])):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
         process_division_files(docs, name_docs, edges, mapping, division_files, root_languages,
@@ -242,7 +244,7 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
             if entry.get('pitaka') == 'su':
                 if 'grouping' not in entry:
                     entry['grouping'] = 'other'
-
+        
         # make documents
         db['root'].import_bulk_safe(docs, overwrite=True)
         db['root_names'].import_bulk_safe(name_docs, overwrite=True)
@@ -318,18 +320,19 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                 for from_uid in full:
                     true_from_uids = uid_matcher.get_matching_uids(from_uid)
                     if not true_from_uids:
-                        logging.error(f'Relationship uid could not be matched: {from_uid}')
+                        logging.error(f'Relationship from uid could not be matched: {from_uid} (dropped)')
                         continue
+
                     for to_uids, is_resembling in ((full, False), (partial, True)):
                         for to_uid in to_uids:
                             if to_uid == from_uid:
                                 continue
-                            if not true_from_uids:
-                                if is_resembling:
-                                    logging.error(f'Relationship uid could not be matched: {from_uid}')
-                                continue
 
                             true_to_uids = uid_matcher.get_matching_uids(to_uid)
+                            if not true_to_uids:
+                                logging.error(f'Relationship to uid could not be matched: {to_uid} (appears as orphan)')
+                                true_to_uids = ['orphan']
+
                             for true_from_uid in true_from_uids:
                                 for true_to_uid in true_to_uids:
                                     remark = remarks.get(frozenset([true_from_uid, true_to_uid]),
@@ -348,6 +351,9 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                 true_first_uids = uid_matcher.get_matching_uids(first_uid)
                 for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
                     true_from_uids = uid_matcher.get_matching_uids(to_uid)
+                    if not true_from_uids:
+                        logging.error(f'Relationship from uid could not be matched: {from_uid} (dropped)')
+                        continue
                     for true_from_uid in true_from_uids:
                         remark = remarks.get(frozenset([true_from_uid, true_first_uid]), None)
                         ll_edges.append({
@@ -449,7 +455,6 @@ def run(no_pull=False):
     additional_info_dir = data_dir / 'additional-info'
     dictionaries_dir = data_dir / 'dictionaries'
 
-    
     db = arangodb.get_db()
     
     if not no_pull:
@@ -465,7 +470,7 @@ def run(no_pull=False):
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir)
-    
+
     generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
 
     load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
@@ -489,5 +494,7 @@ def run(no_pull=False):
     homepage.load_epigraphs(db, additional_info_dir)
 
     homepage.load_why_we_read(db, additional_info_dir)
+
+    available_languages.load_available_languages(db, additional_info_dir)
 
     change_tracker.update_mtimes()

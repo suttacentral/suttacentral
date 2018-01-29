@@ -92,6 +92,8 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
                 lang: text.lang,
                 lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
+                author_short: text.author_short,
+                author_uid: text.author_uid,
                 id: text._key,
                 segmented: false
                 }
@@ -109,6 +111,8 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
                 lang: text.lang,
                 lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
+                author_short: text.author_short,
+                author_uid: text.author_uid,
                 id: text._key,
                 segmented: true,
                 title: text.title
@@ -174,15 +178,22 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             LIMIT 1
             RETURN biblio.text
     )[0]
-        
+
+    LET original_titles = (
+        FOR original_name IN root_names
+            FILTER original_name.uid == v.uid
+            LIMIT 1
+            RETURN original_name.name
+    )[0]
+
     RETURN {
         acronym: v.acronym,
         volpages: v.volpage ? v.volpage : legacy_volpages[0],
         uid: v.uid,
         blurb: blurb,
         difficulty: difficulty,
-        original_title: DOCUMENT(CONCAT('root_names/', v.uid, '_', v.lang)).name,
-        root_lang: v.root_lang,
+        original_title: original_titles,
+        root_lang: v.root_lang ? v.root_lang : v.lang,
         type: e.type ? e.type : (v.type ? v.type : 'text'),
         from: e._from,
         translated_title: translated_titles,
@@ -202,7 +213,10 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             FILTER text.uid == target.uid
             LET res = {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
+                author_short: text.author_short,
+                author_uid: text.author_uid,
                 id: text._key,
                 segmented: false
                 }
@@ -217,7 +231,10 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             FILTER text.uid == target.uid
             LET res = {
                 lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
                 author: text.author,
+                author_short: text.author_short,
+                author_uid: text.author_uid,
                 id: text._key,
                 segmented: true
             }
@@ -261,7 +278,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
         to: {
             to: e.to,
             volpages: v.volpage ? v.volpage : legacy_volpages,
-            acronym: v.acronym,
+            acronym: v.acronym ,
             uid: v.uid,
             root_lang: v.root_lang,
             original_title: original_titles,
@@ -294,13 +311,13 @@ _NEIGHBOURS_SUBQUERY = '''
 LET legacy = (
     FOR html IN html_text
         FILTER html.uid == uid AND html.lang == @language
-        SORT html.author
-        RETURN MERGE(KEEP(html, ['author', 'uid']), {'title': html.name})
+        SORT html.author_uid
+        RETURN MERGE(KEEP(html, ['author_uid', 'uid']), {'title': html.name})
     )
     
     LET same_author_legacy = (
         FOR text IN legacy
-            FILTER LOWER(text.author) == @author
+            FILTER LOWER(text.author_uid) == @author_uid
             LIMIT 1
             RETURN text
     )[0]
@@ -310,15 +327,15 @@ LET legacy = (
     LET segmented = (
         FOR text IN po_strings
             FILTER text.uid == uid.uid AND text.lang == @language
-            SORT text.author
-            RETURN KEEP(text, ['author', 'uid', 'title'])
+            SORT text.author_uid
+            RETURN KEEP(text, ['author_uid', 'uid', 'title'])
     )
     
     LET first_text_segmented = segmented[0]
     
     LET same_author_segmented = (
         FOR text IN segmented
-            FILTER LOWER(text.author) == @author
+            FILTER LOWER(text.author_uid) == @author_uid
             LIMIT 1
             RETURN text
     )[0]
@@ -339,7 +356,7 @@ LET root_text = DOCUMENT(CONCAT('root/', @uid))
 
 LET legacy_html = (
     FOR html IN html_text
-        FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author) == @author) OR html.lang == root_text.root_lang)
+        FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) OR html.lang == root_text.root_lang)
         
         RETURN {
             uid: html.uid,
@@ -347,6 +364,7 @@ LET legacy_html = (
             is_root: html.lang == root_text.root_lang,
             title: html.name,
             author: html.author,
+            author_short: html.author_short,
             author_uid: html.author_uid,
             text: html.text
         }
@@ -366,6 +384,8 @@ LET root_po_obj = (
         RETURN {
             uid: object.uid,
             author: object.author,
+            author_short: object.author_short,
+            author_uid: object.author_uid,
             author_blurb: object.author_blurb,
             lang: object.lang,
             strings: object.strings,
@@ -375,11 +395,13 @@ LET root_po_obj = (
 
 LET translated_po_obj = (
     FOR object IN po_strings 
-        FILTER object.uid == @uid AND object.lang == @language AND LOWER(object.author) == @author
+        FILTER object.uid == @uid AND object.lang == @language AND object.author_uid == @author_uid
         LIMIT 1 
         RETURN {
             uid: object.uid,
             author: object.author,
+            author_short: object.author_short,
+            author_uid: object.author_uid,
             author_blurb: object.author_blurb,
             lang: object.lang,
             strings: object.strings,

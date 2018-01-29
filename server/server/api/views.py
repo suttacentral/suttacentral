@@ -47,8 +47,10 @@ class Languages(Resource):
                                     type: string
         """
         db = get_db()
-        languages = db.aql.execute(LANGUAGES)
-        return list(languages), 200
+        languages = list(db.aql.execute(LANGUAGES))
+        available_languages = [l['iso_code'] for l in db['available_languages'].all()]
+
+        return [l for l in languages if l['iso_code'] in available_languages], 200
 
 
 class Menu(Resource):
@@ -355,6 +357,10 @@ class Parallels(Resource):
 
         data = SortedDict(sort_parallels_key)
         for result in results:
+            if result['to'].get('uid') == 'orphan':
+                for k in ('original_title', 'translated_title'):
+                    result['to'][k] = ''
+                result['to']['acronym'] = result['to']['to'].split('#')[0]
             _from = result.pop('from')
             try:
                 data[_from].append(result)
@@ -422,7 +428,7 @@ class LookupDictionaries(Resource):
 
 
 class Sutta(Resource):
-    def get(self, uid, author=''):
+    def get(self, uid, author_uid=''):
         """
         Send Complete information set for sutta-view for given uid.
         ---
@@ -500,12 +506,10 @@ class Sutta(Resource):
         """
         lang = request.args.get('lang', 'en')
 
-        author = author.lower()
-
         db = get_db()
 
         results = db.aql.execute(SUTTA_VIEW,
-                                 bind_vars={'uid': uid, 'language': lang, 'author': author})
+                                 bind_vars={'uid': uid, 'language': lang, 'author_uid': author_uid})
         data: dict = results.next()
 
         r = re.compile(r'^[a-z\-]+')
@@ -854,6 +858,7 @@ class WhyWeRead(Resource):
         data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit})
 
         return data.batch(), 200
+
 
 class Expansion(Resource):
     def get(self):
