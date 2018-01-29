@@ -1228,6 +1228,10 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  currentId: {
+                      type: String,
+                      value: ''
                   }
               }
           }
@@ -1247,7 +1251,7 @@
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth) {
-              if (!sectionId) return;
+              if (!sectionId || this.currentId === sectionId) return;
               const firstSection = this.shadowRoot.querySelector(sectionId);
               if (firstSection) {
                   firstSection.scrollIntoView({
@@ -1256,6 +1260,7 @@
                       inline: 'nearest'
                   });
               }
+              this.currentId = sectionId;
           }
 
           _siteLanguageChanged() {
