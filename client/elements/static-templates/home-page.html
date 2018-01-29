@@ -12,7 +12,6 @@
   <template>
     <style include="static-styles">
 
-
       .content {
         display: grid;
         grid-auto-flow: row;
@@ -38,12 +37,6 @@
         @apply --sc-skolar-font-size-xl;
         color: var(--sc-primary-text-color);
         text-align: center;
-      }
-
-      .text-card {
-        width: 100%;
-        background-color: var(--sc-secondary-background-color);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       }
 
       .card {
@@ -249,8 +242,7 @@
         @apply --sc-skolar-font-size-md;
         font-weight: normal;
         line-height: 1em;
-        margin: var(--sc-size-md-larger);
-        margin-top: 0;
+        margin: 0 var(--sc-size-md-larger) var(--sc-size-md-larger);
         text-align: right;
       }
 
@@ -426,7 +418,7 @@
 
         <div class="row cards">
           <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card"
-                      image="../../img/home-page/becomingone-min.jpg" elevation="2">
+                      image="/img/home-page/becomingone-min.jpg" elevation="2">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">What’s here</div>
               <div class="image-card-text">
@@ -438,7 +430,7 @@
             </div>
           </paper-card>
           <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card"
-                      image="../../img/home-page/contemplatingthemoon-min.jpg" elevation="2">
+                      image="/img/home-page/contemplatingthemoon-min.jpg" elevation="2">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">Where to begin</div>
               <div class="image-card-text">
@@ -489,7 +481,7 @@
             Tipiṭaka—the three baskets
           </div>
           <div class="three-elements-grid">
-            <paper-card class="three-elements-big paper-card-with-button" image="../../img/home-page/14.jpg"
+            <paper-card class="three-elements-big paper-card-with-button" image="/img/home-page/14.jpg"
                         elevation="2">
               <div class="card-content-wrapper no-bottom-padding">
                 <div class="card-title-text">Discourses</div>
@@ -581,7 +573,7 @@
 
         <div class="row cards">
           <paper-card class="two-paper-cards first-card paper-card-with-button"
-                      image="../../img/home-page/noword-min.jpg"
+                      image="/img/home-page/noword-min.jpg"
                       elevation="2">
             <div class="card-content-wrapper">
               <div class="card-title-text">SuttaCentral—a new beginning</div>
@@ -600,7 +592,7 @@
             </div>
           </paper-card>
           <paper-card class="two-paper-cards second-card paper-card-with-button"
-                      image="../../img/home-page/listeningtotherain-min.jpg" elevation="2">
+                      image="/img/home-page/listeningtotherain-min.jpg" elevation="2">
             <div class="card-content-wrapper">
               <div class="card-title-text">Indexes and Terminology</div>
               <div class="image-card-text">

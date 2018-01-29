@@ -86,10 +86,7 @@
         @apply --sc-skolar-font-size-static-subtitle;
         @apply --sc-sans-font;
         color: var(--sc-secondary-text-color);
-        margin: 38px;
-      }
-
-      .text-center {
+        margin-top: var(--sc-size-xxl);
         text-align: center;
       }
 
@@ -282,72 +279,30 @@
 
     </app-toolbar>
 
-    <iron-lazy-pages id="pages" role="main" selected="[[pages]]" attr-for-selected="name">
-      <div name="HOME">
-        <home-page></home-page>
-      </div>
-      <div name="DONATIONS">
-        <sc-donations-page></sc-donations-page>
-      </div>
-      <div name="DONATE-NOW">
-        <sc-donate-now-page id="donate"></sc-donate-now-page>
-      </div>
-      <div name="DOWNLOADS">
-        <sc-downloads-page></sc-downloads-page>
-      </div>
-      <div name="OFFLINE">
-        <sc-offline-page></sc-offline-page>
-      </div>
-      <div name="NUMBERING">
-        <sc-numbering-page></sc-numbering-page>
-      </div>
-      <div name="METHODOLOGY">
-        <sc-methodology-page></sc-methodology-page>
-      </div>
-      <div name="ACKNOWLEDGMENTS">
-        <sc-acknowledgments-page></sc-acknowledgments-page>
-      </div>
-      <div name="LICENSING">
-        <sc-licensing-page></sc-licensing-page>
-      </div>
-      <div name="ABOUT">
-        <sc-about-page></sc-about-page>
-      </div>
-      <div name="INTRODUCTION">
-        <sc-preamble></sc-preamble>
-      </div>
-      <div name="START">
-        <sc-start></sc-start>
-      </div>
-      <div name="DISCOURSES">
-        <sc-discourses></sc-discourses>
-      </div>
-      <div name="VINAYA">
-        <sc-vinaya></sc-vinaya>
-      </div>
-      <div name="ABHIDHAMMA">
-        <sc-abhidhamma></sc-abhidhamma>
-      </div>
-      <div name="A-NEW-BEGINNING">
-        <sc-a-new-beginning></sc-a-new-beginning>
-      </div>
-      <div name="SUBJECTS">
-        <sc-subjects-page></sc-subjects-page>
-      </div>
-      <div name="SIMILES">
-        <sc-similes-page></sc-similes-page>
-      </div>
-      <div name="NAMES">
-        <sc-names-page></sc-names-page>
-      </div>
-      <div name="TERMINOLOGY">
-        <sc-terminology-page></sc-terminology-page>
-      </div>
-      <div name="ABBREVIATIONS">
-        <sc-abbreviations-page></sc-abbreviations-page>
-      </div>
+    <iron-lazy-pages id="pages" role="main" selected="{{pages}}" attr-for-selected="name">
+      <home-page name="HOME"></home-page>
+      <sc-donations-page name="DONATIONS"></sc-donations-page>
+      <sc-donate-now-page id="donate" name="DONATE-NOW"></sc-donate-now-page>
+      <sc-downloads-page name="DOWNLOADS"></sc-downloads-page>
+      <sc-offline-page name="OFFLINE"></sc-offline-page>
+      <sc-numbering-page name="NUMBERING"></sc-numbering-page>
+      <sc-methodology-page name="METHODOLOGY"></sc-methodology-page>
+      <sc-acknowledgments-page name="ACKNOWLEDGMENTS"></sc-acknowledgments-page>
+      <sc-licensing-page name="LICENSING"></sc-licensing-page>
+      <sc-about-page name="ABOUT"></sc-about-page>
+      <sc-preamble name="INTRODUCTION"></sc-preamble>
+      <sc-start name="START"></sc-start>
+      <sc-discourses name="DISCOURSES"></sc-discourses>
+      <sc-vinaya name="VINAYA"></sc-vinaya>
+      <sc-abhidhamma name="ABHIDHAMMA"></sc-abhidhamma>
+      <sc-a-new-beginning name="A-NEW-BEGINNING"></sc-a-new-beginning>
+      <sc-subjects-page name="SUBJECTS"></sc-subjects-page>
+      <sc-similes-page name="SIMILES"></sc-similes-page>
+      <sc-names-page name="NAMES"></sc-names-page>
+      <sc-terminology-page name="TERMINOLOGY"></sc-terminology-page>
+      <sc-abbreviations-page name="ABBREVIATIONS"></sc-abbreviations-page>
       <div name="NOT-FOUND">
-        <div class="page-not-found-container text-center margin-top-xl">
+        <div class="page-not-found-container">
           <h2>{{localize('error404')}}</h2>
           <h3>{{localize('pageNotFound')}}</h3>
         </div>
@@ -373,8 +328,7 @@
                       statePath: 'currentRoute.name'
                   },
                   pages: {
-                      type: String,
-                      value: 'HOME'
+                      type: String
                   },
                   language: {
                       type: String,
