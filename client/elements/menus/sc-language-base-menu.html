@@ -153,12 +153,13 @@ This is the base language menu that determines the language of the site.
 
           // Is invoked when a language is chosen from the list.
           _selectedLanguageNumChanged() {
-              if (!this.languageListResponse || this.languageListResponse.length === 0 || !this.selectedLanguageNum) {
+              if (!this.languageListResponse || this.languageListResponse.length === 0) {
+                  return;
+              }
+              if (!this.selectedLanguageNum && this.selectedLanguageNum !== 0) {
                   return;
               }
               try {
-                  // When selecting a language from the array of all languages, we're dividing by two.
-                  // That's because of the ISO codes inside our list which paper-listbox treats as separate elements.
                   const languageIsoCode = this.languageListResponse[this.selectedLanguageNum].iso_code;
                   this.dispatch('changeLanguage', languageIsoCode);
               } catch (e) {
