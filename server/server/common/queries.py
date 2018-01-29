@@ -48,7 +48,8 @@ FOR div IN root
         num: div.num, 
         id: div.uid, 
         type: div.type, 
-        parents: parents
+        parents: parents,
+        display_num: div.display_num
     }
 '''
 
@@ -64,7 +65,8 @@ LET descendents = (
             uid: d._id,
             num: d.num,
             type: d.type,
-            id: d.uid
+            id: d.uid,
+            display_num: d.display_num
     }
 )
 LET parents = MERGE(
@@ -79,7 +81,14 @@ LET parents = MERGE(
     }
 )
 
-RETURN {name: div.name, num: div.num, id: div.uid, uid: div._id, descendents: descendents, parents: parents}
+RETURN {
+    name: div.name,
+    num: div.num,
+    id: div.uid,
+    uid: div._id,
+    descendents: descendents,
+    parents: parents
+}
 '''
 
 # Takes 2 bind_vars: `language` and `uid` of root element
