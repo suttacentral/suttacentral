@@ -4,7 +4,6 @@
 exit_status=1
 while [ ${exit_status} != 0 ]; do
     exit_status=`docker inspect sc-frontend-builder --format='{{.State.ExitCode}}'`
-    echo ${exit_status}
     if [ ${exit_status} != 0 ]; then
         sleep 0.5
     fi
