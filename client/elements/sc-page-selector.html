@@ -178,7 +178,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
                           'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGMENTS', 'LICENSING', 'INTRODUCTION',
                           'START', 'DISCOURSES', 'VINAYA', 'ABHIDHAMMA', 'A-NEW-BEGINNING', 'SUBJECTS', 'SIMILES',
-                          'NAMES', 'TERMINOLOGY', 'ABBREVIATIONS']
+                          'NAMES', 'TERMINOLOGY', 'ABBREVIATIONS', 'NOT-FOUND']
                   },
                   allIsoCodes: {
                       type: Array,
@@ -323,7 +323,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _recalculateView() {
-              this.shouldShowStaticPage = this._isStaticPage(this.selectedPage) || this.selectedPage === 'NOT-FOUND';
+              this.shouldShowStaticPage = this._isStaticPage(this.selectedPage);
               this.shouldShowSuttaplexListPage = this._isSuttaplexListPage();
               this.shouldShowSearchPage = this._isSearchPage();
               this.shouldShowSuttaTextPage = this._isSuttaTextPage();
@@ -374,7 +374,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           _isStaticPage(pageName) {
               if (!pageName) {
-                  return;
+                  return false;
+              }
+              if (this.route.path.split('/').length !== 2 && pageName !== 'NOT-FOUND') {
+                  return false;
               }
               return this.staticPages.includes(pageName.toUpperCase());
           }
@@ -384,7 +387,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _isDictionaryPage() {
-              return this.route.path.split('/')[1] === 'define';
+              const path = this.route.path.split('/');
+              return (path.length === 3 && path[1] === 'define');
           }
 
           // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).
@@ -400,6 +404,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           // returns true if the path has three path parameters or - (for suttas with no author) if the second param
           // is an iso code
           _isSuttaTextPage() {
+              // The sutta text endpoint has 4 parts (eg. http://host/dn1/en/sujato)
+              if (this.route.path.split('/').length !== 4) {
+                  return false;
+              }
               if (this._isStaticPage(this._getPathParamNumber(1))) {
                   return false;
               }

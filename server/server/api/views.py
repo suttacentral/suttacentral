@@ -176,7 +176,7 @@ class Menu(Resource):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
             mapping[menu_entry['uid']] = menu_entry
-            if 'id' in menu_entry:
+            if 'id' in menu_entry and menu_entry.get('display_num') is None:
                 num_matches = self.num_regex.match(menu_entry['id'])
                 if num_matches:
                     menu_entry['display_num'] = num_matches[1]
