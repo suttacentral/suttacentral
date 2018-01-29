@@ -155,6 +155,7 @@ prepare-tests:
 	@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	@echo "waiting for all services to fully start"
 	@bash wait_for_flask.sh
+	@bash wait_for_builder.sh
 # Run tests
 test:
 	@make test-client
