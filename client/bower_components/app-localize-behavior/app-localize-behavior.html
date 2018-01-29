@@ -343,7 +343,7 @@ Polymer.AppLocalizeBehavior = {
         propertyUpdates['resources.' + language] = Object.assign(
           propertyUpdates.resources[language] || {}, newResources);
       } else {
-        propertyUpdates.resources = Object.assign(this.resources, newResources);
+        propertyUpdates.resources = Object.assign(this.resources || {}, newResources);
       }
     } else {
       if (language) {

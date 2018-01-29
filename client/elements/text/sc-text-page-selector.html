@@ -56,7 +56,9 @@
         last-response="{{responseData}}"></iron-ajax>
 
     <div class="wrapper">
-      <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+      <template is="dom-if" if="[[!_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
+        <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
+      </template>
 
       <div class="loading-indicator" hidden$="[[!isLoading]]">
         <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
@@ -78,8 +80,8 @@
 
       <template is="dom-if" if="[[_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
         <div class="text-center margin-top-xl">
-          <h2>{{localize('error404')}}</h2>
-          <h3>{{localize('couldNotFind')}}</h3>
+          <h2>Error 404</h2>
+          <h3>Could not find the sutta text.</h3>
         </div>
       </template>
 
