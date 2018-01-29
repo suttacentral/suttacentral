@@ -3,7 +3,7 @@
 
 status=1
 while [ ${status} != 0 ]; do
-    echo `docker-compose ps`
+    echo `docker-compose ps | grep sc-frontend-builder`
     if `docker-compose ps | grep sc-frontend-builder | grep -q 'Exit 0'`; then
         status=0
     else
