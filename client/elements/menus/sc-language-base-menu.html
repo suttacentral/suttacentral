@@ -153,6 +153,7 @@ This is the base language menu that determines the language of the site.
 
           // Is invoked when a language is chosen from the list.
           _selectedLanguageNumChanged() {
+              if (!this.languageListResponse || this.languageListResponse.length === 0) {
                   return;
               }
               if (!this.selectedLanguageNum && this.selectedLanguageNum !== 0) {
