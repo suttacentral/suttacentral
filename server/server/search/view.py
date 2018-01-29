@@ -108,7 +108,10 @@ class Search(Resource):
 
             # Insert dummy urls (to be changed when discussed with client)
             for entry in results['hits']['hits']:
-                entry['url'] = '/dn1/sujato'
+                source = entry['source']
+                uid = source['uid']
+                lang = source['lang']
+                entry['url'] = f'/{uid}/{lang}/sujato'
 
             return results
         except ConnectionError:
