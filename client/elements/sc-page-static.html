@@ -422,7 +422,7 @@
           }
 
           _isToolbarSelected(tipitakaToolbar, secondToolbar, organizationalToolbar, academicToolbar) {
-              return (secondToolbar || tipitakaToolbar || academicToolbar || organizationalToolbar) ? false : true;
+              return !(secondToolbar || tipitakaToolbar || academicToolbar || organizationalToolbar);
           }
 
           _selectNavbarLink() {
