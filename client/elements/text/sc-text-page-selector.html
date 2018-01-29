@@ -247,7 +247,7 @@
           }
 
           _shouldDisplayStepper(isLoading, neighbours) {
-              return !isLoading && (neighbours.next || neighbours.previous);
+              return neighbours && !isLoading && (neighbours.next || neighbours.previous);
           }
 
           _shouldDisplayError(rootSutta, translatedSutta, networkError) {

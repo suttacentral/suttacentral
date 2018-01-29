@@ -384,7 +384,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _isDictionaryPage() {
-              return this.route.path.split('/')[1] === 'define';
+              const path = this.route.path.split('/');
+              return (path.length === 3 && path[1] === 'define');
           }
 
           // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).

@@ -192,12 +192,15 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _idChanged() {
-              setTimeout(() => {
-                this.shadowRoot.querySelector('paper-listbox').selected = -1;
-                this.shadowRoot.querySelector('#languageMenuTemplate').render();
-                this.shadowRoot.querySelector('paper-listbox').forceSynchronousItemUpdate();
-                this.shadowRoot.querySelector('paper-listbox').selected = 0;
-              }, 0);
+              requestAnimationFrame(() => {
+                  const listbox = this.shadowRoot.querySelector('paper-listbox');
+                  if (listbox) {
+                      listbox.selected = -1;
+                      this.shadowRoot.querySelector('#languageMenuTemplate').render();
+                      listbox.forceSynchronousItemUpdate();
+                      listbox.selected = 0;
+                  }
+              });
           }
 
           _siteLanguageChanged() {
@@ -205,17 +208,17 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _computeLanguageMenu(languageChoice, rootLangMappings) {
-            if (languageChoice) {
-              const languageMenu = [];
-              languageChoice.forEach(item => {
-                  if (item.lang in rootLangMappings) {
-                      languageMenu.splice(0, 0, item);
-                  } else {
-                      languageMenu.push(item);
-                  }
-              });
-              return languageMenu;
-            }
+              if (languageChoice) {
+                  const languageMenu = [];
+                  languageChoice.forEach(item => {
+                      if (item.lang in rootLangMappings) {
+                          languageMenu.splice(0, 0, item);
+                      } else {
+                          languageMenu.push(item);
+                      }
+                  });
+                  return languageMenu;
+              }
           }
 
           // does not list items that are from the inputLanguage because those are listed elsewhere.
