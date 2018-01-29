@@ -200,7 +200,10 @@
                   return;
               }
               this.setProperties();
-              this.shadowRoot.querySelector('#sutta_text_options')._closeSuttaplex();
+              const textOptions = this.shadowRoot.querySelector('#sutta_text_options');
+              if (textOptions) {
+                  textOptions._closeSuttaplex();
+              }
               this.dispatch('downloadSuttaText', this.responseData);
           }
 
