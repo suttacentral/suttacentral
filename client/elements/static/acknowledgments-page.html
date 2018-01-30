@@ -145,6 +145,12 @@
         </td>
        </tr>
        <tr>
+        <td inner-text="{{localize('dad4b1fb91bffc73c8eb5726ef5c9372')}}">
+        </td>
+        <td inner-text="{{localize('5c727c0935f40387520b39dfc28f55fa')}}">
+        </td>
+       </tr>
+       <tr>
         <td inner-text="{{localize('9cff374cbec7285174daa3d77f0675b3')}}">
         </td>
         <td inner-text="{{localize('a37ce9e9850a44380479908fe8920f79')}}">
@@ -670,7 +676,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/acknowledgments-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_acknowledgments-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -678,7 +684,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/acknowledgments-page/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_acknowledgments-page/${this.language}.json`), this.language, true);
               }
           }
       }

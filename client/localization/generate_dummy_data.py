@@ -1,11 +1,13 @@
 import json
+import os
 from typing import Iterable
 from pathlib import Path
 
 from faker import Faker
 from tqdm import tqdm
 
-ELEMENTS_DIR = Path('elements')
+CURRENT_FILE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
+ELEMENTS_DIR = CURRENT_FILE_DIR / Path('elements')
 
 LANGUAGES = {'de': 'de_DE', 'fr': 'fr_FR'}  # list of available languages: https://github.com/joke2k/faker
 

@@ -1,0 +1,5 @@
+FROM python:3.6.2
+RUN mkdir -p /opt/sc/po_files
+WORKDIR /opt/sc/po_files
+
+CMD tail -f /dev/null

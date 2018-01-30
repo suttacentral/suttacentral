@@ -17,7 +17,7 @@
       </h1>
       <h2 inner-text="{{localize('c1c1e70d557e9ba9b036ef879a504ce6')}}">
       </h2>
-      <p inner-h-t-m-l="{{localize('35f4da2c4213d5652d7e1059908487d9')}}">
+      <p inner-h-t-m-l="{{localize('df25df1879d6f7fc38051850630ab8fc')}}">
       </p>
       <h2 inner-text="{{localize('62ff57d3bbb642c261331645599a1f56')}}">
       </h2>
@@ -78,7 +78,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/downloads-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_downloads-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -86,7 +86,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/downloads-page/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_downloads-page/${this.language}.json`), this.language, true);
               }
           }
       }

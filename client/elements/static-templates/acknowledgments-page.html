@@ -119,6 +119,10 @@
                 <td>Consultation and liason.</td>
               </tr>
               <tr>
+                <td>Aminah Borg-Luck</td>
+                <td>Text-preparation.</td>
+              </tr>
+              <tr>
                 <td>Andrew Glass</td>
                 <td>Advice regarding font encodings.</td>
               </tr>
@@ -479,7 +483,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/acknowledgments-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_acknowledgments-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -487,7 +491,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/acknowledgments-page/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_acknowledgments-page/${this.language}.json`), this.language, true);
               }
           }
       }
