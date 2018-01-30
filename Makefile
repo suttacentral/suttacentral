@@ -33,16 +33,16 @@ rebuild-elasticsearch: clean-elasticsearch build-elasticsearch
 rebuild-swagger: clean-swagger build-swagger
 
 run-dev:
-	@docker-compose -f docker-compose.yml -f docker-compose-pootle.yml -f docker-compose.dev.yml up
+	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 
 run-dev-no-logs:
-	@docker-compose -f docker-compose.yml -f docker-compose-pootle.yml -f docker-compose.dev.yml up -d
+	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 run-prod:
-	@docker-compose -f docker-compose.yml -f docker-compose-pootle.yml -f docker-compose.prod.yml up
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 
 run-prod-no-logs:
-	@docker-compose -f docker-compose.yml -f docker-compose-pootle.yml -f docker-compose.prod.yml up -d
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 migrate:
 	@docker exec -t sc-flask python server/manage.py migrate
