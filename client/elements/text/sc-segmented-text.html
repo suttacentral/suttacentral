@@ -220,6 +220,10 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  currentId: {
+                      type: String,
+                      value: ''
                   }
               }
           }
@@ -250,6 +254,11 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
+              this.addEventListener('click', () => {
+                  setTimeout(() => {
+                      this._scrollToSection(window.location.hash.substr(1), true, 0);
+                  }, 0);
+              });
           }
 
           _siteLanguageChanged() {
@@ -774,7 +783,7 @@
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
-              if (!sectionId) {
+              if (!sectionId || this.currentId === sectionId) {
                   return;
               }
               this._removeHighlights();
@@ -792,6 +801,7 @@
                       });
                   }
               }, delay);
+              this.currentId = sectionId;
           }
 
           _scrollToSectionInUrl() {

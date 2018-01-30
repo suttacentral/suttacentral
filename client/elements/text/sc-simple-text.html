@@ -205,6 +205,10 @@
                       fallbackLanguage: {
                           type: String,
                           value: 'en'
+                      },
+                      currentId: {
+                          type: String,
+                          value: ''
                       }
                   }
               }
@@ -230,6 +234,11 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
+              this.addEventListener('click', () => {
+                  setTimeout(() => {
+                      this._scrollToSection(window.location.hash.substr(1), true, 0);
+                  }, 0);
+              });
           }
 
           _siteLanguageChanged() {
@@ -242,7 +251,9 @@
               this._updateToolbar();
               this._computeParagraphs();
               // Scroll to the section after the hash sign in the url:
-              this._scrollToSection(window.location.hash.substr(1), false, 500);
+              setTimeout(() => {
+                  this._scrollToSection(window.location.hash.substr(1), false, 500);
+              }, 1000);
           }
 
           _setAttributes() {
@@ -470,7 +481,7 @@
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
-              if (!sectionId) return;
+              if (!sectionId || this.currentId === sectionId) return;
               try {
                   this._removeHighlights();
                   setTimeout(() => {
@@ -483,6 +494,7 @@
                           });
                       }
                   }, delay);
+                  this.currentId = sectionId;
               } catch (e) {
                   console.error(e);
               }
