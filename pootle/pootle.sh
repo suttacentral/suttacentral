@@ -3,9 +3,6 @@ if [ ! -f /root/.pootle/.migrate ]; then
 	sleep 20
 fi
 
-echo "start rqworker"
-/usr/local/bin/pootle rqworker &
-
 sleep 5
 
 if [ ! -f /root/.pootle/.migrate ]; then
@@ -35,5 +32,5 @@ if [ ! -f /root/.pootle/.clonedAssets ]; then
     touch /root/.pootle/.clonedAssets
 fi
 
-echo "start pootle"
-pootle runserver --insecure 0.0.0.0:8000
+pootle revision --restore
+/usr/bin/supervisord -n

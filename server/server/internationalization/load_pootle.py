@@ -26,7 +26,7 @@ class Loader:
         self._reset_counters()
 
         collection = self.db[collection_name]
-        for file in tqdm(list((GENERATED_PO_FILES_DIR / collection_name).glob('*.po'))):
+        for file in tqdm(list((GENERATED_PO_FILES_DIR / f'server_{collection_name}').glob('*.po'))):
             po_data = polib.pofile(str(file))
 
             self._process_entries(po_data, collection, translated_field, file.stem, uid_field)

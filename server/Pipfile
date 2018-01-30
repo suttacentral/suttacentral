@@ -39,3 +39,4 @@ requests = "*"
 
 ptpython = "*"
 ipython = "*"
+slumber = "*"
