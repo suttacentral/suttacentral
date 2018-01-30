@@ -83,7 +83,7 @@ This is the base language menu that determines the language of the site.
     ></iron-ajax>
 
     <paper-dropdown-menu class="language-menu-dropdown" label="{{localize('languageLabel')}}"
-                         title="{{localize('browseTooltip')}}">
+                         title="{{localize('browseTooltip')}}" vertical-align="auto">
       <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNum}}">
         <template is="dom-repeat" items="[[languageListResponse]]" as="language">
           <paper-icon-item class="language-menu-paper-item" id='[[language.uid]]'>

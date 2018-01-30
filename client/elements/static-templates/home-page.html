@@ -647,7 +647,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_home-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _computeUrl(resource) {
@@ -660,7 +660,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/home-page/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_home-page/${this.language}.json`), this.language, true);
               }
           }
       }

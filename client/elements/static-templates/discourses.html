@@ -433,7 +433,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/discourses/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_discourses/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               this.shadowRoot.querySelector('main').addEventListener('click', () => {
                   setTimeout(() => {
                       this._scrollToSection(window.location.hash, true);
@@ -463,7 +463,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/discourses/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_discourses/${this.language}.json`), this.language, true);
               }
           }
       }
