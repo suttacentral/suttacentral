@@ -220,6 +220,10 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  currentId: {
+                      type: String,
+                      value: ''
                   }
               }
           }
@@ -250,6 +254,11 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
+              this.addEventListener('click', () => {
+                  setTimeout(() => {
+                      this._scrollToSection(window.location.hash.substr(1), true, 0);
+                  }, 0);
+              });
           }
 
           _siteLanguageChanged() {
@@ -461,7 +470,8 @@
               const uid = (this.rootSutta || this.translatedSutta).uid;
               const divisionId = /^[a-z]+/.exec(uid)[0];
               this._setParagraphsVisible(this.showParagraphs);
-              const paragraphsAdded = this.$.segmented_text_content.querySelector('.textual-info-paragraph') !== null;
+              const paragraphsAdded = this.$.segmented_text_content
+                  .querySelector('.textual-info-paragraph:not(.textual-info-paragraph-inline)') !== null;
               if (paragraphsAdded) return;
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
@@ -560,6 +570,9 @@
 
           _addInlineParagraph(item, divisionId) {
               const segmentSibling = this._getClosestSegmentSibling(item);
+              if (!segmentSibling) {
+                  return;
+              }
               const inlineItem = item.cloneNode(true);
               if (item.id.startsWith('pts')) {
                   this._processVolPageInfo(inlineItem, divisionId);
@@ -774,7 +787,7 @@
 
           // Scrolls to the chosen section
           _scrollToSection(sectionId, isSmooth, delay) {
-              if (!sectionId) {
+              if (!sectionId || this.currentId === sectionId) {
                   return;
               }
               this._removeHighlights();
@@ -792,6 +805,7 @@
                       });
                   }
               }, delay);
+              this.currentId = sectionId;
           }
 
           _scrollToSectionInUrl() {

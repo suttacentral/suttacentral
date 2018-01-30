@@ -19,7 +19,7 @@
 
             <h2>Raw Data and Texts</h2>
             <p>All the raw SuttaCentral data (<code>json</code>, <code>html</code>, etc.) is
-              <a href="https://github.com/suttacentral/">available on
+              <a href="https://github.com/suttacentral/" target="_blank">available on
                 our GitHub repository</a>. </p>
 
 
@@ -109,7 +109,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/downloads-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_downloads-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -117,7 +117,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/downloads-page/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_downloads-page/${this.language}.json`), this.language, true);
               }
           }
       }

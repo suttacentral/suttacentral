@@ -1,6 +1,6 @@
 {
   "name": "app-localize-behavior",
-  "version": "2.0.0-fallbackLanguage",
+  "version": "2.0.0-fallbackLanguage-v4",
   "description": "A behavior to help with internationalizating apps",
   "authors": [
     "The Polymer Authors"
@@ -59,14 +59,13 @@
   "resolutions": {
     "webcomponentsjs": "^1.0.0"
   },
-  "_release": "2.0.0-fallbackLanguage",
+  "_release": "2.0.0-fallbackLanguage-v4",
   "_resolution": {
     "type": "version",
-    "tag": "2.0.0-fallbackLanguage",
-    "commit": "6e31b24b777d40f970a04542065584c962b8bc04"
+    "tag": "2.0.0-fallbackLanguage-v4",
+    "commit": "123eb5d4f72ba854fcd3a91641e30d71d12f0d36"
   },
   "_source": "git://github.com/suttacentral/app-localize-behavior.git",
-  "_target": "2.0.0-fallbackLanguage",
-  "_originalSource": "git://github.com/suttacentral/app-localize-behavior.git",
-  "_direct": true
+  "_target": "2.0.0-fallbackLanguage-v4",
+  "_originalSource": "git://github.com/suttacentral/app-localize-behavior.git"
 }

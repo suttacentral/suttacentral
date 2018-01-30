@@ -2,6 +2,7 @@ FROM webdevops/bootstrap:ubuntu-16.04
 
 RUN chmod -R 2777 /tmp
 # Install apt packages
+RUN apt-get update
 RUN /usr/local/bin/apt-install build-essential \
   swig \
   git \
@@ -24,7 +25,8 @@ RUN /usr/local/bin/apt-install build-essential \
   curl \
   sudo \
   python-setuptools \
-  nano
+  vim \
+  supervisor
 
 # Install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -

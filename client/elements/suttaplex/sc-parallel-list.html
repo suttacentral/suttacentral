@@ -42,6 +42,12 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
         width: 100%;
       }
 
+      @media screen and (max-width: 600px) {
+        .parallels-parallel-cell {
+          max-width: 200px;
+        }
+      }
+
       .parallels-root-cell {
         text-align: center;
       }
@@ -329,7 +335,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           }
 
           _computeUrl(rootId) {
-              return `/${this.itemUid}/${this.rootLang}/${this.rootText.author}${this._getParagraphRange(rootId)}`
+              return `/${this.itemUid}/${this.rootLang}/${this.rootText.author_uid}${this._getParagraphRange(rootId)}`
           }
 
           _getParagraphRange(rootId) {

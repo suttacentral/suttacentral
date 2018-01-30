@@ -29,14 +29,14 @@
      </p>
      <h2 inner-text="{{localize('f15c1cae7882448b3fb0404682e17e61')}}">
      </h2>
-     <p inner-h-t-m-l="{{localize('112c18ab13ab85aae7d52c032fd49fea')}}">
+     <p inner-h-t-m-l="{{localize('16c545e8caf85a2a3132eb6a81a72be3')}}">
      </p>
      <ul>
-      <li inner-h-t-m-l="{{localize('53cff04c72f60d7fcab44451d14c9e3a')}}">
+      <li inner-h-t-m-l="{{localize('39fae9d4c4048895ae95f51d80695131')}}">
       </li>
-      <li inner-h-t-m-l="{{localize('ed72058618a112e27d10f0d18bfdf892')}}">
+      <li inner-h-t-m-l="{{localize('9da794ac3c06b50ec3eff803fc80660f')}}">
       </li>
-      <li inner-h-t-m-l="{{localize('022b0f2c37cdb913758c17adaf316e67')}}">
+      <li inner-h-t-m-l="{{localize('8554654205a0d63220670531cffe0d2f')}}">
       </li>
      </ul>
      <p inner-text="{{localize('43a73e28df345d8a7a9c1adcb8310c39')}}">
@@ -70,9 +70,9 @@
      </ul>
      <h2 inner-text="{{localize('e109705703e0324d1a5de1d84a3a8951')}}">
      </h2>
-     <p inner-h-t-m-l="{{localize('1e9847da71c4791e590841d36023c28c')}}">
+     <p inner-h-t-m-l="{{localize('d93d08199095db78eeda39c04c3bd284')}}">
      </p>
-     <p inner-h-t-m-l="{{localize('1d673754fe71e483a233c2614f52f840')}}">
+     <p inner-h-t-m-l="{{localize('be6160c8e166154d0239ea1b6c6de837')}}">
      </p>
      <p inner-text="{{localize('2f8486687fac43e883d0b1d169e4c520')}}">
      </p>
@@ -168,7 +168,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/preamble/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_preamble/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -176,7 +176,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/preamble/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_preamble/${this.language}.json`), this.language, true);
               }
           }
       }
