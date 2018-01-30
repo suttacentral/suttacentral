@@ -227,130 +227,130 @@
 
       .not-found-error {
         @apply --sc-sans-font;
-        @apply --paper-font-title;
         text-align: center;
         color: var(--sc-secondary-text-color);
       }
 
     </style>
 
-    <paper-card class="suttaplex" id="[[item.uid]]" elevation="1">
-      <div class="card-content">
+    <template is="dom-if" if="[[item.uid]]">
+      <paper-card class="suttaplex" id="[[item.uid]]" elevation="1">
 
-        <div class="suttaplex-head-container">
-          <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item, localize)]]">
-            [[_computeMainHeading(item)]]</h3>
-          <iron-icon id="difficulty_icon" class="primary-accent-icon"
-                     icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
-          <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds class="sc-tooltip">
-            {{localize(difficulty)}}
-          </paper-tooltip>
-        </div>
+        <div class="card-content">
 
-        <div class="suttaplex-nerdy-row">
+          <div class="suttaplex-head-container">
+            <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item, localize)]]">
+              [[_computeMainHeading(item)]]</h3>
+            <iron-icon id="difficulty_icon" class="primary-accent-icon"
+                       icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
+            <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds class="sc-tooltip">
+              {{localize(difficulty)}}
+            </paper-tooltip>
+          </div>
+
+          <div class="suttaplex-nerdy-row">
           <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
             [[item.original_title]]
           </span>
-          <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
+            <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
             [[_getAcronymOrUid(item, expansionData)]]
           </span>
-          <template is="dom-if" if="[[item.volpages]]">
-            <template is="dom-if" if=[[!item.biblio]]>
+            <template is="dom-if" if="[[item.volpages]]">
+              <template is="dom-if" if=[[!item.biblio]]>
               <span class="book no-margin">
                 <iron-icon class="grey-icon" icon="book"></iron-icon>
               </span>
-              <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
                 [[_computeVolPage(item.volpages)]]
               </span>
-            </template>
-            <template is="dom-if" if=[[item.biblio]]>
-              <div>
-                <details class="suttaplex-details display-inline">
-                  <summary class="volpage-biblio-info-summary">
+              </template>
+              <template is="dom-if" if=[[item.biblio]]>
+                <div>
+                  <details class="suttaplex-details display-inline">
+                    <summary class="volpage-biblio-info-summary">
                     <span class="book no-margin">
                       <iron-icon class="grey-icon" icon="book"></iron-icon>
                     </span>
-                    <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                      <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
                       [[_computeVolPage(item.volpages)]]
                     </span>
-                  </summary>
-                  <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
-                </details>
-              </div>
+                    </summary>
+                    <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
+                  </details>
+                </div>
+              </template>
             </template>
-          </template>
-        </div>
+          </div>
 
-        <template is="dom-if" if="[[item.uid]]">
           <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="{{localize('blurb')}}"
              inner-h-t-m-l="[[item.blurb]]">
           </p>
-        </template>
 
-        <template is="dom-if" if="[[!item.uid]]">
-          <p class="not-found-error">{{localize('itemNotFound')}}</p>
-        </template>
-
-      </div>
-
-      <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
-        <div class="card-actions-left">
-          <template is="dom-repeat" items="[[item.translations]]" as="translation">
-            <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
-              <paper-button class="author-button" flat
-                            title$="{{localize('goToTranslation', 'author', translation.author)}}">
-                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
-                  [[translation.author_short]]
-                </a>
-              </paper-button>
-            </template>
-          </template>
         </div>
 
-        <div class="flex-div">
-          <div class="languagedrop">
-            <sc-language-menu language-choice="[[item.translations]]"
-                              input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
-                              root-id="[[item.uid]]" class="no-left-padding"></sc-language-menu>
-          </div>
-
-          <div class="right-elements">
-            <paper-menu-button id="copy_menu" class="share-menu-button" horizontal-align="right" role="group"
-                               aria-haspopup="true" aria-disabled="false" vertical-align="auto">
-              <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
-                                 role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
-              <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0"
-                             role="listbox">
-                <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
-              </paper-listbox>
-            </paper-menu-button>
-
-            <template is="dom-if" if="[[item.parallel_count]]">
-              <div class="parallels-toggle-div">
-                <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]"
-                                   on-tap="_toggleParallelsOpened">
-                </paper-icon-button>
-                <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
-              </div>
-              <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1" fit-to-visible-bounds
-                             position="right">
-                {{localize('hasParallels', 'num', item.parallel_count)}}
-              </paper-tooltip>
+        <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
+          <div class="card-actions-left">
+            <template is="dom-repeat" items="[[item.translations]]" as="translation">
+              <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
+                <paper-button class="author-button" flat
+                              title$="{{localize('goToTranslation', 'author', translation.author)}}">
+                  <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
+                    [[translation.author_short]]
+                  </a>
+                </paper-button>
+              </template>
             </template>
           </div>
+
+          <div class="flex-div">
+            <div class="languagedrop">
+              <sc-language-menu language-choice="[[item.translations]]"
+                                input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
+                                root-id="[[item.uid]]" class="no-left-padding"></sc-language-menu>
+            </div>
+
+            <div class="right-elements">
+              <paper-menu-button id="copy_menu" class="share-menu-button" horizontal-align="right" role="group"
+                                 aria-haspopup="true" aria-disabled="false" vertical-align="auto">
+                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share"
+                                   role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
+                <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0"
+                               role="listbox">
+                  <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
+                </paper-listbox>
+              </paper-menu-button>
+
+              <template is="dom-if" if="[[item.parallel_count]]">
+                <div class="parallels-toggle-div">
+                  <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]"
+                                     on-tap="_toggleParallelsOpened">
+                  </paper-icon-button>
+                  <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
+                </div>
+                <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1" fit-to-visible-bounds
+                               position="right">
+                  {{localize('hasParallels', 'num', item.parallel_count)}}
+                </paper-tooltip>
+              </template>
+            </div>
+          </div>
+
         </div>
 
-      </div>
+        <template is="dom-if" if="[[parallelsOpened]]">
+          <iron-collapse id="collapse" opened="[[parallelsOpened]]">
+            <sc-parallel-list root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"
+                              root-text="[[_getRootText(item.*)]]" expansion-data="[[expansionData]]">
+            </sc-parallel-list>
+          </iron-collapse>
+        </template>
 
-      <template is="dom-if" if="[[parallelsOpened]]">
-        <iron-collapse id="collapse" opened="[[parallelsOpened]]">
-          <sc-parallel-list root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"
-                            root-text="[[_getRootText(item.*)]]" expansion-data="[[expansionData]]">
-          </sc-parallel-list>
-        </iron-collapse>
-      </template>
+      </paper-card>
+    </template>
 
-    </paper-card>
+    <template is="dom-if" if="[[!item.uid]]">
+      <h2 class="not-found-error">{{localize('itemNotFound')}}</h2>
+    </template>
 
   </template>
 
@@ -578,9 +578,9 @@
           _getVolPageTitle(volPage, localize) {
               const volPages = volPage.split('//');
               if (volPages[1] && (volPages[0] !== volPages[1])) {
-                return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
+                  return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
               } else {
-                return localize('volumeAndPage');
+                  return localize('volumeAndPage');
               }
           }
       }

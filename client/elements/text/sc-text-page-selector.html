@@ -42,6 +42,12 @@
       .margin-top-xl {
         margin-top: var(--sc-size-xl);
       }
+
+      .text-error {
+        @apply --sc-sans-font;
+        text-align: center;
+        color: var(--sc-secondary-text-color);
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -79,7 +85,7 @@
       </template>
 
       <template is="dom-if" if="[[_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
-        <div class="text-center margin-top-xl">
+        <div class="text-center margin-top-xl text-error">
           <h2>Error 404</h2>
           <h3>Could not find the sutta text.</h3>
         </div>
@@ -256,7 +262,7 @@
           }
 
           _shouldDisplayError(rootSutta, translatedSutta, networkError) {
-              return !(rootSutta && translatedSutta) || networkError;
+              return !(rootSutta || translatedSutta) || networkError;
           }
       }
 

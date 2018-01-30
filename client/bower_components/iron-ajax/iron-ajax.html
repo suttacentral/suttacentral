@@ -236,6 +236,15 @@ element.
       },
 
       /**
+       * The `progress` property of this element's `lastRequest`.
+       */
+      lastProgress: {
+        type: Object,
+        notify: true,
+        readOnly: true
+      },
+
+      /**
        * True while lastRequest is in flight.
        */
       loading: {
@@ -325,8 +334,10 @@ element.
       },
 
       /**
-       * Changes the completes promise chain from generateRequest to reject with an object
-       *  containing the error message as well as the request.
+       * Changes the [`completes`](iron-request#property-completes) promise chain 
+       * from `generateRequest` to reject with an object
+       * containing the original request, as well an error message.
+       * If false (default), the promise rejects with an error message only.
        */
       rejectWithRequest: {
         type: Boolean,
@@ -345,6 +356,10 @@ element.
       '_requestOptionsChanged(url, method, params.*, headers, contentType, ' +
           'body, sync, handleAs, jsonPrefix, withCredentials, timeout, auto)'
     ],
+
+    created: function() {
+      this._boundOnProgressChanged = this._onProgressChanged.bind(this);
+    },
 
     /**
      * The query string that should be appended to the `url`, serialized from
@@ -420,6 +435,10 @@ element.
       return headers;
     },
 
+    _onProgressChanged: function(event) {
+      this._setLastProgress(event.detail.value);
+    },
+
     /**
      * Request options suitable for generating an `iron-request` instance based
      * on the current state of the `iron-ajax` instance's properties.
@@ -479,8 +498,16 @@ element.
         return request;
       }
 
-      request.send(requestOptions);
+      if (this.lastRequest) {
+        this.lastRequest.removeEventListener('iron-request-progress-changed',
+                this._boundOnProgressChanged);
+      }
 
+      request.addEventListener('iron-request-progress-changed',
+          this._boundOnProgressChanged);
+
+      request.send(requestOptions);
+      this._setLastProgress(null);
       this._setLastRequest(request);
       this._setLoading(true);
 
