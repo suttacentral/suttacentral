@@ -77,6 +77,7 @@ services:
       - pootle-mysql-socket:/var/run/mysqld
       - pootle-assets:/usr/local/lib/python2.7/dist-packages/pootle
       - ./pootle/supervisord_conf:/etc/supervisor/conf.d/
+      - ./pootle:/home/pootle
     environment:
       - SECRET_KEY=SET THIS TO A DJANGO SECRET KEY
     env_file:

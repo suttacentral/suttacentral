@@ -196,11 +196,12 @@ generate-server-po-files:
 load-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files"
 
-to-pootle:
+load-to-pootle:
 	@make generate-server-po-files
-	@docker exec -t sc-pootle-pipeline pipenv run python to_pootle.py
-	@docker exec -t sc-pootle bash -c "pootle update_stores"
+	@docker exec -t sc-pootle-pipeline python to_pootle.py
+	@docker exec -t sc-pootle bash -c "python3 create_and_update_projects.py"
 
-from_pootle:
+load-from-pootle:
+	@docker exec -t sc-pootle bash -c "python3 update_po_files.py"
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files -p /srv/pootle/po"
-	@docker exec -t sc-pootle-pipeline pipenv run python from_pootle.py
+	@docker exec -t sc-pootle-pipeline python from_pootle.py

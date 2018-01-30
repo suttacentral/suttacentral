@@ -40,7 +40,7 @@ def process_blurbs(db):
 
     (GENERATED_PO_FILES_DIR / 'server_blurbs').mkdir(parents=True, exist_ok=True)
     po.save(str(GENERATED_PO_FILES_DIR / 'server_blurbs' / 'en.po'))
-    # pot.save(str(GENERATED_PO_FILES_DIR / 'server_blurbs' / 'templates.po'))
+    pot.save(str(GENERATED_PO_FILES_DIR / 'server_blurbs' / 'templates.pot'))
 
     print('✓ FINISHED PROCESSING BLURBS')
 
@@ -118,7 +118,7 @@ def process_currencies(db):
 
     (GENERATED_PO_FILES_DIR / 'server_currency_names').mkdir(parents=True, exist_ok=True)
     po.save(str(GENERATED_PO_FILES_DIR / 'server_currency_names' / 'en.po'))
-    # pot.save(str(GENERATED_PO_FILES_DIR / 'server_currency_names' / 'templates.pot'))
+    pot.save(str(GENERATED_PO_FILES_DIR / 'server_currency_names' / 'templates.pot'))
 
     print('✓ FINISHED PROCESSING CURRENCIES')
 
@@ -141,7 +141,7 @@ def run():
     Path(GENERATED_PO_FILES_DIR).mkdir(parents=True, exist_ok=True)
 
     process_blurbs(db)
-    # process_menu(db)
+    process_menu(db)
     process_currencies(db)
 
     change_po_file_permissions()

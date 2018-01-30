@@ -34,7 +34,7 @@ python localizer.py to_pootle''')
 
 
 if __name__ == '__main__':
-    if 3 < len(sys.argv) < 1:
+    if len(sys.argv) < 1 or len(sys.argv) > 3:
         print_help()
         exit(0)
 
