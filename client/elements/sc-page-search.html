@@ -385,7 +385,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // Formats the search result description snippet
           _calculateSnippetContent(description) {
-              return description.toString().split(';').join('...').split('\n').join('<br>');
+              return description.toString().split(',').join(' ... ');
           }
 
           // Calls the input results when page is loaded
