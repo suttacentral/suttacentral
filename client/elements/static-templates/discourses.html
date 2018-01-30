@@ -423,13 +423,39 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  currentId: {
+                      type: String,
+                      value: ''
                   }
               }
           }
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_discourses/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static/discourses/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.shadowRoot.querySelector('main').addEventListener('click', () => {
+                  setTimeout(() => {
+                      this._scrollToSection(window.location.hash, true);
+                  }, 0);
+              });
+              setTimeout(() => {
+                  this._scrollToSection(window.location.hash, false);
+              }, 1000);
+          }
+
+          // Scrolls to the chosen section
+          _scrollToSection(sectionId, isSmooth) {
+              if (!sectionId || this.currentId === sectionId) return;
+              const firstSection = this.shadowRoot.querySelector(sectionId);
+              if (firstSection) {
+                  firstSection.scrollIntoView({
+                      behavior: isSmooth ? 'smooth' : 'instant',
+                      block: 'start',
+                      inline: 'nearest'
+                  });
+              }
+              this.currentId = sectionId;
           }
 
           _siteLanguageChanged() {
@@ -437,7 +463,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_discourses/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static/discourses/${this.language}.json`), this.language, true);
               }
           }
       }

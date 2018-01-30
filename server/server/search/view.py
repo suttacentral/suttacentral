@@ -106,9 +106,12 @@ class Search(Resource):
         try:
             results = query_search.search(query, limit=limit, offset=offset, language=language)
 
-            # Insert dummy urls (to be changed when discussed with client)
             for entry in results['hits']['hits']:
-                entry['url'] = '/dn1/sujato'
+                source = entry['_source']
+                uid = source['uid']
+                lang = source['lang']
+                author = source['author']
+                entry['url'] = f'/{uid}/{lang}/{author}'
 
             return results
         except ConnectionError:
