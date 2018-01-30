@@ -71,6 +71,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         margin-right: var(--sc-size-md);
       }
 
+      #to-home-button {
+        z-index: 1;
+      }
+
       #header {
         transition: all 200ms !important;
       }
@@ -99,6 +103,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         background-color: var(--sc-primary-color);
       }
 
+      .logo-hidden {
+        display: none;
+      }
+
     </style>
 
     <app-location route={{route}}></app-location>
@@ -112,6 +120,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
         <app-header id="header" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
+            <a href="/" class$="[[_showHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
+                <paper-icon-button icon="sc-svg-icons:sc-logo" id="to-home-button"
+                               title="{{localize('goHome')}}"></paper-icon-button>
+            </a>
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"
                                title="{{localize('menu')}}"></paper-icon-button>
 
@@ -465,6 +477,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   composed: true,
                   bubbles: true
               }));
+          }
+
+          _showHideHomeButton(isDrawerOpen, shouldShowStaticPage) {
+            return (isDrawerOpen || shouldShowStaticPage) ? 'logo-hidden' : '';
           }
 
           _drawerOpenStateChanged() {
