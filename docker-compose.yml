@@ -145,7 +145,7 @@ services:
       - "API_URL=http://127.0.0.1/api/swagger.json"
 
   sc-frontend-tester:
-    image: trebuhd/wct-headless:latest
+    image: trebuhd/wct-headless-auto:latest
     container_name: 'sc-frontend-tester'
     labels:
       application: 'sc-frontend-tester'
@@ -155,7 +155,10 @@ services:
     container_name: 'sc-frontend-builder'
     labels:
       application: 'sc-frontend-builder'
-
+    command: bash builder.sh
+    working_dir: /opt/sc/frontend
+    volumes:
+      - ./client/:/opt/sc/frontend
 
 volumes:
   db-data-volume:

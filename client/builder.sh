@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-echo "BUILDING"
-npm install
+set -e
+echo "BUILDING FRONTEND FOR PRODUCTION"
 npm install -g polymer-cli --unsafe-perm
-polymer build --preset es6-bundled
+npm install
+polymer build --verbose
+echo "\033[1;32mFRONTEND BUILT SUCCESSFULLY!"
+touch /tmp/.builder_done.info

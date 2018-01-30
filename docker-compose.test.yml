@@ -2,17 +2,14 @@ version: '2'
 
 services:
 
+  # Containers actually needed for testing:
+
   sc-flask:
     volumes:
       - ./server/:/opt/sc/sc-flask
     env_file:
       - server/env/.test.env
     command: bash docker/entrypoint.test.sh
-
-  sc-nginx:
-    volumes:
-      - ./client/:/opt/sc/static
-    command: bash entry-point.test.sh
 
   sc-arangodb:
     env_file:
@@ -23,9 +20,17 @@ services:
     working_dir: /opt/sc/frontend
     volumes:
       - ./client/:/opt/sc/frontend
+    depends_on:
+      - sc-frontend-builder
 
-  sc-frontend-builder:
-    command: bash builder.sh
-    working_dir: /opt/sc/frontend
+  # Dummy containers to override unneeded ones from the main docker-compose.yml file and speed up the build:
+
+  sc-nginx:
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile-nginx-dummy
     volumes:
-      - ./client/:/opt/sc/frontend
+      - ./client/:/opt/sc/static
+
+  sc-swagger:
+    image: hello-world

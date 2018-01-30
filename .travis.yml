@@ -15,6 +15,7 @@ env:
   - DOCKER_COMPOSE_VERSION=1.15.0
 
 before_install:
+
   # update is required to update the repositories to see the new packages for
   # Docker.
   - sudo apt-get update
@@ -36,7 +37,7 @@ before_install:
   # whatever reason it's best to report that now before your tests start
   # otherwise it can be really tricky to debug why tests are failing sometimes.
   - docker-compose logs
-  - docker ps
+  - docker-compose ps
 
 script:
   # Run our tests
