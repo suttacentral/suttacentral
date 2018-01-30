@@ -192,7 +192,7 @@
           ready() {
               super.ready();
               this.addEventListener('show-image', e => {
-                  this.$.sc_image.showImage(e.detail);
+                  this.$.sc_text_image.showImage(e.detail);
               });
               this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
