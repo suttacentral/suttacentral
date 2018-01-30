@@ -48,6 +48,7 @@ CONTS-NGINX=$(shell docker ps -a -q -f "name=sc-nginx")
 CONTS-ELASTICSEARCH=$(shell docker ps -a -q -f "name=sc-elasticsearch")
 CONTS-SWAGGER=$(shell docker ps -a -q -f "name=sc-swagger")
 CONTS-FRONTEND_TESTER=$(shell docker ps -a -q -f "name=sc-frontend-tester")
+CONTS-POOTLE=$(shell docker ps -a -q -f "name=sc-pootle")
 
 #stop docker containers
 stop-arangodb:
@@ -78,6 +79,8 @@ rm-swagger:
 	-@docker rm $(CONTS-SWAGGER)
 rm-frontend-tester:
 	-@docker rm $(CONTS-FRONTEND_TESTER)
+rm-pootle:
+	-@docker rm $(CONTS-POOTLE)
 rm: rm-arangodb rm-flask rm-nginx rm-elasticsearch rm-frontend-tester
 
 # Remove volumes
@@ -192,3 +195,13 @@ generate-server-po-files:
 
 load-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files"
+
+load-to-pootle:
+	@make generate-server-po-files
+	@docker exec -t sc-pootle-pipeline python to_pootle.py
+	@docker exec -t sc-pootle bash -c "python3 create_and_update_projects.py"
+
+load-from-pootle:
+	@docker exec -t sc-pootle bash -c "python3 update_po_files.py"
+	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files -p /srv/pootle/po"
+	@docker exec -t sc-pootle-pipeline python from_pootle.py

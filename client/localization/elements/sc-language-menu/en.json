@@ -1,9 +1,9 @@
 {
-  "en": {
-    "more": "More",
-    "selectLanguage": "Select a language",
-    "anonym": "Anonym",
-    "selectTranslation": "Select {lang} translation by {author}.",
-    "selectOriginal": "Select {lang} text of {author}."
-  }
+    "en": {
+        "more": "More",
+        "selectLanguage": "Select a language",
+        "anonym": "Anonym",
+        "selectTranslation": "Select {lang} translation by {author}.",
+        "selectOriginal": "Select {lang} text of {author}."
+    }
 }

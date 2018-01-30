@@ -3616,24 +3616,24 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static/subjects/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_subjects/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               this.shadowRoot.querySelector('main').addEventListener('click', () => {
                   setTimeout(() => {
-                      this._scrollToSection(window.location.hash, true);
+                      this._scrollToSection(window.location.hash);
                   }, 0);
               });
               setTimeout(() => {
-                  this._scrollToSection(window.location.hash, false);
+                  this._scrollToSection(window.location.hash);
               }, 1000);
           }
 
           // Scrolls to the chosen section
-          _scrollToSection(sectionId, isSmooth) {
+          _scrollToSection(sectionId) {
               if (!sectionId || this.currentId === sectionId) return;
               const firstSection = this.shadowRoot.querySelector(sectionId);
               if (firstSection) {
                   firstSection.scrollIntoView({
-                      behavior: isSmooth ? 'smooth' : 'instant',
+                      behavior: 'instant',
                       block: 'start',
                       inline: 'nearest'
                   });
@@ -3646,7 +3646,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static/subjects/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_subjects/${this.language}.json`), this.language, true);
               }
           }
       }

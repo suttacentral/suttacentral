@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from flask_script import Manager
 
 from app import app
@@ -43,6 +45,7 @@ def load_data(no_pull=False):
     from data_loader.arangoload import run
     run(no_pull=no_pull)
 
+
 @manager.command
 def delete_db():
     arangodb.delete_db(arangodb.get_db())
@@ -60,9 +63,11 @@ def generate_po_files():
     generate_pootle.run()
 
 
-@manager.command
-def load_po_files():
+@manager.option('-p', '--path', default=None)
+def load_po_files(path):
     from internationalization import load_pootle
+    if path:
+        load_pootle.GENERATED_PO_FILES_DIR = Path(path)
     load_pootle.run()
 
 

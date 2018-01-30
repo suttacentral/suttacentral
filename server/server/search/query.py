@@ -186,7 +186,7 @@ def search(query: str, highlight=True, offset=0, limit=10, language='en',
     body = {
         "from": offset,
         "size": limit,
-        "_source": ["uid", "lang", "name", "volpage", "gloss", "term", "heading", "is_root"],
+        "_source": ["uid", "lang", "name", "volpage", "gloss", "term", "heading", "is_root", "author"],
         "timeout": "15s",
         "query": {
             "function_score": {
