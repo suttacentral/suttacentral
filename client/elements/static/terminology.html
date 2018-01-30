@@ -975,7 +975,7 @@
       <aside class="static-copyright">
        <p inner-text="{{localize('468f479bb1c8e962f33de687d0daafbc')}}">
        </p>
-       <blockquote inner-h-t-m-l="{{localize('3045541f6311447a0e50eb4b912faa6a')}}">
+       <blockquote inner-h-t-m-l="{{localize('213f12010c0a39960ccd7a938e4a3e70')}}">
        </blockquote>
        <p inner-text="{{localize('e632e357ed59f513b589ae5baa3afb0e')}}">
        </p>
@@ -1001,6 +1001,10 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  currentId: {
+                      type: String,
+                      value: ''
                   }
               }
           }
@@ -1008,6 +1012,28 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/static/terminology/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.shadowRoot.querySelector('main').addEventListener('click', () => {
+                  setTimeout(() => {
+                      this._scrollToSection(window.location.hash, true);
+                  }, 0);
+              });
+              setTimeout(() => {
+                  this._scrollToSection(window.location.hash, false);
+              }, 1000);
+          }
+
+          // Scrolls to the chosen section
+          _scrollToSection(sectionId, isSmooth) {
+              if (!sectionId || this.currentId === sectionId) return;
+              const firstSection = this.shadowRoot.querySelector(sectionId);
+              if (firstSection) {
+                  firstSection.scrollIntoView({
+                      behavior: isSmooth ? 'smooth' : 'instant',
+                      block: 'start',
+                      inline: 'nearest'
+                  });
+              }
+              this.currentId = sectionId;
           }
 
           _siteLanguageChanged() {
