@@ -522,7 +522,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               if (this. paliSelectedItemChanged) {
                   this._showLookupToast(targetDictRepr, 'pli');
                   this.paliSelectedItemChanged = false;
-              };
+              }
               this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
           }
 
@@ -541,7 +541,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               if (this.chineseSelectedItemChanged) {
                   this._showLookupToast(targetDictRepr, 'lzh');
                   this.chineseSelectedItemChanged = false;
-              };
+              }
               this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
           }
 
@@ -564,7 +564,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                           case 'popup':
                               textViewMessage = this.localize('popUp');
                               break;
-                      };
+                      }
                       this._showToast(this.localize('textViewEnabled', 'textView', textViewMessage));
                   } else {
                       this._showToast(this.localize('textViewDisabled'));
@@ -587,7 +587,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                   const scriptChangeMessage = this.localize('scriptChanged', 'paliScript', scriptName);
                   this._showToast(scriptChangeMessage);
                   this.paliScriptItemChanged = false;
-              };
+              }
               const script = this.paliScripts.find(i => i.language === language).script;
               this.showLoadingSpinner = true;
               setTimeout(() => {

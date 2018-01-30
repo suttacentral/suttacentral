@@ -470,7 +470,8 @@
               const uid = (this.rootSutta || this.translatedSutta).uid;
               const divisionId = /^[a-z]+/.exec(uid)[0];
               this._setParagraphsVisible(this.showParagraphs);
-              const paragraphsAdded = this.$.segmented_text_content.querySelector('.textual-info-paragraph') !== null;
+              const paragraphsAdded = this.$.segmented_text_content
+                  .querySelector('.textual-info-paragraph:not(.textual-info-paragraph-inline)') !== null;
               if (paragraphsAdded) return;
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
@@ -569,6 +570,9 @@
 
           _addInlineParagraph(item, divisionId) {
               const segmentSibling = this._getClosestSegmentSibling(item);
+              if (!segmentSibling) {
+                  return;
+              }
               const inlineItem = item.cloneNode(true);
               if (item.id.startsWith('pts')) {
                   this._processVolPageInfo(inlineItem, divisionId);
