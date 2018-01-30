@@ -38,6 +38,12 @@ run-dev:
 run-dev-no-logs:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
+run-prod:
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+
+run-prod-no-logs:
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
 migrate:
 	@docker exec -t sc-flask python server/manage.py migrate
 
