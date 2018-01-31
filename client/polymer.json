@@ -4,12 +4,15 @@
       "polymer-2"
     ]
   },
+  "entrypoint": "index.html",
   "extraDependencies": [
     "./localization/**/*.json",
     "./styles/**/*.json",
     "./img/**/*",
     "./files/**/*",
-    "./manifest.json"
+    "./node_modules/workbox-sw/build/importScripts/*",
+    "./manifest.json",
+    "./service-worker.js"
   ],
   "builds": [
     {
