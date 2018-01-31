@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
 
 <!--
   Static page scrolling
@@ -10,18 +11,46 @@
   <script>
       class SCStaticPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
 
+          static get properties() {
+              return {
+                  // language: {
+                  //     type: String,
+                  //     statePath: 'siteLanguage',
+                  //     observer: '_siteLanguageChanged'
+                  // },
+                  // fallbackLanguage: {
+                  //     type: String,
+                  //     value: 'en'
+                  // },
+                  currentId: {
+                      type: String,
+                      value: ''
+                  }
+              }
+          }
+
+
           connectedCallback() {
             super.connectedCallback();
           }
 
           ready() {
               super.ready();
+              this.shadowRoot.querySelector('main').addEventListener('click', () => {
+                  setTimeout(() => {
+                      this.currentId = this._scrollToSection(window.location.hash, this.currentId);
+                  }, 0);
+              });
+              setTimeout(() => {
+                      this.currentId = this._scrollToSection(window.location.hash, this.currentId);
+              }, 1000);
           }
 
-          _scrollToSection(sectionId, currentId, firstSection) {
+          _scrollToSection(sectionId, currentId) {
               if (!sectionId || currentId === sectionId) {
                 return currentId;
               }
+              const firstSection = this.shadowRoot.querySelector(sectionId);
               if (firstSection) {
                   firstSection.scrollIntoView({
                       behavior: 'instant',
@@ -31,6 +60,15 @@
               }
               return sectionId;
           }
+
+          // _siteLanguageChanged(pageUrl) {
+          //     if (this.language !== this.fallbackLanguage) {
+          //         if (this.resources && this.resources[this.language]) {
+          //             return;
+          //         }
+          //         this.loadResources(this.resolveUrl(`/localization/elements/static_${pageUrl}/${this.language}.json`), this.language, true);
+          //     }
+          // }
       }
 
       customElements.define('sc-static-page', SCStaticPage);
