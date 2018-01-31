@@ -5,10 +5,11 @@
     ]
   },
   "extraDependencies": [
-    "localization/**/*.json",
-    "styles/**/*.json",
-    "img/**/*",
-    "files/**/*"
+    "./localization/**/*.json",
+    "./styles/**/*.json",
+    "./img/**/*",
+    "./files/**/*",
+    "./manifest.json"
   ],
   "builds": [
     {
