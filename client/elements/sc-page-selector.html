@@ -71,7 +71,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         margin-right: var(--sc-size-md);
       }
 
-      #to-home-button {
+      #to_home_button {
         z-index: 1;
       }
 
@@ -103,7 +103,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         background-color: var(--sc-primary-color);
       }
 
-      .logo-hidden {
+      .hidebutton {
         display: none;
       }
 
@@ -120,8 +120,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
         <app-header id="header" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
-            <a href="/" class$="[[_showHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
-                <paper-icon-button icon="sc-svg-icons:sc-logo" id="to-home-button"
+            <a href="/" class$="[[_shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
+                <paper-icon-button icon="sc-svg-icons:sc-logo" id="to_home_button"
                                title="{{localize('goHome')}}"></paper-icon-button>
             </a>
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"
@@ -479,8 +479,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               }));
           }
 
-          _showHideHomeButton(isDrawerOpen, shouldShowStaticPage) {
-            return (isDrawerOpen || shouldShowStaticPage) ? 'logo-hidden' : '';
+          _shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage) {
+            return (isDrawerOpen || shouldShowStaticPage) ? 'hidebutton' : '';
           }
 
           _drawerOpenStateChanged() {
