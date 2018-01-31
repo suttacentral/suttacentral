@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../addons/sc-static-page.html" rel="import"/>
 
 <dom-module id="sc-discourses">
   <template>
@@ -408,7 +409,7 @@
   </template>
 
   <script>
-      class Discourses extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class Discourses extends SCStaticPage {
           static get is() {
               return 'sc-discourses';
           }
@@ -436,26 +437,14 @@
               this.loadResources(this.resolveUrl(`/localization/elements/static_discourses/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               this.shadowRoot.querySelector('main').addEventListener('click', () => {
                   setTimeout(() => {
-                      this._scrollToSection(window.location.hash);
+                      const firstSection = this.shadowRoot.querySelector(window.location.hash);
+                      this.currentId = this._scrollToSection(window.location.hash, this.currentId, firstSection);
                   }, 0);
               });
               setTimeout(() => {
-                  this._scrollToSection(window.location.hash);
+                  const firstSection = this.shadowRoot.querySelector(window.location.hash);
+                  this.currentId = this._scrollToSection(window.location.hash, this.currentId, firstSection);
               }, 1000);
-          }
-
-          // Scrolls to the chosen section
-          _scrollToSection(sectionId) {
-              if (!sectionId || this.currentId === sectionId) return;
-              const firstSection = this.shadowRoot.querySelector(sectionId);
-              if (firstSection) {
-                  firstSection.scrollIntoView({
-                      behavior: 'instant',
-                      block: 'start',
-                      inline: 'nearest'
-                  });
-              }
-              this.currentId = sectionId;
           }
 
           _siteLanguageChanged() {

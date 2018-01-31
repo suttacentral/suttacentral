@@ -1,0 +1,38 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!--
+  Static page scrolling
+-->
+<dom-module id="sc-static-page">
+  <template>
+  </template>
+
+  <script>
+      class SCStaticPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+
+          connectedCallback() {
+            super.connectedCallback();
+          }
+
+          ready() {
+              super.ready();
+          }
+
+          _scrollToSection(sectionId, currentId, firstSection) {
+              if (!sectionId || currentId === sectionId) {
+                return currentId;
+              }
+              if (firstSection) {
+                  firstSection.scrollIntoView({
+                      behavior: 'instant',
+                      block: 'start',
+                      inline: 'nearest'
+                  });
+              }
+              return sectionId;
+          }
+      }
+
+      customElements.define('sc-static-page', SCStaticPage);
+  </script>
+</dom-module>
