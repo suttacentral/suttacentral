@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+
+  sc-flask:
+    command: bash docker/entrypoint.prod.sh
+    env_file:
+      - server/env/.prod.env
+    volumes:
+      - ./server/:/opt/sc/sc-flask
+      - ./client/:/opt/sc/frontend
+    ports:
+      - '5001:5000'
+
+  sc-nginx:
+    volumes:
+      - ./client/:/opt/sc/static
+    command: bash entry-point.prod.sh
+    environment:
+      - NODE_ENV='production'
+
+  sc-arangodb:
+    env_file:
+      - server/env/.prod.env
+    ports:
+      - '8529:8529'
+
+  sc-frontend-builder:
+    command: bash builder.sh
+    working_dir: /opt/sc/frontend
+    volumes:
+      - ./client/:/opt/sc/frontend
+
+  sc-swagger:
+    ports:
+      - '8080:8080'
+
+  sc-elasticsearch:
+    ports:
+    - '9200:9200'
+    - '9300:9300'
