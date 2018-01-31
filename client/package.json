@@ -5,7 +5,7 @@
     "serv": "polymer serve -p 8000 --compile",
     "dev": "npm run serv | npm run watch",
     "test": "polymer test",
-    "build": "polymer build --preset es6-bundled --entrypoint index.html",
+    "build": "polymer build",
     "watch": "browser-sync start --proxy 0.0.0.0:8000 --files \"**/*.*, index.html, *.js\" --no-open"
   },
   "dependencies": {
