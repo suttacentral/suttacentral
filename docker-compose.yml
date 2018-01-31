@@ -155,7 +155,10 @@ services:
     container_name: 'sc-frontend-builder'
     labels:
       application: 'sc-frontend-builder'
-
+    command: npm install
+    working_dir: /opt/sc/frontend
+    volumes:
+      - ./client/:/opt/sc/frontend
 
 volumes:
   db-data-volume:
