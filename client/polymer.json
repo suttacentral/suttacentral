@@ -6,7 +6,7 @@
   },
   "entrypoint": "index.html",
   "extraDependencies": [
-    "./localization/**/*.json",
+    "./localization/elements/**/*.json",
     "./styles/**/*.json",
     "./img/**/*",
     "./files/**/*",
