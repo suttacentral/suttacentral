@@ -25,11 +25,15 @@
 
           ready() {
               super.ready();
-              this.shadowRoot.querySelector('main').addEventListener('click', () => {
-                  setTimeout(() => {
-                      this.currentId = this._scrollToSection(window.location.hash, this.currentId);
-                  }, 0);
-              });
+              try {
+                  this.shadowRoot.querySelector('main').addEventListener('click', () => {
+                      setTimeout(() => {
+                          this.currentId = this._scrollToSection(window.location.hash, this.currentId);
+                      }, 0);
+                  });
+              } catch (e) {
+                  console.error(e);
+              };
               setTimeout(() => {
                       this.currentId = this._scrollToSection(window.location.hash, this.currentId);
               }, 1000);
