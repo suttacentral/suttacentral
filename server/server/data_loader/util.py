@@ -3,6 +3,7 @@ import regex
 import json
 import logging
 
+
 def numericsortkey(string, _split=regex.compile(r'(\d+)').split):
     """ Intelligently sorts most kinds of data.
 
@@ -98,6 +99,7 @@ def unique(iterable, key=None):
                 seen_add(k)
                 yield element
 
+
 def iter_sub_dirs(path):
     for subdir in path.iterdir():
         if not subdir.is_dir():
@@ -105,7 +107,8 @@ def iter_sub_dirs(path):
         if subdir.stem.startswith('.'):
             continue
         yield subdir
-        
+
+
 def json_load(path):
     try:
         with open(path, 'r', encoding='utf8') as f:
@@ -114,3 +117,21 @@ def json_load(path):
         logging.error(f'{path}: {e}')
         raise e
 
+
+class TwoWayDict(dict):
+    def __setitem__(self, key, value):
+        # Remove any previous connections with these values
+        if key in self:
+            del self[key]
+        if value in self:
+            del self[value]
+        dict.__setitem__(self, key, value)
+        dict.__setitem__(self, value, key)
+
+    def __delitem__(self, key):
+        dict.__delitem__(self, self[key])
+        dict.__delitem__(self, key)
+
+    def __len__(self):
+        """Returns the number of connections"""
+        return dict.__len__(self) // 2

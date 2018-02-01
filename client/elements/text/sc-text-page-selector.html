@@ -93,8 +93,8 @@
 
     </div>
 
-    <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, neighbours)]]">
-      <sc-stepper next="[[neighbours.next]]" previous="[[neighbours.previous]]" lang="[[langIsoCode]]"></sc-stepper>
+    <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, translatedSutta)]]">
+      <sc-stepper next="[[translatedSutta.next]]" previous="[[translatedSutta.previous]]" lang="[[langIsoCode]]"></sc-stepper>
     </template>
 
     <sc-text-image id="sc_text_image"></sc-text-image>
@@ -146,9 +146,6 @@
                   },
                   markup: {
                       type: String
-                  },
-                  neighbours: {
-                      type: Object
                   },
                   language: {
                       type: String,
@@ -220,7 +217,6 @@
                   this.translatedSutta = this.responseData.translation;
                   this.rootSutta = this.responseData.root_text;
                   this.markup = this.responseData.markup;
-                  this.neighbours = this.responseData.neighbours;
                   if (this.responseData.translation) {
                       this.authorUid = this.responseData.translation.author_uid;
                   }
@@ -257,8 +253,8 @@
               }
           }
 
-          _shouldDisplayStepper(isLoading, neighbours) {
-              return neighbours && !isLoading && (neighbours.next || neighbours.previous);
+          _shouldDisplayStepper(isLoading, translatedSutta) {
+              return !isLoading && (translatedSutta.next || translatedSutta.previous);
           }
 
           _shouldDisplayError(rootSutta, translatedSutta, networkError) {
