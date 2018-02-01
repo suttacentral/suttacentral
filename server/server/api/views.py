@@ -172,14 +172,21 @@ class Menu(Resource):
             pitaka['children'] = pitaka['children'][:i] + new_data + pitaka['children'][i + 1:]
             i += len(new_data)
 
+    def update_display_num(self, menu_entry):
+        display_num = menu_entry.get('display_num')
+        if 'id' in menu_entry and display_num is None:
+            m = self.num_regex.match(menu_entry['id'])
+            if m:
+                if m[1] not in menu_entry.get('name', ''):
+                    display_num = m[1]
+        if display_num:
+            menu_entry['display_num'] = display_num.replace('-', '–\u2060')
+    
     def recursive_cleanup(self, menu_entries, mapping):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
             mapping[menu_entry['uid']] = menu_entry
-            if 'id' in menu_entry and menu_entry.get('display_num') is None:
-                num_matches = self.num_regex.match(menu_entry['id'])
-                if num_matches:
-                    menu_entry['display_num'] = num_matches[1]
+            self.update_display_num(menu_entry)
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
                 mapping.update({d['uid']: d for d in descendents})

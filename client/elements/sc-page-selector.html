@@ -71,6 +71,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         margin-right: var(--sc-size-md);
       }
 
+      #to_home_button {
+        z-index: 1;
+      }
+
       #header {
         transition: all 200ms !important;
       }
@@ -87,7 +91,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
       @media screen and (max-width: 600px) {
         #toolbar_title {
-          @apply(--sc-skolar-font-size-md);
+          @apply --sc-skolar-font-size-md;
         }
       }
 
@@ -97,6 +101,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         height: var(--sc-size-xxl);
         width: 100%;
         background-color: var(--sc-primary-color);
+      }
+
+      .hidebutton {
+        display: none;
       }
 
     </style>
@@ -112,6 +120,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
         <app-header id="header" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
+            <a href="/" class$="[[_shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
+                <paper-icon-button icon="sc-svg-icons:sc-logo" id="to_home_button"
+                               title="{{localize('goHome')}}"></paper-icon-button>
+            </a>
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"
                                title="{{localize('menu')}}"></paper-icon-button>
 
@@ -465,6 +477,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   composed: true,
                   bubbles: true
               }));
+          }
+
+          _shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage) {
+            return (isDrawerOpen || shouldShowStaticPage) ? 'hidebutton' : '';
           }
 
           _drawerOpenStateChanged() {

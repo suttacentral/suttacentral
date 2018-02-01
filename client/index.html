@@ -17,7 +17,12 @@
   <script>
       document.createElement = Document.prototype.createElement;
   </script>
-  <link rel="import" href="/redux-store.html">
+  <!-- Register service worker -->
+  <script async>
+      if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/service-worker.js');
+      }
+  </script>
   <link rel="import" href="/styles/sc-styles.html">
   <link rel="import" href="/elements/sc-drawer-layout.html">
 

@@ -38,6 +38,12 @@ run-dev:
 run-dev-no-logs:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
+run-prod:
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+
+run-prod-no-logs:
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
 migrate:
 	@docker exec -t sc-flask python server/manage.py migrate
 
@@ -189,6 +195,15 @@ run-preview-env-no-search:
 	@make load-data
 	@echo "\033[1;32mDONE!"
 	@make run-dev
+
+run-production-env:
+	@make rebuild-all
+	@make run-prod-no-logs
+	@bash wait_for_flask.sh
+	@make load-data
+	@make index-elasticsearch
+	@echo "\033[1;32mDONE!"
+	@make run-prod
 
 generate-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"

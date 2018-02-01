@@ -39,7 +39,8 @@ all_uids = list(itertools.chain(
         (f'an{i}' for i in range(1,12)),
         (f'an1.{i*10+1}-{i*10+10}' for i in range(0,10)),
         (f'sa{i}' for i in range(1,100)),
-        (f'sa-2.{i}' for i in range(1,100))
+        (f'sa-2.{i}' for i in range(1,100)),
+        ('dhp', 'dhp1-20', 'dhp21-32', 'dhp33-43')
     ))
 
 match_test_data = [
@@ -51,6 +52,9 @@ match_test_data = [
     ('an1.1-5', ['an1.1-10']),
     ('an1.1-20', ['an1.1-10', 'an1.11-20']),
     ('an1.5-15', ['an1.1-10', 'an1.11-20']),
+    
+    ('dhp1', ['dhp1-20']),
+    
     
     ('sa', ['sa']),
     ('sa2', ['sa2']),
