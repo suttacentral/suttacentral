@@ -1,5 +1,4 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
 
 <!--
   Static page scrolling
@@ -13,22 +12,12 @@
 
           static get properties() {
               return {
-                  // language: {
-                  //     type: String,
-                  //     statePath: 'siteLanguage',
-                  //     observer: '_siteLanguageChanged'
-                  // },
-                  // fallbackLanguage: {
-                  //     type: String,
-                  //     value: 'en'
-                  // },
                   currentId: {
                       type: String,
                       value: ''
                   }
               }
           }
-
 
           connectedCallback() {
             super.connectedCallback();
@@ -60,15 +49,6 @@
               }
               return sectionId;
           }
-
-          // _siteLanguageChanged(pageUrl) {
-          //     if (this.language !== this.fallbackLanguage) {
-          //         if (this.resources && this.resources[this.language]) {
-          //             return;
-          //         }
-          //         this.loadResources(this.resolveUrl(`/localization/elements/static_${pageUrl}/${this.language}.json`), this.language, true);
-          //     }
-          // }
       }
 
       customElements.define('sc-static-page', SCStaticPage);

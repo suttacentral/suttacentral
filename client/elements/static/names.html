@@ -4933,10 +4933,6 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
-                  },
-                  currentId: {
-                      type: String,
-                      value: ''
                   }
               }
           }
@@ -4944,16 +4940,6 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/static_names/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-              this.shadowRoot.querySelector('main').addEventListener('click', () => {
-                  setTimeout(() => {
-                      const firstSection = this.shadowRoot.querySelector(window.location.hash);
-                      this.currentId = this._scrollToSection(window.location.hash, this.currentId, firstSection);
-                  }, 0);
-              });
-              setTimeout(() => {
-                  const firstSection = this.shadowRoot.querySelector(window.location.hash);
-                  this.currentId = this._scrollToSection(window.location.hash, this.currentId, firstSection);
-              }, 1000);
           }
 
           _siteLanguageChanged() {
