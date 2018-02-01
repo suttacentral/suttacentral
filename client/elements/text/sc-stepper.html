@@ -120,7 +120,7 @@
                 <iron-icon icon="arrow-back" class="arrow arrow-left"></iron-icon>
                 <div class="text-element">
                   <span class="action">Previous</span>
-                  <span class="text-title">[[_getNameToDisplay(previous)]]</span>
+                  <span class="text-title">[[previous.name]]</span>
                 </div>
               </div>
             </div>
@@ -138,7 +138,7 @@
               <div class="text">
                 <div class="text-element text-element-right">
                   <span class="action">Next</span>
-                  <span class="text-title">[[_getNameToDisplay(next)]]</span>
+                  <span class="text-title">[[next.name]]</span>
                 </div>
                 <iron-icon icon="arrow-forward" class="arrow arrow-right"></iron-icon>
               </div>
@@ -172,14 +172,12 @@
       }
 
       _getUrl(object) {
-        const author = object.author;
+        const author = object.author_uid;
         const uid = object.uid;
-        return `/${uid}/${this.lang}/${author}`;
+        const lang = object.lang;
+        return `/${uid}/${lang}/${author}`;
       }
 
-      _getNameToDisplay(item) {
-        return item.title || item.original_title || item.acronym;
-      }
     }
 
     customElements.define(SCStepper.is, SCStepper);

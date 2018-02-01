@@ -16,7 +16,7 @@ from common.uid_matcher import UidMatcher
 from .util import json_load
 from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
-    divisions, images_files, homepage, available_languages
+    divisions, images_files, homepage, available_languages, order
 
 
 def update_data(repo: Repo, repo_addr: str):
@@ -163,7 +163,7 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
         if len(paths) == 1:
             continue
         logging.error(f'{uid} appears {len(paths)} times: {",".join(paths)}')
-    
+
     docs.append({'uid': 'orphan', '_key': 'orphan'})
 
 
@@ -232,7 +232,8 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     root_languages = process_root_languages(structure_dir)
 
     if (change_tracker.is_any_file_new_or_changed(division_files + category_files)
-     or change_tracker.is_any_function_changed([process_division_files, process_category_files, perform_update_queries])):
+            or change_tracker.is_any_function_changed(
+                [process_division_files, process_category_files, perform_update_queries])):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
         process_division_files(docs, name_docs, edges, mapping, division_files, root_languages,
@@ -244,13 +245,14 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
             if entry.get('pitaka') == 'su':
                 if 'grouping' not in entry:
                     entry['grouping'] = 'other'
-        
+
         # make documents
         db['root'].import_bulk_safe(docs, overwrite=True)
         db['root_names'].import_bulk_safe(name_docs, overwrite=True)
         db['root_edges'].import_bulk_safe(edges, overwrite=True)
 
         perform_update_queries(db)
+
 
 def print_once(msg: Any, antispam: Set):
     """Print msg if it is not in antispam.
@@ -277,10 +279,11 @@ def get_uid_matcher(db):
         SORT doc.num
         RETURN doc.uid
     '''))
-    
+
     return UidMatcher(all_uids)
 
-def generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir,  db):
+
+def generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db):
     relationship_files = list(relationship_dir.glob('*.json'))
 
     if not change_tracker.is_any_file_new_or_changed(relationship_files):
@@ -292,7 +295,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
         relationship_data.extend(json_load(relationship_file))
 
     uid_matcher = get_uid_matcher(db)
-    
+
     remarks_data = json_load(additional_info_dir / 'notes.json')
 
     remarks = defaultdict(dict)
@@ -420,7 +423,7 @@ def process_blurbs(db, additional_info_dir):
     docs = [{'uid': uid, 'lang': lang, 'blurb': blurb}
             for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in
             tqdm(suttas.items())]
-    
+
     db.collection('blurbs').import_bulk_safe(docs, overwrite=True)
 
 
@@ -444,7 +447,6 @@ def run(no_pull=False):
     Args:
         force: Whether or not force clean db setup.
     """
-    
 
     data_dir = current_app.config.get('BASE_DIR') / 'nextdata'
     html_dir = data_dir / 'html_text'
@@ -456,7 +458,7 @@ def run(no_pull=False):
     dictionaries_dir = data_dir / 'dictionaries'
 
     db = arangodb.get_db()
-    
+
     if not no_pull:
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
         collect_data(po_dir, current_app.config.get('PO_REPO'))
@@ -496,5 +498,7 @@ def run(no_pull=False):
     homepage.load_why_we_read(db, additional_info_dir)
 
     available_languages.load_available_languages(db, additional_info_dir)
+
+    order.add_order(db)
 
     change_tracker.update_mtimes()
