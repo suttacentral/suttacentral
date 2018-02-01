@@ -1,9 +1,14 @@
+import regex
 import hashlib
 import itertools
 import time
 from collections import deque
+from functools import lru_cache
 
-import regex
+from common.arangodb import get_db
+from common.queries import LANGUAGES
+
+
 
 HASH = hashlib._hashlib.HASH
 
@@ -129,3 +134,10 @@ def unique(iterable, key=None):
             if k not in seen:
                 seen_add(k)
                 yield element
+
+
+@lru_cache(maxsize=1)
+def get_root_language_uids():
+    db = get_db()
+    languages = db.aql.execute(LANGUAGES)
+    return [l['uid'] for l in languages if l['is_root']]

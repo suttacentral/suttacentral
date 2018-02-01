@@ -1,6 +1,6 @@
 LANGUAGES = '''FOR l in language
                 SORT l.name
-                RETURN {"_rev": l._rev, "uid": l.uid, "name": l.name, "iso_code": l.iso_code}'''
+                RETURN {"uid": l.uid, "name": l.name, "iso_code": l.iso_code, "is_root": l.is_root}'''
 
 TEXTS_BY_LANG = '''
 FOR text IN html_text
