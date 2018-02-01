@@ -1,12 +1,11 @@
 import os
-import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
 
 import tqdm
 
-from data_loader.po import correct_related_uuid
 from data_loader.util import numericsortkey, TwoWayDict
 from common import arangodb
+from .textdata import TextInfoModel
 
 
 def fit_given_uid(db, uid, lang, author_uid):
@@ -119,3 +118,9 @@ def chunks(seq, num):
         last += avg
 
     return out
+
+
+def correct_related_uuid(uid1, uid2):
+    if TextInfoModel.uids_are_related(uid1, uid2):
+        return uid2
+    return None

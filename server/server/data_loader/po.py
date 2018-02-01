@@ -5,7 +5,6 @@ import polib
 import regex
 
 from .util import iter_sub_dirs
-from .textdata import TextInfoModel
 
 
 def remove_leading_zeros(string):
@@ -219,8 +218,3 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
             db['po_markup'].import_bulk_safe(markup_docs, on_duplicate='ignore')
             db['po_strings'].import_bulk_safe(string_docs, on_duplicate='ignore')
 
-
-def correct_related_uuid(uid1, uid2):
-    if TextInfoModel.uids_are_related(uid1, uid2):
-        return uid2
-    return None
