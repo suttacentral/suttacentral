@@ -72,7 +72,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       }
 
       #to_home_button {
+        color: var(--sc-tertiary-text-color);
         z-index: 1;
+        padding: 0;
+        width: var(--sc-size-lg);
+        height: var(--sc-size-lg);
       }
 
       #header {
@@ -121,7 +125,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         <app-header id="header" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
             <a href="/" class$="[[_shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
-                <paper-icon-button icon="sc-svg-icons:sc-logo" id="to_home_button"
+                <paper-icon-button icon="sc-svg-icons:sc-logo-bw" id="to_home_button"
                                title="{{localize('goHome')}}"></paper-icon-button>
             </a>
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"
