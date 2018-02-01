@@ -1,4 +1,5 @@
 import os
+import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
 
 import tqdm
@@ -12,12 +13,12 @@ def fit_given_uid(db, uid, lang, author_uid):
     neighbour_po = list(db.aql.execute(
         f'''FOR po IN po_strings 
         FILTER po.lang == "{lang}" AND po.uid == "{uid}" 
-        RETURN KEEP(po, ["uid", "lang", "author_uid"])'''))
+        RETURN KEEP(po, ["uid", "lang", "author_uid", "title"])'''))
 
     neighbour_text = list(db.aql.execute(
         f'''FOR text IN html_text 
         FILTER text.lang == "{lang}" AND text.uid == "{uid}" 
-        RETURN KEEP(text, ["uid", "lang", "author_uid"])'''))
+        RETURN KEEP(text, ["uid", "lang", "author_uid", "title"])'''))
 
     neighbour_po.extend(neighbour_text)
 
@@ -28,19 +29,32 @@ def fit_given_uid(db, uid, lang, author_uid):
         else:
             text = neighbour_po[0]
 
-        return {'uid': uid, 'author_uid': text['author_uid'], 'lang': text['lang']}
+        data = {'uid': uid, 'author_uid': text['author_uid'], 'lang': text['lang']}
+        if 'title' in text and text['title']:
+            data['name'] = text['title']
+        else:
+            name = list(db.aql.execute(f'''
+            LET name = (FOR name IN root_names 
+                FILTER name.uid == "{uid}" 
+                LIMIT 1 
+                RETURN name.name)[0]
+            RETURN name ? name : (FOR r IN root FILTER r.uid == "{uid}" LIMIT 1 RETURN r.acronym)[0] 
+            '''))
+            if name:
+                data['name'] = name[0]
+        return data
 
 
 def set_neighbour(po, uids, neighbour_name, modifier, db):
     current_neighbour_uid = po['uid']
     while True:
         neighbour_uid = uids[uids[current_neighbour_uid] + modifier]
-        neighbour_uid = correct_related_uuid(current_neighbour_uid, neighbour_uid)
+        neighbour_uid = correct_related_uuid(po['uid'], neighbour_uid)
 
         if neighbour_uid is None:
             break
 
-        fitted_text = fit_given_uid(db, current_neighbour_uid, po['lang'], po['author_uid'])
+        fitted_text = fit_given_uid(db, neighbour_uid, po['lang'], po['author_uid'])
         if fitted_text:
             po[neighbour_name]= fitted_text
             return True
@@ -49,8 +63,8 @@ def set_neighbour(po, uids, neighbour_name, modifier, db):
 
 
 def process_html_text(db, text):
-    for field_name in ['next_uid', 'prev_uid']:
-        text[field_name] = fit_given_uid(db, text[field_name], text['lang'], text['author_uid'])
+    for new_field, field_name in [('next', 'next_uid'), ('prev', 'prev_uid')]:
+        text[new_field] = fit_given_uid(db, text[field_name], text['lang'], text['author_uid'])
 
 
 def thread_pool_executor(html_texts):
