@@ -1,14 +1,11 @@
 import logging
-import re
 import json
-from typing import List
 
 import polib
 import regex
-from arango.database import Database
-from arango.exceptions import DocumentInsertError
 
 from .util import iter_sub_dirs
+from .textdata import TextInfoModel
 
 
 def remove_leading_zeros(string):
@@ -91,7 +88,6 @@ def process_dir(change_tracker, po_dir, authors, info):
         root_author_data = get_author(info['root_author'], authors)
         author_data = get_author(info['author'], authors)
 
-
         # This doc is for root strings
         yield {
             "uid": uid,
@@ -134,12 +130,14 @@ def process_dir(change_tracker, po_dir, authors, info):
     for sub_folder in po_dir.glob('*/'):
         yield from process_dir(change_tracker, sub_folder, authors, info=info)
 
+
 def get_author(author_uid, authors):
     for item in authors:
-        if item['uid'] == author_uid: 
+        if item['uid'] == author_uid:
             return item['long_name'], item['short_name']
 
     return None, None
+
 
 def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
     """ Load strings and markup from po files into database
@@ -205,7 +203,7 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
                     'tr_lang': tr_lang,
                     'root_lang': root_lang
                 })
-                
+
             markup_docs = []
             string_docs = []
 
@@ -217,8 +215,12 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
                 else:
                     doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
                     string_docs.append(doc)
-            
+
             db['po_markup'].import_bulk_safe(markup_docs, on_duplicate='ignore')
             db['po_strings'].import_bulk_safe(string_docs, on_duplicate='ignore')
-                    
-            
+
+
+def correct_related_uuid(uid1, uid2):
+    if TextInfoModel.uids_are_related(uid1, uid2):
+        return uid2
+    return None
