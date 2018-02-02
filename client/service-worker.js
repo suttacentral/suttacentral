@@ -19,7 +19,6 @@ sw.router.registerRoute(
     sw.strategies.cacheFirst()
 );
 
-
 // Cache Stripe scripts
 sw.router.registerRoute(
     new RegExp('^https://m.stripe.com/(.*)'),
@@ -27,7 +26,7 @@ sw.router.registerRoute(
 );
 
 // Register navigation routes:
-sw.router.registerNavigationRoute('/', {
+sw.router.registerNavigationRoute('.', {
     whitelist: [
         /^\/$/,
         /^\/*/
