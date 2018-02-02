@@ -21,7 +21,7 @@ sw.router.registerRoute(
 
 // Cache Stripe scripts
 sw.router.registerRoute(
-    new RegExp('^https://{js|m}.stripe.com/(.*)'),
+    new RegExp('^https://(?:js|m).stripe.com/(.*)'),
     sw.strategies.cacheFirst()
 );
 
