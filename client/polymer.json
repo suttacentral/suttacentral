@@ -18,8 +18,8 @@
     {
       "bundle": {
         "stripComments": true,
-        "inlineCss": false,
-        "sourcemaps": true
+        "inlineCss": true,
+        "sourcemaps": false
       },
       "js": {
         "compile": true,

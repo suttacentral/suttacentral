@@ -1,19 +1,21 @@
 importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
+importScripts('/sw-generated.js');
 
-const staticAssets = [
-    './',
-    './manifest.json',
-    '/bower_components/webcomponentsjs/webcomponents-lite.js',
-    'img/home-page/*',
-    'img/static-pages/*',
-    'img/*.svg',
-    'img/favicon-32x32.png',
-    'img/favicon.ico',
-    'img/*.html',
-    'localization/elements/**/*'
-];
+const sw = new WorkboxSW();
 
-const workboxSW = new WorkboxSW();
-workboxSW.precache(staticAssets);
+// Cache API requests
+sw.router.registerRoute(
+    new RegExp('http://localhost/api/(.*)'),
+    sw.strategies.networkFirst()
+);
 
-workboxSW.router.registerRoute('http://localhost/api/(.*)', workboxSW.strategies.networkFirst());
+sw.router.registerRoute(
+    new RegExp('https://next.suttacentral.com/api/(.*)'),
+    sw.strategies.networkFirst()
+);
+
+// Cache Google fonts
+sw.router.registerRoute(
+  new RegExp('^https://fonts.(?:googleapis|gstatic).com/(.*)'),
+  sw.strategies.cacheFirst()
+);

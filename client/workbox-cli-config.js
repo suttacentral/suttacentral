@@ -1,11 +1,11 @@
 module.exports = {
-    'globDirectory': 'build/default/',
+    'globDirectory': './build/default/',
     'globPatterns': [
-        'bower_components/*.{js|html|css}',
-        'node_modules/*.{js|html|css}',
-        'img/**/*.{png|ico|svg|jpg}',
-        'localization/**/*.json',
-        '*.{json|html|js}'
+        '**/*.js',
+        '**/*.html',
+        '**/*.json',
+        'img/**/*'
     ],
-    'swDest': "build/default/sw-generated.js"
+    'globIgnores': 'bower_components/webcomponentsjs/*',
+    'swDest': './build/default/sw-generated.js'
 };
