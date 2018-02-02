@@ -7,8 +7,7 @@ def change_po_file_permissions(path):
 
 def load_client_po_files():
     print('GENERATING CLIENT JSON FILES')
-    subprocess.call('python3 /opt/sc/frontend/localization/localizer.py from_pootle /srv/pootle/po',
-                    shell=True)
+    subprocess.call('python3 /opt/sc/frontend/localization/localizer.py from_pootle /srv/pootle/po', shell=True)
     change_po_file_permissions('/opt/sc/frontend/localization/')
     print('✓ DONE')
 
