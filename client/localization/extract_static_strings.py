@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import pathlib
+from itertools import chain
 from typing import Tuple
 
 import tqdm
@@ -24,6 +25,13 @@ def is_block_children(block):
     return True
 
 
+def replace_attrs(element):
+    for attr in element.attrs:
+        if attr in TEXT_ATTRS:
+            string_hash = hashlib.md5(element[attr].encode()).hexdigest()
+            element[attr] = f"{{{{localize('{string_hash}')}}}}"
+
+
 def recursive_traversal(element, data):
     if element.name in EXCLUDE_BLOCKS:
         return
@@ -37,13 +45,11 @@ def recursive_traversal(element, data):
             non_block_with_attr.append(child)
 
     if block_children:
-        for child in block_children:
-            recursive_traversal(child, data)
         for child in non_block_with_attr:
-            for attr in child.attrs:
-                if attr in TEXT_ATTRS:
-                    string_hash = hashlib.md5(child[attr].encode()).hexdigest()
-                    child[attr] = f"{{{{localize('{string_hash}')}}}}"
+            replace_attrs(child)
+        for child in block_children:
+            replace_attrs(child)
+            recursive_traversal(child, data)
     else:
         string = ''.join((str(child) for child in element.children))
         string = ' '.join(string.split())
