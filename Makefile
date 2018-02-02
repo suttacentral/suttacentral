@@ -24,6 +24,8 @@ build-swagger:
 	@docker-compose build sc-swagger
 build-frontend-tester:
 	@docker-compose build sc-frontend-tester
+build-pootle-pipeline:
+	@docker-compose build sc-pootle-pipeline
 
 rebuild-all: clean-all build-all
 rebuild-flask: clean-flask build-flask

@@ -20,7 +20,14 @@
   <!-- Register service worker -->
   <script async>
       if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/service-worker.js');
+          navigator.serviceWorker.register('/service-worker.js')
+              .then(function(registration) {
+                  console.log('Service worker registration successful with scope: ',
+                  registration.scope);
+              })
+              .catch(function(err) {
+                  console.log('Service worker registration failed: ', err);
+              });
       }
   </script>
   <link rel="import" href="/styles/sc-styles.html">

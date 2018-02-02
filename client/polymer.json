@@ -4,19 +4,22 @@
       "polymer-2"
     ]
   },
+  "entrypoint": "index.html",
   "extraDependencies": [
-    "./localization/**/*.json",
+    "./localization/elements/**/*.json",
     "./styles/**/*.json",
     "./img/**/*",
     "./files/**/*",
-    "./manifest.json"
+    "./node_modules/workbox-sw/build/importScripts/*",
+    "./manifest.json",
+    "./service-worker.js"
   ],
   "builds": [
     {
       "bundle": {
         "stripComments": true,
-        "inlineCss": false,
-        "sourcemaps": true
+        "inlineCss": true,
+        "sourcemaps": false
       },
       "js": {
         "compile": true,
@@ -28,7 +31,7 @@
       "html": {
         "minify": true
       },
-      "addServiceWorker": true
+      "addServiceWorker": false
     }
   ]
 }

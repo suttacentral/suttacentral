@@ -279,8 +279,8 @@ than ten results in total, a dropdown selection menu appears at the top.
           // search results and _populateList is called.
           _didRespond(e) {
               const results = e.detail.response;
-              this.set('lastSearchResults', results.hits.hits);
-              this.set('resultCount', results.hits.total);
+              this.set('lastSearchResults', results.hits);
+              this.set('resultCount', results.total);
           }
 
           // Saves the fetched search results to be displayed in the iron-list.
@@ -443,7 +443,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (item.category === 'dictionary') {
                   return item.category;
               }
-              if (item._source.is_root) {
+              if (item.is_root) {
                   return 'root-text';
               }
               else return 'translation';
@@ -456,17 +456,17 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // If there is no title in the database, the division is the title
           _calculateTitle(item) {
-              return item._source.heading.title ? item._source.heading.title : item._source.heading.division;
+              return item.heading.title ? item.heading.title : item.heading.division;
           }
 
           // If there is a title, the division is the subtitle
           _calculateDivision(item) {
-              return item._source.heading.title ? item._source.heading.division : '';
+              return item.heading.title ? item.heading.division : '';
           }
 
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
           _calculateLink(item) {
-              return (item.category === 'dictionary') ? ('/define/' + item._source.heading.title) : item.url;
+              return (item.category === 'dictionary') ? ('/define/' + item.heading.title) : item.url;
           }
 
           _getUrl() {
