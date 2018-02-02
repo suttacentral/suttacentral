@@ -6,7 +6,6 @@ from flask_restful import Resource
 
 from search import query as query_search
 
-
 class Search(Resource):
     def get(self):
         """
