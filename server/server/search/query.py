@@ -4,6 +4,7 @@ from inspect import currentframe, getargvalues
 import regex
 
 from search import es, util
+from .util import get_root_language_uids
 
 logger = logging.getLogger(__name__)
 
@@ -147,9 +148,13 @@ def search(query: str, highlight=True, offset=0, limit=10, language='en',
         indexes.append('en-dict')
     if lang:
         indexes.append(lang)
+        
+    
 
     if not indexes:
         indexes = [language, 'suttas', 'en-dict']
+    
+    indexes.extend(get_root_language_uids())
 
     index_string = ','.join(get_available_indexes(indexes))
 
@@ -256,5 +261,5 @@ def search(query: str, highlight=True, offset=0, limit=10, language='en',
                 }
             }
         }
-
+    
     return es.search(index=index_string, body=body)

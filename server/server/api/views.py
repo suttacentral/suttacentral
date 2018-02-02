@@ -517,21 +517,8 @@ class Sutta(Resource):
 
         results = db.aql.execute(SUTTA_VIEW,
                                  bind_vars={'uid': uid, 'language': lang, 'author_uid': author_uid})
-        data: dict = results.next()
 
-        r = re.compile(r'^[a-z\-]+')
-        original_prefix = r.match(uid)[0]
-
-        ordering: dict = data['neighbours']
-        for key, items in ordering.items():
-            for item in items:
-                if r.match(item['uid'])[0] == original_prefix:
-                    ordering[key] = item
-                    break
-            else:
-                ordering[key] = None
-
-        return data, 200
+        return results.next(), 200
 
 
 class Currencies(Resource):
