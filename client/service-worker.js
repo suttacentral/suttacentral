@@ -19,6 +19,13 @@ sw.router.registerRoute(
     sw.strategies.cacheFirst()
 );
 
+
+// Cache Stripe scripts
+sw.router.registerRoute(
+    new RegExp('^https://m.stripe.com/(.*)'),
+    sw.strategies.cacheFirst()
+);
+
 // Register navigation routes:
 sw.router.registerNavigationRoute('/', {
     whitelist: [

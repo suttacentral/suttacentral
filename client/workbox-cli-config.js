@@ -5,7 +5,9 @@ module.exports = {
         '**/*.js',
         '**/*.html',
         '**/*.json',
-        'img/**/*'
+        'img/**/*',
+        'img/home-page/**/*',
+        'img/static-pages/**/*'
     ],
     'globIgnores': 'bower_components/webcomponentsjs/*'
 };
