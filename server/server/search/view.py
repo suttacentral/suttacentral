@@ -33,66 +33,39 @@ class Search(Resource):
                 id: Search result
                 type: object
                 properties:
-                  took:
+                  total:
                     type: number
-                  timed_out:
-                    type: boolean
-                  _shards:
-                    type: object
-                    properties:
-                      total:
-                        type: number
-                      successful:
-                        type: number
-                      failed:
-                        type: number
+                  max_score:
+                    type: number
                   hits:
-                    type: object
-                    properties:
-                      total:
-                        type: number
-                      max_score:
-                        type: number
-                      hits:
-                        type: array
-                        uniqueItems: true
-                        items:
-                          properties:
-                            _index:
-                              type: string
-                            _type:
-                              type: string
-                            _id:
-                              type: string
-                            _score:
-                              type: number
-                            _source:
-                              type: object
-                              properties:
-                                uid:
+                    type: array
+                    uniqueItems: true
+                    items:
+                        properties:
+                          uid:
+                            type: string
+                          heading:
+                            type: object
+                            properties:
+                              division:
+                                type: string
+                              subhead:
+                                type: array
+                                items:
                                   type: string
-                                heading:
-                                  type: object
-                                  properties:
-                                    division:
-                                      type: string
-                                    subhead:
-                                      type: array
-                                      items:
-                                        type: string
-                                    title:
-                                      type: string
-                                lang:
+                              title:
+                                type: string
+                          lang:
+                            type: string
+                          is_root:
+                            type: boolean
+                          highlight:
+                            type: object
+                            properties:
+                              content:
+                                type: array
+                                items:
                                   type: string
-                                is_root:
-                                  type: boolean
-                            highlight:
-                              type: object
-                              properties:
-                                content:
-                                  type: array
-                                  items:
-                                    type: string
         """
         limit = request.args.get('limit', 10)
         offset = request.args.get('offset', 0)
@@ -103,15 +76,27 @@ class Search(Resource):
             return json.dumps({'error': '\'query\' param is required'}), 422
 
         try:
-            results = query_search.search(query, limit=limit, offset=offset, language=language)
+            es_text_results = query_search.search(query, limit=limit, offset=offset, language=language)
+            text_results = []
 
-            for entry in results['hits']['hits']:
+            for entry in es_text_results['hits']['hits']:
                 source = entry['_source']
                 uid = source['uid']
                 lang = source['lang']
                 author = source['author']
-                entry['url'] = f'/{uid}/{lang}/{author}'
-
+                text_results.append({
+                    'uid': uid,
+                    'lang': lang,
+                    'heading': source['heading'],
+                    'is_root': source['is_root'],
+                    'highlight': entry['highlight'],
+                    'url': f'/{uid}/{lang}/{author}'
+                })
+            results = {
+                'total': len(text_results),
+                'hits': text_results
+                
+            }
             return results
         except ConnectionError:
             return json.dumps({'error': 'Elasticsearch unavailable'}), 503
