@@ -1,0 +1,3 @@
+polib
+tqdm
+beautifulsoup4
