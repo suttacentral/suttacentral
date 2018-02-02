@@ -75,6 +75,9 @@ def run():
             formatted_data = {'en': data}
             json.dump(formatted_data, f, indent=4, ensure_ascii=False)
 
+        with (element_dir / 'pl.json').open('w') as f:
+            formatted_data = {'pl': data}
+            json.dump(formatted_data, f, indent=4, ensure_ascii=False)
 
 if __name__ == '__main__':
     run()
