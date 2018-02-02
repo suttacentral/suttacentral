@@ -1,6 +1,7 @@
 {
   "name": "SuttaCentral",
   "short_name": "SuttaCentral",
+  "description": "Early Buddhist texts, translations, and parallels.",
   "icons": [
     {
       "src": "/img/android-chrome-192x192.png",
