@@ -1,4 +1,3 @@
-importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
 importScripts('/sw-generated.js');
 
 const sw = new WorkboxSW();
@@ -16,6 +15,17 @@ sw.router.registerRoute(
 
 // Cache Google fonts
 sw.router.registerRoute(
-  new RegExp('^https://fonts.(?:googleapis|gstatic).com/(.*)'),
-  sw.strategies.cacheFirst()
+    new RegExp('^https://fonts.(?:googleapis|gstatic).com/(.*)'),
+    sw.strategies.cacheFirst()
 );
+
+// Register navigation routes:
+sw.router.registerNavigationRoute('/', {
+    whitelist: [
+        /^\/$/,
+        /^\/*/
+    ],
+    blacklist: [
+        /^\/api/
+    ]
+});
