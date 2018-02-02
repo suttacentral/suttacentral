@@ -15,20 +15,36 @@ LOCALIZATION_JSONS_DIR = str(CURRENT_FILE_DIR / pathlib.Path('../localization/el
 
 NON_BLOCK_ELEMENTS = ['a', 'span', '\n', 'code', 'br', 'cite', 'strong', 'i', 'em', 'img', 'paper-button']
 EXCLUDE_BLOCKS = ['style', 'iframe']
+TEXT_ATTRS = ['title', 'alt']
+
+
+def is_block_children(block):
+    if isinstance(block, NavigableString) or block.name in NON_BLOCK_ELEMENTS:
+        return False
+    return True
 
 
 def recursive_traversal(element, data):
     if element.name in EXCLUDE_BLOCKS:
         return
 
-    children = [child for child in element.children
-                if not (child.name in NON_BLOCK_ELEMENTS or isinstance(child, NavigableString))]
+    block_children = []
+    non_block_with_attr = []
+    for child in element.children:
+        if is_block_children(child):
+            block_children.append(child)
+        elif not isinstance(child, NavigableString) and any(child.has_attr(attr) for attr in TEXT_ATTRS):
+            non_block_with_attr.append(child)
 
-    if children:
-        for child in children:
+    if block_children:
+        for child in block_children:
             recursive_traversal(child, data)
+        for child in non_block_with_attr:
+            for attr in child.attrs:
+                if attr in TEXT_ATTRS:
+                    string_hash = hashlib.md5(child[attr].encode()).hexdigest()
+                    child[attr] = f"{{{{localize('{string_hash}')}}}}"
     else:
-
         string = ''.join((str(child) for child in element.children))
         string = ' '.join(string.split())
 
@@ -36,10 +52,10 @@ def recursive_traversal(element, data):
 
         if isinstance(element, NavigableString) or all(isinstance(child, NavigableString) for child in element.children):
             element.clear()
-            element['inner-text'] = f'{{{{localize(\'{string_hash}\')}}}}'
+            element['inner-text'] = f"{{{{localize('{string_hash}')}}}}"
         else:
             element.clear()
-            element['inner-h-t-m-l'] = f'{{{{localize(\'{string_hash}\')}}}}'
+            element['inner-h-t-m-l'] = f"{{{{localize('{string_hash}')}}}}"
         data[string_hash] = string
 
 
