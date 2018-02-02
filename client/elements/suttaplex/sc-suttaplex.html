@@ -543,18 +543,14 @@
               const root_part = rootId.split('#')[0];
               let uid_parts = root_part.split('-');
               let tail = '';
-              try {
-                  uid_parts.forEach(item => {
-                      if (!expansionData[0][item]) {
-                          tail = item.match(/\d+.*/g)[0] + '–';
-                          item = item.match(/[a-z]*/g)[0];
-                      }
-                      item ? sc_acronym += `${expansionData[0][item][0]} ${tail}` : sc_acronym += tail;
-                  });
-                  return sc_acronym.replace(/–\s*$/, '');
-              } catch (e) {
-                return;
-              }
+              uid_parts.forEach(item => {
+                  if (!expansionData[0][item]) {
+                      tail = item.match(/\d+.*/g)[0] + '–';
+                      item = item.match(/[a-z]*/g)[0];
+                  }
+                  item ? sc_acronym += `${expansionData[0][item][0]} ${tail}` : sc_acronym += tail;
+              });
+              return sc_acronym.replace(/–\s*$/, '');
           }
 
           _getAcronymTitle(item, localize) {
