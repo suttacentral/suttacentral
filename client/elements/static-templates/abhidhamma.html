@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
-
+<link rel="import" href="../addons/sc-static-page.html">
 <link rel="import" href="../../styles/static-styles.html">
 
 <dom-module id="sc-abhidhamma">
@@ -250,7 +250,7 @@
   </template>
 
   <script>
-      class Abhidhamma extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class Abhidhamma extends SCStaticPage {
           static get is() {
               return 'sc-abhidhamma';
           }
@@ -265,10 +265,6 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
-                  },
-                  currentId: {
-                      type: String,
-                      value: ''
                   }
               }
           }
@@ -276,28 +272,6 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/static_abhidhamma/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-              this.shadowRoot.querySelector('main').addEventListener('click', () => {
-                  setTimeout(() => {
-                      this._scrollToSection(window.location.hash);
-                  }, 0);
-              });
-              setTimeout(() => {
-                  this._scrollToSection(window.location.hash);
-              }, 1000);
-          }
-
-          // Scrolls to the chosen section
-          _scrollToSection(sectionId) {
-              if (!sectionId || this.currentId === sectionId) return;
-              const firstSection = this.shadowRoot.querySelector(sectionId);
-              if (firstSection) {
-                  firstSection.scrollIntoView({
-                      behavior: 'instant',
-                      block: 'start',
-                      inline: 'nearest'
-                  });
-              }
-              this.currentId = sectionId;
           }
 
           _siteLanguageChanged() {

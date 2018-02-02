@@ -1,646 +1,647 @@
 <link href="../../bower_components/polymer/polymer.html" rel="import"/>
 <link href="../../styles/static-styles.html" rel="import"/>
 <link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
-<dom-module id="sc-methodology-page">
- <template>
-  <style include="static-styles">
-   .author {
+<link href="../addons/sc-static-page.html" rel="import">
+ <dom-module id="sc-methodology-page">
+  <template>
+   <style include="static-styles">
+    .author {
         @apply --sc-mixed-small-caps;
       }
 
       .byline {
         font-style: italic;
       }
-  </style>
-  <div id="page-wrap">
-   <main>
-    <section>
-     <article>
-      <h1 inner-text="{{localize('5e16430ea3941e14ec95a6da95f0cadc')}}">
-      </h1>
-      <nav class="contents">
-       <ol>
-        <li inner-h-t-m-l="{{localize('0c03613be7636a24ea9fb9b2757b3baa')}}">
+   </style>
+   <div id="page-wrap">
+    <main>
+     <section>
+      <article>
+       <h1 inner-text="{{localize('5e16430ea3941e14ec95a6da95f0cadc')}}">
+       </h1>
+       <nav class="contents">
+        <ol>
+         <li inner-h-t-m-l="{{localize('0c03613be7636a24ea9fb9b2757b3baa')}}">
+         </li>
+         <li inner-h-t-m-l="{{localize('e1ab9ffde5d276c43ff0ca7c2afc103c')}}">
+         </li>
+         <li inner-h-t-m-l="{{localize('2127bccd1709641c7c09f2c5c1f9fe5f')}}">
+         </li>
+         <li inner-h-t-m-l="{{localize('b7d8cf6e9608ee1ad211b0822e3ef292')}}">
+         </li>
+         <li inner-h-t-m-l="{{localize('c94e5dd655198494f4d8a64e1fa4eeae')}}">
+         </li>
+         <li inner-h-t-m-l="{{localize('9fc129aa51fee132a7d9277b6582bbbb')}}">
+         </li>
+        </ol>
+       </nav>
+       <h2 id="item1" inner-text="{{localize('a9ded1e5ce5d75814730bb4caaf49419')}}">
+       </h2>
+       <p inner-h-t-m-l="{{localize('dec90aaae53b6206288acdd46b2ca5f4')}}">
+       </p>
+       <blockquote inner-h-t-m-l="{{localize('1378d2e07bcecbf3519e00bbc2743bec')}}">
+       </blockquote>
+       <p inner-h-t-m-l="{{localize('50bb6f050040972aced763ead615f872')}}">
+       </p>
+       <p inner-text="{{localize('db07d9ff15ce385519766d454b680386')}}">
+       </p>
+       <p inner-h-t-m-l="{{localize('0f1f53d030e200e8c307096bdd778458')}}">
+       </p>
+       <p inner-text="{{localize('5aa166caf01a7471ff888ae83e27095c')}}">
+       </p>
+       <h2 id="item2" inner-text="{{localize('019d8b848220e758c0ff557f4cea4105')}}">
+       </h2>
+       <p class="byline" inner-text="{{localize('0a987e38abaea4b59174376cf6cbf4d9')}}">
+       </p>
+       <h3 inner-text="{{localize('4e07a4d8d1bdff5483e6ef7f60985945')}}">
+       </h3>
+       <p inner-text="{{localize('6a5c14898fb49d1dd2025fa566d2ebc1')}}">
+       </p>
+       <ul>
+        <li inner-h-t-m-l="{{localize('dd7ab8cbc67c833d1c03a5851f197fa0')}}">
         </li>
-        <li inner-h-t-m-l="{{localize('e1ab9ffde5d276c43ff0ca7c2afc103c')}}">
+        <li inner-h-t-m-l="{{localize('28bd36a32c82fd5a4c9afc6fb6ffa547')}}">
         </li>
-        <li inner-h-t-m-l="{{localize('2127bccd1709641c7c09f2c5c1f9fe5f')}}">
+       </ul>
+       <p inner-text="{{localize('3884d96270a9680864afc7f4eb249a08')}}">
+       </p>
+       <p inner-text="{{localize('28077fce8bae099b60f2a2d6af77ee9f')}}">
+       </p>
+       <p inner-text="{{localize('0b46ca9b9db5d90429eac2ee3c7d3f27')}}">
+       </p>
+       <ul>
+        <li inner-h-t-m-l="{{localize('7fb12f6e001f14048f59de9db57b0d87')}}">
         </li>
-        <li inner-h-t-m-l="{{localize('b7d8cf6e9608ee1ad211b0822e3ef292')}}">
+        <li inner-h-t-m-l="{{localize('6d9213c1ec653af6916954b97898116c')}}">
         </li>
-        <li inner-h-t-m-l="{{localize('c94e5dd655198494f4d8a64e1fa4eeae')}}">
+        <li inner-h-t-m-l="{{localize('6bfb84781c6ec6e0336616bf9210d579')}}">
         </li>
-        <li inner-h-t-m-l="{{localize('9fc129aa51fee132a7d9277b6582bbbb')}}">
+        <li inner-h-t-m-l="{{localize('9201f611a671d0fede920d727d46209e')}}">
         </li>
-       </ol>
-      </nav>
-      <h2 id="item1" inner-text="{{localize('a9ded1e5ce5d75814730bb4caaf49419')}}">
-      </h2>
-      <p inner-h-t-m-l="{{localize('dec90aaae53b6206288acdd46b2ca5f4')}}">
-      </p>
-      <blockquote inner-h-t-m-l="{{localize('1378d2e07bcecbf3519e00bbc2743bec')}}">
-      </blockquote>
-      <p inner-h-t-m-l="{{localize('50bb6f050040972aced763ead615f872')}}">
-      </p>
-      <p inner-text="{{localize('db07d9ff15ce385519766d454b680386')}}">
-      </p>
-      <p inner-h-t-m-l="{{localize('0f1f53d030e200e8c307096bdd778458')}}">
-      </p>
-      <p inner-text="{{localize('5aa166caf01a7471ff888ae83e27095c')}}">
-      </p>
-      <h2 id="item2" inner-text="{{localize('019d8b848220e758c0ff557f4cea4105')}}">
-      </h2>
-      <p class="byline" inner-text="{{localize('0a987e38abaea4b59174376cf6cbf4d9')}}">
-      </p>
-      <h3 inner-text="{{localize('4e07a4d8d1bdff5483e6ef7f60985945')}}">
-      </h3>
-      <p inner-text="{{localize('6a5c14898fb49d1dd2025fa566d2ebc1')}}">
-      </p>
-      <ul>
-       <li inner-h-t-m-l="{{localize('dd7ab8cbc67c833d1c03a5851f197fa0')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('28bd36a32c82fd5a4c9afc6fb6ffa547')}}">
-       </li>
-      </ul>
-      <p inner-text="{{localize('3884d96270a9680864afc7f4eb249a08')}}">
-      </p>
-      <p inner-text="{{localize('28077fce8bae099b60f2a2d6af77ee9f')}}">
-      </p>
-      <p inner-text="{{localize('0b46ca9b9db5d90429eac2ee3c7d3f27')}}">
-      </p>
-      <ul>
-       <li inner-h-t-m-l="{{localize('7fb12f6e001f14048f59de9db57b0d87')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6d9213c1ec653af6916954b97898116c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6bfb84781c6ec6e0336616bf9210d579')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('9201f611a671d0fede920d727d46209e')}}">
-       </li>
-      </ul>
-      <p inner-text="{{localize('11eee9d2cca01c458e4519ee5d4ba2c2')}}">
-      </p>
-      <h3 inner-text="{{localize('b39608da2dbefb56120b7d772fe16ce2')}}">
-      </h3>
-      <p inner-text="{{localize('16da01e7c0c332965df4af2627f6b252')}}">
-      </p>
-      <p inner-text="{{localize('551184d2d79ffaec0349e558fd338fb0')}}">
-      </p>
-      <h3 inner-text="{{localize('69d5f629a9a90c89ae453836b3f1d2ad')}}">
-      </h3>
-      <p inner-text="{{localize('86c3d8e37d4a8ecf477083c01a3dc514')}}">
-      </p>
-      <h2 id="item3" inner-text="{{localize('6178fce9b4cf59a18f3b3457671d4ad2')}}">
-      </h2>
-      <p class="byline" inner-text="{{localize('871c2cab9a5e8da6b3c38bbf3340a08a')}}">
-      </p>
-      <p inner-text="{{localize('310e1b636e1a31ba06562606a294250f')}}">
-      </p>
-      <p inner-h-t-m-l="{{localize('3028af1abb14f608cea2604540b51667')}}">
-      </p>
-      <p inner-text="{{localize('a41fc7383bb68d077e36d5e42ae2e93b')}}">
-      </p>
-      <p inner-h-t-m-l="{{localize('96f1e91eb7d01ed68c84f846f3246077')}}">
-      </p>
-      <p inner-h-t-m-l="{{localize('8ddf4971ea9077a44bcb848ecab05d05')}}">
-      </p>
-      <p inner-text="{{localize('75e444153f25893b381c7867b3a8ec23')}}">
-      </p>
-      <p inner-h-t-m-l="{{localize('128a97724dc2b5445486e884dd56cd21')}}">
-      </p>
-      <p inner-text="{{localize('836abb440828b4251dbca99a052ce0a2')}}">
-      </p>
-      <p inner-text="{{localize('48a05a4d17ddc519129a468f98bdddf6')}}">
-      </p>
-      <p inner-text="{{localize('37ed750668f9b741645c231d3b0e7565')}}">
-      </p>
-      <h2 id="item4" inner-text="{{localize('f75f3035b821fa66870ee397875add1c')}}">
-      </h2>
-      <h3 inner-text="{{localize('5b6423b0b87bc8f03d2d0a8dae24bd5e')}}">
-      </h3>
-      <p inner-text="{{localize('6eb60391fc7b1c9b0a834c3b48fd21b7')}}">
-      </p>
-      <p inner-text="{{localize('a9d0fdb3b1cf0954679b93e03cfc300b')}}">
-      </p>
-      <p inner-text="{{localize('8307b8f6cbfa29406e296fdcdb530626')}}">
-      </p>
-      <p inner-text="{{localize('e22e21ef6ef2d931b49c490fcd902dc3')}}">
-      </p>
-      <p inner-text="{{localize('94b0a2594d7abed37a10ee6c55f5b95f')}}">
-      </p>
-      <h3 inner-text="{{localize('3b261136e3c33f35e0a58611b1f344cb')}}">
-      </h3>
-      <p inner-text="{{localize('7fec10ff9bb82cbcf4842ca78619054e')}}">
-      </p>
-      <h3 inner-text="{{localize('a441f933e0026f55ccff38b534f98a53')}}">
-      </h3>
-      <p inner-text="{{localize('1d97ad9220bfcc713a4a2179f28ab2fd')}}">
-      </p>
-      <h3 inner-text="{{localize('a59ae7443136e64154d5ee5456c74717')}}">
-      </h3>
-      <p inner-text="{{localize('aa6de37e85492345f1cd711fe947ba1d')}}">
-      </p>
-      <h3 inner-text="{{localize('0b8d92bc19b720bb1065649535463409')}}">
-      </h3>
-      <p inner-text="{{localize('47d792982533319a08eab82b501f6f75')}}">
-      </p>
-      <h2 id="item5" inner-text="{{localize('e51e08a727173e8719e480316459991e')}}">
-      </h2>
-      <p inner-text="{{localize('18832946710117f04b88d6d97b98cb49')}}">
-      </p>
-      <p inner-text="{{localize('dbf9d52ead8e7bf1cbf7e600ccfed1ca')}}">
-      </p>
-      <p inner-text="{{localize('436cedbbefed2e773d5c4989cd7139ff')}}">
-      </p>
-      <h3 inner-text="{{localize('d95867deadfe690e40f42068d6b59df8')}}">
-      </h3>
-      <p inner-text="{{localize('bae70a34625181909acca4f7f9b24473')}}">
-      </p>
-      <h3 inner-text="{{localize('98d850ac37e182a8073f35e7fc023a95')}}">
-      </h3>
-      <p inner-text="{{localize('eb581bd1f993c5ac1ea75a35fc4c5f3d')}}">
-      </p>
-      <p inner-text="{{localize('cc98df7994122ceba235bfab0cfbfd82')}}">
-      </p>
-      <p inner-h-t-m-l="{{localize('6e810620148a0aab741844b901b6d74d')}}">
-      </p>
-      <h3 inner-text="{{localize('1b8acacb35cfc8196fc53aa6d960581a')}}">
-      </h3>
-      <p inner-text="{{localize('8f5eda39d7965bcad269571abf2d97c3')}}">
-      </p>
-      <ul>
-       <li inner-text="{{localize('7998ef75d60296fd326b97a5d43dce14')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('a8bc43a1d6afc977f4c741e9851b859a')}}">
-       </li>
-       <li inner-text="{{localize('de5e615c14a2a06ea6d831729dd45e4e')}}">
-       </li>
-       <li inner-text="{{localize('99776797ba1f327c736998fe8e5b36c7')}}">
-       </li>
-       <li inner-text="{{localize('39607c24adc406d6903c863f2f2ba32d')}}">
-       </li>
-      </ul>
-      <p inner-h-t-m-l="{{localize('1feb9ff466925b2d9df1e1df0408da8e')}}">
-      </p>
-      <h2 id="item6" inner-text="{{localize('b05a71de14cfda3d81ac57506942dc93')}}">
-      </h2>
-      <h3 inner-text="{{localize('c53ac1e8d8cdec49a502ac43a8bbeaa3')}}">
-      </h3>
-      <p inner-text="{{localize('2ea8e03b81edfdfb931b1b8b06da20fc')}}">
-      </p>
-      <ul>
-       <li inner-h-t-m-l="{{localize('e9744ab41945bf9a81880a7ff66a1208')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('31418e091c63dd5a75260d22fcd21900')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('8eb6760e4c23428a5e58b725420a4ff8')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('bff6250a6d02ae24cee9dc872ca0c75f')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('f44e54b6e7619c780dbafd8803d30670')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('2b471b4b3942500b58fb46f529fba799')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('db245dd006359a364c612fe4f5ba737c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('fd7a4d5a6b1c20768707f3ece97feb20')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('48b3fecb0e2c038c1683fd7bc6532a00')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('d39a82712e9ba801a8d7792b9ef28103')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('d0f8308b816d5de3e3212ef76a054375')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('a7735a61e6a7b0c3d5bda0ddc932a891')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('fe8126b83dce094e36ab88114a5b83d2')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('9862d2a07a699d6b5167c8cd91c27d3a')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('0d48e01c454dc61d3f6f5bc276242001')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('3f89f52bdb93db7284454b934df885da')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('a2b13db637b71115c8d103219e60896d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('abbe2a6d6ba70b2f2babc8d89a35ebd7')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('f1ed2f611f8c07b9b9393ea7443df3a0')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('37a911a5909d6225a91f01183c12b708')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('d37bbbadb16353199aea48ee3bce95ac')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('89ad6f3900014c3abf5282e535807c6c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('65091fab42f76ddff066836ba712980a')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('7f2e254e25c92ed0850527408b0c391d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e94ab487afba2dd05b642b2aa1e8d94d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5f3a37ff564d0b0ea83c1b39b6475ca8')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c0944b9b5588ce0d484bd9f3765f7da4')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('0dd90c1acc29ca05bdb397caacf0b4a3')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('4568697acea44a2d356eea52f76201f7')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('d5421a9d514e09129860766b54f5ea4f')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('a005ec6fa525cd97aa9a86834390103d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e525b3d1cf246dac5a3777fa9a9eb6d1')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6e9f71ab2e8c22edf3f1f048fcc73743')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('0be133876d86ab037d974227ebebc445')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('b8b37e822ab3a54e63fd6a959a23678d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e582ca77ed9e9d0943972fa5e186e77d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('93b13735d67539bb203a944811f203b9')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('08af662706602231a3d5361ab8f77280')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('3c97fbf7680e0de8fa89a59b5603bdbf')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('a1cb8868b0e638e35db8318da6c1ff52')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('1a48862a3dd89771e8db0113c53496b6')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('bb3d9b4bbc69944a14003ddee164c657')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e4848bb661d2a7a421de75bfb92f97e9')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('acbc9b650160eace6295cc7f3ffe4c62')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('4f616a3b40d9136782328cf50a693c1b')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('00a3ddc564e4f4c629b8aba50921f425')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('809191ac07d17cc6a6bbfe475bafd4ff')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('52b9a3da45d78eb73c034f61a67c1850')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('b61f8bc87d97ebf719cfa6afdba77867')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c2e4b0dcccad2bffcc624caaa828e79b')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('31c475047508feed4324c6c23c3fcd9d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('218fd995c06951abbb39be33300d03aa')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('900f9291fdff901719a2a13c1d75e4dc')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('aa2238f29f56c1ab59efb7f94d11424b')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('ae2f1f4f21bf1b991efb11b51e38c3ad')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('f95f44a0ad91bc00f4e0ab470fee56ac')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('12d8dea94cbee554e21e46bb0107e8db')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('3072297faf6cf610a626e789b7763ad2')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('d712121cc38974861cc627cfdb5c35d0')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5309bf5dfb54e0f7edb2bd5798d78af3')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('0d3015c6aa06ebe3a7151b1f644cbe27')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('7eefa5bc88c604ef15dca7a1e4522238')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6b1b063006e2656fc246182854300187')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('219505ee3699b8f86dfe1b44afe4797c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('bb7ce7a81276a56323137c30d559fa5d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('d284b72e15340da6792bcafa3ef17621')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('8995ed9d7d6edc9bf804255b6de5aa2c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('90eb7521162eb7083895a27be5e978fe')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('075dc7407457282984c0201e7dd8a8a2')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('45399c050b1001fae316efdbc6d1543c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('dec07f5bc27ebe0d0d17e0ec7d16d9c5')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('ca04264dc47f1fdd653dd10d206a9bd1')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c42fab9e4e2d72f41d34b4515f5f5c51')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('74429e91b39e3881b3783c8405411aa1')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('48fdb3c8cd73dda8602d28783e2538b5')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('f6f4625dca9cadc7bf73ee6e489ade2f')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('bf91e7a759e77eb6093e6e1055447e1e')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('eb0857636a359ae2de6fb9c2de3aa7e2')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('3878a8862bcf29ca75402fc6bd2ef362')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('500fb6b07770d1174ae639074b81e96f')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('2aa464006db492db05165dc7596a15cd')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5332a01f3960fe1c2f8eb5e636663a88')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('34c52529e82e7f346d6294c878d9bdd6')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5d715e4ac7f03124eff5ccf92f71913c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('9ca428721feaaf75ded460e78c432f9c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6eb5448d0333c5fcf3a4f610dbc4835b')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('dda795216ad26df0de9c1973ed3a4345')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6c0db3119ffa02170417b88038079922')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('f84024032874151e9ea5dfd6dc963219')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('f1d482b92a358d594f05bd08027e53f2')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('7291ef60424ea0b5bc120c8c15c3d6ec')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5e5410137dc088b69d3b4ed3cca1dbba')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('28e878da392f88fa8b344843f0286736')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('fb00a64ed4d2839ceb1e9be040d28d9b')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('1eaaeebb9a2895c96f3a83084dbbd2e7')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6713976462f2177c478fe94c2db04b09')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('98d8f37a3eab61c3a29f6e738f7d6834')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('40574bd7f6685147cfed820f7942d9af')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('35e5f0a7c8c51cada990339e5737cf15')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('0c41363b693685ee1d2dcb194b39a0a2')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('3e6e8c4432f07afe7b3780053a66daac')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('0fcab5e780c3e578f3e2f8838583ae59')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('538b5c3244aa5399640bd81254a45d28')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('d5020a85fd5c5bf4f5f11b29a801cd17')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('dd0915943143c0ce4769ecdb594ee5e2')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('1b2dc8b062e2b9c34ba4a835a8bafd76')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('f73b6b9d0ffc9addf7827ed91edae1a0')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('3ab1a80bfdc52e30bfcec9c2b2f0cd3e')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5e74d9308b5fe142410cd6a5d6a37685')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('48cc8123513c3ae388acad770c50fe16')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5c0851bc3fb09e4f78d4ea527c7dfd3a')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('aa35b8dc3909956668f60eaa1519e430')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('1f32e59e17720ec8d9d89723c4a22397')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('957af6d68b4b7ef481778df7048b79b4')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('55d95c57a109601cda68cd0b3c2a4eee')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('974e1fe964afdd5dcd65dc745454d5c1')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e1629e6c93eb02b89ad542a1ca91e5b4')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e1da7208d7d0d032b32b71fc46d3511d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('7de4721f0f63ec8818c9b9ca3cd37e70')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('8f8f73890e7ae5f3cea897e1d42e08dc')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('9ad0742159d33be2d71e48bbfd27bc7c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5df62e8abb3a352503c54936dd365568')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('186d9734c4252f7308f899a686fb9de0')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('fac155602bb0a95d15a2ae31dfeaf8ec')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('be5187cf2ee684ac8906f9f8fe3ba68b')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5a848519536af553103cfe11a4ef563b')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('fde0962696c418d476e0a1d87318592d')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5009d7636291872fb009132721232861')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('2aa34084c3b727ed6d70e4350990a092')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e3ceca0f6465e620abba7656a08770ee')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c988dbd41e7aa95928c14c6b4ab57e24')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('19a437265a397939cd454969a44a1e3f')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('16136cabe503e8a4c5a0998717cac4a9')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6a253d5b7d195d337913d4f57727cce4')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('1990f3bd42aa723573bd6cdaae1a7c98')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6180b6ed12b57a62496b18330aa89214')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('9ca0427a9089071c0143f1656933b017')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('a38ddfb8972a88f08959c227d9a6226e')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('7edc353a2b2383195170d03b853ad7ba')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('10b7f32e06574d821ce9e02931267ef1')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('15b7b08c84b6b401f8c52cca964f22b0')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('451b871d91ca07bdfac7782ee8674bbe')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('17c5fa5d2730224cbe08137349d7b8d5')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('b89fd169186e00383882093c42e928bf')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e556b61ca6f1dd002b1a4817977c64b7')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('b0dd44a0584b5e4c6be81d13999c3924')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c278a173466072e98b356ab1f54e51d0')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('2d11909e160133256f9297981d7cdf9e')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('f63f42fa7b5f1d1f7bbc34e3a4978375')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('773314749d68b7999f202914eef8dfcf')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6ea4cd46f1131e2d9371063af82cb3c4')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('967f084dca85ffdc09e62946b7cabae8')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('2ba53c58b3a1624e787ba2d9a73853a0')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('8d8af117a8a3147da9a67589c64e6493')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('d10901ca85862b0cf2fa3c7431c45d8a')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('4bca2cbdc35c06f59873422ca91ac4d2')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('86f73d37a968e910cb9a6e5d042c0674')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('4c9f46e733d5d6a9f31fefee1a3be5d8')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c0850ef942c5ef99b9cac3b868eb667e')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('6256df894dd5c10b8d0b5429cc53c006')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('825b379e0476948f3f247993ea364532')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('73ca91a750f00b8b2fbffed51bd62f36')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('852b3e58e7cb68239c75e618afa9cbc1')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('08d42d21a3f976d4cf6f898e373aa9ed')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('2778c2099f4da0b1496000ecee5ba0fe')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('04d74836ca494bb69fe5f199791537d6')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e1d596dfc08e440328b4ba42c57a7403')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('a84a06e267ae45bb2f94f1b86c7dc0cc')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c7adee0bbc63b9b50fca9089ac035b52')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('155134468cf2c589fccdb026f529ee24')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('ff8fcf3effc82cba16ff95c86c5ad648')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5dde81504f9fa4d42a33331a9ac37ccb')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('70fefe44b48a173a2d26016cb7a6e77f')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('66c6de2df005a55406cbdb330f075264')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('739a4f75225a899ca1a10a6fd3a77101')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('54d42b8fd790c876380529928ebe4b17')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('ac2a9bf6eb40cd7f46fd831bb77aa351')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('015562ca65007e6b6bd30d25bafc5257')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c09e55d5b63f0ccfb0b244ca9d4e3e6b')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('9a3c9a3b89be35a9932edefe23a3448b')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('f59056365749ab4b34c5964913bc8ddc')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('23cb202b3dee36259c636c22ee9c3c2f')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('42461b5a6b7fe0ba406cdd002b4572db')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('178a37879aee749c74ad9c035929ba15')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('57e6be0331dc7e1c8c040d197dad84a3')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('4204efd2a0cd202228be00a797f16985')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('9c4e1166a9798fad3db17808ffaa063f')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c4aa9d1d4788a74643a9f5dabcde0a22')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e11883047ea9e993aab56928269c7cd9')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('074e96f678ff7f9805715d3390025eab')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('a8ec0b0203e2aceb029e15c0dadd33e7')}}">
-       </li>
-      </ul>
-      <h3 inner-text="{{localize('febefc7d6889c3596b385ce9e499f694')}}">
-      </h3>
-      <ul>
-       <li inner-h-t-m-l="{{localize('3a71bb08e251283657a58ff820c22828')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('b2645dc3232afa0115ca56b97b300d3a')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('2451ca95b61ed5e2e6e5f9b828ac3de6')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('b92aff344e1f97fadcb42fadf23175dd')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c27d5812bf655c92c49a9d5529222739')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('a179eb12deeda39364a6630c30591ea4')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('8538f083a0ed0956dcc5f401cd0041de')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('e8773f2568d74f1ac2ad0a0055983f2e')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('bd4a9380ca4953ddbe46dd27c0a9ac0e')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('cb8497dd333c782debdc7471cdb7a4b5')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('4e234b8ba283c437c35cec98e833180e')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('24f5c004c9f9f909392dbe3bfe7ed4d8')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('ad87167b696087142a48fb13795b9fb7')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('5f3ed22d291dabaf2997b547093fe8b6')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('32b557909419a8ffaa5cf64219606117')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('9928bf96c52f3abc9e0c3e8b4b2f4dfe')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('c91deb2d7d2a543e2529a11a995d79a0')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('657a187c6cfedf6807bc44b9d75e0225')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('baa612b56f99252f6395a2247f08115c')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('bc05baa91db1a39207455d8682db09bb')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('3107052c1d1a05b061dd639816cd8d97')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('18f6c0c800e883b805259206e09c9dc2')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('dab218bd63ce5c3322db878c3302a03c')}}">
-       </li>
-      </ul>
-      <h3 inner-text="{{localize('d48dc78e94c617f2afb5eefa8ee746b4')}}">
-      </h3>
-      <ul>
-       <li inner-h-t-m-l="{{localize('d5db9d8fcdcae4fe4087f1735d1e5361')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('61986fff07e7b08a3d65a6fa31e2483e')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('455202a08aa4e84acc102607af114e73')}}">
-       </li>
-       <li inner-h-t-m-l="{{localize('b08dfb3375705661377669c369b24e86')}}">
-       </li>
-      </ul>
-     </article>
-    </section>
-   </main>
-  </div>
- </template>
- <script>
-  class SCMethodologyPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+       </ul>
+       <p inner-text="{{localize('11eee9d2cca01c458e4519ee5d4ba2c2')}}">
+       </p>
+       <h3 inner-text="{{localize('b39608da2dbefb56120b7d772fe16ce2')}}">
+       </h3>
+       <p inner-text="{{localize('16da01e7c0c332965df4af2627f6b252')}}">
+       </p>
+       <p inner-text="{{localize('551184d2d79ffaec0349e558fd338fb0')}}">
+       </p>
+       <h3 inner-text="{{localize('69d5f629a9a90c89ae453836b3f1d2ad')}}">
+       </h3>
+       <p inner-text="{{localize('86c3d8e37d4a8ecf477083c01a3dc514')}}">
+       </p>
+       <h2 id="item3" inner-text="{{localize('6178fce9b4cf59a18f3b3457671d4ad2')}}">
+       </h2>
+       <p class="byline" inner-text="{{localize('871c2cab9a5e8da6b3c38bbf3340a08a')}}">
+       </p>
+       <p inner-text="{{localize('310e1b636e1a31ba06562606a294250f')}}">
+       </p>
+       <p inner-h-t-m-l="{{localize('3028af1abb14f608cea2604540b51667')}}">
+       </p>
+       <p inner-text="{{localize('a41fc7383bb68d077e36d5e42ae2e93b')}}">
+       </p>
+       <p inner-h-t-m-l="{{localize('96f1e91eb7d01ed68c84f846f3246077')}}">
+       </p>
+       <p inner-h-t-m-l="{{localize('8ddf4971ea9077a44bcb848ecab05d05')}}">
+       </p>
+       <p inner-text="{{localize('75e444153f25893b381c7867b3a8ec23')}}">
+       </p>
+       <p inner-h-t-m-l="{{localize('128a97724dc2b5445486e884dd56cd21')}}">
+       </p>
+       <p inner-text="{{localize('836abb440828b4251dbca99a052ce0a2')}}">
+       </p>
+       <p inner-text="{{localize('48a05a4d17ddc519129a468f98bdddf6')}}">
+       </p>
+       <p inner-text="{{localize('37ed750668f9b741645c231d3b0e7565')}}">
+       </p>
+       <h2 id="item4" inner-text="{{localize('f75f3035b821fa66870ee397875add1c')}}">
+       </h2>
+       <h3 inner-text="{{localize('5b6423b0b87bc8f03d2d0a8dae24bd5e')}}">
+       </h3>
+       <p inner-text="{{localize('6eb60391fc7b1c9b0a834c3b48fd21b7')}}">
+       </p>
+       <p inner-text="{{localize('a9d0fdb3b1cf0954679b93e03cfc300b')}}">
+       </p>
+       <p inner-text="{{localize('8307b8f6cbfa29406e296fdcdb530626')}}">
+       </p>
+       <p inner-text="{{localize('e22e21ef6ef2d931b49c490fcd902dc3')}}">
+       </p>
+       <p inner-text="{{localize('94b0a2594d7abed37a10ee6c55f5b95f')}}">
+       </p>
+       <h3 inner-text="{{localize('3b261136e3c33f35e0a58611b1f344cb')}}">
+       </h3>
+       <p inner-text="{{localize('7fec10ff9bb82cbcf4842ca78619054e')}}">
+       </p>
+       <h3 inner-text="{{localize('a441f933e0026f55ccff38b534f98a53')}}">
+       </h3>
+       <p inner-text="{{localize('1d97ad9220bfcc713a4a2179f28ab2fd')}}">
+       </p>
+       <h3 inner-text="{{localize('a59ae7443136e64154d5ee5456c74717')}}">
+       </h3>
+       <p inner-text="{{localize('aa6de37e85492345f1cd711fe947ba1d')}}">
+       </p>
+       <h3 inner-text="{{localize('0b8d92bc19b720bb1065649535463409')}}">
+       </h3>
+       <p inner-text="{{localize('47d792982533319a08eab82b501f6f75')}}">
+       </p>
+       <h2 id="item5" inner-text="{{localize('e51e08a727173e8719e480316459991e')}}">
+       </h2>
+       <p inner-text="{{localize('18832946710117f04b88d6d97b98cb49')}}">
+       </p>
+       <p inner-text="{{localize('dbf9d52ead8e7bf1cbf7e600ccfed1ca')}}">
+       </p>
+       <p inner-text="{{localize('436cedbbefed2e773d5c4989cd7139ff')}}">
+       </p>
+       <h3 inner-text="{{localize('d95867deadfe690e40f42068d6b59df8')}}">
+       </h3>
+       <p inner-text="{{localize('bae70a34625181909acca4f7f9b24473')}}">
+       </p>
+       <h3 inner-text="{{localize('98d850ac37e182a8073f35e7fc023a95')}}">
+       </h3>
+       <p inner-text="{{localize('eb581bd1f993c5ac1ea75a35fc4c5f3d')}}">
+       </p>
+       <p inner-text="{{localize('cc98df7994122ceba235bfab0cfbfd82')}}">
+       </p>
+       <p inner-h-t-m-l="{{localize('6e810620148a0aab741844b901b6d74d')}}">
+       </p>
+       <h3 inner-text="{{localize('1b8acacb35cfc8196fc53aa6d960581a')}}">
+       </h3>
+       <p inner-text="{{localize('8f5eda39d7965bcad269571abf2d97c3')}}">
+       </p>
+       <ul>
+        <li inner-text="{{localize('7998ef75d60296fd326b97a5d43dce14')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('a8bc43a1d6afc977f4c741e9851b859a')}}">
+        </li>
+        <li inner-text="{{localize('de5e615c14a2a06ea6d831729dd45e4e')}}">
+        </li>
+        <li inner-text="{{localize('99776797ba1f327c736998fe8e5b36c7')}}">
+        </li>
+        <li inner-text="{{localize('39607c24adc406d6903c863f2f2ba32d')}}">
+        </li>
+       </ul>
+       <p inner-h-t-m-l="{{localize('1feb9ff466925b2d9df1e1df0408da8e')}}">
+       </p>
+       <h2 id="item6" inner-text="{{localize('b05a71de14cfda3d81ac57506942dc93')}}">
+       </h2>
+       <h3 inner-text="{{localize('c53ac1e8d8cdec49a502ac43a8bbeaa3')}}">
+       </h3>
+       <p inner-text="{{localize('2ea8e03b81edfdfb931b1b8b06da20fc')}}">
+       </p>
+       <ul>
+        <li inner-h-t-m-l="{{localize('e9744ab41945bf9a81880a7ff66a1208')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('31418e091c63dd5a75260d22fcd21900')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('8eb6760e4c23428a5e58b725420a4ff8')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('bff6250a6d02ae24cee9dc872ca0c75f')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('f44e54b6e7619c780dbafd8803d30670')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('2b471b4b3942500b58fb46f529fba799')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('db245dd006359a364c612fe4f5ba737c')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('fd7a4d5a6b1c20768707f3ece97feb20')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('48b3fecb0e2c038c1683fd7bc6532a00')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('d39a82712e9ba801a8d7792b9ef28103')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('d0f8308b816d5de3e3212ef76a054375')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('a7735a61e6a7b0c3d5bda0ddc932a891')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('fe8126b83dce094e36ab88114a5b83d2')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('9862d2a07a699d6b5167c8cd91c27d3a')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('0d48e01c454dc61d3f6f5bc276242001')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('3f89f52bdb93db7284454b934df885da')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('a2b13db637b71115c8d103219e60896d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('abbe2a6d6ba70b2f2babc8d89a35ebd7')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('f1ed2f611f8c07b9b9393ea7443df3a0')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('37a911a5909d6225a91f01183c12b708')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('d37bbbadb16353199aea48ee3bce95ac')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('89ad6f3900014c3abf5282e535807c6c')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('65091fab42f76ddff066836ba712980a')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('7f2e254e25c92ed0850527408b0c391d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e94ab487afba2dd05b642b2aa1e8d94d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5f3a37ff564d0b0ea83c1b39b6475ca8')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c0944b9b5588ce0d484bd9f3765f7da4')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('0dd90c1acc29ca05bdb397caacf0b4a3')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('4568697acea44a2d356eea52f76201f7')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('d5421a9d514e09129860766b54f5ea4f')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('a005ec6fa525cd97aa9a86834390103d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e525b3d1cf246dac5a3777fa9a9eb6d1')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('6e9f71ab2e8c22edf3f1f048fcc73743')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('0be133876d86ab037d974227ebebc445')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('b8b37e822ab3a54e63fd6a959a23678d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e582ca77ed9e9d0943972fa5e186e77d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('93b13735d67539bb203a944811f203b9')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('08af662706602231a3d5361ab8f77280')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('3c97fbf7680e0de8fa89a59b5603bdbf')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('a1cb8868b0e638e35db8318da6c1ff52')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('1a48862a3dd89771e8db0113c53496b6')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('bb3d9b4bbc69944a14003ddee164c657')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e4848bb661d2a7a421de75bfb92f97e9')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('acbc9b650160eace6295cc7f3ffe4c62')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('4f616a3b40d9136782328cf50a693c1b')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('00a3ddc564e4f4c629b8aba50921f425')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('809191ac07d17cc6a6bbfe475bafd4ff')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('52b9a3da45d78eb73c034f61a67c1850')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('b61f8bc87d97ebf719cfa6afdba77867')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c2e4b0dcccad2bffcc624caaa828e79b')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('31c475047508feed4324c6c23c3fcd9d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('218fd995c06951abbb39be33300d03aa')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('900f9291fdff901719a2a13c1d75e4dc')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('aa2238f29f56c1ab59efb7f94d11424b')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('ae2f1f4f21bf1b991efb11b51e38c3ad')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('f95f44a0ad91bc00f4e0ab470fee56ac')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('12d8dea94cbee554e21e46bb0107e8db')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('3072297faf6cf610a626e789b7763ad2')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('d712121cc38974861cc627cfdb5c35d0')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5309bf5dfb54e0f7edb2bd5798d78af3')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('0d3015c6aa06ebe3a7151b1f644cbe27')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('7eefa5bc88c604ef15dca7a1e4522238')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('6b1b063006e2656fc246182854300187')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('219505ee3699b8f86dfe1b44afe4797c')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('bb7ce7a81276a56323137c30d559fa5d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('d284b72e15340da6792bcafa3ef17621')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('8995ed9d7d6edc9bf804255b6de5aa2c')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('90eb7521162eb7083895a27be5e978fe')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('075dc7407457282984c0201e7dd8a8a2')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('45399c050b1001fae316efdbc6d1543c')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('dec07f5bc27ebe0d0d17e0ec7d16d9c5')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('ca04264dc47f1fdd653dd10d206a9bd1')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c42fab9e4e2d72f41d34b4515f5f5c51')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('74429e91b39e3881b3783c8405411aa1')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('48fdb3c8cd73dda8602d28783e2538b5')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('f6f4625dca9cadc7bf73ee6e489ade2f')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('bf91e7a759e77eb6093e6e1055447e1e')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('eb0857636a359ae2de6fb9c2de3aa7e2')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('3878a8862bcf29ca75402fc6bd2ef362')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('500fb6b07770d1174ae639074b81e96f')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('2aa464006db492db05165dc7596a15cd')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5332a01f3960fe1c2f8eb5e636663a88')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('34c52529e82e7f346d6294c878d9bdd6')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5d715e4ac7f03124eff5ccf92f71913c')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('9ca428721feaaf75ded460e78c432f9c')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('6eb5448d0333c5fcf3a4f610dbc4835b')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('dda795216ad26df0de9c1973ed3a4345')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('6c0db3119ffa02170417b88038079922')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('f84024032874151e9ea5dfd6dc963219')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('f1d482b92a358d594f05bd08027e53f2')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('7291ef60424ea0b5bc120c8c15c3d6ec')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5e5410137dc088b69d3b4ed3cca1dbba')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('28e878da392f88fa8b344843f0286736')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('fb00a64ed4d2839ceb1e9be040d28d9b')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('1eaaeebb9a2895c96f3a83084dbbd2e7')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('6713976462f2177c478fe94c2db04b09')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('98d8f37a3eab61c3a29f6e738f7d6834')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('40574bd7f6685147cfed820f7942d9af')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('35e5f0a7c8c51cada990339e5737cf15')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('0c41363b693685ee1d2dcb194b39a0a2')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('3e6e8c4432f07afe7b3780053a66daac')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('0fcab5e780c3e578f3e2f8838583ae59')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('538b5c3244aa5399640bd81254a45d28')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('d5020a85fd5c5bf4f5f11b29a801cd17')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('dd0915943143c0ce4769ecdb594ee5e2')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('1b2dc8b062e2b9c34ba4a835a8bafd76')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('f73b6b9d0ffc9addf7827ed91edae1a0')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('3ab1a80bfdc52e30bfcec9c2b2f0cd3e')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5e74d9308b5fe142410cd6a5d6a37685')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('48cc8123513c3ae388acad770c50fe16')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5c0851bc3fb09e4f78d4ea527c7dfd3a')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('aa35b8dc3909956668f60eaa1519e430')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('1f32e59e17720ec8d9d89723c4a22397')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('957af6d68b4b7ef481778df7048b79b4')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('55d95c57a109601cda68cd0b3c2a4eee')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('974e1fe964afdd5dcd65dc745454d5c1')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e1629e6c93eb02b89ad542a1ca91e5b4')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e1da7208d7d0d032b32b71fc46d3511d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('7de4721f0f63ec8818c9b9ca3cd37e70')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('8f8f73890e7ae5f3cea897e1d42e08dc')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('9ad0742159d33be2d71e48bbfd27bc7c')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5df62e8abb3a352503c54936dd365568')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('186d9734c4252f7308f899a686fb9de0')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('fac155602bb0a95d15a2ae31dfeaf8ec')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('be5187cf2ee684ac8906f9f8fe3ba68b')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5a848519536af553103cfe11a4ef563b')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('fde0962696c418d476e0a1d87318592d')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5009d7636291872fb009132721232861')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('2aa34084c3b727ed6d70e4350990a092')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e3ceca0f6465e620abba7656a08770ee')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c988dbd41e7aa95928c14c6b4ab57e24')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('19a437265a397939cd454969a44a1e3f')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('16136cabe503e8a4c5a0998717cac4a9')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('6a253d5b7d195d337913d4f57727cce4')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('1990f3bd42aa723573bd6cdaae1a7c98')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('6180b6ed12b57a62496b18330aa89214')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('9ca0427a9089071c0143f1656933b017')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('a38ddfb8972a88f08959c227d9a6226e')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('7edc353a2b2383195170d03b853ad7ba')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('10b7f32e06574d821ce9e02931267ef1')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('15b7b08c84b6b401f8c52cca964f22b0')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('451b871d91ca07bdfac7782ee8674bbe')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('17c5fa5d2730224cbe08137349d7b8d5')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('b89fd169186e00383882093c42e928bf')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e556b61ca6f1dd002b1a4817977c64b7')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('b0dd44a0584b5e4c6be81d13999c3924')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c278a173466072e98b356ab1f54e51d0')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('2d11909e160133256f9297981d7cdf9e')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('f63f42fa7b5f1d1f7bbc34e3a4978375')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('773314749d68b7999f202914eef8dfcf')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('6ea4cd46f1131e2d9371063af82cb3c4')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('967f084dca85ffdc09e62946b7cabae8')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('2ba53c58b3a1624e787ba2d9a73853a0')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('8d8af117a8a3147da9a67589c64e6493')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('d10901ca85862b0cf2fa3c7431c45d8a')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('4bca2cbdc35c06f59873422ca91ac4d2')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('86f73d37a968e910cb9a6e5d042c0674')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('4c9f46e733d5d6a9f31fefee1a3be5d8')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c0850ef942c5ef99b9cac3b868eb667e')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('6256df894dd5c10b8d0b5429cc53c006')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('825b379e0476948f3f247993ea364532')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('73ca91a750f00b8b2fbffed51bd62f36')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('852b3e58e7cb68239c75e618afa9cbc1')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('08d42d21a3f976d4cf6f898e373aa9ed')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('2778c2099f4da0b1496000ecee5ba0fe')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('04d74836ca494bb69fe5f199791537d6')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e1d596dfc08e440328b4ba42c57a7403')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('a84a06e267ae45bb2f94f1b86c7dc0cc')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c7adee0bbc63b9b50fca9089ac035b52')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('155134468cf2c589fccdb026f529ee24')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('ff8fcf3effc82cba16ff95c86c5ad648')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5dde81504f9fa4d42a33331a9ac37ccb')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('70fefe44b48a173a2d26016cb7a6e77f')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('66c6de2df005a55406cbdb330f075264')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('739a4f75225a899ca1a10a6fd3a77101')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('54d42b8fd790c876380529928ebe4b17')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('ac2a9bf6eb40cd7f46fd831bb77aa351')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('015562ca65007e6b6bd30d25bafc5257')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c09e55d5b63f0ccfb0b244ca9d4e3e6b')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('9a3c9a3b89be35a9932edefe23a3448b')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('f59056365749ab4b34c5964913bc8ddc')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('23cb202b3dee36259c636c22ee9c3c2f')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('42461b5a6b7fe0ba406cdd002b4572db')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('178a37879aee749c74ad9c035929ba15')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('57e6be0331dc7e1c8c040d197dad84a3')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('4204efd2a0cd202228be00a797f16985')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('9c4e1166a9798fad3db17808ffaa063f')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c4aa9d1d4788a74643a9f5dabcde0a22')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e11883047ea9e993aab56928269c7cd9')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('074e96f678ff7f9805715d3390025eab')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('a8ec0b0203e2aceb029e15c0dadd33e7')}}">
+        </li>
+       </ul>
+       <h3 inner-text="{{localize('febefc7d6889c3596b385ce9e499f694')}}">
+       </h3>
+       <ul>
+        <li inner-h-t-m-l="{{localize('3a71bb08e251283657a58ff820c22828')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('b2645dc3232afa0115ca56b97b300d3a')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('2451ca95b61ed5e2e6e5f9b828ac3de6')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('b92aff344e1f97fadcb42fadf23175dd')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c27d5812bf655c92c49a9d5529222739')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('a179eb12deeda39364a6630c30591ea4')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('8538f083a0ed0956dcc5f401cd0041de')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('e8773f2568d74f1ac2ad0a0055983f2e')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('bd4a9380ca4953ddbe46dd27c0a9ac0e')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('cb8497dd333c782debdc7471cdb7a4b5')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('4e234b8ba283c437c35cec98e833180e')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('24f5c004c9f9f909392dbe3bfe7ed4d8')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('ad87167b696087142a48fb13795b9fb7')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('5f3ed22d291dabaf2997b547093fe8b6')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('32b557909419a8ffaa5cf64219606117')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('9928bf96c52f3abc9e0c3e8b4b2f4dfe')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('c91deb2d7d2a543e2529a11a995d79a0')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('657a187c6cfedf6807bc44b9d75e0225')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('baa612b56f99252f6395a2247f08115c')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('bc05baa91db1a39207455d8682db09bb')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('3107052c1d1a05b061dd639816cd8d97')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('18f6c0c800e883b805259206e09c9dc2')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('dab218bd63ce5c3322db878c3302a03c')}}">
+        </li>
+       </ul>
+       <h3 inner-text="{{localize('d48dc78e94c617f2afb5eefa8ee746b4')}}">
+       </h3>
+       <ul>
+        <li inner-h-t-m-l="{{localize('d5db9d8fcdcae4fe4087f1735d1e5361')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('61986fff07e7b08a3d65a6fa31e2483e')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('455202a08aa4e84acc102607af114e73')}}">
+        </li>
+        <li inner-h-t-m-l="{{localize('b08dfb3375705661377669c369b24e86')}}">
+        </li>
+       </ul>
+      </article>
+     </section>
+    </main>
+   </div>
+  </template>
+  <script>
+   class SCMethodologyPage extends SCStaticPage {
           static get is() {
               return 'sc-methodology-page';
           }
@@ -655,10 +656,6 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
-                  },
-                  currentId: {
-                      type: String,
-                      value: ''
                   }
               }
           }
@@ -666,28 +663,6 @@
           ready() {
               super.ready();
               this.loadResources(this.resolveUrl(`/localization/elements/static_methodology-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-              this.shadowRoot.querySelector('main').addEventListener('click', () => {
-                  setTimeout(() => {
-                      this._scrollToSection(window.location.hash);
-                  }, 0);
-              });
-              setTimeout(() => {
-                  this._scrollToSection(window.location.hash);
-              }, 1000);
-          }
-
-          // Scrolls to the chosen section
-          _scrollToSection(sectionId) {
-              if (!sectionId || this.currentId === sectionId) return;
-              const firstSection = this.shadowRoot.querySelector(sectionId);
-              if (firstSection) {
-                  firstSection.scrollIntoView({
-                      behavior: 'instant',
-                      block: 'start',
-                      inline: 'nearest'
-                  });
-              }
-              this.currentId = sectionId;
           }
 
           _siteLanguageChanged() {
@@ -701,5 +676,6 @@
       }
 
       customElements.define(SCMethodologyPage.is, SCMethodologyPage);
- </script>
-</dom-module>
+  </script>
+ </dom-module>
+</link>
