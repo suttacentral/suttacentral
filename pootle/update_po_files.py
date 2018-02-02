@@ -15,7 +15,8 @@ def _run_command(command):
 def update_project(name: str):
     _run_command('pootle fs fetch {name}'.format(name=name))
     _run_command('pootle fs resolve --overwrite --pootle-wins {name}'.format(name=name))
-    _run_command('pootle fs sync {name}'.format(name=name))
+    proc = _run_command('pootle fs sync {name}'.format(name=name))
+    proc.stdout.read()  # I don't know why it has to be here but it's not working otherwise.
 
 
 def get_projects() -> Generator[Path, None, None]:
