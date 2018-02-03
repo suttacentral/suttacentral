@@ -426,13 +426,11 @@
                   }
                   let nextSection = section.nextElementSibling;
                   if (!nextSection) {
-                      this._changePaddingToMargin(section);
                       break;
                   }
                   let sectionLink = nextSection.querySelector('.textual-info-paragraph');
                   if (sectionLink) {
                       if (last) {
-                          this._changePaddingToMargin(section.nodeName === 'A' ? section : section.nextElementSibling);
                           break;
                       } else if (sectionLink.id === idTo) {
                           last = true;
