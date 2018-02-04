@@ -13,7 +13,5 @@
     "viewerjs": "^0.10.0",
     "workbox-sw": "^2.1.2"
   },
-  "devDependencies": {
-    "workbox-cli": "^2.1.2"
-  }
+  "devDependencies": {}
 }
