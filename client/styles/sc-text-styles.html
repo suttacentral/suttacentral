@@ -34,7 +34,7 @@
 
       .html-text-content section {
         margin: 0 auto !important;
-        padding: var(--sc-size-lg) 10% var(--sc-size-lg);
+        padding: var(--sc-size-lg) 10% var(--sc-size-xxl);
         max-width: 720px;
         display: block;
       }
@@ -112,12 +112,6 @@
           text-shadow: 0 0 var(--sc-secondary-background-color);
           white-space: normal;
         };
-      }
-
-      /* This rule prevents a problem with quote hanger */
-
-      p > * {
-        text-indent: initial;
       }
 
       /*Descriptions of all classes below can be found in zz1 and zz3 test files*/
@@ -252,6 +246,12 @@
         color: var(--sc-secondary-text-color);
         @apply --sc-sans-font;
       }
+      
+      #text:lang(pli) p,
+      #text:lang(san) p {
+        word-wrap: break-word;
+        overflow-wrap: break-word
+      }
 
       .pe {
         font-style: italic;
@@ -368,7 +368,7 @@
 
       hr {
         width: 33%;
-        margin: 1.5rem auto
+        margin: 1em auto 0
       }
 
       .t-gaiji {
@@ -442,16 +442,17 @@
       .counter,
       .t-counter {
         @apply --sc-sans-font;
+        @apply --paper-font-body2;
         color: var(--sc-secondary-text-color);
-        font-size: 0.8rem;
       }
 
-         h1, h2, h3, h4, h5, h6, ul, ol, dd, p, figure, pre, table, fieldset, hr {
+         h1, h2, h3, h4, h5, h6, ul, ol, dd, p, figure, pre, table, fieldset {
          margin:1em 0 0 0;
        }
 
-       .hgroup + p {
-        margin-top:3rem;
+       .hgroup + p,
+       .hgroup + blockquote {
+        margin-top: var(--sc-size-xl);
       }
     </style>
   </template>
