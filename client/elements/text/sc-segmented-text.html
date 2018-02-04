@@ -636,10 +636,16 @@
 
           _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
               const paddingBottom = window.getComputedStyle(section).paddingBottom;
+              const marginTop = window.getComputedStyle(section).marginTop;
               if (paddingBottom && paddingBottom !== '0px') {
                   section.style.paddingBottom = '0';
                   section.style.marginBottom = paddingBottom;
               }
+              if (marginTop && marginTop !== '0px') {
+                  section.style.marginTop = '0';
+                  section.style.paddingTop = marginTop;
+              }
+
               if (idFrom.includes('.') || (idTo && idTo.includes('.'))) {
                   let newSection = section.nextElementSibling;
                   if (isSideBySideView && !wrapperAlreadyExists) {
