@@ -261,7 +261,7 @@ It is in effect a miniature version of the suttaplex-card
           _computeTitle(item) {
               const uidLanguage = item.uid.substring(0, 3);
               if (Object.keys(this.rootLangMappings).indexOf(uidLanguage) !== -1) {
-                return this._transformId(item.to, item.uid, this.expansionData, 1);
+                return this._transformId(item.to, this.expansionData, 1);
               } else if (item.translated_title) {
                   return item.translated_title;
               } else if (item.original_title) {
@@ -341,7 +341,7 @@ It is in effect a miniature version of the suttaplex-card
                 const id_part = this._getParagraphRange(rootId);
                 return `${sc_acronym}${id_part}`;
               } else {
-                sc_acronym = this._transformId(item.to, item.uid, expansionData, 0);
+                sc_acronym = this._transformId(item.to, expansionData, 0);
               }
               return sc_acronym;
           }
@@ -352,11 +352,15 @@ It is in effect a miniature version of the suttaplex-card
           // according to the data in the expansion-table. 
           // So f.i. 'an3.4#23-#25' becomes 'AN 3.4 #23-25' and 'lzh-sarv-bi-vb-np1' becomes
           // 'Lzh Sarv Bi Vb NP 1'
-          _transformId(rootId, uid, expansionData, idOrName) {
+          _transformId(rootId, expansionData, idOrName) {
+              if (!rootId || !expansionData) {
+                  return '';
+              }
               rootId = rootId.replace('~','');
               let id_part = this._getParagraphRange(rootId).replace('-','–');
               let sc_acronym = '';
-              const uid_parts = uid.split('-');
+              let root_part = rootId.split('#')[0];
+              const uid_parts = root_part.split('-');
               let tail = '';
               uid_parts.forEach(item => {
                 if (!expansionData[0][item]) {
