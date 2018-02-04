@@ -324,7 +324,7 @@ It is in effect a miniature version of the suttaplex-card
               if (item.acronym) {
                 sc_acronym = item.acronym.split('//')[0];
                 const rootId = item.to.replace('~','');
-                const id_part = this._getParagraphRange(rootId);
+                const id_part = this._getParagraphRange(rootId).replace('-','–');;
                 return `${sc_acronym}${id_part}`;
               } else {
                 sc_acronym = this._transformId(item.to, item.uid, expansionData, 0);

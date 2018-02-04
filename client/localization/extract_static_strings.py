@@ -15,32 +15,65 @@ LOCALIZATION_JSONS_DIR = str(CURRENT_FILE_DIR / pathlib.Path('../localization/el
 
 NON_BLOCK_ELEMENTS = ['a', 'span', '\n', 'code', 'br', 'cite', 'strong', 'i', 'em', 'img', 'paper-button']
 EXCLUDE_BLOCKS = ['style', 'iframe']
+TEXT_ATTRS = ['title', 'alt']
+
+
+def replace_attrs(element, data):
+    for attr in element.attrs:
+        if attr in TEXT_ATTRS:
+            string_hash = hashlib.md5(element[attr].encode()).hexdigest()
+            data[string_hash] = element[attr]
+            element[attr] = f"{{{{localize('{string_hash}')}}}}"
+
+def hash_element_content(element, data):
+    string = ''.join((str(child) for child in element.children))
+    string = ' '.join(string.split())
+
+    string_hash = hashlib.md5(string.encode()).hexdigest()
+
+    if isinstance(element, NavigableString) or all(isinstance(child, NavigableString) for child in element.children):
+        element.clear()
+        element['inner-text'] = f"{{{{localize('{string_hash}')}}}}"
+    else:
+        element.clear()
+        element['inner-h-t-m-l'] = f"{{{{localize('{string_hash}')}}}}"
+    data[string_hash] = string
 
 
 def recursive_traversal(element, data):
     if element.name in EXCLUDE_BLOCKS:
         return
 
-    children = [child for child in element.children
-                if not (child.name in NON_BLOCK_ELEMENTS or isinstance(child, NavigableString))]
-
-    if children:
-        for child in children:
-            recursive_traversal(child, data)
-    else:
-
-        string = ''.join((str(child) for child in element.children))
-        string = ' '.join(string.split())
-
-        string_hash = hashlib.md5(string.encode()).hexdigest()
-
-        if isinstance(element, NavigableString) or all(isinstance(child, NavigableString) for child in element.children):
-            element.clear()
-            element['inner-text'] = f'{{{{localize(\'{string_hash}\')}}}}'
+    block_children = []
+    non_block = []
+    non_block_with_attr = []
+    navigable_strings = []
+    for child in element.children:
+        if isinstance(child, NavigableString):
+            if str(child) != '' and not child.isspace():
+                navigable_strings.append(child)
+        elif child.name not in NON_BLOCK_ELEMENTS:
+            block_children.append(child)
+        elif any(child.has_attr(attr) for attr in TEXT_ATTRS):
+            non_block_with_attr.append(child)
         else:
-            element.clear()
-            element['inner-h-t-m-l'] = f'{{{{localize(\'{string_hash}\')}}}}'
-        data[string_hash] = string
+            non_block.append(child)
+
+    if block_children:
+        for child in non_block_with_attr:
+            replace_attrs(child, data)
+        for child in block_children:
+            replace_attrs(child, data)
+            recursive_traversal(child, data)
+        for navigable_str in navigable_strings:
+            string_hash = hashlib.md5(navigable_str.encode()).hexdigest()
+            data[string_hash] = str(navigable_str)
+            navigable_str.replace_with(NavigableString(f"{{{{localize('{string_hash}')}}}}"))
+        for block in non_block:
+            hash_element_content(block, data)
+
+    else:
+        hash_element_content(element, data)
 
 
 def extract_strings_from_template(file: pathlib.Path) -> Tuple[BeautifulSoup, dict]:
