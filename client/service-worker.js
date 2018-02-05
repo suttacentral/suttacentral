@@ -17,7 +17,7 @@ sw.router.registerRoute(
 );
 
 sw.router.registerRoute(
-    new RegExp('https://next.suttacentral.com/api/(.*)'),
+    new RegExp('https://next.suttacentral.net/api/(.*)'),
     sw.strategies.networkFirst()
 );
 

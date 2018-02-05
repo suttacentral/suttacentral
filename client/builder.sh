@@ -2,6 +2,7 @@
 echo "BUILDING FRONTEND FOR PRODUCTION"
 npm install
 npm install -g polymer-cli --unsafe-perm
+npm install -g workbox-cli
 polymer build --verbose
 
 # This is a workaround for polymer build incuding babelHelpers in the workbox-sw library.
