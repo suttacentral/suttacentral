@@ -1,3 +1,4 @@
 polib
 tqdm
 beautifulsoup4
+requests

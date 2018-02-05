@@ -22,18 +22,13 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
         border-collapse: separate;
         border-spacing: 0 var(--sc-size-sm);
         margin: 0 auto;
-        width: 90%;
-      }
-
-      @media screen and (min-width: 960px) {
-        .parallels-table {
-          max-width: 50vw;
-        }
+        width: 95%;
       }
 
       .parallels-root-cell,
       .parallels-parallel-cell {
         padding: var(--sc-size-sm);
+        padding-bottom: 0;
         border: var(--sc-border);
         border-radius: var(--sc-size-xxs);
       }
@@ -50,6 +45,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
       .parallels-root-cell {
         text-align: center;
+        min-width: 90px;
       }
 
       .parallels-root-id {
