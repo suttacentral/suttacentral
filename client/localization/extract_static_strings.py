@@ -8,6 +8,9 @@ import tqdm
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 
+AVAILABLE_LANGUAGES = ['en', 'pl']
+AVAILABLE_LANGUAGES.remove('en')
+
 CURRENT_FILE_DIR = pathlib.Path(os.path.dirname(os.path.realpath(__file__)))
 TEMPLATE_DIR = str(CURRENT_FILE_DIR / pathlib.Path('../elements/static-templates/'))
 STATIC_DIR = str(CURRENT_FILE_DIR / pathlib.Path('../elements/static/'))
@@ -24,6 +27,7 @@ def replace_attrs(element, data):
             string_hash = hashlib.md5(element[attr].encode()).hexdigest()
             data[string_hash] = element[attr]
             element[attr] = f"{{{{localize('{string_hash}')}}}}"
+
 
 def hash_element_content(element, data):
     string = ''.join((str(child) for child in element.children))
@@ -107,6 +111,26 @@ def run():
         with (element_dir / 'en.json').open('w') as f:
             formatted_data = {'en': data}
             json.dump(formatted_data, f, indent=4, ensure_ascii=False)
+
+        data = {k: '' for k in data.keys()}
+
+        for lang in AVAILABLE_LANGUAGES:
+            lang_file = element_dir / f'{lang}.json'
+            if lang_file.exists():
+                with lang_file.open() as f:
+                    existing_data = json.load(f)['pl']
+                for k in {*existing_data, *data}:
+                    if k not in data:
+                        existing_data.pop(k)
+
+                    elif k not in existing_data:
+                        existing_data[k] = ''
+            else:
+                existing_data = data
+
+            with lang_file.open('w') as f:
+                formatted_data = {lang: existing_data}
+                json.dump(formatted_data, f, indent=4, ensure_ascii=False)
 
 
 if __name__ == '__main__':
