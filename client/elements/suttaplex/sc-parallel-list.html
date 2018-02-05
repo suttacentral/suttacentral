@@ -358,6 +358,9 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           // So f.i. 'an3.4#23-#25' becomes 'AN 3.4 #23-25' and 'lzh-sarv-bi-vb-np1' becomes
           // 'Lzh Sarv Bi Vb NP 1'
           _transformId(rootId, expansionData) {
+              if (!rootId || !expansionData) {
+                  return '';
+              }
               let sc_acronym = '';
               let id_part = this._getParagraphRange(rootId).replace('--','–');
               let root_part = rootId.split('#')[0];
