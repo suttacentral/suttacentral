@@ -254,11 +254,14 @@
           }
 
           _shouldDisplayStepper(isLoading, translatedSutta) {
+              if (!translatedSutta) {
+                  return false;
+              }
               return !isLoading && (translatedSutta.next || translatedSutta.previous);
           }
 
           _shouldDisplayError(rootSutta, translatedSutta, networkError) {
-              return !(rootSutta || translatedSutta) || networkError;
+              return (!rootSutta && !translatedSutta) || networkError;
           }
       }
 
