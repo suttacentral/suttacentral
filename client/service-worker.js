@@ -1,4 +1,12 @@
-importScripts('/sw-generated.js');
+try {
+    importScripts('/sw-generated.js');
+} catch (e) {
+    console.warn('' +
+        'The precaching service worker did not load correctly!' +
+        'Local resources will not be cached for offline use.' +
+        'Ignore this if you are running in development mode.');
+    importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
+}
 
 const sw = new WorkboxSW();
 
@@ -9,7 +17,7 @@ sw.router.registerRoute(
 );
 
 sw.router.registerRoute(
-    new RegExp('https://next.suttacentral.com/api/(.*)'),
+    new RegExp('https://next.suttacentral.net/api/(.*)'),
     sw.strategies.networkFirst()
 );
 
@@ -28,10 +36,10 @@ sw.router.registerRoute(
 // Register navigation routes:
 sw.router.registerNavigationRoute('.', {
     whitelist: [
-        /^\/$/,
         /^\/*/
     ],
     blacklist: [
-        /^\/api/
+        /^\//,
+        /^\/api\/*/
     ]
 });
