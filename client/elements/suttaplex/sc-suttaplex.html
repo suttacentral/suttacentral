@@ -298,22 +298,20 @@
 
         <div class$="{{_addPaddingIfNoBlurb(item.blurb)}} card-actions">
           <div class="card-actions-left">
-            <template is="dom-repeat" items="[[item.translations]]" as="translation">
-              <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
-                <a class="author-link" href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
-                  <paper-button class="author-button" flat
-                                title$="{{localize('goToTranslation', 'author', translation.author)}}">
-                    [[translation.author_short]]
-                  </paper-button>
+            <template is="dom-repeat" items="[[_getUserLanguageTranslations(item.translations, language)]]"
+                      as="translation">
+              <paper-button class="author-button" flat
+                            title$="{{localize('goToTranslation', 'author', translation.author)}}">
+                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
+                  [[translation.author_short]]
                 </a>
-              </template>
+              </paper-button>
             </template>
           </div>
 
           <div class="flex-div">
             <div class="languagedrop">
-              <sc-language-menu language-choice="[[item.translations]]"
-                                input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
+              <sc-language-menu language-choice="[[item.translations]]" original-language="[[item.root_lang]]"
                                 root-id="[[item.uid]]" class="no-left-padding"></sc-language-menu>
             </div>
 
@@ -394,10 +392,6 @@
                   _toggleMoreIcon: {
                       type: String,
                       computed: '_computeToggleMoreIcon(opened)'
-                  },
-                  inputLanguage: {
-                      type: String,
-                      value: 'en' // Temporary hardcoded
                   },
                   // The suttaplex item
                   item: {
@@ -490,8 +484,8 @@
               return `${baseUrl}/${uid}/${lang}/${author_uid}`;
           }
 
-          _isChosenLang(lang) {
-              return lang === this.inputLanguage;
+          _getUserLanguageTranslations(items, language) {
+              return items.filter(item => item.lang === language);
           }
 
           _toggleParallelsOpened() {

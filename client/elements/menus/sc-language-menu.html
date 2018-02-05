@@ -99,12 +99,12 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
     </style>
-    <template is="dom-if" if="[[_shouldShowMenu(languageMenu)]]">
+    <template is="dom-if" if="[[_shouldShowMenu(languageMenu, language)]]">
       <paper-dropdown-menu class="language-menu-dropdown custom" label="{{localize('more')}}"
                            title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="top">
         <paper-listbox class="language-menu-listbox" slot="dropdown-content" selected="0">
           <template is="dom-repeat" id="languageMenuTemplate" items="[[languageMenu]]" as="translation">
-            <template is="dom-if" if="[[!_otherLanguage(translation, inputLanguage)]]">
+            <template is="dom-if" if="[[!_otherLanguage(translation, language)]]">
               <section class$="{{_rootLanguageClassOrStandard(translation)}} no-outline">
                 <a class="language-menu-url"
                    href="/[[rootId]]/[[translation.lang]]/[[translation.author_uid]][[_getParagraphRange()]]">
@@ -147,7 +147,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                       type: Array,
                       computed: '_computeLanguageMenu(languageChoice, rootLangMappings)'
                   },
-                  inputLanguage: String,
                   originalLanguage: String,
                   rootId: {
                       type: String,
@@ -155,7 +154,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   },
                   newLanguage: {
                       type: String,
-                      computed: '_otherLanguage(languageMenu, inputLanguage)'
+                      computed: '_otherLanguage(languageMenu, language)'
                   },
                   rootLangMappings: {
                       type: Object,
@@ -221,9 +220,9 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               }
           }
 
-          // does not list items that are from the inputLanguage because those are listed elsewhere.
-          _otherLanguage(languageMenu, inputLanguage) {
-              return !!(languageMenu && languageMenu.lang === inputLanguage);
+          // does not list items that are from the main website language because those are listed elsewhere.
+          _otherLanguage(languageMenu, language) {
+              return !!(languageMenu && languageMenu.lang === language);
           }
 
           _computeHide(checkText) {
@@ -239,9 +238,8 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               }
           }
 
-          _shouldShowMenu(languageMenu) {
-              return languageMenu.some(item => item.lang !== this.inputLanguage);
-
+          _shouldShowMenu(languageMenu, language) {
+              return languageMenu.some(item => item.lang !== language);
           }
 
           _computeAuthor(author) {
