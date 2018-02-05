@@ -84,6 +84,14 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
         color: var(--sc-disabled-text-color);
       }
 
+      .root-link {
+        text-decoration: none;
+        color: var(--sc-primary-accent-color);
+        letter-spacing: var(--sc-all-caps_-_letter-spacing);
+        text-transform: var(--sc-all-caps_-_text-transform);
+        font-weight: bold;
+      }
+
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -118,9 +126,11 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                 [[_transformId(rootId,expansionData)]]
               </div>
               <template is="dom-if" if="[[rootText]]">
-                <paper-button flat class="dense" title="{{localize('GoToTextInOriginalLanguage')}}">
-                  <a href="[[_computeUrl(rootId)]]">[[_computeFullLangName(rootLang)]]</a>
-                </paper-button>
+                <a class="root-link" href="[[_computeUrl(rootId)]]">
+                  <paper-button flat class="dense" title="{{localize('GoToTextInOriginalLanguage')}}">
+                    [[_computeFullLangName(rootLang)]]
+                  </paper-button>
+                </a>
               </template>
             </td>
             <td class="parallels-relation-cell">
