@@ -3,7 +3,7 @@ import json
 from elasticsearch import ConnectionError
 from flask import request, current_app
 from flask_restful import Resource
-
+from pathlib import Path
 from search import query as query_search
 
 class Search(Resource):
@@ -72,6 +72,10 @@ class Search(Resource):
         query = request.args.get('query', None)
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
 
+        author_file = Path('nextdata/additional-info/author_edition.json')
+        with author_file.open('r', encoding='utf-8') as authorf:
+            authors = json.load(authorf)
+
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
 
@@ -84,13 +88,14 @@ class Search(Resource):
                 uid = source['uid']
                 lang = source['lang']
                 author = source['author']
+                author_uid = self._get_author_uid(author, authors)
                 text_results.append({
                     'uid': uid,
                     'lang': lang,
                     'heading': source['heading'],
                     'is_root': source['is_root'],
                     'highlight': entry['highlight'],
-                    'url': f'/{uid}/{lang}/{author}'
+                    'url': f'/{uid}/{lang}/{author_uid}'
                 })
             results = {
                 'total': len(text_results),
@@ -100,3 +105,11 @@ class Search(Resource):
             return results
         except ConnectionError:
             return json.dumps({'error': 'Elasticsearch unavailable'}), 503
+
+    def _get_author_uid(self, author, authors):
+
+        for item in authors:
+            if item['long_name'] == author: 
+                return item['uid']
+
+        return None
