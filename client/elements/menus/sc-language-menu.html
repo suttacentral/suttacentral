@@ -99,26 +99,26 @@ Language-menu used in the suttaplex card for denoting which translations exist o
       }
 
     </style>
-    <template is="dom-if" if="[[_shouldShowMenu(languageMenu, language)]]">
+    <template is="dom-if" if="[[_shouldShowMenu(languageChoice, language)]]">
       <paper-dropdown-menu class="language-menu-dropdown custom" label="{{localize('more')}}"
                            title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="top">
         <paper-listbox class="language-menu-listbox" slot="dropdown-content" selected="0">
-          <template is="dom-repeat" id="languageMenuTemplate" items="[[languageMenu]]" as="translation">
-            <template is="dom-if" if="[[!_otherLanguage(translation, language)]]">
-              <section class$="{{_rootLanguageClassOrStandard(translation)}} no-outline">
-                <a class="language-menu-url"
-                   href="/[[rootId]]/[[translation.lang]]/[[translation.author_uid]][[_getParagraphRange()]]">
-                  <paper-icon-item class="language-menu-item" id='[[translation.id]]'
-                                   title="[[_getTranslationAuthorTitle(translation, localize)]]">
-                    <iron-icon class="iso-code-image" slot="item-icon" title="[[translation.lang_name]]"
-                               icon="[[_getLanguageIconName(translation.lang)]]"></iron-icon>
-                    <paper-item-body>
-                      [[_computeAuthor(translation.author_short)]]
-                    </paper-item-body>
-                  </paper-icon-item>
-                </a>
-              </section>
-            </template>
+          <template is="dom-repeat"
+                    id="languageMenuTemplate" items="[[_getDisplayedItems(languageChoice, language)]]"
+                    as="translation">
+            <section class$="{{_rootLanguageClassOrStandard(translation)}} no-outline">
+              <a class="language-menu-url"
+                 href="/[[rootId]]/[[translation.lang]]/[[translation.author_uid]][[_getParagraphRange()]]">
+                <paper-icon-item class="language-menu-item" id='[[translation.id]]'
+                                 title="[[_getTranslationAuthorTitle(translation, localize)]]">
+                  <iron-icon class="iso-code-image" slot="item-icon" title="[[translation.lang_name]]"
+                             icon="[[_getLanguageIconName(translation.lang)]]"></iron-icon>
+                  <paper-item-body>
+                    [[_computeAuthor(translation.author_short)]]
+                  </paper-item-body>
+                </paper-icon-item>
+              </a>
+            </section>
           </template>
 
         </paper-listbox>
@@ -143,18 +143,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                       type: Array,
                       notify: true
                   },
-                  languageMenu: {
-                      type: Array,
-                      computed: '_computeLanguageMenu(languageChoice, rootLangMappings)'
-                  },
                   originalLanguage: String,
                   rootId: {
                       type: String,
                       observer: '_idChanged'
-                  },
-                  newLanguage: {
-                      type: String,
-                      computed: '_otherLanguage(languageMenu, language)'
                   },
                   rootLangMappings: {
                       type: Object,
@@ -181,6 +173,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  hideIfOnlyUserLanguageTexts: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -206,23 +202,17 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               this.loadResources(this.resolveUrl(`/localization/elements/sc-language-menu/${this.language}.json`), this.language, true);
           }
 
-          _computeLanguageMenu(languageChoice, rootLangMappings) {
-              if (languageChoice) {
-                  const languageMenu = [];
-                  languageChoice.forEach(item => {
-                      if (item.lang in rootLangMappings) {
-                          languageMenu.splice(0, 0, item);
-                      } else {
-                          languageMenu.push(item);
-                      }
-                  });
-                  return languageMenu;
-              }
-          }
-
-          // does not list items that are from the main website language because those are listed elsewhere.
-          _otherLanguage(languageMenu, language) {
-              return !!(languageMenu && languageMenu.lang === language);
+          _getDisplayedItems(translations, siteLanguage) {
+              // sort so that root languages are first and siteLanguages are deleted
+              const languageChoice = [];
+              translations.forEach(item => {
+                  if (item.lang in this.rootLangMappings) {
+                      languageChoice.splice(0, 0, item);
+                  } else if (item.lang !== siteLanguage) {
+                      languageChoice.push(item);
+                  }
+              });
+              return languageChoice;
           }
 
           _computeHide(checkText) {
@@ -239,7 +229,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _shouldShowMenu(languageMenu, language) {
-              return languageMenu.some(item => item.lang !== language);
+              if (this.hideIfOnlyUserLanguageTexts) {
+                  return languageMenu.some(item => item.lang !== language);
+              }
+              return true;
           }
 
           _computeAuthor(author) {
