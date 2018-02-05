@@ -173,6 +173,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  hideIfOnlyUserLanguageTexts: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -211,11 +215,6 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               return languageChoice;
           }
 
-          // does not list items that are from the main website language because those are listed elsewhere.
-          _otherLanguage(languageMenu, language) {
-              return !!(languageMenu && languageMenu.lang === language);
-          }
-
           _computeHide(checkText) {
               return checkText ? checkText : 'd-none';
           }
@@ -230,7 +229,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _shouldShowMenu(languageMenu, language) {
-              return languageMenu.some(item => item.lang !== language);
+              if (this.hideIfOnlyUserLanguageTexts) {
+                  return languageMenu.some(item => item.lang !== language);
+              }
+              return true;
           }
 
           _computeAuthor(author) {
