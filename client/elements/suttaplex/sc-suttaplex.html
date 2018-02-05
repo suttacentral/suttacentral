@@ -305,7 +305,7 @@
           <div class="flex-div">
             <div class="languagedrop">
               <sc-language-menu language-choice="[[item.translations]]"
-                                input-language="[[inputLanguage]]" original-language="[[item.root_lang]]"
+                                input-language="[[language]]" original-language="[[item.root_lang]]"
                                 root-id="[[item.uid]]" class="no-left-padding"></sc-language-menu>
             </div>
 
@@ -386,10 +386,6 @@
                   _toggleMoreIcon: {
                       type: String,
                       computed: '_computeToggleMoreIcon(opened)'
-                  },
-                  inputLanguage: {
-                      type: String,
-                      value: 'en' // Temporary hardcoded
                   },
                   // The suttaplex item
                   item: {
@@ -483,7 +479,7 @@
           }
 
           _isChosenLang(lang) {
-              return lang === this.inputLanguage;
+              return lang === this.language;
           }
 
           _toggleParallelsOpened() {
