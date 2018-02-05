@@ -202,6 +202,14 @@
         @apply --sc-skolar-font-size-md;
       }
 
+      .author-link {
+        text-decoration: none;
+        color: var(--sc-primary-accent-color);
+        letter-spacing: var(--sc-all-caps_-_letter-spacing);
+        text-transform: var(--sc-all-caps_-_text-transform);
+        font-weight: bold;
+      }
+
       .sc-tooltip {
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
@@ -537,14 +545,18 @@
               const root_part = rootId.split('#')[0];
               let uid_parts = root_part.split('-');
               let tail = '';
-              uid_parts.forEach(item => {
-                  if (!expansionData[0][item]) {
-                      tail = item.match(/\d+.*/g)[0] + '–';
-                      item = item.match(/[a-z]*/g)[0];
-                  }
-                  item ? sc_acronym += `${expansionData[0][item][0]} ${tail}` : sc_acronym += tail;
-              });
-              return sc_acronym.replace(/–\s*$/, '');
+              try {
+                  uid_parts.forEach(item => {
+                      if (!expansionData[0][item]) {
+                          tail = item.match(/\d+.*/g)[0] + '–';
+                          item = item.match(/[a-z]*/g)[0];
+                      }
+                      item ? sc_acronym += `${expansionData[0][item][0]} ${tail}` : sc_acronym += tail;
+                  });
+                  return sc_acronym.replace(/–\s*$/, '');
+              } catch (e) {
+                return;
+              }
           }
 
           _getAcronymTitle(item, localize) {

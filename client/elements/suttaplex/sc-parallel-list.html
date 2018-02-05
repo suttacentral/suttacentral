@@ -22,18 +22,13 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
         border-collapse: separate;
         border-spacing: 0 var(--sc-size-sm);
         margin: 0 auto;
-        width: 90%;
-      }
-
-      @media screen and (min-width: 960px) {
-        .parallels-table {
-          max-width: 50vw;
-        }
+        width: 95%;
       }
 
       .parallels-root-cell,
       .parallels-parallel-cell {
         padding: var(--sc-size-sm);
+        padding-bottom: 0;
         border: var(--sc-border);
         border-radius: var(--sc-size-xxs);
       }
@@ -50,6 +45,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
       .parallels-root-cell {
         text-align: center;
+        min-width: 90px;
       }
 
       .parallels-root-id {
@@ -82,6 +78,14 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
       .grey-icon {
         color: var(--sc-disabled-text-color);
+      }
+
+      .root-link {
+        text-decoration: none;
+        color: var(--sc-primary-accent-color);
+        letter-spacing: var(--sc-all-caps_-_letter-spacing);
+        text-transform: var(--sc-all-caps_-_text-transform);
+        font-weight: bold;
       }
 
     </style>
@@ -118,9 +122,11 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                 [[_transformId(rootId,expansionData)]]
               </div>
               <template is="dom-if" if="[[rootText]]">
-                <paper-button flat class="dense" title="{{localize('GoToTextInOriginalLanguage')}}">
-                  <a href="[[_computeUrl(rootId)]]">[[_computeFullLangName(rootLang)]]</a>
-                </paper-button>
+                <a class="root-link" href="[[_computeUrl(rootId)]]">
+                  <paper-button flat class="dense" title="{{localize('GoToTextInOriginalLanguage')}}">
+                    [[_computeFullLangName(rootLang)]]
+                  </paper-button>
+                </a>
               </template>
             </td>
             <td class="parallels-relation-cell">
