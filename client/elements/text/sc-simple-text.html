@@ -250,10 +250,11 @@
               this._setAttributes();
               this._updateToolbar();
               this._computeParagraphs();
+              this.currentId = '';
               // Scroll to the section after the hash sign in the url:
               setTimeout(() => {
                   this._scrollToSection(window.location.hash.substr(1), false, 500);
-              }, 1000);
+              }, 0);
           }
 
           _setAttributes() {
@@ -355,9 +356,6 @@
               item.title = data.description;
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph', 'latin');
-              item.addEventListener('click', () => {
-                  this._scrollToSection(item.id, true, 0);
-              });
           }
 
           // adds a class to the main container to either show or hide the textual info incl. paragraphs
@@ -428,13 +426,11 @@
                   }
                   let nextSection = section.nextElementSibling;
                   if (!nextSection) {
-                      this._changePaddingToMargin(section);
                       break;
                   }
                   let sectionLink = nextSection.querySelector('.textual-info-paragraph');
                   if (sectionLink) {
                       if (last) {
-                          this._changePaddingToMargin(section.nodeName === 'A' ? section.previousElementSibling : section);
                           break;
                       } else if (sectionLink.id === idTo) {
                           last = true;
