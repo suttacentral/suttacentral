@@ -544,7 +544,7 @@
           // So f.i. 'an3.4' becomes 'AN 3.4' and 'lzh-sarv-bi-vb-np1' becomes
           // 'Lzh Sarv Bi Vb NP 1'
           _transformId(rootId, expansionData) {
-              if (!rootId) {
+              if (!rootId || !expansionData) {
                   return '';
               }
               let sc_acronym = '';
