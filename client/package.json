@@ -12,5 +12,6 @@
     "redux": "^3.7.2",
     "viewerjs": "^0.10.0",
     "workbox-sw": "^2.1.2"
-  }
+  },
+  "devDependencies": {}
 }
