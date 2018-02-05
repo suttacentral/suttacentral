@@ -312,7 +312,8 @@
           <div class="flex-div">
             <div class="languagedrop">
               <sc-language-menu language-choice="[[item.translations]]" original-language="[[item.root_lang]]"
-                                root-id="[[item.uid]]" class="no-left-padding" hide-if-only-user-language-texts="true"></sc-language-menu>
+                                root-id="[[item.uid]]" class="no-left-padding" hide-if-only-user-language-texts="true">
+              </sc-language-menu>
             </div>
 
             <div class="right-elements">
@@ -425,13 +426,14 @@
 
           connectedCallback() {
               super.connectedCallback();
-              const copy_menu = this.shadowRoot.querySelector('#copy_menu');
-              this.addEventListener('par-menu-copied', (e) => {
-                  copy_menu.opened = false;  // Close dropdown after the copy action.
-              });
-              if (copy_menu) {
-                  copy_menu.addEventListener('opened-changed', (e) => { this._moreMenuOpenedChanged(e); })
-              }
+              setTimeout(() => {
+                  const copy_menu = this.shadowRoot.querySelector('#copy_menu');
+                  if (copy_menu) {
+                      this.addEventListener('par-menu-copied', (e) => {
+                          copy_menu.opened = false; // Close dropdown after the copy action.
+                      });
+                  }
+              }, 1000);
           }
 
           _siteLanguageChanged() {
@@ -440,13 +442,6 @@
                       return;
                   }
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.language}.json`), this.language, true);
-              }
-          }
-
-          _moreMenuOpenedChanged(e) {
-              const open = e.detail.value;
-              if (open) {
-                  this.$.more_par_menu._sendRequest();
               }
           }
 
@@ -555,7 +550,7 @@
                   });
                   return sc_acronym.replace(/–\s*$/, '');
               } catch (e) {
-                return;
+                  return;
               }
           }
 
