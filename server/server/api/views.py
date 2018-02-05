@@ -177,7 +177,8 @@ class Menu(Resource):
         if 'id' in menu_entry and display_num is None:
             m = self.num_regex.match(menu_entry['id'])
             if m:
-                if m[1] not in menu_entry.get('name', ''):
+                entry_name = menu_entry.get('name', '')
+                if entry_name and m[1] not in entry_name:
                     display_num = m[1]
         if display_num:
             menu_entry['display_num'] = display_num.replace('-', '–\u2060')
