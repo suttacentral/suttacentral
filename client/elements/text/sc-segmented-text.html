@@ -259,6 +259,10 @@
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
                   }, 0);
               });
+              // Scroll to the section after the hash sign in the url:
+              setTimeout(() => {
+                  this._scrollToSection(window.location.hash.substr(1), false, 500);
+              }, 0);
           }
 
           _siteLanguageChanged() {
@@ -269,6 +273,7 @@
               if (!this.markup) {
                   return;
               }
+              this.currentId = '';
               this._resetViewOptions();
               this._setRootAttributes();
               this._setTranslatedAttributes();
@@ -563,9 +568,6 @@
               item.title = data.description;
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph');
-              item.addEventListener('click', () => {
-                  this._scrollToSection(item.id, true, 0);
-              });
           }
 
           _addInlineParagraph(item, divisionId) {
@@ -636,10 +638,16 @@
 
           _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
               const paddingBottom = window.getComputedStyle(section).paddingBottom;
+              const marginTop = window.getComputedStyle(section).marginTop;
               if (paddingBottom && paddingBottom !== '0px') {
                   section.style.paddingBottom = '0';
                   section.style.marginBottom = paddingBottom;
               }
+              if (marginTop && marginTop !== '0px') {
+                  section.style.marginTop = '0';
+                  section.style.paddingTop = marginTop;
+              }
+
               if (idFrom.includes('.') || (idTo && idTo.includes('.'))) {
                   let newSection = section.nextElementSibling;
                   if (isSideBySideView && !wrapperAlreadyExists) {

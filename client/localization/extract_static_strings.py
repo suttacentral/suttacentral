@@ -5,8 +5,11 @@ import pathlib
 from typing import Tuple
 
 import tqdm
+import requests
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
+
+AVAILABLE_LANGUAGES_URL = 'https://raw.githubusercontent.com/suttacentral/nextdata/master/additional-info/available_languages.json'
 
 CURRENT_FILE_DIR = pathlib.Path(os.path.dirname(os.path.realpath(__file__)))
 TEMPLATE_DIR = str(CURRENT_FILE_DIR / pathlib.Path('../elements/static-templates/'))
@@ -24,6 +27,7 @@ def replace_attrs(element, data):
             string_hash = hashlib.md5(element[attr].encode()).hexdigest()
             data[string_hash] = element[attr]
             element[attr] = f"{{{{localize('{string_hash}')}}}}"
+
 
 def hash_element_content(element, data):
     string = ''.join((str(child) for child in element.children))
@@ -88,7 +92,13 @@ def extract_strings_from_template(file: pathlib.Path) -> Tuple[BeautifulSoup, di
     return soup, data
 
 
+def get_available_languages():
+    data = json.loads(requests.get(AVAILABLE_LANGUAGES_URL).content)
+    return [x['iso_code'] for x in data if x['iso_code'] != 'en']
+
+
 def run():
+    languages = get_available_languages()
     # Ensure needed dirs exist.
     pathlib.Path(STATIC_DIR).mkdir(parents=True, exist_ok=True)
     pathlib.Path(LOCALIZATION_JSONS_DIR).mkdir(parents=True, exist_ok=True)
@@ -107,6 +117,12 @@ def run():
         with (element_dir / 'en.json').open('w') as f:
             formatted_data = {'en': data}
             json.dump(formatted_data, f, indent=4, ensure_ascii=False)
+
+        for lang in languages:
+            lang_file = element_dir / f'{lang}.json'
+            if not lang_file.exists():
+                with lang_file.open('w') as f:
+                    json.dump({lang: {}}, f, indent=4, ensure_ascii=False)
 
 
 if __name__ == '__main__':
