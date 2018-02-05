@@ -202,6 +202,14 @@
         @apply --sc-skolar-font-size-md;
       }
 
+      .author-link {
+        text-decoration: none;
+        color: var(--sc-primary-accent-color);
+        letter-spacing: var(--sc-all-caps_-_letter-spacing);
+        text-transform: var(--sc-all-caps_-_text-transform);
+        font-weight: bold;
+      }
+
       .sc-tooltip {
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
@@ -292,12 +300,12 @@
           <div class="card-actions-left">
             <template is="dom-repeat" items="[[item.translations]]" as="translation">
               <template is="dom-if" if="{{_isChosenLang(translation.lang)}}">
-                <paper-button class="author-button" flat
-                              title$="{{localize('goToTranslation', 'author', translation.author)}}">
-                  <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
+                <a class="author-link" href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
+                  <paper-button class="author-button" flat
+                                title$="{{localize('goToTranslation', 'author', translation.author)}}">
                     [[translation.author_short]]
-                  </a>
-                </paper-button>
+                  </paper-button>
+                </a>
               </template>
             </template>
           </div>
