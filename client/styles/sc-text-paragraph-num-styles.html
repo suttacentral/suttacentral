@@ -445,7 +445,6 @@
         display: none;
       }
 
-
       .textual-info-paragraph {
         @apply --paper-font-common-base;
         @apply --sc-skolar-font-size-xs;
@@ -470,14 +469,6 @@
       }
 
       .infomode .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
-        display: none;
-      }
-
-      .infomode.segmented-infomode .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
-        display: inline-block;
-      }
-
-      .infomode.segmented-infomode .textual-info-paragraph-inline {
         display: none;
       }
 
@@ -523,16 +514,22 @@
       }
 
       @media screen and (min-width: 1500px) {
-        .infomode .textual-info-paragraph {
-          margin-right: -25%;
+        .infomode.segmented-infomode:not(.side-by-side) .textual-info-paragraph-inline.segmented-textual-info-paragraph.sc {
+          position: absolute;
+          right: 20%;
+          display: block;
         }
+
+        /*.infomode .textual-info-paragraph {*/
+          /*margin-right: -25%;*/
+        /*}*/
       }
 
-      @media screen and (min-width: 1800px) {
-        .infomode .textual-info-paragraph {
-          margin-right: -30%;
-        }
-      }
+      /*@media screen and (min-width: 1800px) {*/
+        /*.infomode .textual-info-paragraph {*/
+          /*margin-right: -30%;*/
+        /*}*/
+      /*}*/
 
       .infomode .textual-info-paragraph {
         opacity: 1;
