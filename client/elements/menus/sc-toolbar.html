@@ -147,7 +147,9 @@ Base toolbar that appears on the top right in the header of every page. This too
                   discourseIconTooltip: {
                       type: String,
                       computed: '_computeDiscourseTitle(mode, language)'
-                  }
+                  },
+                  // Polymer lint fails if you don't include this:
+                  search_input: Object
               }
           }
 
