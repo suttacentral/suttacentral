@@ -47,7 +47,8 @@
         @apply --paper-font-subhead;
       }
 
-      .hgroup p {
+      .hgroup p,
+      .hgroup p sc-seg.original-text {
         @apply --sc-all-small-caps;
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
@@ -56,9 +57,8 @@
       }
 
       p + h1 {
-        margin-top: 12px
+        margin-top: 12px;
       }
-
 
       .hgroup p.subheading {
         @apply --sc-serif-font;
@@ -67,17 +67,22 @@
         font-feature-settings: normal
       }
 
-
       .hgroup .collection,
       .hgroup .division,
       .hgroup .subdivision,
       .hgroup .subsubdivision,
       .hgroup .vagga,
       .hgroup .pannasa,
-      .hgroup .nipata {
+      .hgroup .nipata,
+      .hgroup .collection sc-seg,
+      .hgroup .division sc-seg,
+      .hgroup .subdivision sc-seg,
+      .hgroup .subsubdivision sc-seg,
+      .hgroup .vagga sc-seg,
+      .hgroup .pannasa sc-seg,
+      .hgroup .nipata sc-seg {
         font-style: inherit;
       }
-
 
       /*bilingual headings*/
       .mirror {

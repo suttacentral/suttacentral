@@ -131,6 +131,9 @@ class TextIndexer(ElasticIndexer):
                         'uid': uid,
                         'lang': lang,
                         'root_lang': root_lang,
+                        'author': text['author'],
+                        'author_uid': text['author_uid'],
+                        'author_short': text['author_short'],
                         'is_root': lang == root_lang,
                         'mtime': int(text['mtime'])
                     })

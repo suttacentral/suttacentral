@@ -47,13 +47,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         test('aria attributes', function() {
           assert.equal(collapse.getAttribute('role'), 'group');
-          assert.equal(collapse.getAttribute('aria-expanded'), 'false');
           assert.equal(collapse.getAttribute('aria-hidden'), 'true');
+          // aria-expanded should only be set on the button that
+          // controls the collapsable area, not on the area itself.
+          // See https://www.w3.org/WAI/GL/wiki/Using_aria-expanded_to_indicate_the_state_of_a_collapsible_element#Description
+          assert.isFalse(collapse.hasAttribute('aria-expanded'));
         });
 
         test('set opened to true', function() {
           collapse.opened = true;
-          assert.equal(collapse.getAttribute('aria-expanded'), 'true');
           assert.equal(collapse.getAttribute('aria-hidden'), 'false');
         });
 

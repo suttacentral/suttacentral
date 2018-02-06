@@ -44,7 +44,7 @@ Example:
         display: block;
       }
 
-      :host > ::slotted(:not(.iron-selected)) {
+      :host > ::slotted(:not(slot):not(.iron-selected)) {
         display: none !important;
       }
     </style>
