@@ -18,7 +18,8 @@
 <dom-module id="sc-segmented-text">
 
   <template>
-    <style include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles sc-utility-styles">
+    <style
+        include="sc-text-styles sc-text-heading-styles sc-text-paragraph-num-styles sc-lookup-styles sc-utility-styles">
       :host {
         --iron-icon-fill-color: var(--sc-disabled-text-color);
         --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
@@ -331,8 +332,10 @@
 
           // returns the meta-data from the loaded sutta text
           _computeMeta() {
-              if (this.translatedSutta) {
+              if (this.translatedSutta && this.translatedSutta.author_blurb) {
                   return this.translatedSutta.author_blurb[this.translationLang] || this.localize('noMetadata');
+              } else if (this.rootSutta && this.rootSutta.author_blurb) {
+                  return this.rootSutta.author_blurb[Object.keys(this.rootSutta.author_blurb)[0]]
               } else {
                   return this.localize('noMetadata');
               }
