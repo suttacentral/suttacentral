@@ -300,12 +300,12 @@
           <div class="card-actions-left">
             <template is="dom-repeat" items="[[_getUserLanguageTranslations(item.translations, language)]]"
                       as="translation">
-              <paper-button class="author-button" flat
-                            title$="{{localize('goToTranslation', 'author', translation.author)}}">
-                <a href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
-                  [[translation.author_short]]
-                </a>
-              </paper-button>
+              <a class="author-link" href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
+                <paper-button class="author-button" flat
+                              title$="{{localize('goToTranslation', 'author', translation.author)}}">
+                    [[translation.author_short]]
+                </paper-button>
+              </a>
             </template>
           </div>
 
