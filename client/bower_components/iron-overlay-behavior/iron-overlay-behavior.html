@@ -197,6 +197,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Scroll info to be restored.
       this.__scrollTop = this.__scrollLeft = null;
       this.__onCaptureScroll = this.__onCaptureScroll.bind(this);
+      // Root nodes hosting the overlay, used to listen for scroll events on them.
+      this.__rootNodes = null;
       this._ensureSetup();
     },
 
@@ -625,17 +627,57 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     __updateScrollObservers: function(isAttached, opened, scrollAction) {
       if (!isAttached || !opened || !this.__isValidScrollAction(scrollAction)) {
         Polymer.IronScrollManager.removeScrollLock(this);
-        document.removeEventListener('scroll', this.__onCaptureScroll, {
-          passive: true
-        });
+        this.__removeScrollListeners();
       } else {
         if (scrollAction === 'lock') {
           this.__saveScrollPosition();
           Polymer.IronScrollManager.pushScrollLock(this);
         }
-        document.addEventListener('scroll', this.__onCaptureScroll, {
-          passive: true
+        this.__addScrollListeners();
+      }
+    },
+    
+    /**
+     * @private
+     */
+    __addScrollListeners: function() {
+      if (!this.__rootNodes) {
+        this.__rootNodes = [];
+        // Listen for scroll events in all shadowRoots hosting this overlay only
+        // when in native ShadowDOM.
+        if ('attachShadow' in Element.prototype && 'getRootNode' in Element.prototype) {
+          var node = this;
+          while (node) {
+            if (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && node.host) {
+              this.__rootNodes.push(node);
+            }
+            node = node.host || node.assignedSlot || node.parentNode;
+          }
+        }
+        this.__rootNodes.push(document);
+      }
+      this.__rootNodes.forEach(function(el) {
+        el.addEventListener('scroll', this.__onCaptureScroll, {
+          capture: true,
+          passive: true,
         });
+      }, this);
+    },
+    
+    /**
+     * @private
+     */
+    __removeScrollListeners: function() {
+      if (this.__rootNodes) {
+        this.__rootNodes.forEach(function(el) {
+          el.removeEventListener('scroll', this.__onCaptureScroll, {
+            capture: true,
+            passive: true,
+          });
+        }, this);
+      }
+      if (!this.isAttached) {
+        this.__rootNodes = null;
       }
     },
 
@@ -655,6 +697,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      */
     __onCaptureScroll: function(event) {
       if (this.__isAnimating) {
+        return;
+      }
+      // Check if scroll outside the overlay.
+      if (Polymer.dom(event).path.indexOf(this) >= 0) {
         return;
       }
       switch (this.scrollAction) {

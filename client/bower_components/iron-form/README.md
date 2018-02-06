@@ -13,6 +13,7 @@ thing! https://github.com/PolymerLabs/tedium/issues
 -->
 
 [![Build status](https://travis-ci.org/PolymerElements/iron-form.svg?branch=master)](https://travis-ci.org/PolymerElements/iron-form)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/PolymerElements/iron-form)
 
 _[Demo and API docs](https://elements.polymer-project.org/elements/iron-form)_
 
@@ -49,4 +50,28 @@ call the `iron-form`'s `submit` method.
     function submitForm() {
       document.getElementById('iron-form').submit();
     }
+```
+
+### Changes in 2.0
+- since type-extensions are not available in 2.0, `<iron-form>` is now a wrapper
+around a native `<form>`
+- related, since elements are now distributed to the `iron-form`, they no longer
+need to implement `IronFormElementBehavior` to register for submission. However
+they are required to have a `name` and a `value` attribute (which the behaviour
+also added), and to optionally implement the `validate()` method to control
+validation of their shadowRoot validatable elements.
+- the `serialize` method has been renamed to `serializeForm` (because Polymer 2.0
+  is already using a `serialize` method, and we can't stomp over it).
+- in `iron-form` 2.x, the `reset` and `submit` methods now accept an `event` as
+input, which will be prevented if it exists.
+- the `disableNativeValidationUi` property has been removed: because `iron-form`
+is no longer a type extension, it can't actually trigger any native UI, so
+this property is essentially always true.
+- the `contentType` property has been removed in favor of the native [`<form enctype>` 
+attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/enctype);
+you can still use the `application/json` value e.g.
+```html
+<iron-form>
+  <form enctype="application/json"> ... </form>
+</iron-form>
 ```

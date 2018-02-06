@@ -1,6 +1,6 @@
 {
   "name": "app-route",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "authors": [
     "The Polymer Authors"
   ],
@@ -31,7 +31,7 @@
     "paper-styles": "PolymerElements/paper-styles#1 - 2",
     "paper-toggle-button": "polymerelements/paper-toggle-button#1 - 2",
     "url": "webcomponents/URL#^0.5.7",
-    "web-component-tester": "^4.0.0",
+    "web-component-tester": "^6.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   },
   "variants": {
@@ -52,7 +52,7 @@
         "paper-spinner": "PolymerElements/paper-spinner#^1.1.1",
         "paper-styles": "polymerelements/paper-styles#^1.0.13",
         "paper-toggle-button": "polymerelements/paper-toggle-button#^1.0.0",
-        "web-component-tester": "^4.0.0",
+        "web-component-tester": "^6.0.0",
         "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
       },
       "resolutions": {
@@ -63,14 +63,13 @@
   "resolutions": {
     "webcomponentsjs": "^1.0.0"
   },
-  "_release": "2.0.1",
+  "_release": "2.0.3",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.1",
-    "commit": "da2d1c251202bf0c76542a4cfdedec028ee3f33c"
+    "tag": "v2.0.3",
+    "commit": "951dc29dcf73583aee5e629bae3f1065107fd281"
   },
   "_source": "https://github.com/PolymerElements/app-route.git",
   "_target": "^2.0.1",
-  "_originalSource": "PolymerElements/app-route",
-  "_direct": true
+  "_originalSource": "PolymerElements/app-route"
 }

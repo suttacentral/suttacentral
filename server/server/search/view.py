@@ -83,14 +83,16 @@ class Search(Resource):
                 source = entry['_source']
                 uid = source['uid']
                 lang = source['lang']
-                author = source['author']
+                author_uid = source['author_uid']
                 text_results.append({
                     'uid': uid,
                     'lang': lang,
+                    'author': source['author'],
+                    'author_short': source['author_short'],
                     'heading': source['heading'],
                     'is_root': source['is_root'],
                     'highlight': entry['highlight'],
-                    'url': f'/{uid}/{lang}/{author}'
+                    'url': f'/{uid}/{lang}/{author_uid}'
                 })
             results = {
                 'total': len(text_results),
