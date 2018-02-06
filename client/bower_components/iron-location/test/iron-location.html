@@ -290,7 +290,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * to ensure that no navigation occurs (as that would interrupt
        * running and reporting these tests!)
        */
-      function isClickCaptured(anchor, urlSpaceRegex) {
+      function isClickCaptured(anchor, urlSpaceRegex, location) {
         var defaultWasPrevented;
         function handler(event) {
           expect(event.target).to.be.eq(anchor);
@@ -303,6 +303,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (urlSpaceRegex != null) {
           ironLocation.urlSpaceRegex = urlSpaceRegex;
         }
+
+        if (location) {
+          ironLocation.__location = location;
+        }
+
         document.body.appendChild(anchor);
         anchor.click();
         document.body.removeChild(anchor);
@@ -320,6 +325,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         expect(isClickCaptured(anchor)).to.be.eq(true);
           expect(pushStateCalls).to.be.equal(1);
+      });
+
+      test('test http port 80 intercepted', function() {
+        var anchor = document.createElement('a');
+        anchor.href = 'http://www.example.com/hello/world'
+
+        var location = {
+          hash: '',
+          pathname: '',
+          search: '',
+          protocol: 'http:',
+          host: 'www.example.com',
+          href: 'http://www.example.com/',
+          origin: 'http://www.example.com'
+        };
+
+        expect(isClickCaptured(anchor, null, location)).to.be.eq(true);
+        expect(pushStateCalls).to.be.equal(1);
+      });
+
+      test('test https port 443 intercepted', function() {
+        var anchor = document.createElement('a');
+        anchor.href = 'https://www.google.com/hello/world'
+
+        var location = {
+          hash: '',
+          pathname: '',
+          search: '',
+          protocol: 'https:',
+          host: 'www.google.com',
+          href: 'https://www.google.com/',
+          origin: 'https://www.google.com'
+        };
+
+        expect(isClickCaptured(anchor, null, location)).to.be.eq(true);
+        expect(pushStateCalls).to.be.equal(1);
       });
 
       test('link that matches url space is intercepted', function() {
@@ -384,8 +425,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
            window.history.pushState = originalPushState;
 
            expect(count).to.be.equal(0);
-      })
-    });
+        });
+      });
     });
     suite('when used with other iron-location elements', function() {
       var otherUrlElem;
@@ -475,23 +516,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ironLocationTests();
 
       suiteTeardown(cooldownFunction);
-    });
-
-    suite('with a base URI', function() {
-      var baseElem;
-      setup(function() {
-        expect(document.baseURI).to.be.equal(window.location.href);
-        baseElem = document.createElement('base');
-        var href = 'https://example.com/i/dont/exist/obviously'
-        baseElem.href = href;
-        document.head.appendChild(baseElem);
-        expect(document.baseURI).to.be.equal(href);
-      });
-      teardown(function() {
-        document.head.removeChild(baseElem);
-      });
-      suiteTeardown(cooldownFunction);
-      ironLocationTests();
     });
   });
 

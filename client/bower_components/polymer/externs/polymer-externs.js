@@ -21,7 +21,7 @@
  * computed: (string | undefined),
  * reflectToAttribute: (boolean | undefined),
  * notify: (boolean | undefined),
- * observer: (string | undefined)
+ * observer: (string | function(*,*) | undefined)
  * }}
  */
 let PolymerElementPropertiesMeta;
@@ -59,6 +59,10 @@ PolymerElementConstructor.observers;
 /** @type {(!HTMLTemplateElement | string | undefined)} */
 PolymerElementConstructor.template;
 
+let PropertiesMixinConstructor = function (){};
+/** @type {(!PolymerElementProperties | undefined)} */
+PropertiesMixinConstructor.properties;
+
 /**
  * @param {!PolymerInit} init
  * @return {!function(new:HTMLElement)}
@@ -95,6 +99,9 @@ PolymerTelemetry.dumpRegistrations;;
 
 /** @type {PolymerTelemetry} */
 Polymer.telemetry;
+
+/** @type {string} */
+Polymer.version;
 
 // nb. This is explicitly 'var', as Closure Compiler checks that this is the case.
 /**

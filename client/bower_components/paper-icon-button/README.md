@@ -24,7 +24,8 @@ Material design: [Icon toggles](https://www.google.com/design/spec/components/bu
 `paper-icon-button` is a button with an image placed at the center. When the user touches
 the button, a ripple effect emanates from the center of the button.
 
-`paper-icon-button` includes a default icon set.  Use `icon` to specify which icon
+`paper-icon-button` does not include a default icon set. To use icons from the default
+set, include `PolymerElements/iron-icons/iron-icons.html`, and use the `icon` attribute to specify which icon
 from the icon set to use.
 
 <!---
@@ -89,7 +90,3 @@ The following custom properties and mixins are available for styling:
 | `--paper-icon-button` | Mixin for a button | `{}` |
 | `--paper-icon-button-disabled` | Mixin for a disabled button | `{}` |
 | `--paper-icon-button-hover` | Mixin for button on hover | `{}` |
-
-
-
-<!-- No docs for <paper-icon-button-light> found. -->

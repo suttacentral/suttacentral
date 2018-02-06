@@ -195,6 +195,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
 
     suite('propagating data', function() {
+      test('data is defined when active is true', function(done) {
+        var chainedRoutes = fixture('ChainedRoutes');
+
+        chainedRoutes.$.foo.addEventListener('active-changed', function(e) {
+          if (e.detail.value = true) {
+            expect(chainedRoutes.$.foo.data.foo).to.be.equal('bar');
+            done();
+          }
+        });
+
+        chainedRoutes.$.foo.route = {
+          prefix: '',
+          path: '/foo/bar',
+          __queryParams: {}
+        };
+      });
       test('data is empty if no routes in the tree have matched', function() {
         var routes = fixtureChainedRoutes({ path: '' });
 

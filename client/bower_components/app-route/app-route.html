@@ -318,11 +318,8 @@ the `app-route` will update `route.path`. This in-turn will update the
         }
 
         if (this.setProperties) {
-          if (!this.active) {
-            this._setActive(true);
-          }
           // atomic update
-          this.setProperties(propertyUpdates);
+          this.setProperties(propertyUpdates, true);
         } else {
           this.__setMulti(propertyUpdates);
         }
