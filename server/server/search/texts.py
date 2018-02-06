@@ -24,7 +24,7 @@ class TextIndexer(ElasticIndexer):
     def __init__(self, lang):
         self.lang = lang
         super().__init__(lang)
-
+    
     def fix_text(self, string):
         """ Removes repeated whitespace and numbers.
 
@@ -46,7 +46,6 @@ class TextIndexer(ElasticIndexer):
         metaarea = root.cssselect('#metaarea')
         author = []
         if metaarea:
-            author = ' '.join(unique(e.text_content() for e in metaarea[0].cssselect('.author')))
             metaarea[0].drop_tree()
 
         for section in root.iter('section'):
@@ -82,7 +81,6 @@ class TextIndexer(ElasticIndexer):
 
         return {
             'content': content,
-            'author': author,
             'heading': {
                 'title': title,
                 'division': division,
@@ -98,9 +96,21 @@ class TextIndexer(ElasticIndexer):
             if 'preceding' in content or 'identical' in content:
                 boost = boost * 0.4
         return boost
-
+    
     def yield_docs_from_dir(self, lang, size, to_add=None, to_delete=None):
-        db = get_db()
+        yield from self.yield_html_texts(self, lang, size, to_add=None, to_delete=None)
+        yield from self.yield_po_texts(self, lang, size, to_add=None, to_delete=None)
+    
+    def yield_po_texts(self, lang, size):
+        po_texts = db.aql.execute(
+            PO_TEXTS_BY_LANG,
+            bind_vars={'lang': lang}
+        )
+        
+                
+        
+    
+    def yield_html_texts(self, lang, size, to_add=None, to_delete=None):
         html_texts = db.aql.execute(
             TEXTS_BY_LANG,
             bind_vars={'lang': lang}
@@ -186,8 +196,8 @@ class TextIndexer(ElasticIndexer):
         for uid, mtime in stored_mtimes.items():
             if uid in to_delete:
                 continue
-            if mtime <= current_mtimes.get(uid):
-                to_add.pop(uid)
+            #if mtime <= current_mtimes.get(uid):
+                #to_add.pop(uid)
         logger.info(
             "For index {} ({}), {} files already indexed, {} files to be added, {} files to be deleted".format(
                 self.index_name, self.index_alias, len(stored_mtimes), len(to_add), len(to_delete)))

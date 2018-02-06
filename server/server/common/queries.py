@@ -19,6 +19,23 @@ FOR text IN html_text
         }
 '''
 
+PO_TEXTS_BY_LANG = '''
+FOR text IN po_strings
+    FILTER text.lang == @lang
+    LET root_lang = (
+        RETURN DOCUMENT(CONCAT('root', text.uid)).root_lang
+    )[0]
+    RETURN {
+        uid: text.uid,
+        title: text.title,
+        strings: text.strings,        
+        author: text.author,
+        author_uid: text.author_uid,
+        author_short: text.author_short,
+        root_lang: root_lang
+    }
+'''        
+
 CURRENT_MTIMES = '''
 FOR text IN html_text
     FILTER text.lang == @lang
