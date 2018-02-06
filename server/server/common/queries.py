@@ -32,7 +32,8 @@ FOR text IN po_strings
         author: text.author,
         author_uid: text.author_uid,
         author_short: text.author_short,
-        root_lang: root_lang
+        root_lang: root_lang,
+        mtime: text.mtime
     }
 '''        
 

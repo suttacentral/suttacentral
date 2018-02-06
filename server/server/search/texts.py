@@ -7,7 +7,7 @@ from elasticsearch.helpers import scan
 from tqdm import tqdm
 
 from common.arangodb import get_db
-from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG
+from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG, PO_TEXTS_BY_LANG
 from search.indexer import ElasticIndexer
 from search.util import unique
 
@@ -21,6 +21,9 @@ class TextIndexer(ElasticIndexer):
     htmlparser = lxml.html.HTMLParser(encoding='utf8')
     numstriprex = regex.compile(r'(?=\S*\d)\S+')
 
+    def get_extra_state(self):
+        return 'v2'
+        
     def __init__(self, lang):
         self.lang = lang
         super().__init__(lang)
@@ -97,59 +100,90 @@ class TextIndexer(ElasticIndexer):
                 boost = boost * 0.4
         return boost
     
-    def yield_docs_from_dir(self, lang, size, to_add=None, to_delete=None):
-        yield from self.yield_html_texts(self, lang, size, to_add=None, to_delete=None)
-        yield from self.yield_po_texts(self, lang, size, to_add=None, to_delete=None)
-    
     def yield_po_texts(self, lang, size):
-        po_texts = db.aql.execute(
+        po_texts = get_db().aql.execute(
             PO_TEXTS_BY_LANG,
-            bind_vars={'lang': lang}
+            bind_vars={'lang': lang},
+            count=True
         )
         
-                
+        count = po_texts.count()
+        if not count:
+            return
         
+        print(f'Indexing {count} po texts for {lang}')
+        
+        chunk = []
+        chunk_size = 0
+        
+        for text in po_texts:
+            uid = text['uid']
+            author_uid = text['author_uid']
+            action = {
+                '_id': f'{uid}_{author_uid}',
+                'uid': uid,
+                'lang': lang,
+                'author': text['author'],
+                'author_uid': text['author_uid'],
+                'author_short': text['author_short'],
+                'is_root': lang == text['root_lang'],
+                'mtime': int(text['mtime']),
+                'heading': {
+                    'title': self.fix_text(text['title']),
+                    'division': self.fix_text(list(text['strings'].values())[0])
+                },
+                'content': '\n\n'.join(text['strings'].values())
+            }
+            
+            chunk_size += len(action['content'].encode('utf-8'))
+            chunk.append(action)
+            if chunk_size > size:
+                yield chunk
+                chunk = []
+                chunk_size = 0
+                time.sleep(0.25)
+        if chunk:
+            yield chunk
     
-    def yield_html_texts(self, lang, size, to_add=None, to_delete=None):
-        html_texts = db.aql.execute(
+    def yield_html_texts(self, lang, size):
+        html_texts = get_db().aql.execute(
             TEXTS_BY_LANG,
-            bind_vars={'lang': lang}
+            bind_vars={'lang': lang},
+            count=True
         )
+        
+        count = html_texts.count()
+        if not count:
+            return
+        
+        print(f'Indexing {count} html texts for {lang}')
 
         chunk = []
         chunk_size = 0
-        if to_delete:
-            yield ({"_op_type": "delete", "_id": uid}
-                   for uid in to_delete)
 
         for i, text in enumerate(html_texts):
             uid = text['uid']
-            if uid not in to_add and uid not in to_delete:
-                continue
+            author_uid = text['author_uid']
             try:
+                html_bytes = text['text'].encode('utf-8')
+                chunk_size += len(html_bytes) + 512
+
+                root_lang = text['root_lang']
+
                 action = {
-                    '_id': uid,
+                    '_id': f'{uid}_{author_uid}',
+                    'uid': uid,
+                    'lang': lang,
+                    'root_lang': root_lang,
+                    'author': text['author'],
+                    'author_uid': author_uid,
+                    'author_short': text['author_short'],
+                    'is_root': lang == root_lang,
+                    'mtime': int(text['mtime'])
                 }
-                if uid in to_add:
 
-                    html_bytes = bytes(text['text'], encoding='utf-8')
-                    chunk_size += len(html_bytes) + 512
-
-                    root_lang = text['root_lang']
-
-                    action.update({
-                        'uid': uid,
-                        'lang': lang,
-                        'root_lang': root_lang,
-                        'author': text['author'],
-                        'author_uid': text['author_uid'],
-                        'author_short': text['author_short'],
-                        'is_root': lang == root_lang,
-                        'mtime': int(text['mtime'])
-                    })
-
-                    action.update(self.extract_fields_from_html(html_bytes))
-                    chunk.append(action)
+                action.update(self.extract_fields_from_html(html_bytes))
+                chunk.append(action)
             except (ValueError, IndexError) as e:
                 logger.exception(f'{text["uid"]}, {e}')
 
@@ -160,8 +194,11 @@ class TextIndexer(ElasticIndexer):
                 time.sleep(0.25)
         if chunk:
             yield chunk
-        raise StopIteration
-
+    
+    def yield_docs_from_dir(self, lang, size):
+        yield from self.yield_po_texts(lang, size)
+        yield from self.yield_html_texts(lang, size)
+    
     def index_name_from_uid(self, lang_uid):
         return lang_uid
 
@@ -180,29 +217,27 @@ class TextIndexer(ElasticIndexer):
                 raise
 
     def update_data(self, force=False):
-        stored_mtimes = {hit["_id"]: hit["_source"]["mtime"] for hit in scan(self.es,
-                                                                             index=self.index_name,
-                                                                             doc_type="text",
-                                                                             _source_include=[
-                                                                                 "mtime"],
-                                                                             query=None,
-                                                                             size=500)}
-        current_mtimes = get_db().aql.execute(CURRENT_MTIMES,
-                                              bind_vars={'lang': self.lang})
-        current_mtimes = {hit['uid']: hit['mtime'] for hit in current_mtimes}
+        #stored_mtimes = {hit["_id"]: hit["_source"]["mtime"] for hit in scan(self.es,
+                                                                             #index=self.index_name,
+                                                                             #doc_type="text",
+                                                                             #_source_include=[
+                                                                                 #"mtime"],
+                                                                             #query=None,
+                                                                             #size=500)}
+        #current_mtimes = get_db().aql.execute(CURRENT_MTIMES,
+                                              #bind_vars={'lang': self.lang})
+        #current_mtimes = {hit['uid']: hit['mtime'] for hit in current_mtimes}
 
-        to_delete = set(stored_mtimes).difference(current_mtimes)
-        to_add = current_mtimes.copy()
-        for uid, mtime in stored_mtimes.items():
-            if uid in to_delete:
-                continue
-            #if mtime <= current_mtimes.get(uid):
-                #to_add.pop(uid)
-        logger.info(
-            "For index {} ({}), {} files already indexed, {} files to be added, {} files to be deleted".format(
-                self.index_name, self.index_alias, len(stored_mtimes), len(to_add), len(to_delete)))
-        chunks = self.yield_docs_from_dir(self.lang, size=500000, to_add=to_add,
-                                          to_delete=to_delete)
+        #to_delete = set(stored_mtimes).difference(current_mtimes)
+        #to_add = current_mtimes.copy()
+        #for uid, mtime in stored_mtimes.items():
+            #if uid in to_delete:
+                #continue
+
+        #logger.info(
+            #"For index {} ({}), {} files already indexed, {} files to be added, {} files to be deleted".format(
+                #self.index_name, self.index_alias, len(stored_mtimes), len(to_add), len(to_delete)))
+        chunks = self.yield_docs_from_dir(self.lang, size=500000)
         self.process_chunks(chunks)
 
 
