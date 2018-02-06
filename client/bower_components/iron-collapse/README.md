@@ -6,10 +6,13 @@ _[Demo and API docs](https://elements.polymer-project.org/elements/iron-collapse
 ## &lt;iron-collapse&gt;
 
 `iron-collapse` creates a collapsible block of content.  By default, the content
-will be collapsed.  Use `opened` or `toggle()` to show/hide the content.
+will be collapsed.  Use `opened` or `toggle()` to show/hide the content. The
+aria-expanded attribute should only be set on the button that controls the
+collapsable area, not on the area itself. See
+https://www.w3.org/WAI/GL/wiki/Using_aria-expanded_to_indicate_the_state_of_a_collapsible_element#Description
 
 ```html
-<button on-click="toggle">toggle collapse</button>
+<button id="button" on-click="toggle">toggle collapse</button>
 
 <iron-collapse id="collapse">
   <div>Content goes here...</div>
@@ -19,6 +22,7 @@ will be collapsed.  Use `opened` or `toggle()` to show/hide the content.
 
 toggle: function() {
   this.$.collapse.toggle();
+  this.$.button.setAttribute('aria-expanded', this.$.collapse.opened);
 }
 ```
 

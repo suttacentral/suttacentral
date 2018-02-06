@@ -13,6 +13,7 @@ Material design: [Dropdown menus](https://www.google.com/design/spec/components/
 <custom-element-demo>
   <template>
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../neon-animation/web-animations.html">
     <link rel="import" href="paper-dropdown-menu.html">
     <link rel="import" href="../paper-item/paper-item.html">
     <link rel="import" href="../paper-listbox/paper-listbox.html">
