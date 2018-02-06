@@ -89,7 +89,7 @@ Base toolbar that appears on the top right in the header of every page. This too
 
     <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
-      <iron-a11y-keys target="search_input" keys="enter" on-keys-pressed="_startSearch"></iron-a11y-keys>
+      <iron-a11y-keys target="[[search_input]]" keys="enter" on-keys-pressed="_startSearch"></iron-a11y-keys>
       <paper-icon-button icon="search" title="{{localize('searchTooltip')}}" class="white-icon"
                          on-tap="openSearch"></paper-icon-button>
       <paper-input class="toolbar-input" label="{{localize('Search')}}" no-label-float id="search_input"></paper-input>
