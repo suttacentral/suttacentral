@@ -250,10 +250,10 @@
                       this.$.container.style.height = `calc(${height} + 32px)`;
                   });
                   this.firstItem = false;
-              } else {
+              } else if (this.elements) {
                   item = this.elements[this.selectedItemIndex];
               }
-              if (this.display) {
+              if (item && this.display) {
                   item = item[this.display];
               }
               return item ? item : '';
