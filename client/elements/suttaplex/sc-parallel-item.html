@@ -353,8 +353,10 @@ It is in effect a miniature version of the suttaplex-card
               let tail = '';
               uid_parts.forEach(item => {
                   if (!expansionData[0][item]) {
-                      tail = item.match(/\d+.*/g)[0] + '–';
-                      item = item.match(/[a-z]*/g)[0];
+                      const tailMatch = item.match(/\d+.*/g);
+                      tailMatch ? tail = tailMatch[0] + '–' : tail;
+                      const itemMatch = item.match(/[a-z]*/g);
+                      itemMatch ? item = itemMatch[0] : item;
                   }
                   item ? sc_acronym += `${expansionData[0][item][idOrName]} ${tail}` : sc_acronym += tail;
               });
@@ -363,10 +365,11 @@ It is in effect a miniature version of the suttaplex-card
           }
 
           _computeVolPage(volPage) {
+              let volPages;
               if (volPage) {
-                  const volPages = volPage.split('//');
+                  volPages = volPage.split('//');
               }
-              return volPages[1] ? volPages[1] : volPage;
+              return (volPages && volPages[1]) ? volPages[1] : volPage;
           }
 
           _getVolPageTitle(volPage, localize) {
