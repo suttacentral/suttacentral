@@ -1,7 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <!--
-  Static page scrolling
+  Static page functions
 -->
 <dom-module id="sc-static-page">
   <template>
@@ -25,7 +26,7 @@
                       type: String,
                       value: 'en'
                   },
-                  languageStringPath: {
+                  localizedStringPath: {
                       type: String
                   }
               }
@@ -33,16 +34,15 @@
 
           connectedCallback() {
               super.connectedCallback();
-              this.loadResources(this.resolveUrl(`${this.languageStringPath}${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-              try {
-                  this.shadowRoot.querySelector('main').addEventListener('click', () => {
+              this.loadResources(this.resolveUrl(`${this.localizedStringPath}${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              const targetMainElement = this.shadowRoot.querySelector('main');
+              if (targetMainElement) {
+                  targetMainElement.addEventListener('click', () => {
                       setTimeout(() => {
                           this.currentId = this._scrollToSection(window.location.hash, this.currentId);
                       }, 0);
                   });
-              } catch (e) {
-                  return;
-              };
+              }
               setTimeout(() => {
                       this.currentId = this._scrollToSection(window.location.hash, this.currentId);
               }, 2000);
@@ -68,7 +68,7 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`${this.languageStringPath}${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`${this.localizedStringPath}${this.language}.json`), this.language, true);
               }
           }
       }
