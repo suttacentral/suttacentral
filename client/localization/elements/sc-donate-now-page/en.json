@@ -15,7 +15,7 @@
         "paymentSuccessful": "Sadhu! Your payment has been completed successfully.",
         "redirectNotice": "You will be redirected to the homepage in 5 seconds.",
         "Name (optional)": "Name (optional)",
-        "UnknownError": "Unknown error",
+        "UnknownError": "Error when sending donation.",
         "AmountCannotBeLessThan": "Amount cannot be less than $0.50 USD.",
         "StripeLimitations": "Due to Stripe limitations,  please make a direct payment, or else contact us for help.",
         "cardDeclined": "Your card was declined."
