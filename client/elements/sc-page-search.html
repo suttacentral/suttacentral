@@ -282,6 +282,12 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.resultCount = results.total;
           }
 
+          connectedCallback() {
+              super.connectedCallback();
+              // Run every 0.5 seconds
+              setInterval(() => { this._loadMoreIfMinimumNotReached() }, 500);
+          }
+
           // Saves the fetched search results to be displayed in the iron-list.
           // Automatically called after the lastSearchResults array is updated in _didRespond.
           _populateList() {
@@ -309,16 +315,12 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
               // Don't load once all items have already been loaded.
               if (this.searchListNode.items.length === this.resultCount) {
-                  console.log(this.searchListNode.items.length);
-                  console.log(this.resultCount);
-                  console.log('returning');
                   return;
               }
               this._loadNextPage();
           }
 
           _loadNextPage() {
-              console.log('loading next page');
               this.currentPage++;
               this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
@@ -406,8 +408,6 @@ than ten results in total, a dropdown selection menu appears at the top.
               }
               this.currentFilter = selectedView;
               this._filterSearchResults();
-              // Run every 0.5 seconds
-              setInterval(() => { this._loadMoreIfMinimumNotReached() }, 500);
           }
 
           // The endless scroll is dependant on a scroll event, but if there are not enough items on the
