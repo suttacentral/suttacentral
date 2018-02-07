@@ -143,15 +143,14 @@ than ten results in total, a dropdown selection menu appears at the top.
       <main class="search-results-main">
         <div class="search-result-head">
           <h1 class="search-result-header">
-            <span class="search-result-number">[[_calculateResultCount(responseData)]]</span>
+            <span class="search-result-number">[[_calculateResultCount(resultCount)]]</span>
             <span class="search-result-description">{{localize('resultsFor')}}</span>
             <span class="search-result-term">[[searchQuery]]</span>
           </h1>
           <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
         </div>
 
-        <iron-scroll-threshold id="scroll_threshold" lower-threshold="0" on-lower-threshold="_loadMoreData"
-                               scroll-target="document">
+        <iron-scroll-threshold id="scroll_threshold" on-lower-threshold="_loadMoreData" scroll-target="document">
 
           <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item" scroll-target="document">
             <template>
@@ -279,8 +278,8 @@ than ten results in total, a dropdown selection menu appears at the top.
           // search results and _populateList is called.
           _didRespond(e) {
               const results = e.detail.response;
-              this.set('lastSearchResults', results.hits);
-              this.set('resultCount', results.total);
+              this.lastSearchResults = results.hits;
+              this.resultCount = results.total;
           }
 
           // Saves the fetched search results to be displayed in the iron-list.
@@ -308,26 +307,18 @@ than ten results in total, a dropdown selection menu appears at the top.
           // depending on the number of items to be loaded and on previously set parameters.
           _loadMoreData() {
               this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
-              if (!this._shouldLoadMoreData()) {
-                  return;
-              }
               // Don't load once all items have already been loaded.
-              if (this.searchListNode.items.length >= this.resultCount) {
+              if (this.searchListNode.items.length === this.resultCount) {
+                  console.log(this.searchListNode.items.length);
+                  console.log(this.resultCount);
+                  console.log('returning');
                   return;
               }
               this._loadNextPage();
           }
 
-          // Checks if the user scrolled past the required threshold to load more search results.
-          // This has some slightly expensive DOM querying, but at the moment is necessary because of this bug:
-          // https://github.com/PolymerElements/iron-list/issues/290.
-          _shouldLoadMoreData() {
-              // the threshold is set to fire when 8 elements are still not in view.
-              const scrollThreshold = (this.visibleSearchResults.length - 5) * this.searchResultElemHeight;
-              return document.body.scrollTop > scrollThreshold;
-          }
-
           _loadNextPage() {
+              console.log('loading next page');
               this.currentPage++;
               this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
@@ -451,7 +442,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // Determines the number of search results that have been found.
           _calculateResultCount(data) {
-              return data ? data.hits.total : 0;
+              return data ? data : 0;
           }
 
           // If there is no title in the database, the division is the title
