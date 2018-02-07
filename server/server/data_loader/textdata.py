@@ -207,7 +207,7 @@ class TextInfoModel:
                     right_side = h1.select_one('.mirror-right')
                     return right_side.text_content()+' ('+left_side.text_content()+')'
                 except:
-                    return regex.sub(r'\d+\W?\d*\W?\s', '', h1.text_content())
+                    return regex.sub(r'\d+\W?\d*\W?\s', '', h1.text_content(), 1)
             return regex.sub(r'\d+\W?\d*\W?\s', '', h1.text_content(), 1)
         except Exception as e:
             logger.warn('Could not determine name for {}/{}'.format(lang_uid, uid))
