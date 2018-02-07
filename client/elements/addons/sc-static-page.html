@@ -15,16 +15,25 @@
                   currentId: {
                       type: String,
                       value: ''
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  },
+                  languageStringPath: {
+                      type: String
                   }
               }
           }
 
           connectedCallback() {
-            super.connectedCallback();
-          }
-
-          ready() {
-              super.ready();
+              super.connectedCallback();
+              this.loadResources(this.resolveUrl(`${this.languageStringPath}${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               try {
                   this.shadowRoot.querySelector('main').addEventListener('click', () => {
                       setTimeout(() => {
@@ -32,11 +41,11 @@
                       }, 0);
                   });
               } catch (e) {
-                  console.error(e);
+                  return;
               };
               setTimeout(() => {
                       this.currentId = this._scrollToSection(window.location.hash, this.currentId);
-              }, 1500);
+              }, 2000);
           }
 
           _scrollToSection(sectionId, currentId) {
@@ -52,6 +61,15 @@
                   });
               }
               return sectionId;
+          }
+
+          _siteLanguageChanged() {
+              if (this.language !== this.fallbackLanguage) {
+                  if (this.resources && this.resources[this.language]) {
+                      return;
+                  }
+                  this.loadResources(this.resolveUrl(`${this.languageStringPath}${this.language}.json`), this.language, true);
+              }
           }
       }
 

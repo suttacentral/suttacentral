@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../addons/sc-static-page.html">
 
 <dom-module id="sc-introduction">
   <template>
@@ -232,36 +233,17 @@
   </template>
 
   <script>
-      class SCIntroduction extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCIntroduction extends SCStaticPage {
           static get is() {
               return 'sc-introduction';
           }
 
           static get properties() {
               return {
-                  language: {
+                  languageStringPath: {
                       type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
-                  },
-                  fallbackLanguage: {
-                      type: String,
-                      value: 'en'
+                      value: '/localization/elements/static_introduction/'
                   }
-              }
-          }
-
-          ready() {
-              super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_introduction/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-          }
-
-          _siteLanguageChanged() {
-              if (this.language !== this.fallbackLanguage) {
-                  if (this.resources && this.resources[this.language]) {
-                      return;
-                  }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_introduction/${this.language}.json`), this.language, true);
               }
           }
       }
