@@ -26,15 +26,16 @@
       }
 
       .paper-spinner {
+        @apply --center;
         --paper-spinner-color: var(--sc-primary-color);
       }
 
-      .icon-middle {
-        position: absolute;
-        margin: 0;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+      .network-error {
+        @apply --center;
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-l;
+        color: var(--sc-secondary-text-color);
+        text-align: center;
       }
 
       .network-error-icon {
@@ -335,13 +336,16 @@
     <div id="container" class="nav-list-container">
       <template is="dom-if" if="[[_shouldShowLoadingIndicator(loading, mainMenuError, childMenuError)]]">
         <div class="loading-indicator">
-          <paper-spinner-lite class="paper-spinner icon-middle" active="[[loading]]"></paper-spinner-lite>
+          <paper-spinner-lite class="paper-spinner" active="[[loading]]"></paper-spinner-lite>
         </div>
       </template>
 
       <template is="dom-if" if="[[_shouldShowErrorIcon(mainMenuError, childMenuError, currentlySelectedMenu)]]">
-        <iron-icon class="network-error-icon icon-middle" title="{{localize('networkError')}}"
-                   src="img/nonetwork.svg"></iron-icon>
+        <div class="network-error">
+          <iron-icon class="network-error-icon" title="{{localize('networkError')}}"
+                     src="/img/nonetwork.svg"></iron-icon>
+          <div>{{localize('networkError')}}</div>
+        </div>
       </template>
 
       <nav class="sc-nav">
