@@ -77,7 +77,7 @@
 
       .explanation {
         color: var(--sc-secondary-text-color);
-        margin-bottom:8px;
+        margin-bottom: 8px;
       }
 
       .legal-information {
@@ -150,6 +150,19 @@
         }
       }
 
+      .network-error {
+        @apply --center;
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-static-subtitle;
+        color: var(--sc-secondary-text-color);
+        text-align: center;
+      }
+
+      .network-error-icon {
+        width: var(--sc-size-xxl);
+        height: var(--sc-size-xxl);
+      }
+
     </style>
     <iron-ajax
         auto
@@ -173,79 +186,90 @@
     <iron-location path="{{path}}"></iron-location>
     <iron-meta id="meta"></iron-meta>
 
-    <div id="page-wrap">
-      <section>
-        <iron-form id="donation_form" class="payment-iron-form">
-          <form class="payment-form">
-            <div class="flex-row">
-              <paper-dropdown-menu class="currency-dropdown data-input" aria-label="Select currency"
-                                   label="{{localize('currency')}}" always-float-label>
-                <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
-                               selected="[[default_currency_index]]">
-                  <template is="dom-repeat" items="[[currencies]]">
-                    <paper-item id$="[[item.symbol]]" class="currency-menu-item">
-                      [[item.symbol]]
-                    </paper-item>
-                  </template>
-                </paper-listbox>
-              </paper-dropdown-menu>
+    <template is="dom-if" if="[[isOnline]]">
+      <div id="page-wrap">
+        <section>
+          <iron-form id="donation_form" class="payment-iron-form">
+            <form class="payment-form">
+              <div class="flex-row">
+                <paper-dropdown-menu class="currency-dropdown data-input" aria-label="Select currency"
+                                     label="{{localize('currency')}}" always-float-label>
+                  <paper-listbox slot="dropdown-content" class="currency-menu-listbox"
+                                 selected="[[default_currency_index]]">
+                    <template is="dom-repeat" items="[[currencies]]">
+                      <paper-item id$="[[item.symbol]]" class="currency-menu-item">
+                        [[item.symbol]]
+                      </paper-item>
+                    </template>
+                  </paper-listbox>
+                </paper-dropdown-menu>
 
-              <template is="dom-repeat" items="[[currencies]]">
-                <paper-tooltip for="[[item.symbol]]" position="right" class="sc-tooltip" animation-delay="100">
-                  [[item.name]]
-                </paper-tooltip>
-              </template>
+                <template is="dom-repeat" items="[[currencies]]">
+                  <paper-tooltip for="[[item.symbol]]" position="right" class="sc-tooltip" animation-delay="100">
+                    [[item.name]]
+                  </paper-tooltip>
+                </template>
 
-              <paper-input label="{{localize('amount')}}" class="data-input amount-input" auto-validate
-                           pattern="^[+]?(\d+[.,]?\d{0,2})$"
-                           allowed-pattern="[0-9.,]" error-message="{{localize('invalidValue')}}" required
-                           maxlength=20></paper-input>
-            </div>
+                <paper-input label="{{localize('amount')}}" class="data-input amount-input" auto-validate
+                             pattern="^[+]?(\d+[.,]?\d{0,2})$"
+                             allowed-pattern="[0-9.,]" error-message="{{localize('invalidValue')}}" required
+                             maxlength=20></paper-input>
+              </div>
 
-            <p class="explanation">{{localize('chooseFrequency')}}</p>
-            <div class="flex-row">
-              <paper-checkbox class="frequency-checkbox one-time-donation" checked>{{localize('oneTime')}}
-              </paper-checkbox>
-              <paper-checkbox class="frequency-checkbox monthly-donation">{{localize('monthly')}}
-              </paper-checkbox>
-            </div>
+              <p class="explanation">{{localize('chooseFrequency')}}</p>
+              <div class="flex-row">
+                <paper-checkbox class="frequency-checkbox one-time-donation" checked>{{localize('oneTime')}}
+                </paper-checkbox>
+                <paper-checkbox class="frequency-checkbox monthly-donation">{{localize('monthly')}}
+                </paper-checkbox>
+              </div>
 
-            <stripe-card id="stripe_card" class="card-row" publishable-key="pk_test_vFqwBPDW08c5AKXMGLKaeJaB"
-                         token="{{stripeResponse}}"
-                         hide-zip hide-submit></stripe-card>
+              <stripe-card id="stripe_card" class="card-row" publishable-key="pk_test_vFqwBPDW08c5AKXMGLKaeJaB"
+                           token="{{stripeResponse}}"
+                           hide-zip hide-submit></stripe-card>
 
-            <paper-input label="{{localize('Name (optional)')}}" class="data-input name-input" maxlength=200>
-              <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
-            </paper-input>
+              <paper-input label="{{localize('Name (optional)')}}" class="data-input name-input" maxlength=200>
+                <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
+              </paper-input>
 
-            <paper-input label="{{localize('email')}}" class="data-input email-input" auto-validate pattern="^\S+@\S+\.\S+$"
-                         error-message="{{localize('invalidEmail')}}" maxlength=200>
-              <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
-            </paper-input>
+              <paper-input label="{{localize('email')}}" class="data-input email-input" auto-validate
+                           pattern="^\S+@\S+\.\S+$"
+                           error-message="{{localize('invalidEmail')}}" maxlength=200>
+                <iron-icon icon="mail" slot="prefix" class="form-prefix"></iron-icon>
+              </paper-input>
 
-            <paper-textarea label="{{localize('message')}}" class="data-input message-input" rows=2 maxlength=200
-                            char-counter>
-            </paper-textarea>
+              <paper-textarea label="{{localize('message')}}" class="data-input message-input" rows=2 maxlength=200
+                              char-counter>
+              </paper-textarea>
 
-            <div class="flex-row submit">
-              <paper-button id="submitButton" on-tap="_makeDonation" class="submit-button" raised>
-                <div>{{localize('payWithCard')}}</div>
-              </paper-button>
-            </div>
-          </form>
-        </iron-form>
+              <div class="flex-row submit">
+                <paper-button id="submitButton" on-tap="_makeDonation" class="submit-button" raised>
+                  <div>{{localize('payWithCard')}}</div>
+                </paper-button>
+              </div>
+            </form>
+          </iron-form>
 
-        <div class="legal-information">
-          <iron-icon icon="icons:info-outline" class="form-prefix"></iron-icon>
-          <p inner-h-t-m-l="{{localize('storageDisclaimer')}}"></p>
-          <p>{{localize('feeDisclaimer')}}</p>
+          <div class="legal-information">
+            <iron-icon icon="icons:info-outline" class="form-prefix"></iron-icon>
+            <p inner-h-t-m-l="{{localize('storageDisclaimer')}}"></p>
+            <p>{{localize('feeDisclaimer')}}</p>
+          </div>
+        </section>
+      </div>
+      <template is="dom-if" if="[[processingPayment]]">
+        <div class="blocker"></div>
+        <div class="spinner">
+          <paper-spinner active></paper-spinner>
         </div>
-      </section>
-    </div>
-    <template is="dom-if" if="[[processingPayment]]">
-      <div class="blocker"></div>
-      <div class="spinner">
-        <paper-spinner active></paper-spinner>
+      </template>
+    </template>
+
+    <template is="dom-if" if="[[!isOnline]]">
+      <div class="network-error">
+        <iron-icon class="network-error-icon" title="{{localize('networkError')}}"
+                   src="/img/nonetwork.svg"></iron-icon>
+        <div>{{localize('offline')}}</div>
       </div>
     </template>
 
@@ -303,11 +327,11 @@
                   errorMessages: {
                       type: Object,
                       value: {
-                        0: 'UnknownError',
-                        1: 'AmountCannotBeLessThan',
-                        2: 'StripeLimitations',
-                        3: 'cardDeclined'
-                    }
+                          0: 'UnknownError',
+                          1: 'AmountCannotBeLessThan',
+                          2: 'StripeLimitations',
+                          3: 'cardDeclined'
+                      }
                   },
                   language: {
                       type: String,
@@ -317,52 +341,72 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  isOnline: {
+                      type: Boolean
                   }
               }
           }
 
           ready() {
               super.ready();
-
-              let oneTimeDonation = this.shadowRoot.querySelector('.one-time-donation');
-              let monthly = this.shadowRoot.querySelector('.monthly-donation');
-
-              oneTimeDonation.addEventListener('click', (e) => {
-                  oneTimeDonation.checked = true;
-                  monthly.checked = false;
-              });
-
-              monthly.addEventListener('click', (e) => {
-                  oneTimeDonation.checked = false;
-                  monthly.checked = true;
-              });
-
-              let amountInput = this.shadowRoot.querySelector('.amount-input');
-              amountInput.onpaste = (e) => {  // Don't allow pasting text data.
-                  let pastedText = '';
-                  if (window.clipboardData && window.clipboardData.getData) { // IE
-                      pastedText = window.clipboardData.getData('Text');
-                  } else if (e.clipboardData && e.clipboardData.getData) {
-                      pastedText = e.clipboardData.getData('text/plain');
-                  }
-                  if (!/^[+]?(\d+[.,]?\d{0,2})$/.test(pastedText)) {
-                      return false;
-                  }
-              };
-
-              amountInput.addEventListener('keydown', (e) => {
-                  if (e.key === ',') {
-                      let position = amountInput.$.nativeInput.selectionStart;
-                      amountInput.value = amountInput.value.slice(0, position) + '.' + amountInput.value.slice(position);
-                      e.preventDefault();
-                  }
-              });
+              this._addEventListeners();
 
               this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
               this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.language}.json`), this.language, true);
+          }
+
+          _addEventListeners() {
+              window.addEventListener('load', this._updateOnlineStatus.bind(this));
+              window.addEventListener('online', this._updateOnlineStatus.bind(this));
+              window.addEventListener('offline', this._updateOnlineStatus.bind(this));
+
+              let oneTimeDonation = this.shadowRoot.querySelector('.one-time-donation');
+              let monthly = this.shadowRoot.querySelector('.monthly-donation');
+              let amountInput = this.shadowRoot.querySelector('.amount-input');
+
+              if (oneTimeDonation) {
+                  oneTimeDonation.addEventListener('click', (e) => {
+                      oneTimeDonation.checked = true;
+                      monthly.checked = false;
+                  });
+              }
+
+              if (monthly) {
+                  monthly.addEventListener('click', (e) => {
+                      oneTimeDonation.checked = false;
+                      monthly.checked = true;
+                  });
+              }
+
+              if (amountInput) {
+                  amountInput.onpaste = (e) => {  // Don't allow pasting text data.
+                      let pastedText = '';
+                      if (window.clipboardData && window.clipboardData.getData) { // IE
+                          pastedText = window.clipboardData.getData('Text');
+                      } else if (e.clipboardData && e.clipboardData.getData) {
+                          pastedText = e.clipboardData.getData('text/plain');
+                      }
+                      if (!/^[+]?(\d+[.,]?\d{0,2})$/.test(pastedText)) {
+                          return false;
+                      }
+                  };
+
+                  amountInput.addEventListener('keydown', (e) => {
+                      if (e.key === ',') {
+                          let position = amountInput.$.nativeInput.selectionStart;
+                          amountInput.value = amountInput.value.slice(0, position) + '.' + amountInput.value.slice(position);
+                          e.preventDefault();
+                      }
+                  });
+              }
+          }
+
+          _updateOnlineStatus() {
+              this.isOnline = navigator.onLine;
           }
 
           _handleResponse() {
@@ -427,6 +471,9 @@
           }
 
           resetForm() {
+              if (!this.$.donation_form) {
+                  return;
+              }
               this.$.donation_form.reset();
               this.shadowRoot.querySelector('.amount-input').value = undefined;
               this.shadowRoot.querySelector('.one-time-donation').checked = true;
@@ -452,6 +499,7 @@
                   composed: true
               }));
           }
+
       }
 
       customElements.define(SCDonateNow.is, SCDonateNow);

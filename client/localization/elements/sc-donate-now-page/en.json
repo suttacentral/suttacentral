@@ -18,6 +18,7 @@
         "UnknownError": "Error when sending donation.",
         "AmountCannotBeLessThan": "Amount cannot be less than $0.50 USD.",
         "StripeLimitations": "Due to Stripe limitations,  please make a direct payment, or else contact us for help.",
-        "cardDeclined": "Your card was declined."
+        "cardDeclined": "Your card was declined.",
+        "offline": "You're offline."
     }
 }
