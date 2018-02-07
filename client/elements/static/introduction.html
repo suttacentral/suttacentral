@@ -1,7 +1,7 @@
 <link href="../../bower_components/polymer/polymer.html" rel="import"/>
 <link href="../../styles/static-styles.html" rel="import"/>
 <link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
-<dom-module id="sc-preamble">
+<dom-module id="sc-introduction">
  <template>
   <style include="static-styles">
   </style>
@@ -145,9 +145,9 @@
   </div>
  </template>
  <script>
-  class SCPreamble extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+  class SCIntroduction extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
-              return 'sc-preamble';
+              return 'sc-introduction';
           }
 
           static get properties() {
@@ -166,7 +166,7 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_preamble/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.loadResources(this.resolveUrl(`/localization/elements/static_introduction/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
           _siteLanguageChanged() {
@@ -174,11 +174,11 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_preamble/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/static_introduction/${this.language}.json`), this.language, true);
               }
           }
       }
 
-      customElements.define(SCPreamble.is, SCPreamble);
+      customElements.define(SCIntroduction.is, SCIntroduction);
  </script>
 </dom-module>

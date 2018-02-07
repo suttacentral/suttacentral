@@ -175,7 +175,6 @@ Custom property | Description | Default
     hostAttributes: {
       role: 'group',
       'aria-hidden': 'true',
-      'aria-expanded': 'false'
     },
 
     listeners: {
@@ -266,7 +265,6 @@ Custom property | Description | Default
     },
 
     _openedChanged: function() {
-      this.setAttribute('aria-expanded', this.opened);
       this.setAttribute('aria-hidden', !this.opened);
 
       this._setTransitioning(true);

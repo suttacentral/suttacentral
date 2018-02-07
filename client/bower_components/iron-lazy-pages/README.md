@@ -60,7 +60,26 @@ Fetching is only performed once, e.g. switching from `foo` to `bar` to `foo` wil
 ## `<dom-if>` support
 
 You can also add `<dom-if>` as a route to enable restamping:
-
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="iron-lazy-pages.html">
+    <link rel="import" href="../paper-tabs/paper-tabs.html">
+    <link rel="import" href="../paper-tabs/paper-tab.html">
+    <dom-bind>
+      <template is="dom-bind">
+        <paper-tabs selected="{{route}}" attr-for-selected='key'>
+          <paper-tab key='foo'>Foo</paper-tab>
+          <paper-tab key='bar'>Bar</paper-tab>
+        </paper-tabs>
+        <next-code-block></next-code-block>
+      </template>
+    </dom-bind>
+  </template>
+</custom-element-demo>
+```
+-->
 ```html
 <iron-lazy-pages
     attr-for-selected="data-route"

@@ -95,6 +95,48 @@ attach it to the `<iron-form>`:
   </template>
 
   <script>
+  (function() {
+    function isSubmittable(node, ignoreName) {
+      // An element is submittable if it is not disabled, and if it has a
+      // 'name' attribute. If we ignore the name, check if is validatable.
+      // This allows `_findElements` to decide if to explore an element's shadowRoot or not:
+      // an element implementing `validate()` is considered validatable, and we don't
+      // search for validatables in its shadowRoot.
+      return  (!node.disabled && (ignoreName ? typeof node.validate === 'function' : node.name));
+    }
+
+    /**
+     * Traverse the distributed nodes of a slot or content element
+     * and add all submittable nodes to `submittable`.
+     * @param  {Array<Node>} submittable Reference to the arrray of submittables
+     * @param  {Node} node        The slot or content node
+     * @param  {boolean} ignoreName  Whether the name of the submittable nodes should be disregarded
+     * @return {void}
+     */
+    function handleSubmittableInSlot(submittable, node, ignoreName) {
+      var assignedNodes = Polymer.dom(node).getDistributedNodes();
+
+      for (var i = 0; i < assignedNodes.length; i++) {
+        if (assignedNodes[i].nodeType === Node.TEXT_NODE) {
+          continue;
+        }
+
+        // Note: assignedNodes does not contain <slot> or <content> because 
+        // getDistributedNodes flattens the tree.
+        if (isSubmittable(assignedNodes[i], ignoreName)) {
+          submittable.push(assignedNodes[i]);
+        }
+
+        var nestedAssignedNodes = Polymer.dom(assignedNodes[i]).queryDistributedElements('*');
+
+        for (var j = 0; j < nestedAssignedNodes.length; j++) {
+          if (isSubmittable(nestedAssignedNodes[j], ignoreName)) {
+            submittable.push(nestedAssignedNodes[j]);
+          }
+        }
+      }
+    }
+
     Polymer({
       is: 'iron-form',
 
@@ -144,11 +186,17 @@ attach it to the `<iron-form>`:
        */
 
       /**
+       * Fired after the form is reset.
+       *
+       * @event iron-form-reset
+       */
+
+      /**
        * Fired after the form is submitted and a response is received. An
        * IronRequestElement is included as the event.detail object.
        *
        * @event iron-form-response
-      */
+       */
 
       /**
        * Fired after the form is submitted and an error is received. An
@@ -156,21 +204,48 @@ attach it to the `<iron-form>`:
        * IronRequestElement is included in event.detail.request.
        *
        * @event iron-form-error
-      */
+       */
 
+      /**
+       * @return {void}
+       */
       attached: function() {
-        this._nodeObserver = Polymer.dom(this).observeNodes(
-          function(mutations) {
-            for (var i = 0; i < mutations.addedNodes.length; i++) {
-              if (mutations.addedNodes[i].tagName === 'FORM' && !this._alreadyCalledInit) {
-                this._alreadyCalledInit = true;
-                this._form = mutations.addedNodes[i];
-                this._init();
+        // We might have been detached then re-attached.
+        // Avoid searching again for the <form> if we already found it.
+        if (this._form) {
+          return;
+        }
+        // Search for the `<form>`, if we don't find it, observe for
+        // mutations.
+        this._form = Polymer.dom(this).querySelector('form');
+        if (this._form) {
+          this._init();
+          // Since some elements might not be upgraded yet at this time,
+          // we won't be able to look into their shadowRoots for submittables.
+          // We wait a tick and check again for any missing submittable default
+          // values.
+          this.async(this._saveInitialValues.bind(this));
+        } else {
+          this._nodeObserver = Polymer.dom(this).observeNodes(
+            function(mutations) {
+              for (var i = 0; i < mutations.addedNodes.length; i++) {
+                if (mutations.addedNodes[i].tagName === 'FORM') {
+                  this._form = mutations.addedNodes[i];
+                  // At this point in time, all custom elements are expected
+                  // to be upgraded, hence we'll be able to traverse their
+                  // shadowRoots.
+                  this._init();
+                  Polymer.dom(this).unobserveNodes(this._nodeObserver);
+                  this._nodeObserver = null;
+                }
               }
-            }
-          }.bind(this));
+            }.bind(this));
+        }
       },
 
+      /**
+       * @return {void}
+       */
       detached: function() {
         if (this._nodeObserver) {
           Polymer.dom(this).unobserveNodes(this._nodeObserver);
@@ -184,6 +259,10 @@ attach it to the `<iron-form>`:
 
         // Save the initial values.
         this._defaults = this._defaults || new WeakMap();
+        this._saveInitialValues();
+      },
+
+      _saveInitialValues: function() {
         var nodes = this._getSubmittableElements();
         for (var i = 0; i < nodes.length; i++) {
           var node = nodes[i];
@@ -201,6 +280,11 @@ attach it to the `<iron-form>`:
        * @return {boolean} True if all the elements are valid.
        */
       validate: function() {
+        // If you've called this before distribution happened, bail out.
+        if (!this._form) {
+          return false;
+        }
+
         if (this._form.getAttribute('novalidate') === '')
           return true;
 
@@ -222,6 +306,9 @@ attach it to the `<iron-form>`:
 
       /**
        * Submits the form.
+       *
+       * @param {Event=} event
+       * @return {void}
        */
       submit: function(event) {
         // We are not using this form for submission, so always cancel its event.
@@ -266,6 +353,9 @@ attach it to the `<iron-form>`:
 
       /**
        * Resets the form to the default values.
+       *
+       * @param {Event=} event
+       * @return {void}
        */
       reset: function(event) {
         // We are not using this form for submission, so always cancel its event.
@@ -274,6 +364,14 @@ attach it to the `<iron-form>`:
 
         // If you've called this before distribution happened, bail out.
         if (!this._form) {
+          return;
+        }
+
+        // Ensure the native form fired the `reset` event.
+        // User might have bound `<button on-click="_resetIronForm">`, or directly called
+        // `ironForm.reset()`. In these cases we want to first reset the native form.
+        if (!event || event.type !== 'reset' || event.target !== this._form) {
+          this._form.reset();
           return;
         }
 
@@ -287,13 +385,15 @@ attach it to the `<iron-form>`:
             node.checked = defaults.checked;
           }
         }
+
+        this.fire('iron-form-reset');
       },
 
       /**
        * Serializes the form as will be used in submission. Note that `serialize`
        * is a Polymer reserved keyword, so calling `someIronForm`.serialize()`
        * will give you unexpected results.
-       * @return {Object} An object containing name-value pairs for elements that
+       * @return {!Object<string, *>} An object containing name-value pairs for elements that
        *                  would be submitted.
        */
       serializeForm: function() {
@@ -349,29 +449,29 @@ attach it to the `<iron-form>`:
       },
 
       _getValidatableElements: function() {
-        return this._findElements(this._form, true);
+        return this._findElements(this._form, true /* ignoreName */, false /* skipSlots */);
       },
 
       _getSubmittableElements: function() {
-        return this._findElements(this._form, false);
+        return this._findElements(this._form, false /* ignoreName */, false /* skipSlots */);
       },
 
-      _findElements: function(parent, ignoreName) {
-        var nodes = Polymer.dom(parent).querySelectorAll('*');
+      _findElements: function(parent, ignoreName, skipSlots) {
+        var selector = skipSlots ? ':not(slot):not(content)' : '*';
+        var nodes = Polymer.dom(parent).querySelectorAll(selector);
         var submittable = [];
 
         for (var i = 0; i < nodes.length; i++) {
           var node = nodes[i];
           // An element is submittable if it is not disabled, and if it has a
-          // 'name' attribute.
-          if(!node.disabled && (ignoreName || node.name)) {
+          // name attribute.
+          if (node.localName === 'slot' || node.localName === 'content') {
+            handleSubmittableInSlot(submittable, node, ignoreName);
+          } else if (isSubmittable(node, ignoreName)) {
             submittable.push(node);
-          }
-          else {
-            // This element has a root which could contain more submittable elements.
-            if(node.root) {
-              Array.prototype.push.apply(submittable, this._findElements(node.root, ignoreName));
-            }
+          } else if (node.root) {
+            Array.prototype.push.apply(submittable,
+              this._findElements(node.root, ignoreName, true /* skipSlots */));
           }
         }
         return submittable;
@@ -458,5 +558,6 @@ attach it to the `<iron-form>`:
         }
       }
     });
+  })();
   </script>
 </dom-module>

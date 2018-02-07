@@ -107,9 +107,10 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               }
           }
 
-          ready() {
-              super.ready();
+          connectedCallback() {
+              super.connectedCallback();
               this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex-share-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this._sendRequest();
           }
 
           _siteLanguageChanged() {
@@ -147,7 +148,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               if (this.parallels === undefined || this.parallels === null) {
                   return false;
               }
-              return loadingParallels || (Object.keys(this.parallels).length === 0 && typeof this.parallels === 'object')
+              return loadingParallels || (Object.keys(this.parallels).length === 0 && typeof this.parallels === 'object');
           }
 
           _computeLink() {
