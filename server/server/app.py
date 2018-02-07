@@ -12,6 +12,7 @@ from api.views import (Currencies, Donations, Languages, LookupDictionaries, Men
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
+from common.extensions import cache
 
 
 def app_factory() -> Tuple[Api, Flask]:
@@ -41,7 +42,13 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Expansion, '/expansion')
 
     app.register_blueprint(api_bp)
+    register_extensions(app)
+
     return api, app
+
+
+def register_extensions(app):
+    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
 
 api, app = app_factory()
