@@ -208,7 +208,7 @@ class TextInfoModel:
                     return right_side.text_content()+' ('+left_side.text_content()+')'
                 except:
                     return regex.sub(r'^\P{alpha}*', '', h1.text_content())
-            return regex.sub(r'^\P{alpha}*', '', h1.text_content())
+            return regex.sub(r'[\d. –-:]*', '', h1.text_content(), 1)
         except Exception as e:
             logger.warn('Could not determine name for {}/{}'.format(lang_uid, uid))
             return ''
