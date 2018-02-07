@@ -25,8 +25,6 @@ FOR text IN html_text
     RETURN {uid: text.uid, mtime: text.mtime}
 '''
 
-_MAX_NESTING_LEVEL = '5'
-
 MENU = '''
 FOR div IN root
     FILTER div.type == 'division'
@@ -500,3 +498,30 @@ LET expansion_item = (
     
 RETURN MERGE(expansion_item)
 '''
+
+
+class PWA:
+    MENU = '''
+FOR div IN root
+    FILTER div.type == 'division'
+    LET parents = MERGE(
+        FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+            RETURN {
+                [p.type]: {
+                    uid: p._id
+                }
+            }
+        )
+    LET descendant = (
+        FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
+            FILTER d_edge.type != 'text'
+            LIMIT 1
+            RETURN 1
+    )[0]
+    RETURN {
+        uid: div._id, 
+        has_children: descendant != null,
+        id: div.uid, 
+        parents: parents
+    }
+    '''
