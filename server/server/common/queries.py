@@ -37,10 +37,12 @@ FOR text IN po_strings
     }
 '''        
 
+
 CURRENT_MTIMES = '''
-FOR text IN html_text
-    FILTER text.lang == @lang
-    RETURN {uid: text.uid, mtime: text.mtime}
+WITH @@collection /* With statement forces query optimizer to work */
+    FOR text IN @@collection
+        FILTER text.lang == @lang
+        RETURN {uid: text.uid, author_uid: text.author_uid, mtime: text.mtime}
 '''
 
 _MAX_NESTING_LEVEL = '5'
