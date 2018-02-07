@@ -5,8 +5,11 @@ from flask import request, current_app
 from flask_restful import Resource
 
 from search import query as query_search
+from common.extensions import cache, make_cache_key
+
 
 class Search(Resource):
+    @cache.cached(timeout=600, key_prefix=make_cache_key)
     def get(self):
         """
         Search for given query in elasticsearch.
@@ -95,9 +98,8 @@ class Search(Resource):
                     'url': f'/{uid}/{lang}/{author_uid}'
                 })
             results = {
-                'total': len(text_results),
+                'total': es_text_results['hits']['total'],
                 'hits': text_results
-                
             }
             return results
         except ConnectionError:
