@@ -4,12 +4,7 @@ from typing import Generator
 
 
 def _run_command(command):
-    """
-    To get the output of the command use:
-        proc = _run_command(<command>)
-        output = proc.stdout.read()
-    """
-    return subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    return subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
 
 def create_project(name: str):
