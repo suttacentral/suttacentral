@@ -55,9 +55,10 @@ style this element.
         disabled$="[[disabled]]"
         invalid="[[invalid]]">
 
-      <label hidden$="[[!label]]" aria-hidden="true" for="input" slot="label">[[label]]</label>
+      <label hidden$="[[!label]]" aria-hidden="true" for$="[[_inputId]]" slot="label">[[label]]</label>
 
-      <iron-autogrow-textarea id="input" class="paper-input-input" slot="input"
+      <iron-autogrow-textarea class="paper-input-input" slot="input"
+        id$="[[_inputId]]"
         aria-labelledby$="[[_ariaLabelledBy]]"
         aria-describedby$="[[_ariaDescribedBy]]"
         bind-value="{{value}}"
@@ -96,18 +97,18 @@ style this element.
 
     behaviors: [
       Polymer.PaperInputBehavior,
-      Polymer.IronFormElementBehavior
+      Polymer.IronFormElementBehavior,
     ],
 
     properties: {
       _ariaLabelledBy: {
         observer: '_ariaLabelledByChanged',
-        type: String
+        type: String,
       },
 
       _ariaDescribedBy: {
         observer: '_ariaDescribedByChanged',
-        type: String
+        type: String,
       },
 
       /**
@@ -119,7 +120,7 @@ style this element.
        */
       rows: {
         type: Number,
-        value: 1
+        value: 1,
       },
 
       /**
@@ -131,21 +132,35 @@ style this element.
        * @default 0
        */
       maxRows: {
-       type: Number,
-       value: 0
-      }
+        type: Number,
+        value: 0,
+      },
+    },
+
+    get selectionStart() {
+      return this.$.input.textarea.selectionStart;
+    },
+    set selectionStart(start) {
+      this.$.input.textarea.selectionStart = start;
+    },
+
+    get selectionEnd() {
+      return this.$.input.textarea.selectionEnd;
+    },
+    set selectionEnd(end) {
+      this.$.input.textarea.selectionEnd = end;
     },
 
     _ariaLabelledByChanged: function(ariaLabelledBy) {
-      this.$.input.textarea.setAttribute('aria-labelledby', ariaLabelledBy);
+      this._focusableElement.setAttribute('aria-labelledby', ariaLabelledBy);
     },
 
     _ariaDescribedByChanged: function(ariaDescribedBy) {
-      this.$.input.textarea.setAttribute('aria-describedby', ariaDescribedBy);
+      this._focusableElement.setAttribute('aria-describedby', ariaDescribedBy);
     },
 
     get _focusableElement() {
-      return this.$.input.textarea;
+      return this.inputElement.textarea;
     },
   });
 </script>

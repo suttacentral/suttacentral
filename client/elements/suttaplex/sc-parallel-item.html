@@ -116,14 +116,18 @@ It is in effect a miniature version of the suttaplex-card
     <div class="parallel-item d-flex justify-content-space-between">
 
       <div class="parallel-item-main-info-container">
-        <div class="parallel-item-title vertical-margin-xs" title="[[_getHeadingTitle(parallelItem, localize)]]">[[_computeTitle(parallelItem)]]</div>
+        <div class="parallel-item-title vertical-margin-xs" title="[[_getHeadingTitle(parallelItem, localize)]]">
+          [[_computeTitle(parallelItem)]]
+        </div>
 
         <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
           <div class="parallel-item-volpages-container">
-            <span title="{{localize('originalTitle')}}" class$="nerdy-row-element [[_computeHideOriginalTitle(parallelItem)]]">
+            <span title="{{localize('originalTitle')}}"
+                  class$="nerdy-row-element [[_computeHideOriginalTitle(parallelItem)]]">
               [[_getTitleWithoutSuttaText(parallelItem.original_title)]]
             </span>
-            <span class$="nerdy-row-element [[_computeHideUID(parallelItem)]]" title="[[_getAcronymTitle(parallelItem, localize)]]">
+            <span class$="nerdy-row-element [[_computeHideUID(parallelItem)]]"
+                  title="[[_getAcronymTitle(parallelItem, localize)]]">
               [[_getAcronymOrUid(parallelItem, expansionData)]]
             </span>
             <template is="dom-if" if="[[_volpagesAvailable()]]">
@@ -169,10 +173,10 @@ It is in effect a miniature version of the suttaplex-card
       <template is="dom-if" if="[[_shouldShowLanguageDropdown()]]">
         <div class="parallel-item-language-dropdown d-flex align-items-center flex-1">
           <sc-language-menu language-choice="[[parallelItem.translations]]"
-                         original-language="[[parallelItem.root_lang]]"
-                         root-id="[[_computeParallelUrl()]]"
-                         class="no-padding"
-                         parallel-to="[[parallelItem.to]]"></sc-language-menu>
+                            original-language="[[parallelItem.root_lang]]"
+                            root-id="[[_computeParallelUrl()]]"
+                            class="no-padding"
+                            parallel-to="[[parallelItem.to]]"></sc-language-menu>
         </div>
       </template>
 
@@ -246,7 +250,7 @@ It is in effect a miniature version of the suttaplex-card
           _computeTitle(item) {
               const uidLanguage = item.uid.substring(0, 3);
               if (Object.keys(this.rootLangMappings).indexOf(uidLanguage) !== -1) {
-                return this._transformId(item.to, this.expansionData, 1);
+                  return this._transformId(item.to, this.expansionData, 1);
               } else if (item.translated_title) {
                   return item.translated_title;
               } else if (item.original_title) {
@@ -256,10 +260,10 @@ It is in effect a miniature version of the suttaplex-card
               }
           }
 
-          _getHeadingTitle(item,localize) {
+          _getHeadingTitle(item, localize) {
               if (!item || item.translated_title || item.original_title) {
                   return '';
-               } else {
+              } else {
                   return this._getAcronymTitle(item, localize);
               }
           }
@@ -273,7 +277,7 @@ It is in effect a miniature version of the suttaplex-card
           }
 
           _getTitleWithoutSuttaText(item) {
-              return item.replace(' Sutta','');
+              return item.replace(' Sutta', '');
           }
 
           // returns the URL for the parallel with the given index
@@ -296,37 +300,37 @@ It is in effect a miniature version of the suttaplex-card
           _getAcronymTitle(item, localize) {
               let sc_acronym_title = localize('suttaCentralID');
               if (item.acronym) {
-                const alt_number = item.acronym.split('//')[1];
-                if (alt_number) {
-                  let book = '';
-                  (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
-                  sc_acronym_title += `\n${localize('alternateText', 'book', book)} ${alt_number}`;
-                }
+                  const alt_number = item.acronym.split('//')[1];
+                  if (alt_number) {
+                      let book = '';
+                      (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
+                      sc_acronym_title += `\n${localize('alternateText', 'book', book)} ${alt_number}`;
+                  }
               }
               return sc_acronym_title;
           }
 
           _getParagraphRange(rootId) {
-            const ids = rootId.split(/#(.*)/)[1];
-            if(!ids) {
-                return '';
-            }
-            if(ids.includes('-')) {
-              const [id1, id2] = ids.split('-#');
-              return `#${id1}–${id2}`;
-            }
-            return `#${ids}`;
+              const ids = rootId.split(/#(.*)/)[1];
+              if (!ids) {
+                  return '';
+              }
+              if (ids.includes('-')) {
+                  const [id1, id2] = ids.split('-#');
+                  return `#${id1}–${id2}`;
+              }
+              return `#${ids}`;
           }
 
           _getAcronymOrUid(item, expansionData) {
               let sc_acronym = '';
               if (item.acronym) {
-                sc_acronym = item.acronym.split('//')[0];
-                const rootId = item.to.replace('~','');
-                const id_part = this._getParagraphRange(rootId).replace('-','–');;
-                return `${sc_acronym}${id_part}`;
+                  sc_acronym = item.acronym.split('//')[0];
+                  const rootId = item.to.replace('~', '');
+                  const id_part = this._getParagraphRange(rootId).replace('-', '–');
+                  return `${sc_acronym}${id_part}`;
               } else {
-                sc_acronym = this._transformId(item.to, expansionData, 0);
+                  sc_acronym = this._transformId(item.to, expansionData, 0);
               }
               return sc_acronym;
           }
@@ -341,34 +345,36 @@ It is in effect a miniature version of the suttaplex-card
               if (!rootId || !expansionData) {
                   return '';
               }
-              rootId = rootId.replace('~','');
-              let id_part = this._getParagraphRange(rootId).replace('-','–');
+              rootId = rootId.replace('~', '');
+              let id_part = this._getParagraphRange(rootId).replace('-', '–');
               let sc_acronym = '';
               let root_part = rootId.split('#')[0];
               const uid_parts = root_part.split('-');
               let tail = '';
               uid_parts.forEach(item => {
-                if (!expansionData[0][item]) {
-                    tail = item.match(/\d+.*/g)[0]+'–';
-                    item = item.match(/[a-z]*/g)[0];
-                }
-                item ? sc_acronym += `${expansionData[0][item][idOrName]} ${tail}` : sc_acronym += tail;
+                  if (!expansionData[0][item]) {
+                      tail = item.match(/\d+.*/g)[0] + '–';
+                      item = item.match(/[a-z]*/g)[0];
+                  }
+                  item ? sc_acronym += `${expansionData[0][item][idOrName]} ${tail}` : sc_acronym += tail;
               });
               sc_acronym = sc_acronym.replace(/–\s*$/, '');
               return `${sc_acronym}${id_part}`;
           }
 
           _computeVolPage(volPage) {
-              const volPages = volPage.split('//');
+              if (volPage) {
+                  const volPages = volPage.split('//');
+              }
               return volPages[1] ? volPages[1] : volPage;
           }
 
           _getVolPageTitle(volPage, localize) {
               const volPages = volPage.split('//');
               if (volPages[1] && (volPages[0] !== volPages[1])) {
-                return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
+                  return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
               } else {
-                return localize('volumeAndPage');
+                  return localize('volumeAndPage');
               }
           }
       }

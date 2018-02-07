@@ -445,7 +445,6 @@
         display: none;
       }
 
-
       .textual-info-paragraph {
         @apply --paper-font-common-base;
         @apply --sc-skolar-font-size-xs;
@@ -473,63 +472,36 @@
         display: none;
       }
 
-      .infomode.segmented-infomode .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
-        display: inline-block;
-      }
-
-      .infomode.segmented-infomode .textual-info-paragraph-inline {
-        display: none;
-      }
-
       #simple_text_content .textual-info-paragraph {
         display: inline-block;
         float: none;
       }
 
       @media screen and (min-width: 1280px) {
-        .infomode .textual-info-paragraph {
+        .infomode:not(.side-by-side) .textual-info-paragraph {
           margin-right: -20%;
           display: block;
           background-color: transparent;
         }
 
-        .infomode .textual-info-paragraph-inline {
+        .infomode:not(.side-by-side) .textual-info-paragraph-inline {
           display: none;
-        }
-
-        .infomode .segmented-textual-info-paragraph {
-          display: none;
-        }
-
-        .infomode.segmented-infomode .textual-info-paragraph {
-          display: none;
-        }
-
-        .infomode.segmented-infomode .textual-info-paragraph-inline.segmented-textual-info-paragraph.sc {
-          position: absolute;
-          right: 10%;
-          display: block;
-        }
-
-        .infomode.segmented-infomode .sc.textual-info-paragraph.segmented-textual-info-paragraph:not(.textual-info-paragraph-inline) {
-          display: block;
         }
 
         #simple_text_content .textual-info-paragraph {
-          display: block;
+          display: inline-block;
           float: right;
         }
-
       }
 
       @media screen and (min-width: 1500px) {
-        .infomode .textual-info-paragraph {
+        .infomode:not(.side-by-side) .textual-info-paragraph {
           margin-right: -25%;
         }
       }
 
       @media screen and (min-width: 1800px) {
-        .infomode .textual-info-paragraph {
+        .infomode:not(.side-by-side) .textual-info-paragraph {
           margin-right: -30%;
         }
       }

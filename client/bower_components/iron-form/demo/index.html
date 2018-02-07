@@ -56,6 +56,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         height: 14px;
         margin-right: 20px;
       }
+      paper-spinner[hidden] {
+        display: none;
+      }
       .output {
         margin-top: 20px;
         word-wrap: break-word;
@@ -66,10 +69,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </head>
 <body unresolved>
   <div class="vertical-section-container centered">
-    <h3>Iron-form works with native and custom elements, and can prevent automatic redirection</h3>
+    <h3><code>iron-form</code> works with native and custom elements, and can prevent automatic redirection</h3>
     <demo-snippet>
       <template>
-        <input type="checkbox" checked onchange="form1.allowRedirect = !this.checked;"> Prevent automatic form redirection<br><br>
+        <label>
+          <input type="checkbox" checked onchange="form1.allowRedirect = !this.checked;">Prevent automatic form redirection
+        </label>
+        <br><br>
 
         <iron-form id="form1">
           <form action="/foo" method="get">
@@ -103,8 +109,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </demo-snippet>
 
-    <h3>You can submit a form in many different ways: by manually calling submit(),
-      using a native button, or by wrapping a paper-button in a native button:</h3>
+    <h3>You can submit a form in many different ways: by manually calling <code>submit()</code>,
+      using a native button, or by wrapping a <code>paper-button</code> in a native button:</h3>
     <demo-snippet>
       <template>
         <iron-form id="form2">
@@ -132,7 +138,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </demo-snippet>
 
-    <h3>To customize the request sent to the server, you can listen to the `iron-form-presubmit` event</h3>
+    <h3>To customize the request sent to the server, you can listen to the <code>iron-form-presubmit</code> event</h3>
     <demo-snippet>
       <template>
         <iron-form id="form3">
@@ -154,9 +160,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </demo-snippet>
 
-    <h3>Example of an <code>iron-form</code> reacting to state changes.</h3>
+    <h3>Example of an <code>iron-form</code> reacting to state changes</h3>
     <p>This form will have the "Submit" button disabled until all fields
-      are valid, and then show a spinner during submission.</p>
+      are valid, and then show a <code>paper-spinner</code> during submission.</p>
 
     <demo-snippet>
       <template>
@@ -196,7 +202,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </demo-snippet>
 
 
-    <h3>Iron-form respects the novalidate form attribute</h3>
+    <h3>Iron-form respects the <code>novalidate</code> form attribute</h3>
     <demo-snippet>
       <template>
         <iron-form id="form5">
@@ -219,7 +225,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </demo-snippet>
 
-    <h3>Iron-form respects nested elements</h3>
+    <h3><code>iron-form</code> respects nested elements</h3>
     <demo-snippet>
       <template>
         <iron-form id="form6">
