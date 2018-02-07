@@ -9,13 +9,14 @@ from flask_restful import Resource
 from sortedcontainers import SortedDict
 
 from common.arangodb import get_db
+from common.extensions import make_cache_key, cache
 
 from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, \
     SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY, DICTIONARY_ADJACENT, \
     DICTIONARY_SIMILAR, EXPANSION
 
-from common.utils import flat_tree, language_sort, recursive_sort, uid_sort_key, sort_parallels_key, \
-    sort_parallels_type_key, groupby_unsorted
+from common.utils import flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key, \
+    groupby_unsorted
 
 
 class Languages(Resource):
@@ -23,6 +24,7 @@ class Languages(Resource):
     Languages API endpoint.
     """
 
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self):
         """
         Send list of available languages
@@ -58,6 +60,7 @@ class Menu(Resource):
         super().__init__(*args, **kwargs)
         self.num_regex = re.compile(r'^[^\d]*?([\d]+)$')
 
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, submenu_id=None):
         """
         Send Menu structure
@@ -182,7 +185,7 @@ class Menu(Resource):
                     display_num = m[1]
         if display_num:
             menu_entry['display_num'] = display_num.replace('-', '–\u2060')
-    
+
     def recursive_cleanup(self, menu_entries, mapping):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
@@ -208,6 +211,7 @@ class Menu(Resource):
 
 
 class SuttaplexList(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, uid):
         """
         Send suttaplex for given uid. It is represented in flat list structure where order matters.
@@ -304,6 +308,7 @@ class SuttaplexList(Resource):
 
 
 class Parallels(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, uid):
         """
         Send parallel information for given sutta.
@@ -383,6 +388,7 @@ class Parallels(Resource):
 
 
 class LookupDictionaries(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self):
         """
         Send parallel information for given sutta.
@@ -436,6 +442,7 @@ class LookupDictionaries(Resource):
 
 
 class Sutta(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, uid, author_uid=''):
         """
         Send Complete information set for sutta-view for given uid.
@@ -523,6 +530,7 @@ class Sutta(Resource):
 
 
 class Currencies(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self):
         """
         Send list of available currencies.
@@ -570,6 +578,7 @@ class Currencies(Resource):
 
 
 class Paragraphs(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self):
         """
         Send list of textual information paragraphs for the sutta view
@@ -599,6 +608,7 @@ class Paragraphs(Resource):
 
 
 class Glossary(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self):
         """
         Send list of glossary results for related terms in dictionary view
@@ -618,7 +628,9 @@ class Glossary(Resource):
 
         return data.batch(), 200
 
+
 class DictionaryAdjacent(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, word=None):
         """
         Send list of adjacent terms to dictionary search word
@@ -636,7 +648,9 @@ class DictionaryAdjacent(Resource):
 
         return data.batch(), 200
 
+
 class DictionarySimilar(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, word=None):
         """
         Send list of similar terms to dictionary search word
@@ -653,6 +667,7 @@ class DictionarySimilar(Resource):
         data = db.aql.execute(DICTIONARY_SIMILAR, bind_vars={'word': word})
 
         return data.batch(), 200
+
 
 class DictionaryFull(Resource):
     def get(self, word=None):
@@ -776,6 +791,7 @@ class Donations(Resource):
 
 
 class Images(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, division, vol):
         """
         Send list of images for given division.
@@ -801,6 +817,7 @@ class Images(Resource):
 
 
 class Epigraphs(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self):
         """
         Send list of random epigraphs
@@ -831,6 +848,7 @@ class Epigraphs(Resource):
 
 
 class WhyWeRead(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self):
         """
         Send list of random why_we_read quotes.
@@ -856,6 +874,7 @@ class WhyWeRead(Resource):
 
 
 class Expansion(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self):
         """
         Send list of uid expansion results to suttaplex view

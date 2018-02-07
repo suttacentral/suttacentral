@@ -33,6 +33,7 @@ pytest-sugar = "*"
 stripe = "*"
 sortedcontainers = "*"
 requests = "*"
+flask-caching = "*"
 
 
 [dev-packages]
