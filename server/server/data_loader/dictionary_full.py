@@ -26,7 +26,8 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
             words_seen[word] += 1
             
             # create a meaningful id
-            _id = asciify_roman(word)
+            word_ascii = asciify_roman(word)
+            _id = word_ascii
             if _id in ids_seen:
                 _id += str(ids_seen[_id])
             ids_seen[_id] += 1
@@ -37,7 +38,8 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
                    'lang_to': lang_to,
                    'lang_from': lang_from,
                    **entry,
-                   'word': word
+                   'word': word,
+                   'word_ascii': word_ascii
                    }
             docs.append(doc)
     
