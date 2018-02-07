@@ -97,7 +97,6 @@ class Search(Resource):
             results = {
                 'total': len(text_results),
                 'hits': text_results
-                
             }
             return results
         except ConnectionError:
