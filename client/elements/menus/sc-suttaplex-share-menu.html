@@ -110,7 +110,6 @@ Menu on top of the suttaplex parallel's list for copying information from parall
           connectedCallback() {
               super.connectedCallback();
               this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex-share-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-              this._sendRequest();
           }
 
           _siteLanguageChanged() {
