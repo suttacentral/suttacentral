@@ -42,15 +42,16 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Expansion, '/expansion')
 
     app.register_blueprint(api_bp)
+    register_extensions(app)
+
     return api, app
 
 
-def register_extensions():
+def register_extensions(app):
     cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
 
 api, app = app_factory()
-register_extensions()
 arango = ArangoDB(app)
 swagger = Swagger(app, config=swagger_config, template=swagger_template)
 CORS(app)
