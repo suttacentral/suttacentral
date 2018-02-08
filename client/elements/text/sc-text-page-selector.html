@@ -94,8 +94,8 @@
 
     </div>
 
-    <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, translatedSutta)]]">
-      <sc-stepper next="[[translatedSutta.next]]" previous="[[translatedSutta.previous]]" lang="[[langIsoCode]]"></sc-stepper>
+    <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, next, previous)]]">
+      <sc-stepper next="[[next]]" previous="[[previous]]" lang="[[langIsoCode]]"></sc-stepper>
     </template>
 
     <sc-text-image id="sc_text_image"></sc-text-image>
@@ -162,6 +162,12 @@
                   },
                   authorShort: {
                       type: String
+                  },
+                  next: {
+                      type: Object
+                  },
+                  previous: {
+                      type: Object
                   }
               }
           }
@@ -221,6 +227,13 @@
                   if (this.responseData.translation) {
                       this.authorUid = this.responseData.translation.author_uid;
                   }
+                  if (this.translatedSutta) {
+                      this.next = this.translatedSutta.next;
+                      this.previous = this.translatedSutta.previous;
+                  } else if (this.rootSutta){
+                      this.next = this.rootSutta.next;
+                      this.previous = this.rootSutta.previous;
+                  }
               }
           }
 
@@ -254,11 +267,8 @@
               }
           }
 
-          _shouldDisplayStepper(isLoading, translatedSutta) {
-              if (!translatedSutta) {
-                  return false;
-              }
-              return !isLoading && (translatedSutta.next || translatedSutta.previous);
+          _shouldDisplayStepper(isLoading, next, previous) {
+              return !isLoading && (next || previous);
           }
 
           _shouldDisplayError(rootSutta, translatedSutta, networkError) {
