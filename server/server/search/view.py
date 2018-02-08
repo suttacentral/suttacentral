@@ -103,7 +103,6 @@ class Search(Resource):
                 'total': es_text_results['hits']['total'],
                 'hits': text_results
             }
-            return results
         except ConnectionError:
             # Technically we don't have to return a 503 because we can
             # get DB results too: but probably best to fail for debugging

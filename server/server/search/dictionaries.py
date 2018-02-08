@@ -21,7 +21,7 @@ def cleanly_truncate_html(html_string, length):
     else:
         return content
     
-def search(word, truncate_length=500):
+def search(word, truncate_length=1000):
     db = get_db()
     
     results = list(db.aql.execute('''
@@ -48,21 +48,23 @@ def search(word, truncate_length=500):
     # We can have multiple hit: one per dictionary. We want to summarize them.
     gloss = None
     word = results[0]['word']
-    best_text = ''
+    best_result = None
+    best_result_found = False
     for result in results:
-        text = result['text']
-        if result['dictname'] == 'gloss':
-            gloss = text
+        if result['dictname'] == 'ncped':
+            best_result = result
+            best_result_found = True
         
-        if len(text) > len(best_text):
-            best_text = text
+        if not best_result_found:
+            if not best_result or (len(result['text']) > len(best_result['text'])):
+                best_result = result
     
-    content = cleanly_truncate_html(best_text, truncate_length)
+    content = cleanly_truncate_html(best_result['text'], truncate_length)
     
     return {
         "heading": {
-            "division": results[0]['dictname'],
-            "subhead": [gloss] if gloss != best_text else [],
+            "division": best_result['dictname'],
+            "subhead": "",
             "title": ""
         },
         "highlight": {
