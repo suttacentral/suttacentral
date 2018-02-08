@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../styles/static-styles.html">
@@ -23,6 +24,22 @@
         justify-content: flex-end;
       }
 
+      .section {
+        margin: var(--sc-size-md) 0;
+      }
+
+      .icon {
+        margin: var(--sc-size-sm);
+      }
+
+      .success-icon {
+        color: var(--sc-toast-success-color);
+      }
+
+      .failure-icon {
+        color: var(--sc-toast-error-color);
+      }
+
     </style>
 
     <div id="page-wrap">
@@ -44,6 +61,20 @@
               <li>Certain functions, including search, require internet connection.</li>
             </ul>
 
+            <p>
+              <template is="dom-if" if="[[browserSupportsPWA]]">
+                <span>Your browser supports Progressive Web Apps!</span>
+                <iron-icon icon="icons:check-box" class="icon success-icon"></iron-icon>
+              </template>
+              <template is="dom-if" if="[[!browserSupportsPWA]]">
+                <span>Your browser does not support Progressive Web Apps.</span>
+                <iron-icon icon="icons:error" class="icon failure-icon"></iron-icon>
+                <br>
+                <a href="https://caniuse.com/#feat=serviceworkers">
+                  Here is a list of supported browsers.
+                </a>
+              </template>
+            </p>
 
             <div class="button-container">
               <paper-button raised class="button">Make available offline</paper-button>
