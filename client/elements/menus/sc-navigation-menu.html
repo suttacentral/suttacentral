@@ -26,15 +26,16 @@
       }
 
       .paper-spinner {
+        @apply --center;
         --paper-spinner-color: var(--sc-primary-color);
       }
 
-      .icon-middle {
-        position: absolute;
-        margin: 0;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+      .network-error {
+        @apply --center;
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-l;
+        color: var(--sc-secondary-text-color);
+        text-align: center;
       }
 
       .network-error-icon {
@@ -317,7 +318,7 @@
         url="[[_getMenuUrl()]]"
         handle-as="json"
         loading="{{loading}}"
-        last-error="{{error}}"
+        last-error="{{mainMenuError}}"
         last-response="{{mainMenuData}}"
         on-response="_generateMainMenu">
     </iron-ajax>
@@ -327,21 +328,24 @@
         url="[[_getSubMenuUrl()]]"
         handle-as="json"
         loading="{{loading}}"
-        last-error="{{error}}"
+        last-error="{{childMenuError}}"
         last-response="{{subMenuData}}"
         on-response="_createChildMenu">
     </iron-ajax>
 
     <div id="container" class="nav-list-container">
-      <template is="dom-if" if="[[_shouldShowLoadingIndicator(loading, error)]]">
+      <template is="dom-if" if="[[_shouldShowLoadingIndicator(loading, mainMenuError, childMenuError)]]">
         <div class="loading-indicator">
-          <paper-spinner-lite class="paper-spinner icon-middle" active="[[loading]]"></paper-spinner-lite>
+          <paper-spinner-lite class="paper-spinner" active="[[loading]]"></paper-spinner-lite>
         </div>
       </template>
 
-      <template is="dom-if" if="[[error]]">
-        <iron-icon class="network-error-icon icon-middle" title="{{localize('networkError')}}"
-                   src="img/nonetwork.svg"></iron-icon>
+      <template is="dom-if" if="[[_shouldShowErrorIcon(mainMenuError, childMenuError, currentlySelectedMenu)]]">
+        <div class="network-error">
+          <iron-icon class="network-error-icon" title="{{localize('networkError')}}"
+                     src="/img/nonetwork.svg"></iron-icon>
+          <div>{{localize('networkError')}}</div>
+        </div>
       </template>
 
       <nav class="sc-nav">
@@ -399,6 +403,10 @@
                       type: String,
                       statePath: 'selectedNavigationMenuItemId',
                       observer: '_selectedMenuItemChanged'
+                  },
+                  currentlySelectedMenu: {
+                      type: String,
+                      value: 'MainMenu'
                   },
                   language: {
                       type: String,
@@ -607,12 +615,14 @@
               this.shadowRoot.querySelector('#main_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation').classList.add('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.add('active');
+              this.currentlySelectedMenu = 'ChildMenu';
           }
 
           _closeChildMenu() {
               this.shadowRoot.querySelector('#sub_navigation').classList.remove('active');
               this.shadowRoot.querySelector('#sub_navigation_header').classList.remove('active');
               this.shadowRoot.querySelector('#main_navigation').classList.add('active');
+              this.currentlySelectedMenu = 'MainMenu';
           }
 
           // The max-height property is calculated here to achieve a smooth dropdown animation.
@@ -628,8 +638,18 @@
               else return '';
           }
 
-          _shouldShowLoadingIndicator(loading, error) {
-              return !!(loading && !error);
+          _shouldShowLoadingIndicator(loading, mainMenuError, childMenuError) {
+              return !!(loading && !(mainMenuError || childMenuError));
+          }
+
+          _shouldShowErrorIcon(mainMenuError, childMenuError, currentlySelectedMenu) {
+              if (currentlySelectedMenu === 'MainMenu') {
+                  return mainMenuError;
+              } else if (currentlySelectedMenu === 'ChildMenu') {
+                  return childMenuError;
+              } else {
+                  return true;
+              }
           }
 
           _getMenuUrl() {

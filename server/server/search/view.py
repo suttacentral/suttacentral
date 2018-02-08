@@ -98,9 +98,8 @@ class Search(Resource):
                     'url': f'/{uid}/{lang}/{author_uid}'
                 })
             results = {
-                'total': len(text_results),
+                'total': es_text_results['hits']['total'],
                 'hits': text_results
-                
             }
             return results
         except ConnectionError:

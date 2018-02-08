@@ -432,6 +432,12 @@
                       this.addEventListener('par-menu-copied', (e) => {
                           copy_menu.opened = false; // Close dropdown after the copy action.
                       });
+                      copy_menu.addEventListener('opened-changed', (e) => {
+                          const open = e.detail.value;
+                          if (open) {
+                              this.shadowRoot.querySelector('#more_par_menu')._sendRequest();
+                          }
+                      })
                   }
               }, 1000);
           }

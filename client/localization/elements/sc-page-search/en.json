@@ -1,5 +1,7 @@
 {
     "en": {
-        "resultsFor": "results for"
+        "resultsFor": "results for",
+        "offline": "You're offline.",
+        "networkError": "Network error."
     }
 }
