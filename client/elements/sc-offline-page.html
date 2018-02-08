@@ -10,11 +10,17 @@
 
       .button {
         @apply --sc-skolar-font-size-s;
-        margin-top: var(--sc-size-md);
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
         text-align: center;
+        margin: var(--sc-size-lg);
+      }
+
+      .button-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
       }
 
     </style>
@@ -27,11 +33,21 @@
             <p>SuttaCentral is a <a href="https://developers.google.com/web/progressive-web-apps/" target="_blank">Progressive
               Web App</a>. On supported devices, many features, including navigation and previously visited pages, will
               continue to work even if you have no internet connection.</p>
-            <p>In addition, you can download texts in languages of your choosing and keep reading suttas even when
-              offline or with limited data. This is especially useful for users on mobiles with limited data, or in
-              regions with poor coverage. If your data is limited, we recommend connecting to wifi before downloading
-              large amounts of texts.</p>
-            <paper-button raised class="button">Make available offline</paper-button>
+            <p>In addition, you can download texts in languages of your choosing and read them when offline. This is
+              especially useful for users on mobiles with limited data, or in regions with poor coverage. If your data
+              is limited, we recommend connecting to wifi before downloading.</p>
+            <p>PWAs are a new technology. For now, offline usage has some limitations:</p>
+            <ul>
+              <li>Suttas only, not Vinaya or Abhidhamma.</li>
+              <li>Only one language.</li>
+              <li>No original texts.</li>
+              <li>Certain functions, including search, require internet connection.</li>
+            </ul>
+
+
+            <div class="button-container">
+              <paper-button raised class="button">Make available offline</paper-button>
+            </div>
           </article>
         </section>
       </main>
@@ -49,8 +65,16 @@
                   localizedStringPath: {
                       type: String,
                       value: '/localization/elements/sc-offline-page/'
+                  },
+                  browserSupportsPWA: {
+                      type: Boolean,
+                      computed: '_doesBrowserSupportPWA()'
                   }
               }
+          }
+
+          _doesBrowserSupportPWA() {
+              return ('serviceWorker' in navigator);
           }
       }
 
