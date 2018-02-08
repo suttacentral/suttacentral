@@ -101,16 +101,14 @@ class Menu(Resource):
                         required: false
                         type: string
         """
+        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
 
-        return self.get_data(submenu_id), 200
+        return self.get_data(submenu_id, bind_vars={'language': language}), 200
 
-    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, lang_needed=True):
+    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, **kwargs):
         db = get_db()
 
-        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
-        bind_vars = {}
-        if lang_needed:
-            bind_vars['language'] = language
+        bind_vars = kwargs.get('bind_vars', {})
 
         if submenu_id:
             bind_vars['submenu_id'] = submenu_id
@@ -920,33 +918,86 @@ class Expansion(Resource):
 
 
 class CollectionUrlList(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=1)
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, collection=None):
+        """
+        Accept list of languages in format `?languages=lang1,lang2,...`
+        ---
+        parameters:
+           - in: query
+             name: languages
+             type: string
+             required: true
+           - in: query
+             name: include_root
+             type: boolean
+             required: false
+
+        responses:
+            200:
+                type: object
+                properties:
+                    menu:
+                        type: array
+                        items:
+                            type: string
+                    suttaplex:
+                        type: array
+                        items:
+                            type: string
+                    texts:
+                        type: array
+                        items:
+                            type: object
+                            properties:
+                                uid:
+                                    type: string
+                                translations:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            lang:
+                                                type: string
+                                            authors:
+                                                type: array
+                                                items:
+                                                    type: string
+        """
+        languages = request.args.get('languages', None)
+        if languages is None:
+            return 'Language not specified', 404
+
+        languages = languages.split(',')
 
         menu_view = Menu()
-        menu_data = menu_view.get_data(menu_query=PWA.MENU, lang_needed=False)
+        menu_data = menu_view.get_data(menu_query=PWA.MENU, bind_vars={'root_lang': True, 'languages': languages})
         menu = []
         suttaplex = []
+        texts = []
         for entry in menu_data:
             if entry['uid'].split('/')[1] == collection:
                 menu_data = entry
                 break
         if not collection or not isinstance(menu_data, dict):
-            return '', 404
+            return 'collection not found', 404
 
-        self.process_recursively(menu, suttaplex, menu_data['children'])
+        self.process_recursively(menu, suttaplex, texts, menu_data['children'])
 
         urls = {
             'menu': menu,
-            'suttaplex': suttaplex
+            'suttaplex': suttaplex,
+            'texts': texts
         }
         return urls
 
-    def process_recursively(self, menu, suttaplex, data):
+    def process_recursively(self, menu, suttaplex, texts, data):
         for entry in data:
             if 'children' in entry:
-                self.process_recursively(menu, suttaplex, entry['children'])
+                self.process_recursively(menu, suttaplex, texts, entry['children'])
             else:
                 suttaplex.append(entry['id'])
+                suttaplex.extend(entry['suttaplex'])
+                texts.extend(entry['texts'])
                 if entry['has_children']:
                     menu.append(entry['id'])

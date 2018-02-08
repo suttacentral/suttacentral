@@ -512,15 +512,51 @@ FOR div IN root
                 }
             }
         )
-    LET descendant = (
-        FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
+
+    LET texts = (
+        FOR d, d_edge, d_path IN 1..20 OUTBOUND div `root_edges`
+            FILTER d.type == 'text'
+            LET po = (
+                FOR text IN po_strings
+                    FILTER text.uid == d.uid AND (POSITION(@languages, text.lang) OR 
+                                                  (text.lang == d.root_lang AND @root_lang))  
+                    RETURN {author_uid: text.author_uid, lang: text.lang}
+            )
+            LET legacy = (
+                FOR text IN html_text
+                    FILTER text.uid == d.uid AND (POSITION(@languages, text.lang) OR 
+                                                  (text.lang == d.root_lang AND @root_lang))
+                    RETURN {author_uid: text.author_uid, lang: text.lang}
+            )
+            FILTER LENGTH(po) > 0 OR LENGTH(legacy) > 0
+            LET all_texts = UNION(po, legacy)
+            LET languages = (
+                FOR text IN all_texts
+                    RETURN DISTINCT text.lang
+            )
+            
+            LET m = (
+                FOR l IN languages
+                    LET in_lang = (
+                        FOR text IN all_texts
+                            FILTER text.lang == l
+                            RETURN text.author_uid
+                    )
+                    RETURN {lang: l, authors: in_lang}
+            )
+            
+            RETURN {uid: d.uid, translations: m}
+    )
+    LET suttaplex = (
+        FOR d, d_edge, d_path IN 1..20 OUTBOUND div `root_edges`
             FILTER d_edge.type != 'text'
-            LIMIT 1
-            RETURN 1
-    )[0]
+            RETURN d.uid
+    )
     RETURN {
         uid: div._id, 
-        has_children: descendant != null,
+        has_children: LENGTH(suttaplex) != 0,
+        texts: texts,
+        suttaplex: suttaplex,
         id: div.uid, 
         parents: parents
     }
