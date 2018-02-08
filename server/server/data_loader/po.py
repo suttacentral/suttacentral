@@ -86,7 +86,9 @@ def process_dir(change_tracker, po_dir, authors, info):
 
         root_author_data = get_author(info['root_author'], authors)
         author_data = get_author(info['author'], authors)
-
+        
+        mtime = po_file.stat().st_mtime
+        
         # This doc is for root strings
         yield {
             "uid": uid,
@@ -102,7 +104,8 @@ def process_dir(change_tracker, po_dir, authors, info):
                 # because that would be i.e. in pali!
             },
             "strings": data['msgids'],
-            "title": data['root_title']
+            "title": data['root_title'],
+            'mtime': mtime
         }
 
         # This doc is for the translated strings
@@ -117,13 +120,15 @@ def process_dir(change_tracker, po_dir, authors, info):
                 info['tr_lang']: info['author_blurb']
             },
             "strings": data['msgstrs'],
-            "title": data['translated_title']
+            "title": data['translated_title'],
+            'mtime': mtime
         }
 
         # this doc is for the markup
         yield {
             "uid": uid,
-            "markup": data['markup']
+            "markup": data['markup'],
+            'mtime': mtime
         }
 
     for sub_folder in po_dir.glob('*/'):

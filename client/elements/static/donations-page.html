@@ -2,7 +2,7 @@
 <link href="../../bower_components/paper-button/paper-button.html" rel="import"/>
 <link href="../../bower_components/paper-dialog/paper-dialog.html" rel="import"/>
 <link href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html" rel="import"/>
-<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
+<link href="../addons/sc-static-page.html" rel="import"/>
 <link href="../../styles/static-styles.html" rel="import"/>
 <dom-module id="sc-donations-page">
  <template>
@@ -109,36 +109,17 @@
   </div>
  </template>
  <script>
-  class SCDonationsPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+  class SCDonationsPage extends SCStaticPage {
           static get is() {
               return 'sc-donations-page';
           }
 
           static get properties() {
               return {
-                  language: {
+                  localizedStringPath: {
                       type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
-                  },
-                  fallbackLanguage: {
-                      type: String,
-                      value: 'en'
+                      value: '/localization/elements/static_donations-page/'
                   }
-              }
-          }
-
-          ready() {
-              super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_donations-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-          }
-
-          _siteLanguageChanged() {
-              if (this.language !== this.fallbackLanguage) {
-                  if (this.resources && this.resources[this.language]) {
-                      return;
-                  }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_donations-page/${this.language}.json`), this.language, true);
               }
           }
       }

@@ -5,7 +5,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
-
+<link rel="import" href="../addons/sc-static-page.html">
 <link rel="import" href="../../elements/addons/text-carousel.html">
 
 <dom-module id="home-page">
@@ -468,8 +468,7 @@
               </div>
               <div class="card-content-video">
                 <div class='embed-container'>
-                  <iframe src='https://player.vimeo.com/video/125746164?color=ce8400' frameborder='0'
-                          webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                  <iframe width="1280" height="720" src="https://www.youtube.com/embed/aBr2kKAHN6M" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
               </div>
             </div>
@@ -618,21 +617,16 @@
   </template>
 
   <script>
-      class SCHomePage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCHomePage extends SCStaticPage {
           static get is() {
               return 'home-page';
           }
 
           static get properties() {
               return {
-                  language: {
+                  localizedStringPath: {
                       type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
-                  },
-                  fallbackLanguage: {
-                      type: String,
-                      value: 'en'
+                      value: '/localization/elements/static_home-page/'
                   },
                   loadingEpigraphs: {
                       type: Boolean
@@ -649,23 +643,9 @@
               }
           }
 
-          ready() {
-              super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_home-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-          }
-
           _computeUrl(resource) {
               const apiRoot = this.$.meta.byKey('API_ROOT');
               return `${apiRoot}/${resource}`;
-          }
-
-          _siteLanguageChanged() {
-              if (this.language !== this.fallbackLanguage) {
-                  if (this.resources && this.resources[this.language]) {
-                      return;
-                  }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_home-page/${this.language}.json`), this.language, true);
-              }
           }
       }
 
