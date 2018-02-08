@@ -1,10 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../styles/static-styles.html">
 <link rel="import" href="sc-languages-import.html">
+<link rel="import" href="sc-cache-utility.html">
 
 <dom-module id="sc-offline-page">
   <template>
@@ -25,10 +28,6 @@
         justify-content: flex-end;
       }
 
-      .section {
-        margin: var(--sc-size-md) 0;
-      }
-
       .icon {
         margin: var(--sc-size-sm);
       }
@@ -42,6 +41,10 @@
       }
 
     </style>
+
+    <iron-meta id="meta"></iron-meta>
+
+    <sc-cache-utility id="cache_utility"></sc-cache-utility>
 
     <div id="page-wrap">
       <main>
@@ -77,10 +80,13 @@
               </template>
             </p>
 
-            <p>Download texts in <b>[[languageName]]</b></p>
+            <p>Download texts in <b>[[languageName]]</b>.</p>
+            <p>If you would like to choose a different language, select one from the menu.</p>
 
             <div class="button-container">
-              <paper-button raised class="button">Make available offline</paper-button>
+              <paper-button raised id='make_offline_button' class="button">
+                Make available offline
+              </paper-button>
             </div>
           </article>
         </section>
@@ -111,6 +117,20 @@
               }
           }
 
+          connectedCallback() {
+              super.connectedCallback();
+              const offlineButton = this.$.make_offline_button;
+              if (offlineButton) {
+                  offlineButton.addEventListener('tap', () => { this.makeOffline() });
+              }
+          }
+
+          makeOffline() {
+              const cacheUtility = this.shadowRoot.querySelector('#cache_utility');
+              if (cacheUtility) {
+              }
+          }
+
           _doesBrowserSupportPWA() {
               return ('serviceWorker' in navigator);
           }
@@ -118,6 +138,11 @@
           _getNativeLanguageName(languageIsoCode) {
               return languages.getLanguageInfo(languageIsoCode).nativeName;
           }
+
+          _getCollectionUrl(collection) {
+              return `${this.$.meta.byKey('API_ROOT')}/pwa/${collection}/sutta?languages=${this.language}`
+          }
+
       }
 
       customElements.define(SCOfflinePage.is, SCOfflinePage);

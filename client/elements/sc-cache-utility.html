@@ -1,0 +1,51 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+
+<dom-module id="sc-cache-utility">
+  <template>
+    <style>
+    </style>
+  </template>
+
+  <script>
+      class SCCacheUtility extends SCStaticPage {
+          static get is() {
+              return 'sc-cache-utility';
+          }
+
+          async processRequests(dataSource) {
+              let passed = 0;
+              let failed = 0;
+              for (let i = 0; i < dataSource.length; i++) {
+                  await this._fetchUrl(dataSource[i])
+                      .then(() => passed++)
+                      .catch(err => {
+                          console.log(`request failed with ${err}`);
+                          failed++;
+                      });
+              }
+              return [passed, failed];
+          }
+
+          _fetchUrl(url) {
+              return new Promise((resolve, reject) =>
+                  fetch(url)
+                      .then(this._handleErrors)
+                      .then(response => response.json())
+                      .then(resolve)
+                      .catch(err => reject(err))
+              );
+          }
+
+          _handleErrors(response) {
+              if (!response.ok) {
+                  throw Error(response.statusText);
+              }
+              return response;
+          }
+
+      }
+
+      customElements.define(SCCacheUtility.is, SCCacheUtility);
+  </script>
+</dom-module>
