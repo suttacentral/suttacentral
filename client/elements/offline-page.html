@@ -1,10 +1,32 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../styles/static-styles.html">
-<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+
+<link rel="import" href="../styles/static-styles.html">
 
 <dom-module id="sc-offline-page">
   <template>
     <style include="static-styles">
+
+      .buttons-row {
+        @apply --sc-all-caps;
+        display: flex;
+        flex-direction: row;
+        margin-top: var(--sc-size-xl);
+        color: var(--sc-primary-accent-color);
+        text-decoration: none;
+        font-weight:bold;
+      }
+
+      .button {
+        @apply --sc-skolar-font-size-s;
+        margin-top: var(--sc-size-md);
+        background-color: var(--sc-primary-accent-color);
+        color: var(--sc-tertiary-text-color);
+        font-weight: bold;
+        text-align: center;
+      }
+
     </style>
 
     <div id="page-wrap">
@@ -19,7 +41,9 @@
               offline or with limited data. This is especially useful for users on mobiles with limited data, or in
               regions with poor coverage. If your data is limited, we recommend connecting to wifi before downloading
               large amounts of texts.</p>
-            <button>Make available offline</button>
+            <div class="buttons-row">
+              <paper-button raised class="button">Make available offline</paper-button>
+            </div>
           </article>
         </section>
       </main>
