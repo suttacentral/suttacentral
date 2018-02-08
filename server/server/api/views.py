@@ -968,10 +968,12 @@ class CollectionUrlList(Resource):
         if languages is None:
             return 'Language not specified', 404
 
+        root_lang = request.args.get('root_lang', 'false').lower()
+        root_lang = {'true': True, 'false': False}[root_lang]
         languages = languages.split(',')
 
         menu_view = Menu()
-        menu_data = menu_view.get_data(menu_query=PWA.MENU, bind_vars={'root_lang': True, 'languages': languages})
+        menu_data = menu_view.get_data(menu_query=PWA.MENU, bind_vars={'root_lang': root_lang, 'languages': languages})
         menu = []
         suttaplex = []
         texts = []
