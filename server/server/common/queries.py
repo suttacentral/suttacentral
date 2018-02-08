@@ -433,7 +433,7 @@ FOR dictionary IN dictionary_full
 IMAGES = '''
 FOR image IN images
     FILTER image.division == @division AND image.vol == @vol
-    SORT image.page
+    SORT image.page_number
     RETURN {name: image.name,
             pageNumber: image.page_number}
 '''

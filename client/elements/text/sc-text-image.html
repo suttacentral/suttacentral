@@ -83,9 +83,6 @@
           }
 
           _handleResponse() {
-              this.imageData.sort(function(a,b) {
-                  return (a.pageNumber > b.pageNumber) ? 1 : ((b.pageNumber > a.pageNumber) ? -1 : 0);
-              });
               requestAnimationFrame(() => {
                   const options = {
                     url: (e) => e.dataUrl,
