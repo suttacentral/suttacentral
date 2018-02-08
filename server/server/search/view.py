@@ -118,4 +118,3 @@ class Search(Resource):
                 results['hits'].insert(0, dictionary_result)
         
         return results
-        
