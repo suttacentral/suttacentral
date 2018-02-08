@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../styles/static-styles.html">
+<link rel="import" href="sc-languages-import.html">
 
 <dom-module id="sc-offline-page">
   <template>
@@ -60,7 +61,7 @@
               <li>No original texts.</li>
               <li>Certain functions, including search, require internet connection.</li>
             </ul>
-
+            <p>If you want extra features, let us know.</p>
             <p>
               <template is="dom-if" if="[[browserSupportsPWA]]">
                 <span>Your browser supports Progressive Web Apps!</span>
@@ -75,6 +76,8 @@
                 </a>
               </template>
             </p>
+
+            <p>Download texts in <b>[[languageName]]</b></p>
 
             <div class="button-container">
               <paper-button raised class="button">Make available offline</paper-button>
@@ -100,12 +103,20 @@
                   browserSupportsPWA: {
                       type: Boolean,
                       computed: '_doesBrowserSupportPWA()'
+                  },
+                  languageName: {
+                      type: String,
+                      computed: '_getNativeLanguageName(language)'
                   }
               }
           }
 
           _doesBrowserSupportPWA() {
               return ('serviceWorker' in navigator);
+          }
+
+          _getNativeLanguageName(languageIsoCode) {
+              return languages.getLanguageInfo(languageIsoCode).nativeName;
           }
       }
 
