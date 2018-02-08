@@ -5,6 +5,7 @@ from flask import request, current_app
 from flask_restful import Resource
 
 from search import query as query_search
+from search import dictionaries
 from common.extensions import cache, make_cache_key
 
 
@@ -77,7 +78,8 @@ class Search(Resource):
 
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
-
+            
+        results = {'total': 0, 'hits': []}
         try:
             es_text_results = query_search.search(query, limit=limit, offset=offset, language=language)
             text_results = []
@@ -97,10 +99,22 @@ class Search(Resource):
                     'highlight': entry['highlight'],
                     'url': f'/{uid}/{lang}/{author_uid}'
                 })
-            results = {
-                'total': es_text_results['hits']['total'],
-                'hits': text_results
-            }
-            return results
+            
+            results['total'] += es_text_results['hits']['total']
+            results['hits'].extend(text_results)
+            
         except ConnectionError:
+            # Technically we don't have to return a 503 because we can
+            # get DB results too: but probably best to fail for debugging
             return json.dumps({'error': 'Elasticsearch unavailable'}), 503
+        
+        dictionary_result = dictionaries.search(query)
+        if dictionary_result:
+            if offset == 0:
+                # Yeah this is a hack in terms of offset and stuff
+                # but it works: if the client asks for 10 results
+                # it'll return 11. But it doesn't mess with 
+                # the elasticsearch offset and limit.
+                results['hits'].insert(0, dictionary_result)
+        
+        return results

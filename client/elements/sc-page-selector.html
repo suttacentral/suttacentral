@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/page-title/page-title.html">
 
 <link rel="import" href="../elements/menus/sc-toolbar.html">
 <link rel="import" href="../elements/sc-page-static.html">
@@ -138,6 +139,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
             <sc-toolbar id="sc_toolbar"></sc-toolbar>
           </app-toolbar>
         </app-header>
+
+        <page-title base-title="" page-title="{{_getPageTitle(toolbarTitle)}}"></page-title>
 
         <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
           <sc-page-static></sc-page-static>
@@ -335,6 +338,22 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               }
               else {
                   return title;
+              }
+          }
+
+          _getPageTitle(title) {
+              if (title === null) {
+                  return 'Page not found';
+              }
+              else if (['searchResults', 'dictionaryResults'].includes(title)) {
+                  return this.localize(title);
+              }
+              else if (this.suttaId && this.shouldShowSuttaTextPage) {
+                  return `${this.suttaId.toUpperCase()}: ${title}`;
+              } else if (title) {
+                  return title;
+              } else {
+                  return 'SuttaCentral';
               }
           }
 

@@ -488,10 +488,9 @@ than ten results in total, a dropdown selection menu appears at the top.
           _calculateDivision(item) {
               return item.heading.title ? item.heading.division : '';
           }
-
-          // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
+          
           _calculateLink(item) {
-              return (item.category === 'dictionary') ? ('/define/' + item.heading.title) : item.url;
+              return item.url;
           }
 
           _updateOnlineStatus() {
