@@ -8,16 +8,6 @@
   <template>
     <style include="static-styles">
 
-      .buttons-row {
-        @apply --sc-all-caps;
-        display: flex;
-        flex-direction: row;
-        margin-top: var(--sc-size-xl);
-        color: var(--sc-primary-accent-color);
-        text-decoration: none;
-        font-weight:bold;
-      }
-
       .button {
         @apply --sc-skolar-font-size-s;
         margin-top: var(--sc-size-md);
@@ -41,9 +31,7 @@
               offline or with limited data. This is especially useful for users on mobiles with limited data, or in
               regions with poor coverage. If your data is limited, we recommend connecting to wifi before downloading
               large amounts of texts.</p>
-            <div class="buttons-row">
-              <paper-button raised class="button">Make available offline</paper-button>
-            </div>
+            <paper-button raised class="button">Make available offline</paper-button>
           </article>
         </section>
       </main>
