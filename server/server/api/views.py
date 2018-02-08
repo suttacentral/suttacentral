@@ -11,12 +11,12 @@ from sortedcontainers import SortedDict
 from common.arangodb import get_db
 from common.extensions import make_cache_key, cache
 
-from common.queries import CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS, \
-    SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY, DICTIONARY_ADJACENT, \
-    DICTIONARY_SIMILAR, EXPANSION
+from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS,
+                            SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY,
+                            DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA)
 
-from common.utils import flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key, \
-    groupby_unsorted
+from common.utils import (flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key,
+                          groupby_unsorted)
 
 
 class Languages(Resource):
@@ -101,15 +101,21 @@ class Menu(Resource):
                         required: false
                         type: string
         """
-        db = get_db()
-
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
 
+        return self.get_data(submenu_id, bind_vars={'language': language}), 200
+
+    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, **kwargs):
+        db = get_db()
+
+        bind_vars = kwargs.get('bind_vars', {})
+
         if submenu_id:
-            divisions = db.aql.execute(SUBMENU, bind_vars={'submenu_id': submenu_id, 'language': language})
+            bind_vars['submenu_id'] = submenu_id
+            divisions = db.aql.execute(submenu_query, bind_vars=bind_vars)
             data = list(divisions)
         else:
-            divisions = db.aql.execute(MENU, bind_vars={'language': language})
+            divisions = db.aql.execute(menu_query, bind_vars=bind_vars)
             data = self.group_by_parents(divisions, ['pitaka'])
 
         for pitaka in data:
@@ -124,7 +130,7 @@ class Menu(Resource):
 
         self.recursive_cleanup(data, mapping={})
 
-        return data, 200
+        return data
 
     @staticmethod
     def num_sort_key(entry):
@@ -157,23 +163,37 @@ class Menu(Resource):
                 parent['children'] = children
         return sorted(out, key=self.num_sort_key)
 
-    @staticmethod
-    def group_by_language(pitaka):
+    @classmethod
+    def group_by_language(cls, pitaka):
         i = 0
         while i < len(pitaka['children']):
             child = pitaka['children'][i]
             new_data = defaultdict(list)
             for sub_child in child['children']:
-                iso = sub_child.pop('lang_iso')
+                iso = sub_child.pop('lang_iso', None)
                 new_data[iso].append(sub_child)
             child.pop('children')
-            new_data = [{**child, 'lang_iso': iso, 'lang_name': children[0]['lang_name'], 'children': children} for
+            new_data = [{**child, **cls.get_additional_data_from_child(iso, children),'children': children} for
                         iso, children in new_data.items()]
             for data_item in new_data:
                 for child in data_item['children']:
-                    del child['lang_name']
+                    try:
+                        del child['lang_name']
+                    except KeyError:
+                        pass
             pitaka['children'] = pitaka['children'][:i] + new_data + pitaka['children'][i + 1:]
             i += len(new_data)
+
+    @staticmethod
+    def get_additional_data_from_child(iso, children):
+        data = {}
+        if iso:
+            data['lang_iso'] = iso
+        try:
+            data['lang_name'] = children[0]['lang_name']
+        except KeyError:
+            pass
+        return data
 
     def update_display_num(self, menu_entry):
         display_num = menu_entry.get('display_num')
@@ -895,3 +915,91 @@ class Expansion(Resource):
         data = db.aql.execute(EXPANSION)
 
         return data.batch(), 200
+
+
+class CollectionUrlList(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    def get(self, collection=None):
+        """
+        Accept list of languages in format `?languages=lang1,lang2,...`
+        ---
+        parameters:
+           - in: query
+             name: languages
+             type: string
+             required: true
+           - in: query
+             name: include_root
+             type: boolean
+             required: false
+
+        responses:
+            200:
+                type: object
+                properties:
+                    menu:
+                        type: array
+                        items:
+                            type: string
+                    suttaplex:
+                        type: array
+                        items:
+                            type: string
+                    texts:
+                        type: array
+                        items:
+                            type: object
+                            properties:
+                                uid:
+                                    type: string
+                                translations:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            lang:
+                                                type: string
+                                            authors:
+                                                type: array
+                                                items:
+                                                    type: string
+        """
+        languages = request.args.get('languages', None)
+        if languages is None:
+            return 'Language not specified', 404
+
+        root_lang = request.args.get('root_lang', 'false').lower()
+        root_lang = {'true': True, 'false': False}[root_lang]
+        languages = languages.split(',')
+
+        menu_view = Menu()
+        menu_data = menu_view.get_data(menu_query=PWA.MENU, bind_vars={'root_lang': root_lang, 'languages': languages})
+        menu = []
+        suttaplex = []
+        texts = []
+        for entry in menu_data:
+            if entry['uid'].split('/')[1] == collection:
+                menu_data = entry
+                break
+        if not collection or not isinstance(menu_data, dict):
+            return 'collection not found', 404
+
+        self.process_recursively(menu, suttaplex, texts, menu_data['children'])
+
+        urls = {
+            'menu': menu,
+            'suttaplex': suttaplex,
+            'texts': texts
+        }
+        return urls
+
+    def process_recursively(self, menu, suttaplex, texts, data):
+        for entry in data:
+            if 'children' in entry:
+                self.process_recursively(menu, suttaplex, texts, entry['children'])
+            else:
+                suttaplex.append(entry['id'])
+                suttaplex.extend(entry['suttaplex'])
+                texts.extend(entry['texts'])
+                if entry['has_children']:
+                    menu.append(entry['id'])

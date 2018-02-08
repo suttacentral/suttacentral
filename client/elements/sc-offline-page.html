@@ -51,36 +51,17 @@
   </template>
 
   <script>
-      class SCOfflinePage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCOfflinePage extends SCStaticPage {
           static get is() {
               return 'sc-offline-page';
           }
 
           static get properties() {
               return {
-                  language: {
+                  localizedStringPath: {
                       type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
-                  },
-                  fallbackLanguage: {
-                      type: String,
-                      value: 'en'
+                      value: '/localization/elements/static_offline-page/'
                   }
-              }
-          }
-
-          ready() {
-              super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_offline-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-          }
-
-          _siteLanguageChanged() {
-              if (this.language !== this.fallbackLanguage) {
-                  if (this.resources && this.resources[this.language]) {
-                      return;
-                  }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_offline-page/${this.language}.json`), this.language, true);
               }
           }
       }

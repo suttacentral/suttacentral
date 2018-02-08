@@ -226,7 +226,11 @@
           }
 
           _nextItem() {
-              this.selectedItemIndex = (this.selectedItemIndex + 1) % this.elements.length;
+              let index = this.selectedItemIndex + 1;
+              if (this.elements) {
+                  index %= this.elements.length;
+              }
+              this.selectedItemIndex = index;
           }
 
           _previousItem() {
@@ -237,25 +241,28 @@
               }
           }
 
-          _getItemToShow(index) {
+          _getItemToShow() {
               let item;
               if (this.firstItem) {
                   item = this._getLongestItem();
                   requestAnimationFrame(() => {
                       const height = window.getComputedStyle(this.$.container).height;
                       this.$.container.style.height = `calc(${height} + 32px)`;
-                  })
+                  });
                   this.firstItem = false;
-              } else {
+              } else if (this.elements) {
                   item = this.elements[this.selectedItemIndex];
               }
-              if (this.display) {
+              if (item && this.display) {
                   item = item[this.display];
               }
-              return item;
+              return item ? item : '';
           }
 
           _getLongestItem() {
+              if (!this.elements) {
+                  return '';
+              }
               return this.elements.reduce((a, b) => a.length > b.length ? a : b);
           }
 
@@ -269,6 +276,9 @@
           }
 
           _computeUrl(selectedItemIndex) {
+              if (!this.elements) {
+                  return '';
+              }
               let uid = this.elements[selectedItemIndex][this.link];
               uid = uid.split('#')[0];
               return `/${uid}`;
