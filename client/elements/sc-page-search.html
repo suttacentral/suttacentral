@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-location/iron-location.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
@@ -22,12 +23,18 @@ than ten results in total, a dropdown selection menu appears at the top.
   <template>
     <style>
 
+      :host {
+        display: block;
+        width: 100vw;
+        height: calc(100% - var(--sc-size-xxl));
+      }
+
       #search_result_list {
-        padding: 28px 0 var(--sc-size-md);
+        padding: var(--sc-size-xl) 0 var(--sc-size-md);
       }
 
       .search-results-container {
-        padding: 72px 0;
+        padding: var(--sc-size-xxl) 0;
       }
 
       .search-results-main {
@@ -100,9 +107,8 @@ than ten results in total, a dropdown selection menu appears at the top.
       }
 
       .paper-spinner {
+        @apply --center;
         --paper-spinner-color: var(--sc-primary-color);
-        left: 50%;
-        top: 50px;
       }
 
       .google-maps {
@@ -123,6 +129,20 @@ than ten results in total, a dropdown selection menu appears at the top.
       [hidden] {
         display: none !important;
       }
+
+      .network-error {
+        @apply --center;
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-static-subtitle;
+        color: var(--sc-secondary-text-color);
+        text-align: center;
+      }
+
+      .network-error-icon {
+        width: var(--sc-size-xxl);
+        height: var(--sc-size-xxl);
+      }
+
     </style>
 
     <iron-ajax id="ajax"
@@ -134,48 +154,57 @@ than ten results in total, a dropdown selection menu appears at the top.
 
     <iron-meta id="meta"></iron-meta>
 
-    <div class="loadingIndicator">
-      <paper-spinner-lite class="paper-spinner" active="{{loadingResults}}"></paper-spinner-lite>
-    </div>
+    <paper-spinner-lite class="paper-spinner" active="[[loadingResults]]"></paper-spinner-lite>
 
-    <div class="search-results-container">
-      <main class="search-results-main">
-        <div class="search-result-head">
-          <h1 class="search-result-header">
-            <span class="search-result-number">[[_calculateResultCount(resultCount)]]</span>
-            <span class="search-result-description">{{localize('resultsFor')}}</span>
-            <span class="search-result-term">[[searchQuery]]</span>
-          </h1>
-          <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
-        </div>
+    <template is="dom-if" if="[[isOnline]]">
+      <div class="search-results-container">
+        <main class="search-results-main">
+          <div class="search-result-head">
+            <h1 class="search-result-header">
+              <span class="search-result-number">[[_calculateResultCount(resultCount)]]</span>
+              <span class="search-result-description">{{localize('resultsFor')}}</span>
+              <span class="search-result-term">[[searchQuery]]</span>
+            </h1>
+            <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
+          </div>
 
-        <iron-scroll-threshold id="scroll_threshold" on-lower-threshold="_loadMoreData" scroll-target="document">
+          <iron-scroll-threshold id="scroll_threshold" on-lower-threshold="_loadMoreData" scroll-target="document">
 
-          <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item" scroll-target="document">
-            <template>
-              <div class="search-result-item" tabindex$="[[tabIndex]]">
-                <div class="padded-container">
-                  <a class="search-result-link" href="[[_calculateLink(item)]]">
-                    <div class="primary">
-                      <h2 class="search-result-title">[[_calculateTitle(item)]]</h2>
-                    </div>
+            <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item" scroll-target="document">
+              <template>
+                <div class="search-result-item" tabindex$="[[tabIndex]]">
+                  <div class="padded-container">
+                    <a class="search-result-link" href="[[_calculateLink(item)]]">
+                      <div class="primary">
+                        <h2 class="search-result-title">[[_calculateTitle(item)]]</h2>
+                      </div>
+                      <div class="secondary">
+                        <p class="search-result-division" inner-h-t-m-l="[[_calculateDivision(item)]]"></p>
+                      </div>
+                    </a>
                     <div class="secondary">
-                      <p class="search-result-division" inner-h-t-m-l="[[_calculateDivision(item)]]"></p>
+                      <p class="search-result-snippet"
+                         inner-h-t-m-l="{{_calculateSnippetContent(item.highlight.content)}}"></p>
                     </div>
-                  </a>
-                  <div class="secondary">
-                    <p class="search-result-snippet"
-                       inner-h-t-m-l="{{_calculateSnippetContent(item.highlight.content)}}"></p>
                   </div>
                 </div>
-              </div>
-            </template>
-          </iron-list>
+              </template>
+            </iron-list>
 
-        </iron-scroll-threshold>
+          </iron-scroll-threshold>
 
-      </main>
-    </div>
+        </main>
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[!isOnline]]">
+      <div class="network-error">
+        <iron-icon class="network-error-icon" title="{{localize('networkError')}}"
+                   src="/img/nonetwork.svg"></iron-icon>
+        <div>{{localize('offline')}}</div>
+      </div>
+    </template>
+
   </template>
   <script>
       /**
@@ -246,6 +275,9 @@ than ten results in total, a dropdown selection menu appears at the top.
                   },
                   totalLoadedResults: {
                       type: Number
+                  },
+                  isOnline: {
+                      type: Boolean
                   }
               }
           }
@@ -265,6 +297,9 @@ than ten results in total, a dropdown selection menu appears at the top.
               super.ready();
               this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
               this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
+              window.addEventListener('load', this._updateOnlineStatus.bind(this));
+              window.addEventListener('online', this._updateOnlineStatus.bind(this));
+              window.addEventListener('offline', this._updateOnlineStatus.bind(this));
               this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
@@ -332,7 +367,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // generates a new search request.
           _startNewSearch() {
-              if (!this.searchQuery) {
+              if (!this.isOnline || !this.searchQuery) {
                   return;
               }
               this.clearSearchPage();
@@ -457,6 +492,10 @@ than ten results in total, a dropdown selection menu appears at the top.
           // if the item is a dictionary-item, the appropriate link is added, otherwise the url is used.
           _calculateLink(item) {
               return (item.category === 'dictionary') ? ('/define/' + item.heading.title) : item.url;
+          }
+
+          _updateOnlineStatus() {
+              this.isOnline = navigator.onLine;
           }
 
           _getUrl() {

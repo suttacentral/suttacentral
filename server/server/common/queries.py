@@ -19,13 +19,31 @@ FOR text IN html_text
         }
 '''
 
-CURRENT_MTIMES = '''
-FOR text IN html_text
+PO_TEXTS_BY_LANG = '''
+FOR text IN po_strings
     FILTER text.lang == @lang
-    RETURN {uid: text.uid, mtime: text.mtime}
-'''
+    LET root_lang = (
+        RETURN DOCUMENT(CONCAT('root/', text.uid)).root_lang
+    )[0]
+    RETURN {
+        uid: text.uid,
+        title: text.title,
+        strings: text.strings,        
+        author: text.author,
+        author_uid: text.author_uid,
+        author_short: text.author_short,
+        root_lang: root_lang,
+        mtime: text.mtime
+    }
+'''        
 
-_MAX_NESTING_LEVEL = '5'
+
+CURRENT_MTIMES = '''
+WITH @@collection /* With statement forces query optimizer to work */
+    FOR text IN @@collection
+        FILTER text.lang == @lang
+        RETURN {uid: text.uid, author_uid: text.author_uid, mtime: text.mtime}
+'''
 
 MENU = '''
 FOR div IN root
@@ -500,3 +518,66 @@ LET expansion_item = (
     
 RETURN MERGE(expansion_item)
 '''
+
+
+class PWA:
+    MENU = '''
+FOR div IN root
+    FILTER div.type == 'division'
+    LET parents = MERGE(
+        FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+            RETURN {
+                [p.type]: {
+                    uid: p._id
+                }
+            }
+        )
+
+    LET texts = (
+        FOR d, d_edge, d_path IN 1..20 OUTBOUND div `root_edges`
+            FILTER d.type == 'text'
+            LET po = (
+                FOR text IN po_strings
+                    FILTER text.uid == d.uid AND (POSITION(@languages, text.lang) OR 
+                                                  (text.lang == d.root_lang AND @root_lang))  
+                    RETURN {author_uid: text.author_uid, lang: text.lang}
+            )
+            LET legacy = (
+                FOR text IN html_text
+                    FILTER text.uid == d.uid AND (POSITION(@languages, text.lang) OR 
+                                                  (text.lang == d.root_lang AND @root_lang))
+                    RETURN {author_uid: text.author_uid, lang: text.lang}
+            )
+            FILTER LENGTH(po) > 0 OR LENGTH(legacy) > 0
+            LET all_texts = UNION(po, legacy)
+            LET languages = (
+                FOR text IN all_texts
+                    RETURN DISTINCT text.lang
+            )
+            
+            LET m = (
+                FOR l IN languages
+                    LET in_lang = (
+                        FOR text IN all_texts
+                            FILTER text.lang == l
+                            RETURN text.author_uid
+                    )
+                    RETURN {lang: l, authors: in_lang}
+            )
+            
+            RETURN {uid: d.uid, translations: m}
+    )
+    LET suttaplex = (
+        FOR d, d_edge, d_path IN 1..20 OUTBOUND div `root_edges`
+            FILTER d_edge.type != 'text'
+            RETURN d.uid
+    )
+    RETURN {
+        uid: div._id, 
+        has_children: LENGTH(suttaplex) != 0,
+        texts: texts,
+        suttaplex: suttaplex,
+        id: div.uid, 
+        parents: parents
+    }
+    '''

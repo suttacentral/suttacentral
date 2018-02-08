@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../elements/text/sc-segmented-text.html">
@@ -35,19 +36,18 @@
         min-height: calc(100% - var(--sc-size-xxl) * 2.5);
       }
 
-      .text-center {
-        text-align: center;
-      }
-
-      .margin-top-xl {
-        margin-top: var(--sc-size-xl);
-      }
-
       .text-error {
+        @apply --center;
         @apply --sc-sans-font;
         text-align: center;
         color: var(--sc-secondary-text-color);
       }
+
+      .network-error-icon {
+        width: var(--sc-size-xxl);
+        height: var(--sc-size-xxl);
+      }
+
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -85,16 +85,17 @@
       </template>
 
       <template is="dom-if" if="[[_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
-        <div class="text-center margin-top-xl text-error">
-          <h2>Error 404</h2>
-          <h3>Could not find the sutta text.</h3>
+        <div class="text-error">
+          <iron-icon class="network-error-icon" src="/img/nonetwork.svg"></iron-icon>
+          <h2>Error [[lastError.status]]</h2>
+          <h3>[[lastError.statusText]]</h3>
         </div>
       </template>
 
     </div>
 
-    <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, translatedSutta)]]">
-      <sc-stepper next="[[translatedSutta.next]]" previous="[[translatedSutta.previous]]" lang="[[langIsoCode]]"></sc-stepper>
+    <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, next, previous)]]">
+      <sc-stepper next="[[next]]" previous="[[previous]]" lang="[[langIsoCode]]"></sc-stepper>
     </template>
 
     <sc-text-image id="sc_text_image"></sc-text-image>
@@ -161,6 +162,12 @@
                   },
                   authorShort: {
                       type: String
+                  },
+                  next: {
+                      type: Object
+                  },
+                  previous: {
+                      type: Object
                   }
               }
           }
@@ -220,6 +227,13 @@
                   if (this.responseData.translation) {
                       this.authorUid = this.responseData.translation.author_uid;
                   }
+                  if (this.translatedSutta) {
+                      this.next = this.translatedSutta.next;
+                      this.previous = this.translatedSutta.previous;
+                  } else if (this.rootSutta){
+                      this.next = this.rootSutta.next;
+                      this.previous = this.rootSutta.previous;
+                  }
               }
           }
 
@@ -253,11 +267,8 @@
               }
           }
 
-          _shouldDisplayStepper(isLoading, translatedSutta) {
-              if (!translatedSutta) {
-                  return false;
-              }
-              return !isLoading && (translatedSutta.next || translatedSutta.previous);
+          _shouldDisplayStepper(isLoading, next, previous) {
+              return !isLoading && (next || previous);
           }
 
           _shouldDisplayError(rootSutta, translatedSutta, networkError) {
