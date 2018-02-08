@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../addons/sc-static-page.html">
 
 <dom-module id="sc-a-new-beginning">
   <template>
@@ -56,36 +57,17 @@
   </template>
 
   <script>
-      class SCANewBeginning extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCANewBeginning extends SCStaticPage {
           static get is() {
               return 'sc-a-new-beginning';
           }
 
           static get properties() {
               return {
-                  language: {
+                  localizedStringPath: {
                       type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
-                  },
-                  fallbackLanguage: {
-                      type: String,
-                      value: 'en'
+                      value: '/localization/elements/static_a-new-beginning/'
                   }
-              }
-          }
-
-          ready() {
-              super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_a-new-beginning/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-          }
-
-          _siteLanguageChanged() {
-              if (this.language !== this.fallbackLanguage) {
-                  if (this.resources && this.resources[this.language]) {
-                      return;
-                  }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_a-new-beginning/${this.language}.json`), this.language, true);
               }
           }
       }

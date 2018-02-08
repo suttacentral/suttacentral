@@ -1,6 +1,5 @@
 <link href="../../bower_components/polymer/polymer.html" rel="import"/>
 <link href="../../styles/static-styles.html" rel="import"/>
-<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
 <link href="../addons/sc-static-page.html" rel="import"/>
 <dom-module id="sc-methodology-page">
  <template>
@@ -635,6 +634,7 @@
        <li inner-h-t-m-l="{{localize('b08dfb3375705661377669c369b24e86')}}">
        </li>
       </ul>
+      <img inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" src="http://2.bp.blogspot.com/-WzO5UJwkIwM/TpgZLwDfeVI/AAAAAAAAALw/LFqD2C9xU-0/s1600/ANILLO.png" width="8px"/>
      </article>
     </section>
    </main>
@@ -648,29 +648,10 @@
 
           static get properties() {
               return {
-                  language: {
+                  localizedStringPath: {
                       type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
-                  },
-                  fallbackLanguage: {
-                      type: String,
-                      value: 'en'
+                      value: '/localization/elements/static_methodology-page/'
                   }
-              }
-          }
-
-          ready() {
-              super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_methodology-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-          }
-
-          _siteLanguageChanged() {
-              if (this.language !== this.fallbackLanguage) {
-                  if (this.resources && this.resources[this.language]) {
-                      return;
-                  }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_methodology-page/${this.language}.json`), this.language, true);
               }
           }
       }
