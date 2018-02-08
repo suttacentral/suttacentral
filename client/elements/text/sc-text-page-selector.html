@@ -230,7 +230,7 @@
                   if (this.translatedSutta) {
                       this.next = this.translatedSutta.next;
                       this.previous = this.translatedSutta.previous;
-                  } else {
+                  } else if (this.rootSutta){
                       this.next = this.rootSutta.next;
                       this.previous = this.rootSutta.previous;
                   }
