@@ -59,13 +59,3 @@ def search(word, truncate_length=1000):
         'url': f'/define/{word}',
         'category': 'dictionary',
     }
-        
-        
-                
-            
-            
-            
-    
-        
-    
-    
