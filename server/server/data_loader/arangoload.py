@@ -139,12 +139,7 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
                 entry['num'] = ordering_data[uid]
             except KeyError:
                 if 'num' not in entry:
-                    m = number_reg.match(uid)
-                    if m:
-                        num = m.group(1)
-                        entry['num'] = int(num)
-                    else:
-                        entry['num'] = i
+                    entry['num'] = i
 
             for data_name in ['volpage', 'biblio_uid', 'acronym']:
                 try:

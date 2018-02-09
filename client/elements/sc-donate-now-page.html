@@ -244,7 +244,7 @@
               </paper-textarea>
 
               <div class="flex-row submit">
-                <paper-button id="submitButton" on-tap="_makeDonation" class="submit-button" raised>
+                <paper-button id="submit_button" on-tap="_makeDonation" class="submit-button" raised>
                   <div>{{localize('payWithCard')}}</div>
                 </paper-button>
               </div>
@@ -344,7 +344,8 @@
                       value: 'en'
                   },
                   isOnline: {
-                      type: Boolean
+                      type: Boolean,
+                      value: true
                   }
               }
           }
@@ -416,17 +417,15 @@
           }
 
           _makeDonation(e) {
-              let ironForm = this.shadowRoot.querySelector('.payment-iron-form');
-              if (!this.$.stripe_card.$.form.validate()) {
+              const ironForm = this.shadowRoot.querySelector('.payment-iron-form');
+              const stripeCard = this.shadowRoot.querySelector('#stripe_card');
+              if (!stripeCard.$.form.validate() || !ironForm.validate()) {
                   return;
               }
-              if (!ironForm.validate()) {
-                  return;
-              }
-              this.$.stripe_card.createToken().then(v => {
+              stripeCard.createToken().then(v => {
                   let data = this._getFormData();
                   this.processingPayment = true;
-                  this.$.submitButton.disabled = true;
+                  this.shadowRoot.querySelector('#submit_button').disabled = true;
                   data.stripe = this.stripeResponse;
                   this.formData = JSON.stringify(data);
                   let ironAjax = this.shadowRoot.querySelector('.make-donation-ajax');
@@ -441,14 +440,14 @@
               this.processingPayment = false;
               this._showToast('success', `${this.localize('paymentSuccessful')} ${this.localize('redirectNotice')}`);
               setTimeout(() => {
-                  this.$.submitButton.disabled = false;
+                  this.shadowRoot.querySelector('#submit_button').disabled = false;
                   this.resetForm();
                   this.set('path', '/');
               }, 5000);
           }
 
           _paymentError() {
-              this.$.submitButton.disabled = false;
+              this.shadowRoot.querySelector('#submit_button').disabled = false;
               let errCode = this.donationResponseError.response['err_code'];
               this.processingPayment = false;
               this._showToast('error', this.errorMessages[errCode]);
