@@ -86,7 +86,7 @@
             <p>If you would like to choose a different language, select one from the menu.</p>
 
             <div class="button-container">
-              <paper-button raised id='make_offline_button' class="button">
+              <paper-button raised disabled="[[!browserSupportsPWA]]" id='make_offline_button' class="button">
                 Make available offline
               </paper-button>
             </div>
@@ -133,7 +133,18 @@
                   const response = request.__data.response;
                   const menuIdsList = this._buildMenuUrlList(response.menu);
                   const cacheUtility = this.shadowRoot.querySelector('#cache_utility');
-                  cacheUtility.processRequests(menuIdsList);
+                  this._showToast('info', 'Your download has commenced. You can keep using the site and we will let you know when it’s complete.');
+                  cacheUtility.processRequests(menuIdsList).then(([passed, failed]) => {
+                      if (failed === 0 && passed > 0) {
+                          this._showToast('success', `Your download is complete.
+                            You may now read suttas in ${this._getNativeLanguageName(this.language)} offline.`);
+                      } else if (failed > 0) {
+                          this._showToast('error', `Error! We were not able to download all the requested texts.
+                            ${failed} out of ${passed + failed} requests did not complete correctly.`);
+                      } else {
+                          this.showToast('error', 'Network error.');
+                      }
+                  });
               });
           }
 
@@ -155,6 +166,17 @@
 
           _buildMenuUrlList(menuIdsList) {
               return menuIdsList.map(menuId => this._getMenuUrl(menuId));
+          }
+
+          _showToast(type, inputMessage) {
+              this.dispatchEvent(new CustomEvent('show-sc-toast', {
+                  detail: {
+                      toastType: type,
+                      message: inputMessage
+                  },
+                  bubbles: true,
+                  composed: true
+              }));
           }
       }
 
