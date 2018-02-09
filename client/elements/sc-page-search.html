@@ -349,6 +349,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
               // Don't load once all items have already been loaded.
               if (!this.searchListNode) {
+                  return;
               }
               if (this.searchListNode.items.length === this.resultCount) {
                   return;
