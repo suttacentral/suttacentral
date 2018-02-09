@@ -62,11 +62,19 @@
                   },
                   viewer: {
                       type: Object
+                  },
+                  lastDetail: {
+                      type: Object
                   }
               }
           }
 
           showImage(detail) {
+            if (!detail || (this.lastDetail && detail.vol === this.lastDetail.vol 
+              && detail.division === this.lastDetail.division && detail.pageNumber === this.lastDetail.pageNumber)) {
+              return;
+            };
+            this.lastDetail = detail;
             this.division = detail.division;
             this.vol = detail.vol;
             this.pageNumber = detail.pageNumber;
@@ -83,6 +91,15 @@
           }
 
           _handleResponse() {
+              if (!this.imageData || !this.imageData[0]) {
+                return;
+              };
+              let pageNumber = 0;
+              for (let item = 0; item < this.imageData.length; item++) {
+                  if (this.imageData[item].pageNumber === this.pageNumber) {
+                      pageNumber = item;
+                  }
+              };
               requestAnimationFrame(() => {
                   const options = {
                     url: (e) => e.dataUrl,
@@ -95,8 +112,9 @@
                   } else {
                     this.viewer = new Viewer(this.$.images, options);
                   }
-                  this.viewer.index = this.pageNumber - 1;
+                  this.viewer.index = pageNumber;
                   this.viewer.show();
+                  this.lastDetail = {};
               });
           }
       }
