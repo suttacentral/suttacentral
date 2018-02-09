@@ -16,12 +16,13 @@
               let passed = 0;
               let failed = 0;
               for (let i = 0; i < dataSource.length; i++) {
-                  await this._fetchUrl(dataSource[i])
-                      .then(() => passed++)
-                      .catch(err => {
-                          console.log(`request failed with ${err}`);
-                          failed++;
-                      });
+                  try {
+                      await this._fetchUrl(dataSource[i]);
+                      passed++;
+                  } catch (err) {
+                      console.info(`request failed with ${err}`);
+                      failed++;
+                  }
               }
               return [passed, failed];
           }
