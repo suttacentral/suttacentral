@@ -524,13 +524,13 @@
           }
 
           _getAcronymOrUid(item, expansionData) {
-              let sc_acronym = '';
+              let scAcronym = '';
               if (item.acronym) {
-                  sc_acronym = item.acronym.split('//')[0];
+                  scAcronym = item.acronym.split('//')[0];
               } else {
-                  sc_acronym = this._transformId(item.uid, expansionData);
+                  scAcronym = this._transformId(item.uid, expansionData);
               }
-              return sc_acronym;
+              return scAcronym;
           }
 
           // This function parses the input uid of the parallel
@@ -542,35 +542,39 @@
               if (!rootId || !expansionData) {
                   return '';
               }
-              let sc_acronym = '';
-              const root_part = rootId.split('#')[0];
-              let uid_parts = root_part.split('-');
+              let scAcronym = '';
+              const rootPart = rootId.split('#')[0];
+              const uidParts = rootPart.split('-');
               let tail = '';
               try {
-                  uid_parts.forEach(item => {
+                  uidParts.forEach(item => {
                       if (!expansionData[0][item]) {
                           tail = item.match(/\d+.*/g)[0] + '–';
                           item = item.match(/[a-z]*/g)[0];
                       }
-                      item ? sc_acronym += `${expansionData[0][item][0]} ${tail}` : sc_acronym += tail;
+                      if (item && expansionData[0][item]) {
+                          scAcronym += `${expansionData[0][item][0]} ${tail}`
+                      } else {
+                          scAcronym += tail;
+                      }
                   });
-                  return sc_acronym.replace(/–\s*$/, '');
+                  return scAcronym.replace(/–\s*$/, '');
               } catch (e) {
                   return;
               }
           }
 
           _getAcronymTitle(item, localize) {
-              let sc_acronym_title = localize('suttaCentralID');
+              let scAcronymTitle = localize('suttaCentralID');
               if (item && item.acronym) {
-                  const alt_number = item.acronym.split('//')[1];
-                  if (alt_number) {
+                  const altNumber = item.acronym.split('//')[1];
+                  if (altNumber) {
                       let book = '';
-                      (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
-                      sc_acronym_title += `\n${localize('alternateText', 'book', book)} ${alt_number}`;
+                      (altNumber[0] === 'T') ? book = 'Taishō' : book = 'PTS';
+                      scAcronymTitle += `\n${localize('alternateText', 'book', book)} ${altNumber}`;
                   }
               }
-              return sc_acronym_title;
+              return scAcronymTitle;
           }
 
           _getRootText() {
