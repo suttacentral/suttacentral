@@ -1,6 +1,55 @@
 <dom-module id="sc-text-heading-styles">
   <template>
     <style>
+
+      [lang="fa"] .sutta h1, [lang="ar"] .sutta h1, 
+      [lang="fa"] .sutta h2, [lang="fa"] .sutta h3, 
+      [lang="fa"] .sutta h4, [lang="he"] .sutta h1, 
+      [lang="he"] .sutta h2, [lang="he"] .sutta h3, 
+      [lang="hi"] .sutta h1, [lang="mr"] .sutta h1, 
+      [lang="mr"] .sutta h2, [lang="my"] .sutta h1, 
+      [lang="my"] .sutta h2, [lang="my"] .sutta h3,
+      [lang="si"] .sutta h1, [lang="si"] .sutta h2, 
+      [lang="si"] .sutta h3, [lang="si"] .sutta h4,
+      [lang="ta"] .sutta h1, [lang="ta"] .sutta h2,
+      [lang="th"] .sutta h1, [lang="th"] .sutta h2, 
+      [lang="th"] .sutta h3, [lang="th"] .sutta h4,
+      [lang="xct"] .sutta h1, [lang="zh"] .sutta h1, 
+      [lang="lzh"] .sutta h1, [lang="zh"] .sutta h2, 
+      [lang="lzh"] .sutta h2, [lang="lzh"] .sutta h3, 
+      [lang="lzh"] .sutta h4, [lang="ko"] .sutta h1, 
+      [lang="ko"] .sutta h2, [lang="ko"] .sutta h3, 
+      [lang="ko"] .sutta h4, [lang="jpn"] .sutta h1,
+      [lang="jpn"] .sutta h2, [lang="jpn"] .sutta h3, 
+      [lang="jpn"] .sutta h4, [lang="ev"] .sutta h1 {
+        font-family: inherit;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      h1 [lang="pli-Sinh"], h2 [lang="pli-Sinh"],
+      h3 [lang="pli-Sinh"], h4 [lang="pli-Sinh"] {
+        @apply --sc-sinhala-serif-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      h1 [lang="pli-Deva"], h2 [lang="pli-Deva"],
+      h3 [lang="pli-Deva"], h4 [lang="pli-Deva"] {
+        @apply --sc-devanagari-sans-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      h1 [lang="pli-Thai"], h2 [lang="pli-Thai"],
+      h3 [lang="pli-Thai"], h4 [lang="pli-Thai"] {
+        @apply --sc-thai-serif-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      h1 [lang="pli-Mymr"], h2 [lang="pli-Mymr"],
+      h3 [lang="pli-Mymr"], h4 [lang="pli-Mymr"] {
+        @apply --sc-myanmar-serif-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
       .sutta h1, .sutta h2, .sutta h3, .sutta h4, .sutta h5, .sutta h6, .hgroup p, .subheading {
         text-align: center;
         font-weight: normal;
@@ -56,6 +105,10 @@
         padding: 0;
       }
 
+      .hgroup p .latin {
+        @apply --sc-noto-sans-font;
+      }
+
       p + h1 {
         margin-top: 12px;
       }
@@ -65,6 +118,12 @@
         font-style: italic;
         text-transform: none;
         font-feature-settings: normal
+      }
+
+      [lang="th"] .hgroup p.subheading,
+      [lang="lzh"] .hgroup p.subheading {
+        font-family: inherit;
+        font-style: inherit;
       }
 
       .hgroup .collection,

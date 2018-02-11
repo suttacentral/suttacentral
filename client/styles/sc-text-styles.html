@@ -27,83 +27,74 @@
         font-synthesis: none;
       }
 
-      [lang="ar"] .sutta, [lang="fa"] .sutta, 
+      [lang="ar"] .sutta, [lang="fa"] .sutta {
+        @apply --sc-arabic-serif-font;
+      }
+
       [lang="ar"] .hgroup p, [lang="fa"] .hgroup p {
-        @apply --sc-arabic-serif-font;
+        @apply --sc-arabic-sans-font;
         @apply --sc-remove-small-caps;
       }
 
-      [lang="fa"] .sutta h1, [lang="ar"] .sutta h1, 
-      [lang="fa"] .sutta h2, [lang="fa"] .sutta h3, 
-      [lang="fa"] .sutta h4 {
-        @apply --sc-arabic-serif-font;
-        @apply --sc-transform-caps-to-bold;
+      [lang="he"] .sutta {
+        @apply --sc-hebrew-serif-font;
       }
 
-      [lang="he"] .sutta, [lang="he"] .hgroup p {
-        @apply --sc-hebrew-serif-font;
+      [lang="he"] .hgroup p {
+        @apply --sc-hebrew-sans-font;
         @apply --sc-remove-small-caps;
       }
 
-      [lang="he"] .sutta h1, [lang="he"] .sutta h2, 
-      [lang="he"] .sutta h3 {
-        @apply --sc-hebrew-serif-font;
-        @apply --sc-transform-caps-to-bold;
-      }
-
+      /*devanagari sans to be changed here to serif once we have it*/
       [lang="hi"] .sutta, [lang="mr"] .sutta,
-      [lang="hi"] .hgroup p, [lang="mr"] .hgroup p {
+      [lang="pli-Deva"] .word {
+        @apply --sc-devanagari-sans-font; 
+      }
+
+      [lang="hi"] .hgroup p, [lang="mr"] .hgroup p,
+      .hgroup p [lang="pli-Deva"] .word,
+      .uddanagatha [lang="pli-Deva"] .word {
         @apply --sc-devanagari-sans-font;
         @apply --sc-remove-small-caps;
       }
 
-      [lang="hi"] .sutta h1, [lang="mr"] .sutta h1, 
-      [lang="mr"] .sutta h2 {
-        @apply --sc-devanagari-sans-font;
-        @apply --sc-transform-caps-to-bold;
-      }
-
-      [lang="my"] .sutta, [lang="my"] .hgroup p {
+      [lang="my"] .sutta, [lang="pli-Mymr"] .word {
         @apply --sc-myanmar-serif-font;
+      }
+
+      [lang="my"] .hgroup p, .hgroup p [lang="pli-Mymr"] .word,
+      .uddanagatha [lang="pli-Mymr"] .word {
+        @apply --sc-myanmar-sans-font;
         @apply --sc-remove-small-caps;
       }
 
-      [lang="my"] .sutta h1, [lang="my"] .sutta h2, 
-      [lang="my"] .sutta h3 {
-        @apply --sc-myanmar-serif-font;
-        @apply --sc-transform-caps-to-bold;
-      }
-
-      [lang="si"] .sutta, [lang="si"] .hgroup p {
+      [lang="si"] .sutta, [lang="pli-Sinh"] .word {
         @apply --sc-sinhala-serif-font;
+      }
+
+      [lang="si"] .hgroup p, .hgroup p [lang="pli-Sinh"] .word,
+      .uddanagatha [lang="pli-Sinh"] .word {
+        @apply --sc-sinhala-sans-font;
         @apply --sc-remove-small-caps;
       }
 
-      [lang="si"] .sutta h1, [lang="si"] .sutta h2, 
-      [lang="si"] .sutta h3, [lang="si"] .sutta h4 {
-        @apply --sc-sinhala-serif-font;
-        @apply --sc-transform-caps-to-bold;
-      }
-
-      [lang="ta"] .sutta, [lang="ta"] .hgroup p {
+      [lang="ta"] .sutta {
         @apply --sc-tamil-serif-font;
+      }
+
+      [lang="ta"] .hgroup p {
+        @apply --sc-tamil-sans-font;
         @apply --sc-remove-small-caps;
       }
 
-      [lang="ta"] .sutta h1, [lang="ta"] .sutta h2 {
-        @apply --sc-tamil-serif-font;
-        @apply --sc-transform-caps-to-bold;
+      [lang="th"] .sutta, [lang="pli-Thai"] .word {
+        @apply --sc-thai-serif-font;
       }
 
-      [lang="th"] .sutta, [lang="th"] .hgroup p {
-        @apply --sc-thai-serif-font;
+      [lang="th"] .hgroup p, .hgroup p [lang="pli-Thai"] .word,
+      [lang="th"] .uddana, .uddanagatha [lang="pli-Thai"] .word {
+        @apply --sc-thai-sans-font;
         @apply --sc-remove-small-caps;
-      }
-
-      [lang="th"] .sutta h1, [lang="th"] .sutta h2, 
-      [lang="th"] .sutta h3, [lang="th"] .sutta h4 {
-        @apply --sc-thai-serif-font;
-        @apply --sc-transform-caps-to-bold;
       }
 
       [lang="xct"] .sutta, [lang="xct"] .hgroup p {
@@ -111,26 +102,12 @@
         @apply --sc-remove-small-caps;
       }
 
-      [lang="xct"] .sutta h1 {
-        @apply --sc-tibetan-font;
-        @apply --sc-transform-caps-to-bold;
-      }
-
       [lang="zh"] .sutta, [lang="lzh"] .sutta, 
-      [lang="lzh"] .hgroup p, [lang="zh"] .hgroup p {
+      [lang="lzh"] .hgroup p, [lang="zh"] .hgroup p,
+      [lang="lzh"] .uddana, [lang="zh"] .uddanagatha,
+      [lang="lzh"] .counter, [lang="lzh"] .t-counter {
         @apply --sc-traditional-chinese-font;
         @apply --sc-remove-small-caps;
-      }
-
-      [lang="lzh"] .hgroup .latin {
-        @apply --sc-noto-sans-font;
-      }
-
-      [lang="zh"] .sutta h1, [lang="lzh"] .sutta h1, 
-      [lang="zh"] .sutta h2, [lang="lzh"] .sutta h2, 
-      [lang="lzh"] .sutta h3, [lang="lzh"] .sutta h4 {
-        @apply --sc-traditional-chinese-font;
-        @apply --sc-transform-caps-to-bold;
       }
 
       [lang="ko"] .sutta, [lang="ko"] .hgroup p {
@@ -138,30 +115,14 @@
         @apply --sc-remove-small-caps;
       }
 
-      [lang="ko"] .sutta h1, [lang="ko"] .sutta h2, 
-      [lang="ko"] .sutta h3, [lang="ko"] .sutta h4 {
-        @apply --sc-korean-font;
-        @apply --sc-transform-caps-to-bold;
-      }
-
-      [lang="jpn"] .sutta, [lang="jpn"] .hgroup p {
+      [lang="jpn"] .sutta, [lang="jpn"] .hgroup p,
+      [lang="jpn"] .uddana {
         @apply --sc-japanese-font;
         @apply --sc-remove-small-caps;
       }
 
-      [lang="jpn"] .sutta h1, [lang="jpn"] .sutta h2, 
-      [lang="jpn"] .sutta h3, [lang="jpn"] .sutta h4 {
-        @apply --sc-japanese-font;
-        @apply --sc-transform-caps-to-bold;
-      }
-
       [lang="ev"] .sutta {
         @apply --sc-tengwar-font;
-      }
-
-      [lang="ev"] .sutta h1 {
-        @apply --sc-tengwar-font;
-        @apply --sc-transform-caps-to-bold;
       }
 
       .sutta {
@@ -200,11 +161,13 @@
 
       .original-text:not([lang='pli-Latn']) {
         font-style: normal;
+        @apply --sc-remove-small-caps;
         font-synthesis: none;
       }
 
       .html-text-content:not(.latin-script) .word {
         font-style: normal;
+        @apply --sc-remove-small-caps;
       }
 
       [lang='pli-Latn'] .original-text {
@@ -263,11 +226,8 @@
       }
 
       .suttainfo,
-      .xu,
-      .w {
-        @apply --sc-skolar-font-size-md;
-        font-weight: 400;
-        line-height: 24px;
+      .colophon {
+        @apply --paper-font-body1;
         @apply --padding-md;
         color: var(--sc-secondary-text-color);
         background: var(--sc-primary-background-color);
@@ -277,8 +237,13 @@
         margin-bottom: var(--sc-size-md);
       }
 
-      .colophon {
-        @apply --paper-font-body1;
+      [lang="lzh"] .suttainfo,
+      .xu,
+      .w {
+        @apply --sc-traditional-chinese-font;
+        @apply --sc-skolar-font-size-md;
+        font-weight: 400;
+        line-height: 24px;
         @apply --padding-md;
         color: var(--sc-secondary-text-color);
         background: var(--sc-primary-background-color);
@@ -339,6 +304,24 @@
         color: var(--sc-secondary-text-color);
       }
 
+      [lang="si"] .endsection,
+      [lang="he"] .endsection,
+      [lang="hi"] .end,
+      [lang="jpn"] .end,
+      [lang="lzh"] .endsection,
+      [lang="lzh"] .scribe,
+      [lang="zh"] .endsection,
+      [lang="th"] .endsection,
+      [lang="th"] .end,
+      [lang="th"] .namo,
+      [lang="hi"] .namo,
+      [lang="jpn"] .namo,
+      [lang="lzh"] .namo,
+      [lang="si"] .namo,
+      [lang="ta"] .speaker {
+        font-style: inherit;
+      }
+
       .endsutta {
         font-weight: bold;
         text-align: center;
@@ -362,6 +345,12 @@
         @apply --sc-all-caps;
       }
 
+      [lang="si"] .endbook,
+      [lang="zh"] .endbook,
+      [lang="si"] .endvagga {
+        @apply --sc-remove-small-caps;
+      }
+
       .endbook {
         font-weight: bold;
       }
@@ -383,20 +372,20 @@
         color: var(--sc-primary-color-dark);
       }
 
-      #text:lang(pgd) .add,
-      #text:lang(pli) .add,
-      #text:lang(san) .add,
-      #text:lang(xct) .add,
-      #text:lang(lzh) .add,
-      #text:lang(pra) .add,
-      #text:lang(en) .add,
+      [lang="lzh"] .add,
+      [lang="pgd"] .add,
+      [lang="pli"] .add,
+      [lang="san"] .add,
+      [lang="xct"] .add,
+      [lang="pra"] .add,
+      [lang="en"] .add,
       .infomode .add {
         color: var(--sc-secondary-text-color);
         @apply --sc-sans-font;
       }
       
-      #text:lang(pli) p,
-      #text:lang(san) p {
+      [lang="pli"] p,
+      [lang="san"] p {
         word-wrap: break-word;
         overflow-wrap: break-word;
       }
@@ -589,17 +578,16 @@
 
       .counter,
       .t-counter {
-        @apply --sc-sans-font;
-        @apply --paper-font-body2;
+        @apply --paper-font-body2-chinese;
         color: var(--sc-secondary-text-color);
       }
 
-         h1, h2, h3, h4, h5, h6, ul, ol, dd, p, figure, pre, table, fieldset {
-         margin:1em 0 0 0;
-       }
+      h1, h2, h3, h4, h5, h6, ul, ol, dd, p, figure, pre, table, fieldset {
+        margin: 1em 0 0 0;
+      }
 
-       .hgroup + p,
-       .hgroup + blockquote {
+      .hgroup + p,
+      .hgroup + blockquote {
         margin-top: var(--sc-size-xl);
       }
     </style>
