@@ -394,73 +394,78 @@
         -webkit-font-smoothing: antialiased;
       };
 
+      --sc-noto-sans-font: {
+        font-family: "Noto Sans", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      };
+
       --sc-arabic-sans-font: {
-        font-family: "Noto Sans Arabic";
+        font-family: "Noto Sans Arabic", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-arabic-serif-font: {
-        font-family: "Noto Naskh Arabic";
+        font-family: "Noto Naskh Arabic", "Skolar PE", 'Noto Serif', serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-hebrew-sans-font: {
-        font-family: "Noto Sans Hebrew";
+        font-family: "Noto Sans Hebrew", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-hebrew-serif-font: {
-        font-family: "Noto Serif Hebrew";
+        font-family: "Noto Serif Hebrew", "Skolar PE", 'Noto Serif', serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-devanagari-sans-font: {
-        font-family: "Noto Sans Devanagari";
+        font-family: "Noto Sans Devanagari", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-myanmar-sans-font: {
-        font-family: "Noto Sans Myanmar";
+        font-family: "Noto Sans Myanmar", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-myanmar-serif-font: {
-        font-family: "Noto Serif Myanmar";
+        font-family: "Noto Serif Myanmar", "Skolar PE", 'Noto Serif', serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-sinhala-sans-font: {
-        font-family: "Noto Sans Sinhala";
+        font-family: "Noto Sans Sinhala", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-sinhala-serif-font: {
-        font-family: "Noto Serif Sinhala";
+        font-family: "Noto Serif Sinhala", "Skolar PE", 'Noto Serif', serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-tamil-sans-font: {
-        font-family: "Noto Sans Tamil";
+        font-family: "Noto Sans Tamil", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-tamil-serif-font: {
-        font-family: "Noto Serif Tamil";
+        font-family: "Noto Serif Tamil", "Skolar PE", 'Noto Serif', serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-thai-sans-font: {
-        font-family: "Noto Sans Thai";
+        font-family: "Noto Sans Thai", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-thai-serif-font: {
-        font-family: "Noto Serif Thai";
+        font-family: "Noto Serif Thai", "Skolar PE", 'Noto Serif', serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-tibetan-font: {
-        font-family: "Noto Sans Tibetan";
+        font-family: "Noto Sans Tibetan", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
@@ -470,22 +475,22 @@
       };
 
       --sc-japanese-font: {
-        font-family: "Noto Sans CJK JP";
+        font-family: "Noto Sans CJK JP", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-korean-font: {
-        font-family: "Noto Sans CJK KR";
+        font-family: "Noto Sans CJK KR", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-traditional-chinese-font: {
-        font-family: "Noto Sans CJK TC";
+        font-family: "Noto Sans CJK TC", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-simple-chinese-font: {
-        font-family: "Noto Sans CJK SC";
+        font-family: "Noto Sans CJK SC", "Skolar Sans PE", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
@@ -557,9 +562,14 @@
       };
 
       --sc-transform-caps-to-bold: {
-        font-feature-settings: normal;
+        @apply --sc-remove-small-caps;
         font-weight: 700;
+      };
+
+      --sc-remove-small-caps: {
+        font-feature-settings: normal;
         letter-spacing: normal;
+        text-transform: none;
       };
 
       --paper-font-common-base: {
