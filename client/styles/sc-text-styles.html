@@ -47,33 +47,38 @@
 
       /*devanagari sans to be changed here to serif once we have it*/
       [lang="hi"] .sutta, [lang="mr"] .sutta,
-      [lang="pli-Deva"] .word {
+      [lang="pli-Deva"] .word, .devanagari-script .word {
         @apply --sc-devanagari-sans-font; 
       }
 
       [lang="hi"] .hgroup p, [lang="mr"] .hgroup p,
       .hgroup p [lang="pli-Deva"] .word,
-      .uddanagatha [lang="pli-Deva"] .word {
+      .uddanagatha [lang="pli-Deva"] .word,
+      .devanagari-script .hgroup p .word, .devanagari-script .uddanagatha .word {
         @apply --sc-devanagari-sans-font;
         @apply --sc-remove-small-caps;
       }
 
-      [lang="my"] .sutta, [lang="pli-Mymr"] .word {
+      [lang="my"] .sutta, [lang="pli-Mymr"] .word,
+      .myanmar-script .word {
         @apply --sc-myanmar-serif-font;
       }
 
       [lang="my"] .hgroup p, .hgroup p [lang="pli-Mymr"] .word,
-      .uddanagatha [lang="pli-Mymr"] .word {
+      .uddanagatha [lang="pli-Mymr"] .word,
+      .myanmar-script .hgroup p .word, .myanmar-script .uddanagatha .word {
         @apply --sc-myanmar-sans-font;
         @apply --sc-remove-small-caps;
       }
 
-      [lang="si"] .sutta, [lang="pli-Sinh"] .word {
+      [lang="si"] .sutta, [lang="pli-Sinh"] .word,
+      .sinhala-script .word {
         @apply --sc-sinhala-serif-font;
       }
 
       [lang="si"] .hgroup p, .hgroup p [lang="pli-Sinh"] .word,
-      .uddanagatha [lang="pli-Sinh"] .word {
+      .uddanagatha [lang="pli-Sinh"] .word,
+      .sinhala-script .hgroup p .word, .sinhala-script .uddanagatha .word {
         @apply --sc-sinhala-sans-font;
         @apply --sc-remove-small-caps;
       }
@@ -87,12 +92,14 @@
         @apply --sc-remove-small-caps;
       }
 
-      [lang="th"] .sutta, [lang="pli-Thai"] .word {
+      [lang="th"] .sutta, [lang="pli-Thai"] .word,
+      .thai-script .word {
         @apply --sc-thai-serif-font;
       }
 
       [lang="th"] .hgroup p, .hgroup p [lang="pli-Thai"] .word,
-      [lang="th"] .uddana, .uddanagatha [lang="pli-Thai"] .word {
+      [lang="th"] .uddana, .uddanagatha [lang="pli-Thai"] .word,
+      .thai-script .hgroup p .word, .thai-script .uddanagatha .word {
         @apply --sc-thai-sans-font;
         @apply --sc-remove-small-caps;
       }

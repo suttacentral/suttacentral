@@ -27,25 +27,33 @@
       }
 
       h1 [lang="pli-Sinh"], h2 [lang="pli-Sinh"],
-      h3 [lang="pli-Sinh"], h4 [lang="pli-Sinh"] {
+      h3 [lang="pli-Sinh"], h4 [lang="pli-Sinh"],
+      .sinhala-script h1 .word, .sinhala-script h2 .word,
+      .sinhala-script h3 .word, .sinhala-script h4 .word {
         @apply --sc-sinhala-serif-font;
         @apply --sc-transform-caps-to-bold;
       }
 
       h1 [lang="pli-Deva"], h2 [lang="pli-Deva"],
-      h3 [lang="pli-Deva"], h4 [lang="pli-Deva"] {
+      h3 [lang="pli-Deva"], h4 [lang="pli-Deva"],
+      .devanagari-script h1 .word, .devanagari-script h2 .word,
+      .devanagari-script h3 .word, .devanagari-script h4 .word {
         @apply --sc-devanagari-sans-font;
         @apply --sc-transform-caps-to-bold;
       }
 
       h1 [lang="pli-Thai"], h2 [lang="pli-Thai"],
-      h3 [lang="pli-Thai"], h4 [lang="pli-Thai"] {
+      h3 [lang="pli-Thai"], h4 [lang="pli-Thai"],
+      .thai-script h1 .word, .thai-script h2 .word,
+      .thai-script h3 .word, .thai-script h4 .word {
         @apply --sc-thai-serif-font;
         @apply --sc-transform-caps-to-bold;
       }
 
       h1 [lang="pli-Mymr"], h2 [lang="pli-Mymr"],
-      h3 [lang="pli-Mymr"], h4 [lang="pli-Mymr"] {
+      h3 [lang="pli-Mymr"], h4 [lang="pli-Mymr"],
+      .myanmar-script h1 .word, .myanmar-script h2 .word,
+      .myanmar-script h3 .word, .myanmar-script h4 .word {
         @apply --sc-myanmar-serif-font;
         @apply --sc-transform-caps-to-bold;
       }
