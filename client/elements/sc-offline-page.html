@@ -68,28 +68,30 @@
               <li>Certain functions, including search, require internet connection.</li>
             </ul>
             <p>If you want extra features, let us know.</p>
-            <p>
-              <template is="dom-if" if="[[browserSupportsPWA]]">
-                <span>Your browser supports Progressive Web Apps!</span>
-                <iron-icon icon="icons:check-box" class="icon success-icon"></iron-icon>
-              </template>
-              <template is="dom-if" if="[[!browserSupportsPWA]]">
-                <span>Your browser does not support Progressive Web Apps.</span>
-                <iron-icon icon="icons:error" class="icon failure-icon"></iron-icon>
-                <br>
-                <a href="https://caniuse.com/#feat=serviceworkers">
-                  Here is a list of supported browsers.
-                </a>
-              </template>
-            </p>
-
-            <p>Download texts in <b>[[languageName]]</b>.</p>
-            <p>If you would like to choose a different language, select one from the menu.</p>
 
             <div class="button-container">
               <paper-button raised disabled="[[!browserSupportsPWA]]" id='make_offline_button' class="button">
-                Make available offline
+                Download texts in [[languageName]]
               </paper-button>
+              <div class="button-info">
+                <p>
+                  <template is="dom-if" if="[[browserSupportsPWA]]">
+                    <span>Your browser supports Progressive Web Apps!</span>
+                    <iron-icon icon="icons:check-box" class="icon success-icon"></iron-icon>
+                  </template>
+                  <template is="dom-if" if="[[!browserSupportsPWA]]">
+                    <span>Your browser does not support Progressive Web Apps.</span>
+                    <iron-icon icon="icons:error" class="icon failure-icon"></iron-icon>
+                    <br>
+                    <a href="https://caniuse.com/#feat=serviceworkers">
+                      Here is a list of supported browsers.
+                    </a>
+                  </template>
+                </p>
+                <p>
+                  If you would like to choose a different language, select one from the menu.
+                </p>
+              </div>
             </div>
           </article>
         </section>
@@ -130,37 +132,46 @@
 
           makeOffline() {
               this.$.ajax.url = this._getCollectionUrl('sutta');
-              this._showToast('info', 'Your download has commenced. You can keep using the site and we will let you know when it’s complete.');
+              this._showToast('info', `Your download has commenced.
+                You can keep using the site and we will let you know when it’s complete.`);
               this.$.ajax.generateRequest().completes.then((request, error) => {
                   if (error) {
                       this._showToast('error', 'Network error.');
                       return;
                   }
                   const response = request.__data.response;
-                  const menuURLs = this._buildMenuUrlList(response.menu);
-                  const suttaplexURLs = this._buildMenuUrlList(response.suttaplex);
-                  const cacheUtility = this.shadowRoot.querySelector('#cache_utility');
-                  const allURLs = menuURLs.concat(suttaplexURLs);
-                  cacheUtility.processRequests(allURLs).then(([passed, failed]) => {
-                      if (failed === 0 && passed > 0) {
-                          this._showToast('success', `Your download is complete.
-                            You may now read suttas in ${this._getNativeLanguageName(this.language)} offline.`);
-                      } else if (failed > 0) {
-                          this._showToast('error', `Error! We were not able to download all the requested texts.
-                            ${failed} out of ${passed + failed} requests did not complete correctly.`);
-                      } else {
-                          this._showToast('error', 'Network error.');
-                      }
-                  });
+                  const allURLs = this._buildUrlList(response);
+                  this._cacheAllItems(allURLs);
               });
           }
 
-          _doesBrowserSupportPWA() {
-              return ('serviceWorker' in navigator);
+          _cacheAllItems(allURLs) {
+              const cacheUtility = this.shadowRoot.querySelector('#cache_utility');
+              cacheUtility.processRequests(allURLs).then(([passed, failed]) => {
+                  if (failed === 0 && passed > 0) {
+                      this._showToast('success', `Your download is complete.
+                            You may now read suttas in ${this._getNativeLanguageName(this.language)} offline.`);
+                  } else if (failed > 0) {
+                      this._showToast('error', `Error! We were not able to download all the requested texts.
+                            ${failed} out of ${passed + failed} requests did not complete correctly.`);
+                  } else {
+                      this._showToast('error', 'Network error.');
+                  }
+              });
           }
 
-          _getNativeLanguageName(languageIsoCode) {
-              return languages.getLanguageInfo(languageIsoCode).nativeName;
+          _buildUrlList(response) {
+              const menuURLs = response.menu.map(menuId => this._getMenuUrl(menuId));
+              const suttaplexURLs = response.suttaplex.map(suttaplexId => this._getSuttaplexUrl(suttaplexId));
+              const suttaTextURLs = [];
+              response.texts.forEach((text) => {
+                  text.translations.forEach((translation) => {
+                      translation.authors.forEach((author) => {
+                          suttaTextURLs.push(this._getSuttaTextUrl(text.uid, author, translation.lang));
+                      })
+                  })
+              });
+              return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs);
           }
 
           _getCollectionUrl(collection) {
@@ -171,16 +182,20 @@
               return `${this.$.meta.byKey('API_ROOT')}/menu/${menuItemId}?language=${this.language}`;
           }
 
-          _buildMenuUrlList(menuIDs) {
-              return menuIDs.map(menuId => this._getMenuUrl(menuId));
-          }
-
           _getSuttaplexUrl(suttaplexId) {
               return `${this.$.meta.byKey('API_ROOT')}/suttaplex/${suttaplexId}?language=${this.language}`;
           }
 
-          _buildSuttaplexUrlList(suttaplexIDs) {
-              return suttaplexIDs.map(suttaplexId => this._getSuttaplexUrl(suttaplexId));
+          _getSuttaTextUrl(suttaId, authorId, langIsoCode) {
+              return `${this.$.meta.byKey('API_ROOT')}/suttas/${suttaId}/${authorId}?lang=${langIsoCode}`;
+          }
+
+          _doesBrowserSupportPWA() {
+              return ('serviceWorker' in navigator);
+          }
+
+          _getNativeLanguageName(languageIsoCode) {
+              return languages.getLanguageInfo(languageIsoCode).nativeName;
           }
 
           _showToast(type, inputMessage) {
