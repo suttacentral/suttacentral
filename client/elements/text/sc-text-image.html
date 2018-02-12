@@ -25,7 +25,7 @@
         last-response="{{imageData}}"
         on-response="_handleResponse"></iron-ajax>
 
-        <div>
+        <div class="hide">
           <img id="image" class="image" src="[[showUrl]]" alt="[[imageAlt]]">
         </div>
   </template>
@@ -128,7 +128,7 @@
                       reset: 0,
                       prev: 0,
                       play: {
-                        show: 2,
+                        show: 0,
                         size: 'large',
                       },
                       next: 0,
