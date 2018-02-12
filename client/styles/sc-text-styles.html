@@ -29,11 +29,13 @@
 
       [lang="ar"] .sutta, [lang="fa"] .sutta {
         @apply --sc-arabic-serif-font;
+        @apply --sc-tall-font-size-md;
       }
 
       [lang="ar"] .hgroup p, [lang="fa"] .hgroup p {
         @apply --sc-arabic-sans-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-md;
       }
 
       [lang="he"] .sutta {
@@ -49,87 +51,163 @@
       [lang="hi"] .sutta, [lang="mr"] .sutta,
       [lang="pli-Deva"] .word, .devanagari-script .word {
         @apply --sc-devanagari-sans-font; 
+        @apply --sc-tall-font-size-md;
       }
 
       [lang="hi"] .hgroup p, [lang="mr"] .hgroup p,
       .hgroup p [lang="pli-Deva"] .word,
-      .uddanagatha [lang="pli-Deva"] .word,
-      .devanagari-script .hgroup p .word, .devanagari-script .uddanagatha .word {
+      .devanagari-script .hgroup p .word {
         @apply --sc-devanagari-sans-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-md;
+      }
+
+      .uddanagatha [lang="pli-Deva"] .word,
+      .devanagari-script .uddanagatha .word {
+        @apply --sc-devanagari-sans-font;
+        @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-s;
       }
 
       [lang="my"] .sutta, [lang="pli-Mymr"] .word,
       .myanmar-script .word {
         @apply --sc-myanmar-serif-font;
+        @apply --sc-tall-font-size-md;
       }
 
       [lang="my"] .hgroup p, .hgroup p [lang="pli-Mymr"] .word,
-      .uddanagatha [lang="pli-Mymr"] .word,
-      .myanmar-script .hgroup p .word, .myanmar-script .uddanagatha .word {
+      .myanmar-script .hgroup p .word {
         @apply --sc-myanmar-sans-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-md;
+      }
+
+      .uddanagatha [lang="pli-Mymr"] .word,
+      .myanmar-script .uddanagatha .word {
+        @apply --sc-myanmar-sans-font;
+        @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-s;
       }
 
       [lang="si"] .sutta, [lang="pli-Sinh"] .word,
       .sinhala-script .word {
         @apply --sc-sinhala-serif-font;
+        @apply --sc-tall-font-size-md;
       }
 
       [lang="si"] .hgroup p, .hgroup p [lang="pli-Sinh"] .word,
-      .uddanagatha [lang="pli-Sinh"] .word,
-      .sinhala-script .hgroup p .word, .sinhala-script .uddanagatha .word {
+      .sinhala-script .hgroup p .word {
         @apply --sc-sinhala-sans-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-md;
+      }
+
+      .uddanagatha [lang="pli-Sinh"] .word,
+      .sinhala-script .uddanagatha .word {
+        @apply --sc-sinhala-sans-font;
+        @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-s;
       }
 
       [lang="ta"] .sutta {
         @apply --sc-tamil-serif-font;
+        @apply --sc-tall-font-size-md;
       }
 
       [lang="ta"] .hgroup p {
         @apply --sc-tamil-sans-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-md;
       }
 
       [lang="th"] .sutta, [lang="pli-Thai"] .word,
       .thai-script .word {
         @apply --sc-thai-serif-font;
+        @apply --sc-tall-font-size-md;
       }
 
       [lang="th"] .hgroup p, .hgroup p [lang="pli-Thai"] .word,
-      [lang="th"] .uddana, .uddanagatha [lang="pli-Thai"] .word,
-      .thai-script .hgroup p .word, .thai-script .uddanagatha .word {
+      .thai-script .hgroup p .word {
         @apply --sc-thai-sans-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-md;
       }
 
-      [lang="xct"] .sutta, [lang="xct"] .hgroup p {
+      [lang="th"] .uddana, .uddanagatha [lang="pli-Thai"] .word,
+      .thai-script .uddanagatha .word {
+        @apply --sc-thai-sans-font;
+        @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-s;
+      }
+
+      [lang="xct"] .sutta {
+        @apply --sc-tibetan-font;
+        @apply --sc-tall-font-size-md;
+      }
+
+      [lang="xct"] .hgroup p {
         @apply --sc-tibetan-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-md;
       }
 
-      [lang="zh"] .sutta, [lang="lzh"] .sutta, 
+      [lang="zh"] .sutta, [lang="lzh"] .sutta {
+        @apply --sc-traditional-chinese-font;
+        @apply --sc-dense-font-size-md;
+      }
+ 
       [lang="lzh"] .hgroup p, [lang="zh"] .hgroup p,
-      [lang="lzh"] .uddana, [lang="zh"] .uddanagatha,
       [lang="lzh"] .counter, [lang="lzh"] .t-counter {
         @apply --sc-traditional-chinese-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-dense-font-size-md;
       }
 
-      [lang="ko"] .sutta, [lang="ko"] .hgroup p {
+      [lang="lzh"] .uddana, [lang="zh"] .uddanagatha {
+        @apply --sc-traditional-chinese-font;
+        @apply --sc-remove-small-caps;
+        @apply --sc-dense-font-size-s;
+      }
+
+      [lang="ko"] .sutta {
+        @apply --sc-korean-font;
+        @apply --sc-dense-font-size-md;
+      }
+
+      [lang="ko"] .hgroup p {
         @apply --sc-korean-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-dense-font-size-md;
       }
 
-      [lang="jpn"] .sutta, [lang="jpn"] .hgroup p,
+      [lang="jpn"] .sutta {
+        @apply --sc-japanese-font;
+        @apply --sc-dense-font-size-md;
+      }
+
+      [lang="jpn"] .hgroup p {
+        @apply --sc-japanese-font;
+        @apply --sc-remove-small-caps;
+        @apply --sc-dense-font-size-md;
+      }
+
       [lang="jpn"] .uddana {
         @apply --sc-japanese-font;
         @apply --sc-remove-small-caps;
+        @apply --sc-dense-font-size-s;
       }
 
       [lang="ev"] .sutta {
         @apply --sc-tengwar-font;
+        @apply --sc-tall-font-size-md;
+      }
+
+      [lang="vi"] .sutta, [lang="vi"] .hgroup p {
+        @apply --sc-tall-font-size-md;
+      }
+
+      [lang="vi"] .uddana, [lang="vi"] .uddanagatha {
+        @apply --sc-tall-font-size-s;
       }
 
       .sutta {
@@ -248,9 +326,8 @@
       .xu,
       .w {
         @apply --sc-traditional-chinese-font;
-        @apply --sc-skolar-font-size-md;
+        @apply --sc-dense-font-size-md;
         font-weight: 400;
-        line-height: 24px;
         @apply --padding-md;
         color: var(--sc-secondary-text-color);
         background: var(--sc-primary-background-color);
