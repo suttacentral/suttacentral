@@ -18,7 +18,6 @@ from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
     divisions, images_files, homepage, available_languages, order
 
-
 def update_data(repo: Repo, repo_addr: str):
     """Updates given git repo.
 
@@ -120,8 +119,12 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
 
             while base_uid:
                 try:
-                    entry['root_lang'] = root_languages[base_uid]
-                    lang = root_languages[base_uid]
+                    if base_uid == 't':
+                        entry['root_lang'] = 'lzh'
+                        lang = 'lzh'
+                    else:
+                        entry['root_lang'] = root_languages[base_uid]
+                        lang = root_languages[base_uid]
                     break
                 except KeyError:
                     base_uid = '-'.join(base_uid.split('-')[:-1])
@@ -139,12 +142,7 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
                 entry['num'] = ordering_data[uid]
             except KeyError:
                 if 'num' not in entry:
-                    m = number_reg.match(uid)
-                    if m:
-                        num = m.group(1)
-                        entry['num'] = int(num)
-                    else:
-                        entry['num'] = i
+                    entry['num'] = i
 
             for data_name in ['volpage', 'biblio_uid', 'acronym']:
                 try:

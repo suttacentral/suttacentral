@@ -277,7 +277,8 @@ than ten results in total, a dropdown selection menu appears at the top.
                       type: Number
                   },
                   isOnline: {
-                      type: Boolean
+                      type: Boolean,
+                      value: true
                   }
               }
           }
@@ -340,7 +341,6 @@ than ten results in total, a dropdown selection menu appears at the top.
                       this.push('visibleSearchResults', items[i]);
                   }
               }
-              this._setFilterMenuVisibility();
           }
 
           // Determines how the iron-scroll-threshold pushes the items to the iron-list
@@ -348,6 +348,9 @@ than ten results in total, a dropdown selection menu appears at the top.
           _loadMoreData() {
               this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
               // Don't load once all items have already been loaded.
+              if (!this.searchListNode) {
+                  return;
+              }
               if (this.searchListNode.items.length === this.resultCount) {
                   return;
               }
@@ -386,23 +389,10 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.set('currentPage', 0);
               this.set('currentFilter', 'all');
               this.set('totalLoadedResults', 0);
-              this.shadowRoot.querySelector('#filter_menu').resetFilter();
-          }
-
-          // If the number of results is less than 10 or there is only 1 category of results, the search filtering
-          // menu is not displayed.
-          _setFilterMenuVisibility() {
               const filterMenu = this.shadowRoot.querySelector('#filter_menu');
-              const items = this.allSearchResults;
-              if (items.length > 10) {
-                  for (let i = 1; i < items.length; i++) {
-                      if (this._calculateItemCategory(items[i]) !== this._calculateItemCategory(items[0])) {
-                          filterMenu.classList.remove('d-none');
-                          return;
-                      }
-                  }
+              if (filterMenu) {
+                  filterMenu.resetFilter();
               }
-              filterMenu.classList.add('d-none');
           }
 
           // Checks if the item's category fits in the current filter.
@@ -444,10 +434,11 @@ than ten results in total, a dropdown selection menu appears at the top.
               this._filterSearchResults();
           }
 
-          // The endless scroll is dependant on a scroll event, but if there are not enough items on the
-          // screen (less than ~6) items on a search result page, it won't trigger loading more, hence this function:
+          // The endless scroll is dependant on a scroll event, but if there's less then 1 item
+          // on a search result page, it won't trigger loading more, hence this function:
+          // TODO: perform new search on filter change
           _loadMoreIfMinimumNotReached() {
-              if (this.visibleSearchResults.length < 6 && !this._areAllItemsLoaded()) {
+              if (this.visibleSearchResults.length < 1 && !this._areAllItemsLoaded()) {
                   this._loadNextPage();
                   this._filterSearchResults();
               }
