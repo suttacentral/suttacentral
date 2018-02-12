@@ -27,9 +27,146 @@
         font-synthesis: none;
       }
 
+      [lang="ar"] .sutta, [lang="fa"] .sutta, 
+      [lang="ar"] .hgroup p, [lang="fa"] .hgroup p {
+        @apply --sc-arabic-serif-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="fa"] .sutta h1, [lang="ar"] .sutta h1, 
+      [lang="fa"] .sutta h2, [lang="fa"] .sutta h3, 
+      [lang="fa"] .sutta h4 {
+        @apply --sc-arabic-serif-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="he"] .sutta, [lang="he"] .hgroup p {
+        @apply --sc-hebrew-serif-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="he"] .sutta h1, [lang="he"] .sutta h2, 
+      [lang="he"] .sutta h3 {
+        @apply --sc-hebrew-serif-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="hi"] .sutta, [lang="mr"] .sutta,
+      [lang="hi"] .hgroup p, [lang="mr"] .hgroup p {
+        @apply --sc-devanagari-sans-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="hi"] .sutta h1, [lang="mr"] .sutta h1, 
+      [lang="mr"] .sutta h2 {
+        @apply --sc-devanagari-sans-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="my"] .sutta, [lang="my"] .hgroup p {
+        @apply --sc-myanmar-serif-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="my"] .sutta h1, [lang="my"] .sutta h2, 
+      [lang="my"] .sutta h3 {
+        @apply --sc-myanmar-serif-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="si"] .sutta, [lang="si"] .hgroup p {
+        @apply --sc-sinhala-serif-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="si"] .sutta h1, [lang="si"] .sutta h2, 
+      [lang="si"] .sutta h3, [lang="si"] .sutta h4 {
+        @apply --sc-sinhala-serif-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="ta"] .sutta, [lang="ta"] .hgroup p {
+        @apply --sc-tamil-serif-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="ta"] .sutta h1, [lang="ta"] .sutta h2 {
+        @apply --sc-tamil-serif-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="th"] .sutta, [lang="th"] .hgroup p {
+        @apply --sc-thai-serif-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="th"] .sutta h1, [lang="th"] .sutta h2, 
+      [lang="th"] .sutta h3, [lang="th"] .sutta h4 {
+        @apply --sc-thai-serif-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="xct"] .sutta, [lang="xct"] .hgroup p {
+        @apply --sc-tibetan-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="xct"] .sutta h1 {
+        @apply --sc-tibetan-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="zh"] .sutta, [lang="lzh"] .sutta, 
+      [lang="lzh"] .hgroup p, [lang="zh"] .hgroup p {
+        @apply --sc-traditional-chinese-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="lzh"] .hgroup .latin {
+        @apply --sc-noto-sans-font;
+      }
+
+      [lang="zh"] .sutta h1, [lang="lzh"] .sutta h1, 
+      [lang="zh"] .sutta h2, [lang="lzh"] .sutta h2, 
+      [lang="lzh"] .sutta h3, [lang="lzh"] .sutta h4 {
+        @apply --sc-traditional-chinese-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="ko"] .sutta, [lang="ko"] .hgroup p {
+        @apply --sc-korean-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="ko"] .sutta h1, [lang="ko"] .sutta h2, 
+      [lang="ko"] .sutta h3, [lang="ko"] .sutta h4 {
+        @apply --sc-korean-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="jpn"] .sutta, [lang="jpn"] .hgroup p {
+        @apply --sc-japanese-font;
+        @apply --sc-remove-small-caps;
+      }
+
+      [lang="jpn"] .sutta h1, [lang="jpn"] .sutta h2, 
+      [lang="jpn"] .sutta h3, [lang="jpn"] .sutta h4 {
+        @apply --sc-japanese-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
+      [lang="ev"] .sutta {
+        @apply --sc-tengwar-font;
+      }
+
+      [lang="ev"] .sutta h1 {
+        @apply --sc-tengwar-font;
+        @apply --sc-transform-caps-to-bold;
+      }
+
       .sutta {
-      @apply --sc-paper-font-body;
-      @apply --sc-serif-font;
+        @apply --sc-paper-font-body;
+        @apply --sc-serif-font;
       }
 
       .html-text-content section {
@@ -127,10 +264,21 @@
 
       .suttainfo,
       .xu,
-      .w,
+      .w {
+        @apply --sc-skolar-font-size-md;
+        font-weight: 400;
+        line-height: 24px;
+        @apply --padding-md;
+        color: var(--sc-secondary-text-color);
+        background: var(--sc-primary-background-color);
+        border: 1px solid var(--sc-tertiary-background-color);
+        border-radius: var(--sc-size-xxs);
+        display: inline-block;
+        margin-bottom: var(--sc-size-md);
+      }
+
       .colophon {
         @apply --paper-font-body1;
-        @apply --sc-sans-font;
         @apply --padding-md;
         color: var(--sc-secondary-text-color);
         background: var(--sc-primary-background-color);

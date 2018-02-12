@@ -298,16 +298,16 @@ It is in effect a miniature version of the suttaplex-card
           }
 
           _getAcronymTitle(item, localize) {
-              let sc_acronym_title = localize('suttaCentralID');
+              let scAcronymTitle = localize('suttaCentralID');
               if (item.acronym) {
-                  const alt_number = item.acronym.split('//')[1];
-                  if (alt_number) {
+                  const altNumber = item.acronym.split('//')[1];
+                  if (altNumber) {
                       let book = '';
-                      (alt_number[0] === 'T') ? book = 'Taishō' : book = 'PTS';
-                      sc_acronym_title += `\n${localize('alternateText', 'book', book)} ${alt_number}`;
+                      (altNumber[0] === 'T') ? book = 'Taishō' : book = 'PTS';
+                      scAcronymTitle += `\n${localize('alternateText', 'book', book)} ${altNumber}`;
                   }
               }
-              return sc_acronym_title;
+              return scAcronymTitle;
           }
 
           _getParagraphRange(rootId) {
@@ -323,21 +323,21 @@ It is in effect a miniature version of the suttaplex-card
           }
 
           _getAcronymOrUid(item, expansionData) {
-              let sc_acronym = '';
+              let scAcronym = '';
               if (item.acronym) {
-                  sc_acronym = item.acronym.split('//')[0];
+                  scAcronym = item.acronym.split('//')[0];
                   const rootId = item.to.replace('~', '');
-                  const id_part = this._getParagraphRange(rootId).replace('-', '–');
-                  return `${sc_acronym}${id_part}`;
+                  const idPart = this._getParagraphRange(rootId).replace('-', '–');
+                  return `${scAcronym}${idPart}`;
               } else {
-                  sc_acronym = this._transformId(item.to, expansionData, 0);
+                  scAcronym = this._transformId(item.to, expansionData, 0);
               }
-              return sc_acronym;
+              return scAcronym;
           }
 
           // This function parses the input uid of the parallel and splits it into
-          // it's main document part (root_part) and the id (paragraphs) within the document (id_part)
-          // The root_part is then split into it's various elements which are then expanded
+          // it's main document part (rootPart) and the id (paragraphs) within the document (idPart)
+          // The rootPart is then split into it's various elements which are then expanded
           // according to the data in the expansion-table. 
           // So f.i. 'an3.4#23-#25' becomes 'AN 3.4 #23-25' and 'lzh-sarv-bi-vb-np1' becomes
           // 'Lzh Sarv Bi Vb NP 1'
@@ -346,22 +346,26 @@ It is in effect a miniature version of the suttaplex-card
                   return '';
               }
               rootId = rootId.replace('~', '');
-              let id_part = this._getParagraphRange(rootId).replace('-', '–');
-              let sc_acronym = '';
-              let root_part = rootId.split('#')[0];
-              const uid_parts = root_part.split('-');
+              const idPart = this._getParagraphRange(rootId).replace('-', '–');
+              let scAcronym = '';
+              const rootPart = rootId.split('#')[0];
+              const uidParts = rootPart.split('-');
               let tail = '';
-              uid_parts.forEach(item => {
+              uidParts.forEach(item => {
                   if (!expansionData[0][item]) {
                       const tailMatch = item.match(/\d+.*/g);
                       tailMatch ? tail = tailMatch[0] + '–' : tail;
                       const itemMatch = item.match(/[a-z]*/g);
                       itemMatch ? item = itemMatch[0] : item;
                   }
-                  item ? sc_acronym += `${expansionData[0][item][idOrName]} ${tail}` : sc_acronym += tail;
+                  if (item && expansionData[0][item]) {
+                      scAcronym += `${expansionData[0][item][idOrName]} ${tail}`
+                  } else {
+                      scAcronym += tail;
+                  }
               });
-              sc_acronym = sc_acronym.replace(/–\s*$/, '');
-              return `${sc_acronym}${id_part}`;
+              scAcronym = scAcronym.replace(/–\s*$/, '');
+              return `${scAcronym}${idPart}`;
           }
 
           _computeVolPage(volPage) {
@@ -373,6 +377,9 @@ It is in effect a miniature version of the suttaplex-card
           }
 
           _getVolPageTitle(volPage, localize) {
+              if (!volPage) {
+                return;
+              };
               const volPages = volPage.split('//');
               if (volPages[1] && (volPages[0] !== volPages[1])) {
                   return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
