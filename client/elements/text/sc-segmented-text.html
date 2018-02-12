@@ -504,6 +504,9 @@
           }
 
           _processVolPageInfo(item, divisionId, paragraph) {
+              if (!paragraph || !divisionId || !item) {
+                return;
+              }
               const prefix = /[^\d]+/.exec(item.id)[0];
               const suffix = item.id.substring(prefix.length);
               let [vol, pageNumber] = suffix.split('.');

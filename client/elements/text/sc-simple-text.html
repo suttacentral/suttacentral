@@ -306,20 +306,33 @@
                   return;
               }
               let divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
-              if (divisionId === 'pli') {divisionId = 'vi'};
-              if (divisionId === 'iti') {divisionId = 'it'};
+              if (divisionId === 'pli') divisionId = 'vi';
+              if (divisionId === 'iti') divisionId = 'it';
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
-                          if (divisionId !== 'tha' && divisionId !== 'thi' && !item.id.includes('2ed')
-                            && (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/))) {
+                          if (this._shouldDisplayBookIcon(divisionId,item.id)) {
                               this._processVolPageInfo(item, divisionId, paragraph);
                           } else {
                               this._addParagraphData(item, paragraph);
                           }
                       });
                   });
+              }
+          }
+
+          _shouldDisplayBookIcon(divisionId, itemId) {
+              let divisionIdMatch = false;
+              let secondEdition = false;
+              let correctId = false;
+              (divisionId === 'tha' || divisionId === 'thi') ? divisionIdMatch = true : divisionIdMatch = false;
+              itemId.includes('2ed') ? secondEdition = true : secondEdition = false;
+              (itemId.startsWith('pts-vp-pli') || itemId.match(/pts[1-9]/)) ? correctId = true : correctId = false;
+              if (!divisionIdMatch && !secondEdition && correctId) {
+                  return true;
+              } else {
+                  return false;
               }
           }
 
@@ -342,7 +355,7 @@
               vol = Number(vol);
               if (vol === 0) {
                 displayText = `${pageNumber}`;
-                vol = 1
+                vol = 1;
               };
               setTimeout(() => {
                   item.innerHTML = `

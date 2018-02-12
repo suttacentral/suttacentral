@@ -70,8 +70,7 @@
           }
 
           showImage(detail) {
-            if (!detail || (this.lastDetail && detail.vol === this.lastDetail.vol 
-              && detail.division === this.lastDetail.division && detail.pageNumber === this.lastDetail.pageNumber)) {
+            if (!detail || this._didDetailChange(detail)) {
               return;
             };
             this.lastDetail = detail;
@@ -80,6 +79,17 @@
             this.pageNumber = detail.pageNumber;
             this.$.ajax.url = this._getUrl();
             this.$.ajax.generateRequest();
+          }
+
+          _didDetailChange(detail) {
+            if (this.lastDetail && 
+                detail.vol === this.lastDetail.vol && 
+                detail.division === this.lastDetail.division && 
+                detail.pageNumber === this.lastDetail.pageNumber) {
+                return true;
+            } else {
+                return false;
+            }
           }
 
           _getUrl() {
@@ -95,11 +105,9 @@
                 return;
               };
               let pageNumber = 0;
-              for (let item = 0; item < this.imageData.length; item++) {
-                  if (this.imageData[item].pageNumber === this.pageNumber) {
-                      pageNumber = item;
-                  }
-              };
+              if (this.imageData.some(page => page.pageNumber === this.pageNumber)) {
+                  pageNumber = this.pageNumber - 1;
+              }
               requestAnimationFrame(() => {
                   const options = {
                     url: (e) => e.dataUrl,
