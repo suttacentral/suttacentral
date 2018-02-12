@@ -323,17 +323,10 @@
           }
 
           _shouldDisplayBookIcon(divisionId, itemId) {
-              let divisionIdMatch = false;
-              let secondEdition = false;
-              let correctId = false;
-              (divisionId === 'tha' || divisionId === 'thi') ? divisionIdMatch = true : divisionIdMatch = false;
-              itemId.includes('2ed') ? secondEdition = true : secondEdition = false;
-              (itemId.startsWith('pts-vp-pli') || itemId.match(/pts[1-9]/)) ? correctId = true : correctId = false;
-              if (!divisionIdMatch && !secondEdition && correctId) {
-                  return true;
-              } else {
-                  return false;
-              }
+              let divisionIdMatch = (divisionId === 'tha' || divisionId === 'thi');
+              let secondEdition = itemId.includes('2ed');
+              let correctId = (itemId.startsWith('pts-vp-pli') || itemId.match(/pts[1-9]/));
+              return (!divisionIdMatch && !secondEdition && correctId);
           }
 
           _processVolPageInfo(item, divisionId, paragraph) {
