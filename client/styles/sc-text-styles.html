@@ -379,16 +379,20 @@
         color: var(--sc-primary-color-dark);
       }
 
-      [lang="lzh"] .add,
       [lang="pgd"] .add,
       [lang="pli"] .add,
       [lang="san"] .add,
-      [lang="xct"] .add,
       [lang="pra"] .add,
       [lang="en"] .add,
       .infomode .add {
         color: var(--sc-secondary-text-color);
         @apply --sc-sans-font;
+      }
+
+      [lang="lzh"] .add,
+      [lang="xct"] .add {
+        color: var(--sc-secondary-text-color);
+        @apply --sc-noto-sans-font;
       }
       
       [lang="pli"] p,
