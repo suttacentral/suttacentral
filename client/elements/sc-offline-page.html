@@ -141,6 +141,7 @@
                       this._cacheAllItems(allURLs);
                   }, (error) => {
                       this._showToast('error', 'Network error.');
+                      console.error(error);
                       return;
                   });
           }
