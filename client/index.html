@@ -18,12 +18,11 @@
       document.createElement = Document.prototype.createElement;
   </script>
   <!-- Register service worker -->
-  <script async>
+  <script>
       if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/service-worker.js')
-              .catch(function(err) {
-                  console.log('Service worker registration failed: ', err);
-              });
+          navigator.serviceWorker.register('/service-worker.js').catch((err) => {
+              console.log('Service worker registration failed: ', err);
+          });
       }
   </script>
   <link rel="import" href="/styles/sc-styles.html">
