@@ -126,7 +126,7 @@
               super.connectedCallback();
               const offlineButton = this.$.make_offline_button;
               if (offlineButton) {
-                  offlineButton.addEventListener('tap', () => { this.makeOffline() });
+                  offlineButton.addEventListener('click', () => { this.makeOffline() });
               }
           }
 
@@ -134,15 +134,15 @@
               this.$.ajax.url = this._getCollectionUrl('sutta');
               this._showToast('info', `Your download has commenced.
                 You can keep using the site and we will let you know when it’s complete.`);
-              this.$.ajax.generateRequest().completes.then((request, error) => {
-                  if (error) {
+              this.$.ajax.generateRequest().completes.then(
+                  (request) => {
+                      const response = request.__data.response;
+                      const allURLs = this._buildUrlList(response);
+                      this._cacheAllItems(allURLs);
+                  }, (error) => {
                       this._showToast('error', 'Network error.');
                       return;
-                  }
-                  const response = request.__data.response;
-                  const allURLs = this._buildUrlList(response);
-                  this._cacheAllItems(allURLs);
-              });
+                  });
           }
 
           _cacheAllItems(allURLs) {
