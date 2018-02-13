@@ -39,7 +39,6 @@ sw.router.registerNavigationRoute('.', {
         /^\/*/
     ],
     blacklist: [
-        /^\//,
         /^\/api\/*/
     ]
 });
