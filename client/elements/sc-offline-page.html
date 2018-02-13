@@ -41,6 +41,20 @@
         color: var(--sc-toast-error-color);
       }
 
+      @media screen and (max-width: 600px) {
+        .button-container {
+          flex-direction: column;
+        }
+
+        .button {
+          height: var(--sc-size-xxl);
+        }
+
+        .no-phone-top-margin {
+          margin-top: 0;
+        }
+      }
+
     </style>
 
     <iron-ajax id="ajax" reject-with-request="true"></iron-ajax>
@@ -70,7 +84,7 @@
                 {{localize('downloadButton', 'languageName', languageName)}}
               </paper-button>
               <div class="button-info">
-                <p>
+                <p class="no-phone-top-margin">
                   <template is="dom-if" if="[[browserSupportsPWA]]">
                     <span>{{localize('supportsPWAs')}}</span>
                     <iron-icon icon="icons:check-box" class="icon success-icon"></iron-icon>
