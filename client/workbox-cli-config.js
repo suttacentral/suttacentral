@@ -2,6 +2,8 @@ module.exports = {
     'swDest': './build/default/sw-generated.js',
     'globDirectory': './build/default/',
     'globPatterns': [
+        'index.html',
+        'manifest.json',
         '**/*.js',
         '**/*.html',
         '**/*.json',
