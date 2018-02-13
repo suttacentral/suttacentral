@@ -491,7 +491,7 @@ def run(no_pull=False):
     homepage.load_why_we_read(db, additional_info_dir)
 
     available_languages.load_available_languages(db, additional_info_dir)
-
-    order.add_order(db)
+    
+    order.add_next_prev_using_menu_data(db)
 
     change_tracker.update_mtimes()
