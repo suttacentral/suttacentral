@@ -8,7 +8,6 @@ module.exports = {
         'img/**/*',
         'img/home-page/**/*',
         'img/static-pages/**/*',
-        'files/fonts/**/*.otf',
         'files/fonts/**/*.woff2'
     ],
     'globIgnores': 'bower_components/webcomponentsjs/*'
