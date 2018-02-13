@@ -114,24 +114,7 @@ class TextInfoModel:
                     else:
                         _stack.extend(e)
                 unicode_points['normal'].update(root.text_content())
-
-                # Set the previous and next uids, using explicit data
-                # if available, otherwise making a safe guess.
-                # The safe guess relies on comparing uids, and will not
-                # capture relationships such as the order of patimokha
-                # rules.
-                prev_uid = root.get('data-prev')
-                next_uid = root.get('data-next')
-                if not (prev_uid or next_uid):
-                    if i > 0:
-                        prev_uid = files[i - 1].stem
-                        if not self.uids_are_related(uid, prev_uid):
-                            prev_uid = None
-                    if i + 1 < len(files):
-                        next_uid = files[i + 1].stem
-                        if not self.uids_are_related(uid, next_uid):
-                            next_uid = None
-
+                
                 author = self._get_author(root)
                 author_data = self.get_author_by_name(author)
 
@@ -161,8 +144,6 @@ class TextInfoModel:
                     "author_short": author_short,
                     "author_uid": author_uid,
                     "volpage": volpage,
-                    "prev_uid": prev_uid,
-                    "next_uid": next_uid,
                     "mtime": mtime,
                     "text": text,
                 }
