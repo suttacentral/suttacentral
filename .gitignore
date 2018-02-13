@@ -17,3 +17,4 @@ client/build/
 /client/localization/pootle/generatedPoFiles/
 /client/localization/preprocessedStaticTemplates/
 generatedPoFiles/
+/pootle/log/*

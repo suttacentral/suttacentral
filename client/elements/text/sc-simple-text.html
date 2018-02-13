@@ -305,13 +305,15 @@
               if (!this.sutta || !this.sutta.uid) {
                   return;
               }
-              const divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
+              let divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
+              if (divisionId === 'pli') divisionId = 'vi';
+              if (divisionId === 'iti') divisionId = 'it';
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
-                          if (item.id.startsWith('pts')) {
-                              this._processVolPageInfo(item, divisionId);
+                          if (this._shouldDisplayBookIcon(divisionId,item.id)) {
+                              this._processVolPageInfo(item, divisionId, paragraph);
                           } else {
                               this._addParagraphData(item, paragraph);
                           }
@@ -320,22 +322,39 @@
               }
           }
 
-          _processVolPageInfo(item, divisionId) {
-              const prefix = /[^\d]+/.exec(item.id)[0];
+          _shouldDisplayBookIcon(divisionId, itemId) {
+              let divisionIdMatch = (divisionId === 'tha' || divisionId === 'thi');
+              let secondEdition = itemId.includes('2ed');
+              let correctId = (itemId.startsWith('pts-vp-pli') || itemId.match(/pts[1-9]/));
+              return (!divisionIdMatch && !secondEdition && correctId);
+          }
+
+          _processVolPageInfo(item, divisionId, paragraph) {
+              let prefix = /[^\d]+/.exec(item.id)[0];
               const suffix = item.id.substring(prefix.length);
               let [vol, pageNumber] = suffix.split('.');
-              pageNumber = Number(pageNumber);
               if (vol.includes('ed')) {
                   let ed;
                   [ed, vol] = vol.split('ed');
-              }
+                  prefix += `${ed}ed`;
+              };
+              let displayText = `${vol}.${pageNumber}`;
+              if (!pageNumber) {
+                pageNumber = vol;
+                vol = '1';
+                displayText = `${pageNumber}`;
+              };
+              pageNumber = Number(pageNumber);
               vol = Number(vol);
-
+              if (vol === 0) {
+                displayText = `${pageNumber}`;
+                vol = 1;
+              };
               setTimeout(() => {
                   item.innerHTML = `
-                                    <div class="image-link" title="${this.localize('viewImage')}">
-                                        <span>${prefix.toUpperCase()} ${suffix}</span>
-                                        <iron-icon class="image-book-link" icon="sc-svg-icons:book">
+                                    <div class="image-link">
+                                        <span class="${prefix}" title="${paragraph.description}">${displayText}</span>
+                                        <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-svg-icons:book">
                                         </iron-icon>
                                     </div>
                                 `;
