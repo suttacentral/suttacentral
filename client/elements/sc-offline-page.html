@@ -41,6 +41,20 @@
         color: var(--sc-toast-error-color);
       }
 
+      @media screen and (max-width: 600px) {
+        .button-container {
+          flex-direction: column;
+        }
+
+        .button {
+          height: var(--sc-size-xxl);
+        }
+
+        .no-phone-top-margin {
+          margin-top: 0;
+        }
+      }
+
     </style>
 
     <iron-ajax id="ajax" reject-with-request="true"></iron-ajax>
@@ -53,43 +67,39 @@
       <main>
         <section>
           <article>
-            <h1>Using SuttaCentral offline</h1>
-            <p>SuttaCentral is a <a href="https://developers.google.com/web/progressive-web-apps/" target="_blank">Progressive
-              Web App</a>. On supported devices, many features, including navigation and previously visited pages, will
-              continue to work even if you have no internet connection.</p>
-            <p>In addition, you can download texts in languages of your choosing and read them when offline. This is
-              especially useful for users on mobiles with limited data, or in regions with poor coverage. If your data
-              is limited, we recommend connecting to wifi before downloading.</p>
-            <p>PWAs are a new technology. For now, offline usage has some limitations:</p>
+            <h1>{{localize('usingOffline')}}</h1>
+            <p inner-h-t-m-l="{{localize('pwaDescription')}}"></p>
+            <p>{{localize('additionalInfo')}}</p>
+            <p>{{localize('newTech')}}</p>
             <ul>
-              <li>Suttas only, not Vinaya or Abhidhamma.</li>
-              <li>Only one language.</li>
-              <li>No original texts.</li>
-              <li>Certain functions, including search, require internet connection.</li>
+              <li>{{localize('suttasOnly')}}</li>
+              <li>{{localize('oneLang')}}</li>
+              <li>{{localize('noOriginal')}}</li>
+              <li>{{localize('certainFunctions')}}</li>
             </ul>
-            <p>If you want extra features, let us know.</p>
+            <p>{{localize('extraFeatures')}}</p>
 
             <div class="button-container">
               <paper-button raised disabled="[[!browserSupportsPWA]]" id='make_offline_button' class="button">
-                Download texts in [[languageName]]
+                {{localize('downloadButton', 'languageName', languageName)}}
               </paper-button>
               <div class="button-info">
-                <p>
+                <p class="no-phone-top-margin">
                   <template is="dom-if" if="[[browserSupportsPWA]]">
-                    <span>Your browser supports Progressive Web Apps!</span>
+                    <span>{{localize('supportsPWAs')}}</span>
                     <iron-icon icon="icons:check-box" class="icon success-icon"></iron-icon>
                   </template>
                   <template is="dom-if" if="[[!browserSupportsPWA]]">
-                    <span>Your browser does not support Progressive Web Apps.</span>
+                    <span>{{localize('doesntSupportPWAs')}}</span>
                     <iron-icon icon="icons:error" class="icon failure-icon"></iron-icon>
                     <br>
                     <a href="https://caniuse.com/#feat=serviceworkers">
-                      Here is a list of supported browsers.
+                      {{localize('listBrowsers')}}
                     </a>
                   </template>
                 </p>
                 <p>
-                  If you would like to choose a different language, select one from the menu.
+                  {{localize('selectDifferentLang')}}
                 </p>
               </div>
             </div>
