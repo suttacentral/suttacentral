@@ -38,7 +38,7 @@
                           .then(this._handleErrors)
                           .then(response => response.json())
                           .then(resolve)
-                          .catch(err => reject(err))
+                          .catch(reject)
                   );
               });
           }
