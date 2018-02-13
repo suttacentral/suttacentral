@@ -33,7 +33,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Currencies, '/currencies')
     api.add_resource(Donations, '/donate')
     api.add_resource(Paragraphs, '/paragraphs')
-    api.add_resource(Images, '/images/<string:division>/<int:vol>')
+    api.add_resource(Images, '/images/<string:division>/<int:vol>/<int:page>')
     api.add_resource(Epigraphs, '/epigraphs')
     api.add_resource(WhyWeRead, '/whyweread')
     api.add_resource(Glossary, '/glossary')

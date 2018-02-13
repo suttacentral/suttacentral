@@ -25,12 +25,9 @@
         last-response="{{imageData}}"
         on-response="_handleResponse"></iron-ajax>
 
-    <ul id="images" class="hide">
-        <template is="dom-repeat" items="[[imageData]]" as="image">
-            <li><img class="image" data-url="[[_getImageUrl(image.name)]]" alt="[[image.name]]"></li>      
-        </template>
-    </ul>
-
+        <div class="hide">
+          <img id="image" class="image" src="[[showUrl]]" alt="[[imageAlt]]">
+        </div>
   </template>
 
   <script>
@@ -65,6 +62,14 @@
                   },
                   lastDetail: {
                       type: Object
+                  },
+                  showUrl: {
+                      type: String,
+                      computed: '_getShowUrl(imageData)'
+                  },
+                  imageAlt: {
+                      type: String,
+                      computed: '_getImageAlt(imageData)'
                   }
               }
           }
@@ -81,6 +86,14 @@
             this.$.ajax.generateRequest();
           }
 
+          _getShowUrl(imageData) {
+              return this._getImageUrl(imageData[0].name);
+          }
+
+          _getImageAlt(imageData) {
+              return imageData[0].name;
+          }
+
           _didDetailChange(detail) {
             if (this.lastDetail && 
                 detail.vol === this.lastDetail.vol && 
@@ -93,7 +106,7 @@
           }
 
           _getUrl() {
-            return `${this.$.meta.byKey('API_ROOT')}/images/${this.division}/${this.vol}`;
+            return `${this.$.meta.byKey('API_ROOT')}/images/${this.division}/${this.vol}/${this.pageNumber}`;
           }
 
           _getImageUrl(name) {
@@ -104,23 +117,34 @@
               if (!this.imageData || !this.imageData[0]) {
                 return;
               };
-              let pageNumber = 0;
-              if (this.imageData.some(page => page.pageNumber === this.pageNumber)) {
-                  pageNumber = this.pageNumber - 1;
-              }
               requestAnimationFrame(() => {
                   const options = {
-                    url: (e) => e.dataUrl,
+                    url: `'src'`,
                     navbar: false,
-                    transition: false
+                    transition: false,
+                    toolbar: {
+                      zoomIn: 2,
+                      zoomOut: 2,
+                      oneToOne: 2,
+                      reset: 0,
+                      prev: 0,
+                      play: {
+                        show: 0,
+                        size: 'large',
+                      },
+                      next: 0,
+                      rotateLeft: 0,
+                      rotateRight: 0,
+                      flipHorizontal: 0,
+                      flipVertical: 0,
+                    }
                   }
-                  
                   if(this.viewer){
-                    this.viewer.update();
+                    this.viewer.reset();
                   } else {
-                    this.viewer = new Viewer(this.$.images, options);
+                    this.viewer = new Viewer(this.$.image, options);
                   }
-                  this.viewer.index = pageNumber;
+                  this.viewer.index = 0;
                   this.viewer.show();
                   this.lastDetail = {};
               });
