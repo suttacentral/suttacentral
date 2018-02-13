@@ -135,3 +135,6 @@ class TwoWayDict(dict):
     def __len__(self):
         """Returns the number of connections"""
         return dict.__len__(self) // 2
+
+def sort_and_groupby(iterable, function):
+    return itertools.groupby(sorted(iterable, key=function), key=function)
