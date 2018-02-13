@@ -378,6 +378,8 @@
     html {
 
       --sc-skolar-font-scale: 1.13;
+      --sc-tall-font-scale: 1.13;
+      --sc-dense-font-scale: 1.13;
 
       --sc-sans-font: {
         font-family: "Skolar Sans PE", "Noto Sans", sans-serif;
@@ -538,6 +540,96 @@
         font-size: calc(50px * var(--sc-skolar-font-scale));
       };
 
+      --sc-tall-font-size-xs: {
+        font-size: calc(13px * var(--sc-tall-font-scale));
+      };
+
+      --sc-tall-font-size-s: {
+        font-size: calc(15px * var(--sc-tall-font-scale));
+        line-height: 23px;
+      };
+
+      --sc-tall-font-size-md: {
+        font-size: calc(17px * var(--sc-tall-font-scale));
+        line-height: 26px;
+      };
+
+      --sc-tall-font-size-l: {
+        font-size: calc(19px * var(--sc-tall-font-scale));
+      };
+
+      --sc-tall-font-size-xl: {
+        font-size: calc(20px * var(--sc-tall-font-scale));
+        line-height: 30px;
+      };
+
+      --sc-tall-font-size-static-subtitle: {
+        font-size: calc(24px * var(--sc-tall-font-scale));
+        line-height: 34px;
+      };
+
+      --sc-tall-font-size-dialog-header: {
+        font-size: calc(26px * var(--sc-tall-font-scale));
+      };
+
+      --sc-tall-font-size-xxl: {
+        font-size: calc(32px * var(--sc-tall-font-scale));
+      };
+
+      --sc-tall-font-size-h1-md: {
+        font-size: calc(34px * var(--sc-tall-font-scale));
+        line-height: 48px;
+      };
+
+      --sc-tall-font-size-static-main-title: {
+        font-size: calc(50px * var(--sc-tall-font-scale));
+      };
+
+      --sc-dense-font-size-xs: {
+        font-size: calc(13px * var(--sc-dense-font-scale));
+      };
+
+      --sc-dense-font-size-s: {
+        font-size: calc(15px * var(--sc-dense-font-scale));
+        line-height: 23px;
+      };
+
+      --sc-dense-font-size-md: {
+        font-size: calc(17px * var(--sc-dense-font-scale));
+        line-height: 26px;
+      };
+
+      --sc-dense-font-size-l: {
+        font-size: calc(19px * var(--sc-dense-font-scale));
+      };
+
+      --sc-dense-font-size-xl: {
+        font-size: calc(20px * var(--sc-dense-font-scale));
+        line-height: 30px;
+      };
+
+      --sc-dense-font-size-static-subtitle: {
+        font-size: calc(24px * var(--sc-dense-font-scale));
+        line-height: 34px;
+      };
+
+      --sc-dense-font-size-dialog-header: {
+        font-size: calc(26px * var(--sc-dense-font-scale));
+      };
+
+      --sc-dense-font-size-xxl: {
+        font-size: calc(32px * var(--sc-dense-font-scale));
+      };
+
+      --sc-dense-font-size-h1-md: {
+        font-size: calc(34px * var(--sc-dense-font-scale));
+        line-height: 48px;
+      };
+
+      --sc-dense-font-size-static-main-title: {
+        font-size: calc(50px * var(--sc-dense-font-scale));
+      };
+
       --sc-paper-font-body: {
         @apply --paper-font-common-base;
         @apply --sc-skolar-font-size-md;
@@ -605,6 +697,13 @@
         @apply --sc-skolar-font-size-s;
         font-weight: 500;
         line-height: 24px;
+      };
+
+      --paper-font-body2-chinese: {
+        @apply --sc-traditional-chinese-font;
+        @apply --sc-dense-font-size-s;
+        font-weight: 500;
+        line-height: 26px;
       };
 
       --paper-font-headline: {
