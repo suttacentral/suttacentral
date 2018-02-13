@@ -13,9 +13,9 @@ def create_project(name: str):
 
 
 def update_project(name: str):
-    _run_command('pootle fs fetch {name}'.format(name=name))
-    _run_command('pootle fs resolve --overwrite {name}'.format(name=name))
-    _run_command('pootle fs sync {name}'.format(name=name))
+    _run_command('pootle fs fetch {name} --verbosity 3'.format(name=name))
+    _run_command('pootle fs resolve --overwrite {name} --verbosity 3'.format(name=name))
+    _run_command('pootle fs sync {name} --verbosity 3'.format(name=name))
 
 
 def get_projects() -> Generator[Path, None, None]:
