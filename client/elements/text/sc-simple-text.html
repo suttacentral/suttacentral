@@ -255,6 +255,7 @@
               setTimeout(() => {
                   this._scrollToSection(window.location.hash.substr(1), false, 500);
               }, 0);
+              this._applyQuoteHanger();
           }
 
           _setAttributes() {
@@ -958,6 +959,18 @@
                      `;
           }
 
+          _applyQuoteHanger() {
+              if (this.lang !== 'lzh' && this.lang !== 'zh') {
+                return;
+              }
+              const paragraphs = this.$.simple_text_content.querySelectorAll('p');
+              Array.from(paragraphs).forEach(paragraph => {
+                  let paragraphMatch = paragraph.innerText.match(/^[  \n0-9.-]*([“‘「『„«"]+)(.)/);
+                  if (paragraphMatch) {
+                      paragraph.style.textIndent = '-19.21px';
+                  }
+              });
+          }
       }
 
       customElements.define(SCSimpleText.is, SCSimpleText);
