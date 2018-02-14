@@ -230,7 +230,7 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
                     markup_docs.append(doc)
 
                 else:
-                    doc['_key'] = f'{doc['lang']}_{doc['uid']}_{doc['author_uid']}'
+                    doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
                     string_docs.append(doc)
 
             db['po_markup'].import_bulk_safe(markup_docs, on_duplicate='ignore')
