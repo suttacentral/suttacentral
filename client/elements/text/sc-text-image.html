@@ -72,7 +72,7 @@
           showImage(detail) {
             if (!detail || this._didDetailChange(detail)) {
               return;
-            };
+            }
             this.lastDetail = detail;
             this.division = detail.division;
             this.vol = detail.vol;
@@ -82,14 +82,10 @@
           }
 
           _didDetailChange(detail) {
-            if (this.lastDetail && 
-                detail.vol === this.lastDetail.vol && 
-                detail.division === this.lastDetail.division && 
-                detail.pageNumber === this.lastDetail.pageNumber) {
-                return true;
-            } else {
-                return false;
-            }
+            return !!(this.lastDetail &&
+                detail.vol === this.lastDetail.vol &&
+                detail.division === this.lastDetail.division &&
+                detail.pageNumber === this.lastDetail.pageNumber);
           }
 
           _getUrl() {
@@ -103,7 +99,7 @@
           _handleResponse() {
               if (!this.imageData || !this.imageData[0]) {
                 return;
-              };
+              }
               let pageNumber = 0;
               if (this.imageData.some(page => page.pageNumber === this.pageNumber)) {
                   pageNumber = this.pageNumber - 1;
@@ -113,7 +109,7 @@
                     url: (e) => e.dataUrl,
                     navbar: false,
                     transition: false
-                  }
+                  };
                   
                   if(this.viewer){
                     this.viewer.update();

@@ -8,7 +8,7 @@
 <link rel="import" href="../styles/static-styles.html">
 <link rel="import" href="addons/sc-static-page.html">
 <link rel="import" href="html-imports/sc-languages-import.html">
-<link rel="import" href="sc-cache-utility.html">
+<link rel="import" href="html-imports/sc-request-queue-import.html">
 
 <dom-module id="sc-offline-page">
   <template>
@@ -61,8 +61,6 @@
 
     <iron-meta id="meta"></iron-meta>
 
-    <sc-cache-utility id="cache_utility"></sc-cache-utility>
-
     <div id="page-wrap">
       <main>
         <section>
@@ -110,6 +108,10 @@
   </template>
 
   <script>
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
       class SCOfflinePage extends SCStaticPage {
           static get is() {
               return 'sc-offline-page';
@@ -156,18 +158,35 @@
           }
 
           _cacheAllItems(allURLs) {
-              const cacheUtility = this.shadowRoot.querySelector('#cache_utility');
-              cacheUtility.processRequests(allURLs).then(([passed, failed]) => {
-                  if (failed === 0 && passed > 0) {
-                      this._showToast('success', `Your download is complete.
+              let failed = 0;
+              let passed = 0;
+              let queue = new RequestQueue({ rateLimit: 10 }, {
+                  item: (input, done) => {
+                      fetch(input.url)
+                          .then(this._handleErrors)
+                          .then(() => {
+                              passed++;
+                              done();
+                          })
+                          .catch((err) => {
+                              failed++;
+                              console.error(err)
+                          })
+                  },
+                  end: () => {
+                      if (failed === 0) {
+                          this._showToast('success', `Your download is complete.
                             You may now read suttas in ${this._getNativeLanguageName(this.language)} offline.`);
-                  } else if (failed > 0) {
-                      this._showToast('error', `Error! We were not able to download all the requested texts.
+                      } else if (failed > 0 && passed > 0) {
+                          this._showToast('error', `Error! We were not able to download all the requested texts.
                             ${failed} out of ${passed + failed} requests did not complete correctly.`);
-                  } else {
-                      this._showToast('error', 'Network error.');
+                      } else {
+                          this._showToast('error', 'Network error.');
+                      }
                   }
               });
+
+              allURLs.forEach(queue.enqueue, queue);
           }
 
           _buildUrlList(response) {
@@ -182,6 +201,13 @@
                   })
               });
               return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs);
+          }
+
+          _handleErrors(response) {
+              if (!response.ok) {
+                  throw Error(response.statusText);
+              }
+              return response;
           }
 
           _getCollectionUrl(collection) {
