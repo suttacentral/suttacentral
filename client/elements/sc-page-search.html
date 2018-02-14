@@ -296,7 +296,6 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           ready() {
               super.ready();
-              this.searchListNode = this.shadowRoot.querySelector('#search_result_list');
               this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
               window.addEventListener('load', this._updateOnlineStatus.bind(this));
               window.addEventListener('online', this._updateOnlineStatus.bind(this));
@@ -348,10 +347,8 @@ than ten results in total, a dropdown selection menu appears at the top.
           _loadMoreData() {
               this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
               // Don't load once all items have already been loaded.
-              if (!this.searchListNode) {
-                  return;
-              }
-              if (this.searchListNode.items.length === this.resultCount) {
+              const searchListNode = this.shadowRoot.querySelector('#search_result_list');
+              if (!searchListNode || searchListNode.items.length === this.resultCount) {
                   return;
               }
               this._loadNextPage();
