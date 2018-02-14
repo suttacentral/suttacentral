@@ -26,7 +26,7 @@
       }
 
       .button[disabled] {
-          background-color: var(--sc-paper-tooltip-color);
+        background-color: var(--sc-paper-tooltip-color);
       }
 
       .button-container {
@@ -50,7 +50,6 @@
 
       #download_controller {
         width: 100%;
-        height: 200px;
         will-change: opacity;
         transition: opacity cubic-bezier(0.4, 0.0, 0.2, 1) 300ms;
         margin: var(--sc-size-md);
@@ -60,6 +59,19 @@
         --paper-progress-active-color: var(--sc-primary-accent-color);
         --paper-progress-container-color: var(--sc-primary-background-color);
         width: 100%;
+      }
+
+      .download-progress-percentage {
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-l;
+        margin: var(--sc-size-md);
+        text-align: right;
+      }
+
+      .download-current-url {
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-l;
+        margin: var(--sc-size-md);
       }
 
       @media screen and (max-width: 600px) {
@@ -125,6 +137,8 @@
             </div>
             <paper-card id="download_controller">
               <paper-progress id="cache_progress"></paper-progress>
+              <div class="download-progress-percentage">[[downloadProgressPercentage]]%</div>
+              <div class="download-current-url">[[currentDownloadingUrl]]</div>
             </paper-card>
           </article>
         </section>
@@ -160,6 +174,13 @@
                       type: Boolean,
                       observer: '_downloadInProgressChanged',
                       value: false
+                  },
+                  downloadProgessPercentage: {
+                      type: Number,
+                      value: 0
+                  },
+                  currentDownloadingUrl: {
+                      type: String
                   }
               }
           }
@@ -176,14 +197,16 @@
               this.$.ajax.url = this._getCollectionUrl('sutta');
               this._showToast('info', `Your download has commenced.
                 You can keep using the site and we will let you know when it’s complete.`);
+              this.cacheDownloadInProgress = true;
               this.$.ajax.generateRequest().completes.then(
                   (request) => {
-                      this.cacheDownloadInProgress = true;
+                      this.downloadProgressPercentage = 0;
                       const response = request.__data.response;
                       const allURLs = this._buildUrlList(response);
                       this._cacheAllItems(allURLs);
                   }, (error) => {
                       this._showToast('error', 'Network error.');
+                      this.cacheDownloadInProgress = false;
                       console.error(error.error);
                   });
           }
@@ -199,7 +222,7 @@
                           .then(this._handleErrors)
                           .then(() => {
                               passed++;
-                              progressBar.value++;
+                              this._updateUi(progressBar, input.url);
                               done();
                           })
                           .catch((err) => {
@@ -223,6 +246,12 @@
 
               allURLs.slice(0, 150).forEach(queue.enqueue, queue);
               progressBar.max = queue.length();
+          }
+
+          _updateUi(progressBar, currentUrl) {
+              progressBar.value++;
+              this.downloadProgressPercentage = Math.round(progressBar.value / progressBar.max * 100);
+              this.currentDownloadingUrl = currentUrl.slice(currentUrl.indexOf('api') + 4);
           }
 
           _downloadInProgressChanged() {
