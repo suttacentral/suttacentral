@@ -33,12 +33,11 @@ def load_info(po_file):
     }
 
 
-def extract_strings_from_po_file(po_file):
+def extract_strings_from_po(po):
     markup = []
     msgids = {}
     msgstrs = {}
 
-    po = polib.pofile(po_file)
 
     for entry in po:
         markup.append(entry.comment + f'<sc-seg id="{entry.msgctxt}"></sc-seg>')
@@ -53,10 +52,19 @@ def extract_strings_from_po_file(po_file):
         "markup": markup,
         "msgids": msgids,
         "msgstrs": msgstrs,
-        "root_title": po[1].msgid,
-        "translated_title": po[1].msgstr
     }
 
+
+def extract_headings_from_po(po):
+    found = {'tr': {}, 'root': {}}
+    for string, key in ( ('<h1', 'title'), ('class="division"', 'division') ):
+        tr_strings = []
+        root_strings = []
+        for entry in po[:10]:
+            if string in entry.comment:
+                found['tr'][key] = entry.msgstr
+                found['root'][key] = entry.msgid
+    return found
 
 def process_dir(change_tracker, po_dir, authors, info):
     """Process po files in folder
@@ -80,8 +88,11 @@ def process_dir(change_tracker, po_dir, authors, info):
     for po_file in po_files:
         if change_tracker and not change_tracker.is_file_new_or_changed(po_file):
             continue
-
-        data = extract_strings_from_po_file(po_file)
+        po = polib.pofile(po_file)
+        
+        headings = extract_headings_from_po(po)
+        data = extract_strings_from_po(po)
+        
         uid = remove_leading_zeros(po_file.stem)
 
         root_author_data = get_author(info['root_author'], authors)
@@ -104,7 +115,8 @@ def process_dir(change_tracker, po_dir, authors, info):
                 # because that would be i.e. in pali!
             },
             "strings": data['msgids'],
-            "title": data['root_title'],
+            "title": headings['root']['title'],
+            'division_title': headings['root']['division'],
             'mtime': mtime
         }
 
@@ -120,7 +132,8 @@ def process_dir(change_tracker, po_dir, authors, info):
                 info['tr_lang']: info['author_blurb']
             },
             "strings": data['msgstrs'],
-            "title": data['translated_title'],
+            "title": headings['tr']['title'],
+            'division_title': headings['tr']['division'],
             'mtime': mtime
         }
 
