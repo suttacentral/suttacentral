@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
@@ -24,6 +25,10 @@
         margin: var(--sc-size-lg);
       }
 
+      .button[disabled] {
+          background-color: var(--sc-paper-tooltip-color);
+      }
+
       .button-container {
         margin-top: var(--sc-size-md);
         display: flex;
@@ -45,9 +50,16 @@
 
       #download_controller {
         width: 100%;
-        min-height: 200px;
+        height: 200px;
         will-change: opacity;
         transition: opacity cubic-bezier(0.4, 0.0, 0.2, 1) 300ms;
+        margin: var(--sc-size-md);
+      }
+
+      #cache_progress {
+        --paper-progress-active-color: var(--sc-primary-accent-color);
+        --paper-progress-container-color: var(--sc-primary-background-color);
+        width: 100%;
       }
 
       @media screen and (max-width: 600px) {
@@ -87,7 +99,8 @@
             <p>{{localize('extraFeatures')}}</p>
 
             <div class="button-container">
-              <paper-button raised disabled="[[!browserSupportsPWA]]" id='make_offline_button' class="button">
+              <paper-button id='make_offline_button' class="button" raised
+                            disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
                 {{localize('downloadButton', 'languageName', languageName)}}
               </paper-button>
               <div class="button-info">
@@ -111,7 +124,7 @@
               </div>
             </div>
             <paper-card id="download_controller">
-              <p>aushdhasdklj</p>
+              <paper-progress id="cache_progress"></paper-progress>
             </paper-card>
           </article>
         </section>
@@ -178,12 +191,15 @@
           _cacheAllItems(allURLs) {
               let failed = 0;
               let passed = 0;
+              const progressBar = this.$.cache_progress;
+              progressBar.value = 0;
               let queue = new RequestQueue({ rateLimit: 10 }, {
                   item: (input, done) => {
                       fetch(input.url)
                           .then(this._handleErrors)
                           .then(() => {
                               passed++;
+                              progressBar.value++;
                               done();
                           })
                           .catch((err) => {
@@ -205,10 +221,12 @@
                   }
               });
 
-              allURLs.forEach(queue.enqueue, queue);
+              allURLs.slice(0, 150).forEach(queue.enqueue, queue);
+              progressBar.max = queue.length();
           }
 
           _downloadInProgressChanged() {
+              // this.$.download_controller.style.height = this.cacheDownloadInProgress ? 'auto' : '0';
               this.$.download_controller.style.opacity = this.cacheDownloadInProgress ? 1 : 0;
           }
 
@@ -255,6 +273,10 @@
 
           _getNativeLanguageName(languageIsoCode) {
               return languages.getLanguageInfo(languageIsoCode).nativeName;
+          }
+
+          _isDownloadButtonDisabled(browserSupportsPWAs, cacheDownloadInProgress) {
+              return !browserSupportsPWAs || cacheDownloadInProgress;
           }
 
           _showToast(type, inputMessage) {
