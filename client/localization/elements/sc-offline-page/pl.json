@@ -1,3 +1,18 @@
 {
-    "pl": {}
+    "pl": {
+        "usingOffline": "Używaj SuttaCentral w trybie offline",
+        "pwaDescription": "SuttaCentral to <a href=\"https://developers.google.com/web/progressive-web-apps/\" target=\"_blank\">Progresywna Aplikacja Webowa (PWA)</a>. Na wspieranych urządzeniach wiele funkcjonalności, wliczając w to nawigację oraz wcześniej odwiedzone strony, będzie działać nawet, jeśli utracisz połączenie z internetem.",
+        "additionalInfo": "Ponadto, możesz ściągnąć teksty w wybranych językach i czytać je w trybie offline. Jest to szczególnie przydatne dla użytkowników z limitowanych dostępem do internetu oraz w regionach o słabym zasięgu. Jeśli masz mało danych w swoim pakiecie mobilnym, rekomendujemu połączyć się z WiFi zanim rozpoczniesz ściąganie tekstów.",
+        "newTech": "PWA to nowa technologia. Aktualnie istnieje kilka limitacji:",
+        "suttasOnly": "Dostępne są tylko Sutry, nie Vinaya ani Abhidhamma.",
+        "oneLang": "Tylko jeden język.",
+        "noOriginal": "Brak oryginalnych tekstów.",
+        "certainFunctions": "Niektóre funkcje, (na przykład wyszukiwarka) wymagają aktywnego połączenia z internetem.",
+        "extraFeatures": "Jeśli życzysz sobie dodatkowych funkcji, prosimy - daj nam znać.",
+        "downloadButton": "Rozpocznij pobieranie danych w języku: {languageName}",
+        "supportsPWAs": "Twoja przeglądarka wspiera Progresywne Aplikacje Webowe!",
+        "doesntSupportPWAs": "Twoja przeglądarka nie wspiera Progresywnych Aplikacji Webowych.",
+        "listBrowsers": "Oto lista wspieranych przeglądarek.",
+        "selectDifferentLang": "Jeśli chciałbyś wybrać inny język, wybierz go w menu głównym."
+    }
 }
