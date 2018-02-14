@@ -145,12 +145,14 @@ def search(query: str, highlight=True, offset=0, limit=10,
     root_indexes = list(get_root_language_uids())
     tr_indexes = [language]
     
-    if restrict == 'root':
+    if restrict == 'root-text':
         indexes = root_indexes
     elif restrict == 'translation':
         indexes = tr_indexes
-    else:
+    elif restrict is None:
         indexes = root_indexes + tr_indexes
+    else:
+        return None
 
     index_string = ','.join(get_available_indexes(indexes))
 
