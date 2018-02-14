@@ -26,19 +26,18 @@ def load_info(po_file):
     data = {entry.msgid: entry.msgstr for entry in po}
 
     return {
-        "author": data['translation_author_uid'],
-        "author_blurb": data['translation_author_blurb'],
-        "root_author": data['root_author_uid'],
-        "root_author_blurb": data['root_author_blurb'],
+        'author': data['translation_author_uid'],
+        'author_blurb': data['translation_author_blurb'],
+        'root_author': data['root_author_uid'],
+        'root_author_blurb': data['root_author_blurb'],
     }
 
 
-def extract_strings_from_po_file(po_file):
+def extract_strings_from_po(po):
     markup = []
     msgids = {}
     msgstrs = {}
 
-    po = polib.pofile(po_file)
 
     for entry in po:
         markup.append(entry.comment + f'<sc-seg id="{entry.msgctxt}"></sc-seg>')
@@ -50,13 +49,22 @@ def extract_strings_from_po_file(po_file):
     markup = clean_html(''.join(markup))
 
     return {
-        "markup": markup,
-        "msgids": msgids,
-        "msgstrs": msgstrs,
-        "root_title": po[1].msgid,
-        "translated_title": po[1].msgstr
+        'markup': markup,
+        'msgids': msgids,
+        'msgstrs': msgstrs,
     }
 
+
+def extract_headings_from_po(po):
+    found = {'tr': {}, 'root': {}}
+    for string, key in ( ('<h1', 'title'), ('class="division"', 'division') ):
+        tr_strings = []
+        root_strings = []
+        for entry in po[:10]:
+            if string in entry.comment:
+                found['tr'][key] = entry.msgstr
+                found['root'][key] = entry.msgid
+    return found
 
 def process_dir(change_tracker, po_dir, authors, info):
     """Process po files in folder
@@ -80,8 +88,11 @@ def process_dir(change_tracker, po_dir, authors, info):
     for po_file in po_files:
         if change_tracker and not change_tracker.is_file_new_or_changed(po_file):
             continue
-
-        data = extract_strings_from_po_file(po_file)
+        po = polib.pofile(po_file)
+        
+        headings = extract_headings_from_po(po)
+        data = extract_strings_from_po(po)
+        
         uid = remove_leading_zeros(po_file.stem)
 
         root_author_data = get_author(info['root_author'], authors)
@@ -91,43 +102,45 @@ def process_dir(change_tracker, po_dir, authors, info):
         
         # This doc is for root strings
         yield {
-            "uid": uid,
-            "markup_uid": uid,
-            "lang": info['root_lang'],
-            "author": root_author_data[0],
-            "author_short": root_author_data[1],
-            "author_uid": info['root_author'],
-            "author_blurb": {
+            'uid': uid,
+            'markup_uid': uid,
+            'lang': info['root_lang'],
+            'author': root_author_data[0],
+            'author_short': root_author_data[1],
+            'author_uid': info['root_author'],
+            'author_blurb': {
                 info['tr_lang']: info['root_author_blurb']
                 # Note there might be blurbs in other languages
                 # also root language blurb probably wont exist
                 # because that would be i.e. in pali!
             },
-            "strings": data['msgids'],
-            "title": data['root_title'],
+            'strings': data['msgids'],
+            'title': headings['root']['title'],
+            'division_title': headings['root']['division'],
             'mtime': mtime
         }
 
         # This doc is for the translated strings
         yield {
-            "uid": uid,
-            "markup_uid": uid,
-            "lang": info['tr_lang'],
-            "author": author_data[0],
-            "author_short": author_data[1],
-            "author_uid": info['author'],
-            "author_blurb": {
+            'uid': uid,
+            'markup_uid': uid,
+            'lang': info['tr_lang'],
+            'author': author_data[0],
+            'author_short': author_data[1],
+            'author_uid': info['author'],
+            'author_blurb': {
                 info['tr_lang']: info['author_blurb']
             },
-            "strings": data['msgstrs'],
-            "title": data['translated_title'],
+            'strings': data['msgstrs'],
+            'title': headings['tr']['title'],
+            'division_title': headings['tr']['division'],
             'mtime': mtime
         }
 
         # this doc is for the markup
         yield {
-            "uid": uid,
-            "markup": data['markup'],
+            'uid': uid,
+            'markup': data['markup'],
             'mtime': mtime
         }
 
@@ -213,7 +226,7 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
 
             for i, doc in enumerate(docs):
                 if 'markup' in doc:
-                    doc['_key'] = f"{doc['uid']}_markup"
+                    doc['_key'] = f'{doc["uid"]}_markup'
                     markup_docs.append(doc)
 
                 else:
