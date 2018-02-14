@@ -20,6 +20,7 @@
     "StripeLimitations": "Z powodu limitacji Strip'a, dokonaj bezpośredniej płatności albo skontaktuj się z nami.",
     "cardDeclined": "Twoja karta została odrzucona.",
     "offline": "Utracono połączenie z internetem.",
-    "networkError": "Błąd połączenia."
+    "networkError": "Błąd połączenia.",
+    "donateNow": "Wyślij dotację"
   }
 }

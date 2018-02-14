@@ -20,6 +20,7 @@
         "StripeLimitations": "Due to Stripe limitations,  please make a direct payment, or else contact us for help.",
         "cardDeclined": "Your card was declined.",
         "offline": "You're offline.",
-        "networkError": "Network error."
+        "networkError": "Network error.",
+        "donateNow": "Donate Now"
     }
 }
