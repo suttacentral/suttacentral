@@ -74,6 +74,8 @@ class Search(Resource):
         limit = request.args.get('limit', 10)
         offset = request.args.get('offset', 0)
         query = request.args.get('query', None)
+        restrict = request.args.get('restrict', None)
+                
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
 
         if query is None:
@@ -81,7 +83,7 @@ class Search(Resource):
             
         results = {'total': 0, 'hits': []}
         try:
-            es_text_results = query_search.search(query, limit=limit, offset=offset, language=language)
+            es_text_results = query_search.search(query, limit=limit, offset=offset, language=language, restrict=restrict)
             text_results = []
 
             for entry in es_text_results['hits']['hits']:
@@ -108,13 +110,14 @@ class Search(Resource):
             # get DB results too: but probably best to fail for debugging
             return json.dumps({'error': 'Elasticsearch unavailable'}), 503
         
-        dictionary_result = dictionaries.search(query)
-        if dictionary_result:
-            if offset == 0:
-                # Yeah this is a hack in terms of offset and stuff
-                # but it works: if the client asks for 10 results
-                # it'll return 11. But it doesn't mess with 
-                # the elasticsearch offset and limit.
-                results['hits'].insert(0, dictionary_result)
+        if not restrict:
+            dictionary_result = dictionaries.search(query)
+            if dictionary_result:
+                if offset == 0:
+                    # Yeah this is a hack in terms of offset and stuff
+                    # but it works: if the client asks for 10 results
+                    # it'll return 11. But it doesn't mess with 
+                    # the elasticsearch offset and limit.
+                    results['hits'].insert(0, dictionary_result)
         
         return results
