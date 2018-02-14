@@ -2,7 +2,9 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
@@ -74,6 +76,29 @@
         margin: var(--sc-size-md);
       }
 
+      .control-button-row {
+        display: flex;
+        justify-content: center;
+        color: var(--sc-disabled-text-color);
+      }
+
+      .control-button {
+        width: var(--sc-size-xxl);
+        height: var(--sc-size-xxl);
+      }
+
+      #play_button {
+
+      }
+
+      #stop_button {
+
+      }
+
+      #pause_button {
+
+      }
+
       @media screen and (max-width: 600px) {
         .button-container {
           flex-direction: column-reverse;
@@ -137,8 +162,14 @@
             </div>
             <paper-card id="download_controller">
               <paper-progress id="cache_progress"></paper-progress>
-              <div class="download-progress-percentage">[[downloadProgressPercentage]]%</div>
+              <template is="dom-if" if="[[cacheDownloadInProgress]]">
+                <div class="download-progress-percentage">[[downloadProgressPercentage]]%</div>
+              </template>
               <div class="download-current-url">[[currentDownloadingUrl]]</div>
+              <div class="control-button-row">
+                <paper-icon-button id="play_button" class="control-button" icon="av:play-arrow"></paper-icon-button>
+                <paper-icon-button id="stop_button" class="control-button" icon="av:stop"></paper-icon-button>
+              </div>
             </paper-card>
           </article>
         </section>
@@ -181,6 +212,14 @@
                   },
                   currentDownloadingUrl: {
                       type: String
+                  },
+                  downloadPaused: {
+                      type: Boolean,
+                      observer: '_downloadPausedChanged',
+                      value: true
+                  },
+                  downloadQueue: {
+                      type: Object
                   }
               }
           }
@@ -216,7 +255,8 @@
               let passed = 0;
               const progressBar = this.$.cache_progress;
               progressBar.value = 0;
-              let queue = new RequestQueue({ rateLimit: 10 }, {
+              this.downloadPaused = false;
+              this.downloadQueue = new RequestQueue({ rateLimit: 10 }, {
                   item: (input, done) => {
                       fetch(input.url)
                           .then(this._handleErrors)
@@ -227,11 +267,13 @@
                           })
                           .catch((err) => {
                               failed++;
+                              this.downloadPaused = true;
                               console.error(err)
                           })
                   },
                   end: () => {
                       this.cacheDownloadInProgress = false;
+                      this.downloadPaused = true;
                       if (failed === 0) {
                           this._showToast('success', `Your download is complete.
                             You may now read suttas in ${this._getNativeLanguageName(this.language)} offline.`);
@@ -244,8 +286,8 @@
                   }
               });
 
-              allURLs.slice(0, 150).forEach(queue.enqueue, queue);
-              progressBar.max = queue.length();
+              allURLs.slice(0, 150).forEach(this.downloadQueue.enqueue, this.downloadQueue);
+              progressBar.max = this.downloadQueue.length();
           }
 
           _updateUi(progressBar, currentUrl) {
@@ -254,9 +296,12 @@
               this.currentDownloadingUrl = currentUrl.slice(currentUrl.indexOf('api') + 4);
           }
 
+          _downloadPausedChanged() {
+              this.$.play_button.icon = this.downloadPaused ? 'av:play-arrow' : 'av:pause';
+          }
+
           _downloadInProgressChanged() {
-              // this.$.download_controller.style.height = this.cacheDownloadInProgress ? 'auto' : '0';
-              this.$.download_controller.style.opacity = this.cacheDownloadInProgress ? 1 : 0;
+              // this.$.download_controller.style.opacity = this.cacheDownloadInProgress ? 1 : 0;
           }
 
           _buildUrlList(response) {
