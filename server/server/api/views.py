@@ -812,7 +812,7 @@ class Donations(Resource):
 
 class Images(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=600)
-    def get(self, division, vol):
+    def get(self, division, vol, page):
         """
         Send list of images for given division.
         ---
@@ -831,7 +831,7 @@ class Images(Resource):
         """
         db = get_db()
 
-        data = db.aql.execute(IMAGES, bind_vars={'division': division, 'vol': vol})
+        data = db.aql.execute(IMAGES, bind_vars={'division': division, 'vol': vol, 'page': page})
 
         return data.batch(), 200
 

@@ -32,5 +32,7 @@ if [ ! -f /root/.pootle/.clonedAssets ]; then
     touch /root/.pootle/.clonedAssets
 fi
 
+mkdir log
+
 pootle revision --restore
 /usr/bin/supervisord -n
