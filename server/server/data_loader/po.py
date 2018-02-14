@@ -26,10 +26,10 @@ def load_info(po_file):
     data = {entry.msgid: entry.msgstr for entry in po}
 
     return {
-        "author": data['translation_author_uid'],
-        "author_blurb": data['translation_author_blurb'],
-        "root_author": data['root_author_uid'],
-        "root_author_blurb": data['root_author_blurb'],
+        'author': data['translation_author_uid'],
+        'author_blurb': data['translation_author_blurb'],
+        'root_author': data['root_author_uid'],
+        'root_author_blurb': data['root_author_blurb'],
     }
 
 
@@ -49,9 +49,9 @@ def extract_strings_from_po(po):
     markup = clean_html(''.join(markup))
 
     return {
-        "markup": markup,
-        "msgids": msgids,
-        "msgstrs": msgstrs,
+        'markup': markup,
+        'msgids': msgids,
+        'msgstrs': msgstrs,
     }
 
 
@@ -102,45 +102,45 @@ def process_dir(change_tracker, po_dir, authors, info):
         
         # This doc is for root strings
         yield {
-            "uid": uid,
-            "markup_uid": uid,
-            "lang": info['root_lang'],
-            "author": root_author_data[0],
-            "author_short": root_author_data[1],
-            "author_uid": info['root_author'],
-            "author_blurb": {
+            'uid': uid,
+            'markup_uid': uid,
+            'lang': info['root_lang'],
+            'author': root_author_data[0],
+            'author_short': root_author_data[1],
+            'author_uid': info['root_author'],
+            'author_blurb': {
                 info['tr_lang']: info['root_author_blurb']
                 # Note there might be blurbs in other languages
                 # also root language blurb probably wont exist
                 # because that would be i.e. in pali!
             },
-            "strings": data['msgids'],
-            "title": headings['root']['title'],
+            'strings': data['msgids'],
+            'title': headings['root']['title'],
             'division_title': headings['root']['division'],
             'mtime': mtime
         }
 
         # This doc is for the translated strings
         yield {
-            "uid": uid,
-            "markup_uid": uid,
-            "lang": info['tr_lang'],
-            "author": author_data[0],
-            "author_short": author_data[1],
-            "author_uid": info['author'],
-            "author_blurb": {
+            'uid': uid,
+            'markup_uid': uid,
+            'lang': info['tr_lang'],
+            'author': author_data[0],
+            'author_short': author_data[1],
+            'author_uid': info['author'],
+            'author_blurb': {
                 info['tr_lang']: info['author_blurb']
             },
-            "strings": data['msgstrs'],
-            "title": headings['tr']['title'],
+            'strings': data['msgstrs'],
+            'title': headings['tr']['title'],
             'division_title': headings['tr']['division'],
             'mtime': mtime
         }
 
         # this doc is for the markup
         yield {
-            "uid": uid,
-            "markup": data['markup'],
+            'uid': uid,
+            'markup': data['markup'],
             'mtime': mtime
         }
 
@@ -226,11 +226,11 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
 
             for i, doc in enumerate(docs):
                 if 'markup' in doc:
-                    doc['_key'] = f"{doc['uid']}_markup"
+                    doc['_key'] = f'{doc["uid"]}_markup'
                     markup_docs.append(doc)
 
                 else:
-                    doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
+                    doc['_key'] = f'{doc['lang']}_{doc['uid']}_{doc['author_uid']}'
                     string_docs.append(doc)
 
             db['po_markup'].import_bulk_safe(markup_docs, on_duplicate='ignore')
