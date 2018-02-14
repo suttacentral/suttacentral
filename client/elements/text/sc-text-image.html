@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 
-<link rel="import" href="../../elements/text/sc-viewer-import.html">
+<link rel="import" href="../../elements/html-imports/sc-viewer-import.html">
 <link href="../../node_modules/viewerjs/dist/viewer.min.css" rel="stylesheet">
 
 <dom-module id="sc-text-image">
@@ -77,7 +77,7 @@
           showImage(detail) {
             if (!detail || this._didDetailChange(detail)) {
               return;
-            };
+            }
             this.lastDetail = detail;
             this.division = detail.division;
             this.vol = detail.vol;
@@ -95,14 +95,10 @@
           }
 
           _didDetailChange(detail) {
-            if (this.lastDetail && 
-                detail.vol === this.lastDetail.vol && 
-                detail.division === this.lastDetail.division && 
-                detail.pageNumber === this.lastDetail.pageNumber) {
-                return true;
-            } else {
-                return false;
-            }
+            return !!(this.lastDetail &&
+                detail.vol === this.lastDetail.vol &&
+                detail.division === this.lastDetail.division &&
+                detail.pageNumber === this.lastDetail.pageNumber);
           }
 
           _getUrl() {
@@ -116,7 +112,7 @@
           _handleResponse() {
               if (!this.imageData || !this.imageData[0]) {
                 return;
-              };
+              }
               requestAnimationFrame(() => {
                   const options = {
                     url: `'src'`,
@@ -138,7 +134,7 @@
                       flipHorizontal: 0,
                       flipVertical: 0,
                     }
-                  }
+                  };
                   if(this.viewer){
                     this.viewer.reset();
                   } else {
