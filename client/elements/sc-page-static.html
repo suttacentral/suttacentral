@@ -169,7 +169,8 @@
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item>
-      <template is="dom-if" if="[[_isToolbarSelected(shouldShowTipitakaToolbar, shouldShowSecondToolbar, shouldShowOrganizationalToolbar, shouldShowAcademicToolbar)]]">
+      <template is="dom-if"
+                if="[[_isToolbarSelected(shouldShowTipitakaToolbar, shouldShowSecondToolbar, shouldShowOrganizationalToolbar, shouldShowAcademicToolbar)]]">
         <paper-tabs id="nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
@@ -285,34 +286,81 @@
 
     </app-toolbar>
 
-    <iron-lazy-pages id="pages" role="main" selected="{{pages}}" attr-for-selected="name">
-      <home-page name="HOME"></home-page>
-      <sc-donations-page name="DONATIONS"></sc-donations-page>
-      <sc-donate-now-page id="donate" name="DONATE-NOW"></sc-donate-now-page>
-      <sc-downloads-page name="DOWNLOADS"></sc-downloads-page>
-      <sc-offline-page name="OFFLINE"></sc-offline-page>
-      <sc-numbering-page name="NUMBERING"></sc-numbering-page>
-      <sc-methodology-page name="METHODOLOGY"></sc-methodology-page>
-      <sc-acknowledgments-page name="ACKNOWLEDGMENTS"></sc-acknowledgments-page>
-      <sc-licensing-page name="LICENSING"></sc-licensing-page>
-      <sc-about-page name="ABOUT"></sc-about-page>
-      <sc-introduction name="INTRODUCTION"></sc-introduction>
-      <sc-start name="START"></sc-start>
-      <sc-discourses name="DISCOURSES"></sc-discourses>
-      <sc-vinaya name="VINAYA"></sc-vinaya>
-      <sc-abhidhamma name="ABHIDHAMMA"></sc-abhidhamma>
-      <sc-a-new-beginning name="A-NEW-BEGINNING"></sc-a-new-beginning>
-      <sc-subjects-page name="SUBJECTS"></sc-subjects-page>
-      <sc-similes-page name="SIMILES"></sc-similes-page>
-      <sc-names-page name="NAMES"></sc-names-page>
-      <sc-terminology-page name="TERMINOLOGY"></sc-terminology-page>
-      <sc-abbreviations-page name="ABBREVIATIONS"></sc-abbreviations-page>
-      <div name="NOT-FOUND">
+    <iron-lazy-pages
+        id="pages"
+        role="main"
+        selected="{{pages}}"
+        attr-for-selected="name"
+        hide-immediately>
+      <template is="dom-if" name="HOME">
+        <home-page></home-page>
+      </template>
+      <template is="dom-if" name="DONATIONS">
+        <sc-donations-page></sc-donations-page>
+      </template>
+      <template is="dom-if" name="DONATE-NOW" restamp>
+        <sc-donate-now-page id="donate"></sc-donate-now-page>
+      </template>
+      <template is="dom-if" name="DOWNLOADS">
+        <sc-downloads-page></sc-downloads-page>
+      </template>
+      <template is="dom-if" name="OFFLINE">
+        <sc-offline-page></sc-offline-page>
+      </template>
+      <template is="dom-if" name="NUMBERING">
+        <sc-numbering-page></sc-numbering-page>
+      </template>
+      <template is="dom-if" name="METHODOLOGY">
+        <sc-methodology-page></sc-methodology-page>
+      </template>
+      <template is="dom-if" name="ACKNOWLEDGMENTS">
+        <sc-acknowledgments-page></sc-acknowledgments-page>
+      </template>
+      <template is="dom-if" name="LICENSING">
+        <sc-licensing-page></sc-licensing-page>
+      </template>
+      <template is="dom-if" name="ABOUT">
+        <sc-about-page></sc-about-page>
+      </template>
+      <template is="dom-if" name="INTRODUCTION">
+        <sc-introduction></sc-introduction>
+      </template>
+      <template is="dom-if" name="START">
+        <sc-start></sc-start>
+      </template>
+      <template is="dom-if" name="DISCOURSES">
+        <sc-discourses></sc-discourses>
+      </template>
+      <template is="dom-if" name="VINAYA">
+        <sc-vinaya></sc-vinaya>
+      </template>
+      <template is="dom-if" name="ABHIDHAMMA">
+        <sc-abhidhamma></sc-abhidhamma>
+      </template>
+      <template is="dom-if" name="SUBJECTS">
+        <sc-subjects-page></sc-subjects-page>
+      </template>
+      <template is="dom-if" name="A-NEW-BEGINNING">
+        <sc-a-new-beginning></sc-a-new-beginning>
+      </template>
+      <template is="dom-if" name="SIMILES">
+        <sc-similes-page></sc-similes-page>
+      </template>
+      <template is="dom-if" name="NAMES">
+        <sc-names-page></sc-names-page>
+      </template>
+      <template is="dom-if" name="TERMINOLOGY">
+        <sc-terminology-page></sc-terminology-page>
+      </template>
+      <template is="dom-if" name="ABBREVIATIONS">
+        <sc-abbreviations-page></sc-abbreviations-page>
+      </template>
+      <template is="dom-if" name="NOT-FOUND">
         <div class="page-not-found-container">
           <h2>{{localize('error404')}}</h2>
           <h3>{{localize('pageNotFound')}}</h3>
         </div>
-      </div>
+      </template>
     </iron-lazy-pages>
   </template>
 
@@ -417,7 +465,6 @@
               this.shouldShowTipitakaToolbar = ['DISCOURSES', 'VINAYA', 'ABHIDHAMMA'].includes(this.selectedPage);
               this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(this.selectedPage);
               this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(this.selectedPage);
-              this.$.donate.resetForm();
               this.$.pages.selected = this.selectedPage;
               requestAnimationFrame(() => {this._selectNavbarLink()});
           }
