@@ -86,8 +86,8 @@
 
     <template is="dom-if" if="[[_shouldShowError(rootSutta, translatedSutta)]]">
       <div class="text-center margin-top-xl">
-        <h2>{{localize('error404')}}</h2>
-        <h3>{{localize('couldNotFind')}}</h3>
+        <h2>{{ localize('error404') }}</h2>
+        <h3>{{ localize('couldNotFind') }}</h3>
       </div>
     </template>
 
@@ -252,8 +252,8 @@
               }
           }
 
-          ready() {
-              super.ready();
+          connectedCallback() {
+              super.connectedCallback();
               this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
               this.addEventListener('click', () => {
                   setTimeout(() => {
@@ -408,6 +408,7 @@
               try {
                   this._setPrimaryTextSegmentProperties(segments);
                   this._insertPrimaryTextIntoSegments(textStrings, textContainer);
+                  this._deleteEmptySegments();
               }
               catch (e) {
                   console.error(e);
@@ -444,6 +445,21 @@
               });
           }
 
+          _deleteEmptySegments() {
+              const pTags = this.shadowRoot.querySelectorAll('p');
+              Array.from(pTags).forEach(p => {
+                  const segments = Array.from(p.querySelectorAll('sc-seg'));
+                  let containsText = false;
+                  for (let i = 0; i < segments.length; i++) {
+                      if (segments[i].innerText !== '') {
+                          containsText = true;
+                          break;
+                      }
+                  }
+                  if (!containsText) p.remove();
+              })
+          }
+
           // creates a second 'sc-element' behind every 'sc-element' in the base markup and
           // populates that with the corresponding pali text segment.
           _addSecondaryText() {
@@ -477,7 +493,9 @@
           _computeParagraphs() {
               const uid = (this.rootSutta || this.translatedSutta).uid;
               let divisionId = /^[a-z]+/.exec(uid)[0];
-              if (divisionId === 'pli') {divisionId = 'vi'};
+              if (divisionId === 'pli') {
+                  divisionId = 'vi'
+              }
               this._setParagraphsVisible(this.showParagraphs);
               const paragraphsAdded = this.$.segmented_text_content
                   .querySelector('.textual-info-paragraph:not(.textual-info-paragraph-inline)') !== null;
@@ -487,7 +505,7 @@
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
                           if (!item.id.includes('2ed')
-                            && (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/))) {
+                              && (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/))) {
                               this._processVolPageInfo(item, divisionId, paragraph);
                           } else {
                               this._addParagraphData(item, paragraph);
@@ -505,7 +523,7 @@
 
           _processVolPageInfo(item, divisionId, paragraph) {
               if (!paragraph || !divisionId || !item) {
-                return;
+                  return;
               }
               let prefix = /[^\d]+/.exec(item.id)[0];
               const suffix = item.id.substring(prefix.length);
@@ -517,15 +535,15 @@
               }
               let displayText = `${vol}.${pageNumber}`;
               if (!pageNumber) {
-                pageNumber = vol;
-                vol = '1';
-                displayText = `${pageNumber}`;
+                  pageNumber = vol;
+                  vol = '1';
+                  displayText = `${pageNumber}`;
               }
               pageNumber = Number(pageNumber);
               vol = Number(vol);
               if (vol === 0) {
-                displayText = `${pageNumber}`;
-                vol = 1
+                  displayText = `${pageNumber}`;
+                  vol = 1;
               }
               setTimeout(() => {
                   item.innerHTML = `
@@ -1059,7 +1077,7 @@
                       states.isTooltipShown = true;
                   }
               });
-          };
+          }
 
           _transliterateFragment(fragment, transliterator) {
               if (this.paliScript === 'latin') {
