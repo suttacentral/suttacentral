@@ -255,7 +255,6 @@
               setTimeout(() => {
                   this._scrollToSection(window.location.hash.substr(1), false, 500);
               }, 0);
-              this._applyQuoteHanger();
           }
 
           _setAttributes() {
@@ -321,6 +320,9 @@
                       });
                   });
               }
+              setTimeout(() => {
+                  this._applyQuoteHanger();
+              }, 0);
           }
 
           _shouldDisplayBookIcon(divisionId, itemId) {
@@ -960,14 +962,36 @@
           }
 
           _applyQuoteHanger() {
-              if (this.lang !== 'lzh' && this.lang !== 'zh') {
-                return;
-              }
               const paragraphs = this.$.simple_text_content.querySelectorAll('p');
+              if (window.innerWidth < 1280 && this.showParagraphs) {
+                  Array.from(paragraphs).forEach(paragraph => {
+                    paragraph.style.textIndent = null;
+                  });
+                  return;
+              }
+
+              const sutta = this.$.simple_text_content.querySelectorAll('.sutta')[0];
+              const suttaFont = window.getComputedStyle(sutta, null).getPropertyValue('font')
+ 
               Array.from(paragraphs).forEach(paragraph => {
-                  let paragraphMatch = paragraph.innerText.match(/^[  \n0-9.-]*([“‘「『„«"]+)(.)/);
+                  let paragraphNumber = paragraph.innerHTML.match(/>([0-9a-z]*)<\/a>/);
+                  let cleanParagraph = paragraph.innerText;
+                  if (paragraphNumber){
+                      cleanParagraph = cleanParagraph.replace(paragraphNumber[1], '');
+                  }                 
+                  let paragraphMatch = cleanParagraph.match(/^[  \n0-9.-]*([“‘「『„«"]+)(.)/);
                   if (paragraphMatch) {
-                      paragraph.style.textIndent = '-19.21px';
+                      var quotedText = paragraphMatch[2];
+                      var quoteMark = paragraphMatch[1] + paragraphMatch[2];
+                      var canvas = document.createElement('canvas');
+                      var context = canvas.getContext("2d");
+                      context.font = suttaFont;
+                      var diff = context.measureText(quoteMark).width - context.measureText(quotedText).width;
+                      if (this.lang === 'lzh' || this.lang === 'zh') {
+                          paragraph.style.textIndent = `-${context.measureText(quotedText).width}px`;
+                      } else {
+                          paragraph.style.textIndent = `-${diff}px`;
+                      }
                   }
               });
           }
