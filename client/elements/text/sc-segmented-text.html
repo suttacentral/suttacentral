@@ -494,7 +494,7 @@
               const uid = (this.rootSutta || this.translatedSutta).uid;
               let divisionId = /^[a-z]+/.exec(uid)[0];
               if (divisionId === 'pli') {
-                  divisionId = 'vi'
+                  divisionId = 'vi';
               }
               this._setParagraphsVisible(this.showParagraphs);
               const paragraphsAdded = this.$.segmented_text_content
