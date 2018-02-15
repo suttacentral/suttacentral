@@ -34,8 +34,8 @@ sw.router.registerRoute(
 );
 
 // Register navigation routes:
-sw.router.registerNavigationRoute('/index.html', {
-    whitelist: [
-        /^\/$/
-    ]
-});
+// sw.router.registerNavigationRoute('.', {
+//     whitelist: [
+//         /^\/$/
+//     ]
+// });
