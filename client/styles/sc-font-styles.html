@@ -49,6 +49,20 @@
     }
 
     @font-face {
+      font-family: "Skolar Devanagari";
+      src: url('../../files/fonts/SkolarDevanagari-Regular_3.007.woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "Skolar Devanagari";
+      src: url('../../files/fonts/SkolarDevanagari-Bold_3.007.woff2');
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    @font-face {
       font-family: 'Noto Serif Thai';
       src: local('Noto Serif Thai Regular'), local('NotoSerifThai-Regular'),
           url('../../files/fonts/NotoSerifThai-Regular.woff2') format('woff2');
@@ -418,6 +432,11 @@
 
       --sc-hebrew-serif-font: {
         font-family: "Noto Serif Hebrew", "Skolar PE", 'Noto Serif', serif;
+        -webkit-font-smoothing: antialiased;
+      };
+
+      --sc-devanagari-serif-font: {
+        font-family: "Skolar Devanagari", "Skolar PE", 'Noto Serif', serif;
         -webkit-font-smoothing: antialiased;
       };
 
