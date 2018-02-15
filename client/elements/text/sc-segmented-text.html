@@ -510,7 +510,7 @@
                           } else {
                               this._addParagraphData(item, paragraph);
                           }
-                          this._addInlineParagraph(item, divisionId);
+                          this._addInlineParagraph(item, divisionId, paragraph);
                       });
                   });
               }
@@ -547,8 +547,8 @@
               }
               setTimeout(() => {
                   item.innerHTML = `
-                                <div class="image-link">
-                                    <span class="${prefix}" title="${paragraph.description}">${displayText}</span>
+                                <div class="image-link" title="${paragraph ? paragraph.description : ''}">
+                                    <span class="${prefix}">${displayText}</span>
                                     <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-svg-icons:book">
                                     </iron-icon>
                                 </div>
