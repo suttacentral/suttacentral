@@ -337,19 +337,19 @@
                   let ed;
                   [ed, vol] = vol.split('ed');
                   prefix += `${ed}ed`;
-              };
+              }
               let displayText = `${vol}.${pageNumber}`;
               if (!pageNumber) {
                 pageNumber = vol;
                 vol = '1';
                 displayText = `${pageNumber}`;
-              };
+              }
               pageNumber = Number(pageNumber);
               vol = Number(vol);
               if (vol === 0) {
                 displayText = `${pageNumber}`;
                 vol = 1;
-              };
+              }
               setTimeout(() => {
                   item.innerHTML = `
                                     <div class="image-link">
