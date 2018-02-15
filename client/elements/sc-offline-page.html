@@ -402,7 +402,7 @@
               this.downloadQueue.pause();
               delete this.downloadQueue;
               this.cacheDownloadInProgress = false;
-              this._showToast('info', this.localize('canceled'))
+              this._showToast('info', this.localize('canceled'));
           }
 
           _showToast(type, inputMessage) {
