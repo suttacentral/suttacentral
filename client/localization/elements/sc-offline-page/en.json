@@ -18,6 +18,8 @@
         "resume": "Resume download",
         "pause": "Pause download",
         "stop": "Stop download",
-        "canceled": "You have canceled the download."
+        "canceled": "You have canceled the download.",
+        "networkLost": "Network connection lost. Pausing download.",
+        "networkRecovered": "Network connection recovered. Resuming download."
     }
 }

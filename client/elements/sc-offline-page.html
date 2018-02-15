@@ -252,6 +252,20 @@
               }
               this.$.play_button.addEventListener('click', () => { this._resumeOrPauseDownload() });
               this.$.stop_button.addEventListener('click', () => { this._stopDownload() });
+              this._handleNetworkLoss();
+          }
+
+          _handleNetworkLoss() {
+              window.addEventListener('offline', () => {
+                  if (!this.downloadQueue) return;
+                  this.downloadQueue.pause();
+                  this._showToast('info', this.localize('networkLost'));
+              });
+              window.addEventListener('online', () => {
+                  if (!this.downloadQueue) return;
+                  this.downloadQueue.resume();
+                  this._showToast('info', this.localize('networkRecovered'));
+              });
           }
 
           makeOffline() {

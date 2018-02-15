@@ -18,6 +18,8 @@
         "resume": "Wznów pobieranie",
         "pause": "Spauzuj pobieranie",
         "stop": "Zatrzymaj pobieranie",
-        "canceled": "Przerwałeś pobieranie."
+        "canceled": "Przerwałeś pobieranie.",
+        "networkLost": "Utracono połączenie z internetem. Wstrzymuję pobieranie.",
+        "networkRecovered": "Odzyskano połączenie z internetem. Wznawiam pobieranie."
     }
 }
