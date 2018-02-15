@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
@@ -94,12 +95,18 @@
         align-items: center;
       }
 
-      #play_button {
-
-      }
-
-      #stop_button {
-
+      .tooltip {
+        --paper-tooltip-opacity: 0.98;
+        --paper-tooltip-background: var(--sc-paper-tooltip-color);
+        --paper-tooltip: {
+          @apply --sc-sans-font;
+          @apply --sc-skolar-font-size-xs;
+          line-height: var(--sc-size-md);
+          padding: var(--sc-size-sm) var(--sc-size-md);
+          text-shadow: 0 0 var(--sc-secondary-background-color);
+          white-space: normal;
+          max-width: 100% !important;
+        }
       }
 
       @media screen and (max-width: 600px) {
@@ -165,15 +172,23 @@
             </div>
             <paper-card id="download_controller">
               <div class="download-info-row">
-                <div class="download-current-url">Downloading: [[currentDownloadingUrl]]</div>
+                <div class="download-current-url">{{localize('downloading')}}: [[currentDownloadingUrl]]</div>
                 <div class="control-button-row">
                   <paper-icon-button id="play_button" class="control-button" icon="av:play-arrow"></paper-icon-button>
+                  <paper-tooltip for="play_button" class="tooltip">
+                    [[_getPlayButtonTooltip(isDownloadPaused, localize)]]
+                  </paper-tooltip>
                   <paper-icon-button id="stop_button" class="control-button" icon="av:stop"></paper-icon-button>
+                  <paper-tooltip for="stop_button" class="tooltip">
+                    {{localize('stop')}}
+                  </paper-tooltip>
                 </div>
               </div>
               <paper-progress id="cache_progress"></paper-progress>
               <template is="dom-if" if="[[cacheDownloadInProgress]]">
-                <div class="download-progress-percentage">[[downloadProgressPercentage]]%</div>
+                <div class="download-progress-percentage">
+                  [[downloadProgressPercentage]]%
+                </div>
               </template>
             </paper-card>
           </article>
@@ -211,14 +226,14 @@
                       observer: '_downloadInProgressChanged',
                       value: false
                   },
-                  downloadProgessPercentage: {
+                  downloadProgressPercentage: {
                       type: Number,
                       value: 0
                   },
                   currentDownloadingUrl: {
                       type: String
                   },
-                  downloadPaused: {
+                  isDownloadPaused: {
                       type: Boolean,
                       observer: '_downloadPausedChanged',
                       value: true
@@ -235,6 +250,8 @@
               if (offlineButton) {
                   offlineButton.addEventListener('click', () => { this.makeOffline() });
               }
+              this.$.play_button.addEventListener('click', () => { this._resumeOrPauseDownload() });
+              this.$.stop_button.addEventListener('click', () => { this._stopDownload() });
           }
 
           makeOffline() {
@@ -260,7 +277,7 @@
               let passed = 0;
               const progressBar = this.$.cache_progress;
               progressBar.value = 0;
-              this.downloadPaused = false;
+              this.isDownloadPaused = false;
               this.downloadQueue = new RequestQueue({ rateLimit: 10 }, {
                   item: (input, done) => {
                       fetch(input.url)
@@ -272,13 +289,13 @@
                           })
                           .catch((err) => {
                               failed++;
-                              this.downloadPaused = true;
+                              this.isDownloadPaused = true;
                               console.error(err)
                           })
                   },
                   end: () => {
                       this.cacheDownloadInProgress = false;
-                      this.downloadPaused = true;
+                      this.isDownloadPaused = true;
                       if (failed === 0) {
                           this._showToast('success', `Your download is complete.
                             You may now read suttas in ${this._getNativeLanguageName(this.language)} offline.`);
@@ -291,7 +308,7 @@
                   }
               });
 
-              allURLs.slice(0, 150).forEach(this.downloadQueue.enqueue, this.downloadQueue);
+              allURLs.forEach(this.downloadQueue.enqueue, this.downloadQueue);
               progressBar.max = this.downloadQueue.length();
           }
 
@@ -302,11 +319,11 @@
           }
 
           _downloadPausedChanged() {
-              this.$.play_button.icon = this.downloadPaused ? 'av:play-arrow' : 'av:pause';
+              this.$.play_button.icon = this.isDownloadPaused ? 'av:play-arrow' : 'av:pause';
           }
 
           _downloadInProgressChanged() {
-              // this.$.download_controller.style.opacity = this.cacheDownloadInProgress ? 1 : 0;
+              this.$.download_controller.style.opacity = this.cacheDownloadInProgress ? 1 : 0;
           }
 
           _buildUrlList(response) {
@@ -356,6 +373,22 @@
 
           _isDownloadButtonDisabled(browserSupportsPWAs, cacheDownloadInProgress) {
               return !browserSupportsPWAs || cacheDownloadInProgress;
+          }
+
+          _getPlayButtonTooltip(isDownloadPaused, localize) {
+              return isDownloadPaused ? localize('resume') : localize('pause');
+          }
+
+          _resumeOrPauseDownload() {
+              this.isDownloadPaused ? this.downloadQueue.resume() : this.downloadQueue.pause();
+              this.isDownloadPaused = !this.isDownloadPaused;
+          }
+
+          _stopDownload() {
+              this.downloadQueue.pause();
+              delete this.downloadQueue;
+              this.cacheDownloadInProgress = false;
+              this._showToast('info', this.localize('canceled'))
           }
 
           _showToast(type, inputMessage) {

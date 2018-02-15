@@ -13,6 +13,11 @@
         "supportsPWAs": "Your browser supports Progressive Web Apps!",
         "doesntSupportPWAs": "Your browser does not support Progressive Web Apps.",
         "listBrowsers": "Here is a list of supported browsers.",
-        "selectDifferentLang": "If you would like to choose a different language, select one from the menu."
+        "selectDifferentLang": "If you would like to choose a different language, select one from the menu.",
+        "downloading": "Downloading",
+        "resume": "Resume download",
+        "pause": "Pause download",
+        "stop": "Stop download",
+        "canceled": "You have canceled the download."
     }
 }
