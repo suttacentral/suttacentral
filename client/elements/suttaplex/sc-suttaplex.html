@@ -245,7 +245,12 @@
         color: var(--sc-secondary-text-color);
         position: absolute;
         display: block;
-        margin-top: calc(var(--sc-size-sm) * -1);
+        margin-top: -10px;
+        transition: margin-top ease-in-out 200ms;
+      }
+
+      .card-actions-left:hover + .translations-label {
+        margin-top: calc(var(--sc-size-md) * -1);
       }
 
     </style>
@@ -306,9 +311,6 @@
         </div>
 
         <div class$="[[_addPaddingIfNoBlurb(item.blurb)]] card-actions">
-          <label class="translations-label">
-            Translations
-          </label>
           <div class="card-actions-left">
             <template is="dom-repeat" items="[[_getUserLanguageTranslations(item.translations, language)]]"
                       as="translation">
@@ -320,6 +322,9 @@
               </a>
             </template>
           </div>
+          <label class="translations-label">
+            Translations
+          </label>
 
           <div class="flex-div">
             <div class="languagedrop">
