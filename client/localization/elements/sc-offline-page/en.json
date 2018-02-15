@@ -13,6 +13,16 @@
         "supportsPWAs": "Your browser supports Progressive Web Apps!",
         "doesntSupportPWAs": "Your browser does not support Progressive Web Apps.",
         "listBrowsers": "Here is a list of supported browsers.",
-        "selectDifferentLang": "If you would like to choose a different language, select one from the menu."
+        "selectDifferentLang": "If you would like to choose a different language, select one from the menu.",
+        "downloading": "Downloading",
+        "resume": "Resume download",
+        "pause": "Pause download",
+        "stop": "Stop download",
+        "canceled": "You have canceled the download.",
+        "networkLost": "Network connection lost. Pausing download.",
+        "networkRecovered": "Network connection recovered. Resuming download.",
+        "downloadComplete": "Your download is complete. You may now read suttas in {lang} offline.",
+        "downloadErrored": "Error! We were not able to download all the requested texts. {failed} out of {total} requests did not complete correctly.",
+        "networkError": "Network error."
     }
 }
