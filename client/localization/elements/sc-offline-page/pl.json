@@ -20,6 +20,9 @@
         "stop": "Zatrzymaj pobieranie",
         "canceled": "Przerwałeś pobieranie.",
         "networkLost": "Utracono połączenie z internetem. Wstrzymuję pobieranie.",
-        "networkRecovered": "Odzyskano połączenie z internetem. Wznawiam pobieranie."
+        "networkRecovered": "Odzyskano połączenie z internetem. Wznawiam pobieranie.",
+        "downloadComplete": "Pobieranie zostało ukończone. Możesz teraz czytać teksty w języku {lang}m bez połączenia z internetem.",
+        "downloadErrored": "Błąd! Nie udało się pobrać wszystkich tekstów. {failed} spośród {total} zapytań nie zostało ukończonych pomyślnie.",
+        "networkError": "Błąd sieci."
     }
 }

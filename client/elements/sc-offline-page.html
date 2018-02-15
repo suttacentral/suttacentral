@@ -311,13 +311,13 @@
                       this.cacheDownloadInProgress = false;
                       this.isDownloadPaused = true;
                       if (failed === 0) {
-                          this._showToast('success', `Your download is complete.
-                            You may now read suttas in ${this._getNativeLanguageName(this.language)} offline.`);
+                          this._showToast('success',
+                              this.localize('downloadComplete', 'lang', this._getNativeLanguageName(this.language)));
                       } else if (failed > 0 && passed > 0) {
-                          this._showToast('error', `Error! We were not able to download all the requested texts.
-                            ${failed} out of ${passed + failed} requests did not complete correctly.`);
+                          this._showToast('error',
+                              this.localize('downloadErrored', 'failed', failed, 'total', passed + failed));
                       } else {
-                          this._showToast('error', 'Network error.');
+                          this._showToast('error', this.localize('networkError'));
                       }
                   }
               });
