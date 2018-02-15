@@ -55,6 +55,7 @@
         will-change: opacity;
         transition: opacity cubic-bezier(0.4, 0.0, 0.2, 1) 300ms;
         margin: var(--sc-size-md);
+        background-color: var(--sc-secondary-background-color);
       }
 
       #cache_progress {
@@ -65,14 +66,14 @@
 
       .download-progress-percentage {
         @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-l;
+        @apply --sc-skolar-font-size-s;
         margin: var(--sc-size-md);
         text-align: right;
       }
 
       .download-current-url {
         @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-l;
+        @apply --sc-skolar-font-size-s;
         margin: var(--sc-size-md);
       }
 
@@ -83,8 +84,14 @@
       }
 
       .control-button {
-        width: var(--sc-size-xxl);
-        height: var(--sc-size-xxl);
+        width: var(--sc-size-xl);
+        height: var(--sc-size-xl);
+      }
+
+      .download-info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
       #play_button {
@@ -92,10 +99,6 @@
       }
 
       #stop_button {
-
-      }
-
-      #pause_button {
 
       }
 
@@ -161,15 +164,17 @@
               </div>
             </div>
             <paper-card id="download_controller">
+              <div class="download-info-row">
+                <div class="download-current-url">Downloading: [[currentDownloadingUrl]]</div>
+                <div class="control-button-row">
+                  <paper-icon-button id="play_button" class="control-button" icon="av:play-arrow"></paper-icon-button>
+                  <paper-icon-button id="stop_button" class="control-button" icon="av:stop"></paper-icon-button>
+                </div>
+              </div>
               <paper-progress id="cache_progress"></paper-progress>
               <template is="dom-if" if="[[cacheDownloadInProgress]]">
                 <div class="download-progress-percentage">[[downloadProgressPercentage]]%</div>
               </template>
-              <div class="download-current-url">[[currentDownloadingUrl]]</div>
-              <div class="control-button-row">
-                <paper-icon-button id="play_button" class="control-button" icon="av:play-arrow"></paper-icon-button>
-                <paper-icon-button id="stop_button" class="control-button" icon="av:stop"></paper-icon-button>
-              </div>
             </paper-card>
           </article>
         </section>
