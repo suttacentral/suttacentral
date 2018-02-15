@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../styles/static-styles.html">
-<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../addons/sc-static-page.html">
 
 <dom-module id="sc-names-page">
@@ -3990,6 +3989,9 @@
               <dd><a class="ref" href="/ud3.3">Ud 3.3</a>, <a class="ref"
                                                                                       href="/thag3.8">Thag
                 3.8</a></dd>
+              <dt>Yodha</dt>
+              <dd class="type">nunk</dd>
+              <dd><a class="ref" href="https://discourse.suttacentral.net/t/dhamma-doodles-grin/7206/159">DD</a></dd>
               <dt>Yodhajīva</dt>
               <dd class="type">warrior</dd>
               <dd><a class="ref" href="/sn42.3">SN 42.3</a></dd>
@@ -4021,29 +4023,10 @@
 
           static get properties() {
               return {
-                  language: {
+                  localizedStringPath: {
                       type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
-                  },
-                  fallbackLanguage: {
-                      type: String,
-                      value: 'en'
+                      value: '/localization/elements/static_names/'
                   }
-              }
-          }
-
-          ready() {
-              super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_names/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-          }
-
-          _siteLanguageChanged() {
-              if (this.language !== this.fallbackLanguage) {
-                  if (this.resources && this.resources[this.language]) {
-                      return;
-                  }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_names/${this.language}.json`), this.language, true);
               }
           }
       }

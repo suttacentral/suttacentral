@@ -34,12 +34,8 @@ sw.router.registerRoute(
 );
 
 // Register navigation routes:
-sw.router.registerNavigationRoute('.', {
+sw.router.registerNavigationRoute('/index.html', {
     whitelist: [
-        /^\/*/
-    ],
-    blacklist: [
-        /^\//,
-        /^\/api\/*/
+        /^\/$/
     ]
 });

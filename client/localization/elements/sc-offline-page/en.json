@@ -1,0 +1,28 @@
+{
+    "en": {
+        "usingOffline": "Using SuttaCentral offline",
+        "pwaDescription": "SuttaCentral is a <a href=\"https://developers.google.com/web/progressive-web-apps/\" target=\"_blank\">Progressive Web App</a>. On supported devices, many features, including navigation and previously visited pages, will continue to work even if you have no internet connection.",
+        "additionalInfo": "In addition, you can download texts in languages of your choosing and read them when offline. This is especially useful for users on mobiles with limited data, or in regions with poor coverage. If your data is limited, we recommend connecting to wifi before downloading.",
+        "newTech": "PWAs are a new technology. For now, offline usage has some limitations:",
+        "suttasOnly": "Suttas only, not Vinaya or Abhidhamma.",
+        "oneLang": "Only one language.",
+        "noOriginal": "No original texts.",
+        "certainFunctions": "Certain functions, including search, require internet connection.",
+        "extraFeatures": "If you want extra features, let us know.",
+        "downloadButton": "Download texts in {languageName}",
+        "supportsPWAs": "Your browser supports Progressive Web Apps!",
+        "doesntSupportPWAs": "Your browser does not support Progressive Web Apps.",
+        "listBrowsers": "Here is a list of supported browsers.",
+        "selectDifferentLang": "If you would like to choose a different language, select one from the menu.",
+        "downloading": "Downloading",
+        "resume": "Resume download",
+        "pause": "Pause download",
+        "stop": "Stop download",
+        "canceled": "You have canceled the download.",
+        "networkLost": "Network connection lost. Pausing download.",
+        "networkRecovered": "Network connection recovered. Resuming download.",
+        "downloadComplete": "Your download is complete. You may now read suttas in {lang} offline.",
+        "downloadErrored": "Error! We were not able to download all the requested texts. {failed} out of {total} requests did not complete correctly.",
+        "networkError": "Network error."
+    }
+}

@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="sc-suttaplex-section-title.html">
 <link rel="import" href="sc-suttaplex.html">
@@ -14,6 +15,8 @@
     <style>
       .division-content {
         color: var(--sc-primary-text-color);
+        /* Subtract margins and top bar height */
+        height: calc(100% - var(--sc-size-md-larger) * 2 - var(--sc-size-xxl));
         padding: 0;
       }
 
@@ -33,13 +36,25 @@
       }
 
       .loading-spinner {
+        @apply --center;
         --paper-spinner-color: var(--sc-primary-color);
-        left: 50%;
-        top: 50px;
       }
 
       :host {
         display: block;
+      }
+
+      .network-error {
+        @apply --center;
+        @apply --sc-sans-font;
+        @apply --sc-skolar-font-size-static-subtitle;
+        color: var(--sc-secondary-text-color);
+        text-align: center;
+      }
+
+      .network-error-icon {
+        width: var(--sc-size-xxl);
+        height: var(--sc-size-xxl);
       }
 
     </style>
@@ -51,11 +66,13 @@
         id="uid_expansion_ajax"
         url="/api/expansion"
         handle-as="json"
+        last-error="{{expansionError}}"
         last-response="{{expansionReturns}}"></iron-ajax>
 
     <iron-ajax
         id="ajax"
         handle-as="json"
+        last-error="{{suttaplexError}}"
         loading="{{suttaplexLoading}}"
         last-response="{{suttaplexReturns}}"></iron-ajax>
 
@@ -65,12 +82,22 @@
         <paper-spinner-lite class="loading-spinner" active="[[suttaplexLoading]]"></paper-spinner-lite>
       </div>
 
-      <iron-list id="suttaplex_list" class="suttaplex-list" items="{{suttaplexReturns}}" as="item" scroll-target="document">
+      <template is="dom-if" if="[[_shouldShowErrorIcon(suttaplexError, suttaplexReturns)]]">
+        <div class="network-error">
+          <iron-icon class="network-error-icon" title="{{localize('networkError')}}"
+                     src="/img/nonetwork.svg"></iron-icon>
+          <div>{{localize('networkError')}}</div>
+        </div>
+      </template>
+
+      <iron-list id="suttaplex_list" class="suttaplex-list" items="{{suttaplexReturns}}" as="item"
+                 scroll-target="document">
         <template>
           <div style$="z-index: [[_getItemZIndex(suttaplexReturns, index)]];">
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
               <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]"
-                            difficulty="[[_computeItemDifficulty(item.difficulty)]]" expansion-data="[[expansionReturns]]">
+                            difficulty="[[_computeItemDifficulty(item.difficulty)]]"
+                            expansion-data="[[expansionReturns]]">
               </sc-suttaplex>
             </template>
 
@@ -88,17 +115,17 @@
   </template>
 
   <script>
-      class SCSuttaplexList extends ReduxMixin(Polymer.Element) {
+      /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCSuttaplexList extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
               return 'sc-suttaplex-list';
           }
 
           static get properties() {
               return {
-                  suttaplexReturns: {
-                      type: Array,
-                      observer: '_suttaplexReturnsChanged'
-                  },
                   categoryId: {
                       type: String,
                       statePath: 'currentRoute.categoryId',
@@ -110,11 +137,35 @@
                   expansionReturns: {
                       type: Array
                   },
+                  expansionError: {
+                      type: Object
+                  },
+                  suttaplexReturns: {
+                      type: Array,
+                      observer: '_suttaplexReturnsChanged'
+                  },
+                  suttaplexError: {
+                      type: Object
+                  },
                   language: {
                       type: String,
-                      statePath: 'siteLanguage',
+                      statePath: 'siteLanguage'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
                   }
               }
+          }
+
+          // This is using the navigation menu file, because we only need the translated network error string here.
+          ready() {
+              super.ready();
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+          }
+
+          _siteLanguageChanged() {
+              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.language}.json`), this.language, true);
           }
 
           static get actions() {
@@ -147,6 +198,14 @@
               return item.type === 'text';
           }
 
+          _shouldShowErrorIcon(isError, suttaplexItems) {
+              if (suttaplexItems) {
+                  return (isError && suttaplexItems.length === 0) || suttaplexItems.length === 0;
+              } else {
+                  return isError;
+              }
+          }
+
           _calculateClass(itemType) {
               return itemType === 'grouping' ? 'node' : 'vagga-node';
           }
@@ -170,7 +229,7 @@
           // this exists to solve an iron-list bug:
           // https://github.com/PolymerElements/iron-list/issues/242#issuecomment-232450210
           _getItemZIndex(allItems, index) {
-              return allItems.length - index;
+              return allItems ? (allItems.length - index) : 0;
           }
       }
 

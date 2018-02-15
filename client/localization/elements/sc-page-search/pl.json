@@ -1,5 +1,7 @@
 {
   "pl": {
-    "resultsFor": "wyników dla"
+    "resultsFor": "wyników dla",
+    "offline": "Utracono połączenie z internetem.",
+    "networkError": "Błąd połączenia."
   }
 }

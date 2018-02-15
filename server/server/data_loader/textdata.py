@@ -5,13 +5,14 @@ import regex
 from arango.exceptions import DocumentReplaceError
 
 from . import sc_html, util
-
 logger = logging.getLogger(__name__)
-
 
 class TextInfoModel:
     def __init__(self):
         self._metadata = {}
+    
+    def get_author_by_name(self, name):
+        raise NotImplementedError
 
     def add_metadata(self, filepath, author, metadata):
         target = self._metadata
@@ -60,7 +61,7 @@ class TextInfoModel:
             return True
         return False
 
-    def process_lang_dir(self, lang_dir, authors, data_dir=None, files_to_process=None, force=False):
+    def process_lang_dir(self, lang_dir, data_dir=None, files_to_process=None, force=False):
         # files_to_process is actually "files that may be processed" its
         # not the list of files to actually process
 
@@ -113,52 +114,17 @@ class TextInfoModel:
                     else:
                         _stack.extend(e)
                 unicode_points['normal'].update(root.text_content())
+                
+                author = self._get_author(root)
+                author_data = self.get_author_by_name(author)
 
-                # Set the previous and next uids, using explicit data
-                # if available, otherwise making a safe guess.
-                # The safe guess relies on comparing uids, and will not
-                # capture relationships such as the order of patimokha
-                # rules.
-                prev_uid = root.get('data-prev')
-                next_uid = root.get('data-next')
-                if not (prev_uid or next_uid):
-                    if i > 0:
-                        prev_uid = files[i - 1].stem
-                        if not self.uids_are_related(uid, prev_uid):
-                            prev_uid = None
-                    if i + 1 < len(files):
-                        next_uid = files[i + 1].stem
-                        if not self.uids_are_related(uid, next_uid):
-                            next_uid = None
-
-                author = self._get_author(root, lang_uid, uid)
-                author_uid, author_short = self._get_author_data(author, authors)
-
-                if uid == 'metadata':
-                    if author is None:
-                        raise ValueError('Metadata file {} does not define author'.format(path))
-                    self.add_metadata(htmlfile.relative_to(lang_dir), author, root)
-                    continue
-
-                if author is None:
-                    metadata = self.get_metadata(htmlfile.relative_to(lang_dir))
-                    if metadata:
-                        author = metadata['author']
-
-                if author is None:
-                    metadata = root.select_one('#metaarea')
-                    if metadata:
-                        metadata_text = metadata.text_content()
-                        m = regex.match(r'.{,80}\.', metadata_text)
-                        if not m:
-                            m = regex.match(r'.{,80}(?=\s)', metadata_text)
-                        if m:
-                            author = m[0]
-
-                if author is None:
-                    logger.warn('Could not determine author for {}/{}'.format(lang_uid, uid))
-                    author = ''
-
+                if author_data:
+                    author_uid = author_data['uid']
+                    author_short = author_data['short_name']
+                else:
+                    author_uid = None
+                    author_short = None
+                
                 if author_uid:
                     path = f'{lang_uid}/{uid}/{author_uid}'
                 else:
@@ -178,8 +144,6 @@ class TextInfoModel:
                     "author_short": author_short,
                     "author_uid": author_uid,
                     "volpage": volpage,
-                    "prev_uid": prev_uid,
-                    "next_uid": next_uid,
                     "mtime": mtime,
                     "text": text,
                 }
@@ -194,7 +158,7 @@ class TextInfoModel:
 
         del self._ppn
 
-    def _get_author(self, root, lang_uid, uid):
+    def _get_author(self, root):
 
         e = root.select_one('meta[author]')
         if e:
@@ -224,8 +188,8 @@ class TextInfoModel:
                     right_side = h1.select_one('.mirror-right')
                     return right_side.text_content()+' ('+left_side.text_content()+')'
                 except:
-                    return regex.sub(r'^\P{alpha}*', '', h1.text_content())
-            return regex.sub(r'^\P{alpha}*', '', h1.text_content())
+                    return regex.sub(r'\d+\W?\d*\W?\s', '', h1.text_content(), 1)
+            return regex.sub(r'\d+\W?\d*\W?\s', '', h1.text_content(), 1)
         except Exception as e:
             logger.warn('Could not determine name for {}/{}'.format(lang_uid, uid))
             return ''
@@ -256,6 +220,14 @@ class ArangoTextInfoModel(TextInfoModel):
         super().__init__()
         self.db = db
         self.queue = []
+        self._author_cache = dict(db.aql.execute('''
+            RETURN MERGE(
+                FOR doc IN author_edition
+                    RETURN {[doc.long_name]: doc}
+            )''').next())
+        
+    def get_author_by_name(self, name):
+        return self._author_cache.get(name)
 
     def add_document(self, doc):
         doc['_key'] = doc['path'].replace('/', '_')

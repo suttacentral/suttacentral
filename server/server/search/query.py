@@ -138,23 +138,21 @@ def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
     return available
 
 
-def search(query: str, highlight=True, offset=0, limit=10, language='en',
-           lang=None, define=None, details=None):
+def search(query: str, highlight=True, offset=0, limit=10,
+           language=None, restrict=None):
     query.strip()
-    indexes = []
-    if details is not None:
-        indexes = ['suttas']
-    if define is not None:
-        indexes.append('en-dict')
-    if lang:
-        indexes.append(lang)
-        
+       
+    root_indexes = list(get_root_language_uids())
+    tr_indexes = [language]
     
-
-    if not indexes:
-        indexes = [language, 'suttas', 'en-dict']
-    
-    indexes.extend(get_root_language_uids())
+    if restrict == 'root-text':
+        indexes = root_indexes
+    elif restrict == 'translation':
+        indexes = tr_indexes
+    elif restrict is None:
+        indexes = root_indexes + tr_indexes
+    else:
+        return None
 
     index_string = ','.join(get_available_indexes(indexes))
 
@@ -191,14 +189,14 @@ def search(query: str, highlight=True, offset=0, limit=10, language='en',
     body = {
         "from": offset,
         "size": limit,
-        "_source": ["uid", "lang", "name", "volpage", "gloss", "term", "heading", "is_root", "author"],
+        "_source": ["uid", "lang", "name", "volpage", "gloss", "term", "heading", "is_root", "author", "author_uid", "author_short"],
         "timeout": "15s",
         "query": {
             "function_score": {
                 "query": inner_query,
                 "functions": [
                     {
-                        "weight": "20",
+                        "weight": "1.5",
                         "filter": {
                             "term": {
                                 "lang": language
@@ -229,7 +227,7 @@ def search(query: str, highlight=True, offset=0, limit=10, language='en',
                         }
                     },
                     {
-                        "weight": "1.2",
+                        "weight": "1.0",
                         "filter": {
                             "term": {
                                 "is_root": True

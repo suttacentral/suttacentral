@@ -1,126 +1,135 @@
-import os
-from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
+import regex
+import logging
+import itertools
+from collections import defaultdict
 
-import tqdm
-
-from data_loader.util import numericsortkey, TwoWayDict
-from common import arangodb
-from .textdata import TextInfoModel
+from data_loader.util import numericsortkey, sort_and_groupby
+from common.queries import UIDS_IN_ORDER_BY_DIVISION
 
 
-def fit_given_uid(db, uid, lang, author_uid):
-    neighbour_po = list(db.aql.execute(
-        f'''FOR po IN po_strings 
-        FILTER po.lang == "{lang}" AND po.uid == "{uid}" 
-        RETURN KEEP(po, ["uid", "lang", "author_uid", "title"])'''))
 
-    neighbour_text = list(db.aql.execute(
-        f'''FOR text IN html_text 
-        FILTER text.lang == "{lang}" AND text.uid == "{uid}" 
-        RETURN KEEP(text, ["uid", "lang", "author_uid", "title"])'''))
 
-    neighbour_po.extend(neighbour_text)
+def get_uid_stem(uid):
+    """ This suffices for this module """
+    return regex.match(r'^[a-z]+', uid)[0]
 
-    if len(neighbour_po):
-        for text in neighbour_po:
-            if text['author_uid'] == author_uid:
-                break
+
+def further_split_uids(divisions):
+    # Split divisions into subdivisions
+    # The vast majority of divisions will simply be returned unmodified
+    for division_uid, uids_in_division in divisions:
+        stems = []
+        groups = []
+        for stem, group in itertools.groupby(uids_in_division, key=get_uid_stem):
+            stems.append(stem)
+            groups.append(tuple(group))
+        if len(stems) == 1:
+            yield division_uid, uids_in_division
         else:
-            text = neighbour_po[0]
-
-        data = {'uid': uid, 'author_uid': text['author_uid'], 'lang': text['lang']}
-        if 'title' in text and text['title']:
-            data['name'] = text['title']
-        else:
-            name = list(db.aql.execute(f'''
-            LET name = (FOR name IN root_names 
-                FILTER name.uid == "{uid}" 
-                LIMIT 1 
-                RETURN name.name)[0]
-            RETURN name ? name : (FOR r IN root FILTER r.uid == "{uid}" LIMIT 1 RETURN r.acronym)[0] 
-            '''))
-            if name:
-                data['name'] = name[0]
-        return data
+            for stem, group in zip(stems, groups):
+                yield stem, group
 
 
-def set_neighbour(po, uids, neighbour_name, modifier, db):
-    current_neighbour_uid = po['uid']
-    while True:
-        neighbour_uid = uids[uids[current_neighbour_uid] + modifier]
-        neighbour_uid = correct_related_uuid(po['uid'], neighbour_uid)
+def get_matching_uids(divisions, text_uids, lang):
+    """ yields uids belonging to the same division in proper order """
+    text_uids = set(text_uids)
+    not_found = set(text_uids)
+    
+    for division_uid, uids in divisions:
+        matches = tuple(uid for uid in uids if uid in text_uids)
+        yield matches
+        not_found.difference_update(matches)
+    
+    # By now not_found should be empty!
+    if not_found:
+        bad_uids = ', '.join(sorted(not_found, key=numericsortkey))
+        logging.error(f'Text uids do not match menu uids for ({lang}): {bad_uids}')
+    
 
-        if neighbour_uid is None:
-            break
+def get_best_match(text, other_texts):
+    author_uid = text['author_uid']
+    for other_text in other_texts:
+        if other_text['author_uid'] == author_uid:
+            return other_text
+    for other_text in other_texts:
+        if other_text['segmented']:
+            return other_text
+    return sorted(other_texts, key=lambda t: t['author_uid'])[0] # TODO:Improve
 
-        fitted_text = fit_given_uid(db, neighbour_uid, po['lang'], po['author_uid'])
-        if fitted_text:
-            po[neighbour_name]= fitted_text
-            return True
-        current_neighbour_uid = neighbour_uid
-    return False
-
-
-def process_html_text(db, text):
-    for new_field, field_name in [('next', 'next_uid'), ('prev', 'prev_uid')]:
-        text[new_field] = fit_given_uid(db, text[field_name], text['lang'], text['author_uid'])
-
-
-def thread_pool_executor(html_texts):
-    futures = []
-    db = arangodb.get_db()
-    with ThreadPoolExecutor(10) as executor:
-        for text in html_texts:
-            futures.append(executor.submit(process_html_text, db, text))
-
-        for _ in tqdm.tqdm(as_completed(futures), total=len(futures)):
-            pass
-    db['html_text'].update_many(html_texts)
-
-
-def add_order(db):
-    print('* ADDING ORDER')
-    all_uids = sorted(list(db.aql.execute('FOR r IN root RETURN r.uid')), key=numericsortkey)
-    uids = TwoWayDict()
-    for i, uid in enumerate(all_uids):
-        uids[i] = uid
-    del all_uids
-
-    po_texts_query = db.aql.execute('FOR p IN po_strings RETURN KEEP(p, ["uid", "lang", "author_uid", "_key"])')
-    for po in tqdm.tqdm(list(po_texts_query)):
-        is_next = set_neighbour(po, uids, 'next', 1, db)
-        is_prev = set_neighbour(po, uids, 'prev', -1, db)
-        if is_next or is_prev:
-            db['po_strings'].update(po)
-
-    html_texts = list(db.aql.execute('''
-    FOR text IN html_text 
-        RETURN KEEP(text, ["uid", "lang", "author_uid", "next_uid", "prev_uid", "_key"])
+def add_next_prev_using_menu_data(db):
+    po_texts = list(db.aql.execute('''
+        FOR doc IN po_strings
+            RETURN {
+                _key: doc._key,
+                uid: doc.uid,
+                lang: doc.lang,
+                author_uid: doc.author_uid,
+                name: doc.title,
+                segmented: true
+            }
     '''))
-    n_cores = os.cpu_count()
-    futures = []
-    # welcome in async hell :)
-    with ProcessPoolExecutor(max_workers=n_cores) as executor:
-        for chunk in chunks(html_texts, n_cores):
-            futures.append(executor.submit(thread_pool_executor, chunk))
-
-        for _ in tqdm.tqdm(as_completed(futures), total=len(futures)):
-            pass
-
-
-def chunks(seq, num):
-    avg = len(seq) / float(num)
-    out = []
-    last = 0.0
-
-    while last < len(seq):
-        out.append(seq[int(last):int(last + avg)])
-        last += avg
-
-    return out
-
-
-def correct_related_uuid(uid1, uid2):
-    if TextInfoModel.uids_are_related(uid1, uid2):
-        return uid2
-    return None
+    
+    html_texts = list(db.aql.execute('''
+        FOR doc IN html_text
+            RETURN {
+                _key: doc._key,
+                uid: doc.uid,
+                lang: doc.lang,
+                author_uid: doc.author_uid,
+                name: doc.name,
+                segmented: false
+            }
+    '''))
+    
+    
+    texts = po_texts + html_texts
+    
+    divisions = [(doc['division'], tuple(doc['uids'])) for doc in db.aql.execute(UIDS_IN_ORDER_BY_DIVISION)]
+    divisions = list(further_split_uids(divisions))
+    
+    
+    
+    # First group texts by language
+    for lang, lang_texts in sort_and_groupby(texts, lambda text: text['lang']):
+        
+        #Build a mapping of uids to translations of that uid in this lang
+        mapping = defaultdict(dict)
+        for text in lang_texts:
+            uid = text['uid']
+            author_uid = text['author_uid']
+            mapping[uid][author_uid] = text
+        
+        collection_updates = defaultdict(dict)
+        
+        for matches in get_matching_uids(divisions=divisions, text_uids=set(mapping), lang=lang):
+            # matches contains a list of uids in the same division in proper order
+            for i, uid in enumerate(matches):
+                for lang, text in mapping[uid].items():
+                    if i > 0:
+                        prev_uid = matches[i-1]
+                        best_match = get_best_match(text, mapping[prev_uid].values())
+                        
+                        collection_updates[text['_key']].update({
+                            'prev': {
+                                'author_uid': best_match['author_uid'],
+                                'lang': best_match['lang'],
+                                'name': best_match['name'],
+                                'uid': best_match['uid']
+                            }
+                        })
+                    if i < len(matches) - 1:
+                        next_uid = matches[i+1]
+                        best_match = get_best_match(text, mapping[next_uid].values())
+                        collection_updates[text['_key']].update({
+                            'next': {
+                                'author_uid': best_match['author_uid'],
+                                'lang': best_match['lang'],
+                                'name': best_match['name'],
+                                'uid': best_match['uid']
+                            }
+                        })
+    
+        for collection, texts in [(db['po_strings'], po_texts), (db['html_text'], html_texts)]:
+            matching_keys = {text['_key'] for text in texts}
+            updates = [{'_key': _key, **update} for _key, update in collection_updates.items() if _key in matching_keys]
+            collection.import_bulk(updates, on_duplicate="update")

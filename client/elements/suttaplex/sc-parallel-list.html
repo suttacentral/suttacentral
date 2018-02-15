@@ -27,8 +27,7 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
 
       .parallels-root-cell,
       .parallels-parallel-cell {
-        padding: var(--sc-size-sm);
-        padding-bottom: 0;
+        padding: var(--sc-size-sm) var(--sc-size-sm) 0;
         border: var(--sc-border);
         border-radius: var(--sc-size-xxs);
       }
@@ -367,20 +366,24 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               if (!rootId || !expansionData) {
                   return '';
               }
-              let sc_acronym = '';
-              let id_part = this._getParagraphRange(rootId).replace('--','–');
-              let root_part = rootId.split('#')[0];
-              let uid_parts = root_part.split('-');
+              const idPart = this._getParagraphRange(rootId).replace('--','–');
+              const rootPart = rootId.split('#')[0];
+              const uidParts = rootPart.split('-');
+              let scAcronym = '';
               let tail = '';
-              uid_parts.forEach(item => {
+              uidParts.forEach(item => {
                 if (!expansionData[0][item]) {
                     tail = item.match(/\d+.*/g)[0]+'–';
                     item = item.match(/[a-z]*/g)[0];
                 }
-                item ? sc_acronym += `${expansionData[0][item][0]} ${tail}` : sc_acronym += tail;
+                if (item && expansionData[0][item]) {
+                    scAcronym += `${expansionData[0][item][0]} ${tail}`
+                } else {
+                    scAcronym += tail;
+                }
               });
-              sc_acronym = sc_acronym.replace(/–\s*$/, '');
-              return `${sc_acronym}${id_part}`;
+              scAcronym = scAcronym.replace(/–\s*$/, '');
+              return `${scAcronym}${idPart}`;
           }
       }
 

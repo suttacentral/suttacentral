@@ -1,6 +1,5 @@
 <link href="../../bower_components/polymer/polymer.html" rel="import"/>
 <link href="../../styles/static-styles.html" rel="import"/>
-<link href="../../bower_components/app-localize-behavior/app-localize-behavior.html" rel="import"/>
 <link href="../addons/sc-static-page.html" rel="import"/>
 <dom-module id="sc-names-page">
  <template>
@@ -4889,6 +4888,12 @@
        </dd>
        <dd inner-h-t-m-l="{{localize('6d29811b2d1cbc1888980f1ad6e53a41')}}">
        </dd>
+       <dt inner-text="{{localize('480dc61395b1b036892dc2a818bb1a6d')}}">
+       </dt>
+       <dd class="type" inner-text="{{localize('8337366543c3663e7a15b32c6d702599')}}">
+       </dd>
+       <dd inner-h-t-m-l="{{localize('148d44add266baceadc93a574e3dddc6')}}">
+       </dd>
        <dt inner-text="{{localize('112b3bf719f63200121ba915fd2f8d59')}}">
        </dt>
        <dd class="type" inner-text="{{localize('3e3806659785b5be6b7a3209212e9f3e')}}">
@@ -4925,29 +4930,10 @@
 
           static get properties() {
               return {
-                  language: {
+                  localizedStringPath: {
                       type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
-                  },
-                  fallbackLanguage: {
-                      type: String,
-                      value: 'en'
+                      value: '/localization/elements/static_names/'
                   }
-              }
-          }
-
-          ready() {
-              super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/static_names/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-          }
-
-          _siteLanguageChanged() {
-              if (this.language !== this.fallbackLanguage) {
-                  if (this.resources && this.resources[this.language]) {
-                      return;
-                  }
-                  this.loadResources(this.resolveUrl(`/localization/elements/static_names/${this.language}.json`), this.language, true);
               }
           }
       }

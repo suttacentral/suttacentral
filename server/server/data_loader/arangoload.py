@@ -18,7 +18,6 @@ from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
     divisions, images_files, homepage, available_languages, order
 
-
 def update_data(repo: Repo, repo_addr: str):
     """Updates given git repo.
 
@@ -120,8 +119,12 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
 
             while base_uid:
                 try:
-                    entry['root_lang'] = root_languages[base_uid]
-                    lang = root_languages[base_uid]
+                    if base_uid == 't':
+                        entry['root_lang'] = 'lzh'
+                        lang = 'lzh'
+                    else:
+                        entry['root_lang'] = root_languages[base_uid]
+                        lang = root_languages[base_uid]
                     break
                 except KeyError:
                     base_uid = '-'.join(base_uid.split('-')[:-1])
@@ -139,12 +142,7 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
                 entry['num'] = ordering_data[uid]
             except KeyError:
                 if 'num' not in entry:
-                    m = number_reg.match(uid)
-                    if m:
-                        num = m.group(1)
-                        entry['num'] = int(num)
-                    else:
-                        entry['num'] = i
+                    entry['num'] = i
 
             for data_name in ['volpage', 'biblio_uid', 'acronym']:
                 try:
@@ -369,22 +367,17 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                             'remark': remark
                         })
     db['relationship'].import_bulk_safe(ll_edges, from_prefix='root/', to_prefix='root/', overwrite=True)
-
+    
+def load_author_edition(change_tracker, additional_info_dir, db):
+    author_file = additional_info_dir / 'author_edition.json'
+    if change_tracker.is_file_new_or_changed(author_file):
+        with author_file.open('r', encoding='utf-8') as authorf:
+            authors = json.load(authorf)
+        db['author_edition'].import_bulk_safe(authors, overwrite=True)
 
 def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir):
     print('Loading HTML texts')
-    # Load HTML texts
-    languages = db.aql.execute('''/* return all language objects as a key: value mapping */
-        RETURN MERGE(
-            FOR l IN language
-                RETURN {[l.uid] : l} /* Set the key as the uid */
-        )''').next()
-
-    author_file = additional_info_dir / 'author_edition.json'
-
-    with author_file.open('r', encoding='utf-8') as authorf:
-        authors = json.load(authorf)
-
+        
     force = change_tracker.is_any_function_changed(
         [textdata.TextInfoModel, textdata.ArangoTextInfoModel])
     if force:
@@ -395,7 +388,7 @@ def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
         for lang_dir in tqdm(html_dir.glob('*')):
             if not lang_dir.is_dir:
                 continue
-            tim.process_lang_dir(lang_dir=lang_dir, authors=authors, data_dir=data_dir,
+            tim.process_lang_dir(lang_dir=lang_dir, data_dir=data_dir,
                                  files_to_process=change_tracker.changed_or_new,
                                  force=force)
 
@@ -467,8 +460,8 @@ def run(no_pull=False):
 
     change_tracker = ChangeTracker(data_dir, db)
 
-    load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
-
+    load_author_edition(change_tracker, additional_info_dir, db)
+    
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir)
@@ -498,7 +491,7 @@ def run(no_pull=False):
     homepage.load_why_we_read(db, additional_info_dir)
 
     available_languages.load_available_languages(db, additional_info_dir)
-
-    order.add_order(db)
+    
+    order.add_next_prev_using_menu_data(db)
 
     change_tracker.update_mtimes()

@@ -30,6 +30,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
   </dom-module>
 
+  <dom-module id="paper-input-wrapper">
+    <template>
+      <paper-input required/>
+    </template>
+  </dom-module>
+
   <test-fixture id="serialization">
     <template>
       <div>
@@ -154,6 +160,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </form>
         </iron-form>
 
+        <iron-form id="required-novalidate">
+          <form action="/get" method="get" novalidate>
+            <input required>
+          </form>
+        </iron-form>
+
         <iron-form id="native-invalid">
           <form action="/get" method="get">
             <input pattern="aa" value="b">
@@ -178,6 +190,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-input pattern="aa" value="b"></paper-input>
           </form>
         </iron-form>
+
+        <iron-form id="custom-invalid-no-validate">
+          <form action="/get" method="get">
+            <paper-input-wrapper></paper-input-wrapper>
+          </form>
+        </iron-form>
       </div>
     </template>
   </test-fixture>
@@ -185,7 +203,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="submission">
     <template>
       <iron-form>
-        <form action="/get" method="get">
+        <form action="/get" method="get" enctype="application/json">
           <input type="checkbox" name="check1" checked>
           <input type="submit">
           <input type="button">
@@ -247,6 +265,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       suiteSetup(function () {
         Polymer({is: 'x-input-wrapper'});
+        Polymer({is: 'paper-input-wrapper'});
       });
 
       setup(function() {
@@ -442,6 +461,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         server.restore();
       });
 
+      test('handle early calls to validate', function() {
+        var form = f.querySelector('#native-required');
+        expect(form.validate()).to.be.equal(false);
+      });
+
       test('fires iron-form-invalid if it can\'t submit', function(done) {
         var form = f.querySelector('#mixed-invalid');
         form.addEventListener('iron-form-invalid', function(event) {
@@ -477,6 +501,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },  200);
       });
 
+      test('novalidate skips the validation', function(done) {
+        var form = f.querySelector('#required-novalidate');
+
+        form.addEventListener('iron-form-response', function(event) {
+          expect(event.detail.response.success).to.be.equal(true);
+          done();
+        });
+
+        // Wait one tick for observeNodes.
+        Polymer.Base.async(function() {
+          expect(form.validate()).to.be.equal(true);
+          form.submit();
+          server.respond();
+        }, 1);
+      });
+
       test('invalid <input> but not required is validated and does not submit the form', function(done) {
         var form = f.querySelector('#native-invalid');
 
@@ -509,6 +549,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Wait one tick for observeNodes.
         Polymer.Base.async(function() {
           form.validate();
+          expect(form.validate()).to.be.equal(false);
+          form.submit();
+          server.respond();
+        });
+
+        setTimeout(function() {
+          expect(responses).to.be.equal(0);
+          done();
+        },  200);
+      });
+
+      test('<paper-input-wrapper> not implementing validate() is validated and does not submit the form', function(done) {
+        var form = f.querySelector('#custom-invalid-no-validate');
+
+        var responses = 0;
+        form.addEventListener('iron-form-response', function(event) {
+          responses++;
+        });
+
+        // Wait one tick for observeNodes.
+        Polymer.Base.async(function() {
           expect(form.validate()).to.be.equal(false);
           form.submit();
           server.respond();
@@ -623,6 +684,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           form.submit();
           server.respond();
         });
+      });
+
+      test('enctype, headers and withCredentials works', function(done) {
+        form.addEventListener('iron-form-response', function(event) {
+          var xhr = event.detail.xhr;
+          expect(xhr.withCredentials).to.be.true;
+          var headers = xhr.requestHeaders;
+          expect(headers['content-type']).to.be.equal('application/json');
+          expect(headers['x-some']).to.be.equal('header-value');
+          done();
+        });
+
+         // enctype is set in template
+         form.headers = {'x-some': 'header-value'};
+         form.withCredentials = true;
+
+        // Wait one tick for observeNodes.
+        Polymer.Base.async(function() {
+          form.submit();
+          server.respond();
+        }, 1);
       });
 
       test('pressing an <input type=submit> submits the form', function(done) {
@@ -779,6 +861,64 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           form.reset();
           var final = form.serializeForm();
           expect(JSON.stringify(initial)).to.be.equal(JSON.stringify(final));
+          done();
+        });
+      });
+
+      test('fires reset and iron-form-reset events', function(done) {
+        var form = fixture('resetting');
+
+        // Wait one tick for observeNodes.
+        Polymer.Base.async(function() {
+          var nativeResetSpy = sinon.stub();
+          var ironFormResetSpy = sinon.stub();
+          form.addEventListener('reset', nativeResetSpy);
+          form.addEventListener('iron-form-reset', ironFormResetSpy);
+
+          form.reset();
+
+          expect(nativeResetSpy.callCount).to.be.equal(1);
+          expect(ironFormResetSpy.callCount).to.be.equal(1);
+          done();
+        });
+      });
+
+      test('handles <form> `reset` event', function(done) {
+        var form = fixture('resetting');
+
+        // Wait one tick for observeNodes.
+        Polymer.Base.async(function() {
+          var nativeResetSpy = sinon.stub();
+          var ironFormResetSpy = sinon.stub();
+          form.addEventListener('reset', nativeResetSpy);
+          form.addEventListener('iron-form-reset', ironFormResetSpy);
+
+          form.querySelector('[type=reset]').click();
+
+          expect(nativeResetSpy.callCount).to.be.equal(1);
+          expect(ironFormResetSpy.callCount).to.be.equal(1);
+          done();
+        });
+      });
+
+      test('handles reset when triggered by other events', function(done) {
+        var form = fixture('resetting');
+
+        // Wait one tick for observeNodes.
+        Polymer.Base.async(function() {
+          var nativeResetSpy = sinon.stub();
+          var ironFormResetSpy = sinon.stub();
+          form.addEventListener('reset', nativeResetSpy);
+          form.addEventListener('iron-form-reset', ironFormResetSpy);
+
+          var input = document.getElementById('input1');
+          input.addEventListener('click', function(event) {
+            form.reset(event);
+          });
+          input.click();
+
+          expect(nativeResetSpy.callCount).to.be.equal(1);
+          expect(ironFormResetSpy.callCount).to.be.equal(1);
           done();
         });
       });

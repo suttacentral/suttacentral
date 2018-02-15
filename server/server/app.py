@@ -8,10 +8,11 @@ from flask_restful import Api
 
 from api.views import (Currencies, Donations, Languages, LookupDictionaries, Menu, Paragraphs, Parallels, Sutta,
                        SuttaplexList, Images, Epigraphs, WhyWeRead, DictionaryFull, Glossary, DictionaryAdjacent,
-                       DictionarySimilar, Expansion)
+                       DictionarySimilar, Expansion, CollectionUrlList)
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
+from common.extensions import cache
 
 
 def app_factory() -> Tuple[Api, Flask]:
@@ -32,16 +33,23 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Currencies, '/currencies')
     api.add_resource(Donations, '/donate')
     api.add_resource(Paragraphs, '/paragraphs')
-    api.add_resource(Images, '/images/<string:division>/<int:vol>')
+    api.add_resource(Images, '/images/<string:division>/<int:vol>/<int:page>')
     api.add_resource(Epigraphs, '/epigraphs')
     api.add_resource(WhyWeRead, '/whyweread')
     api.add_resource(Glossary, '/glossary')
     api.add_resource(DictionaryAdjacent, '/dictionary_full/adjacent/<string:word>')
     api.add_resource(DictionarySimilar, '/dictionary_full/similar/<string:word>')
     api.add_resource(Expansion, '/expansion')
+    api.add_resource(CollectionUrlList, '/pwa/collection/<string:collection>')
 
     app.register_blueprint(api_bp)
+    register_extensions(app)
+
     return api, app
+
+
+def register_extensions(app):
+    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
 
 api, app = app_factory()
