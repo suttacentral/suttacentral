@@ -485,7 +485,7 @@
                   newSegment.classList.add('original-text');
                   newSegment.innerHTML = content + ' ';
                   this._setScriptISOCode(newSegment, this.rootLang);
-                  segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+                  if (segment) segment.parentNode.insertBefore(newSegment, segment.nextSibling);
               }
           }
 
@@ -547,8 +547,8 @@
               }
               setTimeout(() => {
                   item.innerHTML = `
-                                <div class="image-link" title="${paragraph ? paragraph.description : ''}">
-                                    <span class="${prefix}">${displayText}</span>
+                                <div class="image-link" >
+                                    <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
                                     <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-svg-icons:book">
                                     </iron-icon>
                                 </div>
