@@ -141,7 +141,7 @@ class TextIndexer(ElasticIndexer):
                 'mtime': int(text['mtime']),
                 'heading': {
                     'title': self.fix_text(text['title']),
-                    'division': self.fix_text(text['division_title'])
+                    'division': [self.fix_text(text['division_title']) if 'division_title' in text else '']
                 },
                 'content': '\n\n'.join(text['strings'].values())
             }
