@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
@@ -109,6 +110,30 @@
         }
       }
 
+      .options-section {
+        margin: var(--sc-size-md-larger) 0;
+      }
+
+      .option-title {
+        @apply --paper-font-title;
+        color: var(--sc-primary-text-color);
+        margin: var(--sc-size-sm) 0;
+      }
+
+      .option-description {
+        @apply --paper-font-body1;
+        color: var(--sc-secondary-text-color);
+        margin: var(--sc-size-sm) 0;
+      }
+
+      .toggle-button {
+        --paper-toggle-button-unchecked-bar-color: var(--sc-secondary-text-color);
+        --paper-toggle-button-checked-bar-color: var(--sc-primary-accent-color-light);
+        --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
+        --paper-toggle-button-checked-ink-color: var(--sc-primary-accent-color-dark);
+        margin-left: calc(var(--sc-size-xs) * -1);
+      }
+
       @media screen and (max-width: 600px) {
         .button-container {
           flex-direction: column-reverse;
@@ -165,11 +190,17 @@
                     </a>
                   </template>
                 </p>
-                <p>
-                  {{localize('selectDifferentLang')}}
-                </p>
+                <p>{{localize('selectDifferentLang')}}</p>
               </div>
             </div>
+
+            <div class="options-section">
+              <h3 class="option-title">{{localize('downloadParallels')}}</h3>
+              <div class="option-description">{{localize('downloadParallelsDescription')}}</div>
+              <paper-toggle-button id="download_parallels_button" class="toggle-button" noink
+                                   active="{{shouldDownloadParallels}}"></paper-toggle-button>
+            </div>
+
             <paper-card id="download_controller">
               <div class="download-info-row">
                 <div class="download-current-url">{{localize('downloading')}}: [[currentDownloadingUrl]]</div>
@@ -240,6 +271,10 @@
                   },
                   downloadQueue: {
                       type: Object
+                  },
+                  shouldDownloadParallels: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
