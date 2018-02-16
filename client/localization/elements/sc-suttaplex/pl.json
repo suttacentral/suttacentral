@@ -12,6 +12,7 @@
     "goToTranslation": "Idź do tłumaczenia autorstwa {author}",
     "hasParallels": "Ten tekst posiada {num} analogii.",
     "itemNotFound": "Błąd 404: Nie znaleziono wpisu.",
-    "networkError": "Błąd sieci"
+    "networkError": "Błąd sieci",
+    "translations": "Tłumaczenia"
   }
 }
