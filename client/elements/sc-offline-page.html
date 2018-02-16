@@ -374,7 +374,11 @@
                       })
                   })
               });
-              return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs);
+              let parallelURLs = [];
+              if (this.shouldDownloadParallels) {
+                  parallelURLs = response.texts.map(text => this._getParallelUrl(text.uid));
+              }
+              return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs).concat(parallelURLs);
           }
 
           _handleErrors(response) {
@@ -394,6 +398,10 @@
 
           _getSuttaplexUrl(suttaplexId) {
               return `${this.$.meta.byKey('API_ROOT')}/suttaplex/${suttaplexId}?language=${this.language}`;
+          }
+
+          _getParallelUrl(parallelId) {
+              return `${this.$.meta.byKey('API_ROOT')}/parallels/${parallelId}`;
           }
 
           _getSuttaTextUrl(suttaId, authorId, langIsoCode) {
