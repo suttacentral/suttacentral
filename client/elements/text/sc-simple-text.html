@@ -971,12 +971,12 @@
               }
 
               const sutta = this.$.simple_text_content.querySelectorAll('.sutta')[0];
-              const suttaFont = window.getComputedStyle(sutta, null).getPropertyValue('font')
+              const suttaFont = window.getComputedStyle(sutta, null).getPropertyValue('font');
  
               Array.from(paragraphs).forEach(paragraph => {
                   let paragraphNumber = paragraph.innerHTML.match(/>([0-9a-z]*)<\/a>/);
                   let cleanParagraph = paragraph.innerText;
-                  if (paragraphNumber){
+                  if (paragraphNumber) {
                       cleanParagraph = cleanParagraph.replace(paragraphNumber[1], '');
                   }                 
                   let paragraphMatch = cleanParagraph.match(/^[  \n0-9.-]*([“‘「『„«"]+)(.)/);
