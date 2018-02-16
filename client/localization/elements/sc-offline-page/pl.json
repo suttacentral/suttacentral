@@ -24,7 +24,7 @@
         "downloadComplete": "Pobieranie zostało ukończone. Możesz teraz czytać teksty w języku {lang}m bez połączenia z internetem.",
         "downloadErrored": "Błąd! Nie udało się pobrać wszystkich tekstów. {failed} spośród {total} zapytań nie zostało ukończonych pomyślnie.",
         "networkError": "Błąd sieci.",
-        "downloadParallels": "Pobierz analogie",
-        "downloadParallelsDescription": "Pobierz także tabelki zawierające analogie do tekstów."
+        "downloadParallels": "Uwzględnij analogie",
+        "downloadParallelsDescription": "Zaznacz, aby pobrać także tabelki zawierające analogie do tekstów."
     }
 }

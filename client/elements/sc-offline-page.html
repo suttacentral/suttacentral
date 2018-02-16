@@ -26,18 +26,12 @@
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
         text-align: center;
-        margin: var(--sc-size-lg);
+        margin-bottom: var(--sc-size-md-larger);
+        height: var(--sc-size-xxl);
       }
 
       .button[disabled] {
         background-color: var(--sc-paper-tooltip-color);
-      }
-
-      .button-container {
-        margin-top: var(--sc-size-md);
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
       }
 
       .icon {
@@ -56,7 +50,7 @@
         width: 100%;
         will-change: opacity;
         transition: opacity cubic-bezier(0.4, 0.0, 0.2, 1) 300ms;
-        margin: var(--sc-size-md);
+        margin: var(--sc-size-md) 0;
         background-color: var(--sc-secondary-background-color);
       }
 
@@ -131,18 +125,10 @@
         --paper-toggle-button-checked-bar-color: var(--sc-primary-accent-color-light);
         --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
         --paper-toggle-button-checked-ink-color: var(--sc-primary-accent-color-dark);
-        margin-left: calc(var(--sc-size-xs) * -1);
+        margin: var(--sc-size-md);
       }
 
       @media screen and (max-width: 600px) {
-        .button-container {
-          flex-direction: column-reverse;
-        }
-
-        .button {
-          height: var(--sc-size-xxl);
-        }
-
         .no-phone-top-margin {
           margin-top: 0;
         }
@@ -170,36 +156,36 @@
             </ul>
             <p>{{localize('extraFeatures')}}</p>
 
-            <div class="button-container">
-              <paper-button id='make_offline_button' class="button" raised
-                            disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
-                {{localize('downloadButton', 'languageName', languageName)}}
-              </paper-button>
-              <div class="button-info">
-                <p class="no-phone-top-margin">
-                  <template is="dom-if" if="[[browserSupportsPWA]]">
-                    <span>{{localize('supportsPWAs')}}</span>
-                    <iron-icon icon="icons:check-box" class="icon success-icon"></iron-icon>
-                  </template>
-                  <template is="dom-if" if="[[!browserSupportsPWA]]">
-                    <span>{{localize('doesntSupportPWAs')}}</span>
-                    <iron-icon icon="icons:error" class="icon failure-icon"></iron-icon>
-                    <br>
-                    <a href="https://caniuse.com/#feat=serviceworkers">
-                      {{localize('listBrowsers')}}
-                    </a>
-                  </template>
-                </p>
-                <p>{{localize('selectDifferentLang')}}</p>
-              </div>
+            <div class="button-info">
+              <p class="no-phone-top-margin">
+                <template is="dom-if" if="[[browserSupportsPWA]]">
+                  <span>{{localize('supportsPWAs')}}</span>
+                  <iron-icon icon="icons:check-box" class="icon success-icon"></iron-icon>
+                </template>
+                <template is="dom-if" if="[[!browserSupportsPWA]]">
+                  <span>{{localize('doesntSupportPWAs')}}</span>
+                  <iron-icon icon="icons:error" class="icon failure-icon"></iron-icon>
+                  <br>
+                  <a href="https://caniuse.com/#feat=serviceworkers">
+                    {{localize('listBrowsers')}}
+                  </a>
+                </template>
+              </p>
+              <p>{{localize('selectDifferentLang')}}</p>
             </div>
 
             <div class="options-section">
               <h3 class="option-title">{{localize('downloadParallels')}}</h3>
               <div class="option-description">{{localize('downloadParallelsDescription')}}</div>
               <paper-toggle-button id="download_parallels_button" class="toggle-button" noink
+                                   disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]"
                                    active="{{shouldDownloadParallels}}"></paper-toggle-button>
             </div>
+
+            <paper-button id='make_offline_button' class="button" raised
+                          disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
+              {{localize('downloadButton', 'languageName', languageName)}}
+            </paper-button>
 
             <paper-card id="download_controller">
               <div class="download-info-row">
