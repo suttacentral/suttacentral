@@ -317,14 +317,16 @@
               <a class="author-link" href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
                 <paper-button class="author-button" flat
                               title$="{{localize('goToTranslation', 'author', translation.author)}}">
-                    [[translation.author_short]]
+                  [[translation.author_short]]
                 </paper-button>
               </a>
             </template>
           </div>
-          <label class="translations-label">
-            {{localize('translations')}}
-          </label>
+          <template is="dom-if" if="[[_anyUserLanguageTranslations(item.translations, language)]]">
+            <label class="translations-label">
+              {{localize('translations')}}
+            </label>
+          </template>
 
           <div class="flex-div">
             <div class="languagedrop">
@@ -506,6 +508,10 @@
               return items.filter(item => item.lang === language);
           }
 
+          _anyUserLanguageTranslations(items, language) {
+              return items.some(item => item.lang === language);
+          }
+
           _toggleParallelsOpened() {
               this.parallelsOpened = !this.parallelsOpened;
               this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
@@ -566,8 +572,10 @@
               try {
                   uidParts.forEach(item => {
                       if (!expansionData[0][item]) {
-                          tail = item.match(/\d+.*/g)[0] + '–';
-                          item = item.match(/[a-z]*/g)[0];
+                          const tailMatch = item.match(/\d+.*/g);
+                          if (tailMatch) tail = tailMatch[0] + '–';
+                          const itemMatch = item.match(/[a-z]*/g);
+                          if (itemMatch) item = itemMatch[0];
                       }
                       if (item && expansionData[0][item]) {
                           scAcronym += `${expansionData[0][item][0]} ${tail}`
@@ -577,7 +585,7 @@
                   });
                   return scAcronym.replace(/–\s*$/, '');
               } catch (e) {
-                  return;
+                  console.error(e);
               }
           }
 
