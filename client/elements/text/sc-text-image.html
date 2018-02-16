@@ -25,9 +25,12 @@
         last-response="{{imageData}}"
         on-response="_handleResponse"></iron-ajax>
 
-        <div class="hide">
-          <img id="image" class="image" src="[[showUrl]]" alt="[[imageAlt]]">
-        </div>
+    <ul id="images" class="hide">
+        <template is="dom-repeat" items="[[imageData]]" as="image">
+            <li><img class="image" data-url="[[_getImageUrl(image.name)]]" alt="[[image.name]]"></li>      
+        </template>
+    </ul>
+
   </template>
 
   <script>
@@ -62,14 +65,6 @@
                   },
                   lastDetail: {
                       type: Object
-                  },
-                  showUrl: {
-                      type: String,
-                      computed: '_getShowUrl(imageData)'
-                  },
-                  imageAlt: {
-                      type: String,
-                      computed: '_getImageAlt(imageData)'
                   }
               }
           }
@@ -84,14 +79,6 @@
             this.pageNumber = detail.pageNumber;
             this.$.ajax.url = this._getUrl();
             this.$.ajax.generateRequest();
-          }
-
-          _getShowUrl(imageData) {
-              return this._getImageUrl(imageData[0].name);
-          }
-
-          _getImageAlt(imageData) {
-              return imageData[0].name;
           }
 
           _didDetailChange(detail) {
@@ -113,9 +100,17 @@
               if (!this.imageData || !this.imageData[0]) {
                 return;
               }
+              let viewerIndex = 0;
+              // We need to have the indexnumber of the imageData array as the
+              // starting point for the viewer.
+              for (let page = 0; page < this.imageData.length; page++) {
+                  if (this.imageData[page].pageNumber === this.pageNumber) {
+                      viewerIndex = page;
+                  }
+              };
               requestAnimationFrame(() => {
                   const options = {
-                    url: `'src'`,
+                    url: (e) => e.dataUrl,
                     navbar: false,
                     transition: false,
                     toolbar: {
@@ -123,12 +118,9 @@
                       zoomOut: 2,
                       oneToOne: 2,
                       reset: 0,
-                      prev: 0,
-                      play: {
-                        show: 0,
-                        size: 'large',
-                      },
-                      next: 0,
+                      prev: 1,
+                      play: 0,
+                      next: 1,
                       rotateLeft: 0,
                       rotateRight: 0,
                       flipHorizontal: 0,
@@ -136,11 +128,11 @@
                     }
                   };
                   if(this.viewer){
-                    this.viewer.reset();
+                    this.viewer.update();
                   } else {
-                    this.viewer = new Viewer(this.$.image, options);
+                    this.viewer = new Viewer(this.$.images, options);
                   }
-                  this.viewer.index = 0;
+                  this.viewer.index = viewerIndex;
                   this.viewer.show();
                   this.lastDetail = {};
               });

@@ -33,7 +33,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
 
       .dialog-header {
         @apply --paper-font-title;
-        margin: 0
+        margin: 0;
       }
 
       #settingsbutton {
@@ -41,19 +41,19 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       }
 
       .dialog-section {
-        margin-top: 36px;
+        margin: var(--sc-size-md-larger) 0;
       }
 
       .nerdy-row {
         @apply --paper-font-body1;
         color: var(--sc-secondary-text-color);
-        margin-bottom:1em;
+        margin: var(--sc-size-sm) 0;
       }
 
       .menu-item-title {
         @apply --paper-font-title;
         color: var(--sc-primary-text-color);
-        margin: 1em 0 0 0;
+        margin: var(--sc-size-sm) 0;
       }
 
       .menu-option {
@@ -114,7 +114,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
         --paper-toggle-button-checked-bar-color: var(--sc-primary-accent-color-light);
         --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
         --paper-toggle-button-checked-ink-color: var(--sc-primary-accent-color-dark);
-        margin-top: var(--sc-size-sm);
+        margin-top: var(--sc-size-md);
       }
 
       @media screen and (max-width: 769px) {
@@ -182,7 +182,8 @@ type of view for segmented pages (showing pali next to translated text), lookup 
         <div class="nerdy-row">
           {{localize('activatePaliDescription')}}
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="pali_lookup_menu" vertical-align="auto">
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="pali_lookup_menu"
+                             vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliLookupSelected}}">
             <template is="dom-repeat" items="[[paliLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
@@ -196,7 +197,8 @@ type of view for segmented pages (showing pali next to translated text), lookup 
         <div class="nerdy-row">
           {{localize('activateChineseDescription')}}
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="chinese_lookup_menu" vertical-align="auto">
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="chinese_lookup_menu"
+                             vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{chineseLookupSelected}}">
             <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
               <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
@@ -208,7 +210,8 @@ type of view for segmented pages (showing pali next to translated text), lookup 
       <div class="dialog-section">
         <h3 class="menu-item-title">{{localize('changePaliScript')}}</h3>
         <div class="nerdy-row">{{localize('changePaliScriptDescription')}}</div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('changePaliScriptLabel')}}" id="pali_script_menu" vertical-align="auto">
+        <paper-dropdown-menu class="menu-dropdown" label="{{localize('changePaliScriptLabel')}}" id="pali_script_menu"
+                             vertical-align="auto">
           <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliScriptSelected}}">
             <template is="dom-repeat" items="[[paliScripts]]" as="script">
               <paper-item class="menu-item">[[script.language]]</paper-item>
@@ -519,7 +522,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
               const target = this.paliLookupArray[langIndex];
               const targetLanguage = target.dict.split('2')[1];
               const targetDictRepr = target.language;
-              if (this. paliSelectedItemChanged) {
+              if (this.paliSelectedItemChanged) {
                   this._showLookupToast(targetDictRepr, 'pli');
                   this.paliSelectedItemChanged = false;
               }
@@ -618,9 +621,9 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                   this._showToast(dictChangeMessage);
               } else {
                   if (lang === 'pli') {
-                    this._showToast(this.localize('paliLookupDictionaryDisabled'));
+                      this._showToast(this.localize('paliLookupDictionaryDisabled'));
                   } else {
-                    this._showToast(this.localize('chineseLookupDictionaryDisabled'));
+                      this._showToast(this.localize('chineseLookupDictionaryDisabled'));
                   }
               }
           }
