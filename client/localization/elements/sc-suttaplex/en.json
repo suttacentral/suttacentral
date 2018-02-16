@@ -12,6 +12,7 @@
         "goToTranslation": "Go to a translation by {author}",
         "hasParallels": "This text has {num} parallels.",
         "itemNotFound": "Error 404: Item not found.",
-        "networkError": "Network error"
+        "networkError": "Network error",
+        "translations": "Translations"
     }
 }
