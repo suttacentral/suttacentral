@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
 <link rel="import" href="../../elements/text/sc-text-options.html">
 <link rel="import" href="../../styles/sc-text-styles.html">
@@ -54,6 +55,8 @@
       }
 
     </style>
+
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
 
     <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[_extractSuttaText(sutta.text)]]"
          hidden$="[[isTextViewHidden]]"></div>
@@ -239,6 +242,7 @@
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
                   }, 0);
               });
+              this.$.a11y.target = document.querySelector('body');
           }
 
           _siteLanguageChanged() {
@@ -994,6 +998,17 @@
                       }
                   }
               });
+          }
+
+          deathToTheBeast() {
+              const inputText = this.$.simple_text_content.innerHTML;
+              let outputText = '';
+              if (inputText.indexOf('ṃ') > -1 || inputText.indexOf('Ṃ') > -1) {
+                outputText = inputText.replace(/ṃ/g, 'ṁ').replace(/Ṃ/g, 'Ṁ');
+              } else {
+                outputText = inputText.replace(/ṁ/g, 'ṃ').replace(/Ṁ/g, 'Ṃ');
+              }
+              this.$.simple_text_content.innerHTML = outputText;
           }
       }
 
