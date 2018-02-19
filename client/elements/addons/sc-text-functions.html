@@ -22,8 +22,7 @@
                   },
                   language: {
                       type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
+                      statePath: 'siteLanguage'
                   },
                   fallbackLanguage: {
                       type: String,
@@ -43,7 +42,6 @@
 
           connectedCallback() {
               super.connectedCallback();
-              this.$.a11y.target = document.querySelector('body');
           }
 
           deathToTheBeast() {
@@ -58,7 +56,6 @@
           }
 
           _applyQuoteHanger() {
-            console.log(this.inputElement);
               const paragraphs = this.inputElement.querySelectorAll('p');
               if ((window.innerWidth < 1280 || this.chosenTextView === 'sidebyside') && this.showParagraphs) {
                   Array.from(paragraphs).forEach(paragraph => {
