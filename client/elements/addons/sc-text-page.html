@@ -4,7 +4,7 @@
 <!--
   Static page functions
 -->
-<dom-module id="sc-text-functions">
+<dom-module id="sc-text-page">
   <template>
   </template>
 
@@ -13,7 +13,7 @@
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCTextFunctions extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCTextPage extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
 
           static get properties() {
               return {
@@ -91,6 +91,6 @@
           }
       }
 
-      customElements.define('sc-text-functions', SCTextFunctions);
+      customElements.define('sc-text-page', SCTextPage);
   </script>
 </dom-module>
