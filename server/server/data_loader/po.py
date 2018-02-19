@@ -8,8 +8,17 @@ from .util import iter_sub_dirs
 
 
 def remove_leading_zeros(string):
-    return regex.sub(r'([A-Za-z])0+', r'\1', string)
+    return regex.sub(r'([A-Za-z.])0+', r'\1', string)
 
+
+def strip_number_from_title(title):
+    return regex.sub(r'\d+\W?\d*\W?\s', '', title, 1)
+
+
+def sanitize_title(title):
+    #If stripping the number returns an empty string, just return original
+    return strip_number_from_title(title) or title
+    
 
 def clean_html(string):
     out = regex.sub(r'<html>.*<body>', r'', string, flags=regex.DOTALL).replace('\n', ' ')
@@ -62,8 +71,8 @@ def extract_headings_from_po(po):
         root_strings = []
         for entry in po[:10]:
             if string in entry.comment:
-                found['tr'][key] = entry.msgstr
-                found['root'][key] = entry.msgid
+                found['tr'][key] = sanitize_title(entry.msgstr)
+                found['root'][key] = sanitize_title(entry.msgid)
     return found
 
 def process_dir(change_tracker, po_dir, authors, info):
@@ -88,6 +97,7 @@ def process_dir(change_tracker, po_dir, authors, info):
     for po_file in po_files:
         if change_tracker and not change_tracker.is_file_new_or_changed(po_file):
             continue
+        
         po = polib.pofile(po_file)
         
         headings = extract_headings_from_po(po)
