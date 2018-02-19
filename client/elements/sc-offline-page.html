@@ -392,7 +392,9 @@
               if (this.shouldDownloadParallels) {
                   parallelURLs = response.texts.map(text => this._getParallelUrl(text.uid));
               }
-              return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs).concat(parallelURLs);
+              let paragraphURLs = this._getParagraphsUrl();
+              return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs).concat(parallelURLs)
+                  .concat(paragraphURLs);
           }
 
           _handleErrors(response) {
@@ -424,6 +426,10 @@
 
           _getSuttaTextUrl(suttaId, authorId, langIsoCode) {
               return `${this.$.meta.byKey('API_ROOT')}/suttas/${suttaId}/${authorId}?lang=${langIsoCode}`;
+          }
+
+          _getParagraphsUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/paragraphs`;
           }
 
           _doesBrowserSupportPWA() {
