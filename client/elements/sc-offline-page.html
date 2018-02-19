@@ -206,10 +206,22 @@
               <div class="option-description">{{localize('paliLookupsDescription')}}</div>
               <div class="option-multi-select-container">
                 <template is="dom-repeat" items="[[paliLookupLanguages]]" as="lang">
-                  <paper-checkbox class="option-checkbox" on-change="_togglePaliCheckbox">[[lang.name]]
+                  <paper-checkbox class="option-checkbox" on-change="_togglePaliCheckbox">
+                    [[lang.name]]
                   </paper-checkbox>
                 </template>
               </div>
+
+              <h3 class="option-title">{{localize('chineseLookups')}}</h3>
+              <div class="option-description">{{localize('chineseLookupsDescription')}}</div>
+              <div class="option-multi-select-container">
+                <template is="dom-repeat" items="[[chineseLookupLanguages]]" as="lang">
+                  <paper-checkbox class="option-checkbox" on-change="_toggleChineseCheckbox">
+                    [[lang.name]]
+                  </paper-checkbox>
+                </template>
+              </div>
+
             </div>
 
             <paper-button id='make_offline_button' class="button" raised
@@ -453,7 +465,16 @@
           _buildUrlList(response) {
               const menuURLs = response.menu.map(menuId => this._getMenuUrl(menuId));
               const suttaplexURLs = response.suttaplex.map(suttaplexId => this._getSuttaplexUrl(suttaplexId));
+              const suttaTextURLs = this._buildSuttaTextUrlList(response);
+              const parallelURLs = this.shouldDownloadParallels ? response.texts.map(text => this._getParallelUrl(text.uid)) : [];
+              const paragraphURLs = this._getParagraphUrls();
+              return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs).concat(parallelURLs)
+                  .concat(paragraphURLs);
+          }
+
+          _buildSuttaTextUrlList(response) {
               const suttaTextURLs = [];
+              if (!response.texts) return;
               response.texts.forEach((text) => {
                   text.translations.forEach((translation) => {
                       translation.authors.forEach((author) => {
@@ -461,13 +482,7 @@
                       })
                   })
               });
-              let parallelURLs = [];
-              if (this.shouldDownloadParallels) {
-                  parallelURLs = response.texts.map(text => this._getParallelUrl(text.uid));
-              }
-              let paragraphURLs = this._getParagraphsUrl();
-              return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs).concat(parallelURLs)
-                  .concat(paragraphURLs);
+              return suttaTextURLs;
           }
 
           _handleErrors(response) {
@@ -505,7 +520,7 @@
               return `${this.$.meta.byKey('API_ROOT')}/dictionaries/lookup?from=pli&to=${toLang}`;
           }
 
-          _getParagraphsUrl() {
+          _getParagraphUrls() {
               return `${this.$.meta.byKey('API_ROOT')}/paragraphs`;
           }
 
@@ -533,7 +548,7 @@
 
           _toggleChineseCheckbox(e) {
               const langName = e.target.innerText;
-              const langObj = this.paliLookupLanguages.find(item => item.name === langName);
+              const langObj = this.chineseLookupLanguages.find(item => item.name === langName);
               langObj.enabled = !langObj.enabled;
           }
 
