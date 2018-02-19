@@ -228,7 +228,7 @@
                       type: String,
                       value: ''
                   },
-                  dragonInputElement: {
+                  inputElement: {
                       type: Object
                   }
               }
@@ -269,7 +269,7 @@
               setTimeout(() => {
                   this._scrollToSection(window.location.hash.substr(1), false, 500);
               }, 0);
-              this.dragonInputElement = this.$.segmented_text_content;
+              this.inputElement = this.$.segmented_text_content;
           }
 
           _siteLanguageChanged() {
@@ -1242,37 +1242,6 @@
                       this.isTextViewHidden = false;
                   });
               }
-          }
-
-          _applyQuoteHanger() {
-              const paragraphs = this.$.segmented_text_content.querySelectorAll('p');
-              if ((window.innerWidth < 1280 || this.chosenTextView === 'sidebyside') && this.showParagraphs) {
-                  Array.from(paragraphs).forEach(paragraph => {
-                    paragraph.style.textIndent = null;
-                  });
-                  return;
-              }
-
-              const sutta = this.$.segmented_text_content.querySelectorAll('.sutta')[0];
-              const suttaFont = window.getComputedStyle(sutta, null).getPropertyValue('font');
-
-              Array.from(paragraphs).forEach(paragraph => {
-                  let paragraphNumber = paragraph.innerHTML.match(/>([0-9a-z]*)<\/a>/);
-                  let cleanParagraph = paragraph.innerText;
-                  if (paragraphNumber) {
-                      cleanParagraph = cleanParagraph.replace(paragraphNumber[1], '');
-                  }                 
-                  let paragraphMatch = cleanParagraph.match(/^[  \n0-9.-]*([“‘「『„«"]+)(.)/);
-                  if (paragraphMatch) {
-                      var quotedText = paragraphMatch[2];
-                      var quoteMark = paragraphMatch[1] + paragraphMatch[2];
-                      var canvas = document.createElement('canvas');
-                      var context = canvas.getContext("2d");
-                      context.font = suttaFont;
-                      var diff = context.measureText(quoteMark).width - context.measureText(quotedText).width;
-                      paragraph.style.textIndent = `-${diff}px`;
-                  }
-              });
           }
       }
 
