@@ -459,6 +459,8 @@ def run(no_pull=False):
     images_files.load_images_links(db)
 
     change_tracker = ChangeTracker(data_dir, db)
+    
+    load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
 
     load_author_edition(change_tracker, additional_info_dir, db)
     
