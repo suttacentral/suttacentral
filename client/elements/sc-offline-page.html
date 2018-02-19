@@ -261,6 +261,9 @@
                   shouldDownloadParallels: {
                       type: Boolean,
                       value: false
+                  },
+                  isDownloadPausedBecauseOffline: {
+                      type: Boolean
                   }
               }
           }
@@ -278,15 +281,17 @@
 
           _handleNetworkLoss() {
               window.addEventListener('offline', () => {
-                  if (!this.downloadQueue) return;
+                  if (!this.downloadQueue || this.isDownloadPaused) return;
                   this.downloadQueue.pause();
                   this.isDownloadPaused = true;
+                  this.isDownloadPausedBecauseOffline = true;
                   this._showToast('info', this.localize('networkLost'));
               });
               window.addEventListener('online', () => {
-                  if (!this.downloadQueue) return;
+                  if (!this.downloadQueue || !this.isDownloadPausedBecauseOffline) return;
                   this.downloadQueue.resume();
                   this.isDownloadPaused = false;
+                  this.isDownloadPausedBecauseOffline = false;
                   this._showToast('info', this.localize('networkRecovered'));
               });
           }
