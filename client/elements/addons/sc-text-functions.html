@@ -1,0 +1,54 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<!--
+  Static page functions
+-->
+<dom-module id="sc-text-functions">
+  <template>
+  </template>
+
+  <script>
+        /**
+       * @extends {Polymer.Element}
+       * @appliesMixin Polymer.AppLocalizeBehavior
+       */
+      class SCTextFunctions extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+
+          static get properties() {
+              return {
+                  dragonInputElement: {
+                      type: Object
+                  },
+                  language: {
+                      type: String,
+                      statePath: 'siteLanguage',
+                      observer: '_siteLanguageChanged'
+                  },
+                  fallbackLanguage: {
+                      type: String,
+                      value: 'en'
+                  }
+              }
+          }
+
+          connectedCallback() {
+              super.connectedCallback();
+              this.$.a11y.target = document.querySelector('body');
+          }
+
+          deathToTheBeast() {
+              const inputText = this.dragonInputElement.innerHTML;
+              let outputText = '';
+              if (inputText.indexOf('ṃ') > -1 || inputText.indexOf('Ṃ') > -1) {
+                outputText = inputText.replace(/ṃ/g, 'ṁ').replace(/Ṃ/g, 'Ṁ');
+              } else {
+                outputText = inputText.replace(/ṁ/g, 'ṃ').replace(/Ṁ/g, 'Ṃ');
+              }
+              this.dragonInputElement.innerHTML = outputText;
+          }
+      }
+
+      customElements.define('sc-text-functions', SCTextFunctions);
+  </script>
+</dom-module>

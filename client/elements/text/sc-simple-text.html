@@ -1,8 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
+<link rel="import" href="../addons/sc-text-functions.html">
 <link rel="import" href="../../elements/text/sc-text-options.html">
 <link rel="import" href="../../styles/sc-text-styles.html">
 <link rel="import" href="../../styles/sc-text-heading-styles.html">
@@ -71,7 +70,7 @@
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCSimpleText extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCSimpleText extends SCTextFunctions {
           static get is() {
               return 'sc-simple-text';
           }
@@ -212,6 +211,9 @@
                       currentId: {
                           type: String,
                           value: ''
+                      },
+                      dragonInputElement: {
+                          type: Object
                       }
                   }
               }
@@ -242,7 +244,7 @@
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
                   }, 0);
               });
-              this.$.a11y.target = document.querySelector('body');
+              this.dragonInputElement = this.$.simple_text_content;
           }
 
           _siteLanguageChanged() {
@@ -998,17 +1000,6 @@
                       }
                   }
               });
-          }
-
-          deathToTheBeast() {
-              const inputText = this.$.simple_text_content.innerHTML;
-              let outputText = '';
-              if (inputText.indexOf('ṃ') > -1 || inputText.indexOf('Ṃ') > -1) {
-                outputText = inputText.replace(/ṃ/g, 'ṁ').replace(/Ṃ/g, 'Ṁ');
-              } else {
-                outputText = inputText.replace(/ṁ/g, 'ṃ').replace(/Ṁ/g, 'Ṃ');
-              }
-              this.$.simple_text_content.innerHTML = outputText;
           }
       }
 

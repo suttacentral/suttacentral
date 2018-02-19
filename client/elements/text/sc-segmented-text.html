@@ -4,9 +4,8 @@
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
+<link rel="import" href="../addons/sc-text-functions.html">
 <link rel="import" href="../../elements/text/sc-text-options.html">
 <link rel="import" href="../../styles/sc-text-styles.html">
 <link rel="import" href="../../styles/sc-text-heading-styles.html">
@@ -104,7 +103,7 @@
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCSegmentedText extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCSegmentedText extends SCTextFunctions {
           static get is() {
               return 'sc-segmented-text';
           }
@@ -228,6 +227,9 @@
                   currentId: {
                       type: String,
                       value: ''
+                  },
+                  dragonInputElement: {
+                      type: Object
                   }
               }
           }
@@ -267,7 +269,7 @@
               setTimeout(() => {
                   this._scrollToSection(window.location.hash.substr(1), false, 500);
               }, 0);
-              this.$.a11y.target = document.querySelector('body');
+              this.dragonInputElement = this.$.segmented_text_content;
           }
 
           _siteLanguageChanged() {
@@ -1271,17 +1273,6 @@
                       paragraph.style.textIndent = `-${diff}px`;
                   }
               });
-          }
-
-          deathToTheBeast() {
-              const inputText = this.$.segmented_text_content.innerHTML;
-              let outputText = '';
-              if (inputText.indexOf('ṃ') > -1 || inputText.indexOf('Ṃ') > -1) {
-                outputText = inputText.replace(/ṃ/g, 'ṁ').replace(/Ṃ/g, 'Ṁ');
-              } else {
-                outputText = inputText.replace(/ṁ/g, 'ṃ').replace(/Ṁ/g, 'Ṃ');
-              }
-              this.$.segmented_text_content.innerHTML = outputText;
           }
       }
 
