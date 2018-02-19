@@ -27,6 +27,11 @@
         "downloadParallels": "Uwzględnij analogie",
         "downloadParallelsDescription": "Zaznacz, aby pobrać także tabelki zawierające analogie do tekstów.",
         "downloadRootTexts": "Uwzględnij teksty w językach źródłowych",
-        "downloadRootTextsDescription": "Zaznacz, aby pobrać także teksty w językach źródłowych."
+        "downloadRootTextsDescription": "Zaznacz, aby pobrać także teksty w językach źródłowych.",
+        "paliLookups": "Uwzględnij spoglądanie do słownika Pali.",
+        "paliLookupsDescription": "Zaznacz, aby ściągnąć także definicje słownikowe dla słów palijskich w następujących językach:",
+        "chineseLookups": "Uwzględnij spoglądanie do słownika chińskiego",
+        "chineseLookupsDescription": "Zaznacz, aby ściągnąć także definicje słownikowe dla słów chińskich w następujących językach:",
+        "downloadStarted": "Pobieranie zostało rozpoczęte. Możesz nadal używać strony, damy Ci znać kiedy się zakończy."
     }
 }
