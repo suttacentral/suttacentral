@@ -55,7 +55,7 @@
 
     </style>
 
-    <iron-a11y-keys id="a11y" target="[[inputElement]]" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
 
     <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[_extractSuttaText(sutta.text)]]"
          hidden$="[[isTextViewHidden]]"></div>
@@ -213,9 +213,6 @@
                           value: ''
                       },
                       inputElement: {
-                          type: Object
-                      },
-                      target: {
                           type: Object
                       }
                   }
