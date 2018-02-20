@@ -206,7 +206,8 @@
               <div class="option-description">{{localize('paliLookupsDescription')}}</div>
               <div class="option-multi-select-container">
                 <template is="dom-repeat" items="[[paliLookupLanguages]]" as="lang">
-                  <paper-checkbox class="option-checkbox" on-change="_togglePaliCheckbox">
+                  <paper-checkbox class="option-checkbox" on-change="_togglePaliCheckbox"
+                                  disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
                     [[lang.name]]
                   </paper-checkbox>
                 </template>
@@ -216,7 +217,8 @@
               <div class="option-description">{{localize('chineseLookupsDescription')}}</div>
               <div class="option-multi-select-container">
                 <template is="dom-repeat" items="[[chineseLookupLanguages]]" as="lang">
-                  <paper-checkbox class="option-checkbox" on-change="_toggleChineseCheckbox">
+                  <paper-checkbox class="option-checkbox" on-change="_toggleChineseCheckbox"
+                                  disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
                     [[lang.name]]
                   </paper-checkbox>
                 </template>
