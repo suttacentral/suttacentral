@@ -128,7 +128,7 @@
                   allMatches = allMatches.concat(m);
               }
 
-              if (allMatches.length == 0) {
+              if (allMatches.length === 0) {
                   //Now we attempt to break up the compound.
                   //First is special case since 'an' is possibility.
                   m = this.matchPartial(word);
@@ -197,7 +197,7 @@
                           //On the first pass change nothing.
                           let wordp = word;
                           //On the second pass we change the last vowel if 'ti', otherwise skip.
-                          if (ti && args.ti == true) {
+                          if (ti && args.ti === true) {
                               wordp = wordp.replace(/ī$/, 'i').replace(/ā$/, 'i').replace(/ū$/, 'i').replace(/n$/, '').replace(/n$/, 'ṃ');
                           }
                           if (pi) {
