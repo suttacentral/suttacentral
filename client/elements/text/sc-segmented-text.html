@@ -660,11 +660,9 @@
           }
 
           _putSectionIntoWrapper(section) {
-              let wrapperAlreadyExists = false;
               let wrapper;
               if (section.parentNode && section.parentNode.classList.contains('highlight-wrapper')) {
                   section.parentNode.classList.add('highlight-wrapper-highlighted');
-                  wrapperAlreadyExists = true;
               } else {
                   if (this._previousElementIsNotFullWrapper(section)) {
                       wrapper = section.previousElementSibling;
@@ -895,7 +893,8 @@
               if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
                   this._setScriptISOCode(this.shadowRoot.querySelector('#text'), this.rootLang);
               } else {
-                  this.shadowRoot.querySelector('#text').removeAttribute('lang');
+                  const text = this.shadowRoot.querySelector('#text');
+                  if (text) text.removeAttribute('lang');
               }
               this._addInlineParagraphListeners();
           }
