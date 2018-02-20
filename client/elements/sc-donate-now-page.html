@@ -154,6 +154,7 @@
         @apply --center;
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-static-subtitle;
+        margin-top: var(--sc-size-xxl);
         color: var(--sc-secondary-text-color);
         text-align: center;
       }
@@ -217,9 +218,8 @@
                 </template>
 
                 <paper-input label="{{localize('amount')}}" class="data-input amount-input" auto-validate
-                             pattern="^[+]?(\d+[.,]?\d{0,2})$"
-                             allowed-pattern="[0-9.,]" error-message="{{localize('invalidValue')}}" required
-                             maxlength=20></paper-input>
+                             pattern="^[+]?(\d+[.,]?\d{0,2})$" allowed-pattern="[0-9.,]"
+                             error-message="{{localize('invalidValue')}}" required maxlength=20></paper-input>
               </div>
 
               <p class="explanation">{{localize('chooseFrequency')}}</p>
@@ -361,6 +361,7 @@
                   this._addEventListeners();
               }, 0);
               this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              this.isOnline = navigator ? navigator.onLine : true;
           }
 
           _siteLanguageChanged() {
