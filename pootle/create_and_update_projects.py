@@ -9,7 +9,7 @@ def _run_command(command):
 
 def create_project(name: str):
     _run_command(
-        "pootle init_fs_project {name} localfs+/srv/pootle/po/{name} '<language_code>.<ext>'".format(name=name))
+        "pootle init_fs_project -l=en_GB {name} localfs+/srv/pootle/po/{name} '/<language_code>.<ext>'".format(name=name))
 
 
 def update_project(name: str):
