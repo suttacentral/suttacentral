@@ -517,6 +517,30 @@
         }
       }
 
+      .infomode .segmented-textual-info-paragraph {
+        display: none;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph {
+        display: none;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline.segmented-textual-info-paragraph.sc {
+        display: block;
+      }
+
+      .infomode.segmented-infomode .sc.textual-info-paragraph.segmented-textual-info-paragraph:not(.textual-info-paragraph-inline) {
+        display: block;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
+        display: inline-block;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline {
+        display: none;
+      }
+
       .infomode .textual-info-paragraph {
         opacity: 1;
       }
