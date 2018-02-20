@@ -558,12 +558,12 @@
               }
               setTimeout(() => {
                   item.innerHTML = `
-                                <div class="image-link" >
-                                    <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
-                                    <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-svg-icons:book">
-                                    </iron-icon>
-                                </div>
-                            `;
+                      <div class="image-link" >
+                          <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
+                          <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-svg-icons:book">
+                          </iron-icon>
+                      </div>
+                  `;
                   item.classList.add('image-book-link');
                   item.classList.add('textual-info-paragraph');
                   item.addEventListener('click', () => {
@@ -616,21 +616,7 @@
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph');
           }
-
-          _addInlineParagraphListeners(rootElement) {
-              rootElement = rootElement || this.shadowRoot;
-              const inlineItems = rootElement.querySelectorAll('.textual-info-paragraph-inline');
-              if (!inlineItems) {
-                  return;
-              }
-              inlineItems.forEach((item) => {
-                      item.addEventListener('click', () => {
-                          this._scrollToSection(item.id, true, 0);
-                      })
-                  }
-              );
-          }
-
+        
           // adds a class to the main container to either show or hide the textual info paragraphs
           _setParagraphsVisible(visible) {
               const textElement = this.$.segmented_text_content;
@@ -690,9 +676,6 @@
                       section.remove();
                   }
 
-              }
-              if (isSideBySideView) {
-                  this._addInlineParagraphListeners(wrapper);
               }
           }
 
@@ -766,9 +749,6 @@
                           section.remove();
                       }
                       section = newSection;
-                  }
-                  if (isSideBySideView) {
-                      this._addInlineParagraphListeners(wrapper);
                   }
               }
           }
@@ -883,7 +863,6 @@
                   const text = this.shadowRoot.querySelector('#text');
                   if (text) text.removeAttribute('lang');
               }
-              this._addInlineParagraphListeners();
           }
 
           _setScriptISOCode(targetNode, langAttr) {
