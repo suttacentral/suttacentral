@@ -1,6 +1,5 @@
 //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.
 // Note that they also remove all html coding first so this might have to be changed.
-// Fonts will also need to be implemented because it uses local fonts now.
 
 const Transliterator = function() {
     this.toSinhala = (l) => {
