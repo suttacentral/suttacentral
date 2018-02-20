@@ -508,11 +508,16 @@
                   .querySelector('.textual-info-paragraph:not(.textual-info-paragraph-inline)') !== null;
               if (paragraphsAdded) return;
               if (this.paragraphs && this.showParagraphs) {
+                  // TODO delete once "pi" is renamed to "pli" in the data
+                  this.paragraphs.push({
+                          'uid': 'pts-vp-pi',
+                          'description': 'Vol/page of the Pali Text Society Pali edition.'
+                      }
+                  );
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
-                          if (!item.id.includes('2ed')
-                              && (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/))) {
+                          if (item.id.startsWith('pts-vp-pli') || item.id.startsWith('pts-vp-pi') || item.id.match(/pts[1-9]/)) {
                               this._processVolPageInfo(item, divisionId, paragraph);
                           } else {
                               this._addParagraphData(item, paragraph);
@@ -595,7 +600,7 @@
               inlineParagraph.id = `${parId}_inline`;
               inlineParagraph.innerText = parId;
               inlineParagraph.href = `#${parId}`;
-              inlineParagraph.title = "SuttaCentral segment number";
+              inlineParagraph.title = 'SuttaCentral segment number';
               inlineParagraph.addEventListener('click', () => {
                   this._scrollToSection(inlineParagraph.id, true, 0)
               });
