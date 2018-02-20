@@ -25,6 +25,13 @@
         "downloadErrored": "Error! We were not able to download all the requested texts. {failed} out of {total} requests did not complete correctly.",
         "networkError": "Network error.",
         "downloadParallels": "Include parallels",
-        "downloadParallelsDescription": "Select to download parallel tables for texts as well."
+        "downloadParallelsDescription": "Select to download parallel tables for texts as well.",
+        "downloadRootTexts": "Include root texts",
+        "downloadRootTextsDescription": "Select to download texts in root languages as well.",
+        "paliLookups": "Include Pali lookups",
+        "paliLookupsDescription": "Select to download dictionary lookups of Pali words in the following languages:",
+        "chineseLookups": "Include Chinese lookups",
+        "chineseLookupsDescription": "Select to download dictionary lookups of Chinese words in the following languages:",
+        "downloadStarted": "Your download has commenced. You can keep using the site and we will let you know when it’s complete."
     }
 }

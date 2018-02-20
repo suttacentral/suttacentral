@@ -586,8 +586,7 @@ type of view for segmented pages (showing pali next to translated text), lookup 
                   return;
               }
               if (this.paliScriptItemChanged) {
-                  const scriptName = language;
-                  const scriptChangeMessage = this.localize('scriptChanged', 'paliScript', scriptName);
+                  const scriptChangeMessage = this.localize('scriptChanged', 'paliScript', language);
                   this._showToast(scriptChangeMessage);
                   this.paliScriptItemChanged = false;
               }
