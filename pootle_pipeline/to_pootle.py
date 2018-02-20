@@ -9,7 +9,7 @@ POOTLE_BASE_DIR = '/srv/pootle/po/'
 
 
 def copy_pootle_files(dirs):
-    print('COPING PO FILES')
+    print('COPYING PO FILES')
     for directory in dirs:
         copytree(directory, Path(POOTLE_BASE_DIR))
     print('✓ DONE')
