@@ -4,8 +4,8 @@
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
+<link rel="import" href="../addons/sc-text-page.html">
 <link rel="import" href="../../elements/text/sc-text-options.html">
 <link rel="import" href="../../styles/sc-text-styles.html">
 <link rel="import" href="../../styles/sc-text-heading-styles.html">
@@ -81,6 +81,8 @@
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
+    <iron-a11y-keys id="a11y" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
+
     <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]"
          hidden$="[[isTextViewHidden]]"></div>
 
@@ -101,7 +103,7 @@
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCSegmentedText extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCSegmentedText extends SCTextPage {
           static get is() {
               return 'sc-segmented-text';
           }
@@ -225,6 +227,9 @@
                   currentId: {
                       type: String,
                       value: ''
+                  },
+                  inputElement: {
+                      type: Object
                   }
               }
           }
@@ -264,6 +269,8 @@
               setTimeout(() => {
                   this._scrollToSection(window.location.hash.substr(1), false, 500);
               }, 0);
+              this.inputElement = this.$.segmented_text_content;
+              this.$.a11y.target = document.querySelector('body');
           }
 
           _siteLanguageChanged() {
@@ -1236,37 +1243,6 @@
                       this.isTextViewHidden = false;
                   });
               }
-          }
-
-          _applyQuoteHanger() {
-              const paragraphs = this.$.segmented_text_content.querySelectorAll('p');
-              if ((window.innerWidth < 1280 || this.chosenTextView === 'sidebyside') && this.showParagraphs) {
-                  Array.from(paragraphs).forEach(paragraph => {
-                    paragraph.style.textIndent = null;
-                  });
-                  return;
-              }
-
-              const sutta = this.$.segmented_text_content.querySelectorAll('.sutta')[0];
-              const suttaFont = window.getComputedStyle(sutta, null).getPropertyValue('font');
-
-              Array.from(paragraphs).forEach(paragraph => {
-                  let paragraphNumber = paragraph.innerHTML.match(/>([0-9a-z]*)<\/a>/);
-                  let cleanParagraph = paragraph.innerText;
-                  if (paragraphNumber) {
-                      cleanParagraph = cleanParagraph.replace(paragraphNumber[1], '');
-                  }                 
-                  let paragraphMatch = cleanParagraph.match(/^[  \n0-9.-]*([“‘「『„«"]+)(.)/);
-                  if (paragraphMatch) {
-                      var quotedText = paragraphMatch[2];
-                      var quoteMark = paragraphMatch[1] + paragraphMatch[2];
-                      var canvas = document.createElement('canvas');
-                      var context = canvas.getContext("2d");
-                      context.font = suttaFont;
-                      var diff = context.measureText(quoteMark).width - context.measureText(quotedText).width;
-                      paragraph.style.textIndent = `-${diff}px`;
-                  }
-              });
           }
       }
 
