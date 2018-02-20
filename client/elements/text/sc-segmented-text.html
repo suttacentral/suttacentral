@@ -617,7 +617,8 @@
                   return;
               }
               const inlineItem = item.cloneNode(true);
-              if (item.id.startsWith('pts')) {
+              if (!item.id.includes('2ed')
+                  && (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/))) {
                   this._processVolPageInfo(inlineItem, divisionId);
               }
               inlineItem.classList.add('textual-info-paragraph-inline');
