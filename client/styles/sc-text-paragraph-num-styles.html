@@ -359,8 +359,8 @@
         content: "SC "
       }
 
-      .textual-info-paragraph.segmented-textual-info-paragraph.sc:before {
-        content: ""
+      .textual-info-paragraph.segmented-textual-info-paragraph.textual-info-paragraph-inline.sc:before {
+        content: "SC "
       }
 
       .textual-info-paragraph.sen:before {
@@ -496,19 +496,23 @@
         display: none;
       }
 
+      .infomode.popup .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
+        display: inline-block;
+      }
+
       #simple_text_content.infomode .textual-info-paragraph {
         display: inline-block;
         float: none;
       }
 
       @media screen and (min-width: 1280px) {
-        .infomode:not(.side-by-side) .textual-info-paragraph {
+        .infomode:not(.side-by-side):not(.line-by-line):not(.popup) .textual-info-paragraph {
           margin-right: -20%;
           display: block;
           background-color: transparent;
         }
 
-        .infomode:not(.side-by-side) .textual-info-paragraph-inline {
+        .infomode:not(.side-by-side):not(.line-by-line):not(.popup) .textual-info-paragraph-inline {
           display: none;
         }
 
@@ -518,13 +522,13 @@
       }
 
       @media screen and (min-width: 1500px) {
-        .infomode:not(.side-by-side) .textual-info-paragraph {
+        .infomode:not(.side-by-side):not(.line-by-line):not(.popup) .textual-info-paragraph {
           margin-right: -25%;
         }
       }
 
       @media screen and (min-width: 1800px) {
-        .infomode:not(.side-by-side) .textual-info-paragraph {
+        .infomode:not(.side-by-side):not(.line-by-line):not(.popup) .textual-info-paragraph {
           margin-right: -30%;
         }
       }

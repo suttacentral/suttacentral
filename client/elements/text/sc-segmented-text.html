@@ -369,6 +369,7 @@
                       this._showComplexView();
                       break;
                   case 'popup':
+                      textContent.classList.add('popup');
                       this._addPopupTooltips(textContent);
                       break;
               }
@@ -385,7 +386,7 @@
 
           // reset all classes and remove tooltips.
           _resetViewOptions() {
-              this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
+              this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'popup', 'show-pali');
               Array.from(this.shadowRoot.querySelectorAll('paper-tooltip')).forEach(item =>
                   item.parentNode.removeChild(item)
               );
@@ -616,7 +617,7 @@
               item.href = `#${item.id}`;
               item.classList.add('textual-info-paragraph');
           }
-        
+
           // adds a class to the main container to either show or hide the textual info paragraphs
           _setParagraphsVisible(visible) {
               const textElement = this.$.segmented_text_content;
