@@ -263,6 +263,10 @@
         content: "Pravr-v iv "
       }
 
+      .textual-info-paragraph.nya:before {
+        content: "Nya "
+      }
+
       .textual-info-paragraph .pts:before {
         content: "PTS "
       }
@@ -291,6 +295,14 @@
         content: "PTS vp pli ";
       }
 
+      .textual-info-paragraph .pts-vp-pi:before {
+        content: "PTS vp pli ";
+      }
+
+      .textual-info-paragraph.pts-vp-pi:before {
+        content: "PTS vp pli ";
+      }
+
       .textual-info-paragraph.pts-vp-en:before {
         content: "PTS vp en ";
       }
@@ -308,6 +320,10 @@
       }
 
       .textual-info-paragraph .pts-p-pli:before {
+        content: "PTS p pli "
+      }
+
+      .textual-info-paragraph .pts-p-pi:before {
         content: "PTS p pli "
       }
 
@@ -347,8 +363,8 @@
         content: "SC "
       }
 
-      .textual-info-paragraph.segmented-textual-info-paragraph.sc:before {
-        content: ""
+      .textual-info-paragraph.segmented-textual-info-paragraph.textual-info-paragraph-inline.sc:before {
+        content: "SC "
       }
 
       .textual-info-paragraph.sen:before {
@@ -475,6 +491,11 @@
         border-radius: var(--sc-size-xxs);
       }
 
+      .infomode .textual-info-paragraph:not(.segmented-textual-info-paragraph) {
+        display: inline-block;
+        float: none;
+      }
+
       .infomode .textual-info-paragraph-inline {
         display: inline-block;
         float: none;
@@ -484,15 +505,23 @@
         display: none;
       }
 
+      .infomode.popup .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
+        display: inline-block;
+      }
+
       #simple_text_content.infomode .textual-info-paragraph {
         display: inline-block;
         float: none;
       }
 
+      .infomode.popup .textual-info-paragraph {
+        display: none;
+      }
+
       @media screen and (min-width: 1280px) {
-        .infomode:not(.side-by-side) .textual-info-paragraph {
+        .infomode:not(.side-by-side):not(.popup) .textual-info-paragraph {
           margin-right: -20%;
-          display: block;
+          float: right;
           background-color: transparent;
         }
 
@@ -506,15 +535,39 @@
       }
 
       @media screen and (min-width: 1500px) {
-        .infomode:not(.side-by-side) .textual-info-paragraph {
+        .infomode:not(.side-by-side):not(.popup) .textual-info-paragraph {
           margin-right: -25%;
         }
       }
 
       @media screen and (min-width: 1800px) {
-        .infomode:not(.side-by-side) .textual-info-paragraph {
+        .infomode:not(.side-by-side):not(.popup).textual-info-paragraph {
           margin-right: -30%;
         }
+      }
+
+      .infomode .segmented-textual-info-paragraph {
+        display: none;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph {
+        display: none;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline.segmented-textual-info-paragraph.sc:before {
+        content: "SC ";
+      }
+
+      .infomode.segmented-infomode .sc.textual-info-paragraph.segmented-textual-info-paragraph:not(.textual-info-paragraph-inline) {
+        display: block;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
+        display: inline-block;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline {
+        display: none;
       }
 
       .infomode .textual-info-paragraph {
