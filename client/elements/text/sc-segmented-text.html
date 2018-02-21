@@ -609,9 +609,7 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
-              console.log(item.id);
               item.addEventListener('click', () => {
-                  console.log('scrolling to', item.id);
                   this._scrollToSection(item.id, false, 0)
               });
               item.classList.add('textual-info-paragraph');
