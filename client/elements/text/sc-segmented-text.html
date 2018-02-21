@@ -609,6 +609,11 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
+              console.log(item.id);
+              item.addEventListener('click', () => {
+                  console.log('scrolling to', item.id);
+                  this._scrollToSection(item.id, false, 0)
+              });
               item.classList.add('textual-info-paragraph');
           }
 
@@ -802,18 +807,11 @@
                   return;
               }
               this._removeHighlights();
-              if (sectionId && sectionId.includes('.') &&
-                  (this.chosenTextView === 'none' || !this.translatedSutta)) {
-                  return;
-              }
               setTimeout(() => {
-                  const firstSection = this._processHighlightAndScroll(sectionId);
-                  if (firstSection) {
-                      firstSection.scrollIntoView({
-                          behavior: isSmooth ? 'smooth' : 'instant',
-                          block: 'start',
-                          inline: 'nearest'
-                      });
+                  const section = this._processHighlightAndScroll(sectionId) || this.shadowRoot.getElementById(sectionId);
+                  const options = { behavior: isSmooth ? 'smooth' : 'instant', block: 'start', inline: 'nearest' };
+                  if (section) {
+                      section.scrollIntoView(options);
                   }
               }, delay);
               this.currentId = sectionId;
