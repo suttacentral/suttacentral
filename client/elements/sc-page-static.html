@@ -157,9 +157,24 @@
         /* Subtract height of top bar */
         height: calc(100% - var(--sc-size-xxl) * 2 - 146px);
       }
+
+      #title_toolbar {
+        position: absolute;
+        padding-top: 58px;
+        top: 0;
+        left: 50%;
+        z-index: 999;
+        transform: translateX(-50%);
+        width: 100%;
+      }
+
+      #subtitle_toolbar {
+        margin-top: 62px;
+        padding-bottom: var(--sc-size-md-larger);
+      }
     </style>
 
-    <app-toolbar>
+    <app-toolbar id="title_toolbar">
       <div class="title" main-title>
         <span class="title-text">
           <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
@@ -167,7 +182,7 @@
         </span>
       </div>
     </app-toolbar>
-    <app-toolbar id="lasttoolbar">
+    <app-toolbar id="subtitle_toolbar">
       <div class="title" main-title>
         <p class="subtitle">{{localize('pageSubtitle')}}</p>
       </div>
