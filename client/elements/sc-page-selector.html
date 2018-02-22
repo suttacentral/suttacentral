@@ -64,6 +64,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
       #toolbar_title {
         @apply --paper-font-common-base;
         color: var(--sc-tertiary-text-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       #drawertoggle {
