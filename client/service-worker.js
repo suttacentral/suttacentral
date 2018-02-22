@@ -33,9 +33,5 @@ sw.router.registerRoute(
     sw.strategies.cacheFirst()
 );
 
-// Register navigation routes:
-// sw.router.registerNavigationRoute('.', {
-//     whitelist: [
-//         /^\/$/
-//     ]
-// });
+sw.router.registerNavigationRoute('/');
+
