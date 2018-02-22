@@ -83,12 +83,14 @@
         border-top: 0;
       }
 
-      .card-actions-left {
-        display: inline-block;
+      .author-buttons-container {
+        display: flex;
         align-self: flex-start;
+        align-items: center;
+        justify-content: space-evenly;
       }
 
-      .card-actions-left .author-button:first-of-type {
+      .author-buttons-container .author-button:first-of-type {
         margin-left: -2px;
       }
 
@@ -249,8 +251,13 @@
         transition: margin-top ease-in-out 200ms;
       }
 
-      .card-actions-left:hover + .translations-label {
+      .author-buttons-container:hover + .translations-label {
         margin-top: calc(var(--sc-size-md) * -1);
+      }
+
+      .small-icon {
+        max-height: 16px;
+        max-width: 16px;
       }
 
     </style>
@@ -280,7 +287,7 @@
             <template is="dom-if" if="[[item.volpages]]">
               <template is="dom-if" if=[[!item.biblio]]>
               <span class="book no-margin">
-                <iron-icon class="grey-icon" icon="book"></iron-icon>
+                <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
               </span>
                 <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
                 [[_computeVolPage(item.volpages)]]
@@ -290,9 +297,7 @@
                 <span>
                   <details class="suttaplex-details display-inline">
                     <summary class="volpage-biblio-info-summary">
-                    <span class="book no-margin">
-                      <iron-icon class="grey-icon" icon="book"></iron-icon>
-                    </span>
+                    <iron-icon class="grey-icon" icon="book"></iron-icon>
                       <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
                       [[_computeVolPage(item.volpages)]]
                     </span>
@@ -311,7 +316,7 @@
         </div>
 
         <div class$="[[_addPaddingIfNoBlurb(item.blurb)]] card-actions">
-          <div class="card-actions-left">
+          <div class="author-buttons-container">
             <template is="dom-repeat" items="[[_getUserLanguageTranslations(item.translations, language)]]"
                       as="translation">
               <a class="author-link" href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
