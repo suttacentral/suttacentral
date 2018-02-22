@@ -6,6 +6,8 @@
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
+<link rel="import" href="../../elements/menus/sc-language-menu.html">
+
 <link rel="import" href="../../img/sc-svg-icons.html">
 <link rel="import" href="../../img/sc-language-icons.html">
 
@@ -203,6 +205,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
           }
 
           _getDisplayedItems(translations, siteLanguage) {
+              if (!translations) return;
               // sort so that root languages are first and siteLanguages are deleted
               const languageChoice = [];
               translations.forEach(item => {

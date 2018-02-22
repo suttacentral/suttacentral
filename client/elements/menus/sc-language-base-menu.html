@@ -126,6 +126,16 @@ This is the base language menu that determines the language of the site.
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  // If not used as a main site language select box, pass a unique name here to use in
+                  // the language change event.
+                  cloneName: {
+                      type: String
+                  },
+                  // Whether to ask backend for a list of all languages in the database
+                  // (as opposed to only ones with available translations).
+                  allLanguages: {
+                      type: Boolean
                   }
               };
           }
@@ -161,7 +171,14 @@ This is the base language menu that determines the language of the site.
               }
               try {
                   const languageIsoCode = this.languageListResponse[this.selectedLanguageNum].iso_code;
-                  this.dispatch('changeLanguage', languageIsoCode);
+                  if (this.isClone) {
+                      dispatchEvent(new CustomEvent(`${this.cloneName}-language-changed`, {
+                          composed: true,
+                          bubbles: true
+                      }));
+                  } else {
+                      this.dispatch('changeLanguage', languageIsoCode);
+                  }
               } catch (e) {
                   console.error(e);
               }
@@ -182,7 +199,9 @@ This is the base language menu that determines the language of the site.
           }
 
           _getUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/languages`;
+              let url = `${this.$.meta.byKey('API_ROOT')}/languages`;
+              if (this.allLanguages) url.concat('?all=true');
+              return url;
           }
 
           _getLanguageIconName(isoCode) {
