@@ -17,6 +17,7 @@
   "builds": [
     {
       "name": "es2015-push",
+      "bundle": {
         "stripComments": true,
         "inlineCss": true,
         "sourcemaps": false
