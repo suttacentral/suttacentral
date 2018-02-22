@@ -114,7 +114,7 @@ class Search(Resource):
         if not restrict or restrict == 'dictionary':
             dictionary_result = dictionaries.search(query)
             if dictionary_result:
-                if offset == '0' or restrict == 'dictionary':
+                if offset == 0 or restrict == 'dictionary':
                     # Yeah this is a hack in terms of offset and stuff
                     # but it works: if the client asks for 10 results
                     # it'll return 11. But it doesn't mess with 
