@@ -29,6 +29,10 @@ class Languages(Resource):
         """
         Send list of available languages
         ---
+        parameters:
+           - in: query
+             name: all
+             type: boolean
         responses:
             200:
                 description: List of available languages
@@ -48,11 +52,16 @@ class Languages(Resource):
                                 iso_code:
                                     type: string
         """
+
+        include_all = request.args.get('all', False)
+
         db = get_db()
         languages = list(db.aql.execute(LANGUAGES))
         available_languages = [l['iso_code'] for l in db['available_languages'].all()]
 
-        return [l for l in languages if l['iso_code'] in available_languages], 200
+        response = languages if include_all else [l for l in languages if l['iso_code'] in available_languages]
+
+        return response, 200
 
 
 class Menu(Resource):
