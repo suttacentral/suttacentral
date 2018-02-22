@@ -75,12 +75,16 @@
       .title-text {
         text-align: center;
         color: var(--sc-tertiary-text-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .title-logo-icon {
         vertical-align: bottom;
         height: var(--sc-size-xxl);
         width: var(--sc-size-xxl);
+        margin: 0 var(--sc-size-sm);
       }
 
       .page-not-found-container {
@@ -157,10 +161,10 @@
 
     <app-toolbar>
       <div class="title" main-title>
-        <h1 class="title-text">
+        <span class="title-text">
           <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
-          SuttaCentral
-        </h1>
+          <h1>SuttaCentral</h1>
+        </span>
       </div>
     </app-toolbar>
     <app-toolbar id="lasttoolbar">
