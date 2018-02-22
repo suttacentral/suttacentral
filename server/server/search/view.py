@@ -75,7 +75,8 @@ class Search(Resource):
         offset = request.args.get('offset', 0)
         query = request.args.get('query', None)
         restrict = request.args.get('restrict', None)
-                
+        if restrict == 'all':
+          restrict = None
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
 
         if query is None:
