@@ -20,7 +20,7 @@
       "bundle": {
         "stripComments": true,
         "inlineCss": true,
-        "sourcemaps": false
+        "sourcemaps": true
       },
       "js": {
         "compile": false,
@@ -41,7 +41,7 @@
       "bundle": {
         "stripComments": true,
         "inlineCss": true,
-        "sourcemaps": false
+        "sourcemaps": true
       },
       "js": {
         "compile": false,
@@ -61,7 +61,7 @@
       "bundle": {
         "stripComments": true,
         "inlineCss": true,
-        "sourcemaps": false
+        "sourcemaps": true
       },
       "js": {
         "compile": true,
