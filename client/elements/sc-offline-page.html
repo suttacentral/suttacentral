@@ -14,6 +14,7 @@
 
 <link rel="import" href="../styles/static-styles.html">
 <link rel="import" href="addons/sc-static-page.html">
+<link rel="import" href="menus/sc-language-base-menu.html">
 <link rel="import" href="html-imports/sc-languages-import.html">
 <link rel="import" href="html-imports/sc-request-queue-import.html">
 
@@ -185,7 +186,8 @@
                   </a>
                 </template>
               </p>
-              <sc-language-base-menu id="pwa_language_menu" clone-name="pwa" all-languages></sc-language-base-menu>
+              <sc-language-base-menu id="pwa_language_menu" clone-name="pwa" all-languages
+                                     no-root></sc-language-base-menu>
               <p>{{localize('selectDifferentLang')}}</p>
             </div>
 
