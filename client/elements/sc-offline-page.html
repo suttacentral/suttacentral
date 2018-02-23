@@ -185,8 +185,7 @@
                   </a>
                 </template>
               </p>
-              <sc-language-base-menu id="pwa_language_menu" clone-name="pwa"
-                                     all-languages="[[true]]"></sc-language-base-menu>
+              <sc-language-base-menu id="pwa_language_menu" clone-name="pwa" all-languages></sc-language-base-menu>
               <p>{{localize('selectDifferentLang')}}</p>
             </div>
 
@@ -583,10 +582,6 @@
               delete this.downloadQueue;
               this.cacheDownloadInProgress = false;
               this._showToast('info', this.localize('canceled'));
-          }
-
-          _getAllLanguagesUrl() {
-              return `${this.$.meta.byKey('API_ROOT')}/languages?all=true`;
           }
 
           _showToast(type, inputMessage) {

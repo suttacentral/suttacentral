@@ -27,7 +27,7 @@ This is the base language menu that determines the language of the site.
 
       .language-menu-dropdown {
         @apply --sc-skolar-font-size-md;
-        background-color: var(--sc-secondary-background-color);
+        background-color: transparent;
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-dropdown-menu-icon: {
           color: var(--sc-disabled-text-color);
@@ -127,8 +127,7 @@ This is the base language menu that determines the language of the site.
                       type: String,
                       value: 'en'
                   },
-                  // If not used as a main site language select box, pass a unique name here to use in
-                  // the language change event.
+                  // pass a unique name here to use in the language change event identifier.
                   cloneName: {
                       type: String
                   },
@@ -170,14 +169,17 @@ This is the base language menu that determines the language of the site.
                   return;
               }
               try {
-                  const languageIsoCode = this.languageListResponse[this.selectedLanguageNum].iso_code;
-                  if (this.isClone) {
+                  const chosenLanguage = this.languageListResponse[this.selectedLanguageNum];
+                  // If it's not a main language change menu (but a clone), dispatch an event
+                  if (this.cloneName) {
                       dispatchEvent(new CustomEvent(`${this.cloneName}-language-changed`, {
+                          detail: { isoCode: chosenLanguage.iso_code, name: chosenLanguage.name },
                           composed: true,
                           bubbles: true
                       }));
                   } else {
-                      this.dispatch('changeLanguage', languageIsoCode);
+                      // If it is the main menu, change the website language.
+                      this.dispatch('changeLanguage', chosenLanguage.iso_code);
                   }
               } catch (e) {
                   console.error(e);
@@ -199,9 +201,11 @@ This is the base language menu that determines the language of the site.
           }
 
           _getUrl() {
-              let url = `${this.$.meta.byKey('API_ROOT')}/languages`;
-              if (this.allLanguages) url.concat('?all=true');
-              return url;
+              if (this.allLanguages) {
+                  return `${this.$.meta.byKey('API_ROOT')}/languages?all=true`;
+              } else {
+                  return `${this.$.meta.byKey('API_ROOT')}/languages`;
+              }
           }
 
           _getLanguageIconName(isoCode) {
