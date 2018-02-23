@@ -6,7 +6,6 @@
         "newTech": "PWAs are a new technology. For now, offline usage has some limitations:",
         "suttasOnly": "Suttas only, not Vinaya or Abhidhamma.",
         "oneLang": "Only one language.",
-        "noOriginal": "No original texts.",
         "certainFunctions": "Certain functions, including search, require internet connection.",
         "extraFeatures": "If you want extra features, let us know.",
         "downloadButton": "Download texts in {languageName}",

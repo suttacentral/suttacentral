@@ -6,7 +6,6 @@
         "newTech": "PWA to nowa technologia. Aktualnie istnieje kilka limitacji:",
         "suttasOnly": "Dostępne są tylko Sutry, nie Vinaya ani Abhidhamma.",
         "oneLang": "Tylko jeden język.",
-        "noOriginal": "Brak oryginalnych tekstów.",
         "certainFunctions": "Niektóre funkcje, (na przykład wyszukiwarka) wymagają aktywnego połączenia z internetem.",
         "extraFeatures": "Jeśli życzysz sobie dodatkowych funkcji, prosimy - daj nam znać.",
         "downloadButton": "Rozpocznij pobieranie tekstów w języku: {languageName}",
