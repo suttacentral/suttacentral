@@ -74,17 +74,6 @@ def process_root_languages(structure_dir):
             data.update({sutta_id: uid for sutta_id in lang['contains']})
     return data
 
-
-def process_menu_ordering(structure_dir):
-    raw_data = json_load(structure_dir / 'menu-structure.json')
-
-    data = {}
-    for level in raw_data:
-        for i, sutta in enumerate(level):
-            data[sutta] = i
-    return data
-
-
 def process_division_files(docs, name_docs, edges, mapping, division_files, root_languages,
                            structure_dir):
     sutta_file = json_load(structure_dir / 'sutta.json')
@@ -137,12 +126,8 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
                                   '_key': f'{uid}_{lang}'})
 
             del entry['_path']
-            ordering_data = process_menu_ordering(structure_dir)
-            try:
-                entry['num'] = ordering_data[uid]
-            except KeyError:
-                if 'num' not in entry:
-                    entry['num'] = i
+            if 'num' not in entry:
+                entry['num'] = i
 
             for data_name in ['volpage', 'biblio_uid', 'acronym']:
                 try:
@@ -166,6 +151,7 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
 
 
 def process_category_files(category_files, db, edges, mapping):
+    division_ordering = []
     for category_file in category_files:
         category_name = category_file.stem
         if category_name not in ['grouping', 'language', 'pitaka', 'sect']:
@@ -183,9 +169,12 @@ def process_category_files(category_files, db, edges, mapping):
             entry['num'] = i
 
             if 'contains' in entry:
+                if category_name == 'pitaka':
+                    division_ordering.extend(entry['contains'])
                 for uid in entry['contains']:
                     child = mapping.get(pathlib.PurePath(uid))
                     if child is None:
+                        logging.error(f'Division defined in {category_name} not found: {uid}')
                         continue
                     child[entry['type']] = entry['uid']
                     edges.append({
@@ -195,18 +184,16 @@ def process_category_files(category_files, db, edges, mapping):
                     })
                 del entry['contains']
 
-            if edge_type == 'pitaka':
-                for group in entry['grouping']:
-                    edges.append({
-                        '_from': f'pitaka/{entry["_key"]}',
-                        '_to': f'grouping/{group}',
-                        'type': edge_type
-                    })
-                del entry['grouping']
-
             category_docs.append(entry)
         collection.import_bulk_safe(category_docs, overwrite=True)
-
+    
+    for i, uid in enumerate(division_ordering):
+        try:
+            mapping[Path(uid)]['num'] = i
+        except KeyError:
+            # We should've already reported an error earlier
+            continue
+        
 
 def perform_update_queries(db):
     # add root language uid to everything.
