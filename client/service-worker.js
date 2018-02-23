@@ -33,5 +33,6 @@ sw.router.registerRoute(
     sw.strategies.cacheFirst()
 );
 
-sw.router.registerNavigationRoute('/');
-
+if (self.location.hostname !== 'localhost') {
+    sw.router.registerNavigationRoute('/');
+}

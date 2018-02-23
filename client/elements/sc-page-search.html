@@ -223,7 +223,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                       type: String,
                       value: '',
                       statePath: 'currentRoute.__queryParams.query',
-                      observer: '_startNewSearch'
+                      observer: '_startNewSearchWithNewWord'
                   },
                   // The actual query parameters of the search
                   searchParams: {
@@ -360,9 +360,23 @@ than ten results in total, a dropdown selection menu appears at the top.
                   limit: this.resultsPerLoad,
                   offset: (this.currentPage * this.resultsPerLoad),
                   query: this.searchQuery,
-                  language: this.language
+                  language: this.language,
+                  restrict: this.currentFilter
               });
               this._generateRequest();
+          }
+
+          // generates a new search request after a new search-word was typed.
+          _startNewSearchWithNewWord() {
+              if (!this.isOnline || !this.searchQuery) {
+                  return;
+              }
+              this.set('currentFilter', 'all');
+              const filterMenu = this.shadowRoot.querySelector('#filter_menu');
+              if (filterMenu) {
+                  filterMenu.resetFilter();
+              }
+              this._startNewSearch();
           }
 
           // generates a new search request.
@@ -374,7 +388,8 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.dispatch('initiateSearch', {
                   limit: this.resultsPerLoad,
                   query: this.searchQuery,
-                  language: this.language
+                  language: this.language,
+                  restrict: this.currentFilter
               });
               this._generateRequest();
           }
@@ -384,12 +399,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.splice('visibleSearchResults', 0, this.visibleSearchResults.length);
               this.splice('allSearchResults', 0, this.allSearchResults.length);
               this.set('currentPage', 0);
-              this.set('currentFilter', 'all');
               this.set('totalLoadedResults', 0);
-              const filterMenu = this.shadowRoot.querySelector('#filter_menu');
-              if (filterMenu) {
-                  filterMenu.resetFilter();
-              }
           }
 
           // Checks if the item's category fits in the current filter.
@@ -428,7 +438,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                       selectedView = 'all';
               }
               this.currentFilter = selectedView;
-              this._filterSearchResults();
+              this._startNewSearch();
           }
 
           // The endless scroll is dependant on a scroll event, but if there's less then 1 item
@@ -437,14 +447,7 @@ than ten results in total, a dropdown selection menu appears at the top.
           _loadMoreIfMinimumNotReached() {
               if (this.visibleSearchResults.length < 1 && !this._areAllItemsLoaded()) {
                   this._loadNextPage();
-                  this._filterSearchResults();
               }
-          }
-
-          _filterSearchResults() {
-              this.set('visibleSearchResults', this.allSearchResults.filter((item) => {
-                  return this._belongsToFilterScope(item);
-              }));
           }
 
           _areAllItemsLoaded() {
@@ -474,7 +477,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // If there is a title, the division is the subtitle
           _calculateDivision(item) {
-              return item.heading.title ? item.heading.division : '';
+              return item.heading.title ? item.uid : '';
           }
           
           _calculateLink(item) {
