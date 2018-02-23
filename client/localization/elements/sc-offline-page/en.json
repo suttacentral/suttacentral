@@ -12,7 +12,7 @@
         "supportsPWAs": "Your browser supports Progressive Web Apps!",
         "doesntSupportPWAs": "Your browser does not support Progressive Web Apps.",
         "listBrowsers": "Here is a list of supported browsers.",
-        "selectDifferentLang": "If you would like to choose a different language, select one from the menu.",
+        "selectDifferentLang": "By default your suttas will be downloaded in the site language. If you would like to choose a different language, select one from the menu.",
         "downloading": "Downloading",
         "resume": "Resume download",
         "pause": "Pause download",
@@ -31,6 +31,7 @@
         "paliLookupsDescription": "Select to download dictionary lookups of Pali words in the following languages:",
         "chineseLookups": "Include Chinese lookups",
         "chineseLookupsDescription": "Select to download dictionary lookups of Chinese words in the following languages:",
-        "downloadStarted": "Your download has commenced. You can keep using the site and we will let you know when it’s complete."
+        "downloadStarted": "Your download has commenced. You can keep using the site and we will let you know when it’s complete.",
+        "language": "Language"
     }
 }

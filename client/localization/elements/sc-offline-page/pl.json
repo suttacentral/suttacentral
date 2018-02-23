@@ -12,7 +12,7 @@
         "supportsPWAs": "Twoja przeglądarka wspiera Progresywne Aplikacje Webowe!",
         "doesntSupportPWAs": "Twoja przeglądarka nie wspiera Progresywnych Aplikacji Webowych.",
         "listBrowsers": "Oto lista wspieranych przeglądarek.",
-        "selectDifferentLang": "Jeśli chciałbyś wybrać inny język, wybierz go w menu głównym.",
+        "selectDifferentLang": "Domyślnie pobrane zostaną teksty w języku strony. Jeśli chcesz wybrać inny język, wybierz go z menumenu.",
         "downloading": "Pobieranie",
         "resume": "Wznów pobieranie",
         "pause": "Spauzuj pobieranie",
@@ -31,6 +31,7 @@
         "paliLookupsDescription": "Zaznacz, aby ściągnąć także definicje słownikowe dla słów palijskich w następujących językach:",
         "chineseLookups": "Uwzględnij spoglądanie do słownika chińskiego",
         "chineseLookupsDescription": "Zaznacz, aby ściągnąć także definicje słownikowe dla słów chińskich w następujących językach:",
-        "downloadStarted": "Pobieranie zostało rozpoczęte. Możesz nadal używać strony, damy Ci znać kiedy się zakończy."
+        "downloadStarted": "Pobieranie zostało rozpoczęte. Możesz nadal używać strony, damy Ci znać kiedy się zakończy.",
+        "language": "Język"
     }
 }
