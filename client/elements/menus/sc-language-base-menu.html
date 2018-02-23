@@ -82,7 +82,7 @@ This is the base language menu that determines the language of the site.
         on-response="_languageListDownloaded"
     ></iron-ajax>
 
-    <paper-dropdown-menu class="language-menu-dropdown" label="{{localize('languageLabel')}}"
+    <paper-dropdown-menu class="language-menu-dropdown" label="{{localize('languageLabel')}}" disabled="[[disabled]]"
                          title="{{localize('browseTooltip')}}" vertical-align="auto">
       <paper-listbox class="language-menu-list" slot="dropdown-content" selected="{{selectedLanguageNum}}">
         <template is="dom-repeat" items="[[languageListResponse]]" as="language">
@@ -138,6 +138,9 @@ This is the base language menu that determines the language of the site.
                   },
                   // If true, no root languages will be displayed.
                   noRoot: {
+                      type: Boolean
+                  },
+                  disabled: {
                       type: Boolean
                   }
               };
