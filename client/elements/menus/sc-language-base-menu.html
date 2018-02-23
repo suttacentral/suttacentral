@@ -191,10 +191,10 @@ This is the base language menu that determines the language of the site.
           }
 
           _languageListDownloaded() {
-              this.selectedLanguageNum = this._findChosenLanguageIndex(this.languageListResponse, this.language);
               if (this.noRoot) {
                   this.languageListResponse = this.languageListResponse.filter(lang => !lang.is_root);
               }
+              this.selectedLanguageNum = this._findChosenLanguageIndex(this.languageListResponse, this.language);
           }
 
           // Listens to changes in the global redux app state and updates the language chosen in the list dropdown.
