@@ -16,10 +16,52 @@
   ],
   "builds": [
     {
+      "name": "es2015-push",
       "bundle": {
         "stripComments": true,
         "inlineCss": true,
-        "sourcemaps": false
+        "sourcemaps": true
+      },
+      "js": {
+        "compile": false,
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "addServiceWorker": false,
+      "addPushManifest": true,
+      "browserCapabilities": ["es2015", "push"]
+    },
+    {
+      "name": "es2015",
+      "bundle": {
+        "stripComments": true,
+        "inlineCss": true,
+        "sourcemaps": true
+      },
+      "js": {
+        "compile": false,
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "addServiceWorker": false,
+      "browserCapabilities": ["es2015"]
+    },
+    {
+      "name": "default",
+      "bundle": {
+        "stripComments": true,
+        "inlineCss": true,
+        "sourcemaps": true
       },
       "js": {
         "compile": true,
@@ -33,5 +75,6 @@
       },
       "addServiceWorker": false
     }
+
   ]
 }
