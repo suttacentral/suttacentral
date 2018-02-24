@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="../elements/static/home-page.html">
 <link rel="import" href="../elements/static/donations-page.html">
@@ -165,6 +166,8 @@
         padding-bottom: var(--sc-size-md-larger);
       }
     </style>
+
+    <sherby-metadata data="[[metaData]]"></sherby-metadata>
 
     <app-toolbar id="title_toolbar">
       <div class="title" main-title>
@@ -423,6 +426,9 @@
                   noToolbarSelected: {
                       type: Boolean,
                       value: true
+                  },
+                  metaData: {
+                      type: String
                   }
               }
           }
@@ -478,6 +484,14 @@
               this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(this.selectedPage);
               this.$.pages.selected = this.selectedPage;
               requestAnimationFrame(() => {this._selectNavbarLink()});
+              this._createMetaData(this.selectedPage);
+          }
+
+          _createMetaData(pageSelection) {
+            console.log(pageSelection);
+              this.metaData = {
+                'og:title': `SuttaCentral - ${pageSelection.toLowerCase()}`
+              };
           }
       }
 

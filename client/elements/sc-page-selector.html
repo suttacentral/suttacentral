@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../bower_components/page-title/page-title.html">
+<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="../elements/menus/sc-toolbar.html">
 <link rel="import" href="../elements/sc-page-static.html">
@@ -145,6 +146,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         </app-header>
 
         <page-title base-title="" page-title="{{_getPageTitle(toolbarTitle)}}"></page-title>
+        <sherby-metadata data="[[metaData]]"></sherby-metadata>
 
         <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
           <sc-page-static></sc-page-static>
@@ -264,6 +266,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  metaData: {
+                      type: String
                   }
               }
           }
@@ -345,20 +350,33 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               }
           }
 
+          _createMetaData(pageTitle) {
+              const today = new Date();
+              this.metaData = {
+                'og:title': pageTitle,
+                'og:description': "Early Buddhist texts and modern translations. Suttas (sutras) from the Tipitaka (Tripitaka) in Pali, Chinese, Sanskrit, and Tibetan with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.",
+                cdate: today,
+                mdate: today
+              };
+          }
+
           _getPageTitle(title) {
+              let pageTitle = '';
               if (title === null) {
-                  return 'Page not found';
+                  pageTitle = 'Page not found';
               }
               else if (['searchResults', 'dictionaryResults'].includes(title)) {
-                  return this.localize(title);
+                  pageTitle = this.localize(title);
               }
               else if (this.suttaId && this.shouldShowSuttaTextPage && title) {
-                  return `${this.suttaId.toUpperCase()}: ${title}`;
+                  pageTitle = `${this.suttaId.toUpperCase()}: ${title}`;
               } else if (title) {
-                  return title;
+                  pageTitle = title;
               } else {
-                  return 'SuttaCentral';
+                  pageTitle = 'SuttaCentral';
               }
+              this._createMetaData(pageTitle);
+              return pageTitle;
           }
 
           _recalculateView() {

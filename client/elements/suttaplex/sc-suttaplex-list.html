@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="sc-suttaplex-section-title.html">
 <link rel="import" href="sc-suttaplex.html">
@@ -112,6 +113,9 @@
       </iron-list>
 
     </div>
+
+    <sherby-metadata data="[[metaData]]"></sherby-metadata>
+
   </template>
 
   <script>
@@ -154,7 +158,10 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
-                  }
+                  },
+                  metaData: {
+                      type: String
+                  },
               }
           }
 
@@ -192,6 +199,7 @@
                   return;
               }
               this.dispatch('changeToolbarTitle', this.suttaplexReturns[0].original_title);
+              this._createMetaData(this.suttaplexReturns[0]);
           }
 
           _isSuttaplex(item) {
@@ -230,6 +238,13 @@
           // https://github.com/PolymerElements/iron-list/issues/242#issuecomment-232450210
           _getItemZIndex(allItems, index) {
               return allItems ? (allItems.length - index) : 0;
+          }
+
+          _createMetaData(pageInfo) {
+              this.metaData = {
+                'og:title': `${pageInfo.original_title} - Suttas and Parallels`,
+                'og:description': pageInfo.blurb
+              };
           }
       }
 

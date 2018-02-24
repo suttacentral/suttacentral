@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="../styles/sc-dict-styles.html">
 <link rel="import" href="../styles/sc-scrollbar-style.html">
@@ -194,6 +195,8 @@
       </main>
     </div>
 
+    <sherby-metadata data="[[metaData]]"></sherby-metadata>
+
   </template>
 
   <script>
@@ -241,7 +244,10 @@
                       value: true
                   },
                   dictionaryAdjacent: Array,
-                  dictionarySimilar: Array
+                  dictionarySimilar: Array,
+                  metaData: {
+                      type: String
+                  }
               }
           }
 
@@ -269,6 +275,7 @@
               this._loadAdjacent();
               this._loadSimilar();
               this.$.ajax.url = this._computeUrl();
+              this._createMetaData(this.dictionaryWord);
               return this.$.ajax.generateRequest();
           }
 
@@ -350,6 +357,11 @@
               this.$.drawer.toggle();
           }
 
+          _createMetaData(dictionaryWord) {
+              this.metaData = {
+                'og:title': `Pali dictionary results for ${dictionaryWord}`
+              };
+          }
       }
 
       customElements.define(SCPageDictionary.is, SCPageDictionary);
