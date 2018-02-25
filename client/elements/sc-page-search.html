@@ -97,6 +97,15 @@ than ten results in total, a dropdown selection menu appears at the top.
         margin: 0 0 20px 0;
       }
 
+      .search-result-snippet dd {
+        margin-left: 0;
+      }
+
+      .search-result-snippet dfn {
+        font-style: normal;
+        font-weight: bold;
+      }
+
       .search-result-filter-menu {
         margin-top: -20px;
       }
@@ -113,7 +122,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
       .google-maps {
         height: 480px;
-        margin-bottom: 20px;
+        margin: var(--sc-size-md-larger) 0;
       }
 
       .google-maps iframe {
@@ -479,7 +488,7 @@ than ten results in total, a dropdown selection menu appears at the top.
           _calculateDivision(item) {
               return item.heading.title ? item.uid : '';
           }
-          
+
           _calculateLink(item) {
               return item.url;
           }
