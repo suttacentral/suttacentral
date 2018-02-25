@@ -33,6 +33,7 @@
         display: flex;
         justify-content: space-between;
         padding: 0;
+        margin-bottom:
       }
 
       h1 {
@@ -72,7 +73,7 @@
       }
 
       .dictionary-entries {
-        padding: 0;
+        padding: var(--sc-size-xl) 0 var(--sc-size-md);
       }
 
       .related-terms li {
@@ -293,7 +294,7 @@
                     return this.dictionaryReturns[item];
                   }
               }
-          } 
+          }
 
           _getDictionaryTitle(dictname) {
               return this.dictionaryTitles[dictname];
