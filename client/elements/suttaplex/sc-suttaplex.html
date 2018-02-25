@@ -53,15 +53,12 @@
         @apply --paper-font-body2;
         color: var(--sc-secondary-text-color);
         font-weight: normal;
-        white-space: nowrap;
-        overflow: hidden;
         text-overflow: ellipsis;
       }
 
-      .suttaplex-nerdy-row:hover {
-        text-overflow: clip;
-        white-space: normal;
-        word-break: break-all;
+      .suttaplex-nerdy-row.hidden-row {
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       .nerdy-row-element {
@@ -277,7 +274,7 @@
             </paper-tooltip>
           </div>
 
-          <div class="suttaplex-nerdy-row">
+          <div class="suttaplex-nerdy-row hidden-row" on-tap="revealHiddenNerdyRowContent">
           <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
             [[item.original_title]]
           </span>
@@ -621,6 +618,20 @@
                   return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
               } else {
                   return localize('volumeAndPage');
+              }
+          }
+
+          revealHiddenNerdyRowContent() {
+              const nerdyRow = this.shadowRoot.querySelector('.suttaplex-nerdy-row');
+              console.log(nerdyRow.clientWidth);
+              console.log(nerdyRow.scrollWidth);
+              if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
+                console.log ('showpopup');
+              }
+              if (nerdyRow.classList.contains('hidden-row')) {
+                  nerdyRow.classList.remove('hidden-row');
+              } else {
+                  nerdyRow.classList.add('hidden-row');
               }
           }
       }
