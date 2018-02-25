@@ -148,13 +148,14 @@
         margin-bottom: var(--sc-size-sm);
       }
 
-      .lookups_container {
-        height: 0;
-        transition: height 200ms ease-in-out;
+      #lookups_container {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 200ms ease-in-out;
       }
 
-      .lookups_container.open {
-        height: auto;
+      #lookups_container.open {
+        max-height: none;
       }
 
       @media screen and (max-width: 600px) {
@@ -216,7 +217,9 @@
                                    active="{{shouldDownloadParallels}}"></paper-toggle-button>
 
               <h3 class="option-title">{{localize('downloadRootTexts')}}</h3>
-              <div class="option-description">{{localize('downloadRootTextsDescription', 'toLang', defaultPaliDictToLang.name)}}</div>
+              <div class="option-description">{{localize('downloadRootTextsDescription', 'toLang', defaultPaliDictToLang.name)}}
+                <paper-button id="toggle_lookup_display_button">{{localize('here')}}</paper-button>
+              </div>
               <paper-toggle-button id="download_root_texts_button" class="toggle-button" noink
                                    disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]"
                                    active="{{shouldDownloadRootTexts}}"></paper-toggle-button>
@@ -245,7 +248,7 @@
                   </template>
                 </div>
 
-            </div>
+              </div>
 
             </div>
 
@@ -413,6 +416,7 @@
               }
               this.$.play_button.addEventListener('click', () => { this._resumeOrPauseDownload() });
               this.$.stop_button.addEventListener('click', () => { this._stopDownload() });
+              this.$.toggle_lookup_display_button.addEventListener('click', () => { this._toggleLookupsOpen() });
               addEventListener('pwa-language-changed', (e) => {
                   this.chosenLanguageNativeName = e.detail.name;
                   this.chosenLanguageIsoCode = e.detail.isoCode;
@@ -621,8 +625,9 @@
               this._showToast('info', this.localize('canceled'));
           }
 
-          _toggleLookupsOpen(shouldDisplayLookupsList) {
-              return shouldDisplayLookupsList ? 'open' : '';
+          _toggleLookupsOpen() {
+              const lookupsContainer = this.shadowRoot.querySelector('#lookups_container');
+              lookupsContainer.classList.toggle('open');
           }
 
           _getDefaultPaliLookupDictionaryLang(siteLangIsoCode) {
