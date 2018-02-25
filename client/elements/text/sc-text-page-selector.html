@@ -100,7 +100,7 @@
     </template>
 
     <sc-text-image id="sc_text_image"></sc-text-image>
-    <sherby-metadata data="[[metaData]]"></sherby-metadata>
+    <sherby-metadata data="[[_createMetaData(responseData, localize)]]"></sherby-metadata>
 
   </template>
 
@@ -170,9 +170,6 @@
                   },
                   previous: {
                       type: Object
-                  },
-                  metaData: {
-                      type: String
                   }
               }
           }
@@ -220,7 +217,6 @@
                   textOptions._closeSuttaplex();
               }
               this.dispatch('downloadSuttaText', this.responseData);
-              this._createMetaData(this.responseData);
           }
 
           setProperties() {
@@ -281,10 +277,25 @@
               return (!rootSutta && !translatedSutta) || networkError;
           }
 
-          _createMetaData(responseData) {
-              this.metaData = {
-                'og:description': responseData.suttaplex.blurb
-              };
+          _createMetaData(responseData, localize) {
+              if (!responseData) {
+                  return;
+              }
+              let description = localize('metaDescriptionText');
+              if (responseData.suttaplex.blurb) {
+                  description = responseData.suttaplex.blurb
+              }
+              if (responseData.translation) {
+                  return {
+                    'og:title': `${responseData.translation.title}—${responseData.translation.author}`,
+                    'og:description': description
+                  };
+              } else {
+                  return {
+                    'og:title': `${responseData.root_text.title}—${responseData.root_text.author}`,
+                    'og:description': description
+                  };
+              }
           }
       }
 

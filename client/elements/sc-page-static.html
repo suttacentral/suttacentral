@@ -167,7 +167,7 @@
       }
     </style>
 
-    <sherby-metadata data="[[metaData]]"></sherby-metadata>
+    <sherby-metadata data="[[_createMetaData(selectedPage, localize)]]"></sherby-metadata>
 
     <app-toolbar id="title_toolbar">
       <div class="title" main-title>
@@ -426,9 +426,6 @@
                   noToolbarSelected: {
                       type: Boolean,
                       value: true
-                  },
-                  metaData: {
-                      type: String
                   }
               }
           }
@@ -484,14 +481,15 @@
               this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(this.selectedPage);
               this.$.pages.selected = this.selectedPage;
               requestAnimationFrame(() => {this._selectNavbarLink()});
-              this._createMetaData(this.selectedPage);
           }
 
-          _createMetaData(pageSelection) {
-            console.log(pageSelection);
-              this.metaData = {
-                'og:title': `SuttaCentral - ${pageSelection.toLowerCase()}`
-              };
+          _createMetaData(pageSelection, localize) {
+              const description = localize('metaDescriptionText');
+              const pageName = localize(`${pageSelection}`);
+              return { 
+                'og:title': `SuttaCentral—${pageName.toLowerCase()}`,
+                'og:description': description
+                 };
           }
       }
 

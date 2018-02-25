@@ -195,7 +195,7 @@
       </main>
     </div>
 
-    <sherby-metadata data="[[metaData]]"></sherby-metadata>
+    <sherby-metadata data="[[_createMetaData(dictionaryWord, localize)]]"></sherby-metadata>
 
   </template>
 
@@ -244,10 +244,7 @@
                       value: true
                   },
                   dictionaryAdjacent: Array,
-                  dictionarySimilar: Array,
-                  metaData: {
-                      type: String
-                  }
+                  dictionarySimilar: Array
               }
           }
 
@@ -275,7 +272,6 @@
               this._loadAdjacent();
               this._loadSimilar();
               this.$.ajax.url = this._computeUrl();
-              this._createMetaData(this.dictionaryWord);
               return this.$.ajax.generateRequest();
           }
 
@@ -357,10 +353,13 @@
               this.$.drawer.toggle();
           }
 
-          _createMetaData(dictionaryWord) {
-              this.metaData = {
-                'og:title': `Pali dictionary results for ${dictionaryWord}`
-              };
+          _createMetaData(dictionaryWord, localize) {
+              const description = localize('metaDescriptionText');
+              const dictionaryResultsText = localize('dictionaryResultsText');
+              return { 
+                'og:title': `${dictionaryResultsText} ${dictionaryWord}`,
+                'og:description': description
+                };
           }
       }
 

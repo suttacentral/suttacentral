@@ -206,7 +206,7 @@ than ten results in total, a dropdown selection menu appears at the top.
       </div>
     </template>
 
-    <sherby-metadata data="[[metaData]]"></sherby-metadata>
+    <sherby-metadata data="[[_createMetaData(searchQuery, localize)]]"></sherby-metadata>
 
   </template>
   <script>
@@ -282,9 +282,6 @@ than ten results in total, a dropdown selection menu appears at the top.
                   isOnline: {
                       type: Boolean,
                       value: true
-                  },
-                  metaData: {
-                      type: String
                   }
               }
           }
@@ -383,7 +380,6 @@ than ten results in total, a dropdown selection menu appears at the top.
                   filterMenu.resetFilter();
               }
               this._startNewSearch();
-              this._createMetaData(this.searchQuery);
           }
 
           // generates a new search request.
@@ -499,10 +495,13 @@ than ten results in total, a dropdown selection menu appears at the top.
               return `${this.$.meta.byKey('API_ROOT')}/search`;
           }
 
-          _createMetaData(searchWord) {
-              this.metaData = {
-                'og:title': `Search results for ${searchWord}`
-              };
+          _createMetaData(searchWord, localize) {
+              const description = localize('metaDescriptionText');
+              const searchResultsText = localize('searchResultsText');
+              return { 
+                'og:title': `${searchResultsText} ${searchWord}`,
+                'og:description': description
+                 };
           }
       }
 

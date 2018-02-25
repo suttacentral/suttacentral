@@ -146,7 +146,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         </app-header>
 
         <page-title base-title="" page-title="{{_getPageTitle(toolbarTitle)}}"></page-title>
-        <sherby-metadata data="[[metaData]]"></sherby-metadata>
+        <sherby-metadata data="[[_createMetaData(localize)]]"></sherby-metadata>
 
         <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
           <sc-page-static></sc-page-static>
@@ -266,9 +266,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
-                  },
-                  metaData: {
-                      type: String
                   }
               }
           }
@@ -350,33 +347,32 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               }
           }
 
-          _createMetaData(pageTitle) {
+          _createMetaData(localize) {
               const today = new Date();
-              this.metaData = {
-                'og:title': pageTitle,
-                'og:description': "Early Buddhist texts and modern translations. Suttas (sutras) from the Tipitaka (Tripitaka) in Pali, Chinese, Sanskrit, and Tibetan with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.",
+              const description = localize('metaDescriptionText');
+              const keywords = localize('metaKeywords');
+              return {
+                description: description,
+                keywords: keywords,
                 cdate: today,
                 mdate: today
               };
           }
 
           _getPageTitle(title) {
-              let pageTitle = '';
               if (title === null) {
-                  pageTitle = 'Page not found';
+                  return 'Page not found';
               }
               else if (['searchResults', 'dictionaryResults'].includes(title)) {
-                  pageTitle = this.localize(title);
+                  return this.localize(title);
               }
               else if (this.suttaId && this.shouldShowSuttaTextPage && title) {
-                  pageTitle = `${this.suttaId.toUpperCase()}: ${title}`;
+                  return `${this.suttaId.toUpperCase()}: ${title}`;
               } else if (title) {
-                  pageTitle = title;
+                  return title;
               } else {
-                  pageTitle = 'SuttaCentral';
+                  return 'SuttaCentral';
               }
-              this._createMetaData(pageTitle);
-              return pageTitle;
           }
 
           _recalculateView() {

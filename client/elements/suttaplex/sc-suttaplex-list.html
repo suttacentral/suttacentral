@@ -114,7 +114,7 @@
 
     </div>
 
-    <sherby-metadata data="[[metaData]]"></sherby-metadata>
+    <sherby-metadata data="[[_createMetaData(suttaplexReturns, localize)]]"></sherby-metadata>
 
   </template>
 
@@ -158,10 +158,7 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
-                  },
-                  metaData: {
-                      type: String
-                  },
+                  }
               }
           }
 
@@ -199,7 +196,6 @@
                   return;
               }
               this.dispatch('changeToolbarTitle', this.suttaplexReturns[0].original_title);
-              this._createMetaData(this.suttaplexReturns[0]);
           }
 
           _isSuttaplex(item) {
@@ -240,10 +236,17 @@
               return allItems ? (allItems.length - index) : 0;
           }
 
-          _createMetaData(pageInfo) {
-              this.metaData = {
-                'og:title': `${pageInfo.original_title} - Suttas and Parallels`,
-                'og:description': pageInfo.blurb
+          _createMetaData(pageInfo, localize) {
+              if (!pageInfo) {
+                  return;
+              }
+              let description = localize('metaDescriptionText');
+              if (pageInfo[0].blurb) {
+                  description = pageInfo[0].blurb
+              }
+              return {
+                'og:title': `${pageInfo[0].original_title}—Suttas and Parallels`,
+                'og:description': description
               };
           }
       }
