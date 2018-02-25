@@ -148,6 +148,15 @@
         margin-bottom: var(--sc-size-sm);
       }
 
+      .lookups_container {
+        height: 0;
+        transition: height 200ms ease-in-out;
+      }
+
+      .lookups_container.open {
+        height: auto;
+      }
+
       @media screen and (max-width: 600px) {
         .no-phone-top-margin {
           margin-top: 0;
@@ -207,32 +216,36 @@
                                    active="{{shouldDownloadParallels}}"></paper-toggle-button>
 
               <h3 class="option-title">{{localize('downloadRootTexts')}}</h3>
-              <div class="option-description">{{localize('downloadRootTextsDescription')}}</div>
+              <div class="option-description">{{localize('downloadRootTextsDescription', 'toLang', defaultPaliDictToLang.name)}}</div>
               <paper-toggle-button id="download_root_texts_button" class="toggle-button" noink
                                    disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]"
                                    active="{{shouldDownloadRootTexts}}"></paper-toggle-button>
 
-              <h3 class="option-title">{{localize('paliLookups')}}</h3>
-              <div class="option-description">{{localize('paliLookupsDescription')}}</div>
-              <div class="option-multi-select-container">
-                <template is="dom-repeat" items="[[paliLookupLanguages]]" as="lang">
-                  <paper-checkbox class="option-checkbox" on-change="_togglePaliCheckbox"
-                                  disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
-                    [[lang.name]]
-                  </paper-checkbox>
-                </template>
-              </div>
+              <div id="lookups_container" class$="[[_toggleLookupsOpen(shouldDisplayLookupsList)]]">
 
-              <h3 class="option-title">{{localize('chineseLookups')}}</h3>
-              <div class="option-description">{{localize('chineseLookupsDescription')}}</div>
-              <div class="option-multi-select-container">
-                <template is="dom-repeat" items="[[chineseLookupLanguages]]" as="lang">
-                  <paper-checkbox class="option-checkbox" on-change="_toggleChineseCheckbox"
-                                  disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
-                    [[lang.name]]
-                  </paper-checkbox>
-                </template>
-              </div>
+                <h3 class="option-title">{{localize('paliLookups')}}</h3>
+                <div class="option-description">{{localize('paliLookupsDescription')}}</div>
+                <div class="option-multi-select-container">
+                  <template is="dom-repeat" items="[[paliLookupLanguages]]" as="lang">
+                    <paper-checkbox class="option-checkbox" on-change="_togglePaliCheckbox"
+                                    disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
+                      [[lang.name]]
+                    </paper-checkbox>
+                  </template>
+                </div>
+
+                <h3 class="option-title">{{localize('chineseLookups')}}</h3>
+                <div class="option-description">{{localize('chineseLookupsDescription')}}</div>
+                <div class="option-multi-select-container">
+                  <template is="dom-repeat" items="[[chineseLookupLanguages]]" as="lang">
+                    <paper-checkbox class="option-checkbox" on-change="_toggleChineseCheckbox"
+                                    disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
+                      [[lang.name]]
+                    </paper-checkbox>
+                  </template>
+                </div>
+
+            </div>
 
             </div>
 
@@ -331,7 +344,7 @@
                           {
                               name: 'English',
                               isoCode: 'en',
-                              enabled: false
+                              enabled: true
                           },
                           {
                               name: 'Español',
@@ -374,6 +387,20 @@
                               enabled: false
                           }
                       ]
+                  },
+                  shouldDisplayLookupList: {
+                      type: Boolean
+                  },
+                  siteLangFullName: {
+                      type: String,
+                      statePath: 'fullSiteLanguageName'
+                  },
+                  // This property stores the default Pali lookup dictionary language.
+                  // If there is no lookupp dictionary available in the user language,
+                  // we default to English.
+                  defaultPaliDictToLang: {
+                      type: Object,
+                      computed: '_getDefaultPaliLookupDictionaryLang(language)'
                   }
               }
           }
@@ -546,6 +573,7 @@
           }
 
           _getPaliLookupUrl(toLang) {
+              console.log(toLang);
               return `${this.$.meta.byKey('API_ROOT')}/dictionaries/lookup?from=pli&to=${toLang}`;
           }
 
@@ -591,6 +619,18 @@
               delete this.downloadQueue;
               this.cacheDownloadInProgress = false;
               this._showToast('info', this.localize('canceled'));
+          }
+
+          _toggleLookupsOpen(shouldDisplayLookupsList) {
+              return shouldDisplayLookupsList ? 'open' : '';
+          }
+
+          _getDefaultPaliLookupDictionaryLang(siteLangIsoCode) {
+              const lookupLang = this.paliLookupLanguages.filter(language => language.isoCode === siteLangIsoCode);
+              if (lookupLang && lookupLang.length > 0) {
+                  return lookupLang[0];
+              }
+              else return { name: 'English', isoCode: 'en' };
           }
 
           _showToast(type, inputMessage) {

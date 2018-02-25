@@ -26,7 +26,7 @@
         "downloadParallels": "Uwzględnij analogie",
         "downloadParallelsDescription": "Zaznacz, aby pobrać także tabelki zawierające analogie do tekstów.",
         "downloadRootTexts": "Uwzględnij teksty w językach źródłowych",
-        "downloadRootTextsDescription": "Zaznacz, aby pobrać także teksty w językach źródłowych, a także słownik Pali > {toLang}",
+        "downloadRootTextsDescription": "Zaznacz, aby pobrać także teksty w językach źródłowych, Ta opcja zawiera także słownik Pali > {toLang}.",
         "toChangeLookup": "Aby zmienić język słownika, kliknij ",
         "here": "tutaj.",
         "paliLookups": "Uwzględnij spoglądanie do słownika Pali.",
