@@ -729,16 +729,6 @@ class DictionaryFull(Resource):
 
 
 class Donations(Resource):
-    def get(self):
-        data = {
-            'name': "Kuba",
-            'amount': 42.02,
-            'currency': "USD",
-            'dateTime': datetime.datetime.now().strftime('%d-%m-%y %H:%M'),
-            'subscription': False
-        }
-        self.send_email(data, 'kuba.semik@gmail.com')
-
     def post(self):
         """
         Process the payment
