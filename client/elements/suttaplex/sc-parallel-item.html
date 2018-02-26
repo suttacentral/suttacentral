@@ -28,7 +28,7 @@ It is in effect a miniature version of the suttaplex-card
         word-wrap: normal;
       }
 
-      .parallel-item-biblio-info {
+      .parallel-item-biblio-info, .parallel-item-details .popuptext {
         @apply --paper-font-body1;
         @apply --shadow-elevation-3dp;
         border-top: var(--sc-border);
@@ -47,15 +47,19 @@ It is in effect a miniature version of the suttaplex-card
       .parallel-item-details {
         @apply --paper-font-body2;
         color: var(--sc-secondary-text-color);
+        text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis;
       }
 
-      .parallel-item-details:hover {
-        text-overflow: clip;
-        white-space: normal;
-        word-break: break-all;
+      .parallel-item-details .popuptext {
+        overflow: visible;
+        visibility: hidden;
+        word-wrap: break-word;
+      }
+
+      .parallel-item-details .show {
+        visibility: visible;
       }
 
       .d-block {
@@ -120,7 +124,7 @@ It is in effect a miniature version of the suttaplex-card
           [[_computeTitle(parallelItem)]]
         </div>
 
-        <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
+        <div class="parallel-item-details d-flex align-items-center vertical-margin-xs" on-tap="revealHiddenNerdyRowContent">
           <div class="parallel-item-volpages-container">
             <span title="{{localize('originalTitle')}}"
                   class$="nerdy-row-element [[_computeHideOriginalTitle(parallelItem)]]">
@@ -132,7 +136,7 @@ It is in effect a miniature version of the suttaplex-card
             </span>
             <template is="dom-if" if="[[_volpagesAvailable()]]">
               <div>
-                <template is="dom-if" if="[[parallelItem.bib]]">
+                <template is="dom-if" if="[[parallelItem.biblio]]">
                   <details class="d-block">
                     <summary class="parallel-item-biblio-summary">
                       <span class="book scrollable-dialog">
@@ -142,10 +146,10 @@ It is in effect a miniature version of the suttaplex-card
                         [[_computeVolPage(parallelItem.volpages)]]
                       </span>
                     </summary>
-                    <p class="parallel-item-biblio-info" inner-h-t-m-l="[[parallelItem.bib]]"></p>
+                    <p class="parallel-item-biblio-info" inner-h-t-m-l="[[parallelItem.biblio]]"></p>
                   </details>
                 </template>
-                <template is="dom-if" if="[[!parallelItem.bib]]">
+                <template is="dom-if" if="[[!parallelItem.biblio]]">
                   <span class="book scrollable-dialog" title="{{localize('volAndPageNum')}}">
                     <iron-icon icon="book"></iron-icon>
                   </span>
@@ -160,6 +164,27 @@ It is in effect a miniature version of the suttaplex-card
                 <sc-sutta-note note-data="[[remark]]"></sc-sutta-note>
               </div>
             </template>
+            <span class="popuptext" id="hidden-nerdy-row">
+                <span title="{{localize('originalTitle')}}"
+                      class$="nerdy-row-element [[_computeHideOriginalTitle(parallelItem)]]">
+                  [[_getTitleWithoutSuttaText(parallelItem.original_title)]]<br>
+                </span>
+                <span class$="nerdy-row-element [[_computeHideUID(parallelItem)]]"
+                      title="[[_getAcronymTitle(parallelItem, localize)]]">
+                  [[_getAcronymOrUid(parallelItem, expansionData)]]<br>
+                </span>
+                <template is="dom-if" if="[[_volpagesAvailable()]]">
+                    <span class="book scrollable-dialog" title="{{localize('volAndPageNum')}}">
+                      <iron-icon icon="book"></iron-icon>
+                    </span>
+                    <span class="vol-page" title="[[_getVolPageTitle(parallelItem.volpages, localize)]]">
+                      [[_computeVolPage(parallelItem.volpages)]]<br>
+                    </span>
+                </template>
+                <template is="dom-if" if="[[remark]]">
+                    <sc-sutta-note note-data="[[remark]]"></sc-sutta-note>
+                </template>
+            </span>
           </div>
 
           <div class="parallel-item-note">
@@ -385,6 +410,21 @@ It is in effect a miniature version of the suttaplex-card
                   return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
               } else {
                   return localize('volumeAndPage');
+              }
+          }
+
+          revealHiddenNerdyRowContent() {
+              const detailsElement = this.shadowRoot.querySelector('.parallel-item-biblio-info');
+              const nerdyRow = this.shadowRoot.querySelector('.parallel-item-details');
+              const popup = this.shadowRoot.querySelector('#hidden-nerdy-row');
+              if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
+                  popup.classList.toggle("show");
+                  popup.style.width = nerdyRow.clientWidth-24;
+                  if (detailsElement) {
+                      detailsElement.style.display = 'none';
+                  }
+              } else if (detailsElement) {
+                  detailsElement.style.display = null;
               }
           }
       }

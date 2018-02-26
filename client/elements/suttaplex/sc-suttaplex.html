@@ -59,23 +59,12 @@
       }
 
       .suttaplex-nerdy-row .popuptext {
-        @apply --paper-font-body1;
-        position: absolute;
-        z-index: 200;
-        background-color: var(--sc-tertiary-background-color);
-        padding: 12px;
-        border-top: var(--sc-border);
-        margin: 0 var(--sc-size-xl) 0 0;
-        box-shadow: var(--paper-material-elevation-2_-_box-shadow);
-        white-space: normal;
         overflow: visible;
         visibility: hidden;
       }
 
       .suttaplex-nerdy-row .show {
         visibility: visible;
-        -webkit-animation: fadeIn 1s;
-        animation: fadeIn 1s;
       }
 
       .nerdy-row-element {
@@ -134,7 +123,7 @@
         cursor: pointer;
       }
 
-      .volpage-biblio-info {
+      .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
         @apply --paper-font-body1;
         position: absolute;
         z-index: 200;
