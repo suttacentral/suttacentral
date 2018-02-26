@@ -1192,10 +1192,10 @@
 
           _applyFirefoxShadyDomFix() {
               if (navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Edge')) {
-                  // this.isTextViewHidden = true;
+                  this.isTextViewHidden = true;
                   setTimeout(() => {
-                      //this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
-                      //this.isTextViewHidden = false;
+                      this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
+                      this.isTextViewHidden = false;
                   }, 0);
               }
           }

@@ -1,40 +1,55 @@
 <html id="main_html_root">
 <head>
-  <meta charset="UTF-8">
   <title>SuttaCentral</title>
+
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="rgba(206, 132, 0, 1)">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SuttaCentral">
+  <meta name="msapplication-TileImage" content="/img/mstile-144x144.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-tap-highlight" content="no">
+
   <link rel="icon" href="/img/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="rgba(206, 132, 0, 1)">
-  <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
 
-  <!-- Fix for lastpass extension breaking Shady DOM: -->
-  <script>
-    window.addEventListener('WebComponentsReady', function() {
-      document.createElement = Document.prototype.createElement;
-    });
-  </script>
-  <!-- Register service worker -->
+  <!-- Register pre-caching service worker -->
   <script>
       if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/service-worker.js').catch((err) => {
-              console.log('Service worker registration failed: ', err);
+          window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/service-worker.js').catch((err) => {
+                  console.log('Service worker registration failed: ', err);
+              });
           });
       }
   </script>
+
+  <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+
+  <!-- Fix for lastpass extension breaking Shady DOM: -->
+  <script>
+      window.addEventListener('WebComponentsReady', function() {
+          document.createElement = Document.prototype.createElement;
+          document.querySelector('body').removeAttribute('unresolved');
+      });
+  </script>
+
   <link rel="import" href="/styles/sc-styles.html">
   <link rel="import" href="/elements/sc-drawer-layout.html">
 
-  <script src="https://js.stripe.com/v3/" async></script>
-
+  <script async src="https://js.stripe.com/v3/"></script>
 </head>
-<body>
-<sc-drawer-layout></sc-drawer-layout>
+<body unresolved>
+  <sc-drawer-layout></sc-drawer-layout>
+  <noscript>
+      Please enable JavaScript to view this website.
+  </noscript>
 </body>
 </html>
 
