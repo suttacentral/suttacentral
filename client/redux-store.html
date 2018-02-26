@@ -17,6 +17,7 @@
         },
         previousRouteName: '',
         siteLanguage: (navigator.language || navigator.languages && navigator.languages[0]).split('-')[0],
+        fullSiteLanguageName: '',
         toolbarOptions: {
             title: '',
             mode: ''
@@ -48,7 +49,7 @@
             case 'CHANGE_ROUTE':
                 return routeChanged(state, action);
             case 'CHANGE_SITE_LANGUAGE':
-                return Object.assign({}, state, { siteLanguage: action.language });
+                return Object.assign({}, state, { siteLanguage: action.language, fullSiteLanguageName: action.fullName });
             case 'CHANGE_TOOLBAR_TITLE':
                 return Object.assign({}, state,
                     { toolbarOptions: Object.assign({}, state.toolbarOptions, { title: action.title }) });
