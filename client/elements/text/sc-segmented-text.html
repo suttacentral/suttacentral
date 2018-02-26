@@ -713,7 +713,7 @@
               if (toSection) {
                   toSection = this._getElementToHighlight(toSection);
               }
-              const isSideBySideView = !!(this.chosenTextView === 'isSideBySideView' && this.translatedSutta)
+              const isSideBySideView = !!(this.chosenTextView === 'sidebyside' && this.translatedSutta)
               this._processSections(section, isSideBySideView, toSection, idFrom, idTo);
               return firstSection;
           }
@@ -723,7 +723,7 @@
                   let wrapper;
 
                   if (isSideBySideView) {
-                      wrapper = this._putSectionIntoWrapper();
+                      wrapper = this._putSectionIntoWrapper(section);
                   } else {
                       section.classList.add('highlight');
                   }
@@ -849,9 +849,9 @@
                   this.hasScriptBeenChanged = true;
               }
               if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
-                  this._setScriptISOCode(this.shadowRoot.querySelector('#text'), this.rootLang);
+                  this._setScriptISOCode(this.shadowRoot.querySelector('#segmented_text_content'), this.rootLang);
               } else {
-                  const text = this.shadowRoot.querySelector('#text');
+                  const text = this.shadowRoot.querySelector('#segmented_text_content');
                   if (text) text.removeAttribute('lang');
               }
           }
