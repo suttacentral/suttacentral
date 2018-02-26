@@ -119,7 +119,7 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
                     base_uid = '-'.join(base_uid.split('-')[:-1])
 
             if 'name' in entry:
-                name_docs.append({'name': entry.pop('name'),
+                name_docs.append({'name': entry['name'],
                                   'uid': uid,
                                   'lang': lang,
                                   'root': True,
