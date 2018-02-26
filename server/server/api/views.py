@@ -1,22 +1,24 @@
 import json
 import os
 import re
+import datetime
 from collections import defaultdict
 
 import stripe
 from flask import current_app, request
 from flask_restful import Resource
+from flask_mail import Message
 from sortedcontainers import SortedDict
 
 from common.arangodb import get_db
-from common.extensions import make_cache_key, cache
+from common.extensions import make_cache_key, cache, mail
 
 from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS,
                             SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY,
                             DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA)
 
 from common.utils import (flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key,
-                          groupby_unsorted)
+                          groupby_unsorted, in_thread)
 
 
 class Languages(Resource):
@@ -699,6 +701,7 @@ class DictionarySimilar(Resource):
 
 
 class DictionaryFull(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, word=None):
         """
         Sends list of dictionary entries to dictionary view
@@ -737,12 +740,12 @@ class Donations(Resource):
         """
         data = json.loads(list(request.form.keys())[0])
         currency = data.get('currency')
-        amount = data.get('amount')
+        inputted_amount = data.get('amount')
         one_time_donation = data.get('oneTimeDonation')
         monthly_donation = data.get('monthlyDonation')
         stripe_data = data.get('stripe')
         name = data.get('name')
-        email = data.get('email')
+        email_address = data.get('email')
         message = data.get('message')
 
         secret_key = os.environ.get('STRIPE_SECRET')
@@ -755,21 +758,21 @@ class Donations(Resource):
             return 'No such currency', 400
 
         if currency['decimal']:
-            amount = amount * 100
-        amount = int(amount)
+            amount = inputted_amount * 100
+        else:
+            amount = inputted_amount
 
         customer_data = {
             'source': stripe_data['id']
         }
 
-        if email:
-            customer_data['email'] = email
+        if email_address:
+            customer_data['email'] = email_address
 
         try:
             customer = stripe.Customer.create(**customer_data)
         except stripe.CardError:
             return {'err_code': 3}, 400
-
         try:
             if one_time_donation:
                 charge = stripe.Charge.create(
@@ -801,7 +804,17 @@ class Donations(Resource):
 
             return {'err_code': code}, 400
 
-        return 'Subscribed' if monthly_donation else 'Donated', 200
+        data = {
+            'name': name,
+            'amount': inputted_amount,
+            'currency': currency['symbol'],
+            'dateTime': datetime.datetime.now().strftime('%d-%m-%y %H:%M'),
+            'subscription': monthly_donation
+        }
+
+        self.send_email(data, email_address)
+
+        return data, 200
 
     @staticmethod
     def _get_plan(amount, currency):
@@ -817,6 +830,26 @@ class Donations(Resource):
                 statement_descriptor='SuttaCentralDonation',
                 id=plan_id)
         return plan
+
+    @staticmethod
+    @in_thread
+    def send_async_mail(msg):
+        from app import app
+        with app.app_context():
+            mail.send(msg)
+
+    def send_email(self, data, email_address):
+        msg = Message('Payment confirmation',
+                      recipients=[email_address])
+        msg.html = f'''
+        Donation of <b>{data['amount']} {data['currency']}</b>.           
+        {f"Made by <b>{data['name']}</b>." if data['name'] else ''}
+        Made to SuttaCentral Development Trust, an educational charity For the purpose of supporting SuttaCentral.net<br>
+        Payment service is Stripe.<br>
+        <b>{data['dateTime']}</b>.<br>
+        <b>{'Subscription' if data['subscription'] else 'One time donation'}</b>.           
+        '''
+        self.send_async_mail(msg)
 
 
 class Images(Resource):

@@ -133,6 +133,13 @@
       .option-multi-select-container {
         display: flex;
         flex-direction: column;
+        flex-wrap: wrap;
+      }
+
+      @media screen and (min-width: 600px) {
+        .option-multi-select-container {
+          max-height: 240px;
+        }
       }
 
       .option-checkbox {
@@ -146,6 +153,27 @@
       #pwa_language_menu {
         margin-left: var(--sc-size-sm);
         margin-bottom: var(--sc-size-sm);
+      }
+
+      #lookups_container {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 400ms ease-in-out;
+      }
+
+      #lookups_container.open {
+        max-height: 800px;
+      }
+
+      #toggle_lookup_display_button {
+        padding: 0;
+        margin: 0;
+        min-width: unset;
+      }
+
+      .separator {
+        @apply --sc-separator;
+        margin-top: var(--sc-size-md);
       }
 
       @media screen and (max-width: 600px) {
@@ -165,16 +193,6 @@
         <section>
           <article>
             <h1>{{localize('usingOffline')}}</h1>
-            <p inner-h-t-m-l="{{localize('pwaDescription')}}"></p>
-            <p>{{localize('additionalInfo')}}</p>
-            <p>{{localize('newTech')}}</p>
-            <ul>
-              <li>{{localize('suttasOnly')}}</li>
-              <li>{{localize('oneLang')}}</li>
-              <li>{{localize('certainFunctions')}}</li>
-            </ul>
-            <p>{{localize('extraFeatures')}}</p>
-
             <div class="button-info">
               <p class="no-phone-top-margin">
                 <template is="dom-if" if="[[browserSupportsPWA]]">
@@ -191,6 +209,17 @@
                 </template>
               </p>
             </div>
+            <p inner-h-t-m-l="{{localize('pwaDescription')}}"></p>
+            <p>{{localize('additionalInfo')}}</p>
+            <p>{{localize('newTech')}}</p>
+            <ul>
+              <li>{{localize('suttasOnly')}}</li>
+              <li>{{localize('oneLang')}}</li>
+              <li>{{localize('certainFunctions')}}</li>
+            </ul>
+            <p>{{localize('extraFeatures')}}</p>
+
+            <div class="separator"></div>
 
             <div class="options-section">
 
@@ -207,31 +236,38 @@
                                    active="{{shouldDownloadParallels}}"></paper-toggle-button>
 
               <h3 class="option-title">{{localize('downloadRootTexts')}}</h3>
-              <div class="option-description">{{localize('downloadRootTextsDescription')}}</div>
+              <div class="option-description">{{localize('downloadRootTextsDescription', 'toLang', defaultPaliDictToLang.name)}}
+                <paper-button id="toggle_lookup_display_button">{{localize('here')}}</paper-button>.
+              </div>
               <paper-toggle-button id="download_root_texts_button" class="toggle-button" noink
                                    disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]"
                                    active="{{shouldDownloadRootTexts}}"></paper-toggle-button>
 
-              <h3 class="option-title">{{localize('paliLookups')}}</h3>
-              <div class="option-description">{{localize('paliLookupsDescription')}}</div>
-              <div class="option-multi-select-container">
-                <template is="dom-repeat" items="[[paliLookupLanguages]]" as="lang">
-                  <paper-checkbox class="option-checkbox" on-change="_togglePaliCheckbox"
-                                  disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
-                    [[lang.name]]
-                  </paper-checkbox>
-                </template>
-              </div>
+              <div id="lookups_container">
 
-              <h3 class="option-title">{{localize('chineseLookups')}}</h3>
-              <div class="option-description">{{localize('chineseLookupsDescription')}}</div>
-              <div class="option-multi-select-container">
-                <template is="dom-repeat" items="[[chineseLookupLanguages]]" as="lang">
-                  <paper-checkbox class="option-checkbox" on-change="_toggleChineseCheckbox"
-                                  disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
-                    [[lang.name]]
-                  </paper-checkbox>
-                </template>
+                <h3 class="option-title">{{localize('paliLookups')}}</h3>
+                <div class="option-description">{{localize('paliLookupsDescription')}}</div>
+                <div class="option-multi-select-container">
+                  <template is="dom-repeat" items="[[paliLookupLanguages]]" as="lang">
+                    <paper-checkbox class="option-checkbox pali-checkbox" data-isoCode$="[[lang.isoCode]]"
+                                    on-change="_togglePaliCheckbox"
+                                    disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
+                      [[lang.name]]
+                    </paper-checkbox>
+                  </template>
+                </div>
+
+                <h3 class="option-title">{{localize('chineseLookups')}}</h3>
+                <div class="option-description">{{localize('chineseLookupsDescription')}}</div>
+                <div class="option-multi-select-container">
+                  <template is="dom-repeat" items="[[chineseLookupLanguages]]" as="lang">
+                    <paper-checkbox class="option-checkbox" on-change="_toggleChineseCheckbox"
+                                    disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
+                      [[lang.name]]
+                    </paper-checkbox>
+                  </template>
+                </div>
+
               </div>
 
             </div>
@@ -374,6 +410,20 @@
                               enabled: false
                           }
                       ]
+                  },
+                  shouldDisplayLookupList: {
+                      type: Boolean
+                  },
+                  siteLangFullName: {
+                      type: String,
+                      statePath: 'fullSiteLanguageName'
+                  },
+                  // This property stores the default Pali lookup dictionary language.
+                  // If there is no lookup dictionary available in the user language,
+                  // we default to English.
+                  defaultPaliDictToLang: {
+                      type: Object,
+                      computed: '_getDefaultPaliLookupDictionaryLang(chosenLanguageIsoCode)'
                   }
               }
           }
@@ -386,9 +436,15 @@
               }
               this.$.play_button.addEventListener('click', () => { this._resumeOrPauseDownload() });
               this.$.stop_button.addEventListener('click', () => { this._stopDownload() });
+              this.$.toggle_lookup_display_button.addEventListener('click', () => { this._toggleLookupsOpen() });
               addEventListener('pwa-language-changed', (e) => {
                   this.chosenLanguageNativeName = e.detail.name;
                   this.chosenLanguageIsoCode = e.detail.isoCode;
+                  this.paliLookupLanguages.forEach(lang => lang.enabled = lang.isoCode === e.detail.isoCode);
+                  const checkboxes = this.shadowRoot.querySelectorAll(".pali-checkbox");
+                  Array.from(checkboxes).forEach(checkbox => {
+                      checkbox.checked = checkbox.dataset.isocode === e.detail.isoCode;
+                  })
               });
               this._handleNetworkLoss();
           }
@@ -452,7 +508,6 @@
                       if (failed === 0) {
                           this._showToast('success',
                               this.localize('downloadComplete', 'lang', this.chosenLanguageNativeName));
-                          // this.localize('downloadComplete', 'lang', this._getNativeLanguageName(this.chosenLanguageIsoCode)));
                       } else if (failed > 0 && passed > 0) {
                           this._showToast('error',
                               this.localize('downloadErrored', 'failed', failed, 'total', passed + failed));
@@ -591,6 +646,19 @@
               delete this.downloadQueue;
               this.cacheDownloadInProgress = false;
               this._showToast('info', this.localize('canceled'));
+          }
+
+          _toggleLookupsOpen() {
+              const lookupsContainer = this.shadowRoot.querySelector('#lookups_container');
+              lookupsContainer.classList.toggle('open');
+          }
+
+          _getDefaultPaliLookupDictionaryLang(siteLangIsoCode) {
+              const lookupLang = this.paliLookupLanguages.filter(language => language.isoCode === siteLangIsoCode);
+              if (lookupLang && lookupLang.length > 0) {
+                  return lookupLang[0];
+              }
+              else return { name: 'English', isoCode: 'en' };
           }
 
           _showToast(type, inputMessage) {

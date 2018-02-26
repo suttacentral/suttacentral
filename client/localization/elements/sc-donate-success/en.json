@@ -1,0 +1,10 @@
+{
+    "en": {
+        "DonationOf": "Donation of",
+        "MadeBy": "Made by",
+        "SuttaCentralNote": "Made to SuttaCentral Development Trust, an educational charity For the purpose of supporting SuttaCentral.net",
+        "PaymentServiceIsStripe": "Payment service is Stripe.",
+        "MonthlySubscription": "Monthly subscription",
+        "OneTimeDonation": "One time donation"
+    }
+}
