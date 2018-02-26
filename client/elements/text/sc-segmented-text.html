@@ -505,6 +505,7 @@
                   divisionId = 'vi';
               }
               this._setParagraphsVisible(this.showParagraphs);
+
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
@@ -549,6 +550,7 @@
                   vol = 1;
               }
               requestAnimationFrame(() => {
+                  console.log('we\'re in business');
                   item.innerHTML = `
                       <span class="image-link" >
                           <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
@@ -558,13 +560,16 @@
                   `;
                   item.classList.add('image-book-link');
                   item.classList.add('textual-info-paragraph');
-                  item.addEventListener('click', () => {
-                      this.dispatchEvent(new CustomEvent('show-image', {
-                          detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
-                          bubbles: true,
-                          composed: true
-                      }));
-                  });
+                  setTimeout(() => {
+                    item.addEventListener('click', () => {
+                        console.log('image link clicked');
+                        this.dispatchEvent(new CustomEvent('show-image', {
+                            detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
+                            bubbles: true,
+                            composed: true
+                        }));
+                    });
+                  }, 0);
               });
           }
 
@@ -1187,10 +1192,10 @@
 
           _applyFirefoxShadyDomFix() {
               if (navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Edge')) {
-                  this.isTextViewHidden = true;
+                  // this.isTextViewHidden = true;
                   setTimeout(() => {
-                      this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
-                      this.isTextViewHidden = false;
+                      //this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
+                      //this.isTextViewHidden = false;
                   }, 0);
               }
           }
