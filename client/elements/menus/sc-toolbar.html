@@ -83,6 +83,21 @@ Base toolbar that appears on the top right in the header of every page. This too
       .discourses-link {
         position: relative;
       }
+
+      .toolbar-link, .toolbar-paper-button {
+        margin: 0 var(--sc-size-sm);
+      }
+
+      #tools_menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      #more_vert_button {
+        margin: 0;
+      }
+
     </style>
 
     <iron-location path="{{path}}" query="{{query}}"></iron-location>
@@ -90,10 +105,11 @@ Base toolbar that appears on the top right in the header of every page. This too
     <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
       <iron-a11y-keys target="[[search_input]]" keys="enter" on-keys-pressed="_startSearch"></iron-a11y-keys>
-      <paper-icon-button icon="search" title="{{localize('searchTooltip')}}" class="white-icon"
+      <paper-icon-button icon="search" title="{{localize('searchTooltip')}}" class="white-icon toolbar-paper-button"
                          on-tap="openSearch"></paper-icon-button>
       <paper-input class="toolbar-input" label="{{localize('Search')}}" no-label-float id="search_input"></paper-input>
-      <paper-icon-button icon="close" class="white-icon" id="close_button" on-tap="_closeSearch"></paper-icon-button>
+      <paper-icon-button icon="close" class="white-icon toolbar-paper-button" id="close_button"
+                         on-tap="_closeSearch"></paper-icon-button>
 
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
       <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]"
@@ -103,7 +119,8 @@ Base toolbar that appears on the top right in the header of every page. This too
       </a>
 
       <!-- Menu for more options like language and other static pages -->
-      <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="more_vert_button" vertical-align="auto">
+      <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="more_vert_button"
+                         vertical-align="auto">
         <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger"
                            alt="menu"></paper-icon-button>
         <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">

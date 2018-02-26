@@ -39,12 +39,6 @@
         height: auto;
       }
 
-      #lasttoolbar {
-        @apply --shadow-elevation-8dp;
-        z-index: -1;
-        padding-bottom: var(--sc-size-lg);
-      }
-
       h1 {
         @apply --sc-serif-font;
         @apply --sc-mixed-small-caps;
@@ -75,12 +69,16 @@
       .title-text {
         text-align: center;
         color: var(--sc-tertiary-text-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .title-logo-icon {
         vertical-align: bottom;
         height: var(--sc-size-xxl);
         width: var(--sc-size-xxl);
+        margin: 0 var(--sc-size-sm);
       }
 
       .page-not-found-container {
@@ -89,10 +87,6 @@
         color: var(--sc-secondary-text-color);
         margin-top: var(--sc-size-xxl);
         text-align: center;
-      }
-
-      .margin-top-xl {
-        margin-top: var(--sc-size-xl);
       }
 
       .navigation-tabs {
@@ -153,17 +147,34 @@
         /* Subtract height of top bar */
         height: calc(100% - var(--sc-size-xxl) * 2 - 146px);
       }
+
+      #title_toolbar {
+        position: absolute;
+        padding-top: 58px;
+        padding-left: 0;
+        padding-right: 0;
+        top: 0;
+        left: 50%;
+        z-index: 999;
+        transform: translateX(-50%);
+        width: 100%;
+      }
+
+      #subtitle_toolbar {
+        padding-top: 62px;
+        padding-bottom: var(--sc-size-md-larger);
+      }
     </style>
 
-    <app-toolbar>
+    <app-toolbar id="title_toolbar">
       <div class="title" main-title>
-        <h1 class="title-text">
+        <span class="title-text">
           <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
-          SuttaCentral
-        </h1>
+          <h1>SuttaCentral</h1>
+        </span>
       </div>
     </app-toolbar>
-    <app-toolbar id="lasttoolbar">
+    <app-toolbar id="subtitle_toolbar">
       <div class="title" main-title>
         <p class="subtitle">{{localize('pageSubtitle')}}</p>
       </div>

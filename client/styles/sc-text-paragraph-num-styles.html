@@ -263,6 +263,10 @@
         content: "Pravr-v iv "
       }
 
+      .textual-info-paragraph.nya:before {
+        content: "Nya "
+      }
+
       .textual-info-paragraph .pts:before {
         content: "PTS "
       }
@@ -291,6 +295,14 @@
         content: "PTS vp pli ";
       }
 
+      .textual-info-paragraph .pts-vp-pi:before {
+        content: "PTS vp pli ";
+      }
+
+      .textual-info-paragraph.pts-vp-pi:before {
+        content: "PTS vp pli ";
+      }
+
       .textual-info-paragraph.pts-vp-en:before {
         content: "PTS vp en ";
       }
@@ -308,6 +320,10 @@
       }
 
       .textual-info-paragraph .pts-p-pli:before {
+        content: "PTS p pli "
+      }
+
+      .textual-info-paragraph .pts-p-pi:before {
         content: "PTS p pli "
       }
 
@@ -347,8 +363,8 @@
         content: "SC "
       }
 
-      .textual-info-paragraph.segmented-textual-info-paragraph.sc:before {
-        content: ""
+      .textual-info-paragraph.segmented-textual-info-paragraph.textual-info-paragraph-inline.sc:before {
+        content: "SC "
       }
 
       .textual-info-paragraph.sen:before {
@@ -461,7 +477,7 @@
         @apply --paper-font-common-base;
         @apply --sc-skolar-font-size-xs;
         margin-right: var(--sc-size-sm);
-        padding: 0 var(--sc-size-sm) 0 var(--sc-size-sm);
+        padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
         color: var(--sc-secondary-text-color);
         background: var(--sc-textual-info-background-color);
         text-decoration: none;
@@ -473,10 +489,17 @@
         float: right;
         clear: right;
         border-radius: var(--sc-size-xxs);
+        white-space: nowrap;
+        vertical-align: baseline;
+      }
+
+      .infomode .textual-info-paragraph:not(.segmented-textual-info-paragraph) {
+        display: inline;
+        float: none;
       }
 
       .infomode .textual-info-paragraph-inline {
-        display: inline-block;
+        display: inline;
         float: none;
       }
 
@@ -484,15 +507,23 @@
         display: none;
       }
 
+      .infomode.popup .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
+        display: inline;
+      }
+
       #simple_text_content.infomode .textual-info-paragraph {
-        display: inline-block;
+        display: inline;
         float: none;
       }
 
+      .infomode.popup .textual-info-paragraph {
+        display: none;
+      }
+
       @media screen and (min-width: 1280px) {
-        .infomode:not(.side-by-side) .textual-info-paragraph {
+        .infomode:not(.side-by-side):not(.popup) .textual-info-paragraph {
           margin-right: -20%;
-          display: block;
+          float: right;
           background-color: transparent;
         }
 
@@ -506,15 +537,39 @@
       }
 
       @media screen and (min-width: 1500px) {
-        .infomode:not(.side-by-side) .textual-info-paragraph {
+        .infomode:not(.side-by-side):not(.popup) .textual-info-paragraph {
           margin-right: -25%;
         }
       }
 
       @media screen and (min-width: 1800px) {
-        .infomode:not(.side-by-side) .textual-info-paragraph {
+        .infomode:not(.side-by-side):not(.popup).textual-info-paragraph {
           margin-right: -30%;
         }
+      }
+
+      .infomode .segmented-textual-info-paragraph {
+        display: none;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph {
+        display: none;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline.segmented-textual-info-paragraph.sc:before {
+        content: "SC ";
+      }
+
+      .infomode.segmented-infomode .sc.textual-info-paragraph.segmented-textual-info-paragraph:not(.textual-info-paragraph-inline) {
+        display: block;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline.sc.segmented-textual-info-paragraph {
+        display: inline;
+      }
+
+      .infomode.segmented-infomode .textual-info-paragraph-inline {
+        display: none;
       }
 
       .infomode .textual-info-paragraph {

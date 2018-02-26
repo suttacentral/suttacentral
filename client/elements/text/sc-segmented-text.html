@@ -5,7 +5,7 @@
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 
-<link rel="import" href="../addons/sc-text-page.html">
+<link rel="import" href="sc-text-page.html">
 <link rel="import" href="../../elements/text/sc-text-options.html">
 <link rel="import" href="../../styles/sc-text-styles.html">
 <link rel="import" href="../../styles/sc-text-heading-styles.html">
@@ -369,6 +369,7 @@
                       this._showComplexView();
                       break;
                   case 'popup':
+                      textContent.classList.add('popup');
                       this._addPopupTooltips(textContent);
                       break;
               }
@@ -385,7 +386,7 @@
 
           // reset all classes and remove tooltips.
           _resetViewOptions() {
-              this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'show-pali');
+              this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'popup', 'show-pali');
               Array.from(this.shadowRoot.querySelectorAll('paper-tooltip')).forEach(item =>
                   item.parentNode.removeChild(item)
               );
@@ -511,13 +512,11 @@
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
                       Array.from(refs).forEach((item) => {
-                          if (!item.id.includes('2ed')
-                              && (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/))) {
+                          if (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/)) {
                               this._processVolPageInfo(item, divisionId, paragraph);
                           } else {
                               this._addParagraphData(item, paragraph);
                           }
-                          this._addInlineParagraph(item, divisionId, paragraph);
                       });
                   });
               }
@@ -554,12 +553,12 @@
               }
               setTimeout(() => {
                   item.innerHTML = `
-                                <div class="image-link" >
-                                    <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
-                                    <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-svg-icons:book">
-                                    </iron-icon>
-                                </div>
-                            `;
+                      <span class="image-link" >
+                          <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
+                          <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-svg-icons:book">
+                          </iron-icon>
+                      </span>
+                  `;
                   item.classList.add('image-book-link');
                   item.classList.add('textual-info-paragraph');
                   item.addEventListener('click', () => {
@@ -596,7 +595,7 @@
               inlineParagraph.id = `${parId}_inline`;
               inlineParagraph.innerText = parId;
               inlineParagraph.href = `#${parId}`;
-              inlineParagraph.title = this.localize('segmentNumber');
+              inlineParagraph.title = 'SuttaCentral segment number';
               inlineParagraph.addEventListener('click', () => {
                   this._scrollToSection(inlineParagraph.id, true, 0)
               });
@@ -610,38 +609,10 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
-              item.classList.add('textual-info-paragraph');
-          }
-
-          _addInlineParagraph(item, divisionId) {
-              const segmentSibling = this._getClosestSegmentSibling(item);
-              if (!segmentSibling) {
-                  return;
-              }
-              const inlineItem = item.cloneNode(true);
-              if (item.id.startsWith('pts')) {
-                  this._processVolPageInfo(inlineItem, divisionId);
-              }
-              inlineItem.classList.add('textual-info-paragraph-inline');
-              inlineItem.id = `${inlineItem.id}_inline`;
-              segmentSibling.insertBefore(inlineItem, segmentSibling.firstChild);
-              inlineItem.addEventListener('click', () => {
-                  this._scrollToSection(inlineItem.id, true, 0);
+              item.addEventListener('click', () => {
+                  this._scrollToSection(item.id, false, 0)
               });
-          }
-
-          _addInlineParagraphListeners(rootElement) {
-              rootElement = rootElement || this.shadowRoot;
-              const inlineItems = rootElement.querySelectorAll('.textual-info-paragraph-inline');
-              if (!inlineItems) {
-                  return;
-              }
-              inlineItems.forEach((item) => {
-                      item.addEventListener('click', () => {
-                          this._scrollToSection(item.id, true, 0);
-                      })
-                  }
-              );
+              item.classList.add('textual-info-paragraph');
           }
 
           // adds a class to the main container to either show or hide the textual info paragraphs
@@ -660,11 +631,9 @@
           }
 
           _putSectionIntoWrapper(section) {
-              let wrapperAlreadyExists = false;
               let wrapper;
               if (section.parentNode && section.parentNode.classList.contains('highlight-wrapper')) {
                   section.parentNode.classList.add('highlight-wrapper-highlighted');
-                  wrapperAlreadyExists = true;
               } else {
                   if (this._previousElementIsNotFullWrapper(section)) {
                       wrapper = section.previousElementSibling;
@@ -705,9 +674,6 @@
                       section.remove();
                   }
 
-              }
-              if (isSideBySideView) {
-                  this._addInlineParagraphListeners(wrapper);
               }
           }
 
@@ -782,9 +748,6 @@
                       }
                       section = newSection;
                   }
-                  if (isSideBySideView) {
-                      this._addInlineParagraphListeners(wrapper);
-                  }
               }
           }
 
@@ -842,18 +805,11 @@
                   return;
               }
               this._removeHighlights();
-              if (sectionId && sectionId.includes('.') &&
-                  (this.chosenTextView === 'none' || !this.translatedSutta)) {
-                  return;
-              }
               setTimeout(() => {
-                  const firstSection = this._processHighlightAndScroll(sectionId);
-                  if (firstSection) {
-                      firstSection.scrollIntoView({
-                          behavior: isSmooth ? 'smooth' : 'instant',
-                          block: 'start',
-                          inline: 'nearest'
-                      });
+                  const section = this._processHighlightAndScroll(sectionId) || this.shadowRoot.getElementById(sectionId);
+                  const options = { behavior: isSmooth ? 'smooth' : 'instant', block: 'start', inline: 'nearest' };
+                  if (section) {
+                      section.scrollIntoView(options);
                   }
               }, delay);
               this.currentId = sectionId;
@@ -895,9 +851,9 @@
               if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
                   this._setScriptISOCode(this.shadowRoot.querySelector('#text'), this.rootLang);
               } else {
-                  this.shadowRoot.querySelector('#text').removeAttribute('lang');
+                  const text = this.shadowRoot.querySelector('#text');
+                  if (text) text.removeAttribute('lang');
               }
-              this._addInlineParagraphListeners();
           }
 
           _setScriptISOCode(targetNode, langAttr) {
