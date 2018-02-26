@@ -133,6 +133,13 @@
       .option-multi-select-container {
         display: flex;
         flex-direction: column;
+        flex-wrap: wrap;
+      }
+
+      @media screen and (min-width: 600px) {
+        .option-multi-select-container {
+          max-height: 240px;
+        }
       }
 
       .option-checkbox {
@@ -160,7 +167,13 @@
 
       #toggle_lookup_display_button {
         padding: 0;
+        margin: 0;
         min-width: unset;
+      }
+
+      .separator {
+        @apply --sc-separator;
+        margin-top: var(--sc-size-md);
       }
 
       @media screen and (max-width: 600px) {
@@ -180,16 +193,6 @@
         <section>
           <article>
             <h1>{{localize('usingOffline')}}</h1>
-            <p inner-h-t-m-l="{{localize('pwaDescription')}}"></p>
-            <p>{{localize('additionalInfo')}}</p>
-            <p>{{localize('newTech')}}</p>
-            <ul>
-              <li>{{localize('suttasOnly')}}</li>
-              <li>{{localize('oneLang')}}</li>
-              <li>{{localize('certainFunctions')}}</li>
-            </ul>
-            <p>{{localize('extraFeatures')}}</p>
-
             <div class="button-info">
               <p class="no-phone-top-margin">
                 <template is="dom-if" if="[[browserSupportsPWA]]">
@@ -206,6 +209,17 @@
                 </template>
               </p>
             </div>
+            <p inner-h-t-m-l="{{localize('pwaDescription')}}"></p>
+            <p>{{localize('additionalInfo')}}</p>
+            <p>{{localize('newTech')}}</p>
+            <ul>
+              <li>{{localize('suttasOnly')}}</li>
+              <li>{{localize('oneLang')}}</li>
+              <li>{{localize('certainFunctions')}}</li>
+            </ul>
+            <p>{{localize('extraFeatures')}}</p>
+
+            <div class="separator"></div>
 
             <div class="options-section">
 
@@ -223,13 +237,13 @@
 
               <h3 class="option-title">{{localize('downloadRootTexts')}}</h3>
               <div class="option-description">{{localize('downloadRootTextsDescription', 'toLang', defaultPaliDictToLang.name)}}
-                <paper-button id="toggle_lookup_display_button">{{localize('here')}}.</paper-button>
+                <paper-button id="toggle_lookup_display_button">{{localize('here')}}</paper-button>.
               </div>
               <paper-toggle-button id="download_root_texts_button" class="toggle-button" noink
                                    disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]"
                                    active="{{shouldDownloadRootTexts}}"></paper-toggle-button>
 
-              <div id="lookups_container" class$="[[_toggleLookupsOpen(shouldDisplayLookupsList)]]">
+              <div id="lookups_container">
 
                 <h3 class="option-title">{{localize('paliLookups')}}</h3>
                 <div class="option-description">{{localize('paliLookupsDescription')}}</div>
