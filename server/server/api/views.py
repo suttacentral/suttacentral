@@ -7,17 +7,18 @@ from collections import defaultdict
 import stripe
 from flask import current_app, request
 from flask_restful import Resource
+from flask_mail import Message
 from sortedcontainers import SortedDict
 
 from common.arangodb import get_db
-from common.extensions import make_cache_key, cache
+from common.extensions import make_cache_key, cache, mail
 
 from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS,
                             SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY,
                             DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA)
 
 from common.utils import (flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key,
-                          groupby_unsorted)
+                          groupby_unsorted, in_thread)
 
 
 class Languages(Resource):
@@ -728,6 +729,16 @@ class DictionaryFull(Resource):
 
 
 class Donations(Resource):
+    def get(self):
+        data = {
+            'name': "Kuba",
+            'amount': 42.02,
+            'currency': "USD",
+            'dateTime': datetime.datetime.now().strftime('%d-%m-%y %H:%M'),
+            'subscription': False
+        }
+        self.send_email(data, 'kuba.semik@gmail.com')
+
     def post(self):
         """
         Process the payment
@@ -744,7 +755,7 @@ class Donations(Resource):
         monthly_donation = data.get('monthlyDonation')
         stripe_data = data.get('stripe')
         name = data.get('name')
-        email = data.get('email')
+        email_address = data.get('email')
         message = data.get('message')
 
         secret_key = os.environ.get('STRIPE_SECRET')
@@ -765,8 +776,8 @@ class Donations(Resource):
             'source': stripe_data['id']
         }
 
-        if email:
-            customer_data['email'] = email
+        if email_address:
+            customer_data['email'] = email_address
 
         try:
             customer = stripe.Customer.create(**customer_data)
@@ -810,6 +821,9 @@ class Donations(Resource):
             'dateTime': datetime.datetime.now().strftime('%d-%m-%y %H:%M'),
             'subscription': monthly_donation
         }
+
+        self.send_email(data, email_address)
+
         return data, 200
 
     @staticmethod
@@ -826,6 +840,28 @@ class Donations(Resource):
                 statement_descriptor='SuttaCentralDonation',
                 id=plan_id)
         return plan
+
+    @staticmethod
+    @in_thread
+    def send_async_mail(msg):
+        from app import app
+        with app.app_context():
+            print('ATTEMPTING TO SEND AN EMAIL')
+            mail.send(msg)
+            print('EMAIL SENT')
+
+    def send_email(self, data, email_address):
+        msg = Message('Payment confirmation',
+                      recipients=[email_address])
+        msg.html = f'''
+        Donation of <b>{data['amount']} {data['currency']}</b>.           
+        {f"Made by <b>{data['name']}</b>." if data['name'] else ''}
+        Made to SuttaCentral Development Trust, an educational charity For the purpose of supporting SuttaCentral.net<br>
+        Payment service is Stripe.<br>
+        <b>{data['dateTime']}</b>.<br>
+        <b>{'Subscription' if data['subscription'] else 'One time donation'}</b>.           
+        '''
+        self.send_async_mail(msg)
 
 
 class Images(Resource):
