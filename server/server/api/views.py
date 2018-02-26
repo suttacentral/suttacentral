@@ -836,9 +836,7 @@ class Donations(Resource):
     def send_async_mail(msg):
         from app import app
         with app.app_context():
-            print('ATTEMPTING TO SEND AN EMAIL')
             mail.send(msg)
-            print('EMAIL SENT')
 
     def send_email(self, data, email_address):
         msg = Message('Payment confirmation',
