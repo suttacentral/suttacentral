@@ -1,9 +1,11 @@
 import json
 import os
+import logging
 from pathlib import Path
 
 import polib
 import tqdm
+
 
 CURRENT_FILE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 POOTLE_FILES_DIR = CURRENT_FILE_DIR / Path('generatedPoFiles')
@@ -11,7 +13,9 @@ LOCALIZATION_FILES_DIR = CURRENT_FILE_DIR / Path('../elements/')
 
 
 def get_language(file):
-    return file.stem
+    parts = file.relative_to(POOTLE_FILES_DIR).parts
+    # parts is of form: [project, language, file]
+    return parts[1]
 
 
 def generate_json_file(file):
@@ -21,12 +25,17 @@ def generate_json_file(file):
     
     po_data = polib.pofile(str(file))
     data = {}
-    if language == 'en':
-        for entry in po_data:
-            data[entry.msgctx] = entry.msgid
-    else:
-        for entry in po_data:
-            data[entry.msgctx] = entry.msgstr
+    try:
+        if language == 'en':
+            for entry in po_data:
+                data[entry.msgctxt] = entry.msgid
+        else:
+            for entry in po_data:
+                data[entry.msgctxt] = entry.msgstr
+    except AttributeError as e:
+        logging.error(f'An exception occured when processing {str(file)}\n{str(entry)}')
+        raise
+        
 
     element_path = file.stem
     full_element_path = LOCALIZATION_FILES_DIR / element_path
