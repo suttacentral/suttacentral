@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="../styles/sc-dict-styles.html">
 <link rel="import" href="../styles/sc-scrollbar-style.html">
@@ -32,6 +33,7 @@
         display: flex;
         justify-content: space-between;
         padding: 0;
+        margin-bottom:
       }
 
       h1 {
@@ -71,7 +73,7 @@
       }
 
       .dictionary-entries {
-        padding: 0;
+        padding: var(--sc-size-xl) 0 var(--sc-size-md);
       }
 
       .related-terms li {
@@ -194,6 +196,8 @@
       </main>
     </div>
 
+    <sherby-metadata data="[[_createMetaData(dictionaryWord, localize)]]"></sherby-metadata>
+
   </template>
 
   <script>
@@ -290,7 +294,7 @@
                     return this.dictionaryReturns[item];
                   }
               }
-          } 
+          }
 
           _getDictionaryTitle(dictname) {
               return this.dictionaryTitles[dictname];
@@ -350,6 +354,14 @@
               this.$.drawer.toggle();
           }
 
+          _createMetaData(dictionaryWord, localize) {
+              const description = localize('metaDescriptionText');
+              const dictionaryResultsText = localize('dictionaryResultsText');
+              return { 
+                'og:title': `${dictionaryResultsText} ${dictionaryWord}`,
+                'og:description': description
+                };
+          }
       }
 
       customElements.define(SCPageDictionary.is, SCPageDictionary);

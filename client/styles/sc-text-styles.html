@@ -7,7 +7,7 @@
       }
 
       /* Firefox & Safari use the font-synthesis property
-      to remove italics, etc. that do not appear in the script 
+      to remove italics, etc. that do not appear in the script
       not yet implemented for other browsers */
       [lang="ar"],
       [lang="si"],
@@ -49,7 +49,7 @@
 
       [lang="hi"] .sutta, [lang="mr"] .sutta,
       [lang="pli-Deva"] .word, .devanagari-script .word {
-        @apply --sc-devanagari-serif-font; 
+        @apply --sc-devanagari-serif-font;
         @apply --sc-tall-font-size-md;
       }
 
@@ -154,7 +154,7 @@
         @apply --sc-traditional-chinese-font;
         @apply --sc-dense-font-size-md;
       }
- 
+
       [lang="lzh"] .hgroup p, [lang="zh"] .hgroup p,
       [lang="lzh"] .counter, [lang="lzh"] .t-counter {
         @apply --sc-traditional-chinese-font;
@@ -216,7 +216,7 @@
 
       .html-text-content section {
         margin: 0 auto !important;
-        padding: var(--sc-size-lg) 10% var(--sc-size-xxl);
+        padding: var(--sc-size-lg) var(--sc-size-md) var(--sc-size-xxl);
         max-width: 720px;
         display: block;
       }
@@ -408,7 +408,7 @@
       .endsutta {
         font-weight: bold;
         text-align: center;
-        color: var(--sc-secondary-text-color);        
+        color: var(--sc-secondary-text-color);
       }
 
       .uddana {
@@ -418,7 +418,7 @@
 
       .uddana-intro {
         font-weight: bold;
-        color: var(--sc-secondary-text-color);  
+        color: var(--sc-secondary-text-color);
       }
 
       .endbook,
@@ -470,7 +470,7 @@
         color: var(--sc-secondary-text-color);
         @apply --sc-noto-sans-font;
       }
-      
+
       [lang="pli"] p,
       [lang="san"] p {
         word-wrap: break-word;
@@ -598,7 +598,7 @@
       .t-gaiji {
         color: var(--sc-primary-accent-color);
       }
-      
+
       a.cr {
         color: inherit;
         text-decoration: underline;

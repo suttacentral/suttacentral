@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="menus/sc-search-filter-menu.html">
 
@@ -97,6 +98,15 @@ than ten results in total, a dropdown selection menu appears at the top.
         margin: 0 0 20px 0;
       }
 
+      .search-result-snippet dd {
+        margin-left: 0;
+      }
+
+      .search-result-snippet dfn {
+        font-style: normal;
+        font-weight: bold;
+      }
+
       .search-result-filter-menu {
         margin-top: -20px;
       }
@@ -113,7 +123,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
       .google-maps {
         height: 480px;
-        margin-bottom: 20px;
+        margin: var(--sc-size-md-larger) 0;
       }
 
       .google-maps iframe {
@@ -204,6 +214,8 @@ than ten results in total, a dropdown selection menu appears at the top.
         <div>{{localize('offline')}}</div>
       </div>
     </template>
+
+    <sherby-metadata data="[[_createMetaData(searchQuery, localize)]]"></sherby-metadata>
 
   </template>
   <script>
@@ -479,7 +491,7 @@ than ten results in total, a dropdown selection menu appears at the top.
           _calculateDivision(item) {
               return item.heading.title ? item.uid : '';
           }
-          
+
           _calculateLink(item) {
               return item.url;
           }
@@ -490,6 +502,15 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           _getUrl() {
               return `${this.$.meta.byKey('API_ROOT')}/search`;
+          }
+
+          _createMetaData(searchWord, localize) {
+              const description = localize('metaDescriptionText');
+              const searchResultsText = localize('searchResultsText');
+              return { 
+                'og:title': `${searchResultsText} ${searchWord}`,
+                'og:description': description
+                 };
           }
       }
 

@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../bower_components/page-title/page-title.html">
+<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="../elements/menus/sc-toolbar.html">
 <link rel="import" href="../elements/sc-page-static.html">
@@ -145,6 +146,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         </app-header>
 
         <page-title base-title="" page-title="{{_getPageTitle(toolbarTitle)}}"></page-title>
+        <sherby-metadata data="[[_createMetaData(localize)]]"></sherby-metadata>
 
         <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
           <sc-page-static></sc-page-static>
@@ -201,7 +203,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
                           'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGMENTS', 'LICENSING', 'INTRODUCTION',
                           'START', 'DISCOURSES', 'VINAYA', 'ABHIDHAMMA', 'A-NEW-BEGINNING', 'SUBJECTS', 'SIMILES',
-                          'NAMES', 'TERMINOLOGY', 'ABBREVIATIONS', 'NOT-FOUND']
+                          'NAMES', 'TERMINOLOGY', 'ABBREVIATIONS', 'NOT-FOUND', 'DONATION-SUCCESS']
                   },
                   allIsoCodes: {
                       type: Array,
@@ -343,6 +345,18 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               else {
                   return title;
               }
+          }
+
+          _createMetaData(localize) {
+              const today = new Date();
+              const description = localize('metaDescriptionText');
+              const keywords = localize('metaKeywords');
+              return {
+                description: description,
+                keywords: keywords,
+                cdate: today,
+                mdate: today
+              };
           }
 
           _getPageTitle(title) {
