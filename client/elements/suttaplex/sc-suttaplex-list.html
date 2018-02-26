@@ -37,6 +37,8 @@
 
       .loading-spinner {
         @apply --center;
+        margin-top: var(--sc-size-lg);
+        z-index: 999;
         --paper-spinner-color: var(--sc-primary-color);
       }
 
@@ -93,7 +95,7 @@
       <iron-list id="suttaplex_list" class="suttaplex-list" items="{{suttaplexReturns}}" as="item"
                  scroll-target="document">
         <template>
-          <div style$="z-index: [[_getItemZIndex(suttaplexReturns, index)]];">
+          <div style$="z-index: [[_getItemZIndex(index)]];">
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
               <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]"
                             difficulty="[[_computeItemDifficulty(item.difficulty)]]"
@@ -228,8 +230,8 @@
 
           // this exists to solve an iron-list bug:
           // https://github.com/PolymerElements/iron-list/issues/242#issuecomment-232450210
-          _getItemZIndex(allItems, index) {
-              return allItems ? (allItems.length - index) : 0;
+          _getItemZIndex(index) {
+              return this.suttaplexReturns ? (this.suttaplexReturns.length - index) : 0;
           }
       }
 
