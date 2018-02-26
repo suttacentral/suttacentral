@@ -261,9 +261,9 @@
               super.connectedCallback();
               this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
               this.addEventListener('click', () => {
-                  setTimeout(() => {
+                  requestAnimationFrame(() => {
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
-                  }, 0);
+                  });
               });
               // Scroll to the section after the hash sign in the url:
               setTimeout(() => {
@@ -505,9 +505,6 @@
                   divisionId = 'vi';
               }
               this._setParagraphsVisible(this.showParagraphs);
-              const paragraphsAdded = this.$.segmented_text_content
-                  .querySelector('.textual-info-paragraph:not(.textual-info-paragraph-inline)') !== null;
-              if (paragraphsAdded) return;
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
@@ -551,7 +548,7 @@
                   displayText = `${pageNumber}`;
                   vol = 1;
               }
-              setTimeout(() => {
+              requestAnimationFrame(() => {
                   item.innerHTML = `
                       <span class="image-link" >
                           <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
@@ -568,7 +565,7 @@
                           composed: true
                       }));
                   });
-              }, 500);
+              });
           }
 
           _addSegmentedTextualInfoElements() {
@@ -609,9 +606,6 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
-              item.addEventListener('click', () => {
-                  this._scrollToSection(item.id, false, 0)
-              });
               item.classList.add('textual-info-paragraph');
           }
 
@@ -1194,10 +1188,10 @@
           _applyFirefoxShadyDomFix() {
               if (navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Edge')) {
                   this.isTextViewHidden = true;
-                  requestAnimationFrame(() => {
+                  setTimeout(() => {
                       this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
                       this.isTextViewHidden = false;
-                  });
+                  }, 0);
               }
           }
       }
