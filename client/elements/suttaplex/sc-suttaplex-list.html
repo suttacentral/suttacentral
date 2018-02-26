@@ -238,16 +238,16 @@
               return this.suttaplexReturns ? (this.suttaplexReturns.length - index) : 0;
           }
 
-          _createMetaData(pageInfo, localize) {
-              if (!pageInfo) {
+          _createMetaData(suttaplexReturns, localize) {
+              if (!suttaplexReturns) {
                   return;
               }
               let description = localize('metaDescriptionText');
-              if (pageInfo[0].blurb) {
-                  description = pageInfo[0].blurb
+              if (suttaplexReturns[0].blurb) {
+                  description = suttaplexReturns[0].blurb
               }
               return {
-                'og:title': `${pageInfo[0].original_title}—Suttas and Parallels`,
+                'og:title': `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
                 'og:description': description
               };
           }

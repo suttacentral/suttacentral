@@ -283,19 +283,14 @@
               }
               let description = localize('metaDescriptionText');
               if (responseData.suttaplex.blurb) {
-                  description = responseData.suttaplex.blurb
+                  description = responseData.suttaplex.blurb;
               }
-              if (responseData.translation) {
-                  return {
-                    'og:title': `${responseData.translation.title}—${responseData.translation.author}`,
-                    'og:description': description
-                  };
-              } else {
-                  return {
-                    'og:title': `${responseData.root_text.title}—${responseData.root_text.author}`,
-                    'og:description': description
-                  };
-              }
+              const title = responseData.translation ? responseData.translation.title : responseData.root_text.title;
+              const author = responseData.translation ? responseData.translation.author : responseData.root_text.author;
+              return {
+                'og:title': `${title}—${author}`,
+                'og:description': description
+              };
           }
       }
 
