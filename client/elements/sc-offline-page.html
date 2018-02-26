@@ -249,7 +249,8 @@
                 <div class="option-description">{{localize('paliLookupsDescription')}}</div>
                 <div class="option-multi-select-container">
                   <template is="dom-repeat" items="[[paliLookupLanguages]]" as="lang">
-                    <paper-checkbox class="option-checkbox" on-change="_togglePaliCheckbox"
+                    <paper-checkbox class="option-checkbox pali-checkbox" data-isoCode$="[[lang.isoCode]]"
+                                    on-change="_togglePaliCheckbox"
                                     disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
                       [[lang.name]]
                     </paper-checkbox>
@@ -366,7 +367,7 @@
                           {
                               name: 'English',
                               isoCode: 'en',
-                              enabled: true
+                              enabled: false
                           },
                           {
                               name: 'Español',
@@ -418,11 +419,11 @@
                       statePath: 'fullSiteLanguageName'
                   },
                   // This property stores the default Pali lookup dictionary language.
-                  // If there is no lookupp dictionary available in the user language,
+                  // If there is no lookup dictionary available in the user language,
                   // we default to English.
                   defaultPaliDictToLang: {
                       type: Object,
-                      computed: '_getDefaultPaliLookupDictionaryLang(language)'
+                      computed: '_getDefaultPaliLookupDictionaryLang(chosenLanguageIsoCode)'
                   }
               }
           }
@@ -439,6 +440,11 @@
               addEventListener('pwa-language-changed', (e) => {
                   this.chosenLanguageNativeName = e.detail.name;
                   this.chosenLanguageIsoCode = e.detail.isoCode;
+                  this.paliLookupLanguages.forEach(lang => lang.enabled = lang.isoCode === e.detail.isoCode);
+                  const checkboxes = this.shadowRoot.querySelectorAll(".pali-checkbox");
+                  Array.from(checkboxes).forEach(checkbox => {
+                      checkbox.checked = checkbox.dataset.isocode === e.detail.isoCode;
+                  })
               });
               this._handleNetworkLoss();
           }
@@ -502,7 +508,6 @@
                       if (failed === 0) {
                           this._showToast('success',
                               this.localize('downloadComplete', 'lang', this.chosenLanguageNativeName));
-                          // this.localize('downloadComplete', 'lang', this._getNativeLanguageName(this.chosenLanguageIsoCode)));
                       } else if (failed > 0 && passed > 0) {
                           this._showToast('error',
                               this.localize('downloadErrored', 'failed', failed, 'total', passed + failed));
@@ -621,6 +626,7 @@
           }
 
           _togglePaliCheckbox(e) {
+              console.dir(e);
               const langName = e.target.innerText;
               const langObj = this.paliLookupLanguages.find(item => item.name === langName);
               langObj.enabled = !langObj.enabled;
