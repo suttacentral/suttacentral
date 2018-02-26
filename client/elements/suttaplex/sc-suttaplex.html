@@ -59,33 +59,23 @@
       }
 
       .suttaplex-nerdy-row .popuptext {
+        @apply --paper-font-body1;
+        position: absolute;
+        z-index: 200;
+        background-color: var(--sc-tertiary-background-color);
+        padding: 12px;
+        border-top: var(--sc-border);
+        margin: 0 var(--sc-size-xl) 0 0;
+        box-shadow: var(--paper-material-elevation-2_-_box-shadow);
+        white-space: normal;
         overflow: visible;
         visibility: hidden;
-        background-color: var(--sc-paper-tooltip-color);
-        color: var(--sc-paper-tooltip-text-color);
-        white-space: normal;
-        text-align: center;
-        border-radius: var(--sc-size-xs);
-        padding: var(--sc-size-sm) var(--sc-size-xs);
-        position: absolute;
-        z-index: 1;
       }
 
       .suttaplex-nerdy-row .show {
         visibility: visible;
         -webkit-animation: fadeIn 1s;
         animation: fadeIn 1s;
-      }
-
-      /* Add animation (fade in the popup) */
-      @-webkit-keyframes fadeIn {
-        from {opacity: 0;} 
-        to {opacity: 1;}
-      }
-
-      @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity:1 ;}
       }
 
       .nerdy-row-element {
@@ -333,33 +323,18 @@
               </template>
             <span class="popuptext" id="hidden-nerdy-row">
                 <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
-                  [[item.original_title]]
+                  [[item.original_title]]<br>
                 </span>
                   <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
-                  [[_getAcronymOrUid(item, expansionData)]]
+                  [[_getAcronymOrUid(item, expansionData)]]<br>
                 </span>
                   <template is="dom-if" if="[[item.volpages]]">
-                    <template is="dom-if" if=[[!item.biblio]]>
                     <span class="book no-margin">
                       <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
                     </span>
                       <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
                       [[_computeVolPage(item.volpages)]]
                     </span>
-                    </template>
-                    <template is="dom-if" if=[[item.biblio]]>
-                      <span>
-                        <details class="suttaplex-details display-inline">
-                          <summary class="volpage-biblio-info-summary">
-                          <iron-icon class="grey-icon" icon="book"></iron-icon>
-                            <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
-                            [[_computeVolPage(item.volpages)]]
-                          </span>
-                          </summary>
-                          <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
-                        </details>
-                      </span>
-                    </template>
                   </template>
             </span>
           </div>
@@ -680,12 +655,18 @@
           }
 
           revealHiddenNerdyRowContent() {
+              const detailsElement = this.shadowRoot.querySelector('.volpage-biblio-info');
               const nerdyRow = this.shadowRoot.querySelector('.suttaplex-nerdy-row');
               const popup = this.shadowRoot.querySelector('#hidden-nerdy-row');
               if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
                   popup.classList.toggle("show");
-                  popup.style.width = nerdyRow.clientWidth;
+                  popup.style.width = nerdyRow.clientWidth-16;
                   popup.style.marginLeft = `-${nerdyRow.scrollWidth}px`;
+                  if (detailsElement) {
+                      detailsElement.style.display = 'none';
+                  }
+              } else if (detailsElement) {
+                  detailsElement.style.display = null;
               }
           }
       }
