@@ -27,7 +27,7 @@
         "downloadParallelsDescription": "Select to download parallel tables for texts as well.",
         "downloadRootTexts": "Include root texts",
         "downloadRootTextsDescription": "Select to download texts in root languages as well. This includes a Pali > {toLang} lookup dictionary. To change your lookup, click ",
-        "here": "here.",
+        "here": "here",
         "paliLookups": "Pali lookups",
         "paliLookupsDescription": "Select to download dictionary lookups of Pali words in the following languages:",
         "chineseLookups": "Chinese lookups",
