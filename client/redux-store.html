@@ -15,7 +15,6 @@
             prefix: '',
             __queryParams: {}
         },
-        previousRouteName: '',
         siteLanguage: (navigator.language || navigator.languages && navigator.languages[0]).split('-')[0],
         toolbarOptions: {
             title: '',
@@ -46,7 +45,7 @@
     const reducer = (state, action) => {
         switch (action.type) {
             case 'CHANGE_ROUTE':
-                return routeChanged(state, action);
+                return Object.assign({}, state, { currentRoute: action.route, });
             case 'CHANGE_SITE_LANGUAGE':
                 return Object.assign({}, state, { siteLanguage: action.language });
             case 'CHANGE_TOOLBAR_TITLE':
@@ -128,19 +127,8 @@
         // Reset some state variables:
         parsedState.selectedNavigationMenuItemId = initialState.selectedNavigationMenuItemId;
         parsedState.toolbarOptions = initialState.toolbarOptions;
+        parsedStata.donationSuccessData = initialState.donationSuccessData;
         return parsedState;
-    }
-
-    function routeChanged(state, action) {
-        let n = {
-            currentRoute: action.route,
-            previousRouteName: state.currentRoute.name
-        };
-
-        if (state.currentRoute.name === 'DONATION-SUCCESS' || state.currentRoute.name !== 'DONATE-NOW') {
-            n.donationSuccessData = {};
-        }
-        return Object.assign({}, state, n);
     }
 
     ReduxMixin = PolymerRedux(store);

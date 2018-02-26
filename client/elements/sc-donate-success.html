@@ -57,6 +57,22 @@
                 }
             }
 
+        static get actions() {
+            return {
+                setDonationSuccessData(donationSuccessData) {
+                    return {
+                          type: 'CHANGE_DONATION_SUCCESS',
+                          donationSuccessData: donationSuccessData
+                    }
+                }
+            }
+        }
+
+            detached() {
+                super.detached();
+                this.dispatch('setDonationSuccessData', {});
+            }
+
             _getSubscriptionName(subscription, localize) {
                 return subscription ? localize('MonthlySubscription') : localize('OneTimeDonation');
             }
