@@ -33,9 +33,6 @@ sw.router.registerRoute(
     sw.strategies.cacheFirst()
 );
 
-// Register navigation routes:
-// sw.router.registerNavigationRoute('.', {
-//     whitelist: [
-//         /^\/$/
-//     ]
-// });
+if (!self.location.hostname.match(/127.0.0.1|localhost|172[\d.]+/)) {
+    sw.router.registerNavigationRoute('/');
+}

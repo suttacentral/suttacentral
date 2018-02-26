@@ -75,7 +75,8 @@ class Search(Resource):
         offset = request.args.get('offset', 0)
         query = request.args.get('query', None)
         restrict = request.args.get('restrict', None)
-                
+        if restrict == 'all':
+          restrict = None
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
 
         if query is None:
@@ -114,7 +115,7 @@ class Search(Resource):
         if not restrict or restrict == 'dictionary':
             dictionary_result = dictionaries.search(query)
             if dictionary_result:
-                if offset == '0' or restrict == 'dictionary':
+                if offset == 0 or restrict == 'dictionary':
                     # Yeah this is a hack in terms of offset and stuff
                     # but it works: if the client asks for 10 results
                     # it'll return 11. But it doesn't mess with 
