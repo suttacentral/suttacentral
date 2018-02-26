@@ -601,7 +601,6 @@
           }
 
           _getPaliLookupUrl(toLang) {
-              console.log(toLang);
               return `${this.$.meta.byKey('API_ROOT')}/dictionaries/lookup?from=pli&to=${toLang}`;
           }
 
@@ -626,7 +625,6 @@
           }
 
           _togglePaliCheckbox(e) {
-              console.dir(e);
               const langName = e.target.innerText;
               const langObj = this.paliLookupLanguages.find(item => item.name === langName);
               langObj.enabled = !langObj.enabled;
