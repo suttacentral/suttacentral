@@ -1,0 +1,10 @@
+{
+    "pl": {
+        "DonationOf": "Dotacja wysokości",
+        "MadeBy": "Wysłana przez",
+        "SuttaCentralNote": "Wysłane do SuttaCentral Development Trust, edukacyjnej oragnizacji charytatywnej w celu wsparcia SuttaCentral.net",
+        "PaymentServiceIsStripe": "Obsługa płatności przez Stripe.",
+        "MonthlySubscription": "Subsykrypcja",
+        "OneTimeDonation": "Jednorazowa dotacja"
+    }
+}

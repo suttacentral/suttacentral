@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import datetime
 from collections import defaultdict
 
 import stripe
@@ -690,6 +691,7 @@ class DictionarySimilar(Resource):
 
 
 class DictionaryFull(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
     def get(self, word=None):
         """
         Sends list of dictionary entries to dictionary view
@@ -728,7 +730,7 @@ class Donations(Resource):
         """
         data = json.loads(list(request.form.keys())[0])
         currency = data.get('currency')
-        amount = data.get('amount')
+        inputed_amount = data.get('amount')
         one_time_donation = data.get('oneTimeDonation')
         monthly_donation = data.get('monthlyDonation')
         stripe_data = data.get('stripe')
@@ -746,8 +748,9 @@ class Donations(Resource):
             return 'No such currency', 400
 
         if currency['decimal']:
-            amount = amount * 100
-        amount = int(amount)
+            amount = inputed_amount * 100
+        else:
+            amount = inputed_amount
 
         customer_data = {
             'source': stripe_data['id']
@@ -760,7 +763,6 @@ class Donations(Resource):
             customer = stripe.Customer.create(**customer_data)
         except stripe.CardError:
             return {'err_code': 3}, 400
-
         try:
             if one_time_donation:
                 charge = stripe.Charge.create(
@@ -792,7 +794,14 @@ class Donations(Resource):
 
             return {'err_code': code}, 400
 
-        return 'Subscribed' if monthly_donation else 'Donated', 200
+        data = {
+            'name': name,
+            'amount': inputed_amount,
+            'currency': currency['symbol'],
+            'dateTime': datetime.datetime.now().strftime('%d-%m-%y %H:%M'),
+            'subscription': monthly_donation
+        }
+        return data, 200
 
     @staticmethod
     def _get_plan(amount, currency):

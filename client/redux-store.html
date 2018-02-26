@@ -15,6 +15,7 @@
             prefix: '',
             __queryParams: {}
         },
+        previousRouteName: '',
         siteLanguage: (navigator.language || navigator.languages && navigator.languages[0]).split('-')[0],
         toolbarOptions: {
             title: '',
@@ -36,7 +37,8 @@
             chineseLookupTargetLanguage: ''
         },
         colorTheme: 'light',
-        selectedNavigationMenuItemId: ''
+        selectedNavigationMenuItemId: '',
+        donationSuccessData: {}
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -44,7 +46,7 @@
     const reducer = (state, action) => {
         switch (action.type) {
             case 'CHANGE_ROUTE':
-                return Object.assign({}, state, { currentRoute: action.route });
+                return routeChanged(state, action);
             case 'CHANGE_SITE_LANGUAGE':
                 return Object.assign({}, state, { siteLanguage: action.language });
             case 'CHANGE_TOOLBAR_TITLE':
@@ -91,6 +93,8 @@
                 return Object.assign({}, state, { selectedNavigationMenuItemId: action.id });
             case 'CHANGE_COLOR_THEME':
                 return Object.assign({}, state, { colorTheme: action.theme });
+            case 'CHANGE_DONATION_SUCCESS':
+                return Object.assign({}, state, { donationSuccessData: action.donationSuccessData   });
             default:
                 return state;
         }
@@ -125,6 +129,19 @@
         parsedState.selectedNavigationMenuItemId = initialState.selectedNavigationMenuItemId;
         parsedState.toolbarOptions = initialState.toolbarOptions;
         return parsedState;
+    }
+
+    function routeChanged(state, action) {
+        let n = {
+            currentRoute: action.route,
+            previousRouteName: state.currentRoute.name
+        };
+
+        if (state.currentRoute.name === 'DONATION-SUCCESS' || state.currentRoute.name !== 'DONATE-NOW') {
+            n.donationSuccessData = {};
+        }
+        console.log(n);
+        return Object.assign({}, state, n);
     }
 
     ReduxMixin = PolymerRedux(store);

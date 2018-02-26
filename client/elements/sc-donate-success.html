@@ -1,0 +1,82 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/iron-location/iron-location.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+
+<link rel="import" href="../styles/static-styles.html">
+
+<dom-module id="sc-donate-success">
+    <template>
+        <style include="static-styles sc-scrollbar-style">
+        </style>
+
+        <iron-location path="{{path}}"></iron-location>
+        <iron-meta id="meta"></iron-meta>
+
+        <div id="page-wrap">
+            <section>
+                <template is="dom-if" if="{{donationSuccessData.amount}}">
+                    <div>{{localize('DonationOf')}} <b>{{donationSuccessData.amount}} {{donationSuccessData.currency}}</b>
+                        <template is="dom-if" if="{{donationSuccessData.name}}">
+                            {{localize('MadeBy')}} <b>{{donationSuccessData.name}}</b>.
+                        </template>
+                        {{localize('SuttaCentralNote')}}<br>
+                        {{localize('PaymentServiceIsStripe')}}<br>
+                        <b>{{donationSuccessData.dateTime}} UTC</b>.<br>
+                        <b>{{_subscriptionName(donationSuccessData.subscription, localize)}}</b>.
+                    </div>
+                </template>
+            </section>
+        </div>
+    </template>
+
+    <script>
+        /**
+         * @extends {Polymer.Element}
+         * @appliesMixin Polymer.AppLocalizeBehavior
+         */
+        class SCDonateSuccess extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+            static get is() {
+                return 'sc-donate-success';
+            }
+
+            static get properties() {
+                return {
+                    path: {
+                        type: String
+                    },
+                    language: {
+                        type: String,
+                        statePath: 'siteLanguage',
+                        observer: '_siteLanguageChanged'
+                    },
+                    fallbackLanguage: {
+                        type: String,
+                        value: 'en'
+                    },
+                    donationSuccessData: {
+                      type: Object,
+                      statePath: 'donationSuccessData',
+                    }
+                }
+            }
+
+            ready() {
+                super.ready();
+                this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-success/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+                console.log(this.donationSuccessData);
+            }
+
+            _siteLanguageChanged() {
+                this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-success/${this.language}.json`), this.language, true);
+            }
+
+            _subscriptionName(subscription, localize) {
+                return subscription ? localize('MonthlySubscription') : localize('OneTimeDonation');
+            }
+
+        }
+
+        customElements.define(SCDonateSuccess.is, SCDonateSuccess);
+    </script>
+</dom-module>
