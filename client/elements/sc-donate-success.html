@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../bower_components/iron-location/iron-location.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+<link  rel="import" href="./addons/sc-static-page.html"/>
 
 <link rel="import" href="../styles/static-styles.html">
 
@@ -23,7 +24,7 @@
                         {{localize('SuttaCentralNote')}}<br>
                         {{localize('PaymentServiceIsStripe')}}<br>
                         <b>{{donationSuccessData.dateTime}} UTC</b>.<br>
-                        <b>{{_subscriptionName(donationSuccessData.subscription, localize)}}</b>.
+                        <b>{{_getSubscriptionName(donationSuccessData.subscription, localize)}}</b>.
                     </div>
                 </template>
             </section>
@@ -35,7 +36,7 @@
          * @extends {Polymer.Element}
          * @appliesMixin Polymer.AppLocalizeBehavior
          */
-        class SCDonateSuccess extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+        class SCDonateSuccess extends SCStaticPage {
             static get is() {
                 return 'sc-donate-success';
             }
@@ -45,33 +46,18 @@
                     path: {
                         type: String
                     },
-                    language: {
-                        type: String,
-                        statePath: 'siteLanguage',
-                        observer: '_siteLanguageChanged'
-                    },
-                    fallbackLanguage: {
-                        type: String,
-                        value: 'en'
-                    },
                     donationSuccessData: {
                       type: Object,
                       statePath: 'donationSuccessData',
-                    }
+                    },
+                    localizedStringPath: {
+                      type: String,
+                      value: '/localization/elements/sc-donate-success/'
+                  }
                 }
             }
 
-            ready() {
-                super.ready();
-                this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-success/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-                console.log(this.donationSuccessData);
-            }
-
-            _siteLanguageChanged() {
-                this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-success/${this.language}.json`), this.language, true);
-            }
-
-            _subscriptionName(subscription, localize) {
+            _getSubscriptionName(subscription, localize) {
                 return subscription ? localize('MonthlySubscription') : localize('OneTimeDonation');
             }
 

@@ -750,7 +750,7 @@ class Donations(Resource):
         """
         data = json.loads(list(request.form.keys())[0])
         currency = data.get('currency')
-        inputed_amount = data.get('amount')
+        inputted_amount = data.get('amount')
         one_time_donation = data.get('oneTimeDonation')
         monthly_donation = data.get('monthlyDonation')
         stripe_data = data.get('stripe')
@@ -768,9 +768,9 @@ class Donations(Resource):
             return 'No such currency', 400
 
         if currency['decimal']:
-            amount = inputed_amount * 100
+            amount = inputted_amount * 100
         else:
-            amount = inputed_amount
+            amount = inputted_amount
 
         customer_data = {
             'source': stripe_data['id']
@@ -816,7 +816,7 @@ class Donations(Resource):
 
         data = {
             'name': name,
-            'amount': inputed_amount,
+            'amount': inputted_amount,
             'currency': currency['symbol'],
             'dateTime': datetime.datetime.now().strftime('%d-%m-%y %H:%M'),
             'subscription': monthly_donation
