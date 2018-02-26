@@ -229,9 +229,17 @@
         display: inline-flex;
         @apply --sc-sans-font;
         @apply --sc-skolar-font-size-md;
-        margin:var(--sc-size-md) auto 0;
+        margin: var(--sc-size-md) auto 0;
         border-radius: var(--sc-size-xxs);
         @apply --shadow-elevation-2dp;
+        font-feature-settings: initial;
+        letter-spacing: normal;
+        line-height: initial;
+        font-style:italic;
+      }
+
+      #segmented_text_content.line-by-line h1 [lang="en"]:after {
+        margin-bottom: var(--sc-size-md-larger);
       }
 
       .hgroup p .latin {
