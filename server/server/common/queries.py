@@ -81,9 +81,9 @@ FOR div IN root
     RETURN {
         uid: div._id, 
         has_children: descendant != null,
-        name: name ? name : DOCUMENT(CONCAT('root_names/', div.uid, '_', div.root_lang))['name'],
+        name: name ? name : div.name,
         lang_iso: div.root_lang,
-        lang_name: (FOR lang in language FILTER lang.uid == div.root_lang LIMIT 1 RETURN lang.name)[0],
+        lang_name: div.name,
         num: div.num, 
         id: div.uid, 
         type: div.type, 
@@ -100,7 +100,7 @@ LET descendents = (
         LET name = DOCUMENT(CONCAT('root_names/', d.uid, '_', @language))['name']
         RETURN {
             from: d_edge._from,
-            name: name ? name : DOCUMENT(CONCAT('root_names/', d.uid, '_', d.root_lang))['name'],
+            name: name ? name : d.name,
             uid: d._id,
             num: d.num,
             type: d.type,
