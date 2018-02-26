@@ -103,7 +103,7 @@ class Search(Resource):
                         'highlight': entry['highlight'],
                         'url': f'/{uid}/{lang}/{author_uid}'
                     })
-                
+
                 results['total'] += es_text_results['hits']['total']
                 results['hits'].extend(text_results)
             

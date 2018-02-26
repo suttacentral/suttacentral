@@ -149,10 +149,11 @@ This is the base language menu that determines the language of the site.
           // Redux actions
           static get actions() {
               return {
-                  changeLanguage(language) {
+                  changeLanguage(language, fullName) {
                       return {
                           type: 'CHANGE_SITE_LANGUAGE',
-                          language: language
+                          language: language,
+                          fullName: fullName
                       }
                   }
               }
@@ -186,7 +187,7 @@ This is the base language menu that determines the language of the site.
                       }));
                   } else {
                       // If it is the main menu, change the website language.
-                      this.dispatch('changeLanguage', chosenLanguage.iso_code);
+                      this.dispatch('changeLanguage', chosenLanguage.iso_code, chosenLanguage.name);
                   }
               } catch (e) {
                   console.error(e);
