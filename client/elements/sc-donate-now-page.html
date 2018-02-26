@@ -344,6 +344,10 @@
                       statePath: 'siteLanguage',
                       observer: '_siteLanguageChanged'
                   },
+                  donationSuccessData: {
+                      type: Object,
+                      statePath: 'donationSuccessData'
+                  },
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
@@ -354,6 +358,17 @@
                   }
               }
           }
+
+        static get actions() {
+            return {
+                setDonationSuccessData(donationSuccessData) {
+                    return {
+                          type: 'CHANGE_DONATION_SUCCESS',
+                          donationSuccessData: donationSuccessData
+                    }
+                }
+            }
+        }
 
           ready() {
               super.ready();
@@ -445,12 +460,12 @@
 
           _paymentFinished() {
               this.processingPayment = false;
-              this._showToast('success', `${this.localize('paymentSuccessful')} ${this.localize('redirectNotice')}`);
+              this.dispatch('setDonationSuccessData', this.donationResponseData);
               setTimeout(() => {
                   this.shadowRoot.querySelector('#submit_button').disabled = false;
                   this.resetForm();
-                  this.set('path', '/');
-              }, 5000);
+                  this.set('path', '/donation-success');
+              }, 0);
           }
 
           _paymentError() {
