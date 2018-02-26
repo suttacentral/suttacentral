@@ -417,9 +417,10 @@ It is in effect a miniature version of the suttaplex-card
               const detailsElement = this.shadowRoot.querySelector('.parallel-item-biblio-info');
               const nerdyRow = this.shadowRoot.querySelector('.parallel-item-details');
               const popup = this.shadowRoot.querySelector('#hidden-nerdy-row');
+              const widthReduction = 24;
               if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
                   popup.classList.toggle("show");
-                  popup.style.width = nerdyRow.clientWidth-24;
+                  popup.style.width = nerdyRow.clientWidth-widthReduction;
                   if (detailsElement) {
                       detailsElement.style.display = 'none';
                   }

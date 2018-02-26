@@ -647,9 +647,10 @@
               const detailsElement = this.shadowRoot.querySelector('.volpage-biblio-info');
               const nerdyRow = this.shadowRoot.querySelector('.suttaplex-nerdy-row');
               const popup = this.shadowRoot.querySelector('#hidden-nerdy-row');
+              const widthReduction = 16;
               if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
                   popup.classList.toggle("show");
-                  popup.style.width = nerdyRow.clientWidth-16;
+                  popup.style.width = nerdyRow.clientWidth-widthReduction;
                   popup.style.marginLeft = `-${nerdyRow.scrollWidth}px`;
                   if (detailsElement) {
                       detailsElement.style.display = 'none';
