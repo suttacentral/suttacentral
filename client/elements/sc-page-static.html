@@ -307,78 +307,33 @@
         selected="{{pages}}"
         attr-for-selected="name"
         hide-immediately>
-      <template is="dom-if" name="HOME">
-        <home-page></home-page>
-      </template>
-      <template is="dom-if" name="DONATIONS">
-        <sc-donations-page></sc-donations-page>
-      </template>
+      <home-page name="HOME"></home-page>
+      <sc-donations-page name="DONATIONS"></sc-donations-page>
       <template is="dom-if" name="DONATE-NOW" restamp>
         <sc-donate-now-page id="donate"></sc-donate-now-page>
       </template>
-      <template is="dom-if" name="DOWNLOADS">
-        <sc-downloads-page></sc-downloads-page>
-      </template>
-      <template is="dom-if" name="OFFLINE">
-        <sc-offline-page></sc-offline-page>
-      </template>
-      <template is="dom-if" name="NUMBERING">
-        <sc-numbering-page></sc-numbering-page>
-      </template>
-      <template is="dom-if" name="METHODOLOGY">
-        <sc-methodology-page></sc-methodology-page>
-      </template>
-      <template is="dom-if" name="ACKNOWLEDGMENTS">
-        <sc-acknowledgments-page></sc-acknowledgments-page>
-      </template>
-      <template is="dom-if" name="LICENSING">
-        <sc-licensing-page></sc-licensing-page>
-      </template>
-      <template is="dom-if" name="ABOUT">
-        <sc-about-page></sc-about-page>
-      </template>
-      <template is="dom-if" name="INTRODUCTION">
-        <sc-introduction></sc-introduction>
-      </template>
-      <template is="dom-if" name="START">
-        <sc-start></sc-start>
-      </template>
-      <template is="dom-if" name="DISCOURSES">
-        <sc-discourses></sc-discourses>
-      </template>
-      <template is="dom-if" name="VINAYA">
-        <sc-vinaya></sc-vinaya>
-      </template>
-      <template is="dom-if" name="ABHIDHAMMA">
-        <sc-abhidhamma></sc-abhidhamma>
-      </template>
-      <template is="dom-if" name="SUBJECTS">
-        <sc-subjects-page></sc-subjects-page>
-      </template>
-      <template is="dom-if" name="A-NEW-BEGINNING">
-        <sc-a-new-beginning></sc-a-new-beginning>
-      </template>
-      <template is="dom-if" name="SIMILES">
-        <sc-similes-page></sc-similes-page>
-      </template>
-      <template is="dom-if" name="NAMES">
-        <sc-names-page></sc-names-page>
-      </template>
-      <template is="dom-if" name="TERMINOLOGY">
-        <sc-terminology-page></sc-terminology-page>
-      </template>
-      <template is="dom-if" name="ABBREVIATIONS">
-        <sc-abbreviations-page></sc-abbreviations-page>
-      </template>
-      <template is="dom-if" name="DONATION-SUCCESS">
-        <sc-donate-success></sc-donate-success>
-      </template>
-      <template is="dom-if" name="NOT-FOUND">
-        <div class="page-not-found-container">
-          <h2>{{localize('error404')}}</h2>
-          <h3>{{localize('pageNotFound')}}</h3>
-        </div>
-      </template>
+      <sc-downloads-page name="DOWNLOADS"></sc-downloads-page>
+      <sc-offline-page name="OFFLINE"></sc-offline-page>
+      <sc-numbering-page name="NUMBERING"></sc-numbering-page>
+      <sc-methodology-page name="METHODOLOGY"></sc-methodology-page>
+      <sc-acknowledgments-page name="ACKNOWLEDGMENTS"></sc-acknowledgments-page>
+      <sc-licensing-page name="LICENSING"></sc-licensing-page>
+      <sc-about-page name="ABOUT"></sc-about-page>
+      <sc-introduction name="INTRODUCTION"></sc-introduction>
+      <sc-start name="START"></sc-start>
+      <sc-discourses name="DISCOURSES"></sc-discourses>
+      <sc-vinaya name="VINAYA"></sc-vinaya>
+      <sc-abhidhamma name="ABHIDHAMMA"></sc-abhidhamma>
+      <sc-subjects-page name="SUBJECTS"></sc-subjects-page>
+      <sc-a-new-beginning name="A-NEW-BEGINNING"></sc-a-new-beginning>
+      <sc-similes-page name="SIMILES"></sc-similes-page>
+      <sc-names-page name="NAMES"></sc-names-page>
+      <sc-terminology-page name="TERMINOLOGY"></sc-terminology-page>
+      <sc-abbreviations-page name="ABBREVIATIONS"></sc-abbreviations-page>
+      <div name="NOT-FOUND" class="page-not-found-container">
+        <h2>{{localize('error404')}}</h2>
+        <h3>{{localize('pageNotFound')}}</h3>
+      </div>
     </iron-lazy-pages>
   </template>
 
