@@ -105,6 +105,7 @@ LET descendents = (
             num: d.num,
             type: d.type,
             id: d.uid,
+            lang_iso: (NOT div.root_lang AND LENGTH(d_path.edges) == 1) ? d.root_lang : null,
             display_num: d.display_num
     }
 )
@@ -241,7 +242,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         blurb: blurb,
         difficulty: difficulty,
         original_title: original_titles,
-        root_lang: v.root_lang ? v.root_lang : v.lang,
+        root_lang: v.root_lang,
         type: e.type ? e.type : (v.type ? v.type : 'text'),
         from: e._from,
         translated_title: translated_titles,

@@ -96,48 +96,48 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
 
         for i, entry in enumerate(entries):
             path = pathlib.PurePath(entry['_path'])
-            mapping[path] = entry
-
-            uid = path.parts[-1]
-            uids_seen[uid].append(entry['_path'])
+            uid = path.name
             entry['_key'] = uid
             entry['uid'] = uid
+            
+            is_link = entry.get('type') == 'link'
+            if not is_link:
+                mapping[uid] = entry
+                uids_seen[uid].append(entry['_path'])
+                base_uid = reg.match(uid)[0]
+                lang = 'en'
+                while base_uid:
+                    try:
+                        if base_uid == 't':
+                            entry['root_lang'] = 'lzh'
+                            lang = 'lzh'
+                        else:
+                            entry['root_lang'] = root_languages[base_uid]
+                            lang = root_languages[base_uid]
+                        break
+                    except KeyError:
+                        base_uid = '-'.join(base_uid.split('-')[:-1])
 
-            base_uid = reg.match(uid)[0]
-            lang = 'en'
+                if 'name' in entry:
+                    name_docs.append({'name': entry['name'],
+                                      'uid': uid,
+                                      'lang': lang,
+                                      'root': True,
+                                      '_key': f'{uid}_{lang}'})
 
-            while base_uid:
-                try:
-                    if base_uid == 't':
-                        entry['root_lang'] = 'lzh'
-                        lang = 'lzh'
-                    else:
-                        entry['root_lang'] = root_languages[base_uid]
-                        lang = root_languages[base_uid]
-                    break
-                except KeyError:
-                    base_uid = '-'.join(base_uid.split('-')[:-1])
+                del entry['_path']
+                if 'num' not in entry:
+                    entry['num'] = i
 
-            if 'name' in entry:
-                name_docs.append({'name': entry['name'],
-                                  'uid': uid,
-                                  'lang': lang,
-                                  'root': True,
-                                  '_key': f'{uid}_{lang}'})
-
-            del entry['_path']
-            if 'num' not in entry:
-                entry['num'] = i
-
-            for data_name in ['volpage', 'biblio_uid', 'acronym']:
-                try:
-                    entry[data_name] = sutta_data[uid][data_name]
-                except KeyError:
-                    pass
-            docs.append(entry)
+                for data_name in ['volpage', 'biblio_uid', 'acronym']:
+                    try:
+                        entry[data_name] = sutta_data[uid][data_name]
+                    except KeyError:
+                        pass
+                docs.append(entry)
 
             # find the parent
-            parent = mapping.get(path.parent)
+            parent = mapping.get(path.parent.name)
             edge_type = entry.get('type', 'text')
             if parent:
                 edges.append({'_from': 'root/' + parent['_key'], '_to': 'root/' + entry['_key'],
@@ -172,7 +172,7 @@ def process_category_files(category_files, db, edges, mapping):
                 if category_name == 'pitaka':
                     division_ordering.extend(entry['contains'])
                 for uid in entry['contains']:
-                    child = mapping.get(pathlib.PurePath(uid))
+                    child = mapping.get(uid)
                     if child is None:
                         logging.error(f'Division defined in {category_name} not found: {uid}')
                         continue
@@ -201,7 +201,7 @@ def perform_update_queries(db):
     FOR lang IN language
         FOR sutta IN 1..10 OUTBOUND lang root_edges
             UPDATE sutta WITH {
-                "lang": lang.uid
+                "root_lang": lang.uid
             } IN root
     ''')
 

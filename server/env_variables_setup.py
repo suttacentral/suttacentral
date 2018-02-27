@@ -1,4 +1,5 @@
 import subprocess
+import os
 from string import ascii_letters, digits
 from secrets import choice
 from pathlib import Path
@@ -92,9 +93,12 @@ def change_po_file_permissions(path: Path):
 
 
 def save_new_values(target_file: Path, data: Dict[str, str]):
-    data = '\n'.join(f'{key}={value}' for key, value in data.items())
+    data_str = '\n'.join(f'{key}={value}' for key, value in data.items())
+
+    os.environ.update(data)
+
     with target_file.open(mode='w', encoding='utf-8') as f:
-        f.write(data)
+        f.write(data_str)
     change_po_file_permissions(target_file)
 
 
