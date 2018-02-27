@@ -96,9 +96,10 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
 
         for i, entry in enumerate(entries):
             path = pathlib.PurePath(entry['_path'])
-            mapping[path] = entry
+            uid = path.name
+            mapping[uid] = entry
 
-            uid = path.parts[-1]
+            
             uids_seen[uid].append(entry['_path'])
             entry['_key'] = uid
             entry['uid'] = uid
@@ -137,7 +138,7 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
             docs.append(entry)
 
             # find the parent
-            parent = mapping.get(path.parent)
+            parent = mapping.get(path.parent.name)
             edge_type = entry.get('type', 'text')
             if parent:
                 edges.append({'_from': 'root/' + parent['_key'], '_to': 'root/' + entry['_key'],
@@ -172,7 +173,7 @@ def process_category_files(category_files, db, edges, mapping):
                 if category_name == 'pitaka':
                     division_ordering.extend(entry['contains'])
                 for uid in entry['contains']:
-                    child = mapping.get(pathlib.PurePath(uid))
+                    child = mapping.get(uid)
                     if child is None:
                         logging.error(f'Division defined in {category_name} not found: {uid}')
                         continue
