@@ -261,9 +261,9 @@
               super.connectedCallback();
               this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
               this.addEventListener('click', () => {
-                  setTimeout(() => {
+                  requestAnimationFrame(() => {
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
-                  }, 0);
+                  });
               });
               // Scroll to the section after the hash sign in the url:
               setTimeout(() => {
@@ -287,7 +287,9 @@
               this._setTranslatedAttributes();
               this._updateToolbar();
               this._addTextContent();
-              this._computeParagraphs();
+              if (!this._browserRequiresShadyDomFix()) {
+                  this._computeParagraphs();
+              }
               this.dispatch('changeSuttaMetaText', this._computeMeta());
           }
 
@@ -505,9 +507,7 @@
                   divisionId = 'vi';
               }
               this._setParagraphsVisible(this.showParagraphs);
-              const paragraphsAdded = this.$.segmented_text_content
-                  .querySelector('.textual-info-paragraph:not(.textual-info-paragraph-inline)') !== null;
-              if (paragraphsAdded) return;
+
               if (this.paragraphs && this.showParagraphs) {
                   this.paragraphs.forEach((paragraph) => {
                       const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
@@ -551,7 +551,7 @@
                   displayText = `${pageNumber}`;
                   vol = 1;
               }
-              setTimeout(() => {
+              requestAnimationFrame(() => {
                   item.innerHTML = `
                       <span class="image-link" >
                           <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
@@ -561,14 +561,16 @@
                   `;
                   item.classList.add('image-book-link');
                   item.classList.add('textual-info-paragraph');
-                  item.addEventListener('click', () => {
-                      this.dispatchEvent(new CustomEvent('show-image', {
-                          detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
-                          bubbles: true,
-                          composed: true
-                      }));
-                  });
-              }, 500);
+                  setTimeout(() => {
+                      item.addEventListener('click', () => {
+                          this.dispatchEvent(new CustomEvent('show-image', {
+                              detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
+                              bubbles: true,
+                              composed: true
+                          }));
+                      });
+                  }, 0);
+              });
           }
 
           _addSegmentedTextualInfoElements() {
@@ -609,9 +611,6 @@
               item.innerHTML = item.id.replace(data.uid, '');
               item.title = data.description;
               item.href = `#${item.id}`;
-              item.addEventListener('click', () => {
-                  this._scrollToSection(item.id, false, 0)
-              });
               item.classList.add('textual-info-paragraph');
           }
 
@@ -1007,31 +1006,31 @@
                       let tooltip = document.createElement('paper-tooltip');
                       let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
                       this._setTooltipOptions(tooltip);
-                      segment.addEventListener('mouseover', (e) => {
+                      segment.addEventListener('mouseover', () => {
                           if (this.chosenTextView !== 'popup') return;
                           requestAnimationFrame(() => {
                               segment.style.color = this._getAccentColor();
                               states.isWordHovered = true;
-                              this._showPopupTooltip(segment, tooltip, states, e, transliterator);
+                              this._showPopupTooltip(segment, tooltip, states, transliterator);
                           });
                       });
-                      segment.addEventListener('mouseout', (e) => {
+                      segment.addEventListener('mouseout', () => {
                           states.isWordHovered = false;
                           this._resetColor(states, segment);
-                          this._removeTooltip(segment, tooltip, states, e);
+                          this._removeTooltip(segment, tooltip, states);
                       });
-                      tooltip.addEventListener('mouseover', (e) => {
+                      tooltip.addEventListener('mouseover', () => {
                           states.isTooltipHovered = true;
                       });
-                      tooltip.addEventListener('mouseout', (e) => {
+                      tooltip.addEventListener('mouseout', () => {
                           states.isTooltipHovered = false;
-                          this._removeTooltip(segment, tooltip, states, e);
+                          this._removeTooltip(segment, tooltip, states);
                       });
                   }
               );
           }
 
-          _showPopupTooltip(segment, tooltip, states, e, transliterator) {
+          _showPopupTooltip(segment, tooltip, states, transliterator) {
               tooltip.innerHTML = this._transliterateFragment(this.rootSutta.strings[segment.id], transliterator);
               segment.appendChild(tooltip);
               requestAnimationFrame(() => {
@@ -1051,7 +1050,7 @@
               }
           }
 
-          _showLookupTooltip(v, tooltip, paliLookup, states, e) {
+          _showLookupTooltip(v, tooltip, paliLookup, states) {
               let lookupResult = paliLookup.lookupWord(v.dataset.latin_text || v.innerText);
               tooltip.innerHTML = lookupResult.html;
               v.parentNode.insertBefore(tooltip, v.nextSibling);
@@ -1064,7 +1063,7 @@
               }
           }
 
-          _removeTooltip(word, tooltip, states, e) {
+          _removeTooltip(word, tooltip, states) {
               requestAnimationFrame(() => {
                   if (!states.isWordHovered && !states.isTooltipHovered) {
                       word.style.color = '';
@@ -1083,26 +1082,26 @@
                   let tooltip = document.createElement('paper-tooltip');
                   let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
                   this._setTooltipOptions(tooltip);
-                  word.addEventListener('mouseover', (e) => {
+                  word.addEventListener('mouseover', () => {
                       if (this.isPaliLookupEnabled) {
                           requestAnimationFrame(() => {
                               word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
                               states.isWordHovered = true;
-                              this._showLookupTooltip(word, tooltip, paliLookup, states, e);
+                              this._showLookupTooltip(word, tooltip, paliLookup, states);
                           });
                       }
                   });
-                  word.addEventListener('mouseout', (e) => {
+                  word.addEventListener('mouseout', () => {
                       states.isWordHovered = false;
                       this._resetColor(states, word);
-                      this._removeTooltip(word, tooltip, states, e);
+                      this._removeTooltip(word, tooltip, states);
                   });
-                  tooltip.addEventListener('mouseover', (e) => {
+                  tooltip.addEventListener('mouseover', () => {
                       states.isTooltipHovered = true;
                   });
-                  tooltip.addEventListener('mouseout', (e) => {
+                  tooltip.addEventListener('mouseout', () => {
                       states.isTooltipHovered = false;
-                      this._removeTooltip(word, tooltip, states, e);
+                      this._removeTooltip(word, tooltip, states);
                   });
               })
           }
@@ -1191,13 +1190,18 @@
               }
           }
 
+          _browserRequiresShadyDomFix() {
+              return (navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Edge'));
+          }
+
           _applyFirefoxShadyDomFix() {
-              if (navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Edge')) {
+              if (this._browserRequiresShadyDomFix()) {
                   this.isTextViewHidden = true;
-                  requestAnimationFrame(() => {
+                  setTimeout(() => {
                       this.$.segmented_text_content.innerHTML = this.$.segmented_text_content.innerHTML;
                       this.isTextViewHidden = false;
-                  });
+                      this._computeParagraphs();
+                  }, 0);
               }
           }
       }

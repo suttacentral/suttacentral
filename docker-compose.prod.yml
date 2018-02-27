@@ -39,3 +39,11 @@ services:
     ports:
     - '9200:9200'
     - '9300:9300'
+
+  sc-pootle:
+    env_file:
+      - pootle/environment_prod.yml
+
+  sc-pootle-mysql:
+    env_file:
+      - pootle/environment_prod.yml
