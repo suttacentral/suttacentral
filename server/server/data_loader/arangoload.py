@@ -97,45 +97,49 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
         for i, entry in enumerate(entries):
             path = pathlib.PurePath(entry['_path'])
             uid = path.name
-            mapping[uid] = entry
-
-            
-            uids_seen[uid].append(entry['_path'])
             entry['_key'] = uid
             entry['uid'] = uid
+            
+            is_link = entry.get('type') == 'link'
+            if not is_link:
+                mapping[uid] = entry
+                uids_seen[uid].append(entry['_path'])
+                
 
-            base_uid = reg.match(uid)[0]
-            lang = 'en'
+                base_uid = reg.match(uid)[0]
+                lang = 'en'
+                
+                
 
-            while base_uid:
-                try:
-                    if base_uid == 't':
-                        entry['root_lang'] = 'lzh'
-                        lang = 'lzh'
-                    else:
-                        entry['root_lang'] = root_languages[base_uid]
-                        lang = root_languages[base_uid]
-                    break
-                except KeyError:
-                    base_uid = '-'.join(base_uid.split('-')[:-1])
+                while base_uid:
+                    try:
+                        if base_uid == 't':
+                            entry['root_lang'] = 'lzh'
+                            lang = 'lzh'
+                        else:
+                            entry['root_lang'] = root_languages[base_uid]
+                            lang = root_languages[base_uid]
+                        break
+                    except KeyError:
+                        base_uid = '-'.join(base_uid.split('-')[:-1])
 
-            if 'name' in entry:
-                name_docs.append({'name': entry['name'],
-                                  'uid': uid,
-                                  'lang': lang,
-                                  'root': True,
-                                  '_key': f'{uid}_{lang}'})
+                if 'name' in entry:
+                    name_docs.append({'name': entry['name'],
+                                      'uid': uid,
+                                      'lang': lang,
+                                      'root': True,
+                                      '_key': f'{uid}_{lang}'})
 
-            del entry['_path']
-            if 'num' not in entry:
-                entry['num'] = i
+                del entry['_path']
+                if 'num' not in entry:
+                    entry['num'] = i
 
-            for data_name in ['volpage', 'biblio_uid', 'acronym']:
-                try:
-                    entry[data_name] = sutta_data[uid][data_name]
-                except KeyError:
-                    pass
-            docs.append(entry)
+                for data_name in ['volpage', 'biblio_uid', 'acronym']:
+                    try:
+                        entry[data_name] = sutta_data[uid][data_name]
+                    except KeyError:
+                        pass
+                docs.append(entry)
 
             # find the parent
             parent = mapping.get(path.parent.name)
@@ -202,7 +206,7 @@ def perform_update_queries(db):
     FOR lang IN language
         FOR sutta IN 1..10 OUTBOUND lang root_edges
             UPDATE sutta WITH {
-                "lang": lang.uid
+                "root_lang": lang.uid
             } IN root
     ''')
 
