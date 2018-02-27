@@ -1,4 +1,4 @@
-from string import ascii_letters, digits, punctuation
+from string import ascii_letters, digits
 from secrets import choice
 from pathlib import Path
 from typing import Dict
@@ -42,15 +42,13 @@ def generate_random(generated_len=GENERATED_LEN) -> str:
       1 uppercase letter
       1 lowercase letter
       1 digit
-      1 special character
     """
-    characters = ascii_letters + digits + punctuation
+    characters = ascii_letters + digits
     while True:
         password = ''.join(choice(characters) for _ in range(generated_len))
         if (any(c for c in password if (c.isalpha() and c.islower()))
                 and any(c for c in password if (c.isalpha() and c.isupper()))
-                and any(c.isnumeric() for c in password)
-                and any(c for c in password if c in punctuation)):
+                and any(c.isnumeric() for c in password)):
             break
     return password
 
