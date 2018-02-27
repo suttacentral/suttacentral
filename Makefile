@@ -207,6 +207,9 @@ run-production-env:
 	@echo "\033[1;32mDONE!"
 	@make run-prod
 
+generate-env-variables:
+	@docker exec -it sc-flask python env_variable_setup.py
+
 generate-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"
 
