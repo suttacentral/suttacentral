@@ -832,7 +832,6 @@ class Donations(Resource):
         return plan
 
     @staticmethod
-    @in_thread
     def send_async_mail(msg):
         from app import app
         with app.app_context():
