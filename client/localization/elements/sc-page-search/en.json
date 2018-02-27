@@ -2,6 +2,8 @@
     "en": {
         "resultsFor": "results for",
         "offline": "You're offline.",
-        "networkError": "Network error."
+        "networkError": "Network error.",
+        "metaDescriptionText": "Early Buddhist texts and modern translations. Suttas (sutras) from the Tipitaka (Tripitaka) in Pali, Chinese, Sanskrit, and Tibetan with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.",
+        "searchResultsText": "Search results for"
     }
 }

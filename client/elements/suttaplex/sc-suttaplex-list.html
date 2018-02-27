@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="sc-suttaplex-section-title.html">
 <link rel="import" href="sc-suttaplex.html">
@@ -114,6 +115,9 @@
       </iron-list>
 
     </div>
+
+    <sherby-metadata data="[[_createMetaData(suttaplexReturns, localize)]]"></sherby-metadata>
+
   </template>
 
   <script>
@@ -232,6 +236,20 @@
           // https://github.com/PolymerElements/iron-list/issues/242#issuecomment-232450210
           _getItemZIndex(index) {
               return this.suttaplexReturns ? (this.suttaplexReturns.length - index) : 0;
+          }
+
+          _createMetaData(suttaplexReturns, localize) {
+              if (!suttaplexReturns) {
+                  return;
+              }
+              let description = localize('metaDescriptionText');
+              if (suttaplexReturns[0].blurb) {
+                  description = suttaplexReturns[0].blurb
+              }
+              return {
+                'og:title': `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
+                'og:description': description
+              };
           }
       }
 

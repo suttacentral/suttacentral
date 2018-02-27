@@ -53,15 +53,18 @@
         @apply --paper-font-body2;
         color: var(--sc-secondary-text-color);
         font-weight: normal;
+        text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis;
       }
 
-      .suttaplex-nerdy-row:hover {
-        text-overflow: clip;
-        white-space: normal;
-        word-break: break-all;
+      .suttaplex-nerdy-row .popuptext {
+        overflow: visible;
+        visibility: hidden;
+      }
+
+      .suttaplex-nerdy-row .show {
+        visibility: visible;
       }
 
       .nerdy-row-element {
@@ -120,7 +123,7 @@
         cursor: pointer;
       }
 
-      .volpage-biblio-info {
+      .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
         @apply --paper-font-body1;
         position: absolute;
         z-index: 200;
@@ -277,36 +280,52 @@
             </paper-tooltip>
           </div>
 
-          <div class="suttaplex-nerdy-row">
-          <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
-            [[item.original_title]]
-          </span>
-            <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
-            [[_getAcronymOrUid(item, expansionData)]]
-          </span>
-            <template is="dom-if" if="[[item.volpages]]">
-              <template is="dom-if" if=[[!item.biblio]]>
-              <span class="book no-margin">
-                <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
-              </span>
-                <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
-                [[_computeVolPage(item.volpages)]]
-              </span>
+          <div class="suttaplex-nerdy-row" on-tap="revealHiddenNerdyRowContent">
+            <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
+              [[item.original_title]]
+            </span>
+              <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
+              [[_getAcronymOrUid(item, expansionData)]]
+            </span>
+              <template is="dom-if" if="[[item.volpages]]">
+                <template is="dom-if" if=[[!item.biblio]]>
+                <span class="book no-margin">
+                  <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
+                </span>
+                  <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                  [[_computeVolPage(item.volpages)]]
+                </span>
+                </template>
+                <template is="dom-if" if=[[item.biblio]]>
+                  <span>
+                    <details class="suttaplex-details display-inline">
+                      <summary class="volpage-biblio-info-summary">
+                      <iron-icon class="grey-icon" icon="book"></iron-icon>
+                        <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                        [[_computeVolPage(item.volpages)]]
+                      </span>
+                      </summary>
+                      <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
+                    </details>
+                  </span>
+                </template>
               </template>
-              <template is="dom-if" if=[[item.biblio]]>
-                <span>
-                  <details class="suttaplex-details display-inline">
-                    <summary class="volpage-biblio-info-summary">
-                    <iron-icon class="grey-icon" icon="book"></iron-icon>
+            <span class="popuptext" id="hidden-nerdy-row">
+                <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
+                  [[item.original_title]]<br>
+                </span>
+                  <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
+                  [[_getAcronymOrUid(item, expansionData)]]<br>
+                </span>
+                  <template is="dom-if" if="[[item.volpages]]">
+                    <span class="book no-margin">
+                      <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
+                    </span>
                       <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
                       [[_computeVolPage(item.volpages)]]
                     </span>
-                    </summary>
-                    <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
-                  </details>
-                </span>
-              </template>
-            </template>
+                  </template>
+            </span>
           </div>
 
           <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="{{localize('blurb')}}"
@@ -621,6 +640,23 @@
                   return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
               } else {
                   return localize('volumeAndPage');
+              }
+          }
+
+          revealHiddenNerdyRowContent() {
+              const detailsElement = this.shadowRoot.querySelector('.volpage-biblio-info');
+              const nerdyRow = this.shadowRoot.querySelector('.suttaplex-nerdy-row');
+              const popup = this.shadowRoot.querySelector('#hidden-nerdy-row');
+              const widthReduction = 16;
+              if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
+                  popup.classList.toggle("show");
+                  popup.style.width = nerdyRow.clientWidth-widthReduction;
+                  popup.style.marginLeft = `-${nerdyRow.scrollWidth}px`;
+                  if (detailsElement) {
+                      detailsElement.style.display = 'none';
+                  }
+              } else if (detailsElement) {
+                  detailsElement.style.display = null;
               }
           }
       }
