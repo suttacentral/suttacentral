@@ -550,7 +550,7 @@ FOR div IN root
 
     LET texts = (
         FOR d, d_edge, d_path IN 1..20 OUTBOUND div `root_edges`
-            FILTER d.type == 'text'
+            FILTER d.type == 'text' OR d_edge.type == 'text'
             LET po = (
                 FOR text IN po_strings
                     FILTER text.uid == d.uid AND (POSITION(@languages, text.lang) OR 
