@@ -37,9 +37,7 @@
 
   <!-- Fix for lastpass extension breaking Shady DOM: -->
   <script>
-      window.addEventListener('WebComponentsReady', function() {
-          document.createElement = Document.prototype.createElement;
-      });
+      document.createElement = Document.prototype.createElement;
   </script>
 
   <link rel="import" href="/styles/sc-styles.html">
@@ -48,10 +46,10 @@
   <script async src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-  <sc-drawer-layout></sc-drawer-layout>
-  <noscript>
-      Please enable JavaScript to view this website.
-  </noscript>
+<sc-drawer-layout></sc-drawer-layout>
+<noscript>
+  Please enable JavaScript to view this website.
+</noscript>
 </body>
 </html>
 
