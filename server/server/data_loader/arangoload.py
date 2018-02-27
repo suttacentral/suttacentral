@@ -104,12 +104,9 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
             if not is_link:
                 mapping[uid] = entry
                 uids_seen[uid].append(entry['_path'])
-                
 
                 base_uid = reg.match(uid)[0]
                 lang = 'en'
-                
-                
 
                 while base_uid:
                     try:
