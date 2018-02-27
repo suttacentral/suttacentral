@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="../styles/sc-dict-styles.html">
 <link rel="import" href="../styles/sc-scrollbar-style.html">
@@ -195,6 +196,8 @@
       </main>
     </div>
 
+    <sherby-metadata data="[[_createMetaData(dictionaryWord, localize)]]"></sherby-metadata>
+
   </template>
 
   <script>
@@ -351,6 +354,14 @@
               this.$.drawer.toggle();
           }
 
+          _createMetaData(dictionaryWord, localize) {
+              const description = localize('metaDescriptionText');
+              const dictionaryResultsText = localize('dictionaryResultsText');
+              return { 
+                'og:title': `${dictionaryResultsText} ${dictionaryWord}`,
+                'og:description': description
+                };
+          }
       }
 
       customElements.define(SCPageDictionary.is, SCPageDictionary);

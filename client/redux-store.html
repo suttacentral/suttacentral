@@ -37,7 +37,8 @@
             chineseLookupTargetLanguage: ''
         },
         colorTheme: 'light',
-        selectedNavigationMenuItemId: ''
+        selectedNavigationMenuItemId: '',
+        donationSuccessData: {}
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -92,6 +93,8 @@
                 return Object.assign({}, state, { selectedNavigationMenuItemId: action.id });
             case 'CHANGE_COLOR_THEME':
                 return Object.assign({}, state, { colorTheme: action.theme });
+            case 'CHANGE_DONATION_SUCCESS':
+                return Object.assign({}, state, { donationSuccessData: action.donationSuccessData   });
             default:
                 return state;
         }
@@ -125,6 +128,7 @@
         // Reset some state variables:
         parsedState.selectedNavigationMenuItemId = initialState.selectedNavigationMenuItemId;
         parsedState.toolbarOptions = initialState.toolbarOptions;
+        parsedState.donationSuccessData = initialState.donationSuccessData;
         return parsedState;
     }
 

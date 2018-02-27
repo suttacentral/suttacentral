@@ -99,4 +99,3 @@ def get_db() -> Database:
 
 def delete_db(db: Database):
     get_client().delete_database(db.name)
-        
