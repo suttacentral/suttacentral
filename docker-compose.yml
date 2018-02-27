@@ -17,6 +17,7 @@ services:
       - socket-volume:/opt/sc/sockets
       - ./server/:/opt/sc/sc-flask
       - pootle-po:/srv/pootle/po/
+      - ./pootle:/opt/sc/pootle
     expose:
       - '5000'
     depends_on:

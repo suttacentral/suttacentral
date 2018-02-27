@@ -1,10 +1,11 @@
+import subprocess
 from string import ascii_letters, digits
 from secrets import choice
 from pathlib import Path
 from typing import Dict
 
-FILES = [('server/env/.prod.base.env', 'server/env/.prod.env'),
-         ('pootle/environment_prod.base.yml', 'pootle/environment_prod.yml')]
+FILES = [('/opt/sc/sc-flask/env/.prod.base.env', '/opt/sc/sc-flask/env/.prod.env'),
+         ('/opt/sc/pootle/environment_prod.base.yml', '/opt/sc/pootle/environment_prod.yml')]
 GENERATED_LEN = 32
 RANDOM_WORDS_NUMBER = 3
 
@@ -86,10 +87,15 @@ def collect_new_values(env_variables: Dict[str, str]):
         env_variables[var] = new_value
 
 
+def change_po_file_permissions(path: Path):
+    subprocess.run(['chmod', 'a+rwX', str(path)])
+
+
 def save_new_values(target_file: Path, data: Dict[str, str]):
     data = '\n'.join(f'{key}={value}' for key, value in data.items())
     with target_file.open(mode='w', encoding='utf-8') as f:
         f.write(data)
+    change_po_file_permissions(target_file)
 
 
 def process_file(source_file: Path, target_file: Path):
