@@ -68,7 +68,7 @@
               const suttaFont = window.getComputedStyle(sutta, null).getPropertyValue('font');
 
               Array.from(paragraphs).forEach(paragraph => {
-                  let paragraphNumber = paragraph.innerHTML.match(/>([0-9a-z]*)<\/a>/);
+                  let paragraphNumber = paragraph.innerHTML.match(/>([0-9a-zA-Z\.]*)<\/a>/);
                   let cleanParagraph = paragraph.innerText;
                   if (paragraphNumber) {
                       cleanParagraph = cleanParagraph.replace(paragraphNumber[1], '');
