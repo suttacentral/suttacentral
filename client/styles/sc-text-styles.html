@@ -231,16 +231,13 @@
       }
 
       .html-text-content.line-by-line .original-text {
+        @apply --sc-sans-font;
         color: var(--sc-secondary-text-color);
         margin-bottom: 20px;
       }
 
       .html-text-content aside {
         display: none;
-      }
-
-      .original-text {
-        @apply --sc-sans-font;
       }
 
       .original-text:not([lang='pli-Latn']) {
@@ -266,6 +263,7 @@
       }
 
       .side-by-side .original-text {
+        @apply --sc-sans-font;
         display: inline-block;
         width: 47%;
         padding-left: 5px;
