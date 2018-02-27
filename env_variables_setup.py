@@ -5,8 +5,9 @@ from secrets import choice
 from pathlib import Path
 from typing import Dict
 
-FILES = [('/opt/sc/sc-flask/env/.prod.base.env', '/opt/sc/sc-flask/env/.prod.env'),
-         ('/opt/sc/pootle/environment_prod.base.yml', '/opt/sc/pootle/environment_prod.yml')]
+BASE_PATH = Path(os.path.dirname(os.path.abspath(__file__)))
+FILES = [('server/env/.prod.base.env', 'server/env/.prod.env'),
+         ('pootle/environment_prod.base.yml', 'pootle/environment_prod.yml')]
 GENERATED_LEN = 32
 RANDOM_WORDS_NUMBER = 3
 
@@ -110,7 +111,7 @@ def process_file(source_file: Path, target_file: Path):
 
 def process_files():
     for source_file, target_file in FILES:
-        process_file(Path(source_file), Path(target_file))
+        process_file(BASE_PATH / Path(source_file), BASE_PATH / Path(target_file))
 
 
 def run():
