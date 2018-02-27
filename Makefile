@@ -202,6 +202,7 @@ run-production-env:
 	@make rebuild-all
 	@make run-prod-no-logs
 	@bash wait_for_flask.sh
+	@make generate-env-variables
 	@make load-data
 	@make index-elasticsearch
 	@echo "\033[1;32mDONE!"
