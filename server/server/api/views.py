@@ -832,13 +832,7 @@ class Donations(Resource):
         return plan
 
     @staticmethod
-    @in_thread
-    def send_async_mail(msg):
-        from app import app
-        with app.app_context():
-            mail.send(msg)
-
-    def send_email(self, data, email_address):
+    def send_email(data, email_address):
         msg = Message('Payment confirmation',
                       recipients=[email_address])
         msg.html = f'''
@@ -849,7 +843,7 @@ class Donations(Resource):
         <b>{data['dateTime']}</b>.<br>
         <b>{'Subscription' if data['subscription'] else 'One time donation'}</b>.           
         '''
-        self.send_async_mail(msg)
+        mail.send(msg)(msg)
 
 
 class Images(Resource):

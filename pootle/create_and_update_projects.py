@@ -9,7 +9,7 @@ def _run_command(command):
 
 def create_project(name: str):
     _run_command(
-        "pootle init_fs_project -l=en_GB {name} localfs+/srv/pootle/po/{name} '/<language_code>.<ext>'".format(name=name))
+        "pootle init_fs_project -l=en {name} localfs+/srv/pootle/po/{name} '/<language_code>/<dir_path>/<filename>.<ext>'".format(name=name))
 
 
 def update_project(name: str):
@@ -24,10 +24,9 @@ def get_projects() -> Generator[Path, None, None]:
 
 
 def run():
-    for project in get_projects():
-        print('processing:', project.stem)
-        create_project(project.stem)
-        update_project(project.stem)
+    project_name = 'site-localization'
+    create_project(project_name)
+    update_project(project_name)
     print('DONE')
 
 
