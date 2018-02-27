@@ -18,3 +18,5 @@ client/build/
 /client/localization/preprocessedStaticTemplates/
 generatedPoFiles/
 /pootle/log/*
+.prod.env
+environment_prod.yml
