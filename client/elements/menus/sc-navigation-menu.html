@@ -436,9 +436,9 @@
                     <li class="nav-menu-item top-menu-item">
                       <span class="nav-link-container">${topLevelItem.name}</span>
                       <paper-icon-button icon="expand-more"
-                        class="menu-dropdown-icon ${'closed'}">
+                        class="menu-dropdown-icon closed">
                       </paper-icon-button>
-                      <ul class="nav-secondary ${'closed'}">
+                      <ul class="nav-secondary closed">
                         ${topLevelItem.children.map(groupingLevelItem => `
                         <li class="nav-menu-item">
                           <span class="nav-link-container">${groupingLevelItem.name}</span>
@@ -446,8 +446,7 @@
                             <iron-icon class="iso-code-image" slot="item-icon" title="${groupingLevelItem.lang_name}"
                             icon="${this._getLanguageIconName(groupingLevelItem.lang_iso)}"></iron-icon>` : ''}
                           ${groupingLevelItem.children.length > 0 ? `
-                            <paper-icon-button icon="expand-more" class="menu-dropdown-icon
-                              ${'closed'}">
+                            <paper-icon-button icon="expand-more" class="menu-dropdown-icon closed">
                             </paper-icon-button>
                             ${this._generateDeepMainMenuLevels(groupingLevelItem, (topLevelItem.name === 'Sutta'))}
                             ` : ''}
@@ -467,7 +466,7 @@
                       'nav-tertiary' : 'nav-secondary';
               if (item.children) {
                   return `
-                <ul class="${listType} ${'closed'}" style="${this._getMaxHeightStyle(item)}">
+                <ul class="${listType} closed" style="${this._getMaxHeightStyle(item)}">
                   ${item.children.map(childItem => `
                     <li class="nav-menu-item" data-uid="${childItem.id}">
                     ${listType === 'nav-secondary' ?
