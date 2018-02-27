@@ -17,6 +17,7 @@ services:
       - socket-volume:/opt/sc/sockets
       - ./server/:/opt/sc/sc-flask
       - pootle-po:/srv/pootle/po/
+      - ./pootle:/opt/sc/pootle
     expose:
       - '5000'
     depends_on:
@@ -81,7 +82,7 @@ services:
     environment:
       - SECRET_KEY=SET THIS TO A DJANGO SECRET KEY
     env_file:
-      - pootle/environment.yml
+      - pootle/environment_dev.yml
 
   sc-pootle-mysql:
     image: mariadb:10
@@ -95,7 +96,7 @@ services:
     ports:
       - "3306:3306"
     env_file:
-      - pootle/environment.yml
+      - pootle/environment_dev.yml
 
   sc-pootle-redis:
     image: redis

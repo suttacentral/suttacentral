@@ -19,7 +19,8 @@
       "bundle": {
         "stripComments": true,
         "inlineCss": true,
-        "sourcemaps": false
+        "sourcemaps": true,
+        "excludes": ["bower_components/webcomponentsjs/webcomponents-loader.js"]
       },
       "js": {
         "compile": true,
