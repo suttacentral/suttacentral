@@ -239,7 +239,7 @@
       }
 
       /* Padding for ISO code icons (19px for the icon + 16px for the icon padding) */
-      #main_navigation .nav-tertiary > .nav-menu-item {
+      #main_navigation .nav-tertiary > .nav-menu-item, #sub_navigation .top-menu-item {
         padding-left: 35px;
       }
 
@@ -513,6 +513,9 @@
                   style="${isRootElement ? '' : this._getMaxHeightStyle(menuItem)}">
                   ${menuItem.children.map(childItem => `
                     <li class="nav-menu-item ${isRootElement ? 'top-menu-item' : ''}" data-uid="${childItem.id}">
+                      ${childItem.lang_iso ? `
+                     <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
+                     icon="${this._getLanguageIconName(childItem.lang_iso)}"></iron-icon>` : ''}
                       <div class="nav-link-container link-text-ellipsis" title="${childItem.name}"
                         style="${this._calculateSubmenuChildrenStyle(menuLevel)}">
                         <a class="nav-link" href="${this._getSuttaplexUrl(childItem.id)}">

@@ -105,6 +105,7 @@ LET descendents = (
             num: d.num,
             type: d.type,
             id: d.uid,
+            lang_iso: (NOT div.root_lang AND LENGTH(d_path.edges) == 1) ? d.root_lang : null,
             display_num: d.display_num
     }
 )
