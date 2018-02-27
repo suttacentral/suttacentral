@@ -30,13 +30,12 @@
       }
   </script>
 
-  <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 
   <!-- Fix for lastpass extension breaking Shady DOM: -->
   <script>
       window.addEventListener('WebComponentsReady', function() {
           document.createElement = Document.prototype.createElement;
-          document.querySelector('body').removeAttribute('unresolved');
       });
   </script>
 
@@ -45,7 +44,7 @@
 
   <script async src="https://js.stripe.com/v3/"></script>
 </head>
-<body unresolved>
+<body>
   <sc-drawer-layout></sc-drawer-layout>
   <noscript>
       Please enable JavaScript to view this website.
