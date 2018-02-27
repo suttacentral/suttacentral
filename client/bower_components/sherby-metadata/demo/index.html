@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<head lang="en">
+  <title>sherby-metadata demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+  <link rel="import" href="../sherby-metadata.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles"></style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h1>&lt;sherby-metadata&gt;</h1>
+    <p><b>Warning</b>: as this demo is included into an iframe, you need to look
+      <b>inside</b> the head iframe to see that the meta tags data are changed after you have clicked on the buttons.</p>
+
+    <demo-snippet>
+      <p>Include the <b>sherby-metadata</b> component in your shell component.</p>
+      <template>
+        <sherby-metadata id="metadata" data="[[data]]"></sherby-metadata>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div class="vertical-section-container centered">
+    <demo-snippet>
+      <p>Set the data attribute to your <b>sherby-metadata</b> component.</p>
+      <template>
+        <button onclick="setMetadata()">Update meta tags data</button>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div class="vertical-section-container centered">
+    <demo-snippet>
+      <p>Dispatch the <b>sherby-metadata</b> event.</p>
+      <template>
+        <button onclick="dispatchSherbyEvent()">Update meta tags data</button>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <script>
+    /**
+    * Set the data of the metadata element.
+    * @public
+    */
+    function setMetadata() { // eslint-disable-line no-unused-vars
+      let meta = document.getElementById('metadata');
+      meta.data = {
+        description: 'A Polymer element to manage page meta tags for SEO',
+        keywords: 'polymer,element,meta,tags,page,SEO,search engine optimization',
+        title: 'udes-metadata: data changed',
+      };
+    }
+
+    /**
+    * Distpatch a sherby-metadata event to window.
+    * @public
+    */
+    function dispatchSherbyEvent() { // eslint-disable-line no-unused-vars
+      window.dispatchEvent(new CustomEvent('sherby-metadata', {
+        detail: {
+          description: 'A Polymer element to manage page meta tags for SEO',
+          keywords: 'polymer,element,meta,tags,page,SEO,search engine optimization',
+          title: 'udes-metadata: event received',
+        },
+      }));
+    }
+  </script>
+</body>
+
+</html>

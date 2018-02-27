@@ -15,6 +15,7 @@ Faker==0.8.10
 flasgger==0.8.0
 Flask==0.12.2
 Flask-Cors==3.0.3
+Flask-Mail==0.9.1
 Flask-RESTful==0.3.6
 Flask-Script==2.0.6
 gitdb2==2.0.3

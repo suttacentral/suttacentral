@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="../../elements/text/sc-segmented-text.html">
 <link rel="import" href="../../elements/text/sc-simple-text.html">
@@ -99,6 +100,7 @@
     </template>
 
     <sc-text-image id="sc_text_image"></sc-text-image>
+    <sherby-metadata data="[[_createMetaData(responseData, localize)]]"></sherby-metadata>
 
   </template>
 
@@ -273,6 +275,22 @@
 
           _shouldDisplayError(rootSutta, translatedSutta, networkError) {
               return (!rootSutta && !translatedSutta) || networkError;
+          }
+
+          _createMetaData(responseData, localize) {
+              if (!responseData) {
+                  return;
+              }
+              let description = localize('metaDescriptionText');
+              if (responseData.suttaplex.blurb) {
+                  description = responseData.suttaplex.blurb;
+              }
+              const title = responseData.translation ? responseData.translation.title : responseData.root_text.title;
+              const author = responseData.translation ? responseData.translation.author : responseData.root_text.author;
+              return {
+                'og:title': `${title}—${author}`,
+                'og:description': description
+              };
           }
       }
 

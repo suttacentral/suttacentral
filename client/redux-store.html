@@ -16,6 +16,7 @@
             __queryParams: {}
         },
         siteLanguage: (navigator.language || navigator.languages && navigator.languages[0]).split('-')[0],
+        fullSiteLanguageName: '',
         toolbarOptions: {
             title: '',
             mode: ''
@@ -36,7 +37,8 @@
             chineseLookupTargetLanguage: ''
         },
         colorTheme: 'light',
-        selectedNavigationMenuItemId: ''
+        selectedNavigationMenuItemId: '',
+        donationSuccessData: {}
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -46,7 +48,7 @@
             case 'CHANGE_ROUTE':
                 return Object.assign({}, state, { currentRoute: action.route });
             case 'CHANGE_SITE_LANGUAGE':
-                return Object.assign({}, state, { siteLanguage: action.language });
+                return Object.assign({}, state, { siteLanguage: action.language, fullSiteLanguageName: action.fullName });
             case 'CHANGE_TOOLBAR_TITLE':
                 return Object.assign({}, state,
                     { toolbarOptions: Object.assign({}, state.toolbarOptions, { title: action.title }) });
@@ -91,6 +93,8 @@
                 return Object.assign({}, state, { selectedNavigationMenuItemId: action.id });
             case 'CHANGE_COLOR_THEME':
                 return Object.assign({}, state, { colorTheme: action.theme });
+            case 'CHANGE_DONATION_SUCCESS':
+                return Object.assign({}, state, { donationSuccessData: action.donationSuccessData   });
             default:
                 return state;
         }
@@ -124,6 +128,7 @@
         // Reset some state variables:
         parsedState.selectedNavigationMenuItemId = initialState.selectedNavigationMenuItemId;
         parsedState.toolbarOptions = initialState.toolbarOptions;
+        parsedState.donationSuccessData = initialState.donationSuccessData;
         return parsedState;
     }
 
