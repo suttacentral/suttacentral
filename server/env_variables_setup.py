@@ -1,6 +1,6 @@
 import subprocess
 from string import ascii_letters, digits
-from random import choice
+from secrets import choice
 from pathlib import Path
 from typing import Dict
 
