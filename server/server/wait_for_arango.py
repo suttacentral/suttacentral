@@ -15,9 +15,9 @@ def connect():
     )
     client.databases()
 
+
 while True:
     try:
-        print('CONNECTING')
         connect()
         break
     except (ConnectionError, DatabaseListError):
