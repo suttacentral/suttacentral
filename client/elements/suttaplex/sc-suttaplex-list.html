@@ -239,7 +239,7 @@
           }
 
           _calculateOpened(suttaplexReturns) {
-              return (suttaplexReturns.length > 1) ? false : true;
+              return (suttaplexReturns.length <= 3) ? true : false;
           }
 
           _createMetaData(suttaplexReturns, localize) {
