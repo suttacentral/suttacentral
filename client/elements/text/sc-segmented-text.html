@@ -704,6 +704,12 @@
 
           _processHighlightAndScroll(sectionId) {
               let [idFrom, idTo] = sectionId.split('--');
+              if (idFrom.match(/^[0-9]+$/)) {
+                  idFrom = `sc${idFrom}`
+              }
+              if (idTo && idTo.match(/^[0-9]+$/)) {
+                  idTo = `sc${idTo}`
+              }
               idFrom = this._generateId(idFrom);
               idTo = this._generateId(idTo);
               let firstSection = this.shadowRoot.getElementById(idFrom);
