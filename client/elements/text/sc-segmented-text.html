@@ -659,7 +659,8 @@
                   section.style.paddingTop = marginTop;
               }
 
-              if (idFrom.includes('.') || (idTo && idTo.includes('.'))) {
+              if ((idFrom.includes('.') && !idFrom.startsWith('pts')) || 
+                  (idTo && idTo.includes('.') && !idTo.startsWith('pts'))) {
                   let newSection = section.nextElementSibling;
                   if (isSideBySideView && !wrapperAlreadyExists) {
                       section.remove();
@@ -709,6 +710,7 @@
               firstSection = this._getElementToHighlight(firstSection);
               let section = firstSection;
               let toSection = this.shadowRoot.getElementById(idTo);
+              console.log(section, toSection);
               if (toSection) {
                   toSection = this._getElementToHighlight(toSection);
               }
@@ -771,7 +773,7 @@
           }
 
           _generateId(id) {
-              if (id && id.includes('.') && !id.includes('inline')) {
+              if (id && id.includes('.') && !id.includes('inline') && !id.startsWith('pts')) {
                   return `${id}_inline`;
               }
               return id;
