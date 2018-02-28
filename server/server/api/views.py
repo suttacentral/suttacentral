@@ -18,7 +18,7 @@ from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, 
                             DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA)
 
 from common.utils import (flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key,
-                          groupby_unsorted, in_thread)
+                          groupby_unsorted)
 
 
 class Languages(Resource):
