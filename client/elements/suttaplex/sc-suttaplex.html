@@ -114,6 +114,10 @@
         margin: -18px var(--sc-size-md) 0;
       }
 
+      .languagedrop.no-authors {
+        margin: -18px 0 0;
+      }
+
       .volpage-biblio-info-summary::-webkit-details-marker {
         color: var(--sc-paper-tooltip-color);
       }
@@ -353,7 +357,7 @@
           </template>
 
           <div class="flex-div">
-            <div class="languagedrop">
+            <div class$="languagedrop [[_removeMarginIfNoAuthors(item.translations, language)]]">
               <sc-language-menu language-choice="[[item.translations]]" original-language="[[item.root_lang]]"
                                 root-id="[[item.uid]]" class="no-left-padding" hide-if-only-user-language-texts="true">
               </sc-language-menu>
@@ -641,6 +645,10 @@
               } else {
                   return localize('volumeAndPage');
               }
+          }
+
+          _removeMarginIfNoAuthors(translations, language) {
+              return (this._getUserLanguageTranslations(translations, language).length > 0) ? '' : 'no-authors';
           }
 
           revealHiddenNerdyRowContent() {
