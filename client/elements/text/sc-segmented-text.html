@@ -508,19 +508,22 @@
               }
               this._setParagraphsVisible(this.showParagraphs);
 
-              if (this.paragraphs && this.showParagraphs) {
-                  this.paragraphs.forEach((paragraph) => {
-                      const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}`);
-                      Array.from(refs).forEach((item) => {
-                          if (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/)) {
-                              this._processVolPageInfo(item, divisionId, paragraph);
-                          } else {
-                              this._addParagraphData(item, paragraph);
-                          }
-                      });
-                  });
+              if (!this.paragraphs || !this.showParagraphs) {
+                  return;
               }
-              // Add segmented textal information paragraphs if not added already
+
+              this.paragraphs.forEach((paragraph) => {
+                  const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}:not(.textual-info-paragraph-inline)`);
+                  Array.from(refs).forEach((item) => {
+                      if (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/)) {
+                          this._processVolPageInfo(item, divisionId, paragraph);
+                      } else {
+                          this._addParagraphData(item, paragraph);
+                      }
+                  });
+              });
+
+              // Add segmented textual information paragraphs if not added already
               if (!this.segmentedIDsAdded) {
                   this._addSegmentedTextualInfoElements();
               }
@@ -701,6 +704,12 @@
 
           _processHighlightAndScroll(sectionId) {
               let [idFrom, idTo] = sectionId.split('--');
+              if (idFrom.match(/^[0-9]+$/)) {
+                  idFrom = `sc${idFrom}`
+              }
+              if (idTo && idTo.match(/^[0-9]+$/)) {
+                  idTo = `sc${idTo}`
+              }
               idFrom = this._generateId(idFrom);
               idTo = this._generateId(idTo);
               let firstSection = this.shadowRoot.getElementById(idFrom);
