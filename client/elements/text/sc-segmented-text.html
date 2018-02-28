@@ -659,7 +659,8 @@
                   section.style.paddingTop = marginTop;
               }
 
-              if (idFrom.includes('.') || (idTo && idTo.includes('.'))) {
+              if ((idFrom.includes('.') && !idFrom.startsWith('pts')) || 
+                  (idTo && idTo.includes('.') && !idTo.startsWith('pts'))) {
                   let newSection = section.nextElementSibling;
                   if (isSideBySideView && !wrapperAlreadyExists) {
                       section.remove();
@@ -777,7 +778,7 @@
           }
 
           _generateId(id) {
-              if (id && id.includes('.') && !id.includes('inline')) {
+              if (id && id.includes('.') && !id.includes('inline') && !id.startsWith('pts')) {
                   return `${id}_inline`;
               }
               return id;
