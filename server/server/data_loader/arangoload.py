@@ -189,7 +189,7 @@ def process_category_files(category_files, db, edges, mapping):
     
     for i, uid in enumerate(division_ordering):
         try:
-            mapping[Path(uid)]['num'] = i
+            mapping[uid]['num'] = i
         except KeyError:
             # We should've already reported an error earlier
             continue
