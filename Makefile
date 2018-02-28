@@ -199,17 +199,17 @@ run-preview-env-no-search:
 	@make run-dev
 
 run-production-env:
+	@make generate-env-variables
 	@make rebuild-all
 	@make run-prod-no-logs
 	@bash wait_for_flask.sh
-	@make generate-env-variables
 	@make load-data
 	@make index-elasticsearch
 	@echo "\033[1;32mDONE!"
 	@make run-prod
 
 generate-env-variables:
-	@docker exec -it sc-flask python env_variable_setup.py
+	@docker run -it --rm --name env_variable_setup -v ${PWD}:/opt/ -w /opt python:3.6.2 python env_variables_setup.py
 
 generate-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"
