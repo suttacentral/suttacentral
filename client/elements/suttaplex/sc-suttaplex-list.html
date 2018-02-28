@@ -107,7 +107,7 @@
             <template is="dom-if" if="{{!_isSuttaplex(item)}}">
               <section class$="[[_calculateClass(item.type)]]">
                 <sc-suttaplex-section-title input-title="[[item.original_title]]" input-text="[[item.blurb]]"
-                                            input-type="[[item.type]]"></sc-suttaplex-section-title>
+                                            input-type="[[item.type]]" opened="[[_calculateOpened(suttaplexReturns)]]"></sc-suttaplex-section-title>
               </section>
             </template>
           </div>
@@ -236,6 +236,10 @@
           // https://github.com/PolymerElements/iron-list/issues/242#issuecomment-232450210
           _getItemZIndex(index) {
               return this.suttaplexReturns ? (this.suttaplexReturns.length - index) : 0;
+          }
+
+          _calculateOpened(suttaplexReturns) {
+              return (suttaplexReturns.length > 1) ? false : true;
           }
 
           _createMetaData(suttaplexReturns, localize) {
