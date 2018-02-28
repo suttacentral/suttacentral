@@ -182,7 +182,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
             <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item" scroll-target="document">
               <template>
-                <div class="search-result-item" tabindex$="[[tabIndex]]">
+                <div class$="search-result-item [[_calculateItemCategory(item)]]" tabindex$="[[tabIndex]]">
                   <div class="padded-container">
                     <a class="search-result-link" href="[[_calculateLink(item)]]">
                       <div class="primary">
@@ -291,6 +291,16 @@ than ten results in total, a dropdown selection menu appears at the top.
                   isOnline: {
                       type: Boolean,
                       value: true
+                  },
+                  dictionaryTitles: {
+                      type: Object,
+                      value: {
+                          'ncped': 'New Concise Pali English Dictionary',
+                          'cped': 'Concise Pali English Dictionary',
+                          'dhammika': 'Nature and the Environment in Early Buddhism by S. Dhammika',
+                          'dppn': 'Pali Proper Names',
+                          'pts': 'PTS Pali English Dictionary'
+                      }
                   }
               }
           }
@@ -484,6 +494,9 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // If there is no title in the database, the division is the title
           _calculateTitle(item) {
+              if (item.category === 'dictionary') {
+                  return this.dictionaryTitles[item.heading.division];
+              }
               return item.heading.title ? item.heading.title : item.heading.division;
           }
 
