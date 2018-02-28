@@ -182,7 +182,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
             <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item" scroll-target="document">
               <template>
-                <div class="search-result-item" tabindex$="[[tabIndex]]">
+                <div class$="search-result-item [[_calculateItemCategory(item)]]" tabindex$="[[tabIndex]]">
                   <div class="padded-container">
                     <a class="search-result-link" href="[[_calculateLink(item)]]">
                       <div class="primary">
