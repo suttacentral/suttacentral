@@ -218,8 +218,7 @@
                 </template>
 
                 <paper-input label="{{localize('amount')}}" class="data-input amount-input" auto-validate
-                             pattern="^[+]?(\d+[.,]?\d{0,2})$" allowed-pattern="[0-9.,]"
-                             error-message="{{localize('invalidValue')}}" required maxlength=20></paper-input>
+                             pattern="^[+]?(\d+[.,]?\d{0,2})$" allowed-pattern="[0-9.,]" required maxlength=20></paper-input>
               </div>
 
               <p class="explanation">{{localize('chooseFrequency')}}</p>
@@ -493,10 +492,11 @@
           }
 
           resetForm() {
-              if (!this.$.donation_form) {
+              const donationForm = this.shadowRoot.querySelector('#donation_form');
+              if (!donationForm) {
                   return;
               }
-              this.$.donation_form.reset();
+              donationForm.reset();
               this.shadowRoot.querySelector('.amount-input').value = undefined;
               this.shadowRoot.querySelector('.one-time-donation').checked = true;
               this.shadowRoot.querySelector('.monthly-donation').checked = false;
