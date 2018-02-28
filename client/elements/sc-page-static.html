@@ -309,9 +309,7 @@
         hide-immediately>
       <home-page name="HOME"></home-page>
       <sc-donations-page name="DONATIONS"></sc-donations-page>
-      <template is="dom-if" name="DONATE-NOW" restamp>
-        <sc-donate-now-page id="donate"></sc-donate-now-page>
-      </template>
+      <sc-donate-now-page id="donate" name="DONATE-NOW"></sc-donate-now-page>
       <sc-downloads-page name="DOWNLOADS"></sc-downloads-page>
       <sc-offline-page name="OFFLINE"></sc-offline-page>
       <sc-numbering-page name="NUMBERING"></sc-numbering-page>
@@ -440,6 +438,7 @@
               this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(this.selectedPage);
               this.$.pages.selected = this.selectedPage;
               requestAnimationFrame(() => {this._selectNavbarLink()});
+              this.shadowRoot.querySelector('#donate').resetForm();
           }
 
           _createMetaData(pageSelection, localize) {
