@@ -843,7 +843,7 @@ class Donations(Resource):
         <b>{data['dateTime']}</b>.<br>
         <b>{'Subscription' if data['subscription'] else 'One time donation'}</b>.           
         '''
-        mail.send(msg)(msg)
+        mail.send(msg)
 
 
 class Images(Resource):
