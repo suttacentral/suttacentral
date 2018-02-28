@@ -1,7 +1,6 @@
 import re
 from typing import Callable, Dict, List
 from collections import defaultdict
-from threading import Thread
 
 import decorator
 
@@ -227,10 +226,3 @@ def groupby_unsorted(seq, key=lambda x: x):
         indexes[key(elem)].append(i)
     for k, idxs in indexes.items():
         yield k, (seq[i] for i in idxs)
-
-
-def in_thread(func):
-    def wrapper(*args, **kwargs):
-        thread = Thread(target=func, args=args, kwargs=kwargs)
-        thread.start()
-    return wrapper

@@ -8,7 +8,7 @@ from typing import Dict
 BASE_PATH = Path(os.path.dirname(os.path.abspath(__file__)))
 FILES = [('server/env/.prod.base.env', 'server/env/.prod.env'),
          ('pootle/environment_prod.base.yml', 'pootle/environment_prod.yml')]
-GENERATED_LEN = 32
+GENERATED_LEN = 30
 RANDOM_WORDS_NUMBER = 3
 
 
@@ -29,14 +29,21 @@ If you want to leave current value just leave the answer blank.
     ''')
 
 
-def read_variables(source_file: Path) -> Dict[str, str]:
-    with source_file.open(encoding='utf-8') as f:
+def read_file(file: Path) -> Dict[str, str]:
+    with file.open(encoding='utf-8') as f:
         data = [x.strip() for x in f.readlines() if x.strip()]
     final_data = {}
     for var in data:
         variable, value = var.split('=')
         final_data[variable] = value
     return final_data
+
+
+def read_variables(source_file: Path, target_file: Path) -> Dict[str, str]:
+    data = read_file(source_file)
+    if target_file.exists():
+        data.update(read_file(target_file))
+    return data
 
 
 def generate_random(generated_len=GENERATED_LEN) -> str:
@@ -104,7 +111,7 @@ def save_new_values(target_file: Path, data: Dict[str, str]):
 
 
 def process_file(source_file: Path, target_file: Path):
-    env_variables = read_variables(source_file)
+    env_variables = read_variables(source_file, target_file)
     collect_new_values(env_variables)
     save_new_values(target_file, env_variables)
 
