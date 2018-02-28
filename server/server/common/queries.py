@@ -77,13 +77,21 @@ FOR div IN root
             LIMIT 1
             RETURN d.uid
     )[0]
+
+    LET root_language = (
+        FOR lang in language
+            FILTER lang.iso_code == div.root_lang
+            LIMIT 1
+            RETURN lang.name
+    )[0]
+
     LET name = DOCUMENT(CONCAT('root_names/', div.uid, '_', @language))['name']
     RETURN {
         uid: div._id, 
         has_children: descendant != null,
         name: name ? name : div.name,
         lang_iso: div.root_lang,
-        lang_name: div.name,
+        lang_name: root_language,
         num: div.num, 
         id: div.uid, 
         type: div.type, 
