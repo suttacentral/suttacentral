@@ -102,10 +102,19 @@ FOR div IN root
 
 SUBMENU = '''
 LET div = DOCUMENT('root', @submenu_id)
+
 LET descendents = (
     FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
         FILTER d_edge.type != 'text' OR LENGTH(d_path.vertices) <= 2
         LET name = DOCUMENT(CONCAT('root_names/', d.uid, '_', @language))['name']
+
+        LET root_language = (
+            FOR lang in language
+                FILTER lang.iso_code == d.root_lang
+                LIMIT 1
+                RETURN lang.name
+        )[0]
+
         RETURN {
             from: d_edge._from,
             name: name ? name : d.name,
@@ -114,6 +123,7 @@ LET descendents = (
             type: d.type,
             id: d.uid,
             lang_iso: (NOT div.root_lang AND LENGTH(d_path.edges) == 1) ? d.root_lang : null,
+            lang_name: root_language,
             display_num: d.display_num
     }
 )
