@@ -179,6 +179,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   hideIfOnlyUserLanguageTexts: {
                       type: Boolean,
                       value: false
+                  },
+                  parallelMenu: {
+                      type: Boolean,
+                      value: false
                   }
               }
           }
@@ -211,7 +215,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               translations.forEach(item => {
                   if (item.lang in this.rootLangMappings) {
                       languageChoice.splice(0, 0, item);
-                  } else if (item.lang !== siteLanguage) {
+                  } else if (item.lang !== siteLanguage || this.parallelMenu) {
                       languageChoice.push(item);
                   }
               });
