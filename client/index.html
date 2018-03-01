@@ -83,6 +83,7 @@
       background-color: #f5f5f5;
       color: rgb(33, 33, 33);
       text-align: center;
+      font-family: "Skolar Sans PE", "Noto Sans", sans-serif;
     }
 
     .center {
@@ -91,20 +92,98 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
+
+    .margin-md {
+      margin: 32px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    a {
+      color: rgba(206, 132, 0, 1);
+      font-family: arial, sans-serif;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      background: none !important;
+      border: none;
+      padding: 0 !important;
+      font-family: arial, sans-serif; /*input has OS specific font-family*/
+      color: rgba(206, 132, 0, 1);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      text-decoration: underline;
+    }
   </style>
+
 </head>
 <body>
-<div class="unsupported-browser-splash-screen">
+<div class="unsupported-browser-splash-screen hidden">
   <div class="center">
-    <div class="logo"></div>
+    <img src="img/android-chrome-192x192.png"/>
     <h1>Oh no!</h1>
-    <h2>It seems like you're using an unsupported browser.</h2>
-    <h3>For the best experience, we recommend Google Chrome.</h3>
+    <h3>It looks like you're using an unsupported browser.</h3>
+    <h3>For the best experience, we recommend <a href="https://www.google.com/chrome/">Google Chrome</a>.</h3>
+    <hr>
+    <div class="margin-md">
+      <a href="https://suttacentral.net">Proceed to SuttaCentral classic</a>
+    </div>
+    <div class="margin-md">
+      <button class="link" onclick="appendSiteContent()">Try using the modern version anyway</button>
+    </div>
   </div>
 </div>
 <noscript>
   Please enable JavaScript to view this website.
 </noscript>
+
+<script>
+  var isIE = function() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf('MSIE ');
+    if (msie > 0) {
+      return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+    }
+    var trident = ua.indexOf('Trident/');
+    if (trident > 0) {
+      var rv = ua.indexOf('rv:');
+      return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+    }
+    var edge = ua.indexOf('Edge/');
+    if (edge > 0) {
+      return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+    }
+    return false;
+  };
+  var showUnsupportedBrowserSplashScreen = function(shouldShow) {
+      var unsupportedBrowserSplashScreen = document.querySelector('.unsupported-browser-splash-screen');
+      if (shouldShow) {
+          unsupportedBrowserSplashScreen.classList.remove('hidden');
+      } else {
+          unsupportedBrowserSplashScreen.classList.add('hidden');
+      }
+  };
+  var appendSiteContent = function() {
+      var mainElement = document.createElement('sc-drawer-layout');
+      var body = document.querySelector('body');
+      body.appendChild(mainElement);
+      showUnsupportedBrowserSplashScreen(false);
+  };
+  if (isIE()) {
+      showUnsupportedBrowserSplashScreen(true);
+  } else appendSiteContent();
+</script>
+
 </body>
 </html>
 
