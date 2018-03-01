@@ -126,7 +126,11 @@
                       type: Number,
                       value: 0
                   },
-                  spansGenerated: {
+                  spansForWordsGenerated: {
+                      type: Boolean,
+                      value: false
+                  },
+                  spansForGraphsGenerated: {
                       type: Boolean,
                       value: false
                   },
@@ -258,6 +262,10 @@
               this._updateToolbar();
               this._computeParagraphs();
               this.currentId = '';
+              this.spansForWordsGenerated = false;
+              this.spansForGraphsGenerated = false;
+              this._paliLookupStateChanged();
+              this._chineseLookupStateChanged();
               // Scroll to the section after the hash sign in the url:
               setTimeout(() => {
                   this._scrollToSection(window.location.hash.substr(1), false, 500);
