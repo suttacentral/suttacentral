@@ -812,7 +812,8 @@ class Donations(Resource):
             'subscription': monthly_donation
         }
 
-        self.send_email(data, email_address)
+        if email_address:
+            self.send_email(data, email_address)
 
         return data, 200
 
