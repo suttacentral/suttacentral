@@ -100,14 +100,7 @@ LET descendents = (
     FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
         FILTER d_edge.type != 'text' OR LENGTH(d_path.vertices) <= 2
         LET name = DOCUMENT(CONCAT('root_names/', d.uid, '_', @language))['name']
-
-        LET root_language = (
-            FOR lang in language
-                FILTER lang.iso_code == d.root_lang
-                LIMIT 1
-                RETURN lang.name
-        )[0]
-
+        LET root_language = d.root_lang ? DOCUMENT(CONCAT('language/', d.root_lang))['name'] : ''
         RETURN {
             from: d_edge._from,
             name: name ? name : d.name,
