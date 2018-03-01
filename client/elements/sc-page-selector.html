@@ -352,6 +352,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               const description = localize('metaDescriptionText');
               const keywords = localize('metaKeywords');
               return {
+                "twitter:description": description,
+                "og:description": description,
                 description: description,
                 keywords: keywords,
                 cdate: today,
