@@ -75,9 +75,33 @@
   <link rel="import" href="/elements/sc-drawer-layout.html">
 
   <script async src="https://js.stripe.com/v3/"></script>
+
+  <style>
+    .unsupported-browser-splash-screen {
+      height: 100%;
+      width: 100%;
+      background-color: #f5f5f5;
+      color: rgb(33, 33, 33);
+      text-align: center;
+    }
+
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
 </head>
 <body>
-<sc-drawer-layout></sc-drawer-layout>
+<div class="unsupported-browser-splash-screen">
+  <div class="center">
+    <div class="logo"></div>
+    <h1>Oh no!</h1>
+    <h2>It seems like you're using an unsupported browser.</h2>
+    <h3>For the best experience, we recommend Google Chrome.</h3>
+  </div>
+</div>
 <noscript>
   Please enable JavaScript to view this website.
 </noscript>
