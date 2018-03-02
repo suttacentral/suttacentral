@@ -179,6 +179,13 @@
         on-response="_handleResponse"></iron-ajax>
 
     <iron-ajax
+        auto
+        id='stripe_key_ajax'
+        url="[[_computeStripeKeyUrl()]]"
+        handle-as="json"
+        last-response="{{stripePublicKey}}"></iron-ajax>
+
+    <iron-ajax
         class="make-donation-ajax"
         url="/api/donate"
         handle-as="json"
@@ -229,7 +236,7 @@
                 </paper-checkbox>
               </div>
 
-              <stripe-card id="stripe_card" class="card-row" publishable-key="pk_test_vFqwBPDW08c5AKXMGLKaeJaB"
+              <stripe-card id="stripe_card" class="card-row" publishable-key="{{stripePublicKey}}"
                            token="{{stripeResponse}}"
                            hide-zip hide-submit></stripe-card>
 
@@ -354,6 +361,9 @@
                   isOnline: {
                       type: Boolean,
                       value: true
+                  },
+                  stripePublicKey: {
+                      type: String
                   }
               }
           }
@@ -508,6 +518,11 @@
           _computeCurrencyUrl(language) {
               const apiRoot = this.$.meta.byKey('API_ROOT');
               return `${apiRoot}/currencies?language=${language}`;
+          }
+
+          _computeStripeKeyUrl() {
+            const apiRoot = this.$.meta.byKey('API_ROOT');
+            return `${apiRoot}/stripe_public_key`;
           }
 
           _showToast(toastType, text) {
