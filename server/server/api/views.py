@@ -1040,3 +1040,13 @@ class CollectionUrlList(Resource):
                 texts.extend(entry['texts'])
                 if entry['has_children']:
                     menu.append(entry['id'])
+
+
+class StripePublicKey(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    def get(self):
+        key = os.environ.get('PUBLISHABLE_KEY')
+        if key:
+            return key, 200
+        else:
+            return 'Key not found', 404
