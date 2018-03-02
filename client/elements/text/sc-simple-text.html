@@ -248,6 +248,11 @@
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
                   }, 0);
               });
+              window.addEventListener('hashchange', () => {
+                  setTimeout(() => {
+                      this._scrollToSection(window.location.hash.substr(1), true, 0);
+                  }, 0);
+              });
               this.inputElement = this.$.simple_text_content;
               this.$.a11y.target = document.querySelector('body');
           }

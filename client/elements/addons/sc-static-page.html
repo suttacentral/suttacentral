@@ -43,6 +43,11 @@
                       }, 0);
                   });
               }
+              window.addEventListener('hashchange', () => {
+                  setTimeout(() => {
+                      this.currentId = this._scrollToSection(window.location.hash, this.currentId);
+                  }, 0);
+              });
               setTimeout(() => {
                       this.currentId = this._scrollToSection(window.location.hash, this.currentId);
               }, 2000);
