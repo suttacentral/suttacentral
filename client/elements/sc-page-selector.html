@@ -105,14 +105,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         }
       }
 
-      .header-backdrop-full-width-bar {
-        position: absolute;
-        top: 0;
-        height: var(--sc-size-xxl);
-        width: 100%;
-        background-color: var(--sc-primary-color);
-      }
-
       .hidebutton {
         display: none;
       }
@@ -126,9 +118,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     <div class="container">
       <app-header-layout>
 
-        <div class="header-backdrop-full-width-bar"></div>
-
-        <app-header id="header" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
+        <app-header id="header" class="drawer-closed" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
             <a href="/" class$="[[_shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
                 <paper-icon-button icon="sc-svg-icons:sc-logo-bw" id="to_home_button"
@@ -138,14 +128,14 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                                title="{{localize('menu')}}"></paper-icon-button>
 
             <div main-title id="toolbar_title_box">
-              <p id="toolbar_title">{{_getToolbarTitle(toolbarTitle)}}</p>
+              <p id="toolbar_title">{{_getToolbarTitle(toolbarTitle, localize)}}</p>
             </div>
 
             <sc-toolbar id="sc_toolbar"></sc-toolbar>
           </app-toolbar>
         </app-header>
 
-        <page-title base-title="" page-title="{{_getPageTitle(toolbarTitle)}}"></page-title>
+        <page-title base-title="" page-title="{{_getPageTitle(toolbarTitle, localize)}}"></page-title>
         <sherby-metadata data="[[_createMetaData(localize)]]"></sherby-metadata>
 
         <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
@@ -326,21 +316,18 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               requestAnimationFrame(() => {
                   this._toggleDrawer(true);
               });
-              setTimeout(() => {
-                  this.shadowRoot.querySelector('.header-backdrop-full-width-bar').style.display = 'none';
-              }, 5000);
           }
 
           _siteLanguageChanged() {
               this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`), this.language, true);
           }
 
-          _getToolbarTitle(title) {
+          _getToolbarTitle(title, localize) {
               if (title === null) {
                   return 'Page not found';
               }
               else if (['searchResults', 'dictionaryResults'].includes(title)) {
-                  return this.localize(title);
+                  return localize(title);
               }
               else {
                   return title;
@@ -361,12 +348,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               };
           }
 
-          _getPageTitle(title) {
+          _getPageTitle(title, localize) {
               if (title === null) {
                   return 'Page not found';
               }
               else if (['searchResults', 'dictionaryResults'].includes(title)) {
-                  return this.localize(title);
+                  return localize(title);
               }
               else if (this.suttaId && this.shouldShowSuttaTextPage && title) {
                   return `${this.suttaId.toUpperCase()}: ${title}`;
