@@ -350,6 +350,10 @@
         .d-none {
           display: unset;
         }
+
+        #sc-video {
+          z-index: 999;
+        }
       }
 
       @media (min-width: 1680px) {
@@ -424,12 +428,10 @@
        <div class="card-heading">
         <div class="card-heading-text smaller-title" inner-h-t-m-l="{{localize('80c9f84bfa3911cda919d61934abc0a2')}}">
         </div>
-        <div class="card-heading-subtext" inner-text="{{localize('84e1d6799debf209a5ce8267eaed74e9')}}">
-        </div>
        </div>
        <div class="card-content-video">
         <div class="embed-container">
-         <iframe allowfullscreen="" frameborder="0" height="360" mozallowfullscreen="" src="https://player.vimeo.com/video/257038431?color=efe700&amp;byline=0" webkitallowfullscreen="" width="640">
+         <iframe allowfullscreen="" frameborder="0" height="360" id="sc-video" mozallowfullscreen="" src="https://player.vimeo.com/video/257038431?color=efe700&amp;byline=0" webkitallowfullscreen="" width="640">
          </iframe>
         </div>
        </div>
