@@ -118,11 +118,12 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     <div class="container">
       <app-header-layout>
 
-        <app-header id="header" class="drawer-closed" condenses reveals effects="waterfall" slot="header" mode$="[[toolbarMode]]">
+        <app-header id="header" class="drawer-closed" condenses reveals effects="waterfall" slot="header"
+                    mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
             <a href="/" class$="[[_shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
-                <paper-icon-button icon="sc-svg-icons:sc-logo-bw" id="to_home_button"
-                               title="{{localize('goHome')}}"></paper-icon-button>
+              <paper-icon-button icon="sc-svg-icons:sc-logo-bw" id="to_home_button"
+                                 title="{{localize('goHome')}}"></paper-icon-button>
             </a>
             <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer"
                                title="{{localize('menu')}}"></paper-icon-button>
@@ -314,7 +315,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           connectedCallback() {
               super.connectedCallback();
               requestAnimationFrame(() => {
-                  this._toggleDrawer(true);
+                  if (!this.shouldShowStaticPage) {
+                      this._toggleDrawer(true);
+                  }
               });
           }
 
@@ -339,11 +342,11 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               const description = localize('metaDescriptionText');
               const keywords = localize('metaKeywords');
               return {
-                "og:description": description,
-                description: description,
-                keywords: keywords,
-                cdate: today,
-                mdate: today
+                  'og:description': description,
+                  description: description,
+                  keywords: keywords,
+                  cdate: today,
+                  mdate: today
               };
           }
 
@@ -509,7 +512,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage) {
-            return (isDrawerOpen || shouldShowStaticPage) ? 'hidebutton' : '';
+              return (isDrawerOpen || shouldShowStaticPage) ? 'hidebutton' : '';
           }
 
           _drawerOpenStateChanged() {
