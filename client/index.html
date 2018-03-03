@@ -46,6 +46,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
 
+  <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
   <!-- Register pre-caching service worker -->
   <script>
       if ('serviceWorker' in navigator) {
@@ -56,8 +58,6 @@
           });
       }
   </script>
-
-  <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 
   <!-- Fix for lastpass extension breaking Shady DOM: -->
   <script>
@@ -147,6 +147,9 @@
     </div>
   </div>
 </div>
+
+<sc-drawer-layout></sc-drawer-layout>
+
 <noscript>
   Please enable JavaScript to view this website.
 </noscript>
@@ -183,9 +186,14 @@
       body.appendChild(mainElement);
       showUnsupportedBrowserSplashScreen(false);
   };
+  var removeSiteContent = function() {
+      var mainElement = document.querySelector('sc-drawer-layout');
+      mainElement.parentNode.removeChild(mainElement);
+  };
   if (isIE()) {
       showUnsupportedBrowserSplashScreen(true);
-  } else appendSiteContent();
+      removeSiteContent();
+  }
 </script>
 
 </body>
