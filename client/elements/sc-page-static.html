@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/iron-lazy-pages/iron-lazy-pages.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
@@ -301,12 +301,11 @@
 
     </app-toolbar>
 
-    <iron-lazy-pages
+    <iron-pages
         id="pages"
         role="main"
         selected="{{pages}}"
-        attr-for-selected="name"
-        hide-immediately>
+        attr-for-selected="name">
       <home-page name="HOME"></home-page>
       <sc-donations-page name="DONATIONS"></sc-donations-page>
       <sc-donate-now-page id="donate" name="DONATE-NOW"></sc-donate-now-page>
@@ -333,7 +332,7 @@
         <h2>{{localize('error404')}}</h2>
         <h3>{{localize('pageNotFound')}}</h3>
       </div>
-    </iron-lazy-pages>
+    </iron-pages>
   </template>
 
   <script>
