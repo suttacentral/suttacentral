@@ -3,7 +3,6 @@
   "shell": "elements/sc-drawer-layout.html",
   "sources": [
     "elements/**/*",
-    "styles/**/*",
     "files/**/*",
     "img/**/*"
   ],

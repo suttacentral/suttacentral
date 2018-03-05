@@ -9,9 +9,9 @@
 <link rel="import" href="/redux-store.html">
 
 <link rel="import" href="sc-page-selector.html">
-<link rel="import" href="../elements/addons/sc-toasts.html">
-<link rel="import" href="../elements/menus/sc-navigation-menu.html">
-<link rel="import" href="../styles/sc-scrollbar-style.html">
+<link rel="import" href="addons/sc-toasts.html">
+<link rel="import" href="menus/sc-navigation-menu.html">
+<link rel="import" href="styles/sc-scrollbar-style.html">
 
 <!-- Imports for the sutta text dialogs: -->
 <link rel="import" href="../bower_components/isw-dialog/isw-dialog.html">
@@ -342,7 +342,7 @@
           }
 
           _colorThemeChanged() {
-              this.$.colorsAjax.url = `/styles/sc-colors-${this.appColorTheme}.json`;
+              this.$.colorsAjax.url = `/elements/styles/sc-colors-${this.appColorTheme}.json`;
               this.$.colorsAjax.generateRequest();
           }
 
