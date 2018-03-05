@@ -2,7 +2,8 @@
   "entrypoint": "index.html",
   "shell": "elements/sc-drawer-layout.html",
   "sources": [
-    "elements/**/*"
+    "elements/**/*",
+    "img/**/*"
   ],
   "extraDependencies": [
     "localization/elements/**/*.json",
