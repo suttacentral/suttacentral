@@ -46,7 +46,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
 
-  <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
   <!-- Register pre-caching service worker -->
   <script>
@@ -61,7 +61,9 @@
 
   <!-- Fix for lastpass extension breaking Shady DOM: -->
   <script>
-      document.createElement = Document.prototype.createElement;
+      window.addEventListener('WebComponentsReady', function() {
+          document.createElement = Document.prototype.createElement;
+      });
   </script>
 
   <!-- Google Analytics -->
@@ -72,12 +74,18 @@
   </script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
 
-  <link rel="import" href="/styles/sc-styles.html">
   <link rel="import" href="/elements/sc-drawer-layout.html">
 
   <script async src="https://js.stripe.com/v3/"></script>
 
   <style>
+    body {
+      margin: 0;
+      height: 100%;
+      background-color: var(--sc-primary-background-color);
+      color: var(--sc-primary-text-color);
+    }
+
     .unsupported-browser-splash-screen {
       height: 100%;
       width: 100%;
