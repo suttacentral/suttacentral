@@ -72,12 +72,18 @@
   </script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
 
-  <link rel="import" href="/elements/styles/sc-styles.html">
   <link rel="import" href="/elements/sc-drawer-layout.html">
 
   <script async src="https://js.stripe.com/v3/"></script>
 
   <style>
+    body {
+      margin: 0;
+      height: 100%;
+      background-color: var(--sc-primary-background-color);
+      color: var(--sc-primary-text-color);
+    }
+
     .unsupported-browser-splash-screen {
       height: 100%;
       width: 100%;
