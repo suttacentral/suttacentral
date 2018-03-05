@@ -6,7 +6,6 @@
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../bower_components/paper-styles/typography.html">
@@ -295,6 +294,7 @@
 
           ready() {
               super.ready();
+              this.removeAttribute('unresolved');
               // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
               // Lock scroll for the text dialogs:
