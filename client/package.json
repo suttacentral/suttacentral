@@ -9,6 +9,7 @@
     "watch": "browser-sync start --proxy 0.0.0.0:8000 --files \"**/*.*, index.html, *.js\" --no-open"
   },
   "dependencies": {
+    "npm": "^5.7.1",
     "redux": "^3.7.2",
     "viewerjs": "^0.10.0",
     "workbox-sw": "^2.1.2"
