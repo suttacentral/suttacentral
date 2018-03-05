@@ -1,23 +1,19 @@
 {
-  "lint": {
-    "rules": [
-      "polymer-2"
-    ]
-  },
-  "sources": [
-    "index.html",
-    "elements/**/*"
-  ],
   "entrypoint": "index.html",
+  "shell": "elements/sc-drawer-layout.html",
+  "sources": [
+    "elements/**/*",
+    "styles/**/*",
+    "files/**/*",
+    "img/**/*"
+  ],
   "extraDependencies": [
     "localization/elements/**/*.json",
-    "styles/**/*.json",
-    "img/**/*",
-    "files/**/*",
     "node_modules/workbox-sw/build/importScripts/*",
     "manifest.json",
     "service-worker.js",
-    "bower_components/webcomponentsjs/webcomponents-loader.js"
+    "bower_components/webcomponentsjs/*.js",
+    "bower_components/webcomponentsjs/*.js.map"
   ],
   "builds": [
     {
@@ -58,7 +54,13 @@
         "minify": true
       },
       "addServiceWorker": false,
-      "addPushManifest": true
+      "addPushManifest": true,
+      "insertPrefetchLinks": true
     }
-  ]
+  ],
+  "lint": {
+    "rules": [
+      "polymer-2"
+    ]
+  }
 }
