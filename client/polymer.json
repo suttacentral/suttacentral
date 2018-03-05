@@ -12,15 +12,16 @@
     "./files/**/*",
     "./node_modules/workbox-sw/build/importScripts/*",
     "./manifest.json",
-    "./service-worker.js"
+    "./service-worker.js",
+    "./bower_components/webcomponentsjs/webcomponents-loader.js"
   ],
   "builds": [
     {
+      "name": "es5-bundled",
       "bundle": {
         "stripComments": true,
         "inlineCss": true,
-        "sourcemaps": false,
-        "excludes": ["bower_components/webcomponentsjs/webcomponents-loader.js"]
+        "sourcemaps": false
       },
       "js": {
         "compile": true,
@@ -32,7 +33,28 @@
       "html": {
         "minify": true
       },
-      "addServiceWorker": false
+      "addServiceWorker": false,
+      "addPushManifest": true
+    },
+    {
+      "name": "default",
+      "bundle": {
+        "stripComments": true,
+        "inlineCss": true,
+        "sourcemaps": false
+      },
+      "js": {
+        "compile": false,
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "addServiceWorker": false,
+      "addPushManifest": true
     }
   ]
 }
