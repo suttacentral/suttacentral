@@ -7,6 +7,7 @@ module.exports = {
         'manifest.json',
         '**/*.js',
         'elements/**/*.html',
+        'elements/**/*.json',
         'localization/**/en.json',
         'img/home-page/**/*',
         'img/static-pages/**/*',
@@ -19,5 +20,8 @@ module.exports = {
         'files/fonts/SkolarSansPE-It_2.001.woff2',
         'files/fonts/SkolarSansPE-Rg_2.001.woff2'
     ],
-    'globIgnores': 'bower_components/webcomponentsjs/*'
+    'globIgnores': [
+        'bower_components/webcomponentsjs/*',
+        'elements/static-templates/*'
+    ]
 };
