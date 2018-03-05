@@ -7,6 +7,14 @@
     "weight": 1,
     "type": "script"
   },
+  "localization/elements/sc-navigation-menu/en.json": {
+    "weight": 1,
+    "type": "script"
+  },
+  "localization/elements/sc-language-base-menu/en.json": {
+    "weight": 1,
+    "type": "script"
+  },
   "localization/elements/static_home-page/en.json": {
     "weight": 1,
     "type": "script"
