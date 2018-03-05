@@ -46,8 +46,6 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
 
-  <link rel="import" href="/elements/sc-drawer-layout.html">
-
   <style>
     body {
       margin: 0;
@@ -58,9 +56,9 @@
 
     sc-drawer-layout[unresolved] {
       display: block;
-      min-height: 101vh;
-      min-width: 101vw;
-      background-color: rgba(206, 132, 0, 1);
+      min-height: 100vh;
+      min-width: 100vw;
+      background-color: #f5f5f5;
       overflow: visible;
     }
 
@@ -116,6 +114,7 @@
 <body>
 
 <sc-drawer-layout unresolved></sc-drawer-layout>
+<link rel="import" href="/elements/sc-drawer-layout.html">
 
 <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
@@ -205,10 +204,6 @@
 <noscript>
   Please enable JavaScript to view this website.
 </noscript>
-
-<script>
-  window.performance && performance.mark && performance.mark('index.html');
-</script>
 
 </body>
 </html>
