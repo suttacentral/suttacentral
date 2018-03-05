@@ -4,16 +4,20 @@
       "polymer-2"
     ]
   },
+  "sources": [
+    "index.html",
+    "elements/**/*"
+  ],
   "entrypoint": "index.html",
   "extraDependencies": [
-    "./localization/elements/**/*.json",
-    "./styles/**/*.json",
-    "./img/**/*",
-    "./files/**/*",
-    "./node_modules/workbox-sw/build/importScripts/*",
-    "./manifest.json",
-    "./service-worker.js",
-    "./bower_components/webcomponentsjs/webcomponents-loader.js"
+    "localization/elements/**/*.json",
+    "styles/**/*.json",
+    "img/**/*",
+    "files/**/*",
+    "node_modules/workbox-sw/build/importScripts/*",
+    "manifest.json",
+    "service-worker.js",
+    "bower_components/webcomponentsjs/webcomponents-loader.js"
   ],
   "builds": [
     {
