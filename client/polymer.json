@@ -10,6 +10,7 @@
     "localization/elements/**/*.json",
     "node_modules/workbox-sw/build/importScripts/*",
     "manifest.json",
+    "push_manifest.json",
     "service-worker.js",
     "bower_components/webcomponentsjs/*.js",
     "bower_components/webcomponentsjs/*.js.map"
@@ -33,7 +34,7 @@
         "minify": true
       },
       "addServiceWorker": false,
-      "addPushManifest": true
+      "addPushManifest": false
     },
     {
       "name": "default",
@@ -53,7 +54,7 @@
         "minify": true
       },
       "addServiceWorker": false,
-      "addPushManifest": true,
+      "addPushManifest": false,
       "insertPrefetchLinks": true
     }
   ],
