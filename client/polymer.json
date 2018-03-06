@@ -11,7 +11,6 @@
     "manifest.json",
     "push_manifest.json",
     "service-worker.js",
-    "img/**/*.html",
     "bower_components/webcomponentsjs/*.js",
     "bower_components/webcomponentsjs/*.js.map"
   ],
@@ -54,8 +53,7 @@
         "minify": true
       },
       "addServiceWorker": false,
-      "addPushManifest": false,
-      "insertPrefetchLinks": true
+      "addPushManifest": false
     }
   ],
   "lint": {
