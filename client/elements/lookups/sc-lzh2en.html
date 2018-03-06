@@ -94,7 +94,7 @@
               return `<div class="definition">
                           <span class="ideograph">
                             <a title="Go to full entry at the DDB. Login with user name ‘guest’" 
-                               href="${href}" target="_blank" class="lookup-link">${graph}</a>
+                               href="${href}" target="_blank" rel="noopener" class="lookup-link">${graph}</a>
                           </span>
                           <span class="meaning"> 
                             ${this.dictData.dictionary[graph][0]}: ${this.dictData.dictionary[graph][1]}
@@ -108,7 +108,7 @@
               return `<div class="fallback definition">
                           <span class="ideograph">
                             <a title="Go to full entry at the CJKV. Login with user name ‘guest’"
-                               href="${href}" target="_blank" class="lookup-link">${graph}</a>
+                               href="${href}" target="_blank" rel="noopener" class="lookup-link">${graph}</a>
                           </span>
                           <span class="meaning">
                             ${this.fallbackDictData.dictionary[graph][0]}: ${this.fallbackDictData.dictionary[graph][1]} [modern chinese]

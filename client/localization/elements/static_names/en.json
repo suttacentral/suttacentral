@@ -1,13 +1,13 @@
 {
     "en": {
         "8da0ed640d1bf0c0a261e90d857d702c": "Index of Names",
-        "b04e4fde7c7ff5e71fd3e16c94173cfa": "This is a modified version of the <a href=\"https://www.accesstoinsight.org/index-names.html\" target=\"_blank\">Index of Names</a> from Access to Insight. We adapt this useful resource with gratitude. Changes include:",
+        "907604c78acc932a6ba60016a6103c11": "This is a modified version of the <a href=\"https://www.accesstoinsight.org/index-names.html\" rel=\"noopener\" target=\"_blank\">Index of Names</a> from Access to Insight. We adapt this useful resource with gratitude. Changes include:",
         "a52884d4949311176c9a0cc75030ca98": "Removing all later texts and references, retaining only references directly to the early texts.",
         "af2b95d00c342b56a096393936671a35": "In a few cases, terminology and definitions have been changed, corrected, or deleted. However, the bulk of the content is identical.",
         "fab0579db5a6612182cbc65f1e546c1e": "HTML structure is modified.",
         "6c9760885a191d6d17d16842fbb005db": "Diacritical marks have added.",
         "20b53ce860730d9c22b37c86e0ea0a73": "Links go to SuttaCentral.",
-        "6cd81a621aeb2233877c346378be7351": "In most cases, <a href=\"https://www.accesstoinsight.org/abbrev.html\" target=\"_blank\" title=\"Access to Insight abbreviations\">Access to Insight</a> and <a href=\"/abbreviations\" target=\"_blank\" title=\"SuttaCentral abbreviations\">SuttaCentral</a> use the same reference conventions. However, in a few cases they differ; for example Sutta Nipāta is Sn in Access to Insight and Snp in SuttaCentral. In such cases the references have been changed to SuttaCentral’s system.",
+        "4e5b25ac962365d2bc288eb176cab9d0": "In most cases, <a href=\"https://www.accesstoinsight.org/abbrev.html\" rel=\"noopener\" target=\"_blank\" title=\"Access to Insight abbreviations\">Access to Insight</a> and <a href=\"/abbreviations\" target=\"_blank\" title=\"SuttaCentral abbreviations\">SuttaCentral</a> use the same reference conventions. However, in a few cases they differ; for example Sutta Nipāta is Sn in Access to Insight and Snp in SuttaCentral. In such cases the references have been changed to SuttaCentral’s system.",
         "3ba88ea5aa20d3fc77c4ed4ac60577e6": "In addition, note the following:",
         "0abdaf0e93b1bd21a4a65abdd3e73e7e": "References only include the Pali texts.",
         "867d1188017198c3df110d0875a5fb59": "The list is incomplete.",
@@ -1506,7 +1506,7 @@
         "a597b1d57a187d44d53834ddb9459921": "goes for refuge: <a class=\"ref\" href=\"/sn42.3\">SN 42.3</a>",
         "504c146a7acbda0d91eaeaede843d458": "Yugandhara",
         "0efe06960d71afdb0add54d2b6bab04e": "The original source of this Index was released under the following terms:",
-        "1cb55fc6e95af9517ca5d9fea6f6eb99": "© 2007 Access to Insight. The text of this page (“Index of proper Names”, by Access to Insight) is licensed under a Creative Commons Attribution 4.0 International License. To view a copy of the license, visit <a href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"_blank\">this page</a>.",
+        "b92f018e654caf6a6909417ac7377a32": "© 2007 Access to Insight. The text of this page (“Index of proper Names”, by Access to Insight) is licensed under a Creative Commons Attribution 4.0 International License. To view a copy of the license, visit <a href=\"http://creativecommons.org/licenses/by/4.0/\" rel=\"noopener\" target=\"_blank\">this page</a>.",
         "e632e357ed59f513b589ae5baa3afb0e": "The same license also applies to this modified version by SuttaCentral, 2018."
     }
 }
