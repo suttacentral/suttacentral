@@ -16,7 +16,7 @@ def search(word, truncate_length=1000):
     
     results = list(db.aql.execute('''
         FOR doc IN dictionary_full
-            FILTER doc.word == @word OR doc.word_ascii == @word
+            FILTER doc.word == LOWER(@word) OR doc.word_ascii == LOWER(@word)
             RETURN KEEP(doc, "dictname", "lang_to", "lang_from", "word", "word_ascii", "text")
         ''',
         bind_vars={'word': word}))
