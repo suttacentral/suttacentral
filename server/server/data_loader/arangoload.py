@@ -16,7 +16,7 @@ from common.uid_matcher import UidMatcher
 from .util import json_load
 from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
-    divisions, images_files, homepage, available_languages, order
+    divisions, images_files, homepage, available_languages, order, sizes
 
 def update_data(repo: Repo, repo_addr: str):
     """Updates given git repo.
@@ -436,6 +436,7 @@ def run(no_pull=False):
     po_dir = data_dir / 'po_text'
     additional_info_dir = data_dir / 'additional-info'
     dictionaries_dir = data_dir / 'dictionaries'
+    sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
 
     db = arangodb.get_db()
 
@@ -483,4 +484,8 @@ def run(no_pull=False):
     
     order.add_next_prev_using_menu_data(db)
 
+    sizes.load_sizes(sizes_dir, db)
+
     change_tracker.update_mtimes()
+
+

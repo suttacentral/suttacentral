@@ -1,0 +1,192 @@
+[
+  {
+    "lang": "xto",
+    "parallels": 0,
+    "base": 5698026
+  },
+  {
+    "lang": "mr",
+    "parallels": 486,
+    "base": 5816402
+  },
+  {
+    "lang": "he",
+    "parallels": 500344,
+    "base": 6809092
+  },
+  {
+    "lang": "pt",
+    "parallels": 2787759,
+    "base": 11523977
+  },
+  {
+    "lang": "no",
+    "parallels": 2784075,
+    "base": 12233529
+  },
+  {
+    "lang": "id",
+    "parallels": 5114348,
+    "base": 18202291
+  },
+  {
+    "lang": "zh",
+    "parallels": 4277094,
+    "base": 15177146
+  },
+  {
+    "lang": "ro",
+    "parallels": 125079,
+    "base": 5898232
+  },
+  {
+    "lang": "vi",
+    "parallels": 7527390,
+    "base": 27513301
+  },
+  {
+    "lang": "es",
+    "parallels": 3215698,
+    "base": 13369244
+  },
+  {
+    "lang": "pl",
+    "parallels": 105883,
+    "base": 5890144
+  },
+  {
+    "lang": "jpn",
+    "parallels": 337153,
+    "base": 7134764
+  },
+  {
+    "lang": "uig",
+    "parallels": 0,
+    "base": 5698026
+  },
+  {
+    "lang": "ev",
+    "parallels": 1726,
+    "base": 5700684
+  },
+  {
+    "lang": "sv",
+    "parallels": 149072,
+    "base": 6038746
+  },
+  {
+    "lang": "my",
+    "parallels": 4686138,
+    "base": 23565531
+  },
+  {
+    "lang": "ta",
+    "parallels": 195703,
+    "base": 6393707
+  },
+  {
+    "lang": "af",
+    "parallels": 169540,
+    "base": 6007869
+  },
+  {
+    "lang": "fr",
+    "parallels": 1126319,
+    "base": 8094537
+  },
+  {
+    "lang": "fa",
+    "parallels": 10376,
+    "base": 5728681
+  },
+  {
+    "lang": "en",
+    "parallels": 5419431,
+    "base": 28987539
+  },
+  {
+    "lang": "nl",
+    "parallels": 363452,
+    "base": 6514036
+  },
+  {
+    "lang": "th",
+    "parallels": 4216711,
+    "base": 19588891
+  },
+  {
+    "lang": "la",
+    "parallels": 243,
+    "base": 5701448
+  },
+  {
+    "lang": "kho",
+    "parallels": 0,
+    "base": 5698026
+  },
+  {
+    "lang": "hu",
+    "parallels": 762902,
+    "base": 7524844
+  },
+  {
+    "lang": "cs",
+    "parallels": 663624,
+    "base": 7166346
+  },
+  {
+    "lang": "ca",
+    "parallels": 546193,
+    "base": 6702687
+  },
+  {
+    "lang": "sr",
+    "parallels": 773155,
+    "base": 6835328
+  },
+  {
+    "lang": "hi",
+    "parallels": 783884,
+    "base": 7332294
+  },
+  {
+    "lang": "ar",
+    "parallels": 1234,
+    "base": 5702325
+  },
+  {
+    "lang": "it",
+    "parallels": 2157536,
+    "base": 9664877
+  },
+  {
+    "lang": "ru",
+    "parallels": 4056751,
+    "base": 19218429
+  },
+  {
+    "lang": "ko",
+    "parallels": 180361,
+    "base": 6044111
+  },
+  {
+    "lang": "si",
+    "parallels": 5491354,
+    "base": 31532681
+  },
+  {
+    "lang": "fi",
+    "parallels": 19708,
+    "base": 5725532
+  },
+  {
+    "lang": "de",
+    "parallels": 4447473,
+    "base": 20967895
+  },
+  {
+    "lang": "root",
+    "parallels": 10282350,
+    "base": 29910069
+  }
+]
