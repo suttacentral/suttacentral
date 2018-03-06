@@ -9,6 +9,7 @@
     "localization/elements/**/*.json",
     "node_modules/workbox-sw/build/importScripts/*",
     "manifest.json",
+    "files/**/*",
     "push_manifest.json",
     "service-worker.js",
     "bower_components/webcomponentsjs/*.js",
