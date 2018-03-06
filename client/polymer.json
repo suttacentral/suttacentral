@@ -11,6 +11,7 @@
     "manifest.json",
     "push_manifest.json",
     "service-worker.js",
+    "img/**/*.html",
     "bower_components/webcomponentsjs/*.js",
     "bower_components/webcomponentsjs/*.js.map"
   ],
