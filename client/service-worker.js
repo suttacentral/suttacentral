@@ -5,7 +5,7 @@ try {
         'The precaching service worker did not load correctly!' +
         'Local resources will not be cached for offline use.' +
         'Ignore this if you are running in development mode.');
-    importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
+    importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.prod.v2.1.2.js');
 }
 
 const sw = new WorkboxSW();
