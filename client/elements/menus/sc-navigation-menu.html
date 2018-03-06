@@ -239,7 +239,8 @@
       }
 
       /* Padding for ISO code icons (19px for the icon + 16px for the icon padding) */
-      #main_navigation .nav-tertiary > .nav-menu-item, #sub_navigation .top-menu-item {
+      #main_navigation .nav-tertiary > .nav-menu-item,
+      #sub_navigation[data-menuid="dharmapadas"] .top-menu-item {
         padding-left: 35px;
       }
 
@@ -354,7 +355,7 @@
           <a class="nav-back-title" href="[[headerHref]]">[[headerTitle]]</a>
         </div>
 
-        <div id="sub_navigation" class="sub-nav-container swap-section right"></div>
+        <div id="sub_navigation" class="sub-nav-container swap-section right" data-menuId$="[[subMenuId]]"></div>
         <div id="main_menu_container"></div>
 
       </nav>
@@ -459,8 +460,7 @@
               this._selectedMenuItemChanged();
           }
 
-          // Although the 'isOpen' option is currently not being used, I kept in in there as an option.
-          _generateDeepMainMenuLevels(item, isOpen) {
+          _generateDeepMainMenuLevels(item) {
               const listType =
                   item.children && item.children.some(child => ['div', 'division'].indexOf(child.type) !== -1) ?
                       'nav-tertiary' : 'nav-secondary';
@@ -606,6 +606,7 @@
               this.headerTitle = clickedElement.innerText;
               this.parentId = clickedElement.dataset.uid;
               this.headerHref = this._getSuttaplexUrl(clickedElement.dataset.uid);
+              this.subMenuId = clickedElement.dataset.uid;
               const subMenuUrl = this._getSubMenuUrl(clickedElement.dataset.uid);
               if (this.$.submenu_ajax.url !== subMenuUrl) {
                   this.$.submenu_ajax.url = subMenuUrl;
