@@ -186,6 +186,13 @@
 
     <iron-ajax id="ajax" reject-with-request="true"></iron-ajax>
 
+    <iron-ajax
+    auto
+    id='sizes_ajax'
+    url="[[_computeSizesUrl()]]"
+    handle-as="json"
+    last-response="{{PWASizes}}"></iron-ajax>
+
     <iron-meta id="meta"></iron-meta>
 
     <div id="page-wrap">
@@ -424,6 +431,9 @@
                   defaultPaliDictToLang: {
                       type: Object,
                       computed: '_getDefaultPaliLookupDictionaryLang(chosenLanguageIsoCode)'
+                  },
+                  PWASizes: {
+                      type: Array
                   }
               }
           }
@@ -662,6 +672,10 @@
                   bubbles: true,
                   composed: true
               }));
+          }
+
+          _computeSizesUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/pwa/sizes`;
           }
       }
 
