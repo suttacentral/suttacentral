@@ -33,7 +33,7 @@ def load_images_links(db):
 
 def get_data():
     print('   * getting data from the server')
-    URL = 'https://suttacentral.net/text_images/contents.txt'
+    URL = 'https://legacy.suttacentral.net/text_images/contents.txt'
 
     response = requests.get(URL)
 
