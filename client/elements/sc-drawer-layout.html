@@ -180,7 +180,7 @@
     </style>
 
     <iron-meta id="meta" key="API_ROOT" value="{{_getApiUrl()}}"></iron-meta>
-    <iron-meta id="meta" key="IMAGES_ROOT" value="https://suttacentral.net/text_images"></iron-meta>
+    <iron-meta id="meta" key="IMAGES_ROOT" value="https://legacy.suttacentral.net/text_images"></iron-meta>
 
     <iron-ajax
         id="colorsAjax"
@@ -288,6 +288,9 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  originalDrawerZIndex: {
+                      type: String
                   }
               }
           }
@@ -299,6 +302,16 @@
               this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
               // Lock scroll for the text dialogs:
               this._addScrollLockListeners();
+              this.addEventListener('webkitfullscreenchange', e => {
+                  let drawer = this.shadowRoot.querySelector('.sc-app-drawer');
+                  const currentZIndex = drawer.style.zIndex;
+                  if (currentZIndex === '-1') {
+                      drawer.style.zIndex = this.originalDrawerZIndex;
+                  } else {
+                      this.originalDrawerZIndex = currentZIndex;
+                      drawer.style.zIndex = -1;
+                  }
+              })
               this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 

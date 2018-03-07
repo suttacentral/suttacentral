@@ -132,6 +132,11 @@
             navigator.serviceWorker.register('/service-worker.js').catch((err) => {
                 console.log('Service worker registration failed: ', err);
             });
+            navigator.serviceWorker.register('/sw-generated.js').catch((err) => {
+                console.log('The precaching service worker did not load correctly!' +
+                    'Local resources will not be cached for offline use.' +
+                    'Ignore this if you are running in development mode.', err);
+            });
         });
     }
 </script>
@@ -148,7 +153,7 @@
     <h3>Edge support is coming soon. IE will not be supported.</h3>
     <hr>
     <div class="margin-md">
-      <a href="https://suttacentral.net">Proceed to the legacy version of SuttaCentral</a>
+      <a href="https://legacy.suttacentral.net">Proceed to the legacy version of SuttaCentral</a>
     </div>
     <div class="margin-md">
       <button class="link" onclick="appendSiteContent()">Try using the modern version anyway</button>
@@ -157,48 +162,48 @@
 </div>
 
 <script defer>
-  var isIE = function() {
-    var ua = window.navigator.userAgent;
-    var msie = ua.indexOf('MSIE ');
-    if (msie > 0) {
-      return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+    var isIE = function() {
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf('MSIE ');
+        if (msie > 0) {
+            return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+        }
+        var trident = ua.indexOf('Trident/');
+        if (trident > 0) {
+            var rv = ua.indexOf('rv:');
+            return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+        }
+        var edge = ua.indexOf('Edge/');
+        if (edge > 0) {
+            return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+        }
+        return false;
+    };
+    var showUnsupportedBrowserSplashScreen = function(shouldShow) {
+        var unsupportedBrowserSplashScreen = document.querySelector('.unsupported-browser-splash-screen');
+        if (shouldShow) {
+            unsupportedBrowserSplashScreen.classList.remove('hidden');
+        } else {
+            unsupportedBrowserSplashScreen.classList.add('hidden');
+        }
+    };
+    var appendSiteContent = function() {
+        var mainElement = document.createElement('sc-drawer-layout');
+        var body = document.querySelector('body');
+        body.appendChild(mainElement);
+        showUnsupportedBrowserSplashScreen(false);
+    };
+    var removeSiteContent = function() {
+        var mainElement = document.querySelector('sc-drawer-layout');
+        mainElement.parentNode.removeChild(mainElement);
+    };
+    if (isIE()) {
+        showUnsupportedBrowserSplashScreen(true);
+        var logoImg = document.createElement('img');
+        logoImg.src = 'img/android-chrome-192x192.png';
+        document.querySelector('.logo-image-container').appendChild(logoImg);
+        removeSiteContent();
     }
-    var trident = ua.indexOf('Trident/');
-    if (trident > 0) {
-      var rv = ua.indexOf('rv:');
-      return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
-    }
-    var edge = ua.indexOf('Edge/');
-    if (edge > 0) {
-      return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
-    }
-    return false;
-  };
-  var showUnsupportedBrowserSplashScreen = function(shouldShow) {
-      var unsupportedBrowserSplashScreen = document.querySelector('.unsupported-browser-splash-screen');
-      if (shouldShow) {
-          unsupportedBrowserSplashScreen.classList.remove('hidden');
-      } else {
-          unsupportedBrowserSplashScreen.classList.add('hidden');
-      }
-  };
-  var appendSiteContent = function() {
-      var mainElement = document.createElement('sc-drawer-layout');
-      var body = document.querySelector('body');
-      body.appendChild(mainElement);
-      showUnsupportedBrowserSplashScreen(false);
-  };
-  var removeSiteContent = function() {
-      var mainElement = document.querySelector('sc-drawer-layout');
-      mainElement.parentNode.removeChild(mainElement);
-  };
-  if (isIE()) {
-      showUnsupportedBrowserSplashScreen(true);
-      var logoImg = document.createElement('img');
-      logoImg.src = "img/android-chrome-192x192.png";
-      document.querySelector('.logo-image-container').appendChild(logoImg);
-      removeSiteContent();
-  }
 </script>
 
 <noscript>
