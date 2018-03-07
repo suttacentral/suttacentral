@@ -71,5 +71,11 @@ def load_po_files(path):
     load_pootle.run()
 
 
+@manager.command
+def calculate_download_sizes():
+    from tools.calculate_download_size import run
+    run()
+
+
 if __name__ == '__main__':
     manager.run()

@@ -1001,13 +1001,13 @@ class CollectionUrlList(Resource):
                                                 items:
                                                     type: string
         """
-        languages = request.args.get('languages', None)
-        if languages is None:
-            return 'Language not specified', 404
-
+        languages = request.args.get('languages', '')
         root_lang = request.args.get('root_lang', 'false').lower()
         root_lang = {'true': True, 'false': False}[root_lang]
-        languages = languages.split(',')
+        if not languages and not root_lang:
+            return 'Language not specified', 404
+
+        languages = languages.split(',') if languages else []
 
         menu_view = Menu()
         menu_data = menu_view.get_data(menu_query=PWA.MENU, bind_vars={'root_lang': root_lang, 'languages': languages})
@@ -1050,3 +1050,14 @@ class StripePublicKey(Resource):
             return key, 200
         else:
             return 'Key not found', 404
+
+
+class PWASizes(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    def get(self):
+        db = get_db()
+        try:
+            data = list(db.aql.execute(PWA.SIZES))
+            return data, 200
+        except IndexError:
+            return 'Language not found', 404

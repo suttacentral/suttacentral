@@ -601,3 +601,8 @@ FOR div IN root
         parents: parents
     }
     '''
+
+    SIZES = '''
+    FOR s IN pwa_sizes 
+        RETURN KEEP(s, ['parallels', 'base', 'lang'])
+    '''

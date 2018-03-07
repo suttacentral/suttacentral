@@ -562,10 +562,10 @@
           _buildLookupUrlList(paliLookups, chineseLookups) {
               const paliUrls = paliLookups
                   .filter(item => item.enabled)
-                  .map(item => this._getPaliLookupUrl(item.isoCode));
+                  .map(item => this._getLookupUrl('pli', item.isoCode));
               const chineseUrls = chineseLookups
                   .filter(item => item.enabled)
-                  .map(item => this._getChineseLookupUrl(item.isoCode));
+                  .map(item => this._getLookupUrl('lzh', item.isoCode));
               return paliUrls.concat(chineseUrls);
           }
 
@@ -592,20 +592,12 @@
               return `${this.$.meta.byKey('API_ROOT')}/parallels/${parallelId}`;
           }
 
-          _getRootTextUrl(textId) {
-              return `${this.$.meta.byKey('API_ROOT')}/parallels/${parallelId}`;
-          }
-
           _getSuttaTextUrl(suttaId, authorId, langIsoCode) {
               return `${this.$.meta.byKey('API_ROOT')}/suttas/${suttaId}/${authorId}?lang=${langIsoCode}`;
           }
 
-          _getPaliLookupUrl(toLang) {
-              return `${this.$.meta.byKey('API_ROOT')}/dictionaries/lookup?from=pli&to=${toLang}`;
-          }
-
-          _getChineseLookupUrl(toLang) {
-              return `${this.$.meta.byKey('API_ROOT')}/dictionaries/lookup?from=lzh&to=${toLang}`;
+          _getLookupUrl(fromLang, toLang) {
+              return `${this.$.meta.byKey('API_ROOT')}/dictionaries/lookup?from=${fromLang}&to=${toLang}`;
           }
 
           _getParagraphUrls() {
