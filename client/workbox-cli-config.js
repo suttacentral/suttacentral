@@ -13,7 +13,6 @@ module.exports = {
         'img/static-pages/**/*',
         'img/pray.png',
         'img/*.svg',
-        'img/*.html',
         'files/fonts/SkolarPE-Bold_3.005.woff2',
         'files/fonts/SkolarPE-Regular_3.005.woff2',
         'files/fonts/SkolarSansPE-Bd_2.001.woff2',
