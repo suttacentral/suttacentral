@@ -288,6 +288,9 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  originalDrawerZIndex: {
+                      type: String
                   }
               }
           }
@@ -303,8 +306,9 @@
                   let drawer = this.shadowRoot.querySelector('.sc-app-drawer');
                   const currentZIndex = drawer.style.zIndex;
                   if (currentZIndex === '-1') {
-                      drawer.style.zIndex = 1;
+                      drawer.style.zIndex = this.originalDrawerZIndex;
                   } else {
+                      this.originalDrawerZIndex = currentZIndex;
                       drawer.style.zIndex = -1;
                   }
               })

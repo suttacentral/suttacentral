@@ -257,6 +257,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  originalDrawerZIndex: {
+                      type: String
                   }
               }
           }
@@ -312,8 +315,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.addEventListener('webkitfullscreenchange', e => {
                   const currentZIndex = this.$.header.style.zIndex;
                   if (currentZIndex === '-1') {
-                    this.$.header.style.zIndex = 1;
+                    this.$.header.style.zIndex = this.originalDrawerZIndex;
                   } else {
+                      this.originalDrawerZIndex = currentZIndex;
                       this.$.header.style.zIndex = -1;
                   }
               })
