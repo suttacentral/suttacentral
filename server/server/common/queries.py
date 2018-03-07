@@ -603,6 +603,8 @@ FOR div IN root
     '''
 
     SIZES = '''
-    FOR s IN pwa_sizes 
-        RETURN KEEP(s, ['parallels', 'base', 'lang'])
+LET languages = (FOR s IN pwa_sizes 
+    RETURN { [s.lang]: KEEP(s, ['parallels', 'base', 'lookup'])})
+
+RETURN MERGE(languages)
     '''
