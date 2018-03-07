@@ -1,4 +1,6 @@
 const isProductionEnv = !self.location.hostname.match(/127.0.0.1|localhost|172[\d.]+/);
+console.log(self.location.hostname);
+console.log('isProductionEnv? ', isProductionEnv);
 
 if (isProductionEnv) {
     importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.prod.v2.1.2.js');
@@ -38,5 +40,6 @@ sw.router.registerRoute(
 // This returns the cached value for '/' (index.html) when the user requests a URL like suttacentral.net/home
 // instead of just looking for the cached match for suttacentral.net/home, which doesn't exist.
 if (isProductionEnv) {
-    sw.router.registerNavigationRoute('/');
+    console.log('registering navigation route');
+    sw.router.registerNavigationRoute('index.html');
 }
