@@ -8,6 +8,9 @@ if (isProductionEnv) {
 
 const sw = new WorkboxSW();
 
+// This has to remain empty, the Workbox CLI injects the list of precached files here:
+sw.precache([]);
+
 // Cache API requests
 sw.router.registerRoute(
     new RegExp('http://localhost/api/(.*)'),
