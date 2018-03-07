@@ -1,4 +1,4 @@
-const isProductionEnv = (!self.location.hostname.match(/127.0.0.1|localhost|172[\d.]+/));
+const isProductionEnv = !self.location.hostname.match(/127.0.0.1|localhost|172[\d.]+/);
 
 if (isProductionEnv) {
     importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.prod.v2.1.2.js');
