@@ -1050,3 +1050,14 @@ class StripePublicKey(Resource):
             return key, 200
         else:
             return 'Key not found', 404
+
+
+class PWASizes(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    def get(self):
+        db = get_db()
+        try:
+            data = list(db.aql.execute(PWA.SIZES))
+            return data, 200
+        except IndexError:
+            return 'Language not found', 404
