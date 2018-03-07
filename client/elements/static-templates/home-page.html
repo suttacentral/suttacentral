@@ -1,5 +1,5 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../styles/static-styles.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../elements/styles/static-styles.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
@@ -368,6 +368,14 @@
 
     <iron-ajax
         auto
+        url="[[_computeUrl('epigraphs')]]"
+        id="epigraphs-ajax"
+        handle-as="json"
+        loading="{{ loadingEpigraphs }}"
+        last-response="{{ epigraphsData }}"></iron-ajax>
+
+    <iron-ajax
+        auto
         url="[[_computeUrl('whyweread')]]"
         id="why-we-read-ajax"
         handle-as="json"
@@ -398,9 +406,14 @@
               </div>
               <div class="card-content">
                 <div class="card-content-text">
+                  <template is="dom-if" if="[[loadingEpigraphs]]">
+                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                  </template>
+                  <template is="dom-if" if="[[!loadingEpigraphs]]">
                     <div class="card-text center-text buddhas-words-text">
-                      <sc-text-carousel></sc-text-carousel>
+                      <sc-text-carousel elements="[[epigraphsData]]" display="epigraph" link="uid"></sc-text-carousel>
                     </div>
+                  </template>
                 </div>
               </div>
             </div>
@@ -545,12 +558,12 @@
                   </template>
                   <template is="dom-if" if="[[!loadingWhyWeRead]]">
                     <div class="why-we-read">
-                      <!-- <sc-text-carousel elements="[[whyWeReadData]]"></sc-text-carousel> -->
+                      <sc-text-carousel elements="[[whyWeReadData]]"></sc-text-carousel>
                     </div>
                     <div>
                       <a class="button-link"
                          href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"
-                         target="_blank">
+                         target="_blank" rel="noopener">
                         <paper-button class="button card-button-middle" raised>TELL US WHY YOU READ</paper-button>
                       </a>
                     </div>
@@ -626,10 +639,6 @@
                   },
                   whyWeReadData: {
                       type: Object
-                  },
-                  showEpigraphs: {
-                    type: Boolean,
-                    value: false
                   }
               }
           }
@@ -637,10 +646,6 @@
           _computeUrl(resource) {
               const apiRoot = this.$.meta.byKey('API_ROOT');
               return `${apiRoot}/${resource}`;
-          }
-
-          test() {
-            this.showEpigraphs = true;
           }
       }
 

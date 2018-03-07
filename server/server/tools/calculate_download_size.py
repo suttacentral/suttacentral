@@ -1,6 +1,7 @@
 import requests
 import os
 import json
+from collections import defaultdict
 from pathlib import Path
 from typing import List, Generator, Dict, Iterable
 
@@ -13,6 +14,10 @@ from common.arangodb import get_db
 
 MEAN_DIFFERENCE = 240
 BASE_URL = 'http://sc-nginx/api'
+LOOKUP_LANGUAGES = {
+    'pli': ['en', 'es', 'de', 'zh', 'pt', 'id', 'nl'],
+    'lzh': ['en']
+}
 
 
 def get_size(response: Response) -> int:
@@ -116,6 +121,20 @@ def save_results(data: dict):
         json.dump(transformed_data, f, ensure_ascii=False, indent=2)
 
 
+def get_lookup_url(from_lang: str, to_lang: str) -> str:
+    return f'{BASE_URL}/dictionaries/lookup?from={from_lang}&to={to_lang}'
+
+
+def get_lookup_sizes() -> Dict[str, Dict[str, int]]:
+    data = defaultdict(dict)
+    for from_lang, to_langs in LOOKUP_LANGUAGES.items():
+        for to_lang in tqdm(to_langs):
+            res = make_request(get_lookup_url(from_lang, to_lang))
+            size = get_size(res)
+            data[from_lang][to_lang] = size
+    return data
+
+
 def run():
     languages = get_non_root_languages(get_db())
     data = {}
@@ -123,6 +142,7 @@ def run():
         size = check_language(lang)
         data[lang] = size
     data['root'] = get_root_size()
+    data['root']['lookup'] = get_lookup_sizes()
     save_results(data)
 
 

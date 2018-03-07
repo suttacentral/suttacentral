@@ -46,38 +46,22 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
 
-  <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-
-  <!-- Register pre-caching service worker -->
-  <script>
-      if ('serviceWorker' in navigator) {
-          window.addEventListener('load', function() {
-              navigator.serviceWorker.register('/service-worker.js').catch((err) => {
-                  console.log('Service worker registration failed: ', err);
-              });
-          });
-      }
-  </script>
-
-  <!-- Fix for lastpass extension breaking Shady DOM: -->
-  <script>
-      document.createElement = Document.prototype.createElement;
-  </script>
-
-  <!-- Google Analytics -->
-  <script>
-    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-    ga('create', 'UA-39277629-1', 'suttacentral.net');
-    ga('send', 'pageview');
-  </script>
-  <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-  <link rel="import" href="/styles/sc-styles.html">
-  <link rel="import" href="/elements/sc-drawer-layout.html">
-
-  <script async src="https://js.stripe.com/v3/"></script>
-
   <style>
+    body {
+      margin: 0;
+      height: 100%;
+      background-color: var(--sc-primary-background-color);
+      color: var(--sc-primary-text-color);
+    }
+
+    sc-drawer-layout[unresolved] {
+      display: block;
+      min-height: 100vh;
+      min-width: 100vw;
+      background-color: #f5f5f5;
+      overflow: visible;
+    }
+
     .unsupported-browser-splash-screen {
       height: 100%;
       width: 100%;
@@ -128,9 +112,33 @@
 
 </head>
 <body>
+
+<sc-drawer-layout unresolved></sc-drawer-layout>
+<link rel="import" href="/elements/sc-drawer-layout.html">
+
+<script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+
+<!-- Fix for lastpass extension breaking Shady DOM: -->
+<script>
+    window.addEventListener('WebComponentsReady', function() {
+        document.createElement = Document.prototype.createElement;
+    });
+</script>
+
+<!-- Register pre-caching service worker -->
+<script async>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js').catch((err) => {
+                console.log('Service worker registration failed: ', err);
+            });
+        });
+    }
+</script>
+
 <div class="unsupported-browser-splash-screen hidden">
   <div class="center">
-    <img src="img/android-chrome-192x192.png"/>
+    <div class="logo-image-container"></div>
     <h1>Oh no!</h1>
     <h3>It looks like you're using an unsupported browser.</h3>
     <h3>The site works well on <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>,
@@ -148,13 +156,7 @@
   </div>
 </div>
 
-<sc-drawer-layout></sc-drawer-layout>
-
-<noscript>
-  Please enable JavaScript to view this website.
-</noscript>
-
-<script>
+<script defer>
   var isIE = function() {
     var ua = window.navigator.userAgent;
     var msie = ua.indexOf('MSIE ');
@@ -192,9 +194,16 @@
   };
   if (isIE()) {
       showUnsupportedBrowserSplashScreen(true);
+      var logoImg = document.createElement('img');
+      logoImg.src = "img/android-chrome-192x192.png";
+      document.querySelector('.logo-image-container').appendChild(logoImg);
       removeSiteContent();
   }
 </script>
+
+<noscript>
+  Please enable JavaScript to view this website.
+</noscript>
 
 </body>
 </html>

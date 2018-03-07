@@ -1,13 +1,13 @@
 {
     "en": {
         "59e6d263035abe153ca1c2d2bfd2a9f6": "Index of Similes",
-        "e9254634af387d0c324cc05f8ba23e12": "This is a modified version of the <a href=\"https://www.accesstoinsight.org/index-similes.html\" target=\"_blank\">Index of Similes</a> from Access to Insight. We adapt this useful resource with gratitude. Changes include:",
+        "38370cb1838fa1d485ae2a2fdb557f5b": "This is a modified version of the <a href=\"https://www.accesstoinsight.org/index-similes.html\" rel=\"noopener\" target=\"_blank\">Index of Similes</a> from Access to Insight. We adapt this useful resource with gratitude. Changes include:",
         "a52884d4949311176c9a0cc75030ca98": "Removing all later texts and references, retaining only references directly to the early texts.",
         "af2b95d00c342b56a096393936671a35": "In a few cases, terminology and definitions have been changed, corrected, or deleted. However, the bulk of the content is identical.",
         "fab0579db5a6612182cbc65f1e546c1e": "HTML structure is modified.",
         "6c9760885a191d6d17d16842fbb005db": "Diacritical marks have added.",
         "20b53ce860730d9c22b37c86e0ea0a73": "Links go to SuttaCentral.",
-        "6cd81a621aeb2233877c346378be7351": "In most cases, <a href=\"https://www.accesstoinsight.org/abbrev.html\" target=\"_blank\" title=\"Access to Insight abbreviations\">Access to Insight</a> and <a href=\"/abbreviations\" target=\"_blank\" title=\"SuttaCentral abbreviations\">SuttaCentral</a> use the same reference conventions. However, in a few cases they differ; for example Sutta Nipāta is Sn in Access to Insight and Snp in SuttaCentral. In such cases the references have been changed to SuttaCentral’s system.",
+        "41d76befe46cce365598799b1407c9b0": "In most cases, <a href=\"https://www.accesstoinsight.org/abbrev.html\" rel=\"noopener\" target=\"_blank\" title=\"Access to Insight abbreviations\">Access to Insight</a> and <a href=\"/abbreviations\" rel=\"noopener\" target=\"_blank\" title=\"SuttaCentral abbreviations\">SuttaCentral</a> use the same reference conventions. However, in a few cases they differ; for example Sutta Nipāta is Sn in Access to Insight and Snp in SuttaCentral. In such cases the references have been changed to SuttaCentral’s system.",
         "46d8b5b655fbb42ba4d5372da5301392": "The caveats expressed by the author of the original index still apply:",
         "3e4d8e1a9c902e8f50d2f30adb68e7b8": "Only the imagery that illustrates points of Dhamma is included here; imagery that serves primarily a literary or narrative function is not included.",
         "3ba88ea5aa20d3fc77c4ed4ac60577e6": "In addition, note the following:",
@@ -981,7 +981,7 @@
         "83f45f2b4e24e199f2119b7986c26aa0": "<span class=\"subject\">sensuality, becoming, etc.</span> <a class=\"ref\" href=\"/an4.10\">AN 4.10</a>",
         "14aaf834ae38e2ed61b29a5bc3d52f99": "<span class=\"subject\">discernment</span> <a class=\"ref\" href=\"/snp1.4\">Snp 1.4</a>",
         "0efe06960d71afdb0add54d2b6bab04e": "The original source of this Index was released under the following terms:",
-        "8183203fad47a27b5329fd7236c9bc3b": "© 2007 Access to Insight. The text of this page (“Index of Similes”, by Access to Insight) is licensed under a Creative Commons Attribution 4.0 International License. To view a copy of the license, visit <a href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"_blank\">this page</a>.",
+        "3eef4e7bce2f2deee45c8524d8b689af": "© 2007 Access to Insight. The text of this page (“Index of Similes”, by Access to Insight) is licensed under a Creative Commons Attribution 4.0 International License. To view a copy of the license, visit <a href=\"http://creativecommons.org/licenses/by/4.0/\" rel=\"noopener\" target=\"_blank\">this page</a>.",
         "e632e357ed59f513b589ae5baa3afb0e": "The same license also applies to this modified version by SuttaCentral, 2018."
     }
 }

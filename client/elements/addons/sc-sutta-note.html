@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 
@@ -35,7 +35,7 @@ Used in the Suttaplex.
 
     <span class="note">
       <iron-icon class="icon-outline" icon="info-outline" id="note1"></iron-icon>
-      <paper-tooltip class="tooltip" for="note1" fit-to-visible-bounds>[[noteData]]</paper-tooltip>
+      <paper-tooltip class="tooltip" for="note1" fit-to-visible-bounds><span inner-h-t-m-l="[[noteData]]"></span></paper-tooltip>
     </span>
   </template>
 
