@@ -132,8 +132,6 @@
             navigator.serviceWorker.register('/service-worker.js').catch((err) => {
                 console.log('Service worker registration failed: ', err);
             });
-        });
-        window.addEventListener('load', function() {
             navigator.serviceWorker.register('/sw-generated.js').catch((err) => {
                 console.log('The precaching service worker did not load correctly!' +
                     'Local resources will not be cached for offline use.' +
