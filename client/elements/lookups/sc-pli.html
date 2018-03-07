@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 
@@ -90,7 +90,7 @@
                   if (out) {
                       out += ' + ';
                   }
-                  out += '<a href="' + href + '" target="_blank" class="lookup-link">' + match.base + '</a>: ' + match.meaning;
+                  out += '<a href="' + href + '" target="_blank" rel="noopener" class="lookup-link">' + match.base + '</a>: ' + match.meaning;
               }
               return out;
           }
