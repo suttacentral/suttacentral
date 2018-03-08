@@ -1,12 +1,12 @@
 # SuttaCentral server and client repository
-[![Build Status](https://travis-ci.org/suttacentral/next-sc.svg?branch=development)](https://travis-ci.org/suttacentral/next-sc)
+[![Build Status](https://travis-ci.org/suttacentral/suttacentral.svg?branch=development)](https://travis-ci.org/suttacentral/suttacentral)
 
 # 1. Server
 
 ## 1.1 Running the project
 0. Install [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/).
-1. Clone the repo `git clone git@github.com:suttacentral/next-sc.git`.
-2. Cd into the repo `cd next-sc`.
+1. Clone the repo `git clone git@github.com:suttacentral/suttacentral.git`.
+2. Cd into the repo `cd suttacentral`.
 3. Checkout to the development branch `git checkout development`.
 4. run `make prepare-host` in order to make some small adjustment on the host machine so that we can run ElasticSearch.
 5.  * 1st time run: run `make run-preview-env` - Build images, load data, index-elasticsearch and more.
@@ -94,7 +94,7 @@ There is a Makefile with following commands:
 * `test` - Run tests inside containers.
 * `test-client` - Run only frontend tests.
 * `test-server` - Run only server test.
-* `load-data` - Pulls most recent data from github and loads it from `server/nextdata` folder to the db.
+* `load-data` - Pulls most recent data from github and loads it from `server/sc-data` folder to the db.
 * `delete-databse` - Delete database from ArangoDB.
 * `index-elasticsearch` - Index ElasticSearch with data from the db.
 * `run-preview-env` - Fully rebuild and run most recent development version.

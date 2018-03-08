@@ -26,7 +26,7 @@ class Config:
     }
 
     BASE_DIR = Path('../')
-    DATA_REPO = 'https://github.com/suttacentral/nextdata.git'
+    DATA_REPO = 'https://github.com/suttacentral/sc-data.git'
     PO_REPO = 'https://github.com/suttacentral/po_text.git'
 
     DEFAULT_LANGUAGE = 'en'

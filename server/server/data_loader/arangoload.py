@@ -422,13 +422,13 @@ def process_difficulty(db, additional_info_dir):
 def run(no_pull=False):
     """Runs data load.
 
-    It will take data from nextdata repository and populate the database with it.
+    It will take data from sc-data repository and populate the database with it.
 
     Args:
         force: Whether or not force clean db setup.
     """
 
-    data_dir = current_app.config.get('BASE_DIR') / 'nextdata'
+    data_dir = current_app.config.get('BASE_DIR') / 'sc-data'
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'

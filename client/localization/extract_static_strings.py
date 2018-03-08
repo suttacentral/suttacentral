@@ -9,7 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 
-AVAILABLE_LANGUAGES_URL = 'https://raw.githubusercontent.com/suttacentral/nextdata/master/additional-info/available_languages.json'
+AVAILABLE_LANGUAGES_URL = 'https://raw.githubusercontent.com/suttacentral/sc-data/master/additional-info/available_languages.json'
 
 CURRENT_FILE_DIR = pathlib.Path(os.path.dirname(os.path.realpath(__file__)))
 TEMPLATE_DIR = str(CURRENT_FILE_DIR / pathlib.Path('../elements/static-templates/'))
