@@ -40,7 +40,7 @@ def set_constants():
     data_dir = base_dir / 'data'
     db_dir = base_dir / 'db'
     static_dir = base_dir / 'static'
-    text_dir = base_dir.parent.parent / 'nextdata' / 'html_text'
+    text_dir = base_dir.parent.parent / 'sc-data' / 'html_text'
 
     dict_db_path = db_dir / 'dictionaries.sqlite'
     dict_sources_dir = base_dir / 'dicts'

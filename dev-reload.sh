@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if hash inotifywait 2>/dev/null; then
-    inotifywait -e close_write,move -m -r . --exclude '(.git|.idea|node_modules|nextdata|__pycache__|.cache)'|
+    inotifywait -e close_write,move -m -r . --exclude '(.git|.idea|node_modules|sc-data|__pycache__|.cache)'|
     while read -r directory events filename; do
         if [[ "$directory" = ./nginx/* && "$events" = "CLOSE_WRITE,CLOSE" ]]; then
             echo "Reloading Nginx"

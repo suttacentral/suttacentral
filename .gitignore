@@ -8,6 +8,7 @@ data/segmented_texts
 .cache
 client/data/
 /data
+/server/sc-data/
 /server/nextdata/
 .DS_Store
 /client/node_modules/
