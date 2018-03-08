@@ -1057,7 +1057,7 @@ class PWASizes(Resource):
     def get(self):
         db = get_db()
         try:
-            data = list(db.aql.execute(PWA.SIZES))
+            data = list(db.aql.execute(PWA.SIZES))[0]
             return data, 200
         except IndexError:
             return 'Language not found', 404
