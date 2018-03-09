@@ -171,6 +171,7 @@
                 }, timeout);
             }
             else {
+                console.log('sending', args[0]);
                 handler.apply(null, args);
             }
         }
