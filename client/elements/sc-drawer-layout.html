@@ -311,7 +311,7 @@
                       this.originalDrawerZIndex = currentZIndex;
                       drawer.style.zIndex = -1;
                   }
-              })
+              });
               this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
@@ -362,9 +362,12 @@
               return `${currentUrl.protocol}//${currentUrl.host}/api`;
           }
 
-          _colorThemeChanged() {
-              this.$.colorsAjax.url = `/elements/styles/sc-colors-${this.appColorTheme}.json`;
-              this.$.colorsAjax.generateRequest();
+          _colorThemeChanged(newVal, oldVal) {
+              if (oldVal === undefined && newVal === 'light') {
+                  return;
+              }
+              this.$.colors_ajax.url = `/elements/styles/sc-colors-${this.appColorTheme}.json`;
+              this.$.colors_ajax.generateRequest();
           }
 
           _colorsResponseReceived() {
