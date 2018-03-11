@@ -242,23 +242,27 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
+              });
               this.addEventListener('click', () => {
                   setTimeout(() => {
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
-                  }, 0);
+                  });
               });
               window.addEventListener('hashchange', () => {
                   setTimeout(() => {
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
-                  }, 0);
+                  });
               });
               this.inputElement = this.$.simple_text_content;
               this.$.a11y.target = document.querySelector('body');
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
+              });
           }
 
           _updateView() {

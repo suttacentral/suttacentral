@@ -320,8 +320,10 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       this.originalDrawerZIndex = currentZIndex;
                       this.$.header.style.zIndex = -1;
                   }
-              })
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           connectedCallback() {
@@ -334,7 +336,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`), this.language, true);
+              });
           }
 
           _getToolbarTitle(title, localize) {

@@ -322,11 +322,15 @@ than ten results in total, a dropdown selection menu appears at the top.
               window.addEventListener('load', this._updateOnlineStatus.bind(this));
               window.addEventListener('online', this._updateOnlineStatus.bind(this));
               window.addEventListener('offline', this._updateOnlineStatus.bind(this));
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.language}.json`), this.language, true);
+              });
           }
 
           // After results have been loaded into memory, pushes items to an array.

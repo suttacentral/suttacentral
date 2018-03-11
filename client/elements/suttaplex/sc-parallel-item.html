@@ -259,7 +259,9 @@ It is in effect a miniature version of the suttaplex-card
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
@@ -267,7 +269,9 @@ It is in effect a miniature version of the suttaplex-card
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.language}.json`), this.language, true);
+                  setTimeout(() => {
+                      this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-item/${this.language}.json`), this.language, true);
+                  });
               }
           }
 

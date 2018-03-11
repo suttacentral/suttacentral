@@ -467,7 +467,9 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-suttaplex/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           connectedCallback() {

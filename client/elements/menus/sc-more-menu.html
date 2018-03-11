@@ -175,7 +175,9 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           ready() {
               super.ready();
               this._initializeListeners();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
 
@@ -188,7 +190,9 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`), this.language, true);
+              });
           }
 
           _initializeListeners() {

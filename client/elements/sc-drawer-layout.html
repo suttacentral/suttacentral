@@ -312,11 +312,15 @@
                       drawer.style.zIndex = -1;
                   }
               });
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.language}.json`), this.language, true);
+              });
           }
 
           // opens the app-drawer when it is not visible.

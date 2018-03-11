@@ -315,7 +315,7 @@
     </style>
 
     <iron-ajax
-        auto
+        id="menu_ajax"
         url="[[_getMenuUrl()]]"
         handle-as="json"
         loading="{{loading}}"
@@ -335,7 +335,7 @@
     </iron-ajax>
 
     <div id="container" class="nav-list-container">
-      <template is="dom-if" if="[[_shouldShowLoadingIndicator(loading, mainMenuError, childMenuError)]]">
+      <template is="dom-if" if="[[_shouldShowLoadingIndicator(loading, mainMenuError, childMenuError, mainMenuData)]]">
         <div class="loading-indicator">
           <paper-spinner-lite class="paper-spinner" active="[[loading]]"></paper-spinner-lite>
         </div>
@@ -421,13 +421,20 @@
               }
           }
 
-          ready() {
-              super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+          _siteLanguageChanged() {
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.language}.json`), this.language, true);
+              });
           }
 
-          _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.language}.json`), this.language, true);
+          connectedCallback() {
+              super.connectedCallback();
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
+              setTimeout(() => {
+                  this.$.menu_ajax.generateRequest();
+              });
           }
 
           _generateMainMenu() {
@@ -642,8 +649,8 @@
               else return '';
           }
 
-          _shouldShowLoadingIndicator(loading, mainMenuError, childMenuError) {
-              return !!(loading && !(mainMenuError || childMenuError));
+          _shouldShowLoadingIndicator(loading, mainMenuError, childMenuError, mainMenuData) {
+              return !!(loading && !(mainMenuError || childMenuError)) || !mainMenuData;
           }
 
           _shouldShowErrorIcon(mainMenuError, childMenuError, currentlySelectedMenu) {

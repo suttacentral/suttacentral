@@ -383,13 +383,17 @@
               super.ready();
               setTimeout(() => {
                   this._addEventListeners();
-              }, 0);
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
               this.isOnline = navigator ? navigator.onLine : true;
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-donate-now-page/${this.language}.json`), this.language, true);
+              });
           }
 
           _addEventListeners() {

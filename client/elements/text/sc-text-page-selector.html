@@ -200,11 +200,15 @@
               this.addEventListener('show-image', e => {
                   this.$.sc_text_image.showImage(e.detail);
               });
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
+              });
           }
 
           _onResponse() {
