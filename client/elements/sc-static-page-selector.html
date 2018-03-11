@@ -33,7 +33,7 @@
 <link rel="import" href="../elements/sc-donate-now-page.html">
 <link rel="import" href="../elements/sc-offline-page.html">
 
-<dom-module id="sc-page-static">
+<dom-module id="sc-static-page-selector">
   <template>
     <style>
       app-toolbar {
@@ -341,9 +341,9 @@
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCPageStatic extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCStaticPageSelector extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
-              return 'sc-page-static';
+              return 'sc-static-page-selector';
           }
 
           static get properties() {
@@ -391,13 +391,13 @@
           ready() {
               super.ready();
               setTimeout(() => {
-                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-static-page-selector/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               });
           }
 
           _siteLanguageChanged() {
               setTimeout(() => {
-                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`), this.language, true);
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-static-page-selector/${this.language}.json`), this.language, true);
               });
               const tabs = this.shadowRoot.querySelector(this._getNavTabsSelector());
               if (tabs) {
@@ -456,6 +456,6 @@
           }
       }
 
-      customElements.define(SCPageStatic.is, SCPageStatic);
+      customElements.define(SCStaticPageSelector.is, SCStaticPageSelector);
   </script>
 </dom-module>
