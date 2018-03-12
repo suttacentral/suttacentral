@@ -569,11 +569,16 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           _createMetaData(searchWord, localize) {
               const description = localize('metaDescriptionText');
+              const twitterDescription = description.substring(0,149);
               const searchResultsText = localize('searchResultsText');
               return { 
                 'og:title': `${searchResultsText} ${searchWord}`,
-                'og:description': description
-                 };
+                'og:description': description,
+                'twitter:title': `${searchResultsText} ${searchWord}`,
+                'twitter:description': twitterDescription,
+                title: `${searchResultsText} ${searchWord}`,
+                description: description
+              };
           }
       }
 
