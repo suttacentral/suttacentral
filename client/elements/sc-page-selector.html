@@ -351,11 +351,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           _createMetaData(localize) {
               const today = new Date();
-              const description = localize('metaDescriptionText');
               const keywords = localize('metaKeywords');
               return {
-                  'og:description': description,
-                  description: description,
                   keywords: keywords,
                   cdate: today,
                   mdate: today
