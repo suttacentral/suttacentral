@@ -250,9 +250,14 @@
               if (suttaplexReturns[0].blurb) {
                   description = suttaplexReturns[0].blurb
               }
+              const twitterDescription = description.substring(0,149);
               return {
                 'og:title': `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
-                'og:description': description
+                'og:description': description,
+                title: `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
+                description: description,
+                'twitter:title': `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
+                'twitter:description': twitterDescription
               };
           }
       }
