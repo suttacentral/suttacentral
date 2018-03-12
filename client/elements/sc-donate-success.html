@@ -9,6 +9,13 @@
 <dom-module id="sc-donate-success">
     <template>
         <style include="static-styles sc-scrollbar-style">
+            .bolded {
+                font-weight: bold;
+            }
+
+            .italic {
+                font-style: italic;
+            }
         </style>
 
         <iron-location path="{{path}}"></iron-location>
@@ -17,15 +24,29 @@
         <div id="page-wrap">
             <section>
                 <template is="dom-if" if="{{donationSuccessData.amount}}">
-                    <div>{{localize('DonationOf')}} <b>{{donationSuccessData.amount}} {{donationSuccessData.currency}}</b>
-                        <template is="dom-if" if="{{donationSuccessData.name}}">
-                            {{localize('MadeBy')}} <b>{{donationSuccessData.name}}</b>.
-                        </template>
-                        {{localize('SuttaCentralNote')}}<br>
-                        {{localize('PaymentServiceIsStripe')}}<br>
-                        <b>{{donationSuccessData.dateTime}} UTC</b>.<br>
-                        <b>{{_getSubscriptionName(donationSuccessData.subscription, localize)}}</b>.
+                    <div>{{localize('Acknowledge')}}</div><br>
+                    <div>{{localize('Description')}}</div><br>
+                    <template is="dom-if" if="{{donationSuccessData.name}}">
+                        <div>{{localize('Donor')}}: <span class="bolded">{{donationSuccessData.name}}</span></div>
+                    </template>
+                    <div>{{localize('Donation')}}: 
+                        <span class="bolded">{{donationSuccessData.amount}} {{donationSuccessData.currency}}</span>
                     </div>
+                    <div>{{localize('PaidTo')}}: <span class="bolded">SuttaCentral Development Trust</span></div>
+                    <div>{{localize('PaymentService')}}: <span class="bolded">Stripe</span></div>
+                    <div>{{localize('TimeOfPayment')}}: <span class="bolded">{{donationSuccessData.dateTime}} UTC</span></div>
+                    <div>{{localize('TypeOfPayment')}}: 
+                        <span class="bolded">{{_getSubscriptionName(donationSuccessData.subscription, localize)}}</span>
+                    </div><br>
+                    <div>{{localize('Contact')}} 
+                        <a href="mailto:suttacentraldevelopmenttrust@gmail.com" target="_top"> 
+                            suttacentraldevelopmenttrust@gmail.com
+                        </a>.
+                    </div><br>
+                    <div>
+                        {{localize('SuttaCentralDevelopmentTrustDescription')}}
+                    </div><br>
+                    <div class="cursive">Sadhu! Sadhu! Sadhu!</div>
                 </template>
             </section>
         </div>
