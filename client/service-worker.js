@@ -42,11 +42,9 @@ if (isProductionEnv) {
         const cacheName = keys.filter(name => name.includes('suttacentral'))[0];
         caches.open(cacheName).then(cache => {
             if (cache.match('index.html')) {
-                console.log('registering nav route for index.html');
                 sw.router.registerNavigationRoute('index.html');
             }
             else if (cache.match('/')) {
-                console.log('registering nav route for /');
                 sw.router.registerNavigationRoute('/');
             }
         });
