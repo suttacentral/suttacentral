@@ -39,7 +39,7 @@ sw.router.registerRoute(
 // instead of just looking for the cached match for suttacentral.net/home, which doesn't exist.
 if (isProductionEnv) {
     caches.keys().then(keys => {
-        const cacheName = keys[0];
+        const cacheName = keys.filter(name => name.includes('suttacentral'))[0];
         caches.open(cacheName).then(cache => {
             if (cache.match('/')) {
                 sw.router.registerNavigationRoute('/');
