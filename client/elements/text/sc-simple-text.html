@@ -711,7 +711,7 @@
 
           _addTooltip(v, tooltip, lookup, states, e, lang) {
               if (lang === 'pli') {
-                  let lookupResult = lookup.lookupWord(v.dataset.latin_text || v.innerText);
+                  let lookupResult = lookup.lookupWord(v.dataset.latin_text || v.textContent);
                   tooltip.innerHTML = lookupResult.html;
               } else if (lang === 'lzh') {
                   this._addLzhTooltip(v, lookup, tooltip);
@@ -729,7 +729,7 @@
           }
 
           _addLzhTooltip(v, lookup, tooltip) {
-              let graphs = v.innerText;
+              let graphs = v.textContent;
               let lastNode = v;
               for (let i = 0; i < 10; i++) {
                   let next = lastNode.nextElementSibling;
@@ -739,7 +739,7 @@
                           i--;
                           continue;
                       }
-                      graphs += next.innerText;
+                      graphs += next.textContent;
                   } else {
                       break;
                   }

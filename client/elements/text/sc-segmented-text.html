@@ -466,7 +466,7 @@
                   const segments = Array.from(p.querySelectorAll('sc-seg'));
                   let containsText = false;
                   for (let i = 0; i < segments.length; i++) {
-                      if (segments[i].innerText !== '') {
+                      if (segments[i].textContent !== '') {
                           containsText = true;
                           break;
                       }
@@ -603,7 +603,7 @@
               inlineParagraph.classList.add('textual-info-paragraph', 'segmented-textual-info-paragraph',
                   'textual-info-paragraph-inline', 'sc');
               inlineParagraph.id = `${parId}_inline`;
-              inlineParagraph.innerText = parId;
+              inlineParagraph.textContent = parId;
               inlineParagraph.href = `#${parId}`;
               inlineParagraph.title = 'SuttaCentral segment number';
               inlineParagraph.addEventListener('click', () => {
@@ -1066,7 +1066,7 @@
           }
 
           _showLookupTooltip(v, tooltip, paliLookup, states) {
-              let lookupResult = paliLookup.lookupWord(v.dataset.latin_text || v.innerText);
+              let lookupResult = paliLookup.lookupWord(v.dataset.latin_text || v.textContent);
               tooltip.innerHTML = lookupResult.html;
               v.parentNode.insertBefore(tooltip, v.nextSibling);
               if (states.isWordHovered && !states.isTooltipShown) {
