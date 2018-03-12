@@ -341,7 +341,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               if (title === null) {
                   return 'Page not found';
               }
-              else if (['searchResults', 'dictionaryResults'].includes(title)) {
+              else if (['searchResults', 'dictionaryResults'].indexOf(title) !== -1) {
                   return localize(title);
               }
               else {

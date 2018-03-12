@@ -1206,7 +1206,7 @@
           }
 
           _browserRequiresShadyDomFix() {
-              return (navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Edge'));
+              return (navigator.userAgent.indexOf('Firefox') !== -1 || navigator.userAgent.indexOf('Edge') !== -1);
           }
 
           _applyFirefoxShadyDomFix() {
