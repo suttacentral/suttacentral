@@ -9,7 +9,6 @@
 <link rel="import" href="../bower_components/polymer/lib/utils/import-href.html">
 
 <link rel="import" href="../elements/static/home-page.html">
-<link rel="import" href="./sc-donation-success-page.html">
 
 <dom-module id="sc-static-page-selector">
   <template>
@@ -418,10 +417,14 @@
               this._setVisibleToolbar(this.selectedPage);
               setTimeout(() => {this._selectNavbarLink()});
               this.$.pages.selected = this.selectedPage;
-              // home route is eagerly loaded
-              if (this.selectedPage !== 'home') {
-                Polymer.import
-              }
+              // Routes that shouldn't trigger importHref (for example, home route is eagerly loaded)
+              setTimeout(() => {
+                const ignoredRoutes = ['HOME', 'SUTTAPLEX'];
+                if (!ignoredRoutes.includes(this.selectedPage)) {
+                  Polymer.importHref(this.resolveUrl(`../elements/static/${this.selectedPage.toLowerCase()}-page.html`),
+                      null, null, true);
+                }
+              });
               this._resetDonationForm();
           }
 
@@ -445,7 +448,7 @@
               return {
                 'og:title': `SuttaCentral—${pageName.toLowerCase()}`,
                 'og:description': description
-                 };
+               };
           }
       }
 
