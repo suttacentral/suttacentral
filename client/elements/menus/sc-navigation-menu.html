@@ -417,6 +417,10 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  unclickableMenuItems: {
+                      type: Array,
+                      value: ['sn', 'sa', 'an', 'ea', 'kn', 'dharmapadas', 'minor-lzh', 'other-san', 'other-xct']
                   }
               }
           }
@@ -665,7 +669,7 @@
           }
 
           _getSuttaplexUrl(uid) {
-              return `${this._getBaseUrl()}/${uid}`;
+              return (this.unclickableMenuItems.indexOf(uid) === -1) ? `${this._getBaseUrl()}/${uid}` : '';
           }
 
           _getBaseUrl() {
