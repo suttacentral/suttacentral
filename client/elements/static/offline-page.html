@@ -640,14 +640,14 @@
           }
 
           _togglePaliCheckbox(e) {
-              const langName = e.target.innerText;
+              const langName = e.target.textContent;
               const langObj = this.paliLookupLanguages.find(item => item.name === langName);
               langObj.enabled = !langObj.enabled;
               this._changeLookupsDownloadSize();
           }
 
           _toggleChineseCheckbox(e) {
-              const langName = e.target.innerText;
+              const langName = e.target.textContent;
               const langObj = this.chineseLookupLanguages.find(item => item.name === langName);
               langObj.enabled = !langObj.enabled;
               this._changeLookupsDownloadSize();
@@ -703,7 +703,7 @@
                     lang.enabled = false;
                     changed = true;
                 }
-            })
+            });
             if (changed) {
                 this._changeLookupsDownloadSize();
             }
@@ -717,7 +717,7 @@
                           size += this.PWASizes.root.lookup.pli[lang.isoCode];
                       }
                   });
-              })
+              });
               return size;
           }
 

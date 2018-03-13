@@ -296,7 +296,7 @@
           }
 
           _clearErrors() {
-              this.$.error.innerText = "";
+              this.$.error.textContent = "";
           }
 
           displayError(error) {
@@ -310,7 +310,7 @@
                       }
                   }
               }
-              this.$.error.innerText = error.message;
+              this.$.error.textContent = error.message;
           }
 
           _nestedQueryString(params, parent) {

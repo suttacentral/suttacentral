@@ -13,6 +13,7 @@
     "elements/text/transliterator.js",
     "elements/static/*.html",
     "push_manifest.json",
+    "polyfills.js",
     "service-worker.js",
     "bower_components/webcomponentsjs/*.js",
     "bower_components/webcomponentsjs/*.js.map"
