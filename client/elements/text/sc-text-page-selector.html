@@ -281,11 +281,11 @@
               if (!responseData) {
                   return;
               }
-              let description = localize('metaDescriptionText');
+              let description = localize('metaDescriptionText')(0,120);
               if (responseData.suttaplex.blurb) {
-                  description = responseData.suttaplex.blurb;
+                  description = responseData.suttaplex.blurb(0,120);
               }
-              const twitterDescription = description.substring(0,149);
+              const twitterDescription = description.substring(0,120);
               const title = responseData.translation ? responseData.translation.title : responseData.root_text.title;
               const author = responseData.translation ? responseData.translation.author : responseData.root_text.author;
               return {
