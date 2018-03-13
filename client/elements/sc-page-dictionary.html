@@ -355,8 +355,8 @@
           }
 
           _createMetaData(dictionaryWord, localize) {
-              const description = localize('metaDescriptionText');
-              const twitterDescription = description.substring(0,149);
+              const description = localize('metaDescriptionText').substring(0,120);
+              const twitterDescription = description.substring(0,120);
               const dictionaryResultsText = localize('dictionaryResultsText');
               return { 
                 'og:title': `${dictionaryResultsText} ${dictionaryWord}`,

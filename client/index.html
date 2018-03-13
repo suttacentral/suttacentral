@@ -41,6 +41,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
 
+  <script src="/polyfills.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -124,11 +126,9 @@
 <script async>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/service-worker.js').catch((err) => {
-                console.log('Service worker registration failed: ', err);
-            });
             navigator.serviceWorker.register('/sw-generated.js').catch((err) => {
-                console.log('The precaching service worker did not load correctly!' +
+                console.log(
+                    'The precaching service worker did not load correctly!' +
                     'Local resources will not be cached for offline use.' +
                     'Ignore this if you are running in development mode.', err);
             });

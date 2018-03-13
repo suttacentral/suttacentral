@@ -320,7 +320,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       this.originalDrawerZIndex = currentZIndex;
                       this.$.header.style.zIndex = -1;
                   }
-              })
+              });
               this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
           }
 
@@ -341,7 +341,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               if (title === null) {
                   return 'Page not found';
               }
-              else if (['searchResults', 'dictionaryResults'].includes(title)) {
+              else if (['searchResults', 'dictionaryResults'].indexOf(title) !== -1) {
                   return localize(title);
               }
               else {
@@ -351,7 +351,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           _createMetaData(localize) {
               const today = new Date();
-              const keywords = localize('metaKeywords');
+              const keywords = localize('metaKeywords').substring(0,120);
               return {
                   keywords: keywords,
                   cdate: today,
