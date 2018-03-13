@@ -16,11 +16,8 @@ def intro():
     print('''
 Welcome in SuttaCentral environment setup script!
 You are going to be prompted for a bunch of information.
-If you want to set the value to the random one enter 'R', if you would like XKCD style value (randomMergedWords) use RW.
+If you want to set the value to the random one enter 'R'.
 You will be prompted back with the generated value. eg.
-< RW
-> AmbassadorMagnesium'sRelics
-
 < R
 > Xu@+$;*ed3||,zfuP7kw%e0!c<`e^PLC
 By default
@@ -63,16 +60,6 @@ def generate_random(generated_len=GENERATED_LEN) -> str:
     return password
 
 
-def generate_xkcd_style() -> str:
-    """
-    Generate random password made of couple of random words.
-    """
-    with open('/usr/share/dict/words') as f:
-        words = [word.strip() for word in f]
-        password = ''.join(choice(words).capitalize() for _ in range(RANDOM_WORDS_NUMBER))
-    return password
-
-
 def collect_new_values(env_variables: Dict[str, str]):
     for var, value in env_variables.items():
         print(var)
@@ -89,9 +76,6 @@ def collect_new_values(env_variables: Dict[str, str]):
 
             if new_value == 'R':
                 new_value = generate_random()
-                print('Generated value: ', new_value)
-            elif new_value == 'RW':
-                new_value = generate_xkcd_style()
                 print('Generated value: ', new_value)
         env_variables[var] = new_value
 

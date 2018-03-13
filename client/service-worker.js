@@ -38,5 +38,15 @@ sw.router.registerRoute(
 // This returns the cached value for '/' (index.html) when the user requests a URL like suttacentral.net/home
 // instead of just looking for the cached match for suttacentral.net/home, which doesn't exist.
 if (isProductionEnv) {
-    sw.router.registerNavigationRoute('index.html');
+    caches.keys().then(keys => {
+        const cacheName = keys.filter(name => name.includes('suttacentral'))[0];
+        caches.open(cacheName).then(cache => {
+            if (cache.match('index.html')) {
+                sw.router.registerNavigationRoute('index.html');
+            }
+            else if (cache.match('/')) {
+                sw.router.registerNavigationRoute('/');
+            }
+        });
+    });
 }
