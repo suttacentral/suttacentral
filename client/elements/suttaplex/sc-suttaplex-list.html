@@ -246,11 +246,11 @@
               if (!suttaplexReturns) {
                   return;
               }
-              let description = localize('metaDescriptionText');
+              let description = localize('metaDescriptionText')(0,120);
               if (suttaplexReturns[0].blurb) {
-                  description = suttaplexReturns[0].blurb
+                  description = suttaplexReturns[0].blurb(0,120)
               }
-              const twitterDescription = description.substring(0,149);
+              const twitterDescription = description.substring(0,120);
               return {
                 'og:title': `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
                 'og:description': description,
