@@ -355,7 +355,7 @@
           }
 
           _createMetaData(dictionaryWord, localize) {
-              const description = localize('metaDescriptionText')(0,120);
+              const description = localize('metaDescriptionText').substring(0,120);
               const twitterDescription = description.substring(0,120);
               const dictionaryResultsText = localize('dictionaryResultsText');
               return { 

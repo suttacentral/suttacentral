@@ -246,9 +246,9 @@
               if (!suttaplexReturns) {
                   return;
               }
-              let description = localize('metaDescriptionText')(0,120);
+              let description = localize('metaDescriptionText').substring(0,120);
               if (suttaplexReturns[0].blurb) {
-                  description = suttaplexReturns[0].blurb(0,120)
+                  description = suttaplexReturns[0].blurb.substring(0,120);
               }
               const twitterDescription = description.substring(0,120);
               return {
