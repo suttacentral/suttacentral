@@ -611,7 +611,7 @@
 
           _setHeaderParamsAndOpenChildMenu(e) {
               const clickedElement = e.composedPath()[1];
-              this.headerTitle = clickedElement.innerText;
+              this.headerTitle = clickedElement.textContent;
               this.parentId = clickedElement.dataset.uid;
               this.headerHref = this._getSuttaplexUrl(clickedElement.dataset.uid);
               this.subMenuId = clickedElement.dataset.uid;

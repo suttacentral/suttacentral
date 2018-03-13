@@ -69,7 +69,7 @@
 
               Array.from(paragraphs).forEach(paragraph => {
                   let paragraphNumber = paragraph.innerHTML.match(/>([0-9a-zA-Z\.]*)<\/a>/);
-                  let cleanParagraph = paragraph.innerText;
+                  let cleanParagraph = paragraph.textContent;
                   if (paragraphNumber) {
                       cleanParagraph = cleanParagraph.replace(paragraphNumber[1], '');
                   }                 
