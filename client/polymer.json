@@ -4,6 +4,29 @@
   "sources": [
     "elements/**/*"
   ],
+  "fragments": [
+    "elements/static/a-new-beginning-page.html",
+    "elements/static/abbreviations-page.html",
+    "elements/static/abhidhamma-page.html",
+    "elements/static/about-page.html",
+    "elements/static/acknowledgments-page.html",
+    "elements/static/discourses-page.html",
+    "elements/static/donate-now-page.html",
+    "elements/static/donation-success-page.html",
+    "elements/static/donations-page.html",
+    "elements/static/downloads-page.html",
+    "elements/static/introduction-page.html",
+    "elements/static/licensing-page.html",
+    "elements/static/methodology-page.html",
+    "elements/static/names-page.html",
+    "elements/static/numbering-page.html",
+    "elements/static/offline-page.html",
+    "elements/static/similes-page.html",
+    "elements/static/start-page.html",
+    "elements/static/subjects-page.html",
+    "elements/static/terminology-page.html",
+    "elements/static/vinaya-page.html"
+  ],
   "extraDependencies": [
     "localization/elements/**/*.json",
     "img/**/*",
@@ -11,7 +34,6 @@
     "manifest.json",
     "files/**/*",
     "elements/text/transliterator.js",
-    "elements/static/*.html",
     "push_manifest.json",
     "polyfills.js",
     "service-worker.js",
