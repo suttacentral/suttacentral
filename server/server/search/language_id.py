@@ -57,7 +57,7 @@ def smart_rank(text):
     else:
         # We only indiscriminately return the best result if there
         # is no good alternative
-        return [best_result[0]]
+        return [results[0][0]]
     
     
     
@@ -72,7 +72,6 @@ def get_accept_languages():
         short_code = iso_code.split('_')[0]
         if short_code not in results:
             results[short_code] = rank
-    print(f'Accept-Language: {results}')
     return results
             
     
