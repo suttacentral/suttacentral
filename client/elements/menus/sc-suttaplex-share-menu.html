@@ -255,7 +255,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
               for (let section of Object.keys(this.parallels)) {
                   let acronymUid = this._generateAcronymUid(this.item.acronym, section)
                   result += `Parallels for ${acronymUid} ${this.item.original_title} `;
-                  if (this.item.volpages.length > 0) {
+                  if (this.item.volpages && this.item.volpages.length > 0) {
                       result += `(${this.item.volpages[0]})`;
                   }
                   result = this._strip(result, ' ');
