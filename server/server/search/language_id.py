@@ -66,11 +66,11 @@ def get_accept_languages():
     
     for pair in request.headers.get('Accept-Language').split(','):
         if ';' in pair:
-            iso_code, rank = pair.split(';')
+            iso_code, rank = pair.strip().split(';')
         else:
-            iso_code, rank = pair, 1.0
-        short_code = iso_code.split('_')[0]
-        if short_code not in results:
+            iso_code, rank = pair.strip(), 1.0
+        short_code = iso_code.split('-')[0]
+        if short_code not in results and short_code.isalpha():
             results[short_code] = rank
     return results
             
