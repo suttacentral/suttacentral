@@ -41,7 +41,25 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
 
-  <script src="/polyfills.js"></script>
+  <!-- Polyfills -->
+  <script>
+    var head = document.querySelector('head');
+    if (!Array.prototype.includes) {
+        var script = document.createElement('script');
+        script.src = '/polyfills/arrayIncludes.js';
+        head.appendChild(script);
+    }
+    if (!Object.entries) {
+        var script = document.createElement('script');
+        script.src = '/polyfills/objectEntries.js';
+        head.appendChild(script);
+    }
+    if (!String.prototype.includes) {
+        var script = document.createElement('script');
+        script.src = '/polyfills/objectEntries.js';
+        head.appendChild(script);
+    }
+  </script>
 
   <style>
     body {
@@ -50,15 +68,7 @@
       background-color: var(--sc-primary-background-color);
       color: var(--sc-primary-text-color);
     }
-
-    sc-drawer-layout[unresolved] {
-      display: block;
-      min-height: 100vh;
-      min-width: 100vw;
-      background-color: #f5f5f5;
-      overflow: visible;
-    }
-
+z
     .unsupported-browser-splash-screen {
       height: 100%;
       width: 100%;

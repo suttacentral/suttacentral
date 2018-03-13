@@ -6,6 +6,12 @@
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../../bower_components/sherby-metadata/sherby-metadata.html">
 
+<!-- Imports for the ISW dialogs -->
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html" async>
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html" async>
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html" async>
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html" async>
+
 <link rel="import" href="../../elements/text/sc-segmented-text.html">
 <link rel="import" href="../../elements/text/sc-simple-text.html">
 <link rel="import" href="../../elements/text/sc-stepper.html">
@@ -180,12 +186,6 @@
 
           static get actions() {
               return {
-                  changeToolbarTitle(title) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_TITLE',
-                          title: title
-                      };
-                  },
                   downloadSuttaText(text) {
                       return {
                           type: 'DOWNLOAD_SUTTA_TEXT',
@@ -243,9 +243,9 @@
               }
           }
 
-          // The stopRequests variable exists so that we don't make 3 consequent requests in case the
-          // author, suttaId and the langIsoCode all change at the same time.
           _paramChanged() {
+              // The stopRequests variable exists so that we don't make 3 consequent requests in case the
+              // author, suttaId and the langIsoCode all change at the same time.
               if (!this.stopRequests) {
                   this.stopRequests = true;
                   // wait 50ms until all route parameters are changed
