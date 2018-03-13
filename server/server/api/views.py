@@ -995,7 +995,7 @@ class CollectionUrlList(Resource):
                                         type: object
                                         properties:
                                             lang:
-                                                    type: string
+                                                type: string
                                             authors:
                                                 type: array
                                                 items:
