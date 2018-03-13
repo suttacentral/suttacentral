@@ -42,15 +42,15 @@ def smart_rank(text):
     special_codes = {'en', 'pli'}
     # if there are other codes in the Accept-Language header we
     # also give those codes special privelage
-    special_codes.update(get_accept_langauges())
+    special_codes.update(get_accept_languages())
         
     good_matches = []
     
     # this comparison might seem extreme, but it's how langid works
     # a bad match is like a quadzillion times smaller than a good match
     # a mildly bad match can be like 5.5e-21
-    for iso_code, rank in results:
-        if iso_code in special_codes and rank > 0.00001:
+    for iso_code, prob in results:
+        if iso_code in special_codes and prob > 0.00001:
             good_matches.append(iso_code)
     if good_matches:
         return good_matches
@@ -69,7 +69,7 @@ def get_accept_languages():
             iso_code, rank = pair.split(';')
         else:
             iso_code, rank = pair, 1.0
-        short_code = iso_code.split('_')
+        short_code = iso_code.split('_')[0]
         if short_code not in results:
             results[short_code] = rank
     print(f'Accept-Language: {results}')

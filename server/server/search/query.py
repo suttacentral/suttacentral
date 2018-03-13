@@ -3,7 +3,7 @@ from inspect import currentframe, getargvalues
 
 import regex
 
-from search import es, util
+from search import es, util, language_id
 from .util import get_root_language_uids
 
 logger = logging.getLogger(__name__)
@@ -100,17 +100,6 @@ def make_text_search_query(query, lang, root_lang=None, author=None, uid=None, s
 lang_bias = {'en': 1.4, 'pli': 1.2}
 
 
-def rank_language(string):
-    import sc.lib.langid as langid
-    rank = langid.rank(string.casefold())[:4]
-
-    biased_rank = sorted(
-        ((lang, score * lang_bias.get(lang, 1.0)) for lang, score in rank),
-        key=lambda t: t[1],
-        reverse=True)
-    return biased_rank
-
-
 def guess_language(string):
     return rank_language(string)[0][0]
 
@@ -144,6 +133,11 @@ def search(query: str, highlight=True, offset=0, limit=10,
        
     root_indexes = list(get_root_language_uids())
     tr_indexes = [language]
+    
+    extra_langs = language_id.smart_rank(query)
+    for iso_code in extra_langs:
+        if iso_code != language and iso_code not in root_indexes:
+            tr_indexes.append(iso_code)
     
     if restrict == 'root-text':
         indexes = root_indexes
