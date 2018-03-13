@@ -67,6 +67,18 @@ than ten results in total, a dropdown selection menu appears at the top.
         @apply --layout-horizontal;
       }
 
+      .search-result-item dl a {
+        @apply --sc-inline-link;
+      }
+
+      .search-result-item dl a:hover {
+        @apply --sc-inline-link-hover;
+      }
+
+      .search-result-item dl a:visited {
+        @apply --sc-inline-link-visited;
+      }
+
       .search-result-item:focus {
         outline: 0;
         background: linear-gradient(to right, var(--sc-primary-accent-color) 4px, transparent 4px);
@@ -114,6 +126,44 @@ than ten results in total, a dropdown selection menu appears at the top.
       .search-result-link {
         text-decoration: none;
         color: initial;
+      }
+
+      .dictionary {
+        background-color: var(--sc-secondary-background-color);
+        @apply --shadow-elevation-2dp;
+        border-radius: var(--sc-size-xxs);
+      }
+
+      .dictionary .search-result-division {
+        display: none;
+      }
+
+      .dictionary .search-result-title {
+        @apply --paper-font-subhead;
+      }
+
+      .dictionary dfn {
+       @apply --paper-font-headline;
+       font-weight: bold;
+      }
+
+      .dictionary dd p {
+        margin: 0 0 var(--sc-size-s) 0;
+      }
+
+      .dictionary .case {
+        color: var(--sc-secondary-text-color);
+        @apply --sc-all-small-caps;
+        display: block;
+      }
+
+      .dictionary .ref {
+        @apply --sc-skolar-font-size-s;
+        color: var(--sc-secondary-text-color);
+        background-color: var(--sc-textual-info-background-color);
+        border-radius: var(--sc-size-xxs);
+        padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
+        white-space: nowrap;
       }
 
       .paper-spinner {
@@ -519,11 +569,16 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           _createMetaData(searchWord, localize) {
               const description = localize('metaDescriptionText');
+              const twitterDescription = description.substring(0,149);
               const searchResultsText = localize('searchResultsText');
               return { 
                 'og:title': `${searchResultsText} ${searchWord}`,
-                'og:description': description
-                 };
+                'og:description': description,
+                'twitter:title': `${searchResultsText} ${searchWord}`,
+                'twitter:description': twitterDescription,
+                title: `${searchResultsText} ${searchWord}`,
+                description: description
+              };
           }
       }
 

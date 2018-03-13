@@ -14,8 +14,7 @@
   <meta name="msapplication-tap-highlight" content="no">
 
   <!-- Search Engine -->
-  <meta name="description"
-        content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
+  <meta name="title" content="SuttaCentral">
   <meta name="image" content="https://i.vimeocdn.com/portrait/23756910_500x500.jpg">
   <!-- Schema.org for Google -->
   <meta itemprop="name" content="SuttaCentral">
@@ -27,9 +26,6 @@
   <meta name="twitter:title" content="SuttaCentral">
   <meta name="twitter:player" content="https://player.vimeo.com/video/257038431">
   <meta name="twitter:image:alt" content="SuttaCentral">
-  <meta name="twitter:description"
-        content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
-
 
   <!-- Open Graph general (Facebook, Pinterest & Google+) -->
   <meta property="og:title" content="SuttaCentral">
@@ -38,7 +34,6 @@
   <meta property="og:url" content="https://next.suttacentral.net/">
   <meta property="og:site_name" content="SuttaCentral">
   <meta property="og:type" content="website">
-
 
   <link rel="icon" href="/img/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
@@ -129,11 +124,9 @@
 <script async>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/service-worker.js').catch((err) => {
-                console.log('Service worker registration failed: ', err);
-            });
             navigator.serviceWorker.register('/sw-generated.js').catch((err) => {
-                console.log('The precaching service worker did not load correctly!' +
+                console.log(
+                    'The precaching service worker did not load correctly!' +
                     'Local resources will not be cached for offline use.' +
                     'Ignore this if you are running in development mode.', err);
             });
