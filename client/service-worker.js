@@ -19,7 +19,7 @@ sw.router.registerRoute(
 );
 
 sw.router.registerRoute(
-    new RegExp('https://next.suttacentral.net/api/(.*)'),
+    new RegExp('https://(?:staging.)suttacentral.net/api/(.*)'),
     sw.strategies.networkFirst()
 );
 
