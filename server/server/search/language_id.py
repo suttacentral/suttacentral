@@ -3,6 +3,7 @@ from flask import current_app
 from flask import request
 identifier = None
 
+
 def load_model():
     global identifier
     data_dir = current_app.config.get('BASE_DIR') / 'sc-data'
@@ -13,12 +14,13 @@ def load_model():
     # langid is frightfully hacky in general
     identifier = langid.LanguageIdentifier.from_modelpath(langid_model_file, norm_probs=True)
 
+
 def rank(text):
     if not identifier:
-        load_model()        
-    
+        load_model()
     return identifier.rank(text.casefold())
-    
+
+
 def smart_rank(text):
     """ Return probable iso_codes fudged by Accept-Language header
     
@@ -43,7 +45,7 @@ def smart_rank(text):
     # if there are other codes in the Accept-Language header we
     # also give those codes special privelage
     special_codes.update(get_accept_languages())
-        
+    
     good_matches = []
     
     # this comparison might seem extreme, but it's how langid works
@@ -60,11 +62,13 @@ def smart_rank(text):
         return [results[0][0]]
     
     
-    
 def get_accept_languages():
-    results = {}
+    header = request.headers.get('Accept-Language')
+    if not header:
+        return {}
     
-    for pair in request.headers.get('Accept-Language').split(','):
+    results = {}    
+    for pair in header.split(','):
         if ';' in pair:
             iso_code, rank = pair.strip().split(';')
         else:
@@ -73,6 +77,3 @@ def get_accept_languages():
         if short_code not in results and short_code.isalpha():
             results[short_code] = rank
     return results
-            
-    
-    
