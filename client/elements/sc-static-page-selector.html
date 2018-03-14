@@ -471,16 +471,15 @@
 
           _createMetaData(pageSelection, localize) {
               const description = localize('metaDescriptionText');
-              const twitterDescription = description.substring(0, 149);
               const pageName = localize(`${pageSelection}`);
-              return {
-                  'og:title': `SuttaCentral—${pageName.toLowerCase()}`,
-                  'og:description': description,
-                  'twitter:title': `SuttaCentral—${pageName.toLowerCase()}`,
-                  'twitter:description': twitterDescription,
-                  title: `SuttaCentral—${pageName.toLowerCase()}`,
-                  description: description
-              };
+              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+                  detail: {
+                      title: `SuttaCentral—${pageName.toLowerCase()}`,
+                      description: description,
+                      bubbles: true,
+                      composed: true
+                  }
+              }));
           }
       }
 

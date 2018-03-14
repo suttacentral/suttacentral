@@ -283,17 +283,17 @@
               if (responseData.suttaplex.blurb) {
                   description = responseData.suttaplex.blurb;
               }
-              const twitterDescription = description.substring(0,149);
               const title = responseData.translation ? responseData.translation.title : responseData.root_text.title;
               const author = responseData.translation ? responseData.translation.author : responseData.root_text.author;
-              return {
-                'og:title': `${title}—${author}`,
-                'og:description': description,
-                title: `${title}—${author}`,
-                description: description,
-                'twitter:title': `${title}—${author}`,
-                'twitter:description': twitterDescription
-              };
+
+              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+                  detail: {
+                      title: `${title}—${author}`,
+                      description: description,
+                      bubbles: true,
+                      composed: true
+                  }
+              }));
           }
       }
 

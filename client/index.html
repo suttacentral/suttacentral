@@ -15,7 +15,10 @@
 
   <!-- Search Engine -->
   <meta name="title" content="SuttaCentral">
+  <meta name="description" content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
   <meta name="image" content="https://i.vimeocdn.com/portrait/23756910_500x500.jpg">
+  <meta name="keywords" content="Buddha, Buddhism, Buddhist, sutta, sutra, tipitaka, tripitaka, wisdom, teaching, mindfulness, meditation, scripture, canon, Pali, Sanskrit, Tibetan, Chinese, insight, vipassana">
+
   <!-- Schema.org for Google -->
   <meta itemprop="name" content="SuttaCentral">
   <meta itemprop="description"
@@ -24,11 +27,13 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="SuttaCentral">
+  <meta name="twitter:description" content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings.">
   <meta name="twitter:player" content="https://player.vimeo.com/video/257038431">
   <meta name="twitter:image:alt" content="SuttaCentral">
 
   <!-- Open Graph general (Facebook, Pinterest & Google+) -->
   <meta property="og:title" content="SuttaCentral">
+  <meta property="og:description" content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
   <meta property="og:image"
         content="https://raw.githubusercontent.com/suttacentral/suttacentral/development/client/img/social_image.png">
   <meta property="og:url" content="https://next.suttacentral.net/">
@@ -209,6 +214,25 @@ z
         document.querySelector('.logo-image-container').appendChild(logoImg);
         removeSiteContent();
     }
+    document.addEventListener("sherby-metadata", function(e) {
+        var metaData = e.detail;
+        if (metaData) {
+            document.head.querySelector("[property='og:title']").content = metaData.title;
+            document.head.querySelector("[property='og:description']").content = metaData.description;
+            document.head.querySelector("[name='title']").content = metaData.title;
+            document.head.querySelector("[name='description']").content = metaData.description;
+            document.head.querySelector("[name='twitter:title']").content = metaData.title;
+            document.head.querySelector("[name='twitter:description']").content = metaData.description.substring(0,120);
+            document.head.querySelector("[itemprop='name']").content = metaData.title;
+            document.head.querySelector("[itemprop='description']").content = metaData.description;
+        }
+    });
+    document.addEventListener("keyword-metadata", function(e) {
+        var metaData = e.detail;
+        if (metaData) {
+            document.head.querySelector("[name='keywords']").content = metaData.keywords;
+        }
+    });
 </script>
 
 <noscript>

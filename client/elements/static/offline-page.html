@@ -15,7 +15,7 @@
 <link rel="import" href="../styles/static-styles.html">
 <link rel="import" href="../addons/sc-static-page.html">
 <link rel="import" href="../menus/sc-language-base-menu.html">
-<link rel="import" href="../html-imports/sc-request-queue-import.html" async>
+<link rel="import" href="../html-imports/d3-queue.html">
 
 <dom-module id="sc-offline-page">
   <template>
@@ -496,8 +496,8 @@
               this.$.ajax.generateRequest().completes.then((request) => {
                   this.downloadProgressPercentage = 0;
                   const response = request.__data.response;
-                  const allURLs = this._buildUrlList(response);
-                  this._cacheAllItems(allURLs);
+                  this.allURLs = this._buildUrlList(response);
+                  this._cacheAllItems();
               }, (error) => {
                   this._showToast('error', this.localize('networkError'));
                   this.cacheDownloadInProgress = false;
@@ -505,43 +505,52 @@
               });
           }
 
-          _cacheAllItems(allURLs) {
+          _cacheAllItems() {
               let failed = 0;
               let passed = 0;
               const progressBar = this.$.cache_progress;
               progressBar.value = 0;
               this.isDownloadPaused = false;
-              this.downloadQueue = new RequestQueue({ rateLimit: 10 }, {
-                  item: (input, done) => {
-                      fetch(input.url)
-                          .then(this._handleErrors)
-                          .then(() => {
-                              passed++;
-                              this._updateUi(progressBar, input.url);
-                              done();
-                          })
-                          .catch((err) => {
-                              failed++;
-                              console.error(err)
-                          })
-                  },
-                  end: () => {
-                      this.cacheDownloadInProgress = false;
-                      this.isDownloadPaused = true;
-                      if (failed === 0) {
-                          this._showToast('success',
-                              this.localize('downloadComplete', 'lang', this.chosenLanguageNativeName));
-                      } else if (failed > 0 && passed > 0) {
-                          this._showToast('error',
-                              this.localize('downloadErrored', 'failed', failed, 'total', passed + failed));
-                      } else {
-                          this._showToast('error', this.localize('networkError'));
-                      }
+              this.D3queue = d3.queue(20);
+              this.allURLs.forEach(input => {
+                if (input.done) {
+                    passed++;
+                    progressBar.value++;
+                    return;
+                }
+                this.D3queue.defer((input, callback) => {
+                    fetch(input.url)
+                        .then(this._handleErrors)
+                        .then(() => {
+                            passed++;
+                            this._updateUi(progressBar, input.url);
+                            input.done = true;
+                            callback(null);
+                        })
+                        .catch((err) => {
+                            failed++;
+                            console.error(err);
+                            callback(null);
+                        })
+                }, input);
+              });
+              this.D3queue.await((e) => {
+                  if (this.isDownloadPaused) {
+                      return;
+                  }
+                  this.cacheDownloadInProgress = false;
+                  if (failed === 0) {
+                      this._showToast('success',
+                          this.localize('downloadComplete', 'lang', this.chosenLanguageNativeName));
+                  } else if (failed > 0 && passed > 0) {
+                      this._showToast('error',
+                          this.localize('downloadErrored', 'failed', failed, 'total', passed + failed));
+                  } else {
+                      this._showToast('error', this.localize('networkError'));
                   }
               });
 
-              allURLs.forEach(this.downloadQueue.enqueue, this.downloadQueue);
-              progressBar.max = this.downloadQueue.length();
+              progressBar.max = this.allURLs.length;
           }
 
           _updateUi(progressBar, currentUrl) {
@@ -567,7 +576,7 @@
               const lookupURLs = this._buildLookupUrlList(this.paliLookupLanguages, this.chineseLookupLanguages);
 
               return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs).concat(parallelURLs)
-                  .concat(paragraphURLs).concat(lookupURLs);
+                  .concat(paragraphURLs).concat(lookupURLs).map(url => ({url: url, done: false}));
           }
 
           _buildSuttaTextUrlList(response) {
@@ -654,13 +663,21 @@
           }
 
           _resumeOrPauseDownload() {
-              this.isDownloadPaused ? this.downloadQueue.resume() : this.downloadQueue.pause();
               this.isDownloadPaused = !this.isDownloadPaused;
+              this.isDownloadPaused ? this._pauseDownload() : this._resumeDownload();
+          }
+
+          _resumeDownload() {
+              this._cacheAllItems();
+          }
+
+          _pauseDownload() {
+              this.D3queue.abort();
           }
 
           _stopDownload() {
-              this.downloadQueue.pause();
-              delete this.downloadQueue;
+              this.D3queue.abort();
+              delete this.D3queue;
               this.cacheDownloadInProgress = false;
               this._showToast('info', this.localize('canceled'));
           }
@@ -710,6 +727,9 @@
           }
 
           _calculateLookupSizes() {
+              if (!(this.PWASizes && this.paliLookupLanguages && this.chineseLookupLanguages)){
+                  return;
+              }
               let size = 0;
               [this.paliLookupLanguages, this.chineseLookupLanguages].forEach(lookupLanguages => {
                   lookupLanguages.forEach(lang => {

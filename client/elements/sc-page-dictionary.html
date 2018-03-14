@@ -360,16 +360,16 @@
 
           _createMetaData(dictionaryWord, localize) {
               const description = localize('metaDescriptionText');
-              const twitterDescription = description.substring(0,149);
               const dictionaryResultsText = localize('dictionaryResultsText');
-              return { 
-                'og:title': `${dictionaryResultsText} ${dictionaryWord}`,
-                'og:description': description,
-                'twitter:title': `${dictionaryResultsText} ${dictionaryWord}`,
-                'twitter:description': twitterDescription,
-                title: `${dictionaryResultsText} ${dictionaryWord}`,
-                description: description
-                };
+
+              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+                  detail: {
+                      title: `${dictionaryResultsText} ${dictionaryWord}`,
+                      description: description,
+                      bubbles: true,
+                      composed: true
+                  }
+              }));
           }
       }
 
