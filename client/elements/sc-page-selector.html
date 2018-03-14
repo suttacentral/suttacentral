@@ -343,7 +343,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _shouldRedirect() {
-              const langReg = this.allIsoCodes.join('|')
+              const langReg = this.allIsoCodes.join('|');
               const legacyLinkReg = new RegExp(`\/(${langReg})\/[a-zA-Z\d]+`);
               return legacyLinkReg.test(this.route.path);
           }
