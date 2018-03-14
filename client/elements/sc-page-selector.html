@@ -428,7 +428,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               // load the element
               if (importedElementUrl) {
                   Polymer.RenderStatus.afterNextRender(this, () => {
-                      console.log('loading url: ', importedElementUrl);
                       Polymer.importHref(this.resolveUrl(importedElementUrl), null, null, true);
                   });
               }

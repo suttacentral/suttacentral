@@ -441,8 +441,6 @@
               super.connectedCallback();
               Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-              });
-              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.$.menu_ajax.generateRequest();
               });
           }
