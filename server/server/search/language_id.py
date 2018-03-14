@@ -28,7 +28,7 @@ def smart_rank(text):
     for a shared word like concentration it just has no way to know.
     
     In this kind of case the langid rank will conclude that "concentration"
-    is probably french but could be english. "fr" will only be returned 
+    is probably french but could be english. 'fr' will only be returned 
     if it also appears in the Accept-Language header, in other words
     this function will try and not return a language code that the user
     browser doesn't accept if it can reasonably return one that is accepted.
