@@ -441,13 +441,8 @@
               this._setVisibleToolbar(this.selectedPage);
               setTimeout(() => {this._selectNavbarLink()});
               this.$.pages.selected = this.selectedPage;
-              // Routes that shouldn't trigger importHref (for example, home route is eagerly loaded)
-              const ignoredRoutes = ['HOME', 'SUTTAPLEX'];
               if (!customElements.get(`${this.selectedPage.toLowerCase()}-page`)) {
                   Polymer.RenderStatus.afterNextRender(this, () => {
-                      if (ignoredRoutes.includes(this.selectedPage)) {
-                          return;
-                      }
                       Polymer.importHref(this.resolveUrl(`../elements/static/${this.selectedPage.toLowerCase()}-page.html`),
                           null, null, true);
                   });
