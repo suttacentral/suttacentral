@@ -1,21 +1,21 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
-<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/iron-icons/av-icons.html">
-<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
-<link rel="import" href="styles/static-styles.html">
-<link rel="import" href="addons/sc-static-page.html">
-<link rel="import" href="menus/sc-language-base-menu.html">
-<link rel="import" href="html-imports/d3-queue.html">
+<link rel="import" href="../styles/static-styles.html">
+<link rel="import" href="../addons/sc-static-page.html">
+<link rel="import" href="../menus/sc-language-base-menu.html">
+<link rel="import" href="../html-imports/d3-queue.html">
 
 <dom-module id="sc-offline-page">
   <template>
@@ -514,8 +514,8 @@
               this.D3queue = d3.queue(20);
               this.allURLs.forEach(input => {
                 if (input.done) {
-                    passed++;   
-                    progressBar.value++; 
+                    passed++;
+                    progressBar.value++;
                     return;
                 }
                 this.D3queue.defer((input, callback) => {
@@ -548,7 +548,7 @@
                   } else {
                       this._showToast('error', this.localize('networkError'));
                   }
-              })
+              });
 
               progressBar.max = this.allURLs.length;
           }

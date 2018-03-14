@@ -8,7 +8,6 @@
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../elements/styles/sc-suttaplex-styles.html">
-<link rel="import" href="../menus/sc-settings-menu.html">
 <link rel="import" href="../../elements/suttaplex/sc-suttaplex.html">
 
 <!--
@@ -132,11 +131,15 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text-options/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text-options/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text-options/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text-options/${this.language}.json`), this.language, true);
+              });
           }
 
           _toggleOpened() {

@@ -1,12 +1,12 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../bower_components/iron-location/iron-location.html">
-<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../elements/addons/sc-static-page.html"/>
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/iron-location/iron-location.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../elements/addons/sc-static-page.html"/>
 
-<link rel="import" href="styles/static-styles.html">
+<link rel="import" href="../styles/static-styles.html">
 
-<dom-module id="sc-donate-success">
+<dom-module id="sc-donation-success-page">
     <template>
         <style include="static-styles sc-scrollbar-style">
             .bolded {
@@ -57,9 +57,9 @@
          * @extends {Polymer.Element}
          * @appliesMixin Polymer.AppLocalizeBehavior
          */
-        class SCDonateSuccess extends SCStaticPage {
+        class SCDonationSuccessPage extends SCStaticPage {
             static get is() {
-                return 'sc-donate-success';
+                return 'sc-donation-success-page';
             }
 
             static get properties() {
@@ -73,7 +73,7 @@
                     },
                     localizedStringPath: {
                       type: String,
-                      value: '/localization/elements/sc-donate-success/'
+                      value: '/localization/elements/sc-donation-success-page/'
                   }
                 }
             }
@@ -100,6 +100,6 @@
 
         }
 
-        customElements.define(SCDonateSuccess.is, SCDonateSuccess);
+        customElements.define(SCDonationSuccessPage.is, SCDonationSuccessPage);
     </script>
 </dom-module>

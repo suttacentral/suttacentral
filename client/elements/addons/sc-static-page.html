@@ -34,7 +34,9 @@
 
           connectedCallback() {
               super.connectedCallback();
-              this.loadResources(this.resolveUrl(`${this.localizedStringPath}${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`${this.localizedStringPath}${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
               const targetMainElement = this.shadowRoot.querySelector('main');
               if (targetMainElement) {
                   targetMainElement.addEventListener('click', () => {
@@ -49,13 +51,13 @@
                   }, 0);
               });
               setTimeout(() => {
-                      this.currentId = this._scrollToSection(window.location.hash, this.currentId);
+                  this.currentId = this._scrollToSection(window.location.hash, this.currentId);
               }, 2000);
           }
 
           _scrollToSection(sectionId, currentId) {
               if (!sectionId || currentId === sectionId) {
-                return currentId;
+                  return currentId;
               }
               const firstSection = this.shadowRoot.querySelector(sectionId);
               if (firstSection) {
@@ -73,7 +75,9 @@
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`${this.localizedStringPath}${this.language}.json`), this.language, true);
+                  setTimeout(() => {
+                      this.loadResources(this.resolveUrl(`${this.localizedStringPath}${this.language}.json`), this.language, true);
+                  });
               }
           }
       }
