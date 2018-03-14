@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/utils/render-status.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
@@ -6,34 +7,34 @@
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
+<link rel="import" href="../bower_components/polymer/lib/utils/import-href.html">
 
-<link rel="import" href="../elements/static/home-page.html">
-<link rel="import" href="../elements/static/donations-page.html">
-<link rel="import" href="../elements/static/downloads-page.html">
-<link rel="import" href="../elements/static/numbering-page.html">
-<link rel="import" href="../elements/static/abbreviations-page.html">
-<link rel="import" href="../elements/static/methodology-page.html">
-<link rel="import" href="../elements/static/acknowledgments-page.html">
-<link rel="import" href="../elements/static/licensing-page.html">
-<link rel="import" href="../elements/static/about-page.html">
-<link rel="import" href="../elements/static/introduction.html">
-<link rel="import" href="../elements/static/start.html">
-<link rel="import" href="../elements/static/discourses.html">
-<link rel="import" href="../elements/static/vinaya.html">
-<link rel="import" href="../elements/static/abhidhamma.html">
-<link rel="import" href="../elements/static/home-page.html">
-<link rel="import" href="../elements/static/subjects.html">
-<link rel="import" href="../elements/static/similes.html">
-<link rel="import" href="../elements/static/names.html">
-<link rel="import" href="../elements/static/terminology.html">
-<link rel="import" href="../elements/static/a-new-beginning.html">
-<link rel="import" href="../elements/static/abbreviations-page.html">
-<link rel="import" href="./sc-donate-success.html">
+<link rel="lazy-import" href="../elements/static/home-page.html">
+<link rel="lazy-import" href="../elements/static/donations-page.html">
+<link rel="lazy-import" href="../elements/static/downloads-page.html">
+<link rel="lazy-import" href="../elements/static/numbering-page.html">
+<link rel="lazy-import" href="../elements/static/abbreviations-page.html">
+<link rel="lazy-import" href="../elements/static/methodology-page.html">
+<link rel="lazy-import" href="../elements/static/acknowledgments-page.html">
+<link rel="lazy-import" href="../elements/static/licensing-page.html">
+<link rel="lazy-import" href="../elements/static/about-page.html">
+<link rel="lazy-import" href="../elements/static/introduction-page.html">
+<link rel="lazy-import" href="../elements/static/start-page.html">
+<link rel="lazy-import" href="../elements/static/discourses-page.html">
+<link rel="lazy-import" href="../elements/static/vinaya-page.html">
+<link rel="lazy-import" href="../elements/static/abhidhamma-page.html">
+<link rel="lazy-import" href="../elements/static/home-page.html">
+<link rel="lazy-import" href="../elements/static/subjects-page.html">
+<link rel="lazy-import" href="../elements/static/similes-page.html">
+<link rel="lazy-import" href="../elements/static/names-page.html">
+<link rel="lazy-import" href="../elements/static/terminology-page.html">
+<link rel="lazy-import" href="../elements/static/a-new-beginning-page.html">
+<link rel="lazy-import" href="../elements/static/abbreviations-page.html">
+<link rel="lazy-import" href="../elements/static/donation-success-page.html">
+<link rel="lazy-import" href="../elements/static/donate-now-page.html">
+<link rel="lazy-import" href="../elements/static/offline-page.html">
 
-<link rel="import" href="../elements/sc-donate-now-page.html">
-<link rel="import" href="../elements/sc-offline-page.html">
-
-<dom-module id="sc-page-static">
+<dom-module id="sc-static-page-selector">
   <template>
     <style>
       app-toolbar {
@@ -328,7 +329,7 @@
       <sc-names-page name="NAMES"></sc-names-page>
       <sc-terminology-page name="TERMINOLOGY"></sc-terminology-page>
       <sc-abbreviations-page name="ABBREVIATIONS"></sc-abbreviations-page>
-      <sc-donate-success name="DONATION-SUCCESS"></sc-donate-success>
+      <sc-donation-success-page name="DONATION-SUCCESS"></sc-donation-success-page>
       <div name="NOT-FOUND" class="page-not-found-container">
         <h2>{{localize('error404')}}</h2>
         <h3>{{localize('pageNotFound')}}</h3>
@@ -341,9 +342,9 @@
        * @extends {Polymer.Element}
        * @appliesMixin Polymer.AppLocalizeBehavior
        */
-      class SCPageStatic extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
+      class SCStaticPageSelector extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
           static get is() {
-              return 'sc-page-static';
+              return 'sc-static-page-selector';
           }
 
           static get properties() {
@@ -390,11 +391,15 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-static-page-selector/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-static/${this.language}.json`), this.language, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-static-page-selector/${this.language}.json`), this.language, true);
+              });
               const tabs = this.shadowRoot.querySelector(this._getNavTabsSelector());
               if (tabs) {
                   tabs.notifyResize();
@@ -433,13 +438,35 @@
           }
 
           _changeView() {
-              this.shouldShowSecondToolbar = ['SUBJECTS', 'SIMILES', 'NAMES', 'TERMINOLOGY'].includes(this.selectedPage);
-              this.shouldShowTipitakaToolbar = ['DISCOURSES', 'VINAYA', 'ABHIDHAMMA'].includes(this.selectedPage);
-              this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(this.selectedPage);
-              this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(this.selectedPage);
+              this._setVisibleToolbar(this.selectedPage);
+              setTimeout(() => {this._selectNavbarLink()});
               this.$.pages.selected = this.selectedPage;
-              requestAnimationFrame(() => {this._selectNavbarLink()});
-              this.shadowRoot.querySelector('#donate').resetForm();
+              // Routes that shouldn't trigger importHref (for example, home route is eagerly loaded)
+              const ignoredRoutes = ['HOME', 'SUTTAPLEX'];
+              if (!customElements.get(`${this.selectedPage.toLowerCase()}-page`)) {
+                  Polymer.RenderStatus.afterNextRender(this, () => {
+                      if (ignoredRoutes.includes(this.selectedPage)) {
+                          return;
+                      }
+                      Polymer.importHref(this.resolveUrl(`../elements/static/${this.selectedPage.toLowerCase()}-page.html`),
+                          null, null, true);
+                  });
+              }
+              this._resetDonationForm();
+          }
+
+          _resetDonationForm() {
+              const donationForm = this.shadowRoot.querySelector('#donate');
+              if (donationForm.hasOwnProperty('resetForm')) {
+                  donationForm.resetForm();
+              }
+          }
+
+          _setVisibleToolbar(selectedPage) {
+              this.shouldShowSecondToolbar = ['SUBJECTS', 'SIMILES', 'NAMES', 'TERMINOLOGY'].includes(selectedPage);
+              this.shouldShowTipitakaToolbar = ['DISCOURSES', 'VINAYA', 'ABHIDHAMMA'].includes(selectedPage);
+              this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(selectedPage);
+              this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(selectedPage);
           }
 
           _createMetaData(pageSelection, localize) {
@@ -456,6 +483,6 @@
           }
       }
 
-      customElements.define(SCPageStatic.is, SCPageStatic);
+      customElements.define(SCStaticPageSelector.is, SCStaticPageSelector);
   </script>
 </dom-module>

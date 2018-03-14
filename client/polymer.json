@@ -2,21 +2,72 @@
   "entrypoint": "index.html",
   "shell": "elements/sc-drawer-layout.html",
   "sources": [
-    "elements/**/*",
-    "img/**/*"
+    "elements/**/*"
+  ],
+  "fragments": [
+    "elements/static/a-new-beginning-page.html",
+    "elements/static/abbreviations-page.html",
+    "elements/static/abhidhamma-page.html",
+    "elements/static/about-page.html",
+    "elements/static/acknowledgments-page.html",
+    "elements/static/discourses-page.html",
+    "elements/static/donate-now-page.html",
+    "elements/static/donation-success-page.html",
+    "elements/static/donations-page.html",
+    "elements/static/downloads-page.html",
+    "elements/static/introduction-page.html",
+    "elements/static/licensing-page.html",
+    "elements/static/methodology-page.html",
+    "elements/static/names-page.html",
+    "elements/static/numbering-page.html",
+    "elements/static/offline-page.html",
+    "elements/static/similes-page.html",
+    "elements/static/start-page.html",
+    "elements/static/subjects-page.html",
+    "elements/static/terminology-page.html",
+    "elements/static/vinaya-page.html",
+    "elements/suttaplex/sc-suttaplex-list.html",
+    "elements/sc-static-page-selector.html",
+    "elements/suttaplex/sc-suttaplex-list.html",
+    "elements/suttaplex/sc-suttaplex-list.html",
+    "elements/sc-page-search.html",
+    "elements/text/sc-text-page-selector.html"
   ],
   "extraDependencies": [
-    "localization/elements/**/*.json",
-    "node_modules/workbox-sw/build/importScripts/*",
-    "manifest.json",
+    "img/**/*",
     "files/**/*",
-    "push_manifest.json",
-    "polyfills.js",
+    "localization/elements/**/*.json",
+    "manifest.json",
+    "node_modules/workbox-sw/build/importScripts/*",
+    "polyfills/*.js",
+    "elements/text/transliterator.js",
     "service-worker.js",
     "bower_components/webcomponentsjs/*.js",
     "bower_components/webcomponentsjs/*.js.map"
   ],
   "builds": [
+    {
+      "name": "default",
+      "bundle": {
+        "stripComments": true,
+        "inlineCss": true,
+        "sourcemaps": false
+      },
+      "browserCapabilities": ["es2015"],
+      "js": {
+        "compile": false,
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "addServiceWorker": false,
+      "addPushManifest": false,
+      "insertPrefetchLinks": true
+    },
     {
       "name": "es5-bundled",
       "bundle": {
@@ -35,32 +86,11 @@
         "minify": true
       },
       "addServiceWorker": false,
-      "addPushManifest": false
-    },
-    {
-      "name": "default",
-      "bundle": {
-        "stripComments": true,
-        "inlineCss": true,
-        "sourcemaps": false
-      },
-      "js": {
-        "compile": false,
-        "minify": true
-      },
-      "css": {
-        "minify": true
-      },
-      "html": {
-        "minify": true
-      },
-      "addServiceWorker": false,
-      "addPushManifest": false
+      "addPushManifest": false,
+      "insertPrefetchLinks": true
     }
   ],
   "lint": {
-    "rules": [
-      "polymer-2"
-    ]
+    "rules": ["polymer-2"]
   }
 }

@@ -1,23 +1,24 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/utils/render-status.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html" async>
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../bower_components/page-title/page-title.html">
-<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
+<link rel="import" href="../bower_components/page-title/page-title.html" async>
+<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html" async>
 
 <link rel="import" href="../elements/menus/sc-toolbar.html">
-<link rel="import" href="../elements/sc-page-static.html">
-<link rel="import" href="../elements/suttaplex/sc-suttaplex-list.html">
-<link rel="import" href="../elements/text/sc-simple-text.html">
-<link rel="import" href="../elements/text/sc-segmented-text.html">
-<link rel="import" href="../elements/sc-page-search.html">
-<link rel="import" href="../elements/sc-page-dictionary.html">
-<link rel="import" href="../elements/text/sc-text-page-selector.html">
 
+<link rel="lazy-import" href="../elements/sc-static-page-selector.html">
+<link rel="lazy-import" href="../elements/suttaplex/sc-suttaplex-list.html">
+<link rel="lazy-import" href="../elements/text/sc-simple-text.html">
+<link rel="lazy-import" href="../elements/text/sc-segmented-text.html">
+<link rel="lazy-import" href="../elements/sc-page-search.html">
+<link rel="lazy-import" href="../elements/sc-page-dictionary.html">
+<link rel="lazy-import" href="../elements/text/sc-text-page-selector.html">
 <!--
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
 the header will have a different appearance and different items in the toolbar.
@@ -26,8 +27,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
     - static pages: **sc-page-static.html**
     - search page: **sc-page-search.html**
     - dictionary page: **sc-page-dictionary.html**
-    - normal html text pages: **sc-simple-text.html**
-    - segmented text pages from pootle output: **sc-segmented-text.html**
+    - sutta text pages: **sc-text-page-selector.html**
+    - text pages from pootle output: **sc-segmented-text.html**
     - suttaplex list: **sc-suttaplex-list.html**
 -->
 <dom-module id="sc-page-selector" attributes="togdraw">
@@ -140,7 +141,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
         <sherby-metadata data="[[_createMetaData(localize)]]"></sherby-metadata>
 
         <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
-          <sc-page-static></sc-page-static>
+          <sc-static-page-selector></sc-static-page-selector>
         </template>
 
         <template is="dom-if" if="[[shouldShowSuttaplexListPage]]" restamp>
@@ -325,12 +326,15 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       this.$.header.style.zIndex = -1;
                   }
               });
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           connectedCallback() {
               super.connectedCallback();
-              requestAnimationFrame(() => {
+              // Hide drawer
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   if (!this.shouldShowStaticPage) {
                       this._toggleDrawer(true);
                   }
@@ -350,7 +354,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`), this.language, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-selector/${this.language}.json`), this.language, true);
+              });
           }
 
           _getToolbarTitle(title, localize) {
@@ -398,6 +404,33 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               this.shouldShowSearchPage = this._isSearchPage();
               this.shouldShowSuttaTextPage = this._isSuttaTextPage();
               this.shouldShowDictionaryPage = this._isDictionaryPage();
+              this._resolveImports();
+          }
+
+          // Lazy loading for site elements
+          _resolveImports() {
+              let importedElementUrl;
+              if (this.shouldShowStaticPage && !customElements.get(`sc-static-page-selector`)) {
+                  importedElementUrl = '../elements/sc-static-page-selector.html';
+              }
+              else if (this.shouldShowSuttaplexListPage && !customElements.get(`sc-suttaplex-list`)) {
+                  importedElementUrl = '../elements/suttaplex/sc-suttaplex-list.html';
+              }
+              else if (this.shouldShowSearchPage && !customElements.get(`sc-page-search`)) {
+                  importedElementUrl = '../elements/sc-page-search.html';
+              }
+              else if (this.shouldShowDictionaryPage && !customElements.get(`sc-page-dictionary`)) {
+                  importedElementUrl = '../elements/sc-page-dictionary.html';
+              }
+              else if (this.shouldShowSuttaTextPage && !customElements.get(`sc-text-page-selector`)) {
+                  importedElementUrl = '../elements/text/sc-text-page-selector.html';
+              }
+              // load the element
+              if (importedElementUrl) {
+                  Polymer.RenderStatus.afterNextRender(this, () => {
+                      Polymer.importHref(this.resolveUrl(importedElementUrl), null, null, true);
+                  });
+              }
           }
 
           // Dispatches the CHANGE_ROUTE action and sets the toolbar attributes.

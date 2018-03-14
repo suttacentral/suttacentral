@@ -95,11 +95,15 @@ The two necessary conditions are:
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-search-filter-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-search-filter-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-search-filter-menu/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-search-filter-menu/${this.language}.json`), this.language, true);
+              });
           }
 
           // Fires resulting choice to search page, where it is converted to a selection of the relevant items.

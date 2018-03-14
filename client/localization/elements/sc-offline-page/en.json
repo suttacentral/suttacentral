@@ -1,7 +1,7 @@
 {
     "en": {
         "usingOffline": "Using SuttaCentral offline",
-        "pwaDescription": "SuttaCentral is a <a href=\"https://developers.google.com/web/progressive-web-apps/\" target=\"_blank\">Progressive Web App</a>. On supported devices, many features, including navigation and previously visited pages, will continue to work even if you have no internet connection.",
+        "pwaDescription": "SuttaCentral is a <a href=\"https://developers.google.com/web/progressive-web-apps/\" target=\"_blank\" rel=\"noopener\">Progressive Web App</a>. On supported devices, many features, including navigation and previously visited pages, will continue to work even if you have no internet connection.",
         "additionalInfo": "In addition, you can download texts in languages of your choosing and read them when offline. This is especially useful for users on mobiles with limited data, or in regions with poor coverage. If your data is limited, we recommend connecting to wifi before downloading.",
         "newTech": "PWAs are a new technology. For now, offline usage has some limitations:",
         "suttasOnly": "Suttas only, not Vinaya or Abhidhamma.",

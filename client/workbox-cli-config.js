@@ -10,8 +10,6 @@ module.exports = {
         'elements/**/*.html',
         'elements/**/*.json',
         'localization/**/en.json',
-        'img/home-page/**/*',
-        'img/static-pages/**/*',
         'img/pray.png',
         'img/*.svg',
         'files/fonts/SkolarPE-Bold_3.005.woff2',
