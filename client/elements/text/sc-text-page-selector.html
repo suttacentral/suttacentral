@@ -6,12 +6,6 @@
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../../bower_components/sherby-metadata/sherby-metadata.html">
 
-<!-- Imports for the ISW dialogs -->
-<link rel="import" href="../../bower_components/neon-animation/web-animations.html" async>
-<link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html" async>
-<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html" async>
-<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html" async>
-
 <link rel="import" href="../../elements/text/sc-segmented-text.html">
 <link rel="import" href="../../elements/text/sc-simple-text.html">
 <link rel="import" href="../../elements/text/sc-stepper.html">
@@ -94,7 +88,7 @@
       <template is="dom-if" if="[[_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
         <div class="text-error">
           <iron-icon class="network-error-icon" src="/img/nonetwork.svg"></iron-icon>
-          <h2>Error [[lastError.status]]</h2>
+          <h2>Network Error</h2>
           <h3>[[lastError.statusText]]</h3>
         </div>
       </template>

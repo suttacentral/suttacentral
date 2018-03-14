@@ -121,8 +121,7 @@ Base toolbar that appears on the top right in the header of every page. This too
       <!-- Menu for more options like language and other static pages -->
       <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="more_vert_button"
                          vertical-align="auto">
-        <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger"
-                           alt="menu"></paper-icon-button>
+        <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
         <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">
           <sc-more-menu id="more_menu"></sc-more-menu>
         </paper-listbox>
@@ -175,13 +174,13 @@ Base toolbar that appears on the top right in the header of every page. This too
               this.$.more_menu.addEventListener('item-selected', (e) => {
                   this.$.more_vert_button.close();
               });
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               });
           }
 
           _siteLanguageChanged() {
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.language}.json`), this.language, true);
               });
           }

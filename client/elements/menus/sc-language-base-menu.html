@@ -161,16 +161,16 @@ This is the base language menu that determines the language of the site.
 
           ready() {
               super.ready();
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               });
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.$.languages_ajax.generateRequest();
               });
           }
 
           _siteLanguageChanged() {
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.language}.json`), this.language, true);
               });
           }

@@ -47,6 +47,28 @@
   ],
   "builds": [
     {
+      "name": "default",
+      "bundle": {
+        "stripComments": true,
+        "inlineCss": true,
+        "sourcemaps": false
+      },
+      "browserCapabilities": ["es2015"],
+      "js": {
+        "compile": false,
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "addServiceWorker": false,
+      "addPushManifest": false,
+      "insertPrefetchLinks": true
+    },
+    {
       "name": "es5-bundled",
       "bundle": {
         "stripComments": true,
@@ -64,27 +86,8 @@
         "minify": true
       },
       "addServiceWorker": false,
-      "addPushManifest": false
-    },
-    {
-      "name": "default",
-      "bundle": {
-        "stripComments": true,
-        "inlineCss": true,
-        "sourcemaps": false
-      },
-      "js": {
-        "compile": false,
-        "minify": true
-      },
-      "css": {
-        "minify": true
-      },
-      "html": {
-        "minify": true
-      },
-      "addServiceWorker": false,
-      "addPushManifest": false
+      "addPushManifest": false,
+      "insertPrefetchLinks": true
     }
   ],
   "lint": {

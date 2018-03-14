@@ -176,7 +176,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           ready() {
               super.ready();
               this._initializeListeners();
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               });
           }
@@ -191,7 +191,7 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           }
 
           _siteLanguageChanged() {
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`), this.language, true);
               });
           }
