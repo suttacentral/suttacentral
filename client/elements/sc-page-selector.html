@@ -366,13 +366,14 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           }
 
           _createMetaData(localize) {
-              const today = new Date();
-              const keywords = localize('metaKeywords').substring(0,120);
-              return {
-                  keywords: keywords,
-                  cdate: today,
-                  mdate: today
-              };
+              const keywords = localize('metaKeywords');
+              document.dispatchEvent(new CustomEvent('keyword-metadata', {
+                  detail: {
+                      keywords: keywords,
+                      bubbles: true,
+                      composed: true
+                  }
+              }));
           }
 
           _getPageTitle(title, localize) {
