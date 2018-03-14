@@ -34,11 +34,9 @@
     "elements/text/sc-text-page-selector.html"
   ],
   "extraDependencies": [
-    "img/sc-language-icons.html",
-    "img/sc-svg-icons.html",
+    "img/**/*",
     "files/**/*",
     "localization/elements/**/*.json",
-    "push_manifest.json",
     "manifest.json",
     "node_modules/workbox-sw/build/importScripts/*",
     "polyfills/*.js",

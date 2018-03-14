@@ -430,17 +430,17 @@
           }
 
           _siteLanguageChanged() {
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.language}.json`), this.language, true);
               });
           }
 
           connectedCallback() {
               super.connectedCallback();
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               });
-              setTimeout(() => {
+              Polymer.RenderStatus.afterNextRender(this, () => {
                   this.$.menu_ajax.generateRequest();
               });
           }
