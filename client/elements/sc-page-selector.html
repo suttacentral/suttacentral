@@ -303,6 +303,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           ready() {
               super.ready();
+              if (this._shouldRedirect()) {
+                this._redirectFromLegacyLink();
+              }
               this.addEventListener('par-menu-copied', (e) => {
                   let success = '';
                   if (e.detail.success) {
@@ -331,6 +334,21 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       this._toggleDrawer(true);
                   }
               });
+          }
+
+          _redirectFromLegacyLink() {
+            let parts = this.route.path.split('/');
+            parts.splice(1,1);
+            this.set('route.path', parts.join('/'));
+          }
+
+          _shouldRedirect() {
+              const langReg = this.allIsoCodes.join('|')
+              const legacyLinkReg = new RegExp(`\/(${langReg})\/[a-zA-Z\d]+`);
+              if (legacyLinkReg.test(this.route.path)) {
+                return true;
+              }
+              return false;
           }
 
           _siteLanguageChanged() {
