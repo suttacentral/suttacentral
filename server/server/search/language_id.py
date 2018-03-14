@@ -1,3 +1,4 @@
+import pathlib
 from langid import langid
 from flask import current_app
 from flask import request
@@ -6,12 +7,9 @@ identifier = None
 
 def load_model():
     global identifier
-    data_dir = current_app.config.get('BASE_DIR') / 'sc-data'
-    if not data_dir.exists():
-        data_dir = current_app.config.get('BASE_DIR') / 'sc-flask/sc-data'
-    langid_model_file = data_dir / 'langid' / 'model'
     
     # langid is frightfully hacky in general
+    langid_model_file = pathlib.Path(__file__).parent / 'langid.model'
     identifier = langid.LanguageIdentifier.from_modelpath(langid_model_file, norm_probs=True)
 
 
