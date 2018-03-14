@@ -361,7 +361,9 @@
               document.dispatchEvent(new CustomEvent('sherby-metadata', {
                   detail: {
                       title: `${dictionaryResultsText} ${dictionaryWord}`,
-                      description: description
+                      description: description,
+                      bubbles: true,
+                      composed: true
                   }
               }));
           }

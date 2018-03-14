@@ -574,7 +574,9 @@ than ten results in total, a dropdown selection menu appears at the top.
               document.dispatchEvent(new CustomEvent('sherby-metadata', {
                   detail: {
                       title: `${searchResultsText} ${searchWord}`,
-                      description: description
+                      description: description,
+                      bubbles: true,
+                      composed: true
                   }
               }));
           }

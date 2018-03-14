@@ -291,7 +291,9 @@
               document.dispatchEvent(new CustomEvent('sherby-metadata', {
                   detail: {
                       title: `${title}—${author}`,
-                      description: description
+                      description: description,
+                      bubbles: true,
+                      composed: true
                   }
               }));
           }

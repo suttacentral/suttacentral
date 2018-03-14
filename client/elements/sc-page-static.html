@@ -448,7 +448,9 @@
               document.dispatchEvent(new CustomEvent('sherby-metadata', {
                   detail: {
                       title: `SuttaCentral—${pageName.toLowerCase()}`,
-                      description: description
+                      description: description,
+                      bubbles: true,
+                      composed: true
                   }
               }));
           }

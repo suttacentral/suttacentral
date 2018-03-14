@@ -254,7 +254,9 @@
               document.dispatchEvent(new CustomEvent('sherby-metadata', {
                   detail: {
                       title: `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
-                      description: description
+                      description: description,
+                      bubbles: true,
+                      composed: true
                   }
               }));
           }
