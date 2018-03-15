@@ -1,5 +1,4 @@
 import pytest
-from app import api
 from search.language_id import smart_rank
 
 
