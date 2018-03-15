@@ -202,7 +202,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       value: ['af', 'ar', 'ca', 'cs', 'lzh', 'de', 'en', 'es', 'fa', 'fr', 'pgd', 'he', 'id', 'it',
                           'la', 'hu', 'nl', 'no', 'ot', 'pli', 'pl', 'pt', 'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct',
                           'xto', 'vn', 'uig', 'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh', 
-                          'bo', 'pi', 'sa', 'ug', 'gr', 'pr', 'skt', 'sl']
+                          'bo', 'pi', 'ug', 'gr', 'pr', 'skt', 'sl']
                   },
                   selectedPage: {
                       type: String,
@@ -343,12 +343,13 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           _redirectFromLegacyLink() {
             let parts = this.route.path.split('/');
-            parts.forEach(item => {
+            let partsNewIsoCode = parts.map(function(x) {return x.replace('pi-','pli-').replace('skt-','san-'); });
+            partsNewIsoCode.forEach(item => {
                 if (this.allIsoCodes.indexOf(item) !== -1) {
-                  parts.splice(parts.indexOf(item),1);
+                  partsNewIsoCode.splice(partsNewIsoCode.indexOf(item),1);
                 }
             });
-            this.set('route.path', parts.join('/'));
+            this.set('route.path', partsNewIsoCode.join('/'));
           }
 
           _shouldRedirect() {
