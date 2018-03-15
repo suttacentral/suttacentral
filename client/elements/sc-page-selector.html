@@ -343,7 +343,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           _redirectFromLegacyLink() {
             let parts = this.route.path.split('/');
-            let partsNewIsoCode = parts.map(function(x) {return x.replace('pi-','pli-').replace('skt-','san-'); });
+            let partsNewIsoCode = parts.map(x => x.replace('pi-','pli-').replace('skt-','san-'));
             partsNewIsoCode.forEach(item => {
                 if (this.allIsoCodes.indexOf(item) !== -1) {
                   partsNewIsoCode.splice(partsNewIsoCode.indexOf(item),1);
