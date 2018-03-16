@@ -3,117 +3,10 @@ from inspect import currentframe, getargvalues
 
 import regex
 
-from search import es, util
+from search import es, util, language_id
 from .util import get_root_language_uids
 
 logger = logging.getLogger(__name__)
-
-
-def text_search(query, lang=None, **kwargs):
-    import langid
-    lang_guess = langid.identifier
-    if lang is None:
-        lang = lang_guess
-    query = make_text_search_query(query, lang=lang, lang_guess=lang_guess, **kwargs)
-
-
-def make_text_search_query(query, lang, root_lang=None, author=None, uid=None, search_title=None,
-                           search_body=None):
-    query = query.trim()
-    m = regex.match(r'^"(.*)"$', query)
-    if m:
-        query = m[0]
-        phrase_search = True
-    else:
-        phrase_search = False
-
-    query_params = {k: v for k, v in getargvalues(currentframe()) if v is not None}
-
-    filters = []
-    if root_lang:
-        filters.append({
-            "term": {
-                "root_lang": root_lang
-            }
-        })
-    if author:
-        filters.append({
-            "term": {
-                "author": author
-            }
-        })
-    if division:
-        filters.append({
-            "or": [
-                {
-                    "term": {
-                        "subdivision": division
-                    }
-                },
-                {
-                    "term": {
-                        "division": division
-                    }
-                }
-            ]
-        })
-    if uid:
-        filters.append({
-            "query": {
-                "wildcard": {
-                    "uid": uid
-                }
-            }
-        })
-
-    if not search_title and not search_body:
-        search_title = True
-        search_body = True
-
-    fields = []
-
-    if search_title:
-        fields.extend(["heading.title^0.5",
-                       "heading.title.plain^0.5",
-                       "heading.title.shingle^0.5"])
-
-    if search_body:
-        fields.extend(["content", "content.*^0.5"])
-
-    body = {
-        "from": offset,
-        "size": limit,
-        "_source": ["uid", "lang", "name", "volpage", "gloss", "term", "heading", "is_root"],
-        "timeout": "15s",
-        "query": {
-            "function_score": {
-                "multi_match": {
-                    "query": query,
-                    "fields": fields,
-                    "type": "phrase" if phrase_search else "best_fields"
-                }
-            }
-        }
-    }
-
-
-lang_bias = {'en': 1.4, 'pli': 1.2}
-
-
-def rank_language(string):
-    import sc.lib.langid as langid
-    rank = langid.rank(string.casefold())[:4]
-
-    biased_rank = sorted(
-        ((lang, score * lang_bias.get(lang, 1.0)) for lang, score in rank),
-        key=lambda t: t[1],
-        reverse=True)
-    return biased_rank
-
-
-def guess_language(string):
-    return rank_language(string)[0][0]
-
 
 def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
     key = tuple(indexes)
@@ -144,6 +37,11 @@ def search(query: str, highlight=True, offset=0, limit=10,
        
     root_indexes = list(get_root_language_uids())
     tr_indexes = [language]
+    
+    extra_langs = language_id.smart_rank(query)
+    for iso_code in extra_langs:
+        if iso_code != language and iso_code not in root_indexes:
+            tr_indexes.append(iso_code)
     
     if restrict == 'root-text':
         indexes = root_indexes
@@ -239,9 +137,6 @@ def search(query: str, highlight=True, offset=0, limit=10,
             }
         }
     }
-
-    # print('searching index: {}'.format(index_string))
-    # print(json.dumps(body, indent=2))
 
     if highlight:
         body["highlight"] = {
