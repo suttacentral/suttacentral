@@ -15,12 +15,12 @@ sw.precache([]);
 // Cache API requests
 sw.router.registerRoute(
     new RegExp('http://localhost/api/(.*)'),
-    sw.strategies.staleWhileRevaliate()
+    sw.strategies.networkFirst()
 );
 
 sw.router.registerRoute(
     new RegExp('https://(?:staging.)suttacentral.net/api/(.*)'),
-    sw.strategies.staleWhileRevaliate()
+    sw.strategies.networkFirst()
 );
 
 // Cache assets (images and fonts)
