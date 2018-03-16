@@ -258,11 +258,15 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-dictionary/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-dictionary/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-page-dictionary/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-page-dictionary/${this.language}.json`), this.language, true);
+              });
           }
 
           _computeUrl() {
@@ -357,10 +361,15 @@
           _createMetaData(dictionaryWord, localize) {
               const description = localize('metaDescriptionText');
               const dictionaryResultsText = localize('dictionaryResultsText');
-              return { 
-                'og:title': `${dictionaryResultsText} ${dictionaryWord}`,
-                'og:description': description
-                };
+
+              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+                  detail: {
+                      title: `${dictionaryResultsText} ${dictionaryWord}`,
+                      description: description,
+                      bubbles: true,
+                      composed: true
+                  }
+              }));
           }
       }
 

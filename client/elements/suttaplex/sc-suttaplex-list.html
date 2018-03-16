@@ -167,11 +167,15 @@
           // This is using the navigation menu file, because we only need the translated network error string here.
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.language}.json`), this.language, true);
+              });
           }
 
           static get actions() {
@@ -248,12 +252,17 @@
               }
               let description = localize('metaDescriptionText');
               if (suttaplexReturns[0].blurb) {
-                  description = suttaplexReturns[0].blurb
+                  description = suttaplexReturns[0].blurb;
               }
-              return {
-                'og:title': `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
-                'og:description': description
-              };
+
+              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+                  detail: {
+                      title: `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
+                      description: description,
+                      bubbles: true,
+                      composed: true
+                  }
+              }));
           }
       }
 

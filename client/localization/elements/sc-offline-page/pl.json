@@ -1,7 +1,7 @@
 {
     "pl": {
         "usingOffline": "Używaj SuttaCentral w trybie offline",
-        "pwaDescription": "SuttaCentral to <a href=\"https://developers.google.com/web/progressive-web-apps/\" target=\"_blank\">Progresywna Aplikacja Webowa (PWA)</a>. Na wspieranych urządzeniach wiele funkcjonalności, wliczając w to nawigację oraz wcześniej odwiedzone strony, będzie działać nawet, jeśli utracisz połączenie z internetem.",
+        "pwaDescription": "SuttaCentral to <a href=\"https://developers.google.com/web/progressive-web-apps/\" target=\"_blank\" rel=\"noopener\">Progresywna Aplikacja Webowa (PWA)</a>. Na wspieranych urządzeniach wiele funkcjonalności, wliczając w to nawigację oraz wcześniej odwiedzone strony, będzie działać nawet, jeśli utracisz połączenie z internetem.",
         "additionalInfo": "Ponadto, możesz ściągnąć teksty w wybranych językach i czytać je w trybie offline. Jest to szczególnie przydatne dla użytkowników z limitowanych dostępem do internetu oraz w regionach o słabym zasięgu. Jeśli masz mało danych w swoim pakiecie mobilnym, rekomendujemu połączyć się z WiFi zanim rozpoczniesz ściąganie tekstów.",
         "newTech": "PWA to nowa technologia. Aktualnie istnieje kilka limitacji:",
         "suttasOnly": "Dostępne są tylko Sutry, nie Vinaya ani Abhidhamma.",
@@ -9,9 +9,8 @@
         "certainFunctions": "Niektóre funkcje, (na przykład wyszukiwarka) wymagają aktywnego połączenia z internetem.",
         "extraFeatures": "Jeśli życzysz sobie dodatkowych funkcji, prosimy - daj nam znać.",
         "downloadButton": "Rozpocznij pobieranie tekstów w języku: {languageName}",
-        "supportsPWAs": "Twoja przeglądarka wspiera Progresywne Aplikacje Webowe!",
+        "supportsPWAs": "Niestety nie wspieramy progresywnych aplikacji webowych (PWA) na tej przeglądarce. Jeżeli chcesz pełny support dla wersji offline, użyj najnowszej wersji chroma. Planujemy szerszy support PWA na innych przeglądarkach w przyszłości.",
         "doesntSupportPWAs": "Twoja przeglądarka nie wspiera Progresywnych Aplikacji Webowych.",
-        "listBrowsers": "Oto lista wspieranych przeglądarek.",
         "selectDifferentLang": "Domyślnie pobrane zostaną teksty w języku strony. Jeśli chcesz wybrać inny język, wybierz go z menumenu.",
         "downloading": "Pobieranie",
         "resume": "Wznów pobieranie",
@@ -33,6 +32,7 @@
         "chineseLookups": "Słowniki Chińskie",
         "chineseLookupsDescription": "Zaznacz, aby ściągnąć definicje słownikowe dla słów chińskich w następujących językach:",
         "downloadStarted": "Pobieranie zostało rozpoczęte. Możesz nadal używać strony, damy Ci znać kiedy się zakończy.",
-        "language": "Język"
+        "language": "Język",
+        "resetButton": "Wyczyść historię pobierania"
     }
 }

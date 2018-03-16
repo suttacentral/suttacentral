@@ -1,31 +1,35 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../bower_components/polymer/lib/utils/render-status.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html" async>
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../bower_components/paper-styles/color.html">
-<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
-<link rel="import" href="../bower_components/paper-styles/typography.html">
-<link rel="import" href="../bower_components/paper-styles/shadow.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html" async>
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html" async>
+<link rel="import" href="../bower_components/paper-styles/color.html" async>
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html" async>
+<link rel="import" href="../bower_components/paper-styles/typography.html" async>
+<link rel="import" href="../bower_components/paper-styles/shadow.html" async>
+
+<!-- Imports for the ISW dialog (see comment with TODO below) -->
+<link rel="import" href="../bower_components/isw-dialog/isw-dialog.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html" async>
+<link rel="import" href="../bower_components/neon-animation/animations/fade-in-animation.html" async>
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html" async>
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html" async>
+
+<link rel="import" href="../img/sc-svg-icons.html" async>
 
 <link rel="import" href="/redux-store.html">
-<link rel="import" href="sc-page-selector.html">
-<link rel="import" href="addons/sc-toasts.html">
-<link rel="import" href="menus/sc-navigation-menu.html">
+<link rel="import" href="sc-page-selector.html" >
+<link rel="import" href="menus/sc-navigation-menu.html" >
+<link rel="import" href="menus/sc-settings-menu.html">
+<link rel="import" href="addons/sc-toasts.html" async>
 <link rel="import" href="styles/sc-scrollbar-style.html">
-<link rel="import" href="styles/sc-utility-styles.html">
-<link rel="import" href="styles/sc-font-styles.html">
-<link rel="import" href="styles/sc-colors.html">
-
-<!-- Imports for the sutta text dialogs: -->
-<link rel="import" href="../bower_components/isw-dialog/isw-dialog.html">
-<link rel="import" href="../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../bower_components/neon-animation/animations/fade-in-animation.html">
-<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="styles/sc-utility-styles.html" async>
+<link rel="import" href="styles/sc-font-styles.html" async>
+<link rel="import" href="styles/sc-colors.html" async>
 
 <!--
   This is the base layout element of the application. It contains the sidebar and the main content container.
@@ -183,7 +187,7 @@
     <iron-meta id="meta" key="IMAGES_ROOT" value="https://legacy.suttacentral.net/text_images"></iron-meta>
 
     <iron-ajax
-        id="colorsAjax"
+        id="colors_ajax"
         handle-as="json"
         last-response="{{colorsResponse}}"
         on-response="_colorsResponseReceived"></iron-ajax>
@@ -311,12 +315,16 @@
                       this.originalDrawerZIndex = currentZIndex;
                       drawer.style.zIndex = -1;
                   }
-              })
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.language}.json`), this.language, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.language}.json`), this.language, true);
+              });
           }
 
           // opens the app-drawer when it is not visible.
@@ -362,9 +370,12 @@
               return `${currentUrl.protocol}//${currentUrl.host}/api`;
           }
 
-          _colorThemeChanged() {
-              this.$.colorsAjax.url = `/elements/styles/sc-colors-${this.appColorTheme}.json`;
-              this.$.colorsAjax.generateRequest();
+          _colorThemeChanged(newVal, oldVal) {
+              if (oldVal === undefined && newVal === 'light') {
+                  return;
+              }
+              this.$.colors_ajax.url = `/elements/styles/sc-colors-${this.appColorTheme}.json`;
+              this.$.colors_ajax.generateRequest();
           }
 
           _colorsResponseReceived() {

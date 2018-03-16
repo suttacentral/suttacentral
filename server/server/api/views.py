@@ -837,13 +837,30 @@ class Donations(Resource):
         msg = Message('Payment confirmation',
                       recipients=[email_address])
         msg.html = f'''
-        Donation of <b>{data['amount']} {data['currency']}</b>.           
-        {f"Made by <b>{data['name']}</b>." if data['name'] else ''}
-        Made to SuttaCentral Development Trust, an educational charity For the purpose of supporting SuttaCentral.net<br>
-        Payment service is Stripe.<br>
-        <b>{data['dateTime']}</b>.<br>
-        <b>{'Subscription' if data['subscription'] else 'One time donation'}</b>.           
-        '''
+        <div>We gratefully acknowledge your donation to support SuttaCentral.</div><br>
+        <div>Here are the transaction details for your records. 
+        If you have entered your email address, a copy of these details will be sent there too.</div><br>
+        {f"<div>Donor: <b>data['name']</b></div>" if data['name'] else ''}
+        <div>Donation: 
+            <b>{data['amount']} {data['currency']}</b>
+        </div>
+        <div>Paid to: <b>SuttaCentral Development Trust</b></div>
+        <div>Payment service: <b>Stripe</b></div>
+        <div>Time of payment: <b>{data['dateTime']}</b></div>
+        <div>Type of payment: 
+            <b>{'Subscription' if data['subscription'] else 'One time donation'}</b>
+        </div><br>
+        <div>For further inquiries, please contact SuttaCentral Development Trust’s financial officer Deepika Weerakoon 
+            at <a href="mailto:suttacentraldevelopmenttrust@gmail.com" target="_top"> 
+                suttacentraldevelopmenttrust@gmail.com
+            </a>.
+        </div><br>
+        <div>
+            SuttaCentral Development Trust is a charitable trust registered in Australia. 
+            Your donation will be used for the development of SuttaCentral.
+        </div><br>
+        <div class="cursive">Sadhu! Sadhu! Sadhu!</div>
+'''
         mail.send(msg)
 
 

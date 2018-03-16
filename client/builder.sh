@@ -2,7 +2,7 @@
 echo "BUILDING FRONTEND FOR PRODUCTION"
 npm install
 npm install -g polymer-cli --unsafe-perm
-npm install -g workbox-cli
+npm install -g workbox-cli@2.1.3
 polymer build --verbose
 
 # Generate service worker with revision hashes for each file.

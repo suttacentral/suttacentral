@@ -1,5 +1,5 @@
 <link rel="import" href="bower_components/polymer-redux/polymer-redux.html">
-<script src="node_modules/redux/dist/redux.js"></script>
+<script src="node_modules/redux/dist/redux.min.js"></script>
 
 <!--
  This element creates and describes the redux store.
@@ -38,7 +38,12 @@
         },
         colorTheme: 'light',
         selectedNavigationMenuItemId: '',
-        donationSuccessData: {}
+        donationSuccessData: {},
+        downloadedUrls: {},
+        downloadedPWASettings: {
+            languages: [],
+            lookups: {}
+        }
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -94,7 +99,9 @@
             case 'CHANGE_COLOR_THEME':
                 return Object.assign({}, state, { colorTheme: action.theme });
             case 'CHANGE_DONATION_SUCCESS':
-                return Object.assign({}, state, { donationSuccessData: action.donationSuccessData   });
+                return Object.assign({}, state, { donationSuccessData: action.donationSuccessData });
+            case 'SAVE_DOWNLOADED_URLS':
+                return Object.assign({}, state, { downloadedUrls: action.downloadedUrls });
             default:
                 return state;
         }

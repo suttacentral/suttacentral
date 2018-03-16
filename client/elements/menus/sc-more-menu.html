@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/render-status.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
@@ -175,7 +177,9 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           ready() {
               super.ready();
               this._initializeListeners();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
 
@@ -188,7 +192,9 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`), this.language, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-more-menu/${this.language}.json`), this.language, true);
+              });
           }
 
           _initializeListeners() {

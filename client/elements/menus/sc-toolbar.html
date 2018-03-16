@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/render-status.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -121,8 +122,7 @@ Base toolbar that appears on the top right in the header of every page. This too
       <!-- Menu for more options like language and other static pages -->
       <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select id="more_vert_button"
                          vertical-align="auto">
-        <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger"
-                           alt="menu"></paper-icon-button>
+        <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
         <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">
           <sc-more-menu id="more_menu"></sc-more-menu>
         </paper-listbox>
@@ -175,11 +175,15 @@ Base toolbar that appears on the top right in the header of every page. This too
               this.$.more_menu.addEventListener('item-selected', (e) => {
                   this.$.more_vert_button.close();
               });
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.language}.json`), this.language, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.language}.json`), this.language, true);
+              });
           }
 
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.

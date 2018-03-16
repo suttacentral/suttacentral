@@ -224,7 +224,9 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               if (!this.expansionData) {
                   this.$.uid_expansion_ajax.generateRequest()
               }
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
@@ -232,7 +234,9 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                   if (this.resources && this.resources[this.language]) {
                       return;
                   }
-                  this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.language}.json`), this.language, true);
+                  setTimeout(() => {
+                      this.loadResources(this.resolveUrl(`/localization/elements/sc-parallel-list/${this.language}.json`), this.language, true);
+                  });
               }
           }
 

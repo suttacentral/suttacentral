@@ -1,0 +1,67 @@
+<link href="../../bower_components/polymer/polymer-element.html" rel="import"/>
+<link href="../../elements/styles/static-styles.html" rel="import"/>
+<link href="../addons/sc-static-page.html" rel="import"/>
+<dom-module id="sc-a-new-beginning">
+ <template>
+  <style include="static-styles">
+  </style>
+  <div id="page-wrap">
+   <main>
+    <section>
+     <article>
+      <h1 inner-text="{{localize('4e1776b6d0f3ec62485bd2f61ea7f101')}}">
+      </h1>
+      <p inner-text="{{localize('d04a1161f90ab33fc1f301fa1fe2f85c')}}">
+      </p>
+      <p inner-h-t-m-l="{{localize('94cae36a49869be9cc7bb9cdd92ba73b')}}">
+      </p>
+      <p inner-text="{{localize('26f2fbece49f2a97c5d3818f1089e712')}}">
+      </p>
+      <p inner-text="{{localize('f7a8b54d80948e2d0b95703fa810fc18')}}">
+      </p>
+      <p inner-text="{{localize('5b4c3bd7aa6c0dc3a01c86aa0d5be994')}}">
+      </p>
+      <ul>
+       <li inner-text="{{localize('20f5a30c59046da15a178ce024e48b84')}}">
+       </li>
+       <li inner-text="{{localize('a5157f7df058f3ff412e73e57b70baf4')}}">
+       </li>
+       <li inner-text="{{localize('d161d993274c6deb56f610e4807720f6')}}">
+       </li>
+       <li inner-text="{{localize('f287e4ad21bbff30cc2fdb99aa1b347a')}}">
+       </li>
+       <li inner-text="{{localize('252cec6fcbf59527091c13bf0dd03de3')}}">
+       </li>
+       <li inner-text="{{localize('d211abc376662619d2f8ac2c1d4747ab')}}">
+       </li>
+       <li inner-text="{{localize('0ad269886bf0c5502cc62a8c26b34926')}}">
+       </li>
+       <li inner-text="{{localize('d9917dbac2969d0ea8cc86298619c927')}}">
+       </li>
+       <li inner-text="{{localize('6576c009a48d554c33f85a6fd2405e8f')}}">
+       </li>
+      </ul>
+     </article>
+    </section>
+   </main>
+  </div>
+ </template>
+ <script>
+  class SCANewBeginning extends SCStaticPage {
+          static get is() {
+              return 'sc-a-new-beginning';
+          }
+
+          static get properties() {
+              return {
+                  localizedStringPath: {
+                      type: String,
+                      value: '/localization/elements/static_a-new-beginning-page/'
+                  }
+              }
+          }
+      }
+
+      customElements.define(SCANewBeginning.is, SCANewBeginning);
+ </script>
+</dom-module>

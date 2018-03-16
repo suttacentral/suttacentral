@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+
 <!--
   Static page functions
 -->
@@ -40,10 +41,6 @@
               }
           }
 
-          connectedCallback() {
-              super.connectedCallback();
-          }
-
           deathToTheBeast() {
               const inputText = this.inputElement.innerHTML;
               let outputText = '';
@@ -69,7 +66,7 @@
 
               Array.from(paragraphs).forEach(paragraph => {
                   let paragraphNumber = paragraph.innerHTML.match(/>([0-9a-zA-Z\.]*)<\/a>/);
-                  let cleanParagraph = paragraph.innerText;
+                  let cleanParagraph = paragraph.textContent;
                   if (paragraphNumber) {
                       cleanParagraph = cleanParagraph.replace(paragraphNumber[1], '');
                   }                 

@@ -242,23 +242,27 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text/en.json`), this.fallbackLanguage, true);
+              });
               this.addEventListener('click', () => {
                   setTimeout(() => {
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
-                  }, 0);
+                  });
               });
               window.addEventListener('hashchange', () => {
                   setTimeout(() => {
                       this._scrollToSection(window.location.hash.substr(1), true, 0);
-                  }, 0);
+                  });
               });
               this.inputElement = this.$.simple_text_content;
               this.$.a11y.target = document.querySelector('body');
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
+              });
           }
 
           _updateView() {
@@ -711,7 +715,7 @@
 
           _addTooltip(v, tooltip, lookup, states, e, lang) {
               if (lang === 'pli') {
-                  let lookupResult = lookup.lookupWord(v.dataset.latin_text || v.innerText);
+                  let lookupResult = lookup.lookupWord(v.dataset.latin_text || v.textContent);
                   tooltip.innerHTML = lookupResult.html;
               } else if (lang === 'lzh') {
                   this._addLzhTooltip(v, lookup, tooltip);
@@ -729,7 +733,7 @@
           }
 
           _addLzhTooltip(v, lookup, tooltip) {
-              let graphs = v.innerText;
+              let graphs = v.textContent;
               let lastNode = v;
               for (let i = 0; i < 10; i++) {
                   let next = lastNode.nextElementSibling;
@@ -739,7 +743,7 @@
                           i--;
                           continue;
                       }
-                      graphs += next.innerText;
+                      graphs += next.textContent;
                   } else {
                       break;
                   }
@@ -897,7 +901,7 @@
           // Lookup word end
 
           _applyFirefoxShadyDomFix() {
-              if (navigator.userAgent.includes('Firefox')) {
+              if (navigator.userAgent.indexOf('Firefox') !== -1) {
                   this.isTextViewHidden = true;
                   setTimeout(() => {
                       this.$.simple_text_content.innerHTML = this.$.simple_text_content.innerHTML;

@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/render-status.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
@@ -75,8 +76,8 @@ This is the base language menu that determines the language of the site.
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax
-        auto
-        url='[[_getUrl()]]'
+        id="languages_ajax"
+        url='[[_getLanguagesUrl()]]'
         handle-as="json"
         last-response="{{languageListResponse}}"
         on-response="_languageListDownloaded"
@@ -161,11 +162,18 @@ This is the base language menu that determines the language of the site.
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.$.languages_ajax.generateRequest();
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.language}.json`), this.language, true);
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-language-base-menu/${this.language}.json`), this.language, true);
+              });
           }
 
           // Is invoked when a language is chosen from the list.
@@ -211,7 +219,7 @@ This is the base language menu that determines the language of the site.
               }
           }
 
-          _getUrl() {
+          _getLanguagesUrl() {
               if (this.allLanguages) {
                   return `${this.$.meta.byKey('API_ROOT')}/languages?all=true`;
               } else {

@@ -88,7 +88,7 @@
       <template is="dom-if" if="[[_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
         <div class="text-error">
           <iron-icon class="network-error-icon" src="/img/nonetwork.svg"></iron-icon>
-          <h2>Error [[lastError.status]]</h2>
+          <h2>Network Error</h2>
           <h3>[[lastError.statusText]]</h3>
         </div>
       </template>
@@ -180,12 +180,6 @@
 
           static get actions() {
               return {
-                  changeToolbarTitle(title) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_TITLE',
-                          title: title
-                      };
-                  },
                   downloadSuttaText(text) {
                       return {
                           type: 'DOWNLOAD_SUTTA_TEXT',
@@ -200,11 +194,15 @@
               this.addEventListener('show-image', e => {
                   this.$.sc_text_image.showImage(e.detail);
               });
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/sc-text/${this.language}.json`), this.language, true);
+              });
           }
 
           _onResponse() {
@@ -239,9 +237,9 @@
               }
           }
 
-          // The stopRequests variable exists so that we don't make 3 consequent requests in case the
-          // author, suttaId and the langIsoCode all change at the same time.
           _paramChanged() {
+              // The stopRequests variable exists so that we don't make 3 consequent requests in case the
+              // author, suttaId and the langIsoCode all change at the same time.
               if (!this.stopRequests) {
                   this.stopRequests = true;
                   // wait 50ms until all route parameters are changed
@@ -287,10 +285,15 @@
               }
               const title = responseData.translation ? responseData.translation.title : responseData.root_text.title;
               const author = responseData.translation ? responseData.translation.author : responseData.root_text.author;
-              return {
-                'og:title': `${title}—${author}`,
-                'og:description': description
-              };
+
+              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+                  detail: {
+                      title: `${title}—${author}`,
+                      description: description,
+                      bubbles: true,
+                      composed: true
+                  }
+              }));
           }
       }
 

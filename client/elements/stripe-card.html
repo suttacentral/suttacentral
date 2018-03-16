@@ -200,11 +200,15 @@
 
           ready() {
               super.ready();
-              this.loadResources(this.resolveUrl(`/localization/elements/stripe-card/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/stripe-card/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
+              });
           }
 
           _siteLanguageChanged() {
-              this.loadResources(this.resolveUrl(`/localization/elements/stripe-card/${this.language}.json`), this.language, true);
+              setTimeout(() => {
+                  this.loadResources(this.resolveUrl(`/localization/elements/stripe-card/${this.language}.json`), this.language, true);
+              });
           }
 
           // request token, returns a promise
@@ -292,7 +296,7 @@
           }
 
           _clearErrors() {
-              this.$.error.innerText = "";
+              this.$.error.textContent = "";
           }
 
           displayError(error) {
@@ -306,7 +310,7 @@
                       }
                   }
               }
-              this.$.error.innerText = error.message;
+              this.$.error.textContent = error.message;
           }
 
           _nestedQueryString(params, parent) {
