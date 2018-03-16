@@ -176,6 +176,12 @@
         margin-top: var(--sc-size-md);
       }
 
+      .no-margin {
+          color: var(--sc-toast-error-color);
+          margin-top: 0;
+          margin-bottom: 0;
+      }
+
       @media screen and (max-width: 600px) {
         .no-phone-top-margin {
           margin-top: 0;
@@ -208,11 +214,8 @@
                 </template>
                 <template is="dom-if" if="[[!browserSupportsPWA]]">
                   <span>{{localize('doesntSupportPWAs')}}</span>
-                  <iron-icon icon="icons:error" class="icon failure-icon"></iron-icon>
+                  <iron-icon class="no-margin" icon="icons:error" class="icon failure-icon"></iron-icon>
                   <br>
-                  <a href="https://caniuse.com/#feat=serviceworkers">
-                    {{localize('listBrowsers')}}
-                  </a>
                 </template>
               </p>
             </div>
@@ -284,7 +287,8 @@
               {{localize('downloadButton', 'languageName', chosenLanguageNativeName)}} {{_showDownloadSize(downloadSize)}}
             </paper-button>
 
-            <paper-button id='reset_history_button' class="button" raised>
+            <paper-button id='reset_history_button' class="button" raised
+                          disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
                 {{localize('resetButton')}}
             </paper-button>
 
@@ -679,7 +683,22 @@
           }
 
           _doesBrowserSupportPWA() {
-              return ('serviceWorker' in navigator);
+              // Found it somewhere and it works.
+              let ua= navigator.userAgent, tem,
+              M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+              if(/trident/i.test(M[1])){
+                  tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                  return 'IE '+(tem[1] || '');
+              }
+              if(M[1]=== 'Chrome'){
+                  tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+                  if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+              }
+              M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+              if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+
+              // Check if it is supported browser
+              return M[0].toLowerCase() === 'chrome' && parseInt(M[1]) >= 65;
           }
 
           _isDownloadButtonDisabled(browserSupportsPWAs, cacheDownloadInProgress) {
