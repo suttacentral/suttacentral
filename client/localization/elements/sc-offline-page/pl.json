@@ -33,6 +33,7 @@
         "chineseLookups": "Słowniki Chińskie",
         "chineseLookupsDescription": "Zaznacz, aby ściągnąć definicje słownikowe dla słów chińskich w następujących językach:",
         "downloadStarted": "Pobieranie zostało rozpoczęte. Możesz nadal używać strony, damy Ci znać kiedy się zakończy.",
-        "language": "Język"
+        "language": "Język",
+        "resetButton": "Wyczyść historię pobierania"
     }
 }

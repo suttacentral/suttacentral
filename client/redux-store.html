@@ -38,7 +38,8 @@
         },
         colorTheme: 'light',
         selectedNavigationMenuItemId: '',
-        donationSuccessData: {}
+        donationSuccessData: {},
+        downloadedUrls: {}
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -95,6 +96,8 @@
                 return Object.assign({}, state, { colorTheme: action.theme });
             case 'CHANGE_DONATION_SUCCESS':
                 return Object.assign({}, state, { donationSuccessData: action.donationSuccessData });
+            case 'SAVE_DOWNLOADED_URLS':
+                return Object.assign({}, state, { downloadedUrls: action.downloadedUrls });
             default:
                 return state;
         }

@@ -15,12 +15,12 @@ sw.precache([]);
 // Cache API requests
 sw.router.registerRoute(
     new RegExp('http://localhost/api/(.*)'),
-    sw.strategies.networkFirst()
+    sw.strategies.staleWhileRevaliate()
 );
 
 sw.router.registerRoute(
     new RegExp('https://next.suttacentral.net/api/(.*)'),
-    sw.strategies.networkFirst()
+    sw.strategies.staleWhileRevaliate()
 );
 
 // Cache Google fonts
