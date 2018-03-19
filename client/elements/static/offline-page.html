@@ -283,8 +283,9 @@
             </div>
 
             <paper-button id='make_offline_button' class="button" raised
-                          disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
-              {{localize('downloadButton', 'languageName', chosenLanguageNativeName)}} {{_showDownloadSize(downloadSize)}}
+                          disabled="[[_isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)]]"
+                          title="[[_getDownloaddButtonTitle(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize)]]">
+              [[_getDownloadButtonText(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize, downloadSize, chosenLanguageNativeName)]]
             </paper-button>
 
             <paper-button id='reset_history_button' class="button" raised
@@ -467,6 +468,10 @@
                   downloadedPWASettings: {
                       type: Object,
                       statePath: 'downloadedPWASettings'
+                  },
+                  shouldButtonBeActive: {
+                      type: Boolean,
+                      computed: '_setShouldButtonBeActive(chosenLanguageIsoCode, shouldDownloadParallels, shouldDownloadRootTexts, downloadedPWASettings)'
                   }
               }
           }
@@ -485,6 +490,67 @@
                         downloadedPWASettings: downloadedPWASettings
                       }
                   }
+              }
+          }
+
+          _hasToDownloadParallels() {
+              if (!this.shouldDownloadParallels) {
+                  return false;
+              }
+              if (!this.downloadedPWASettings.languages[this.chosenLanguageIsoCode].parallels) {
+                  return true;
+              }
+              if (this.shouldDownloadRootTexts && !this.downloadedPWASettings.languages.root.parallels) {
+                  return true;
+              }
+              return false;
+          }
+
+          _hasToDownloadLookups() {
+              if(!this.shouldDownloadRootTexts) {
+                  return false;
+              }
+              for(let l of this.paliLookupLanguages) {
+                  if (l.enabled && !this.downloadedPWASettings.lookups.pali[l.isoCode]) {
+                      return true;
+                  }
+              }
+              for(let l of this.chineseLookupLanguages) {
+                  if (l.enabled && !this.downloadedPWASettings.chinese.pali[l.isoCode]) {
+                      return true;
+                  }
+              }
+              return false;
+          }
+
+          _setShouldButtonBeActive(){
+              if (!this.downloadedPWASettings.languages[this.chosenLanguageIsoCode]) {
+                  return true;
+              } else if (this.shouldDownloadRootTexts && !this.downloadedPWASettings.languages.root) {
+                  return true;
+              } else if (this._hasToDownloadParallels()) {
+                  return true;
+              } else if (this._hasToDownloadLookups()) {
+                  return true;
+              } else {
+                  return false;
+              }
+          }
+
+          _getDownloaddButtonTitle(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize) {
+              if (this._isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)){
+                  return localize('alreadyDownloaded');
+              } else {
+                  return localize('ClickToDownload');
+              }
+          }
+
+          _getDownloadButtonText(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive,
+                                                        localize, downloadSize, chosenLanguageNativeName) {
+              if (this._isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)){
+                return localize('alreadyDownloaded')
+              } else {
+                return `${localize('downloadButton', 'languageName', chosenLanguageNativeName)} ${this._showDownloadSize(downloadSize)}`;
               }
           }
 
@@ -553,8 +619,6 @@
 
               const originalLength = this.allURLs.length;
               this.allURLs = this.allURLs.filter(v => this.previousDownloadedUrls[v.url] !== true);
-              console.log('difference', originalLength -this.allURLs.length);
-
               this.D3queue = d3.queue(20);
               this.allURLs.forEach(input => {
                 if (input.done) {
@@ -648,7 +712,6 @@
                 downloadedPWASettings.lookups.chinese[l.isoCode] = !!(l.enabled || downloadedPWASettings.lookups.chinese[l.isoCode]);
               });
               this.dispatch('saveDownloadedPWASettings', downloadedPWASettings);
-              console.log(downloadedPWASettings);
           }
 
           _buildUrlList(response) {
@@ -743,21 +806,27 @@
               return !browserSupportsPWAs || cacheDownloadInProgress;
           }
 
+          _isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive) {
+              return !shouldButtonBeActive || this._isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress);
+          }
+
           _getPlayButtonTooltip(isDownloadPaused, localize) {
               return isDownloadPaused ? localize('resume') : localize('pause');
           }
 
           _togglePaliCheckbox(e) {
-              const langName = e.target.textContent;
+              const langName = e.target.textContent.trim();
               const langObj = this.paliLookupLanguages.find(item => item.name === langName);
               langObj.enabled = !langObj.enabled;
+              this._setShouldButtonBeActive();
               this._changeLookupsDownloadSize();
           }
 
           _toggleChineseCheckbox(e) {
-              const langName = e.target.textContent;
+              const langName = e.target.textContent.trim();
               const langObj = this.chineseLookupLanguages.find(item => item.name === langName);
               langObj.enabled = !langObj.enabled;
+              this._setShouldButtonBeActive();
               this._changeLookupsDownloadSize();
           }
 
