@@ -43,6 +43,7 @@ services:
     labels:
       application: 'sc-nginx'
     volumes:
+      - ./nginx/conf.d:/etc/nginx/configurations
       - nginx-data-volume:/opt/sc/logs/nginx
       - socket-volume:/opt/sc/sockets
       - l10n-ter:/l10n_ter
