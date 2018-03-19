@@ -395,7 +395,8 @@ than ten results in total, a dropdown selection menu appears at the top.
           connectedCallback() {
               super.connectedCallback();
               // Run every 0.5 seconds
-              setInterval(() => { this._loadMoreIfMinimumNotReached() }, 500);
+              // setInterval(() => { this._loadMoreIfMinimumNotReached() }, 500);
+              // I've disabled this function because it was creating problems by loading with old keywords.
           }
 
           // Saves the fetched search results to be displayed in the iron-list.
@@ -490,7 +491,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // Calls the input results when page is loaded
           _generateRequest() {
-              if (!this.searchParams || this._areAllItemsLoaded()) {
+              if (!this.searchParams || !this.searchQuery || this._areAllItemsLoaded()) {
                   return;
               }
               this.shadowRoot.querySelector('#ajax').generateRequest();
