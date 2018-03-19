@@ -4,8 +4,6 @@ RUN mkdir -p /opt/sc/sockets
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-ADD conf.d/ /etc/nginx/configurations
-
 COPY '*.sh' ./
 
 RUN ./create-certs.sh
