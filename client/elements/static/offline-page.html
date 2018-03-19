@@ -463,6 +463,10 @@
                   downloadedUrls: {
                       type: Object,
                       value: {}
+                  },
+                  downloadedPWASettings: {
+                      type: Object,
+                      statePath: 'downloadedPWASettings'
                   }
               }
           }
@@ -473,6 +477,12 @@
                       return {
                           type: 'SAVE_DOWNLOADED_URLS',
                           downloadedUrls: downloadedUrls
+                      }
+                  },
+                  saveDownloadedPWASettings(downloadedPWASettings) {
+                      return {
+                        type: 'SAVE_DOWNLOADED_PWA_SETTINGS',
+                        downloadedPWASettings: downloadedPWASettings
                       }
                   }
               }
@@ -581,6 +591,7 @@
                   }
                   this.cacheDownloadInProgress = false;
                   if (failed === 0) {
+                      this._saveDownloadedSettings();
                       this._showToast('success',
                           this.localize('downloadComplete', 'lang', this.chosenLanguageNativeName));
                   } else if (failed > 0 && passed > 0) {
@@ -597,6 +608,13 @@
 
           _resetDownloadHistory() {
             this.dispatch('saveDownloadedUrls', {});
+            this.dispatch('saveDownloadedPWASettings', {
+                    languages: {},
+                    lookups: {
+                        pali: {},
+                        chinese: {}
+                    }
+                });
           }
 
           _updateUi(progressBar, currentUrl) {
@@ -611,6 +629,26 @@
 
           _downloadInProgressChanged() {
               this.$.download_controller.style.opacity = this.cacheDownloadInProgress ? 1 : 0;
+          }
+
+          _saveDownloadedSettings() {
+              let downloadedPWASettings = Object.assign({}, this.downloadedPWASettings);
+              if (this.shouldDownloadRootTexts && 
+                  (!downloadedPWASettings.languages.root || !downloadedPWASettings.languages.root.parallels)) {
+                    downloadedPWASettings.languages.root = {parallels: this.shouldDownloadParallels};
+              }
+              if (!downloadedPWASettings.languages[this.chosenLanguageIsoCode] || 
+                  !downloadedPWASettings.languages[this.chosenLanguageIsoCode].parallels) {
+                      downloadedPWASettings.languages[this.chosenLanguageIsoCode] = {parallels: this.shouldDownloadParallels};
+              }
+              this.paliLookupLanguages.forEach((l) => {
+                  downloadedPWASettings.lookups.pali[l.isoCode] = !!(l.enabled || downloadedPWASettings.lookups.pali[l.isoCode]);
+              });
+              this.chineseLookupLanguages.forEach((l) => {
+                downloadedPWASettings.lookups.chinese[l.isoCode] = !!(l.enabled || downloadedPWASettings.lookups.chinese[l.isoCode]);
+              });
+              this.dispatch('saveDownloadedPWASettings', downloadedPWASettings);
+              console.log(downloadedPWASettings);
           }
 
           _buildUrlList(response) {
