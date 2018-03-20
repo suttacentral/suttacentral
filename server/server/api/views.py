@@ -560,7 +560,31 @@ class Sutta(Resource):
         results = db.aql.execute(SUTTA_VIEW,
                                  bind_vars={'uid': uid, 'language': lang, 'author_uid': author_uid})
 
-        return results.next(), 200
+        result = results.next()
+        self.convert_paths_to_content(result)
+        for k in ('root_text', 'translation'):
+            doc = result[k]
+            if doc:
+                self.convert_paths_to_content(doc)
+        
+        return result, 200
+        
+    @staticmethod
+    def convert_paths_to_content(doc):
+        conversions = (
+            ('file_path', 'text', lambda f: f.read() ),
+            ('markup_path', 'markup', lambda f: f.read() ),
+            ('strings_path', 'strings', json.load ),
+        )
+        
+        for from_prop, to_prop, load_func in conversions:
+            if (to_prop not in doc) and (from_prop in doc):
+                file_path = doc.pop(from_prop)
+                if file_path is None:
+                    doc[to_prop] = None
+                else:
+                    with open(file_path) as f:
+                        doc[to_prop] = load_func(f)
 
 
 class Currencies(Resource):

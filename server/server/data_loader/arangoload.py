@@ -438,6 +438,9 @@ def run(no_pull=False):
     dictionaries_dir = data_dir / 'dictionaries'
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
 
+    storage_dir = current_app.config.get('STORAGE_DIR')
+    if not storage_dir.exists():
+        storage_dir.mkdir()
     db = arangodb.get_db()
 
     if not no_pull:
@@ -454,7 +457,7 @@ def run(no_pull=False):
     
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
-    po.load_po_texts(change_tracker, po_dir, db, additional_info_dir)
+    po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
 
