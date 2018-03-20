@@ -145,7 +145,7 @@ services:
     expose:
       - 8080
     environment:
-      - "API_URL=http://127.0.0.1/api/swagger.json"
+      - "API_URL=http://localhost/api/swagger.json"
 
   sc-frontend-tester:
     image: trebuhd/wct-headless:latest
