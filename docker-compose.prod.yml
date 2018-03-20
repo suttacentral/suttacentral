@@ -34,6 +34,8 @@ services:
   sc-swagger:
     ports:
       - '8080:8080'
+    environment:
+      - "API_URL=https://suttacentral.net/api/swagger.json"
 
   sc-elasticsearch:
     ports:
