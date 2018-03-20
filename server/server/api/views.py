@@ -137,7 +137,7 @@ class Menu(Resource):
                     pitaka['children'] = self.group_by_parents(children, ['grouping'])
                 else:
                     pitaka['children'] = self.group_by_parents(children, ['sect'])
-                    self.group_by_language(pitaka)
+                    self.group_by_language(pitaka, exclude={'sect/other'})
 
         self.recursive_cleanup(data, mapping={})
 
@@ -175,10 +175,13 @@ class Menu(Resource):
         return sorted(out, key=self.num_sort_key)
 
     @classmethod
-    def group_by_language(cls, pitaka):
+    def group_by_language(cls, pitaka, exclude=None):
         i = 0
         while i < len(pitaka['children']):
             child = pitaka['children'][i]
+            if exclude and child['uid'] in exclude:
+                i += 1
+                continue
             new_data = defaultdict(list)
             for sub_child in child['children']:
                 iso = sub_child.pop('lang_iso', None)
