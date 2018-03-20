@@ -9,7 +9,7 @@ FOR text IN html_text
             RETURN DOCUMENT(CONCAT('root/', text.uid)).root_lang
         )[0]
         RETURN {
-            text: text.text,
+            file_path: text.file_path,
             uid: text.uid,
             mtime: text.mtime,
             author: text.author,
@@ -28,7 +28,7 @@ FOR text IN po_strings
     RETURN {
         uid: text.uid,
         title: text.title,
-        strings: text.strings,        
+        strings_path: text.strings_path,
         author: text.author,
         author_uid: text.author_uid,
         author_short: text.author_short,
@@ -374,17 +374,17 @@ LET legacy_html = (
             author: html.author,
             author_short: html.author_short,
             author_uid: html.author_uid,
-            text: html.text,
+            file_path: html.file_path,
             next: html.next,
             previous: html.prev
         }
 )
 
-LET markup = (
+LET markup_path = (
     FOR markup IN po_markup
         FILTER markup.uid == @uid
         LIMIT 1
-        RETURN markup.markup
+        RETURN markup.markup_path
 )[0]
 
 LET root_po_obj = (
@@ -398,7 +398,7 @@ LET root_po_obj = (
             author_uid: object.author_uid,
             author_blurb: object.author_blurb,
             lang: object.lang,
-            strings: object.strings,
+            strings_path: object.strings_path,
             title: object.title,
             next: object.next,
             previous: object.prev
@@ -416,7 +416,7 @@ LET translated_po_obj = (
             author_uid: object.author_uid,
             author_blurb: object.author_blurb,
             lang: object.lang,
-            strings: object.strings,
+            strings_path: object.strings_path,
             title: object.title,
             next: object.next,
             previous: object.prev
@@ -430,7 +430,7 @@ RETURN {
     translation: translated_po_obj ? (root_po_obj == translated_po_obj ? null : translated_po_obj) 
         : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     segmented: translated_po_obj ? true : false,
-    markup: translated_po_obj ? markup : null,
+    markup_path: translated_po_obj ? markup_path : null,
     suttaplex: suttaplex
 }
 '''

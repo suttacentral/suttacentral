@@ -1,5 +1,6 @@
 import logging
 import time
+import json
 
 import lxml.html
 import regex
@@ -10,6 +11,7 @@ from itertools import chain
 
 from common.arangodb import get_db
 from data_loader import change_tracker
+from data_loader.util import get_path_from_uri
 from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG, PO_TEXTS_BY_LANG
 from search.indexer import ElasticIndexer
 from search.util import unique
@@ -130,6 +132,10 @@ class TextIndexer(ElasticIndexer):
             _id = self.make_id(uid, author_uid)
             if _id not in to_add:
                 continue
+
+            with open(text['strings_path']) as f:
+                strings = json.load(f)
+
             action = {
                 '_id': _id,
                 'uid': uid,
@@ -143,7 +149,7 @@ class TextIndexer(ElasticIndexer):
                     'title': self.fix_text(text['title']),
                     'division': [self.fix_text(text['division_title']) if 'division_title' in text else '']
                 },
-                'content': '\n\n'.join(text['strings'].values())
+                'content': '\n\n'.join(strings.values())
             }
             
             chunk_size += len(action['content'].encode('utf-8'))
@@ -177,7 +183,9 @@ class TextIndexer(ElasticIndexer):
             if _id not in to_add:
                 continue
             try:
-                html_bytes = text['text'].encode('utf-8')
+                
+                with open(text['file_path'], 'rb') as f:
+                    html_bytes = f.read()
                 chunk_size += len(html_bytes) + 512
 
                 root_lang = text['root_lang']

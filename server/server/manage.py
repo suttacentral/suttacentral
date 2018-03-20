@@ -49,6 +49,10 @@ def load_data(no_pull=False):
 @manager.command
 def delete_db():
     arangodb.delete_db(arangodb.get_db())
+    from flask import current_app
+    storage_dir = current_app.config.get('STORAGE_DIR')
+    for file_path in storage_dir.glob('.*'):
+        file_path.unlink()
 
 
 @manager.command

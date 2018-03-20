@@ -145,7 +145,7 @@ class TextInfoModel:
                     "author_uid": author_uid,
                     "volpage": volpage,
                     "mtime": mtime,
-                    "text": text,
+                    "file_path": str(htmlfile.resolve()),
                 }
 
                 self.add_document(text_info)

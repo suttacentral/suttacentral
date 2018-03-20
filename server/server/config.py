@@ -26,6 +26,7 @@ class Config:
     }
 
     BASE_DIR = Path('../')
+    STORAGE_DIR = Path('/opt/sc/storage/')
     DATA_REPO = 'https://github.com/suttacentral/sc-data.git'
     PO_REPO = 'https://github.com/suttacentral/po_text.git'
 

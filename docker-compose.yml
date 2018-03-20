@@ -18,6 +18,7 @@ services:
       - ./server/:/opt/sc/sc-flask
       - pootle-po:/srv/pootle/po/
       - ./pootle:/opt/sc/pootle
+      - working-storage-volume:/opt/sc/storage
     expose:
       - '5000'
     depends_on:
@@ -166,6 +167,7 @@ services:
 volumes:
   db-data-volume:
   nginx-data-volume:
+  working-storage-volume:
   socket-volume:
   elasticsearch-data:
   pootle-po:
