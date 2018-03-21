@@ -7,6 +7,8 @@ from flask_restful import Resource
 from search import query as query_search
 from search import dictionaries
 from common.extensions import cache, make_cache_key
+from common.arangodb import get_db
+from common.queries import SUTTAPLEX_LIST
 
 
 class Search(Resource):
@@ -76,15 +78,16 @@ class Search(Resource):
         query = request.args.get('query', None)
         restrict = request.args.get('restrict', None)
         if restrict == 'all':
-          restrict = None
+            restrict = None
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
 
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
-            
+
         results = {'total': 0, 'hits': []}
         try:
-            es_text_results = query_search.search(query, limit=limit, offset=offset, language=language, restrict=restrict)
+            es_text_results = query_search.search(query, limit=limit, offset=offset, language=language,
+                                                  restrict=restrict)
             if es_text_results:
                 text_results = []
 
@@ -106,12 +109,12 @@ class Search(Resource):
 
                 results['total'] += es_text_results['hits']['total']
                 results['hits'].extend(text_results)
-            
+
         except ConnectionError:
             # Technically we don't have to return a 503 because we can
             # get DB results too: but probably best to fail for debugging
             return json.dumps({'error': 'Elasticsearch unavailable'}), 503
-        
+
         if not restrict or restrict == 'dictionary':
             dictionary_result = dictionaries.search(query)
             if dictionary_result:
@@ -122,5 +125,14 @@ class Search(Resource):
                     # the elasticsearch offset and limit.
                     results['hits'].insert(0, dictionary_result)
                     results['total'] += 1
-        
+
+        db = get_db()
+        query_lower = query.lower()
+        possible_uids = [query_lower, query_lower.replace(' ', '.'), query_lower.replace('.', '.')]
+        found = list(db.aql.execute('FOR r IN root FILTER r.uid IN @uids AND r.type == "text" LIMIT 1 RETURN r.uid',
+                                    bind_vars={'uids': possible_uids}))
+        if found:
+            suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': language}))
+            results['suttaplex'] = suttaplex
+
         return results
