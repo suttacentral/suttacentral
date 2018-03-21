@@ -45,14 +45,14 @@ class Languages(Resource):
                             id: language
                             type: object
                             properties:
-                                _rev:
-                                    type: string
                                 uid:
                                     type: string
                                 name:
                                     type: string
                                 iso_code:
                                     type: string
+                                is_root:
+                                    type: boolean
         """
 
         include_all = request.args.get('all', False)
@@ -81,26 +81,27 @@ class Menu(Resource):
                 description: Menu structure
                 schema:
                     id: Menu
-                    type: object
-                    properties:
-                        <uid_1>:
-                            $ref: '#/definitions/MenuItem'
-                        <uid_2...x>:
-                            $ref: '#/definitions/MenuItem'
+                    type: array
+                    items:
+                        $ref: '#/definitions/MenuItem'
         definitions:
             MenuItem:
                 type: object
                 properties:
                     name:
                         type: string
+                    num:
+                        type: number
                     uid:
                         required: false
+                        type: string
+                    lang_iso:
+                        type: string
+                    lang_name:
                         type: string
                     id:
                         required: false
                         type: string
-                    num:
-                        type: number
                     children:
                         type: array
                         items:
@@ -108,8 +109,7 @@ class Menu(Resource):
                     has_children:
                         required: false
                         type: boolean
-                    lang:
-                        required: false
+                    type:
                         type: string
         """
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
@@ -449,7 +449,7 @@ class LookupDictionaries(Resource):
                         to:
                             type: string
                         dictionary:
-                            type: array
+                            type: object
                             items:
                                 type: array
                                 items:
@@ -596,16 +596,20 @@ class Currencies(Resource):
         responses:
             200:
                 schema:
-                    id: currencies
-                    type: array
-                    items:
-                        $ref '#/definitions/currency'
+                    type: object
+                    properties:
+                        default_currency_index:
+                            type: number
+                        currencies:
+                            type: array
+                            items:
+                                $ref: '#/definitions/currency'
         definitions:
             currency:
                 type: object
                 properties:
                     american_express:
-                        type: bool
+                        type: boolean
                     name:
                         type: string
                     symbol:
@@ -674,11 +678,11 @@ class Glossary(Resource):
         responses:
             glossary:
                 type: array
-                properties:
-                    word:
-                        type: string
-                    text:
-                        type: string
+                items:
+                    type: object
+                    properties:
+                        <word>:
+                            type: string
         """
         db = get_db()
 
@@ -696,9 +700,8 @@ class DictionaryAdjacent(Resource):
         responses:
             glossary:
                 type: array
-                properties:
-                    word:
-                        type: string
+                items:
+                    type: string
         """
         db = get_db()
 
@@ -716,9 +719,8 @@ class DictionarySimilar(Resource):
         responses:
             glossary:
                 type: array
-                properties:
-                    word:
-                        type: string
+                items:
+                    type: string
         """
         db = get_db()
 
@@ -736,13 +738,13 @@ class DictionaryFull(Resource):
         responses:
             dictionary_full:
                 type: array
-                properties:
-                    dictname:
-                        type: string
-                    word:
-                        type: string
-                    text:
-                        type: string
+                items:
+                    type: object
+                    properties:
+                        dictname:
+                            type: string
+                        text:
+                            type: string
 
         """
         if word is not None:
@@ -983,13 +985,13 @@ class Expansion(Resource):
         responses:
             expansion:
                 type: array
-                properties:
-                    uid:
-                        type: string
-                    acro:
-                        type: string
-                    name:
-                        type: string
+                items:
+                    type: object
+                    properties:
+                        <expansion_name>:
+                            type: array
+                            items:
+                                type: string
         """
         db = get_db()
 

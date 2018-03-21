@@ -41,6 +41,8 @@ class Search(Resource):
                     type: number
                   max_score:
                     type: number
+                  suttaplex:
+                    $ref: '#/definitions/Suttaplex'
                   hits:
                     type: array
                     uniqueItems: true
