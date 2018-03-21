@@ -11,11 +11,8 @@ from itertools import chain
 
 from common.arangodb import get_db
 from data_loader import change_tracker
-from data_loader.util import get_path_from_uri
 from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG, PO_TEXTS_BY_LANG
 from search.indexer import ElasticIndexer
-from search.util import unique
-
 
 
 logger = logging.getLogger('search.texts')
