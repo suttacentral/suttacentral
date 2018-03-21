@@ -888,7 +888,10 @@ class Donations(Resource):
         </div><br>
         <div class="cursive">Sadhu! Sadhu! Sadhu!</div>
 '''
-        mail.send(msg)
+        try:
+            mail.send(msg)
+        except Exception:
+            pass
 
 
 class Images(Resource):
