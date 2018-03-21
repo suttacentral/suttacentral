@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "npm": "^5.7.1",
+    "raven-js": "^3.23.3",
     "redux": "^3.7.2",
     "viewerjs": "^0.10.0",
     "workbox-sw": "2.1.2"
