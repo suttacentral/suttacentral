@@ -11,6 +11,7 @@
 <link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="menus/sc-search-filter-menu.html">
+<link rel="import" href="../elements/suttaplex/sc-suttaplex.html">
 
 <!--
 The search page opens when a search string is typed into the search-input-box in the toolbar.
@@ -32,6 +33,11 @@ than ten results in total, a dropdown selection menu appears at the top.
 
       #search_result_list {
         padding: var(--sc-size-xl) 0 var(--sc-size-md);
+      }
+
+      .suttaplex-item {
+          margin-top: var(--sc-size-xl);
+          margin-bottom: calc(-1 * var(--sc-size-md));
       }
 
       .search-results-container {
@@ -211,6 +217,13 @@ than ten results in total, a dropdown selection menu appears at the top.
                handle-as="json"
                loading="{{loadingResults}}"
                on-response="_didRespond"></iron-ajax>
+    
+    <iron-ajax
+               auto
+               id="uid_expansion_ajax"
+               url="/api/expansion"
+               handle-as="json"
+               last-response="{{expansionReturns}}"></iron-ajax>
 
     <iron-meta id="meta"></iron-meta>
 
@@ -225,13 +238,21 @@ than ten results in total, a dropdown selection menu appears at the top.
               <span class="search-result-description">{{localize('resultsFor')}}</span>
               <span class="search-result-term">[[searchQuery]]</span>
             </h1>
-            <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
+              <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
           </div>
 
-          <iron-scroll-threshold id="scroll_threshold" on-lower-threshold="_loadMoreData" scroll-target="document">
+            <div class="suttaplex-item">
+                <sc-suttaplex item="[[suttaplex]]" parallels-opened="[[_areParallelsOpen(suttaplex)]]"
+                                difficulty="[[_computeItemDifficulty(suttaplex.difficulty)]]"
+                                expansion-data="[[expansionReturns]]">
+                </sc-suttaplex>
+            </div>
 
-            <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item" scroll-target="document">
-              <template>
+            <iron-scroll-threshold id="scroll_threshold" on-lower-threshold="_loadMoreData" scroll-target="document">
+
+                <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item"
+                           scroll-target="document">
+                    <template>
                 <div class$="search-result-item [[_calculateItemCategory(item)]]" tabindex$="[[tabIndex]]">
                   <div class="padded-container">
                     <a class="search-result-link" href="[[_calculateLink(item)]]">
@@ -351,6 +372,12 @@ than ten results in total, a dropdown selection menu appears at the top.
                           'dppn': 'Dictionary of Pali Proper Names',
                           'pts': 'PTS Pali English Dictionary'
                       }
+                  },
+                  suttaplex: {
+                      type: Array
+                  },
+                  expansionReturns: {
+                      type: Array
                   }
               }
           }
@@ -388,6 +415,7 @@ than ten results in total, a dropdown selection menu appears at the top.
           // search results and _populateList is called.
           _didRespond(e) {
               const results = e.detail.response;
+              this.suttaplex = results.suttaplex;
               this.lastSearchResults = results.hits;
               this.resultCount = results.total;
           }
@@ -584,6 +612,21 @@ than ten results in total, a dropdown selection menu appears at the top.
                       composed: true
                   }
               }));
+          }
+
+          _areParallelsOpen(item) {
+              return false;
+          }
+
+          _computeItemDifficulty(difficulty) {
+              if (!difficulty) return;
+              if (difficulty.name) {
+                  return difficulty.name;
+              }
+              else {
+                  const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
+                  return levels[difficulty];
+              }
           }
       }
 

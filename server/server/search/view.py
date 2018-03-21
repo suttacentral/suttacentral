@@ -132,7 +132,7 @@ class Search(Resource):
         found = list(db.aql.execute('FOR r IN root FILTER r.uid IN @uids AND r.type == "text" LIMIT 1 RETURN r.uid',
                                     bind_vars={'uids': possible_uids}))
         if found:
-            suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': language}))
+            suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': language}))[0]
             results['suttaplex'] = suttaplex
 
         return results
