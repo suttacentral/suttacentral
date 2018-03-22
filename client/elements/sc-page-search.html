@@ -415,10 +415,10 @@ than ten results in total, a dropdown selection menu appears at the top.
           _didRespond(e) {
               const results = e.detail.response;
               this.suttaplex = results.suttaplex;
-              if (this.suttaplex.length !== 0) {
+              if (this.suttaplex && this.suttaplex.length !== 0) {
                   setTimeout(() => {
                       this.$.uid_expansion_ajax.generateRequest();
-                  })
+                  });
               }
               this.lastSearchResults = results.hits;
               this.resultCount = results.total;
