@@ -4,12 +4,13 @@
 
 # Deploying
 1. `$ git clone git@github.com:suttacentral/suttacentral.git`
-2. `$ git checkout production`
-3. `$ make prepare-host`
-4. `$ make run-production-env` -> Supply needed env variables, 
+2. `$ cd suttacentral`
+3. `$ git checkout production`
+4. `$ make prepare-host`
+5. `$ make run-production-env` -> Supply needed env variables, 
 if you chose random you will be prompted back with generated values.
 Remember them! You will use some of them to access admin services, eg. Pootle.
-5. Done
+6. Done
 
 
 # Working with pootle
