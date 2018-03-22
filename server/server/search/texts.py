@@ -133,6 +133,7 @@ class TextIndexer(ElasticIndexer):
                 strings = json.load(f)
 
             action = {
+                'acronym': text['acronym'],
                 '_id': _id,
                 'uid': uid,
                 'lang': lang,
@@ -187,6 +188,7 @@ class TextIndexer(ElasticIndexer):
                 root_lang = text['root_lang']
 
                 action = {
+                    'acronym': text['acronym'],
                     '_id': _id,
                     'uid': uid,
                     'lang': lang,

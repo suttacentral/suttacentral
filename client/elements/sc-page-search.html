@@ -589,6 +589,11 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // If there is a title, the division is the subtitle
           _calculateDivision(item) {
+              if (!item.heading.title) {
+                  return '';
+              } else {
+                  return item.acronym ? item.acronym : item.uid;
+              }
               return item.heading.title ? item.uid : '';
           }
 

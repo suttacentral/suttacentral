@@ -99,6 +99,7 @@ class Search(Resource):
                     lang = source['lang']
                     author_uid = source['author_uid']
                     text_results.append({
+                        'acronym': source['acronym'],
                         'uid': uid,
                         'lang': lang,
                         'author': source['author'],
