@@ -415,11 +415,7 @@ than ten results in total, a dropdown selection menu appears at the top.
           _didRespond(e) {
               const results = e.detail.response;
               this.suttaplex = results.suttaplex;
-              if (this.suttaplex && this.suttaplex.length !== 0) {
-                  setTimeout(() => {
-                      this.$.uid_expansion_ajax.generateRequest();
-                  });
-              }
+              this.$.uid_expansion_ajax.generateRequest();
               this.lastSearchResults = results.hits;
               this.resultCount = results.total;
           }
@@ -592,9 +588,41 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (!item.heading.title) {
                   return '';
               } else {
-                  return item.acronym ? item.acronym : item.uid;
+                  return item.acronym ? `${this._convertAcronym(item.acronym)} — ${item.author}` : `${this._transformId(item.uid)} — ${item.author}`;
               }
-              return item.heading.title ? item.uid : '';
+          }
+
+          _convertAcronym(acronym) {
+              if (acronym.match(/\/\//)) {
+                  return acronym.replace(/\/\//, " (") + ")";
+              } else {
+                  return acronym;
+              }
+          }
+
+          _transformId(rootId) {
+              if (!rootId || !this.expansionReturns) {
+                  return '';
+              }
+              const expansionData = this.expansionReturns;
+              let scAcronym = '';
+              const uidParts = rootId.split('-');
+              let tail = '';
+
+              uidParts.forEach(item => {
+                  if (!expansionData[0][item]) {
+                      const tailMatch = item.match(/\d+.*/g);
+                      if (tailMatch) tail = tailMatch[0] + '–';
+                      const itemMatch = item.match(/[a-z]*/g);
+                      if (itemMatch) item = itemMatch[0];
+                  }
+                  if (item && expansionData[0][item]) {
+                      scAcronym += `${expansionData[0][item][0]} ${tail}`
+                  } else {
+                      scAcronym += tail;
+                  }
+              });
+              return scAcronym.replace(/–\s*$/, '');
           }
 
           _calculateLink(item) {
