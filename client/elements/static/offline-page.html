@@ -524,6 +524,9 @@
           }
 
           _setShouldButtonBeActive(){
+              if (!this.downloadedPWASettings){
+                  return true;
+              }
               if (!this.downloadedPWASettings.languages[this.chosenLanguageIsoCode]) {
                   return true;
               } else if (this.shouldDownloadRootTexts && !this.downloadedPWASettings.languages.root) {
