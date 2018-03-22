@@ -608,21 +608,24 @@ than ten results in total, a dropdown selection menu appears at the top.
               let scAcronym = '';
               const uidParts = rootId.split('-');
               let tail = '';
-
-              uidParts.forEach(item => {
-                  if (!expansionData[0][item]) {
-                      const tailMatch = item.match(/\d+.*/g);
-                      if (tailMatch) tail = tailMatch[0] + '–';
-                      const itemMatch = item.match(/[a-z]*/g);
-                      if (itemMatch) item = itemMatch[0];
-                  }
-                  if (item && expansionData[0][item]) {
-                      scAcronym += `${expansionData[0][item][0]} ${tail}`
-                  } else {
-                      scAcronym += tail;
-                  }
-              });
-              return scAcronym.replace(/–\s*$/, '');
+              try {
+                  uidParts.forEach(item => {
+                      if (!expansionData[0][item]) {
+                          const tailMatch = item.match(/\d+.*/g);
+                          if (tailMatch) tail = tailMatch[0] + '–';
+                          const itemMatch = item.match(/[a-z]*/g);
+                          if (itemMatch) item = itemMatch[0];
+                      }
+                      if (item && expansionData[0][item]) {
+                          scAcronym += `${expansionData[0][item][0]} ${tail}`
+                      } else {
+                          scAcronym += tail;
+                      }
+                  });
+                  return scAcronym.replace(/–\s*$/, '');
+              } catch (e) {
+                  console.error(e);
+              }
           }
 
           _calculateLink(item) {
