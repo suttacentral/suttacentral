@@ -1,9 +1,32 @@
 # SuttaCentral server and client repository
 [![Build Status](https://travis-ci.org/suttacentral/suttacentral.svg?branch=development)](https://travis-ci.org/suttacentral/suttacentral)
 
-# 1. Server
 
-## 1.1 Running the project
+# Deploying
+1. `$ git clone git@github.com:suttacentral/suttacentral.git`
+2. `$ cd suttacentral`
+3. `$ git checkout production`
+4. `$ make prepare-host`
+5. `$ make run-production-env` -> Supply needed env variables, 
+if you chose random you will be prompted back with generated values.
+Remember them! You will use some of them to access admin services, eg. Pootle.
+6. Done
+
+
+# Working with pootle
+  * In order to load data to pootle run `make load-to-pootle`.
+  * To load data from pootle to server/client run `make load-from-pootle`.
+  
+To access pootle in dev mode go to `pootle.localhost`,
+default credentials in dev mode are:
+* login: `admin`
+* password: `password`
+
+
+# Development
+## 1. Server
+
+### 1.1 Running the project
 0. Install [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/).
 1. Clone the repo `git clone git@github.com:suttacentral/suttacentral.git`.
 2. Cd into the repo `cd suttacentral`.
@@ -12,11 +35,11 @@
 5.  * 1st time run: run `make run-preview-env` - Build images, load data, index-elasticsearch and more.
 	* normal run: run `make run-dev`.
 
-## 1.2 Loading the data
+### 1.2 Loading the data
 0. ensure server is up and run `make load-data`.
 1. To index elasticsearch run `make index-elasticsearch`.
 
-## 1.3 Docs
+### 1.3 Docs
 API documentation is available at `/api/docs`.
 
 Swagger documentation is generated from doc strings in api methods. The docstring should use 
@@ -28,7 +51,7 @@ In this mode server, nignx, client dirs are mounted in Docker's containers so th
 
 In addition `Uwsgi+Flask` expose port `5001` on local host, arangodb port `8529` and elasticsearch ports `9200` and `9300`.
 
-## 1.4 Makefile
+### 1.4 Makefile
 There is a Makefile with following commands:
 * `prepare-host` - Set `vm.max_map_count` to `262144` because otherwise ElasticSearch won't work.
 * `build-all` - Build all containers:
@@ -107,7 +130,7 @@ There is a Makefile with following commands:
 * `load-from-pootle` - Load data from pootle to ArangoDB and client.
 
 
-## 1.5 Working with ArangoDB
+### 1.5 Working with ArangoDB
 Our project is using [ArangoDB](https://www.arangodb.com/) on the back-end. In the development mode it exposes port 8529 on the localhost.
 You can access it's web interface on <http://127.0.0.1:8529>.
 
@@ -121,16 +144,16 @@ In the development mode:
 
 In order to change password you have to change `ARANGO_ROOT_PASSWORD` in env's `.env` fiel eg. If you want to change it in development env you have to edit `.dev.env` file.
 
-## 1.6 Nginx proxy
+### 1.6 Nginx proxy
 Our project is using nginx as a HTTP reverse proxy. It is responsible for serving static files and passing `/api/*` endpoints to the uwsgi+flask server.
 
-## 1.7 Working with elasticsearch
+### 1.7 Working with elasticsearch
 Expose ports `9200` and `9300`.
 
-## 1.8 Flask + uWSGI
+### 1.8 Flask + uWSGI
 Flask is hidden behind uWSGI. uWsgi communicate with nignx with unix socket. The socket file (`uwsgi.sock`) is in `socket-volume` shared beetwen `nginx` and `flask+uwsgi`
 
-### Creating db migrations
+#### Creating db migrations
 In order to create database migration in out app you have to follow those simple steps:
 1. in `server/server/migrations/migrations` folder create file with name `<migration_name>_<id of the last migration + 1>.py`.
 2. Add this line at the top of the file: `from ._base import Migration`.
@@ -165,16 +188,16 @@ class InitialMigration(Migration):
         )
 ```
 
-### Flask manage tasks
+#### Flask manage tasks
 1. `python manage.py migrate` - Run migrations.
 2. `python manage.py list_routes` - Lists all available routes/URLs.
 
 
-## 1.9 Pootle
+### 1.9 Pootle
 1. Load data from client and database to pootle - `make load-to-pootle`.
 2. Load data to client and database from pootle - `make load-from-pootle`.
 
-## 1.10 Style guidelines
+### 1.10 Style guidelines
 * Follow [PEP8](https://www.python.org/dev/peps/pep-0008/) for Python code.
 
 * Try to keep line width under 120 characters.
@@ -193,14 +216,14 @@ class InitialMigration(Migration):
 
 * Test files should be placed in `tests` dir in directory where tested file is.
 
-# 2. Client
+## 2. Client
 
-## 2.1 Style guidelines
+### 2.1 Style guidelines
 
 - Based on the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) for JS code...
 - ...and [Polymer Elements Style Guide](https://polymerelements.github.io/style-guide/) for Polymer components.
 
-### General considerations:
+#### General considerations:
 
 - Use [template strings](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals).
 
