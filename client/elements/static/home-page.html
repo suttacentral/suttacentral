@@ -236,6 +236,10 @@
         justify-self: end;
       }
 
+      .carousel {
+        width: 100%;
+      }
+
       .card-heading-subtext {
         @apply --sc-skolar-font-size-md;
         font-weight: normal;
@@ -362,10 +366,6 @@
         }
       }
   </style>
-  <iron-ajax auto="" handle-as="json" id="epigraphs-ajax" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ epigraphsData }}" loading="{{ loadingEpigraphs }}" url="[[_computeUrl('epigraphs')]]">
-  </iron-ajax>
-  <iron-ajax auto="" handle-as="json" id="why-we-read-ajax" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" last-response="{{ whyWeReadData }}" loading="{{ loadingWhyWeRead }}" url="[[_computeUrl('whyweread')]]">
-  </iron-ajax>
   <iron-meta id="meta" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
   </iron-meta>
   <div class="bottom-space" id="page-wrap">
@@ -380,21 +380,15 @@
      <paper-card elevation="2">
       <div class="card">
        <div class="card-heading">
-        <div class="card-heading-text" inner-h-t-m-l="{{localize('ab29c73d3f06449e14fb4e95dd26ddba')}}">
+        <div class="card-heading-text" inner-h-t-m-l="{{localize('6fa47a464d90ac462faad21974edfb66')}}">
         </div>
        </div>
        <div class="card-content">
         <div class="card-content-text">
-         <template if="[[loadingEpigraphs]]" is="dom-if">
-          <paper-spinner-lite active="" class="spinner" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
-          </paper-spinner-lite>
-         </template>
-         <template if="[[!loadingEpigraphs]]" is="dom-if">
-          <div class="card-text center-text buddhas-words-text">
-           <sc-text-carousel display="epigraph" elements="[[epigraphsData]]" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" link="uid">
-           </sc-text-carousel>
-          </div>
-         </template>
+         <div class="card-text center-text buddhas-words-text">
+          <sc-text-carousel class="carousel" data-url="[[_computeUrl('epigraphs')]]" display="epigraph" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}" link="uid">
+          </sc-text-carousel>
+         </div>
         </div>
        </div>
       </div>
@@ -483,18 +477,12 @@
        </div>
        <div class="card-content">
         <div class="card-content-text">
-         <template if="[[loadingWhyWeRead]]" is="dom-if">
-          <paper-spinner-lite active="" class="spinner" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
-          </paper-spinner-lite>
-         </template>
-         <template if="[[!loadingWhyWeRead]]" is="dom-if">
-          <div class="why-we-read">
-           <sc-text-carousel elements="[[whyWeReadData]]" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
-           </sc-text-carousel>
-          </div>
-          <div inner-h-t-m-l="{{localize('a3adeafa08c6b5bb0648ed61a7410245')}}">
-          </div>
-         </template>
+         <div class="why-we-read">
+          <sc-text-carousel data-url="[[_computeUrl('whyweread')]]" inner-text="{{localize('d41d8cd98f00b204e9800998ecf8427e')}}">
+          </sc-text-carousel>
+         </div>
+         <div inner-h-t-m-l="{{localize('a3adeafa08c6b5bb0648ed61a7410245')}}">
+         </div>
         </div>
        </div>
       </div>
