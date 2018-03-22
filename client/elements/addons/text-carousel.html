@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
 
@@ -89,14 +90,26 @@
 
     </style>
 
+    <iron-ajax
+        auto
+        url="[[dataUrl]]"
+        id="elements_ajax"
+        handle-as="json"
+        loading="{{loadingData}}"
+        last-response="{{elements}}"></iron-ajax>
+
     <div id="container" class="container">
+      <template is="dom-if" if="[[loadingData]]">
+        <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+      </template>
+
       <button id="previous_button" class="chevron previous" on-click="_loadPreviousItem" type="button">
         <paper-ripple></paper-ripple>
         <iron-icon icon="chevron-left"></iron-icon>
       </button>
       <div id="text" class="text"><span id="text_span"></span></div>
       <template is="dom-if" if="[[link]]">
-        <a class="button-link" href="[[_computeUrl(selectedItemIndex)]]">
+        <a class="button-link" href="[[_computeUrl(selectedItemIndex, elements)]]">
           <paper-button class="button card-button-middle" raised>READ THIS SUTTA</paper-button>
         </a>
       </template>
@@ -139,6 +152,9 @@
                   },
                   previousWidth: {
                       type: Number
+                  },
+                  dataUrl: {
+                      type: String
                   }
               }
           }
@@ -250,7 +266,8 @@
                       this.$.container.style.height = `calc(${height} + 32px)`;
                   });
                   this.firstItem = false;
-              } else if (this.elements) {
+              }
+              if (this.elements) {
                   item = this.elements[this.selectedItemIndex];
               }
               if (item && this.display) {
