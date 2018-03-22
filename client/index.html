@@ -78,7 +78,8 @@
 
   <script src="/node_modules/raven-js/dist/raven.min.js"></script>
   <script>Raven.config('https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981', {
-      release: '1.0.0'
+      release: '1.0.0',
+      environment: window.location.href.indexOf('suttacentral') === -1 ? 'development' : 'production'
   }).install();</script>
 
   <style>
