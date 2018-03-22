@@ -43,7 +43,9 @@
     "elements/text/transliterator.js",
     "service-worker.js",
     "bower_components/webcomponentsjs/*.js",
-    "bower_components/webcomponentsjs/*.js.map"
+    "bower_components/webcomponentsjs/*.js.map",
+    "node_modules/raven-js/dist/raven.min.js",
+    "node_modules/raven-js/dist/raven.min.js.map"
   ],
   "builds": [
     {
