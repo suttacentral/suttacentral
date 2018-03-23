@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
 
@@ -47,6 +49,10 @@
         --iron-icon-height: var(--sc-size-md-larger);
       }
 
+      .spinner {
+        --paper-spinner-color: var(--sc-primary-color);
+      }
+
       .chevron:focus {
         outline: none;
       }
@@ -89,14 +95,25 @@
 
     </style>
 
+    <iron-ajax
+        url="[[elementsUrl]]"
+        id="elements_ajax"
+        handle-as="json"
+        loading="{{loadingData}}"
+        last-response="{{elements}}"></iron-ajax>
+
     <div id="container" class="container">
+      <template is="dom-if" if="[[loadingData]]">
+        <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+      </template>
+
       <button id="previous_button" class="chevron previous" on-click="_loadPreviousItem" type="button">
         <paper-ripple></paper-ripple>
         <iron-icon icon="chevron-left"></iron-icon>
       </button>
       <div id="text" class="text"><span id="text_span"></span></div>
       <template is="dom-if" if="[[link]]">
-        <a class="button-link" href="[[_computeUrl(selectedItemIndex)]]">
+        <a class="button-link" href="[[_computeUrl(selectedItemIndex, elements)]]">
           <paper-button class="button card-button-middle" raised>READ THIS SUTTA</paper-button>
         </a>
       </template>
@@ -139,6 +156,9 @@
                   },
                   previousWidth: {
                       type: Number
+                  },
+                  elementsUrl: {
+                      type: String
                   }
               }
           }
@@ -148,6 +168,9 @@
               this._setInterval();
               this._resizeContainerOnWindowResize();
               this._addChevronHighlightListeners();
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.$.elements_ajax.generateRequest();
+              })
           }
 
           _resizeContainerOnWindowResize() {
@@ -250,7 +273,8 @@
                       this.$.container.style.height = `calc(${height} + 32px)`;
                   });
                   this.firstItem = false;
-              } else if (this.elements) {
+              }
+              if (this.elements) {
                   item = this.elements[this.selectedItemIndex];
               }
               if (item && this.display) {
