@@ -363,9 +363,6 @@
                       observer: '_downloadPausedChanged',
                       value: true
                   },
-                  downloadQueue: {
-                      type: Object
-                  },
                   shouldDownloadParallels: {
                       type: Boolean,
                       value: false
@@ -581,14 +578,14 @@
 
           _handleNetworkLoss() {
               window.addEventListener('offline', () => {
-                  if (!this.downloadQueue || this.isDownloadPaused) return;
+                  if (!this.D3queue || this.isDownloadPaused) return;
                   this._pauseDownload();
                   this.isDownloadPaused = true;
                   this.isDownloadPausedBecauseOffline = true;
                   this._showToast('info', this.localize('networkLost'));
               });
               window.addEventListener('online', () => {
-                  if (!this.downloadQueue || !this.isDownloadPausedBecauseOffline) return;
+                  if (!this.D3queue || !this.isDownloadPausedBecauseOffline) return;
                   this._resumeDownload();
                   this.isDownloadPaused = false;
                   this.isDownloadPausedBecauseOffline = false;
