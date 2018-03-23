@@ -32,6 +32,8 @@ def replace_attrs(element, data):
 def hash_element_content(element, data):
     string = ''.join((str(child) for child in element.children))
     string = ' '.join(string.split())
+    if string == '':
+        return
 
     string_hash = hashlib.md5(string.encode()).hexdigest()
 
