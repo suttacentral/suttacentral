@@ -35,6 +35,8 @@
         "language": "Język",
         "resetButton": "Wyczyść historię pobierania",
         "alreadyDownloaded": "Dane zostały już pobrane.",
-        "ClickToDownload": "Kliknij aby pobrać."
+        "ClickToDownload": "Kliknij aby pobrać.",
+        "downloadInProgress": "Pobieranie w trakcie.",
+        "downloadPaused": "Pobieranie spauzowane."
     }
 }

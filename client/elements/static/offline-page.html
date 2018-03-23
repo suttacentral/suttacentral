@@ -288,7 +288,7 @@
                           disabled="[[_isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)]]"
                           title="[[_getDownloadButtonTitle(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize)]]">
               [[_getDownloadButtonText(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize,
-              downloadSize, chosenLanguageNativeName)]]
+              downloadSize, chosenLanguageNativeName, isDownloadPaused)]]
             </paper-button>
 
             <paper-button id='reset_history_button' class="button" raised
@@ -364,7 +364,7 @@
                   isDownloadPaused: {
                       type: Boolean,
                       observer: '_downloadPausedChanged',
-                      value: true
+                      value: false
                   },
                   shouldDownloadParallels: {
                       type: Boolean,
@@ -547,9 +547,14 @@
           }
 
           _getDownloadButtonText(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive,
-                                 localize, downloadSize, chosenLanguageNativeName) {
-              if (this._isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)) {
-                  return localize('alreadyDownloaded')
+                                 localize, downloadSize, chosenLanguageNativeName, isDownloadPaused) {
+              console.log(isDownloadPaused);
+              if (this.isDownloadPaused) {
+                  return localize('downloadPaused');
+              } else if (this.cacheDownloadInProgress) {
+                  return localize('downloadInProgress');
+              } else if (this._isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)) {
+                  return localize('alreadyDownloaded');
               } else {
                   return `${localize('downloadButton', 'languageName', chosenLanguageNativeName)} ${this._showDownloadSize(downloadSize)}`;
               }
@@ -839,10 +844,12 @@
 
           _resumeDownload() {
               this._cacheAllItems();
+              this.isDownloadPaused = false;
           }
 
           _pauseDownload() {
               this.D3queue.abort();
+              this.isDownloadPaused = true;
           }
 
           _stopDownload() {
