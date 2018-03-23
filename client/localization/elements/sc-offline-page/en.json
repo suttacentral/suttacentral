@@ -35,6 +35,8 @@
         "language": "Language",
         "resetButton": "Clear download history",
         "alreadyDownloaded": "Already downloaded.",
-        "ClickToDownload": "Click to download."
+        "ClickToDownload": "Click to download.",
+        "downloadInProgress": "Download in progress.",
+        "downloadPaused": "Download paused."
     }
 }
