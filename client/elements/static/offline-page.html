@@ -177,9 +177,9 @@
       }
 
       .no-margin {
-          color: var(--sc-toast-error-color);
-          margin-top: 0;
-          margin-bottom: 0;
+        color: var(--sc-toast-error-color);
+        margin-top: 0;
+        margin-bottom: 0;
       }
 
       @media screen and (max-width: 600px) {
@@ -246,8 +246,10 @@
                                    active="{{shouldDownloadParallels}}"></paper-toggle-button>
 
               <h3 class="option-title">{{localize('downloadRootTexts')}}</h3>
-              <div class="option-description">{{localize('downloadRootTextsDescription', 'toLang', defaultPaliDictToLang.name)}}
-                <paper-button id="toggle_lookup_display_button"><b>{{localize('here')}}</b></paper-button>.
+              <div class="option-description">{{localize('downloadRootTextsDescription', 'toLang',
+                defaultPaliDictToLang.name)}}
+                <paper-button id="toggle_lookup_display_button"><b>{{localize('here')}}</b></paper-button>
+                .
               </div>
               <paper-toggle-button id="download_root_texts_button" class="toggle-button" noink
                                    disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]"
@@ -284,13 +286,14 @@
 
             <paper-button id='make_offline_button' class="button" raised
                           disabled="[[_isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)]]"
-                          title="[[_getDownloaddButtonTitle(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize)]]">
-              [[_getDownloadButtonText(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize, downloadSize, chosenLanguageNativeName)]]
+                          title="[[_getDownloadButtonTitle(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize)]]">
+              [[_getDownloadButtonText(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize,
+              downloadSize, chosenLanguageNativeName)]]
             </paper-button>
 
             <paper-button id='reset_history_button' class="button" raised
                           disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
-                {{localize('resetButton')}}
+              {{localize('resetButton')}}
             </paper-button>
 
             <paper-card id="download_controller">
@@ -362,9 +365,6 @@
                       type: Boolean,
                       observer: '_downloadPausedChanged',
                       value: true
-                  },
-                  downloadQueue: {
-                      type: Object
                   },
                   shouldDownloadParallels: {
                       type: Boolean,
@@ -459,7 +459,7 @@
                   },
                   previousDownloadedUrls: {
                       type: Object,
-                      statePath: 'downloadedUrls',
+                      statePath: 'downloadedUrls'
                   },
                   downloadedUrls: {
                       type: Object,
@@ -486,8 +486,8 @@
                   },
                   saveDownloadedPWASettings(downloadedPWASettings) {
                       return {
-                        type: 'SAVE_DOWNLOADED_PWA_SETTINGS',
-                        downloadedPWASettings: downloadedPWASettings
+                          type: 'SAVE_DOWNLOADED_PWA_SETTINGS',
+                          downloadedPWASettings: downloadedPWASettings
                       }
                   }
               }
@@ -507,15 +507,15 @@
           }
 
           _hasToDownloadLookups() {
-              if(!this.shouldDownloadRootTexts) {
+              if (!this.shouldDownloadRootTexts) {
                   return false;
               }
-              for(let l of this.paliLookupLanguages) {
+              for (let l of this.paliLookupLanguages) {
                   if (l.enabled && !this.downloadedPWASettings.lookups.pali[l.isoCode]) {
                       return true;
                   }
               }
-              for(let l of this.chineseLookupLanguages) {
+              for (let l of this.chineseLookupLanguages) {
                   if (l.enabled && !this.downloadedPWASettings.chinese.pali[l.isoCode]) {
                       return true;
                   }
@@ -523,7 +523,10 @@
               return false;
           }
 
-          _setShouldButtonBeActive(){
+          _setShouldButtonBeActive() {
+              if (!this.downloadedPWASettings) {
+                  return true;
+              }
               if (!this.downloadedPWASettings.languages[this.chosenLanguageIsoCode]) {
                   return true;
               } else if (this.shouldDownloadRootTexts && !this.downloadedPWASettings.languages.root) {
@@ -532,13 +535,11 @@
                   return true;
               } else if (this._hasToDownloadLookups()) {
                   return true;
-              } else {
-                  return false;
-              }
+              } else return false;
           }
 
-          _getDownloaddButtonTitle(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize) {
-              if (this._isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)){
+          _getDownloadButtonTitle(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize) {
+              if (this._isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)) {
                   return localize('alreadyDownloaded');
               } else {
                   return localize('ClickToDownload');
@@ -546,11 +547,11 @@
           }
 
           _getDownloadButtonText(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive,
-                                                        localize, downloadSize, chosenLanguageNativeName) {
-              if (this._isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)){
-                return localize('alreadyDownloaded')
+                                 localize, downloadSize, chosenLanguageNativeName) {
+              if (this._isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)) {
+                  return localize('alreadyDownloaded')
               } else {
-                return `${localize('downloadButton', 'languageName', chosenLanguageNativeName)} ${this._showDownloadSize(downloadSize)}`;
+                  return `${localize('downloadButton', 'languageName', chosenLanguageNativeName)} ${this._showDownloadSize(downloadSize)}`;
               }
           }
 
@@ -560,7 +561,7 @@
               if (offlineButton) {
                   offlineButton.addEventListener('click', () => { this.makeOffline() });
               }
-              this.$.reset_history_button.addEventListener('click', () => { this._resetDownloadHistory() })
+              this.$.reset_history_button.addEventListener('click', () => { this._resetDownloadHistory() });
               this.$.play_button.addEventListener('click', () => { this._resumeOrPauseDownload() });
               this.$.stop_button.addEventListener('click', () => { this._stopDownload() });
               this.$.toggle_lookup_display_button.addEventListener('click', () => { this._toggleLookupsOpen() });
@@ -568,7 +569,7 @@
                   this.chosenLanguageNativeName = e.detail.name;
                   this.chosenLanguageIsoCode = e.detail.isoCode;
                   this.paliLookupLanguages.forEach(lang => lang.enabled = lang.isoCode === e.detail.isoCode);
-                  const checkboxes = this.shadowRoot.querySelectorAll(".pali-checkbox");
+                  const checkboxes = this.shadowRoot.querySelectorAll('.pali-checkbox');
                   Array.from(checkboxes).forEach(checkbox => {
                       checkbox.checked = checkbox.dataset.isocode === e.detail.isoCode;
                   })
@@ -578,15 +579,16 @@
 
           _handleNetworkLoss() {
               window.addEventListener('offline', () => {
-                  if (!this.downloadQueue || this.isDownloadPaused) return;
-                  this.downloadQueue.pause();
+                  if (!this.D3queue || this.isDownloadPaused) return;
+                  this._pauseDownload();
                   this.isDownloadPaused = true;
                   this.isDownloadPausedBecauseOffline = true;
                   this._showToast('info', this.localize('networkLost'));
               });
               window.addEventListener('online', () => {
-                  if (!this.downloadQueue || !this.isDownloadPausedBecauseOffline) return;
-                  this.downloadQueue.resume();
+                  if (!this.D3queue || !this.isDownloadPausedBecauseOffline) return;
+                  this._resumeDownload();
+                  this.cacheDownloadInProgress = true;
                   this.isDownloadPaused = false;
                   this.isDownloadPausedBecauseOffline = false;
                   this._showToast('info', this.localize('networkRecovered'));
@@ -621,33 +623,33 @@
               this.allURLs = this.allURLs.filter(v => this.previousDownloadedUrls[v.url] !== true);
               this.D3queue = d3.queue(20);
               this.allURLs.forEach(input => {
-                if (input.done) {
-                    passed++;
-                    progressBar.value++;
-                    return;
-                }
-                this.D3queue.defer((input, callback) => {
-                    fetch(input.url)
-                        .then(this._handleErrors)
-                        .then(() => {
-                            passed++;
-                            this._updateUi(progressBar, input.url);
-                            input.done = true;
-                            this.downloadedUrls[input.url] = true;
-                            interval++;
-                            if (interval === 50) {
-                                interval = 0;
-                                this.dispatch('saveDownloadedUrls', Object.assign({}, this.downloadedUrls, this.previousDownloadedUrls));
-                                this.downloadedUrls = {};
-                            }
-                            callback(null);
-                        })
-                        .catch((err) => {
-                            failed++;
-                            console.error(err);
-                            callback(null);
-                        })
-                }, input);
+                  if (input.done) {
+                      passed++;
+                      progressBar.value++;
+                      return;
+                  }
+                  this.D3queue.defer((input, callback) => {
+                      fetch(input.url)
+                          .then(this._handleErrors)
+                          .then(() => {
+                              passed++;
+                              this._updateUi(progressBar, input.url);
+                              input.done = true;
+                              this.downloadedUrls[input.url] = true;
+                              interval++;
+                              if (interval === 50) {
+                                  interval = 0;
+                                  this.dispatch('saveDownloadedUrls', Object.assign({}, this.downloadedUrls, this.previousDownloadedUrls));
+                                  this.downloadedUrls = {};
+                              }
+                              callback(null);
+                          })
+                          .catch((err) => {
+                              failed++;
+                              console.error(err);
+                              callback(null);
+                          })
+                  }, input);
               });
               this.D3queue.await((e) => {
                   if (this.isDownloadPaused) {
@@ -671,14 +673,14 @@
           }
 
           _resetDownloadHistory() {
-            this.dispatch('saveDownloadedUrls', {});
-            this.dispatch('saveDownloadedPWASettings', {
-                    languages: {},
-                    lookups: {
-                        pali: {},
-                        chinese: {}
-                    }
-                });
+              this.dispatch('saveDownloadedUrls', {});
+              this.dispatch('saveDownloadedPWASettings', {
+                  languages: {},
+                  lookups: {
+                      pali: {},
+                      chinese: {}
+                  }
+              });
           }
 
           _updateUi(progressBar, currentUrl) {
@@ -697,19 +699,19 @@
 
           _saveDownloadedSettings() {
               let downloadedPWASettings = Object.assign({}, this.downloadedPWASettings);
-              if (this.shouldDownloadRootTexts && 
+              if (this.shouldDownloadRootTexts &&
                   (!downloadedPWASettings.languages.root || !downloadedPWASettings.languages.root.parallels)) {
-                    downloadedPWASettings.languages.root = {parallels: this.shouldDownloadParallels};
+                  downloadedPWASettings.languages.root = { parallels: this.shouldDownloadParallels };
               }
-              if (!downloadedPWASettings.languages[this.chosenLanguageIsoCode] || 
+              if (!downloadedPWASettings.languages[this.chosenLanguageIsoCode] ||
                   !downloadedPWASettings.languages[this.chosenLanguageIsoCode].parallels) {
-                      downloadedPWASettings.languages[this.chosenLanguageIsoCode] = {parallels: this.shouldDownloadParallels};
+                  downloadedPWASettings.languages[this.chosenLanguageIsoCode] = { parallels: this.shouldDownloadParallels };
               }
               this.paliLookupLanguages.forEach((l) => {
                   downloadedPWASettings.lookups.pali[l.isoCode] = !!(l.enabled || downloadedPWASettings.lookups.pali[l.isoCode]);
               });
               this.chineseLookupLanguages.forEach((l) => {
-                downloadedPWASettings.lookups.chinese[l.isoCode] = !!(l.enabled || downloadedPWASettings.lookups.chinese[l.isoCode]);
+                  downloadedPWASettings.lookups.chinese[l.isoCode] = !!(l.enabled || downloadedPWASettings.lookups.chinese[l.isoCode]);
               });
               this.dispatch('saveDownloadedPWASettings', downloadedPWASettings);
           }
@@ -723,7 +725,7 @@
               const lookupURLs = this._buildLookupUrlList(this.paliLookupLanguages, this.chineseLookupLanguages);
 
               return menuURLs.concat(suttaplexURLs).concat(suttaTextURLs).concat(parallelURLs)
-                  .concat(paragraphURLs).concat(lookupURLs).map(url => ({url: url, done: false}));
+                  .concat(paragraphURLs).concat(lookupURLs).map(url => ({ url: url, done: false }));
           }
 
           _buildSuttaTextUrlList(response) {
@@ -785,18 +787,18 @@
 
           _doesBrowserSupportPWA() {
               // Found it somewhere and it works.
-              let ua= navigator.userAgent, tem,
-              M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-              if(/trident/i.test(M[1])){
-                  tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+              let ua = navigator.userAgent, tem,
+                  M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+              if (/trident/i.test(M[1])) {
+                  tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
                   return false;
               }
-              if(M[1]=== 'Chrome'){
-                  tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
-                  if(tem!= null) return false;
+              if (M[1] === 'Chrome') {
+                  tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
+                  if (tem != null) return false;
               }
-              M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-              if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+              M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+              if ((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
 
               // Check if it is supported browser
               return M[0].toLowerCase() === 'chrome' && parseInt(M[1]) >= 65;
@@ -879,23 +881,23 @@
           }
 
           _activatePaliDictToLang(defaultPaliDictToLang, oldValue) {
-            let changed = false;
-            this.paliLookupLanguages.forEach(lang => {
-                if (lang.isoCode === defaultPaliDictToLang.isoCode) {
-                    lang.enabled = true;
-                    changed = true;
-                } else if (oldValue && lang.isoCode === oldValue.isoCode) {
-                    lang.enabled = false;
-                    changed = true;
-                }
-            });
-            if (changed) {
-                this._changeLookupsDownloadSize();
-            }
+              let changed = false;
+              this.paliLookupLanguages.forEach(lang => {
+                  if (lang.isoCode === defaultPaliDictToLang.isoCode) {
+                      lang.enabled = true;
+                      changed = true;
+                  } else if (oldValue && lang.isoCode === oldValue.isoCode) {
+                      lang.enabled = false;
+                      changed = true;
+                  }
+              });
+              if (changed) {
+                  this._changeLookupsDownloadSize();
+              }
           }
 
           _calculateLookupSizes() {
-              if (!(this.PWASizes && this.paliLookupLanguages && this.chineseLookupLanguages)){
+              if (!(this.PWASizes && this.paliLookupLanguages && this.chineseLookupLanguages)) {
                   return;
               }
               let size = 0;
