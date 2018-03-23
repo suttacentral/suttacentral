@@ -533,7 +533,9 @@
                   return true;
               } else if (this._hasToDownloadParallels()) {
                   return true;
-              } else return this._hasToDownloadLookups();
+              } else if (this._hasToDownloadLookups()) {
+                  return true;
+              } else return false;
           }
 
           _getDownloadButtonTitle(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive, localize) {
@@ -841,7 +843,6 @@
 
           _pauseDownload() {
               this.D3queue.abort();
-              this.cacheDownloadInProgress = false;
           }
 
           _stopDownload() {
