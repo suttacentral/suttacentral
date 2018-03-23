@@ -552,9 +552,9 @@
               if (this.isDownloadPaused) {
                   return localize('downloadPaused');
               } else if (this.cacheDownloadInProgress) {
-                  return localize('downloadInProgress')
+                  return localize('downloadInProgress');
               } else if (this._isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive)) {
-                  return localize('alreadyDownloaded')
+                  return localize('alreadyDownloaded');
               } else {
                   return `${localize('downloadButton', 'languageName', chosenLanguageNativeName)} ${this._showDownloadSize(downloadSize)}`;
               }
