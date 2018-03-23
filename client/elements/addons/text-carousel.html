@@ -96,7 +96,6 @@
     </style>
 
     <iron-ajax
-        auto
         url="[[elementsUrl]]"
         id="elements_ajax"
         handle-as="json"
@@ -169,6 +168,9 @@
               this._setInterval();
               this._resizeContainerOnWindowResize();
               this._addChevronHighlightListeners();
+              Polymer.RenderStatus.afterNextRender(this, () => {
+                  this.$.elements_ajax.generateRequest();
+              })
           }
 
           _resizeContainerOnWindowResize() {
