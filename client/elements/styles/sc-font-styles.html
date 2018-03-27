@@ -377,6 +377,20 @@
     }
 
     @font-face {
+      font-family: "Klingon";
+      src: url('/files/fonts/Klingon.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "Vulcan";
+      src: url('/files/fonts/Vulcan.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
       font-family: 'Noto Sans CJK JP';
       src: url('/files/fonts/noto-sans-jp_regular_jp_462a49732c9d.woff2') format('woff2'),
         url('/files/fonts/noto-sans-jp_regular_jp_462a49732c9d.ttf') format('truetype');
@@ -543,6 +557,16 @@
 
       --sc-tengwar-font: {
         font-family: "Tengwar Annatar Italic", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      };
+
+      --sc-klingon-font: {
+        font-family: "Klingon", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      };
+
+      --sc-vulcan-font: {
+        font-family: "Vulcan", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
