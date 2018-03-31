@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/page-title/page-title.html">
 
 <link rel="import" href="../../elements/styles/sc-suttaplex-styles.html">
 <link rel="import" href="../../elements/suttaplex/sc-suttaplex.html">
@@ -78,6 +79,8 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
       </iron-collapse>
     </div>
 
+    <page-title base-title="" page-title="{{_getPageTitle(suttaplex, responseData)}}"></page-title>
+
     <!--These elements remotely control the text dialogs: -->
 
     <isw-dialog-remote
@@ -125,6 +128,9 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  pageTitle: {
+                      type: String
                   }
               }
           }
@@ -160,6 +166,35 @@ Pulls in one relevant suttaplex-card inside a collapse-item to display on top of
 
           _openInfoDialog() {
               this.$.info_dialog_remote.open();
+          }
+
+          _getPageTitle(pageTitle, suttaplex) {
+            if (!suttaplex) {
+              return
+            }
+            let titleAcronym = this._getAcronymOrUid(suttaplex);
+            console.log(responseData.suttaplex.acronym);
+              return `${titleAcronym}: ${pageTitle}`;
+          }
+
+          _getAcronymOrUid(suttaplex) {
+              let scAcronym = '';
+              if (suttaplex && suttaplex.acronym) {
+                  scAcronym = suttaplex.acronym.split('//')[0];
+              } else {
+                  scAcronym = this._transformId(this.suttaId);
+              }
+              return scAcronym;
+          }
+
+          _transformId(rootId) {
+              if (!rootId) {
+                  return '';
+              }
+              let scAcronym = '';
+              const firstDigit = rootId.match(/\d/);
+              scAcronym = rootId.replace(firstDigit,` ${firstDigit}`);
+              return scAcronym.toUpperCase();
           }
       }
 
