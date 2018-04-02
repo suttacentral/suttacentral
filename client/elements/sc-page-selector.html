@@ -358,7 +358,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               const legacyLinkReg2 = new RegExp(`\/.*[0-9]\/(${langReg})`);
               const legacyLinkReg3 = this.route.path.startsWith("/pi-") || this.route.path.startsWith("/skt-");
               const newLinkReg = new RegExp(`\/.*[0-9]\/(${langReg})\/[a-z\d]+`);
-              return (legacyLinkReg.test(this.route.path) || legacyLinkReg2.test(this.route.path)) || legacyLinkReg3 && !newLinkReg.test(this.route.path);
+              return (legacyLinkReg.test(this.route.path) || legacyLinkReg2.test(this.route.path) || legacyLinkReg3) && !newLinkReg.test(this.route.path);
           }
 
           _siteLanguageChanged() {
