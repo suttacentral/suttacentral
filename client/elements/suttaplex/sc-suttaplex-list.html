@@ -221,7 +221,7 @@
 
           // Close parallels when navigating to new page
           _areParallelsOpen(item) {
-              return false;
+              return (this.suttaplexReturns.length === 1) ? true : false;
           }
 
           _computeItemDifficulty(difficulty) {
