@@ -6,7 +6,6 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/iron-dropdown/iron-dropdown-scroll-manager.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="sc-suttaplex-section-title.html">
 <link rel="import" href="sc-suttaplex.html">
@@ -116,7 +115,7 @@
 
     </div>
 
-    <sherby-metadata data="[[_createMetaData(suttaplexReturns, localize)]]"></sherby-metadata>
+    [[_createMetaData(suttaplexReturns, localize)]]
 
   </template>
 
@@ -255,8 +254,9 @@
                   description = suttaplexReturns[0].blurb;
               }
 
-              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+              document.dispatchEvent(new CustomEvent('metadata', {
                   detail: {
+                      pageTitle: `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
                       title: `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
                       description: description,
                       bubbles: true,

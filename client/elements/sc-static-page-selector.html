@@ -6,7 +6,6 @@
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 <link rel="import" href="../bower_components/polymer/lib/utils/import-href.html">
 
 <link rel="import" href="../elements/static/home-page.html">
@@ -169,7 +168,7 @@
       }
     </style>
 
-    <sherby-metadata data="[[_createMetaData(selectedPage, localize)]]"></sherby-metadata>
+    [[_createMetaData(selectedPage, localize)]]
 
     <app-toolbar id="title_toolbar">
       <div class="title" main-title>
@@ -467,8 +466,9 @@
           _createMetaData(pageSelection, localize) {
               const description = localize('metaDescriptionText');
               const pageName = localize(`${pageSelection}`);
-              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+              document.dispatchEvent(new CustomEvent('metadata', {
                   detail: {
+                      pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
                       title: `SuttaCentral—${pageName.toLowerCase()}`,
                       description: description,
                       bubbles: true,

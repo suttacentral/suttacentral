@@ -230,9 +230,10 @@
         document.querySelector('.logo-image-container').appendChild(logoImg);
         removeSiteContent();
     }
-    document.addEventListener("sherby-metadata", function(e) {
+    document.addEventListener("metadata", function(e) {
         var metaData = e.detail;
         if (metaData) {
+            document.head.querySelector("title").innerText = metaData.pageTitle;
             document.head.querySelector("[property='og:title']").content = metaData.title;
             document.head.querySelector("[property='og:description']").content = metaData.description;
             document.head.querySelector("[name='title']").content = metaData.title;
