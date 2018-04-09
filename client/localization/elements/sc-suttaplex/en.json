@@ -11,6 +11,7 @@
         "blurb": "Blurb",
         "goToTranslation": "Go to a translation by {author}",
         "hasParallels": "This text has {num} parallels.",
+        "hasNoParallels": "This text has no recorded parallels.",
         "itemNotFound": "Error 404: Item not found.",
         "networkError": "Network error",
         "translations": "Translations"

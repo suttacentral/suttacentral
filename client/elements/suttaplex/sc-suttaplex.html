@@ -384,6 +384,16 @@
                   {{localize('hasParallels', 'num', item.parallel_count)}}
                 </paper-tooltip>
               </template>
+              <template is="dom-if" if="[[!item.parallel_count]]">
+                <div class="parallels-toggle-div">
+                  <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]">
+                  </paper-icon-button>
+                  <sc-badge class="absolute-pos behind-button" number="0"></sc-badge>
+                </div>
+                <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1">
+                  {{localize('hasNoParallels')}}
+                </paper-tooltip>
+              </template>
             </div>
           </div>
 
