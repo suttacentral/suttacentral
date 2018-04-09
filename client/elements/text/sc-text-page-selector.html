@@ -4,7 +4,6 @@
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="../../elements/text/sc-segmented-text.html">
 <link rel="import" href="../../elements/text/sc-simple-text.html">
@@ -62,6 +61,12 @@
         last-error="{{lastError}}"
         last-response="{{responseData}}"></iron-ajax>
 
+    <iron-ajax
+               id="uid_expansion_ajax"
+               url="[[_getExpansionUrl()]]"
+               handle-as="json"
+               last-response="{{expansionReturns}}"></iron-ajax>
+
     <div class="wrapper">
       <template is="dom-if" if="[[!_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
         <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
@@ -100,7 +105,7 @@
     </template>
 
     <sc-text-image id="sc_text_image"></sc-text-image>
-    <sherby-metadata data="[[_createMetaData(responseData, localize)]]"></sherby-metadata>
+    [[_createMetaData(responseData, expansionReturns, localize)]]
 
   </template>
 
@@ -170,6 +175,9 @@
                   },
                   previous: {
                       type: Object
+                  },
+                  expansionReturns: {
+                      type: Array
                   }
               }
           }
@@ -217,6 +225,10 @@
               this.dispatch('downloadSuttaText', this.responseData);
           }
 
+          _getExpansionUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/expansion`;
+          }
+
           setProperties() {
               if (this.responseData) {
                   this.isSegmentedText = !!(this.responseData.segmented);
@@ -246,6 +258,8 @@
                   setTimeout(() => {
                       this.$.sutta_text_ajax.url = this._getSuttaTextUrl();
                       this.$.sutta_text_ajax.generateRequest();
+                      this.$.uid_expansion_ajax.url = this._getExpansionUrl();
+                      this.$.uid_expansion_ajax.generateRequest();
                       this.stopRequests = false;
                   }, 50);
               }
@@ -275,25 +289,58 @@
               return (!rootSutta && !translatedSutta) || networkError;
           }
 
-          _createMetaData(responseData, localize) {
+          _createMetaData(responseData, expansionReturns, localize) {
               if (!responseData) {
                   return;
               }
-              let description = localize('metaDescriptionText');
+              // The localization on this page does not work.
+              // There is a bug report for this so in the mean time I use English.
+              // let description = localize('metaDescriptionText');
+              let description = "Early Buddhist texts and modern translations. Suttas (sutras) from the Tipitaka (Tripitaka) in Pali, Chinese, Sanskrit, and Tibetan with the Buddha's teachings on mindfulness, insight, wisdom, and meditation."
               if (responseData.suttaplex.blurb) {
                   description = responseData.suttaplex.blurb;
               }
               const title = responseData.translation ? responseData.translation.title : responseData.root_text.title;
               const author = responseData.translation ? responseData.translation.author : responseData.root_text.author;
+              const acronym = responseData.suttaplex.acronym ? responseData.suttaplex.acronym.split(/\/\//)[0] : this._transformId(responseData.suttaplex.uid,expansionReturns);
 
-              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+              document.dispatchEvent(new CustomEvent('metadata', {
                   detail: {
+                      pageTitle: `${acronym}: ${title}—${author}`,
                       title: `${title}—${author}`,
                       description: description,
                       bubbles: true,
                       composed: true
                   }
               }));
+          }
+
+          _transformId(rootId, expansionReturns) {
+              if (!rootId || !expansionReturns) {
+                  return '';
+              }
+              let scAcronym = '';
+              const uidParts = rootId.split('-');
+              let tail = '';
+              try {
+                  uidParts.forEach(item => {
+                      if (!expansionReturns[0][item]) {
+                          const tailMatch = item.match(/\d+.*/g);
+                          if (tailMatch) tail = tailMatch[0] + '–';
+                          const itemMatch = item.match(/[a-z]*/g);
+                          if (itemMatch) item = itemMatch[0];
+                      }
+                      if (item && expansionReturns[0][item]) {
+                          scAcronym += `${expansionReturns[0][item][0]} ${tail}`
+                      } else {
+                          scAcronym += tail;
+                      }
+                  });
+                  return scAcronym.replace(/–\s*$/, '');
+              } catch (e) {
+                  console.error(e);
+                  return rootId;
+              }
           }
       }
 
