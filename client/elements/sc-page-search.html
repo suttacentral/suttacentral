@@ -8,7 +8,6 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="menus/sc-search-filter-menu.html">
 <link rel="import" href="../elements/suttaplex/sc-suttaplex.html">
@@ -285,7 +284,7 @@ than ten results in total, a dropdown selection menu appears at the top.
       </div>
     </template>
 
-    <sherby-metadata data="[[_createMetaData(searchQuery, localize)]]"></sherby-metadata>
+    [[_createMetaData(searchQuery, localize)]]
 
   </template>
   <script>
@@ -643,8 +642,9 @@ than ten results in total, a dropdown selection menu appears at the top.
               const description = localize('metaDescriptionText');
               const searchResultsText = localize('searchResultsText');
 
-              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+              document.dispatchEvent(new CustomEvent('metadata', {
                   detail: {
+                      pageTitle: `SuttaCentral—${searchResultsText} ${searchWord}`,
                       title: `${searchResultsText} ${searchWord}`,
                       description: description,
                       bubbles: true,
