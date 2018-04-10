@@ -201,6 +201,10 @@
         color: var(--sc-disabled-text-color);
       }
 
+      .invisible-icon {
+        visibility: hidden;
+      }
+
       .primary-accent-icon {
         color: var(--sc-primary-accent-color);
         stroke: var(--sc-primary-accent-color);
@@ -386,11 +390,11 @@
               </template>
               <template is="dom-if" if="[[!item.parallel_count]]">
                 <div class="parallels-toggle-div">
-                  <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]">
+                  <paper-icon-button class="toggle-button invisible-icon" icon="[[toggleIcon]]">
                   </paper-icon-button>
-                  <sc-badge class="absolute-pos behind-button" number="0"></sc-badge>
+                  <sc-badge id="parallels_badge"class="absolute-pos behind-button" number="0"></sc-badge>
                 </div>
-                <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1">
+                <paper-tooltip for="parallels_badge" class="sc-tooltip" offset="-1">
                   {{localize('hasNoParallels')}}
                 </paper-tooltip>
               </template>
