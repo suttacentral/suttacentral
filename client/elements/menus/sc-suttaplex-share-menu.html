@@ -256,7 +256,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                   let acronymUid = this._generateAcronymUid(this.item.acronym, section)
                   result += `Parallels for ${acronymUid} ${this.item.original_title} `;
                   if (this.item.volpages && this.item.volpages.length > 0) {
-                      result += `(${this.item.volpages[0]})`;
+                      result += `(${this.item.volpages})`;
                   }
                   result = this._strip(result, ' ');
                   result += ': ';
@@ -264,7 +264,7 @@ Menu on top of the suttaplex parallel's list for copying information from parall
                       result += this._generateAcronymUid(parallel.to.acronym, parallel.to.to);
                       result += ' ';
                       if (parallel.to.volpages) {
-                          result += `(${this.item.volpages}) `;
+                          result += `(${parallel.to.volpages}) `;
                       }
                       if (parallel.to.biblio) {
                           result += this._getTextFromHtml(parallel.to.biblio);
