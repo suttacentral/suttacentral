@@ -34,7 +34,6 @@ stripe = "*"
 sortedcontainers = "*"
 requests = "*"
 flask-caching = "*"
-flask-mail = "*"
 
 
 [dev-packages]

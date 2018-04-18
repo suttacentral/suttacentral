@@ -7,11 +7,12 @@ from collections import defaultdict
 import stripe
 from flask import current_app, request
 from flask_restful import Resource
-from flask_mail import Message
+
 from sortedcontainers import SortedDict
 
 from common.arangodb import get_db
-from common.extensions import make_cache_key, cache, mail
+from common.extensions import make_cache_key, cache
+from common.mail import send_email
 
 from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS,
                             SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY,
@@ -863,13 +864,14 @@ class Donations(Resource):
 
     @staticmethod
     def send_email(data, email_address):
-        msg = Message('Payment confirmation',
-                      recipients=[email_address])
-        msg.html = f'''
+        msg = {'subject': 'Payment confirmation',
+               'from_email': current_app.config.get('MAIL_DONATIONS_SENDER'),
+               'to_email': email_address,
+               'html': f'''
         <div>We gratefully acknowledge your donation to support SuttaCentral.</div><br>
         <div>Here are the transaction details for your records. 
         If you have entered your email address, a copy of these details will be sent there too.</div><br>
-        {f"<div>Donor: <b>data['name']</b></div>" if data['name'] else ''}
+        {f"<div>Donor: <b>{data['name']}</b></div>" if data['name'] else ''}
         <div>Donation: 
             <b>{data['amount']} {data['currency']}</b>
         </div>
@@ -889,9 +891,9 @@ class Donations(Resource):
             Your donation will be used for the development of SuttaCentral.
         </div><br>
         <div class="cursive">Sadhu! Sadhu! Sadhu!</div>
-'''
+'''}
         try:
-            mail.send(msg)
+            send_email(**msg)
         except Exception:
             pass
 
