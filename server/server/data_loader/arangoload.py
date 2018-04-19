@@ -308,7 +308,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                 for from_uid in full:
                     try:
                         from_nr = int(regex.findall(r'.*?([0-9]+)$', from_uid)[0])
-                    except:
+                    except BaseException:
                         from_nr = 0
                     true_from_uids = uid_matcher.get_matching_uids(from_uid)
                     if not true_from_uids:
@@ -343,7 +343,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                 first_uid = uids[0]
                 try:
                     from_nr = int(regex.findall(r'.*?([0-9]+)$', first_uid)[0])
-                except:
+                except BaseException:
                     from_nr = 0
                 true_first_uids = uid_matcher.get_matching_uids(first_uid)
                 for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
