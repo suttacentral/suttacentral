@@ -12,6 +12,14 @@ if you chose random you will be prompted back with generated values.
 Remember them! You will use some of them to access admin services, eg. Pootle.
 6. Done
 
+## Or updating in individual steps
+
+1. `cd /opt/suttacentral`
+2. `make generate-env-variables` -> Supply needed env variables (only if env has been changed)
+3. `make run-prod-no-logs` -> run docker containers
+4. `make load-data` -> load data into arangodb
+5. `make index-elasticsearch` -> load data into elasticsearch
+6. `make reload-uwsgi` -> make sure flask server is not serving cached stale data
 
 # Working with pootle
   * In order to load data to pootle run `make load-to-pootle`.
