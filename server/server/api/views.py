@@ -7,11 +7,12 @@ from collections import defaultdict
 import stripe
 from flask import current_app, request
 from flask_restful import Resource
-from flask_mail import Message
+
 from sortedcontainers import SortedDict
 
 from common.arangodb import get_db
-from common.extensions import make_cache_key, cache, mail
+from common.extensions import make_cache_key, cache
+from common.mail import send_email
 
 from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS,
                             SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY,
@@ -45,14 +46,14 @@ class Languages(Resource):
                             id: language
                             type: object
                             properties:
-                                _rev:
-                                    type: string
                                 uid:
                                     type: string
                                 name:
                                     type: string
                                 iso_code:
                                     type: string
+                                is_root:
+                                    type: boolean
         """
 
         include_all = request.args.get('all', False)
@@ -81,26 +82,27 @@ class Menu(Resource):
                 description: Menu structure
                 schema:
                     id: Menu
-                    type: object
-                    properties:
-                        <uid_1>:
-                            $ref: '#/definitions/MenuItem'
-                        <uid_2...x>:
-                            $ref: '#/definitions/MenuItem'
+                    type: array
+                    items:
+                        $ref: '#/definitions/MenuItem'
         definitions:
             MenuItem:
                 type: object
                 properties:
                     name:
                         type: string
+                    num:
+                        type: number
                     uid:
                         required: false
+                        type: string
+                    lang_iso:
+                        type: string
+                    lang_name:
                         type: string
                     id:
                         required: false
                         type: string
-                    num:
-                        type: number
                     children:
                         type: array
                         items:
@@ -108,8 +110,7 @@ class Menu(Resource):
                     has_children:
                         required: false
                         type: boolean
-                    lang:
-                        required: false
+                    type:
                         type: string
         """
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
@@ -137,7 +138,7 @@ class Menu(Resource):
                     pitaka['children'] = self.group_by_parents(children, ['grouping'])
                 else:
                     pitaka['children'] = self.group_by_parents(children, ['sect'])
-                    self.group_by_language(pitaka)
+                    self.group_by_language(pitaka, exclude={'sect/other'})
 
         self.recursive_cleanup(data, mapping={})
 
@@ -175,10 +176,13 @@ class Menu(Resource):
         return sorted(out, key=self.num_sort_key)
 
     @classmethod
-    def group_by_language(cls, pitaka):
+    def group_by_language(cls, pitaka, exclude=None):
         i = 0
         while i < len(pitaka['children']):
             child = pitaka['children'][i]
+            if exclude and child['uid'] in exclude:
+                i += 1
+                continue
             new_data = defaultdict(list)
             for sub_child in child['children']:
                 iso = sub_child.pop('lang_iso', None)
@@ -446,7 +450,7 @@ class LookupDictionaries(Resource):
                         to:
                             type: string
                         dictionary:
-                            type: array
+                            type: object
                             items:
                                 type: array
                                 items:
@@ -557,7 +561,31 @@ class Sutta(Resource):
         results = db.aql.execute(SUTTA_VIEW,
                                  bind_vars={'uid': uid, 'language': lang, 'author_uid': author_uid})
 
-        return results.next(), 200
+        result = results.next()
+        self.convert_paths_to_content(result)
+        for k in ('root_text', 'translation'):
+            doc = result[k]
+            if doc:
+                self.convert_paths_to_content(doc)
+        
+        return result, 200
+        
+    @staticmethod
+    def convert_paths_to_content(doc):
+        conversions = (
+            ('file_path', 'text', lambda f: f.read() ),
+            ('markup_path', 'markup', lambda f: f.read() ),
+            ('strings_path', 'strings', json.load ),
+        )
+        
+        for from_prop, to_prop, load_func in conversions:
+            if (to_prop not in doc) and (from_prop in doc):
+                file_path = doc.pop(from_prop)
+                if file_path is None:
+                    doc[to_prop] = None
+                else:
+                    with open(file_path) as f:
+                        doc[to_prop] = load_func(f)
 
 
 class Currencies(Resource):
@@ -569,16 +597,20 @@ class Currencies(Resource):
         responses:
             200:
                 schema:
-                    id: currencies
-                    type: array
-                    items:
-                        $ref '#/definitions/currency'
+                    type: object
+                    properties:
+                        default_currency_index:
+                            type: number
+                        currencies:
+                            type: array
+                            items:
+                                $ref: '#/definitions/currency'
         definitions:
             currency:
                 type: object
                 properties:
                     american_express:
-                        type: bool
+                        type: boolean
                     name:
                         type: string
                     symbol:
@@ -647,11 +679,11 @@ class Glossary(Resource):
         responses:
             glossary:
                 type: array
-                properties:
-                    word:
-                        type: string
-                    text:
-                        type: string
+                items:
+                    type: object
+                    properties:
+                        <word>:
+                            type: string
         """
         db = get_db()
 
@@ -669,9 +701,8 @@ class DictionaryAdjacent(Resource):
         responses:
             glossary:
                 type: array
-                properties:
-                    word:
-                        type: string
+                items:
+                    type: string
         """
         db = get_db()
 
@@ -689,9 +720,8 @@ class DictionarySimilar(Resource):
         responses:
             glossary:
                 type: array
-                properties:
-                    word:
-                        type: string
+                items:
+                    type: string
         """
         db = get_db()
 
@@ -709,13 +739,13 @@ class DictionaryFull(Resource):
         responses:
             dictionary_full:
                 type: array
-                properties:
-                    dictname:
-                        type: string
-                    word:
-                        type: string
-                    text:
-                        type: string
+                items:
+                    type: object
+                    properties:
+                        dictname:
+                            type: string
+                        text:
+                            type: string
 
         """
         if word is not None:
@@ -834,13 +864,14 @@ class Donations(Resource):
 
     @staticmethod
     def send_email(data, email_address):
-        msg = Message('Payment confirmation',
-                      recipients=[email_address])
-        msg.html = f'''
+        msg = {'subject': 'Payment confirmation',
+               'from_email': current_app.config.get('MAIL_DONATIONS_SENDER'),
+               'to_email': email_address,
+               'html': f'''
         <div>We gratefully acknowledge your donation to support SuttaCentral.</div><br>
         <div>Here are the transaction details for your records. 
         If you have entered your email address, a copy of these details will be sent there too.</div><br>
-        {f"<div>Donor: <b>data['name']</b></div>" if data['name'] else ''}
+        {f"<div>Donor: <b>{data['name']}</b></div>" if data['name'] else ''}
         <div>Donation: 
             <b>{data['amount']} {data['currency']}</b>
         </div>
@@ -860,8 +891,11 @@ class Donations(Resource):
             Your donation will be used for the development of SuttaCentral.
         </div><br>
         <div class="cursive">Sadhu! Sadhu! Sadhu!</div>
-'''
-        mail.send(msg)
+'''}
+        try:
+            send_email(**msg)
+        except Exception:
+            pass
 
 
 class Images(Resource):
@@ -956,13 +990,13 @@ class Expansion(Resource):
         responses:
             expansion:
                 type: array
-                properties:
-                    uid:
-                        type: string
-                    acro:
-                        type: string
-                    name:
-                        type: string
+                items:
+                    type: object
+                    properties:
+                        <expansion_name>:
+                            type: array
+                            items:
+                                type: string
         """
         db = get_db()
 

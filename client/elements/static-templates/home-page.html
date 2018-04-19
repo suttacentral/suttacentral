@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+
 <link rel="import" href="../addons/sc-static-page.html">
 <link rel="import" href="../../elements/addons/text-carousel.html">
 
@@ -238,16 +238,16 @@
         justify-self: end;
       }
 
+      .carousel {
+        width: 100%;
+      }
+
       .card-heading-subtext {
         @apply --sc-skolar-font-size-md;
         font-weight: normal;
         line-height: 1em;
         margin: 0 var(--sc-size-md-larger) var(--sc-size-md-larger);
         text-align: right;
-      }
-
-      .spinner {
-        --paper-spinner-color: var(--sc-primary-color);
       }
 
       .card-button-middle {
@@ -366,22 +366,6 @@
 
     </style>
 
-    <iron-ajax
-        auto
-        url="[[_computeUrl('epigraphs')]]"
-        id="epigraphs-ajax"
-        handle-as="json"
-        loading="{{ loadingEpigraphs }}"
-        last-response="{{ epigraphsData }}"></iron-ajax>
-
-    <iron-ajax
-        auto
-        url="[[_computeUrl('whyweread')]]"
-        id="why-we-read-ajax"
-        handle-as="json"
-        loading="{{ loadingWhyWeRead }}"
-        last-response="{{ whyWeReadData }}"></iron-ajax>
-
     <iron-meta id="meta"></iron-meta>
 
     <div id="page-wrap" class="bottom-space">
@@ -399,21 +383,20 @@
             <div class="card">
               <div class="card-heading">
                 <div class="card-heading-text">
-                  The<br class="d-none">
-                  Buddha’s<br class="d-none">
+                  The
+                  <br class="d-none">
+                  Buddha’s
+                  <br class="d-none">
                   words
                 </div>
               </div>
               <div class="card-content">
                 <div class="card-content-text">
-                  <template is="dom-if" if="[[loadingEpigraphs]]">
-                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
-                  </template>
-                  <template is="dom-if" if="[[!loadingEpigraphs]]">
-                    <div class="card-text center-text buddhas-words-text">
-                      <sc-text-carousel elements="[[epigraphsData]]" display="epigraph" link="uid"></sc-text-carousel>
-                    </div>
-                  </template>
+                  <div class="card-text center-text buddhas-words-text">
+                    <sc-text-carousel class="carousel" elements-url="[[_computeUrl('epigraphs')]]" display="epigraph"
+                                      link="uid">
+                    </sc-text-carousel>
+                  </div>
                 </div>
               </div>
             </div>
@@ -441,7 +424,7 @@
               <div class="image-card-text">
                 There are thousands of early Buddhist texts, and they’re not organized for easy reading.
                 But here’s the good news: you are not alone. We’ve been down this road ourselves,
-                and have tried to make it a little easier for you. Here’s some things you can try.
+                and have tried to make it a little easier for you. Here are some things you can try.
               </div>
             </div>
           </paper-card>
@@ -553,12 +536,8 @@
               </div>
               <div class="card-content">
                 <div class="card-content-text">
-                  <template is="dom-if" if="[[loadingWhyWeRead]]">
-                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
-                  </template>
-                  <template is="dom-if" if="[[!loadingWhyWeRead]]">
                     <div class="why-we-read">
-                      <sc-text-carousel elements="[[whyWeReadData]]"></sc-text-carousel>
+                      <sc-text-carousel elements-url="[[_computeUrl('whyweread')]]"></sc-text-carousel>
                     </div>
                     <div>
                       <a class="button-link"
@@ -567,7 +546,6 @@
                         <paper-button class="button card-button-middle" raised>TELL US WHY YOU READ</paper-button>
                       </a>
                     </div>
-                  </template>
                 </div>
               </div>
             </div>

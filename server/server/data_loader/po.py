@@ -75,7 +75,7 @@ def extract_headings_from_po(po):
                 found['root'][key] = sanitize_title(entry.msgid)
     return found
 
-def process_dir(change_tracker, po_dir, authors, info):
+def process_dir(change_tracker, po_dir, authors, info, storage_dir):
     """Process po files in folder
 
     Note that this function operates recursively, a file called "info.po"
@@ -110,6 +110,17 @@ def process_dir(change_tracker, po_dir, authors, info):
         
         mtime = po_file.stat().st_mtime
         
+        markup_storage_file = (storage_dir / f'{uid}_{info["root_author"]}.html').resolve()
+        msgstrs_storage_file = (storage_dir / f'{uid}_{info["author"]}.json').resolve()
+        msgids_storage_file = (storage_dir / f'{uid}_{info["root_author"]}.json').resolve()
+        
+        with markup_storage_file.open('w') as f:
+            f.write(data['markup'])
+        with msgstrs_storage_file.open('w') as f:
+            json.dump(data['msgstrs'], f)
+        with msgids_storage_file.open('w') as f:
+            json.dump(data['msgids'], f)
+        
         # This doc is for root strings
         yield {
             'uid': uid,
@@ -124,7 +135,7 @@ def process_dir(change_tracker, po_dir, authors, info):
                 # also root language blurb probably wont exist
                 # because that would be i.e. in pali!
             },
-            'strings': data['msgids'],
+            'strings_path': str(msgids_storage_file),
             'title': headings['root']['title'],
             'division_title': headings['root']['division'],
             'mtime': mtime
@@ -141,7 +152,7 @@ def process_dir(change_tracker, po_dir, authors, info):
             'author_blurb': {
                 info['tr_lang']: info['author_blurb']
             },
-            'strings': data['msgstrs'],
+            'strings_path': str(msgstrs_storage_file),
             'title': headings['tr']['title'],
             'division_title': headings['tr']['division'],
             'mtime': mtime
@@ -150,12 +161,12 @@ def process_dir(change_tracker, po_dir, authors, info):
         # this doc is for the markup
         yield {
             'uid': uid,
-            'markup': data['markup'],
+            'markup_path': str(markup_storage_file),
             'mtime': mtime
         }
 
     for sub_folder in po_dir.glob('*/'):
-        yield from process_dir(change_tracker, sub_folder, authors, info=info)
+        yield from process_dir(change_tracker, sub_folder, authors, info=info, storage_dir=storage_dir)
 
 
 def get_author(author_uid, authors):
@@ -166,7 +177,7 @@ def get_author(author_uid, authors):
     return None, None
 
 
-def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
+def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
     """ Load strings and markup from po files into database
     
     each strings entry looks like this:
@@ -229,13 +240,14 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir):
                 info={
                     'tr_lang': tr_lang,
                     'root_lang': root_lang
-                })
+                },
+                storage_dir=storage_dir)
 
             markup_docs = []
             string_docs = []
 
             for i, doc in enumerate(docs):
-                if 'markup' in doc:
+                if 'markup_path' in doc:
                     doc['_key'] = f'{doc["uid"]}_markup'
                     markup_docs.append(doc)
 

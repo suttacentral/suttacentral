@@ -11,6 +11,7 @@
     "blurb": "Wprowadzenie",
     "goToTranslation": "Idź do tłumaczenia autorstwa {author}",
     "hasParallels": "Ten tekst posiada {num} analogii.",
+    "hasNoParallels": "Ten tekst nie ma zarejestrowanych podobieństw.",
     "itemNotFound": "Błąd 404: Nie znaleziono wpisu.",
     "networkError": "Błąd sieci",
     "translations": "Tłumaczenia"

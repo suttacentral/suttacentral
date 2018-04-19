@@ -201,6 +201,10 @@
         color: var(--sc-disabled-text-color);
       }
 
+      .invisible-icon {
+        visibility: hidden;
+      }
+
       .primary-accent-icon {
         color: var(--sc-primary-accent-color);
         stroke: var(--sc-primary-accent-color);
@@ -384,6 +388,16 @@
                   {{localize('hasParallels', 'num', item.parallel_count)}}
                 </paper-tooltip>
               </template>
+              <template is="dom-if" if="[[!item.parallel_count]]">
+                <div class="parallels-toggle-div">
+                  <paper-icon-button class="toggle-button invisible-icon" icon="[[toggleIcon]]">
+                  </paper-icon-button>
+                  <sc-badge id="parallels_badge"class="absolute-pos behind-button" number="0"></sc-badge>
+                </div>
+                <paper-tooltip for="parallels_badge" class="sc-tooltip" offset="-1">
+                  {{localize('hasNoParallels')}}
+                </paper-tooltip>
+              </template>
             </div>
           </div>
 
@@ -398,10 +412,6 @@
         </template>
 
       </paper-card>
-    </template>
-
-    <template is="dom-if" if="[[!item.uid]]">
-      <h2 class="not-found-error">{{localize('itemNotFound')}}</h2>
     </template>
 
   </template>
@@ -614,6 +624,7 @@
                   return scAcronym.replace(/–\s*$/, '');
               } catch (e) {
                   console.error(e);
+                  return rootId;
               }
           }
 

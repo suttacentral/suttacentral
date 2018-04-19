@@ -33,6 +33,10 @@
         "chineseLookupsDescription": "Zaznacz, aby ściągnąć definicje słownikowe dla słów chińskich w następujących językach:",
         "downloadStarted": "Pobieranie zostało rozpoczęte. Możesz nadal używać strony, damy Ci znać kiedy się zakończy.",
         "language": "Język",
-        "resetButton": "Wyczyść historię pobierania"
+        "resetButton": "Wyczyść historię pobierania",
+        "alreadyDownloaded": "Dane zostały już pobrane.",
+        "ClickToDownload": "Kliknij aby pobrać.",
+        "downloadInProgress": "Pobieranie w trakcie.",
+        "downloadPaused": "Pobieranie spauzowane."
     }
 }

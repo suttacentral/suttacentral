@@ -209,7 +209,7 @@ run-production-env:
 	@make run-prod
 
 generate-env-variables:
-	@docker run -it --rm --name env_variable_setup -v ${PWD}:/opt/ -w /opt python:3.6.2 python env_variables_setup.py
+	@docker run -it --rm --name env_variable_setup -v $(shell pwd):/opt/ -w /opt python:3.6.2 python env_variables_setup.py
 
 generate-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"

@@ -26,19 +26,16 @@ class Config:
     }
 
     BASE_DIR = Path('../')
+    STORAGE_DIR = Path('/opt/sc/storage/')
     DATA_REPO = 'https://github.com/suttacentral/sc-data.git'
     PO_REPO = 'https://github.com/suttacentral/po_text.git'
 
     DEFAULT_LANGUAGE = 'en'
 
-    # email server
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = 465
-    MAIL_USE_TLS = False
-    MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    MAIL_DEFAULT_SENDER = MAIL_USERNAME
+    MAILGUN_DOMAIN = os.environ['MAILGUN_DOMAIN']
+    MAILGUN_API_KEY = os.environ['MAILGUN_API_KEY']
+    MAIL_DONATIONS_SENDER = os.environ['MAIL_DONATIONS_SENDER']
+    MAIL_DEFAULT_SENDER = os.environ['MAIL_DEFAULT_SENDER']
 
 
 class DevelopmentConfig(Config):

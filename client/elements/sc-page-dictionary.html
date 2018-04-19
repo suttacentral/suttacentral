@@ -6,7 +6,6 @@
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="styles/sc-dict-styles.html">
 <link rel="import" href="styles/sc-scrollbar-style.html">
@@ -196,7 +195,7 @@
       </main>
     </div>
 
-    <sherby-metadata data="[[_createMetaData(dictionaryWord, localize)]]"></sherby-metadata>
+    [[_createMetaData(dictionaryWord, localize)]]
 
   </template>
 
@@ -362,8 +361,9 @@
               const description = localize('metaDescriptionText');
               const dictionaryResultsText = localize('dictionaryResultsText');
 
-              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+              document.dispatchEvent(new CustomEvent('metadata', {
                   detail: {
+                      pageTitle: `SuttaCentral—${dictionaryResultsText} ${dictionaryWord}`,
                       title: `${dictionaryResultsText} ${dictionaryWord}`,
                       description: description,
                       bubbles: true,

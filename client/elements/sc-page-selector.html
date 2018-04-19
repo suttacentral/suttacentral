@@ -7,8 +7,6 @@
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../bower_components/page-title/page-title.html">
-<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="../elements/menus/sc-toolbar.html">
 
@@ -137,8 +135,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
           </app-toolbar>
         </app-header>
 
-        <page-title base-title="" page-title="{{_getPageTitle(toolbarTitle, localize)}}"></page-title>
-        <sherby-metadata data="[[_createMetaData(localize)]]"></sherby-metadata>
+        [[_createMetaData(localize)]]
 
         <template is="dom-if" if="[[shouldShowStaticPage]]" restamp>
           <sc-static-page-selector></sc-static-page-selector>
@@ -356,8 +353,9 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
               const langReg = this.allIsoCodes.join('|');
               const legacyLinkReg = new RegExp(`\/(${langReg})\/.*[0-9]`);
               const legacyLinkReg2 = new RegExp(`\/.*[0-9]\/(${langReg})`);
+              const legacyLinkReg3 = this.route.path.startsWith("/pi-") || this.route.path.startsWith("/skt-");
               const newLinkReg = new RegExp(`\/.*[0-9]\/(${langReg})\/[a-z\d]+`);
-              return (legacyLinkReg.test(this.route.path) || legacyLinkReg2.test(this.route.path)) && !newLinkReg.test(this.route.path);
+              return (legacyLinkReg.test(this.route.path) || legacyLinkReg2.test(this.route.path) || legacyLinkReg3) && !newLinkReg.test(this.route.path);
           }
 
           _siteLanguageChanged() {
@@ -387,22 +385,6 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                       composed: true
                   }
               }));
-          }
-
-          _getPageTitle(title, localize) {
-              if (title === null) {
-                  return 'Page not found';
-              }
-              else if (['searchResults', 'dictionaryResults'].includes(title)) {
-                  return localize(title);
-              }
-              else if (this.suttaId && this.shouldShowSuttaTextPage && title) {
-                  return `${this.suttaId.toUpperCase()}: ${title}`;
-              } else if (title) {
-                  return title;
-              } else {
-                  return 'SuttaCentral';
-              }
           }
 
           _recalculateView() {

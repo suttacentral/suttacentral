@@ -205,6 +205,16 @@
         @apply --sc-tall-font-size-md;
       }
 
+      [lang="kln"] .sutta {
+        @apply --sc-klingon-font;
+        @apply --sc-tall-font-size-md;
+      }
+
+      [lang="vu"] .sutta {
+        @apply --sc-vulcan-font;
+        @apply --sc-tall-font-size-xl;
+      }
+
       [lang="vi"] .sutta, [lang="vi"] .hgroup p {
         @apply --sc-tall-font-size-md;
       }
@@ -213,7 +223,7 @@
         @apply --sc-tall-font-size-s;
       }
 
-      .sutta {
+      .sutta, article.latin-script {
         @apply --sc-paper-font-body;
         @apply --sc-serif-font;
       }

@@ -306,6 +306,10 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                 full = [uid for uid in uids if not uid.startswith('~')]
                 partial = [uid for uid in uids if uid.startswith('~')]
                 for from_uid in full:
+                    try:
+                        from_nr = int(regex.findall(r'.*?([0-9]+)$', from_uid)[0])
+                    except BaseException:
+                        from_nr = 0
                     true_from_uids = uid_matcher.get_matching_uids(from_uid)
                     if not true_from_uids:
                         logging.error(f'Relationship from uid could not be matched: {from_uid} (dropped)')
@@ -329,6 +333,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                                         '_from': true_from_uid,
                                         '_to': true_to_uid,
                                         'from': from_uid,
+                                        'number': from_nr,
                                         'to': to_uid.lstrip('~'),
                                         'type': r_type,
                                         'resembling': is_resembling,
@@ -336,6 +341,10 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                                     })
             else:
                 first_uid = uids[0]
+                try:
+                    from_nr = int(regex.findall(r'.*?([0-9]+)$', first_uid)[0])
+                except BaseException:
+                    from_nr = 0
                 true_first_uids = uid_matcher.get_matching_uids(first_uid)
                 for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
                     true_from_uids = uid_matcher.get_matching_uids(to_uid)
@@ -349,6 +358,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                             '_to': true_from_uid,
                             'from': first_uid.lstrip('~'),
                             'to': to_uid,
+                            'number': from_nr,
                             'type': r_type,
                             'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
                             'remark': remark
@@ -438,6 +448,9 @@ def run(no_pull=False):
     dictionaries_dir = data_dir / 'dictionaries'
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
 
+    storage_dir = current_app.config.get('STORAGE_DIR')
+    if not storage_dir.exists():
+        storage_dir.mkdir()
     db = arangodb.get_db()
 
     if not no_pull:
@@ -454,7 +467,7 @@ def run(no_pull=False):
     
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
-    po.load_po_texts(change_tracker, po_dir, db, additional_info_dir)
+    po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
 

@@ -8,9 +8,9 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../bower_components/sherby-metadata/sherby-metadata.html">
 
 <link rel="import" href="menus/sc-search-filter-menu.html">
+<link rel="import" href="../elements/suttaplex/sc-suttaplex.html">
 
 <!--
 The search page opens when a search string is typed into the search-input-box in the toolbar.
@@ -32,6 +32,11 @@ than ten results in total, a dropdown selection menu appears at the top.
 
       #search_result_list {
         padding: var(--sc-size-xl) 0 var(--sc-size-md);
+      }
+
+      .suttaplex-item {
+          margin-top: var(--sc-size-xl);
+          margin-bottom: calc(-1 * var(--sc-size-md));
       }
 
       .search-results-container {
@@ -211,6 +216,12 @@ than ten results in total, a dropdown selection menu appears at the top.
                handle-as="json"
                loading="{{loadingResults}}"
                on-response="_didRespond"></iron-ajax>
+    
+    <iron-ajax
+               id="uid_expansion_ajax"
+               url="[[_getExpansionUrl()]]"
+               handle-as="json"
+               last-response="{{expansionReturns}}"></iron-ajax>
 
     <iron-meta id="meta"></iron-meta>
 
@@ -225,13 +236,21 @@ than ten results in total, a dropdown selection menu appears at the top.
               <span class="search-result-description">{{localize('resultsFor')}}</span>
               <span class="search-result-term">[[searchQuery]]</span>
             </h1>
-            <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
+              <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
           </div>
 
-          <iron-scroll-threshold id="scroll_threshold" on-lower-threshold="_loadMoreData" scroll-target="document">
+            <div class="suttaplex-item">
+                <sc-suttaplex item="[[suttaplex]]" parallels-opened="[[false]]"
+                                difficulty="[[_computeItemDifficulty(suttaplex.difficulty)]]"
+                                expansion-data="[[expansionReturns]]">
+                </sc-suttaplex>
+            </div>
 
-            <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item" scroll-target="document">
-              <template>
+            <iron-scroll-threshold id="scroll_threshold" on-lower-threshold="_loadMoreData" scroll-target="document">
+
+                <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item"
+                           scroll-target="document">
+                    <template>
                 <div class$="search-result-item [[_calculateItemCategory(item)]]" tabindex$="[[tabIndex]]">
                   <div class="padded-container">
                     <a class="search-result-link" href="[[_calculateLink(item)]]">
@@ -265,7 +284,7 @@ than ten results in total, a dropdown selection menu appears at the top.
       </div>
     </template>
 
-    <sherby-metadata data="[[_createMetaData(searchQuery, localize)]]"></sherby-metadata>
+    [[_createMetaData(searchQuery, localize)]]
 
   </template>
   <script>
@@ -351,6 +370,12 @@ than ten results in total, a dropdown selection menu appears at the top.
                           'dppn': 'Dictionary of Pali Proper Names',
                           'pts': 'PTS Pali English Dictionary'
                       }
+                  },
+                  suttaplex: {
+                      type: Array
+                  },
+                  expansionReturns: {
+                      type: Array
                   }
               }
           }
@@ -380,6 +405,7 @@ than ten results in total, a dropdown selection menu appears at the top.
           _siteLanguageChanged() {
               setTimeout(() => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.language}.json`), this.language, true);
+                  this._startNewSearch();
               });
           }
 
@@ -388,14 +414,10 @@ than ten results in total, a dropdown selection menu appears at the top.
           // search results and _populateList is called.
           _didRespond(e) {
               const results = e.detail.response;
+              this.suttaplex = results.suttaplex;
+              this.$.uid_expansion_ajax.generateRequest();
               this.lastSearchResults = results.hits;
               this.resultCount = results.total;
-          }
-
-          connectedCallback() {
-              super.connectedCallback();
-              // Run every 0.5 seconds
-              setInterval(() => { this._loadMoreIfMinimumNotReached() }, 500);
           }
 
           // Saves the fetched search results to be displayed in the iron-list.
@@ -490,7 +512,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // Calls the input results when page is loaded
           _generateRequest() {
-              if (!this.searchParams || this._areAllItemsLoaded()) {
+              if (!this.searchParams || !this.searchQuery || this._areAllItemsLoaded()) {
                   return;
               }
               this.shadowRoot.querySelector('#ajax').generateRequest();
@@ -556,7 +578,48 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           // If there is a title, the division is the subtitle
           _calculateDivision(item) {
-              return item.heading.title ? item.uid : '';
+              if (!item.heading.title) {
+                  return '';
+              } else {
+                  return item.acronym ? `${this._convertAcronym(item.acronym)} — ${item.author}` : `${this._transformId(item.uid)} — ${item.author}`;
+              }
+          }
+
+          _convertAcronym(acronym) {
+              if (acronym.match(/\/\//)) {
+                  return acronym.replace(/\/\//, " (") + ")";
+              } else {
+                  return acronym;
+              }
+          }
+
+          _transformId(rootId) {
+              if (!rootId || !this.expansionReturns) {
+                  return '';
+              }
+              const expansionData = this.expansionReturns;
+              let scAcronym = '';
+              const uidParts = rootId.split('-');
+              let tail = '';
+              try {
+                  uidParts.forEach(item => {
+                      if (!expansionData[0][item]) {
+                          const tailMatch = item.match(/\d+.*/g);
+                          if (tailMatch) tail = tailMatch[0] + '–';
+                          const itemMatch = item.match(/[a-z]*/g);
+                          if (itemMatch) item = itemMatch[0];
+                      }
+                      if (item && expansionData[0][item]) {
+                          scAcronym += `${expansionData[0][item][0]} ${tail}`
+                      } else {
+                          scAcronym += tail;
+                      }
+                  });
+                  return scAcronym.replace(/–\s*$/, '');
+              } catch (e) {
+                  console.error(e);
+                  return rootId;
+              }
           }
 
           _calculateLink(item) {
@@ -571,18 +634,34 @@ than ten results in total, a dropdown selection menu appears at the top.
               return `${this.$.meta.byKey('API_ROOT')}/search`;
           }
 
+          _getExpansionUrl() {
+              return `${this.$.meta.byKey('API_ROOT')}/expansion`;
+          }
+
           _createMetaData(searchWord, localize) {
               const description = localize('metaDescriptionText');
               const searchResultsText = localize('searchResultsText');
 
-              document.dispatchEvent(new CustomEvent('sherby-metadata', {
+              document.dispatchEvent(new CustomEvent('metadata', {
                   detail: {
+                      pageTitle: `SuttaCentral—${searchResultsText} ${searchWord}`,
                       title: `${searchResultsText} ${searchWord}`,
                       description: description,
                       bubbles: true,
                       composed: true
                   }
               }));
+          }
+
+          _computeItemDifficulty(difficulty) {
+              if (!difficulty) return;
+              if (difficulty.name) {
+                  return difficulty.name;
+              }
+              else {
+                  const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
+                  return levels[difficulty];
+              }
           }
       }
 

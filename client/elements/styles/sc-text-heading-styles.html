@@ -13,9 +13,15 @@
       [lang="hi"] .sutta h1, [lang="mr"] .sutta h1, 
       [lang="my"] .sutta h1, [lang="si"] .sutta h1,
       [lang="ta"] .sutta h1, [lang="th"] .sutta h1,
-      [lang="xct"] .sutta h1, [lang="ev"] .sutta h1 {
+      [lang="xct"] .sutta h1, [lang="ev"] .sutta h1,
+      [lang="kln"] .sutta h1 {
         font-family: inherit;
         @apply --sc-transform-caps-to-bold;
+        @apply --sc-tall-font-size-h1-md;
+      }
+
+      [lang="vu"] .sutta h1 {
+        font-family: inherit;
         @apply --sc-tall-font-size-h1-md;
       }
 
@@ -34,7 +40,8 @@
       [lang="hi"] .sutta h2, [lang="mr"] .sutta h2, 
       [lang="my"] .sutta h2, [lang="si"] .sutta h2,
       [lang="ta"] .sutta h2, [lang="th"] .sutta h2,
-      [lang="xct"] .sutta h2, [lang="ev"] .sutta h2 {
+      [lang="xct"] .sutta h2, [lang="ev"] .sutta h2,
+      [lang="kln"] .sutta h2, [lang="vu"] .sutta h2 {
         font-family: inherit;
         @apply --sc-transform-caps-to-bold;
         @apply --sc-tall-font-size-static-subtitle;
@@ -55,7 +62,8 @@
       [lang="hi"] .sutta h3, [lang="mr"] .sutta h3, 
       [lang="my"] .sutta h3, [lang="si"] .sutta h3,
       [lang="ta"] .sutta h3, [lang="th"] .sutta h3,
-      [lang="xct"] .sutta h3, [lang="ev"] .sutta h3 {
+      [lang="xct"] .sutta h3, [lang="ev"] .sutta h3,
+      [lang="kln"] .sutta h3, [lang="vu"] .sutta h3 {
         font-family: inherit;
         @apply --sc-transform-caps-to-bold;
         @apply --sc-tall-font-size-xl;
@@ -226,6 +234,9 @@
 
       #segmented_text_content h1 [lang="en"]:after {
         content: "NOTE: This is a draft. The proofreading is not complete.";
+      }
+
+      #segmented_text_content h1 [lang="en"]:after, .draft-notice {
         background-color: var(--sc-secondary-background-color);
         padding: var(--sc-size-md);
         display: table;

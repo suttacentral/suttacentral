@@ -87,7 +87,7 @@ def search(query: str, highlight=True, offset=0, limit=10,
     body = {
         "from": offset,
         "size": limit,
-        "_source": ["uid", "lang", "name", "volpage", "gloss", "term", "heading", "is_root", "author", "author_uid", "author_short"],
+        "_source": ["uid", "lang", "name", "volpage", "gloss", "term", "heading", "is_root", "author", "author_uid", "author_short", "acronym"],
         "timeout": "15s",
         "query": {
             "function_score": {

@@ -62,6 +62,9 @@
               }
 
               const sutta = this.inputElement.querySelectorAll('.sutta')[0];
+              if (!sutta) {
+                  return;
+              }
               const suttaFont = window.getComputedStyle(sutta, null).getPropertyValue('font');
 
               Array.from(paragraphs).forEach(paragraph => {

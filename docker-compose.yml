@@ -18,6 +18,7 @@ services:
       - ./server/:/opt/sc/sc-flask
       - pootle-po:/srv/pootle/po/
       - ./pootle:/opt/sc/pootle
+      - working-storage-volume:/opt/sc/storage
     expose:
       - '5000'
     depends_on:
@@ -43,6 +44,7 @@ services:
     labels:
       application: 'sc-nginx'
     volumes:
+      - ./nginx/conf.d:/etc/nginx/configurations
       - nginx-data-volume:/opt/sc/logs/nginx
       - socket-volume:/opt/sc/sockets
       - l10n-ter:/l10n_ter
@@ -144,7 +146,7 @@ services:
     expose:
       - 8080
     environment:
-      - "API_URL=http://127.0.0.1/api/swagger.json"
+      - "API_URL=http://localhost/api/swagger.json"
 
   sc-frontend-tester:
     image: trebuhd/wct-headless:latest
@@ -165,6 +167,7 @@ services:
 volumes:
   db-data-volume:
   nginx-data-volume:
+  working-storage-volume:
   socket-volume:
   elasticsearch-data:
   pootle-po:

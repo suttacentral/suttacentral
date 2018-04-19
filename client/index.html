@@ -45,6 +45,42 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Noto+Serif" rel="stylesheet">
+
+  <!-- Google Analytics -->
+  <script>
+  window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+  ga('create', 'UA-39277629-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+  <script async src='https://www.google-analytics.com/analytics.js'></script>
+  <!-- End Google Analytics -->
+
+  <!-- Polyfills -->
+  <script>
+    var head = document.querySelector('head');
+    if (!Array.prototype.includes) {
+        var script = document.createElement('script');
+        script.src = '/polyfills/arrayIncludes.js';
+        head.appendChild(script);
+    }
+    if (!Object.entries) {
+        var script = document.createElement('script');
+        script.src = '/polyfills/objectEntries.js';
+        head.appendChild(script);
+    }
+    if (!String.prototype.includes) {
+        var script = document.createElement('script');
+        script.src = '/polyfills/stringIncludes.js';
+        head.appendChild(script);
+    }
+  </script>
+
+  <script src="/node_modules/raven-js/dist/raven.min.js"></script>
+  <script>Raven.config('https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981', {
+      release: '1.0.0',
+      environment: window.location.href.indexOf('suttacentral') === -1 ? 'development' : 'production'
+  }).install();</script>
 
   <!-- Polyfills -->
   <script>
@@ -214,9 +250,10 @@
         document.querySelector('.logo-image-container').appendChild(logoImg);
         removeSiteContent();
     }
-    document.addEventListener("sherby-metadata", function(e) {
+    document.addEventListener("metadata", function(e) {
         var metaData = e.detail;
         if (metaData) {
+            document.head.querySelector("title").innerText = metaData.pageTitle;
             document.head.querySelector("[property='og:title']").content = metaData.title;
             document.head.querySelector("[property='og:description']").content = metaData.description;
             document.head.querySelector("[name='title']").content = metaData.title;
