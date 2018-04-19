@@ -12,8 +12,7 @@ from api.views import (Currencies, Donations, Languages, LookupDictionaries, Men
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
-from common.extensions import cache, mail
-
+from common.extensions import cache
 
 def app_factory() -> Tuple[Api, Flask]:
     """app factory. Handles app object creation for better readability"""
@@ -52,7 +51,6 @@ def app_factory() -> Tuple[Api, Flask]:
 
 def register_extensions(app):
     cache.init_app(app, config={'CACHE_TYPE': 'simple'})
-    mail.init_app(app)
 
 
 api, app = app_factory()

@@ -40,6 +40,7 @@ RUN pip install -q virtualenv \
     python-memcached \
     python-Levenshtein \
     m2crypto \
+    django-mailgun \
     wheel
 
 
