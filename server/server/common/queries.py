@@ -328,6 +328,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             RETURN original_name.name
     )[0]
 
+    SORT e.number, e.to
     RETURN {
         from: e.from,
         to: {
