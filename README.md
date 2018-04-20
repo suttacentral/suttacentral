@@ -21,6 +21,13 @@ Remember them! You will use some of them to access admin services, eg. Pootle.
 5. `make index-elasticsearch` -> load data into elasticsearch
 6. `make reload-uwsgi` -> make sure flask server is not serving cached stale data
 
+### If the data has changed in a serious way
+
+Add these extra commands before `make load-data`:
+
+1. `make delete-database`
+2. `make migrate`
+
 # Working with pootle
   * In order to load data to pootle run `make load-to-pootle`.
   * To load data from pootle to server/client run `make load-from-pootle`.
