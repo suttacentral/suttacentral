@@ -226,3 +226,9 @@ load-from-pootle:
 	@docker exec -t sc-pootle bash -c "python3 update_po_files.py"
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files -p /srv/pootle/po"
 	@docker exec -t sc-pootle-pipeline python from_pootle.py
+
+backup-mysql:
+	@docker exec -t sc-pootle "/home/pootle/backup_mysql.sh"
+
+restore-mysql:
+	@docker exec -t sc-pootle "/home/pootle/restore_mysql.sh" < /dev/stdin
