@@ -408,12 +408,11 @@ than ten results in total, a dropdown selection menu appears at the top.
 
           _siteLanguageChanged() {
               if (!this.waitTimeAfterNewWordExpired) {
-                console.log("wait = ", this.waitTimeAfterNewWordExpired);
                 return;
               }
               setTimeout(() => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.language}.json`), this.language, true);
-                  this._startNewSearch("_siteLanguageChanged");
+                  this._startNewSearch();
               });
           }
 
@@ -427,7 +426,6 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.lastSearchResults = results.hits;
               this.resultCount = results.total;
               this.set('waitTimeAfterNewWordExpired', true);
-              console.log(results);
           }
 
           // Saves the fetched search results to be displayed in the iron-list.
@@ -485,12 +483,11 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (filterMenu) {
                   filterMenu.resetFilter();
               }
-              this._startNewSearch("_startNewSearchWithNewWord");
+              this._startNewSearch();
           }
 
           // generates a new search request.
-          _startNewSearch(something) {
-            console.log(something);
+          _startNewSearch() {
               if (!this.isOnline || !this.searchQuery) {
                   return;
               }
@@ -534,7 +531,6 @@ than ten results in total, a dropdown selection menu appears at the top.
           // "translations" or "dictionaries"
           _calculateCurrentFilter(event) {
               if (!this.waitTimeAfterNewWordExpired) {
-                console.log("wait = ", this.waitTimeAfterNewWordExpired);
                 return;
               }
               let selectedView;
@@ -552,7 +548,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                       selectedView = 'all';
               }
               this.currentFilter = selectedView;
-              this._startNewSearch("_calculateCurrentFilter");
+              this._startNewSearch();
           }
 
           // The endless scroll is dependant on a scroll event, but if there's less then 1 item
