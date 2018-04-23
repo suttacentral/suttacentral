@@ -376,6 +376,10 @@ than ten results in total, a dropdown selection menu appears at the top.
                   },
                   expansionReturns: {
                       type: Array
+                  },
+                  waitTimeAfterNewWordExpired: {
+                      type: Boolean,
+                      value: true
                   }
               }
           }
@@ -403,9 +407,13 @@ than ten results in total, a dropdown selection menu appears at the top.
           }
 
           _siteLanguageChanged() {
+              if (!this.waitTimeAfterNewWordExpired) {
+                console.log("wait = ", this.waitTimeAfterNewWordExpired);
+                return;
+              }
               setTimeout(() => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-page-search/${this.language}.json`), this.language, true);
-                  this._startNewSearch();
+                  this._startNewSearch("_siteLanguageChanged");
               });
           }
 
@@ -418,6 +426,8 @@ than ten results in total, a dropdown selection menu appears at the top.
               this.$.uid_expansion_ajax.generateRequest();
               this.lastSearchResults = results.hits;
               this.resultCount = results.total;
+              this.set('waitTimeAfterNewWordExpired', true);
+              console.log(results);
           }
 
           // Saves the fetched search results to be displayed in the iron-list.
@@ -469,16 +479,18 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (!this.isOnline || !this.searchQuery) {
                   return;
               }
+              this.set('waitTimeAfterNewWordExpired', false);
               this.set('currentFilter', 'all');
               const filterMenu = this.shadowRoot.querySelector('#filter_menu');
               if (filterMenu) {
                   filterMenu.resetFilter();
               }
-              this._startNewSearch();
+              this._startNewSearch("_startNewSearchWithNewWord");
           }
 
           // generates a new search request.
-          _startNewSearch() {
+          _startNewSearch(something) {
+            console.log(something);
               if (!this.isOnline || !this.searchQuery) {
                   return;
               }
@@ -521,6 +533,10 @@ than ten results in total, a dropdown selection menu appears at the top.
           // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
           // "translations" or "dictionaries"
           _calculateCurrentFilter(event) {
+              if (!this.waitTimeAfterNewWordExpired) {
+                console.log("wait = ", this.waitTimeAfterNewWordExpired);
+                return;
+              }
               let selectedView;
               switch (event.detail.searchView) {
                   case 1:
@@ -536,7 +552,7 @@ than ten results in total, a dropdown selection menu appears at the top.
                       selectedView = 'all';
               }
               this.currentFilter = selectedView;
-              this._startNewSearch();
+              this._startNewSearch("_calculateCurrentFilter");
           }
 
           // The endless scroll is dependant on a scroll event, but if there's less then 1 item
