@@ -295,6 +295,11 @@
                   },
                   originalDrawerZIndex: {
                       type: String
+                  },
+                  changedRoute: {
+                      type: String,
+                      statePath: 'currentRoute',
+                      observer: '_routeChanged'
                   }
               }
           }
@@ -319,6 +324,11 @@
               Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-drawer-layout/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               });
+          }
+
+          _routeChanged() {
+              this.$.settings_dialog.close();
+              this.$.info_dialog.close();
           }
 
           _siteLanguageChanged() {
