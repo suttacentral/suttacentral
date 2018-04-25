@@ -337,6 +337,9 @@
                   if (e.detail.largeScreenOnly === true && isNarrowScreen) {
                       return;
                   }
+                  if (e.detail.largeScreenOnly === false && !isNarrowScreen) {
+                      return;
+                  }
                   if (!isNarrowScreen) {
                       if (appDrawer.hasAttribute('opened')) {
                           // hide drawer
