@@ -235,12 +235,6 @@
 
           static get actions() {
               return {
-                  changeToolbarTitle(title) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_TITLE',
-                          title: title
-                      };
-                  },
                   changeSuttaMetaText(metaText) {
                       return {
                           type: 'CHANGE_SUTTA_META_TEXT',
@@ -293,7 +287,6 @@
               this._resetViewOptions();
               this._setRootAttributes();
               this._setTranslatedAttributes();
-              this._updateToolbar();
               this._addTextContent();
               if (!this._browserRequiresShadyDomFix()) {
                   this._computeParagraphs();
@@ -334,17 +327,6 @@
               this.translationAuthor = this.translatedSutta.author;
               this.translationLang = this.translatedSutta.lang;
               this.translatedTitle = this.translatedSutta.title;
-          }
-
-          _updateToolbar() {
-              if (!this.translatedSutta && !this.rootSutta) {
-                  setTimeout(() => {
-                      this.dispatch('changeToolbarTitle', this.localize('suttaNotFound'));
-                  }, 500);
-                  return;
-              }
-              this.dispatch('changeToolbarTitle',
-                  `${this.translatedTitle || this.rootTitle} — ${this.translationAuthor || this.rootAuthor}`);
           }
 
           // returns the meta-data from the loaded sutta text

@@ -12,12 +12,12 @@ def remove_leading_zeros(string):
 
 
 def strip_number_from_title(title):
-    return regex.sub(r'\d+\W?\d*\W?\s', '', title, 1)
-
+    return regex.sub(r'[\d\.\{\} –-]*', '', title, 1)
 
 def sanitize_title(title):
-    #If stripping the number returns an empty string, just return original
-    return strip_number_from_title(title) or title
+    #If stripping the number returns an empty string, return that so suttaplex picks up
+    # the root title instead.
+    return strip_number_from_title(title)
     
 
 def clean_html(string):
@@ -65,6 +65,8 @@ def extract_strings_from_po(po):
 
 
 def extract_headings_from_po(po):
+    # If the title only contains numbers, an empty string is returned so the 
+    # suttaplex only picks up the original title instead.
     found = {'tr': {}, 'root': {}}
     for string, key in ( ('<h1', 'title'), ('class="division"', 'division') ):
         tr_strings = []
