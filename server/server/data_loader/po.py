@@ -65,7 +65,7 @@ def extract_strings_from_po(po):
 
 
 def extract_headings_from_po(po):
-    # If the title only contains numbers, an empty string is returned so the 
+    # If the title only contains numbers, an empty string is returned so the
     # suttaplex only picks up the original title instead.
     found = {'tr': {}, 'root': {}}
     for string, key in ( ('<h1', 'title'), ('class="division"', 'division') ):
