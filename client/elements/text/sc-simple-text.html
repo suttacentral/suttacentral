@@ -272,6 +272,7 @@
               setTimeout(() => {
                   this._scrollToSection(window.location.hash.substr(1), false, 500);
               }, 0);
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
           }
 
           _setAttributes() {
@@ -303,6 +304,7 @@
               } catch (e) {
                   console.error(e);
               }
+              console.log(metaText);
               return metaText;
           }
 
