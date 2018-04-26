@@ -302,6 +302,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           ready() {
               super.ready();
+              const lowerCaseRoute = this.route.path.toLowerCase();
+              this.set('route.path', lowerCaseRoute);
               if (this._shouldRedirect()) {
                 this._redirectFromLegacyLink();
               }
@@ -450,6 +452,7 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
                   this.dispatch('changeToolbarMode', 'list-mode');
                   this.dispatch('selectNavigationMenuItem', this._getPathParamNumber(1));
                   this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
+                  this._toggleDrawer(false);
               }
               else if (this._isSuttaTextPage()) {
                   const suttaRouteParams = this._getSuttaRouteParams();

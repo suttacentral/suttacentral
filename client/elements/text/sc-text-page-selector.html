@@ -193,7 +193,13 @@
                           type: 'DOWNLOAD_SUTTA_TEXT',
                           text: text
                       }
-                  }
+                  },
+                  changeToolbarTitle(title) {
+                      return {
+                          type: 'CHANGE_TOOLBAR_TITLE',
+                          title: title
+                      };
+                  },
               }
           }
 
@@ -289,6 +295,10 @@
               return (!rootSutta && !translatedSutta) || networkError;
           }
 
+          _updateToolbar(title) {
+              this.dispatch('changeToolbarTitle', title);
+          }
+
           _createMetaData(responseData, expansionReturns, localize) {
               if (!responseData) {
                   return;
@@ -300,7 +310,10 @@
               if (responseData.suttaplex.blurb) {
                   description = responseData.suttaplex.blurb;
               }
-              const title = responseData.translation ? responseData.translation.title : responseData.root_text.title;
+              let title = responseData.translation ? responseData.translation.title : '';
+              if (title === '') {
+                title = responseData.suttaplex.original_title;
+              }
               const author = responseData.translation ? responseData.translation.author : responseData.root_text.author;
               const acronym = responseData.suttaplex.acronym ? responseData.suttaplex.acronym.split(/\/\//)[0] : this._transformId(responseData.suttaplex.uid,expansionReturns);
 
@@ -313,6 +326,8 @@
                       composed: true
                   }
               }));
+
+              this._updateToolbar(`${title}—${author}`);
           }
 
           _transformId(rootId, expansionReturns) {
