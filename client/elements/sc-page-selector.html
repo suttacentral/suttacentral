@@ -302,6 +302,8 @@ The page-selector also parses the input-data and loads one of 6 possible page-vi
 
           ready() {
               super.ready();
+              const lowerCaseRoute = this.route.path.toLowerCase();
+              this.set('route.path', lowerCaseRoute);
               if (this._shouldRedirect()) {
                 this._redirectFromLegacyLink();
               }
