@@ -454,10 +454,6 @@ def run(no_pull=False):
     db = arangodb.get_db()
 
     if not no_pull:
-        po_text_dir = current_app.config.get('DATA_REPO') / 'po_text'
-        if (po_text_dir / '.git').exists():
-            import shutil
-            shutil.rmtree(po_text_dir)
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
 
     images_files.load_images_links(db)
