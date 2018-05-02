@@ -225,12 +225,6 @@
 
           static get actions() {
               return {
-                  changeToolbarTitle(title) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_TITLE',
-                          title: title
-                      };
-                  },
                   changeSuttaMetaText(metaText) {
                       return {
                           type: 'CHANGE_SUTTA_META_TEXT',
@@ -268,7 +262,6 @@
           _updateView() {
               this._applyFirefoxShadyDomFix();
               this._setAttributes();
-              this._updateToolbar();
               this._computeParagraphs();
               this.currentId = '';
               this.spansForWordsGenerated = false;
@@ -279,6 +272,7 @@
               setTimeout(() => {
                   this._scrollToSection(window.location.hash.substr(1), false, 500);
               }, 0);
+              this.dispatch('changeSuttaMetaText', this._computeMeta());
           }
 
           _setAttributes() {
@@ -288,16 +282,6 @@
               this.author = this.sutta.author;
               this.lang = this.sutta.lang;
               this.suttaTitle = this.sutta.title;
-          }
-
-          _updateToolbar() {
-              this.dispatch('changeSuttaMetaText', this._computeMeta());
-              if (!this.sutta || !this.sutta.text) {
-                  this.dispatch('changeToolbarTitle', 'Sutta not found.');
-                  return;
-              }
-              const title = this.author ? `${this.suttaTitle} — ${this.author}` : `${this.suttaTitle}`;
-              this.dispatch('changeToolbarTitle', title);
           }
 
           _extractSuttaText(suttaText) {

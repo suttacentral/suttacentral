@@ -82,6 +82,26 @@
       environment: window.location.href.indexOf('suttacentral') === -1 ? 'development' : 'production'
   }).install();</script>
 
+  <!-- Polyfills -->
+  <script>
+    var head = document.querySelector('head');
+    if (!Array.prototype.includes) {
+        var script = document.createElement('script');
+        script.src = '/polyfills/arrayIncludes.js';
+        head.appendChild(script);
+    }
+    if (!Object.entries) {
+        var script = document.createElement('script');
+        script.src = '/polyfills/objectEntries.js';
+        head.appendChild(script);
+    }
+    if (!String.prototype.includes) {
+        var script = document.createElement('script');
+        script.src = '/polyfills/stringIncludes.js';
+        head.appendChild(script);
+    }
+  </script>
+
   <style>
     body {
       margin: 0;

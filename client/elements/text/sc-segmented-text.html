@@ -235,12 +235,6 @@
 
           static get actions() {
               return {
-                  changeToolbarTitle(title) {
-                      return {
-                          type: 'CHANGE_TOOLBAR_TITLE',
-                          title: title
-                      };
-                  },
                   changeSuttaMetaText(metaText) {
                       return {
                           type: 'CHANGE_SUTTA_META_TEXT',
@@ -293,7 +287,6 @@
               this._resetViewOptions();
               this._setRootAttributes();
               this._setTranslatedAttributes();
-              this._updateToolbar();
               this._addTextContent();
               if (!this._browserRequiresShadyDomFix()) {
                   this._computeParagraphs();
@@ -334,17 +327,6 @@
               this.translationAuthor = this.translatedSutta.author;
               this.translationLang = this.translatedSutta.lang;
               this.translatedTitle = this.translatedSutta.title;
-          }
-
-          _updateToolbar() {
-              if (!this.translatedSutta && !this.rootSutta) {
-                  setTimeout(() => {
-                      this.dispatch('changeToolbarTitle', this.localize('suttaNotFound'));
-                  }, 500);
-                  return;
-              }
-              this.dispatch('changeToolbarTitle',
-                  `${this.translatedTitle || this.rootTitle} — ${this.translationAuthor || this.rootAuthor}`);
           }
 
           // returns the meta-data from the loaded sutta text
@@ -511,19 +493,17 @@
           _computeParagraphs() {
               const uid = (this.rootSutta || this.translatedSutta).uid;
               let divisionId = /^[a-z]+/.exec(uid)[0];
-              if (divisionId === 'pli') {
-                  divisionId = 'vi';
-              }
+              if (divisionId === 'pli') divisionId = 'vi';
+              if (divisionId === 'iti') divisionId = 'it';
               this._setParagraphsVisible(this.showParagraphs);
 
               if (!this.paragraphs || !this.showParagraphs) {
                   return;
               }
-
               this.paragraphs.forEach((paragraph) => {
                   const refs = this.$.segmented_text_content.querySelectorAll(`.${paragraph.uid}:not(.textual-info-paragraph-inline)`);
                   Array.from(refs).forEach((item) => {
-                      if (item.id.startsWith('pts-vp-pli') || item.id.match(/pts[1-9]/)) {
+                      if (this._shouldDisplayBookIcon(divisionId,item.id)) {
                           this._processVolPageInfo(item, divisionId, paragraph);
                       } else {
                           this._addParagraphData(item, paragraph);
@@ -539,6 +519,13 @@
               setTimeout(() => {
                   this._applyQuoteHanger();
               });
+          }
+
+          _shouldDisplayBookIcon(divisionId, itemId) {
+              let divisionIdMatch = (divisionId === 'tha' || divisionId === 'thi');
+              let secondEdition = itemId.includes('2ed');
+              let correctId = (itemId.startsWith('pts-vp-pli') || itemId.match(/pts[1-9]/));
+              return (!divisionIdMatch && !secondEdition && correctId);
           }
 
           _processVolPageInfo(item, divisionId, paragraph) {

@@ -12,6 +12,27 @@ if you chose random you will be prompted back with generated values.
 Remember them! You will use some of them to access admin services, eg. Pootle.
 6. Done
 
+## Or updating in individual steps
+
+1. `cd /opt/suttacentral`
+2. `make generate-env-variables` -> Supply needed env variables (only if env has been changed)
+3. `make run-prod-no-logs` -> run docker containers
+4. `make delete-database` -> OPTIONAL: Skip this if data hasn't seriously changed (do it, if texts have been deleted or renamed)
+5. `make migrate` -> only needed for delete-database, but harmless to run anyway
+6. `make load-data` -> load data into arangodb
+7. `make index-elasticsearch` -> load data into elasticsearch
+8. `make reload-uwsgi` -> make sure flask server is not serving cached stale data
+
+### Changing the branch(s) the server, or staging server, uses
+
+1. `cd /opt/suttacentral`
+2. `git checkout <code-branch>`
+3. `cd server/sc-data`
+4. `git checkout <data-branch>`
+5. `cd po_text`
+6. `git checkout <po-branch>`
+
+Then run the commands for updating, probably including the `make delete-database` step.
 
 # Working with pootle
   * In order to load data to pootle run `make load-to-pootle`.

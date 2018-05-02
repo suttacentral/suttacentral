@@ -296,6 +296,11 @@
               {{localize('resetButton')}}
             </paper-button>
 
+            <paper-button id='reset_history_button' class="button" raised
+                          disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
+                {{localize('resetButton')}}
+            </paper-button>
+
             <paper-card id="download_controller">
               <div class="download-info-row">
                 <div class="download-current-url">{{localize('downloading')}}: [[currentDownloadingUrl]]</div>
