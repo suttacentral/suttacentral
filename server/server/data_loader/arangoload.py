@@ -455,7 +455,6 @@ def run(no_pull=False):
 
     if not no_pull:
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
-        collect_data(po_dir, current_app.config.get('PO_REPO'))
 
     images_files.load_images_links(db)
 
