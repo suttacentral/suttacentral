@@ -311,7 +311,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                     except BaseException:
                         from_nr = 0
                     true_from_uids = uid_matcher.get_matching_uids(from_uid)
-                    if not true_from_uids:
+                    if not true_from_uids and ' ' not in from_uid:
                         logging.error(f'Relationship from uid could not be matched: {from_uid} (dropped)')
                         continue
 
@@ -321,7 +321,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                                 continue
 
                             true_to_uids = uid_matcher.get_matching_uids(to_uid)
-                            if not true_to_uids:
+                            if not true_to_uids and ' ' not in to_uid:
                                 logging.error(f'Relationship to uid could not be matched: {to_uid} (appears as orphan)')
                                 true_to_uids = ['orphan']
 
@@ -348,7 +348,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                 true_first_uids = uid_matcher.get_matching_uids(first_uid)
                 for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
                     true_from_uids = uid_matcher.get_matching_uids(to_uid)
-                    if not true_from_uids:
+                    if not true_from_uids and ' ' not in from_uid:
                         logging.error(f'Relationship from uid could not be matched: {from_uid} (dropped)')
                         continue
                     for true_from_uid in true_from_uids:
