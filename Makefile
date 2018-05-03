@@ -18,6 +18,7 @@ build-arangodb:
 	@docker-compose build sc-arangodb
 build-nginx:
 	@docker-compose build sc-nginx
+	cd nginx && ./create-certs.sh
 build-elasticsearch:
 	@docker-compose build sc-elasticsearch
 build-swagger:
