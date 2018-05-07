@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-echo "Creating self-signed certificate"
-mkdir -p /opt/sc/certs
-openssl req -x509 -nodes -days 50000 -newkey rsa:2048 \
-    -subj "/O=SuttaCentral" \
-    -keyout  /opt/sc/certs/self-signed.key \
-    -out /opt/sc/certs/self-signed.crt
+
+if [ ! -f ./conf.d/certs/server.pem ]; then
+    echo "Creating self-signed certificate"
+    openssl req -x509 -nodes -days 50000 -newkey rsa:2048 \
+        -subj "/O=SuttaCentral" \
+        -keyout ./conf.d/certs/server.pem \
+        -out ./conf.d/server.key
+fi
 
