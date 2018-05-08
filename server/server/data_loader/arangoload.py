@@ -18,6 +18,8 @@ from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
     divisions, images_files, homepage, available_languages, order, sizes
 
+from .generate_sitemap import generate_sitemap
+
 def update_data(repo: Repo, repo_addr: str):
     """Updates given git repo.
 
@@ -494,7 +496,15 @@ def run(no_pull=False):
 
     available_languages.load_available_languages(db, additional_info_dir)
     
+    sitemap = generate_sitemap(db)
+    
+    for folder in pathlib.Path('/opt/sc/frontend/builds').glob('*'):
+        if folder.is_dir():
+            (folder / 'sitemap.xml').open('w').write(sitemap)
+    
     order.add_next_prev_using_menu_data(db)
+    
+    
 
     sizes.load_sizes(sizes_dir, db)
 
