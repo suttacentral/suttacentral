@@ -18,6 +18,8 @@ from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
     divisions, images_files, homepage, available_languages, order, sizes
 
+from .generate_sitemap import generate_sitemap
+
 def update_data(repo: Repo, repo_addr: str):
     """Updates given git repo.
 
@@ -311,7 +313,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                     except BaseException:
                         from_nr = 0
                     true_from_uids = uid_matcher.get_matching_uids(from_uid)
-                    if not true_from_uids:
+                    if not true_from_uids and ' ' not in from_uid:
                         logging.error(f'Relationship from uid could not be matched: {from_uid} (dropped)')
                         continue
 
@@ -321,7 +323,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                                 continue
 
                             true_to_uids = uid_matcher.get_matching_uids(to_uid)
-                            if not true_to_uids:
+                            if not true_to_uids and ' ' not in to_uid:
                                 logging.error(f'Relationship to uid could not be matched: {to_uid} (appears as orphan)')
                                 true_to_uids = ['orphan']
 
@@ -348,7 +350,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                 true_first_uids = uid_matcher.get_matching_uids(first_uid)
                 for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
                     true_from_uids = uid_matcher.get_matching_uids(to_uid)
-                    if not true_from_uids:
+                    if not true_from_uids and ' ' not in from_uid:
                         logging.error(f'Relationship from uid could not be matched: {from_uid} (dropped)')
                         continue
                     for true_from_uid in true_from_uids:
@@ -494,7 +496,15 @@ def run(no_pull=False):
 
     available_languages.load_available_languages(db, additional_info_dir)
     
+    sitemap = generate_sitemap(db)
+    
+    for folder in pathlib.Path('/opt/sc/frontend/builds').glob('*'):
+        if folder.is_dir():
+            (folder / 'sitemap.xml').open('w').write(sitemap)
+    
     order.add_next_prev_using_menu_data(db)
+    
+    
 
     sizes.load_sizes(sizes_dir, db)
 
