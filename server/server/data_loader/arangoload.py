@@ -498,7 +498,9 @@ def run(no_pull=False):
     
     sitemap = generate_sitemap(db)
     
-    pathlib.Path('/opt/sc/frontend/sitemap.xml').open('w').write(sitemap)
+    for folder in pathlib.Path('/opt/sc/frontend/builds').glob('*'):
+        if folder.is_dir():
+            (folder / 'sitemap.xml').open('w').write(sitemap)
     
     order.add_next_prev_using_menu_data(db)
     
