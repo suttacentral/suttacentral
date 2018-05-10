@@ -5,7 +5,7 @@ import datetime
 from collections import defaultdict
 
 import stripe
-from flask import current_app, request
+from flask import current_app, request, redirect
 from flask_restful import Resource
 
 from sortedcontainers import SortedDict
@@ -1112,3 +1112,36 @@ class PWASizes(Resource):
             return data, 200
         except IndexError:
             return 'Language not found', 404
+
+class Redirect(Resource):
+    def get(self, url):
+        print(url)
+        db = get_db()
+        parts = url.split('/')
+        if len(parts) == 2:
+            lang, uid = parts
+            languages = db.collection['language']
+            if lang in languages:
+                hits = db.aql.execute('''
+                    LET modern = (FOR text IN po_strings
+                        FILTER text.lang == @lang
+                        FILTER text.uid == @uid
+                        RETURN {author_uid: text.author_uid, legacy: false})
+
+                    LET legacy = (FOR text IN html_text
+                        FILTER text.lang == @lang
+                        FILTER text.uid == @uid
+                        RETURN {author_uid: text.author_uid, legacy: true})
+
+                    RETURN APPEND(modern, legacy)
+                ''', bind_vars={"lang": lang, "uid": uid}).next()
+                if hits:
+                    author_uid = hits[0]['author_uid']
+                    return "Redirect", 301, {'Location': f'/{uid}/{lang}/{author_uid}'}
+                else:
+                    root = db.collection['root']
+                    if uid in root:
+                        return "Redirect", 301, {'Location': f'/{uid}'}
+                    
+        
+        return "Not found", 300, {'Location': '/'}
