@@ -1120,7 +1120,9 @@ class Redirect(Resource):
         parts = url.split('/')
         if len(parts) == 2:
             lang, uid = parts
-            languages = db.collection['language']
+            if lang == 'pi':
+                lang = 'pli'
+            languages = db.collection('language')
             if lang in languages:
                 hits = db.aql.execute('''
                     LET modern = (FOR text IN po_strings
@@ -1139,9 +1141,9 @@ class Redirect(Resource):
                     author_uid = hits[0]['author_uid']
                     return "Redirect", 301, {'Location': f'/{uid}/{lang}/{author_uid}'}
                 else:
-                    root = db.collection['root']
+                    root = db.collection('root')
                     if uid in root:
                         return "Redirect", 301, {'Location': f'/{uid}'}
                     
         
-        return "Not found", 300, {'Location': '/'}
+        return "Not found", 403
