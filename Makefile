@@ -47,6 +47,9 @@ run-prod:
 run-prod-no-logs:
 	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
+run-frontend-builder:
+	@docker-compose run --entrypoint "bash builder.sh" sc-frontend-builder
+
 migrate:
 	@docker exec -t sc-flask python server/manage.py migrate
 
@@ -163,12 +166,17 @@ prepare-tests:
 test:
 	@make test-client
 	@make test-server
+	@make test-builds
 
 test-client:
 	@docker exec -t sc-frontend-tester bash -c "echo 'Running client linter' && polymer lint && wct"
 
 test-server:
 	@docker exec -t sc-flask pytest server/
+
+test-builds:
+	test -e client/build/default/index.html
+	test -e client/build/es5-bundled/index.html
 
 load-data:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
