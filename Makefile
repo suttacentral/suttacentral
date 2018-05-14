@@ -47,6 +47,9 @@ run-prod:
 run-prod-no-logs:
 	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
+run-frontend-builder:
+	@docker-compose run --entrypoint "bash builder.sh" sc-frontend-builder
+
 migrate:
 	@docker exec -t sc-flask python server/manage.py migrate
 
