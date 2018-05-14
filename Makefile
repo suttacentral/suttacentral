@@ -161,6 +161,7 @@ prepare-tests:
 	@bash wait_for_flask.sh
 # Run tests
 test:
+	@make test-urls
 	@make test-client
 	@make test-server
 
@@ -169,6 +170,11 @@ test-client:
 
 test-server:
 	@docker exec -t sc-flask pytest server/
+
+test-urls:
+	curl --fail -sS localhost/ >/dev/null
+	curl --fail -sS localhost/default/index.html >/dev/null
+	curl --fail -sS localhost/default/es5-compiled.html >/dev/null
 
 load-data:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
