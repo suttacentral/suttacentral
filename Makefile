@@ -161,9 +161,9 @@ prepare-tests:
 	@bash wait_for_flask.sh
 # Run tests
 test:
-	@make test-builds
 	@make test-client
 	@make test-server
+	@make test-builds
 
 test-client:
 	@docker exec -t sc-frontend-tester bash -c "echo 'Running client linter' && polymer lint && wct"
