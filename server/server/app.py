@@ -2,17 +2,19 @@ import os
 from typing import Tuple
 
 from flasgger import Swagger
-from flask import Blueprint, Flask
+from flask import Blueprint, Flask, redirect
 from flask_cors import CORS
 from flask_restful import Api
 
 from api.views import (Currencies, Donations, Languages, LookupDictionaries, Menu, Paragraphs, Parallels, Sutta,
                        SuttaplexList, Images, Epigraphs, WhyWeRead, DictionaryFull, Glossary, DictionaryAdjacent,
-                       DictionarySimilar, Expansion, CollectionUrlList, StripePublicKey, PWASizes)
+                       DictionarySimilar, Expansion, CollectionUrlList, StripePublicKey, PWASizes, Redirect)
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
 from common.extensions import cache
+
+
 
 def app_factory() -> Tuple[Api, Flask]:
     """app factory. Handles app object creation for better readability"""
@@ -42,7 +44,8 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(StripePublicKey, '/stripe_public_key')
     api.add_resource(CollectionUrlList, '/pwa/collection/<string:collection>')
     api.add_resource(PWASizes, '/pwa/sizes')
-
+    api.add_resource(Redirect, '/redirect/<path:url>')
+    
     app.register_blueprint(api_bp)
     register_extensions(app)
 

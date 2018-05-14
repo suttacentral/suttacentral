@@ -3,6 +3,7 @@
   <title>SuttaCentral</title>
 
   <meta charset="UTF-8">
+  
   <meta name="theme-color" content="rgba(206, 132, 0, 1)">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -35,7 +36,7 @@
   <meta property="og:title" content="SuttaCentral">
   <meta property="og:description" content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
   <meta property="og:image"
-        content="https://raw.githubusercontent.com/suttacentral/suttacentral/development/client/img/social_image.png">
+        content="https://suttacentral.net/img/social_image.png">
   <meta property="og:url" content="https://suttacentral.net/">
   <meta property="og:site_name" content="SuttaCentral">
   <meta property="og:type" content="website">
@@ -46,6 +47,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Noto+Serif" rel="stylesheet">
+  <link rel="canonical" href="https://suttacentral.net/">
 
   <!-- Google Analytics -->
   <script>
@@ -254,7 +256,10 @@
     document.addEventListener("metadata", function(e) {
         var metaData = e.detail;
         if (metaData) {
+            var url = 'https://suttacentral.net' + window.location.pathname;
+            document.head.querySelector("[rel=canonical]").href = url;
             document.head.querySelector("title").innerText = metaData.pageTitle;
+            document.head.querySelector("[property='og:url']").content = url;
             document.head.querySelector("[property='og:title']").content = metaData.title;
             document.head.querySelector("[property='og:description']").content = metaData.description;
             document.head.querySelector("[name='title']").content = metaData.title;
