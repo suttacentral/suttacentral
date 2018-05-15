@@ -15,7 +15,7 @@ module.exports = {
         'files/fonts/SkolarPE-Regular_3.005.woff2',
         'files/fonts/SkolarSansPE-Bd_2.001.woff2',
         'files/fonts/SkolarSansPE-It_2.004.woff2',
-        'files/fonts/SkolarSansPE-Rg_2.001.woff2'
+        'files/fonts/SkolarSansPE-Rg_2.004.woff2'
     ],
     'globIgnores': [
         'bower_components/webcomponentsjs/*',

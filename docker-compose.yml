@@ -155,7 +155,7 @@ services:
       application: 'sc-frontend-tester'
 
   sc-frontend-builder:
-    image: node
+    image: node:8.11.1
     container_name: 'sc-frontend-builder'
     labels:
       application: 'sc-frontend-builder'

@@ -31,6 +31,7 @@ before_install:
   # Build and start your containers.
   - make build-all
   - make prepare-tests
+  - make run-frontend-builder
 
   # You will want this for logging. If one of your containers does not build for
   # whatever reason it's best to report that now before your tests start
