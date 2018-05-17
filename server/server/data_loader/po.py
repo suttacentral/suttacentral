@@ -24,7 +24,7 @@ def clean_html(string):
     out = regex.sub(r'<html>.*<body>', r'', string, flags=regex.DOTALL).replace('\n', ' ')
     out = regex.sub(r'>\s*VAR.*?<', '><', out)
     out = out.replace('</p>', '</p>\n')
-    out = out.replace('</blockquote>', '</p>\n')
+    out = out.replace('</blockquote>', '</blockquote>\n')
     return out
 
 
