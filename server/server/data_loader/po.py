@@ -3,6 +3,7 @@ import json
 
 import polib
 import regex
+import lxml
 
 from .util import iter_sub_dirs
 
@@ -25,6 +26,8 @@ def clean_html(string):
     out = regex.sub(r'>\s*VAR.*?<', '><', out)
     out = out.replace('</p>', '</p>\n')
     out = out.replace('</blockquote>', '</blockquote>\n')
+    root = lxml.html.fromstring(out)
+    out = lxml.html.tostring(root, encoding='unicode')
     return out
 
 
