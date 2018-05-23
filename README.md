@@ -15,13 +15,25 @@ Remember them! You will use some of them to access admin services, eg. Pootle.
 ## Or updating in individual steps
 
 1. `cd /opt/suttacentral`
-2. `make generate-env-variables` -> Supply needed env variables (only if env has been changed)
-3. `make run-prod-no-logs` -> run docker containers
-4. `make delete-database` -> OPTIONAL: Skip this if data hasn't seriously changed (do it, if texts have been deleted or renamed)
-5. `make migrate` -> only needed for delete-database, but harmless to run anyway
-6. `make load-data` -> load data into arangodb
-7. `make index-elasticsearch` -> load data into elasticsearch
-8. `make reload-uwsgi` -> make sure flask server is not serving cached stale data
+2. `git pull`
+3. `make generate-env-variables` -> Supply needed env variables (only if env has been changed)
+4. `make run-prod-no-logs` -> run docker containers
+5. `make delete-database` -> OPTIONAL: Skip this if data hasn't seriously changed (do it, if texts have been deleted or renamed)
+6. `make migrate` -> only needed for delete-database, but harmless to run anyway
+7. `make load-data` -> load data into arangodb
+8. `make index-elasticsearch` -> load data into elasticsearch
+9. `make reload-uwsgi` -> make sure flask server is not serving cached stale data
+
+### Minimally disruptive update
+
+If no containers need to be rebuilt then this is all that needs to be run:
+
+1. `cd /opt/suttacentral`
+2. `git pull`
+3. `run frontend-builder`
+4. `make load-data`
+5. `make reload-uwsgi`
+6. `make index-elasticsearch`
 
 ### Changing the branch(s) the server, or staging server, uses
 
