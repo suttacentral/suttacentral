@@ -437,6 +437,9 @@
           }
 
           _changeView() {
+              if (this.selectedPage.substr(0, 5) === "SUTTA") {
+                return;
+              };           
               this._setVisibleToolbar(this.selectedPage);
               setTimeout(() => {this._selectNavbarLink()});
               this.$.pages.selected = this.selectedPage;
