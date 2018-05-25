@@ -403,7 +403,7 @@
 
         </div>
 
-        <template is="dom-if" if="[[_computeParallelsOpened(item.parallel_count)]]">
+        <template is="dom-if" if="[[_computeParallelsOpened(parallelsOpened,item.parallel_count)]]">
           <iron-collapse id="collapse" opened="[[parallelsOpened]]">
             <sc-parallel-list root-lang="[[item.root_lang]]" item-uid="[[item.uid]]"
                               root-text="[[_getRootText(item.*)]]" expansion-data="[[expansionData]]">
@@ -521,8 +521,8 @@
               return item.translated_title && item.original_title ? '' : 'hide-element';
           }
 
-          _computeParallelsOpened(parallel_count) {
-            return (this.parallelsOpened && parallel_count);
+          _computeParallelsOpened(parallelsOpened, parallel_count) {
+            return (parallelsOpened && parallel_count);
           }
 
           // returns the relevant icon for the expander
