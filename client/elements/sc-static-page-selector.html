@@ -437,7 +437,7 @@
           }
 
           _changeView() {
-              if (this.selectedPage.substr(0, 5) === "SUTTA") {
+              if (this.selectedPage.substr(0, 5) === "SUTTA" || this.selectedPage === "SEARCH") {
                 return;
               };           
               this._setVisibleToolbar(this.selectedPage);
