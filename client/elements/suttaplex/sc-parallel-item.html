@@ -375,6 +375,10 @@ It is in effect a miniature version of the suttaplex-card
                   return '';
               }
               rootId = rootId.replace('~', '');
+              if (rootId.substring(0,5) === 'g3dhp') {
+                const idNumbers = rootId.substring(5);
+                return `G-3 Dhp ${idNumbers}`;
+              }
               const idPart = this._getParagraphRange(rootId).replace('-', '–');
               let scAcronym = '';
               const rootPart = rootId.split('#')[0];
