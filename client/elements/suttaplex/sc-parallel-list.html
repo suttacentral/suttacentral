@@ -198,7 +198,9 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
                           'kho': 'Khotanese'
                       }
                   },
-                  responseData: Object,
+                  responseData: {
+                      type: Object
+                  },
                   error: Boolean,
                   rootText: {
                       type: Object
@@ -344,21 +346,29 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           }
 
           _computeUrl(rootId) {
-              return `/${this.itemUid}/${this.rootLang}/${this.rootText.author_uid}${this._getParagraphRange(rootId)}`
+              return `/${this.itemUid}/${this.rootLang}/${this.rootText.author_uid}${this._getParagraphRange(rootId,true)}`
           }
 
-          _getParagraphRange(rootId) {
-              const ids = rootId.split(/#(.*)/)[1];
-              if (!ids) {
-                  return '';
+          _getParagraphRange(rootId,isUrl) {
+              if (rootId.match(/dhp/g) && isUrl) {
+                  const ids = rootId.substring(rootId.indexOf('dhp')+3);
+                  if (ids.includes('-')) {
+                      const [id1, id2] = ids.split('-');
+                      return `#${id1}--${id2}`;
+                  }
+                  return `#${ids}`;
+              } else {
+                  const ids = rootId.split(/#(.*)/)[1];
+                  if (!ids) {
+                      return '';
+                  }
+                  if (ids.includes('-')) {
+                      const [id1, id2] = ids.split('-#');
+                      return `#${id1}--${id2}`;
+                  }
+                  return `#${ids}`;
               }
-              if (ids.includes('-')) {
-                  const [id1, id2] = ids.split('-#');
-                  return `#${id1}--${id2}`;
-              }
-              return `#${ids}`;
           }
-
 
           // This function parses the input uid of the parallel and splits it into
           // it's main document part (root_part) and the id (paragraphs) within the document (id_part)
@@ -370,7 +380,11 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
               if (!rootId || !expansionData) {
                   return '';
               }
-              const idPart = this._getParagraphRange(rootId).replace('--', '–');
+              if (rootId.substring(0,5) === 'g3dhp') {
+                const idNumbers = rootId.substring(5);
+                return `G-3 Dhp ${idNumbers}`;
+              }
+              const idPart = this._getParagraphRange(rootId,false).replace('--', '–');
               const rootPart = rootId.split('#')[0];
               const uidParts = rootPart.split('-');
               let scAcronym = '';
