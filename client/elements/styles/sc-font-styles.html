@@ -391,6 +391,13 @@
     }
 
     @font-face {
+      font-family: "Aurebesh";
+      src: url('/files/fonts/Aurebesh.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
       font-family: 'Noto Sans CJK JP';
       src: url('/files/fonts/noto-sans-jp_regular_jp_462a49732c9d.woff2') format('woff2'),
         url('/files/fonts/noto-sans-jp_regular_jp_462a49732c9d.ttf') format('truetype');
@@ -571,6 +578,11 @@
 
       --sc-vulcan-font: {
         font-family: "Vulcan", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      };
+
+      --sc-aurebesh-font: {
+        font-family: "Aurebesh", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
