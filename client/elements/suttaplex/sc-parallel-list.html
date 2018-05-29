@@ -255,7 +255,50 @@ which is loaded from `../data/suttas` in **sc-parallel-item.html**.
           }
 
           _didRespond() {
-              this.rootKeys = Object.keys(this.responseData);
+              let rootKeys = Object.keys(this.responseData);
+              if (rootKeys[0].substring(0,3) === "sag") {
+                    let numbersArray = [];
+                    rootKeys.forEach(item => {
+                        const sagNumbers = item.match(/\d{1,4}/g);
+                        numbersArray.push(sagNumbers.map(Number));
+                    })
+                    numbersArray = numbersArray.sort(this._compareArray);
+                    let rootKeysSorted = [];
+                    numbersArray.forEach(item => {
+                        if (item.length === 1) {
+                            rootKeysSorted.push(`sag#${item[0].toString()}`);
+                        } else if (item.length === 2) {
+                            rootKeysSorted.push(`sag#${item[0].toString()}.${item[1].toString()}`);
+                        } else {
+                            rootKeysSorted.push(`sag#${item[0].toString()}.${item[1].toString()}-#${item[2].toString()}.${item[3].toString()}`);
+                        }
+                    })
+                    this.rootKeys = rootKeysSorted;
+              } else if (rootKeys[0].match(/dhp/)) {
+                    let rootKeysSorted = [];
+                    let numbersArray = [];
+                    rootKeys.forEach(item => {
+                        const dhpNumber = this.responseData[item][0].enumber;
+                        numbersArray.push([dhpNumber,item]);
+                    })
+                    numbersArray = numbersArray.sort(this._compareArray);
+                    numbersArray.forEach(item => {
+                        rootKeysSorted.push(item[1]);
+                    })
+                    this.rootKeys = rootKeysSorted;
+              } else {
+                    this.rootKeys = rootKeys;
+              }
+          }
+
+          _compareArray(a, b) {
+              if (a[0] < b[0]) return -1;
+              if (a[0] > b[0]) return 1;
+              if (a[0] === b[0]) {
+                  if (a[1] < b[1]) return -1;
+                  if (a[1] > b[1]) return 1;
+              }
+              return 0;
           }
 
           _resizeParentList() {
