@@ -16,7 +16,7 @@ services:
     volumes:
       - socket-volume:/opt/sc/sockets
       - ./server/:/opt/sc/sc-flask
-      - pootle-po:/srv/pootle/po/
+      - ./pootle/po:/srv/pootle/po/
       - ./pootle:/opt/sc/pootle
       - working-storage-volume:/opt/sc/storage
     expose:
@@ -48,7 +48,7 @@ services:
       - nginx-data-volume:/opt/sc/logs/nginx
       - socket-volume:/opt/sc/sockets
       - l10n-ter:/l10n_ter
-      - pootle-po:/srv/pootle/po
+      - ./pootle/po:/srv/pootle/po
       - pootle-git:/srv/pootle/git-clones
       - pootle-assets:/usr/local/lib/python2.7/dist-packages/pootle
     ports:
@@ -76,7 +76,7 @@ services:
       - "8000"
     volumes:
       - l10n-ter:/l10n_ter
-      - pootle-po:/srv/pootle/po
+      - ./pootle/po:/srv/pootle/po
       - pootle-git:/srv/pootle/git-clones
       - pootle-mysql-socket:/var/run/mysqld
       - pootle-assets:/usr/local/lib/python2.7/dist-packages/pootle
@@ -117,7 +117,7 @@ services:
     labels:
       application: 'sc-pootle-pipeline'
     volumes:
-      - pootle-po:/srv/pootle/po/
+      - ./pootle/po:/srv/pootle/po/
       - ./server/server/:/opt/sc/server/
       - ./client/:/opt/sc/frontend/
       - ./pootle_pipeline/:/opt/sc/po_files/
@@ -170,7 +170,6 @@ volumes:
   working-storage-volume:
   socket-volume:
   elasticsearch-data:
-  pootle-po:
   pootle-git:
   pootle-mysql-data:
   pootle-mysql-socket:
