@@ -27,6 +27,7 @@ class Config:
 
     BASE_DIR = Path('../')
     STORAGE_DIR = Path('/opt/sc/storage/')
+    ASSETS_DIR = Path('/opt/sc/frontend/')
     DATA_REPO = 'https://github.com/suttacentral/sc-data.git'
 
     DEFAULT_LANGUAGE = 'en'
