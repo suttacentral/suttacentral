@@ -1,3 +1,4 @@
+import hashlib
 import pathlib
 import subprocess
 from flask import current_app, request, redirect
@@ -6,10 +7,7 @@ from flask_restful import Resource
 from .make_html import get_html_data
 from .epub import Book as Epub
 
-from app import config
-
 HERE = pathlib.Path(__file__).parent
-EXPORTS_DIR = config.ASSETS_DIR / 'exports'
 
 def create_epub(data, filename):
     title = 'Long Discourses'
@@ -44,8 +42,9 @@ def create_epub(data, filename):
     for page in data['pages']:
         chapter = book.add_page(title=page['title'], content=page['html'], uid=page['uid'])
 
+    
+
     book.save(filename)
-    #epubcheck(filename)
 
 class EBook(Resource):
     def get(self, uid, language, author, **kwargs):
@@ -60,13 +59,24 @@ class EBook(Resource):
         
         if debug:
             return data
+        
+        from flask import current_app
+        ASSETS_DIR = current_app.config.get('ASSETS_DIR')
+        EXPORTS_DIR = ASSETS_DIR / 'files' / 'exports'
+
             
-        filename = str((HERE / f'{uid}_{language}_{author}.epub').absolute())
+        filename = EXPORTS_DIR / f'{uid}_{language}_{author}.epub'
         
-        create_epub(data, filename)            
+        create_epub(data, filename)
         
         
-        return {'uid': uid, 'language': language, 'author': author, 'format': ebook_format, 'filename': filename}
+        return {
+            'uid': uid,
+            'language': language,
+            'author': author,
+            'format': ebook_format,
+             'href': f'/{filename.relative_to(ASSETS_DIR)}'
+        }
 
 
 def epubcheck(filename):

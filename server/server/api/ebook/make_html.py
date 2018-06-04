@@ -95,7 +95,8 @@ def get_html_data(division_uid, language, author):
     texts = data.pop('texts')
     toc = data.pop('toc')
     data['pages'] = []
-    data['pages'].append({'title': 'Guide', 'uid': 'guide', 'html': toc})
+    if len(texts) > 1:
+        data['pages'].append({'title': 'Guide to Contents', 'uid': 'guide', 'html': toc})
     
     deduplicator = Deduplicator()
     
