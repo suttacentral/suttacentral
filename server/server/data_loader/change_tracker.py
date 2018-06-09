@@ -56,11 +56,14 @@ class ChangeTracker:
     
     def is_function_changed(self, function):
         key = f'{function.__module__}.{function.__qualname__}'
+        return self.is_thing_changed(key, function)
         
-        # Generate a hash for the function using the source lines
-        # this is obviously not foolproof
+    def is_module_changed(self, module):
+        key = module.__name__
+        return self.is_thing_changed(key, module)
         
-        function_hash = hashlib.md5(function_source(function).encode()).hexdigest()
+    def is_thing_changed(self, key, thing):
+        function_hash = hashlib.md5(thing_source(thing).encode()).hexdigest()
         
         self.new_function_hashes[key] = function_hash
         if self.old_function_hashes.get(key) == function_hash:
@@ -81,7 +84,7 @@ class ChangeTracker:
         docs = [{'_key': k, 'hash': v} for k, v in self.new_function_hashes.items()]
         self.db['function_hashes'].import_bulk_safe(docs, overwrite=True)
 
-def function_source(function):
+def thing_source(function):
     return ''.join(inspect.getsourcelines(function)[0])
 
 def who_is_calling(depth=2):

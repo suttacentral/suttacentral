@@ -7,6 +7,9 @@ import lxml
 
 from .util import iter_sub_dirs
 
+import sys
+current_module = sys.modules[__name__]
+
 
 def remove_leading_zeros(string):
     return regex.sub(r'([A-Za-z.])0+', r'\1', string)
@@ -19,7 +22,17 @@ def sanitize_title(title):
     #If stripping the number returns an empty string, return that so suttaplex picks up
     # the root title instead.
     return strip_number_from_title(title)
-    
+
+def tilde_to_html_lists(po):
+    for entry in po:
+        if '~' in entry.msgstr:
+            if not entry.msgstr.startswith('~'):
+                raise ValueError('Case not handled: msgstr contains but does not start with ~')
+                
+            entry.msgstr = ('<ol><li>' + 
+                            '</li><li>'.join(entry.msgstr.split('~')[1:]) + 
+                            '</li></ol>'
+                            )
 
 def clean_html(string):
     out = regex.sub(r'<html>.*<body>', r'', string, flags=regex.DOTALL).replace('\n', ' ')
@@ -104,6 +117,8 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
             continue
         
         po = polib.pofile(po_file)
+        
+        tilde_to_html_lists(po)
         
         headings = extract_headings_from_po(po)
         data = extract_strings_from_po(po)
@@ -219,7 +234,7 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
     # does occur we just nuke and rebuild.
 
     deleted_po = [f for f in change_tracker.deleted if f.endswith('.po')]
-    if deleted_po or change_tracker.is_function_changed(load_po_texts):
+    if deleted_po or change_tracker.is_module_changed(current_module):
         change_tracker = None
         db['po_markup'].truncate()
         db['po_strings'].truncate()
