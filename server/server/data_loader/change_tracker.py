@@ -56,11 +56,14 @@ class ChangeTracker:
     
     def is_function_changed(self, function):
         key = f'{function.__module__}.{function.__qualname__}'
+        return self.is_thing_changed(key, function)
         
-        # Generate a hash for the function using the source lines
-        # this is obviously not foolproof
+    def is_module_changed(self, module):
+        key = module.__name__
+        return self.is_thing_changed(key, module)
         
-        function_hash = hashlib.md5(function_source(function).encode()).hexdigest()
+    def is_thing_changed(self, key, thing):
+        function_hash = hashlib.md5(function_source(thing).encode()).hexdigest()
         
         self.new_function_hashes[key] = function_hash
         if self.old_function_hashes.get(key) == function_hash:

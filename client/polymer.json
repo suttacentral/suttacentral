@@ -93,6 +93,7 @@
     }
   ],
   "lint": {
-    "rules": ["polymer-2"]
+    "rules": ["polymer-2"],
+    "ignoreWarnings": ["could-not-resolve-reference"]
   }
 }
