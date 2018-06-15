@@ -226,6 +226,42 @@
     }
 
     @font-face {
+      font-family: 'Noto Sans Bengali';
+      src: local('Noto Sans Bengali Regular'), local('NotoSansBengali-Regular'),
+          url('/files/fonts/NotoSansBengali-Regular.woff2') format('woff2'),
+          url('/files/fonts/NotoSansBengali-Regular.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Noto Sans Bengali';
+      src: local('Noto Sans Bengali Bold'), local('NotoSansBengali-Bold'),
+          url('/files/fonts/NotoSansBengali-Bold.woff2') format('woff2'),
+          url('/files/fonts/NotoSansBengali-Bold.woff') format('woff');
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Noto Serif Bengali';
+      src: local('Noto Serif Bengali Bold'), local('NotoSerifBengali-Bold'),
+          url('/files/fonts/NotoSerifBengali-Bold.woff2') format('woff2'),
+          url('/files/fonts/NotoSerifBengali-Bold.woff') format('woff');
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Noto Serif Bengali';
+      src: local('Noto Serif Bengali Regular'), local('NotoSerifBengali-Regular'),
+          url('/files/fonts/NotoSerifBengali-Regular.woff2') format('woff2'),
+          url('/files/fonts/NotoSerifBengali-Regular.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
       font-family: 'Noto Serif Thai';
       src: local('Noto Serif Thai Bold'), local('NotoSerifThai-Bold'),
           url('/files/fonts/NotoSerifThai-Bold.woff2') format('woff2'),
@@ -552,12 +588,12 @@
       };
 
       --sc-bengali-sans-font: {
-        font-family: "Noto Sans", sans-serif;
+        font-family: "Noto Sans Bengali", "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       };
 
       --sc-bengali-serif-font: {
-        font-family: "Noto Serif", "Noto Sans", serif;
+        font-family: "Noto Serif Bengali", "Noto Serif", "Noto Sans", serif;
         -webkit-font-smoothing: antialiased;
       };
 
