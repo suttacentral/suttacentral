@@ -27,7 +27,8 @@
       [lang="ta"],
       [lang="th"],
       [lang="xct"],
-      [lang="ko"] {
+      [lang="ko"],
+      [lang="bn"] {
         font-synthesis: none;
       }
 
@@ -119,6 +120,17 @@
 
       [lang="ta"] .hgroup p {
         @apply --sc-tamil-sans-font;
+        @apply --sc-remove-small-caps;
+        @apply --sc-tall-font-size-md;
+      }
+
+      [lang="bn"] .sutta {
+        @apply --sc-bengali-serif-font;
+        @apply --sc-tall-font-size-md;
+      }
+
+      [lang="bn"] .hgroup p {
+        @apply --sc-bengali-sans-font;
         @apply --sc-remove-small-caps;
         @apply --sc-tall-font-size-md;
       }
@@ -418,7 +430,10 @@
       [lang="jpn"] .namo,
       [lang="lzh"] .namo,
       [lang="si"] .namo,
-      [lang="ta"] .speaker {
+      [lang="ta"] .speaker,
+      [lang="bn"] .endsutta,
+      [lang="bn"] .endsection,
+      [lang="bn"] .namo {
         font-style: inherit;
       }
 
