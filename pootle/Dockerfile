@@ -56,6 +56,8 @@ RUN mkdir -p /srv/pootle/po/.tmp
 
 WORKDIR /home/pootle
 
+RUN echo "59 * * * * /home/pootle/clear_cache.sh" | crontab
+
 COPY pootle.sh /pootle.sh
 RUN chmod a+x /pootle.sh
 CMD ["/pootle.sh"]
