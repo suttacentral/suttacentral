@@ -16,6 +16,7 @@ def remove_leading_zeros(string):
 
 
 def strip_number_from_title(title):
+    title = title.replace('​','')
     return regex.sub(r'[\d\.\{\} –-]*', '', title, 1)
 
 def sanitize_title(title):
