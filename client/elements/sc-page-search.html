@@ -230,14 +230,16 @@ than ten results in total, a dropdown selection menu appears at the top.
     <template is="dom-if" if="[[isOnline]]">
       <div class="search-results-container">
         <main class="search-results-main">
-          <div class="search-result-head">
-            <h1 class="search-result-header">
-              <span class="search-result-number">[[_calculateResultCount(resultCount)]]</span>
-              <span class="search-result-description">{{localize('resultsFor')}}</span>
-              <span class="search-result-term">[[searchQuery]]</span>
-            </h1>
-              <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
-          </div>
+          <template is="dom-if" if="[[!loadingResults]]">
+            <div class="search-result-head">
+              <h1 class="search-result-header">
+                <span class="search-result-number">[[_calculateResultCount(resultCount)]]</span>
+                <span class="search-result-description">{{localize('resultsFor')}}</span>
+                <span class="search-result-term">[[searchQuery]]</span>
+              </h1>
+                <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
+            </div>
+          </template>
 
             <div class="suttaplex-item">
                 <sc-suttaplex item="[[suttaplex]]" parallels-opened="[[false]]"
