@@ -57,5 +57,5 @@ services:
     env_file:
       - pootle/environment_prod.yml
     
-   sc-pootle-redis:
-     restart: always
+  sc-pootle-redis:
+    restart: always
