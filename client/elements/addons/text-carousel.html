@@ -111,16 +111,17 @@
         <paper-ripple></paper-ripple>
         <iron-icon icon="chevron-left"></iron-icon>
       </button>
+
       <div id="text" class="text"><span id="text_span"></span></div>
-      <template is="dom-if" if="[[link]]">
-        <a class="button-link" href="[[_computeUrl(selectedItemIndex, elements)]]">
-          <paper-button class="button card-button-middle" raised>READ THIS SUTTA</paper-button>
-        </a>
-      </template>
+      <a class="button-link" href="[[_computeUrl(selectedItemIndex, elements, link)]]">
+        <paper-button class="button card-button-middle" raised>[[_computeButtonText(link)]]</paper-button>
+      </a>
+
       <button id="next_button" class="chevron next" on-click="_loadNextItem">
         <paper-ripple></paper-ripple>
         <iron-icon icon="chevron-right"></iron-icon>
       </button>
+
     </div>
 
   </template>
@@ -140,7 +141,8 @@
                       type: String
                   },
                   link: {
-                      type: String
+                      type: Boolean,
+                      value: false
                   },
                   selectedItemIndex: {
                       type: Number,
@@ -299,13 +301,25 @@
               }, 400);
           }
 
-          _computeUrl(selectedItemIndex) {
-              if (!this.elements) {
+          _computeButtonText(link) {
+              if (link) {
+                 return 'READ THIS SUTTA';
+              } else {
+                 return 'TELL US WHY YOU READ';
+              }
+          }
+
+          _computeUrl(selectedItemIndex, elements, link) {
+              if (!elements) {
                   return '';
               }
-              let uid = this.elements[selectedItemIndex][this.link];
-              uid = uid.split('#')[0];
-              return `/${uid}`;
+              if (link) {
+                  let uid = elements[selectedItemIndex].uid;
+                  uid = uid.split('#')[0];
+                  return `/${uid}`;
+              } else {
+                  return 'https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747';
+              }
           }
       }
 

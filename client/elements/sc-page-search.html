@@ -230,14 +230,16 @@ than ten results in total, a dropdown selection menu appears at the top.
     <template is="dom-if" if="[[isOnline]]">
       <div class="search-results-container">
         <main class="search-results-main">
-          <div class="search-result-head">
-            <h1 class="search-result-header">
-              <span class="search-result-number">[[_calculateResultCount(resultCount)]]</span>
-              <span class="search-result-description">{{localize('resultsFor')}}</span>
-              <span class="search-result-term">[[searchQuery]]</span>
-            </h1>
-              <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
-          </div>
+          <template is="dom-if" if="[[!loadingResults]]">
+            <div class="search-result-head">
+              <h1 class="search-result-header">
+                <span class="search-result-number">[[_calculateResultCount(resultCount)]]</span>
+                <span class="search-result-description">{{localize('resultsFor')}}</span>
+                <span class="search-result-term">[[searchQuery]]</span>
+              </h1>
+                <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
+            </div>
+          </template>
 
             <div class="suttaplex-item">
                 <sc-suttaplex item="[[suttaplex]]" parallels-opened="[[false]]"
@@ -250,7 +252,7 @@ than ten results in total, a dropdown selection menu appears at the top.
 
                 <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item"
                            scroll-target="document">
-                    <template>
+              <template>
                 <div class$="search-result-item [[_calculateItemCategory(item)]]" tabindex$="[[tabIndex]]">
                   <div class="padded-container">
                     <a class="search-result-link" href="[[_calculateLink(item)]]">
@@ -422,7 +424,6 @@ than ten results in total, a dropdown selection menu appears at the top.
           _didRespond(e) {
               const results = e.detail.response;
               this.suttaplex = results.suttaplex;
-              this.$.uid_expansion_ajax.generateRequest();
               this.lastSearchResults = results.hits;
               this.resultCount = results.total;
               this.set('waitTimeAfterNewWordExpired', true);
@@ -524,6 +525,7 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (!this.searchParams || !this.searchQuery || this._areAllItemsLoaded()) {
                   return;
               }
+              this.$.uid_expansion_ajax.generateRequest();
               this.shadowRoot.querySelector('#ajax').generateRequest();
           }
 
@@ -585,16 +587,16 @@ than ten results in total, a dropdown selection menu appears at the top.
               if (item.category === 'dictionary') {
                   return this.dictionaryTitles[item.heading.division];
               }
-              return item.heading.title ? item.heading.title : item.heading.division;
+              return item.heading.title ? item.heading.title : this._getDivision(item);
           }
 
           // If there is a title, the division is the subtitle
           _calculateDivision(item) {
-              if (!item.heading.title) {
-                  return '';
-              } else {
-                  return item.acronym ? `${this._convertAcronym(item.acronym)} — ${item.author}` : `${this._transformId(item.uid)} — ${item.author}`;
-              }
+              return `${this._getDivision(item)} — ${item.author}`;
+          }
+
+          _getDivision(item) {
+                  return item.acronym ? this._convertAcronym(item.acronym) : this._transformId(item.uid);
           }
 
           _convertAcronym(acronym) {
