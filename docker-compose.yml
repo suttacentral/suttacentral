@@ -50,7 +50,7 @@ services:
     ports:
       - '80:80'
       - '443:443'
-      - '8000:8000'
+      - '8001:8001'
       - '2052:2052'
     depends_on:
       - sc-flask
@@ -99,6 +99,11 @@ services:
     working_dir: /opt/sc/frontend
     volumes:
       - ./client/:/opt/sc/frontend
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
 
 volumes:
   db-data-volume:

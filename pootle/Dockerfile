@@ -52,8 +52,8 @@ RUN pip install --upgrade pip
 RUN pip install --process-dependency-links git+https://github.com/suttacentral/pootle.git
 
 # Configure pootle
-RUN ln -s pootle.conf /root/.pootle/pootle.conf
-RUN mkdir -p /srv/pootle/po/.tmp
+RUN mkdir /root/.pootle && ln -s /home/pootle/pootle.conf /root/.pootle/pootle.conf && mkdir -p /srv/pootle/po/.tmp
+
 
 WORKDIR /home/pootle
 
