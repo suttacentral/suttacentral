@@ -46,9 +46,11 @@ services:
       - nginx-data-volume:/opt/sc/logs/nginx
       - socket-volume:/opt/sc/sockets
       - l10n-ter:/l10n_ter
+      - ./pootle/assets:/opt/sc/pootle/assets
     ports:
       - '80:80'
       - '443:443'
+      - '8000:8000'
       - '2052:2052'
     depends_on:
       - sc-flask
