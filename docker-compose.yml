@@ -54,9 +54,6 @@ services:
       - '2052:2052'
     depends_on:
       - sc-flask
-    environment:
-      - VIRTUAL_HOST=sc-pootle.docker
-      - VIRTUAL_PORT=80
 
   sc-elasticsearch:
     build:
