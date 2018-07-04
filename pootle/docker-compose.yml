@@ -1,0 +1,61 @@
+version: '2'
+
+services:
+  sc-pootle:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: 'sc-pootle'
+    labels:
+      application: 'sc-pootle'
+    depends_on:
+      - sc-pootle-redis
+      - sc-pootle-mysql
+    expose:
+      - '8001'
+    volumes:
+      - l10n-ter:/l10n_ter
+      - pootle-po:/srv/pootle/po
+      - pootle-git:/srv/pootle/git-clones
+      - pootle-mysql-socket:/var/run/mysqld
+      - ./supervisord_conf:/etc/supervisor/conf.d/
+      - ./:/home/pootle
+      - ./assets:/usr/local/lib/python2.7/dist-packages/pootle/assets
+    environment:
+      - SECRET_KEY=SET THIS TO A DJANGO SECRET KEY
+    env_file:
+      - ./environment_dev.yml
+
+  sc-pootle-mysql:
+    image: mariadb:10
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+    container_name: 'sc-pootle-mysql'
+    labels:
+      application: 'sc-pootle-mysql'
+    volumes:
+      - pootle-mysql-data:/var/lib/mysql
+      - pootle-mysql-socket:/var/run/mysqld
+    ports:
+      - "3306:3306"
+    env_file:
+      - environment_dev.yml
+
+  sc-pootle-redis:
+    image: redis
+    container_name: 'sc-pootle-redis'
+    labels:
+      application: 'sc-pootle-redis'
+    expose:
+      - "6379"
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
+
+volumes:
+    l10n-ter:
+    pootle-po:
+    pootle-git:
+    pootle-mysql-data:
+    pootle-mysql-socket:

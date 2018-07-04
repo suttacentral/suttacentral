@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  sc-pootle:
+    restart: always
+    env_file:
+      - pootle/environment_prod.yml
+
+  sc-pootle-mysql:
+    restart: always
+    env_file:
+      - pootle/environment_prod.yml
+    
+  sc-pootle-redis:
+    restart: always
