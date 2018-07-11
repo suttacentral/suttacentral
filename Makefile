@@ -5,7 +5,11 @@ prepare-host:
 	sudo bash -c 'echo "vm.max_map_count=262144" >> /etc/sysctl.conf'
 	@echo "\033[1;32mSuccess!"
 
+create-network:
+	@docker network create nginx-proxy
+
 build-all:
+	@make create-network || true
 	@make build-flask
 	@make build-arangodb
 	@make build-nginx
@@ -34,6 +38,7 @@ rebuild-arangodb: clean-arangodb build-arangodb
 rebuild-nginx: clean-nginx build-nginx
 rebuild-elasticsearch: clean-elasticsearch build-elasticsearch
 rebuild-swagger: clean-swagger build-swagger
+
 
 run-dev:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up

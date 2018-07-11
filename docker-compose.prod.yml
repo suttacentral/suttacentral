@@ -46,16 +46,3 @@ services:
     ports:
     - '9200:9200'
     - '9300:9300'
-
-  sc-pootle:
-    restart: always
-    env_file:
-      - pootle/environment_prod.yml
-
-  sc-pootle-mysql:
-    restart: always
-    env_file:
-      - pootle/environment_prod.yml
-    
-  sc-pootle-redis:
-    restart: always

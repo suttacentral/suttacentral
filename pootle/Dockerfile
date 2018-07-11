@@ -40,6 +40,7 @@ RUN pip install -q virtualenv \
     python-memcached \
     python-Levenshtein \
     m2crypto \
+    mailgun \
     django-mailgun \
     wheel
 
@@ -51,8 +52,8 @@ RUN pip install --upgrade pip
 RUN pip install --process-dependency-links git+https://github.com/suttacentral/pootle.git
 
 # Configure pootle
-COPY pootle.conf /root/.pootle/pootle.conf
-RUN mkdir -p /srv/pootle/po/.tmp
+RUN mkdir /root/.pootle && ln -s /home/pootle/pootle.conf /root/.pootle/pootle.conf && mkdir -p /srv/pootle/po/.tmp
+
 
 WORKDIR /home/pootle
 
