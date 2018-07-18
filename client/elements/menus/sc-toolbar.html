@@ -69,7 +69,8 @@ Base toolbar that appears on the top right in the header of every page. This too
         text-decoration: none;
       }
 
-      .search-open #discourse_button, .search-open > #more_vert_button {
+      .search-open #discourse_button, .search-open > #more_vert_button,
+      .search-open #suttaplex_switch_button {
         display: none;
       }
 
@@ -112,6 +113,13 @@ Base toolbar that appears on the top right in the header of every page. This too
       <paper-icon-button icon="close" class="white-icon toolbar-paper-button" id="close_button"
                          on-tap="_closeSearch"></paper-icon-button>
 
+      <!-- To appear only on SuttaPlex pages: toggle switch for list-view -->
+      <template is="dom-if" if="[[suttaplexDisplay]]" restamp>
+          <paper-icon-button id="suttaplex_switch_button" class="white-icon"
+                           icon="[[suttaplexToggleIcon]]" on-tap="_toggleSuttaplexDisplay"
+                           title="[[suttaplexIconTitle]]"></paper-icon-button>
+      </template>
+
       <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
       <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]"
          title="{{localize(discourseIconTooltip)}}" rel="noopener">
@@ -145,6 +153,13 @@ Base toolbar that appears on the top right in the header of every page. This too
                   path: {
                       type: String
                   },
+                  suttaplexDisplay: {
+                      type: Boolean
+                  },
+                  suttaplexListEnabled: {
+                      type: Boolean,
+                      statePath: 'suttaplexListDisplay'
+                  },
                   query: {
                       type: String
                   },
@@ -166,7 +181,29 @@ Base toolbar that appears on the top right in the header of every page. This too
                       computed: '_computeDiscourseTitle(mode, language)'
                   },
                   // Polymer lint fails if you don't include this:
-                  search_input: Object
+                  search_input: Object,
+                  suttaplexListEnabled: {
+                      type: Boolean,
+                      statePath: 'suttaplexListDisplay',
+                      observer: '_setSuttaplexToggleIcon'
+                  },
+                  suttaplexToggleIcon: {
+                      type: String
+                  },
+                  suttaplexIconTitle: {
+                      type: String
+                  }
+              }
+          }
+
+          static get actions() {
+              return {
+                  toggleSuttaplexDisplay(suttaplexdisplay) {
+                      return {
+                          type: 'SUTTPLEX_LIST_DISPLAY',
+                          suttaplexdisplay: suttaplexdisplay
+                      }
+                  }
               }
           }
 
@@ -184,6 +221,24 @@ Base toolbar that appears on the top right in the header of every page. This too
               Polymer.RenderStatus.afterNextRender(this, () => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-toolbar/${this.language}.json`), this.language, true);
               });
+          }
+
+          _toggleSuttaplexDisplay() {
+              if (this.suttaplexListEnabled) {
+                this.dispatch('toggleSuttaplexDisplay', false);
+              } else {
+                this.dispatch('toggleSuttaplexDisplay', true);
+              }
+          }
+
+          _setSuttaplexToggleIcon() {
+              if (this.suttaplexListEnabled) {
+                this.suttaplexToggleIcon = 'view-agenda';
+                this.suttaplexIconTitle = 'View Suttaplex Cards'
+              } else {
+                this.suttaplexToggleIcon = 'view-headline';
+                this.suttaplexIconTitle = 'View Suttaplex List'
+              }
           }
 
           // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
