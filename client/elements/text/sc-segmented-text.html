@@ -401,6 +401,10 @@
                   textContent.classList.remove('segmented-infomode');
               }
           }
+          
+          _tweakText(text) {
+               return text + (text.match(/—$/) ? '' : ' ');
+          }
 
           _addPrimaryText(textStrings) {
               const textContainer = this.shadowRoot.querySelector('#segmented_text_content');
@@ -440,7 +444,7 @@
                   if (!key.startsWith('_')) {
                       let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
                       const segment = textContainer.querySelector(`#${subkey}`);
-                      segment.innerHTML = value + ' ';
+                      segment.innerHTML = this._tweakText(value);
                   }
               });
           }
@@ -483,7 +487,7 @@
                   const newSegment = document.createElement('sc-seg');
                   newSegment.id = key;
                   newSegment.classList.add('original-text');
-                  newSegment.innerHTML = content + ' ';
+                  newSegment.innerHTML = this._tweakText(content);
                   this._setScriptISOCode(newSegment, this.rootLang);
                   if (segment) segment.parentNode.insertBefore(newSegment, segment.nextSibling);
               }
