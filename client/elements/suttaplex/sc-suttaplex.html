@@ -89,6 +89,7 @@
 
       .suttaplex.list-view .suttaplex-heading {
         @apply --paper-font-subhead;
+        @apply --sc-serif-font;
         margin-right: var(--sc-size-md-larger);
       }
 
@@ -115,7 +116,7 @@
       }
 
       .suttaplex.list-view .card-actions {
-        padding: var(--sc-size-sm) var(--sc-size-md) 0;
+        padding: 0 var(--sc-size-md) 0;
       }
 
       .author-buttons-container {
@@ -294,6 +295,10 @@
         transition: margin-top ease-in-out 200ms;
       }
 
+      .suttaplex.list-view .translations-label {
+        display: none;
+      }
+
       .author-buttons-container:hover + .translations-label {
         margin-top: calc(var(--sc-size-md) * -1);
       }
@@ -306,7 +311,7 @@
     </style>
 
     <template is="dom-if" if="[[item.uid]]">
-      <paper-card class$="[[suttaplexListStyle]]" id="[[item.uid]]" elevation="1">
+      <paper-card class$="suttaplex [[suttaplexListStyle]]" id="[[item.uid]]" elevation="1">
 
         <div class="card-content">
 
@@ -466,8 +471,7 @@
                       computed: '_computeToggleIcon(parallelsOpened)'
                   },
                   suttaplexListStyle: {
-                      type: String,
-                      value: "suttaplex"
+                      type: String
                   },
                   parallelsOpened: {
                       type: Boolean,

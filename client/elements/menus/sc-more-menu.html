@@ -81,6 +81,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
       <paper-toggle-button id="theme_toggler" class="toggle-button" checked="{{darkThemeChosen}}"></paper-toggle-button>
       {{localize('DarkTheme')}}
     </paper-item>
+    <paper-item class="more-menu-paper-item">
+      <iron-icon class="more-menu-icon" icon="[[suttaplexToggleIcon]]" on-tap="_toggleSuttaplexDisplay" title="[[suttaplexIconTitle]]"></iron-icon>
+      {{localize('SuttaplexListCardView')}}
+    </paper-item>
     <a class="more-menu-link" href="/downloads">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="file-download"></iron-icon>
@@ -159,6 +163,17 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                   darkThemeChosen: {
                       type: Boolean,
                       computed: '_isDarkThemeChosen(appTheme)'
+                  },
+                  suttaplexListEnabled: {
+                      type: Boolean,
+                      statePath: 'suttaplexListDisplay',
+                      observer: '_setSuttaplexToggleIcon'
+                  },
+                  suttaplexToggleIcon: {
+                      type: String
+                  },
+                  suttaplexIconTitle: {
+                      type: String
                   }
               };
           }
@@ -169,6 +184,12 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                       return {
                           type: "CHANGE_COLOR_THEME",
                           theme: theme
+                      }
+                  },
+                  toggleSuttaplexDisplay(suttaplexdisplay) {
+                      return {
+                          type: 'SUTTPLEX_LIST_DISPLAY',
+                          suttaplexdisplay: suttaplexdisplay
                       }
                   }
               }
@@ -217,6 +238,24 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
 
           _isDarkThemeChosen() {
               return this.appTheme === 'dark';
+          }
+
+          _toggleSuttaplexDisplay() {
+              if (this.suttaplexListEnabled) {
+                this.dispatch('toggleSuttaplexDisplay', false);
+              } else {
+                this.dispatch('toggleSuttaplexDisplay', true);
+              }
+          }
+
+          _setSuttaplexToggleIcon() {
+              if (this.suttaplexListEnabled) {
+                this.suttaplexToggleIcon = 'view-agenda';
+                this.suttaplexIconTitle = this.localize('suttaplexCards');
+              } else {
+                this.suttaplexToggleIcon = 'view-headline';
+                this.suttaplexIconTitle = this.localize('suttaplexList');
+              }
           }
       }
 

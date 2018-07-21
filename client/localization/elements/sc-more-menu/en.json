@@ -9,6 +9,9 @@
         "Downloads": "Downloads",
         "Licensing": "Licensing",
         "About": "About",
-        "DarkTheme": "Use dark theme"
+        "DarkTheme": "Use dark theme",
+        "suttaplexCards": "Display menu as cards",
+        "suttaplexList": "Display menu as list",
+        "SuttaplexListCardView": "Toggle menu view"
     }
 }

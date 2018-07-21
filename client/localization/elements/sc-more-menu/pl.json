@@ -9,6 +9,9 @@
     "Downloads": "Pobieranie",
     "Licensing": "Licencjonowanie",
     "About": "O nas",
-    "DarkTheme": "Ciemna szata graficzna"
+    "DarkTheme": "Ciemna szata graficzna",
+    "suttaplexCards": "Wyświetl menu jako karty",
+    "suttaplexList": "Wyświetl menu jako listę",
+    "SuttaplexListCardView": "Przełącz widok menu"
   }
 }
