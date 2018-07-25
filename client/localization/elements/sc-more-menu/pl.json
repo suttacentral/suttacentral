@@ -10,8 +10,6 @@
     "Licensing": "Licencjonowanie",
     "About": "O nas",
     "DarkTheme": "Ciemna szata graficzna",
-    "suttaplexCards": "Wyświetl menu jako karty",
-    "suttaplexList": "Wyświetl menu jako listę",
-    "SuttaplexListCardView": "Przełącz widok menu"
+    "SuttaplexCompactView": "Użyj widoku kompaktowego"
   }
 }

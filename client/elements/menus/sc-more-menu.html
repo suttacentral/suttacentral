@@ -82,8 +82,8 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
       {{localize('DarkTheme')}}
     </paper-item>
     <paper-item class="more-menu-paper-item">
-      <iron-icon class="more-menu-icon" icon="[[suttaplexToggleIcon]]" on-tap="_toggleSuttaplexDisplay" title="[[suttaplexIconTitle]]"></iron-icon>
-      {{localize('SuttaplexListCardView')}}
+      <paper-toggle-button id="view_toggler" class="toggle-button" checked="{{compactViewChosen}}"></paper-toggle-button>
+      {{localize('SuttaplexCompactView')}}
     </paper-item>
     <a class="more-menu-link" href="/downloads">
       <paper-item class="more-menu-paper-item">
@@ -164,16 +164,13 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                       type: Boolean,
                       computed: '_isDarkThemeChosen(appTheme)'
                   },
-                  suttaplexListEnabled: {
+                  compactViewChosen: {
                       type: Boolean,
-                      statePath: 'suttaplexListDisplay',
-                      observer: '_setSuttaplexToggleIcon'
+                      computed: '_isCompactViewChosen(appView)'
                   },
-                  suttaplexToggleIcon: {
-                      type: String
-                  },
-                  suttaplexIconTitle: {
-                      type: String
+                  appView: {
+                      type: Boolean,
+                      statePath: 'suttaplexListDisplay'
                   }
               };
           }
@@ -186,10 +183,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                           theme: theme
                       }
                   },
-                  toggleSuttaplexDisplay(suttaplexdisplay) {
+                  toggleSuttaplexDisplay(view) {
                       return {
                           type: 'SUTTPLEX_LIST_DISPLAY',
-                          suttaplexdisplay: suttaplexdisplay
+                          suttaplexdisplay: view
                       }
                   }
               }
@@ -209,6 +206,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
               this.$.theme_toggler.addEventListener('checked-changed', () => {
                   const newTheme = this.darkThemeChosen ? 'light' : 'dark';
                   this.dispatch('changeAppTheme', newTheme);
+              });
+              this.$.view_toggler.addEventListener('checked-changed', () => {
+                  const newView = this.compactViewChosen ? false : true;
+                  this.dispatch('toggleSuttaplexDisplay', newView);
               });
           }
 
@@ -240,23 +241,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
               return this.appTheme === 'dark';
           }
 
-          _toggleSuttaplexDisplay() {
-              if (this.suttaplexListEnabled) {
-                this.dispatch('toggleSuttaplexDisplay', false);
-              } else {
-                this.dispatch('toggleSuttaplexDisplay', true);
-              }
+          _isCompactViewChosen() {
+              return this.appView === true;
           }
 
-          _setSuttaplexToggleIcon() {
-              if (this.suttaplexListEnabled) {
-                this.suttaplexToggleIcon = 'view-agenda';
-                this.suttaplexIconTitle = this.localize('suttaplexCards');
-              } else {
-                this.suttaplexToggleIcon = 'view-headline';
-                this.suttaplexIconTitle = this.localize('suttaplexList');
-              }
-          }
       }
 
       customElements.define(SCMoreMenu.is, SCMoreMenu);
