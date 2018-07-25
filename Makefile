@@ -234,7 +234,7 @@ load-server-po-files:
 load-to-pootle:
 	@make generate-server-po-files
 	@docker exec -t sc-pootle-pipeline python to_pootle.py
-	@docker exec -t sc-pootle bash -c "python3 create_and_update_projects.py"
+	#@docker exec -t sc-pootle bash -c "python3 create_and_update_projects.py"
 
 load-from-pootle:
 	@docker exec -t sc-pootle bash -c "python3 update_po_files.py"

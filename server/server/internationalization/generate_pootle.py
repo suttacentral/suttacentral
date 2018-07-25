@@ -9,14 +9,13 @@ from tqdm import tqdm
 from common.arangodb import get_db
 from common.utils import uid_sort_key
 
-#CURRENT_FILE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 GENERATED_PO_FILES_DIR = Path('/srv/pootle/po/')
 
 
-BLURBS_QUERY = '''
+BLURBS_QUERY = r'''
 FOR doc IN blurbs
     FILTER doc.lang == 'en'
-    COLLECT division = REGEX_REPLACE(doc.uid, "^([a-z]+(-(\d|[a-z]{0,3}(?=[.-])))?).*", "$1") INTO group = {[doc.uid]: doc.blurb}
+    COLLECT division = REGEX_REPLACE(doc.uid, "^([a-z]+(-([1-9]|[a-z]{0,3}(?=[.-])))?).*", "$1") INTO group = {[doc.uid]: doc.blurb}
     RETURN {
         "division": division,
         "entries": MERGE(group)
