@@ -69,7 +69,8 @@ Base toolbar that appears on the top right in the header of every page. This too
         text-decoration: none;
       }
 
-      .search-open #discourse_button, .search-open > #more_vert_button {
+      .search-open #discourse_button, .search-open > #more_vert_button,
+      .search-open #suttaplex_switch_button {
         display: none;
       }
 
@@ -145,6 +146,13 @@ Base toolbar that appears on the top right in the header of every page. This too
                   path: {
                       type: String
                   },
+                  suttaplexDisplay: {
+                      type: Boolean
+                  },
+                  suttaplexListEnabled: {
+                      type: Boolean,
+                      statePath: 'suttaplexListDisplay'
+                  },
                   query: {
                       type: String
                   },
@@ -167,6 +175,17 @@ Base toolbar that appears on the top right in the header of every page. This too
                   },
                   // Polymer lint fails if you don't include this:
                   search_input: Object
+              }
+          }
+
+          static get actions() {
+              return {
+                  toggleSuttaplexDisplay(suttaplexdisplay) {
+                      return {
+                          type: 'SUTTPLEX_LIST_DISPLAY',
+                          suttaplexdisplay: suttaplexdisplay
+                      }
+                  }
               }
           }
 

@@ -81,6 +81,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
       <paper-toggle-button id="theme_toggler" class="toggle-button" checked="{{darkThemeChosen}}"></paper-toggle-button>
       {{localize('DarkTheme')}}
     </paper-item>
+    <paper-item class="more-menu-paper-item">
+      <paper-toggle-button id="view_toggler" class="toggle-button" checked="{{compactViewChosen}}"></paper-toggle-button>
+      {{localize('SuttaplexCompactView')}}
+    </paper-item>
     <a class="more-menu-link" href="/downloads">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="file-download"></iron-icon>
@@ -159,6 +163,14 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                   darkThemeChosen: {
                       type: Boolean,
                       computed: '_isDarkThemeChosen(appTheme)'
+                  },
+                  compactViewChosen: {
+                      type: Boolean,
+                      computed: '_isCompactViewChosen(appView)'
+                  },
+                  appView: {
+                      type: Boolean,
+                      statePath: 'suttaplexListDisplay'
                   }
               };
           }
@@ -169,6 +181,12 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
                       return {
                           type: "CHANGE_COLOR_THEME",
                           theme: theme
+                      }
+                  },
+                  toggleSuttaplexDisplay(view) {
+                      return {
+                          type: 'SUTTPLEX_LIST_DISPLAY',
+                          suttaplexdisplay: view
                       }
                   }
               }
@@ -188,6 +206,10 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
               this.$.theme_toggler.addEventListener('checked-changed', () => {
                   const newTheme = this.darkThemeChosen ? 'light' : 'dark';
                   this.dispatch('changeAppTheme', newTheme);
+              });
+              this.$.view_toggler.addEventListener('checked-changed', () => {
+                  const newView = this.compactViewChosen ? false : true;
+                  this.dispatch('toggleSuttaplexDisplay', newView);
               });
           }
 
@@ -218,6 +240,11 @@ Basic more-vert menu on the main toolbar for choice of language and for choosing
           _isDarkThemeChosen() {
               return this.appTheme === 'dark';
           }
+
+          _isCompactViewChosen() {
+              return this.appView === true;
+          }
+
       }
 
       customElements.define(SCMoreMenu.is, SCMoreMenu);

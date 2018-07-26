@@ -99,7 +99,7 @@
             <template is="dom-if" if="{{_isSuttaplex(item)}}">
               <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]"
                             difficulty="[[_computeItemDifficulty(item.difficulty)]]"
-                            expansion-data="[[expansionReturns]]">
+                            expansion-data="[[expansionReturns]]" suttaplex-list-style="[[suttaplexListView]]">
               </sc-suttaplex>
             </template>
 
@@ -159,6 +159,14 @@
                   fallbackLanguage: {
                       type: String,
                       value: 'en'
+                  },
+                  suttaplexListEnabled: {
+                      type: Boolean,
+                      statePath: 'suttaplexListDisplay',
+                      observer: '_setSuttaplexListStyle'
+                  },
+                  suttaplexListView: {
+                      type: String
                   }
               }
           }
@@ -169,6 +177,15 @@
               setTimeout(() => {
                   this.loadResources(this.resolveUrl(`/localization/elements/sc-navigation-menu/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
               });
+          }
+
+          _setSuttaplexListStyle() {
+              if (this.suttaplexListEnabled) {
+                  this.suttaplexListView = 'list-view';
+              } else {
+                  this.suttaplexListView = '';
+              }
+              this.$.ajax.generateRequest();
           }
 
           _siteLanguageChanged() {
