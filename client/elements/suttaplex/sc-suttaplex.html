@@ -37,9 +37,17 @@
         display: block;
       }
 
+      .suttaplex.list-view {
+        margin: 0;
+      }
+
       .suttaplex .card-content {
         padding-top: var(--sc-size-md-larger);
         padding-bottom: 1px;
+      }
+
+      .suttaplex.list-view .card-content {
+        padding-top: var(--sc-size-md);
       }
 
       .suttaplex-heading {
@@ -55,6 +63,10 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+      }
+
+      .suttaplex.list-view .suttaplex-nerdy-row {
+        display: inline-flex;
       }
 
       .suttaplex-nerdy-row .popuptext {
@@ -75,6 +87,24 @@
         overflow: hidden;
       }
 
+      .suttaplex.list-view .suttaplex-heading {
+        @apply --paper-font-title;
+        @apply --sc-serif-font;
+        margin-right: var(--sc-size-md-larger);
+      }
+
+      .suttaplex.list-view .suttaplex-head-container {
+        display: inline-flex;
+      }
+
+      .suttaplex.list-view .primary-accent-icon {
+        display: none;
+      }
+
+      .suttaplex.list-view .suttaplex-blurb {
+        display: none;
+      }
+
       .suttaplex .card-actions {
         padding: 0 var(--sc-size-md) var(--sc-size-sm);
         display: flex;
@@ -83,6 +113,10 @@
         justify-content: space-between;
         align-items: baseline;
         border-top: 0;
+      }
+
+      .suttaplex.list-view .card-actions {
+        padding: 0 var(--sc-size-md) 0;
       }
 
       .author-buttons-container {
@@ -97,7 +131,7 @@
       }
 
       .right-elements {
-        display: flex;
+        display: inline-block;
         align-self: flex-end;
       }
 
@@ -261,6 +295,10 @@
         transition: margin-top ease-in-out 200ms;
       }
 
+      .suttaplex.list-view .translations-label {
+        display: none;
+      }
+
       .author-buttons-container:hover + .translations-label {
         margin-top: calc(var(--sc-size-md) * -1);
       }
@@ -273,7 +311,7 @@
     </style>
 
     <template is="dom-if" if="[[item.uid]]">
-      <paper-card class="suttaplex" id="[[item.uid]]" elevation="1">
+      <paper-card class$="suttaplex [[suttaplexListStyle]]" id="[[item.uid]]" elevation="1">
 
         <div class="card-content">
 
@@ -431,6 +469,9 @@
                   toggleIcon: {
                       type: String,
                       computed: '_computeToggleIcon(parallelsOpened)'
+                  },
+                  suttaplexListStyle: {
+                      type: String
                   },
                   parallelsOpened: {
                       type: Boolean,

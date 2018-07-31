@@ -46,7 +46,8 @@
                 pali: {},
                 chinese: {}
             }
-        }
+        },
+        suttaplexListDisplay: false
     };
 
     // The reducer accepts the current state and an action and returns a new state object
@@ -95,8 +96,8 @@
                         chineseLookupActivated: action.chineseLookupActivated,
                         chineseLookupTargetLanguage: action.chineseLookupTargetLanguage,
                         chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr
-                    })
-                });
+                    }
+)                });
             case 'SELECT_NAVIGATION_MENU_ITEM':
                 return Object.assign({}, state, { selectedNavigationMenuItemId: action.id });
             case 'CHANGE_COLOR_THEME':
@@ -107,6 +108,8 @@
                 return Object.assign({}, state, { downloadedUrls: action.downloadedUrls });
             case 'SAVE_DOWNLOADED_PWA_SETTINGS':
                 return Object.assign({}, state, { downloadedPWASettings: action.downloadedPWASettings });
+            case 'SUTTPLEX_LIST_DISPLAY':
+                return Object.assign({}, state, { suttaplexListDisplay: action.suttaplexdisplay });
             default:
                 return state;
         }

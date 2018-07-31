@@ -101,7 +101,7 @@ Language-menu used in the suttaplex card for denoting which translations exist o
 
     </style>
     <template is="dom-if" if="[[_shouldShowMenu(languageChoice, language)]]">
-      <paper-dropdown-menu class="language-menu-dropdown custom" label="{{localize('more')}}"
+      <paper-dropdown-menu class="language-menu-dropdown custom" label="[[_getLabel(localize, showLabel)]]"
                            title="{{localize('selectLanguage')}}" id="paper_dropdown_menu" vertical-align="top">
         <paper-listbox class="language-menu-listbox" slot="dropdown-content" selected="0">
           <template is="dom-repeat"
@@ -182,6 +182,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
                   parallelMenu: {
                       type: Boolean,
                       value: false
+                  },
+                  showLabel: {
+                      type: Boolean,
+                      statePath: 'suttaplexListDisplay'
                   }
               }
           }
@@ -290,6 +294,10 @@ Language-menu used in the suttaplex card for denoting which translations exist o
               } else {
                   return localize('selectTranslation', 'lang', translation.lang_name, 'author', translation.author);
               }
+          }
+
+          _getLabel(localize, showLabel) {
+              return showLabel ? '' : localize('more');
           }
       }
 
