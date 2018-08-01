@@ -15,8 +15,6 @@ services:
       - '8001'
     volumes:
       - l10n-ter:/l10n_ter
-      - pootle-po:/srv/pootle/po
-      - pootle-git:/srv/pootle/git-clones
       - pootle-mysql-socket:/var/run/mysqld
       - ./supervisord_conf:/etc/supervisor/conf.d/
       - ./:/home/pootle
@@ -55,7 +53,5 @@ networks:
 
 volumes:
     l10n-ter:
-    pootle-po:
-    pootle-git:
     pootle-mysql-data:
     pootle-mysql-socket:

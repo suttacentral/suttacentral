@@ -8,9 +8,9 @@ import tqdm
 
 
 CURRENT_FILE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
-POOTLE_FILES_DIR = CURRENT_FILE_DIR / Path('generatedPoFiles')
+PO_FILES_DIR = Path('/srv/pootle/po/')
 LOCALIZATION_FILES_DIR = CURRENT_FILE_DIR / Path('../elements/')
-
+PROJECT_NAME = 'site-localization'
 
 def get_language(file):
     parts = file.relative_to(POOTLE_FILES_DIR).parts
@@ -47,7 +47,7 @@ def generate_json_file(file):
 
 
 def run():
-    project_dir = POOTLE_FILES_DIR / 'site-localization'
+    project_dir = PO_FILES_DIR / PROJECT_NAME
     for file in tqdm.tqdm([f for f in project_dir.rglob('*.po*') if not f.parts[-2].startswith('server')]):
         generate_json_file(file)
 

@@ -17,6 +17,7 @@ services:
       - socket-volume:/opt/sc/sockets
       - ./server/:/opt/sc/sc-flask
       - working-storage-volume:/opt/sc/storage
+      - ./pootle/po:/srv/pootle/po
     expose:
       - '5000'
     depends_on:
@@ -97,6 +98,19 @@ services:
     volumes:
       - ./client/:/opt/sc/frontend
 
+  sc-pootle-pipeline:
+    build:
+      context: ./pootle_pipeline/
+      dockerfile: Dockerfile-pootle-pipeline
+    container_name: 'sc-pootle-pipeline'
+    labels:
+      application: 'sc-pootle-pipeline'
+    volumes:
+      - ./pootle/po/:/srv/pootle/po/
+      - ./server/server/:/opt/sc/server/
+      - ./client/:/opt/sc/frontend/
+      - ./pootle_pipeline/:/opt/sc/po_files/
+      
 networks:
   default:
     external:

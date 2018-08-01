@@ -7,40 +7,53 @@ import polib
 from tqdm import tqdm
 
 from common.arangodb import get_db
+from common.utils import uid_sort_key
 
-CURRENT_FILE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
-GENERATED_PO_FILES_DIR = CURRENT_FILE_DIR / Path('generatedPoFiles')
+GENERATED_PO_FILES_DIR = Path('/srv/pootle/po/')
 
+
+BLURBS_QUERY = r'''
+FOR doc IN blurbs
+    FILTER doc.lang == 'en'
+    COLLECT division = REGEX_REPLACE(doc.uid, "^([a-z]+(-([1-9]|[a-z]{0,3}(?=[.-])))?).*", "$1") INTO group = {[doc.uid]: doc.blurb}
+    RETURN {
+        "division": division,
+        "entries": MERGE(group)
+    }
+'''
 
 def process_blurbs(db):
     print('PROCESSING_BLURBS')
-
-    blurbs_collection = db['blurbs']
-    po = polib.POFile()
-    po.metadata = {
-        'POT-Creation-Date': str(datetime.datetime.now()),
-        'Content-Type': 'text/plain; charset=utf-8'
-    }
-    pot = polib.POFile()
-    pot.metadata = {
-        'POT-Creation-Date': str(datetime.datetime.now()),
-        'Content-Type': 'text/plain; charset=utf-8'
-    }
-    for blurb in tqdm(blurbs_collection.find({'lang': 'en'})):
-        entry = polib.POEntry(
-            msgid=blurb['blurb'],
-            msgstr=blurb['blurb'],
-            msgctxt=blurb['uid']
-        )
-        po.append(entry)
-        pot.append(polib.POEntry(
-            msgid=blurb['blurb'],
-            msgctxt=blurb['uid']
-        ))
-
-    (GENERATED_PO_FILES_DIR / 'server_blurbs').mkdir(parents=True, exist_ok=True)
-    po.save(str(GENERATED_PO_FILES_DIR / 'server_blurbs' / 'en.po'))
-    pot.save(str(GENERATED_PO_FILES_DIR / 'server_blurbs' / 'templates.pot'))
+    
+    out_dir = GENERATED_PO_FILES_DIR / 'server_blurbs' / 'templates'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    leftovers = {}
+    for doc in tqdm(db.aql.execute(BLURBS_QUERY)):
+        division = doc['division']
+        
+        entries = doc['entries']
+        if len(entries) < 2:
+            leftovers.update(entries)
+            continue
+        pot = polib.POFile()
+        for uid in sorted(entries.keys(), key=uid_sort_key):
+            blurb = entries[uid]
+            pot.append(polib.POEntry(
+                msgid=blurb,
+                msgctxt=uid
+            ))        
+        pot.save(str(out_dir / f'{division}.pot'))
+    
+    if leftovers:
+        #print(leftovers)
+        pot = polib.POFile()
+        for uid in sorted(leftovers.keys(), key=uid_sort_key):
+            blurb = leftovers[uid]
+            pot.append(polib.POEntry(
+                msgid=blurb,
+                msgctxt=uid
+            ))
+        pot.save(str(out_dir / '0-blurbs.pot'))
 
     print('✓ FINISHED PROCESSING BLURBS')
 
@@ -85,7 +98,7 @@ def process_menu(db):
 
             po_file.append(entry)
 
-        po_file.save(str(GENERATED_PO_FILES_DIR / 'server_root_names' / f'{lang}.po'))
+        po_file.save(str(GENERATED_PO_FILES_DIR / 'server_root_names' / f'{lang}.pot'))
 
     print('✓ FINISHED PROCESSING ROOT NAMES')
 
