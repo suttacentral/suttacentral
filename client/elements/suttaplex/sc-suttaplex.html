@@ -69,6 +69,12 @@
         display: inline-flex;
       }
 
+      @media screen and (max-width: 600px) {
+        .suttaplex.list-view .suttaplex-nerdy-row {
+          display: block;
+        }
+      }
+
       .suttaplex-nerdy-row .popuptext {
         overflow: visible;
         visibility: hidden;
@@ -88,8 +94,7 @@
       }
 
       .suttaplex.list-view .suttaplex-heading {
-        @apply --paper-font-title;
-        @apply --sc-serif-font;
+        @apply --paper-font-compact-title;
         margin-right: var(--sc-size-md-larger);
       }
 
