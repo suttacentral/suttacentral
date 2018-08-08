@@ -11,11 +11,11 @@ module.exports = {
         'localization/elements/**/en.json',
         'img/pray.png',
         'img/*.svg',
-        'files/fonts/SkolarPE-Bold_3.005.woff2',
-        'files/fonts/SkolarPE-Regular_3.005.woff2',
-        'files/fonts/SkolarSansPE-Bd_2.001.woff2',
-        'files/fonts/SkolarSansPE-It_2.004.woff2',
-        'files/fonts/SkolarSansPE-Rg_2.004.woff2'
+        'files/fonts/RaloksPE-Bold_3.007.woff2',
+        'files/fonts/RaloksPE-Regular_3.007.woff2',
+        'files/fonts/RaloksSansPE-Bd_2.004.woff2',
+        'files/fonts/RaloksSansPE-It_2.004.woff2',
+        'files/fonts/RaloksSansPE-Rg_2.004.woff2'
     ],
     'globIgnores': [
         'bower_components/webcomponentsjs/*',
