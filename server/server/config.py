@@ -31,6 +31,8 @@ class Config:
     DATA_REPO = 'https://github.com/suttacentral/sc-data.git'
 
     DEFAULT_LANGUAGE = 'en'
+    
+    SERVER_ADDRESS = os.environ['SERVER_ADDRESS']
 
     MAILGUN_DOMAIN = os.environ['MAILGUN_DOMAIN']
     MAILGUN_API_KEY = os.environ['MAILGUN_API_KEY']
