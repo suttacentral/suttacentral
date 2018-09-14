@@ -33,12 +33,16 @@ def sanitize_div_name(string):
 def retrieve_data(division_uid, language, author):
     db = get_db()
     docs = list(db.aql.execute(QUERY, bind_vars={'uid': division_uid, 'author': author, 'language': language}))
-    print(docs)
     texts = [doc['text'] for doc in docs if doc['text']]
-    
-    division_title = sanitize_div_name(texts[0]['division_title'])
+    if len(texts) == 1:
+        division_title = texts[0]['title']
+    else:
+        division_title = sanitize_div_name(texts[0]['division_title'])
     author = texts[0]['author']
-    author_blurb = texts[0]['author_blurb'][language]
+    try:
+        author_blurb = texts[0]['author_blurb'][language]
+    except KeyError:
+        author_blurb = texts[0]['author_blurb']['en']
     
     toc = ['<div><h1>Guide</h1>']
     last_depth = -1

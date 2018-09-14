@@ -4,3 +4,4 @@ RUN mkdir -p /opt/sc/sc-flask
 WORKDIR /opt/sc/sc-flask
 COPY *.* ./
 RUN pip install -r requirements.txt
+RUN apt update && apt install -y pngnq
