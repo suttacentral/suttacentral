@@ -1,3 +1,4 @@
+aiohttp==3.4.4
 alabaster==0.7.10
 aniso8601==2.0.0
 arrow==0.12.1
@@ -37,6 +38,7 @@ Pygments==2.2.0
 pytest==3.3.2
 pytest-flask==0.10.0
 pytest-sugar==0.9.0
+pyppeteer==0.0.24
 python-arango==3.12.1
 python-dateutil==2.6.1
 pytz==2017.3
