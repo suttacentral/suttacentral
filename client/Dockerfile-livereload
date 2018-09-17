@@ -5,7 +5,7 @@ RUN apt-get update \
 	   git \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g bower polymer-cli browser-sync --unsafe-perm
+RUN npm install -g polymer-cli browser-sync --unsafe-perm
 
 # Create app directory
 RUN mkdir -p /opt/sc/static
