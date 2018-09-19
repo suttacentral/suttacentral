@@ -5,8 +5,7 @@ from pathlib import Path
 
 import os
 
-es = elasticsearch.Elasticsearch([f'{os.getenv("ES_HOST")}:{os.getenv("ES_PORT")}'],
-                                 http_auth=('elastic', 'changeme'))
+es = elasticsearch.Elasticsearch([{'host': os.getenv("ES_HOST"), 'port': int(os.getenv("ES_PORT"))}])
 
 
 def is_available():

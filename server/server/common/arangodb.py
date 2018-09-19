@@ -79,6 +79,10 @@ def get_db() -> Database:
         db = ArangoDB(current_app).db
     return db
 
+def get_system_db() -> Database:
+    config = current_app.config['ARANGO_CLIENT']
+    db = get_client().db(**{'username': config['username'], 'password': config['password']})
+    return db
 
 def delete_db(db: Database):
-    get_client().delete_database(db.name)
+    get_system_db().delete_database(db.name)
