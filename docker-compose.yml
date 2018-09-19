@@ -114,8 +114,10 @@ services:
   sc-chrome-headless:
     image: justinribeiro/chrome-headless
     container_name: 'sc-chrome-headless'
+    labels:
+      application: 'sc-chrome-headless'
     expose:
-      - 9222
+      - '9222'
     cap_add:
       - SYS_ADMIN
       

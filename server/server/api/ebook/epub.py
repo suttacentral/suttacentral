@@ -140,6 +140,10 @@ class Book:
         with open(str(self.oebps / 'images' / name), 'wb') as file:
             file.write(data)
     
+    def add_cover(self, data):
+        with open(str(self.path / 'cover.png'), 'wb') as file:
+            file.write(data)
+        
     def add_stylesheet(self, data):
         with open(str(self.oebps / 'styles/stylesheet.css'), 'w') as file:
             file.write(data)

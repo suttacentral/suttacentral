@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookID" version="2.0">
     <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
-    <meta name="cover" content="cover"/>
+    <meta name="cover" content="images/cover.png"/>
     <dc:title/>
     <dc:creator/>
     <dc:date/>
@@ -10,6 +10,7 @@
     <dc:rights/>
   </metadata>
   <manifest>
+    <item id="cover_png" properties="cover-image" href="images/cover.png" media-type="image/png" />
     <item href="styles/stylesheet.css" id="stylesheet" media-type="text/css"/>
     <item href="toc.ncx" id="toc" media-type="application/x-dtbncx+xml"/>
     
