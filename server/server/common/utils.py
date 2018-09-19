@@ -5,7 +5,7 @@ from collections import defaultdict
 import decorator
 
 from common import models
-from common.arangodb import get_client, get_db
+from common.arangodb import get_system_db, get_db
 from migrations.runner import run_migrations
 
 
@@ -19,8 +19,7 @@ def remove_test_db():
     """
     Delete the test db.
     """
-    get_client().delete_database(current_app().config.get('ARANGO_DB'), ignore_missing=True)
-
+    get_system_db().delete_database(current_app().config.get('ARANGO_DB'), ignore_missing=True)
 
 def app_context(func: Callable):
     """

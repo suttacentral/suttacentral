@@ -51,3 +51,7 @@ services:
     working_dir: /opt/sc/frontend
     volumes:
       - ./client/:/opt/sc/frontend
+      
+  sc-chrome-headless:
+    ports:
+      - '9222:9222'

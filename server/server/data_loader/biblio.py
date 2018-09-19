@@ -7,4 +7,4 @@ def load_biblios(db, additional_info_dir: Path):
     biblio_collection = db['biblios']
     data = json_load(additional_info_dir / 'biblio.json')
 
-    biblio_collection.import_bulk_safe(data, overwrite=True)
+    biblio_collection.import_bulk(data, overwrite=True)

@@ -46,3 +46,8 @@ services:
     ports:
     - '9200:9200'
     - '9300:9300'
+    
+  sc-chrome-headless:
+    restart: always
+    ports:
+     - '9222:9222'

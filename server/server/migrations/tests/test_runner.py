@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from common.arangodb import get_client, get_db
+from common.arangodb import get_client, get_system_db, get_db
 from common.utils import app_context, empty_arango
 from migrations import base, runner
 
@@ -44,4 +44,4 @@ def test_ensure_db_exists(app):
     client = get_client()
 
     runner._ensure_sutta_db_exists()
-    client.database(app.config.get('ARANGO_DB'))  # No error means that the db has been created.
+    client.db(app.config.get('ARANGO_DB'))  # No error means that the db has been created.

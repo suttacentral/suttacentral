@@ -4,38 +4,18 @@ from typing import Union
 
 from arango import ArangoClient
 from arango.database import Database
-from arango.collections.base import BaseCollection
 from flask import current_app, g
 
 import logging
 
-
-# python-arango import_bulk function is pretty dangerous to use
-# in current version unless you set "halt_on_error=True" it silently
-# ignores errors. But if you set "halt_on_error=True" you get an
-# exception but lose the response body containing the error details
-# so you have no idea what went wrong!
-# It's pretty much a no-win.
-# I expect this will be improved in the library in time but for now
-# I'm patching in a more sensible version which always logs errors
-# and can be told to raise an exception.
-def import_bulk_safe(self, *args, halt_on_error=False, **kwargs):
-    res = self.import_bulk(*args, **kwargs, halt_on_error=False)
-    if res['errors'] > 0:
-        for error in res['details']:
-            logging.error(f'{self.name}:{error}')
-        if halt_on_error:
-            raise arango.exception.DocumentInsertError()
-
-BaseCollection.import_bulk_safe = import_bulk_safe
-
 class ArangoDB:
     def __init__(self, app=None):
         self.app = app
-
+        
     def connect(self) -> ArangoClient:
         """Connect to the ArangoDB"""
-        return ArangoClient(**current_app.config['ARANGO_CLIENT'])
+        config = current_app.config['ARANGO_CLIENT']
+        return ArangoClient(host=config['host'], port=config['port'])
 
     @property
     def client(self) -> ArangoClient:
@@ -56,10 +36,13 @@ class ArangoDB:
         """
         db = self._get_db_from_g_or_none()
         if db is None:
+            config = current_app.config['ARANGO_CLIENT']
+            params = {'username': config['username'], 'password': config['password']}
             if isinstance(current_app.config['ARANGO_DB'], dict):
-                db = g._database = self.client.db(**current_app.config['ARANGO_DB'])
+                params.update(current_app.config['ARANGO_DB'])
             else:
-                db = g._database = self.client.db(name=current_app.config['ARANGO_DB'])
+                params['name'] = current_app.config['ARANGO_DB']
+            db = g._database = self.client.db(**params)
         return db
 
     @staticmethod
@@ -96,6 +79,10 @@ def get_db() -> Database:
         db = ArangoDB(current_app).db
     return db
 
+def get_system_db() -> Database:
+    config = current_app.config['ARANGO_CLIENT']
+    db = get_client().db(**{'username': config['username'], 'password': config['password']})
+    return db
 
 def delete_db(db: Database):
-    get_client().delete_database(db.name)
+    get_system_db().delete_database(db.name)

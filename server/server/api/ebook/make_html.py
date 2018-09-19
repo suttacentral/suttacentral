@@ -23,8 +23,9 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('root/', @uid) root_edges OPTIONS {
     LET text = KEEP(DOCUMENT(CONCAT('po_strings/', @language, '_', doc.uid, '_', @author)), 'uid', 'name', 'strings_path', 'title', 'division_title', 'author', 'author_blurb', 'markup_uid')
     LET markup_path = text ? DOCUMENT(CONCAT('po_markup/', text.markup_uid, '_markup')).markup_path : null
     
-    RETURN {uid: doc.uid, depth: LENGTH(path.edges), name: doc.name, title: doc.title, type: doc.type, blurb: blurb, text:MERGE(text, {markup_path:markup_path})}
+    LET legacy_text = KEEP(DOCUMENT(CONCAT('html_text/',  @language, '_', doc.uid, '_', @author)), 'uid', 'name', 'file_path', 'title', 'division_title', 'author')
     
+    RETURN {uid: doc.uid, acronym: doc.acronym, depth: LENGTH(path.edges), name: doc.name, title: doc.title, type: doc.type, blurb: blurb, text: text ? MERGE(text, {markup_path:markup_path}) : legacy_text}
 '''
 
 def sanitize_div_name(string):
@@ -33,16 +34,13 @@ def sanitize_div_name(string):
 def retrieve_data(division_uid, language, author):
     db = get_db()
     docs = list(db.aql.execute(QUERY, bind_vars={'uid': division_uid, 'author': author, 'language': language}))
+    docs = [doc for doc in docs if doc['type'] != 'text' or doc['text']]
     texts = [doc['text'] for doc in docs if doc['text']]
-    if len(texts) == 1:
-        division_title = texts[0]['title']
-    else:
-        division_title = sanitize_div_name(texts[0]['division_title'])
     author = texts[0]['author']
-    try:
-        author_blurb = texts[0]['author_blurb'][language]
-    except KeyError:
-        author_blurb = texts[0]['author_blurb']['en']
+    
+    for text in texts:
+        if 'name' in text:
+            text['title'] = text.pop('name')
     
     toc = ['<div><h1>Guide</h1>']
     last_depth = -1
@@ -55,10 +53,15 @@ def retrieve_data(division_uid, language, author):
                 toc.append('</ul>\n' * (last_depth - depth))
             if doc['name']:
                 toc.append('<li>\n')
-                if doc['text']:
-                    toc.append(f'<b><a href="./{doc["uid"]}.xhtml">{doc["text"]["title"]}</a></b> <i>{doc["name"]}</i>')
+                acronym = doc.get('acronym')
+                if acronym:
+                    acronym = acronym + ': '
                 else:
-                    toc.append(f'<b>{doc["name"]}</b> <i>{doc["title"]}</i>')
+                    acronym = ""
+                if doc['text']:
+                    toc.append(f'<b><a href="./{doc["uid"]}.xhtml">{acronym}{doc["text"]["title"]}</a></b> <i>{doc["name"]}</i>')
+                else:
+                    toc.append(f'<b>{acronym}{doc["name"]}</b> <i>{doc["title"]}</i>')
                 if doc['blurb'] and i > 0:
                     toc.append(f'<p>{doc["blurb"]}</p>')
                 if i >= len(docs) - 1 or docs[i+1]['depth'] <= doc['depth']:
@@ -71,11 +74,10 @@ def retrieve_data(division_uid, language, author):
     
     toc_string = toc_string.replace(' <i>None</i>', '')
     
-    return {'title': division_title,
+    return {
             'root_title': docs[0]['name'],
             'blurb': docs[0]['blurb'],
             'author': author,
-            'author_blurb': author_blurb,
             'toc': toc_string,
             'texts': texts}
 
@@ -97,25 +99,62 @@ def get_html_data(division_uid, language, author):
     data = retrieve_data(division_uid, language, author)
     
     texts = data.pop('texts')
-    toc = data.pop('toc')
+    
     data['pages'] = []
-    if len(texts) > 1:
-        data['pages'].append({'title': 'Guide to Contents', 'uid': 'guide', 'html': toc})
+
+
+    
+    if len(texts) == 1:
+        division_title = texts[0]['title']
+    elif 'division_title' in texts[0]:
+        division_title = texts[0]['division_title']
+    else:
+        division_title = None
+    
+    if 'author_blurb' in texts[0]:
+        try:
+            author_blurb = texts[0]['author_blurb'][language]
+        except KeyError:
+            author_blurb = texts[0]['author_blurb']['en']
+    else:
+        author_blurb = None
+    
     
     deduplicator = Deduplicator()
-    
     def repl(m):
         return regex.sub('<p.*?>.*?</p>', deduplicator, m[0])
     
     for text in texts:
-        html = make_clean_html(text['strings_path'], text['markup_path'])
-        
+        if 'strings_path' in text:
+            html = convert_to_html(text['strings_path'], text['markup_path'])
+        else:
+            html = open(text['file_path']).read()
+            html = clean_html(html)
+            if division_title is None:
+                m = regex.search(r'<p class="division">(.*?)</p>', html)
+                if m:
+                    division_title = m[1]
+            if author_blurb is None:
+                m = regex.search('(?s)<aside id="metaarea">(.*?)</aside>', html)
+                if m:
+                    author_blurb = m[1]
+            
         html = regex.sub(r'(?s)<div class="hgroup">.*?</div>', repl, html)
         
+        
         data['pages'].append({'title': text['title'], 'uid': text['uid'], 'html': html})
+            
+    data['title'] = division_title
+    data['author_blurb'] = author_blurb
+    
+    if len(texts) > 1:
+        toc = data.pop('toc')
+        data['pages'].insert(0, {'title': 'Guide to Contents', 'uid': 'guide', 'html': toc})
+    
+    
     return data
 
-def make_clean_html(strings_path, markup_path):
+def convert_to_html(strings_path, markup_path):
 
     markup_string = open(markup_path).read()
     strings = json.load(open(strings_path))
@@ -129,7 +168,11 @@ def make_clean_html(strings_path, markup_path):
     markup_string = regex.sub(r'<sc-seg id="([^"]+)"></sc-seg>', repl_fn, markup_string)
     markup_string = regex.sub(r' *\n *', r'\n', markup_string)
     markup_string = regex.sub(r' +', ' ', markup_string)
-    root = lxml.html.fromstring(markup_string)
+
+    return clean_html(markup_string)
+
+def clean_html(html_string):
+    root = lxml.html.fromstring(html_string)
     
     for e in root.iter('a', 'article'):
         e.drop_tag()
@@ -141,9 +184,7 @@ def make_clean_html(strings_path, markup_path):
             p.drop_tree()
         elif p.text:
             p.text = regex.sub(r'^\s+', '', p.text)
-        
-            
-
+    
     string = lxml.html.tostring(root, encoding='unicode')
     string = regex.sub(r'\s+</p>', '</p>', string)
     return string
