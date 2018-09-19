@@ -187,7 +187,7 @@ def process_category_files(category_files, db, edges, mapping):
                 del entry['contains']
 
             category_docs.append(entry)
-        collection.import_bulk_safe(category_docs, overwrite=True)
+        collection.import_bulk(category_docs, overwrite=True)
     
     for i, uid in enumerate(division_ordering):
         try:
@@ -234,9 +234,9 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
                     entry['grouping'] = 'other'
 
         # make documents
-        db['root'].import_bulk_safe(docs, overwrite=True)
-        db['root_names'].import_bulk_safe(name_docs, overwrite=True)
-        db['root_edges'].import_bulk_safe(edges, overwrite=True)
+        db['root'].import_bulk(docs, overwrite=True)
+        db['root_names'].import_bulk(name_docs, overwrite=True)
+        db['root_edges'].import_bulk(edges, overwrite=True)
 
         perform_update_queries(db)
 
@@ -365,14 +365,14 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                             'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
                             'remark': remark
                         })
-    db['relationship'].import_bulk_safe(ll_edges, from_prefix='root/', to_prefix='root/', overwrite=True)
+    db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/', overwrite=True)
     
 def load_author_edition(change_tracker, additional_info_dir, db):
     author_file = additional_info_dir / 'author_edition.json'
     if change_tracker.is_file_new_or_changed(author_file):
         with author_file.open('r', encoding='utf-8') as authorf:
             authors = json.load(authorf)
-        db['author_edition'].import_bulk_safe(authors, overwrite=True)
+        db['author_edition'].import_bulk(authors, overwrite=True)
 
 def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir):
     print('Loading HTML texts')
@@ -402,7 +402,7 @@ def load_json_file(db, change_tracker, json_file):
     if 'uid' in data[0]:
         for d in data:
             d['_key'] = d['uid']
-        db[collection_name].import_bulk_safe(data, overwrite=True)
+        db[collection_name].import_bulk(data, overwrite=True)
 
 
 def process_blurbs(db, additional_info_dir):
@@ -416,7 +416,7 @@ def process_blurbs(db, additional_info_dir):
             for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in
             tqdm(suttas.items())]
 
-    db.collection('blurbs').import_bulk_safe(docs, overwrite=True)
+    db.collection('blurbs').import_bulk(docs, overwrite=True)
 
 
 def process_difficulty(db, additional_info_dir):
@@ -428,7 +428,7 @@ def process_difficulty(db, additional_info_dir):
     docs = [{'uid': uid, 'difficulty': lvl}
             for x in difficulty_info.values() for uid, lvl in tqdm(x.items())]
 
-    db.collection('difficulties').import_bulk_safe(docs, overwrite=True)
+    db.collection('difficulties').import_bulk(docs, overwrite=True)
 
 
 def run(no_pull=False):

@@ -236,7 +236,7 @@ class ArangoTextInfoModel(TextInfoModel):
             self.flush_documents()
 
     def flush_documents(self):
-        self.db['html_text'].import_bulk_safe(self.queue, on_duplicate='replace')
+        self.db['html_text'].import_bulk(self.queue, on_duplicate='replace')
         self.queue.clear()
 
     def update_code_points(self, lang_uid, unicode_points, force=False):

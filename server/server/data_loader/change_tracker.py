@@ -77,12 +77,12 @@ class ChangeTracker:
                                 FILTER entry.path IN @to_remove 
                                 REMOVE entry IN mtimes''', bind_vars={'to_remove': list(self.deleted)})
 
-        self.db['mtimes'].import_bulk_safe(
+        self.db['mtimes'].import_bulk(
             [{'path': k, 'mtime': v, '_key': k.replace('/', '_')} for k, v in
              self.changed_or_new.items()], on_duplicate="replace")
         self.db['function_hashes'].truncate()
         docs = [{'_key': k, 'hash': v} for k, v in self.new_function_hashes.items()]
-        self.db['function_hashes'].import_bulk_safe(docs, overwrite=True)
+        self.db['function_hashes'].import_bulk(docs, overwrite=True)
 
 def function_source(function):
     return ''.join(inspect.getsourcelines(function)[0])

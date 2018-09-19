@@ -58,7 +58,7 @@ class ModelList(list):
         db = get_db()
         collection = db.collection(collection)
 
-        return collection.import_bulk_safe([m.document for m in self])
+        return collection.import_bulk([m.document for m in self])
 
 
 class Language(Model):

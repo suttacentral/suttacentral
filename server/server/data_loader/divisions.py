@@ -20,8 +20,8 @@ def load_divisions(db, structure_dir: Path):
                          for i, entry in enumerate(division_data)]
         text_division_data_objects += division_data
 
-    divisions_collection.import_bulk_safe(division_objects)
-    text_divisions_collection.import_bulk_safe(text_division_data_objects)
+    divisions_collection.import_bulk(division_objects)
+    text_divisions_collection.import_bulk(text_division_data_objects)
 
 
 def get_uid(entry):

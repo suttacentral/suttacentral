@@ -13,4 +13,4 @@ def load_available_languages(db, additional_info_dir: Path):
         languages_data.append({
             'iso_code': iso_code['iso_code']
         })
-    languages_collection.import_bulk_safe(data, overwrite=True)
+    languages_collection.import_bulk(data, overwrite=True)
