@@ -153,12 +153,6 @@
 <link rel="import" href="/elements/sc-drawer-layout.html">
 
 
-<!-- Fix for lastpass extension breaking Shady DOM: -->
-<script>
-    window.addEventListener('WebComponentsReady', function() {
-        document.createElement = Document.prototype.createElement;
-    });
-</script>
 
 <!-- Register pre-caching service worker -->
 <script async>
