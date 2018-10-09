@@ -274,31 +274,33 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
 
     # We expect the project dir name to be the division name
     for lang_dir in iter_sub_dirs(po_dir):
-        tr_lang = lang_dir.name
-        for root_lang_dir in iter_sub_dirs(lang_dir):
-            root_lang = root_lang_dir.name
-            docs = process_dir(
-                change_tracker,
-                root_lang_dir,
-                authors,
-                info={
-                    'tr_lang': tr_lang,
-                    'root_lang': root_lang
-                },
-                storage_dir=storage_dir)
+        if '-' in lang_dir.stem:
+            root_lang, tr_lang = lang_dir.stem.split('-')
+        else:
+            raise ValueError(f'po subdir {lang_dir} should be of form such as pli-en')
 
-            markup_docs = []
-            string_docs = []
+        docs = process_dir(
+            change_tracker,
+            lang_dir,
+            authors,
+            info={
+                'tr_lang': tr_lang,
+                'root_lang': root_lang
+            },
+            storage_dir=storage_dir)
 
-            for i, doc in enumerate(docs):
-                if 'markup_path' in doc:
-                    doc['_key'] = f'{doc["uid"]}_markup'
-                    markup_docs.append(doc)
+        markup_docs = []
+        string_docs = []
 
-                else:
-                    doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
-                    string_docs.append(doc)
+        for i, doc in enumerate(docs):
+            if 'markup_path' in doc:
+                doc['_key'] = f'{doc["uid"]}_markup'
+                markup_docs.append(doc)
 
-            db['po_markup'].import_bulk(markup_docs, on_duplicate='ignore')
-            db['po_strings'].import_bulk(string_docs, on_duplicate='ignore')
+            else:
+                doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
+                string_docs.append(doc)
+
+        db['po_markup'].import_bulk(markup_docs, on_duplicate='ignore')
+        db['po_strings'].import_bulk(string_docs, on_duplicate='ignore')
 
