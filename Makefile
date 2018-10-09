@@ -182,6 +182,9 @@ test-server:
 test-builds:
 	test -e client/build/default/index.html
 	test -e client/build/es5-bundled/index.html
+	
+test-api:
+	docker-compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
 load-data:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
