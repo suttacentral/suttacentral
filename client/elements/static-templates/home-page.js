@@ -1,17 +1,21 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../elements/styles/static-styles.html">
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 
-<link rel="import" href="../addons/sc-static-page.html">
-<link rel="import" href="../../elements/addons/text-carousel.html">
+import { html } from '@polymer/lit-element/lit-element.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import '@polymer/paper-card/paper-card.js';
+import '@polymer/paper-button/paper-button.js';
+import '@polymer/iron-ajax/iron-ajax.js';
 
-<dom-module id="home-page">
-  <template>
-    <style include="static-styles">
+import { staticStyles } from '../styles/static-styles.js';
+import { SCStaticPage } from '../addons/sc-static-page.js';
+import { API_ROOT } from '/constants.js';
+import _ from '../../localization/macro.js';
+import '../addons/text-carousel.js';
 
+class SCHomePage extends SCStaticPage {
+  render() {
+    return html`
+    ${staticStyles}
+    <style>
       .content {
         display: grid;
         grid-auto-flow: row;
@@ -366,35 +370,28 @@
 
     </style>
 
-    <iron-meta id="meta"></iron-meta>
-
-    <div id="page-wrap" class="bottom-space">
+    <div class="bottom-space" id="page-wrap">
       <div class="content">
-
         <div class="row preamble">
-          <p>The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br>
-            Many of these scriptures have now been translated into the world’s languages.</p>
-          <p>SuttaCentral brings these together and makes them freely available. <br>
-            Setting aside the boundaries of language and tradition, we let the Buddha speak for himself.</p>
+          <p>
+            ${_`The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br/> Many of these scriptures have now been translated into the world’s languages.`}
+          </p>
+          <p>
+            ${_`SuttaCentral brings these together and makes them freely available. <br/> Setting aside the boundaries of language and tradition, we let the Buddha speak for himself.`}
+          </p>
         </div>
-
         <div class="row">
           <paper-card elevation="2">
             <div class="card">
               <div class="card-heading">
                 <div class="card-heading-text">
-                  The
-                  <br class="d-none">
-                  Buddha’s
-                  <br class="d-none">
-                  words
+                  ${_`The <br class="d-none"/> Buddha’s <br class="d-none"/> words`}
                 </div>
               </div>
               <div class="card-content">
                 <div class="card-content-text">
                   <div class="card-text center-text buddhas-words-text">
-                    <sc-text-carousel class="carousel" elements-url="[[_computeUrl('epigraphs')]]" display="epigraph"
-                                      link=true>
+                    <sc-text-carousel class="carousel" display="epigraph" elements-url="${`${API_ROOT}/epigraphs`}" link="true">
                     </sc-text-carousel>
                   </div>
                 </div>
@@ -402,224 +399,152 @@
             </div>
           </paper-card>
         </div>
-
         <div class="row cards">
-          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card"
-                      image="/img/home-page/becomingone-min.jpg" elevation="2">
+          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="/img/home-page/becomingone-min.jpg">
             <div class="transparent-card-content-wrapper">
-              <div class="card-title-text">What’s here</div>
+              <div class="card-title-text">
+                ${_`What’s here`}
+              </div>
               <div class="image-card-text">
-                SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”.
-                This is a large collection of teachings attributed to the Buddha or his earliest disciples,
-                who were teaching in India around 2500 years ago.
-                They are regarded as sacred canon in all schools of Buddhism.
-                You can find all of our texts through the sidebar menu on the left.
+                ${_`SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. This is a large collection of teachings attributed to the Buddha or his earliest disciples, who were teaching in India around 2500 years ago. They are regarded as sacred canon in all schools of Buddhism. You can find all of our texts through the sidebar menu on the left.`}
               </div>
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card"
-                      image="/img/home-page/contemplatingthemoon-min.jpg" elevation="2">
+          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="/img/home-page/contemplatingthemoon-min.jpg">
             <div class="transparent-card-content-wrapper">
-              <div class="card-title-text">Where to begin</div>
+              <div class="card-title-text">
+                ${_`Where to begin`}
+              </div>
               <div class="image-card-text">
-                There are thousands of early Buddhist texts, and they’re not organized for easy reading.
-                But here’s the good news: you are not alone. We’ve been down this road ourselves,
-                and have tried to make it a little easier for you. Here are some things you can try.
+                ${_`There are thousands of early Buddhist texts, and they’re not organized for easy reading. But here’s the good news: you are not alone. We’ve been down this road ourselves, and have tried to make it a little easier for you. Here are some things you can try.`}
               </div>
             </div>
           </paper-card>
           <div>
-            <a class="button-link first-card-button grid-button" href="/introduction">
-              <paper-button class="button" raised>INTRODUCTION</paper-button>
-            </a>
+            ${_`<a class="button-link first-card-button grid-button" href="/introduction"> <paper-button class="button" raised="">INTRODUCTION</paper-button> </a>`}
           </div>
           <div>
-            <a class="button-link second-card-button grid-button" href="/start">
-              <paper-button class="button" raised>GET STARTED</paper-button>
-            </a>
+            ${_`<a class="button-link second-card-button grid-button" href="/start"> <paper-button class="button" raised="">GET STARTED</paper-button> </a>`}
           </div>
         </div>
-
         <div class="row">
           <paper-card elevation="2">
             <div class="card">
               <div class="card-heading">
                 <div class="card-heading-text smaller-title">
-                  Meet<br class="d-none">
-                  SuttaCentral
+                  ${_`Meet<br class="d-none"/> SuttaCentral`}
                 </div>
               </div>
               <div class="card-content-video">
-                <div class='embed-container'>
-                  <iframe id="sc-video" src="https://player.vimeo.com/video/257038431?color=efe700&byline=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                <div class="embed-container">
+                  <iframe allowfullscreen="" frameborder="0" height="360" id="sc-video" mozallowfullscreen="" src="https://player.vimeo.com/video/257038431?color=efe700&byline=0" webkitallowfullscreen="" width="640">
+                  </iframe>
                 </div>
               </div>
             </div>
           </paper-card>
         </div>
-
         <div class="row">
           <div class="big-card-title">
-            Tipiṭaka—the three baskets
+            ${_`Tipiṭaka—the three baskets`}
           </div>
           <div class="three-elements-grid">
-            <paper-card class="three-elements-big paper-card-with-button" image="/img/home-page/burmese_kammavaca.jpg"
-                        title="A decorative kammavaca manuscript"
-                        alt="Sixteen gilt and lacquer leaves with two gilt and lacquer book covers. Wood coated with lacquer, 
-                        twelve lines to each leaf written in Pali script in black lacquer, the text interspersed and bordered 
-                        with undulating floral and vegetal motifs in gold on an orange ground. Burma, 19th century. 16 x 63 cm."
-                        elevation="2">
+            <paper-card alt="${_`Sixteen gilt and lacquer leaves with two gilt and lacquer book covers. Wood coated with lacquer, \n                        twelve lines to each leaf written in Pali script in black lacquer, the text interspersed and bordered \n                        with undulating floral and vegetal motifs in gold on an orange ground. Burma, 19th century. 16 x 63 cm.`}" class="three-elements-big paper-card-with-button" elevation="2" image="/img/home-page/burmese_kammavaca.jpg" title="${_`A decorative kammavaca manuscript`}">
               <div class="card-content-wrapper no-bottom-padding">
-                <div class="card-title-text">Discourses</div>
+                <div class="card-title-text">
+                  ${_`Discourses`}
+                </div>
                 <div class="image-card-text">
-                  These are our primary sources for understanding what the Buddha taught.
-                  They record the Buddha’s teachings and conversations on specific occasions
-                  with a diverse range of people. Discourses are called sutta in Pali, which is
-                  spelled sūtra in Sanskrit.
+                  ${_`These are our primary sources for understanding what the Buddha taught. They record the Buddha’s teachings and conversations on specific occasions with a diverse range of people. Discourses are called sutta in Pali, which is spelled sūtra in Sanskrit.`}
                 </div>
               </div>
               <div>
-                <a class="button-link" href="/discourses">
-                  <paper-button class="button card-button" raised>MORE ...</paper-button>
-                </a>
+                ${_`<a class="button-link" href="/discourses"> <paper-button class="button card-button" raised="">MORE ...</paper-button> </a>`}
               </div>
             </paper-card>
-            <paper-card class="three-elements-small three-elements-first-small full-height paper-card-with-button"
-                        elevation="2">
+            <paper-card class="three-elements-small three-elements-first-small full-height paper-card-with-button" elevation="2">
               <div class="card-content-wrapper no-bottom-padding">
                 <div class="card-title-text">
-                  Monastic Law
+                  ${_`Monastic Law`}
                 </div>
                 <div class="text-card-text">
-                  The texts on Monastic Law (vinaya) detail the lifestyle, rules,
-                  and procedures for Buddhist monks and nuns.
-                  They provide the guidelines for Buddhist monastics to this day, and in addition,
-                  paint a detailed and vivid picture of everyday life in ancient India.
+                  ${_`The texts on Monastic Law (vinaya) detail the lifestyle, rules, and procedures for Buddhist monks and nuns. They provide the guidelines for Buddhist monastics to this day, and in addition, paint a detailed and vivid picture of everyday life in ancient India.`}
                 </div>
               </div>
               <div>
-                <a class="button-link" href="/vinaya">
-                  <paper-button class="button card-button" raised>MORE ...</paper-button>
-                </a>
+                ${_`<a class="button-link" href="/vinaya"> <paper-button class="button card-button" raised="">MORE ...</paper-button> </a>`}
               </div>
             </paper-card>
-            <paper-card class="three-elements-small three-elements-second-small full-height paper-card-with-button"
-                        elevation="2">
+            <paper-card class="three-elements-small three-elements-second-small full-height paper-card-with-button" elevation="2">
               <div class="card-content-wrapper no-bottom-padding">
                 <div class="card-title-text">
-                  Abhidhamma
+                  ${_`Abhidhamma`}
                 </div>
                 <div class="image-card-text">
-                  Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier
-                  discourses.
-                  The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.
+                  ${_`Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses. The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.`}
                 </div>
               </div>
               <div>
-                <a class="button-link" href="/abhidhamma">
-                  <paper-button class="button card-button" raised>MORE ...</paper-button>
-                </a>
+                ${_`<a class="button-link" href="/abhidhamma"> <paper-button class="button card-button" raised="">MORE ...</paper-button> </a>`}
               </div>
             </paper-card>
           </div>
         </div>
-
         <div class="row">
           <paper-card elevation="2">
             <div class="card">
               <div class="card-heading">
                 <div class="card-heading-text">
-                  Why<br class="d-none">
-                  we<br class="d-none">
-                  read
+                  ${_`Why<br class="d-none"/> we<br class="d-none"/> read`}
                 </div>
               </div>
               <div class="card-content">
                 <div class="card-content-text">
-                    <div class="why-we-read">
-                      <sc-text-carousel elements-url="[[_computeUrl('whyweread')]]"></sc-text-carousel>
-                    </div>
+                  <div class="why-we-read">
+                    <sc-text-carousel elements-url="${`${API_ROOT}/whyweread`}">
+                    </sc-text-carousel>
+                  </div>
                 </div>
               </div>
             </div>
           </paper-card>
         </div>
-
         <div class="row cards">
-          <paper-card class="two-paper-cards first-card paper-card-with-button"
-                      image="/img/home-page/noword-min.jpg"
-                      elevation="2">
+          <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword-min.jpg">
             <div class="card-content-wrapper">
-              <div class="card-title-text">SuttaCentral—a new beginning</div>
+              <div class="card-title-text">
+                ${_`SuttaCentral—a new beginning`}
+              </div>
               <div class="image-card-text">
-                We’re proud to share with you the new SuttaCentral.
-                The team has been working on it for over two years, and we think it’s something special.
-                The new site features an entirely new translation of the four Pali nikāyas,
-                prepared specially for SuttaCentral by Bhante Sujato.
-                And the whole site has been re-built to be faster, clearer, and more flexible.
+                ${_`We’re proud to share with you the new SuttaCentral. The team has been working on it for over two years, and we think it’s something special. The new site features an entirely new translation of the four Pali nikāyas, prepared specially for SuttaCentral by Bhante Sujato. And the whole site has been re-built to be faster, clearer, and more flexible.`}
               </div>
             </div>
             <div>
-              <a class="button-link" href="/a-new-beginning">
-                <paper-button class="button card-button" raised>WHAT’S NEW IN 2018</paper-button>
-              </a>
+              ${_`<a class="button-link" href="/a-new-beginning"> <paper-button class="button card-button" raised="">WHAT’S NEW IN 2018</paper-button> </a>`}
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards second-card paper-card-with-button"
-                      image="/img/home-page/listeningtotherain-min.jpg" elevation="2">
+          <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain-min.jpg">
             <div class="card-content-wrapper">
-              <div class="card-title-text">Indexes and Terminology</div>
+              <div class="card-title-text">
+                ${_`Indexes and Terminology`}
+              </div>
               <div class="image-card-text">
-                Like any specialized field, Buddhist studies has it's own terminology and content. It's easy to get lost
-                or to miss references, so here we provide indexes of terms in the early texts sorted by subject, name
-                and simile, as well a glossary of important terms. These hand-curated lists offer another way to find
-                the sutta or passage that you're looking for.
+                ${_`Like any specialized field, Buddhist studies has it's own terminology and content. It's easy to get lost or to miss references, so here we provide indexes of terms in the early texts sorted by subject, name and simile, as well a glossary of important terms. These hand-curated lists offer another way to find the sutta or passage that you're looking for.`}
               </div>
             </div>
             <div>
-              <a class="button-link" href="/subjects">
-                <paper-button class="button card-button" raised>Indexes</paper-button>
-              </a>
+              ${_`<a class="button-link" href="/subjects"> <paper-button class="button card-button" raised="">Indexes</paper-button> </a>`}
             </div>
           </paper-card>
         </div>
       </div>
-    </div>
-  </template>
+    </div>`;
+  }
 
-  <script>
-      class SCHomePage extends SCStaticPage {
-          static get is() {
-              return 'home-page';
-          }
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/static_home-page';
+  }
+}
 
-          static get properties() {
-              return {
-                  localizedStringPath: {
-                      type: String,
-                      value: '/localization/elements/static_home-page/'
-                  },
-                  loadingEpigraphs: {
-                      type: Boolean
-                  },
-                  epigraphsData: {
-                      type: Object
-                  },
-                  loadingWhyWeRead: {
-                      type: Boolean
-                  },
-                  whyWeReadData: {
-                      type: Object
-                  }
-              }
-          }
-
-          _computeUrl(resource) {
-              const apiRoot = this.$.meta.byKey('API_ROOT');
-              return `${apiRoot}/${resource}`;
-          }
-      }
-
-      customElements.define(SCHomePage.is, SCHomePage);
-  </script>
-</dom-module>
+customElements.define('home-page', SCHomePage);
