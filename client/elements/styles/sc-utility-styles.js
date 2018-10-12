@@ -1,14 +1,11 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/polymer/lib/elements/custom-style.html">
+import '@polymer/polymer/lib/elements/custom-style.js';
 
-<!--
-  Utility values and style mixins for various purposes (margins, etc).
--->
+const template = document.createElement('template');
 
+template.innerHTML = `
 <custom-style>
   <style>
     html {
-
       --sc-screen-sm: 600px;
       --sc-screen-md: 840px;
       --sc-screen-l: 960px;
@@ -92,7 +89,8 @@
         margin-top: var(--sc-size-xxs);
         margin-bottom: var(--sc-size-xxs);
       };
-
     }
   </style>
-</custom-style>
+</custom-style>`;
+
+document.head.appendChild(template.content);

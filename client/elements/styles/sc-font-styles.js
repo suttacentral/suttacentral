@@ -1,13 +1,10 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/polymer/lib/elements/custom-style.html">
+import '@polymer/polymer/lib/elements/custom-style.js';
 
-<!--
-  Utility values and style mixins for various purposes (margins, etc).
--->
+const template = document.createElement('template');
 
+template.innerHTML = `
 <custom-style>
   <style>
-
     @font-face {
       font-family: "Skolar Sans PE";
       src: url('/files/fonts/RaloksSansPE-Rg_2.004.woff2') format('woff2'),
@@ -497,8 +494,8 @@
       font-style: normal;
     }
 
-    html {
 
+    html {
       --sc-skolar-font-scale: 1.13;
       --sc-tall-font-scale: 1.13;
       --sc-dense-font-scale: 1.13;
@@ -887,4 +884,6 @@
 
     }
   </style>
-</custom-style>
+</custom-style>`;
+
+document.head.appendChild(template.content);

@@ -1,14 +1,11 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/polymer/lib/elements/custom-style.html">
+import '@polymer/polymer/lib/elements/custom-style.js';
 
-<!--
-  The SuttaCentral color palette.
--->
+const template = document.createElement('template');
 
+template.innerHTML = `
 <custom-style>
   <style>
     html {
-
       /* Text */
       --sc-primary-text-color: #212121;
       --sc-secondary-text-color: #737373;
@@ -42,4 +39,6 @@
 
     }
   </style>
-</custom-style>
+</custom-style>`;
+
+document.head.appendChild(template.content);
