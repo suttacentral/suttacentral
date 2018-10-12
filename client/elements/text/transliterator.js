@@ -1,7 +1,7 @@
 //The below functions change the script. to Sinhala, Devanagari, Myanmar or Thai.
 // Note that they also remove all html coding first so this might have to be changed.
 
-const Transliterator = function() {
+export const Transliterator = function() {
     this.toSinhala = (l) => {
         l = l.replace(/<.*?>/g, '');
         l = l.toLowerCase() + ' ';

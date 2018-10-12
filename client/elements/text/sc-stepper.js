@@ -1,11 +1,11 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import '@polymer/paper-button/paper-button.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/paper-ripple/paper-ripple.js';
 
-<dom-module id="sc-stepper">
-  <template>
+class SCStepper extends PolymerElement {
+  static get template() {
+    return html`
     <style>
       .bar {
         display: flex;
@@ -110,8 +110,6 @@
       }
     </style>
 
-    <iron-meta id="meta"></iron-meta>
-
     <div class="bar">
       <div class="button-container">
         <template is="dom-if" if="[[previous.uid]]">
@@ -149,39 +147,29 @@
         </template>
       </div>
 
-    </div>
+    </div>`;
+  }
 
-  </template>
-
-  <script>
-    class SCStepper extends Polymer.Element {
-      static get is() {
-        return 'sc-stepper';
+  static get properties() {
+    return {
+      next: {
+        type: Object
+      },
+      previous: {
+        type: Object
+      },
+      lang: {
+        type: String
       }
-
-      static get properties() {
-        return {
-          next: {
-            type: Object
-          },
-          previous: {
-            type: Object
-          },
-          lang: {
-            type: String
-          }
-        }
-      }
-
-      _getUrl(object) {
-        const author = object.author_uid;
-        const uid = object.uid;
-        const lang = object.lang;
-        return `/${uid}/${lang}/${author}`;
-      }
-
     }
+  }
 
-    customElements.define(SCStepper.is, SCStepper);
-  </script>
-</dom-module>
+  _getUrl(object) {
+    const author = object.author_uid;
+    const uid = object.uid;
+    const lang = object.lang;
+    return `/${uid}/${lang}/${author}`;
+  }
+}
+
+customElements.define('sc-stepper', SCStepper);
