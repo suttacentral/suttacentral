@@ -62,7 +62,7 @@ class SCSimpleText extends SCTextPage {
 
     <iron-a11y-keys id="a11y" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
 
-    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[_extractSuttaText(sutta.text)]]" hidden\$="[[isTextViewHidden]]"></div>
+    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[_extractSuttaText(sutta.text)]]" hidden$="[[isTextViewHidden]]"></div>
 
     <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
     <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>`;

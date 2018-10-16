@@ -1,0 +1,406 @@
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/polymer/lib/elements/dom-if.js';
+
+import '../menus/sc-language-menu.js';
+import '../addons/sc-sutta-note.js';
+import { ReduxMixin } from '/redux-store.js';
+import { Localized } from '../addons/localization-mixin.js';
+import { suttaplexStyles } from '../styles/sc-suttaplex-styles.js';
+
+
+/*
+This element loads additional info for each relevant parallel sutta, which is then used in sc-parallel-list.html.
+It is in effect a miniature version of the suttaplex-card
+*/
+
+class SCParallelItem extends ReduxMixin(Localized(PolymerElement)) {
+  static get template() {
+    return html`
+    ${suttaplexStyles}
+    <style>
+      :host {
+        --language-menu-dropdown-width: 150px;
+      }
+
+      .parallel-item-main-info-container {
+        width: 100%;
+        max-width: 360px;
+      }
+
+      .parallel-item-title {
+        @apply --paper-font-subhead;
+        @apply --sc-serif-font;
+        word-wrap: normal;
+      }
+
+      .parallel-item-biblio-info, .parallel-item-details .popuptext {
+        @apply --paper-font-body1;
+        @apply --shadow-elevation-3dp;
+        border-top: var(--sc-border);
+        position: absolute;
+        z-index: 200;
+        background-color: var(--sc-secondary-background-color);
+        padding: 12px;
+        margin: 0 var(--sc-size-xl) 0 0;
+        white-space: normal;
+      }
+
+      .parallel-item-biblio-summary::-webkit-details-marker {
+        color: var(--sc-disabled-text-color);
+      }
+
+      .parallel-item-details {
+        @apply --paper-font-body2;
+        color: var(--sc-secondary-text-color);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .parallel-item-details .popuptext {
+        overflow: visible;
+        visibility: hidden;
+        word-wrap: break-word;
+      }
+
+      .parallel-item-details .show {
+        visibility: visible;
+      }
+
+      .d-block {
+        display: inline-block;
+      }
+
+      .scrollable-dialog {
+        margin: 0;
+      }
+
+      .vertical-margin-xs {
+        margin-top: var(--sc-size-xs);
+        margin-bottom: var(--sc-size-xs);
+      }
+
+      .right-margin-md {
+        margin-right: var(--sc-size-md);
+      }
+
+      .d-flex {
+        display: flex;
+      }
+
+      .justify-content-space-between {
+        justify-content: space-between;
+      }
+
+      .align-items-center {
+        align-items: center;
+      }
+
+      #remark_info {
+        cursor: help;
+      }
+
+      .parallel-item-volpages-container {
+        display: flex;
+      }
+
+      .parallel-item {
+        flex-wrap: wrap;
+      }
+
+      .no-padding {
+        padding: 0;
+      }
+
+      .hide-element {
+        display: none;
+      }
+
+      .nerdy-row-element {
+        margin-right: var(--sc-size-md);
+      }
+    </style>
+
+    <div class="parallel-item d-flex justify-content-space-between">
+
+      <div class="parallel-item-main-info-container">
+        <div class="parallel-item-title vertical-margin-xs" title="[[_getHeadingTitle(parallelItem, localize)]]">
+          [[_computeTitle(parallelItem)]]
+        </div>
+
+        <div class="parallel-item-details d-flex align-items-center vertical-margin-xs" on-tap="revealHiddenNerdyRowContent">
+          <div class="parallel-item-volpages-container">
+            <span title="{{localize('originalTitle')}}" class$="nerdy-row-element [[_computeHideOriginalTitle(parallelItem)]]">
+              [[_getTitleWithoutSuttaText(parallelItem.original_title)]]
+            </span>
+            <span class$="nerdy-row-element [[_computeHideUID(parallelItem)]]" title="[[_getAcronymTitle(parallelItem, localize)]]">
+              [[_getAcronymOrUid(parallelItem, expansionData)]]
+            </span>
+            <template is="dom-if" if="[[_volpagesAvailable()]]">
+              <div>
+                <template is="dom-if" if="[[parallelItem.biblio]]">
+                  <details class="d-block">
+                    <summary class="parallel-item-biblio-summary">
+                      <span class="book scrollable-dialog">
+                        <iron-icon icon="book"></iron-icon>
+                      </span>
+                      <span class="vol-page" title="[[_getVolPageTitle(parallelItem.volpages, localize)]]">
+                        [[_computeVolPage(parallelItem.volpages)]]
+                      </span>
+                    </summary>
+                    <p class="parallel-item-biblio-info" inner-h-t-m-l="[[parallelItem.biblio]]"></p>
+                  </details>
+                </template>
+                <template is="dom-if" if="[[!parallelItem.biblio]]">
+                  <span class="book scrollable-dialog" title="{{localize('volAndPageNum')}}">
+                    <iron-icon icon="book"></iron-icon>
+                  </span>
+                  <span class="vol-page" title="[[_getVolPageTitle(parallelItem.volpages, localize)]]">
+                    [[_computeVolPage(parallelItem.volpages)]]
+                  </span>
+                </template>
+              </div>
+            </template>
+            <template is="dom-if" if="[[remark]]">
+              <div class="sutta-remark">
+                <sc-sutta-note note-data="[[remark]]"></sc-sutta-note>
+              </div>
+            </template>
+            <span class="popuptext" id="hidden-nerdy-row">
+                <span title="{{localize('originalTitle')}}" class$="nerdy-row-element [[_computeHideOriginalTitle(parallelItem)]]">
+                  [[_getTitleWithoutSuttaText(parallelItem.original_title)]]<br>
+                </span>
+                <span class$="nerdy-row-element [[_computeHideUID(parallelItem)]]" title="[[_getAcronymTitle(parallelItem, localize)]]">
+                  [[_getAcronymOrUid(parallelItem, expansionData)]]<br>
+                </span>
+                <template is="dom-if" if="[[_volpagesAvailable()]]">
+                    <span class="book scrollable-dialog" title="{{localize('volAndPageNum')}}">
+                      <iron-icon icon="book"></iron-icon>
+                    </span>
+                    <span class="vol-page" title="[[_getVolPageTitle(parallelItem.volpages, localize)]]">
+                      [[_computeVolPage(parallelItem.volpages)]]<br>
+                    </span>
+                </template>
+                <template is="dom-if" if="[[remark]]">
+                    <sc-sutta-note note-data="[[remark]]"></sc-sutta-note>
+                </template>
+            </span>
+          </div>
+
+          <div class="parallel-item-note">
+            <template is="dom-if" if="[[parallelItem.note]]">
+              <sc-sutta-note note-data="[[parallelItem.note]]"></sc-sutta-note>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <template is="dom-if" if="[[_shouldShowLanguageDropdown()]]">
+        <div class="parallel-item-language-dropdown d-flex align-items-center flex-1">
+          <sc-language-menu language-choice="[[parallelItem.translations]]" original-language="[[parallelItem.root_lang]]" root-id="[[_computeParallelUrl()]]" class="no-padding" parallel-to="[[parallelItem.to]]" parallel-menu="true"></sc-language-menu>
+        </div>
+      </template>
+
+    </div>`;
+  }
+
+  static get properties() {
+    return {
+      // The parallel item to be displayed
+      parallelItem: {
+        type: Object
+      },
+      remark: {
+        type: String
+      },
+      rootLangMappings: {
+        type: Object,
+        value: {
+          'pli': 'Pali',
+          'lzh': 'Chinese',
+          'san': 'Sanskrit',
+          'xct': 'Tibetan',
+          'pra': 'Prakrit',
+          'pgd': 'Gandhari',
+          'uig': 'Uighur',
+          'xto': 'TocharianA',
+          'kho': 'Khotanese'
+        }
+      },
+      localizedStringsPath: {
+        type: String,
+        value: '/localization/elements/sc-parallel-item'
+      },
+      expansionData: {
+        type: Array
+      }
+    }
+  }
+
+  // returns the relevant header, either the title in the translated language,
+  // otherwise in pali or otherwise just the ID.
+  _computeTitle(item) {
+    const uidLanguage = item.uid.substring(0, 3);
+    if (Object.keys(this.rootLangMappings).indexOf(uidLanguage) !== -1) {
+      return this._transformId(item.to, this.expansionData, 1);
+    } else if (item.translated_title) {
+      return item.translated_title;
+    } else if (item.original_title) {
+      return item.original_title;
+    } else {
+      return this._getAcronymOrUid(item, this.expansionData);
+    }
+  }
+
+  _getHeadingTitle(item, localize) {
+    if (!item || item.translated_title || item.original_title) {
+      return '';
+    } else {
+      return this._getAcronymTitle(item, localize);
+    }
+  }
+
+  _computeHideUID(item) {
+    return (item.translated_title || item.original_title) ? '' : 'hide-element';
+  }
+
+  _computeHideOriginalTitle(item) {
+    return item.translated_title && item.original_title ? '' : 'hide-element';
+  }
+
+  _getTitleWithoutSuttaText(item) {
+    return item.replace(' Sutta', '');
+  }
+
+  // returns the URL for the parallel with the given index
+  _computeParallelUrl() {
+    return `${this.parallelItem.uid}`;
+  }
+
+  _volpagesAvailable() {
+    return !!this.parallelItem.volpages;
+  }
+
+  _computeFullLangName(isoCode) {
+    return this.rootLangMappings[isoCode];
+  }
+
+  _shouldShowLanguageDropdown() {
+    return this.parallelItem.translations.length > 0;
+  }
+
+  _getAcronymTitle(item, localize) {
+    let scAcronymTitle = localize('suttaCentralID');
+    if (item.acronym) {
+      const altNumber = item.acronym.split('//')[1];
+      if (altNumber) {
+        let book = '';
+        (altNumber[0] === 'T') ? book = 'Taishō' : book = 'PTS';
+        scAcronymTitle += `\n${localize('alternateText', 'book', book)} ${altNumber}`;
+      }
+    }
+    return scAcronymTitle;
+  }
+
+  _getParagraphRange(rootId) {
+    const ids = rootId.split(/#(.*)/)[1];
+    if (!ids) {
+      return '';
+    }
+    if (ids.includes('-')) {
+      const [id1, id2] = ids.split('-#');
+      return `#${id1}–${id2}`;
+    }
+    return `#${ids}`;
+  }
+
+  _getAcronymOrUid(item, expansionData) {
+    let scAcronym = '';
+    if (item.acronym) {
+      scAcronym = item.acronym.split('//')[0];
+      const rootId = item.to.replace('~', '');
+      const idPart = this._getParagraphRange(rootId).replace('-', '–');
+      return `${scAcronym}${idPart}`;
+    } else {
+      scAcronym = this._transformId(item.to, expansionData, 0);
+    }
+    return scAcronym;
+  }
+
+  // This function parses the input uid of the parallel and splits it into
+  // it's main document part (rootPart) and the id (paragraphs) within the document (idPart)
+  // The rootPart is then split into it's various elements which are then expanded
+  // according to the data in the expansion-table. 
+  // So f.i. 'an3.4#23-#25' becomes 'AN 3.4 #23-25' and 'lzh-sarv-bi-vb-np1' becomes
+  // 'Lzh Sarv Bi Vb NP 1'
+  _transformId(rootId, expansionData, idOrName) {
+    if (!rootId || !expansionData) {
+      return '';
+    }
+    rootId = rootId.replace('~', '');
+    if (rootId.substring(0, 5) === 'g3dhp') {
+      const idNumbers = rootId.substring(5);
+      return `G-3 Dhp ${idNumbers}`;
+    }
+    const idPart = this._getParagraphRange(rootId).replace('-', '–');
+    let scAcronym = '';
+    const rootPart = rootId.split('#')[0];
+    const uidParts = rootPart.split('-');
+    let tail = '';
+    uidParts.forEach(item => {
+      if (!expansionData[0][item]) {
+        const tailMatch = item.match(/\d+.*/g);
+        tailMatch ? tail = tailMatch[0] + '–' : tail;
+        const itemMatch = item.match(/[a-z]*/g);
+        itemMatch ? item = itemMatch[0] : item;
+      }
+      if (item && expansionData[0][item]) {
+        scAcronym += `${expansionData[0][item][idOrName]} ${tail}`
+      } else {
+        scAcronym += tail;
+      }
+    });
+    scAcronym = scAcronym.replace(/–\s*$/, '');
+    return `${scAcronym}${idPart}`;
+  }
+
+  _computeVolPage(volPage) {
+    let volPages;
+    if (volPage) {
+      volPages = volPage.split('//');
+    }
+    return (volPages && volPages[1]) ? volPages[1] : volPage;
+  }
+
+  _getVolPageTitle(volPage, localize) {
+    if (!volPage) {
+      return;
+    };
+    const volPages = volPage.split('//');
+    if (volPages[1] && (volPages[0] !== volPages[1])) {
+      return localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
+    } else {
+      return localize('volumeAndPage');
+    }
+  }
+
+  revealHiddenNerdyRowContent() {
+    const detailsElement = this.shadowRoot.querySelector('.parallel-item-biblio-info');
+    const nerdyRow = this.shadowRoot.querySelector('.parallel-item-details');
+    const popup = this.shadowRoot.querySelector('#hidden-nerdy-row');
+    const widthReduction = 24;
+    if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
+      popup.classList.toggle("show");
+      popup.style.width = nerdyRow.clientWidth - widthReduction;
+      if (detailsElement) {
+        detailsElement.style.display = 'none';
+      }
+    } else if (detailsElement) {
+      detailsElement.style.display = null;
+    }
+  }
+}
+
+customElements.define('sc-parallel-item', SCParallelItem);

@@ -79,13 +79,13 @@ class SCSegmentedText extends SCTextPage {
 
     </style>
 
-    <div class="loading-indicator" hidden\$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
+    <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
 
     <iron-a11y-keys id="a11y" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
 
-    <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]" hidden\$="[[isTextViewHidden]]"></div>
+    <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]" hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[_shouldShowError(rootSutta, translatedSutta)]]">
       <div class="text-center margin-top-xl">
@@ -96,10 +96,6 @@ class SCSegmentedText extends SCTextPage {
 
     <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
     <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>`;
-  }
-
-  static get is() {
-    return 'sc-segmented-text';
   }
 
   static get properties() {

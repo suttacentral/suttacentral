@@ -59,17 +59,17 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
       </template>
 
-      <div class="loading-indicator" hidden\$="[[!isLoading]]">
+      <div class="loading-indicator" hidden$="[[!isLoading]]">
         <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
       </div>
 
       <template is="dom-if" if="[[!_shouldHideSimpleText(isSegmentedText, isLoading)]]">
-        <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]" hidden\$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
+        <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]" hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
         </sc-simple-text>
       </template>
 
       <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]" restamp="">
-        <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]" translated-sutta="[[translatedSutta]]" root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]" hidden\$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
+        <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]" translated-sutta="[[translatedSutta]]" root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]" hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
         </sc-segmented-text>
       </template>
 
