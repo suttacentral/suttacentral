@@ -1,40 +1,17 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/polymer/lib/utils/render-status.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
-<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/polymer/lib/utils/import-href.html">
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import '@polymer/iron-ajax/iron-ajax.js';
+import '@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '@polymer/iron-pages/iron-pages.js';
+import '@polymer/paper-tabs/paper-tabs.js';
+import '@polymer/iron-icons/iron-icons.js';
 
-<link rel="import" href="../elements/static/home-page.html">
-<link rel="lazy-import" href="../elements/static/donations-page.html">
-<link rel="lazy-import" href="../elements/static/downloads-page.html">
-<link rel="lazy-import" href="../elements/static/numbering-page.html">
-<link rel="lazy-import" href="../elements/static/abbreviations-page.html">
-<link rel="lazy-import" href="../elements/static/methodology-page.html">
-<link rel="lazy-import" href="../elements/static/acknowledgments-page.html">
-<link rel="lazy-import" href="../elements/static/licensing-page.html">
-<link rel="lazy-import" href="../elements/static/about-page.html">
-<link rel="lazy-import" href="../elements/static/introduction-page.html">
-<link rel="lazy-import" href="../elements/static/start-page.html">
-<link rel="lazy-import" href="../elements/static/discourses-page.html">
-<link rel="lazy-import" href="../elements/static/vinaya-page.html">
-<link rel="lazy-import" href="../elements/static/abhidhamma-page.html">
-<link rel="lazy-import" href="../elements/static/home-page.html">
-<link rel="lazy-import" href="../elements/static/subjects-page.html">
-<link rel="lazy-import" href="../elements/static/similes-page.html">
-<link rel="lazy-import" href="../elements/static/names-page.html">
-<link rel="lazy-import" href="../elements/static/terminology-page.html">
-<link rel="lazy-import" href="../elements/static/a-new-beginning-page.html">
-<link rel="lazy-import" href="../elements/static/abbreviations-page.html">
-<link rel="lazy-import" href="../elements/static/donation-success-page.html">
-<link rel="lazy-import" href="../elements/static/donate-now-page.html">
-<link rel="lazy-import" href="../elements/static/offline-page.html">
+import { ReduxMixin } from '/redux-store.js';
+import { Localized } from "./addons/localization-mixin.js";
 
-<dom-module id="sc-static-page-selector">
-  <template>
+class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
+  static get template() {
+    return html`
     <style>
       app-toolbar {
         background-color: var(--sc-primary-color);
@@ -171,7 +148,7 @@
     [[_createMetaData(selectedPage, localize)]]
 
     <app-toolbar id="title_toolbar">
-      <div class="title" main-title>
+      <div class="title" main-title="">
         <span class="title-text">
           <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
           <h1>SuttaCentral</h1>
@@ -179,14 +156,13 @@
       </div>
     </app-toolbar>
     <app-toolbar id="subtitle_toolbar">
-      <div class="title" main-title>
+      <div class="title" main-title="">
         <p class="subtitle">{{localize('pageSubtitle')}}</p>
       </div>
     </app-toolbar>
-    <app-toolbar id="nav_toolbar" bottom-item>
-      <template is="dom-if"
-                if="[[_isToolbarSelected(shouldShowTipitakaToolbar, shouldShowSecondToolbar, shouldShowOrganizationalToolbar, shouldShowAcademicToolbar)]]">
-        <paper-tabs id="nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
+    <app-toolbar id="nav_toolbar" bottom-item="">
+      <template is="dom-if" if="[[_isToolbarSelected(shouldShowTipitakaToolbar, shouldShowSecondToolbar, shouldShowOrganizationalToolbar, shouldShowAcademicToolbar)]]">
+        <paper-tabs id="nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -205,14 +181,13 @@
           </paper-tab>
           <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW">
             <div>{{localize('WHATSNEW')}}</div>
-            <a class="link-anchor" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1"
-               target="_blank" rel="noopener">
+            <a class="link-anchor" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank" rel="noopener">
             </a>
           </paper-tab>
         </paper-tabs>
       </template>
       <template is="dom-if" if="[[shouldShowSecondToolbar]]">
-        <paper-tabs id="second_nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tabs id="second_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -237,7 +212,7 @@
       </template>
 
       <template is="dom-if" if="[[shouldShowTipitakaToolbar]]">
-        <paper-tabs id="tipitaka_nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tabs id="tipitaka_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -258,7 +233,7 @@
       </template>
 
       <template is="dom-if" if="[[shouldShowAcademicToolbar]]">
-        <paper-tabs id="academic_nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tabs id="academic_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -279,7 +254,7 @@
       </template>
 
       <template is="dom-if" if="[[shouldShowOrganizationalToolbar]]">
-        <paper-tabs id="organizational_nav_tabs" class="navigation-tabs" selected="0" scrollable hide-scroll-buttons>
+        <paper-tabs id="organizational_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
             <a class="link-anchor" href="/home"></a>
@@ -301,12 +276,7 @@
 
     </app-toolbar>
 
-    <iron-pages
-        id="pages"
-        role="main"
-        selected="{{pages}}"
-        attr-for-selected="name"
-        fallback-selection="NOT-FOUND">
+    <iron-pages id="pages" role="main" selected="{{pages}}" attr-for-selected="name" fallback-selection="NOT-FOUND">
       <home-page name="HOME"></home-page>
       <sc-donations-page name="DONATIONS"></sc-donations-page>
       <sc-donate-now-page id="donate" name="DONATE-NOW"></sc-donate-now-page>
@@ -333,154 +303,131 @@
         <h2>{{localize('error404')}}</h2>
         <h3>{{localize('pageNotFound')}}</h3>
       </div>
-    </iron-pages>
-  </template>
+    </iron-pages>`;
+  }
 
-  <script>
-      /**
-       * @extends {Polymer.Element}
-       * @appliesMixin Polymer.AppLocalizeBehavior
-       */
-      class SCStaticPageSelector extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], ReduxMixin(Polymer.Element)) {
-          static get is() {
-              return 'sc-static-page-selector';
-          }
-
-          static get properties() {
-              return {
-                  selectedPage: {
-                      type: String,
-                      observer: '_changeView',
-                      statePath: 'currentRoute.name'
-                  },
-                  pages: {
-                      type: String
-                  },
-                  language: {
-                      type: String,
-                      statePath: 'siteLanguage',
-                      observer: '_siteLanguageChanged'
-                  },
-                  fallbackLanguage: {
-                      type: String,
-                      value: 'en'
-                  },
-                  shouldShowSecondToolbar: {
-                      type: Boolean,
-                      value: false
-                  },
-                  shouldShowTipitakaToolbar: {
-                      type: Boolean,
-                      value: false
-                  },
-                  shouldShowAcademicToolbar: {
-                      type: Boolean,
-                      value: false
-                  },
-                  shouldShowOrganizationalToolbar: {
-                      type: Boolean,
-                      value: false
-                  },
-                  noToolbarSelected: {
-                      type: Boolean,
-                      value: true
-                  }
-              }
-          }
-
-          ready() {
-              super.ready();
-              Polymer.RenderStatus.afterNextRender(this, () => {
-                  this.loadResources(this.resolveUrl(`/localization/elements/sc-static-page-selector/${this.fallbackLanguage}.json`), this.fallbackLanguage, true);
-              });
-          }
-
-          _siteLanguageChanged() {
-              Polymer.RenderStatus.afterNextRender(this, () => {
-                  this.loadResources(this.resolveUrl(`/localization/elements/sc-static-page-selector/${this.language}.json`), this.language, true);
-              });
-              const tabs = this.shadowRoot.querySelector(this._getNavTabsSelector());
-              if (tabs) {
-                  tabs.notifyResize();
-              }
-          }
-
-          _isToolbarSelected(tipitakaToolbar, secondToolbar, organizationalToolbar, academicToolbar) {
-              return !(secondToolbar || tipitakaToolbar || academicToolbar || organizationalToolbar);
-          }
-
-          _selectNavbarLink() {
-              const selector = this._getNavTabsSelector();
-              const tabs_element = this.shadowRoot.querySelector(selector);
-              const tabs = tabs_element.querySelectorAll('paper-tab');
-              for (let i = 0; i < tabs.length; i++) {
-                  if (tabs[i].dataset.name === this.selectedPage) {
-                      tabs_element.selectIndex(i);
-                      return;
-                  }
-              }
-              tabs_element.selectIndex(-1);
-          }
-
-          _getNavTabsSelector() {
-              let selector = '#nav_tabs';
-              if (this.shouldShowSecondToolbar) {
-                  selector = '#second_nav_tabs'
-              } else if (this.shouldShowTipitakaToolbar) {
-                  selector = '#tipitaka_nav_tabs'
-              } else if (this.shouldShowAcademicToolbar) {
-                  selector = '#academic_nav_tabs'
-              } else if (this.shouldShowOrganizationalToolbar) {
-                  selector = '#organizational_nav_tabs'
-              }
-              return selector;
-          }
-
-          _changeView() {
-              if (this.selectedPage.substr(0, 5) === "SUTTA" || this.selectedPage === "SEARCH") {
-                return;
-              };           
-              this._setVisibleToolbar(this.selectedPage);
-              setTimeout(() => {this._selectNavbarLink()});
-              this.$.pages.selected = this.selectedPage;
-              if (!customElements.get(`${this.selectedPage.toLowerCase()}-page`)) {
-                  Polymer.RenderStatus.afterNextRender(this, () => {
-                      Polymer.importHref(this.resolveUrl(`../elements/static/${this.selectedPage.toLowerCase()}-page.html`),
-                          null, null, true);
-                  });
-              }
-              this._resetDonationForm();
-          }
-
-          _resetDonationForm() {
-              const donationForm = this.shadowRoot.querySelector('#donate');
-              if (donationForm.hasOwnProperty('resetForm')) {
-                  donationForm.resetForm();
-              }
-          }
-
-          _setVisibleToolbar(selectedPage) {
-              this.shouldShowSecondToolbar = ['SUBJECTS', 'SIMILES', 'NAMES', 'TERMINOLOGY'].includes(selectedPage);
-              this.shouldShowTipitakaToolbar = ['DISCOURSES', 'VINAYA', 'ABHIDHAMMA'].includes(selectedPage);
-              this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(selectedPage);
-              this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(selectedPage);
-          }
-
-          _createMetaData(pageSelection, localize) {
-              const description = localize('metaDescriptionText');
-              const pageName = localize(`${pageSelection}`);
-              document.dispatchEvent(new CustomEvent('metadata', {
-                  detail: {
-                      pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
-                      title: `SuttaCentral—${pageName.toLowerCase()}`,
-                      description: description,
-                      bubbles: true,
-                      composed: true
-                  }
-              }));
-          }
+  static get properties() {
+    return {
+      selectedPage: {
+        type: String,
+        observer: '_changeView',
+        statePath: 'currentRoute.name'
+      },
+      pages: {
+        type: String
+      },
+      localizedStringsPath: {
+        type: String,
+        value: '/localization/elements/sc-static-page-selector'
+      },
+      shouldShowSecondToolbar: {
+        type: Boolean,
+        value: false
+      },
+      shouldShowTipitakaToolbar: {
+        type: Boolean,
+        value: false
+      },
+      shouldShowAcademicToolbar: {
+        type: Boolean,
+        value: false
+      },
+      shouldShowOrganizationalToolbar: {
+        type: Boolean,
+        value: false
+      },
+      noToolbarSelected: {
+        type: Boolean,
+        value: true
+      },
+      resources: {
+        type: Object,
+        observer: '__resourcesChanged'
       }
+    }
+  }
 
-      customElements.define(SCStaticPageSelector.is, SCStaticPageSelector);
-  </script>
-</dom-module>
+  __resourcesChanged(newValue, oldValue) {
+    const tabs = this.shadowRoot.querySelector(this._getNavTabsSelector());
+    if (tabs) {
+      tabs.notifyResize();
+    }
+  }
+
+  _isToolbarSelected(tipitakaToolbar, secondToolbar, organizationalToolbar, academicToolbar) {
+    return !(secondToolbar || tipitakaToolbar || academicToolbar || organizationalToolbar);
+  }
+
+  _selectNavbarLink() {
+    const selector = this._getNavTabsSelector();
+    const tabs_element = this.shadowRoot.querySelector(selector);
+    const tabs = tabs_element.querySelectorAll('paper-tab');
+    for (let i = 0; i < tabs.length; i++) {
+      if (tabs[i].dataset.name === this.selectedPage) {
+        tabs_element.selectIndex(i);
+        return;
+      }
+    }
+    tabs_element.selectIndex(-1);
+  }
+
+  _getNavTabsSelector() {
+    let selector = '#nav_tabs';
+    if (this.shouldShowSecondToolbar) {
+      selector = '#second_nav_tabs'
+    } else if (this.shouldShowTipitakaToolbar) {
+      selector = '#tipitaka_nav_tabs'
+    } else if (this.shouldShowAcademicToolbar) {
+      selector = '#academic_nav_tabs'
+    } else if (this.shouldShowOrganizationalToolbar) {
+      selector = '#organizational_nav_tabs'
+    }
+    return selector;
+  }
+
+  _changeView() {
+    if (this.selectedPage.substr(0, 5) === "SUTTA" || this.selectedPage === "SEARCH") {
+      return;
+    };
+    this._setVisibleToolbar(this.selectedPage);
+    setTimeout(() => { this._selectNavbarLink() });
+    this.$.pages.selected = this.selectedPage;
+    if (!customElements.get(`${this.selectedPage.toLowerCase()}-page`)) {
+      afterNextRender(this, () => {
+        import(`../elements/static/${this.selectedPage.toLowerCase()}-page.js`);
+      });
+    }
+    this._resetDonationForm();
+  }
+
+  _resetDonationForm() {
+    const donationForm = this.shadowRoot.querySelector('#donate');
+    if (donationForm.hasOwnProperty('resetForm')) {
+      donationForm.resetForm();
+    }
+  }
+
+  _setVisibleToolbar(selectedPage) {
+    this.shouldShowSecondToolbar = ['SUBJECTS', 'SIMILES', 'NAMES', 'TERMINOLOGY'].includes(selectedPage);
+    this.shouldShowTipitakaToolbar = ['DISCOURSES', 'VINAYA', 'ABHIDHAMMA'].includes(selectedPage);
+    this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(selectedPage);
+    this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(selectedPage);
+  }
+
+  _createMetaData(pageSelection, localize) {
+    if (!localize) return;
+    const description = localize('metaDescriptionText');
+    const pageName = localize(`${pageSelection}`);
+    document.dispatchEvent(new CustomEvent('metadata', {
+      detail: {
+        pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
+        title: `SuttaCentral—${pageName.toLowerCase()}`,
+        description: description,
+        bubbles: true,
+        composed: true
+      }
+    }));
+  }
+}
+
+customElements.define('sc-static-page-selector', SCStaticPageSelector);
