@@ -11,6 +11,9 @@ import sys
 current_module = sys.modules[__name__]
 
 
+class PoProcessingError(Exception):
+    pass
+    
 def remove_leading_zeros(string):
     return regex.sub(r'([A-Za-z.])0+', r'\1', string)
 
@@ -35,8 +38,15 @@ def tilde_to_html_lists(po):
                             '</li></ol>'
                             )
 
+def ref_match_repl(m):
+    return ''.join(
+        '<a class="{}" id="{}"></a>'.format(_class, _id) 
+            for _class, _id in zip(m.captures(1), m.captures(2)))
+
 def clean_html(string):
     out = regex.sub(r'<html>.*<body>', r'', string, flags=regex.DOTALL).replace('\n', ' ')
+    out = out.replace('HTML: ', '')
+    out = regex.sub(r'REF: (?:([a-z]+)([\w.-]+),?\s*)+', ref_match_repl, out)
     out = regex.sub(r'>\s*VAR.*?<', '><', out)
     out = out.replace('</p>', '</p>\n')
     out = out.replace('</blockquote>', '</blockquote>\n')
@@ -142,6 +152,24 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
         with msgids_storage_file.open('w') as f:
             json.dump(data['msgids'], f)
         
+        
+        should_include_strings = True
+        if not data['msgstrs']:
+            should_include_strings = False
+        
+        try:
+            root_division_title = headings['root']['division']
+        except KeyError as e:
+            logging.error(f'Could not determine root division title for {str(po_file)}')
+            root_division_title = ''
+            
+        try:
+            tr_division_title = headings['tr']['division']
+        except KeyError as e:
+            logging.error(f'Could not determine translation division title for {str(po_file)}')
+            tr_division_title = ''
+            
+            
         # This doc is for root strings
         yield {
             'uid': uid,
@@ -158,26 +186,27 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
             },
             'strings_path': str(msgids_storage_file),
             'title': headings['root']['title'],
-            'division_title': headings['root']['division'],
+            'division_title': root_division_title,
             'mtime': mtime
         }
-
-        # This doc is for the translated strings
-        yield {
-            'uid': uid,
-            'markup_uid': uid,
-            'lang': info['tr_lang'],
-            'author': author_data[0],
-            'author_short': author_data[1],
-            'author_uid': info['author'],
-            'author_blurb': {
-                info['tr_lang']: info['author_blurb']
-            },
-            'strings_path': str(msgstrs_storage_file),
-            'title': headings['tr']['title'],
-            'division_title': headings['tr']['division'],
-            'mtime': mtime
-        }
+        
+        if should_include_strings:
+            # This doc is for the translated strings
+            yield {
+                'uid': uid,
+                'markup_uid': uid,
+                'lang': info['tr_lang'],
+                'author': author_data[0],
+                'author_short': author_data[1],
+                'author_uid': info['author'],
+                'author_blurb': {
+                    info['tr_lang']: info['author_blurb']
+                },
+                'strings_path': str(msgstrs_storage_file),
+                'title': headings['tr']['title'],
+                'division_title': tr_division_title,
+                'mtime': mtime
+            }
 
         # this doc is for the markup
         yield {
@@ -244,38 +273,34 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
     # /dn/en/dn01 or /an/en/an01/an01.001.po
 
     # We expect the project dir name to be the division name
-    for division_dir in iter_sub_dirs(po_dir):
-        root_lang = db['root'][division_dir.stem]['language']
+    for lang_dir in iter_sub_dirs(po_dir):
+        if '-' in lang_dir.stem:
+            root_lang, tr_lang = lang_dir.stem.split('-')
+        else:
+            raise ValueError(f'po subdir {lang_dir} should be of form such as pli-en')
 
-        if not root_lang:
-            logging.error(f'Division {division_dir.stem} not recognized')
-            continue
+        docs = process_dir(
+            change_tracker,
+            lang_dir,
+            authors,
+            info={
+                'tr_lang': tr_lang,
+                'root_lang': root_lang
+            },
+            storage_dir=storage_dir)
 
-        for tr_lang_dir in iter_sub_dirs(division_dir):
-            tr_lang = tr_lang_dir.stem
+        markup_docs = []
+        string_docs = []
 
-            docs = process_dir(
-                change_tracker,
-                tr_lang_dir,
-                authors,
-                info={
-                    'tr_lang': tr_lang,
-                    'root_lang': root_lang
-                },
-                storage_dir=storage_dir)
+        for i, doc in enumerate(docs):
+            if 'markup_path' in doc:
+                doc['_key'] = f'{doc["uid"]}_markup'
+                markup_docs.append(doc)
 
-            markup_docs = []
-            string_docs = []
+            else:
+                doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
+                string_docs.append(doc)
 
-            for i, doc in enumerate(docs):
-                if 'markup_path' in doc:
-                    doc['_key'] = f'{doc["uid"]}_markup'
-                    markup_docs.append(doc)
-
-                else:
-                    doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
-                    string_docs.append(doc)
-
-            db['po_markup'].import_bulk(markup_docs, on_duplicate='ignore')
-            db['po_strings'].import_bulk(string_docs, on_duplicate='ignore')
+        db['po_markup'].import_bulk(markup_docs, on_duplicate='ignore')
+        db['po_strings'].import_bulk(string_docs, on_duplicate='ignore')
 

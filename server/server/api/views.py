@@ -667,7 +667,7 @@ class Paragraphs(Resource):
 
         data = db.aql.execute(PARAGRAPHS)
 
-        return data.batch(), 200
+        return list(data), 200
 
 
 class Glossary(Resource):
@@ -689,7 +689,7 @@ class Glossary(Resource):
 
         data = db.aql.execute(GLOSSARY)
 
-        return data.batch(), 200
+        return list(data), 200
 
 
 class DictionaryAdjacent(Resource):
@@ -708,7 +708,7 @@ class DictionaryAdjacent(Resource):
 
         data = db.aql.execute(DICTIONARY_ADJACENT, bind_vars={'word': word})
 
-        return data.batch(), 200
+        return list(data), 200
 
 
 class DictionarySimilar(Resource):
@@ -727,7 +727,7 @@ class DictionarySimilar(Resource):
 
         data = db.aql.execute(DICTIONARY_SIMILAR, bind_vars={'word': word})
 
-        return data.batch(), 200
+        return list(data), 200
 
 
 class DictionaryFull(Resource):
@@ -755,7 +755,7 @@ class DictionaryFull(Resource):
 
         data = db.aql.execute(DICTIONARYFULL, bind_vars={'word': word})
 
-        return data.batch(), 200
+        return list(data), 200
 
 
 class Donations(Resource):
@@ -921,7 +921,7 @@ class Images(Resource):
 
         data = db.aql.execute(IMAGES, bind_vars={'division': division, 'vol': vol, 'page': page})
 
-        return data.batch(), 200
+        return list(data), 200
 
 
 class Epigraphs(Resource):
@@ -952,7 +952,7 @@ class Epigraphs(Resource):
 
         data = db.aql.execute(EPIGRAPHS, bind_vars={'number': limit})
 
-        return data.batch(), 200
+        return list(data), 200
 
 
 class WhyWeRead(Resource):
@@ -978,7 +978,7 @@ class WhyWeRead(Resource):
 
         data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit})
 
-        return data.batch(), 200
+        return list(data), 200
 
 
 class Expansion(Resource):
@@ -1002,7 +1002,7 @@ class Expansion(Resource):
 
         data = db.aql.execute(EXPANSION)
 
-        return data.batch(), 200
+        return list(data), 200
 
 
 class CollectionUrlList(Resource):
