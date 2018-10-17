@@ -1,10 +1,8 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-<!--
-  Badge element
--->
-<dom-module id="sc-badge">
-  <template>
+class SCBadge extends PolymerElement {
+  static get template() {
+    return html`
     <style>
       .badge {
         position: relative;
@@ -29,25 +27,20 @@
 
     <div class="badge">
       <div class="badge-number">[[number]]</div>
-    </div>
+    </div>`;
+  }
 
-  </template>
+  static get is() {
+      return ;
+  }
 
-  <script>
-      class SCBadge extends Polymer.Element {
-          static get is() {
-              return 'sc-badge';
-          }
-
-          static get properties() {
-              return {
-                  number: {
-                      type: Number
-                  }
-              }
-          }
+  static get properties() {
+    return {
+      number: {
+        type: Number
       }
+    }
+  }
+}
 
-      customElements.define(SCBadge.is, SCBadge);
-  </script>
-</dom-module>
+customElements.define('sc-badge', SCBadge);
