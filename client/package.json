@@ -6,11 +6,11 @@
     "dev": "npm run serv | npm run watch",
     "test": "polymer test",
     "build": "polymer build",
-    "watch": "browser-sync start --proxy 0.0.0.0:8000 --files \"**/*.*, index.html, *.js\" --no-open"
+    "watch": "browser-sync start --proxy 0.0.0.0:8000 --files \"**/*.*, index.html, *.js\" --no-open",
+    "extract-static-strings": "babel --plugins babel-plugin-macros elements/static-templates/ --out-dir elements/static"
   },
   "dependencies": {
     "@polymer/app-layout": "^3.0.0",
-    "@polymer/app-localize-behavior": "^3.0.0",
     "@polymer/app-route": "^3.0.0",
     "@polymer/app-storage": "^3.0.0",
     "@polymer/iron-a11y-keys": "^3.0.0",
@@ -29,12 +29,13 @@
     "@polymer/iron-overlay-behavior": "^3.0.0",
     "@polymer/iron-pages": "^3.0.0",
     "@polymer/iron-scroll-threshold": "^3.0.0",
+    "@polymer/lit-element": "^0.6.2",
     "@polymer/neon-animation": "^3.0.0",
     "@polymer/paper-button": "^3.0.0",
     "@polymer/paper-card": "^3.0.0",
     "@polymer/paper-checkbox": "^3.0.0",
-    "@polymer/paper-dialog-scrollable": "^3.0.0",
     "@polymer/paper-dialog": "^3.0.0",
+    "@polymer/paper-dialog-scrollable": "^3.0.0",
     "@polymer/paper-dropdown-menu": "^3.0.0",
     "@polymer/paper-icon-button": "^3.0.0",
     "@polymer/paper-input": "^3.0.0",
@@ -54,6 +55,7 @@
     "d3-queue": "^3.0.7",
     "iron-lazy-pages": "^3.0.2",
     "polymer-redux": "tur-nr/polymer-redux#polymer-3",
+    "pwa-helpers": "^0.8.4",
     "raven-js": "^3.23.3",
     "redux": "^3.7.2",
     "viewerjs": "^0.10.0",
@@ -61,6 +63,10 @@
     "workbox-sw": "2.1.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-macros": "^2.4.2",
+    "htmlparser2": "^3.9.2",
+    "node-fetch": "^2.2.0",
     "wct-browser-legacy": "^1.0.1"
   }
 }
