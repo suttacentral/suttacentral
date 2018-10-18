@@ -35,6 +35,7 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .toolbar-input {
+        @apply --sc-paper-font-body;
         --paper-input-container: {
           padding: 0;
         };
@@ -205,7 +206,7 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
       if (searchWidth > 360) {
         searchWidth = 360
       }
-      this.shadowRoot.querySelector('.opened').style.width = searchWidth;
+      this.shadowRoot.querySelector('.opened').style.width = `${searchWidth}px`;
     }
   }
 
