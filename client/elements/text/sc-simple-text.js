@@ -195,18 +195,18 @@ class SCSimpleText extends SCTextPage {
           'syā3': 'Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)',
           'bj': 'Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)',
           'bj-a': 'Buddhajayantītripiṭakagranthamālā Atthakathā)'
-        },
-        localizedStringsPath: {
-          type: String,
-          value: '/localization/elements/sc-text'
-        },
-        currentId: {
-          type: String,
-          value: ''
-        },
-        inputElement: {
-          type: Object
         }
+      },
+      localizedStringsPath: {
+        type: String,
+        value: '/localization/elements/sc-text'
+      },
+      currentId: {
+        type: String,
+        value: ''
+      },
+      inputElement: {
+        type: Object
       }
     }
   }
