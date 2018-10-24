@@ -7,13 +7,8 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/app-route/app-location.js';
 
 import './menus/sc-toolbar.js';
-import './sc-static-page-selector.js';
-import './suttaplex/sc-suttaplex-list.js';
 import './text/sc-simple-text.js';
 import './text/sc-segmented-text.js';
-import './sc-page-search.js';
-import './sc-page-dictionary.js';
-import './text/sc-text-page-selector.js';
 import { ReduxMixin } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 
@@ -21,13 +16,12 @@ import { Localized } from './addons/localization-mixin.js';
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
 the header will have a different appearance and different items in the toolbar.
 
-The page-selector also parses the input-data and loads one of 6 possible page-views depending on the input given:
-    - static pages: **sc-page-static.html**
-    - search page: **sc-page-search.html**
-    - dictionary page: **sc-page-dictionary.html**
-    - sutta text pages: **sc-text-page-selector.html**
-    - text pages from pootle output: **sc-segmented-text.html**
-    - suttaplex list: **sc-suttaplex-list.html**
+The page-selector also parses the input-data and loads one of 5 possible page-views depending on the input given:
+    - static pages:       <sc-static-page-selector>
+    - search page:        <sc-page-search>
+    - dictionary page:    <sc-page-dictionary>
+    - sutta text pages:   <sc-text-page-selector>
+    - suttaplex list:     <sc-suttaplex-list>
 */
 
 class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
@@ -172,7 +166,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         notify: true
       },
       // Defines all the available static pate routes.
-      // See <sc-page-static.html>.
+      // See <sc-static-page-selector>
       staticPages: {
         type: Array,
         value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
@@ -372,27 +366,20 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
   // Lazy loading for site elements
   _resolveImports() {
-    let importedElementUrl;
-    if (this.shouldShowStaticPage && !customElements.get(`sc-static-page-selector`)) {
-      importedElementUrl = '../elements/sc-static-page-selector.html';
+    if (this.shouldShowStaticPage) {
+      import('./sc-static-page-selector.js');
     }
-    else if (this.shouldShowSuttaplexListPage && !customElements.get(`sc-suttaplex-list`)) {
-      importedElementUrl = '../elements/suttaplex/sc-suttaplex-list.html';
+    else if (this.shouldShowSuttaplexListPage) {
+      import('./suttaplex/sc-suttaplex-list.js');
     }
-    else if (this.shouldShowSearchPage && !customElements.get(`sc-page-search`)) {
-      importedElementUrl = '../elements/sc-page-search.html';
+    else if (this.shouldShowSearchPage) {
+      import('./sc-page-search.js');
     }
-    else if (this.shouldShowDictionaryPage && !customElements.get(`sc-page-dictionary`)) {
-      importedElementUrl = '../elements/sc-page-dictionary.html';
+    else if (this.shouldShowDictionaryPage) {
+      import('./sc-page-dictionary.js');
     }
-    else if (this.shouldShowSuttaTextPage && !customElements.get(`sc-text-page-selector`)) {
-      importedElementUrl = '../elements/text/sc-text-page-selector.html';
-    }
-    // load the element
-    if (importedElementUrl) {
-      afterNextRender(this, () => {
-        import(importedElementUrl);
-      });
+    else if (this.shouldShowSuttaTextPage) {
+      import('./text/sc-text-page-selector.js');
     }
   }
 
