@@ -2,15 +2,6 @@ const FALLBACK_LANGUAGE = 'en';
 
 const localizationCache = { };
 
-function keyPairArrayToObject(arr) {
-  return arr.reduce((result, value, index, array) => {
-    if (index % 2 === 0) {
-      result[array[index]] = array[index + 1]
-    }
-    return result;
-  }, {});
-}
-
 export const Localized = base => class extends base {
   static get properties() {
     return {
@@ -38,8 +29,10 @@ export const Localized = base => class extends base {
       const string = (resources && resources[key]) ? resources[key] : '';
 
       if (params.length) {
-        params = keyPairArrayToObject(params);
-        return string.replace(/\{([a-z]+)\}/gi, (match, group) => params[group]);
+        return string.replace(
+          /\{([a-z]+)\}/gi,
+          (match, group) => params[params.indexOf(group) + 1]
+        );
       }
 
       return string;
