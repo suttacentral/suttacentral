@@ -77,6 +77,11 @@
         head.appendChild(script);
     }
   </script>
+
+  <!-- Temporary fix for broken CSS mixins (@apply) inside LitElement
+       https://github.com/Polymer/lit-html/issues/518 -->
+  <script src="/node_modules/@webcomponents/shadycss/apply-shim.min.js"></script>
+
   <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
   <script src="/node_modules/web-animations-js/web-animations-next.min.js"></script>
 
