@@ -29,7 +29,7 @@ async function saveJSON(basename, hashes) {
   const basePath = join(__dirname, 'elements', `static_${basename}`);
   try {
     await mkdir(basePath);
-  } catch {
+  } catch (e) {
     // dir exists, do nothing
   }
 
@@ -41,7 +41,7 @@ async function saveJSON(basename, hashes) {
     try {
       const path = join(basePath, `${lang}.json`);
       await writeFile(path, 'wx', prepareJSON(lang, {}));
-    } catch {
+    } catch (e) {
       // file exists, skip
     }
   }

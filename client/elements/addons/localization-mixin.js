@@ -2,6 +2,10 @@ const FALLBACK_LANGUAGE = 'en';
 
 const localizationCache = { };
 
+/**
+* @polymer
+* @mixinFunction
+*/
 export const Localized = base => class extends base {
   static get properties() {
     return {
