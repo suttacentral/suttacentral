@@ -1,51 +1,45 @@
 {
   "entrypoint": "index.html",
-  "shell": "elements/sc-drawer-layout.html",
+  "shell": "elements/sc-drawer-layout.js",
   "sources": [
-    "elements/**/*"
+    "elements/**.js"
   ],
   "fragments": [
-    "elements/static/a-new-beginning-page.html",
-    "elements/static/abbreviations-page.html",
-    "elements/static/abhidhamma-page.html",
-    "elements/static/about-page.html",
-    "elements/static/acknowledgments-page.html",
-    "elements/static/discourses-page.html",
-    "elements/static/donate-now-page.html",
-    "elements/static/donation-success-page.html",
-    "elements/static/donations-page.html",
-    "elements/static/downloads-page.html",
-    "elements/static/introduction-page.html",
-    "elements/static/licensing-page.html",
-    "elements/static/methodology-page.html",
-    "elements/static/names-page.html",
-    "elements/static/numbering-page.html",
-    "elements/static/offline-page.html",
-    "elements/static/similes-page.html",
-    "elements/static/start-page.html",
-    "elements/static/subjects-page.html",
-    "elements/static/terminology-page.html",
-    "elements/static/vinaya-page.html",
-    "elements/suttaplex/sc-suttaplex-list.html",
-    "elements/sc-static-page-selector.html",
-    "elements/suttaplex/sc-suttaplex-list.html",
-    "elements/suttaplex/sc-suttaplex-list.html",
-    "elements/sc-page-search.html",
-    "elements/text/sc-text-page-selector.html"
+    "elements/static/a-new-beginning-page.js",
+    "elements/static/abbreviations-page.js",
+    "elements/static/abhidhamma-page.js",
+    "elements/static/about-page.js",
+    "elements/static/acknowledgments-page.js",
+    "elements/static/discourses-page.js",
+    "elements/static/donate-now-page.js",
+    "elements/static/donation-success-page.js",
+    "elements/static/donations-page.js",
+    "elements/static/downloads-page.js",
+    "elements/static/home-page.js",
+    "elements/static/introduction-page.js",
+    "elements/static/licensing-page.js",
+    "elements/static/methodology-page.js",
+    "elements/static/names-page.js",
+    "elements/static/numbering-page.js",
+    "elements/static/offline-page.js",
+    "elements/static/similes-page.js",
+    "elements/static/start-page.js",
+    "elements/static/subjects-page.js",
+    "elements/static/terminology-page.js",
+    "elements/static/vinaya-page.js"
   ],
   "extraDependencies": [
     "img/**/*",
     "files/**/*",
     "localization/elements/**/*.json",
+    "elements/styles/*.json",
     "manifest.json",
-    "node_modules/workbox-sw/build/importScripts/*",
     "polyfills/*.js",
-    "elements/text/transliterator.js",
     "service-worker.js",
-    "bower_components/webcomponentsjs/*.js",
-    "bower_components/webcomponentsjs/*.js.map",
-    "node_modules/raven-js/dist/raven.min.js",
-    "node_modules/raven-js/dist/raven.min.js.map"
+    "node_modules/workbox-sw/build/importScripts/*",
+    "node_modules/web-animations-js/*.js",
+    "node_modules/@webcomponents/**/*.js",
+    "node_modules/raven-js/dist/raven.min.js"
   ],
   "builds": [
     {
@@ -67,8 +61,7 @@
         "minify": true
       },
       "addServiceWorker": false,
-      "addPushManifest": false,
-      "insertPrefetchLinks": true
+      "addPushManifest": false
     },
     {
       "name": "es5-bundled",
@@ -88,12 +81,13 @@
         "minify": true
       },
       "addServiceWorker": false,
-      "addPushManifest": false,
-      "insertPrefetchLinks": true
+      "addPushManifest": false
     }
   ],
+  "moduleResolution": "node",
+  "npm": true,
   "lint": {
-    "rules": ["polymer-2"],
-    "ignoreWarnings": ["could-not-resolve-reference"]
+    "rules": ["polymer-3"],
+    "ignoreWarnings": ["non-literal-import", "not-loadable"]
   }
 }
