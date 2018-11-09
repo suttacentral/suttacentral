@@ -18,12 +18,6 @@ services:
     env_file:
       - server/env/.test.env
 
-  sc-frontend-tester:
-    entrypoint: tail -f /dev/null
-    working_dir: /opt/sc/frontend
-    volumes:
-      - ./client/:/opt/sc/frontend
-
   sc-frontend-builder:
     command: bash builder.sh
     working_dir: /opt/sc/frontend

@@ -1,3 +1,8 @@
+COMPOSE     := docker-compose -f docker-compose.yml
+COMPOSEDEV  := $(COMPOSE) -f docker-compose.dev.yml
+COMPOSETEST := $(COMPOSE) -f docker-compose.test.yml
+COMPOSEPROD := $(COMPOSE) -f docker-compose.prod.yml
+
 prepare-host:
 	@echo "Since ElasticSearch 5.0 you have to change 'vm.max_map_count' to at least 262144 on the host machine, even when using Docker."
 	@echo "In order to do that I'm going to ask you for your sudo password"
@@ -6,150 +11,37 @@ prepare-host:
 	@echo "\033[1;32mSuccess!"
 
 create-network:
-	@docker network create nginx-proxy
+	-@docker network create nginx-proxy
 
-build-all:
-	@make create-network || true
-	@make build-flask
-	@make build-arangodb
-	@make build-nginx
-	@make build-elasticsearch
-	@make build-swagger
-	@make build-frontend-tester
-build-flask:
-	@docker-compose build sc-flask
-build-arangodb:
-	@docker-compose build sc-arangodb
-build-nginx:
-	@docker-compose build sc-nginx
-	cd nginx && ./create-certs.sh
-build-elasticsearch:
-	@docker-compose build sc-elasticsearch
-build-swagger:
-	@docker-compose build sc-swagger
-build-frontend-tester:
-	@docker-compose build sc-frontend-tester
-build-pootle-pipeline:
-	@docker-compose build sc-pootle-pipeline
+generate-cert:
+	@cd nginx && ./create-certs.sh
 
-rebuild-all: clean-all build-all
-rebuild-flask: clean-flask build-flask
-rebuild-arangodb: clean-arangodb build-arangodb
-rebuild-nginx: clean-nginx build-nginx
-rebuild-elasticsearch: clean-elasticsearch build-elasticsearch
-rebuild-swagger: clean-swagger build-swagger
 
+
+SERVICES := sc-flask sc-nginx sc-swagger sc-arangodb sc-frontend sc-elasticsearch
 
 run-dev:
-	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+	@$(COMPOSEDEV) up $(SERVICES)
 
 run-dev-no-logs:
-	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+	@$(COMPOSEDEV) up -d $(SERVICES)
+
+run-dev-rebuild:
+	@$(COMPOSEDEV) up --build -d $(SERVICES)
 
 run-prod:
-	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+	@$(COMPOSEPROD) up $(SERVICES)
 
 run-prod-no-logs:
-	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-
-run-frontend-builder:
-	@docker-compose run --entrypoint "bash builder.sh" sc-frontend-builder
+	@$(COMPOSEPROD) up -d $(SERVICES)
 
 migrate:
 	@docker exec -t sc-flask python server/manage.py migrate
 
-# Containers and images ids
-CONTS-ARANGO=$(shell docker ps -a -q -f "name=sc-arangodb")
-CONTS-FLASK=$(shell docker ps -a -q -f "name=sc-flask")
-CONTS-NGINX=$(shell docker ps -a -q -f "name=sc-nginx")
-CONTS-ELASTICSEARCH=$(shell docker ps -a -q -f "name=sc-elasticsearch")
-CONTS-SWAGGER=$(shell docker ps -a -q -f "name=sc-swagger")
-CONTS-FRONTEND_TESTER=$(shell docker ps -a -q -f "name=sc-frontend-tester")
-CONTS-POOTLE=$(shell docker ps -a -q -f "name=sc-pootle")
 
-#stop docker containers
-stop-arangodb:
-	-@docker stop $(CONTS-ARANGO)
-stop-flask:
-	-@docker stop $(CONTS-FLASK)
-stop-nginx:
-	-@docker stop $(CONTS-NGINX)
-stop-elasticsearch:
-	-@docker stop $(CONTS-ELASTICSEARCH)
-stop-swagger:
-	-@docker stop $(CONTS-SWAGGER)
-stop-frontend-tester:
-	-@docker stop $(CONTS-FRONTEND_TESTER)
-stop:
-	@docker-compose stop
+clean-all:
+	$(COMPOSE) down --rmi local --volumes
 
-#remove docker containers
-rm-arangodb:
-	-@docker rm $(CONTS-ARANGO)
-rm-flask:
-	-@docker rm $(CONTS-FLASK)
-rm-nginx:
-	-@docker rm $(CONTS-NGINX)
-rm-elasticsearch:
-	-@docker rm $(CONTS-ELASTICSEARCH)
-rm-swagger:
-	-@docker rm $(CONTS-SWAGGER)
-rm-frontend-tester:
-	-@docker rm $(CONTS-FRONTEND_TESTER)
-rm-pootle:
-	-@docker rm $(CONTS-POOTLE)
-rm: rm-arangodb rm-flask rm-nginx rm-elasticsearch rm-frontend-tester
-
-# Remove volumes
-rm-db-volume:
-	-@docker volume rm nextsc_db-data-volume
-rm-elasticsearch-volume:
-	-@docker volume rm nextsc_elasticsearch-data
-rm-nginx-volume:
-	-@docker volume rm nextsc_nginx-data-volume
-rm-socket-volume:
-	-@docker volume rm nextsc_socket-volume
-rm-all-volumes: rm-db-volume rm-elasticsearch-volume rm-nginx-volume rm-socket-volume
-
-
-#clean docker containers
-clean-arangodb: stop-arangodb rm-arangodb
-clean-flask: stop-flask rm-flask
-clean-nginx: stop-nginx rm-nginx
-clean-elasticsearch: stop-elasticsearch rm-elasticsearch
-clean-all: clean-arangodb clean-flask clean-nginx clean-elasticsearch rm-all-volumes
-
-#Open shell in container
-shell-arangodb:
-	@docker exec -it sc-arangodb bash
-shell-flask:
-	@docker exec -it sc-flask bash
-shell-nginx:
-	@docker exec -it sc-nginx bash
-shell-elasticsearch:
-	@docker exec -it sc-elasticsearch bash
-shell-swagger:
-	@docker exec -it sc-swagger
-shell-frontend-tester:
-	@docker exec -it sc-frontend-tester bash
-shell-pootle:
-	@docker exec -it sc-pootle bash
-
-#Logs
-logs:
-	@docker-compose logs -f
-logs-flask:
-	@docker logs -f sc-flask
-logs-arangodb:
-	@docker logs -f sc-arangodb
-logs-nginx:
-	@docker logs -f sc-nginx
-logs-elasticsearch:
-	@docker logs -f sc-elasticsearch
-logs-swagger:
-	@docker logs -f sc-swagger
-logs-frontend-tester:
-	@docker logs -f sc-frontend-tester
 
 # reloads
 # Only in dev mode local changes will be used after the reload
@@ -199,21 +91,23 @@ index-elasticsearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"
 
 run-preview-env:
-	@make rebuild-all
+	@make clean-all
+	@make create-network
+	@make generate-cert
 	@make run-dev-no-logs
 	@bash wait_for_flask.sh
 	@make load-data
 	@make index-elasticsearch
 	@echo "\033[1;32mDONE!"
-	@make run-dev
 
 run-preview-env-no-search:
-	@make rebuild-all
+	@make clean-all
+	@make create-network
+	@make generate-cert
 	@make run-dev-no-logs
 	@bash wait_for_flask.sh
 	@make load-data
 	@echo "\033[1;32mDONE!"
-	@make run-dev
 
 run-production-env:
 	@make generate-env-variables
@@ -226,7 +120,7 @@ run-production-env:
 	@make run-prod
 
 generate-env-variables:
-	@docker run -it --rm --name env_variable_setup -v $(shell pwd):/opt/ -w /opt python:3.6.2 python env_variables_setup.py
+	@docker run -it --rm --name env_variable_setup -v $(shell pwd):/opt/ -w /opt python:3.7 python env_variables_setup.py
 
 generate-server-po-files:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"
