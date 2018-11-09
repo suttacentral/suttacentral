@@ -1,6 +1,7 @@
 {
   "name": "suttacentral",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "serv": "polymer serve -p 8000 --compile",
     "dev": "npm run serv | npm run watch",
@@ -66,8 +67,9 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-macros": "^2.4.2",
+    "browser-sync": "^2.26.3",
     "htmlparser2": "^3.9.2",
     "node-fetch": "^2.2.0",
-    "wct-browser-legacy": "^1.0.1"
+    "polymer-cli": "^1.8.1"
   }
 }
