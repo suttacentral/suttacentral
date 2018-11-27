@@ -14,6 +14,7 @@ import '@polymer/neon-animation/animations/fade-in-animation.js';
 import '@polymer/neon-animation/animations/fade-out-animation.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
+import {enableBodyScroll, disableBodyScroll} from 'body-scroll-lock/lib/bodyScrollLock.es6'
 setPassiveTouchGestures(true);
 
 import { ReduxMixin } from '../redux-store.js';
@@ -174,7 +175,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
 
     <app-drawer-layout id="drawer_layout" responsive-width="840px" _drawer-position="hidden">
 
-      <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer" persistent="[[false]]" opened="{{isDrawerOpened}}">
+      <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer" persistent="[[false]]" opened="{{isDrawerOpened}}" swipe-open>
         <div class="nav-drawer-box sc-scrollbar">
           <div class="nav-home-title">
             <a class="nav-home-link" href="/">
@@ -269,6 +270,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     this.removeAttribute('unresolved');
     // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
     this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
+    this.addEventListener('app-drawer-transitioned', () => this._trapScroll());
     // Lock scroll for the text dialogs:
     this._addScrollLockListeners();
     this.addEventListener('webkitfullscreenchange', e => {
@@ -291,6 +293,20 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
 
   _openDialog(event) {
     this.$[event.detail.id].open();
+  }
+
+  // traps a scroll when app-drawer is opened (fix necessary for iOS devices)
+  _trapScroll() {
+    const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
+    const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
+    const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
+    if(isNarrowScreen) {
+      if(appDrawer.hasAttribute('opened')) {
+        disableBodyScroll(this)
+      } else {
+        enableBodyScroll(this)
+      }
+    }
   }
 
   // opens the app-drawer when it is not visible.
