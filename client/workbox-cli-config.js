@@ -5,8 +5,6 @@ module.exports = {
     'globPatterns': [
         '/',
         'index.html',
-        'elements/**/*.html',
-        'elements/*.html',
         'elements/styles/*.json',
         'localization/elements/**/en.json',
         'img/pray.png',
@@ -18,7 +16,7 @@ module.exports = {
         'files/fonts/RaloksSansPE-Rg_2.004.woff2'
     ],
     'globIgnores': [
-        'bower_components/webcomponentsjs/*',
+        'node_modules/webcomponents/*',
         'elements/static-templates/*'
     ]
 };
