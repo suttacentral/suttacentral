@@ -45,3 +45,8 @@ services:
     restart: always
     ports:
      - '9222:9222'
+
+  sc-frontend:
+    command: bash builder.sh
+    volumes:
+      - ./client/builder.sh:/opt/sc/frontend/builder.sh
