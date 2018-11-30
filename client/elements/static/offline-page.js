@@ -182,6 +182,10 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
         margin-top: 0;
         margin-bottom: 0;
       }
+      
+      [hidden] {
+        display:none
+      }
 
       @media screen and (max-width: 600px) {
         .no-phone-top-margin {
@@ -292,7 +296,9 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
                           disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
               {{localize('resetButton')}}
             </paper-button>
-
+            <paper-button id='add_to_homescreen_button' class="button" raised hidden$="[[!canBeAddedToHomeScreen]]">
+                {{localize('addToHomeScreen')}}
+            </paper-button>
             <paper-card id="download_controller">
               <div class="download-info-row">
                 <div class="download-current-url">{{localize('downloading')}}: [[currentDownloadingUrl]]</div>
@@ -329,6 +335,10 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       browserSupportsPWA: {
         type: Boolean,
         computed: '_doesBrowserSupportPWA()'
+      },
+      canBeAddedToHomeScreen: {
+        type: Boolean,
+        computed: '_canBeAddedToHomeScreen()'
       },
       chosenLanguageNativeName: {
         type: String
@@ -554,6 +564,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       offlineButton.addEventListener('click', () => { this.makeOffline() });
     }
     this.$.reset_history_button.addEventListener('click', () => { this._resetDownloadHistory() });
+    this.$.add_to_homescreen_button.addEventListener('click', () => { this._showAddToHomeScreenPrompt() });
     this.$.play_button.addEventListener('click', () => { this._resumeOrPauseDownload() });
     this.$.stop_button.addEventListener('click', () => { this._stopDownload() });
     this.$.toggle_lookup_display_button.addEventListener('click', () => { this._toggleLookupsOpen() });
@@ -796,6 +807,10 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
     return M[0].toLowerCase() === 'chrome' && parseInt(M[1]) >= 65;
   }
 
+  _canBeAddedToHomeScreen() {
+    return this._doesBrowserSupportPWA() && !!window.deferredPWAInstallPrompt;
+  }
+
   _isDownloadButtonDisabled(browserSupportsPWAs, cacheDownloadInProgress) {
     return !browserSupportsPWAs || cacheDownloadInProgress;
   }
@@ -857,6 +872,10 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       return lookupLang[0];
     }
     else return { name: 'English', isoCode: 'en' };
+  }
+
+  _showAddToHomeScreenPrompt() {
+    window.deferredPWAInstallPrompt.prompt()
   }
 
   _showToast(type, inputMessage) {

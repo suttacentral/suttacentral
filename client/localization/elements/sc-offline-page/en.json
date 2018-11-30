@@ -34,6 +34,7 @@
         "downloadStarted": "Your download has commenced. You can keep using the site and we will let you know when it’s complete.",
         "language": "Language",
         "resetButton": "Clear download history",
+        "addToHomeScreen": "Add to home screen",
         "alreadyDownloaded": "Already downloaded.",
         "ClickToDownload": "Click to download.",
         "downloadInProgress": "Download in progress.",
