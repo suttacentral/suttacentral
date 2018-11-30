@@ -7,6 +7,7 @@ import '@polymer/iron-ajax/iron-ajax.js';
 import { ReduxMixin } from '/redux-store.js';
 import { Localized } from '../addons/localization-mixin.js';
 import { API_ROOT } from '../../constants.js';
+import copyToClipboard from '../../utils/copy.js'
 
 /*
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
@@ -105,8 +106,8 @@ class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
   // copy the parallels-table in html-string
   _copyContent() {
     try {
-      const copyTextarea = this._computeCopyTable();
-      this._copyToClipboard(copyTextarea);
+      const table = this._computeCopyTable();
+      copyToClipboard(table);
       this._notifyCopy(this.localize('tableCopied'), true);
     } catch (err) {
       this._notifyCopy(this.localize('error'), false);
@@ -135,7 +136,7 @@ class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
   _copyLink() {
     try {
       const link = this._computeLink();
-      this._copyToClipboard(link);
+      copyToClipboard(link);
       this._notifyCopy(this.localize('linkCopied'), true);
     } catch (err) {
       this._notifyCopy(this.localize('error'), false);
@@ -147,29 +148,12 @@ class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
   _copyCite() {
     this._computeCiteData();
     try {
-      const copyTextarea = this._computeCiteData();
-      this._copyToClipboard(copyTextarea);
+      const cite = this._computeCiteData();
+      copyToClipboard(cite);
       this._notifyCopy(this.localize('citeCopied'), true);
     } catch (err) {
       this._notifyCopy(this.localize('error'), false);
       console.error(err);
-    }
-  }
-
-  // copies inputtext to the clipboard by creating and selecting a dummy element.
-  _copyToClipboard(inputText) {
-    const textarea = document.createElement('textarea');
-    textarea.textContent = inputText;
-    textarea.style.position = 'fixed';
-    document.body.appendChild(textarea);
-    textarea.select();
-    try {
-      return document.execCommand('copy');
-    } catch (err) {
-      console.error(err);
-      return false;
-    } finally {
-      document.body.removeChild(textarea);
     }
   }
 
