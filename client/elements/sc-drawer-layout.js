@@ -300,11 +300,11 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
     const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
     const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
-    if(isNarrowScreen) {
-      if(appDrawer.hasAttribute('opened')) {
-        disableBodyScroll(this)
+    if (isNarrowScreen) {
+      if (appDrawer.hasAttribute('opened')) {
+        disableBodyScroll(this);
       } else {
-        enableBodyScroll(this)
+        enableBodyScroll(this);
       }
     }
   }
