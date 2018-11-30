@@ -14,7 +14,7 @@ import '@polymer/neon-animation/animations/fade-in-animation.js';
 import '@polymer/neon-animation/animations/fade-out-animation.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
-import {enableBodyScroll, disableBodyScroll} from 'body-scroll-lock/lib/bodyScrollLock.es6'
+import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock/lib/bodyScrollLock.es6';
 setPassiveTouchGestures(true);
 
 import { ReduxMixin } from '../redux-store.js';
