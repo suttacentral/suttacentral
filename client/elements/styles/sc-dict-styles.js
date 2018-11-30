@@ -109,7 +109,6 @@ export const dictStyles = html`
 
   dd ol + ul.compounds {
     margin-top: var(--sc-size-md-larger) !important;
-    list-style-type: none;
   }
 
   dd ol li {
@@ -119,7 +118,8 @@ export const dictStyles = html`
   }
 
   .compounds {
-    margin-left: var(--sc-size-md-larger) !important
+    margin-left: var(--sc-size-md-larger) !important;
+    list-style-type: none;
   }
 
   dd ol + li {
