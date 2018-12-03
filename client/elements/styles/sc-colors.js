@@ -23,6 +23,9 @@ template.innerHTML = `
       --sc-primary-accent-color-light: #52c756;
       --sc-primary-accent-color-dark: #428342;
       --sc-secondary-accent-color: #9c27b0;
+      --sc-tertiary-color-light: #f4d4d4;
+      --sc-tertiary-color-medium: #e39494;
+      --sc-tertiary-color-dark: #c62828;
 
       /* Background colors */
       --sc-primary-background-color: #f5f5f5;

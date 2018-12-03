@@ -37,6 +37,8 @@ services:
     volumes:
       - ./client/elements:/opt/sc/frontend/elements
       - ./client/utils:/opt/sc/frontend/utils
+      - ./client/img:/opt/sc/frontend/img
+      - ./client/localization:/opt/sc/frontend/localization
       - ./client/index.html:/opt/sc/frontend/index.html
       - ./client/redux-store.js:/opt/sc/frontend/redux-store.js
     ports:

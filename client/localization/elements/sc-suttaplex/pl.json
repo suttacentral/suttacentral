@@ -14,6 +14,12 @@
     "hasNoParallels": "Ten tekst nie ma zarejestrowanych podobieństw.",
     "itemNotFound": "Błąd 404: Nie znaleziono wpisu.",
     "networkError": "Błąd sieci",
-    "translations": "Tłumaczenia"
+    "translationsIn": "tłumaczenia w języku {lang}",
+    "editions": "edycje",
+    "ofRootText": "tekstu źródłowego",
+    "moreTranslations": "więcej tłumaczeń",
+    "inModernLanguages": "w nowożytnych językach",
+    "countParallels": "{count} podobieństw",
+    "inAncientTexts": "w starożytnych tekstach"
   }
 }
