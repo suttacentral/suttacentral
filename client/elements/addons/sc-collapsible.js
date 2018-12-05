@@ -54,7 +54,7 @@ class SCCollapsible extends PolymerElement {
         type: Boolean,
         notify: true,
       },
-    }
+    };
   }
 
   toggleVisibility() {
