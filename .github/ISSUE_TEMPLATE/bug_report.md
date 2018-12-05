@@ -4,14 +4,14 @@ about: Create a report to help us improve
 
 ---
 
-**Description:**
+#### Description:
 
-**Steps to reproduce:**
+#### Steps to reproduce:
 
 * [include links were possible]
 
 
-**Expected behaviour:**
+#### Expected behaviour:
 
 
-**Screenshots:**
+#### Screenshots:
