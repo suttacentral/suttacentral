@@ -56,8 +56,6 @@ class SCParallelItem extends ReduxMixin(Localized(PolymerElement)) {
       .parallel-item-details {
         @apply --paper-font-body2;
         color: var(--sc-secondary-text-color);
-        text-overflow: ellipsis;
-        white-space: nowrap;
         overflow: hidden;
       }
 

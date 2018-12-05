@@ -27,6 +27,18 @@ class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
     return html`
       ${suttaplexStyles}
       <style>
+        :host {
+          --paper-card-background-color: var(--sc-secondary-background-color);
+        }
+
+        .menu-listbox {
+            --paper-input-container-focus-color: var(--sc-primary-accent-color);
+            --paper-input-container-color: var(--sc-secondary-text-color);
+            --paper-input-container-input-color: var(--sc-secondary-text-color);
+            --paper-dropdown-menu-icon_-_color: var(--sc-disabled-text-color);
+            background-color: var(--sc-secondary-background-color);
+        }
+
         h1 {
           @apply --paper-font-headline;
           @apply --sc-serif-font;
@@ -72,6 +84,7 @@ class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
         .sc-tooltip {
           --paper-tooltip-opacity: 0.98;
           --paper-tooltip-background: var(--sc-paper-tooltip-color);
+          --paper-tooltip-text-color: var(--sc-paper-tooltip-text-color);
           --paper-tooltip: {
             @apply --sc-skolar-font-size-xs;
             white-space: nowrap;
@@ -262,6 +275,7 @@ class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
         }
         
         .top-row-icons {
+          align-items: center;
           display: flex;
         }
 

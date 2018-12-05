@@ -99,7 +99,7 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
 
     <div>
 
-      <template dom-if="[[loadingResults]]">
+      <template is="dom-if" if="[[loadingResults]]">
         <paper-spinner-lite class="paper-spinner" active="{{loadingResults}}"></paper-spinner-lite>
       </template>
 
@@ -297,7 +297,6 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
 
   // returns the correct title for each type of parallel.
   _computeIconTitle(item, localize) {
-
     if (!item) {
       return;
     }
