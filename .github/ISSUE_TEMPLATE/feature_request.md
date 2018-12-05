@@ -4,26 +4,26 @@ about: Suggest an idea for this project
 
 ---
 
-**Added value:**
+#### Added value:
 
 
-**Acceptance criteria:**
+#### Acceptance criteria:
 
 
-**Performance criteria:**
+#### Performance criteria:
 
 
-**Method of demonstrating completion:**
+#### Method of demonstrating completion:
 
 
-**Pre milestone planning check:**
+#### Pre milestone planning check:
 - [ ] Small enough to completed in a milestone.
-- [ ] Dependancies marked
+- [ ] Dependencies marked
 - [ ] No external dependencies block the PBI from being completed.
 - [ ] Details are understood by dev team to decide if the PBI can be completed.
 
 
-**Done check:**
+#### Done check:
 - [ ] Produced code for presumed functionalities
 - [ ] Project builds without errors
 - [ ] Peer Code Review performed/pull request approved x2
