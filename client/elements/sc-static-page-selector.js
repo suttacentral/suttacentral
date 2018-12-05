@@ -1,5 +1,4 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/iron-pages/iron-pages.js';
@@ -388,14 +387,12 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   _changeView() {
     if (this.selectedPage.substr(0, 5) === "SUTTA" || this.selectedPage === "SEARCH") {
       return;
-    };
+    }
     this._setVisibleToolbar(this.selectedPage);
     setTimeout(() => { this._selectNavbarLink() });
     this.$.pages.selected = this.selectedPage;
     if (!customElements.get(`${this.selectedPage.toLowerCase()}-page`)) {
-      afterNextRender(this, () => {
-        import(`../elements/static/${this.selectedPage.toLowerCase()}-page.js`);
-      });
+      import(`../elements/static/${this.selectedPage.toLowerCase()}-page.js`);
     }
     this._resetDonationForm();
   }

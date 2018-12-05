@@ -270,6 +270,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     this.removeAttribute('unresolved');
     // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
     this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
+    this.addEventListener('closeDrawer', () => this._closeDrawer());
     this.addEventListener('app-drawer-transitioned', () => this._trapScroll());
     // Lock scroll for the text dialogs:
     this._addScrollLockListeners();
@@ -302,11 +303,17 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
     if (isNarrowScreen) {
       if (appDrawer.hasAttribute('opened')) {
+        document.body.style.overflow = 'auto';
         disableBodyScroll(this);
       } else {
         enableBodyScroll(this);
       }
     }
+  }
+
+  _closeDrawer() {
+    const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
+    appDrawer.close();
   }
 
   // opens the app-drawer when it is not visible.

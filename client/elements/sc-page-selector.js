@@ -307,7 +307,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     // Hide drawer
     afterNextRender(this, () => {
       if (!this.shouldShowStaticPage) {
-        this._toggleDrawer(true);
+        this._closeDrawer();
       }
     });
   }
@@ -411,7 +411,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.dispatch('changeToolbarMode', 'list-mode');
       this.dispatch('selectNavigationMenuItem', this._getPathParamNumber(1));
       this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
-      this._toggleDrawer(false);
+      this._closeDrawer();
     }
     else if (this._isSuttaTextPage()) {
       const suttaRouteParams = this._getSuttaRouteParams();
@@ -516,6 +516,13 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   _toggleDrawer(largeScreenOnly) {
     this.dispatchEvent(new CustomEvent('toggleDrawer', {
       detail: { largeScreenOnly: largeScreenOnly },
+      composed: true,
+      bubbles: true
+    }));
+  }
+
+  _closeDrawer() {
+    this.dispatchEvent(new CustomEvent('closeDrawer', {
       composed: true,
       bubbles: true
     }));
