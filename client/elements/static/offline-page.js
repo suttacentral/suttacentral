@@ -184,7 +184,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       }
       
       [hidden] {
-        display:none
+        display: none;
       }
 
       @media screen and (max-width: 600px) {
