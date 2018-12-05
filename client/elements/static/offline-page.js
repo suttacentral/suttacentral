@@ -875,7 +875,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _showAddToHomeScreenPrompt() {
-    window.deferredPWAInstallPrompt.prompt()
+    window.deferredPWAInstallPrompt.prompt();
   }
 
   _showToast(type, inputMessage) {
