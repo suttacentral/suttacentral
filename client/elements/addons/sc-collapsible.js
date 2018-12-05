@@ -59,18 +59,10 @@ class SCCollapsible extends PolymerElement {
 
   toggleVisibility() {
     this.opened = !this.opened;
-    this._updateIronLists();
   }
 
   getIconClass(opened) {
     return opened ? 'opened' : '';
-  }
-
-  _updateIronLists() {
-    const interval = setInterval(() => {
-      this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }))
-    }, 20);
-    setTimeout(() => clearInterval(interval), 300);
   }
 }
 

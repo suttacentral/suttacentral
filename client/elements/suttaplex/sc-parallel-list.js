@@ -189,7 +189,6 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
 
   ready() {
     super.ready();
-    this.addEventListener('loading-results-changed', this._resizeParentList);
     if (!this.expansionData) {
       this.$.uid_expansion_ajax.generateRequest()
     }
@@ -252,10 +251,6 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
       if (a[1] > b[1]) return 1;
     }
     return 0;
-  }
-
-  _resizeParentList() {
-    this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true, composed: true }));
   }
 
   _getRelations(rootId) {
@@ -343,7 +338,7 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
 
   _computeUrl(rootId) {
     const authorUid = (this.rootText || {}).author_uid || '';
-    return `/${this.itemUid}/${this.rootLang}/${authorUid}${this._getParagraphRange(rootId, true)}`
+    return `/${this.itemUid}/${this.rootLang}/${authorUid}${this._getParagraphRange(rootId, true)}`;
   }
 
   _getParagraphRange(rootId, isUrl) {

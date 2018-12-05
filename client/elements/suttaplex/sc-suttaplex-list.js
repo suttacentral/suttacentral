@@ -1,6 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-ajax/iron-ajax.js';
-import '@polymer/iron-list/iron-list.js';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
@@ -79,22 +78,18 @@ class SCSuttaplexList extends ReduxMixin(Localized(PolymerElement)) {
         </div>
       </template>
 
-      <iron-list id="suttaplex_list" class="suttaplex-list" items="{{suttaplexReturns}}" as="item" scroll-target="document">
-        <template>
-          <div style$="z-index: [[_getItemZIndex(index)]];">
-            <template is="dom-if" if="{{_isSuttaplex(item)}}">
-              <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]" difficulty="[[_computeItemDifficulty(item.difficulty)]]" expansion-data="[[expansionReturns]]" suttaplex-list-style="[[suttaplexListView]]">
-              </sc-suttaplex>
-            </template>
-
-            <template is="dom-if" if="{{!_isSuttaplex(item)}}">
-              <section class$="[[_calculateClass(item.type)]]">
-                <sc-suttaplex-section-title input-title="[[item.original_title]]" input-text="[[item.blurb]]" input-type="[[item.type]]" opened="[[_calculateOpened(suttaplexReturns)]]"></sc-suttaplex-section-title>
-              </section>
-            </template>
-          </div>
+      <template is="dom-repeat" items="[[suttaplexReturns]]" as="item" id="suttaplex_list" class="suttaplex-list">
+        <template is="dom-if" if="{{_isSuttaplex(item)}}">
+          <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]" difficulty="[[_computeItemDifficulty(item.difficulty)]]" expansion-data="[[expansionReturns]]" suttaplex-list-style="[[suttaplexListView]]">
+          </sc-suttaplex>
         </template>
-      </iron-list>
+
+        <template is="dom-if" if="{{!_isSuttaplex(item)}}">
+          <section class$="[[_calculateClass(item.type)]]">
+            <sc-suttaplex-section-title input-title="[[item.original_title]]" input-text="[[item.blurb]]" input-type="[[item.type]]" opened="[[_calculateOpened(suttaplexReturns)]]"></sc-suttaplex-section-title>
+          </section>
+        </template>
+      </template>
 
     </div>
 
@@ -206,12 +201,6 @@ class SCSuttaplexList extends ReduxMixin(Localized(PolymerElement)) {
       const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
       return levels[difficulty];
     }
-  }
-
-  // this exists to solve an iron-list bug:
-  // https://github.com/PolymerElements/iron-list/issues/242#issuecomment-232450210
-  _getItemZIndex(index) {
-    return this.suttaplexReturns ? (this.suttaplexReturns.length - index) : 0;
   }
 
   _calculateOpened(suttaplexReturns) {

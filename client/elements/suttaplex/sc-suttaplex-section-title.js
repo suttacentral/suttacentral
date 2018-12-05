@@ -79,7 +79,6 @@ class SCSuttaplexSectionTitle extends PolymerElement {
 
   _toggleOpened(e) {
     this.opened = !this.opened;
-    this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
   }
 
   _calculateTitleClass(inputType) {
