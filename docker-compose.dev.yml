@@ -41,6 +41,7 @@ services:
       - ./client/localization:/opt/sc/frontend/localization
       - ./client/index.html:/opt/sc/frontend/index.html
       - ./client/redux-store.js:/opt/sc/frontend/redux-store.js
+      - ./client/localization/elements:/opt/sc/frontend/localization/elements
     ports:
       - '3000:3000'
 
