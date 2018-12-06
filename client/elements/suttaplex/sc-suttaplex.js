@@ -1,489 +1,492 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
+import { ReduxMixin } from '/redux-store.js';
+import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-collapse/iron-collapse.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-card/paper-card.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/paper-styles/paper-styles.js';
-import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/paper-card/paper-card.js';
-import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-toast/paper-toast.js';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 
-import '../addons/sc-sutta-note.js';
-import '../menus/sc-language-menu.js';
-import '../menus/sc-suttaplex-share-menu.js';
-import './sc-parallel-list.js';
-import '../addons/sc-badge.js';
-import { ReduxMixin } from '/redux-store.js';
-import { suttaplexStyles } from '../styles/sc-suttaplex-styles.js';
+import '../../img/sc-svg-icons.js';
 import { Localized } from '../addons/localization-mixin.js';
+import '../addons/sc-badge.js';
+import '../addons/sc-collapsible.js';
+import '../addons/sc-sutta-note.js';
+import '../menus/sc-suttaplex-share-menu.js';
+import { suttaplexStyles } from '../styles/sc-suttaplex-styles.js';
+import './sc-parallel-list.js';
 
 
 class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
   static get template() {
     return html`
-    ${suttaplexStyles}
-    <style>
-      .suttaplex-head-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .suttaplex {
-        background-color: var(--sc-secondary-background-color);
-        margin-bottom: var(--sc-size-md);
-        border-radius: var(--sc-size-xxs);
-        display: block;
-      }
-
-      .suttaplex.list-view {
-        margin: 0;
-      }
-
-      .suttaplex .card-content {
-        padding-top: var(--sc-size-md-larger);
-        padding-bottom: 1px;
-      }
-
-      .suttaplex.list-view .card-content {
-        padding-top: var(--sc-size-md);
-      }
-
-      .suttaplex-heading {
-        @apply --paper-font-headline;
-        @apply --sc-serif-font;
-        margin: 0;
-      }
-
-      .suttaplex-nerdy-row {
-        @apply --paper-font-body2;
-        color: var(--sc-secondary-text-color);
-        font-weight: normal;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-
-      .suttaplex.list-view .suttaplex-nerdy-row {
-        display: inline-flex;
-      }
-
-      @media screen and (max-width: 600px) {
-        .suttaplex.list-view .suttaplex-nerdy-row {
-          display: block;
+      ${suttaplexStyles}
+      <style>
+        :host {
+          --paper-card-background-color: var(--sc-secondary-background-color);
         }
-      }
 
-      .suttaplex-nerdy-row .popuptext {
-        overflow: visible;
-        visibility: hidden;
-      }
+        .menu-listbox {
+            --paper-input-container-focus-color: var(--sc-primary-accent-color);
+            --paper-input-container-color: var(--sc-secondary-text-color);
+            --paper-input-container-input-color: var(--sc-secondary-text-color);
+            --paper-dropdown-menu-icon_-_color: var(--sc-disabled-text-color);
+            background-color: var(--sc-secondary-background-color);
+        }
 
-      .suttaplex-nerdy-row .show {
-        visibility: visible;
-      }
+        h1 {
+          @apply --paper-font-headline;
+          @apply --sc-serif-font;
+          @apply --sc-skolar-font-size-xl;
+          margin: 0;
+        }
+      
+        h2 {
+          @apply --paper-font-headline;
+          @apply --sc-sans-font;
+          color: var(--sc-secondary-text-color);
+        }
+        
+        a {
+          color: inherit;
+          text-decoration: inherit;
+        }
+      
+        .hide-element {
+          display: none;
+        }
+      
+        .suttaplex {
+          display: block;
+          padding: var(--sc-size-md);
+          margin-bottom: var(--sc-size-md);
+        }
+      
+        .top-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          --iron-icon-height: 20px;
+          --iron-icon-width: 20px;
+        }
+      
+        .tx-level-icon {
+          --iron-icon-height: 24px;
+          --iron-icon-width: 24px;
+          margin: 0 var(--sc-size-sm);
+        }
+      
+        .sc-tooltip {
+          --paper-tooltip-opacity: 0.98;
+          --paper-tooltip-background: var(--sc-paper-tooltip-color);
+          --paper-tooltip-text-color: var(--sc-paper-tooltip-text-color);
+          --paper-tooltip: {
+            @apply --sc-skolar-font-size-xs;
+            white-space: nowrap;
+            line-height: var(--sc-size-md);
+            padding: var(--sc-size-sm) var(--sc-size-md);
+            text-shadow: 0 0 var(--sc-secondary-background-color);
+            max-width: 100% !important;
+          };
+        }
+      
+        .top-menu-button {
+          padding: 0;
+          --paper-menu-button-dropdown: {
+            @apply --shadow-elevation-8dp;
+          };
+        }
+      
+        .top-menu-button .btn-share, .top-menu-button .btn-speaker {
+          align-self: flex-end;
+          width: var(--sc-size-lg);
+          height: var(--sc-size-lg);
+        }
+      
+        .btn-speaker {
+          --paper-icon-button: {
+            padding: 5px;
+          }
+        }
+      
+        .btn-share {
+          --paper-icon-button: {
+            padding: 7px;
+          }
+        }
+       
+        .suttaplex-nerdy-row {
+          @apply --paper-font-body2;
+          color: var(--sc-secondary-text-color);
+          font-weight: normal;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          margin-top: -4px;
+        }
+      
+        .popuptext {
+          overflow: visible;
+          display: none;
+        }
 
-      .nerdy-row-element {
-        margin-right: var(--sc-size-md-larger);
-      }
-
-      .suttaplex-blurb {
-        @apply --sc-paper-font-body;
-        overflow: hidden;
-      }
-
-      .suttaplex.list-view .suttaplex-heading {
-        @apply --paper-font-compact-title;
-        margin-right: var(--sc-size-md-larger);
-      }
-
-      .suttaplex.list-view .suttaplex-head-container {
-        display: inline-flex;
-      }
-
-      .suttaplex.list-view .primary-accent-icon {
-        display: none;
-      }
-
-      .suttaplex.list-view .suttaplex-blurb {
-        display: none;
-      }
-
-      .suttaplex .card-actions {
-        padding: 0 var(--sc-size-md) var(--sc-size-sm);
-        display: flex;
-        flex-flow: wrap;
-        flex-grow: 1;
-        justify-content: space-between;
-        align-items: baseline;
-        border-top: 0;
-      }
-
-      .suttaplex.list-view .card-actions {
-        padding: 0 var(--sc-size-md) 0;
-      }
-
-      .author-buttons-container {
-        display: flex;
-        align-self: flex-start;
-        align-items: center;
-        justify-content: space-evenly;
-      }
-
-      .author-buttons-container .author-button:first-of-type {
-        margin-left: -2px;
-      }
-
-      .right-elements {
-        display: inline-block;
-        align-self: flex-end;
-      }
-
-      .flex-div {
-        display: flex;
-        justify-content: space-between;
-        flex: 1;
-      }
-
-      .languagedrop {
-        display: inline-block;
-        vertical-align: middle;
-        margin: -18px var(--sc-size-md) 0;
-      }
-
-      .languagedrop.no-authors {
-        margin: -18px 0 0;
-      }
-
-      .volpage-biblio-info-summary::-webkit-details-marker {
-        color: var(--sc-paper-tooltip-color);
-      }
-
-      .volpage-biblio-info-summary {
-        outline: none;
-        cursor: pointer;
-      }
-
-      .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
-        @apply --paper-font-body1;
-        position: absolute;
-        z-index: 200;
-        background-color: var(--sc-tertiary-background-color);
-        padding: 12px;
-        border-top: var(--sc-border);
-        margin: 0 var(--sc-size-xl) 0 0;
-        box-shadow: var(--paper-material-elevation-2_-_box-shadow);
-        white-space: normal;
-      }
-
-      .suttaplex-details {
-        display: inline-block;
-      }
-
-      .share-menu-button {
-        padding: 0;
-        --paper-menu-button-dropdown: {
-          @apply --shadow-elevation-8dp;
-        };
-      }
-
-      .more-par-listbox:focus,
-      #more_par_menu:focus {
-        outline: none;
-      }
-
-      .hide-element {
-        display: none;
-      }
-
-      .toggle-button {
-        min-width: 40px;
-        align-self: flex-end;
-        z-index: 201;
-      }
-
-      .behind-button {
-        z-index: 0;
-      }
-
-      .more-info {
-        align-self: flex-end;
-        width: var(--sc-size-lg);
-        height: var(--sc-size-lg);
-        margin-top: var(--sc-size-xs);
-      }
-
-      .display-inline {
-        display: inline-block;
-      }
-
-      .parallels-toggle-div {
-        z-index: 0;
-        display: inline-grid;
-        position: relative;
-      }
-
-      .absolute-pos {
-        position: absolute;
-      }
-
-      .no-left-padding {
-        padding-left: 0;
-      }
-
-      .top-space {
-        margin-top: var(--sc-size-md-larger);
-      }
-
-      .grey-icon {
-        color: var(--sc-disabled-text-color);
-      }
-
-      .invisible-icon {
-        visibility: hidden;
-      }
-
-      .primary-accent-icon {
-        color: var(--sc-primary-accent-color);
-        stroke: var(--sc-primary-accent-color);
-      }
-
-      .author-button {
-        @apply --sc-skolar-font-size-md;
-      }
-
-      .author-link {
-        text-decoration: none;
-        color: var(--sc-primary-accent-color);
-        letter-spacing: var(--sc-all-caps_-_letter-spacing);
-        text-transform: var(--sc-all-caps_-_text-transform);
-        font-weight: bold;
-      }
-
-      .sc-tooltip {
-        --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--sc-paper-tooltip-color);
-        --paper-tooltip: {
-          @apply --sc-skolar-font-size-xs;
-          line-height: var(--sc-size-md);
-          padding: var(--sc-size-sm) var(--sc-size-md);
-          text-shadow: 0 0 var(--sc-secondary-background-color);
+        .popuptext.show {
+           display: unset;
+        }
+        
+        .nerdy-row-element {
+          margin-right: var(--sc-size-md-larger);
+        }
+      
+        .nerdy-vol-page:before {
+          content: "📕";
+          margin-right: 4px;
+        }
+      
+        .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
+          @apply --paper-font-body1;
+          position: absolute;
+          z-index: 200;
+          background-color: var(--sc-tertiary-background-color);
+          padding: 12px;
+          border-top: var(--sc-border);
+          margin: 0 var(--sc-size-xl) 0 0;
+          box-shadow: var(--paper-material-elevation-2_-_box-shadow);
           white-space: normal;
-          max-width: 100% !important;
-        };
-      }
+        }
+      
+        .suttaplex-details {
+          display: inline-block;
+        }
+      
+        .blurb {
+          margin: var(--sc-size-sm) 0;
+        }
+      
+        .tx {
+          display: flex;
+          align-items: center;
+          flex-wrap: nowrap;
+          cursor: pointer;
+          padding: 0 var(--sc-size-sm);
+          margin: var(--sc-size-sm) 0;
+          border-radius: var(--sc-size-sm);
+        }
+      
+        .tx:first-child {
+          margin-top: 0;
+        }
+      
+        .tx:last-child {
+          margin-bottom: 0;
+        }
+      
+        .tx:after {
+          content: "➔";
+          font-size: 32px;
+          color: white;
+          margin-left: auto
+        }
+      
+        .tx,
+        .tx:hover,
+        .tx:active {
+          transition: all 0.2s ease;
+        }
+      
+        .primary-accent-icon {
+          color: var(--sc-primary-accent-color);
+          stroke: var(--sc-primary-accent-color);
+        }
+      
+        .sc-primary-color:hover {
+          background-color: var(--sc-primary-color-light);
+        }
+      
+        .sc-primary-color paper-ripple {
+          color: var(--sc-primary-color-medium);
+        }
+      
+        a {
+          position: relative;
+          overflow: hidden;
+        }
+      
+        .sc-primary-accent-color:hover {
+          background-color: var(--sc-tertiary-color-light);
+        }
+      
+        .sc-primary-accent-color paper-ripple  {
+          color: var(--sc-tertiary-color-medium);
+        }
+      
+        .tx-icon {
+          height: 28px;
+          width: 28px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          --iron-icon-width: 18px;
+          --iron-icon-height: 18px;
+        }
+      
+        .sc-primary-color .tx-icon {
+          --iron-icon-fill-color: var(--sc-primary-color);
+          border: 2px solid var(--sc-primary-color);
+        }
+      
+        .sc-primary-accent-color .tx-icon {
+          --iron-icon-fill-color: var(--sc-tertiary-color-dark);
+          border: 2px solid var(--sc-tertiary-color-dark);
+        }
+      
+        .tx-details {
+          padding: var(--sc-size-sm) var(--sc-size-md);
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: baseline
+        }
+      
+        .tx-creator {
+          @apply --sc-serif-font;
+          margin-right: var(--sc-size-md);
+        }
+      
+        .tx-publication {
+          color: var(--sc-secondary-text-color);
+          @apply --sc-skolar-font-size-s;
+        }
+      
+        .section-details h3 {
+          height: 23px;
+          margin: var(--sc-size-sm) 0;
+          @apply --sc-skolar-font-size-md;
+          font-weight: normal;
+          font-style: italic;
+          color: var(--sc-secondary-text-color);
+          display: inline-block;
+        }
+        
+        .top-row-icons {
+          align-items: center;
+          display: flex;
+        }
 
-      .menu-listbox {
-        --paper-input-container-focus-color: var(--sc-primary-accent-color);
-        --paper-input-container-color: var(--sc-secondary-text-color);
-        --paper-input-container-input-color: var(--sc-secondary-text-color);
-        --paper-dropdown-menu-icon: {
-          color: var(--sc-disabled-text-color);
-        };
-        background-color: var(--sc-secondary-background-color);
-      }
-
-      .not-found-error {
-        @apply --sc-sans-font;
-        text-align: center;
-        color: var(--sc-secondary-text-color);
-      }
-
-      .translations-label {
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-xs;
-        color: var(--sc-secondary-text-color);
-        position: absolute;
-        display: block;
-        margin-top: -10px;
-        transition: margin-top ease-in-out 200ms;
-      }
-
-      .suttaplex.list-view .translations-label {
-        display: none;
-      }
-
-      .author-buttons-container:hover + .translations-label {
-        margin-top: calc(var(--sc-size-md) * -1);
-      }
-
-      .small-icon {
-        max-height: 16px;
-        max-width: 16px;
-      }
-
-    </style>
-
-    <template is="dom-if" if="[[item.uid]]">
-      <paper-card class$="suttaplex [[suttaplexListStyle]]" id="[[item.uid]]" elevation="1">
-
-        <div class="card-content">
-
-          <div class="suttaplex-head-container">
-            <h3 class="suttaplex-heading" title="[[_getMainHeadingTitle(item, localize)]]">
-              [[_computeMainHeading(item)]]</h3>
-            <iron-icon id="difficulty_icon" class="primary-accent-icon" icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
-            <paper-tooltip for="difficulty_icon" offset="0" fit-to-visible-bounds="" class="sc-tooltip">
-              {{localize(difficulty)}}
-            </paper-tooltip>
-          </div>
-
-          <div class="suttaplex-nerdy-row" on-tap="revealHiddenNerdyRowContent">
-            <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
-              [[item.original_title]]
-            </span>
-              <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
-              [[_getAcronymOrUid(item, expansionData)]]
-            </span>
+        #more_par_menu {
+          outline: none;
+        }
+      </style>
+      
+      <template is="dom-if" if="[[item.uid]]">
+        <paper-card class$="suttaplex [[suttaplexListStyle]]" id="[[item.uid]]" elevation="1">
+          <div class="compact">
+            <div class="top-row">
+              <h1 title="[[_getMainHeadingTitle(item, localize)]]">
+                [[_computeMainHeading(item)]]
+              </h1>
+      
+              <div class="top-row-icons">
+                <iron-icon id="difficulty-icon" class="tx-level-icon primary-accent-icon"
+                           icon="[[_computeDifficultyLevelIconName(item.difficulty)]]"></iron-icon>
+                <paper-tooltip for="difficulty-icon" offset="0" fit-to-visible-bounds="" class="sc-tooltip">
+                  {{localize(difficulty)}}
+                </paper-tooltip>
+      
+                <paper-menu-button class="top-menu-button" horizontal-align="right" role="group" aria-haspopup="true"
+                                   aria-disabled="false" vertical-align="auto" title="Listen to this sutta">
+                  <paper-icon-button class="btn-speaker grey-icon" slot="dropdown-trigger"
+                                     icon="icons:sc-svg-icons:speaker" role="button" tabindex="0" aria-disabled="false">
+                  </paper-icon-button>
+                </paper-menu-button>
+      
+                <paper-menu-button id="copy_menu" class="top-menu-button" horizontal-align="right" role="group"
+                                   aria-haspopup="true" aria-disabled="false" vertical-align="auto">
+                  <paper-icon-button class="btn-share grey-icon" slot="dropdown-trigger"
+                                     icon="icons:sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false">
+                  </paper-icon-button>
+      
+                  <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
+                    <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
+                  </paper-listbox>
+                </paper-menu-button>
+              </div>
+            </div>
+      
+            <div class="suttaplex-nerdy-row" on-tap="revealHiddenNerdyRowContent">
+              <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
+                [[item.original_title]]
+              </span>
+              <span title="[[_get AcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
+                [[_getAcronymOrUid(item, expansionData)]]
+              </span>
               <template is="dom-if" if="[[item.volpages]]">
                 <template is="dom-if" if="[[!item.biblio]]">
-                <span class="book no-margin">
-                  <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
-                </span>
+                  <span class="book no-margin">
+                    <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
+                  </span>
                   <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
-                  [[_computeVolPage(item.volpages)]]
-                </span>
+                    [[_computeVolPage(item.volpages)]]
+                  </span>
                 </template>
+
                 <template is="dom-if" if="[[item.biblio]]">
                   <span>
-                    <details class="suttaplex-details display-inline">
-                      <summary class="volpage-biblio-info-summary">
-                      <iron-icon class="grey-icon" icon="book"></iron-icon>
+                    <sc-collapsible class="suttaplex-details">
+                      <span slot="summary">
+                        <iron-icon class="grey-icon" icon="book"></iron-icon>
                         <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
-                        [[_computeVolPage(item.volpages)]]
+                          [[_computeVolPage(item.volpages)]]
+                        </span>
                       </span>
-                      </summary>
                       <p class="volpage-biblio-info" inner-h-t-m-l="[[item.biblio]]"></p>
-                    </details>
+                    </sc-collapsible>
                   </span>
                 </template>
               </template>
-            <span class="popuptext" id="hidden-nerdy-row">
+
+              <span class="popuptext" id="hidden-nerdy-row">
                 <span title="{{localize('originalTitle')}}" class$="[[_computeHideOriginalTitle(item)]] nerdy-row-element">
                   [[item.original_title]]<br>
+              </span>
+              <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
+                [[_getAcronymOrUid(item, expansionData)]]<br>
+              </span>
+              
+              <template is="dom-if" if="[[item.volpages]]">
+                <span class="book no-margin">
+                  <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
                 </span>
-                  <span title="[[_getAcronymTitle(item, localize)]]" class$="[[_computeHideUID(item)]] nerdy-row-element">
-                  [[_getAcronymOrUid(item, expansionData)]]<br>
+                <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
+                  [[_computeVolPage(item.volpages)]]
                 </span>
-                  <template is="dom-if" if="[[item.volpages]]">
-                    <span class="book no-margin">
-                      <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
-                    </span>
-                      <span class="vol-page nerdy-row-element" title="[[_getVolPageTitle(item.volpages, localize)]]">
-                      [[_computeVolPage(item.volpages)]]
-                    </span>
-                  </template>
-            </span>
+              </template>
+              </span>
+            </div>
           </div>
-
-          <p class$="suttaplex-blurb [[_computeHide(item.blurb)]]" title="{{localize('blurb')}}" inner-h-t-m-l="[[item.blurb]]">
-          </p>
-
-        </div>
-
-        <div class$="[[_addPaddingIfNoBlurb(item.blurb)]] card-actions">
-          <div class="author-buttons-container">
-            <template is="dom-repeat" items="[[_getUserLanguageTranslations(item.translations, language)]]" as="translation">
-              <a class="author-link" href="[[_getSuttaTextUrl(item.uid, translation.lang, translation.author_uid)]]">
-                <paper-button class="author-button" flat="" title$="{{localize('goToTranslation', 'author', translation.author)}}">
-                  [[translation.author_short]]
-                </paper-button>
-              </a>
-            </template>
+      
+          <div class$="blurb [[_computeHide(item.blurb)]]" title="{{localize('blurb')}}" inner-h-t-m-l="[[item.blurb]]">
           </div>
-          <template is="dom-if" if="[[_anyUserLanguageTranslations(item.translations, language)]]">
-            <label class="translations-label">
-              {{localize('translations')}}
-            </label>
+      
+          <template is="dom-if" if="[[translationsInUserLanguage.length]]">
+            <div class="section-details main-translations">
+              <h3>
+                <b>
+                   [[translationsInUserLanguage.length]] [[localize('translationsIn', 'lang', userLanguageName)]]
+                </b>
+              </h3>
+              <div>
+                <template is="dom-repeat" items="[[translationsInUserLanguage]]" as="translation" restamp="true">
+                  <a href="/[[item.uid]]/[[translation.lang]]/[[translation.author_uid]][[_getParagraphRange()]]" class="tx sc-primary-color">
+                    <paper-ripple></paper-ripple>
+                    <div class="tx-icon">
+                      <iron-icon icon="sc-svg-icons:translation"></iron-icon>
+                    </div>
+                    <div class="tx-details">
+                      <span class="tx-creator">{{translation.author}}</span>
+                      <span class="tx-publication">{{translation.lang_name}}</span>
+                    </div>
+                  </a>
+                </template>
+              </div>
+            </div>
+          </template>
+      
+          <template is="dom-if" if="[[translationsInModernLanguages.length]]">
+            <sc-collapsible class="section-details">
+                <span slot="summary">
+                  <h3>
+                    <b>[[translationsInModernLanguages.length]] [[localize('moreTranslations')]]</b> 
+                    [[localize('inModernLanguages')]]
+                  </h3>
+                </span>
+              <div>
+                <template is="dom-repeat" items="[[translationsInModernLanguages]]" as="translation" restamp="true">
+                  <a href="/[[item.uid]]/[[translation.lang]]/[[translation.author_uid]][[_getParagraphRange()]]" class="tx sc-primary-color">
+                    <paper-ripple></paper-ripple>
+                    <div class="tx-icon">
+                      <iron-icon icon="sc-svg-icons:translation"></iron-icon>
+                    </div>
+                    <div class="tx-details">
+                        <span class="tx-creator">{{translation.author}}</span>
+                        <span class="tx-publication">{{translation.lang_name}}</span>
+                    </div>
+                  </a>
+                </template>
+              </div>
+            </sc-collapsible>
+          </template>
+      
+      
+          <template is="dom-if" if="[[rootTexts.length]]" restamp="true">
+            <sc-collapsible class="section-details">
+              <span slot="summary">
+                <h3><b>{{rootTexts.length}} {{localize('editions')}}</b> {{localize('ofRootText')}}</h3>
+              </span>
+  
+              <div>
+                <template is="dom-repeat" items="[[rootTexts]]" as="translation">
+                  <a href="/[[item.uid]]/[[translation.lang]]/[[translation.author_uid]][[_getParagraphRange()]]" class="tx sc-primary-accent-color">
+                    <paper-ripple></paper-ripple>
+                    <div class="tx-icon">
+                      <iron-icon icon="sc-svg-icons:translation"></iron-icon>
+                    </div>
+                    <div class="tx-details">
+                        <span class="tx-creator">{{translation.author}}</span>
+                        <span class="tx-publication">{{translation.lang_name}}</span>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </sc-collapsible>
           </template>
 
-          <div class="flex-div">
-            <div class$="languagedrop [[_removeMarginIfNoAuthors(item.translations, language)]]">
-              <sc-language-menu language-choice="[[item.translations]]" original-language="[[item.root_lang]]" root-id="[[item.uid]]" class="no-left-padding" hide-if-only-user-language-texts="true">
-              </sc-language-menu>
-            </div>
-
-            <div class="right-elements">
-              <paper-menu-button id="copy_menu" class="share-menu-button" horizontal-align="right" role="group" aria-haspopup="true" aria-disabled="false" vertical-align="auto">
-                <paper-icon-button class="more-info grey-icon" slot="dropdown-trigger" icon="icons:sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false"></paper-icon-button>
-                <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
-                  <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" item="[[item]]"></sc-suttaplex-share-menu>
-                </paper-listbox>
-              </paper-menu-button>
-
-              <template is="dom-if" if="[[item.parallel_count]]">
-                <div class="parallels-toggle-div">
-                  <paper-icon-button id="parallels_toggle" class="toggle-button grey-icon" icon="[[toggleIcon]]" on-tap="_toggleParallelsOpened">
-                  </paper-icon-button>
-                  <sc-badge class="absolute-pos behind-button" number="[[item.parallel_count]]"></sc-badge>
-                </div>
-                <paper-tooltip for="parallels_toggle" class="sc-tooltip" offset="-1">
-                  {{localize('hasParallels', 'num', item.parallel_count)}}
-                </paper-tooltip>
-              </template>
-              <template is="dom-if" if="[[!item.parallel_count]]">
-                <div class="parallels-toggle-div">
-                  <paper-icon-button class="toggle-button invisible-icon" icon="[[toggleIcon]]">
-                  </paper-icon-button>
-                  <sc-badge id="parallels_badge" class="absolute-pos behind-button" number="0"></sc-badge>
-                </div>
-                <paper-tooltip for="parallels_badge" class="sc-tooltip" offset="-1">
-                  {{localize('hasNoParallels')}}
-                </paper-tooltip>
-              </template>
-            </div>
-          </div>
-
-        </div>
-
-        <template is="dom-if" if="[[_computeParallelsOpened(parallelsOpened,item.parallel_count)]]">
-          <iron-collapse id="collapse" opened="[[parallelsOpened]]">
-            <sc-parallel-list root-lang="[[item.root_lang]]" item-uid="[[item.uid]]" root-text="[[_getRootText(item.*)]]" expansion-data="[[expansionData]]">
-            </sc-parallel-list>
-          </iron-collapse>
-        </template>
-
-      </paper-card>
-    </template>`;
+          <sc-collapsible class="section-details" opened="{{parallelsOpened}}">
+            <span slot="summary">
+              <h3><b>[[localize('countParallels', 'count', item.parallel_count)]]</b> [[localize('inAncientTexts')]]</h3>
+            </span>
+            <template is="dom-if" if="[[_parallelsAvailable(item, parallelsOpened)]]">
+              <sc-parallel-list root-lang="[[item.root_lang]]"
+                                item-uid="[[item.uid]]" root-text="[[_getRootText(item.*)]]" expansion-data="[[expansionData]]">
+              </sc-parallel-list>
+            </template>
+            <template is="dom-if" if="[[!item.parallel_count]]">
+              <h3>[[localize('hasNoParallels')]]</h3>
+            </template>
+          </sc-collapsible>
+        </paper-card>
+      </template>`;
   }
-
 
   static get properties() {
     return {
-      toggleIcon: {
-        type: String,
-        computed: '_computeToggleIcon(parallelsOpened)'
-      },
       suttaplexListStyle: {
         type: String
       },
-      parallelsOpened: {
-        type: Boolean,
-        value: false
-      },
-      opened: {
-        type: Boolean,
-        reflectToAttribute: true,
-        notify: true
-      },
-      _toggleIcon: {
-        type: String,
-        computed: '_computeToggleIcon(opened)'
-      },
-      _toggleMoreIcon: {
-        type: String,
-        computed: '_computeToggleMoreIcon(opened)'
-      },
-      // The suttaplex item
       item: {
         type: Object
       },
-      toastMessage: {
-        type: String
+      translationsInUserLanguage: {
+        type: Array,
+        computed: '_getUserLanguageTranslations(item.translations, language)'
+      },
+      userLanguageName: {
+        type: Array,
+        computed: '_getUserLanguageName(item.translations, language)'
+      },
+      translationsInModernLanguages: {
+        type: Array,
+        computed: '_getOtherLanguageTranslations(item.translations, language)'
+      },
+      rootTexts: {
+        type: Array,
+        computed: '_getRootTexts(item.translations)'
       },
       localizedStringsPath: {
         type: String,
@@ -494,6 +497,9 @@ class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
       },
       expansionData: {
         type: Array
+      },
+      parallelsOpened: {
+        type: Boolean
       }
     }
   }
@@ -503,9 +509,10 @@ class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
     setTimeout(() => {
       const copy_menu = this.shadowRoot.querySelector('#copy_menu');
       if (copy_menu) {
-        this.addEventListener('par-menu-copied', (e) => {
-          copy_menu.opened = false; // Close dropdown after the copy action.
+        this.addEventListener('par-menu-copied', () => {
+          copy_menu.opened = false;
         });
+
         copy_menu.addEventListener('opened-changed', (e) => {
           const open = e.detail.value;
           if (open) {
@@ -516,31 +523,16 @@ class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
     }, 1000);
   }
 
-  // general function to hide or display various elements.
   _computeHide(checkText) {
     return (!checkText) ? 'hide-element' : '';
   }
 
   _computeHideUID(item) {
-    return (item.translated_title || item.original_title) ? '' : 'hide-element';
+    return this._computeHide(item.translated_title || item.original_title);
   }
 
   _computeHideOriginalTitle(item) {
-    return item.translated_title && item.original_title ? '' : 'hide-element';
-  }
-
-  _computeParallelsOpened(parallelsOpened, parallel_count) {
-    return (parallelsOpened && parallel_count);
-  }
-
-  // returns the relevant icon for the expander
-  _computeToggleIcon(parallelsOpened) {
-    return parallelsOpened ? 'icons:expand-less' : 'icons:expand-more';
-  }
-
-  // shows the more-par menu when the expander is opened.
-  _computeToggleMoreIcon(opened) {
-    return opened ? '' : 'moremenu';
+    return this._computeHide(item.translated_title && item.original_title);
   }
 
   _computeDifficultyLevelIconName() {
@@ -554,17 +546,24 @@ class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
     return `${baseUrl}/${uid}/${lang}/${author_uid}`;
   }
 
+  _getUserLanguageName(items, language) {
+    return ((items || []).find(item => item.lang === language) || {}).lang_name;
+  }
+
   _getUserLanguageTranslations(items, language) {
-    return items.filter(item => item.lang === language);
+    return (items || []).filter(item => item.lang === language);
   }
 
-  _anyUserLanguageTranslations(items, language) {
-    return items.some(item => item.lang === language);
+  _getOtherLanguageTranslations(items, language) {
+    return (items || []).filter(item => item.lang.length === 2 && item.lang !== language);
   }
 
-  _toggleParallelsOpened() {
-    this.parallelsOpened = !this.parallelsOpened;
-    this.dispatchEvent(new CustomEvent('iron-resize', { composed: true, bubbles: true }));
+  _getRootTexts(items) {
+    return (items || []).filter(item => item.lang.length === 3);
+  }
+
+  _parallelsAvailable(item, parallelsOpened) {
+    return item.parallel_count && parallelsOpened;
   }
 
   _computeMainHeading(item) {
@@ -586,14 +585,6 @@ class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
     } else {
       return this._getAcronymTitle(item, localize);
     }
-  }
-
-  _addPaddingIfNoBlurb(blurb) {
-    return (blurb === null || blurb === undefined) ? 'top-space' : '';
-  }
-
-  _capitalize(author) {
-    return author.replace(/\b\w/g, l => l.toUpperCase());
   }
 
   _getAcronymOrUid(item, expansionData) {
@@ -677,15 +668,12 @@ class SCSuttaplex extends ReduxMixin(Localized(PolymerElement)) {
     }
   }
 
-  _removeMarginIfNoAuthors(translations, language) {
-    return (this._getUserLanguageTranslations(translations, language).length > 0) ? '' : 'no-authors';
-  }
-
   revealHiddenNerdyRowContent() {
     const detailsElement = this.shadowRoot.querySelector('.volpage-biblio-info');
     const nerdyRow = this.shadowRoot.querySelector('.suttaplex-nerdy-row');
     const popup = this.shadowRoot.querySelector('#hidden-nerdy-row');
     const widthReduction = 16;
+
     if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
       popup.classList.toggle("show");
       popup.style.width = nerdyRow.clientWidth - widthReduction;

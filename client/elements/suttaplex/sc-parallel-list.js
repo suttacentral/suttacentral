@@ -23,6 +23,10 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
     return html`
     ${suttaplexStyles}
     <style>
+      a {
+        position: relative;
+      }
+
       .parallels-table {
         border-collapse: separate;
         border-spacing: 0 var(--sc-size-sm);
@@ -32,9 +36,8 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
 
       .parallels-root-cell,
       .parallels-parallel-cell {
-        padding: var(--sc-size-sm) var(--sc-size-sm) 0;
-        border: var(--sc-border);
-        border-radius: var(--sc-size-xxs);
+        border-radius: var(--sc-size-sm);
+        background: var(--sc-tertiary-background-color);
       }
 
       .parallels-parallel-cell {
@@ -50,10 +53,15 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
       .parallels-root-cell {
         text-align: center;
         min-width: 90px;
+        height: 1px; /* Hack for anchor height. */
       }
-
+      
+      paper-ripple {
+        color: var(--sc-tertiary-color-medium);
+      }
+      
       .parallels-root-id {
-        @apply --paper-font-subhead;
+        @apply --sc-skolar-font-size-sm;
         @apply --sc-serif-font;
       }
 
@@ -68,28 +76,20 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
         margin-bottom: var(--sc-size-sm);
       }
 
-      .light-grey-bg {
-        background-color: var(--sc-tertiary-background-color);
-      }
-
-      .white-bg {
-        background-color: var(--sc-secondary-background-color);
-      }
-
-      .parallels-expanded {
-        border-top: var(--sc-border);
-      }
-
       .grey-icon {
         color: var(--sc-disabled-text-color);
       }
 
       .root-link {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-decoration: none;
-        color: var(--sc-primary-accent-color);
         letter-spacing: var(--sc-all-caps_-_letter-spacing);
         text-transform: var(--sc-all-caps_-_text-transform);
-        font-weight: bold;
+        color: inherit;
       }
     </style>
 
@@ -97,33 +97,29 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
 
     <iron-ajax id="ajax" url="[[_getAPIEndpoint(itemUid)]]" handle-as="json" loading="{{loadingResults}}" last-response="{{responseData}}" on-response="_didRespond"></iron-ajax>
 
-    <div class="parallels-expanded light-grey-bg">
+    <div>
 
-      <div class="light-grey-bg">
+      <template is="dom-if" if="[[loadingResults]]">
         <paper-spinner-lite class="paper-spinner" active="{{loadingResults}}"></paper-spinner-lite>
-      </div>
+      </template>
 
       <table class="parallels-table">
         <template is="dom-repeat" items="[[rootKeys]]" as="rootId">
           <tbody class="parallels-table-body">
 
           <tr class="parallels-row">
-            <td class="parallels-root-cell parallels-table-cell paper-lift white-bg" rowspan$="[[_getRowspan(rootId)]]">
-              <div class="parallels-root-id root" title="{{localize('suttaCentralID')}}">
-                [[_transformId(rootId,expansionData)]]
-              </div>
-              <template is="dom-if" if="[[rootText]]">
-                <a class="root-link" href="[[_computeUrl(rootId)]]">
-                  <paper-button flat="" class="dense" title="{{localize('GoToTextInOriginalLanguage')}}">
-                    [[_computeFullLangName(rootLang)]]
-                  </paper-button>
-                </a>
-              </template>
+            <td class="parallels-root-cell parallels-table-cell paper-lift" rowspan$="[[_getRowspan(rootId)]]">
+              <a class="root-link" href="[[_computeUrl(rootId)]]">
+                <paper-ripple></paper-ripple>
+                <div class="parallels-root-id root" title="{{localize('suttaCentralID')}}">
+                  [[_transformId(rootId,expansionData)]]
+                </div>
+              </a>
             </td>
             <td class="parallels-relation-cell">
               <iron-icon class="grey-icon" icon$="[[_getFirstParallelIcon(rootId)]]" title$="[[_getFirstParallelIconTitle(rootId, localize)]]"></iron-icon>
             </td>
-            <td class="parallels-parallel-cell paper-lift white-bg">
+            <td class="parallels-parallel-cell paper-lift">
               <sc-parallel-item parallel-item="[[_getFirstParallelItem(rootId)]]" remark="[[_getFirstParallelRemark(rootId)]]" expansion-data="[[expansionData]]"></sc-parallel-item>
             </td>
           </tr>
@@ -133,7 +129,7 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
               <td class="parallels-relation-cell">
                 <iron-icon class="grey-icon" icon="[[_getParallelIcon(item)]]" title="[[_computeIconTitle(item, localize)]]"></iron-icon>
               </td>
-              <td class="parallels-parallel-cell paper-lift white-bg">
+              <td class="parallels-parallel-cell paper-lift">
                 <sc-parallel-item parallel-item="[[item.to]]" remark="[[item.remark]]" expansion-data="[[expansionData]]"></sc-parallel-item>
               </td>
             </tr>
@@ -193,7 +189,6 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
 
   ready() {
     super.ready();
-    this.addEventListener('loading-results-changed', this._resizeParentList);
     if (!this.expansionData) {
       this.$.uid_expansion_ajax.generateRequest()
     }
@@ -218,7 +213,7 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
       rootKeys.forEach(item => {
         const sagNumbers = item.match(/\d{1,4}/g);
         numbersArray.push(sagNumbers.map(Number));
-      })
+      });
       numbersArray = numbersArray.sort(this._compareArray);
       let rootKeysSorted = [];
       numbersArray.forEach(item => {
@@ -229,7 +224,7 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
         } else {
           rootKeysSorted.push(`sag#${item[0].toString()}.${item[1].toString()}-#${item[2].toString()}.${item[3].toString()}`);
         }
-      })
+      });
       this.rootKeys = rootKeysSorted;
     } else if (rootKeys[0].match(/dhp/)) {
       let rootKeysSorted = [];
@@ -237,11 +232,11 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
       rootKeys.forEach(item => {
         const dhpNumber = this.responseData[item][0].enumber;
         numbersArray.push([dhpNumber, item]);
-      })
+      });
       numbersArray = numbersArray.sort(this._compareArray);
       numbersArray.forEach(item => {
         rootKeysSorted.push(item[1]);
-      })
+      });
       this.rootKeys = rootKeysSorted;
     } else {
       this.rootKeys = rootKeys;
@@ -256,10 +251,6 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
       if (a[1] > b[1]) return 1;
     }
     return 0;
-  }
-
-  _resizeParentList() {
-    this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true, composed: true }));
   }
 
   _getRelations(rootId) {
@@ -306,7 +297,6 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
 
   // returns the correct title for each type of parallel.
   _computeIconTitle(item, localize) {
-
     if (!item) {
       return;
     }
@@ -346,7 +336,8 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _computeUrl(rootId) {
-    return `/${this.itemUid}/${this.rootLang}/${this.rootText.author_uid}${this._getParagraphRange(rootId, true)}`
+    const authorUid = (this.rootText || {}).author_uid || '';
+    return `/${this.itemUid}/${this.rootLang}/${authorUid}${this._getParagraphRange(rootId, true)}`;
   }
 
   _getParagraphRange(rootId, isUrl) {
@@ -373,7 +364,7 @@ class SCParallels extends ReduxMixin(Localized(PolymerElement)) {
   // This function parses the input uid of the parallel and splits it into
   // it's main document part (root_part) and the id (paragraphs) within the document (id_part)
   // The root_part is then split into it's various elements which are then expanded
-  // according to the data in the expansion-table. 
+  // according to the data in the expansion-table.
   // So f.i. 'an3.4#23-#25' becomes 'AN 3.4 #23-25' and 'lzh-sarv-bi-vb-np1' becomes
   // 'Lzh Sarv Bi Vb NP 1'
   _transformId(rootId, expansionData) {

@@ -14,6 +14,12 @@
         "hasNoParallels": "This text has no recorded parallels.",
         "itemNotFound": "Error 404: Item not found.",
         "networkError": "Network error",
-        "translations": "Translations"
+        "translationsIn": "{lang} translations by",
+        "editions": "editions",
+        "ofRootText": "of the root text",
+        "moreTranslations": "more translations",
+        "inModernLanguages": "in modern languages",
+        "countParallels": "{count} parallels",
+        "inAncientTexts": "in ancient texts"
     }
 }

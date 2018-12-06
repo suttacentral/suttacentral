@@ -2,7 +2,6 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-location/iron-location.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/iron-list/iron-list.js';
 import '@polymer/iron-scroll-threshold/iron-scroll-threshold.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
@@ -238,26 +237,23 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
 
             <iron-scroll-threshold id="scroll_threshold" on-lower-threshold="_loadMoreData" scroll-target="document">
 
-                <iron-list id="search_result_list" items="{{visibleSearchResults}}" as="item" scroll-target="document">
-              <template>
-                <div class$="search-result-item [[_calculateItemCategory(item)]]" tabindex$="[[tabIndex]]">
-                  <div class="padded-container">
-                    <a class="search-result-link" href="[[_calculateLink(item)]]">
-                      <div class="primary">
-                        <h2 class="search-result-title">[[_calculateTitle(item)]]</h2>
-                      </div>
-                      <div class="secondary">
-                        <p class="search-result-division" inner-h-t-m-l="[[_calculateDivision(item)]]"></p>
-                      </div>
-                    </a>
-                    <div class="secondary">
-                      <p class="search-result-snippet" inner-h-t-m-l="{{_calculateSnippetContent(item.highlight.content)}}"></p>
+            <template is="dom-repeat" id="search_result_list" items="[[visibleSearchResults]]" as="item" >
+              <div class$="search-result-item [[_calculateItemCategory(item)]]" tabindex$="[[tabIndex]]">
+                <div class="padded-container">
+                  <a class="search-result-link" href="[[_calculateLink(item)]]">
+                    <div class="primary">
+                      <h2 class="search-result-title">[[_calculateTitle(item)]]</h2>
                     </div>
+                    <div class="secondary">
+                      <p class="search-result-division" inner-h-t-m-l="[[_calculateDivision(item)]]"></p>
+                    </div>
+                  </a>
+                  <div class="secondary">
+                    <p class="search-result-snippet" inner-h-t-m-l="{{_calculateSnippetContent(item.highlight.content)}}"></p>
                   </div>
                 </div>
-              </template>
-            </iron-list>
-
+              </div>
+            </template>
           </iron-scroll-threshold>
 
         </main>
@@ -386,7 +382,7 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
     this.set('waitTimeAfterNewWordExpired', true);
   }
 
-  // Saves the fetched search results to be displayed in the iron-list.
+  // Saves the fetched search results to be displayed in the list.
   // Automatically called after the lastSearchResults array is updated in _didRespond.
   _populateList() {
     const items = this.lastSearchResults;
