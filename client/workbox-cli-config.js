@@ -1,7 +1,7 @@
 module.exports = {
-    'swSrc': './build/default/service-worker.js',
-    'swDest': './build/default/sw-generated.js',
-    'globDirectory': './build/default/',
+    'swSrc': './build/service-worker.js',
+    'swDest': './build/sw-generated.js',
+    'globDirectory': './build/',
     'globPatterns': [
         '/',
         'index.html',

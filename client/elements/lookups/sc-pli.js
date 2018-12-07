@@ -1,7 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../../redux-store.js';
 import { API_ROOT } from '../../constants.js';
 
 class SCPaliLookup extends ReduxMixin(PolymerElement) {

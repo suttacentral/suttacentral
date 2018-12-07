@@ -4,7 +4,7 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/polymer/lib/elements/dom-if.js';
 
 import '../addons/sc-sutta-note.js';
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from '../addons/localization-mixin.js';
 import { suttaplexStyles } from '../styles/sc-suttaplex-styles.js';
 

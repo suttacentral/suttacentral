@@ -1,4 +1,3 @@
-import { ReduxMixin } from '/redux-store.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-collapse/iron-collapse.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -12,6 +11,7 @@ import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-toast/paper-toast.js';
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 
+import { ReduxMixin } from '../../redux-store.js';
 import '../../img/sc-svg-icons.js';
 import { Localized } from '../addons/localization-mixin.js';
 import '../addons/sc-badge.js';

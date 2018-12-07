@@ -7,7 +7,7 @@ import './sc-segmented-text.js';
 import './sc-simple-text.js';
 import './sc-stepper.js';
 import './sc-text-image.js';
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from '../addons/localization-mixin.js';
 import { textHeadingStyles } from '../styles/sc-text-heading-styles.js';
 import { API_ROOT } from '../../constants.js';

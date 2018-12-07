@@ -68,7 +68,7 @@ export const Localized = base => class extends base {
   }
 }
 
-import { store } from '/redux-store.js';
+import { store } from '../../redux-store.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 
 export const LitLocalized = base => class extends connect(store)(base) {

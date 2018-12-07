@@ -7,7 +7,7 @@ import '@polymer/iron-ajax/iron-ajax.js';
 
 import { staticStyles } from '../styles/static-styles.js';
 import { SCStaticPage } from '../addons/sc-static-page.js';
-import { API_ROOT } from '/constants.js';
+import { API_ROOT } from '../../constants.js';
 import _ from '../../localization/macro.js';
 import '../addons/text-carousel.js';
 

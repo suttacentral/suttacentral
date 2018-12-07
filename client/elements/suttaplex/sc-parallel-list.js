@@ -8,7 +8,7 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 
 import { suttaplexStyles} from '../styles/sc-suttaplex-styles.js';
 import './sc-parallel-item.js';
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from '../addons/localization-mixin.js';
 import { API_ROOT } from '../../constants.js';
 

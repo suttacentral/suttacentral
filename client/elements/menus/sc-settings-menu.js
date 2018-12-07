@@ -12,7 +12,7 @@ import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '@polymer/iron-overlay-behavior/iron-overlay-backdrop.js';
 import '@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../../redux-store.js';
 import { API_ROOT } from '../../constants.js';
 import { Localized } from '../addons/localization-mixin.js';
 

@@ -2,7 +2,7 @@
 
 echo "BUILDING FRONTEND FOR PRODUCTION"
 
-npx polymer build "$@"
+npm run build
 
 # Generate service worker with revision hashes for each file.
 npx workbox inject:manifest

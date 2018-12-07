@@ -4,7 +4,7 @@ import '@polymer/iron-icons/editor-icons.js';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from '../addons/localization-mixin.js';
 import { API_ROOT } from '../../constants.js';
 import copyToClipboard from '../../utils/copy.js'

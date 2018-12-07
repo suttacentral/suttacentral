@@ -5,7 +5,7 @@ import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/paper-tabs/paper-tabs.js';
 import '@polymer/iron-icons/iron-icons.js';
 
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../redux-store.js';
 import { Localized } from "./addons/localization-mixin.js";
 
 class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {

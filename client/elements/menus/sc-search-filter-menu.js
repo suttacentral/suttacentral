@@ -4,7 +4,7 @@ import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-item/paper-item.js';
 
 import { Localized } from '../addons/localization-mixin.js';
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../../redux-store.js';
 
 /*
 This dropdown for the search pages is normally hidden, and only shows when necessary.

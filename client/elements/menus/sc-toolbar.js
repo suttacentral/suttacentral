@@ -11,7 +11,7 @@ import '@polymer/iron-location/iron-location.js';
 import './sc-more-menu.js';
 import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 import { Localized } from '../addons/localization-mixin.js';
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../../redux-store.js';
 
 /*
 Base toolbar that appears on the top right in the header of every page. This toolbar is called from the page-selector.

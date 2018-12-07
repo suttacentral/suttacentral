@@ -8,7 +8,7 @@ import '@polymer/iron-flex-layout/iron-flex-layout.js';
 
 import './menus/sc-search-filter-menu.js';
 import './suttaplex/sc-suttaplex.js';
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 import { API_ROOT } from '../constants.js';
 

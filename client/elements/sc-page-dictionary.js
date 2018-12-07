@@ -5,7 +5,7 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
 import '@polymer/paper-tooltip/paper-tooltip.js';
 
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../redux-store.js';
 import { API_ROOT } from '../constants.js';
 import { Localized } from './addons/localization-mixin.js';
 import { dictStyles } from './styles/sc-dict-styles.js';

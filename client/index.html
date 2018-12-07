@@ -91,14 +91,6 @@
       release: '1.0.0',
       environment: window.location.href.indexOf('suttacentral') === -1 ? 'development' : 'production'
   }).install();</script>
-  <script>
-    // Redux ES module build assumes `process.env.NODE_ENV` exists
-    // TODO: remove when https://github.com/reduxjs/redux/pull/3143 gets released
-      window.process = { env: { NODE_ENV: 'production' } };
-  </script>
-
-  <!-- Application shell -->
-  <script type="module" src="/elements/sc-drawer-layout.js"></script>
 
   <style>
     html, body {

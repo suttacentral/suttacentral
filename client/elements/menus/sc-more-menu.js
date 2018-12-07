@@ -5,7 +5,7 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 
 import './sc-language-base-menu.js';
-import { ReduxMixin } from '/redux-store.js';
+import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from "../addons/localization-mixin.js";
 
 /*
