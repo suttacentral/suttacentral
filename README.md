@@ -63,9 +63,8 @@ default credentials in dev mode are:
 0. Install [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/).
 1. Clone the repo `git clone git@github.com:suttacentral/suttacentral.git`.
 2. Cd into the repo `cd suttacentral`.
-3. Checkout to the development branch `git checkout development`.
-4. run `make prepare-host` in order to make some small adjustment on the host machine so that we can run ElasticSearch.
-5.  * 1st time run: run `make run-preview-env` - Build images, load data, index-elasticsearch and more.
+3. run `make prepare-host` in order to make some small adjustment on the host machine so that we can run ElasticSearch.
+4.  * 1st time run: run `make run-preview-env` - Build images, load data, index-elasticsearch and more.
 	* normal run: run `make run-dev`.
 
 ### 1.2 Loading the data
@@ -87,63 +86,12 @@ In addition `Uwsgi+Flask` expose port `5001` on local host, arangodb port `8529`
 ### 1.4 Makefile
 There is a Makefile with following commands:
 * `prepare-host` - Set `vm.max_map_count` to `262144` because otherwise ElasticSearch won't work.
-* `build-all` - Build all containers:
-    * `build-flask`
-    * `build-arangodb`
-    * `build-nginx`
-    * `build-elasticsearch`
-    * `build-swagger`
-* `rebuild-all` - Remove all containers and volumes and rebuilds them.
-    * `rebuild-flask`
-    * `rebuild-arangodb`
-    * `rebuild-nginx`
-    * `rebuild-elasticsearch`
-    * `rebuild-swagger`
 * `run-dev` - Run containers in development mode.
 * `run-dev-no-logs` - Run containers in development mode without output to the console.
 * `run-prod` - Run containers in production mode.
 * `run-prod-no-logs` - Run containers in production mode without output to the console.
 * `migrate` - Run migrations in flask container.
-* `stop` - Stops all containers:
-    * `stop-arangodb`
-    * `stop-flask`
-    * `stop-nginx`
-    * `stop-elasticsearch`
-    * `stop-swagger`
-    * `stop-frontend-tester`
-* `rm` - Remove all containers:
-    * `rm-arangodb`
-    * `rm-flask`
-    * `rm-nginx`
-    * `rm-elasticsearch`
-    * `rm-swagger`
-    * `rm-frontend-tester`
-    * `rm-pootle`
-* `rm-all-volumes` - Remove all volumes:
-    * `rm-db-volume`
-    * `rm-elasticsearch-volume`
-    * `rm-nginx-volume`
-    * `rm-socket-volume`
-* `clean-all` - Remove all containers and volumes:
-    * `clean-arangodb`
-    * `clean-flask`
-    * `clean-nignx`
-    * `clean-elasticsearch`
-    * `clean-swagger`
-* `shell-arangodb` - Opens Bash shell in ArangoDB container.
-* `shell-flask` - Opens Bash shell in Flask container.
-* `shell-nginx` - Opens Bash shell in Nginx container.
-* `shell-elasticsearch` - Opens Bash shell in ElasticSearch container.
-* `shell-swagger` - Opens Bash shell in Swagger container.
-* `shell-frontend-tester` - Opens Bash shell in frontend-tester container.
-* `shell-pootle` - Opens Bash shell in Pootle container.
-* `logs` - Output all logs to the terminal:
-    * `logs-flask`
-    * `logs-arangodb`
-    * `logs-nginx`
-    * `logs-elasticsearch`
-    * `logs-swagger`
-    * `logs-frontend-tester`
+* `clean-all` - Remove all containers, volumes and built images
 * `reload-nginx` - Reloads Nginx.
 * `reload-uwsgi` - Reloads uWSGI+Flask.
 * `prepare-tests` - Starts containers in test mode and wait for start-ups to finnish.
