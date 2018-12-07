@@ -1,4 +1,4 @@
-const { resolve, join } = require('path');
+const { resolve } = require('path');
 const merge = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -36,6 +36,7 @@ const devConfig = {
   },
   devtool: 'eval-source-map',
   devServer: {
+    public: 'localhost',
     host: 'sc-frontend',
     port: 3000,
     historyApiFallback: true
