@@ -1,32 +1,23 @@
-const isProductionEnv = !self.location.hostname.match(/127.0.0.1|localhost|172[\d.]+/);
+importScripts('node_modules/workbox-sw/build/workbox-sw.js');
 
-if (isProductionEnv) {
-    importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.prod.v2.1.2.js');
-}
-else {
-    importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
-}
-
-const sw = new WorkboxSW();
-
-// This has to remain empty, the Workbox CLI injects the list of precached files here:
-sw.precache([]);
+workbox.clientsClaim();
+workbox.skipWaiting();
 
 // Cache API requests
-sw.router.registerRoute(
+workbox.routing.registerRoute(
     new RegExp('http://localhost/api/(.*)'),
-    sw.strategies.networkFirst()
+    workbox.strategies.networkFirst()
 );
 
-sw.router.registerRoute(
+workbox.routing.registerRoute(
     new RegExp('https://(?:staging.)suttacentral.net/api/(.*)'),
-    sw.strategies.networkFirst()
+    workbox.strategies.networkFirst()
 );
 
 // Cache assets (images and fonts)
-sw.router.registerRoute(
+workbox.routing.registerRoute(
     new RegExp('https://(?:staging.)suttacentral.net/(?:img|files)/(.*)'),
-    sw.strategies.cacheFirst({
+    workbox.strategies.cacheFirst({
         cacheName: "assets",
         cacheExpiration: {
             maxAgeSeconds: 7 * 24 * 60 * 60
@@ -36,16 +27,20 @@ sw.router.registerRoute(
 );
 
 // Cache Google fonts
-sw.router.registerRoute(
+workbox.routing.registerRoute(
     new RegExp('^https://fonts.(?:googleapis|gstatic).com/(.*)'),
-    sw.strategies.cacheFirst()
+    workbox.strategies.cacheFirst()
 );
 
 // Cache Stripe scripts
-sw.router.registerRoute(
+workbox.routing.registerRoute(
     new RegExp('^https://(?:js|m).stripe.com/(.*)'),
-    sw.strategies.cacheFirst()
+    workbox.strategies.cacheFirst()
 );
+
+workbox.precaching.precacheAndRoute(self.__precacheManifest);
+
+const isProductionEnv = !self.location.hostname.match(/127.0.0.1|localhost|172[\d.]+/);
 
 if (isProductionEnv) {
     // For the production version, register a base route for all offline navigation requests.
@@ -61,10 +56,10 @@ if (isProductionEnv) {
                 ]
             };
             if (cache.match('index.html')) {
-                sw.router.registerNavigationRoute('index.html', cacheOptions);
+                workbox.routing.registerNavigationRoute('index.html', cacheOptions);
             }
             else if (cache.match('/')) {
-                sw.router.registerNavigationRoute('/', cacheOptions);
+                workbox.routing.registerNavigationRoute('/', cacheOptions);
             }
         });
     });

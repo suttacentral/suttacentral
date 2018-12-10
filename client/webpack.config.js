@@ -3,6 +3,7 @@ const merge = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 
 const OUTPUT_PATH = 'build';
@@ -67,13 +68,40 @@ const prodConfig = {
   ]
 };
 
+const swConfig = {
+  plugins: [
+    new WorkboxPlugin.InjectManifest({
+      swSrc: 'service-worker.js',
+      swDest: 'sw-generated.js',
+      importWorkboxFrom: 'disabled',
+      globPatterns: [
+          '/',
+          'index.html',
+          'elements/styles/*.json',
+          'localization/elements/**/en.json',
+          'img/pray.png',
+          'img/*.svg',
+          'files/fonts/RaloksPE-Bold_3.007.woff2',
+          'files/fonts/RaloksPE-Regular_3.007.woff2',
+          'files/fonts/RaloksSansPE-Bd_2.004.woff2',
+          'files/fonts/RaloksSansPE-It_2.004.woff2',
+          'files/fonts/RaloksSansPE-Rg_2.004.woff2'
+      ],
+        globIgnores: [
+          'node_modules/webcomponents/*',
+          'elements/static-templates/*'
+      ]
+    })
+  ]
+};
+
 
 module.exports = env => {
   switch (env) {
     case 'dev':
-      return merge(commonConfig, devConfig);
+      return merge(commonConfig, devConfig, swConfig);
     case 'prod':
-      return merge(commonConfig, prodConfig);
+      return merge(commonConfig, prodConfig, swConfig);
     default:
       return {};
   }
