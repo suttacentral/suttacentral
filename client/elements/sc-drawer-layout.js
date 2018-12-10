@@ -297,7 +297,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _isNarrowScreen() {
-    return window.innerWidth <= parseInt(this.$.drawer_layout.getAttribute('responsive-width'))
+    return window.innerWidth <= parseInt(this.$.drawer_layout.getAttribute('responsive-width'));
   }
 
   // traps a scroll when app-drawer is opened (fix necessary for iOS devices)
