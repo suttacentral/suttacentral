@@ -1,6 +1,6 @@
 const FALLBACK_LANGUAGE = 'en';
 
-const localizationCache = { };
+const localizationCache = {};
 
 /**
 * @polymer
@@ -54,19 +54,19 @@ export const Localized = base => class extends base {
   async __loadLanguage(lang) {
     const path = `${this.localizedStringsPath}/${lang}.json`;
 
-    if (!this.localizedStringsPath) console.log(this)
+    if (!this.localizedStringsPath) console.log(this);
 
     if (path in localizationCache) {
       return localizationCache[path];
     }
 
-    let resp = await fetch(path);
-    let data = await resp.json();
-    localizationCache[path] = data[lang];
+    localizationCache[path] = fetch(path)
+      .then(r => r.json())
+      .then(data => data[lang]);
 
-    return data[lang];
+    return localizationCache[path];
   }
-}
+};
 
 import { store } from '../../redux-store.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
@@ -74,28 +74,36 @@ import { connect } from 'pwa-helpers/connect-mixin.js';
 export const LitLocalized = base => class extends connect(store)(base) {
   static get properties() {
     return {
-      language: {
-        type: String
-      },
-      localizedStringsPath: {
-        type: String
-      },
-      resources: {
-        type: Object
-      }
+      language: String,
+      localizedStringsPath: String,
+      _languageLoaded: Boolean,
     }
   }
 
   constructor() {
     super();
-    this.__localizationCache = {};
+    this.__resources = {};
   }
 
-  localize(key) {
-    if (!this.resources[key]) {
-      console.warn('missing translation key', key)
+  shouldUpdate() {
+    return this._languageLoaded;
+  }
+
+  localize(key, params) {
+    const string = (this.__resources && this.__resources[key]) ? this.__resources[key] : '';
+
+    if (!string) {
+      console.warn('missing translation key', key);
     }
-    return this.resources[key] || '';
+
+    if (params) {
+      return string.replace(
+        /\{([a-z]+)\}/gi,
+        (match, group) => undefined !== params[group] ? params[group] : group
+      );
+    }
+
+    return string;
   }
 
   _stateChanged(state) {
@@ -106,22 +114,26 @@ export const LitLocalized = base => class extends connect(store)(base) {
   }
 
   async __siteLanguageChanged(lang) {
-    this.resources = Object.assign(
+    this._languageLoaded = false;
+    this.__resources = Object.assign(
       {},
       await this.__loadLanguage(FALLBACK_LANGUAGE),
       await this.__loadLanguage(lang)
     );
+    this._languageLoaded = true;
   }
 
   async __loadLanguage(lang) {
-    if (lang in this.__localizationCache) {
-      return this.__localizationCache[lang];
+    const path = `${this.localizedStringsPath}/${lang}.json`;
+
+    if (path in localizationCache) {
+      return localizationCache[path];
     }
 
-    let resp = await fetch(`${this.localizedStringsPath}/${lang}.json`);
-    let data = await resp.json();
-    this.__localizationCache[lang] = data[lang];
+    localizationCache[path] = fetch(path)
+      .then(r => r.json())
+      .then(data => data[lang]);
 
-    return data[lang];
+    return localizationCache[path];
   }
-}
+};
