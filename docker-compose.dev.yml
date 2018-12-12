@@ -36,7 +36,7 @@ services:
     command: npm run dev
     volumes:
       - ./client/elements:/opt/sc/frontend/elements
-      - ./client/sw-generated.js:/opt/sc/frontend/sw-generated.js
+      - ./client/service-worker.js:/opt/sc/frontend/service-worker.js
       - ./client/utils:/opt/sc/frontend/utils
       - ./client/img:/opt/sc/frontend/img
       - ./client/localization:/opt/sc/frontend/localization

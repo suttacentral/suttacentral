@@ -32,6 +32,11 @@ const devConfig = {
         test: /\.js$/,
         type: 'javascript/esm',
         exclude: /node_modules/
+      },
+      {
+        test: /\.json$/,
+        type: 'json',
+        exclude: /node_modules/
       }
     ]
   },
@@ -74,9 +79,8 @@ const swConfig = {
       swSrc: 'service-worker.js',
       swDest: 'sw-generated.js',
       importWorkboxFrom: 'disabled',
+      globDirectory: '.',
       globPatterns: [
-          '/',
-          'index.html',
           'elements/styles/*.json',
           'localization/elements/**/en.json',
           'img/pray.png',
