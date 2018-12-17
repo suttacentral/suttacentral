@@ -5,7 +5,7 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
 import '@polymer/iron-collapse/iron-collapse.js';
 
-import '../suttaplex/sc-suttaplex.js';
+import '../suttaplex/card/sc-suttaplex.js';
 import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from '../addons/localization-mixin.js';
 import { suttaplexStyles } from '../styles/sc-suttaplex-styles.js';
