@@ -35,8 +35,15 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         height: 100%;
       }
 
-      .container {
+      .container, app-header-layout {
         position: relative;
+        height: 100%;
+      }
+
+      sc-text-page-selector {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
       }
 
       .toolbar-header, #sc_toolbar {
@@ -109,7 +116,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     <app-location route="{{route}}"></app-location>
 
     <div class="container">
-      <app-header-layout>
+      <app-header-layout fullbleed>
 
         <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header" mode$="[[toolbarMode]]">
           <app-toolbar class="toolbar-header">
