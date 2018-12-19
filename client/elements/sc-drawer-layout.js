@@ -169,6 +169,9 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
         height: 100%;
       }
 
+      #drawer_layout {
+        height: 100%;
+      }
     </style>
 
     <iron-ajax id="colors_ajax" handle-as="json" last-response="{{colorsResponse}}" on-response="_colorsResponseReceived"></iron-ajax>
@@ -296,12 +299,14 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     this.$[event.detail.id].open();
   }
 
+  _isNarrowScreen() {
+    return window.innerWidth <= parseInt(this.$.drawer_layout.getAttribute('responsive-width'));
+  }
+
   // traps a scroll when app-drawer is opened (fix necessary for iOS devices)
   _trapScroll() {
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
-    const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
-    const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
-    if (isNarrowScreen) {
+    if (this._isNarrowScreen()) {
       if (appDrawer.hasAttribute('opened')) {
         document.body.style.overflow = 'auto';
         disableBodyScroll(this);
@@ -313,6 +318,10 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
 
   _closeDrawer() {
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
+    if(!this._isNarrowScreen()) {
+      const contentContainer = this.$.drawer_layout.shadowRoot.querySelector('#contentContainer');
+      contentContainer.removeAttribute('drawer-position');
+    }
     appDrawer.close();
   }
 
@@ -322,7 +331,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
     requestAnimationFrame(() => {
-      const isNarrowScreen = window.innerWidth <= parseInt(drawerLayout.getAttribute('responsive-width'));
+      const isNarrowScreen = this._isNarrowScreen();
       if (e.detail.largeScreenOnly === true && isNarrowScreen) {
         return;
       }

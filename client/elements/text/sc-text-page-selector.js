@@ -34,7 +34,7 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .wrapper {
-        min-height: calc(100% - var(--sc-size-xxl) * 2.5);
+        flex: 1;
       }
 
       .text-error {

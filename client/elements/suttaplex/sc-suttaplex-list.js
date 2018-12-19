@@ -1,198 +1,76 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-ajax/iron-ajax.js';
+import { html, LitElement } from '@polymer/lit-element';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
-import '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
-
-import './sc-suttaplex-section-title.js';
-import './sc-suttaplex.js';
-import { ReduxMixin } from '../../redux-store.js';
+import { repeat } from 'lit-html/directives/repeat';
 import { API_ROOT } from '../../constants.js';
-import { Localized } from '../addons/localization-mixin.js';
+import { store } from '../../redux-store';
+import { partitionAsync } from '../../utils/partitionAsync';
+import { LitLocalized } from '../addons/localization-mixin';
+import './card/sc-suttaplex.js';
+import { suttaplexListCss } from './sc-suttaplex-list.css.js';
+import './sc-suttaplex-section-title.js';
 
-class SCSuttaplexList extends ReduxMixin(Localized(PolymerElement)) {
-  static get template() {
-    return html`
-    <style>
-      .division-content {
-        color: var(--sc-primary-text-color);
-        /* Subtract margins and top bar height */
-        height: calc(100vh - var(--sc-size-md-larger) * 2 - var(--sc-size-xxl));
-        position: relative;
-        padding: 0;
-      }
+let expansionDataCache;
 
-      .main {
-        margin: var(--sc-size-md-larger) auto;
-        max-width: 720px;
-      }
-
-      .node {
-        padding: var(--sc-size-md) var(--sc-size-md) 0;
-        color: var(--sc-secondary-text-color);
-      }
-
-      .vagga-node {
-        padding: 0 var(--sc-size-md) var(--sc-size-md) var(--sc-size-md);
-        color: var(--sc-secondary-text-color);
-      }
-
-      .loading-spinner {
-        @apply --center;
-        z-index: 999;
-        --paper-spinner-color: var(--sc-primary-color);
-      }
-
-      :host {
-        display: block;
-      }
-
-      .network-error {
-        @apply --center;
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-static-subtitle;
-        color: var(--sc-secondary-text-color);
-        text-align: center;
-      }
-
-      .network-error-icon {
-        width: var(--sc-size-xxl);
-        height: var(--sc-size-xxl);
-      }
-    </style>
-
-    <iron-ajax auto="" id="uid_expansion_ajax" url="/api/expansion" handle-as="json" last-error="{{expansionError}}" last-response="{{expansionReturns}}"></iron-ajax>
-
-    <iron-ajax id="ajax" handle-as="json" last-error="{{suttaplexError}}" loading="{{suttaplexLoading}}" last-response="{{suttaplexReturns}}"></iron-ajax>
-
-    <div class="division-content main">
-
-      <div class="loading-indicator">
-        <paper-spinner-lite class="loading-spinner" active="[[suttaplexLoading]]"></paper-spinner-lite>
-      </div>
-
-      <template is="dom-if" if="[[_shouldShowErrorIcon(suttaplexError, suttaplexReturns)]]">
-        <div class="network-error">
-          <iron-icon class="network-error-icon" title="{{localize('networkError')}}" src="/img/nonetwork.svg"></iron-icon>
-          <div>{{localize('networkError')}}</div>
-        </div>
-      </template>
-
-      <template is="dom-repeat" items="[[suttaplexReturns]]" as="item" id="suttaplex_list" class="suttaplex-list">
-        <template is="dom-if" if="{{_isSuttaplex(item)}}">
-          <sc-suttaplex item="[[item]]" parallels-opened="[[_areParallelsOpen(item)]]" difficulty="[[_computeItemDifficulty(item.difficulty)]]" expansion-data="[[expansionReturns]]" suttaplex-list-style="[[suttaplexListView]]">
-          </sc-suttaplex>
-        </template>
-
-        <template is="dom-if" if="{{!_isSuttaplex(item)}}">
-          <section class$="[[_calculateClass(item.type)]]">
-            <sc-suttaplex-section-title input-title="[[item.original_title]]" input-text="[[item.blurb]]" input-type="[[item.type]]" opened="[[_calculateOpened(suttaplexReturns)]]"></sc-suttaplex-section-title>
-          </section>
-        </template>
-      </template>
-
-    </div>
-
-    [[_createMetaData(suttaplexReturns, localize)]]
-    `;
-  }
-
+class SCSuttaplexList extends LitLocalized(LitElement) {
   static get properties() {
     return {
-      categoryId: {
-        type: String,
-        statePath: 'currentRoute.categoryId',
-        observer: '_categoryChanged'
-      },
-      item: {
-        type: Object
-      },
-      expansionReturns: {
-        type: Array
-      },
-      expansionError: {
-        type: Object
-      },
-      suttaplexReturns: {
-        type: Array,
-        observer: '_suttaplexReturnsChanged'
-      },
-      suttaplexError: {
-        type: Object
-      },
-      localizedStringsPath: {
-        type: String,
-        // This is using the navigation menu file, because we only need the translated network error string here.
-        value: '/localization/elements/sc-navigation-menu'
-      },
-      suttaplexListEnabled: {
-        type: Boolean,
-        statePath: 'suttaplexListDisplay',
-        observer: '_setSuttaplexListStyle'
-      },
-      suttaplexListView: {
-        type: String
-      }
+      localizedStringsPath: String,
+      categoryId: String,
+      suttaplexListDisplay: String,
+      expansionData: Array,
+      suttaplexData: Array,
+      networkError: Object,
     }
   }
 
-  _setSuttaplexListStyle() {
-    if (this.suttaplexListEnabled) {
-      this.suttaplexListView = 'list-view';
-    } else {
-      this.suttaplexListView = '';
-    }
-    this.$.ajax.generateRequest();
-  }
-
-  static get actions() {
+  get actions() {
     return {
       changeToolbarTitle(title) {
-        return {
+        store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
           title: title
-        };
+        });
       }
-    }
+    };
+  };
+
+  get apiUrl() {
+    return `${API_ROOT}/suttaplex/${this.categoryId}?language=${this.language}`;
+  };
+
+  get expansionApiUrl() {
+    return `${API_ROOT}/expansion`;
   }
 
-  _categoryChanged() {
-    if (!this.categoryId || !this.language) {
-      return;
-    }
-    this.$.ajax.url = `${API_ROOT}\/suttaplex\/${this.categoryId}?language=${this.language}`;
-    this.$.ajax.generateRequest();
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/sc-navigation-menu';
   }
 
-  _suttaplexReturnsChanged() {
-    if (!this.suttaplexReturns) {
-      return;
-    }
-    this.dispatch('changeToolbarTitle', this.suttaplexReturns[0].original_title);
-  }
-
-  _isSuttaplex(item) {
+  isSuttaplex(item) {
     return item.type === 'text';
   }
 
-  _shouldShowErrorIcon(isError, suttaplexItems) {
-    if (suttaplexItems) {
-      return (isError && suttaplexItems.length === 0) || suttaplexItems.length === 0;
-    } else {
-      return isError;
-    }
+  shouldExpandAll() {
+    return this.suttaplexData.length <= 3;
   }
 
-  _calculateClass(itemType) {
+  hasError() {
+    return this.networkError || (this.suttaplexData && this.suttaplexData.length === 0);
+  }
+
+  calculateClass(itemType) {
     return itemType === 'grouping' ? 'node' : 'vagga-node';
   }
 
   // Close parallels when navigating to new page
-  _areParallelsOpen(item) {
-    return (this.suttaplexReturns.length === 1) ? true : false;
+  areParallelsOpen() {
+    return this.suttaplexData.length === 1;
   }
 
-  _computeItemDifficulty(difficulty) {
+  computeItemDifficulty(difficulty) {
     if (!difficulty) return;
     if (difficulty.name) {
       return difficulty.name;
@@ -203,28 +81,120 @@ class SCSuttaplexList extends ReduxMixin(Localized(PolymerElement)) {
     }
   }
 
-  _calculateOpened(suttaplexReturns) {
-    return (suttaplexReturns.length <= 3);
+  _stateChanged(state) {
+    super._stateChanged(state);
+    if (this.categoryId !== state.currentRoute.categoryId) {
+      this.categoryId = state.currentRoute.categoryId;
+      if (this.categoryId && state.siteLanguage) {
+        this._fetchCategory();
+      }
+    }
+
+    if (this.suttaplexListDisplay !== state.suttaplexListDisplay) {
+      this.suttaplexListDisplay = state.suttaplexListDisplay;
+    }
   }
 
-  _createMetaData(suttaplexReturns, localize) {
-    if (!suttaplexReturns) {
-      return;
-    }
-    let description = localize('metaDescriptionText');
-    if (suttaplexReturns[0].blurb) {
-      description = suttaplexReturns[0].blurb;
+  async _fetchCategory() {
+    this.suttaplexLoading = true;
+    this.networkError = null;
+
+    try {
+      let responseData;
+
+      [responseData, this.expansionData] = await Promise.all([
+        fetch(this.apiUrl).then(r => r.json()),
+        this._fetchExpansionData()
+      ]);
+
+      this.suttaplexData = [];
+      partitionAsync(responseData, (part) => this.suttaplexData = [...this.suttaplexData, ...part], 15, 100)
+        .then(() => this._updateMetaData());
+    } catch (e) {
+      this.networkError = e;
     }
 
-    document.dispatchEvent(new CustomEvent('metadata', {
-      detail: {
-        pageTitle: `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
-        title: `${suttaplexReturns[0].original_title}—Suttas and Parallels`,
-        description: description,
-        bubbles: true,
-        composed: true
+    this.suttaplexLoading = false;
+  }
+
+  async _fetchExpansionData() {
+    if (!expansionDataCache) {
+      expansionDataCache = await (await fetch(this.expansionApiUrl)).json();
+    }
+
+    return expansionDataCache;
+  }
+
+  _updateMetaData() {
+    if (this.suttaplexData && this.suttaplexData.length) {
+      this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
+
+      let description = this.localize('metaDescriptionText');
+      if (this.suttaplexData[0].blurb) {
+        description = this.suttaplexData[0].blurb;
       }
-    }));
+
+      document.dispatchEvent(new CustomEvent('metadata', {
+        detail: {
+          pageTitle: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
+          title: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
+          description: description,
+          bubbles: true,
+          composed: true
+        }
+      }));
+    }
+  }
+
+  get errorTemplate() {
+    return html`
+    <div class="network-error">
+      <iron-icon class="network-error-icon" title="${this.localize('networkError')}" src="/img/nonetwork.svg"></iron-icon>
+      <div>${this.localize('networkError')}</div>
+    </div>`;
+  }
+
+  suttaplexTemplate(item) {
+    return html`
+      <sc-suttaplex
+        .item="${item}"
+        .parallelsOpened="${this.areParallelsOpen(item)}"
+        .difficulty="${this.computeItemDifficulty(item.difficulty)}"
+        .expansionData="${this.expansionData}"
+        .suttaplexListStyle="${this.suttaplexListDisplay ? 'compact' : ''}">
+      </sc-suttaplex>`;
+  }
+
+  sectionTemplate(item) {
+    return html`
+      <section class="${this.calculateClass(item.type)}">
+        <sc-suttaplex-section-title
+          .inputTitle="${item.original_title}"
+          .inputText="${item.blurb}"
+          .inputType="${item.type}"
+          .opened="${this.shouldExpandAll()}">
+        </sc-suttaplex-section-title>
+      </section>`;
+  }
+
+  render() {
+    return html`
+    ${suttaplexListCss}
+
+    <div class="division-content main">
+      <div class="loading-indicator">
+        <paper-spinner-lite class="loading-spinner" .active="${this.suttaplexLoading}"></paper-spinner-lite>
+      </div>
+
+      ${this.hasError() ? this.errorTemplate : ''}
+
+      ${(this.suttaplexData && repeat(this.suttaplexData, (item) => item.key, (item) =>
+        this.isSuttaplex(item)
+          ? this.suttaplexTemplate(item)
+          : this.sectionTemplate(item))
+    )}
+    </div>
+    `;
   }
 }
 

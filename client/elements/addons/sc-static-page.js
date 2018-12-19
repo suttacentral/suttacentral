@@ -12,12 +12,6 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     }
   }
 
-  shouldUpdate(props) {
-    // re-render only when `resources` property changes
-    // this includes holding off the initial render
-    return props.has('resources');
-  }
-
   firstUpdated(props) {
     const targetMainElement = this.shadowRoot.querySelector('main');
 

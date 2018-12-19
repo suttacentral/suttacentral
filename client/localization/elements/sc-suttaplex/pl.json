@@ -15,9 +15,12 @@
     "itemNotFound": "Błąd 404: Nie znaleziono wpisu.",
     "networkError": "Błąd sieci",
     "translationsIn": "tłumaczenia w języku {lang}",
+    "translationIn": "tłumaczenie w języku {lang}",
     "editions": "edycje",
+    "edition": "edycja",
     "ofRootText": "tekstu źródłowego",
     "moreTranslations": "więcej tłumaczeń",
+    "moreTranslation": "więcej tłumaczenie",
     "inModernLanguages": "w nowożytnych językach",
     "countParallels": "{count} podobieństw",
     "inAncientTexts": "w starożytnych tekstach"
