@@ -513,7 +513,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       }
     }
     for (let l of this.chineseLookupLanguages) {
-      if (l.enabled && !this.downloadedPWASettings.chinese.pali[l.isoCode]) {
+      if (l.enabled && !this.downloadedPWASettings.lookups.chinese[l.isoCode]) {
         return true;
       }
     }
@@ -749,7 +749,11 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       .map(item => this._getLookupUrl('pli', item.isoCode));
     const chineseUrls = chineseLookups
       .filter(item => item.enabled)
-      .map(item => this._getLookupUrl('lzh', item.isoCode));
+      .map(item => [
+        this._getChineseLookupUrl('lzh', item.isoCode, true),
+        this._getChineseLookupUrl('lzh', item.isoCode, false),
+      ])
+      .reduce((item, acc) => [...acc, ...item], []);
     return paliUrls.concat(chineseUrls);
   }
 
@@ -782,6 +786,10 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
 
   _getLookupUrl(fromLang, toLang) {
     return `${API_ROOT}/dictionaries/lookup?from=${fromLang}&to=${toLang}`;
+  }
+
+  _getChineseLookupUrl(fromLang, toLang, fallback) {
+    return `${API_ROOT}/dictionaries/lookup?from=${fromLang}&to=${toLang}&fallback=${fallback}`;
   }
 
   _getParagraphUrls() {

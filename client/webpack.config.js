@@ -54,7 +54,6 @@ const prodConfig = {
     ),
     new CopyWebpackPlugin([
       'manifest.json',
-      'service-worker.js',
       'img/**',
       'polyfills/*.js',
       'files/fonts/**',
