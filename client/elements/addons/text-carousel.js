@@ -6,9 +6,10 @@ import '@polymer/paper-ripple/paper-ripple.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { LitLocalized } from './localization-mixin';
 import { textCarouselStyles } from './text-carousel.css';
 
-class SCTextCarousel extends LitElement {
+class SCTextCarousel extends LitLocalized(LitElement) {
   static get properties() {
     return {
       elements: Array,
@@ -35,9 +36,9 @@ class SCTextCarousel extends LitElement {
 
   get buttonText() {
     if (this.link) {
-      return 'READ THIS SUTTA';
+      return this.localize('readSutta');
     } else {
-      return 'TELL US WHY YOU READ';
+      return this.localize('whyYouRead');
     }
   }
 
@@ -47,16 +48,9 @@ class SCTextCarousel extends LitElement {
     }
   }
 
-  loadNextItem(e) {
-    this._selectNewIndex(1);
-    this._resetInterval();
-    e.preventDefault();
-  }
-
-  loadPreviousItem(e) {
-    this._selectNewIndex(-1);
-    this._resetInterval();
-    e.preventDefault();
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/text-carousel';
   }
 
   connectedCallback() {
@@ -71,6 +65,18 @@ class SCTextCarousel extends LitElement {
       this._setContainerHeight();
       this.loading = false;
     });
+  }
+
+  loadNextItem(e) {
+    this._selectNewIndex(1);
+    this._resetInterval();
+    e.preventDefault();
+  }
+
+  loadPreviousItem(e) {
+    this._selectNewIndex(-1);
+    this._resetInterval();
+    e.preventDefault();
   }
 
   render() {
