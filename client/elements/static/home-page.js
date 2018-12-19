@@ -390,7 +390,7 @@ class SCHomePage extends SCStaticPage {
               <div class="card-content">
                 <div class="card-content-text">
                   <div class="card-text center-text buddhas-words-text">
-                    <sc-text-carousel class="carousel" display="epigraph" elements-url="${`${API_ROOT}/epigraphs`}" link="true">
+                    <sc-text-carousel class="carousel" .elementsUrl="${`${API_ROOT}/epigraphs`}" link="true">
                     </sc-text-carousel>
                   </div>
                 </div>
@@ -500,7 +500,7 @@ class SCHomePage extends SCStaticPage {
               <div class="card-content">
                 <div class="card-content-text">
                   <div class="why-we-read">
-                    <sc-text-carousel elements-url="${`${API_ROOT}/whyweread`}">
+                    <sc-text-carousel .elementsUrl="${`${API_ROOT}/whyweread`}">
                     </sc-text-carousel>
                   </div>
                 </div>

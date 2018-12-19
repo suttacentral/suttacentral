@@ -104,6 +104,11 @@ class SCParallels extends LitLocalized(LitElement) {
     return parallels;
   }
 
+  computeUrl(rootId) {
+    const authorUid = (this.rootText || {}).author_uid || '';
+    return `/${this.itemUid}/${this.rootLang}/${authorUid}${getParagraphRange(rootId, true)}`;
+  }
+
   render() {
     return html`
     ${parallelsListCss}
@@ -118,7 +123,7 @@ class SCParallels extends LitLocalized(LitElement) {
             <tbody class="parallels-table-body">
               <tr class="parallels-row">
                 <td class="parallels-root-cell parallels-table-cell paper-lift" rowspan="${this.getRowspan(rootId)}">
-                  <a class="root-link" href="${this._computeUrl(rootId)}">
+                  <a class="root-link" href="${this.computeUrl(rootId)}">
                     <paper-ripple></paper-ripple>
                     <div class="parallels-root-id root" title="${this.localize('suttaCentralID')}">
                       ${transformId(rootId, this.expansionData)}
@@ -208,11 +213,6 @@ class SCParallels extends LitLocalized(LitElement) {
 
   _getAPIEndpoint(itemUrl) {
     return `${API_ROOT}/parallels/${itemUrl}`;
-  }
-
-  _computeUrl(rootId) {
-    const authorUid = (this.rootText || {}).author_uid || '';
-    return `/${this.itemUid}/${this.rootLang}/${authorUid}${getParagraphRange(rootId, true)}`;
   }
 }
 

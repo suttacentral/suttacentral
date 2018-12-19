@@ -2,6 +2,7 @@ import '@polymer/iron-ajax/iron-ajax.js';
 import { html, LitElement } from '@polymer/lit-element';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
+import { repeat } from 'lit-html/directives/repeat';
 import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
@@ -187,11 +188,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
       ${this.hasError() ? this.errorTemplate : ''}
 
-      ${(this.suttaplexData && this.suttaplexData.map((item) => 
-          this.isSuttaplex(item) 
-            ? this.suttaplexTemplate(item) 
-            : this.sectionTemplate(item))
-      )}
+      ${(this.suttaplexData && repeat(this.suttaplexData, (item) => item.key, (item) =>
+        this.isSuttaplex(item)
+          ? this.suttaplexTemplate(item)
+          : this.sectionTemplate(item))
+    )}
     </div>
     `;
   }
