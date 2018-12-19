@@ -32,11 +32,6 @@ const devConfig = {
         test: /\.js$/,
         type: 'javascript/esm',
         exclude: /node_modules/
-      },
-      {
-        test: /\.json$/,
-        type: 'json',
-        exclude: /node_modules/
       }
     ]
   },
@@ -76,26 +71,40 @@ const prodConfig = {
 
 const swConfig = {
   plugins: [
-    new WorkboxPlugin.InjectManifest({
-      swSrc: 'service-worker.js',
+    new WorkboxPlugin.GenerateSW({
       swDest: 'sw-generated.js',
       importWorkboxFrom: 'disabled',
-      globDirectory: '.',
-      globPatterns: [
-          'elements/styles/*.json',
-          'localization/elements/**/en.json',
-          'img/pray.png',
-          'img/*.svg',
-          'files/fonts/RaloksPE-Bold_3.007.woff2',
-          'files/fonts/RaloksPE-Regular_3.007.woff2',
-          'files/fonts/RaloksSansPE-Bd_2.004.woff2',
-          'files/fonts/RaloksSansPE-It_2.004.woff2',
-          'files/fonts/RaloksSansPE-Rg_2.004.woff2'
+      skipWaiting: true,
+      clientsClaim: true,
+      importScripts: ['node_modules/workbox-sw/build/workbox-sw.js'],
+      runtimeCaching: [
+        {
+          urlPattern: new RegExp('/api/(.*)'),
+          handler: 'networkFirst',
+        },
+        {
+          urlPattern: new RegExp('/node_modules/(.*)'),
+          handler: 'networkFirst',
+        },
+        {
+          urlPattern: new RegExp('/(?:img|files)/(.*)'),
+          handler: 'cacheFirst',
+          options: {
+            cacheName: "assets",
+            expiration: {
+                maxAgeSeconds: 7 * 24 * 60 * 60
+            },
+            cacheableResponse: { statuses: [0, 200] }
+          }
+        },
+        {
+          urlPattern: new RegExp('^https://(?:js|m).stripe.com/(.*)'),
+          handler: 'cacheFirst',
+        },
       ],
-        globIgnores: [
-          'node_modules/webcomponents/*',
-          'elements/static-templates/*'
-      ]
+      navigateFallback: '/index.html',
+      navigateFallbackBlacklist: [/^\/img\/.*/, /^\/files\/.*/],
+      exclude: [/\.(woff(2)?|ttf)$/, /node_modules\//, /img\/.*(?<!\.svg)$/],
     })
   ]
 };
