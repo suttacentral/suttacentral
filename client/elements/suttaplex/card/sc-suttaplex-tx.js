@@ -25,7 +25,7 @@ class SCSuttaplexTx extends LitElement {
   }
 
   get translationUrl() {
-    return `${this.item.uid}/${this.translation.lang}/${this.translation.author_uid}`;
+    return `/${this.item.uid}/${this.translation.lang}/${this.translation.author_uid}`;
   }
 
   render() {

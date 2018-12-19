@@ -27,7 +27,7 @@
     "@polymer/iron-overlay-behavior": "^3.0.0",
     "@polymer/iron-pages": "^3.0.0",
     "@polymer/iron-scroll-threshold": "^3.0.0",
-    "@polymer/lit-element": "^0.6.2",
+    "@polymer/lit-element": "^0.6.5",
     "@polymer/neon-animation": "^3.0.0",
     "@polymer/paper-button": "^3.0.0",
     "@polymer/paper-card": "^3.0.0",
