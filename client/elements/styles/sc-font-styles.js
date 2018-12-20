@@ -869,7 +869,6 @@ template.innerHTML = `
 
       --paper-font-title: {
         @apply --paper-font-common-base;
-        @apply --paper-font-common-nowrap;
         @apply --sc-skolar-font-size-xl;
         font-weight: 400;
         line-height: 28px;
