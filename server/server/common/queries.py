@@ -143,12 +143,15 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
     LET legacy_translations = (
         FOR text IN html_text
             FILTER text.uid == v.uid
+            LET lang_doc = DOCUMENT('language', text.lang)
             LET res = {
                 lang: text.lang,
-                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
+                lang_name: lang_doc.name,
+                is_root: lang_doc.is_root,
                 author: text.author,
                 author_short: text.author_short,
                 author_uid: text.author_uid,
+                publication_date: text.publication_date,
                 id: text._key,
                 segmented: false
                 }
@@ -162,9 +165,11 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         FOR text IN po_strings
             FILTER text.uid == v.uid
             SORT text.lang
+            LET lang_doc = DOCUMENT('language', text.lang)
             RETURN {
                 lang: text.lang,
-                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
+                lang_name: lang_doc.name,
+                is_root: lang_doc.is_root,
                 author: text.author,
                 author_short: text.author_short,
                 author_uid: text.author_uid,
@@ -249,6 +254,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         difficulty: difficulty,
         original_title: original_titles,
         root_lang: v.root_lang,
+        root_lang_name: DOCUMENT('language', v.root_lang).name,
         type: e.type ? e.type : (v.type ? v.type : 'text'),
         from: e._from,
         translated_title: translated_titles,
