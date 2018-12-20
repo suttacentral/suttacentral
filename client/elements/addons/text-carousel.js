@@ -6,6 +6,7 @@ import '@polymer/paper-ripple/paper-ripple.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { LitLocalized } from './localization-mixin';
 import { textCarouselStyles } from './text-carousel.css';
 
@@ -53,6 +54,10 @@ class SCTextCarousel extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/text-carousel';
   }
 
+  shouldUpdate() {
+    return true;
+  }
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -91,7 +96,7 @@ class SCTextCarousel extends LitLocalized(LitElement) {
         <iron-icon icon="chevron-left"></iron-icon>
       </button>
 
-      <div id="text" class="text">${this.selectedItem}</div>
+      <div id="text" class="text">${unsafeHTML(this.selectedItem)}</div>
       <a class="button-link" href="${this.url}">
         <paper-button class="button card-button-middle" raised>${this.buttonText}</paper-button>
       </a>
@@ -132,17 +137,18 @@ class SCTextCarousel extends LitLocalized(LitElement) {
     const index = this.selectedItemIndex + delta;
     const length = this.elements ? this.elements.length : 0;
 
-    this._applyItemChange(index > 0 ? index % length : length - index);
+    this._applyItemChange(index >= 0 ? index % length : length - (-index));
   }
 
   _setContainerHeight() {
     const lastIndex = this.selectedItemIndex;
     this.selectedItemIndex = this._getLongestItemIndex();
+    const container = this.shadowRoot.querySelector('#container');
 
-    this.shadowRoot.querySelector('#container').style.height = 'unset';
+    container.style.height = 'unset';
     requestAnimationFrame(() => {
-      const height = window.getComputedStyle(this.shadowRoot.querySelector('#container')).height;
-      this.shadowRoot.querySelector('#container').style.height = `calc(${height} + 32px)`;
+      const height = window.getComputedStyle(container).height;
+      container.style.height = `calc(${height} + 32px)`;
       this.selectedItemIndex = lastIndex;
     });
   }
