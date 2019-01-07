@@ -1,5 +1,5 @@
 {
-    "zh_CN": {
+    "zh": {
         "usingOffline": "无网路下使用SuttaCentral",
         "pwaDescription": "SuttaCentral是个 <a href=\"https://developers.google.com/web/progressive-web-apps/\" target=\"_blank\" rel=\"noopener\">采用渐进式应用程序的网页 </a>。在有支持的设备中，许多功能可以在无网路的情况下继续使用，如导航和返回之前浏览过的页面.",
         "additionalInfo": "此外你可下载并且离线阅读你所选择语言的文字，这有利与有限流量移的动用户或是覆盖较差区域。假如你的流量有限，我们建议用无线下载。",
