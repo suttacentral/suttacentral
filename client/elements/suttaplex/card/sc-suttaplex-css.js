@@ -17,15 +17,7 @@ export const suttaplexCss = html`
 
   h1 {
     @apply --paper-font-headline;
-    @apply --sc-serif-font;
-    @apply --sc-skolar-font-size-xl;
     margin: 0;
-  }
-
-  h2 {
-    @apply --paper-font-headline;
-    @apply --sc-sans-font;
-    color: var(--sc-secondary-text-color);
   }
 
   .hide-element {
@@ -85,11 +77,9 @@ export const suttaplexCss = html`
   .suttaplex-nerdy-row {
     @apply --paper-font-body2;
     color: var(--sc-secondary-text-color);
-    font-weight: normal;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    margin-top: -4px;
   }
 
   .popuptext {
@@ -138,10 +128,12 @@ export const suttaplexCss = html`
   .section-details h3 {
     height: 23px;
     margin: var(--sc-size-sm) 0;
-    @apply --sc-skolar-font-size-md;
-    font-weight: normal;
     color: var(--sc-secondary-text-color);
     display: inline-block;
+  }
+  
+  .blurb, .section-details h3 {
+    @apply --sc-paper-font-body;
   }
   
   .top-row-icons {
@@ -182,22 +174,6 @@ export const suttaplexTxCss = html`
     overflow: hidden;
   }
 
-  .sc-primary-color:hover {
-    background-color: var(--sc-primary-color-light);
-  }
-
-  .sc-primary-color paper-ripple {
-    color: var(--sc-primary-color-medium);
-  }
-
-  .sc-primary-accent-color:hover {
-    background-color: var(--sc-tertiary-color-light);
-  }
-
-  .sc-primary-accent-color paper-ripple  {
-    color: var(--sc-tertiary-color-medium);
-  }
-
   .tx {
     display: flex;
     align-items: center;
@@ -207,17 +183,18 @@ export const suttaplexTxCss = html`
     border-radius: var(--sc-size-sm);
   }
 
-  .tx:after {
-    content: "➔";
-    font-size: 32px;
-    color: white;
-    margin-left: auto
-  }
-
   .tx,
   .tx:hover,
   .tx:active {
     transition: all 0.2s ease;
+  }
+
+  .tx:hover {
+    background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  .tx paper-ripple {
+    color: var(--sc-primary-color-medium);
   }
 
   .tx-icon {
@@ -229,16 +206,8 @@ export const suttaplexTxCss = html`
     align-items: center;
     --iron-icon-width: 18px;
     --iron-icon-height: 18px;
-  }
-
-  .sc-primary-color .tx-icon {
     --iron-icon-fill-color: var(--sc-primary-color);
     border: 2px solid var(--sc-primary-color);
-  }
-
-  .sc-primary-accent-color .tx-icon {
-    --iron-icon-fill-color: var(--sc-tertiary-color-dark);
-    border: 2px solid var(--sc-tertiary-color-dark);
   }
 
   .tx-details {
@@ -250,22 +219,25 @@ export const suttaplexTxCss = html`
   }
 
   .tx-creator {
-    @apply --sc-serif-font;
     margin-right: var(--sc-size-md);
+    @apply --sc-paper-font-body;
   }
 
   .tx-publication {
     color: var(--sc-secondary-text-color);
-    @apply --sc-skolar-font-size-s;
+    @apply --paper-font-body2;
+  }
+  
+  .arrow {
+    height: 32px;
+    width: 32px;
+    fill: white;
+    margin-left: auto;
   }
 </style>`;
 
 export const parallelsListCss = html`
 <style>
-  a {
-    position: relative;
-  }
-
   .parallels-table {
     border-collapse: separate;
     border-spacing: 0 var(--sc-size-sm);
@@ -277,6 +249,11 @@ export const parallelsListCss = html`
   .parallels-parallel-cell {
     border-radius: var(--sc-size-sm);
     background: var(--sc-tertiary-background-color);
+  }
+  
+  .parallels-root-cell:hover,
+  .parallels-parallel-cell:hover {
+      background-color: var(--sc-primary-color-light-transparent);
   }
 
   .parallels-parallel-cell {
@@ -304,14 +281,13 @@ export const parallelsListCss = html`
     top: 0;
     left: 0;
   }
-  
+
   paper-ripple {
-    color: var(--sc-tertiary-color-medium);
+    color: var(--sc-primary-color-medium);
   }
   
   .parallels-root-id {
-    @apply --sc-skolar-font-size-sm;
-    @apply --sc-serif-font;
+    @apply --paper-font-body1;
   }
 
   .paper-spinner {
@@ -336,8 +312,6 @@ export const parallelsListCss = html`
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    letter-spacing: var(--sc-all-caps_-_letter-spacing);
-    text-transform: var(--sc-all-caps_-_text-transform);
     color: inherit;
   }
 </style>`;
@@ -357,8 +331,7 @@ export const parallelItemCss = html`
   }
 
   .parallel-item-title {
-    @apply --sc-skolar-font-size-sm;
-    @apply --sc-serif-font;
+    @apply --paper-font-body1;
     word-wrap: normal;
   }
 
@@ -382,14 +355,6 @@ export const parallelItemCss = html`
     @apply --paper-font-body2;
     color: var(--sc-secondary-text-color);
     overflow: hidden;
-  }
-
-  .d-block {
-    display: inline-block;
-  }
-
-  .scrollable-dialog {
-    margin: 0;
   }
 
   .vertical-margin-xs {
@@ -430,15 +395,30 @@ export const parallelItemCss = html`
   paper-ripple {
       color: var(--sc-primary-color-medium);
   }
-  
-  [hidden] {
-    display: none;
-  }
 
   iron-icon {
     color: var(--sc-disabled-text-color);
     --iron-icon-height: var(--sc-size-md);
     --iron-icon-width: var(--sc-size-md);
+  }
+  
+  .disabled {
+    cursor: default;
+  }
+  
+  .disabled paper-ripple {
+    display: none;
+  }
+  
+  summary {
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .icon-outline {
+    cursor: help;
+    --iron-icon-height: 20px;
+    --iron-icon-width: 20px;
   }
 </style>
 `;

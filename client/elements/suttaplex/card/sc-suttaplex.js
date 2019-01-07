@@ -5,14 +5,16 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/paper-styles/paper-styles.js';
+import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import '../../../img/sc-svg-icons.js';
-import { SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import { transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
 import '../../menus/sc-suttaplex-share-menu.js';
 import './sc-parallel-list.js';
 import { suttaplexCss } from './sc-suttaplex-css';
 import './sc-suttaplex-tx.js';
+
+let expansionDataCache;
 
 class SCSuttaplex extends LitLocalized(LitElement) {
   static get properties() {
@@ -35,6 +37,9 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
+
+    this._fetchExpansionData();
+
     setTimeout(() => {
       const copyMenu = this.shadowRoot.querySelector('#copy-menu');
       if (copyMenu) {
@@ -59,7 +64,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       this.userLanguageName = (translations.find(item => item.lang === lang) || {}).lang_name;
       this.translationsInUserLanguage = translations.filter(item => item.lang === lang);
       this.translationsInModernLanguages = translations.filter(item => item.lang.length === 2 && item.lang !== lang);
-      this.rootTexts = translations.filter(item => item.lang.length === 3);
+      this.rootTexts = translations.filter(item => item.is_root);
       this.hasSegmentedTexts = translations.filter(item => item.segmented).length > 0;
     }
 
@@ -175,10 +180,13 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.nerdyRowTemplate}
         </div>
 
-        ${this.item.blurb && html`<div class="blurb" title="${this.localize('blurb')}" .innerHTML="${this.item.blurb}"/>`}
+        ${this.suttaplexListStyle !== 'compact' ? html`
+          ${this.item.blurb && html`<div class="blurb" title="${this.localize('blurb')}" .innerHTML="${this.item.blurb}"/>`}
+        ` : ''}
+
+        ${this.translationsInUserLanguage.length ? this.userLanguageTranslationsTemplate : ''}
 
         ${this.suttaplexListStyle !== 'compact' ? html` 
-          ${this.translationsInUserLanguage.length ? this.userLanguageTranslationsTemplate : ''}
           ${this.translationsInModernLanguages.length ? this.modernLanguageTranslationsTemplate : ''}
           ${this.rootTexts.length ? this.rootTextsTemplate : ''}
           ${this.parallelsTemplate}
@@ -197,7 +205,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
               title="${this.localize(this.difficulty)}"
            ></iron-icon>
         ` : ''}
-        
+
       ${this.hasSegmentedTexts ? html`
         <a class="top-menu-button" role="group" aria-haspopup="true" href="${this.listenUrl}" target="_blank"
           aria-disabled="false" title="Listen to this sutta">
@@ -239,8 +247,8 @@ class SCSuttaplex extends LitLocalized(LitElement) {
             <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
               ${this.volPage}
             </span>
-          `: ''}
-  
+          ` : ''}
+
           ${this.item.biblio && html`
             <details class="suttaplex-details">
               <summary>
@@ -265,7 +273,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
               ${this.acronymOrUid}<br>
             </span>
           `}
-          
+
           ${this.item.volpages && html`
             <span class="book no-margin">
               <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
@@ -279,17 +287,17 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get userLanguageTranslationsTemplate() {
-    const translationKey =  this.translationsInUserLanguage.length === 1 ? 'translationIn' : 'translationsIn';
+    const translationKey = this.translationsInUserLanguage.length === 1 ? 'translationIn' : 'translationsIn';
     return html`
       <div class="section-details main-translations">
         <h3>
           <b>
-             ${this.translationsInUserLanguage.length} ${this.localize(translationKey, {lang: this.userLanguageName})}
+             ${this.translationsInUserLanguage.length} ${this.localize(translationKey, { lang: this.userLanguageName })}
           </b>
         </h3>
         <div>
           ${this.translationsInUserLanguage.map((translation) => html`
-            <sc-suttaplex-tx .item="${this.item}" .translation="${translation}" className="primary"></sc-suttaplex-tx>
+            <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
           `)}
         </div>
       </div>
@@ -297,7 +305,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get modernLanguageTranslationsTemplate() {
-    const translationKey =  this.translationsInModernLanguages.length === 1 ? 'moreTranslation' : 'moreTranslations';
+    const translationKey = this.translationsInModernLanguages.length === 1 ? 'translation' : 'translations';
 
     return html`
       <details 
@@ -312,14 +320,14 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           </h3>
         </summary>
         ${this.translationsOpened ? this.translationsInModernLanguages.map((translation) => html`
-          <sc-suttaplex-tx .item="${this.item}" .translation="${translation}" className="primary"></sc-suttaplex-tx>
+          <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
         `) : ''}
       </details>
     `;
   }
 
   get rootTextsTemplate() {
-    const translationKey =  this.rootTexts.length === 1 ? 'edition' : 'editions';
+    const translationKey = this.rootTexts.length === 1 ? 'edition' : 'editions';
 
     return html`
       <details 
@@ -331,22 +339,24 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           <h3><b>${this.rootTexts.length} ${this.localize(translationKey)}</b> ${this.localize('ofRootText')}</h3>
         </summary>
         ${this.rootTextsOpened ? this.rootTexts.map((translation) => html`
-          <sc-suttaplex-tx .item="${this.item}" .translation="${translation}" className="accent"></sc-suttaplex-tx>
-        `): ''}
+          <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
+        `) : ''}
       </details>
     `;
   }
 
   get parallelsTemplate() {
+    const translationKey = this.item.parallel_count === 1 ? 'countParallel' : 'countParallels';
+
     return html`
-      <details 
+      <details
         class="section-details" 
         ?open="${this.parallelsOpened}"
         @toggle="${(e) => this.parallelsOpened = e.target.open}"
       >
         <summary>
           <h3>
-            <b>${this.localize('countParallels', {count: this.item.parallel_count})}</b> 
+            <b>${this.localize(translationKey, { count: this.item.parallel_count })}</b> 
             ${this.localize('inAncientTexts')}
           </h3>
         </summary>
@@ -359,12 +369,20 @@ class SCSuttaplex extends LitLocalized(LitElement) {
             .expansionData="${this.expansionData}"
           >
           </sc-parallel-list>
-        `: ''}
+        ` : ''}
         
         ${!this.item.parallel_count ? html`<h3>${this.localize('hasNoParallels')}</h3>` : ''}
         </template>
       </details>
     `;
+  }
+
+  async _fetchExpansionData() {
+    if (!expansionDataCache) {
+      expansionDataCache = await (await fetch(`${API_ROOT}/expansion`)).json();
+    }
+
+    this.expansionData = expansionDataCache;
   }
 }
 

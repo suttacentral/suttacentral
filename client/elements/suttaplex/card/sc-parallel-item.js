@@ -4,7 +4,6 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/polymer/lib/elements/dom-if.js';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
-import '../../addons/sc-sutta-note.js';
 import { parallelItemCss } from './sc-suttaplex-css';
 
 const stopPropagation = (e) => e.stopPropagation();
@@ -127,8 +126,8 @@ class SCParallelItem extends LitLocalized(LitElement) {
     return html`
     ${parallelItemCss}
 
-    <a href="${this.parallelUrl}">
-      <paper-ripple ?hidden="${!this.parallelUrl}"></paper-ripple>
+    <a href="${this.parallelUrl}" class="${this.parallelUrl ? '' : 'disabled'}">
+      <paper-ripple></paper-ripple>
       <div class="parallel-item d-flex justify-content-space-between">
         <div class="parallel-item-main-info-container">
           <div class="parallel-item-title vertical-margin-xs" title="${this.headingTitle}">
@@ -138,7 +137,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
           <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
             <div class="parallel-item-volpages-container">
               ${this.parallelItem.translated_title && this.parallelItem.original_title ? html`
-                <div title="${this.localize('originalTitle')}" class="nerdy-row-element}">
+                <div title="${this.localize('originalTitle')}" class="nerdy-row-element">
                   ${this.titleWithoutSuttaText}
                 </div>
               ` : ''}
@@ -150,13 +149,11 @@ class SCParallelItem extends LitLocalized(LitElement) {
               ` : ''}
 
               ${this.volpagesAvailable ? html`
-                <div class="nerdy-row-summary"  @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+                <div class="nerdy-row-summary" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
                   ${this.parallelItem.biblio && html`
-                    <details class="d-block">
-                      <summary class="parallel-item-biblio-summary">
-                        <span class="book scrollable-dialog">
-                          <iron-icon icon="book"></iron-icon>
-                        </span>
+                    <details>
+                      <summary>
+                        <iron-icon icon="book"></iron-icon>
                         <span class="vol-page" title="${this.volPageTitle}">
                           ${this.volPage}
                         </span>
@@ -175,17 +172,26 @@ class SCParallelItem extends LitLocalized(LitElement) {
                 </div>
               ` : ''}
               ${this.remark && html`
-                <div class="sutta-remark">
-                  <sc-sutta-note .noteData="${this.remark}"></sc-sutta-note>
+                <div @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+                  <details>
+                    <summary>
+                      <iron-icon class="icon-outline" icon="info-outline"></iron-icon>
+                    </summary>
+                    <p class="parallel-item-biblio-info" .innerHTML="${this.remark}"></p>
+                  </details>
                 </div>
               `}
             </div>
-  
-            <div class="parallel-item-note">
-              ${this.parallelItem.note && html`
-                <sc-sutta-note .noteData="${this.parallelItem.note}"></sc-sutta-note>
-              `}
-            </div>
+            ${this.parallelItem.note && html`
+              <div @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+                <details>
+                  <summary>
+                    <iron-icon class="icon-outline" icon="info-outline"></iron-icon>
+                  </summary>
+                  <p class="parallel-item-biblio-info" .innerHTML="${this.parallelItem.not}"></p>
+                </details>
+              </div>
+            `}
           </div>
         </div>
       </div>
