@@ -1,0 +1,9 @@
+{
+    "zh_CN": {
+        "cardNumber": "卡号",
+        "ZIP": "邮政编码",
+        "CVC": "CVC码",
+        "year": "年",
+        "month": "月"
+    }
+}

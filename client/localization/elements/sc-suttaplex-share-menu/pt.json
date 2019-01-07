@@ -1,0 +1,11 @@
+{
+    "pt": {
+        "cite": "Citar",
+        "copyTable": "Copiar tabela",
+        "copyLink": "Copiar link",
+        "tableCopied": "Tabela com textos comparáveis copiada!",
+        "linkCopied": "Link copiado!",
+        "citeCopied": "Citação copiada!",
+        "error": "Ocorreu um erro."
+    }
+}

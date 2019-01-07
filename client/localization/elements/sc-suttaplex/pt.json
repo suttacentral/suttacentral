@@ -1,0 +1,19 @@
+{
+    "pt": {
+        "beginner": "Recomendado para iniciantes",
+        "intermediate": "Recomendado para aqueles com entendimento intermediário dos textos",
+        "advanced": "Recomendado para aqueles com conhecimento avançado dos textos",
+        "originalTitle": "Título original",
+        "suttaCentralID": "Identificador SuttaCentral",
+        "alternateText": "Número alternativo na edição {book}:",
+        "volumeAndPage": "Volume e página",
+        "volumeAndPagePTS1": "Volume e página PTS:\n1ª edição = {pts1}\n2ª edição = {pts2}",
+        "blurb": "Sinopse / resumo",
+        "goToTranslation": "Ir para tradução por {author}",
+        "hasParallels": "Este texto tem {num} paralelos.",
+        "hasNoParallels": "Este texto não tem paralelos.",
+        "itemNotFound": "Erro 404: item não encontrado.",
+        "networkError": "Erro de rede.",
+        "translations": "Traduções"
+    }
+}
