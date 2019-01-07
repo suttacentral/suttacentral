@@ -1,0 +1,19 @@
+{
+    "pt": {
+        "4e1776b6d0f3ec62485bd2f61ea7f101": "SuttaCentral 2018",
+        "d04a1161f90ab33fc1f301fa1fe2f85c": "Seja bem-vindo ao novo SuttaCentral! Nosso website vem mudando bastante desde 2005. Confira abaixo as últimas novidades:",
+        "94cae36a49869be9cc7bb9cdd92ba73b": "O novo site contém uma nova tradução (para o inglês) dos quatro <i>nikāyas</i> páli, preparada para o SuttaCentral por Bhante Sujato. Trata-se de uma tradução amigável e lúcida, com ênfase na exatidão e clareza. Acreditamos que se trata da primeira tradução completa, consistente e unificada dos quatro <i>nikāyas</i> em um idioma europeu. É com orgulho que o SuttaCentral disponibiliza este texto sem quaisquer restrições de direitos autorais.",
+        "26f2fbece49f2a97c5d3818f1089e712": "As traduções dos suttas são acompanhadas por uma tradução (ainda em andamento) do Vinaya Páli por Bhante Brahmali. A tradução anterior do Vinaya por I.B. Horner carecia há muito de uma atualização. A nova tradução por Bhante Brahmali é mais clara e acessível, e resulta não somente de seu conhecimento do idioma e textos Páli, mas também de sua experiência de vida, fazendo parte de uma comunidade que vive de acordo com o Vinaya. A publicação desta nova tradução ocorre de forma gradual.",
+        "f7a8b54d80948e2d0b95703fa810fc18": "As duas traduções acima citadas foram implementadas de forma segmentada. Isto significa que cada segmento, ou frase, do texto original em páli é correspondido com um segmento de tradução. Isto permite a apresentação do texto original com sua tradução segmento por segmento. Esta abordagem também permite maior confiabilidade e consistência quando se faz referência ao páli em um nível granular, algo antes impossível. Estes textos são segmentados com um software chamado Pootle, desenvolvido para tornar mais fácil o trabalho do tradutor. A intenção é que o resultado desta tradução sirva também como base para uma nova geração de traduções em outros idiomas.",
+        "5b4c3bd7aa6c0dc3a01c86aa0d5be994": "Note-se também que o website foi completamente reformulado. Todas as características anteriores ainda estão presentes, mas há muita coisa nova também.",
+        "20f5a30c59046da15a178ce024e48b84": "Design amigável e convidativo, baseado em padrões claros e familiares.",
+        "a5157f7df058f3ff412e73e57b70baf4": "O menu lateral oferece navegação mais detalhada e flexível. Pela primeira vez, a navegação do site reflete adequadamente a estrutura hierárquica tradicional dos textos.",
+        "d161d993274c6deb56f610e4807720f6": "Resumos concisos explicam os textos e categorias.",
+        "f287e4ad21bbff30cc2fdb99aa1b347a": "Paralelos apresentam mais claramente a relação entre os textos.",
+        "252cec6fcbf59527091c13bf0dd03de3": "Milhares de novas relações e paralelos entre os textos.",
+        "d211abc376662619d2f8ac2c1d4747ab": "Múltiplas traduções no mesmo idioma são agora suportadas.",
+        "0ad269886bf0c5502cc62a8c26b34926": "O site é agora internacionalizado, o que torna possível a visualização em uma variedade de idiomas. Mais e mais idiomas serão suportados com o tempo.",
+        "d9917dbac2969d0ea8cc86298619c927": "A tecnologia inovativa Progressive Web App possibilita a navegação offline em sistemas suportados. Isto é ideal para quem não tem conexão, ou conecta-se com plano de dados limitado.",
+        "6576c009a48d554c33f85a6fd2405e8f": "O software de tradução é integrado ao site, o que o torna não apenas uma plataforma para a apresentação de textos, mas também para a publicação de novas traduções."
+    }
+}

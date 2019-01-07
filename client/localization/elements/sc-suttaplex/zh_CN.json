@@ -1,0 +1,19 @@
+{
+    "zh_CN": {
+        "beginner": "推荐给级初学者",
+        "intermediate": "推荐给中级学者",
+        "advanced": "推荐给高级学者",
+        "originalTitle": "原本标题",
+        "suttaCentralID": "SuttaCentral ID",
+        "alternateText": "{book}版本中的代数：",
+        "volumeAndPage": "卷和页",
+        "volumeAndPagePTS1": "PTS 卷和页：\n第一版= {pts1}\n第二版= {pts2}",
+        "blurb": "Blurb",
+        "goToTranslation": "转到{author}翻译",
+        "hasParallels": "这段文字有{num}个相似之处。",
+        "hasNoParallels": "本文没有相似之处的记录。",
+        "itemNotFound": "错误404：找不到项目。",
+        "networkError": "网络错误",
+        "translations": "翻译"
+    }
+}
