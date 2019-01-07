@@ -10,8 +10,6 @@
         "volumeAndPagePTS1": "PTS volume and page:\n1st edition = {pts1}\n2nd edition = {pts2}",
         "blurb": "Blurb",
         "goToTranslation": "Go to a translation by {author}",
-        "hasParallels": "This text has {num} parallels.",
-        "hasNoParallels": "This text has no recorded parallels.",
         "itemNotFound": "Error 404: Item not found.",
         "networkError": "Network error",
         "translationsIn": "{lang} translations by",
@@ -19,10 +17,12 @@
         "editions": "editions",
         "edition": "edition",
         "ofRootText": "of the root text",
-        "moreTranslations": "more translations",
-        "moreTranslation": "more translation",
-        "inModernLanguages": "in modern languages",
+        "translations": "translations",
+        "translation": "translation",
+        "inModernLanguages": "in other modern languages",
         "countParallels": "{count} parallels",
+        "countParallel": "{count} parallel",
+        "hasNoParallels": "This text has no recorded parallels.",
         "inAncientTexts": "in ancient texts"
     }
 }

@@ -10,17 +10,6 @@ class SCSuttaplexTx extends LitElement {
     return {
       item: Object,
       translation: Object,
-      className: String,
-    }
-  }
-
-  get colorClass() {
-    switch (this.className) {
-      case 'accent':
-        return 'sc-primary-accent-color';
-      case 'primary':
-      default:
-        return 'sc-primary-color';
     }
   }
 
@@ -32,7 +21,7 @@ class SCSuttaplexTx extends LitElement {
     return html`
       ${suttaplexTxCss}
       
-      <a href="${this.translationUrl}" class="tx ${this.colorClass}">
+      <a href="${this.translationUrl}" class="tx">
         <paper-ripple></paper-ripple>
         <div class="tx-icon">
           <iron-icon icon="sc-svg-icons:translation"></iron-icon>
@@ -41,6 +30,8 @@ class SCSuttaplexTx extends LitElement {
           <span class="tx-creator">${this.translation.author}</span>
           <span class="tx-publication">${this.translation.lang_name}</span>
         </div>
+
+        <iron-icon class="arrow" icon="icons:chevron-right"></iron-icon>
       </a>`;
   }
 }

@@ -11,15 +11,12 @@ import './card/sc-suttaplex.js';
 import { suttaplexListCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title.js';
 
-let expansionDataCache;
-
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static get properties() {
     return {
       localizedStringsPath: String,
       categoryId: String,
       suttaplexListDisplay: String,
-      expansionData: Array,
       suttaplexData: Array,
       networkError: Object,
     }
@@ -39,10 +36,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   get apiUrl() {
     return `${API_ROOT}/suttaplex/${this.categoryId}?language=${this.language}`;
   };
-
-  get expansionApiUrl() {
-    return `${API_ROOT}/expansion`;
-  }
 
   constructor() {
     super();
@@ -100,12 +93,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     this.networkError = null;
 
     try {
-      let responseData;
-
-      [responseData, this.expansionData] = await Promise.all([
-        fetch(this.apiUrl).then(r => r.json()),
-        this._fetchExpansionData()
-      ]);
+      const responseData = await fetch(this.apiUrl).then(r => r.json());
 
       this.suttaplexData = [];
       partitionAsync(responseData, (part) => this.suttaplexData = [...this.suttaplexData, ...part], 15, 100)
@@ -115,14 +103,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     }
 
     this.suttaplexLoading = false;
-  }
-
-  async _fetchExpansionData() {
-    if (!expansionDataCache) {
-      expansionDataCache = await (await fetch(this.expansionApiUrl)).json();
-    }
-
-    return expansionDataCache;
   }
 
   _updateMetaData() {
@@ -160,7 +140,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .item="${item}"
         .parallelsOpened="${this.areParallelsOpen(item)}"
         .difficulty="${this.computeItemDifficulty(item.difficulty)}"
-        .expansionData="${this.expansionData}"
         .suttaplexListStyle="${this.suttaplexListDisplay ? 'compact' : ''}">
       </sc-suttaplex>`;
   }
@@ -192,7 +171,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         this.isSuttaplex(item)
           ? this.suttaplexTemplate(item)
           : this.sectionTemplate(item))
-    )}
+      )}
     </div>
     `;
   }
