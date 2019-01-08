@@ -61,7 +61,7 @@ class SCMoreMenu extends ReduxMixin(Localized(PolymerElement)) {
 
     <paper-item class="more-menu-paper-item language-choice-box">
       <iron-icon class="more-menu-icon" icon="language"></iron-icon>
-      <sc-language-base-menu id="language_menu"></sc-language-base-menu>
+      <sc-language-base-menu id="language_menu" no-root></sc-language-base-menu>
     </paper-item>
 
     <a class="more-menu-link" href="/donations">
