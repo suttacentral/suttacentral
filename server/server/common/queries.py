@@ -1,6 +1,13 @@
 LANGUAGES = '''FOR l in language
                 SORT l.name
-                RETURN {"uid": l.uid, "name": l.name, "iso_code": l.iso_code, "is_root": l.is_root}'''
+                RETURN {
+                    "uid": l.uid,
+                    "name": l.name,
+                    "iso_code": l.iso_code,
+                    "is_root": l.is_root,
+                    "localized": !!l.localized,
+                    "localized_percent": l.localized_percent ? l.localized_percent : 0
+                    }'''
 
 TEXTS_BY_LANG = '''
 FOR text IN html_text
