@@ -16,7 +16,7 @@ from common.mail import send_email
 
 from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS,
                             SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY,
-                            DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA)
+                            DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA, AVAILABLE_TRANSLATIONS_LIST)
 
 from common.utils import (flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key,
                           groupby_unsorted)
@@ -72,6 +72,16 @@ class Languages(Resource):
 
         return response, 200
 
+def has_translated_descendent(uid, lang, _cache={}):
+    if lang not in _cache:
+        db = get_db()
+        uids = next(db.aql.execute(AVAILABLE_TRANSLATIONS_LIST, bind_vars={'lang': lang}))
+        _cache[lang] = set(uids)
+    
+    lang_mapping = _cache[lang]
+    return uid in lang_mapping
+
+
 
 class Menu(Resource):
     def __init__(self, *args, **kwargs):
@@ -120,13 +130,12 @@ class Menu(Resource):
                         type: string
         """
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+        return self.get_data(submenu_id, language=language), 200
 
-        return self.get_data(submenu_id, bind_vars={'language': language}), 200
-
-    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, **kwargs):
+    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, language=None):
         db = get_db()
 
-        bind_vars = kwargs.get('bind_vars', {})
+        bind_vars = {'language': language}
 
         if submenu_id:
             bind_vars['submenu_id'] = submenu_id
@@ -146,8 +155,7 @@ class Menu(Resource):
                     pitaka['children'] = self.group_by_parents(children, ['sect'])
                     self.group_by_language(pitaka, exclude={'sect/other'})
 
-        self.recursive_cleanup(data, mapping={})
-
+        self.recursive_cleanup(data, language=language, mapping={})
         return data
 
     @staticmethod
@@ -227,11 +235,13 @@ class Menu(Resource):
         if display_num:
             menu_entry['display_num'] = display_num.replace('-', '–\u2060')
 
-    def recursive_cleanup(self, menu_entries, mapping):
+    def recursive_cleanup(self, menu_entries, language, mapping):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
             mapping[menu_entry['uid']] = menu_entry
-            self.update_display_num(menu_entry)
+            if 'id' in menu_entry:
+                menu_entry['yellow_brick_road'] = has_translated_descendent(menu_entry['id'], language)
+            self.update_display_num(menu_entry)            
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
                 mapping.update({d['uid']: d for d in descendents})
@@ -248,7 +258,7 @@ class Menu(Resource):
                 del menu_entry['parents']
             if 'children' in menu_entry:
                 children = menu_entry['children']
-                self.recursive_cleanup(children, mapping=mapping)
+                self.recursive_cleanup(children, language=language, mapping=mapping)
 
 
 class SuttaplexList(Resource):
