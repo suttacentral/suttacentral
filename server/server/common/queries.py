@@ -625,3 +625,60 @@ LET languages = (FOR s IN pwa_sizes
 
 RETURN MERGE(languages)
     '''
+
+
+AVAILABLE_TRANSLATIONS_LIST = '''
+LET legacy_texts = (
+    FOR doc IN html_text
+        FILTER doc.lang == @lang
+        COLLECT uid = doc.uid
+        SORT null
+        RETURN uid
+    )
+    
+LET modern_texts = (
+    FOR doc IN po_strings
+        FILTER doc.lang == @lang
+        COLLECT uid = doc.uid
+        SORT null
+        RETURN uid
+    )
+    
+LET text_uids = UNION_DISTINCT(legacy_texts, modern_texts)
+
+LET division_uids = UNIQUE(
+    FOR uid IN text_uids
+        RETURN REGEX_REPLACE(uid, '([a-z]+(?:-[a-z]+|-[0-9]+)*).*', '$1')
+    )
+
+/* Perform a graph traversal on estimated division_uids, we could do this with the 
+text uids but it takes about 200ms */
+LET parents = UNIQUE(FLATTEN(
+    FOR uid in division_uids
+        LET parents = (
+            LET doc = DOCUMENT('root', uid)
+            FILTER doc
+            FOR v, e, p IN 1..5 INBOUND doc `root_edges`
+                FILTER v.type != 'language'
+                RETURN v.uid
+            )
+        return parents
+))
+
+RETURN UNION_DISTINCT(parents, division_uids, text_uids)
+'''
+
+GET_ANCESTORS = '''
+    /* Return uids that are ancestors to any uid in @uid_list */
+    RETURN UNIQUE(FLATTEN(
+        FOR uid in ['pli-tv-bi-vb-ss', 'pli-tv-bi-vb-sk', 'pli-tv-bu-vb-pd', 'pli-tv-bi-pm', 'sf', 'vv', 'pli-tv-bu-vb-np', 'pli-tv-bi-vb-pc', 'ds', 'xct-mu-bu-pm', 'thag', 'patthana', 'pdhp', 'iti', 'pli-tv-bu-vb-ay', 'sn', 'pp', 'ud', 'sa-2', 'pli-tv-pvr', 'da', 'pv', 'pli-tv-bu-vb-as', 'dn', 'arv', 'ma', 'kp', 'thi-ap', 'lal', 'pli-tv-bi-vb-pd', 'snp', 'pli-tv-bi-vb-np', 'pli-tv-bu-vb-pj', 'pli-tv-bi-vb-as', 'ja', 'thig', 'vb', 'pli-tv-bi-vb-pj', 'ea', 'pli-tv-bu-vb-ss', 'lzh-dg-kd', 'mn', 'tha-ap', 'an', 'kv', 'up', 'pli-tv-bu-vb-pc', 't', 'sa', 'mil', 'uv-kg', 'lzh-dg-bu-pm', 'dhp', 'pli-tv-kd']
+            LET parents = (
+                LET doc = DOCUMENT('root', uid)
+                FILTER doc
+                FOR v, e, p IN 1..5 INBOUND doc `root_edges`
+                    FILTER v.type != 'language'
+                    RETURN v.uid
+                )
+            return parents
+    ))
+'''
