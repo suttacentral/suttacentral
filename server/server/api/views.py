@@ -54,15 +54,21 @@ class Languages(Resource):
                                     type: string
                                 is_root:
                                     type: boolean
+                                localized:
+                                    type: boolean
+                                localized_percent:
+                                    type: number
         """
 
         include_all = request.args.get('all', False)
 
         db = get_db()
         languages = list(db.aql.execute(LANGUAGES))
-        available_languages = [l['iso_code'] for l in db['available_languages'].all()]
 
-        response = languages if include_all else [l for l in languages if l['iso_code'] in available_languages]
+        if include_all:
+            response = languages
+        else:
+            response = [l for l in languages if not l['is_root']]
 
         return response, 200
 
