@@ -58,10 +58,9 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   shouldUpdate(changedProperties) {
-    if (changedProperties.has('item')) {
+    if (changedProperties.has('item') || changedProperties.has('language')) {
       const translations = (this.item || {}).translations || [];
       const lang = this.language;
-      this.userLanguageName = (translations.find(item => item.lang === lang) || {}).lang_name;
       this.translationsInUserLanguage = translations.filter(item => item.lang === lang);
       this.translationsInModernLanguages = translations.filter(item => item.lang.length === 2 && item.lang !== lang);
       this.rootTexts = translations.filter(item => item.is_root);
@@ -184,11 +183,11 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.item.blurb && html`<div class="blurb" title="${this.localize('blurb')}" .innerHTML="${this.item.blurb}"/>`}
         ` : ''}
 
-        ${this.translationsInUserLanguage.length ? this.userLanguageTranslationsTemplate : ''}
+        ${this.userLanguageTranslationsTemplate}
 
         ${this.suttaplexListStyle !== 'compact' ? html` 
-          ${this.translationsInModernLanguages.length ? this.modernLanguageTranslationsTemplate : ''}
-          ${this.rootTexts.length ? this.rootTextsTemplate : ''}
+          ${this.modernLanguageTranslationsTemplate}
+          ${this.rootTextsTemplate}
           ${this.parallelsTemplate}
         ` : ''}
       </paper-card>`;
@@ -292,7 +291,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       <div class="section-details main-translations">
         <h3>
           <b>
-             ${this.translationsInUserLanguage.length} ${this.localize(translationKey, { lang: this.userLanguageName })}
+             ${this.translationsInUserLanguage.length} ${this.localize(translationKey, { lang: this.fullSiteLanguageName })}
           </b>
         </h3>
         <div>
@@ -379,10 +378,10 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
   async _fetchExpansionData() {
     if (!expansionDataCache) {
-      expansionDataCache = await (await fetch(`${API_ROOT}/expansion`)).json();
+      expansionDataCache = fetch(`${API_ROOT}/expansion`).then((r) => r.json());
     }
 
-    this.expansionData = expansionDataCache;
+    this.expansionData = await expansionDataCache;
   }
 }
 

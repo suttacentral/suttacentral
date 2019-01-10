@@ -1,11 +1,15 @@
 const FALLBACK_LANGUAGE = 'en';
 
+// I don't want to make call for /api/languages
+// because it would block the rendering
+const SUPPORTED_TRANSLATIONS = ['en', 'pl', 'pt', 'zh'];
+
 const localizationCache = {};
 
 /**
-* @polymer
-* @mixinFunction
-*/
+ * @polymer
+ * @mixinFunction
+ */
 export const Localized = base => class extends base {
   static get properties() {
     return {
@@ -29,7 +33,7 @@ export const Localized = base => class extends base {
   }
 
   __computeLocalize(resources) {
-    return function(key, ...params) {
+    return function (key, ...params) {
       const string = (resources && resources[key]) ? resources[key] : '';
 
       if (params.length) {
@@ -52,24 +56,29 @@ export const Localized = base => class extends base {
   }
 
   async __loadLanguage(lang) {
-    const path = `${this.localizedStringsPath}/${lang}.json`;
+    if (SUPPORTED_TRANSLATIONS.includes(lang)) {
+      const path = `${this.localizedStringsPath}/${lang}.json`;
 
-    if (!this.localizedStringsPath) console.log(this);
+      if (!this.localizedStringsPath) console.log(this);
 
-    if (path in localizationCache) {
+      if (path in localizationCache) {
+        return localizationCache[path];
+      }
+
+      localizationCache[path] = fetch(path)
+        .then(r => r.json())
+        .then(data => data[lang])
+        .catch(() => ({}));
+
       return localizationCache[path];
+    } else {
+      return Promise.resolve({});
     }
-
-    localizationCache[path] = fetch(path)
-      .then(r => r.json())
-      .then(data => data[lang]);
-
-    return localizationCache[path];
   }
 };
 
-import { store } from '../../redux-store.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
+import { store } from '../../redux-store.js';
 
 export const LitLocalized = base => class extends connect(store)(base) {
   static get properties() {
@@ -109,6 +118,7 @@ export const LitLocalized = base => class extends connect(store)(base) {
   _stateChanged(state) {
     if (this.language !== state.siteLanguage) {
       this.language = state.siteLanguage;
+      this.fullSiteLanguageName = state.fullSiteLanguageName;
       this.__siteLanguageChanged(this.language);
     }
   }
@@ -124,16 +134,21 @@ export const LitLocalized = base => class extends connect(store)(base) {
   }
 
   async __loadLanguage(lang) {
-    const path = `${this.localizedStringsPath}/${lang}.json`;
+    if (SUPPORTED_TRANSLATIONS.includes(lang)) {
+      const path = `${this.localizedStringsPath}/${lang}.json`;
 
-    if (path in localizationCache) {
+      if (path in localizationCache) {
+        return localizationCache[path];
+      }
+
+      localizationCache[path] = fetch(path)
+        .then(r => r.json())
+        .then(data => data[lang])
+        .catch(() => ({}));
+
       return localizationCache[path];
+    } else {
+      return Promise.resolve({});
     }
-
-    localizationCache[path] = fetch(path)
-      .then(r => r.json())
-      .then(data => data[lang]);
-
-    return localizationCache[path];
   }
 };
