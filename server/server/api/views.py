@@ -16,7 +16,8 @@ from common.mail import send_email
 
 from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS,
                             SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY,
-                            DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA, AVAILABLE_TRANSLATIONS_LIST)
+                            DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA, AVAILABLE_TRANSLATIONS_LIST,
+                            TRANSLATION_COUNT_BY_DIVISION, TRANSLATION_COUNT_BY_AUTHOR, TRANSLATION_COUNT_BY_LANGUAGE)
 
 from common.utils import (flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key,
                           groupby_unsorted)
@@ -71,6 +72,101 @@ class Languages(Resource):
             response = [l for l in languages if not l['is_root']]
 
         return response, 200
+
+
+
+
+class TranslationCountByDivision(Resource):
+    """
+    Return a summary of translation count by division and author
+    """
+
+    def get(self, iso_code):
+        """
+
+        ---
+        responses:
+            200:
+                description: Summary of translation counts
+                schema:
+                    type: object
+                    properties:
+                        divisions:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    uid:
+                                        type: string
+                                    name:
+                                        type: string
+                                    root_lang:
+                                        type: string
+                                    total:
+                                        type: number
+                        authors:
+                            type: array
+                            items:
+                                schema:
+                                    type: object
+                                    properties:
+                                        name: 
+                                            type: string
+                                        total:
+                                            type: number
+        """
+
+        db = get_db()
+
+        if not db['language'][iso_code]:
+            return {"error": f'language code not recognized "{iso_code}"'}, 422
+
+        response = {
+            'division': list(db.aql.execute(TRANSLATION_COUNT_BY_DIVISION, bind_vars={'lang': iso_code})),
+            'author': list(db.aql.execute(TRANSLATION_COUNT_BY_AUTHOR, bind_vars={'lang': iso_code}))
+        }
+        return response, 200
+ 
+
+
+class TranslationCountByLanguage(Resource):
+    """
+    return a summary of translation counts by language
+    """
+
+    def get(self):
+        '''
+        responses:
+            200:
+                description: Summary of translation counts by language
+                schema:
+                    type: object
+                    properties:
+                        modern:
+                            type: array
+                            items:
+                                $ref: '#/definitions/TranslationCount'
+                        ancient:
+                            type: array
+                            items:
+                                $ref: '#/definitions/TranslationCount'
+        definitions:
+            TranslationCount:
+                type: object
+                properties:
+                    iso_code:
+                        type: string
+                    name:
+                        type: string
+                    total:
+                        type: number
+        '''
+
+        db = get_db()
+        
+        response = next(db.aql.execute(TRANSLATION_COUNT_BY_LANGUAGE))
+        return response, 200
+
 
 def has_translated_descendent(uid, lang, _cache={}):
     if lang not in _cache:

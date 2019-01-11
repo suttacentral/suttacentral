@@ -650,21 +650,21 @@ LET langs = (
             iso_code: lang.iso_code,
             is_root: lang.is_root,
             name: lang.name,
-            count: legacy_counts[lang.iso_code] + segmented_counts[lang.iso_code]
+            total: legacy_counts[lang.iso_code] + segmented_counts[lang.iso_code]
         }
     )
     
 LET sorted_langs = MERGE(
     FOR lang IN langs
-        COLLECT is_root = lang.is_root INTO groups
+        COLLECT is_root = lang.is_root INTO groupings
         RETURN {
-            [is_root]: groups
+            [is_root]: groupings[*].lang
         }
     )
 
 RETURN {
-    ancient: sorted_langs["true"],
-    modern: sorted_langs["false"]
+    ancient: sorted_langs["true"][* RETURN UNSET(CURRENT, 'is_root', 'num')],
+    modern: sorted_langs["false"][* RETURN UNSET(CURRENT, 'is_root', 'num')]
 }
 '''
 
