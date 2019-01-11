@@ -8,7 +8,8 @@ from flask_restful import Api
 
 from api.views import (Currencies, Donations, Languages, LookupDictionaries, Menu, Paragraphs, Parallels, Sutta,
                        SuttaplexList, Images, Epigraphs, WhyWeRead, DictionaryFull, Glossary, DictionaryAdjacent,
-                       DictionarySimilar, Expansion, CollectionUrlList, StripePublicKey, PWASizes, Redirect)
+                       DictionarySimilar, Expansion, CollectionUrlList, StripePublicKey, PWASizes, Redirect,
+                       TranslationCountByDivision, TranslationCountByLanguage)
 from api.ebook.ebook import EBook
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
@@ -25,6 +26,8 @@ def app_factory() -> Tuple[Api, Flask]:
     api = Api(api_bp)
 
     api.add_resource(Languages, '/languages')
+    api.add_resource(TranslationCountByDivision, '/translation_count/<string:iso_code>')
+    api.add_resource(TranslationCountByLanguage, '/translation_count')
     api.add_resource(Search, '/search')
     api.add_resource(DictionaryFull, '/dictionary_full/<string:word>')
     api.add_resource(Menu, '/menu', '/menu/<path:submenu_id>')
