@@ -4,16 +4,13 @@ about: Suggest an idea for this project
 
 ---
 
-#### Added value:
+#### User story
 
 
-#### Acceptance criteria:
+#### Feature description
 
 
-#### Performance criteria:
-
-
-#### Method of demonstrating completion:
+#### Acceptance criteria (the list of things that need to be done for the ticket to be considered finished):
 
 
 #### Pre milestone planning check:
