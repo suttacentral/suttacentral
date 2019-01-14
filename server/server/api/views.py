@@ -228,10 +228,12 @@ class Menu(Resource):
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
         return self.get_data(submenu_id, language=language), 200
 
-    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, language=None):
+    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, language=None, bind_vars=None):
         db = get_db()
 
-        bind_vars = {'language': language}
+        if not bind_vars:
+            bind_vars = {'language': language}
+        
 
         if submenu_id:
             bind_vars['submenu_id'] = submenu_id
