@@ -237,7 +237,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
 
               <h3 class="option-title">{{localize('language')}}</h3>
               <div class="option-description">{{localize('selectDifferentLang')}}</div>
-              <sc-language-base-menu id="pwa_language_menu" clone-name="pwa" no-root
+              <sc-language-base-menu id="pwa_language_menu" cloneName="pwa" noRoot="true"
                                      disabled="[[_isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress)]]">
               </sc-language-base-menu>
 
