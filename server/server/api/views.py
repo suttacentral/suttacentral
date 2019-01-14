@@ -22,6 +22,8 @@ from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, 
 from common.utils import (flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key,
                           groupby_unsorted)
 
+from data_loader.textfunctions import asciify_roman as asciify
+
 
 class Languages(Resource):
     """
@@ -839,7 +841,7 @@ class DictionarySimilar(Resource):
         """
         db = get_db()
 
-        data = db.aql.execute(DICTIONARY_SIMILAR, bind_vars={'word': word})
+        data = db.aql.execute(DICTIONARY_SIMILAR, bind_vars={'word': word, 'word_ascii': asciify(word)})
 
         return list(data), 200
 

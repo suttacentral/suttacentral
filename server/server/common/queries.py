@@ -537,14 +537,15 @@ RETURN UNIQUE(adjacent_words)
 '''
 
 DICTIONARY_SIMILAR = '''
-LET similar_words = (
-    FOR dictionary IN dictionary_full
-        FILTER dictionary.word == @word
-        LIMIT 1
-        RETURN dictionary.similar
-    )[0]
-    
-RETURN similar_words
+RETURN FLATTEN(
+    FOR doc IN FULLTEXT(dictionary_full, 'word_ascii', CONCAT('prefix:', LEFT(@word_ascii, 1)))
+        FILTER doc.word != @word
+        LET ed = LEVENSHTEIN_DISTANCE(@word_ascii, doc.word_ascii) + LEVENSHTEIN_DISTANCE(@word, doc.word)
+        FILTER ed < 4
+        SORT ed
+        LIMIT 10
+        RETURN doc.word        
+    )
 '''
 
 EXPANSION = '''
