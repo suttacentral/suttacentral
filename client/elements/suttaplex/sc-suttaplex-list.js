@@ -10,6 +10,7 @@ import { LitLocalized } from '../addons/localization-mixin';
 import './card/sc-suttaplex.js';
 import { suttaplexListCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title.js';
+import '../addons/sc-error-icon.js';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static get properties() {
@@ -126,14 +127,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     }
   }
 
-  get errorTemplate() {
-    return html`
-    <div class="network-error">
-      <iron-icon class="network-error-icon" title="${this.localize('networkError')}" src="/img/nonetwork.svg"></iron-icon>
-      <div>${this.localize('networkError')}</div>
-    </div>`;
-  }
-
   suttaplexTemplate(item) {
     return html`
       <sc-suttaplex
@@ -165,7 +158,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         <paper-spinner-lite class="loading-spinner" .active="${this.suttaplexLoading}"></paper-spinner-lite>
       </div>
 
-      ${this.hasError() ? this.errorTemplate : ''}
+      ${this.hasError() ? html`<sc-error-icon type="no-network"></sc-error-icon>` : ''}
 
       ${(this.suttaplexData && repeat(this.suttaplexData, (item) => item.key, (item) =>
         this.isSuttaplex(item)

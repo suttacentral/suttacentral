@@ -268,6 +268,17 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     }
   }
 
+  static get actions() {
+    return {
+      setOnlineStatus(isOnline) {
+        return {
+          type: 'SET_ONLINE_STATUS',
+          isOnline
+        };
+      }
+    };
+  }
+
   ready() {
     super.ready();
     this.removeAttribute('unresolved');
@@ -288,6 +299,12 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       }
     });
     this.addEventListener('open-dialog', e => this._openDialog(e));
+
+    ['load', 'online', 'offline'].forEach(eventName => {
+      window.addEventListener(eventName, () => {
+        this.dispatch('setOnlineStatus', navigator.onLine);
+      });
+    });
   }
 
   _routeChanged() {

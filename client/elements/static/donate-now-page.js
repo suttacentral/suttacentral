@@ -20,6 +20,7 @@ import "@polymer/iron-location/iron-location.js";
 import "@polymer/paper-toast/paper-toast.js";
 
 import '../addons/stripe-card.js';
+import '../addons/sc-error-icon.js';
 import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from "../addons/localization-mixin.js";
 import { staticStyles } from '../styles/static-styles.old.js';
@@ -153,20 +154,6 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
         }
       }
 
-      .network-error {
-        @apply --center;
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-static-subtitle;
-        margin-top: var(--sc-size-xxl);
-        color: var(--sc-secondary-text-color);
-        text-align: center;
-      }
-
-      .network-error-icon {
-        width: var(--sc-size-xxl);
-        height: var(--sc-size-xxl);
-      }
-
       .margin-bottom-md {
         margin-bottom: var(--sc-size-md);
       }
@@ -281,11 +268,7 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
     </template>
 
     <template is="dom-if" if="[[!isOnline]]">
-      <div class="network-error">
-        <iron-icon class="network-error-icon" title="{{localize('networkError')}}"
-                   src="/img/nonetwork.svg"></iron-icon>
-        <div>{{localize('offline')}}</div>
-      </div>
+      <sc-error-icon type="no-network"></sc-error-icon>
     </template>`;
   }
 
@@ -351,7 +334,7 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
       },
       isOnline: {
         type: Boolean,
-        value: true
+        statePath: 'isOnline'
       },
       stripePublicKey: {
         type: String
@@ -375,14 +358,9 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
     setTimeout(() => {
       this._addEventListeners();
     });
-    this.isOnline = navigator ? navigator.onLine : true;
   }
 
   _addEventListeners() {
-    window.addEventListener('load', this._updateOnlineStatus.bind(this));
-    window.addEventListener('online', this._updateOnlineStatus.bind(this));
-    window.addEventListener('offline', this._updateOnlineStatus.bind(this));
-
     let oneTimeDonation = this.shadowRoot.querySelector('.one-time-donation');
     let monthly = this.shadowRoot.querySelector('.monthly-donation');
     let amountInput = this.shadowRoot.querySelector('.amount-input');
@@ -422,10 +400,6 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
         }
       });
     }
-  }
-
-  _updateOnlineStatus() {
-    this.isOnline = navigator.onLine;
   }
 
   _handleResponse() {
