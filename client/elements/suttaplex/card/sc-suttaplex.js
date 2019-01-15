@@ -312,7 +312,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         ` : ''}
         <div>
           ${this.translationsInUserLanguage.map((translation) => html`
-            <sc-suttaplex-tx .item="${this.item}" .translation="${translation}" isCompact="${this.isCompact}"></sc-suttaplex-tx>
+            <sc-suttaplex-tx .item="${this.item}" .translation="${translation}" .isCompact="${this.isCompact}"></sc-suttaplex-tx>
           `)}
         </div>
       </div>
