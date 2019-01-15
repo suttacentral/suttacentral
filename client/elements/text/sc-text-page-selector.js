@@ -7,6 +7,7 @@ import './sc-segmented-text.js';
 import './sc-simple-text.js';
 import './sc-stepper.js';
 import './sc-text-image.js';
+import '../addons/sc-error-icon.js';
 import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from '../addons/localization-mixin.js';
 import { textHeadingStyles } from '../styles/sc-text-heading-styles.js';
@@ -36,18 +37,6 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       .wrapper {
         flex: 1;
       }
-
-      .text-error {
-        @apply --center;
-        @apply --sc-sans-font;
-        text-align: center;
-        color: var(--sc-secondary-text-color);
-      }
-
-      .network-error-icon {
-        width: var(--sc-size-xxl);
-        height: var(--sc-size-xxl);
-      }
     </style>
 
     <iron-ajax id="sutta_text_ajax" url="[[_getSuttaTextUrl()]]" debounce-duration="500" handle-as="json" loading="{{isLoading}}" last-error="{{lastError}}" last-response="{{responseData}}"></iron-ajax>
@@ -74,11 +63,7 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       </template>
 
       <template is="dom-if" if="[[_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
-        <div class="text-error">
-          <iron-icon class="network-error-icon" src="/img/nonetwork.svg"></iron-icon>
-          <h2>Network Error</h2>
-          <h3>[[lastError.statusText]]</h3>
-        </div>
+        <sc-error-icon type="no-network"></sc-error-icon>
       </template>
 
     </div>

@@ -19,8 +19,6 @@
         "AmountCannotBeLessThan": "Valor não pode ser menor que US$ 0.50.",
         "StripeLimitations": "Por favor, faça um pagamento direto ou entre em contato conosco para ajuda.",
         "cardDeclined": "Seu cartão foi recusado.",
-        "offline": "Sem conexão.",
-        "networkError": "Erro de rede.",
         "donateNow": "Contribua"
     }
 }

@@ -48,7 +48,8 @@ const initialState = {
             chinese: {}
         }
     },
-    suttaplexListDisplay: false
+    suttaplexListDisplay: false,
+    isOnline: true
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -111,6 +112,8 @@ const reducer = (state, action) => {
             return Object.assign({}, state, { downloadedPWASettings: action.downloadedPWASettings });
         case 'SUTTPLEX_LIST_DISPLAY':
             return Object.assign({}, state, { suttaplexListDisplay: action.suttaplexdisplay });
+        case 'SET_ONLINE_STATUS':
+            return Object.assign({}, state, { isOnline: action.isOnline });
         default:
             return state;
     }

@@ -1,0 +1,6 @@
+{
+    "pt": {
+        "offline": "Não há conexão.",
+        "networkError": "Erro de rede."
+    }
+}

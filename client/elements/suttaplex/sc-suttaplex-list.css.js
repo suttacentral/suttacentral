@@ -33,17 +33,4 @@ export const suttaplexListCss = html`<style>
     z-index: 999;
     --paper-spinner-color: var(--sc-primary-color);
   }
-
-  .network-error {
-    @apply --center;
-    @apply --sc-sans-font;
-    @apply --sc-skolar-font-size-static-subtitle;
-    color: var(--sc-secondary-text-color);
-    text-align: center;
-  }
-
-  .network-error-icon {
-    width: var(--sc-size-xxl);
-    height: var(--sc-size-xxl);
-  }
 </style>`;

@@ -19,8 +19,6 @@
         "AmountCannotBeLessThan": "金额不能低于0.50美元。",
         "StripeLimitations": "由于磁卡（Stripe）限制，请使用直接付款，或者联系我们寻求帮助。",
         "cardDeclined": "您的卡被拒绝。",
-        "offline": "您已离线。",
-        "networkError": "网络错误。",
         "donateNow": "立即捐款。"
     }
 }

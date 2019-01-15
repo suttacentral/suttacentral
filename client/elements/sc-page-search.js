@@ -8,6 +8,7 @@ import '@polymer/iron-flex-layout/iron-flex-layout.js';
 
 import './menus/sc-search-filter-menu.js';
 import './suttaplex/card/sc-suttaplex.js';
+import './addons/sc-error-icon.js';
 import { ReduxMixin } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 import { API_ROOT } from '../constants.js';
@@ -28,7 +29,7 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
       :host {
         display: block;
         width: 100%;
-        height: calc(100% - var(--sc-size-xxl));
+        height: calc(100vh - var(--sc-size-xxl));
       }
 
       #search_result_list {
@@ -195,19 +196,6 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
       [hidden] {
         display: none !important;
       }
-
-      .network-error {
-        @apply --center;
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-static-subtitle;
-        color: var(--sc-secondary-text-color);
-        text-align: center;
-      }
-
-      .network-error-icon {
-        width: var(--sc-size-xxl);
-        height: var(--sc-size-xxl);
-      }
     </style>
 
     <iron-ajax id="ajax" url="[[_getUrl()]]" params="[[searchParams]]" handle-as="json" loading="{{loadingResults}}" on-response="_didRespond"></iron-ajax>
@@ -261,10 +249,7 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
     </template>
 
     <template is="dom-if" if="[[!isOnline]]">
-      <div class="network-error">
-        <iron-icon class="network-error-icon" title="{{localize('networkError')}}" src="/img/nonetwork.svg"></iron-icon>
-        <div>{{localize('offline')}}</div>
-      </div>
+      <sc-error-icon type="no-network"></sc-error-icon>
     </template>
 
     [[_createMetaData(searchQuery, localize)]]`;
@@ -327,7 +312,7 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
       },
       isOnline: {
         type: Boolean,
-        value: true
+        statePath: 'isOnline'
       },
       dictionaryTitles: {
         type: Object,
@@ -366,9 +351,6 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
   ready() {
     super.ready();
     this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
-    window.addEventListener('load', this._updateOnlineStatus.bind(this));
-    window.addEventListener('online', this._updateOnlineStatus.bind(this));
-    window.addEventListener('offline', this._updateOnlineStatus.bind(this));
   }
 
   // After results have been loaded into memory, pushes items to an array.
@@ -591,10 +573,6 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
 
   _calculateLink(item) {
     return item.url;
-  }
-
-  _updateOnlineStatus() {
-    this.isOnline = navigator.onLine;
   }
 
   _getUrl() {

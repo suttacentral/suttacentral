@@ -123,7 +123,8 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
       #pages {
         /* Subtract height of top bar */
-        height: calc(100% - var(--sc-size-xxl) * 2 - 146px);
+        min-height: calc(100vh - 145px - var(--sc-size-xxl) - var(--sc-size-xl));
+        position: relative;
       }
 
       #title_toolbar {
