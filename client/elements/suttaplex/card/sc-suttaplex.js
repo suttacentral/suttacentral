@@ -27,6 +27,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       parallelsOpened: Boolean,
       translationsOpened: Boolean,
       rootTextsOpened: Boolean,
+      compactToggle: Boolean,
     }
   }
 
@@ -61,13 +62,21 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     if (changedProperties.has('item') || changedProperties.has('language')) {
       const translations = (this.item || {}).translations || [];
       const lang = this.language;
-      this.translationsInUserLanguage = translations.filter(item => item.lang === lang);
+      this._translationsInUserLanguage = translations.filter(item => item.lang === lang);
       this.translationsInModernLanguages = translations.filter(item => item.lang.length === 2 && item.lang !== lang);
       this.rootTexts = translations.filter(item => item.is_root);
       this.hasSegmentedTexts = translations.filter(item => item.segmented).length > 0;
     }
 
     return super.shouldUpdate();
+  }
+
+  toggleCompact() {
+    this.compactToggle = !this.compactToggle;
+  }
+
+  get translationsInUserLanguage() {
+    return this.isCompact ? this._translationsInUserLanguage.slice(0, 1) : this._translationsInUserLanguage
   }
 
   get difficultyLevelIconName() {
@@ -156,6 +165,10 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     }
   }
 
+  get isCompact() {
+    return this.suttaplexListStyle === 'compact' && !this.compactToggle;
+  }
+
   get listenUrl() {
     return `${SUTTACENTRAL_VOICE_URL}scv/#/?search=${this.item.uid}&lang=${this.language}`;
   }
@@ -169,9 +182,11 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       ${suttaplexCss}
       
       <paper-card class="suttaplex" id="${this.item.uid}" elevation="1">
-        <div class="compact">
+        <div>
           <div class="top-row">
-            <h1 title="${this.mainHeadingTitle}">${this.mainHeading}</h1>
+            <h1 class="${this.suttaplexListStyle}" title="${this.mainHeadingTitle}" @click="${this.toggleCompact}">
+              ${this.mainHeading}
+            </h1>
     
             ${this.topRowIconsTemplate}
           </div>
@@ -179,13 +194,13 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.nerdyRowTemplate}
         </div>
 
-        ${this.suttaplexListStyle !== 'compact' ? html`
+        ${!this.isCompact ? html`
           ${this.item.blurb && html`<div class="blurb" title="${this.localize('blurb')}" .innerHTML="${this.item.blurb}"/>`}
         ` : ''}
 
         ${this.userLanguageTranslationsTemplate}
 
-        ${this.suttaplexListStyle !== 'compact' ? html` 
+        ${!this.isCompact ? html`
           ${this.modernLanguageTranslationsTemplate}
           ${this.rootTextsTemplate}
           ${this.parallelsTemplate}
@@ -208,7 +223,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       ${this.hasSegmentedTexts ? html`
         <a class="top-menu-button" role="group" aria-haspopup="true" href="${this.listenUrl}" target="_blank"
           aria-disabled="false" title="Listen to this sutta">
-          <paper-icon-button class="btn-speaker grey-icon" slot="dropdown-trigger"
+          <paper-icon-button class="btn-speaker" slot="dropdown-trigger"
              icon="icons:sc-svg-icons:speaker" role="button" tabindex="0" aria-disabled="false">
           </paper-icon-button>
         </a>
@@ -216,7 +231,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
       <paper-menu-button id="copy-menu" class="top-menu-button" horizontal-align="right" role="group"
         aria-haspopup="true" aria-disabled="false" vertical-align="auto">
-        <paper-icon-button class="btn-share grey-icon" slot="dropdown-trigger"
+        <paper-icon-button class="btn-share" slot="dropdown-trigger"
           icon="icons:sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false">
         </paper-icon-button>
   
@@ -242,7 +257,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
         ${this.item.volpages && html`
           ${!this.item.biblio ? html`
-            <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
+            <iron-icon class="small-icon" icon="book"></iron-icon>
             <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
               ${this.volPage}
             </span>
@@ -251,7 +266,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.item.biblio && html`
             <details class="suttaplex-details">
               <summary>
-                <iron-icon class="grey-icon" icon="book"></iron-icon>
+                <iron-icon icon="book"></iron-icon>
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
                   ${this.volPage}
                 </span>
@@ -275,7 +290,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
           ${this.item.volpages && html`
             <span class="book no-margin">
-              <iron-icon class="grey-icon small-icon" icon="book"></iron-icon>
+              <iron-icon class="small-icon" icon="book"></iron-icon>
             </span>
             <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
               ${this.volPage}
@@ -289,14 +304,15 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     const translationKey = this.translationsInUserLanguage.length === 1 ? 'translationIn' : 'translationsIn';
     return html`
       <div class="section-details main-translations">
-        <h3>
-          <b>
-             ${this.translationsInUserLanguage.length} ${this.localize(translationKey, { lang: this.fullSiteLanguageName })}
-          </b>
-        </h3>
+        ${!this.isCompact ? html`<h3>
+            <b>
+               ${this.translationsInUserLanguage.length} ${this.localize(translationKey, { lang: this.fullSiteLanguageName })}
+            </b>
+          </h3>
+        ` : ''}
         <div>
           ${this.translationsInUserLanguage.map((translation) => html`
-            <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
+            <sc-suttaplex-tx .item="${this.item}" .translation="${translation}" isCompact="${this.isCompact}"></sc-suttaplex-tx>
           `)}
         </div>
       </div>

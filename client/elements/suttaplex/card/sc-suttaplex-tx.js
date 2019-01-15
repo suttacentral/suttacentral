@@ -10,6 +10,7 @@ class SCSuttaplexTx extends LitElement {
     return {
       item: Object,
       translation: Object,
+      isCompact: Boolean,
     }
   }
 
@@ -21,14 +22,14 @@ class SCSuttaplexTx extends LitElement {
     return html`
       ${suttaplexTxCss}
       
-      <a href="${this.translationUrl}" class="tx">
+      <a href="${this.translationUrl}" class="tx ${this.isCompact ? 'compact' : ''}">
         <paper-ripple></paper-ripple>
         <div class="tx-icon">
           <iron-icon icon="sc-svg-icons:translation"></iron-icon>
         </div>
         <div class="tx-details">
           <span class="tx-creator">${this.translation.author}</span>
-          <span class="tx-publication">${this.translation.lang_name}</span>
+          <span class="tx-publication">${this.translation.lang_name} ${this.translation.segmented ? '& Pali' : ''}</span>
         </div>
 
         <iron-icon class="arrow" icon="icons:chevron-right"></iron-icon>

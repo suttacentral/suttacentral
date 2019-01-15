@@ -790,6 +790,13 @@ template.innerHTML = `
         line-height: 24px;
       };
 
+      --sc-paper-font-body-serif: {
+        @apply --sc-serif-font;
+        @apply --sc-skolar-font-size-md;
+        font-weight: 400;
+        line-height: 24px;
+      };
+
       --sc-all-small-caps: {
         font-feature-settings: "smcp", "c2sc";
         text-transform: lowercase;

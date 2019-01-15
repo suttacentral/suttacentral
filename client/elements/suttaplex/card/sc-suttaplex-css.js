@@ -16,8 +16,12 @@ export const suttaplexCss = html`
   }
 
   h1 {
-    @apply --paper-font-headline;
+    @apply --paper-font-compact-title;
     margin: 0;
+  }
+
+  h1:not(.compact) {
+    @apply --sc-skolar-font-size-static-subtitle;
   }
 
   .hide-element {
@@ -162,6 +166,11 @@ export const suttaplexCss = html`
   sc-suttaplex-tx:last-of-type {
     margin-bottom: 0;
   }
+
+  .small-icon {
+    --iron-icon-width: 16px;
+    --iron-icon-height: 16px;
+  }
 </style>`;
 
 
@@ -197,6 +206,10 @@ export const suttaplexTxCss = html`
     color: var(--sc-primary-color-medium);
   }
 
+  .tx.compact {
+    padding: 0;
+  }
+
   .tx-icon {
     height: 28px;
     min-width: 28px;
@@ -220,7 +233,7 @@ export const suttaplexTxCss = html`
 
   .tx-creator {
     margin-right: var(--sc-size-md);
-    @apply --sc-paper-font-body;
+    @apply --sc-paper-font-body-serif;
   }
 
   .tx-publication {
