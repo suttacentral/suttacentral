@@ -24,7 +24,7 @@ services:
       - sc-arangodb
 
   sc-arangodb:
-    image: arangodb/arangodb
+    image: arangodb/arangodb:3.4.1
     container_name: 'sc-arangodb'
     env_file:
       - server/env/.base.env

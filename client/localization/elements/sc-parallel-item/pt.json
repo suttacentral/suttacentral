@@ -1,0 +1,10 @@
+{
+    "pt": {
+        "originalTitle": "Título original",
+        "suttaCentralID": "Identificador SuttaCentral",
+        "alternateText": "Número alternativo na edição {book}:",
+        "volumeAndPage": "Volume e página",
+        "volumeAndPagePTS1": "Volume e página PTS:\n1ª edição = {pts1}\n2ª edição = {pts2}",
+        "translations": "Traduções"
+    }
+}

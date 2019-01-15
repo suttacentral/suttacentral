@@ -1,0 +1,9 @@
+{
+    "pt": {
+        "cardNumber": "Número do cartão",
+        "ZIP": "Código postal",
+        "CVC": "Código de verificação (CVC)",
+        "year": "AA",
+        "month": "MM"
+    }
+}

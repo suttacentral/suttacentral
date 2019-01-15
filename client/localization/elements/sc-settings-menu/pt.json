@@ -1,0 +1,32 @@
+{
+    "pt": {
+        "viewTextualInfo": "Ver informações sobre o texto",
+        "displaysInfo": "Apresenta informações como referência bibliográfica, versões alternativas, etc.",
+        "viewOriginal": "Ver texto original com tradução lado a lado",
+        "onlyWorks": "Funcionalidade disponível apenas para alguns textos, inclusive traduções por Sujato e Brahmali.",
+        "none": "Nada",
+        "sideBySide": "Lado a lado",
+        "lineByLine": "Linha por linha",
+        "popUp": "Pop-up",
+        "lookup": "Busca automática (lookup)",
+        "activatePaliLookup": "Ativar busca automática por termos em páli",
+        "activatePaliDescription": "Analisa o texto páli e apresenta significados para estes. Note que esta funcionalidade existe apenas como elemento auxiliar, apresentando definições para termos não necessariamente em contexto e/ou de forma exata. As definições foram traduzidas a partir do dicionário páli-inglês New Concise Pali English Dictionary.",
+        "activateChineseLookup": "Ativar busca automática por termos em chinês",
+        "activateChineseDescription": "Esta opção permite a busca de termos para textos chineses antigos. As definições foram traduzidas a partir do dicionário chinês-inglês Digital Dictionary of Buddhism.",
+        "changePaliScript": "Alterar o sistema de escrita em que o texto páli é apresentado",
+        "changePaliScriptLabel": "Sistema de escrita",
+        "changePaliScriptDescription": "Esta opção permite que textos originais em páli sejam apresentados em diferentes sistemas de escrita.",
+        "rememberSettings": "Lembrar opções",
+        "rememberSettingsDescription": "Selecione esta opção para que as escolhas e configurações sejam lembradas na próxima vez em que SuttaCentral for acessado.",
+        "textualInformationEnabled": "Informação textual ativada.",
+        "textualInformationDisabled": "Informação textual desativada.",
+        "textViewEnabled": "{textView}- opção de apresentação ativada para textos com esta configuração.",
+        "textViewDisabled": "Apresentação páli-português desativada.",
+        "lookupDictionaryEnabled": "Busca automática (lookup) {lookupDictionary} ativada.",
+        "paliLookupDictionaryDisabled": "Busca automática (lookup) desativada.",
+        "chineseLookupDictionaryDisabled": "Busca automática (lookup) desativada.",
+        "scriptChanged": "Apresentação do texto páli no sistema de escrita {paliScript} ativada.",
+        "rememberSettingsEnabled": "A opção escolhida será lembrada da próxima vez que SuttaCentral for acessado.",
+        "rememberSettingsDisabled": "A opção escolhida não será lembrada da próxima vez que SuttaCentral for acessado."
+    }
+}

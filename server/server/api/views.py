@@ -16,10 +16,13 @@ from common.mail import send_email
 
 from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS,
                             SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY,
-                            DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA)
+                            DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA, AVAILABLE_TRANSLATIONS_LIST,
+                            TRANSLATION_COUNT_BY_DIVISION, TRANSLATION_COUNT_BY_AUTHOR, TRANSLATION_COUNT_BY_LANGUAGE)
 
 from common.utils import (flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key,
                           groupby_unsorted)
+
+from data_loader.textfunctions import asciify_roman as asciify
 
 
 class Languages(Resource):
@@ -54,17 +57,128 @@ class Languages(Resource):
                                     type: string
                                 is_root:
                                     type: boolean
+                                localized:
+                                    type: boolean
+                                localized_percent:
+                                    type: number
         """
 
         include_all = request.args.get('all', False)
 
         db = get_db()
         languages = list(db.aql.execute(LANGUAGES))
-        available_languages = [l['iso_code'] for l in db['available_languages'].all()]
 
-        response = languages if include_all else [l for l in languages if l['iso_code'] in available_languages]
+        if include_all:
+            response = languages
+        else:
+            response = [l for l in languages if not l['is_root']]
 
         return response, 200
+
+
+
+
+class TranslationCountByDivision(Resource):
+    """
+    Return a summary of translation count by division and author
+    """
+
+    def get(self, iso_code):
+        """
+
+        ---
+        responses:
+            200:
+                description: Summary of translation counts
+                schema:
+                    type: object
+                    properties:
+                        divisions:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    uid:
+                                        type: string
+                                    name:
+                                        type: string
+                                    root_lang:
+                                        type: string
+                                    total:
+                                        type: number
+                        authors:
+                            type: array
+                            items:
+                                schema:
+                                    type: object
+                                    properties:
+                                        name: 
+                                            type: string
+                                        total:
+                                            type: number
+        """
+
+        db = get_db()
+
+        if not db['language'][iso_code]:
+            return {"error": f'language code not recognized "{iso_code}"'}, 422
+
+        response = {
+            'division': list(db.aql.execute(TRANSLATION_COUNT_BY_DIVISION, bind_vars={'lang': iso_code})),
+            'author': list(db.aql.execute(TRANSLATION_COUNT_BY_AUTHOR, bind_vars={'lang': iso_code}))
+        }
+        return response, 200
+ 
+
+
+class TranslationCountByLanguage(Resource):
+    """
+    return a summary of translation counts by language
+    """
+
+    def get(self):
+        '''
+        responses:
+            200:
+                description: Summary of translation counts by language
+                schema:
+                    type: object
+                    properties:
+                        modern:
+                            type: array
+                            items:
+                                $ref: '#/definitions/TranslationCount'
+                        ancient:
+                            type: array
+                            items:
+                                $ref: '#/definitions/TranslationCount'
+        definitions:
+            TranslationCount:
+                type: object
+                properties:
+                    iso_code:
+                        type: string
+                    name:
+                        type: string
+                    total:
+                        type: number
+        '''
+
+        db = get_db()
+        
+        response = next(db.aql.execute(TRANSLATION_COUNT_BY_LANGUAGE))
+        return response, 200
+
+
+def has_translated_descendent(uid, lang, _cache={}):
+    if lang not in _cache:
+        db = get_db()
+        uids = next(db.aql.execute(AVAILABLE_TRANSLATIONS_LIST, bind_vars={'lang': lang}))
+        _cache[lang] = set(uids)
+    
+    lang_mapping = _cache[lang]
+    return uid in lang_mapping
+
 
 
 class Menu(Resource):
@@ -114,13 +228,14 @@ class Menu(Resource):
                         type: string
         """
         language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+        return self.get_data(submenu_id, language=language), 200
 
-        return self.get_data(submenu_id, bind_vars={'language': language}), 200
-
-    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, **kwargs):
+    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, language=None, bind_vars=None):
         db = get_db()
 
-        bind_vars = kwargs.get('bind_vars', {})
+        if not bind_vars:
+            bind_vars = {'language': language}
+        
 
         if submenu_id:
             bind_vars['submenu_id'] = submenu_id
@@ -140,8 +255,7 @@ class Menu(Resource):
                     pitaka['children'] = self.group_by_parents(children, ['sect'])
                     self.group_by_language(pitaka, exclude={'sect/other'})
 
-        self.recursive_cleanup(data, mapping={})
-
+        self.recursive_cleanup(data, language=language, mapping={})
         return data
 
     @staticmethod
@@ -221,11 +335,13 @@ class Menu(Resource):
         if display_num:
             menu_entry['display_num'] = display_num.replace('-', '–\u2060')
 
-    def recursive_cleanup(self, menu_entries, mapping):
+    def recursive_cleanup(self, menu_entries, language, mapping):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
             mapping[menu_entry['uid']] = menu_entry
-            self.update_display_num(menu_entry)
+            if 'id' in menu_entry:
+                menu_entry['yellow_brick_road'] = has_translated_descendent(menu_entry['id'], language)
+            self.update_display_num(menu_entry)            
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
                 mapping.update({d['uid']: d for d in descendents})
@@ -242,7 +358,7 @@ class Menu(Resource):
                 del menu_entry['parents']
             if 'children' in menu_entry:
                 children = menu_entry['children']
-                self.recursive_cleanup(children, mapping=mapping)
+                self.recursive_cleanup(children, language=language, mapping=mapping)
 
 
 class SuttaplexList(Resource):
@@ -725,7 +841,7 @@ class DictionarySimilar(Resource):
         """
         db = get_db()
 
-        data = db.aql.execute(DICTIONARY_SIMILAR, bind_vars={'word': word})
+        data = db.aql.execute(DICTIONARY_SIMILAR, bind_vars={'word': word, 'word_ascii': asciify(word)})
 
         return list(data), 200
 

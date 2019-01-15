@@ -1,0 +1,10 @@
+{
+    "zh": {
+        "originalTitle": "原本标题",
+        "suttaCentralID": "SuttaCentral 定处",
+        "alternateText": "{book}版本中的代数：",
+        "volumeAndPage": "卷和页",
+        "volumeAndPagePTS1": "PTS 卷和页：\n第一版= {pts1}\n第二版= {pts2}",
+        "translations": "翻译"
+    }
+}

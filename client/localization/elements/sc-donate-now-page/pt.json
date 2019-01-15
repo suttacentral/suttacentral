@@ -1,0 +1,26 @@
+{
+    "pt": {
+        "currency": "Moeda",
+        "amount": "Valor",
+        "invalidValue": "Valor inválido",
+        "chooseFrequency": "Você pode fazer uma doação única ou valor mensal:",
+        "oneTime": "Única",
+        "monthly": "Mensal",
+        "email": "E-mail (opcional)",
+        "invalidEmail": "E-mail inválido",
+        "message": "Mensagem (opcional)",
+        "payWithCard": "Pague com cartão de crédito/débito",
+        "storageDisclaimer": "SuttaCentral não armazena ou distribui os detalhes de seu cartão. Todas as transações são realizadas em ambiente seguro por <a href='https://stripe.com' target='blank'>Stripe</a>.",
+        "feeDisclaimer": "A taxa por operação deduzida de sua doação equivale a 1.75% + AU$ 0.30 para cartões emitidos na Austrália, e 2.9% + AU$ 0.30 para cartões internacionais, acrescido de 1.8% de taxa de câmbio quando aplicável.",
+        "paymentSuccessful": "Sadhu! Seu pagamento foi realizado com sucesso.",
+        "redirectNotice": "Em 5 segundos você será redirecionado para a página principal.",
+        "Name (optional)": "Nome (opcional)",
+        "UnknownError": "Erro na transação.",
+        "AmountCannotBeLessThan": "Valor não pode ser menor que US$ 0.50.",
+        "StripeLimitations": "Por favor, faça um pagamento direto ou entre em contato conosco para ajuda.",
+        "cardDeclined": "Seu cartão foi recusado.",
+        "offline": "Sem conexão.",
+        "networkError": "Erro de rede.",
+        "donateNow": "Contribua"
+    }
+}
