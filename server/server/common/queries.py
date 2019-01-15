@@ -537,15 +537,16 @@ RETURN UNIQUE(adjacent_words)
 '''
 
 DICTIONARY_SIMILAR = '''
-RETURN FLATTEN(
-    FOR doc IN FULLTEXT(dictionary_full, 'word_ascii', CONCAT('prefix:', LEFT(@word_ascii, 1)))
+LET words = FLATTEN(
+    FOR doc IN v_dict SEARCH STARTS_WITH(doc.word_ascii, LEFT(@word_ascii, 1))
         FILTER doc.word != @word
-        LET ed = LEVENSHTEIN_DISTANCE(@word_ascii, doc.word_ascii) + LEVENSHTEIN_DISTANCE(@word, doc.word)
-        FILTER ed < 4
-        SORT ed
-        LIMIT 10
-        RETURN doc.word        
+        LET ed1 = LEVENSHTEIN_DISTANCE(@word_ascii, doc.word_ascii) * 2
+        LET ed2 = LEVENSHTEIN_DISTANCE(@word, doc.word)
+        FILTER ed2 < MAX([1, LENGTH(@word) / 2])
+        SORT ed1 + ed2
+        RETURN DISTINCT doc.word
     )
+RETURN SLICE(words, 0, 10)
 '''
 
 EXPANSION = '''

@@ -39,7 +39,7 @@ pytest==3.8.0
 pytest-flask==0.12.0
 pytest-sugar==0.9.1
 pyppeteer==0.0.24
-python-arango==4.2.1
+python-arango==4.4.0
 python-dateutil==2.7.3
 pytz==2018.5
 PyYAML==3.13
