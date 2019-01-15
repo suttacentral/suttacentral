@@ -28,6 +28,8 @@ import './styles/sc-utility-styles.js';
 import './styles/sc-font-styles.js';
 import './styles/sc-colors.js';
 
+import {initSentry} from '../sentry.js';
+
 
 class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
   static get template() {

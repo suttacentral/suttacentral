@@ -62,7 +62,7 @@ const prodConfig = {
       'node_modules/web-animations-js/*.js',
       'node_modules/@webcomponents/**/*.js',
       'node_modules/viewerjs/dist/*',
-      'node_modules/raven-js/dist/*'
+      'node_modules/@sentry/**/*',
     ])
   ]
 };
