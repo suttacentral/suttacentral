@@ -3,6 +3,12 @@ import { LitElement, html } from "@polymer/lit-element";
 import { LitLocalized } from './localization-mixin';
 
 export class SCErrorIcon extends LitLocalized(LitElement) {
+  static get properties() {
+    return {
+      type: String
+    };
+  }
+
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/sc-error-icon';
@@ -13,12 +19,6 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
         title: 'networkError',
         message: 'offline'
       }
-    };
-  }
-
-  static get properties() {
-    return {
-      type: String
     };
   }
 
