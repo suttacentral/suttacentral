@@ -29,7 +29,10 @@ class SCSuttaplexTx extends LitElement {
         </div>
         <div class="tx-details">
           <span class="tx-creator">${this.translation.author}</span>
-          <span class="tx-publication">${this.translation.lang_name} ${this.translation.segmented ? '& Pali' : ''}</span>
+          <span class="tx-publication">
+            ${this.translation.lang_name} ${this.translation.segmented ? '& Pali' : ''}
+            ${this.translation.publication_date ? ', ' + this.translation.publication_date : ''}
+          </span>
         </div>
 
         <iron-icon class="arrow" icon="icons:chevron-right"></iron-icon>
