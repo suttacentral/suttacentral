@@ -561,7 +561,7 @@ RETURN MERGE(expansion_item)
 
 class PWA:
     MENU = '''
-LET langs = UNION(@langs OR [], @include_root ? (FOR lang IN language FILTER lang.is_root RETURN lang.uid) : [])
+LET langs = UNION(@languages OR [], @include_root ? (FOR lang IN language FILTER lang.is_root RETURN lang.uid) : [])
 
 LET menu = (
     FOR div IN 1..1 OUTBOUND DOCUMENT('pitaka', 'sutta') `root_edges`
