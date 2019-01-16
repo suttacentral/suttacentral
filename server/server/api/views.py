@@ -233,7 +233,7 @@ class Menu(Resource):
     def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, language=None, bind_vars=None):
         db = get_db()
 
-        if not bind_vars:
+        if bind_vars is None:
             bind_vars = {'language': language}
         
 
@@ -1176,37 +1176,8 @@ class CollectionUrlList(Resource):
 
         languages = languages.split(',') if languages else []
 
-        menu_view = Menu()
-        menu_data = menu_view.get_data(menu_query=PWA.MENU, bind_vars={'root_lang': root_lang, 'languages': languages})
-        menu = []
-        suttaplex = []
-        texts = []
-        for entry in menu_data:
-            if entry['uid'].split('/')[1] == collection:
-                menu_data = entry
-                break
-        if not collection or not isinstance(menu_data, dict):
-            return 'collection not found', 404
-
-        self.process_recursively(menu, suttaplex, texts, menu_data['children'])
-
-        urls = {
-            'menu': menu,
-            'suttaplex': suttaplex,
-            'texts': texts
-        }
-        return urls
-
-    def process_recursively(self, menu, suttaplex, texts, data):
-        for entry in data:
-            if 'children' in entry:
-                self.process_recursively(menu, suttaplex, texts, entry['children'])
-            else:
-                suttaplex.append(entry['id'])
-                suttaplex.extend(entry['suttaplex'])
-                texts.extend(entry['texts'])
-                if entry['has_children']:
-                    menu.append(entry['id'])
+        db = get_db()
+        return next(db.aql.execute(PWA.MENU, bind_vars={'languages': languages, 'include_root': root_lang}))
 
 
 class StripePublicKey(Resource):
