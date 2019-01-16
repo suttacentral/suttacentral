@@ -365,7 +365,13 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                             'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
                             'remark': remark
                         })
-    db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/', overwrite=True)
+    
+    
+    # Because there are many edges (nearly 400k at last count) chunk the import
+    db['relationship'].truncate()
+    chunk_size = 10000
+    for chunk in (ll_edges[i:i+chunk_size] for i in range(0, len(ll_edges), chunk_size)):
+        db['relationship'].import_bulk(chunk, from_prefix='root/', to_prefix='root/')
     
 def load_author_edition(change_tracker, additional_info_dir, db):
     author_file = additional_info_dir / 'author_edition.json'

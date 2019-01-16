@@ -44,7 +44,7 @@ FOR text IN po_strings
         acronym: root.acronym,
         mtime: text.mtime
     }
-'''        
+'''
 
 # Returns all uids in proper order assuming num is set correctly in data
 UIDS_IN_ORDER_BY_DIVISION = '''
@@ -561,64 +561,46 @@ RETURN MERGE(expansion_item)
 
 class PWA:
     MENU = '''
-FOR div IN root
-    FILTER div.type == 'division'
-    LET parents = MERGE(
-        FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
-            RETURN {
-                [p.type]: {
-                    uid: p._id
-                }
-            }
-        )
+LET langs = UNION(@langs OR [], @include_root ? (FOR lang IN language FILTER lang.is_root RETURN lang.uid) : [])
 
-    LET texts = (
-        FOR d, d_edge, d_path IN 1..20 OUTBOUND div `root_edges`
-            FILTER d.type == 'text' OR d_edge.type == 'text'
-            LET po = (
-                FOR text IN po_strings
-                    FILTER text.uid == d.uid AND (POSITION(@languages, text.lang) OR 
-                                                  (text.lang == d.root_lang AND @root_lang))  
-                    RETURN {author_uid: text.author_uid, lang: text.lang}
+LET menu = (
+    FOR div IN 1..1 OUTBOUND DOCUMENT('pitaka', 'sutta') `root_edges`
+        LET has_subdivisions = LENGTH(
+            FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
+                FILTER d_edge.type != 'text'
+                
+                LIMIT 1
+                RETURN 1
             )
-            LET legacy = (
-                FOR text IN html_text
-                    FILTER text.uid == d.uid AND (POSITION(@languages, text.lang) OR 
-                                                  (text.lang == d.root_lang AND @root_lang))
-                    RETURN {author_uid: text.author_uid, lang: text.lang}
-            )
-            FILTER LENGTH(po) > 0 OR LENGTH(legacy) > 0
-            LET all_texts = UNION(po, legacy)
-            LET languages = (
-                FOR text IN all_texts
-                    RETURN DISTINCT text.lang
-            )
-            
-            LET m = (
-                FOR l IN languages
-                    LET in_lang = (
-                        FOR text IN all_texts
-                            FILTER text.lang == l
-                            RETURN text.author_uid
-                    )
-                    RETURN {lang: l, authors: in_lang}
-            )
-            
-            RETURN {uid: d.uid, translations: m}
+        FILTER has_subdivisions
+        SORT div.num
+        RETURN div.uid
     )
-    LET suttaplex = (
-        FOR d, d_edge, d_path IN 1..20 OUTBOUND div `root_edges`
-            FILTER d_edge.type != 'text'
-            RETURN d.uid
-    )
-    RETURN {
-        uid: div._id, 
-        has_children: LENGTH(suttaplex) != 0,
-        texts: texts,
-        suttaplex: suttaplex,
-        id: div.uid, 
-        parents: parents
-    }
+
+LET grouped_children = MERGE(
+    FOR d, d_edge, d_path IN 1..20 OUTBOUND DOCUMENT('pitaka', 'sutta') `root_edges`
+        SORT d_path.vertices[*].num
+        COLLECT is_div = d_edge.type != 'text' INTO uids = d.uid
+        RETURN {[is_div ? 'div' : 'text']: uids}
+)
+
+LET suttaplex = grouped_children['div']
+
+LET texts = (
+        FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['text']
+            COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: text.author_uid}
+            RETURN {uid, translations:(
+                FOR text IN groups
+                    COLLECT lang = text.lang INTO authors = text.author_uid
+                    RETURN {lang, authors}
+                )}
+)
+
+RETURN {
+    menu,
+    suttaplex,
+    texts
+}
     '''
 
     SIZES = '''
