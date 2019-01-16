@@ -2,6 +2,7 @@ import json
 import regex
 from tqdm import tqdm
 from collections import Counter
+from common.utils import chunks
 from .textfunctions import asciify_roman, pali_sort_key
 from .util import json_load
 
@@ -55,4 +56,6 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
     for doc in docs:
         doc['num'] = word_number[doc['word']]
     
-    dictionary_full_collection.import_bulk(docs, overwrite=True, on_duplicate="ignore")
+    dictionary_full_collection.truncate()
+    for chunk in chunks(docs, 1000):
+        dictionary_full_collection.import_bulk(chunk, on_duplicate="ignore")

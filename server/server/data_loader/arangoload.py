@@ -12,6 +12,7 @@ from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
 from common import arangodb
+from common.utils import chunks
 from common.uid_matcher import UidMatcher
 from .util import json_load
 from .change_tracker import ChangeTracker
@@ -369,8 +370,7 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
     
     # Because there are many edges (nearly 400k at last count) chunk the import
     db['relationship'].truncate()
-    chunk_size = 10000
-    for chunk in (ll_edges[i:i+chunk_size] for i in range(0, len(ll_edges), chunk_size)):
+    for chunk in chunks(ll_edges, 10000):
         db['relationship'].import_bulk(chunk, from_prefix='root/', to_prefix='root/')
     
 def load_author_edition(change_tracker, additional_info_dir, db):
