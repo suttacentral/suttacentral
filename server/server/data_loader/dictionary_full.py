@@ -20,7 +20,7 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
     lang_to = 'en'
     words_seen = Counter()    
     ids_seen = Counter()
-    for dictionary in tqdm(dictionary_full_files):
+    for dictionary in tqdm(dictionary_full_files, desc="Loading dictionaries", ncols=79):
         entries = json_load(dictionary)
         for entry in entries:
             word = entry['word'].lower()

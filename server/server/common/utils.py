@@ -1,6 +1,7 @@
 import re
 from typing import Callable, Dict, List
 from collections import defaultdict
+import itertools
 
 import decorator
 
@@ -228,7 +229,7 @@ def groupby_unsorted(seq, key=lambda x: x):
 
 def chunks(iterable, chunk_size):
     if isinstance(iterable, list):
-        return [iterable[i:i+chunk_size] for i in range(0, len(iterable), chunk_size)]
+        yield from (iterable[i:i+chunk_size] for i in range(0, len(iterable), chunk_size))
     else:
         iterator = iter(iterable)
         while True:
