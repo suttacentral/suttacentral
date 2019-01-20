@@ -21,7 +21,7 @@ import { ReduxMixin } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 import '../img/sc-svg-icons.js';
 import './sc-page-selector.js';
-import './menus/sc-navigation-menu.js';
+import './menus/navigation-menu/sc-navigation-menu.js';
 import './menus/sc-settings-menu.js';
 import './addons/sc-toasts.js';
 import './styles/sc-utility-styles.js';
@@ -186,7 +186,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
               <span class="nav-home-title-text">SuttaCentral</span>
             </a>
           </div>
-          <sc-navigation-menu class="navigation-menu"></sc-navigation-menu>
+          <sc-navigation-menu class="navigation-menu" opened="[[isDrawerOpened]]"></sc-navigation-menu>
         </div>
       </app-drawer>
 

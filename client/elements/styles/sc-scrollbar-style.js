@@ -2,7 +2,6 @@ import { html } from '@polymer/polymer/polymer-element.js';
 
 export const scrollbarStyle = html`
 <style>
-
   .sc-scrollbar::-webkit-scrollbar {
     width: var(--sc-size-sm);
     height: var(--sc-size-sm);
