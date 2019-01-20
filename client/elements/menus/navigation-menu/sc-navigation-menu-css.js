@@ -145,6 +145,23 @@ ${litScrollbarStyle}
     background: linear-gradient(to right, var(--sc-primary-color) 4px, transparent 4px);
   }
 
+  .yellow-brick .nav-link-container::after {
+    content: '';
+    display: inline-block;
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 5px;
+    top: 1px;
+    background: var(--sc-primary-accent-color-dark);
+    border-radius: 20px;
+  }
+
+  .yellow-brick .menu-dropdown-icon {
+      color: var(--sc-tertiary-text-color);
+  }
+
   .nav-menu-item.selected > .nav-link-container > .nav-link {
     color: var(--sc-primary-color);
   }
