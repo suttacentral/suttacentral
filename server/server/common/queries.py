@@ -160,12 +160,11 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
                 author_uid: text.author_uid,
                 publication_date: text.publication_date,
                 id: text._key,
-                segmented: false
+                segmented: false,
+                volpage: text.volpage
                 }
             // Add title if it is in desired language
-            LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
-            // Add volpage info if it exists.
-            RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res2
+            RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
         )
 
     LET po_translations = (
@@ -180,9 +179,11 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
                 author: text.author,
                 author_short: text.author_short,
                 author_uid: text.author_uid,
+                publication_date: text.publication_date,
                 id: text._key,
                 segmented: true,
-                title: text.title
+                title: text.title,
+                volpage: text.volpage
             }
     )
     
@@ -198,12 +199,6 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
              blurbs_by_uid[0].blurb
     )[0]
     
-    LET legacy_volpages = (
-        FOR text IN legacy_translations
-            FILTER HAS(text, "volpage")
-            RETURN text.volpage
-    )
-    
     LET difficulty = (
         FOR difficulty IN difficulties
             FILTER difficulty.uid == v.uid
@@ -212,6 +207,13 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
     )[0]
     
     LET translations = FLATTEN([po_translations, legacy_translations])
+
+    LET volpages = (
+        FOR text IN translations
+            FILTER text.volpage != null
+            LIMIT 1
+            RETURN text.volpage
+    )
     
     LET is_segmented_original = (
         FOR translation IN translations
@@ -255,7 +257,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
 
     RETURN {
         acronym: v.acronym,
-        volpages: v.volpage ? v.volpage : legacy_volpages[0],
+        volpages: v.volpage ? v.volpage : volpages[0],
         uid: v.uid,
         blurb: blurb,
         difficulty: difficulty,

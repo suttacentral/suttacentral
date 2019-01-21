@@ -5,7 +5,8 @@ import polib
 import regex
 import lxml
 
-from .util import iter_sub_dirs
+from .util import iter_sub_dirs, humansortkey
+
 
 import sys
 current_module = sys.modules[__name__]
@@ -64,10 +65,20 @@ def load_info(po_file):
     return {
         'author': data['translation_author_uid'],
         'author_blurb': data['translation_author_blurb'],
+        'publication_date': get_publication_date(data['translation_author_blurb']),
         'root_author': data['root_author_uid'],
         'root_author_blurb': data['root_author_blurb'],
+        'root_publication_date': get_publication_date(data['root_author_blurb']),
     }
 
+
+def get_publication_date(author_blurb):
+    root = lxml.html.fromstring(author_blurb)
+    e = root.cssselect('.publication-date')
+    if e:
+        return e[0].text
+    else:
+        return None
 
 def extract_strings_from_po(po):
     markup = []
@@ -123,7 +134,8 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
         info.update(local_info)
 
     po_files = (f for f in po_dir.glob('*.po') if f.stem != 'info')
-    for po_file in po_files:
+    get_volpage = VolpageGetter()
+    for po_file in sorted(po_files, key=humansortkey):
         if change_tracker and not change_tracker.is_file_new_or_changed(po_file):
             continue
         
@@ -145,6 +157,8 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
         msgstrs_storage_file = (storage_dir / f'{uid}_{info["author"]}.json').resolve()
         msgids_storage_file = (storage_dir / f'{uid}_{info["root_author"]}.json').resolve()
         
+        volpage = get_volpage(data['markup'], po_file.relative_to(po_dir))
+
         with markup_storage_file.open('w') as f:
             f.write(data['markup'])
         with msgstrs_storage_file.open('w') as f:
@@ -184,9 +198,11 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
                 # also root language blurb probably wont exist
                 # because that would be i.e. in pali!
             },
+            'publication_date': info['root_publication_date'],
             'strings_path': str(msgids_storage_file),
             'title': headings['root']['title'],
             'division_title': root_division_title,
+            'volpage': volpage,
             'mtime': mtime
         }
         
@@ -202,6 +218,7 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
                 'author_blurb': {
                     info['tr_lang']: info['author_blurb']
                 },
+                'publication_date': info['publication_date'],
                 'strings_path': str(msgstrs_storage_file),
                 'title': headings['tr']['title'],
                 'division_title': tr_division_title,
@@ -304,3 +321,34 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
         db['po_markup'].import_bulk(markup_docs, on_duplicate='ignore')
         db['po_strings'].import_bulk(string_docs, on_duplicate='ignore')
 
+
+class VolpageGetter:
+
+    regexes = [
+        regex.compile(r'<a class="(pts1ed)" id="(.*?)"></a>'),
+        regex.compile(r'<a class="(pts2ed)" id="(.*?)"></a>'),
+        regex.compile(r'<a class="(pts-vp-pli|pts)" id="(.*?)"></a>'),
+    ]
+    def __init__(self):
+        self.last_volpage = None
+    
+    def __call__(self, markup, filepath):
+        volpages = []
+
+        for rex in self.regexes:
+            m = rex.search(markup)
+            if m:
+                class_ = m[1]
+                volpage = m[2]
+                if not volpage.startswith(class_):
+                    volpage = class_ + volpage
+                volpages.append(volpage)
+            
+        volpage = ', '.join(volpages)
+        if volpage:
+            self.last_volpage = volpage
+            return volpage
+        elif self.last_volpage:
+            return self.last_volpage
+        print(f'Could not determine volpage for {filepath}')
+        return None
