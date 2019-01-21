@@ -4,7 +4,6 @@ import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import { html, PolymerElement } from '@polymer/polymer';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { ReduxMixin } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 
