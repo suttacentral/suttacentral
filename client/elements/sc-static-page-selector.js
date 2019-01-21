@@ -161,7 +161,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item="">
-      <template is="dom-if" if="[[_isToolbarSelected(shouldShowTipitakaToolbar, shouldShowSecondToolbar, shouldShowOrganizationalToolbar, shouldShowAcademicToolbar)]]">
+      <template is="dom-if" if="[[_isToolbarSelected(shouldShowTipitakaToolbar, shouldShowSecondToolbar, shouldShowOrganizationalToolbar, shouldShowAcademicToolbar, shouldShowGuidesToolbar)]]">
         <paper-tabs id="nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
@@ -274,6 +274,31 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         </paper-tabs>
       </template>
 
+      <template is="dom-if" if="[[shouldShowGuidesToolbar]]">
+        <paper-tabs id="guides_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
+          <paper-tab class="nav-link" data-name="GENERAL-GUIDE-SUJATO">
+            <div>{{localize('GENERAL')}}</div>
+            <a class="link-anchor" href="/general-guide-sujato"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="DN-GUIDE-SUJATO">
+            <div>{{localize('LONG')}}</div>
+            <a class="link-anchor" href="/dn-guide-sujato" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="MN-GUIDE-SUJATO">
+            <div>{{localize('MIDDLE')}}</div>
+            <a class="link-anchor" href="/mn-guide-sujato" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="SN-GUIDE-SUJATO">
+            <div>{{localize('LINKED')}}</div>
+            <a class="link-anchor" href="/sn-guide-sujato" tabindex="-1"></a>
+          </paper-tab>
+          <paper-tab class="nav-link" data-name="AN-GUIDE-SUJATO">
+            <div>{{localize('NUMBERED')}}</div>
+            <a class="link-anchor" href="/an-guide-sujato" tabindex="-1"></a>
+          </paper-tab>
+        </paper-tabs>
+      </template>
+
     </app-toolbar>
 
     <iron-pages id="pages" role="main" selected="{{pages}}" attr-for-selected="name" fallback-selection="NOT-FOUND">
@@ -299,6 +324,12 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       <sc-terminology-page name="TERMINOLOGY"></sc-terminology-page>
       <sc-abbreviations-page name="ABBREVIATIONS"></sc-abbreviations-page>
       <sc-donation-success-page name="DONATION-SUCCESS"></sc-donation-success-page>
+      <sc-general-guide name="GENERAL-GUIDE-SUJATO"></sc-general-guide>
+      <sc-dn-guide name="DN-GUIDE-SUJATO"></sc-dn-guide>
+      <sc-mn-guide name="MN-GUIDE-SUJATO"></sc-mn-guide>
+      <sc-sn-guide name="SN-GUIDE-SUJATO"></sc-sn-guide>
+      <sc-an-guide name="AN-GUIDE-SUJATO"></sc-an-guide>
+      <sc-an-introduction name="AN-INTRODUCTION-BODHI"></sc-an-introduction>
       <div name="NOT-FOUND" class="page-not-found-container">
         <h2>{{localize('error404')}}</h2>
         <h3>{{localize('pageNotFound')}}</h3>
@@ -336,6 +367,10 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         type: Boolean,
         value: false
       },
+      shouldShowGuidesToolbar: {
+        type: Boolean,
+        value: false
+      },
       noToolbarSelected: {
         type: Boolean,
         value: true
@@ -354,8 +389,8 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     }
   }
 
-  _isToolbarSelected(tipitakaToolbar, secondToolbar, organizationalToolbar, academicToolbar) {
-    return !(secondToolbar || tipitakaToolbar || academicToolbar || organizationalToolbar);
+  _isToolbarSelected(tipitakaToolbar, secondToolbar, organizationalToolbar, academicToolbar, guidesToolbar) {
+    return !(secondToolbar || tipitakaToolbar || academicToolbar || organizationalToolbar || guidesToolbar);
   }
 
   _selectNavbarLink() {
@@ -374,13 +409,15 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   _getNavTabsSelector() {
     let selector = '#nav_tabs';
     if (this.shouldShowSecondToolbar) {
-      selector = '#second_nav_tabs'
+      selector = '#second_nav_tabs';
     } else if (this.shouldShowTipitakaToolbar) {
-      selector = '#tipitaka_nav_tabs'
+      selector = '#tipitaka_nav_tabs';
     } else if (this.shouldShowAcademicToolbar) {
-      selector = '#academic_nav_tabs'
+      selector = '#academic_nav_tabs';
     } else if (this.shouldShowOrganizationalToolbar) {
-      selector = '#organizational_nav_tabs'
+      selector = '#organizational_nav_tabs';
+    } else if (this.shouldShowGuidesToolbar) {
+      selector = '#guides_nav_tabs';
     }
     return selector;
   }
@@ -410,6 +447,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.shouldShowTipitakaToolbar = ['DISCOURSES', 'VINAYA', 'ABHIDHAMMA'].includes(selectedPage);
     this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(selectedPage);
     this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(selectedPage);
+    this.shouldShowGuidesToolbar = ['GENERAL-GUIDE-SUJATO', 'DN-GUIDE-SUJATO', 'MN-GUIDE-SUJATO', 'SN-GUIDE-SUJATO', 'AN-GUIDE-SUJATO', 'AN-INTRODUCTION-BODHI'].includes(selectedPage);
   }
 
   _createMetaData(pageSelection, localize) {

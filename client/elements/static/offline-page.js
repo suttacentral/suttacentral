@@ -14,13 +14,13 @@ import { queue } from 'd3-queue';
 import '../menus/sc-language-base-menu.js';
 import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from "../addons/localization-mixin.js";
-import { staticStyles } from '../styles/static-styles.old.js';
+import { legacyStaticStyles } from '../styles/static-styles.js';
 import { API_ROOT } from '../../constants.js';
 
 class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
   static get template() {
     return html`
-    ${staticStyles}
+    ${legacyStaticStyles}
     <style>
       .button {
         @apply --sc-skolar-font-size-s;

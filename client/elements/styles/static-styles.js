@@ -1,4 +1,5 @@
 import { html } from "@polymer/lit-element/lit-element.js";
+import { html as legacyHtml } from '@polymer/polymer/polymer-element.js';
 
 export const staticStyles = html`
 <style>
@@ -77,6 +78,9 @@ export const staticStyles = html`
   }
   ul {
     padding-left: var(--sc-size-xl);
+  }
+  ol ul, ul ol, ul ul, ol ol {
+    margin: var(--sc-size-xs) 0 0;
   }
   dd ol,
   dd ul {
@@ -228,3 +232,5 @@ export const staticStyles = html`
     margin: var(--sc-size-xxl) var(--sc-size-md);
   }
 </style>`;
+
+export const legacyStaticStyles = legacyHtml([staticStyles.strings.join('')]);

@@ -1,3 +1,4 @@
+
 import { html } from '@polymer/lit-element/lit-element.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@polymer/paper-card/paper-card.js';
@@ -512,14 +513,14 @@ class SCHomePage extends SCStaticPage {
           <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword-min.jpg">
             <div class="card-content-wrapper">
               <div class="card-title-text">
-                ${this.localize('bb5566f11a6995bf929b51ece58274bc')}
+                ${this.localize('078365b3da2eb8b34d23c36661309359')}
               </div>
               <div class="image-card-text">
-                ${this.localize('08d18ae95254308908e1ec79dfd33748')}
+                ${unsafeHTML(this.localize('2e64b76d5549e9dc3e83c5845571322a'))}
               </div>
             </div>
             <div>
-              ${unsafeHTML(this.localize('970494445b71db64bd003b47ccb035b1'))}
+              ${unsafeHTML(this.localize('0b689c82a3c57190d06581150a74ae85'))}
             </div>
           </paper-card>
           <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain-min.jpg">
