@@ -391,7 +391,7 @@ class SCHomePage extends SCStaticPage {
               <div class="card-content">
                 <div class="card-content-text">
                   <div class="card-text center-text buddhas-words-text">
-                    <sc-text-carousel class="carousel" display="epigraph" elements-url="${`${API_ROOT}/epigraphs`}" link="true">
+                    <sc-text-carousel class="carousel" .elementsUrl="${`${API_ROOT}/epigraphs`}" link="true">
                     </sc-text-carousel>
                   </div>
                 </div>
@@ -501,7 +501,7 @@ class SCHomePage extends SCStaticPage {
               <div class="card-content">
                 <div class="card-content-text">
                   <div class="why-we-read">
-                    <sc-text-carousel elements-url="${`${API_ROOT}/whyweread`}">
+                    <sc-text-carousel .elementsUrl="${`${API_ROOT}/whyweread`}">
                     </sc-text-carousel>
                   </div>
                 </div>
@@ -513,14 +513,14 @@ class SCHomePage extends SCStaticPage {
           <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword-min.jpg">
             <div class="card-content-wrapper">
               <div class="card-title-text">
-                ${_`SuttaCentral—a new beginning`}
+                ${_`A Reader’s Guide to the Pali Suttas`}
               </div>
               <div class="image-card-text">
-                ${_`We’re proud to share with you the new SuttaCentral. The team has been working on it for over two years, and we think it’s something special. The new site features an entirely new translation of the four Pali nikāyas, prepared specially for SuttaCentral by Bhante Sujato. And the whole site has been re-built to be faster, clearer, and more flexible.`}
+                ${_`The suttas of the Pali Canon (Tipiṭaka), especially the four main <i lang="pli">nikāyas</i>, are essential reading for anyone who wishes to understand the Buddha and his teaching. Bhikkhu Sujato has prepared an extensive set of reading guides for the serious student. These provide essential background and survey most of the core teachings from the perspective of early Buddhism.`}
               </div>
             </div>
             <div>
-              ${_`<a class="button-link" href="/a-new-beginning"> <paper-button class="button card-button" raised="">WHAT’S NEW IN 2018</paper-button> </a>`}
+              ${_`<a class="button-link" href="/general-guide-sujato"><paper-button class="button card-button" raised>GUIDES</paper-button></a>`}
             </div>
           </paper-card>
           <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain-min.jpg">
