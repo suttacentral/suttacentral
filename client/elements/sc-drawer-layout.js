@@ -105,7 +105,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
         right: 0;
       }
 
-      @media screen and (max-width: 840px) {
+      @media screen and (max-width: var(--sc-screen-l)) {
         .dialog {
           left: 0;
         }
@@ -176,7 +176,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
 
     <iron-ajax id="colors_ajax" handle-as="json" last-response="{{colorsResponse}}" on-response="_colorsResponseReceived"></iron-ajax>
 
-    <app-drawer-layout id="drawer_layout" responsive-width="840px" _drawer-position="hidden" narrow="{{isNarrowScreen}}">
+    <app-drawer-layout id="drawer_layout" responsive-width="960px" _drawer-position="hidden" narrow="{{isNarrowScreen}}">
 
       <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer" persistent="[[false]]" opened="{{isDrawerOpened}}" swipe-open>
         <div class="nav-drawer-box sc-scrollbar">

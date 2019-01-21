@@ -92,7 +92,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         transition: all 200ms !important;
       }
 
-      @media screen and (min-width: 840px) {
+      @media screen and (min-width: var(--sc-screen-l)) {
         #header.drawer-closed {
           left: 0 !important;
         }
@@ -309,14 +309,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         this.originalDrawerZIndex = currentZIndex;
         this.$.header.style.zIndex = -1;
       }
-    });
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    // Hide drawer
-    afterNextRender(this, () => {
-      this._closeDrawer();
     });
   }
 
