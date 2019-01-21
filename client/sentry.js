@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/browser/esm';
 
 const sentryEnabled = process.env.NODE_ENV === 'production';
+
 function getEnvironment(hostname) {
   if (hostname === 'localhost') {
     return 'development';
