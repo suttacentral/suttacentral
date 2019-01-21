@@ -131,7 +131,7 @@ export const store = createStore(
     reducer,
     state,
     // Enable redux dev tools extension:
-    compose(window.devToolsExtension ? window.devToolsExtension() : v => v)
+    compose(window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : v => v)
 );
 
 // Persist the store in localStorage:
