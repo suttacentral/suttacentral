@@ -78,6 +78,9 @@ export const staticStyles = html`
   ul {
     padding-left: var(--sc-size-xl);
   }
+  ol ul, ul ol, ul ul, ol ol {
+    margin: var(--sc-size-xs) 0 0;
+  }
   dd ol,
   dd ul {
     padding-left: 0;
