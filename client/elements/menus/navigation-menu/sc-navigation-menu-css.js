@@ -9,9 +9,6 @@ ${litScrollbarStyle}
 <style>
   .sc-nav {
     user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
     height: 100%;
     @apply --paper-font-common-base;
   }
@@ -72,40 +69,30 @@ ${litScrollbarStyle}
     height: 0;
     opacity: 0;
     transition: opacity .5s, transform 375ms;
-    -webkit-transition: opacity .5s, -webkit-transform 375ms;
   }
 
   .nav .swap-section {
     transition-duration: 225ms;
-    -webkit-transition-duration: 225ms;
   }
 
   .swap-section.up {
     will-change: transform;
     transform: translateY(-100%);
-    -webkit-transform: translateY(-100%);
-    -ms-transform: translateY(-100%);
   }
 
   .swap-section.right {
     will-change: transform;
     transform: translateX(100%);
-    -webkit-transform: translateX(100%);
-    -ms-transform: translateX(100%);
   }
 
   .swap-section.left {
     will-change: transform;
     transform: translateX(-100%);
-    -webkit-transform: translateX(-100%);
-    -ms-transform: translateX(-100%);
   }
 
   .swap-section.active {
     opacity: 1;
     position: relative;
-    -webkit-transform: translate(0, 0);
-    -ms-transform: translate(0, 0);
     transform: translate(0, 0);
     width: auto;
   }
@@ -138,11 +125,27 @@ ${litScrollbarStyle}
     margin: var(--sc-size-xs) 0;
     text-decoration: none;
     transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
-    -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
   }
 
   .nav-menu-item.selected {
     background: linear-gradient(to right, var(--sc-primary-color) 4px, transparent 4px);
+  }
+
+  .yellow-brick .nav-link-container::after {
+    content: '';
+    display: inline-block;
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 5px;
+    top: 1px;
+    background: var(--sc-primary-accent-color-dark);
+    border-radius: 20px;
+  }
+
+  .yellow-brick .menu-dropdown-icon {
+      color: var(--sc-tertiary-text-color);
   }
 
   .nav-menu-item.selected > .nav-link-container > .nav-link {
@@ -304,7 +307,6 @@ ${litScrollbarStyle}
 
   .link-text-ellipsis {
     white-space: nowrap;
-    -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
     overflow: hidden;
   }

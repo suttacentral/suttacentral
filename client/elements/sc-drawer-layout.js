@@ -105,7 +105,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
         right: 0;
       }
 
-      @media screen and (max-width: 840px) {
+      @media screen and (max-width: var(--sc-screen-l)) {
         .dialog {
           left: 0;
         }
@@ -176,7 +176,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
 
     <iron-ajax id="colors_ajax" handle-as="json" last-response="{{colorsResponse}}" on-response="_colorsResponseReceived"></iron-ajax>
 
-    <app-drawer-layout id="drawer_layout" responsive-width="840px" _drawer-position="hidden">
+    <app-drawer-layout id="drawer_layout" responsive-width="960px" _drawer-position="hidden" narrow="{{isNarrowScreen}}">
 
       <app-drawer class="sc-app-drawer sc-scrollbar" slot="drawer" persistent="[[false]]" opened="{{isDrawerOpened}}" swipe-open>
         <div class="nav-drawer-box sc-scrollbar">
@@ -190,7 +190,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
         </div>
       </app-drawer>
 
-      <sc-page-selector id="page_selector" is-drawer-open="[[isDrawerOpened]]"></sc-page-selector>
+      <sc-page-selector id="page_selector" is-drawer-open="[[isDrawerOpened]]" is-narrow-screen="[[isNarrowScreen]]"></sc-page-selector>
 
     </app-drawer-layout>
 
@@ -247,6 +247,9 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       },
       isDrawerOpened: {
         type: Boolean
+      },
+      isNarrowScreen: {
+        type: Boolean,
       },
       appColorTheme: {
         type: String,
@@ -316,14 +319,10 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     this.$[event.detail.id].open();
   }
 
-  _isNarrowScreen() {
-    return window.innerWidth <= parseInt(this.$.drawer_layout.getAttribute('responsive-width'));
-  }
-
   // traps a scroll when app-drawer is opened (fix necessary for iOS devices)
   _trapScroll() {
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
-    if (this._isNarrowScreen()) {
+    if (this.isNarrowScreen) {
       if (appDrawer.hasAttribute('opened')) {
         document.body.style.overflow = 'auto';
         disableBodyScroll(this);
@@ -335,7 +334,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
 
   _closeDrawer() {
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
-    if(!this._isNarrowScreen()) {
+    if(!this.isNarrowScreen) {
       const contentContainer = this.$.drawer_layout.shadowRoot.querySelector('#contentContainer');
       contentContainer.removeAttribute('drawer-position');
     }
@@ -348,14 +347,13 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
     requestAnimationFrame(() => {
-      const isNarrowScreen = this._isNarrowScreen();
-      if (e.detail.largeScreenOnly === true && isNarrowScreen) {
+      if (e.detail.largeScreenOnly === true && this.isNarrowScreen) {
         return;
       }
-      if (e.detail.largeScreenOnly === false && !isNarrowScreen) {
+      if (e.detail.largeScreenOnly === false && !this.isNarrowScreen) {
         return;
       }
-      if (!isNarrowScreen) {
+      if (!this.isNarrowScreen) {
         if (appDrawer.hasAttribute('opened')) {
           // hide drawer
           contentContainer.removeAttribute('drawer-position');

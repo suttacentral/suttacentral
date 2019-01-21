@@ -229,7 +229,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
       return html`
         <ul class="${listType} closed" style="${this.getMaxHeightStyle(item)}">
           ${item.children.map(childItem => html`
-            <li class="nav-menu-item ${this.selectedItemId === childItem.id || this.parentId === childItem.id ? 'selected' : ''}">
+            <li class="nav-menu-item ${this.selectedItemId === childItem.id || this.parentId === childItem.id ? 'selected' : ''} ${childItem.yellow_brick_road ? 'yellow-brick' : ''}">
             ${listType === 'nav-secondary' ? html`
               <span class="nav-link-container">${childItem.name}</span>
               ${childItem.lang_iso ? html`
@@ -262,12 +262,13 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
   getChildMenuTemplate(menuItem, menuLevel) {
     const isRootElement = menuLevel === 0;
 
+
     return menuItem.children ? html`
       <ul class="nav-tertiary ${isRootElement ? 'sub-nav sc-scrollbar open' : 'sub-nav-child closed'}"
         style="${isRootElement ? '' : this.getMaxHeightStyle(menuItem)}">
         ${menuItem.children.map(childItem => html`
-          <li class="nav-menu-item ${isRootElement ? 'top-menu-item' : ''} ${childItem.id === this.selectedItemId ? 'selected' : ''}"
-              @click="${this.selectChildItem(menuItem)}"
+          <li class="nav-menu-item ${isRootElement ? 'top-menu-item' : ''} ${childItem.id === this.selectedItemId ? 'selected' : ''} ${childItem.yellow_brick_road ? 'yellow-brick' : ''}"
+            @click="${this.selectChildItem(menuItem)}"
           >
             ${childItem.lang_iso ? html`
               <iron-icon class="iso-code-image" slot="item-icon"
