@@ -381,6 +381,10 @@ export const textParagraphNumStyles = html`
   .textual-info-paragraph.rs-vp:before {
     content: "RS vp "
   }
+  
+  .textual-info-paragraph.rs:before {
+    content: "RS "
+  }
 
   .textual-info-paragraph[class^="san"]:before {
     content: "San "
