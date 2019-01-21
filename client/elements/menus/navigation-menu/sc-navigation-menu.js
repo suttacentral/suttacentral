@@ -15,7 +15,6 @@ const childMenuCache = {};
 const MAIN_MENU = 'Main Menu';
 const CHILD_MENU = 'Child Menu';
 
-
 class SCNavigationMenu extends LitLocalized(LitElement) {
   static get properties() {
     return {
@@ -135,7 +134,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
   }
 
   getSuttaplexUrl(uid) {
-    return (this.unclickableMenuItems.indexOf(uid) === -1) ? `/${uid}` : '';
+    return this.unclickableMenuItems.includes(uid) ? '' : `/${uid}`;
   }
 
   getLanguageIconName(isoCode) {
@@ -223,7 +222,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
 
   deepMainMenuLevelsTemplate(item) {
     if (item.children) {
-      const listType = item.children && item.children.some(child => ['div', 'division'].indexOf(child.type) !== -1) ?
+      const listType = item.children && item.children.some(child => ['div', 'division'].includes(child.type)) ?
         'nav-tertiary' : 'nav-secondary';
 
       return html`
