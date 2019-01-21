@@ -28,7 +28,7 @@ import './styles/sc-utility-styles.js';
 import './styles/sc-font-styles.js';
 import './styles/sc-colors.js';
 
-import {initSentry} from '../sentry.js';
+import { initSentry } from '../sentry.js';
 initSentry();
 
 
