@@ -1,16 +1,15 @@
-import { PolymerElement, html } from '@polymer/polymer';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import '@polymer/app-layout/app-header-layout/app-header-layout.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/app-route/app-location.js';
-
-import './menus/sc-toolbar.js';
-import './text/sc-simple-text.js';
-import './text/sc-segmented-text.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
+import { html, PolymerElement } from '@polymer/polymer';
 import { ReduxMixin } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
+
+import './menus/sc-toolbar.js';
+import './text/sc-segmented-text.js';
+import './text/sc-simple-text.js';
 
 /*
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
@@ -92,7 +91,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         transition: all 200ms !important;
       }
 
-      @media screen and (min-width: 840px) {
+      @media screen and (min-width: var(--sc-screen-l)) {
         #header.drawer-closed {
           left: 0 !important;
         }
@@ -241,6 +240,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       },
       originalDrawerZIndex: {
         type: String
+      },
+      isNarrowScreen: {
+        type: Boolean
       }
     }
   }
@@ -305,16 +307,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       } else {
         this.originalDrawerZIndex = currentZIndex;
         this.$.header.style.zIndex = -1;
-      }
-    });
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    // Hide drawer
-    afterNextRender(this, () => {
-      if (!this.shouldShowStaticPage) {
-        this._closeDrawer();
       }
     });
   }
@@ -418,7 +410,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.dispatch('changeToolbarMode', 'list-mode');
       this.dispatch('selectNavigationMenuItem', this._getPathParamNumber(1));
       this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
-      this._closeDrawer();
     }
     else if (this._isSuttaTextPage()) {
       const suttaRouteParams = this._getSuttaRouteParams();
@@ -430,6 +421,10 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     }
     else {
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
+    }
+
+    if (this.isNarrowScreen) {
+      this._closeDrawer();
     }
   }
 
