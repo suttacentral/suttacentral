@@ -50,15 +50,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         white-space: nowrap;
       }
 
-      [mode="search-mode"] #sc_toolbar,
-      [mode="search-mode"] .toolbar-header,
-      [mode="dictionary-mode"] #sc_toolbar,
-      [mode="dictionary-mode"] .toolbar-header,
-      [mode="list-mode"] #sc_toolbar,
-      [mode="list-mode"] .toolbar-header {
-        background-color: var(--sc-primary-accent-color);
-      }
-
       #toolbar_title_box {
         width: 1px;
         z-index: -10;
@@ -117,7 +108,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     <div class="container">
       <app-header-layout fullbleed>
 
-        <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header" mode$="[[toolbarMode]]">
+        <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header">
           <app-toolbar class="toolbar-header">
             <a href="/" class$="[[_shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
               <paper-icon-button icon="sc-svg-icons:sc-logo-bw" id="to_home_button" title="{{localize('goHome')}}"></paper-icon-button>
@@ -197,11 +188,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         type: String,
         statePath: 'currentRoute.path'
       },
-      // Class set on the class on the header depending on the chosen page.
-      toolbarMode: {
-        type: String,
-        statePath: 'toolbarOptions.mode'
-      },
       toolbarTitle: {
         type: String,
         statePath: 'toolbarOptions.title'
@@ -268,12 +254,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         return {
           type: 'CHANGE_TOOLBAR_TITLE',
           title: title
-        };
-      },
-      changeToolbarMode(mode) {
-        return {
-          type: 'CHANGE_TOOLBAR_MODE',
-          mode: mode
         };
       },
       selectNavigationMenuItem(id) {
@@ -388,27 +368,22 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     const routeName = this._getBaseRouteName();
     if (routeName === '') {
       this.dispatch('changeToolbarTitle', '');
-      this.dispatch('changeToolbarMode', '');
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'HOME' }));
     }
     else if (this._isStaticPage(routeName)) {
-      this.dispatch('changeToolbarMode', '');
       this.dispatch('changeToolbarTitle', '');
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
     }
     else if (this._isSearchPage()) {
       this.dispatch('changeToolbarTitle', 'searchResults');
-      this.dispatch('changeToolbarMode', 'search-mode');
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
     }
     else if (this._isDictionaryPage()) {
       this.set('dictionaryWord', this._getDictionaryParams());
-      this.dispatch('changeToolbarMode', 'dictionary-mode');
       this.dispatch('changeToolbarTitle', 'dictionaryResults');
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: routeName }));
     }
     else if (this._isSuttaplexListPage()) {
-      this.dispatch('changeToolbarMode', 'list-mode');
       this.dispatch('selectNavigationMenuItem', this._getPathParamNumber(1));
       this.dispatch('changeRoute', Object.assign({}, this.route, this._getSuttaplexRouteParams()));
     }
@@ -417,7 +392,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.set('suttaId', suttaRouteParams.suttaId);
       this.set('langIsoCode', suttaRouteParams.langIsoCode);
       this.set('suttaAuthor', suttaRouteParams.authorName);
-      this.dispatch('changeToolbarMode', 'text-mode');
       this.dispatch('changeRoute', Object.assign({}, this.route, suttaRouteParams));
     }
     else {
