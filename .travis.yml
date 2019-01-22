@@ -29,7 +29,6 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
   # Build and start your containers.
-  - make create-network
   - make prepare-tests
 
   # You will want this for logging. If one of your containers does not build for
