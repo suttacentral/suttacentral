@@ -59,16 +59,16 @@ class SCTextOptions extends ReduxMixin(Localized(PolymerElement)) {
     <div class="container">
       <div class="heading">
         <template is="dom-if" if="[[metaArea]]">
-          <paper-icon-button id="text_info_button" icon="info" on-tap="_openInfoDialog"></paper-icon-button>
+          <paper-icon-button id="text_info_button" icon="info" on-tap="_openInfoDialog" aria-label$="{{localize('information')}}"></paper-icon-button>
           <paper-tooltip class="sc-tooltip" for="text_info_button" offset="0">
             {{localize('information')}}
           </paper-tooltip>
         </template>
-        <paper-icon-button id="text_settings_button" icon="settings" on-tap="_openSettingsDialog"></paper-icon-button>
+        <paper-icon-button id="text_settings_button" icon="settings" on-tap="_openSettingsDialog" aria-label$="{{localize('textSettings')}}"></paper-icon-button>
         <paper-tooltip class="sc-tooltip" for="text_settings_button" offset="0">
           {{localize('textSettings')}}
         </paper-tooltip>
-        <paper-icon-button id="suttaplex_button" icon="[[_toggleIcon]]" on-tap="_toggleOpened"></paper-icon-button>
+        <paper-icon-button id="suttaplex_button" icon="[[_toggleIcon]]" on-tap="_toggleOpened" aria-label$="{{localize('viewParallels')}}"></paper-icon-button>
         <paper-tooltip class="sc-tooltip" for="suttaplex_button" offset="0" fit-to-visible-bounds="">
           {{localize('viewParallels')}}
         </paper-tooltip>

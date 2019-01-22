@@ -23,6 +23,8 @@
         "countParallels": "{count} parallels",
         "countParallel": "{count} parallel",
         "hasNoParallels": "This text has no recorded parallels.",
-        "inAncientTexts": "in ancient texts"
+        "inAncientTexts": "in ancient texts",
+        "listenSutta": "Listen to this sutta",
+        "share": "Share"
     }
 }
