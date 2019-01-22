@@ -62,14 +62,10 @@ prepare-tests:
 # Run tests
 test:
 	@make test-server
-	@make test-builds
 
 test-server:
 	@docker exec -t sc-flask pytest server/
 
-test-builds:
-	test -e client/build/index.html
-	
 test-api:
 	docker-compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
