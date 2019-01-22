@@ -108,7 +108,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
         right: 0;
       }
 
-      @media screen and (max-width: var(--sc-screen-l)) {
+      @media screen and (max-width: 960px) {
         .dialog {
           left: 0;
         }

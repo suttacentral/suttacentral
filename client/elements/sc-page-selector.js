@@ -91,7 +91,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         transition: all 200ms !important;
       }
 
-      @media screen and (min-width: var(--sc-screen-l)) {
+      @media screen and (min-width: 960px) {
         #header.drawer-closed {
           left: 0 !important;
         }
