@@ -29,7 +29,6 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
   # Build and start your containers.
-  - make build-all
   - make prepare-tests
   - make run-frontend-builder
 

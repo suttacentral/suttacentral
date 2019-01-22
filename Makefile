@@ -61,19 +61,14 @@ prepare-tests:
 	@bash wait_for_flask.sh
 # Run tests
 test:
-	@make test-client
 	@make test-server
 	@make test-builds
-
-test-client:
-	@docker exec -t sc-frontend-tester bash -c "echo 'Running client linter' && polymer lint && wct"
 
 test-server:
 	@docker exec -t sc-flask pytest server/
 
 test-builds:
-	test -e client/build/default/index.html
-	test -e client/build/es5-bundled/index.html
+	test -e client/build/index.html
 	
 test-api:
 	docker-compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
