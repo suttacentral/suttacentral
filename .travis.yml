@@ -40,4 +40,5 @@ before_install:
 
 script:
   # Run our tests
+  - docker wait sc_frontend
   - make test

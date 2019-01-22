@@ -56,7 +56,7 @@ install-requirements:
 # Tests.
 # Starts containers so that we are ready to run tests in them.
 prepare-tests:
-	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up
 	@echo "waiting for all services to fully start"
 	@bash wait_for_flask.sh
 # Run tests
