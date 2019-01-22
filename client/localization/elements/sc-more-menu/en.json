@@ -10,6 +10,9 @@
         "Licensing": "Licensing",
         "About": "About",
         "DarkTheme": "Use dark theme",
-        "SuttaplexCompactView": "Use compact view"
+        "SuttaplexCompactView": "Use compact view",
+        "joinDiscussion": "Join the discussion about this sutta.",
+        "discussSuttas": "Discuss the suttas on our forum",
+        "Discuss": "Discuss"
     }
 }

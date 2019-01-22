@@ -63,9 +63,6 @@ const reducer = (state, action) => {
         case 'CHANGE_TOOLBAR_TITLE':
             return Object.assign({}, state,
                 { toolbarOptions: Object.assign({}, state.toolbarOptions, { title: action.title }) });
-        case 'CHANGE_TOOLBAR_MODE':
-            return Object.assign({}, state,
-                { toolbarOptions: Object.assign({}, state.toolbarOptions, { mode: action.mode }) });
         case 'INITIATE_SEARCH':
             return Object.assign({}, state, { searchParams: action.params });
         case 'DOWNLOAD_SUTTA_TEXT':

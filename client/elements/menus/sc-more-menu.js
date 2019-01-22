@@ -127,6 +127,13 @@ class SCMoreMenu extends ReduxMixin(Localized(PolymerElement)) {
         <iron-icon class="more-menu-icon" icon="icons:info"></iron-icon>
         {{localize('About')}}
       </paper-item>
+    </a>
+    <a class="more-menu-link" href="[[getDiscourseUrl(routeName)]]"
+      title="[[getDiscourseTitle(routeName)]]" target="_blank" rel="noopener noreferrer">
+      <paper-item class="more-menu-paper-item">
+        <iron-icon class="more-menu-icon" icon="communication:forum"></iron-icon>
+        {{localize('Discuss')}}
+      </paper-item>
     </a>`;
   }
 
@@ -155,7 +162,11 @@ class SCMoreMenu extends ReduxMixin(Localized(PolymerElement)) {
       appView: {
         type: Boolean,
         statePath: 'suttaplexListDisplay'
-      }
+      },
+      routeName: {
+        type: String,
+        statePath: 'currentRoute.name',
+      },
     };
   }
 
@@ -174,6 +185,20 @@ class SCMoreMenu extends ReduxMixin(Localized(PolymerElement)) {
         }
       }
     }
+  }
+
+  getDiscourseUrl(routeName) {
+    if (routeName === 'SUTTA') {
+      const sutta_id = window.location.pathname.split('/')[1];
+      return `https://discourse.suttacentral.net/search?q="${sutta_id}%20"`;
+    } else {
+      return 'https://discourse.suttacentral.net';
+    }
+  }
+
+  getDiscourseTitle(routeName) {
+    const title = (routeName === 'SUTTA' ? 'joinDiscussion': 'discussSuttas');
+    return this.localize(title);
   }
 
   ready() {

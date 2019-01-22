@@ -1,15 +1,18 @@
 {
-  "pl": {
-    "Donations": "Dotacje",
-    "UseOffline": "Używaj offline",
-    "Numbering": "Numeracja",
-    "Abbreviations": "Skróty",
-    "Methodology": "Metodologia",
-    "Acknowledgments": "Podziękowania",
-    "Downloads": "Pobieranie",
-    "Licensing": "Licencjonowanie",
-    "About": "O nas",
-    "DarkTheme": "Ciemna szata graficzna",
-    "SuttaplexCompactView": "Użyj widoku kompaktowego"
-  }
+    "pl": {
+        "Donations": "Dotacje",
+        "UseOffline": "Używaj offline",
+        "Numbering": "Numeracja",
+        "Abbreviations": "Skróty",
+        "Methodology": "Metodologia",
+        "Acknowledgments": "Podziękowania",
+        "Downloads": "Pobieranie",
+        "Licensing": "Licencjonowanie",
+        "About": "O nas",
+        "DarkTheme": "Ciemna szata graficzna",
+        "SuttaplexCompactView": "Użyj widoku kompaktowego",
+        "joinDiscussion": "Dołącz do dyskusji o tej sutrze.",
+        "discussSuttas": "Podyskutuj o sutrach na naszym forum",
+        "Discuss": "Dyskutuj"
+    }
 }

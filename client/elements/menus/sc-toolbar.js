@@ -114,11 +114,6 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
       <paper-input class="toolbar-input" label="{{localize('Search')}}" no-label-float="" id="search_input"></paper-input>
       <paper-icon-button icon="close" class="white-icon toolbar-paper-button" id="close_button" on-tap="_closeSearch"></paper-icon-button>
 
-      <!-- Link to Discourse.suttacentral.net. On sutta-pages with a search for that resp. sutta. -->
-      <a class="toolbar-link discourses-link" tabindex="-1" target="_blank" href="[[_computeDiscourseUrl(mode)]]" title="{{localize(discourseIconTooltip)}}" rel="noopener">
-        <paper-icon-button id="discourse_button" class="white-icon" icon="communication:forum"></paper-icon-button>
-      </a>
-
       <!-- Menu for more options like language and other static pages -->
       <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select="" id="more_vert_button" vertical-align="auto">
         <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
@@ -227,23 +222,6 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
     const searchQuery = this.$.search_input.value;
     this.set('path', '/search');
     this.set('query', `query=${searchQuery}`);
-  }
-
-  _computeDiscourseUrl(mode) {
-    if (mode === 'text-mode') {
-      const sutta_id = window.location.pathname.split('/')[1];
-      return `https://discourse.suttacentral.net/search?q="${sutta_id}%20"`;
-    } else {
-      return 'https://discourse.suttacentral.net';
-    }
-  }
-
-  _computeDiscourseTitle(mode) {
-    if (mode === 'text-mode') {
-      return 'joinDiscussion';
-    } else {
-      return 'discussSuttas';
-    }
   }
 }
 
