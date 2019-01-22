@@ -129,7 +129,7 @@ class SCMoreMenu extends ReduxMixin(Localized(PolymerElement)) {
       </paper-item>
     </a>
     <a class="more-menu-link" href="[[getDiscourseUrl(routeName)]]"
-      title="[[getDiscourseTitle(routeName)]]" target="_blank" rel="noopener">
+      title="[[getDiscourseTitle(routeName)]]" target="_blank" rel="noopener noreferrer">
       <paper-item class="more-menu-paper-item">
         <iron-icon class="more-menu-icon" icon="communication:forum"></iron-icon>
         {{localize('Discuss')}}
