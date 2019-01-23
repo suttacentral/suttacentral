@@ -698,7 +698,7 @@ LET segmented_counts = MERGE(
 
 /* Merge keys */
 
-LET keys = APPEND(ATTRIBUTES(legacy_counts), ATTRIBUTES(segmented_counts))
+LET keys = UNION_DISTINCT(ATTRIBUTES(legacy_counts), ATTRIBUTES(segmented_counts))
 
 FOR key IN keys
     LET doc = DOCUMENT('root', key)
