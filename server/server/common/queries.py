@@ -662,7 +662,7 @@ RETURN {
     ancient: (
         FOR doc IN sorted_langs["true"]
             SORT doc.total DESC
-            RETURN UNSET(doc, 'is_root', 'num')
+            RETURN UNSET(doc, 'is_root', 'num', 'percent')
         ),
     modern: (
         FOR doc IN sorted_langs["false"]
