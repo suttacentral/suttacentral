@@ -10,7 +10,8 @@ class SCSuttaplexSectionTitle extends LitElement {
       inputTitle: String,
       inputText: String,
       inputType: String,
-      opened: Boolean
+      opened: Boolean,
+      label: String,
     }
   }
 
@@ -20,7 +21,7 @@ class SCSuttaplexSectionTitle extends LitElement {
 
 
   get iconTemplate() {
-    return html`<paper-icon-button class="grey-icon" .icon="${this.toggleIcon}" @tap="${this.toggleOpened}"></paper-icon-button>`;
+    return html`<paper-icon-button class="grey-icon" .icon="${this.toggleIcon}" @tap="${this.toggleOpened}" aria-label="${this.label}"></paper-icon-button>`;
   }
 
   get titleClass() {

@@ -165,23 +165,23 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         <paper-tabs id="nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" href="/home"></a>
+            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="INTRODUCTION">
             <div>{{localize('INTRODUCTION')}}</div>
-            <a class="link-anchor" href="/introduction" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('INTRODUCTION')}}" href="/introduction" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="DONATIONS">
             <div>{{localize('DONATIONS')}}</div>
-            <a class="link-anchor" href="/donations" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('DONATIONS')}}" href="/donations" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="OFFLINE">
             <div>{{localize('USEOFFLINE')}}</div>
-            <a class="link-anchor" href="/offline" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('USEOFFLINE')}}" href="/offline" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW">
             <div>{{localize('WHATSNEW')}}</div>
-            <a class="link-anchor" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank" rel="noopener">
+            <a class="link-anchor" aria-label$="{{localize('WHATSNEW')}}" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank" rel="noopener">
             </a>
           </paper-tab>
         </paper-tabs>
@@ -190,23 +190,23 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         <paper-tabs id="second_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" href="/home"></a>
+            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="SUBJECTS">
             <div>{{localize('SUBJECTS')}}</div>
-            <a class="link-anchor" href="/subjects" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('SUBJECTS')}}" href="/subjects" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="SIMILES">
             <div>{{localize('SIMILES')}}</div>
-            <a class="link-anchor" href="/similes" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('SMILES')}}" href="/similes" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="NAMES">
             <div>{{localize('NAMES')}}</div>
-            <a class="link-anchor" href="/names" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('NAMES')}}" href="/names" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="TERMINOLOGY">
             <div>{{localize('TERMINOLOGY')}}</div>
-            <a class="link-anchor" href="/terminology" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('TERMINOLOGY')}}" href="/terminology" tabindex="-1"></a>
           </paper-tab>
         </paper-tabs>
       </template>
@@ -215,19 +215,19 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         <paper-tabs id="tipitaka_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" href="/home"></a>
+            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="DISCOURSES">
             <div>{{localize('DISCOURSES')}}</div>
-            <a class="link-anchor" href="/discourses" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('DISCOURSES')}}" href="/discourses" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="VINAYA">
             <div>{{localize('VINAYA')}}</div>
-            <a class="link-anchor" href="/vinaya" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('VINAYA')}}" href="/vinaya" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="ABHIDHAMMA">
             <div>{{localize('ABHIDHAMMA')}}</div>
-            <a class="link-anchor" href="/abhidhamma" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('ABHIDHAMMA')}}" href="/abhidhamma" tabindex="-1"></a>
           </paper-tab>
         </paper-tabs>
       </template>
@@ -236,19 +236,19 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         <paper-tabs id="academic_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" href="/home"></a>
+            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="NUMBERING">
             <div>{{localize('NUMBERING')}}</div>
-            <a class="link-anchor" href="/numbering" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('NUMBERING')}}" href="/numbering" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="ABBREVIATIONS">
             <div>{{localize('ABBREVIATIONS')}}</div>
-            <a class="link-anchor" href="/abbreviations" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('ABBREVIATIONS')}}" href="/abbreviations" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="METHODOLOGY">
             <div>{{localize('METHODOLOGY')}}</div>
-            <a class="link-anchor" href="/methodology" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('METHODOLOGY')}}" href="/methodology" tabindex="-1"></a>
           </paper-tab>
         </paper-tabs>
       </template>
@@ -257,19 +257,19 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         <paper-tabs id="organizational_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="HOME">
             <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" href="/home"></a>
+            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="ACKNOWLEDGMENTS">
             <div>{{localize('ACKNOWLEDGMENTS')}}</div>
-            <a class="link-anchor" href="/acknowledgments" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('ACKNOWLEDGMENTS')}}" href="/acknowledgments" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="LICENSING">
             <div>{{localize('LICENSING')}}</div>
-            <a class="link-anchor" href="/licensing" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('LICENSING')}}" href="/licensing" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="ABOUT">
             <div>{{localize('ABOUT')}}</div>
-            <a class="link-anchor" href="/about" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('ABOUT')}}" href="/about" tabindex="-1"></a>
           </paper-tab>
         </paper-tabs>
       </template>
@@ -278,23 +278,23 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         <paper-tabs id="guides_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
           <paper-tab class="nav-link" data-name="GENERAL-GUIDE-SUJATO">
             <div>{{localize('GENERAL')}}</div>
-            <a class="link-anchor" href="/general-guide-sujato"></a>
+            <a class="link-anchor" aria-label$="{{localize('GENERAL')}}" href="/general-guide-sujato"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="DN-GUIDE-SUJATO">
             <div>{{localize('LONG')}}</div>
-            <a class="link-anchor" href="/dn-guide-sujato" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('LONG')}}"  href="/dn-guide-sujato" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="MN-GUIDE-SUJATO">
             <div>{{localize('MIDDLE')}}</div>
-            <a class="link-anchor" href="/mn-guide-sujato" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('MIDDLE')}}" href="/mn-guide-sujato" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="SN-GUIDE-SUJATO">
             <div>{{localize('LINKED')}}</div>
-            <a class="link-anchor" href="/sn-guide-sujato" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('LINKED')}}" href="/sn-guide-sujato" tabindex="-1"></a>
           </paper-tab>
           <paper-tab class="nav-link" data-name="AN-GUIDE-SUJATO">
             <div>{{localize('NUMBERED')}}</div>
-            <a class="link-anchor" href="/an-guide-sujato" tabindex="-1"></a>
+            <a class="link-anchor" aria-label$="{{localize('NUMBERED')}}" href="/an-guide-sujato" tabindex="-1"></a>
           </paper-tab>
         </paper-tabs>
       </template>

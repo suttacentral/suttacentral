@@ -144,6 +144,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           .inputTitle="${item.original_title}"
           .inputText="${item.blurb}"
           .inputType="${item.type}"
+          .label="${this.localize('expandSection')}"
           .opened="${this.shouldExpandAll()}">
         </sc-suttaplex-section-title>
       </section>`;
