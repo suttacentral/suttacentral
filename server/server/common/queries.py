@@ -616,6 +616,12 @@ RETURN MERGE(languages)
 # The translation count queries use COLLECT/AGGREGATE
 # these are very fast queries
 TRANSLATION_COUNT_BY_LANGUAGE = '''
+LET root_langs = (FOR lang IN language FILTER lang.is_root RETURN lang.uid)
+
+
+LET root_lang_total = COUNT(FOR text IN v_text SEARCH text.lang IN root_langs
+    RETURN 1)
+
 LET legacy_counts = MERGE(
     FOR doc IN html_text
         COLLECT lang = doc.lang WITH COUNT INTO lang_count
@@ -631,12 +637,16 @@ LET segmented_counts = MERGE(
 LET langs = (
     FOR lang IN language
         SORT lang.iso_code
+        LET total = legacy_counts[lang.iso_code] + segmented_counts[lang.iso_code]
+        FILTER total > 0
+        LET translated = total / root_lang_total
         RETURN {
             num: lang.num,
             iso_code: lang.iso_code,
             is_root: lang.is_root,
             name: lang.name,
-            total: legacy_counts[lang.iso_code] + segmented_counts[lang.iso_code]
+            total: total,
+            percent: translated > 0.01 ? CEIL(100 * translated) : CEIL(1000 * translated) / 10
         }
     )
     
@@ -649,8 +659,16 @@ LET sorted_langs = MERGE(
     )
 
 RETURN {
-    ancient: sorted_langs["true"][* RETURN UNSET(CURRENT, 'is_root', 'num')],
-    modern: sorted_langs["false"][* RETURN UNSET(CURRENT, 'is_root', 'num')]
+    ancient: (
+        FOR doc IN sorted_langs["true"]
+            SORT doc.total DESC
+            RETURN UNSET(doc, 'is_root', 'num')
+        ),
+    modern: (
+        FOR doc IN sorted_langs["false"]
+            SORT doc.total DESC
+            RETURN UNSET(doc, 'is_root', 'num')
+        )
 }
 '''
 
@@ -709,6 +727,7 @@ FOR key IN keys
 '''
 
 TRANSLATION_COUNT_BY_AUTHOR = '''
+
 LET legacy_counts = (
     FOR doc IN html_text
         FILTER doc.lang == @lang
