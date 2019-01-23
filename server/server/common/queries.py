@@ -618,27 +618,13 @@ RETURN MERGE(languages)
 TRANSLATION_COUNT_BY_LANGUAGE = '''
 LET root_langs = (FOR lang IN language FILTER lang.is_root RETURN lang.uid)
 
-
 LET root_lang_total = COUNT(FOR text IN v_text SEARCH text.lang IN root_langs
     RETURN 1)
 
-LET legacy_counts = MERGE(
-    FOR doc IN html_text
-        COLLECT lang = doc.lang WITH COUNT INTO lang_count
-        RETURN {[lang]: lang_count}
-    )
-
-LET segmented_counts = MERGE(
-    FOR doc IN po_strings
-        COLLECT lang = doc.lang WITH COUNT INTO lang_count
-        RETURN {[lang]: lang_count}
-    )
-
 LET langs = (
-    FOR lang IN language
-        SORT lang.iso_code
-        LET total = legacy_counts[lang.iso_code] + segmented_counts[lang.iso_code]
-        FILTER total > 0
+    FOR text IN v_text
+        COLLECT lang_code = text.lang WITH COUNT INTO total
+        LET lang = DOCUMENT('language', lang_code)
         LET translated = total / root_lang_total
         RETURN {
             num: lang.num,
@@ -648,15 +634,15 @@ LET langs = (
             total: total,
             percent: translated > 0.01 ? CEIL(100 * translated) : CEIL(1000 * translated) / 10
         }
-    )
-    
+)
+
 LET sorted_langs = MERGE(
     FOR lang IN langs
         COLLECT is_root = lang.is_root INTO groupings
         RETURN {
             [is_root]: groupings[*].lang
         }
-    )
+)
 
 RETURN {
     ancient: (
