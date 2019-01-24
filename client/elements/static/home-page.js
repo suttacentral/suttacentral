@@ -400,7 +400,7 @@ class SCHomePage extends SCStaticPage {
           </paper-card>
         </div>
         <div class="row cards">
-          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="/img/home-page/becomingone-min.jpg">
+          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="/img/home-page/becomingone-min.jpg" alt="${this.localize('742e700832d62bb2f6a17592968b4dab')}">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">
                 ${this.localize('742e700832d62bb2f6a17592968b4dab')}
@@ -410,7 +410,7 @@ class SCHomePage extends SCStaticPage {
               </div>
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="/img/home-page/contemplatingthemoon-min.jpg">
+          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="/img/home-page/contemplatingthemoon-min.jpg" alt="${this.localize('a5172cf2c34de3fc8e2af331ac915ec9')}">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">
                 ${this.localize('a5172cf2c34de3fc8e2af331ac915ec9')}
@@ -437,7 +437,7 @@ class SCHomePage extends SCStaticPage {
               </div>
               <div class="card-content-video">
                 <div class="embed-container">
-                  <iframe allowfullscreen="" frameborder="0" height="360" id="sc-video" mozallowfullscreen="" src="https://player.vimeo.com/video/257038431?color=efe700&byline=0" webkitallowfullscreen="" width="640">
+                  <iframe allowfullscreen="" frameborder="0" height="360" id="sc-video" mozallowfullscreen="" src="https://player.vimeo.com/video/257038431?color=efe700&byline=0" webkitallowfullscreen="" width="640" title="SuttaCentral.net - Early Buddhist texts, translations, and parallels">
                   </iframe>
                 </div>
               </div>
@@ -510,7 +510,7 @@ class SCHomePage extends SCStaticPage {
           </paper-card>
         </div>
         <div class="row cards">
-          <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword-min.jpg">
+          <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword-min.jpg" alt="${this.localize('078365b3da2eb8b34d23c36661309359')}">
             <div class="card-content-wrapper">
               <div class="card-title-text">
                 ${this.localize('078365b3da2eb8b34d23c36661309359')}
@@ -523,7 +523,7 @@ class SCHomePage extends SCStaticPage {
               ${unsafeHTML(this.localize('0b689c82a3c57190d06581150a74ae85'))}
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain-min.jpg">
+          <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain-min.jpg" alt="${this.localize('149842aa5477edb219ce272ec2aab269')}">
             <div class="card-content-wrapper">
               <div class="card-title-text">
                 ${this.localize('149842aa5477edb219ce272ec2aab269')}
