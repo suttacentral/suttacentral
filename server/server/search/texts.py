@@ -109,14 +109,12 @@ class TextIndexer(ElasticIndexer):
         return boost
 
     def yield_po_texts(self, lang, size, to_add):
-        po_texts = get_db().aql.execute(
+        po_texts = list(get_db().aql.execute(
             PO_TEXTS_BY_LANG,
-            bind_vars={'lang': lang},
-            count=True
-        )
+            bind_vars={'lang': lang}
+        ))
 
-        count = po_texts.count()
-        if not count:
+        if not po_texts:
             return
 
         chunk = []
@@ -160,14 +158,12 @@ class TextIndexer(ElasticIndexer):
             yield chunk
 
     def yield_html_texts(self, lang, size, to_add):
-        html_texts = get_db().aql.execute(
+        html_texts = list(get_db().aql.execute(
             TEXTS_BY_LANG,
-            bind_vars={'lang': lang},
-            count=True
-        )
+            bind_vars={'lang': lang}
+        ))
 
-        count = html_texts.count()
-        if not count:
+        if not html_texts:
             return
 
         chunk = []
