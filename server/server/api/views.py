@@ -239,17 +239,24 @@ class Menu(Resource):
 
         if submenu_id:
             bind_vars['submenu_id'] = submenu_id
-            divisions = db.aql.execute(submenu_query, bind_vars=bind_vars)
-            data = list(divisions)
+            divisions = list(db.aql.execute(submenu_query, bind_vars=bind_vars))
         else:
-            divisions = db.aql.execute(menu_query, bind_vars=bind_vars)
-            data = self.group_by_parents(divisions, ['pitaka'])
+            divisions = list(db.aql.execute(menu_query, bind_vars=bind_vars))
+        
+        for division in divisions:
+            division['yellow_brick_road'] = has_translated_descendent(division['id'], language)
+            for parent in division['parents'].values():
+                parent['yellow_brick_road'] = has_translated_descendent(parent['uid'].split('/',1)[1], language)
 
+        if submenu_id:
+            data = divisions
+        else:
+            data = self.group_by_parents(divisions, ['pitaka'])
+        
         for pitaka in data:
             if 'children' in pitaka:
-                uid = pitaka['uid']
                 children = pitaka.pop('children')
-                if uid == 'pitaka/sutta':
+                if pitaka['uid'] == 'pitaka/sutta':
                     pitaka['children'] = self.group_by_parents(children, ['grouping'])
                 else:
                     pitaka['children'] = self.group_by_parents(children, ['sect'])
@@ -339,8 +346,6 @@ class Menu(Resource):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
             mapping[menu_entry['uid']] = menu_entry
-            if 'id' in menu_entry:
-                menu_entry['yellow_brick_road'] = has_translated_descendent(menu_entry['id'], language)
             self.update_display_num(menu_entry)            
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')

@@ -616,71 +616,61 @@ RETURN MERGE(languages)
 # The translation count queries use COLLECT/AGGREGATE
 # these are very fast queries
 TRANSLATION_COUNT_BY_LANGUAGE = '''
-LET legacy_counts = MERGE(
-    FOR doc IN html_text
-        COLLECT lang = doc.lang WITH COUNT INTO lang_count
-        RETURN {[lang]: lang_count}
-    )
+LET root_langs = (FOR lang IN language FILTER lang.is_root RETURN lang.uid)
 
-LET segmented_counts = MERGE(
-    FOR doc IN po_strings
-        COLLECT lang = doc.lang WITH COUNT INTO lang_count
-        RETURN {[lang]: lang_count}
-    )
+LET root_lang_total = COUNT(FOR text IN v_text SEARCH text.lang IN root_langs
+    RETURN 1)
 
 LET langs = (
-    FOR lang IN language
-        SORT lang.iso_code
+    FOR text IN v_text
+        COLLECT lang_code = text.lang WITH COUNT INTO total
+        LET lang = DOCUMENT('language', lang_code)
+        LET translated = total / root_lang_total
         RETURN {
             num: lang.num,
             iso_code: lang.iso_code,
             is_root: lang.is_root,
             name: lang.name,
-            total: legacy_counts[lang.iso_code] + segmented_counts[lang.iso_code]
+            total: total,
+            percent: translated > 0.01 ? CEIL(100 * translated) : CEIL(1000 * translated) / 10
         }
-    )
-    
+)
+
 LET sorted_langs = MERGE(
     FOR lang IN langs
         COLLECT is_root = lang.is_root INTO groupings
         RETURN {
             [is_root]: groupings[*].lang
         }
-    )
+)
 
 RETURN {
-    ancient: sorted_langs["true"][* RETURN UNSET(CURRENT, 'is_root', 'num')],
-    modern: sorted_langs["false"][* RETURN UNSET(CURRENT, 'is_root', 'num')]
+    ancient: (
+        FOR doc IN sorted_langs["true"]
+            SORT doc.total DESC
+            RETURN UNSET(doc, 'is_root', 'num', 'percent')
+        ),
+    modern: (
+        FOR doc IN sorted_langs["false"]
+            SORT doc.total DESC
+            RETURN UNSET(doc, 'is_root', 'num')
+        )
 }
 '''
 
 TRANSLATION_COUNT_BY_DIVISION = '''
 /* First we count the number of texts by (sub)division uid based on pattern matching */
-
-LET legacy_counts = MERGE(
-    FOR doc IN html_text
-        FILTER doc.lang == @lang
+LET counts = MERGE(
+    FOR doc IN v_text
+        SEARCH doc.lang == @lang
         COLLECT division_uid = REGEX_REPLACE(doc.uid, '([a-z]+(?:-[a-z]+|-[0-9]+)*).*', '$1') WITH COUNT INTO div_count
         SORT null
         RETURN {
             [division_uid]: div_count
         }
-    )
+)
     
-LET segmented_counts = MERGE(
-    FOR doc IN po_strings
-        FILTER doc.lang == @lang
-        COLLECT division_uid = REGEX_REPLACE(doc.uid, '([a-z]+(?:-[a-z]+|-[0-9]+)*).*', '$1') WITH COUNT INTO div_count
-        SORT null
-        RETURN {
-            [division_uid]: div_count
-        }
-    )
-
-
-/* Merge keys */
-
-LET keys = APPEND(ATTRIBUTES(legacy_counts), ATTRIBUTES(segmented_counts))
+LET keys = ATTRIBUTES(counts)
 
 FOR key IN keys
     LET doc = DOCUMENT('root', key)
@@ -698,7 +688,7 @@ FOR key IN keys
     )
     COLLECT div = highest_div /* Filter out the subdivisions */
     /* But accumulate their counts */
-    AGGREGATE total = SUM(legacy_counts[key] + segmented_counts[key])
+    AGGREGATE total = SUM(counts[key])
     SORT div.num
     RETURN {
         uid: div.uid,
@@ -709,6 +699,7 @@ FOR key IN keys
 '''
 
 TRANSLATION_COUNT_BY_AUTHOR = '''
+
 LET legacy_counts = (
     FOR doc IN html_text
         FILTER doc.lang == @lang
@@ -741,32 +732,22 @@ FOR subcount IN APPEND(legacy_counts, segmented_counts)
 '''
 
 AVAILABLE_TRANSLATIONS_LIST = '''
-LET legacy_texts = (
-    FOR doc IN html_text
-        FILTER doc.lang == @lang
+LET text_uids = (
+    FOR doc IN v_text
+        SEARCH doc.lang == @lang
         COLLECT uid = doc.uid
         SORT null
         RETURN uid
-    )
+)
     
-LET modern_texts = (
-    FOR doc IN po_strings
-        FILTER doc.lang == @lang
-        COLLECT uid = doc.uid
-        SORT null
-        RETURN uid
-    )
-    
-LET text_uids = UNION_DISTINCT(legacy_texts, modern_texts)
-
 LET division_uids = UNIQUE(
     FOR uid IN text_uids
         RETURN REGEX_REPLACE(uid, '([a-z]+(?:-[a-z]+|-[0-9]+)*).*', '$1')
-    )
+)
 
 /* Perform a graph traversal on estimated division_uids, we could do this with the 
 text uids but it takes about 200ms */
-LET parents = UNIQUE(FLATTEN(
+LET parents = FLATTEN(
     FOR uid in division_uids
         LET parents = (
             LET doc = DOCUMENT('root', uid)
@@ -775,10 +756,10 @@ LET parents = UNIQUE(FLATTEN(
                 FILTER v.type != 'language'
                 RETURN v.uid
             )
-        return parents
-))
+        RETURN parents
+)
 
-RETURN UNION_DISTINCT(parents, division_uids, text_uids)
+RETURN SORTED_UNIQUE(UNION(parents, division_uids, text_uids))
 '''
 
 

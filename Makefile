@@ -56,25 +56,17 @@ install-requirements:
 # Tests.
 # Starts containers so that we are ready to run tests in them.
 prepare-tests:
+	@make create-network
 	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	@echo "waiting for all services to fully start"
 	@bash wait_for_flask.sh
 # Run tests
 test:
-	@make test-client
 	@make test-server
-	@make test-builds
-
-test-client:
-	@docker exec -t sc-frontend-tester bash -c "echo 'Running client linter' && polymer lint && wct"
 
 test-server:
 	@docker exec -t sc-flask pytest server/
 
-test-builds:
-	test -e client/build/default/index.html
-	test -e client/build/es5-bundled/index.html
-	
 test-api:
 	docker-compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
