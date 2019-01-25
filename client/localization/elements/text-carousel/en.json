@@ -1,6 +1,8 @@
 {
   "en": {
     "readSutta": "Read this sutta",
-    "whyYouRead": "Tell us why you read"
+    "whyYouRead": "Tell us why you read",
+    "previous": "Previous",
+    "next": "Next"
   }
 }
