@@ -245,8 +245,9 @@ class Menu(Resource):
         
         for division in divisions:
             division['yellow_brick_road'] = has_translated_descendent(division['id'], language)
-            for parent in division['parents'].values():
-                parent['yellow_brick_road'] = has_translated_descendent(parent['uid'].split('/',1)[1], language)
+            
+            for obj in list(division['parents'].values()) + division.get('descendents', []):
+                obj['yellow_brick_road'] = has_translated_descendent(obj['uid'].split('/',1)[1], language)
 
         if submenu_id:
             data = divisions
