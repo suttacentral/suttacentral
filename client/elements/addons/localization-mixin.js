@@ -101,7 +101,7 @@ export const LitLocalized = base => class extends connect(store)(base) {
   localize(key, params) {
     const string = (this.__resources && this.__resources[key]) ? this.__resources[key] : '';
 
-    if (!string) {
+    if (!string && this._languageLoaded) {
       console.warn('missing translation key', key);
     }
 
