@@ -1,0 +1,12 @@
+{
+    "en": {
+        "languagesOnSuttaCentral": "Languages on SuttaCentral",
+        "ancientLanguages": "Ancient Languages",
+        "modernLanguages": "Modern Languages",
+        "translations": "Translations",
+        "translators": "Translators",
+        "divisions": "Divisions",
+        "authors": "Authors",
+        "percentageOfOriginalTexts": "Percentage of original texts on SuttaCentral that have been translated into {lang}"
+    }
+}

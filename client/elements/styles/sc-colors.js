@@ -37,7 +37,8 @@ template.innerHTML = `
       --sc-textual-info-background-color: #e2e2e2;
       --sc-toast-error-color: #f44336;
       --sc-toast-success-color: #43a047;
-
+      --sc-pie-chart-bg-color: #e1f7d0;
+      --sc-pie-chart-fill-color: #c1eda1;
     }
   </style>
 </custom-style>`;

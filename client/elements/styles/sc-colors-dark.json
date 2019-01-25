@@ -22,5 +22,7 @@
   "--sc-border-color": "rgba(0, 0, 0, 0.12)",
   "--sc-textual-info-background-color": "#515151",
   "--sc-toast-error-color": "#f44336",
-  "--sc-toast-success-color": "#43a047"
+  "--sc-toast-success-color": "#43a047",
+  "--sc-pie-chart-bg-color": "#e1f7d0",
+  "--sc-pie-chart-fill-color": "#c1eda1"
 }
