@@ -6,7 +6,7 @@ export const staticStyles = html`
   #page-wrap {
     @apply --sc-paper-font-body;
     height: auto !important;
-    margin: 0 auto -240px;
+    margin: 0 auto;
     min-width: 320px;
   }
   main {

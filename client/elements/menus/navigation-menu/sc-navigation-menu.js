@@ -193,12 +193,12 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
     return this.mainMenuData.length ? html`
       <ul id="main_navigation" class="nav-list sc-scrollbar swap-section left ${this.isMainMenu ? 'active' : ''}">
         ${this.mainMenuData.map(topLevelItem => html`
-          <li class="nav-menu-item top-menu-item">
+          <li class="nav-menu-item top-menu-item ${topLevelItem.yellow_brick_road ? 'yellow-brick' : ''}">
             <span class="nav-link-container">${topLevelItem.name}</span>
             ${this.expandMoreButtonTemplate}
             <ul class="nav-secondary closed">
               ${topLevelItem.children.map(groupingLevelItem => html`
-                <li class="nav-menu-item">
+                <li class="nav-menu-item ${topLevelItem.yellow_brick_road ? 'yellow-brick' : ''}">
                 <span class="nav-link-container">${groupingLevelItem.name}</span>
   
                 ${groupingLevelItem.lang_iso ? html`
