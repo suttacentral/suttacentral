@@ -753,7 +753,7 @@ LET parents = FLATTEN(
             LET doc = DOCUMENT('root', uid)
             FILTER doc
             FOR v, e, p IN 1..5 INBOUND doc `root_edges`
-                FILTER v.type != 'language'
+                FILTER v.type == 'division'
                 RETURN v.uid
             )
         RETURN parents
