@@ -198,7 +198,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
             ${this.expandMoreButtonTemplate}
             <ul class="nav-secondary closed">
               ${topLevelItem.children.map(groupingLevelItem => html`
-                <li class="nav-menu-item ${topLevelItem.yellow_brick_road ? 'yellow-brick' : ''}">
+                <li class="nav-menu-item ${groupingLevelItem.yellow_brick_road ? 'yellow-brick' : ''}">
                 <span class="nav-link-container">${groupingLevelItem.name}</span>
   
                 ${groupingLevelItem.lang_iso ? html`
