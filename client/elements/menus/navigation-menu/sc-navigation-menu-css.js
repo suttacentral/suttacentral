@@ -131,7 +131,7 @@ ${litScrollbarStyle}
     background: linear-gradient(to right, var(--sc-primary-color) 4px, transparent 4px);
   }
 
-  .yellow-brick .nav-link-container::after {
+  .yellow-brick > .nav-link-container::after {
     content: '';
     display: inline-block;
     margin-left: auto;
@@ -144,7 +144,7 @@ ${litScrollbarStyle}
     border-radius: 20px;
   }
 
-  .yellow-brick .menu-dropdown-icon {
+  .yellow-brick > .menu-dropdown-icon {
       color: var(--sc-tertiary-text-color);
   }
 
