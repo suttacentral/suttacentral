@@ -242,11 +242,6 @@ class Menu(Resource):
             divisions = list(db.aql.execute(submenu_query, bind_vars=bind_vars))
         else:
             divisions = list(db.aql.execute(menu_query, bind_vars=bind_vars))
-        
-        for division in divisions:
-            division['yellow_brick_road'] = has_translated_descendent(division['id'], language)
-            for parent in division['parents'].values():
-                parent['yellow_brick_road'] = has_translated_descendent(parent['uid'].split('/',1)[1], language)
 
         if submenu_id:
             data = divisions
@@ -263,6 +258,7 @@ class Menu(Resource):
                     self.group_by_language(pitaka, exclude={'sect/other'})
 
         self.recursive_cleanup(data, language=language, mapping={})
+        self.make_yellow_brick_road(data, language)
         return data
 
     @staticmethod
@@ -365,6 +361,20 @@ class Menu(Resource):
                 children = menu_entry['children']
                 self.recursive_cleanup(children, language=language, mapping=mapping)
 
+    def make_yellow_brick_road(self, menu_entries, language):
+        is_submenu_yellow_brick_road = False
+        for entry in menu_entries:
+            if 'uid' in entry:
+                uid = entry['uid'].split('/', 1)[1]
+            else:
+                uid = entry['id']
+            
+            is_entry_yellow_brick = has_translated_descendent(uid, language)
+            if 'children' in entry:
+                is_entry_yellow_brick += self.make_yellow_brick_road(entry['children'], language)
+            entry['yellow_brick_road'] = bool(is_entry_yellow_brick)
+            is_submenu_yellow_brick_road += is_entry_yellow_brick
+        return is_submenu_yellow_brick_road
 
 class SuttaplexList(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=600)
