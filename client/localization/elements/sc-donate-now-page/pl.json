@@ -19,8 +19,6 @@
     "AmountCannotBeLessThan": "Wartość nie może być mniejsza $0.50 USD.",
     "StripeLimitations": "Z powodu limitacji Strip'a, dokonaj bezpośredniej płatności albo skontaktuj się z nami.",
     "cardDeclined": "Twoja karta została odrzucona.",
-    "offline": "Utracono połączenie z internetem.",
-    "networkError": "Błąd połączenia.",
     "donateNow": "Wyślij dotację"
   }
 }

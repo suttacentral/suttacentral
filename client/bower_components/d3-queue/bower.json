@@ -1,7 +1,0 @@
-{
-  "name": "d3-queue",
-  "description": "Evaluate asynchronous tasks with configurable concurrency.",
-  "main": "d3-queue.js",
-  "license": "BSD-3-Clause",
-  "ignore": []
-}

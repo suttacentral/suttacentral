@@ -1,6 +1,7 @@
 import re
 from typing import Callable, Dict, List
 from collections import defaultdict
+import itertools
 
 import decorator
 
@@ -225,3 +226,15 @@ def groupby_unsorted(seq, key=lambda x: x):
         indexes[key(elem)].append(i)
     for k, idxs in indexes.items():
         yield k, (seq[i] for i in idxs)
+
+def chunks(iterable, chunk_size):
+    if isinstance(iterable, list):
+        yield from (iterable[i:i+chunk_size] for i in range(0, len(iterable), chunk_size))
+    else:
+        iterator = iter(iterable)
+        while True:
+            r = list(itertools.islice(iterator, 0, chunk_size))
+            if r:
+                yield r
+            else:
+                break

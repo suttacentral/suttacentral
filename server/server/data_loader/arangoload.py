@@ -12,11 +12,12 @@ from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
 from common import arangodb
+from common.utils import chunks
 from common.uid_matcher import UidMatcher
 from .util import json_load
 from .change_tracker import ChangeTracker
 from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
-    divisions, images_files, homepage, available_languages, order, sizes
+    divisions, images_files, homepage, localized_languages, order, sizes
 
 from .generate_sitemap import generate_sitemap
 
@@ -365,7 +366,12 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                             'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
                             'remark': remark
                         })
-    db['relationship'].import_bulk(ll_edges, from_prefix='root/', to_prefix='root/', overwrite=True)
+    
+    
+    # Because there are many edges (nearly 400k at last count) chunk the import
+    db['relationship'].truncate()
+    for chunk in chunks(ll_edges, 10000):
+        db['relationship'].import_bulk(chunk, from_prefix='root/', to_prefix='root/')
     
 def load_author_edition(change_tracker, additional_info_dir, db):
     author_file = additional_info_dir / 'author_edition.json'
@@ -468,6 +474,8 @@ def run(no_pull=False):
     
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
+    localized_languages.update_languages(db, current_app.config.get('ASSETS_DIR') / 'localization/elements')
+
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
@@ -494,7 +502,7 @@ def run(no_pull=False):
 
     homepage.load_why_we_read(db, additional_info_dir)
 
-    available_languages.load_available_languages(db, additional_info_dir)
+    
     
     sitemap = generate_sitemap(db)
     

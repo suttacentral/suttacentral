@@ -28,12 +28,6 @@ services:
     ports:
       - '8529:8529'
 
-  sc-frontend-builder:
-    command: bash builder.sh
-    working_dir: /opt/sc/frontend
-    volumes:
-      - ./client/:/opt/sc/frontend
-
   sc-swagger:
     restart: always
     ports:
@@ -51,3 +45,6 @@ services:
     restart: always
     ports:
      - '9222:9222'
+
+  sc-frontend:
+    command: npm run build

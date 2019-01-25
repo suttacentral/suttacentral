@@ -10,10 +10,19 @@
     "volumeAndPagePTS1": "Wolumen i strona PTS:\nedycja 1 = {pts1}\nedycja 2 = {pts2}",
     "blurb": "Wprowadzenie",
     "goToTranslation": "Idź do tłumaczenia autorstwa {author}",
-    "hasParallels": "Ten tekst posiada {num} analogii.",
-    "hasNoParallels": "Ten tekst nie ma zarejestrowanych podobieństw.",
     "itemNotFound": "Błąd 404: Nie znaleziono wpisu.",
     "networkError": "Błąd sieci",
-    "translations": "Tłumaczenia"
+    "translationsIn": "tłumaczenia w języku {lang}",
+    "translationIn": "tłumaczenie w języku {lang}",
+    "editions": "edycje",
+    "edition": "edycja",
+    "ofRootText": "tekstu źródłowego",
+    "translations": "tłumaczenia",
+    "translation": "tłumazenie",
+    "hasNoParallels": "Ten tekst nie ma zarejestrowanych analogii.",
+    "countParallels": "{count} podobieństw",
+    "countParallel": "{count} podobieństwo",
+    "inModernLanguages": "w innych nowożytnych językach",
+    "inAncientTexts": "w starożytnych tekstach"
   }
 }

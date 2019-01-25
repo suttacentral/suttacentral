@@ -1,0 +1,24 @@
+{
+    "zh": {
+        "currency": "货币",
+        "amount": "金额",
+        "invalidValue": "数值无效",
+        "chooseFrequency": "您可以选择单次捐款或每月捐款：",
+        "oneTime": "单次捐款",
+        "monthly": "每月捐款",
+        "email": "电子邮件地址（可选）",
+        "invalidEmail": "无效的电子邮件地址",
+        "message": "信息（可选）",
+        "payWithCard": "用卡付款",
+        "storageDisclaimer": "SuttaCentral并不处理或储存您的信用卡信息。所有信用卡交易都将由 <a href='https://stripe.com' target='blank'>Stripe</a> 进行安全处理。",
+        "feeDisclaimer": "对于澳大利亚的卡，信用卡处理费（Stripe handling fee）为捐款额的 1.75% + 30¢，对于国际卡，为捐款额的 2.9% + 30¢，必要时还需要增加1.8%的货币转换费。",
+        "paymentSuccessful": "善哉！您的付款已成功完成。",
+        "redirectNotice": "您将在五秒内回到主页。",
+        "Name (optional)": "姓名（可选）",
+        "UnknownError": "捐款传输出现错误。",
+        "AmountCannotBeLessThan": "金额不能低于0.50美元。",
+        "StripeLimitations": "由于磁卡（Stripe）限制，请使用直接付款，或者联系我们寻求帮助。",
+        "cardDeclined": "您的卡被拒绝。",
+        "donateNow": "立即捐款。"
+    }
+}

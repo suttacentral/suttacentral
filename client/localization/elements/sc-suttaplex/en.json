@@ -10,10 +10,21 @@
         "volumeAndPagePTS1": "PTS volume and page:\n1st edition = {pts1}\n2nd edition = {pts2}",
         "blurb": "Blurb",
         "goToTranslation": "Go to a translation by {author}",
-        "hasParallels": "This text has {num} parallels.",
-        "hasNoParallels": "This text has no recorded parallels.",
         "itemNotFound": "Error 404: Item not found.",
         "networkError": "Network error",
-        "translations": "Translations"
+        "translationsIn": "{lang} translations by",
+        "translationIn": "{lang} translation by",
+        "editions": "editions",
+        "edition": "edition",
+        "ofRootText": "of the root text",
+        "translations": "translations",
+        "translation": "translation",
+        "inModernLanguages": "in other modern languages",
+        "countParallels": "{count} parallels",
+        "countParallel": "{count} parallel",
+        "hasNoParallels": "This text has no recorded parallels.",
+        "inAncientTexts": "in ancient texts",
+        "listenSutta": "Listen to this sutta",
+        "share": "Share"
     }
 }

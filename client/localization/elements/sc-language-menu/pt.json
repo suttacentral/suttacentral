@@ -1,0 +1,9 @@
+{
+    "pt": {
+        "more": "Mais",
+        "selectLanguage": "Selecione um idioma",
+        "anonym": "Anônimo",
+        "selectTranslation": "Selecione tradução em {lang} por {author}.",
+        "selectOriginal": "Selecione o texto em {lang} por {author}."
+    }
+}

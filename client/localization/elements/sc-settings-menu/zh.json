@@ -1,0 +1,32 @@
+{
+    "zh": {
+        "viewTextualInfo": "查看文本信息",
+        "displaysInfo": "显示信息，如卷/页面参考，不同的阅读等",
+        "viewOriginal": "查看原文与翻译",
+        "onlyWorks": "这只适用于某些文本，其中包括Sujato和Brahmali的翻译。",
+        "none": "无",
+        "sideBySide": "并排",
+        "lineByLine": "逐行",
+        "popUp": "弹出",
+        "lookup": "查找",
+        "activatePaliLookup": "启用巴利文查找",
+        "activatePaliDescription": "分析巴利文与尝试显示单词的含义。请注意，这只是一个援助，并不一定准确。单词的解读来自New Concise Pali English Dictionary。",
+        "activateChineseLookup": "启用中文查找",
+        "activateChineseDescription": "这启动古中文查找。单词解读来自佛教数据字典（Digital Dictionary of Buddhism）",
+        "changePaliScript": "更改巴利文的原稿",
+        "changePaliScriptLabel": "文稿",
+        "changePaliScriptDescription": "这使您能阅读各种巴利文字符。",
+        "rememberSettings": "记住设置",
+        "rememberSettingsDescription": "选择此项以在下次浏览SuttaCentral时记住这些设置。",
+        "textualInformationEnabled": "文本信息现已启用。",
+        "textualInformationDisabled": "文本信息现已停用。",
+        "textViewEnabled": "{textView}-现可阅览应用文字。",
+        "textViewDisabled": "巴利文-英文 现已停用",
+        "lookupDictionaryEnabled": "{lookupDictionary}查找字典现已启用",
+        "paliLookupDictionaryDisabled": "巴利文查找字典现已停用。",
+        "chineseLookupDictionaryDisabled": "汉语查找字典现已停用。",
+        "scriptChanged": "巴利文现已显示在{paliScript}文字",
+        "rememberSettingsEnabled": "您下次游览SuttaCentral将会记住您的设置。",
+        "rememberSettingsDisabled": "您下次游览SuttaCentral将不会记住您的设置。"
+    }
+}

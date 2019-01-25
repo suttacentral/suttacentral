@@ -34,6 +34,7 @@
         "downloadStarted": "Pobieranie zostało rozpoczęte. Możesz nadal używać strony, damy Ci znać kiedy się zakończy.",
         "language": "Język",
         "resetButton": "Wyczyść historię pobierania",
+        "addToHomeScreen": "Dodaj do głównego ekranu",
         "alreadyDownloaded": "Dane zostały już pobrane.",
         "ClickToDownload": "Kliknij aby pobrać.",
         "downloadInProgress": "Pobieranie w trakcie.",

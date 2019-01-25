@@ -2,8 +2,8 @@ import json
 import regex
 from tqdm import tqdm
 from collections import Counter
+from common.utils import chunks
 from .textfunctions import asciify_roman, pali_sort_key
-from .fuzzymatcher import FuzzyMatcher
 from .util import json_load
 
 def load_dictionary_full(db, dictionaries_dir, change_tracker):
@@ -20,7 +20,7 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
     lang_to = 'en'
     words_seen = Counter()    
     ids_seen = Counter()
-    for dictionary in tqdm(dictionary_full_files):
+    for dictionary in tqdm(dictionary_full_files, desc="Loading dictionaries", ncols=79):
         entries = json_load(dictionary)
         for entry in entries:
             word = entry['word'].lower()
@@ -53,10 +53,9 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
     words_sorted = sorted(words_seen, key=pali_sort_key)
     word_number = {w: i for i, w in enumerate(words_sorted)}
     
-    print('Generating fuzzy matches: this might take some time')
-    fm = FuzzyMatcher(words_seen)
-    for doc in tqdm(docs):
+    for doc in docs:
         doc['num'] = word_number[doc['word']]
-        doc['similar'] = [t[0] for t in fm.search(doc['word'])]
     
-    dictionary_full_collection.import_bulk(docs, overwrite=True, on_duplicate="ignore")
+    dictionary_full_collection.truncate()
+    for chunk in chunks(docs, 1000):
+        dictionary_full_collection.import_bulk(chunk, on_duplicate="ignore")

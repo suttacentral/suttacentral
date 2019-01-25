@@ -129,6 +129,8 @@ class TextInfoModel:
                     path = f'{lang_uid}/{uid}/{author_uid}'
                 else:
                     path = f'{lang_uid}/{uid}'
+                    
+                publication_date = self._get_publication_date(root)
 
                 name = self._get_name(root, lang_uid, uid)
                 volpage = self._get_volpage(root, lang_uid, uid)
@@ -143,8 +145,9 @@ class TextInfoModel:
                     "author": author,
                     "author_short": author_short,
                     "author_uid": author_uid,
+                    "publication_date": publication_date,
                     "volpage": volpage,
-                    "mtime": mtime,
+                    "mtime": mtime,                    
                     "file_path": str(htmlfile.resolve()),
                 }
 
@@ -177,6 +180,13 @@ class TextInfoModel:
                 return item['uid'], item['short_name']
 
         return None, None
+    
+    def _get_publication_date(self, root):
+        e = root.select_one('.publication-date')
+        if e:
+            return e.text_content()
+        
+        return None
 
     def _get_name(self, root, lang_uid, uid):
         try:

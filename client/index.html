@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <html id="main_html_root">
 <head>
   <title>SuttaCentral</title>
 
   <meta charset="UTF-8">
-  
+
   <meta name="theme-color" content="rgba(206, 132, 0, 1)">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -56,7 +57,6 @@
   ga('send', 'pageview');
   </script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
-  <!-- End Google Analytics -->
 
   <!-- Polyfills -->
   <script>
@@ -78,36 +78,20 @@
     }
   </script>
 
-  <script src="/node_modules/raven-js/dist/raven.min.js"></script>
-  <script>Raven.config('https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981', {
-      release: '1.0.0',
-      environment: window.location.href.indexOf('suttacentral') === -1 ? 'development' : 'production'
-  }).install();</script>
+  <!-- Temporary fix for broken CSS mixins (@apply) inside LitElement
+       https://github.com/Polymer/lit-html/issues/518 -->
+  <script src="/node_modules/@webcomponents/shadycss/apply-shim.min.js"></script>
 
-  <!-- Polyfills -->
-  <script>
-    var head = document.querySelector('head');
-    if (!Array.prototype.includes) {
-        var script = document.createElement('script');
-        script.src = '/polyfills/arrayIncludes.js';
-        head.appendChild(script);
-    }
-    if (!Object.entries) {
-        var script = document.createElement('script');
-        script.src = '/polyfills/objectEntries.js';
-        head.appendChild(script);
-    }
-    if (!String.prototype.includes) {
-        var script = document.createElement('script');
-        script.src = '/polyfills/stringIncludes.js';
-        head.appendChild(script);
-    }
-  </script>
+  <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="/node_modules/web-animations-js/web-animations-next.min.js"></script>
 
   <style>
+    html, body {
+      height: 100%;
+    }
+
     body {
       margin: 0;
-      height: 100%;
       background-color: var(--sc-primary-background-color);
       color: var(--sc-primary-text-color);
     }
@@ -163,18 +147,9 @@
 </head>
 <body>
 
-<script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
 <sc-drawer-layout unresolved></sc-drawer-layout>
-<link rel="import" href="/elements/sc-drawer-layout.html">
 
-
-<!-- Fix for lastpass extension breaking Shady DOM: -->
-<script>
-    window.addEventListener('WebComponentsReady', function() {
-        document.createElement = Document.prototype.createElement;
-    });
-</script>
 
 <!-- Register pre-caching service worker -->
 <script async>
@@ -275,6 +250,13 @@
         if (metaData) {
             document.head.querySelector("[name='keywords']").content = metaData.keywords;
         }
+    });
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      window.deferredPWAInstallPrompt = e;
     });
 </script>
 

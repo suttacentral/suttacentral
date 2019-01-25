@@ -1,6 +1,13 @@
 LANGUAGES = '''FOR l in language
                 SORT l.name
-                RETURN {"uid": l.uid, "name": l.name, "iso_code": l.iso_code, "is_root": l.is_root}'''
+                RETURN {
+                    "uid": l.uid,
+                    "name": l.name,
+                    "iso_code": l.iso_code,
+                    "is_root": l.is_root,
+                    "localized": !!l.localized,
+                    "localized_percent": l.localized_percent ? l.localized_percent : 0
+                    }'''
 
 TEXTS_BY_LANG = '''
 FOR text IN html_text
@@ -37,7 +44,7 @@ FOR text IN po_strings
         acronym: root.acronym,
         mtime: text.mtime
     }
-'''        
+'''
 
 # Returns all uids in proper order assuming num is set correctly in data
 UIDS_IN_ORDER_BY_DIVISION = '''
@@ -143,34 +150,40 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
     LET legacy_translations = (
         FOR text IN html_text
             FILTER text.uid == v.uid
+            LET lang_doc = DOCUMENT('language', text.lang)
             LET res = {
                 lang: text.lang,
-                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
+                lang_name: lang_doc.name,
+                is_root: lang_doc.is_root,
                 author: text.author,
                 author_short: text.author_short,
                 author_uid: text.author_uid,
+                publication_date: text.publication_date,
                 id: text._key,
-                segmented: false
+                segmented: false,
+                volpage: text.volpage
                 }
             // Add title if it is in desired language
-            LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
-            // Add volpage info if it exists.
-            RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res2
+            RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
         )
 
     LET po_translations = (
         FOR text IN po_strings
             FILTER text.uid == v.uid
             SORT text.lang
+            LET lang_doc = DOCUMENT('language', text.lang)
             RETURN {
                 lang: text.lang,
-                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
+                lang_name: lang_doc.name,
+                is_root: lang_doc.is_root,
                 author: text.author,
                 author_short: text.author_short,
                 author_uid: text.author_uid,
+                publication_date: text.publication_date,
                 id: text._key,
                 segmented: true,
-                title: text.title
+                title: text.title,
+                volpage: text.volpage
             }
     )
     
@@ -186,12 +199,6 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
              blurbs_by_uid[0].blurb
     )[0]
     
-    LET legacy_volpages = (
-        FOR text IN legacy_translations
-            FILTER HAS(text, "volpage")
-            RETURN text.volpage
-    )
-    
     LET difficulty = (
         FOR difficulty IN difficulties
             FILTER difficulty.uid == v.uid
@@ -200,6 +207,13 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
     )[0]
     
     LET translations = FLATTEN([po_translations, legacy_translations])
+
+    LET volpages = (
+        FOR text IN translations
+            FILTER text.volpage != null
+            LIMIT 1
+            RETURN text.volpage
+    )
     
     LET is_segmented_original = (
         FOR translation IN translations
@@ -243,12 +257,13 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
 
     RETURN {
         acronym: v.acronym,
-        volpages: v.volpage ? v.volpage : legacy_volpages[0],
+        volpages: v.volpage ? v.volpage : volpages[0],
         uid: v.uid,
         blurb: blurb,
         difficulty: difficulty,
         original_title: original_titles,
         root_lang: v.root_lang,
+        root_lang_name: DOCUMENT('language', v.root_lang).name,
         type: e.type ? e.type : (v.type ? v.type : 'text'),
         from: e._from,
         translated_title: translated_titles,
@@ -524,14 +539,16 @@ RETURN UNIQUE(adjacent_words)
 '''
 
 DICTIONARY_SIMILAR = '''
-LET similar_words = (
-    FOR dictionary IN dictionary_full
-        FILTER dictionary.word == @word
-        LIMIT 1
-        RETURN dictionary.similar
-    )[0]
-    
-RETURN similar_words
+LET words = FLATTEN(
+    FOR doc IN v_dict SEARCH STARTS_WITH(doc.word_ascii, LEFT(@word_ascii, 1))
+        FILTER doc.word != @word
+        LET ed1 = LEVENSHTEIN_DISTANCE(@word_ascii, doc.word_ascii) * 2
+        LET ed2 = LEVENSHTEIN_DISTANCE(@word, doc.word)
+        FILTER ed2 < MAX([1, LENGTH(@word) / 2])
+        SORT ed1 + ed2
+        RETURN DISTINCT doc.word
+    )
+RETURN SLICE(words, 0, 10)
 '''
 
 EXPANSION = '''
@@ -546,64 +563,46 @@ RETURN MERGE(expansion_item)
 
 class PWA:
     MENU = '''
-FOR div IN root
-    FILTER div.type == 'division'
-    LET parents = MERGE(
-        FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
-            RETURN {
-                [p.type]: {
-                    uid: p._id
-                }
-            }
-        )
+LET langs = UNION(@languages OR [], @include_root ? (FOR lang IN language FILTER lang.is_root RETURN lang.uid) : [])
 
-    LET texts = (
-        FOR d, d_edge, d_path IN 1..20 OUTBOUND div `root_edges`
-            FILTER d.type == 'text' OR d_edge.type == 'text'
-            LET po = (
-                FOR text IN po_strings
-                    FILTER text.uid == d.uid AND (POSITION(@languages, text.lang) OR 
-                                                  (text.lang == d.root_lang AND @root_lang))  
-                    RETURN {author_uid: text.author_uid, lang: text.lang}
+LET menu = (
+    FOR div IN 1..1 OUTBOUND DOCUMENT('pitaka', 'sutta') `root_edges`
+        LET has_subdivisions = LENGTH(
+            FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
+                FILTER d_edge.type != 'text'
+                
+                LIMIT 1
+                RETURN 1
             )
-            LET legacy = (
-                FOR text IN html_text
-                    FILTER text.uid == d.uid AND (POSITION(@languages, text.lang) OR 
-                                                  (text.lang == d.root_lang AND @root_lang))
-                    RETURN {author_uid: text.author_uid, lang: text.lang}
-            )
-            FILTER LENGTH(po) > 0 OR LENGTH(legacy) > 0
-            LET all_texts = UNION(po, legacy)
-            LET languages = (
-                FOR text IN all_texts
-                    RETURN DISTINCT text.lang
-            )
-            
-            LET m = (
-                FOR l IN languages
-                    LET in_lang = (
-                        FOR text IN all_texts
-                            FILTER text.lang == l
-                            RETURN text.author_uid
-                    )
-                    RETURN {lang: l, authors: in_lang}
-            )
-            
-            RETURN {uid: d.uid, translations: m}
+        FILTER has_subdivisions
+        SORT div.num
+        RETURN div.uid
     )
-    LET suttaplex = (
-        FOR d, d_edge, d_path IN 1..20 OUTBOUND div `root_edges`
-            FILTER d_edge.type != 'text'
-            RETURN d.uid
-    )
-    RETURN {
-        uid: div._id, 
-        has_children: LENGTH(suttaplex) != 0,
-        texts: texts,
-        suttaplex: suttaplex,
-        id: div.uid, 
-        parents: parents
-    }
+
+LET grouped_children = MERGE(
+    FOR d, d_edge, d_path IN 1..20 OUTBOUND DOCUMENT('pitaka', 'sutta') `root_edges`
+        SORT d_path.vertices[*].num
+        COLLECT is_div = d_edge.type != 'text' INTO uids = d.uid
+        RETURN {[is_div ? 'div' : 'text']: uids}
+)
+
+LET suttaplex = grouped_children['div']
+
+LET texts = (
+        FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['text']
+            COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: text.author_uid}
+            RETURN {uid, translations:(
+                FOR text IN groups
+                    COLLECT lang = text.lang INTO authors = text.author_uid
+                    RETURN {lang, authors}
+                )}
+)
+
+RETURN {
+    menu,
+    suttaplex,
+    texts
+}
     '''
 
     SIZES = '''
@@ -612,3 +611,171 @@ LET languages = (FOR s IN pwa_sizes
 
 RETURN MERGE(languages)
     '''
+
+
+# The translation count queries use COLLECT/AGGREGATE
+# these are very fast queries
+TRANSLATION_COUNT_BY_LANGUAGE = '''
+LET root_langs = (FOR lang IN language FILTER lang.is_root RETURN lang.uid)
+
+LET root_lang_total = COUNT(FOR text IN v_text SEARCH text.lang IN root_langs
+    RETURN 1)
+
+LET langs = (
+    FOR text IN v_text
+        COLLECT lang_code = text.lang WITH COUNT INTO total
+        LET lang = DOCUMENT('language', lang_code)
+        LET translated = total / root_lang_total
+        RETURN {
+            num: lang.num,
+            iso_code: lang.iso_code,
+            is_root: lang.is_root,
+            name: lang.name,
+            total: total,
+            percent: translated > 0.01 ? CEIL(100 * translated) : CEIL(1000 * translated) / 10
+        }
+)
+
+LET sorted_langs = MERGE(
+    FOR lang IN langs
+        COLLECT is_root = lang.is_root INTO groupings
+        RETURN {
+            [is_root]: groupings[*].lang
+        }
+)
+
+RETURN {
+    ancient: (
+        FOR doc IN sorted_langs["true"]
+            SORT doc.total DESC
+            RETURN UNSET(doc, 'is_root', 'num', 'percent')
+        ),
+    modern: (
+        FOR doc IN sorted_langs["false"]
+            SORT doc.total DESC
+            RETURN UNSET(doc, 'is_root', 'num')
+        )
+}
+'''
+
+TRANSLATION_COUNT_BY_DIVISION = '''
+/* First we count the number of texts by (sub)division uid based on pattern matching */
+LET counts = MERGE(
+    FOR doc IN v_text
+        SEARCH doc.lang == @lang
+        COLLECT division_uid = REGEX_REPLACE(doc.uid, '([a-z]+(?:-[a-z]+|-[0-9]+)*).*', '$1') WITH COUNT INTO div_count
+        SORT null
+        RETURN {
+            [division_uid]: div_count
+        }
+)
+    
+LET keys = ATTRIBUTES(counts)
+
+FOR key IN keys
+    LET doc = DOCUMENT('root', key)
+    FILTER doc
+    /* Determine the highest division level */
+    LET highest_div = LAST(
+        FOR v, e, p IN 0..10 INBOUND doc `root_edges`
+        FILTER v.type == 'division'
+        RETURN {
+            uid: v.uid,
+            name: v.name,
+            root_lang: v.root_lang,
+            num: v.num
+        }
+    )
+    COLLECT div = highest_div /* Filter out the subdivisions */
+    /* But accumulate their counts */
+    AGGREGATE total = SUM(counts[key])
+    SORT div.num
+    RETURN {
+        uid: div.uid,
+        name: div.name,
+        root_lang: div.root_lang,
+        total: total
+    }
+'''
+
+TRANSLATION_COUNT_BY_AUTHOR = '''
+
+LET legacy_counts = (
+    FOR doc IN html_text
+        FILTER doc.lang == @lang
+        COLLECT author = doc.author WITH COUNT INTO total
+        SORT null
+        RETURN {
+            author,
+            total
+        }
+    )
+    
+LET segmented_counts = (
+    FOR doc IN po_strings
+        FILTER doc.lang == @lang
+        COLLECT author = doc.author WITH COUNT INTO total
+        SORT null
+        RETURN {
+            author,
+            total
+        }
+    )
+
+FOR subcount IN APPEND(legacy_counts, segmented_counts)
+    /* If there are multiple authors split them and count seperately */
+    FOR author_name IN SPLIT(subcount.author, ', ')
+        COLLECT name = author_name
+        AGGREGATE total = SUM(subcount.total)
+        SORT total DESC
+        RETURN {name, total}
+'''
+
+AVAILABLE_TRANSLATIONS_LIST = '''
+LET text_uids = (
+    FOR doc IN v_text
+        SEARCH doc.lang == @lang
+        COLLECT uid = doc.uid
+        SORT null
+        RETURN uid
+)
+    
+LET division_uids = UNIQUE(
+    FOR uid IN text_uids
+        RETURN REGEX_REPLACE(uid, '([a-z]+(?:-[a-z]+|-[0-9]+)*).*', '$1')
+)
+
+/* Perform a graph traversal on estimated division_uids, we could do this with the 
+text uids but it takes about 200ms */
+LET parents = FLATTEN(
+    FOR uid in division_uids
+        LET parents = (
+            LET doc = DOCUMENT('root', uid)
+            FILTER doc
+            FOR v, e, p IN 1..5 INBOUND doc `root_edges`
+                FILTER v.type != 'language'
+                RETURN v.uid
+            )
+        RETURN parents
+)
+
+RETURN SORTED_UNIQUE(UNION(parents, division_uids, text_uids))
+'''
+
+
+
+GET_ANCESTORS = '''
+    /* Return uids that are ancestors to any uid in @uid_list */
+    RETURN UNIQUE(FLATTEN(
+        FOR uid in ['pli-tv-bi-vb-ss', 'pli-tv-bi-vb-sk', 'pli-tv-bu-vb-pd', 'pli-tv-bi-pm', 'sf', 'vv', 'pli-tv-bu-vb-np', 'pli-tv-bi-vb-pc', 'ds', 'xct-mu-bu-pm', 'thag', 'patthana', 'pdhp', 'iti', 'pli-tv-bu-vb-ay', 'sn', 'pp', 'ud', 'sa-2', 'pli-tv-pvr', 'da', 'pv', 'pli-tv-bu-vb-as', 'dn', 'arv', 'ma', 'kp', 'thi-ap', 'lal', 'pli-tv-bi-vb-pd', 'snp', 'pli-tv-bi-vb-np', 'pli-tv-bu-vb-pj', 'pli-tv-bi-vb-as', 'ja', 'thig', 'vb', 'pli-tv-bi-vb-pj', 'ea', 'pli-tv-bu-vb-ss', 'lzh-dg-kd', 'mn', 'tha-ap', 'an', 'kv', 'up', 'pli-tv-bu-vb-pc', 't', 'sa', 'mil', 'uv-kg', 'lzh-dg-bu-pm', 'dhp', 'pli-tv-kd']
+            LET parents = (
+                LET doc = DOCUMENT('root', uid)
+                FILTER doc
+                FOR v, e, p IN 1..5 INBOUND doc `root_edges`
+                    FILTER v.type != 'language'
+                    RETURN v.uid
+                )
+            return parents
+    ))
+'''
+

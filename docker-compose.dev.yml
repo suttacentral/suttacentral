@@ -32,26 +32,20 @@ services:
     - '9200:9200'
     - '9300:9300'
 
-  sc-livereload:
-    build:
-      context: ./client/
-      dockerfile: Dockerfile-livereload
+  sc-frontend:
     command: npm run dev
-    container_name: 'sc-livereload'
-    labels:
-      application: 'sc-livereload'
     volumes:
-      - ./client/:/opt/sc/static
+      - ./client/elements:/opt/sc/frontend/elements
+      - ./client/utils:/opt/sc/frontend/utils
+      - ./client/img:/opt/sc/frontend/img
+      - ./client/localization:/opt/sc/frontend/localization
+      - ./client/index.html:/opt/sc/frontend/index.html
+      - ./client/redux-store.js:/opt/sc/frontend/redux-store.js
+      - ./client/sentry.js:/opt/sc/frontend/sentry.js
+      - ./client/localization/elements:/opt/sc/frontend/localization/elements
     ports:
       - '3000:3000'
-      - '3001:3001'
 
-  sc-frontend-tester:
-    entrypoint: tail -f /dev/null
-    working_dir: /opt/sc/frontend
-    volumes:
-      - ./client/:/opt/sc/frontend
-      
   sc-chrome-headless:
     ports:
       - '9222:9222'
