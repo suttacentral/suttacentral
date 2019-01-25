@@ -400,7 +400,7 @@ class SCHomePage extends SCStaticPage {
           </paper-card>
         </div>
         <div class="row cards">
-          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="/img/home-page/becomingone-min.jpg">
+          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="/img/home-page/becomingone-min.jpg" alt="${_`What’s here`}">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">
                 ${_`What’s here`}
@@ -410,7 +410,7 @@ class SCHomePage extends SCStaticPage {
               </div>
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="/img/home-page/contemplatingthemoon-min.jpg">
+          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="/img/home-page/contemplatingthemoon-min.jpg" alt="${_`Where to begin`}">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">
                 ${_`Where to begin`}
@@ -437,7 +437,7 @@ class SCHomePage extends SCStaticPage {
               </div>
               <div class="card-content-video">
                 <div class="embed-container">
-                  <iframe allowfullscreen="" frameborder="0" height="360" id="sc-video" mozallowfullscreen="" src="https://player.vimeo.com/video/257038431?color=efe700&byline=0" webkitallowfullscreen="" width="640">
+                  <iframe allowfullscreen="" frameborder="0" height="360" id="sc-video" mozallowfullscreen="" src="https://player.vimeo.com/video/257038431?color=efe700&byline=0" webkitallowfullscreen="" width="640" title="SuttaCentral.net - Early Buddhist texts, translations, and parallels">
                   </iframe>
                 </div>
               </div>
@@ -510,7 +510,7 @@ class SCHomePage extends SCStaticPage {
           </paper-card>
         </div>
         <div class="row cards">
-          <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword-min.jpg">
+          <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword-min.jpg" alt="${_`A Reader’s Guide to the Pali Suttas`}">
             <div class="card-content-wrapper">
               <div class="card-title-text">
                 ${_`A Reader’s Guide to the Pali Suttas`}
@@ -523,7 +523,7 @@ class SCHomePage extends SCStaticPage {
               ${_`<a class="button-link" href="/general-guide-sujato"><paper-button class="button card-button" raised>GUIDES</paper-button></a>`}
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain-min.jpg">
+          <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain-min.jpg" alt="${_`Indexes and Terminology`}">
             <div class="card-content-wrapper">
               <div class="card-title-text">
                 ${_`Indexes and Terminology`}
