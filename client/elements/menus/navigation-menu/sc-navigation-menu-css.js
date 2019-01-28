@@ -115,7 +115,7 @@ ${litScrollbarStyle}
     z-index: 1;
   }
 
-  .nav-link-container {
+  .nav-link {
     @apply --sc-skolar-font-size-md;
     @apply --sc-all-caps;
     color: var(--sc-primary-text-color);
@@ -131,24 +131,11 @@ ${litScrollbarStyle}
     background: linear-gradient(to right, var(--sc-primary-color) 4px, transparent 4px);
   }
 
-  .yellow-brick > .nav-link-container::after {
-    content: '';
-    display: inline-block;
-    margin-left: auto;
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    right: 5px;
-    top: 1px;
-    background: var(--sc-primary-accent-color-dark);
-    border-radius: 20px;
-  }
-
   .yellow-brick > .menu-dropdown-icon {
       color: var(--sc-tertiary-text-color);
   }
 
-  .nav-menu-item.selected > .nav-link-container > .nav-link {
+  .nav-menu-item.selected > .nav-link {
     color: var(--sc-primary-color);
   }
 
@@ -195,8 +182,8 @@ ${litScrollbarStyle}
     will-change: transform;
   }
 
-  .nav-secondary .nav-link-container,
-  .nav-tertiary .nav-link-container {
+  .nav-secondary .nav-link,
+  .nav-tertiary .nav-link {
     @apply --sc-skolar-font-size-s;
     padding-right: var(--sc-size-lg);
     font-weight: 400;
@@ -243,15 +230,15 @@ ${litScrollbarStyle}
     padding-left: 35px;
   }
 
-  #main_navigation .nav-link-container {
+  #main_navigation .nav-link {
     padding-left: calc(35px + var(--sc-size-md));
   }
 
-  #main_navigation .nav-tertiary .nav-link-container {
+  #main_navigation .nav-tertiary .nav-link {
     padding: 5px var(--sc-size-md);
   }
 
-  #main_navigation .nav-tertiary .nav-link-container.link-text-ellipsis {
+  #main_navigation .nav-tertiary .nav-link.link-text-ellipsis {
     padding-right: calc(var(--sc-size-sm) + var(--sc-size-lg));
   }
 

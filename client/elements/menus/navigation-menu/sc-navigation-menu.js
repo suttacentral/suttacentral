@@ -9,6 +9,7 @@ import { API_ROOT } from '../../../constants';
 import '../../../img/sc-language-icons.js';
 import { LitLocalized } from '../../addons/localization-mixin';
 import { scNavigationMenuCss } from './sc-navigation-menu-css';
+import './yellow-brick';
 
 const childMenuCache = {};
 
@@ -62,7 +63,8 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
 
   toggleOpenDropdownMenu(e) {
     const icon = e.composedPath()[0];
-    const container = e.composedPath()[1];
+
+    const container = e.composedPath().find((elem) => elem.tagName === 'LI');
     const childMenu = container.querySelector('ul');
 
     if (!childMenu) {
@@ -193,27 +195,31 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
     return this.mainMenuData.length ? html`
       <ul id="main_navigation" class="nav-list sc-scrollbar swap-section left ${this.isMainMenu ? 'active' : ''}">
         ${this.mainMenuData.map(topLevelItem => html`
-          <li class="nav-menu-item top-menu-item ${topLevelItem.yellow_brick_road ? 'yellow-brick' : ''}">
-            <span class="nav-link-container">${topLevelItem.name}</span>
-            ${this.expandMoreButtonTemplate}
-            <ul class="nav-secondary closed">
-              ${topLevelItem.children.map(groupingLevelItem => html`
-                <li class="nav-menu-item ${groupingLevelItem.yellow_brick_road ? 'yellow-brick' : ''}">
-                <span class="nav-link-container">${groupingLevelItem.name}</span>
-  
-                ${groupingLevelItem.lang_iso ? html`
-                  <iron-icon class="iso-code-image" slot="item-icon" title="${groupingLevelItem.lang_name}"
-                    icon="${this.getLanguageIconName(groupingLevelItem.lang_iso)}">
-                  </iron-icon>
-                ` : ''}
-                
-                ${groupingLevelItem.children.length > 0 ? html`
-                  ${this.expandMoreButtonTemplate}
-                  ${this.deepMainMenuLevelsTemplate(groupingLevelItem, (topLevelItem.name === 'Sutta'))}
-                ` : ''}
-                </li>
-              `)}
-            </ul>
+          <li class="nav-menu-item top-menu-item">
+            <sc-yellow-brick .hasRoad="${topLevelItem.yellow_brick_road}">
+              <span class="nav-link">${topLevelItem.name}</span>
+              ${this.expandMoreButtonTemplate}
+              <ul class="nav-secondary closed">
+                ${topLevelItem.children.map(groupingLevelItem => html`
+                  <li class="nav-menu-item">
+                    <sc-yellow-brick .hasRoad="${groupingLevelItem.yellow_brick_road}">
+                      <span class="nav-link">${groupingLevelItem.name}</span>
+        
+                      ${groupingLevelItem.lang_iso ? html`
+                        <iron-icon class="iso-code-image" slot="item-icon" title="${groupingLevelItem.lang_name}"
+                          icon="${this.getLanguageIconName(groupingLevelItem.lang_iso)}">
+                        </iron-icon>
+                      ` : ''}
+                      
+                      ${groupingLevelItem.children.length > 0 ? html`
+                        ${this.expandMoreButtonTemplate}
+                        ${this.deepMainMenuLevelsTemplate(groupingLevelItem, (topLevelItem.name === 'Sutta'))}
+                      ` : ''}
+                    </sc-yellow-brick>
+                  </li>
+                `)}
+              </ul>
+            </sc-yellow-brick>
           </li>
         `)}
       </ul>
@@ -228,29 +234,32 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
       return html`
         <ul class="${listType} closed" style="${this.getMaxHeightStyle(item)}">
           ${item.children.map(childItem => html`
-            <li class="nav-menu-item ${this.selectedItemId === childItem.id || this.parentId === childItem.id ? 'selected' : ''} ${childItem.yellow_brick_road ? 'yellow-brick' : ''}">
-            ${listType === 'nav-secondary' ? html`
-              <span class="nav-link-container">${childItem.name}</span>
-              ${childItem.lang_iso ? html`
-                <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
-                  icon="${this.getLanguageIconName(childItem.lang_iso)}"></iron-icon>
-              ` : ''}
-            ` : html`
-              <div class="nav-link-container link-text-ellipsis" title="${childItem.name}">
-                <a class="nav-link" href="${this.getSuttaplexUrl(childItem.id)}">${childItem.name}</a>
-              </div>
-              ${childItem.lang_iso ? html`
-                <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
-                  icon="${this.getLanguageIconName(childItem.lang_iso)}"></iron-icon>
-              ` : ''}
-            `}
-            
-            ${childItem.children && childItem.children.length > 0 ? html`
-              ${this.expandMoreButtonTemplate}
-              ${this.deepMainMenuLevelsTemplate(childItem, false)}
-            ` : childItem.has_children ? html`
-              <paper-icon-button icon="arrow-forward" class="menu-dropdown-icon" @click="${() => this.openChildMenu(childItem)}"></paper-icon-button>
-            ` : ''}
+            <li class="nav-menu-item ${this.selectedItemId === childItem.id || this.parentId === childItem.id ? 'selected' : ''}">
+              <sc-yellow-brick .hasRoad="${childItem.yellow_brick_road}">
+                ${listType === 'nav-secondary' ? html`
+                  <span class="nav-link">${childItem.name}</span>
+                  ${childItem.lang_iso ? html`
+                    <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
+                      icon="${this.getLanguageIconName(childItem.lang_iso)}"></iron-icon>
+                  ` : ''}
+                ` : html`
+                  <a class="nav-link link-text-ellipsis" title="${childItem.name}"
+                     href="${this.getSuttaplexUrl(childItem.id)}">
+                    ${childItem.name}
+                  </a>
+                  ${childItem.lang_iso ? html`
+                    <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
+                      icon="${this.getLanguageIconName(childItem.lang_iso)}"></iron-icon>
+                  ` : ''}
+                `}
+                
+                ${childItem.children && childItem.children.length > 0 ? html`
+                  ${this.expandMoreButtonTemplate}
+                  ${this.deepMainMenuLevelsTemplate(childItem, false)}
+                ` : childItem.has_children ? html`
+                  <paper-icon-button icon="arrow-forward" class="menu-dropdown-icon" @click="${() => this.openChildMenu(childItem)}"></paper-icon-button>
+                ` : ''}
+              </sc-yellow-brick>
             </li>
           `)}
         </ul>
@@ -261,30 +270,31 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
   getChildMenuTemplate(menuItem, menuLevel) {
     const isRootElement = menuLevel === 0;
 
-
     return menuItem.children ? html`
       <ul class="nav-tertiary ${isRootElement ? 'sub-nav sc-scrollbar open' : 'sub-nav-child closed'}"
         style="${isRootElement ? '' : this.getMaxHeightStyle(menuItem)}">
         ${menuItem.children.map(childItem => html`
-          <li class="nav-menu-item ${isRootElement ? 'top-menu-item' : ''} ${childItem.id === this.selectedItemId ? 'selected' : ''} ${childItem.yellow_brick_road ? 'yellow-brick' : ''}"
-            @click="${this.selectChildItem(menuItem)}"
+          <li class="nav-menu-item ${isRootElement ? 'top-menu-item' : ''} ${childItem.id === this.selectedItemId ? 'selected' : ''}"
+            @click="${() => this.selectChildItem(menuItem)}"
           >
-            ${childItem.lang_iso ? html`
-              <iron-icon class="iso-code-image" slot="item-icon"
-                title="${childItem.lang_name}" icon="${this.getLanguageIconName(childItem.lang_iso)}">
-              </iron-icon>
-            ` : ''}
-
-            <div class="nav-link-container link-text-ellipsis" title="${childItem.name}" style="${this.calculateSubmenuChildrenStyle(menuLevel)}">
-              <a class="nav-link" href="${this.getSuttaplexUrl(childItem.id)}">
+            <sc-yellow-brick .hasRoad="${childItem.yellow_brick_road}">
+              ${childItem.lang_iso ? html`
+                <iron-icon class="iso-code-image" slot="item-icon"
+                  title="${childItem.lang_name}" icon="${this.getLanguageIconName(childItem.lang_iso)}">
+                </iron-icon>
+              ` : ''}
+  
+              <a class="nav-link link-text-ellipsis" title="${childItem.name}"
+                 style="${this.calculateSubmenuChildrenStyle(menuLevel)}"
+                 href="${this.getSuttaplexUrl(childItem.id)}">
                 ${this.getPrefixedItemName(childItem.name, childItem.display_num)}
               </a>
-            </div>
-
-            ${childItem.children && childItem.children.length > 0 ? html`
-              ${this.expandMoreButtonTemplate}
-              ${this.getChildMenuTemplate(childItem, menuLevel + 1)}
-            ` : ''}
+  
+              ${childItem.children && childItem.children.length > 0 ? html`
+                ${this.expandMoreButtonTemplate}
+                ${this.getChildMenuTemplate(childItem, menuLevel + 1)}
+              ` : ''}
+            </sc-yellow-brick>
           </li>
         `)}
       </ul>
