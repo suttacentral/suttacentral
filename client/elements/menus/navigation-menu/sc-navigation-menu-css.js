@@ -135,11 +135,11 @@ ${litScrollbarStyle}
       color: var(--sc-tertiary-text-color);
   }
 
-  .nav-menu-item.selected > .nav-link {
+  .nav-menu-item.selected > sc-yellow-brick > .nav-link {
     color: var(--sc-primary-color);
   }
 
-  .nav-menu-item.selected > .open {
+  .nav-menu-item.selected > sc-yellow-brick > .open {
     background: var(--sc-secondary-background-color);
   }
 

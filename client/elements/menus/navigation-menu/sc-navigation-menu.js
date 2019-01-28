@@ -206,7 +206,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
                       <span class="nav-link">${groupingLevelItem.name}</span>
         
                       ${groupingLevelItem.lang_iso ? html`
-                        <iron-icon class="iso-code-image" slot="item-icon" title="${groupingLevelItem.lang_name}"
+                        <iron-icon class="iso-code-image" title="${groupingLevelItem.lang_name}"
                           icon="${this.getLanguageIconName(groupingLevelItem.lang_iso)}">
                         </iron-icon>
                       ` : ''}
@@ -239,7 +239,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
                 ${listType === 'nav-secondary' ? html`
                   <span class="nav-link">${childItem.name}</span>
                   ${childItem.lang_iso ? html`
-                    <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
+                    <iron-icon class="iso-code-image" title="${childItem.lang_name}"
                       icon="${this.getLanguageIconName(childItem.lang_iso)}"></iron-icon>
                   ` : ''}
                 ` : html`
@@ -248,7 +248,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
                     ${childItem.name}
                   </a>
                   ${childItem.lang_iso ? html`
-                    <iron-icon class="iso-code-image" slot="item-icon" title="${childItem.lang_name}"
+                    <iron-icon class="iso-code-image" title="${childItem.lang_name}"
                       icon="${this.getLanguageIconName(childItem.lang_iso)}"></iron-icon>
                   ` : ''}
                 `}
@@ -279,7 +279,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
           >
             <sc-yellow-brick .hasRoad="${childItem.yellow_brick_road}">
               ${childItem.lang_iso ? html`
-                <iron-icon class="iso-code-image" slot="item-icon"
+                <iron-icon class="iso-code-image"
                   title="${childItem.lang_name}" icon="${this.getLanguageIconName(childItem.lang_iso)}">
                 </iron-icon>
               ` : ''}
