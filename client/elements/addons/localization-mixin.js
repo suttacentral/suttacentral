@@ -61,7 +61,7 @@ export const Localized = base => class extends base {
       await this.__loadLanguage(lang)
     );
 
-    this.languageLoaded()
+    this.languageLoaded();
   }
 
   async __loadLanguage(lang) {
