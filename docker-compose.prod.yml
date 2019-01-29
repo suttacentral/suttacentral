@@ -48,3 +48,5 @@ services:
 
   sc-frontend:
     command: npm run build
+    volumes:
+      - ./client/build:/opt/sc/frontend/build
