@@ -330,6 +330,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       <sc-sn-guide name="SN-GUIDE-SUJATO"></sc-sn-guide>
       <sc-an-guide name="AN-GUIDE-SUJATO"></sc-an-guide>
       <sc-an-introduction name="AN-INTRODUCTION-BODHI"></sc-an-introduction>
+      <sc-languages-page name="LANGUAGES"></sc-languages-page>
       <div name="NOT-FOUND" class="page-not-found-container">
         <h2>{{localize('error404')}}</h2>
         <h3>{{localize('pageNotFound')}}</h3>
