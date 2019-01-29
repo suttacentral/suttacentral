@@ -25,6 +25,9 @@ export const Localized = base => class extends base {
       localizedStringsPath: {
         type: String
       },
+      languageLoaded: {
+        type: Object
+      },
       resources: {
         type: Object,
         value: {}
@@ -47,12 +50,18 @@ export const Localized = base => class extends base {
     }
   }
 
+  languageLoaded() {
+    return true;
+  }
+
   async __siteLanguageChanged(lang) {
     this.resources = Object.assign(
       {},
       await this.__loadLanguage(FALLBACK_LANGUAGE),
       await this.__loadLanguage(lang)
     );
+
+    this.languageLoaded();
   }
 
   async __loadLanguage(lang) {
