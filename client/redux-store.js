@@ -20,7 +20,6 @@ const initialState = {
     fullSiteLanguageName: '',
     toolbarOptions: {
         title: '',
-        mode: ''
     },
     searchParams: {},
     suttaText: {},
@@ -49,7 +48,8 @@ const initialState = {
         }
     },
     suttaplexListDisplay: false,
-    isOnline: true
+    isOnline: true,
+    showedLanguagePrompt: false,
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -111,6 +111,8 @@ const reducer = (state, action) => {
             return Object.assign({}, state, { suttaplexListDisplay: action.suttaplexdisplay });
         case 'SET_ONLINE_STATUS':
             return Object.assign({}, state, { isOnline: action.isOnline });
+        case 'SET_SHOWED_LANGUAGE_PROMPT':
+            return Object.assign({}, state, { showedLanguagePrompt: action.showedLanguagePrompt });
         default:
             return state;
     }

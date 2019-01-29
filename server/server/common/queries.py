@@ -732,34 +732,47 @@ FOR subcount IN APPEND(legacy_counts, segmented_counts)
 '''
 
 AVAILABLE_TRANSLATIONS_LIST = '''
+/*
+// This commented out query does the same thing, but
+// takes about 4x longer to execute because it doesn't
+// prune the number of documents that it does traversals for
+
+FOR doc IN v_text
+    SEARCH doc.lang == @lang
+    COLLECT uid = doc.uid
+    LET root_doc = DOCUMENT('root', uid)
+    FILTER root_doc
+    FOR v, e, p IN 0..10 INBOUND root_doc `root_edges`
+        FILTER v.type == 'division' OR v.type == 'div'
+        RETURN DISTINCT v.uid
+*/
+
+
+// First collect all distinct text uids
 LET text_uids = (
     FOR doc IN v_text
         SEARCH doc.lang == @lang
-        COLLECT uid = doc.uid
-        SORT null
-        RETURN uid
+        RETURN DISTINCT doc.uid
 )
-    
-LET division_uids = UNIQUE(
+
+// Now collect their distinct parent documents
+LET parents = (
     FOR uid IN text_uids
-        RETURN REGEX_REPLACE(uid, '([a-z]+(?:-[a-z]+|-[0-9]+)*).*', '$1')
+        LET doc = DOCUMENT('root', uid)
+        FILTER doc
+        FOR v, e, p IN 1..1 INBOUND doc `root_edges`
+            RETURN DISTINCT v
 )
 
-/* Perform a graph traversal on estimated division_uids, we could do this with the 
-text uids but it takes about 200ms */
-LET parents = FLATTEN(
-    FOR uid in division_uids
-        LET parents = (
-            LET doc = DOCUMENT('root', uid)
-            FILTER doc
-            FOR v, e, p IN 1..5 INBOUND doc `root_edges`
-                FILTER v.type != 'language'
-                RETURN v.uid
-            )
-        RETURN parents
+// Now get the uids for those parents and all anscestors
+LET parent_uids = (
+    FOR doc IN parents
+        FOR v, e, p IN 0..10 INBOUND doc `root_edges`
+            FILTER v.type == 'division' OR v.type == 'div'
+            RETURN DISTINCT v.uid
 )
 
-RETURN SORTED_UNIQUE(UNION(parents, division_uids, text_uids))
+RETURN SORTED_UNIQUE(UNION(parent_uids, text_uids))
 '''
 
 

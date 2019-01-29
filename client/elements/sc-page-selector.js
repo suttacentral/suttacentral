@@ -169,7 +169,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         value: ['HOME', 'DONATIONS', 'PEOPLE', 'DOWNLOADS', 'DONATE-NOW', 'OFFLINE', 'ABOUT',
           'NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY', 'ACKNOWLEDGMENTS', 'LICENSING', 'INTRODUCTION',
           'START', 'DISCOURSES', 'VINAYA', 'ABHIDHAMMA', 'A-NEW-BEGINNING', 'SUBJECTS', 'SIMILES',
-          'NAMES', 'TERMINOLOGY', 'ABBREVIATIONS', 'NOT-FOUND', 'DONATION-SUCCESS',
+          'NAMES', 'TERMINOLOGY', 'ABBREVIATIONS', 'NOT-FOUND', 'DONATION-SUCCESS', 'LANGUAGES',
           'GENERAL-GUIDE-SUJATO', 'DN-GUIDE-SUJATO', 'MN-GUIDE-SUJATO', 'SN-GUIDE-SUJATO', 'AN-GUIDE-SUJATO', 'AN-INTRODUCTION-BODHI']
       },
       allIsoCodes: {
@@ -407,7 +407,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     if (!pageName) {
       return false;
     }
-    if (this.route.path.split('/').length !== 2 && pageName !== 'NOT-FOUND') {
+    const path = this.route.path.split('/');
+    if (path.length !== 2 && pageName !== 'NOT-FOUND' && path[1] !== 'languages') {
       return false;
     }
     return this.staticPages.includes(pageName.toUpperCase());

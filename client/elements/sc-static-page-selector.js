@@ -330,6 +330,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       <sc-sn-guide name="SN-GUIDE-SUJATO"></sc-sn-guide>
       <sc-an-guide name="AN-GUIDE-SUJATO"></sc-an-guide>
       <sc-an-introduction name="AN-INTRODUCTION-BODHI"></sc-an-introduction>
+      <sc-languages-page name="LANGUAGES"></sc-languages-page>
       <div name="NOT-FOUND" class="page-not-found-container">
         <h2>{{localize('error404')}}</h2>
         <h3>{{localize('pageNotFound')}}</h3>
@@ -429,9 +430,38 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this._setVisibleToolbar(this.selectedPage);
     setTimeout(() => { this._selectNavbarLink() });
     this.$.pages.selected = this.selectedPage;
-    if (!customElements.get(`${this.selectedPage.toLowerCase()}-page`)) {
-      import(`../elements/static/${this.selectedPage.toLowerCase()}-page.js`);
+
+    switch (this.selectedPage.toLowerCase()) {
+      case 'abbreviations':             import('./static/abbreviations-page.js'); break;
+      case 'abhidhamma':                import('./static/abhidhamma-page.js'); break;
+      case 'about':                     import('./static/about-page.js'); break;
+      case 'acknowledgments':           import('./static/acknowledgments-page.js'); break;
+      case 'a-new-beginning':           import('./static/a-new-beginning-page.js'); break;
+      case 'an-guide-sujato':           import('./static/an-guide-sujato-page.js'); break;
+      case 'an-introduction-bodhi':     import('./static/an-introduction-bodhi-page.js'); break;
+      case 'discourses':                import('./static/discourses-page.js'); break;
+      case 'dn-guide-sujato':           import('./static/dn-guide-sujato-page.js'); break;
+      case 'donate-now':                import('./static/donate-now-page.js'); break;
+      case 'donations':                 import('./static/donations-page.js'); break;
+      case 'donation-success':          import('./static/donation-success-page.js'); break;
+      case 'downloads':                 import('./static/downloads-page.js'); break;
+      case 'general-guide-sujato':      import('./static/general-guide-sujato-page.js'); break;
+      case 'home':                      import('./static/home-page.js'); break;
+      case 'introduction':              import('./static/introduction-page.js'); break;
+      case 'licensing':                 import('./static/licensing-page.js'); break;
+      case 'methodology':               import('./static/methodology-page.js'); break;
+      case 'mn-guide-sujato':           import('./static/mn-guide-sujato-page.js'); break;
+      case 'names':                     import('./static/names-page.js'); break;
+      case 'numbering':                 import('./static/numbering-page.js'); break;
+      case 'offline':                   import('./static/offline-page.js'); break;
+      case 'similes':                   import('./static/similes-page.js'); break;
+      case 'sn-guide-sujato':           import('./static/sn-guide-sujato-page.js'); break;
+      case 'start':                     import('./static/start-page.js'); break;
+      case 'subjects':                  import('./static/subjects-page.js'); break;
+      case 'terminology':               import('./static/terminology-page.js'); break;
+      case 'vinaya':                    import('./static/vinaya-page.js'); break;
     }
+
     this._resetDonationForm();
   }
 

@@ -91,7 +91,7 @@ class SCTextCarousel extends LitLocalized(LitElement) {
     <div id="container" class="container">
       ${this.loading ? html`<paper-spinner-lite active class="spinner"></paper-spinner-lite>` : ''}
 
-      <button id="previous_button" class="chevron previous" @tap="${this.loadPreviousItem}" type="button">
+      <button id="previous_button" class="chevron previous" @tap="${this.loadPreviousItem}" type="button" aria-label="${this.localize('previous')}">
         <paper-ripple></paper-ripple>
         <iron-icon icon="chevron-left"></iron-icon>
       </button>
@@ -101,7 +101,7 @@ class SCTextCarousel extends LitLocalized(LitElement) {
         <paper-button class="button card-button-middle" raised>${this.buttonText}</paper-button>
       </a>
 
-      <button id="next_button" class="chevron next" @tap="${this.loadNextItem}">
+      <button id="next_button" class="chevron next" @tap="${this.loadNextItem}" aria-label="${this.localize('next')}">
         <paper-ripple></paper-ripple>
         <iron-icon icon="chevron-right"></iron-icon>
       </button>

@@ -147,10 +147,6 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
         type: String,
         value: '/localization/elements/sc-toolbar'
       },
-      discourseIconTooltip: {
-        type: String,
-        computed: '_computeDiscourseTitle(mode, language)'
-      },
       // Polymer lint fails if you don't include this:
       search_input: Object
     }
