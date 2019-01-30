@@ -747,7 +747,6 @@ FOR doc IN v_text
         RETURN DISTINCT v.uid
 */
 
-
 // First collect all distinct text uids
 LET text_uids = (
     FOR doc IN v_text
@@ -768,8 +767,7 @@ LET parents = (
 LET parent_uids = (
     FOR doc IN parents
         FOR v, e, p IN 0..10 INBOUND doc `root_edges`
-            FILTER v.type == 'division' OR v.type == 'div'
-            RETURN DISTINCT v.uid
+            RETURN v.uid
 )
 
 RETURN SORTED_UNIQUE(UNION(parent_uids, text_uids))
