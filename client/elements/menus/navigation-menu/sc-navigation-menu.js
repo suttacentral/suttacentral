@@ -58,6 +58,14 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
         this.parentId = '';
       }
     }
+
+    if (state.siteLanguage) {
+      this._fetchMainMenu();
+
+      if (this.currentlySelectedMenu === CHILD_MENU) {
+        this._fetchChildMenu({id: this.subMenuId});
+      }
+    }
   }
 
   toggleOpenDropdownMenu(e) {
