@@ -222,7 +222,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
       ${this.hasSegmentedTexts ? html`
         <a class="top-menu-button" role="group" aria-haspopup="true" href="${this.listenUrl}" target="_blank"
-          aria-disabled="false" title="Listen to this sutta">
+          aria-disabled="false" title="Listen to this sutta" rel="noopener noreferrer">
           <paper-icon-button class="btn-speaker" slot="dropdown-trigger" aria-label="${this.localize('listenSutta')}"
              icon="icons:sc-svg-icons:speaker" role="button" tabindex="0" aria-disabled="false">
           </paper-icon-button>

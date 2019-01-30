@@ -14,7 +14,7 @@ template.innerHTML = `
       --sc-disabled-text-color-opaque: rgba(158, 158, 158, .3);
 
       /* Main colors */
-      --sc-primary-color: rgba(206, 132, 0, 1);
+      --sc-primary-color: #ce8400;
       --sc-primary-color-light: #ffcb61;
       --sc-primary-color-light-transparent: rgba(255, 203, 97, 0.3);
       --sc-primary-color-medium: #f6b735;
