@@ -155,7 +155,7 @@
 <script async>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw-generated.js').catch((err) => {
+            navigator.serviceWorker.register('/sw-generated.js').catch(function(err) {
                 console.log(
                     'The precaching service worker did not load correctly!' +
                     'Local resources will not be cached for offline use.' +
@@ -252,7 +252,7 @@
         }
     });
 
-    window.addEventListener('beforeinstallprompt', (e) => {
+    window.addEventListener('beforeinstallprompt', function(e) {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
       // Stash the event so it can be triggered later.
