@@ -24,13 +24,15 @@ from common.utils import (flat_tree, language_sort, recursive_sort, sort_paralle
 
 from data_loader.textfunctions import asciify_roman as asciify
 
+default_cache_timeout = 600
+long_cache_timeout = 7200
 
 class Languages(Resource):
     """
     Languages API endpoint.
     """
 
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=long_cache_timeout)
     def get(self):
         """
         Send list of available languages
@@ -83,6 +85,7 @@ class TranslationCountByDivision(Resource):
     Return a summary of translation count by division and author
     """
 
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, iso_code):
         """
 
@@ -136,6 +139,7 @@ class TranslationCountByLanguage(Resource):
     return a summary of translation counts by language
     """
 
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         '''
         responses:
@@ -186,7 +190,7 @@ class Menu(Resource):
         super().__init__(*args, **kwargs)
         self.num_regex = re.compile(r'^[^\d]*?([\d]+)$')
 
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=long_cache_timeout)
     def get(self, submenu_id=None):
         """
         Send Menu structure
@@ -377,7 +381,7 @@ class Menu(Resource):
         return is_submenu_yellow_brick_road
 
 class SuttaplexList(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid):
         """
         Send suttaplex for given uid. It is represented in flat list structure where order matters.
@@ -474,7 +478,7 @@ class SuttaplexList(Resource):
 
 
 class Parallels(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout/10)
     def get(self, uid):
         """
         Send parallel information for given sutta.
@@ -554,7 +558,7 @@ class Parallels(Resource):
 
 
 class LookupDictionaries(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         """
         Send parallel information for given sutta.
@@ -608,7 +612,7 @@ class LookupDictionaries(Resource):
 
 
 class Sutta(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, author_uid=''):
         """
         Send Complete information set for sutta-view for given uid.
@@ -720,7 +724,7 @@ class Sutta(Resource):
 
 
 class Currencies(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         """
         Send list of available currencies.
@@ -772,7 +776,7 @@ class Currencies(Resource):
 
 
 class Paragraphs(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         """
         Send list of textual information paragraphs for the sutta view
@@ -802,7 +806,7 @@ class Paragraphs(Resource):
 
 
 class Glossary(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         """
         Send list of glossary results for related terms in dictionary view
@@ -824,7 +828,7 @@ class Glossary(Resource):
 
 
 class DictionaryAdjacent(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, word=None):
         """
         Send list of adjacent terms to dictionary search word
@@ -843,7 +847,7 @@ class DictionaryAdjacent(Resource):
 
 
 class DictionarySimilar(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, word=None):
         """
         Send list of similar terms to dictionary search word
@@ -862,7 +866,7 @@ class DictionarySimilar(Resource):
 
 
 class DictionaryFull(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, word=None):
         """
         Sends list of dictionary entries to dictionary view
@@ -1030,7 +1034,7 @@ class Donations(Resource):
 
 
 class Images(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, division, vol, page):
         """
         Send list of images for given division.
@@ -1056,7 +1060,7 @@ class Images(Resource):
 
 
 class Epigraphs(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=long_cache_timeout)
     def get(self):
         """
         Send list of random epigraphs
@@ -1087,7 +1091,7 @@ class Epigraphs(Resource):
 
 
 class WhyWeRead(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         """
         Send list of random why_we_read quotes.
@@ -1113,7 +1117,7 @@ class WhyWeRead(Resource):
 
 
 class Expansion(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=long_cache_timeout)
     def get(self):
         """
         Send list of uid expansion results to suttaplex view
@@ -1137,7 +1141,7 @@ class Expansion(Resource):
 
 
 class CollectionUrlList(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, collection=None):
         """
         Accept list of languages in format `?languages=lang1,lang2,...`
@@ -1196,7 +1200,7 @@ class CollectionUrlList(Resource):
 
 
 class StripePublicKey(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         key = os.environ.get('PUBLISHABLE_KEY')
         if key:
@@ -1206,7 +1210,7 @@ class StripePublicKey(Resource):
 
 
 class PWASizes(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=600)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         db = get_db()
         try:
