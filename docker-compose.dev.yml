@@ -42,6 +42,7 @@ services:
       - ./client/index.html:/opt/sc/frontend/index.html
       - ./client/redux-store.js:/opt/sc/frontend/redux-store.js
       - ./client/sentry.js:/opt/sc/frontend/sentry.js
+      - ./client/webpack.config.js:/opt/sc/frontend/webpack.config.js
       - ./client/localization/elements:/opt/sc/frontend/localization/elements
     ports:
       - '3000:3000'

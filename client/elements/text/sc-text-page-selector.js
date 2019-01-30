@@ -131,6 +131,10 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       },
       expansionReturns: {
         type: Array
+      },
+      showedLanguagePrompt: {
+        type: Boolean,
+        statePath: 'showedLanguagePrompt'
       }
     }
   }
@@ -153,6 +157,12 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
           title: title
         };
       },
+      setShowedLanguagePrompt() {
+        return {
+          type: 'SET_SHOWED_LANGUAGE_PROMPT',
+          showedLanguagePrompt: true
+        };
+      },
     }
   }
 
@@ -162,6 +172,14 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.$.sc_text_image.showImage(e.detail);
     });
   }
+
+  languageLoaded() {
+
+  if (this.langIsoCode !== 'en' && !this.showedLanguagePrompt) {
+      this.dispatch('setShowedLanguagePrompt');
+      this._showLanguagePromptToast();
+    }
+}
 
   _onResponse() {
     if (!this.responseData) {
@@ -243,7 +261,7 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.dispatch('changeToolbarTitle', title);
   }
 
-  _createMetaData(responseData, expansionReturns, localize) {
+  _createMetaData(responseData, expansionReturns) {
     if (!responseData) {
       return;
     }
@@ -300,6 +318,17 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       console.error(e);
       return rootId;
     }
+  }
+
+  _showLanguagePromptToast() {
+    this.dispatchEvent(new CustomEvent('show-sc-toast', {
+      detail: {
+        toastType: 'info',
+        message: this.localize('languagePromptMessage')
+      },
+      bubbles: true,
+      composed: true
+    }));
   }
 }
 

@@ -90,6 +90,12 @@ class SCMoreMenu extends ReduxMixin(Localized(PolymerElement)) {
         {{localize('Downloads')}}
       </paper-item>
     </a>
+    <a class="more-menu-link" href="/languages">
+      <paper-item class="more-menu-paper-item">
+        <iron-icon class="more-menu-icon" icon="icons:translate"></iron-icon>
+        {{localize('Languages')}}
+      </paper-item>
+    </a>
     <div class="separator"></div>
     <a class="more-menu-link" href="/numbering">
       <paper-item class="more-menu-paper-item">

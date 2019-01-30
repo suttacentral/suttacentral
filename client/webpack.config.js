@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-
+const { BabelMultiTargetPlugin } = require('webpack-babel-multi-target-plugin');
 
 const OUTPUT_PATH = 'build';
 
@@ -20,6 +20,13 @@ const commonConfig = {
     filename: '[name].js',
     path: resolve(OUTPUT_PATH),
     publicPath: '/'
+  },
+  resolve: {
+    mainFields: [
+      'es2015',
+      'module',
+      'main',
+    ]
   }
 };
 
@@ -40,16 +47,43 @@ const devConfig = {
     public: 'localhost',
     host: 'sc-frontend',
     port: 3000,
-    historyApiFallback: true
+    historyApiFallback: {
+      disableDotRule: true,
+    }
   }
 };
 
 
 const prodConfig = {
   mode: 'production',
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          BabelMultiTargetPlugin.loader(),
+        ]
+      }
+    ]
+  },
   plugins: [
+    new BabelMultiTargetPlugin({
+      targets: {
+        modern: {
+          tagAssetsWithKey: false,
+        },
+        legacy: {
+          browsers: [
+              'chrome 41',
+              '>0.5%'
+          ],
+          key: 'es5',
+          tagAssetsWithKey: true,
+        }
+      }
+    }),
     new CleanWebpackPlugin(
-      [ OUTPUT_PATH ],
+      [OUTPUT_PATH],
       { verbose: true }
     ),
     new CopyWebpackPlugin([
@@ -61,9 +95,8 @@ const prodConfig = {
       'elements/styles/*.json',
       'node_modules/web-animations-js/*.js',
       'node_modules/@webcomponents/**/*.js',
-      'node_modules/viewerjs/dist/*',
+      'node_modules/viewerjs/dist/*.css',
       'node_modules/workbox-sw/build/*.js',
-      'node_modules/@sentry/**/*',
     ])
   ]
 };
