@@ -6,7 +6,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const { BabelMultiTargetPlugin } = require('webpack-babel-multi-target-plugin');
 
-
 const OUTPUT_PATH = 'build';
 
 const commonConfig = {
@@ -74,6 +73,10 @@ const prodConfig = {
           tagAssetsWithKey: false,
         },
         legacy: {
+          browsers: [
+              'chrome 41',
+              '>0.5%'
+          ],
           key: 'es5',
           tagAssetsWithKey: true,
         }
