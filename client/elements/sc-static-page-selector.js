@@ -448,6 +448,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       case 'general-guide-sujato':      import('./static/general-guide-sujato-page.js'); break;
       case 'home':                      import('./static/home-page.js'); break;
       case 'introduction':              import('./static/introduction-page.js'); break;
+      case 'languages':                 import('./static/languages-page.js'); break;
       case 'licensing':                 import('./static/licensing-page.js'); break;
       case 'methodology':               import('./static/methodology-page.js'); break;
       case 'mn-guide-sujato':           import('./static/mn-guide-sujato-page.js'); break;
