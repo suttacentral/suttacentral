@@ -43,6 +43,7 @@ class ArangoDB:
             else:
                 params['name'] = current_app.config['ARANGO_DB']
             db = g._database = self.client.db(**params)
+            update_views_hack(db)
         return db
 
     @staticmethod
@@ -59,6 +60,7 @@ class ArangoDB:
         """
         return getattr(g, '_database_client', None)
 
+    
 
 def get_client() -> ArangoClient:
     """
@@ -86,3 +88,9 @@ def get_system_db() -> Database:
 
 def delete_db(db: Database):
     get_system_db().delete_database(db.name)
+
+def update_views_hack(db):
+    # This is a hack to help reduce view corruption in 3.4
+    for view in db.views():
+        name = view['name']
+        db.update_view(name, db.view(name))
