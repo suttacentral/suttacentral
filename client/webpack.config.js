@@ -73,10 +73,6 @@ const prodConfig = {
           tagAssetsWithKey: false,
         },
         legacy: {
-          browsers: [
-              'chrome 41',
-              '>0.5%'
-          ],
           key: 'es5',
           tagAssetsWithKey: true,
         }
