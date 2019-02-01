@@ -101,6 +101,12 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       .hidebutton {
         display: none;
       }
+
+      @media print {
+        #header {
+          display: none;
+        }
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
