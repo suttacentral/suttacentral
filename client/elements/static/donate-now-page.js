@@ -9,8 +9,6 @@ import "@polymer/paper-dropdown-menu/paper-dropdown-menu.js";
 import "@polymer/paper-checkbox/paper-checkbox.js";
 import "@polymer/paper-tooltip/paper-tooltip.js";
 import "@polymer/iron-icon/iron-icon.js";
-import "@polymer/iron-icons/iron-icons.js";
-import "@polymer/iron-icons/social-icons.js";
 import "@polymer/iron-ajax/iron-ajax.js";
 import "@polymer/paper-item/paper-item.js";
 import "@polymer/paper-item/paper-item-body.js";
@@ -230,13 +228,13 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
                             hide-zip hide-submit></stripe-card>
 
                 <paper-input label="{{localize('Name (optional)')}}" class="data-input name-input" maxlength=200>
-                  <iron-icon icon="social:person" slot="prefix" class="form-prefix"></iron-icon>
+                  <iron-icon icon="sc-iron-icons:person" slot="prefix" class="form-prefix"></iron-icon>
                 </paper-input>
 
                 <paper-input label="{{localize('email')}}" class="data-input email-input" auto-validate
                             pattern="^\\S+@\\S+\\.\\S+$"
                             error-message="{{localize('invalidEmail')}}" maxlength=200>
-                  <iron-icon icon="icons:mail" slot="prefix" class="form-prefix"></iron-icon>
+                  <iron-icon icon="sc-iron-icons:mail" slot="prefix" class="form-prefix"></iron-icon>
                 </paper-input>
 
                 <paper-textarea label="{{localize('message')}}" class="data-input message-input" rows=2 maxlength=200
@@ -252,7 +250,7 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
             </iron-form>
 
             <div class="legal-information">
-              <iron-icon icon="icons:info-outline" class="form-prefix"></iron-icon>
+              <iron-icon icon="sc-iron-icons:info-outline" class="form-prefix"></iron-icon>
               <p inner-h-t-m-l="{{localize('storageDisclaimer')}}"></p>
               <p>{{localize('feeDisclaimer')}}</p>
             </div>

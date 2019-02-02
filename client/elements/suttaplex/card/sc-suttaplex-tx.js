@@ -35,7 +35,7 @@ class SCSuttaplexTx extends LitElement {
           </span>
         </div>
 
-        <iron-icon class="arrow" icon="icons:chevron-right"></iron-icon>
+        <iron-icon class="arrow" icon="sc-iron-icons:chevron-right"></iron-icon>
       </a>`;
   }
 }

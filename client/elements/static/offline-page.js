@@ -6,8 +6,6 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-progress/paper-progress.js';
 import "@polymer/paper-checkbox/paper-checkbox.js";
 import "@polymer/paper-tooltip/paper-tooltip.js";
-import "@polymer/iron-icon/iron-icon.js";
-import "@polymer/iron-icons/av-icons.js";
 import "@polymer/iron-ajax/iron-ajax.js";
 import { queue } from 'd3-queue';
 
@@ -212,11 +210,11 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
               <p class="no-phone-top-margin">
                 <template is="dom-if" if="[[browserSupportsPWA]]">
                   <span>{{localize('supportsPWAs')}}</span>
-                  <iron-icon icon="icons:check-box" class="icon success-icon"></iron-icon>
+                  <iron-icon icon="sc-iron-icons:check-box" class="icon success-icon"></iron-icon>
                 </template>
                 <template is="dom-if" if="[[!browserSupportsPWA]]">
                   <span>{{localize('doesntSupportPWAs')}}</span>
-                  <iron-icon class="no-margin" icon="icons:error" class="icon failure-icon"></iron-icon>
+                  <iron-icon class="no-margin" icon="sc-iron-icons:error" class="icon failure-icon"></iron-icon>
                   <br>
                 </template>
               </p>

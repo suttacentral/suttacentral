@@ -39,6 +39,7 @@ export const textCarouselStyles = html`<style>
       --iron-icon-height: var(--sc-size-md-larger);
       cursor: pointer;
       transition: background-color .2s;
+      color: var(--sc-disabled-text-color);
     }
 
     .spinner {
@@ -74,6 +75,7 @@ export const textCarouselStyles = html`<style>
       top: 50%;
       opacity: 1;
       transition: all .4s ease;
+      color: var(--sc-primary-text-color);
     }
 
     .transparent {

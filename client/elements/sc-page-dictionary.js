@@ -1,10 +1,8 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
 import '@polymer/paper-tooltip/paper-tooltip.js';
-
 import { ReduxMixin } from '../redux-store.js';
 import { API_ROOT } from '../constants.js';
 import { Localized } from './addons/localization-mixin.js';
@@ -148,7 +146,7 @@ class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {
         <div class="dictionary-results-head">
           <h1><span class="dictionary-results-description">{{localize('definitionsFor')}}</span> <span class="dictionary-results-term">[[dictionaryWord]]</span></h1>
           <span class="terms-button">
-            <paper-icon-button icon="menu" id="menu_icon" on-tap="_toggleDrawer"></paper-icon-button>
+            <paper-icon-button icon="sc-iron-icons:menu" id="menu_icon" on-tap="_toggleDrawer"></paper-icon-button>
             <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds="">{{localize('relatedItems')}}</paper-tooltip>
           </span>
         </div>

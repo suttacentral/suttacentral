@@ -93,7 +93,7 @@ class SCTextCarousel extends LitLocalized(LitElement) {
 
       <button id="previous_button" class="chevron previous" @tap="${this.loadPreviousItem}" type="button" aria-label="${this.localize('previous')}">
         <paper-ripple></paper-ripple>
-        <iron-icon icon="chevron-left"></iron-icon>
+        <iron-icon icon="sc-iron-icons:chevron-left"></iron-icon>
       </button>
 
       <div id="text" class="text">${unsafeHTML(this.selectedItem)}</div>
@@ -103,7 +103,7 @@ class SCTextCarousel extends LitLocalized(LitElement) {
 
       <button id="next_button" class="chevron next" @tap="${this.loadNextItem}" aria-label="${this.localize('next')}">
         <paper-ripple></paper-ripple>
-        <iron-icon icon="chevron-right"></iron-icon>
+        <iron-icon icon="sc-iron-icons:chevron-right"></iron-icon>
       </button>
     </div>`;
   }

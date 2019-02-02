@@ -1,7 +1,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-tooltip/paper-tooltip.js';
-import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
 import '@polymer/iron-collapse/iron-collapse.js';
 
@@ -59,12 +58,12 @@ class SCTextOptions extends ReduxMixin(Localized(PolymerElement)) {
     <div class="container">
       <div class="heading">
         <template is="dom-if" if="[[metaArea]]">
-          <paper-icon-button id="text_info_button" icon="info" on-tap="_openInfoDialog" aria-label$="{{localize('information')}}"></paper-icon-button>
+          <paper-icon-button id="text_info_button" icon="sc-iron-icons:info" on-tap="_openInfoDialog" aria-label$="{{localize('information')}}"></paper-icon-button>
           <paper-tooltip class="sc-tooltip" for="text_info_button" offset="0">
             {{localize('information')}}
           </paper-tooltip>
         </template>
-        <paper-icon-button id="text_settings_button" icon="settings" on-tap="_openSettingsDialog" aria-label$="{{localize('textSettings')}}"></paper-icon-button>
+        <paper-icon-button id="text_settings_button" icon="sc-iron-icons:settings" on-tap="_openSettingsDialog" aria-label$="{{localize('textSettings')}}"></paper-icon-button>
         <paper-tooltip class="sc-tooltip" for="text_settings_button" offset="0">
           {{localize('textSettings')}}
         </paper-tooltip>
@@ -112,7 +111,7 @@ class SCTextOptions extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _computeToggleIcon() {
-    return this.opened ? 'icons:expand-less' : 'icons:expand-more';
+    return this.opened ? 'sc-iron-icons:expand-less' : 'sc-iron-icons:expand-more';
   }
 
   _openSettingsDialog() {

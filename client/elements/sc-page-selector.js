@@ -113,7 +113,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
             <a href="/" class$="[[_shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
               <paper-icon-button icon="sc-svg-icons:sc-logo-bw" id="to_home_button" title="{{localize('goHome')}}"></paper-icon-button>
             </a>
-            <paper-icon-button icon="menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
+            <paper-icon-button icon="sc-iron-icons:menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
 
             <div main-title="" id="toolbar_title_box">
               <p id="toolbar_title">{{_getToolbarTitle(toolbarTitle, localize)}}</p>
