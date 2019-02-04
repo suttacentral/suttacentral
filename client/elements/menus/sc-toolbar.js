@@ -1,6 +1,4 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-icons/communication-icons.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/paper-listbox/paper-listbox.js';
@@ -110,13 +108,13 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
     <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
       <iron-a11y-keys target="[[search_input]]" keys="enter" on-keys-pressed="_startSearch"></iron-a11y-keys>
-      <paper-icon-button icon="search" title="{{localize('searchTooltip')}}" class="white-icon toolbar-paper-button" on-tap="openSearch"></paper-icon-button>
+      <paper-icon-button icon="sc-iron-icons:search" title="{{localize('searchTooltip')}}" class="white-icon toolbar-paper-button" on-tap="openSearch"></paper-icon-button>
       <paper-input class="toolbar-input" label="{{localize('Search')}}" no-label-float="" id="search_input"></paper-input>
-      <paper-icon-button icon="close" class="white-icon toolbar-paper-button" id="close_button" on-tap="_closeSearch"></paper-icon-button>
+      <paper-icon-button icon="sc-iron-icons:close" class="white-icon toolbar-paper-button" id="close_button" on-tap="_closeSearch"></paper-icon-button>
 
       <!-- Menu for more options like language and other static pages -->
       <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select="" id="more_vert_button" vertical-align="auto">
-        <paper-icon-button icon="more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
+        <paper-icon-button icon="sc-iron-icons:more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
         <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">
           <sc-more-menu id="more_menu"></sc-more-menu>
         </paper-listbox>

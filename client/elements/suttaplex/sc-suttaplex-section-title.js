@@ -16,7 +16,7 @@ class SCSuttaplexSectionTitle extends LitElement {
   }
 
   get toggleIcon() {
-    return this.opened ? 'icons:expand-less' : 'icons:expand-more';
+    return this.opened ? 'sc-iron-icons:expand-less' : 'sc-iron-icons:expand-more';
   }
 
 

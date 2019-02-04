@@ -1,6 +1,5 @@
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/iron-icons/iron-icons.js';
 import { html, LitElement } from '@polymer/lit-element';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
@@ -154,7 +153,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
 
         <nav class="sc-nav">
           <div id="sub_navigation_header" class="nav-back-button swap-section up ${this.isChildMenu ? 'active' : ''}" title="${this.localize('goBack')}">
-            <paper-icon-button id="back_arrow" icon="arrow-back" @click="${this.closeChildMenu}"></paper-icon-button>
+            <paper-icon-button id="back_arrow" icon="sc-iron-icons:arrow-back" @click="${this.closeChildMenu}"></paper-icon-button>
             <a class="nav-back-title" href="${this.headerHref}">${this.headerTitle}</a>
           </div>
 
@@ -181,7 +180,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
   }
 
   get expandMoreButtonTemplate() {
-    return html`<paper-icon-button icon="expand-more" class="menu-dropdown-icon" @click="${this.toggleOpenDropdownMenu}"></paper-icon-button>`;
+    return html`<paper-icon-button icon="sc-iron-icons:expand-more" class="menu-dropdown-icon" @click="${this.toggleOpenDropdownMenu}"></paper-icon-button>`;
   }
 
   get mainMenuTemplate() {
@@ -245,7 +244,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
                 ${this.expandMoreButtonTemplate}
                 ${this.deepMainMenuLevelsTemplate(childItem, false)}
               ` : childItem.has_children ? html`
-                <paper-icon-button icon="arrow-forward" class="menu-dropdown-icon" @click="${() => this.openChildMenu(childItem)}"></paper-icon-button>
+                <paper-icon-button icon="sc-iron-icons:arrow-forward" class="menu-dropdown-icon" @click="${() => this.openChildMenu(childItem)}"></paper-icon-button>
               ` : ''}
             </li>
           `)}

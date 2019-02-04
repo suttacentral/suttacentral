@@ -1,6 +1,4 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-icons/editor-icons.js';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 
@@ -60,13 +58,13 @@ class SCMoreMenu extends ReduxMixin(Localized(PolymerElement)) {
     </style>
 
     <paper-item class="more-menu-paper-item language-choice-box">
-      <iron-icon class="more-menu-icon" icon="language"></iron-icon>
+      <iron-icon class="more-menu-icon" icon="sc-iron-icons:language"></iron-icon>
       <sc-language-base-menu id="language_menu" noRoot="true"></sc-language-base-menu>
     </paper-item>
 
     <a class="more-menu-link" href="/donations">
       <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" src="/img/pray.png"></iron-icon>
+        <iron-icon class="more-menu-icon" icon="sc-svg-icons:pray"></iron-icon>
         {{localize('Donations')}}
       </paper-item>
     </a>
@@ -86,20 +84,20 @@ class SCMoreMenu extends ReduxMixin(Localized(PolymerElement)) {
     </paper-item>
     <a class="more-menu-link" href="/downloads">
       <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" icon="file-download"></iron-icon>
+        <iron-icon class="more-menu-icon" icon="sc-iron-icons:file-download"></iron-icon>
         {{localize('Downloads')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/languages">
       <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" icon="icons:translate"></iron-icon>
+        <iron-icon class="more-menu-icon" icon="sc-iron-icons:translate"></iron-icon>
         {{localize('Languages')}}
       </paper-item>
     </a>
     <div class="separator"></div>
     <a class="more-menu-link" href="/numbering">
       <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" icon="editor:format-list-numbered"></iron-icon>
+        <iron-icon class="more-menu-icon" icon="sc-iron-icons:format-list-numbered"></iron-icon>
         {{localize('Numbering')}}
       </paper-item>
     </a>
@@ -124,20 +122,20 @@ class SCMoreMenu extends ReduxMixin(Localized(PolymerElement)) {
     </a>
     <a class="more-menu-link" href="/licensing">
       <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" icon="icons:copyright"></iron-icon>
+        <iron-icon class="more-menu-icon" icon="sc-iron-icons:copyright"></iron-icon>
         {{localize('Licensing')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="/about">
       <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" icon="icons:info"></iron-icon>
+        <iron-icon class="more-menu-icon" icon="sc-iron-icons:info-outline"></iron-icon>
         {{localize('About')}}
       </paper-item>
     </a>
     <a class="more-menu-link" href="[[getDiscourseUrl(routeName)]]"
       title="[[getDiscourseTitle(routeName)]]" target="_blank" rel="noopener noreferrer">
       <paper-item class="more-menu-paper-item">
-        <iron-icon class="more-menu-icon" icon="communication:forum"></iron-icon>
+        <iron-icon class="more-menu-icon" icon="sc-iron-icons:forum"></iron-icon>
         {{localize('Discuss')}}
       </paper-item>
     </a>`;

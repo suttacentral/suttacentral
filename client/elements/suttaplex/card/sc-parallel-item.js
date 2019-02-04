@@ -1,4 +1,3 @@
-import '@polymer/iron-icons/iron-icons.js';
 import { html, LitElement } from '@polymer/lit-element';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/polymer/lib/elements/dom-if.js';
@@ -153,7 +152,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
                   ${this.parallelItem.biblio && html`
                     <details>
                       <summary>
-                        <iron-icon icon="book"></iron-icon>
+                        <iron-icon icon="sc-iron-icons:book"></iron-icon>
                         <span class="vol-page" title="${this.volPageTitle}">
                           ${this.volPage}
                         </span>
@@ -163,7 +162,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
                   `}
                   ${!this.parallelItem.biblio ? html`
                     <span class="book scrollable-dialog" title="${this.localize('volumeAndPage')}">
-                      <iron-icon icon="book"></iron-icon>
+                      <iron-icon icon="sc-iron-icons:book"></iron-icon>
                     </span>
                     <span class="vol-page" title="${this.volPageTitle}">
                       ${this.volPage}
@@ -175,7 +174,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
                 <div @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
                   <details>
                     <summary>
-                      <iron-icon class="icon-outline" icon="info-outline"></iron-icon>
+                      <iron-icon class="icon-outline" icon="sc-iron-icons:info-outline"></iron-icon>
                     </summary>
                     <p class="parallel-item-biblio-info" .innerHTML="${this.remark}"></p>
                   </details>
@@ -186,7 +185,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
               <div @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
                 <details>
                   <summary>
-                    <iron-icon class="icon-outline" icon="info-outline"></iron-icon>
+                    <iron-icon class="icon-outline" icon="sc-iron-icons:info-outline"></iron-icon>
                   </summary>
                   <p class="parallel-item-biblio-info" .innerHTML="${this.parallelItem.not}"></p>
                 </details>

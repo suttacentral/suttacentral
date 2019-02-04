@@ -1,6 +1,4 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-icons/editor-icons.js';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
@@ -48,15 +46,15 @@ class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
     <iron-ajax id="parallels_ajax" url="[[_getAPIEndpoint(item)]]" handle-as="json" loading="{{loadingParallels}}" last-response="{{parallels}}"></iron-ajax>
 
     <paper-item class="table-element button-text" on-tap="_copyLink" title="[[_computeLink(item)]]">
-      <iron-icon class="grey-icon" icon="link"></iron-icon>
+      <iron-icon class="grey-icon" icon="sc-iron-icons:link"></iron-icon>
       {{localize('copyLink')}}
     </paper-item>
     <paper-item class="table-element button-text" on-tap="_copyContent" disabled="[[areParallelsAvailable]]">
-      <iron-icon class="grey-icon" icon="content-copy"></iron-icon>
+      <iron-icon class="grey-icon" icon="sc-iron-icons:content-copy"></iron-icon>
       {{localize('copyTable')}}
     </paper-item>
     <paper-item class="table-element button-text" on-tap="_copyCite" disabled="[[areParallelsAvailable]]">
-      <iron-icon class="grey-icon" icon="editor:format-quote"></iron-icon>
+      <iron-icon class="grey-icon" icon="sc-iron-icons:format-quote"></iron-icon>
       {{localize('cite')}}
     </paper-item>`;
   }
