@@ -115,8 +115,8 @@ class TextInfoModel:
                         _stack.extend(e)
                 unicode_points['normal'].update(root.text_content())
                 
-                author = self._get_author(root)
-                author_data = self.get_author_by_name(author)
+                author = self._get_author(root, htmlfile)
+                author_data = self.get_author_by_name(author, htmlfile)
 
                 if author_data:
                     author_uid = author_data['uid']
@@ -161,26 +161,21 @@ class TextInfoModel:
 
         del self._ppn
 
-    def _get_author(self, root):
-
+    def _get_author(self, root, file):
+        author = None
         e = root.select_one('meta[author]')
         if e:
-            return e.attrib['author']
+            author = e.attrib['author']
 
-        e = root.select_one('meta[name=author]')
-        if e:
-            return e.attrib['content']
+        if not author:
+            e = root.select_one('meta[name=author]')
+            if e:
+                author = e.attrib['content']
+        
+        if not author:
+            logging.critical(f'Author not found: {str(file)}')
+        return author
 
-        return None
-
-    def _get_author_data(self, author, authors):
-
-        for item in authors:
-            if item['long_name'] == author: 
-                return item['uid'], item['short_name']
-
-        return None, None
-    
     def _get_publication_date(self, root):
         e = root.select_one('.publication-date')
         if e:
@@ -236,8 +231,11 @@ class ArangoTextInfoModel(TextInfoModel):
                     RETURN {[doc.long_name]: doc}
             )''').next())
         
-    def get_author_by_name(self, name):
-        return self._author_cache.get(name)
+    def get_author_by_name(self, name, file):
+        author = self._author_cache.get(name)
+        if author is None:
+            logging.critical(f'Author data not defined for "{name}" ( {str(file)} )')
+        return author
 
     def add_document(self, doc):
         doc['_key'] = doc['path'].replace('/', '_')
