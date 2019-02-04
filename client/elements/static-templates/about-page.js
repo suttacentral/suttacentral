@@ -17,7 +17,7 @@ class SCAboutPage extends SCStaticPage {
               ${_`About SuttaCentral`}
             </h1>
             <p>
-              ${_`SuttaCentral is a website run by a small team, originally based in Australia. We have no institutional affiliation, but are just a group of friends interested in the Suttas. The founders are Rod Bucknell, John Kelly, and Bhante Sujato. As of 2017 the main developers are Bhante Sujato, Ayya Vimala, and Blake Walsh. Financial support for the site comes the SuttaCentral Development Trust, a non-profit charity incorporated in Australia.`}
+              ${_`SuttaCentral is a website run by a small team, originally based in Australia. We have no institutional affiliation, but are just a group of friends interested in the Suttas. The founders are Rod Bucknell, John Kelly, and Bhante Sujato. As of 2017 the main developers are Bhante Sujato, Ayya Vimala, and Blake Walsh. Financial support for the site comes from the SuttaCentral Development Trust, a non-profit charity incorporated in Australia.`}
             </p>
             <p>
               ${_`SuttaCentral aims at facilitating the study of Buddhist texts from comparative and historical perspectives. It focuses on the texts that represent “Early Buddhism”, texts preserved not only in the Pali Sutta and Vinaya Piṭakas but also in Chinese and Tibetan translations and in fragmentary remains in Sanskrit and other languages.`}

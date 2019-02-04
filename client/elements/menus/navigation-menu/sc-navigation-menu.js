@@ -47,6 +47,14 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
       this._fetchMainMenu();
     }
 
+    if (prevProps.has('language')) {
+      this._fetchMainMenu();
+
+      if (this.currentlySelectedMenu === CHILD_MENU) {
+        this._fetchChildMenu({id: this.subMenuId});
+      }
+    }
+
     return super.shouldUpdate();
   }
 
@@ -56,14 +64,6 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
       this.selectedItemId = state.selectedNavigationMenuItemId;
       if (this.currentlySelectedMenu !== CHILD_MENU) {
         this.parentId = '';
-      }
-    }
-
-    if (state.siteLanguage) {
-      this._fetchMainMenu();
-
-      if (this.currentlySelectedMenu === CHILD_MENU) {
-        this._fetchChildMenu({id: this.subMenuId});
       }
     }
   }

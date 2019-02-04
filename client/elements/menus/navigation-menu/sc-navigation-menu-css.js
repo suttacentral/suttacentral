@@ -136,9 +136,8 @@ ${litScrollbarStyle}
     margin-left: auto;
     width: 30px;
     height: 30px;
-    background: var(--sc-primary-accent-color);
+    background: var(--sc-primary-accent-color-light);
     border-radius: 20px;
-
     position: absolute;
     right: 5px;
     top: 1px;
