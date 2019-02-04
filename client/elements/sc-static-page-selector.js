@@ -142,6 +142,12 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         padding-top: 62px;
         padding-bottom: var(--sc-size-md-larger);
       }
+
+      @media print {
+        app-toolbar {
+          display: none;
+        }
+      }
     </style>
 
     [[_createMetaData(selectedPage, localize)]]

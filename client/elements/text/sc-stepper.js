@@ -7,6 +7,12 @@ class SCStepper extends PolymerElement {
   static get template() {
     return html`
     <style>
+      @media print {
+        :host {
+          display: none;
+        }
+      }
+
       .bar {
         display: flex;
         width: 100%;

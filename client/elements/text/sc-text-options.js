@@ -18,6 +18,12 @@ class SCTextOptions extends ReduxMixin(Localized(PolymerElement)) {
     return html`
     ${suttaplexStyles}
     <style>
+      @media print {
+        :host {
+          display: none;
+        }
+      }
+
       .container {
         padding: var(--sc-size-lg) 5% 0 !important;
         margin: 0 auto;
@@ -52,7 +58,6 @@ class SCTextOptions extends ReduxMixin(Localized(PolymerElement)) {
           white-space: normal;
         };
       }
-
     </style>
 
     <div class="container">

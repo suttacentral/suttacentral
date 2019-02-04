@@ -175,6 +175,16 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       #drawer_layout {
         height: 100%;
       }
+
+      @media print {
+        :host {
+          --app-drawer-width: 0;
+        }
+
+        .sc-app-drawer {
+          display: none;
+        }
+      }
     </style>
 
     <iron-ajax id="colors_ajax" handle-as="json" last-response="{{colorsResponse}}" on-response="_colorsResponseReceived"></iron-ajax>
