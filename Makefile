@@ -135,3 +135,6 @@ backup-mysql:
 
 restore-mysql:
 	@docker exec -t sc-pootle "/home/pootle/restore_mysql.sh" < /dev/stdin
+
+toggle-maintenance:
+	@docker exec -it sc-nginx bash -c "cd /opt/sc/static; if rm maintenance_on.html 2>/dev/null; then echo 'Maintenance Off'; else ln -s maintenance_off.html -T ./maintenance_on.html && echo 'Maintenance On'; fi"
