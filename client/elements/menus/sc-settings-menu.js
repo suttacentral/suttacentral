@@ -1,6 +1,4 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-icons/editor-icons.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@polymer/paper-radio-button/paper-radio-button.js';
 import '@polymer/paper-radio-group/paper-radio-group.js';
@@ -159,15 +157,15 @@ class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
             {{localize('none')}}
           </paper-radio-button>
           <paper-radio-button id="sides" name="sidebyside" class="menu-option">
-            <iron-icon class="menu-icon" icon="view-column"></iron-icon>
+            <iron-icon class="menu-icon" icon="sc-iron-icons:view-column"></iron-icon>
             {{localize('sideBySide')}}
           </paper-radio-button>
           <paper-radio-button name="linebyline" class="menu-option">
-            <iron-icon class="menu-icon" icon="view-headline"></iron-icon>
+            <iron-icon class="menu-icon" icon="sc-iron-icons:view-headline"></iron-icon>
             {{localize('lineByLine')}}
           </paper-radio-button>
           <paper-radio-button name="popup" class="menu-option">
-            <iron-icon class="menu-icon" icon="editor:insert-comment"></iron-icon>
+            <iron-icon class="menu-icon" icon="sc-iron-icons:insert-comment"></iron-icon>
             {{localize('popUp')}}
           </paper-radio-button>
         </paper-radio-group>

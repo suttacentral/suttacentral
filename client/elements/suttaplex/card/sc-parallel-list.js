@@ -1,6 +1,4 @@
 import '@polymer/iron-ajax/iron-ajax.js';
-import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/iron-icons/editor-icons.js';
 import { html, LitElement } from '@polymer/lit-element';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
@@ -63,13 +61,13 @@ class SCParallels extends LitLocalized(LitElement) {
     switch (item.type) {
       case 'full':
         if (item.resembling) {
-          return 'icons:compare-arrows';
+          return 'sc-iron-icons:compare-arrows';
         }
-        return 'swap-horiz';
+        return 'sc-iron-icons:swap-horiz';
       case 'retelling':
         return 'cached';
       case 'mention':
-        return 'editor:format-quote';
+        return 'sc-iron-icons:format-quote';
       default:
         return '';
     }

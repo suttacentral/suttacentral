@@ -3,7 +3,6 @@ import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-styles/typography.js';
-import '@polymer/iron-icon/iron-icon.js';
 
 import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from "./localization-mixin.js";
@@ -95,7 +94,7 @@ class StripeCard extends ReduxMixin(Localized(PolymerElement)) {
         <div class="horizontal wrap">
           <paper-input class="data-input large" id="cardNumber" type="tel" allowed-pattern="[0-9 ]" maxlength="19"
                        name="number" label="{{localize('cardNumber')}}" auto-validate required on-value-changed="_maskCard">
-            <iron-icon icon="icons:credit-card" slot="prefix" class="form-prefix"></iron-icon>
+            <iron-icon icon="sc-iron-icons:credit-card" slot="prefix" class="form-prefix"></iron-icon>
           </paper-input>
           <div class="horizontal data-input">
             <paper-input class="small" type="tel" name="exp_month" label="{{localize('month')}}" min="1" max="12" maxlength="2"

@@ -123,7 +123,7 @@ class SCStepper extends PolymerElement {
           <a href="[[_getUrl(previous)]]" class="link">
             <div class="button button-left">
               <div class="text">
-                <iron-icon icon="arrow-back" class="arrow arrow-left"></iron-icon>
+                <iron-icon icon="sc-iron-icons:arrow-back" class="arrow arrow-left"></iron-icon>
                 <div class="text-element">
                   <span class="action">Previous</span>
                   <span class="text-title">[[previous.name]]</span>
@@ -146,7 +146,7 @@ class SCStepper extends PolymerElement {
                   <span class="action">Next</span>
                   <span class="text-title">[[next.name]]</span>
                 </div>
-                <iron-icon icon="arrow-forward" class="arrow arrow-right"></iron-icon>
+                <iron-icon icon="sc-iron-icons:arrow-forward" class="arrow arrow-right"></iron-icon>
               </div>
             </div>
           </a>
