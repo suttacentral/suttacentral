@@ -41,6 +41,8 @@ import tempfile
 import uuid
 import zipfile
 
+from shutil import copy
+
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -112,6 +114,7 @@ class Book:
         (self.oebps / 'pages').mkdir()
         (self.oebps / 'images').mkdir()
         (self.oebps / 'styles').mkdir()
+        (self.oebps / 'fonts').mkdir()
 
         self.title = kwargs.get('title', 'Untitled')
         self.language = kwargs.get('language', 'en')
@@ -139,6 +142,9 @@ class Book:
         self.images.append(Image(name, media_type))
         with open(str(self.oebps / 'images' / name), 'wb') as file:
             file.write(data)
+
+    def add_font_file(self, file, name=None):
+        copy(file, self.oebps / 'fonts' / (name if name else file.name))
     
     def add_cover(self, data):
         with open(str(self.path / 'cover.png'), 'wb') as file:

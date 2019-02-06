@@ -1,6 +1,8 @@
 import hashlib
 import pathlib
 import subprocess
+
+from tempfile import TemporaryDirectory
 from flask import current_app, request, redirect
 from flask_restful import Resource
 
@@ -8,6 +10,8 @@ from .make_html import get_html_data
 from .epub import Book as Epub
 from .cover import make_cover_png
 from .common import export_dir
+
+from common.font_subsetter import subset_files_by_names
 
 HERE = pathlib.Path(__file__).parent
 
@@ -21,10 +25,33 @@ def create_epub(data, language, filename, debug=False):
     '''
 
     stylesheet = '''
+    @font-face {
+        font-family: 'Skolar';
+        font-weight: normal;
+        font-style: normal;
+        src:url(../fonts/RaloksPE-Regular.woff) format('woff')
+    }
+    @font-face {
+        font-family: 'Skolar';
+        font-weight: normal;
+        font-style: italic;
+        src:url(../fonts/RaloksPE-Italic.woff) format('woff')
+    }
+    @font-face {
+        font-family: 'Skolar';
+        font-weight: bold;
+        font-style: normal;
+        src:url(../fonts/RaloksPE-Bold.woff) format('woff')
+    }
+
+    body {
+        font-family: 'Skolar', Literata, Bookerly, serif;
+    }
+
     '''
     
     is_root = len(language) == 3
-    
+
     
     author = data['author']
     if is_root:
@@ -35,6 +62,16 @@ def create_epub(data, language, filename, debug=False):
     cover_data = make_cover_png(title=data['title'], author=author, about=about, debug=debug)
 
     book = Epub(title=data['title'], author=data['author'])
+
+    font_dir = pathlib.Path('/tmp/font_dir')
+    if not font_dir.exists():
+        font_dir.mkdir()
+    
+    fonts = subset_files_by_names(names=['RaloksPE-Regular', 'RaloksPE-Italic', 'RaloksPE-Bold'], text=str(data), out_dir=font_dir)
+
+    for name, font_file in fonts.items():
+        book.add_font_file(font_file, name=name+'.woff')
+
     book.add_stylesheet(stylesheet)
     book.add_image(name='cover.png', data=cover_data)
     #book.add_page(title=data['title'], content='<img src="../images/cover.png" alt="cover image">', uid='cover')
