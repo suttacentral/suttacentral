@@ -173,18 +173,21 @@ def convert_to_html(strings_path, markup_path):
 
 def clean_html(html_string):
     root = lxml.html.fromstring(html_string)
-    
-    for e in root.iter('a', 'article'):
-        e.drop_tag()
-    root.tag = 'div'
-    
-    for p in root.iter('p', 'blockquote'):
+
+    for p in list(root.iter('p')) + list(root.iter('blockquote')):
         tc = p.text_content()
         if not tc or tc.isspace():
             p.drop_tree()
-        elif p.text:
-            p.text = regex.sub(r'^\s+', '', p.text)
+        else:
+            if p.text:
+                p.text = regex.sub(r'^\s+', '', p.text)
+
+    for e in root.iter('a', 'article'):
+        e.drop_tag()
+
+    root.tag = 'div'
     
     string = lxml.html.tostring(root, encoding='unicode')
     string = regex.sub(r'\s+</p>', '</p>', string)
+
     return string
