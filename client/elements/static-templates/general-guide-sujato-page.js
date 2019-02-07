@@ -35,22 +35,22 @@ class SCGeneralGuide extends SCStaticPage {
                 <li>
                   ${_`<a href="#item6">In the Buddha’s Day: A Time of Change</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item7">Economics and Politics</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item8">Social Life</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item9">The Many Spiritual Paths of Ancient India</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item10">Cosmology</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item11">On the Pali Commentaries</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item12">A Brief and Incomplete Textual History</a>`}
                 </li>
               </ol>
