@@ -5,6 +5,7 @@ import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/iron-location/iron-location.js';
+import '@polymer/neon-animation/animations/slide-from-right-animation.js';
 
 import './sc-more-menu.js';
 import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
@@ -113,7 +114,7 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
       <paper-icon-button icon="sc-iron-icons:close" class="white-icon toolbar-paper-button" id="close_button" on-tap="_closeSearch"></paper-icon-button>
 
       <!-- Menu for more options like language and other static pages -->
-      <paper-menu-button class="toolbar-paper-button" horizontal-align="right" ignore-select="" id="more_vert_button" vertical-align="auto">
+      <paper-menu-button class="toolbar-paper-button" horizontal-align="right" open-animation-config="[[paperMenuButtonAnimations]]" ignore-select="" id="more_vert_button" vertical-align="auto">
         <paper-icon-button icon="sc-iron-icons:more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
         <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">
           <sc-more-menu id="more_menu"></sc-more-menu>
@@ -146,7 +147,39 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
         value: '/localization/elements/sc-toolbar'
       },
       // Polymer lint fails if you don't include this:
-      search_input: Object
+      search_input: Object,
+      paperMenuButtonAnimations: {
+        type: Function,
+        value: () => {
+          return [
+            {name: 'fade-in-animation', timing: {delay: 100, duration: 200}},
+            {
+              name: 'paper-menu-grow-width-animation',
+              timing: {
+                delay: 100,
+                duration: 150,
+                easing: 'cubic-bezier(.3,.95,.5,1)'
+              }
+            },
+            {
+              name: 'slide-from-right-animation',
+              timing: {
+                delay: 100,
+                duration: 150,
+                easing: 'cubic-bezier(.3,.95,.5,1)',
+              }
+            },
+            {
+              name: 'paper-menu-grow-height-animation',
+              timing: {
+                delay: 100,
+                duration: 275,
+                easing: 'cubic-bezier(.3,.95,.5,1)'
+              }
+            }
+          ];
+        }
+      }
     }
   }
 
