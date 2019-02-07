@@ -15,6 +15,28 @@ class SCSNGuide extends SCStaticPage {
           <article>
             <h1>${this.localize('2ce5f20fd7c7df2aa3d6ea2f3cb4368e')}</h1>
             <p class="byline">${this.localize('7c952261dd788f03d59a9f4e630f68c6')}</p>
+            <nav class="contents">
+              <ol>
+                <li>
+                  ${unsafeHTML(this.localize('fec7c25a40ed06545f34b9d61a7d6736'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('7498322df50fb501da89435273aa7d21'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('a96b2268520d67eeb203aa74cc6017bb'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('4b16bcaa1fb820e09a5538c1fe3b74de'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('d78ebb7a5897aabac4e7fd94501c9634'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('1bb2b65ed2c7c1a1f96b6171bb21c95d'))}
+                </li>
+              </ol>
+            </nav>
             <p>${unsafeHTML(this.localize('3a862a1598a20225138b6674224a0591'))}</p>
             <p>${unsafeHTML(this.localize('1963ba65c559a23c03d809827401f8f2'))}</p>
             <p>${this.localize('24588741f0c3ba808bbded03e1da46b6')}</p>
@@ -33,7 +55,7 @@ class SCSNGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('681a8ab12b6a5fa4178873bec9b06d7d'))}</p>
             <p>${unsafeHTML(this.localize('fed9b7845c9d2a0356aece5b6c570817'))}</p>
             <p>${this.localize('1a9a47f355a1c2e4e6ac15e3fb3cf9c5')}</p>
-            <h2>${this.localize('997e110621fdf2e895cf339c0d5aac7d')}</h2>
+            <h2 id="item1">${this.localize('997e110621fdf2e895cf339c0d5aac7d')}</h2>
             <p>${unsafeHTML(this.localize('3e4cae3cfd29e2ef6aacf546b82556a1'))}</p>
             <p>${unsafeHTML(this.localize('81ca3502c73805171f2370174b8009c6'))}</p>
             <p>${unsafeHTML(this.localize('5a2465e764af7eb6c2fdf1e8399c3efd'))}</p>
@@ -44,7 +66,7 @@ class SCSNGuide extends SCStaticPage {
             <li>${unsafeHTML(this.localize('8aa6989584dd0d0955f5495c9128769a'))}</li>
             </ul>
             <p>${unsafeHTML(this.localize('47ff9fadd10b3f5311c47a81de9845e1'))}</p>
-            <h2>${this.localize('d61fe3c3fb3dc51e1969ecf0f9193a11')}</h2>
+            <h2 id="item2">${this.localize('d61fe3c3fb3dc51e1969ecf0f9193a11')}</h2>
             <p>${unsafeHTML(this.localize('33262ceb675f8e9a2c75bd859791d773'))}</p>
             <p>${unsafeHTML(this.localize('ba4db5a75dad76a49c0a0966c06ce21c'))}</p>
             <p>${this.localize('5674f232062c6311d7fc4cdb43705257')}</p>
@@ -79,7 +101,7 @@ class SCSNGuide extends SCStaticPage {
             <p>${this.localize('2d0fa00459ee02dfc8b962772cad4981')}</p>
             <p>${unsafeHTML(this.localize('396ceb60f09cf6a5dc93c010a4d65d79'))}</p>
             <p>${this.localize('42de79df716f9549243487504f5d4402')}</p>
-            <h2>${this.localize('6e38d19e50471836d4751b63c0cc27df')}</h2>
+            <h2 id="item3">${this.localize('6e38d19e50471836d4751b63c0cc27df')}</h2>
             <p>${unsafeHTML(this.localize('f961438c8705418ce984de491d1d5072'))}</p>
             <p>${unsafeHTML(this.localize('e7cb363ceb8e27c5d7939762f75404c2'))}</p>
             <p>${this.localize('2fe89800ca7aec5de017a539a6eabd2f')}</p>
@@ -148,7 +170,7 @@ class SCSNGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('4ede19ac563bd98fdf06212be412ce0b'))}</p>
             <p>${unsafeHTML(this.localize('193fd0e907413b4a5ede2f1522061ca4'))}</p>
             <p>${unsafeHTML(this.localize('a2e6fa4c078ab682574009896f6eed01'))}</p>
-            <h2>${this.localize('c5892503d41b6049510f93873eba756e')}</h2>
+            <h2 id="item4">${this.localize('c5892503d41b6049510f93873eba756e')}</h2>
             <p>${unsafeHTML(this.localize('324cb25b68c14a6cced60899f06846df'))}</p>
             <p>${unsafeHTML(this.localize('708fb5fae8d9328989462d0f97d47525'))}</p>
             <p>${unsafeHTML(this.localize('ff3ffb011c10aa897f67285a1c7403b6'))}</p>
@@ -201,7 +223,7 @@ class SCSNGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('5d0ffb495265210aa8c75c1538e523bb'))}</p>
             <p>${unsafeHTML(this.localize('8fc32c3cb6f864876dc0f16b712be7e6'))}</p>
             <p>${unsafeHTML(this.localize('a6b40d7a045f313d2ab72fc6652231d1'))}</p>
-            <h2>${this.localize('e8e9977abc06e4ea587171eb271d419d')}</h2>
+            <h2 id="item5">${this.localize('e8e9977abc06e4ea587171eb271d419d')}</h2>
             <p>${unsafeHTML(this.localize('2611bf1fbd55835821d7da64d70c6266'))}</p>
             <p>${unsafeHTML(this.localize('a53bd41b617b990ff8ed174e542cdf10'))}</p>
             <p>${unsafeHTML(this.localize('c0303f919f76f422615fc67598a1bb1b'))}</p>
@@ -248,7 +270,7 @@ class SCSNGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('fadeb1864a3e007a52575497acb8a2ce'))}</p>
             <p>${unsafeHTML(this.localize('e473411ff3eb42b19f14bfa9ecb59c48'))}</p>
             <p>${unsafeHTML(this.localize('45350b1ac856fc7f92b1f90d5feeeb6f'))}</p>
-            <h2>${this.localize('8f2f438f59acc7df716c18d9ab0ac873')}</h2>
+            <h2 id="item6">${this.localize('8f2f438f59acc7df716c18d9ab0ac873')}</h2>
             <p>${unsafeHTML(this.localize('523da4d3c946e375585e3241a8f222bc'))}</p>
             <p>${unsafeHTML(this.localize('57c872275101097d01e11e4dcf0e37f8'))}</p>
             <p>${unsafeHTML(this.localize('df378b568cbd24b094e8ba75f3cb645f'))}</p>
@@ -514,7 +536,7 @@ class SCSNGuide extends SCStaticPage {
             </ol>
             <p>${unsafeHTML(this.localize('b8ee7cbfbe344df19fe881d4c080e4fb'))}</p>
             <p>${unsafeHTML(this.localize('daeee6737b3791529603575a3db2f6ae'))}</p>
-            <h2>${this.localize('cf8ec64685f79c415e766a205bd9ed3f')}</h2>
+            <h2 id="item7">${this.localize('cf8ec64685f79c415e766a205bd9ed3f')}</h2>
             <p>${unsafeHTML(this.localize('7272848568ed1b901f24f6c7046c7cac'))}</p>
             <p>${unsafeHTML(this.localize('94dbb9f73a06eac801b754be291943bf'))}</p>
             <p>${this.localize('589fddd7b64485c4657f493a90998194')}</p>

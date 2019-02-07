@@ -17,7 +17,7 @@ class SCAboutPage extends SCStaticPage {
               ${this.localize('55d139c73398413f27c7e15a4cad3a59')}
             </h1>
             <p>
-              ${this.localize('81f99fc63b1b99385e27080e5c8a93fc')}
+              ${this.localize('43c1abba8207309efd6799a3a7011ff7')}
             </p>
             <p>
               ${this.localize('0e5c6c307a41274b2d6770164f0a82cb')}

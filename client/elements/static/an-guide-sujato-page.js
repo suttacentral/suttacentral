@@ -15,6 +15,25 @@ class SCANGuide extends SCStaticPage {
           <article>
             <h1>${this.localize('9e374b788daf9a3e465a9b0c9ed106cf')}</h1>
             <p class="byline">${this.localize('7c952261dd788f03d59a9f4e630f68c6')}</p>
+            <nav class="contents">
+              <ol>
+                <li>
+                  ${unsafeHTML(this.localize('84b5f68d1868857765df0a866f4330eb'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('eb75fa2770541f0d0bb7d8efb6a69cbc'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('0102a3995c7c67d524cd6fd7cbf14f6e'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('07c939625228c7c596636993d6c2e36c'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('c0dcdeb667cbf4fffe6013a8a37c9397'))}
+                </li>
+              </ol>
+            </nav>
             <p>${unsafeHTML(this.localize('dd6ce4e8126d5bcd1be1d6b389ed443f'))}</p>
             <p>${unsafeHTML(this.localize('8248f47a5eb89fe21570748f1e2b9953'))}</p>
             <p>${unsafeHTML(this.localize('3129b396a39e514bc8dad1e468c4c3c7'))}</p>
@@ -22,7 +41,7 @@ class SCANGuide extends SCStaticPage {
             <p>${this.localize('f26a4a866a7dd7d357564e205ddd4899')}</p>
             <p>${this.localize('d5bdd656f79d5ec59eb52bee7a44607b')}</p>
             <p>${this.localize('3741a9ea70a2edc370662a82f11387cd')}</p>
-            <h2>${this.localize('ed85d5f3665e3c26d01f5f531b46bfb7')}</h2>
+            <h2 id="item1">${this.localize('ed85d5f3665e3c26d01f5f531b46bfb7')}</h2>
             <p>${unsafeHTML(this.localize('70059dedf0d680a52aa3068b9bc4e501'))}</p>
             <p>${this.localize('961509297ccfcc3173156ab51f4bdc46')}</p>
             <p>${unsafeHTML(this.localize('d951c64816ddbf25132b508848561ee6'))}</p>
@@ -75,7 +94,7 @@ class SCANGuide extends SCStaticPage {
             <p>${this.localize('a2c0179b26e0bb543cb8faff3ed2310a')}</p>
             <p>${this.localize('a5875a8c991a148cb543fde84bcf6c96')}</p>
             <p>${unsafeHTML(this.localize('85467ac44435a354aaa80c6b40f1eafc'))}</p>
-            <h2>${this.localize('652e3bd3fabfdbe432e2729f34254fd2')}</h2>
+            <h2 id="item2">${this.localize('652e3bd3fabfdbe432e2729f34254fd2')}</h2>
             <p>${this.localize('5a9d1e873b5e69e888d5da50e85cf7d7')}</p>
             <p>${unsafeHTML(this.localize('1760e42f1ce849338bbaaba1eb16339f'))}</p>
             <p>${unsafeHTML(this.localize('3bb6744b0f8561265ff21b905630c927'))}</p>
@@ -98,7 +117,7 @@ class SCANGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('91053efda2d7edd676ebd9ebcbf13546'))}</p>
             <p>${unsafeHTML(this.localize('1f96c3ca0f4db1e458ca435c6d6a680a'))}</p>
             <p>${unsafeHTML(this.localize('b4bce37459d4c4a0c6a6d30355ada2a4'))}</p>
-            <h2>${this.localize('685e778466f714ecda9ea0d022f12502')}</h2>
+            <h2 id="item3">${this.localize('685e778466f714ecda9ea0d022f12502')}</h2>
             <p>${unsafeHTML(this.localize('c8a58cab211b1a8edc2daa35b155403b'))}</p>
             <p>${unsafeHTML(this.localize('ff97e335c9c94e9a724f90e9fe10f1ca'))}</p>
             <p>${unsafeHTML(this.localize('b930165bdf78463d409aa7482e159c60'))}</p>
@@ -113,7 +132,7 @@ class SCANGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('79919034d7e37a93d61a2ced02afbb78'))}</p>
             <p>${unsafeHTML(this.localize('026b2569b3cae51cd479d2df3cee8a26'))}</p>
             <p>${unsafeHTML(this.localize('cdb2369f766383e1ff8851fb6a165f40'))}</p>
-            <h2>${this.localize('8bcfc36b67a96767abeaf29df503d4b7')}</h2>
+            <h2 id="item4">${this.localize('8bcfc36b67a96767abeaf29df503d4b7')}</h2>
             <p>${this.localize('496a35da3ca6c861f9e198e507cd9df3')}</p>
             <p>${unsafeHTML(this.localize('81ed25eba3543c889f044161bc68d3ac'))}</p>
             <p>${unsafeHTML(this.localize('3f086485ed647517b4d635e01615ef4b'))}</p>
@@ -137,7 +156,7 @@ class SCANGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('535c15a12df4dea45970403c3f32b00e'))}</p>
             <p>${unsafeHTML(this.localize('125f3ef54ef3e9d40b7a7ff07b307afd'))}</p>
             <p>${this.localize('f029f6368c4144f12fc7a67aca207000')}</p>
-            <h2>${this.localize('cf8ec64685f79c415e766a205bd9ed3f')}</h2>
+            <h2 id="item5">${this.localize('cf8ec64685f79c415e766a205bd9ed3f')}</h2>
             <p>${unsafeHTML(this.localize('1c0e856f46dd9577fe4c75c69b646628'))}</p>
             <p>${unsafeHTML(this.localize('f0a1680f11cce16505bed29c7008f550'))}</p>
             <p>${this.localize('0949a2513c988b1ca9a3c2f0a09d8241')}</p>
