@@ -26,7 +26,7 @@ template.innerHTML = `
       --sc-secondary-accent-color: #9c27b0;
 
       /* Background colors */
-      --sc-primary-background-color: rgb(250, 249, 249);
+      --sc-primary-background-color: rgb(250, 249, 248);
       --sc-secondary-background-color: rgb(255, 255, 255);
       --sc-tertiary-background-color: rgb(244, 243, 242);
 
