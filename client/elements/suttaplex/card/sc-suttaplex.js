@@ -224,7 +224,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         <a class="top-menu-button" role="group" aria-haspopup="true" href="${this.listenUrl}" target="_blank"
           aria-disabled="false" title="Listen to this sutta" rel="noopener noreferrer">
           <paper-icon-button class="btn-speaker" slot="dropdown-trigger" aria-label="${this.localize('listenSutta')}"
-             icon="icons:sc-svg-icons:speaker" role="button" tabindex="0" aria-disabled="false">
+             icon="sc-svg-icons:speaker" role="button" tabindex="0" aria-disabled="false">
           </paper-icon-button>
         </a>
       ` : ''}
@@ -232,7 +232,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       <paper-menu-button id="copy-menu" class="top-menu-button" horizontal-align="right" role="group"
         aria-haspopup="true" aria-disabled="false" vertical-align="auto">
         <paper-icon-button class="btn-share" slot="dropdown-trigger" aria-label="${this.localize('share')}"
-          icon="icons:sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false">
+          icon="sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false">
         </paper-icon-button>
   
         <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">

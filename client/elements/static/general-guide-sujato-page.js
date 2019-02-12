@@ -15,6 +15,46 @@ class SCGeneralGuide extends SCStaticPage {
           <article>
             <h1>${this.localize('078365b3da2eb8b34d23c36661309359')}</h1>
             <p class="byline">${this.localize('7c952261dd788f03d59a9f4e630f68c6')}</p>
+            <nav class="contents">
+              <ol>
+                <li>
+                  ${unsafeHTML(this.localize('c6f7c50031ef6abc248509c0d4f58104'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('af680c88f139916e736cd0d4288f6312'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('febfb889ff490894b3311a1e1fafd481'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('b8c5b4079c53171d2e069756f7a99773'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('0d05dac9a1795aa184464d31141de20f'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('126bfdd9998968304b7e7b266054cd02'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('88b88012d7169896d6333fe6f6ccc72f'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('2e329c8aa1c5ce62d22ebab224261795'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('dcd47e7d78a3e9385eb18e5bcb6401d5'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('7f6d03dbd58078d3f0f173d3ebe76d17'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('9d4e5d6582bcb35c144c0acfb47d09b8'))}
+                </li>
+                <li>
+                  ${unsafeHTML(this.localize('c9a00e496a1ecfb974e78ee3d82c55b8'))}
+                </li>
+              </ol>
+            </nav>
             <p>${unsafeHTML(this.localize('7185b6b927bfd1a70bfb7c1d7b6b58fb'))}</p>
             <p>${this.localize('c3245e15e46b2ef11f7d07fd462a4ac3')}</p>
             <p>${this.localize('e994fdca386f9c666ad2eaf56672b620')}</p>
@@ -44,12 +84,12 @@ class SCGeneralGuide extends SCStaticPage {
             <p>${this.localize('d90b66476ef448dcdada0e555e908c24')}</p>
             <p>${unsafeHTML(this.localize('ed1709d44b167d14635ff1f59f87a8f2'))}</p>
             <p>${unsafeHTML(this.localize('f07e44499589376ec26d6b51e012dab3'))}</p>
-            <h2>${this.localize('9204d3f94460388c770823878eccc6ce')}</h2>
+            <h2 id="item1">${this.localize('9204d3f94460388c770823878eccc6ce')}</h2>
             <p>${unsafeHTML(this.localize('8c35d75d63f1c106d6e1b0d9e20cbe83'))}</p>
             <p>${unsafeHTML(this.localize('dbb512535e0d77a5de7d2c29b434f3f5'))}</p>
             <p>${this.localize('b0c22d3df741f25748867ab280a6d8d9')}</p>
             <p>${this.localize('d7fdd429db12310fa16705f40c78a8fe')}</p>
-            <h2>${this.localize('397fe945ff89c5dbb3707dd82e3ad555')}</h2>
+            <h2 id="item2">${this.localize('397fe945ff89c5dbb3707dd82e3ad555')}</h2>
             <p>${unsafeHTML(this.localize('3125873d0a1d1edcaf0ac66d7efe8b9c'))}</p>
             <p>${this.localize('ef62d2b83f5a7196146f5e300c22982c')}</p>
             <p>${this.localize('8600c2973c9b48c78199566c05fd3230')}</p>
@@ -61,13 +101,13 @@ class SCGeneralGuide extends SCStaticPage {
             <p>${this.localize('80b247cd28029b64f1ab9547388ad532')}</p>
             <p>${this.localize('59e399225fea839d25980d2d2c3de814')}</p>
             <p>${unsafeHTML(this.localize('d7a1d685e1a584f543ca5beea32b8be9'))}</p>
-            <h2>${this.localize('9b513c8e92bd43499096d371a6866477')}</h2>
+            <h2 id="item3">${this.localize('9b513c8e92bd43499096d371a6866477')}</h2>
             <p>${unsafeHTML(this.localize('46355c4e2487ba1d04bed0a79d63da8e'))}</p>
             <p>${this.localize('46bd28e11caf3cbbef92a571a8a7d7f7')}</p>
             <p>${this.localize('2d9251dc7d8fab67474d74201a5c821e')}</p>
             <p>${this.localize('7a34842affaa5c804e376673c68598f3')}</p>
             <p>${this.localize('ef54b6337425cf8eaab070855e985c02')}</p>
-            <h2>${this.localize('85903287f84f31aa1dc1140d2bb12d28')}</h2>
+            <h2 id="item4">${this.localize('85903287f84f31aa1dc1140d2bb12d28')}</h2>
             <p>${this.localize('7a2e7595402032c9a18a2afd68d806f3')}</p>
             <p>${unsafeHTML(this.localize('4881b8760f05fb514410e893b1822846'))}</p>
             <ul>
@@ -91,7 +131,7 @@ class SCGeneralGuide extends SCStaticPage {
             </ul>
             <p>${this.localize('10074a4d0e234700e3cdf0af862038d9')}</p>
             <p>${unsafeHTML(this.localize('088bd0c5021ddf81cc0ec6fedeecd52f'))}</p>
-            <h2>${this.localize('1320eb191fefb128e23e54c70d9d3cf5')}</h2>
+            <h2 id="item5">${this.localize('1320eb191fefb128e23e54c70d9d3cf5')}</h2>
             <p>${unsafeHTML(this.localize('18dd6a9daf0afc48b5fd1664de28be77'))}</p>
             <p>${this.localize('43895ce147c7268f0ae49e3cd088caf7')}</p>
             <p>${this.localize('a7a506769e34505ca92ac0b6fbb4c4fe')}</p>
@@ -136,20 +176,20 @@ class SCGeneralGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('5484dde2bc20137171e892c99472b982'))}</p>
             <p>${unsafeHTML(this.localize('6570db079799766168a5a3a209fb8b17'))}</p>
             <p>${unsafeHTML(this.localize('2f4ba516ead9acb936ef19f31c304c88'))}</p>
-            <h2>${this.localize('bf299544579f5c03e672d82f92d8925c')}</h2>
+            <h2 id="item6">${this.localize('bf299544579f5c03e672d82f92d8925c')}</h2>
             <p>${this.localize('c21328701c6e6f74c7416c030fecc603')}</p>
             <p>${this.localize('9de9112789aa129de5e1571f81ac7140')}</p>
             <p>${this.localize('30ea8ce8dede5d215544bf5c83983528')}</p>
             <p>${unsafeHTML(this.localize('f977418cdb5c1cf88e58338e0792fe2e'))}</p>
             <p>${this.localize('04d3990034d7e4f55249a64f80a34a28')}</p>
-            <h2>${this.localize('af77eceff0d1dab6b8cecad446195c33')}</h2>
+            <h2 id="item7">${this.localize('af77eceff0d1dab6b8cecad446195c33')}</h2>
             <p>${this.localize('ca9ab15dc9f615c636edf8a833013c4c')}</p>
             <p>${this.localize('f4a0e88f64ff4d3f019b4ba5ad6a46ce')}</p>
             <p>${this.localize('585d0c82ad95d0b63af69c7622e16c6a')}</p>
             <p>${this.localize('88e962de39fe3b90ce353621292a7554')}</p>
             <p>${this.localize('98adcd4cbd573169d68aa90fcbd71ad4')}</p>
             <p>${this.localize('b47935da8a2b8fd0227922616f611a86')}</p>
-            <h2>${this.localize('60aee93c68b9bbb3ee7aeeca295fcf16')}</h2>
+            <h2 id="item8">${this.localize('60aee93c68b9bbb3ee7aeeca295fcf16')}</h2>
             <p>${this.localize('b92125ea4330c0fe2b6680d116bdddc9')}</p>
             <p>${this.localize('faba83d0bfffd959048c830a630f129e')}</p>
             <p>${this.localize('3d7e61c22c734a4d39f010585049c201')}</p>
@@ -167,7 +207,7 @@ class SCGeneralGuide extends SCStaticPage {
             <dd>${this.localize('948b5f36bdb65d7d7022ffd4feed7155')}</dd>
             </dl>
             <p>${unsafeHTML(this.localize('22c8def1ed8aa8af89ee59f98b1f2ede'))}</p>
-            <h2>${this.localize('f1d789af942cc63657c2c2c119fa96a8')}</h2>
+            <h2 id="item9">${this.localize('f1d789af942cc63657c2c2c119fa96a8')}</h2>
             <p>${this.localize('68a5ee892414a3d06f6c33890067f2d8')}</p>
             <p>${unsafeHTML(this.localize('cb857aac0823331a0e5f105f3fdb80ce'))}</p>
             <p>${unsafeHTML(this.localize('73ac9d02dc0501249e072ff166cf2ac5'))}</p>
@@ -202,7 +242,7 @@ class SCGeneralGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('8f4a598801cc9d4f3d5161594162e6f9'))}</p>
             <p>${unsafeHTML(this.localize('64f68ca586230770be3966c418cceb49'))}</p>
             <p>${this.localize('63f0e95dd533cd6540808f44499d2e2b')}</p>
-            <h2>${this.localize('08f1e0f7f76b3847bc1cb85fc8eb7d67')}</h2>
+            <h2 id="item10">${this.localize('08f1e0f7f76b3847bc1cb85fc8eb7d67')}</h2>
             <p>${this.localize('848d91d2a08e05485ea640fad10868f3')}</p>
             <p>${this.localize('f51030da1c840fc0da23fc9c225f8a58')}</p>
             <p>${this.localize('c7393ad2c86e981833d33a6cb0b278d1')}</p>
@@ -241,7 +281,7 @@ class SCGeneralGuide extends SCStaticPage {
             <p>${this.localize('61b3a2eeddf52b460251f5e537cc02fb')}</p>
             <p>${this.localize('bc42915503200938a5dd19fbec152f5f')}</p>
             <p>${unsafeHTML(this.localize('aa2c35cece23c49dc4aa4ce7c97f452e'))}</p>
-            <h2>${this.localize('82d6fd45fbe6ff8d023a0c7677b35744')}</h2>
+            <h2 id="item11">${this.localize('82d6fd45fbe6ff8d023a0c7677b35744')}</h2>
             <p>${unsafeHTML(this.localize('0feb1b9035128dcb28092f52f87eb2c2'))}</p>
             <p>${this.localize('25540bc0d9b4acb2cf13d6038d034c9f')}</p>
             <p>${this.localize('3ae62ee4d50bca78ea4ecbde01522913')}</p>
@@ -251,7 +291,7 @@ class SCGeneralGuide extends SCStaticPage {
             <p>${this.localize('71f8ebeb8e032d77ad7fed087b6d0063')}</p>
             <p>${this.localize('a5734b3217412c515bbb2f66717ec283')}</p>
             <p>${this.localize('0d173001d46f37d9bd5c37ac84fb7e19')}</p>
-            <h2>${this.localize('384ca53970d8bc91a9f9b4da8f992164')}</h2>
+            <h2 id="item12">${this.localize('384ca53970d8bc91a9f9b4da8f992164')}</h2>
             <p>${unsafeHTML(this.localize('1b052cecad295e404b0842dd0b42b1cb'))}</p>
             <p>${this.localize('0f38bdb3bbdfb068bfef82b69c1b2660')}</p>
             <p>${this.localize('ea1f4ede8106217171449b5e4c4e3a8e')}</p>

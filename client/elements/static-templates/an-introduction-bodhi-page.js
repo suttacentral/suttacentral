@@ -35,25 +35,25 @@ class SCANIntroduction extends SCStaticPage {
                 <li>
                   ${_`<a href="#item6">Dispelling the World’s Enchantment</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item7">The Defilements of the Mind</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item8">The Path of Renunciation</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item9">Meditation</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item10">Wisdom</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item11">The Saṅgha</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item12">Types of Persons</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item13">Bhikkhunīs and Women in the Aṅguttara Nikāya</a>`}
                 </li>
               </ol>

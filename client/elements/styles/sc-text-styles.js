@@ -398,6 +398,7 @@ export const textStyles = html`
     display: table;
     width: auto;
     margin: 0 auto;
+    max-width: 90%;
   }
 
   .indent {

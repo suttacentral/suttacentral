@@ -216,7 +216,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     <paper-dialog id="settings_dialog" name="settings_dialog" class="dialog" with-backdrop="" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
       <div class="buttons-bar green-bg">
         <h2 class="dialog-header green-bg">{{localize('textSettings')}}</h2>
-        <paper-icon-button class="close-dialog-icon" icon="close" dialog-confirm=""></paper-icon-button>
+        <paper-icon-button class="close-dialog-icon" icon="sc-iron-icons:close" dialog-confirm=""></paper-icon-button>
       </div>
       <paper-dialog-scrollable class="scrollable-dialog">
         <sc-settings-menu></sc-settings-menu>
@@ -226,7 +226,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     <paper-dialog id="info_dialog" name="info_dialog" class="dialog" with-backdrop="true" data="{{infoDialogMetaArea}}" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
       <div class="buttons-bar green-bg">
         <h2 class="dialog-header green-bg">{{localize('publicationDetails')}}</h2>
-        <paper-icon-button class="close-dialog-icon" icon="close" dialog-confirm=""></paper-icon-button>
+        <paper-icon-button class="close-dialog-icon" icon="sc-iron-icons:close" dialog-confirm=""></paper-icon-button>
       </div>
       <paper-dialog-scrollable class="scrollable-dialog">
         <div class="dialog-section">

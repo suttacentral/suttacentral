@@ -301,11 +301,11 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
               <div class="download-info-row">
                 <div class="download-current-url">{{localize('downloading')}}: [[currentDownloadingUrl]]</div>
                 <div class="control-button-row">
-                  <paper-icon-button id="play_button" class="control-button" icon="av:play-arrow"></paper-icon-button>
+                  <paper-icon-button id="play_button" class="control-button" icon="sc-iron-icons:play-arrow"></paper-icon-button>
                   <paper-tooltip for="play_button" class="tooltip">
                     [[_getPlayButtonTooltip(isDownloadPaused, localize)]]
                   </paper-tooltip>
-                  <paper-icon-button id="stop_button" class="control-button" icon="av:stop"></paper-icon-button>
+                  <paper-icon-button id="stop_button" class="control-button" icon="sc-iron-icons:stop"></paper-icon-button>
                   <paper-tooltip for="stop_button" class="tooltip">
                     {{localize('stop')}}
                   </paper-tooltip>
@@ -691,7 +691,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _downloadPausedChanged() {
-    this.$.play_button.icon = this.isDownloadPaused ? 'av:play-arrow' : 'av:pause';
+    this.$.play_button.icon = this.isDownloadPaused ? 'sc-iron-icons:play-arrow' : 'sc-iron-icons:pause';
   }
 
   _downloadInProgressChanged() {

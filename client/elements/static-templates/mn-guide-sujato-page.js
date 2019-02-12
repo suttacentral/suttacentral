@@ -35,13 +35,13 @@ class SCMNGuide extends SCStaticPage {
                 <li>
                   ${_`<a href="#item6">The Monastic Disciples</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item7">The Saṅgha</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item8">The Wider Community</a>`}
                 </li>
-                                <li>
+                <li>
                   ${_`<a href="#item9">A Brief Textual History</a>`}
                 </li>
               </ol>
