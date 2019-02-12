@@ -9,7 +9,7 @@ template.innerHTML = `
       /* Text */
       --sc-primary-text-color: rgb(34,33,32);
       --sc-secondary-text-color: rgb(116,115,114);
-      --sc-tertiary-text-color: #fff;
+      --sc-tertiary-text-color: rgb(255, 255, 255);
       --sc-disabled-text-color: rgb(159,158,157);
       --sc-disabled-text-color-opaque: rgba(159, 158, 157, .3);
 
@@ -31,10 +31,10 @@ template.innerHTML = `
       --sc-tertiary-background-color: rgb(244, 243, 242);
 
       /* Other colors */
-      --sc-paper-tooltip-color: #616161;
-      --sc-paper-tooltip-text-color: #fff;
+      --sc-paper-tooltip-color: rgb(98,97,96);
+      --sc-paper-tooltip-text-color: rgb(255, 255, 255);
       --sc-border-color: rgba(0, 0, 0, 0.12);
-      --sc-textual-info-background-color: #e2e2e2;
+      --sc-textual-info-background-color: rgb(227,226,225);
       --sc-toast-error-color: #f44336;
       --sc-toast-success-color: #43a047;
       --sc-pie-chart-bg-color: #e1f7d0;
