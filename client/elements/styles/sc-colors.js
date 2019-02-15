@@ -7,11 +7,11 @@ template.innerHTML = `
   <style>
     html {
       /* Text */
-      --sc-primary-text-color: #212121;
-      --sc-secondary-text-color: #737373;
-      --sc-tertiary-text-color: #fff;
-      --sc-disabled-text-color: #9e9e9e;
-      --sc-disabled-text-color-opaque: rgba(158, 158, 158, .3);
+      --sc-primary-text-color: rgb(34,33,32);
+      --sc-secondary-text-color: rgb(116,115,114);
+      --sc-tertiary-text-color: rgb(255, 255, 255);
+      --sc-disabled-text-color: rgb(159,158,157);
+      --sc-disabled-text-color-opaque: rgba(159, 158, 157, .3);
 
       /* Main colors */
       --sc-primary-color: #ce8400;
@@ -26,15 +26,15 @@ template.innerHTML = `
       --sc-secondary-accent-color: #9c27b0;
 
       /* Background colors */
-      --sc-primary-background-color: #f5f5f5;
-      --sc-secondary-background-color: #fff;
-      --sc-tertiary-background-color: rgb(243, 243, 243);
+      --sc-primary-background-color: rgb(250, 249, 248);
+      --sc-secondary-background-color: rgb(255, 255, 255);
+      --sc-tertiary-background-color: rgb(244, 243, 242);
 
       /* Other colors */
-      --sc-paper-tooltip-color: #616161;
-      --sc-paper-tooltip-text-color: #fff;
+      --sc-paper-tooltip-color: rgb(98,97,96);
+      --sc-paper-tooltip-text-color: rgb(255, 255, 255);
       --sc-border-color: rgba(0, 0, 0, 0.12);
-      --sc-textual-info-background-color: #e2e2e2;
+      --sc-textual-info-background-color: rgb(227,226,225);
       --sc-toast-error-color: #f44336;
       --sc-toast-success-color: #43a047;
       --sc-pie-chart-bg-color: #e1f7d0;

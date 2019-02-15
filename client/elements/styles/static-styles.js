@@ -226,6 +226,7 @@ export const staticStyles = html`
     display: table;
     width: auto;
     margin: 0 auto;
+    max-width: 90%;
   }
   .pre {
     @apply --sc-monospace-font;
