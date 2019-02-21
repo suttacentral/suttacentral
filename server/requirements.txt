@@ -12,6 +12,7 @@ colorama==0.3.9
 cssselect==1.0.3
 decorator==4.3.0
 docutils==0.14
+EbookLib==0.17.1
 elasticsearch==6.3.1
 Faker==0.9.1
 flasgger==0.9.1
@@ -19,6 +20,7 @@ Flask==1.0.2
 Flask-Cors==3.0.6
 Flask-RESTful==0.3.6
 Flask-Script==2.0.6
+fonttools==3.38.0
 gitdb2==2.0.4
 GitPython==2.1.11
 idna==2.7

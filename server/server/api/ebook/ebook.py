@@ -7,7 +7,6 @@ from flask import current_app, request, redirect
 from flask_restful import Resource
 
 from .make_html import get_html_data
-#from .epub import Book as Epub
 from .cover import make_cover_png
 from .common import export_dir
 
@@ -183,7 +182,7 @@ def create_epub(data, language, filename, debug=False):
     else:
         about = f'A translation of {data["root_title"]} by'
     
-    cover_data = make_cover_png(title=data['title'], author=author, about=about, debug=debug)
+    cover_data = make_cover_png(title=data['title'], author=author, about=about, debug=False)
 
     book = epub.EpubBook()
 
@@ -258,34 +257,66 @@ def create_epub(data, language, filename, debug=False):
     filename.rename(epub_file)
     return epub_file
 
+
+def generate_epub(uid, language, author):
+    data = get_html_data(uid, language, author)
+        
+    filename = export_dir / f'{uid}_{language}_{author}.epub'
+    
+    epub_file = create_epub(data, language, filename, debug=False)
+    
+    result = {
+        'uid': uid,
+        'language': language,
+        'author': author,
+        'format': 'epub',
+        'href': f'{current_app.config["SERVER_ADDRESS"]}/ebook/{epub_file.name}'
+    }
+
+    return result
+
+# def make_file_stem(uid, language, author):
+#     return f'{uid}_{language}_{author}'
+
+# def pregenerate_epubs():
+#     selection = [
+#         ('dn', 'en', 'sujato'),
+#         ('mn', 'en', 'sujato'),
+#         ('sn', 'en', 'sujato'),
+#         ('an', 'en', 'sujato'),
+#         ('thag', 'en', 'sujato'),
+#         ('thig', 'en', 'sujato')
+#     ]
+
+#     pregen_dir = export_dir / 'pregen'
+#     if not pregen_dir.exists():
+#         pregen_dir.mkdir()
+
+#     for uid, language, author in selection:
+#         result = generate_epub(uid, language, author)
+#         with (pregen_dir / f'{make_file_stem(uid, language, author)}.json').open('w') as f:
+#             json.dump(result, f)
+        
+        
+# class EBookPregen(Resource):
+#     def get(self, uid, language, author, **kwargs):
+#         pregen_json_file = pregen_dir / f'{make_file_stem(uid, language, author)}.json'
+#         if not pregen_json_file.exists():
+
+
 class EBook(Resource):
     def get(self, uid, language, author, **kwargs):
         ebook_format = request.args.get('format', 'epub')
-        debug = request.args.get('debug') != None
-        if debug:
-            print('Debugging EBook')
+        details = request.args.get('details') != None
         
         if ebook_format != 'epub':
             return 500, "Format not supported"           
-        
-        
-        data = get_html_data(uid, language, author)
-        
-        filename = export_dir / f'{uid}_{language}_{author}.epub'
-        
-        epub_file = create_epub(data, language, filename, debug=debug)
-        
-        result = {
-            'uid': uid,
-            'language': language,
-            'author': author,
-            'format': ebook_format,
-            'href': f'//{current_app.config["SERVER_ADDRESS"]}/ebook/{epub_file.name}'
-        }
-        if debug:
-            result['data'] = data
-        return result
 
+        result = generate_epub(uid, language, author)
+        if details:
+            return result
+        else:
+            return redirect(result['href'], code=302)
 
 def epubcheck(filename):
     subprocess.run(['epubcheck', str(filename)])

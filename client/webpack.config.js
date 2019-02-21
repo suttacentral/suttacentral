@@ -131,7 +131,7 @@ const swConfig = {
         },
       ],
       navigateFallback: '/index.html',
-      navigateFallbackBlacklist: [/^\/img\/.*/, /^\/files\/.*/],
+      navigateFallbackBlacklist: [/^\/img\/.*/, /^/ebook/.*, /^\/files\/.*/],
       exclude: [/\.(woff(2)?|ttf)$/, /node_modules\//, /img\/.*(?<!\.svg)$/],
     })
   ]
