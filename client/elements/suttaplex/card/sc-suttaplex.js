@@ -63,7 +63,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       const translations = (this.item || {}).translations || [];
       const lang = this.language;
       this._translationsInUserLanguage = translations.filter(item => item.lang === lang);
-      this.translationsInModernLanguages = translations.filter(item => item.lang.length === 2 && item.lang !== lang);
+      this.translationsInModernLanguages = translations.filter(item => !item.is_root && item.lang !== lang);
       this.rootTexts = translations.filter(item => item.is_root);
       this.hasSegmentedTexts = translations.filter(item => item.segmented).length > 0;
     }
