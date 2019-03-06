@@ -30,8 +30,10 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
             word_ascii = asciify_roman(word)
             _key = regex.sub(r'[^a-z0-9]+', '_', word_ascii)
             if _key in ids_seen:
+                ids_seen[_key] += 1
                 _key += str(ids_seen[_key])
-            ids_seen[_key] += 1
+            else:
+                ids_seen[_key] = 1
             words_seen[word] += 1
             
             doc = {'_key': _key,
