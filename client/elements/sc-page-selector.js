@@ -400,6 +400,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.set('suttaAuthor', suttaRouteParams.authorName);
       this.dispatch('changeRoute', Object.assign({}, this.route, suttaRouteParams));
     }
+    else if (this._isAPI()) {
+      
+    }
     else {
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
     }
@@ -452,6 +455,14 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     const pathIsoCode = this._getPathParamNumber(2);
     const pathAuthor = this._getPathParamNumber(3);
     return (!!(pathIsoCode && pathAuthor) || this.allIsoCodes.indexOf(pathIsoCode) !== -1);
+  }
+
+  _isAPI() {
+    let isApi = this.route.path.split('/')[1] == 'api';
+    if (isApi) {
+      return true
+    }
+    return false
   }
 
   _getSuttaplexRouteParams() {

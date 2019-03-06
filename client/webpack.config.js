@@ -107,7 +107,7 @@ const swConfig = {
       importScripts: ['node_modules/workbox-sw/build/workbox-sw.js'],
       runtimeCaching: [
         {
-          urlPattern: new RegExp('/api/(.*)'),
+          urlPattern: new RegExp('/api/((?!ebook).*)'),
           handler: 'networkFirst',
         },
         {
@@ -131,8 +131,8 @@ const swConfig = {
         },
       ],
       navigateFallback: '/index.html',
-      navigateFallbackBlacklist: [/^\/img\/.*/, /^\/files\/.*/],
-      exclude: [/\.(woff(2)?|ttf)$/, /node_modules\//, /img\/.*(?<!\.svg)$/],
+      navigateFallbackBlacklist: [/^\/img\/.*/,/^\/ebook\/.*/,  /^\/api\/.*/, /^\/files\/.*/],
+      exclude: [/\.(woff(2)?|ttf|epub)$/, /node_modules\//, /img\/.*(?<!\.svg)$/],
     })
   ]
 };

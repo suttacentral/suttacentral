@@ -6,6 +6,8 @@ import pathlib
 import json
 import regex
 
+from search.uid_expansion import uid_to_acro
+
 from collections import Counter
 
 from common.arangodb import get_db
@@ -29,7 +31,18 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('root/', @uid) root_edges OPTIONS {
 '''
 
 def sanitize_div_name(string):
-    return regex.sub(r'\d+\.?\d*\p{punct}*\d*', '', string).strip()
+    name = regex.sub(r'\d+\.?\d*\p{punct}*\d*', '', string).strip()
+    if name:
+        return name
+    return string
+
+def get_acronym(doc):
+    acronym = doc.get('acronym')
+    if acronym:
+        acronym = acronym.split('//')[0]
+    else:
+        acronym = uid_to_acro(doc['uid'])
+    return acronym
 
 def retrieve_data(division_uid, language, author):
     db = get_db()
@@ -53,27 +66,28 @@ def retrieve_data(division_uid, language, author):
                 toc.append('</ul>\n' * (last_depth - depth))
             if doc['name']:
                 toc.append('<li>\n')
-                acronym = doc.get('acronym')
-                if acronym:
-                    acronym = acronym + ': '
-                else:
-                    acronym = ""
+                acronym = get_acronym(doc)
                 if doc['text']:
-                    toc.append(f'<b><a href="./{doc["uid"]}.xhtml">{acronym}{doc["text"]["title"]}</a></b> <i>{doc["name"]}</i>')
+                    doc['text']['acronym'] = acronym
+                    title = doc["text"]["title"]
+                    long_title = f'{acronym}{": " if title else ""}{title}'
+                    toc.append(f'<b><a href="./{doc["uid"]}.xhtml">{long_title}</a></b>')
+                    if doc.get('name'):
+                        toc.append(f'<br><i>{doc["name"]}</i>')
+                    doc['text']['long_title'] = long_title
                 else:
-                    toc.append(f'<b>{acronym}{doc["name"]}</b> <i>{doc["title"]}</i>')
+                    toc.append(f'<b>{doc["name"]}</b>')
+                    if doc.get('title'):
+                        toc.append(f'<br><i>{doc["title"]}</i>')
                 if doc['blurb'] and i > 0:
-                    toc.append(f'<p>{doc["blurb"]}</p>')
+                    toc.append(f'<br>{doc["blurb"]}')
                 if i >= len(docs) - 1 or docs[i+1]['depth'] <= doc['depth']:
                     toc.append('</li>\n')
         last_depth = depth
-        
     
     root = lxml.html.fromstring(''.join(toc))
     toc_string = lxml.html.tostring(root, encoding='unicode')
-    
-    toc_string = toc_string.replace(' <i>None</i>', '')
-    
+
     return {
             'root_title': docs[0]['name'],
             'blurb': docs[0]['blurb'],
@@ -102,8 +116,6 @@ def get_html_data(division_uid, language, author):
     
     data['pages'] = []
 
-
-    
     if len(texts) == 1:
         division_title = texts[0]['title']
     elif 'division_title' in texts[0]:
@@ -125,11 +137,41 @@ def get_html_data(division_uid, language, author):
         return regex.sub('<p.*?>.*?</p>', deduplicator, m[0])
     
     for text in texts:
+
+        def acroize_heading(m):
+            acro = text.get('acronym')
+            if not acro:
+                return m[0]
+            heading = m[2]
+            if not heading:
+                return acro
+            m2 = regex.match(r'(\d+)(?:\.)?\s*(.*)$', heading)
+            if not m2:
+                h_text = heading
+            else:
+                h_num = m2[1]
+                h_text = m2[2]
+
+                m3 = regex.match(r'(.*?)(\d+(?:–(\d+))?)$', text['acronym'])
+                acro_prefix = m3[1]
+                acro_num = m3[2]
+
+                if acro_num == h_num:
+                    heading = h_text
+                elif '–' in acro_num and h_num:
+                    acro = acro_prefix + h_num
+                    heading = h_text
+
+            new_heading = f'<span class="acro">{acro}</span>{": " if h_text else ""}{h_text}'
+            return f'{m[1]}{new_heading}'
+
         if 'strings_path' in text:
             html = convert_to_html(text['strings_path'], text['markup_path'])
+            html = regex.sub(r'(<h1.*?>)(.*?)</h1>', acroize_heading, html)
         else:
             html = open(text['file_path']).read()
             html = clean_html(html)
+            
             if division_title is None:
                 m = regex.search(r'<p class="division">(.*?)</p>', html)
                 if m:
@@ -141,8 +183,11 @@ def get_html_data(division_uid, language, author):
             
         html = regex.sub(r'(?s)<div class="hgroup">.*?</div>', repl, html)
         
+        title = text['title']
+        if not title:
+            title = None
         
-        data['pages'].append({'title': text['title'], 'uid': text['uid'], 'html': html})
+        data['pages'].append({'title': title, 'uid': text['uid'], 'html': html, 'acronym': text.get('acronym', '')})
             
     data['title'] = division_title
     data['author_blurb'] = author_blurb
@@ -173,18 +218,22 @@ def convert_to_html(strings_path, markup_path):
 
 def clean_html(html_string):
     root = lxml.html.fromstring(html_string)
-    
-    for e in root.iter('a', 'article'):
-        e.drop_tag()
-    root.tag = 'div'
-    
-    for p in root.iter('p', 'blockquote'):
+
+    for p in list(root.iter('p')) + list(root.iter('blockquote')):
         tc = p.text_content()
         if not tc or tc.isspace():
             p.drop_tree()
-        elif p.text:
-            p.text = regex.sub(r'^\s+', '', p.text)
+        else:
+            if p.text:
+                p.text = regex.sub(r'^\s+', '', p.text)
+
+    for e in root.iter('a', 'article'):
+        e.drop_tag()
+
+    root.tag = 'div'
     
     string = lxml.html.tostring(root, encoding='unicode')
+    string = regex.sub(r'(<p\b.*?>)\s+', r'\1', string)
     string = regex.sub(r'\s+</p>', '</p>', string)
+
     return string
