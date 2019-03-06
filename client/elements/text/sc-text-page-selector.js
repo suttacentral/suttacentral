@@ -130,7 +130,8 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         type: Object
       },
       expansionReturns: {
-        type: Array
+        type: Array,
+        observer: '_onResponseExpansionData'
       },
       showedLanguagePrompt: {
         type: Boolean,
@@ -179,7 +180,7 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.dispatch('setShowedLanguagePrompt');
       this._showLanguagePromptToast();
     }
-}
+  }
 
   _onResponse() {
     if (!this.responseData) {
@@ -195,6 +196,11 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
   _getExpansionUrl() {
     return `${API_ROOT}/expansion`;
+  }
+
+  _onResponseExpansionData() {
+    this.$.sutta_text_ajax.url = this._getSuttaTextUrl();
+    this.$.sutta_text_ajax.generateRequest();
   }
 
   setProperties() {
@@ -215,6 +221,13 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         this.previous = this.rootSutta.previous;
       }
     }
+
+    if (this.next && !this.next.name) {
+      this.next.name = this._transformId(this.next.uid, this.expansionReturns);
+    }
+    if (this.previous && !this.previous.name) {
+      this.previous.name = this._transformId(this.previous.uid, this.expansionReturns);
+    }
   }
 
   _paramChanged() {
@@ -224,10 +237,13 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.stopRequests = true;
       // wait 50ms until all route parameters are changed
       setTimeout(() => {
-        this.$.sutta_text_ajax.url = this._getSuttaTextUrl();
-        this.$.sutta_text_ajax.generateRequest();
-        this.$.uid_expansion_ajax.url = this._getExpansionUrl();
-        this.$.uid_expansion_ajax.generateRequest();
+        if (!this.expansionReturns) {
+            this.$.uid_expansion_ajax.url = this._getExpansionUrl();
+            this.$.uid_expansion_ajax.generateRequest();
+        } else {
+            this.$.sutta_text_ajax.url = this._getSuttaTextUrl();
+            this.$.sutta_text_ajax.generateRequest();
+        }
         this.stopRequests = false;
       }, 50);
     }
@@ -289,6 +305,9 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
     }));
 
+    if (!title) {
+      title = this._transformId(this.suttaId, this.expansionReturns);
+    }
     this._updateToolbar(`${title}—${author}`);
   }
 
