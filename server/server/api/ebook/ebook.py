@@ -3,7 +3,7 @@ import pathlib
 import subprocess
 
 from tempfile import TemporaryDirectory
-from flask import current_app, request, redirect
+from flask import send_file, request, current_app
 from flask_restful import Resource
 
 from .make_html import get_html_data
@@ -11,6 +11,7 @@ from .cover import make_cover_png
 from .common import export_dir
 
 from common.font_subsetter import subset_files_by_names
+from common.extensions import make_cache_key, cache
 
 from ebooklib import epub
 
@@ -270,53 +271,34 @@ def generate_epub(uid, language, author):
         'language': language,
         'author': author,
         'format': 'epub',
+        'file': epub_file,
         'href': f'{current_app.config["SERVER_ADDRESS"]}/ebook/{epub_file.name}'
     }
 
     return result
 
-# def make_file_stem(uid, language, author):
-#     return f'{uid}_{language}_{author}'
-
-# def pregenerate_epubs():
-#     selection = [
-#         ('dn', 'en', 'sujato'),
-#         ('mn', 'en', 'sujato'),
-#         ('sn', 'en', 'sujato'),
-#         ('an', 'en', 'sujato'),
-#         ('thag', 'en', 'sujato'),
-#         ('thig', 'en', 'sujato')
-#     ]
-
-#     pregen_dir = export_dir / 'pregen'
-#     if not pregen_dir.exists():
-#         pregen_dir.mkdir()
-
-#     for uid, language, author in selection:
-#         result = generate_epub(uid, language, author)
-#         with (pregen_dir / f'{make_file_stem(uid, language, author)}.json').open('w') as f:
-#             json.dump(result, f)
-        
-        
-# class EBookPregen(Resource):
-#     def get(self, uid, language, author, **kwargs):
-#         pregen_json_file = pregen_dir / f'{make_file_stem(uid, language, author)}.json'
-#         if not pregen_json_file.exists():
-
-
+_cache = {}
 class EBook(Resource):
     def get(self, uid, language, author, **kwargs):
-        ebook_format = request.args.get('format', 'epub')
-        details = request.args.get('details') != None
-        
-        if ebook_format != 'epub':
-            return 500, "Format not supported"           
+        cache_key = f'{uid}_{language}_{author}'
+        if cache_key not in _cache:
+            parts = author.split('.')
+            ebook_format = parts[-1]
+            author = '.'.join(parts[:-1])
+            details = request.args.get('details') != None
+            
+            if ebook_format != 'epub':
+                return 500, "Format not supported"           
 
-        result = generate_epub(uid, language, author)
+            result = generate_epub(uid, language, author)
+            _cache[cache_key] = result
+        else:
+            result = _cache[cache_key]
         if details:
             return result
         else:
-            return redirect(result['href'], code=302)
+            print(result['file'])
+            return send_file(str(result['file']))
 
 def epubcheck(filename):
     subprocess.run(['epubcheck', str(filename)])

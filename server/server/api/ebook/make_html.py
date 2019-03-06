@@ -139,7 +139,7 @@ def get_html_data(division_uid, language, author):
     for text in texts:
 
         def acroize_heading(m):
-            acro = text['acronym']
+            acro = text.get('acronym')
             if not acro:
                 return m[0]
             heading = m[2]
@@ -187,7 +187,7 @@ def get_html_data(division_uid, language, author):
         if not title:
             title = None
         
-        data['pages'].append({'title': title, 'uid': text['uid'], 'html': html, 'acronym': text['acronym']})
+        data['pages'].append({'title': title, 'uid': text['uid'], 'html': html, 'acronym': text.get('acronym', '')})
             
     data['title'] = division_title
     data['author_blurb'] = author_blurb
