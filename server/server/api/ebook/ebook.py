@@ -280,12 +280,12 @@ def generate_epub(uid, language, author):
 _cache = {}
 class EBook(Resource):
     def get(self, uid, language, author, **kwargs):
-        cache_key = f'{uid}_{language}_{author}'
+        details = request.args.get('details') != None
+        cache_key = f'{uid}_{language}_{author}_{details}'
         if cache_key not in _cache:
             parts = author.split('.')
             ebook_format = parts[-1]
             author = '.'.join(parts[:-1])
-            details = request.args.get('details') != None
             
             if ebook_format != 'epub':
                 return 500, "Format not supported"           
@@ -297,7 +297,6 @@ class EBook(Resource):
         if details:
             return result
         else:
-            print(result['file'])
             return send_file(str(result['file']))
 
 def epubcheck(filename):
