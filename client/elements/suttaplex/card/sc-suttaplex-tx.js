@@ -30,7 +30,7 @@ class SCSuttaplexTx extends LitElement {
         <div class="tx-details">
           <span class="tx-creator">${this.translation.author}</span>
           <span class="tx-publication">
-            ${this.translation.lang_name} ${this.translation.segmented ? '& Pali' : ''}
+            ${this.translation.lang_name} ${(this.translation.segmented && (this.translation.lang_name !== 'Pāli')) ? '& Pāli' : ''}
             ${this.translation.publication_date ? ', ' + this.translation.publication_date : ''}
           </span>
         </div>
