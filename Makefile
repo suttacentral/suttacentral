@@ -18,7 +18,7 @@ generate-cert:
 
 
 
-SERVICES := sc-flask sc-nginx sc-swagger sc-arangodb sc-frontend sc-elasticsearch
+SERVICES := sc-flask sc-nginx sc-swagger sc-arangodb sc-frontend sc-elasticsearch sc-chrome-headless
 
 run-dev:
 	@$(COMPOSEDEV) up $(SERVICES)
