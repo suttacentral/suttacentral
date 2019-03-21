@@ -49,7 +49,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(CollectionUrlList, '/pwa/collection/<string:collection>')
     api.add_resource(PWASizes, '/pwa/sizes')
     api.add_resource(Redirect, '/redirect/<path:url>')
-    api.add_resource(EBook, '/ebook/<string:uid>/<string:language>/<string:author>')
+    api.add_resource(EBook, '/ebook/<string:name>')
     
     app.register_blueprint(api_bp)
     register_extensions(app)
