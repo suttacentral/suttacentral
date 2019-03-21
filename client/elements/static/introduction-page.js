@@ -28,6 +28,8 @@ class SCIntroduction extends SCStaticPage {
             ${this.localize('64cd2e478659db49f887dae97da862c3')}
           </p>
           <picture>
+            <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.webp" type="image/webp"/>
+            <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg" type="image/jpeg"/>
             <img alt="${this.localize('025257a3215157ee4626b3cb6e483c94')}" class="image-home-full" src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg" title="${this.localize('d9b4df8b039c324a4b8e7f98426f2455')}" width="640px"/>
           </picture>
           <h2>
@@ -47,6 +49,8 @@ class SCIntroduction extends SCStaticPage {
           </h2>
           <p>
             <picture>
+              <source srcset="/img/static-pages/birchbark_w400.webp" type="image/webp"/>
+              <source srcset="/img/static-pages/birchbark_w400.jpg" type="image/jpeg"/>
               <img alt="${this.localize('46d831f3bb74892e53c4603434e46e40')}" class="image-home" src="/img/static-pages/birchbark_w400.jpg" title="${this.localize('b6e60cfe55a01b89e5fb3e3918783055')}" />
             </picture>
             ${this.localize('eefafa4d2d7214360b1103762d9f04eb')}
@@ -112,6 +116,8 @@ class SCIntroduction extends SCStaticPage {
           </h2>
           <p>
             <picture>
+              <source srcset="/img/static-pages/dn20.webp" type="image/webp"/>
+              <source srcset="/img/static-pages/dn20.jpg" type="image/jpeg"/>
               <img alt="${this.localize('48b65b4ddc298706957757b9d1084047')}" class="image-home" src="/img/static-pages/dn20.jpg" title="${this.localize('4876141d1d5c276e672a3bf35f732208')}" width="640px"/>
             </picture>
             ${this.localize('3145680918ffae0d7b0932b712b36884')}
