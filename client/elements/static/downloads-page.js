@@ -25,12 +25,12 @@ class SCDownloadsPage extends SCStaticPage {
             <h2>${this.localize('0f47776094370e032467a8ac23182881')}</h2>
             <p>${unsafeHTML(this.localize('38e4989cbe5b5596eef6db24cca413b5'))}
             <ul>
-            <li><a href="/api/ebook/dn/en/sujato.epub" download="dn_en_sujato.epub" target="_blank"><cite class="text-translated">Long Discourses</cite> (<cite class="text-root">Dīgha Nikāya</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
-            <li><a href="/api/ebook/mn/en/sujato.epub" download="mn_en_sujato.epub" target="_blank"><cite class="text-translated">Middle Discourses</cite> (<cite class="text-root">Majjhima Nikāya</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
-            <li><a href="/api/ebook/sn/en/sujato.epub" download="sn_en_sujato.epub" target="_blank"><cite class="text-translated">Linked Discourses</cite> (<cite class="text-root">Saṁyutta Nikāya</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
-            <li><a href="/api/ebook/an/en/sujato.epub" download="an_en_sujato.epub" target="_blank"><cite class="text-translated">Numbered Discourses</cite> (<cite class="text-root">Aṅguttara Nikāya</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
-            <li><a href="/api/ebook/thag/en/sujato.epub" download="thag_en_sujato.epub" target="_blank"><cite class="text-translated">Verses of the Senior Monks</cite> (<cite class="text-root">Theragāthā</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
-            <li><a href="/api/ebook/thig/en/sujato.epub" download="thig_en_sujato.epub" target="_blank"><cite class="text-translated">Verses of the Senior Nuns</cite> (<cite class="text-root">Therīgāthā</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
+            <li><a href="/api/ebook/dn_en_sujato.epub" download target="_blank"><cite class="text-translated">Long Discourses</cite> (<cite class="text-root">Dīgha Nikāya</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
+            <li><a href="/api/ebook/mn_en_sujato.epub" download target="_blank"><cite class="text-translated">Middle Discourses</cite> (<cite class="text-root">Majjhima Nikāya</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
+            <li><a href="/api/ebook/sn_en_sujato.epub" download target="_blank"><cite class="text-translated">Linked Discourses</cite> (<cite class="text-root">Saṁyutta Nikāya</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
+            <li><a href="/api/ebook/an_en_sujato.epub" download target="_blank"><cite class="text-translated">Numbered Discourses</cite> (<cite class="text-root">Aṅguttara Nikāya</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
+            <li><a href="/api/ebook/thag_en_sujato.epub" download target="_blank"><cite class="text-translated">Verses of the Senior Monks</cite> (<cite class="text-root">Theragāthā</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
+            <li><a href="/api/ebook/thig_en_sujato.epub" download target="_blank"><cite class="text-translated">Verses of the Senior Nuns</cite> (<cite class="text-root">Therīgāthā</cite>), <span class="author">Bhikkhu Sujato</span></a></li>
             </ul>
             <h2>
               ${this.localize('c1c1e70d557e9ba9b036ef879a504ce6')}

@@ -44,9 +44,9 @@ pyppeteer==0.0.24
 python-arango==4.4.0
 python-dateutil==2.7.3
 pytz==2018.5
-PyYAML==3.13
+PyYAML==5.1
 regex==2018.8.29
-requests==2.19.1
+requests==2.21.0
 six==1.11.0
 smmap2==2.0.4
 snowballstemmer==1.2.1

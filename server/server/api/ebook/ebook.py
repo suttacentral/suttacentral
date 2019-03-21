@@ -134,6 +134,9 @@ def create_epub(data, language, filename, debug=False):
         li {
             margin: 1em 0 0 0em;
         }
+        nav ol{
+          list-style-type: none;
+        }
         article,
         aside,
         figure,
@@ -172,6 +175,8 @@ def create_epub(data, language, filename, debug=False):
         a {
             color: #b37800
         }
+    
+
     '''
     
     is_root = len(language) == 3
@@ -279,15 +284,16 @@ def generate_epub(uid, language, author):
 
 _cache = {}
 class EBook(Resource):
-    def get(self, uid, language, author, **kwargs):
+    def get(self, name, **kwargs):
+        filepath = pathlib.Path(name)
+        print('WTF========================' + name)
+        ebook_format = filepath.suffix
+        stem = filepath.stem
+        uid, language, author = stem.split('_')
         details = request.args.get('details') != None
         cache_key = f'{uid}_{language}_{author}_{details}'
         if cache_key not in _cache:
-            parts = author.split('.')
-            ebook_format = parts[-1]
-            author = '.'.join(parts[:-1])
-            
-            if ebook_format != 'epub':
+            if ebook_format != '.epub':
                 return 500, "Format not supported"           
 
             result = generate_epub(uid, language, author)
@@ -298,6 +304,3 @@ class EBook(Resource):
             return result
         else:
             return send_file(str(result['file']))
-
-def epubcheck(filename):
-    subprocess.run(['epubcheck', str(filename)])

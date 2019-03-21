@@ -105,7 +105,9 @@ services:
       - ./pootle_pipeline/:/opt/sc/po_files/
       
   sc-chrome-headless:
-    image: justinribeiro/chrome-headless
+    build:
+      context: ./server/docker/
+      dockerfile: Dockerfile-chrome-headless
     container_name: 'sc-chrome-headless'
     labels:
       application: 'sc-chrome-headless'

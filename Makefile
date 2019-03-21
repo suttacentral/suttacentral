@@ -82,6 +82,14 @@ delete-database:
 index-elasticsearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"
 
+
+
+rebuild-frontend:
+	docker-compose run sc-frontend npm run build
+
+rebuild-static-pages:
+	cd client && npm run extract-static-strings
+
 run-preview-env:
 	@make clean-all
 	@make create-network
