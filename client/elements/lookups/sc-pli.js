@@ -60,7 +60,7 @@ class SCPaliLookup extends ReduxMixin(PolymerElement) {
   }
 
   _stripSpecialCharacters(word) {
-    return word.replace(/(~|`|!|@|#|\$|%|\^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|—​|_|\+|=|“)/g, '');
+    return word.replace(/(~|`|!|@|#|\$|%|\^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=|“|‘|—)/g, '');
   }
 
   _computeUrl() {
