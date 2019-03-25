@@ -118,6 +118,10 @@ export const textParagraphNumStyles = html`
     content: "GL "
   }
 
+  .textual-info-paragraph.gs:before {
+    content: "GS "
+  }
+
   .textual-info-paragraph.gn:before {
     content: "Verse "
   }

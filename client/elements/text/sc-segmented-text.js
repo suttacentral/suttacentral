@@ -942,7 +942,7 @@ class SCSegmentedText extends SCTextPage {
     let div = document.createElement('div');
     div.innerHTML = text;
     that._recurseDomChildren(div, true, unit);
-    segment.innerHTML = div.innerHTML.replace(/%spfrnt%/g, `<span class="word">`).replace(/%spback%/g, '</span>');
+    segment.innerHTML = div.innerHTML.replace(/%spfrnt%/g, `<span class="word">`).replace(/%spback%/g, '</span>').replace(/—/g, '</span>—<span class="word">');
   }
 
   _recurseDomChildren(start, output, unit) {
