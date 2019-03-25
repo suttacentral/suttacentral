@@ -44,6 +44,12 @@ def get_acronym(doc):
         acronym = uid_to_acro(doc['uid'])
     return acronym
 
+def fix_main_title(title, uid):
+    if regex.search(r'[0-9]', uid):
+        return title
+    else:
+        return regex.sub(r'\s*[0-9]+(?:–(\d+))?\s*$', '', title)
+
 def retrieve_data(division_uid, language, author):
     db = get_db()
     docs = list(db.aql.execute(QUERY, bind_vars={'uid': division_uid, 'author': author, 'language': language}))
@@ -89,7 +95,7 @@ def retrieve_data(division_uid, language, author):
     toc_string = lxml.html.tostring(root, encoding='unicode')
 
     return {
-            'root_title': docs[0]['name'],
+            'root_title': fix_main_title(docs[0]['name'], division_uid),
             'blurb': docs[0]['blurb'],
             'author': author,
             'toc': toc_string,
@@ -201,7 +207,7 @@ def get_html_data(division_uid, language, author):
         
         data['pages'].append({'title': title, 'uid': text['uid'], 'html': html, 'acronym': text.get('acronym', '')})
             
-    data['title'] = division_title
+    data['title'] = fix_main_title(division_title, division_uid)
     data['author_blurb'] = author_blurb
     
     if len(texts) > 1:
