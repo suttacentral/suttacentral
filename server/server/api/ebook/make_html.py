@@ -171,6 +171,8 @@ def get_html_data(division_uid, language, author):
                 elif '–' in acro_num and h_num:
                     acro = acro_prefix + h_num
                     heading = h_text
+                
+                
 
             new_heading = f'<span class="acro">{acro}</span>{": " if h_text else ""}{h_text}'
             return f'{m[1]}{new_heading}'
@@ -193,7 +195,7 @@ def get_html_data(division_uid, language, author):
             
         html = regex.sub(r'(?s)<div class="hgroup">.*?</div>', repl, html)
         
-        title = text['title']
+        title = text.get('long_title') or text['title']
         if not title:
             title = None
         
