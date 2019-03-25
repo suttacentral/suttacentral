@@ -1,3 +1,4 @@
+import regex
 import hashlib
 import pathlib
 import subprocess
@@ -14,6 +15,22 @@ from common.font_subsetter import subset_files_by_names
 from common.extensions import make_cache_key, cache
 
 from ebooklib import epub
+
+def monkey_patch_EpubWriter():
+    from ebooklib.epub import EpubWriter
+    # evil function that replaces h2 with h1 in nav
+
+    if not hasattr(EpubWriter, '_get_nav'):
+        return
+    _old_get_nav = EpubWriter._get_nav
+
+    def _get_nav(self, item):
+        result = _old_get_nav(self, item)
+        return regex.sub(rb'<h2([^>]*)>(.*)</h2>', rb'<h1\1>\2</h1>', result)
+    
+    EpubWriter._get_nav = _get_nav
+
+monkey_patch_EpubWriter()
 
 HERE = pathlib.Path(__file__).parent
 
