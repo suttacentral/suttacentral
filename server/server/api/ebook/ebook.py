@@ -196,7 +196,7 @@ def create_epub(data, language, filename, debug=False):
     
     book.set_identifier(book_id)
     book.set_title(data['title'])
-    book.set_language('language')
+    book.set_language(language)
 
     book.add_author(data['author'])
 
@@ -226,7 +226,7 @@ def create_epub(data, language, filename, debug=False):
     chapters.append(intro_page)
    
     for page in data['pages']:
-        title = page['long_title'] if 'long_tile' in page else page['title']
+        title = page.get('long_title') or page.get('title')        
         if not title:
             title = page['acronym']
         chapter = epub.EpubHtml(title=title, file_name=page['uid'] + '.xhtml', uid=page['uid'])
@@ -237,9 +237,15 @@ def create_epub(data, language, filename, debug=False):
     for chapter in chapters:
         chapter.add_item(style_sheet)
 
-    book.toc = (epub.Link('intro.xhtml', 'Introduction', 'intro'),
-        epub.Link('guide.xhtml', 'Guide', 'guide'),
-        *tuple(chapters[2:])
+    book.toc = (
+        (epub.Section('Front Matter'), (
+            epub.Link('intro.xhtml', 'Introduction', 'intro'),
+            epub.Link('guide.xhtml', 'Guide', 'guide')
+        )
+        ),
+        (epub.Section('Discourses'),
+            tuple(chapters[2:])
+        )
     )
 
     book.spine = ['nav'] + chapters
