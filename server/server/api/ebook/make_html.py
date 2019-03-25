@@ -99,6 +99,9 @@ def retrieve_data(division_uid, language, author):
 class Deduplicator:
     
     def __init__(self):
+        self.clear()
+
+    def clear(self):
         self.seen = set()
     
     def __call__(self, m):
@@ -136,7 +139,14 @@ def get_html_data(division_uid, language, author):
     def repl(m):
         return regex.sub('<p.*?>.*?</p>', deduplicator, m[0])
     
+    last_uid_parts = None
     for text in texts:
+        uid_parts = text['uid'].split('.')
+        if len(uid_parts) > 1:
+            if last_uid_parts:
+                if uid_parts[0] != last_uid_parts[0]:
+                    deduplicator.clear()
+            last_uid_parts = uid_parts
 
         def acroize_heading(m):
             acro = text.get('acronym')
@@ -145,12 +155,12 @@ def get_html_data(division_uid, language, author):
             heading = m[2]
             if not heading:
                 return acro
-            m2 = regex.match(r'(\d+)(?:\.)?\s*(.*)$', heading)
+            m2 = regex.match(r'(\d+(?:–(\d+))?)(?:\.)?\s*(.*)$', heading)
             if not m2:
                 h_text = heading
             else:
                 h_num = m2[1]
-                h_text = m2[2]
+                h_text = m2[3]
 
                 m3 = regex.match(r'(.*?)(\d+(?:–(\d+))?)$', text['acronym'])
                 acro_prefix = m3[1]

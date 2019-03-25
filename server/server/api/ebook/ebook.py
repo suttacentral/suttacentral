@@ -239,12 +239,8 @@ def create_epub(data, language, filename, debug=False):
 
     book.toc = (epub.Link('intro.xhtml', 'Introduction', 'intro'),
         epub.Link('guide.xhtml', 'Guide', 'guide'),
-        (epub.Section('Contents'),
-        tuple(chapters[2:])
-        )
+        *tuple(chapters[2:])
     )
-
-    
 
     book.spine = ['nav'] + chapters
 
@@ -286,7 +282,6 @@ _cache = {}
 class EBook(Resource):
     def get(self, name, **kwargs):
         filepath = pathlib.Path(name)
-        print('WTF========================' + name)
         ebook_format = filepath.suffix
         stem = filepath.stem
         uid, language, author = stem.split('_')
