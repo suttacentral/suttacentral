@@ -1030,6 +1030,8 @@ class Donations(Resource):
         try:
             send_email(**msg)
         except Exception:
+            logger.error('Failed to send email')
+            logger.exception()
             pass
 
 
