@@ -366,6 +366,20 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                             'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
                             'remark': remark
                         })
+                        try:
+                            to_nr = int(regex.findall(r'.*?([0-9]+)$', to_uid)[0])
+                        except BaseException:
+                            to_nr = 0
+                        ll_edges.append({
+                            '_from': true_from_uid,
+                            '_to': true_first_uid,
+                            'from': to_uid,
+                            'to': first_uid.lstrip('~'),
+                            'number': to_nr,
+                            'type': r_type,
+                            'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
+                            'remark': remark
+                        })
     
     
     # Because there are many edges (nearly 400k at last count) chunk the import
