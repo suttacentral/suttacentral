@@ -65,7 +65,7 @@ class SCParallels extends LitLocalized(LitElement) {
         }
         return 'sc-iron-icons:swap-horiz';
       case 'retelling':
-        return 'cached';
+        return 'sc-iron-icons:cached';
       case 'mention':
         return 'sc-iron-icons:format-quote';
       default:
