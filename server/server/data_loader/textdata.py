@@ -184,20 +184,23 @@ class TextInfoModel:
         return None
 
     def _get_name(self, root, lang_uid, uid):
-        try:
-            hgroup = root.select_one('.hgroup')
-            h1 = hgroup.select_one('h1')
-            if lang_uid == 'lzh':
-                try:
-                    left_side = h1.select_one('.mirror-left')
-                    right_side = h1.select_one('.mirror-right')
-                    return right_side.text_content()+' ('+left_side.text_content()+')'
-                except:
-                    return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
-            return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
-        except Exception as e:
-            logger.warn('Could not determine name for {}/{}'.format(lang_uid, uid))
+        hgroup = root.select_one('.hgroup')
+        if not hgroup:
+            logger.error(f'No hgroup found in {lang_uid}/{uid}')
             return ''
+            
+        h1 = hgroup.select_one('h1')
+        if not h1:
+            logger.error(f'No h1 found in {lang_uid}/{uid}')
+            return ''
+            
+        if lang_uid == 'lzh':
+            left_side = h1.select_one('.mirror-left')
+            right_side = h1.select_one('.mirror-right')
+            if left_side and right_side:
+                return right_side.text_content()+' ('+left_side.text_content()+')'
+        
+        return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
 
     def _get_volpage(self, element, lang_uid, uid):
         if lang_uid == 'lzh':
