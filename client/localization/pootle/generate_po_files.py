@@ -8,7 +8,7 @@ import tqdm
 
 CURRENT_FILE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 PRE_POOTLE_FILES_DIR = CURRENT_FILE_DIR / Path('prePootleFiles')
-GENERATED_PO_FILES_DIR = Path('/srv/pootle/po/')
+GENERATED_PO_FILES_DIR = CURRENT_FILE_DIR / 'generatedPoFiles'
 PROJECT_NAME = 'site-localization'
 
 
