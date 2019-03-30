@@ -46,7 +46,9 @@ export const languageBaseMenuCss = html`
   .language-name {
     padding-top: var(--sc-size-xxs);        
   }
-
+   /* This is an illogical solution, but the results are in line with expectations.
+   It should be “language-menu-paper-item::before”, but it produces unexpected results, 
+   using “language-menu-paper-item::after” instead obtains the expected results. */
   .language-menu-paper-item::after {
     content: attr(id);
     background-color:var(--sc-disabled-text-color);
