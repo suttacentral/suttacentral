@@ -310,5 +310,34 @@ ${litScrollbarStyle}
     text-overflow: ellipsis;
     overflow: hidden;
   }
+
+  [data-iso]::before {
+    content: attr(data-iso);
+      background-color:var(--sc-disabled-text-color);
+      color: var(--sc-tertiary-text-color);
+      font-weight: 800;
+      width: var(--sc-size-md-larger);
+      height: 20px;
+      line-height: 20px;
+      text-transform: uppercase;
+      display: inline-block;
+      text-align: center;
+      font-size:11px;
+      position:absolute;
+      margin-top:1px;
+      margin-left: -40px;
+      --notchSize: 4px;
+      clip-path: 
+      polygon(
+        0% var(--notchSize), 
+        var(--notchSize) 0%, 
+        calc(100% - var(--notchSize)) 0%, 
+        100% var(--notchSize), 
+        100% calc(100% - var(--notchSize)), 
+        calc(100% - var(--notchSize)) 100%, 
+        var(--notchSize) 100%, 
+        0% calc(100% - var(--notchSize))
+      );
+  }  
 </style>`;
 
