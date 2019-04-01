@@ -267,7 +267,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
               <a class="nav-link link-text-ellipsis" title="${childItem.name}"
                 style="${this.calculateSubmenuChildrenStyle(menuLevel)}"
                 href="${this.getSuttaplexUrl(childItem.id)}"
-                data-iso="${this.getLanguageName(childItem.lang_iso)}"></a>>
+                data-iso="${this.getLanguageName(childItem.lang_iso)}">
                 ${this.getPrefixedItemName(childItem.name, childItem.display_num)}
               </a>              
             ` : html`
