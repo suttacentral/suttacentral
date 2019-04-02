@@ -9,7 +9,7 @@ import { Localized } from "./addons/localization-mixin.js";
 
 class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   static get template() {
-    return html`
+    return html`    
     <style>
       app-toolbar {
         background-color: var(--sc-primary-color);
@@ -37,6 +37,25 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         margin-bottom: 24px;
         margin-top: 0;
         text-align: center;
+      }
+
+      [lang="ar"],
+      [lang="si"],
+      [lang="fa"],
+      [lang="he"],
+      [lang="hi"],
+      [lang="vi"],
+      [lang="jpn"],
+      [lang="lzh"],
+      [lang="zh"],
+      [lang="mr"],
+      [lang="my"],
+      [lang="ta"],
+      [lang="th"],
+      [lang="xct"],
+      [lang="ko"],
+      [lang="bn"] {
+        font-synthesis: none;
       }
 
       .title {
@@ -151,7 +170,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     </style>
 
     [[_createMetaData(selectedPage, localize)]]
-
+    
     <app-toolbar id="title_toolbar">
       <div class="title" main-title="">
         <span class="title-text">
@@ -162,7 +181,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     </app-toolbar>
     <app-toolbar id="subtitle_toolbar">
       <div class="title" main-title="">
-        <p class="subtitle">{{localize('pageSubtitle')}}</p>
+        <p class="subtitle" lang="{{language}}">{{localize('pageSubtitle')}}</p>
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item="">
