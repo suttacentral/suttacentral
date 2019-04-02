@@ -323,9 +323,8 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                         for to_uid in to_uids:
                             if to_uid == from_uid:
                                 continue
-
                             true_to_uids = uid_matcher.get_matching_uids(to_uid)
-                            if not true_to_uids and ' ' not in to_uid:
+                            if not true_to_uids:
                                 logging.error(f'Relationship to uid could not be matched: {to_uid} (appears as orphan)')
                                 true_to_uids = ['orphan']
 
