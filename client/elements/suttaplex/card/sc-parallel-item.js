@@ -92,7 +92,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
     if (this.parallelItem.acronym) {
       scAcronym = this.parallelItem.acronym.split('//')[0];
       const rootId = this.parallelItem.to.replace('~', '');
-      const idPart = getParagraphRange(rootId).replace('-', '–');
+      const idPart = getParagraphRange(rootId).replace('--', '–').replace('#', ': ').replace(/[a-z]+/g,'');
       return `${scAcronym}${idPart}`;
     } else {
       scAcronym = transformId(this.parallelItem.to, this.expansionData, 0);

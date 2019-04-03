@@ -2,9 +2,9 @@
     "en": {
         "suttaCentralID": "SuttaCentral ID",
         "GoToTextInOriginalLanguage": "Go to text in original language",
-        "ResemblingParallel": "Resembling parallel",
-        "FullParallel": "Full parallel",
-        "RetellingParallel": "Retelling parallel",
-        "Mention": "Mention"
+        "ResemblingParallel": "Resembling parallel: texts are comparable.",
+        "FullParallel": "Full parallel: different versions of the same text.",
+        "RetellingParallel": "Retelling: the events of one text are retold in another.",
+        "Mention": "Mention: one text is quoted or mentioned in another."
     }
 }

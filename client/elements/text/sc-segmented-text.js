@@ -58,7 +58,7 @@ class SCSegmentedText extends SCTextPage {
       }
 
       .highlight-wrapper {
-        display: flex;
+        display: block;
       }
 
       .disabled-highlight-wrapper {
@@ -255,6 +255,11 @@ class SCSegmentedText extends SCTextPage {
     });
     this.inputElement = this.$.segmented_text_content;
     this.$.a11y.target = document.querySelector('body');
+    // Add segmented textual information paragraphs if not added already
+    if (!this.segmentedIDsAdded) {
+      this._addSegmentedTextualInfoElements();
+    }
+    this._scrollToSectionInUrl();
   }
 
   _updateView() {
@@ -493,11 +498,6 @@ class SCSegmentedText extends SCTextPage {
       });
     });
 
-    // Add segmented textual information paragraphs if not added already
-    if (!this.segmentedIDsAdded) {
-      this._addSegmentedTextualInfoElements();
-    }
-    this._scrollToSectionInUrl();
     setTimeout(() => {
       this._applyQuoteHanger();
     });
@@ -627,7 +627,7 @@ class SCSegmentedText extends SCTextPage {
     return wrapper;
   }
 
-  _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
+  _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, isLineByLineView, wrapperAlreadyExists) {
     const paddingBottom = window.getComputedStyle(section).paddingBottom;
     const marginTop = window.getComputedStyle(section).marginTop;
     if (paddingBottom && paddingBottom !== '0px') {
@@ -638,19 +638,24 @@ class SCSegmentedText extends SCTextPage {
       section.style.marginTop = '0';
       section.style.paddingTop = marginTop;
     }
-
     if ((idFrom.includes('.') && !idFrom.startsWith('pts')) ||
       (idTo && idTo.includes('.') && !idTo.startsWith('pts'))) {
-      let newSection = section.nextElementSibling;
+      let newSection;
+      (isSideBySideView || isLineByLineView) ? newSection = section.nextElementSibling : newSection = section;
+
       if (isSideBySideView && !wrapperAlreadyExists) {
         section.remove();
       }
-      section = newSection;
+      newSection ? section = newSection : '';
+
       if (!isSideBySideView) {
         section.classList.add('highlight');
+        isLineByLineView ? section.parentNode.style.margin = '0' : '';
       }
       if (isSideBySideView && !wrapperAlreadyExists) {
         wrapper.appendChild(section.cloneNode(true));
+        wrapper.style.paddingTop = window.getComputedStyle(wrapper.parentNode).marginTop;
+        wrapper.parentNode.style.marginTop = "0";
         section.remove();
       }
 
@@ -660,21 +665,31 @@ class SCSegmentedText extends SCTextPage {
   _processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper) {
     let paragraph = section.parentNode;
     const margin = window.getComputedStyle(paragraph).margin;
-    requestAnimationFrame(() => {
-      paragraph.style.margin = '0';
-    });
+    if (this.chosenTextView !== 'none') {
+      requestAnimationFrame(() => {
+        if (!paragraph.previousElementSibling.classList.contains("hgroup")) {
+          paragraph.style.margin = '0';
+        }
+      });
+    }
     if (isSideBySideView && !wrapperAlreadyExists) {
       requestAnimationFrame(() => {
         wrapper.style.padding = margin;
       })
-    } else if (this.chosenTextView === 'none') {
-      requestAnimationFrame(() => {
-        paragraph.style.padding = margin;
-      })
     }
-    let newSection = paragraph.nextElementSibling.firstChild;
+
+    let newSection = paragraph.nextElementSibling.getElementsByTagName("sc-seg")[0];
     if (isSideBySideView && !wrapperAlreadyExists) {
       section.remove();
+    }
+    if (!newSection) {
+      let sectionList = paragraph.parentNode.getElementsByTagName("sc-seg");
+      for (let i = 0; i < sectionList.length; i++) {
+        if (sectionList[i] === section) {
+            sectionList[i+1] ? newSection = sectionList[i+1] : '';
+            break;
+        }
+      }
     }
     return newSection;
   }
@@ -700,32 +715,45 @@ class SCSegmentedText extends SCTextPage {
       toSection = this._getElementToHighlight(toSection);
     }
     const isSideBySideView = !!(this.chosenTextView === 'sidebyside' && this.translatedSutta)
-    this._processSections(section, isSideBySideView, toSection, idFrom, idTo);
+    const isLineByLineView = !!(this.chosenTextView === 'linebyline' && this.translatedSutta);
+    this._processSections(section, isSideBySideView, isLineByLineView, toSection, idFrom, idTo);
     return firstSection;
   }
 
-  _processSections(section, isSideBySideView, toSection, idFrom, idTo) {
-    while (section) {
+  _processSections(section, isSideBySideView, isLineByLineView, toSection, idFrom, idTo) {
+    while (section && section.classList) {
       let wrapper;
 
       if (isSideBySideView) {
         wrapper = this._putSectionIntoWrapper(section);
       } else {
         section.classList.add('highlight');
+        if (section.nextElementSibling && section.nextElementSibling.classList.contains("added")){
+          section.nextElementSibling.classList.add('highlight');
+        }
       }
 
       const wrapperAlreadyExists = !wrapper;
 
       const margin = window.getComputedStyle(section).margin;
+
       if (section === toSection || !toSection) {
-        this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists);
+        if (section.nextElementSibling && section.nextElementSibling.classList.contains("added") && margin && margin !== '0px') {
+            section.nextElementSibling.style.margin = '0';
+            section.nextElementSibling.style.padding = margin;
+        }
+        if (section.nextElementSibling && section.nextElementSibling.parentNode.classList.contains("added")) {
+            section.nextElementSibling.parentNode.style.margin = '0';
+            section.nextElementSibling.parentNode.style.padding = margin;
+        }
+        this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, isLineByLineView, wrapperAlreadyExists);
         break;
       } else if (margin && margin !== '0px') {
         section.style.margin = '0';
         section.style.padding = margin;
       }
 
-      if (section.nextElementSibling === null && section.parentNode.nodeName === 'P') {
+      if (section.nextElementSibling === null && (section.parentNode.nodeName === 'P' || section.parentNode.nodeName === 'SPAN')) {
         section = this._processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper);
       } else {
         let newSection = section.nextElementSibling;

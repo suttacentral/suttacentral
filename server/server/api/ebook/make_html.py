@@ -205,7 +205,7 @@ def get_html_data(division_uid, language, author):
         if not title:
             title = None
         
-        data['pages'].append({'title': title, 'uid': text['uid'], 'html': html, 'acronym': text.get('acronym', '')})
+        data['pages'].append({'title': title, 'uid': text['uid'], 'html': html, 'acronym': get_acronym(text)})
             
     data['title'] = fix_main_title(division_title, division_uid)
     data['author_blurb'] = author_blurb
