@@ -278,15 +278,15 @@ class SCSegmentedText extends SCTextPage {
   }
 
   _addTextContent() {
-    this._applyFirefoxShadyDomFix();    
+    this._applyFirefoxShadyDomFix();
     if (this.translatedSutta) {
       this._addPrimaryText(this.translatedSutta.strings);
-      if (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh') {        
+      if (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh') {
         this._putIntoSpans('.translated-text', this.rootSutta.lang);
       }
     } else {
       this._addPrimaryText(this.rootSutta.strings);
-      if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {        
+      if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
         this._putIntoSpans('.translated-text', this.rootSutta.lang);
       }
     }
@@ -321,7 +321,6 @@ class SCSegmentedText extends SCTextPage {
     } else {
       return this.localize('noMetadata');
     }
-    
   }
 
   // if the base html and the pali texts have been fully loaded, the setting from the
@@ -423,12 +422,12 @@ class SCSegmentedText extends SCTextPage {
     );
   }
 
-  _insertPrimaryTextIntoSegments(textStrings, textContainer) {    
+  _insertPrimaryTextIntoSegments(textStrings, textContainer) {
     Object.entries(textStrings).forEach(([key, value]) => {
       if (!key.startsWith('_')) {
         let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
         const segment = textContainer.querySelector(`#${subkey}`);
-        segment.innerHTML = this._tweakText(value);        
+        segment.innerHTML = this._tweakText(value);
       }
     });
   }
@@ -455,8 +454,8 @@ class SCSegmentedText extends SCTextPage {
     if (!this.shadowRoot.querySelector('.original-text')) {
       const stringsArr = Object.entries(this.rootSutta.strings);            
       stringsArr.forEach(item => {
-        this._insertSecondaryTextSegment(item);                
-      });      
+        this._insertSecondaryTextSegment(item);
+      });
       if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
         this._putIntoSpans('.original-text', this.rootSutta.lang);
       }
@@ -984,8 +983,8 @@ class SCSegmentedText extends SCTextPage {
   }
 
   _startGeneratingSpans(selector, unit) {
-    let segments = this.shadowRoot.querySelectorAll(selector);    
-    segments = Array.from(segments);    
+    let segments = this.shadowRoot.querySelectorAll(selector);
+    segments = Array.from(segments);
     let empty = true;
     while (segments.length > 0) {
       const segment = segments.shift();
@@ -1007,7 +1006,7 @@ class SCSegmentedText extends SCTextPage {
   }
 
   _putSegmentIntoSpans(segment, unit, that) {
-    const text = segment.innerHTML;        
+    const text = segment.innerHTML;
     let div = document.createElement('div');
     div.innerHTML = text;
     that._recurseDomChildren(div, true, unit);
