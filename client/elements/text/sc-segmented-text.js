@@ -278,15 +278,15 @@ class SCSegmentedText extends SCTextPage {
   }
 
   _addTextContent() {
-    this._applyFirefoxShadyDomFix();
+    this._applyFirefoxShadyDomFix();    
     if (this.translatedSutta) {
       this._addPrimaryText(this.translatedSutta.strings);
-      if (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh') {
+      if (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh') {        
         this._putIntoSpans('.translated-text', this.rootSutta.lang);
       }
     } else {
       this._addPrimaryText(this.rootSutta.strings);
-      if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
+      if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {        
         this._putIntoSpans('.translated-text', this.rootSutta.lang);
       }
     }
@@ -321,6 +321,7 @@ class SCSegmentedText extends SCTextPage {
     } else {
       return this.localize('noMetadata');
     }
+    
   }
 
   // if the base html and the pali texts have been fully loaded, the setting from the
@@ -422,12 +423,12 @@ class SCSegmentedText extends SCTextPage {
     );
   }
 
-  _insertPrimaryTextIntoSegments(textStrings, textContainer) {
+  _insertPrimaryTextIntoSegments(textStrings, textContainer) {    
     Object.entries(textStrings).forEach(([key, value]) => {
       if (!key.startsWith('_')) {
         let subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
         const segment = textContainer.querySelector(`#${subkey}`);
-        segment.innerHTML = this._tweakText(value);
+        segment.innerHTML = this._tweakText(value);        
       }
     });
   }
@@ -452,10 +453,10 @@ class SCSegmentedText extends SCTextPage {
   _addSecondaryText() {
     const textContainer = this.$.segmented_text_content;
     if (!this.shadowRoot.querySelector('.original-text')) {
-      const stringsArr = Object.entries(this.rootSutta.strings);
+      const stringsArr = Object.entries(this.rootSutta.strings);            
       stringsArr.forEach(item => {
-        this._insertSecondaryTextSegment(item);
-      });
+        this._insertSecondaryTextSegment(item);                
+      });      
       if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
         this._putIntoSpans('.original-text', this.rootSutta.lang);
       }
@@ -465,14 +466,54 @@ class SCSegmentedText extends SCTextPage {
 
   _insertSecondaryTextSegment([key, content]) {
     if (!key.startsWith('_')) {
-      const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
+      const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');      
+      let segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
       const newSegment = document.createElement('sc-seg');
       newSegment.id = key;
       newSegment.classList.add('original-text');
-      newSegment.innerHTML = this._tweakText(content);
-      this._setScriptISOCode(newSegment, this.rootLang);
-      if (segment) segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+      newSegment.innerHTML = this._tweakText(content);            
+      this._setScriptISOCode(newSegment, this.rootLang);            
+      if (segment){
+        segment.parentNode.insertBefore(newSegment, segment.nextSibling);     
+      }
+      else{                
+        this.translatedSutta.strings[key] = "";
+
+        let rootSuttaLastkey = "";
+        for (var keyname in this.rootSutta.strings){     
+          rootSuttaLastkey = keyname;
+        }  
+        
+        let sectionId = `#rootSutta-sc${key.split(':')[1].split('.')[0]}`;
+        let rootSuttaSection = this.$.segmented_text_content.querySelector(sectionId);        
+        if (!rootSuttaSection){          
+          const newSection = document.createElement('p');
+          newSection.id = `rootSutta-sc${key.split(':')[1].split('.')[0]}`;                
+          const articleElement = this.$.segmented_text_content.getElementsByTagName('article')[0];          
+          if (articleElement) articleElement.appendChild(newSection);            
+        }        
+        
+        const newTranslatedSegment = document.createElement('sc-seg');
+        newTranslatedSegment.id = key;
+        newTranslatedSegment.classList.add('translated-text');
+        this._setScriptISOCode(newTranslatedSegment, this.translationLang);     
+
+        if (key !== rootSuttaLastkey){          
+          rootSuttaSection = this.$.segmented_text_content.querySelector(sectionId);        
+          rootSuttaSection.appendChild(newTranslatedSegment);            
+          let segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
+          segment.parentNode.insertBefore(newSegment, segment.nextSibling);       
+        } else {
+          const newEndSectionP = document.createElement('p');        
+          newEndSectionP.classList.add('endsection');
+          const articleElement = this.$.segmented_text_content.getElementsByTagName('article')[0];          
+          if (articleElement) articleElement.appendChild(newEndSectionP);
+
+          const endsection = this.$.segmented_text_content.querySelector('.endsection');
+          endsection.appendChild(newTranslatedSegment);
+          endsection.appendChild(newSegment);          
+        }            
+      }            
     }
   }
 
@@ -943,8 +984,8 @@ class SCSegmentedText extends SCTextPage {
   }
 
   _startGeneratingSpans(selector, unit) {
-    let segments = this.shadowRoot.querySelectorAll(selector);
-    segments = Array.from(segments);
+    let segments = this.shadowRoot.querySelectorAll(selector);    
+    segments = Array.from(segments);    
     let empty = true;
     while (segments.length > 0) {
       const segment = segments.shift();
@@ -966,7 +1007,7 @@ class SCSegmentedText extends SCTextPage {
   }
 
   _putSegmentIntoSpans(segment, unit, that) {
-    const text = segment.innerHTML;
+    const text = segment.innerHTML;        
     let div = document.createElement('div');
     div.innerHTML = text;
     that._recurseDomChildren(div, true, unit);
