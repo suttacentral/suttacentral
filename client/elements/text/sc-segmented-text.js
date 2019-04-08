@@ -466,7 +466,7 @@ class SCSegmentedText extends SCTextPage {
   _insertSecondaryTextSegment([key, content]) {
     if (!key.startsWith('_')) {
       const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');      
-      let segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
+      const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
       const newSegment = document.createElement('sc-seg');
       newSegment.id = key;
       newSegment.classList.add('original-text');
@@ -477,43 +477,55 @@ class SCSegmentedText extends SCTextPage {
       }
       else{                
         this.translatedSutta.strings[key] = "";
-
-        let rootSuttaLastkey = "";
-        for (var keyname in this.rootSutta.strings){     
-          rootSuttaLastkey = keyname;
-        }  
-        
-        let sectionId = `#rootSutta-sc${key.split(':')[1].split('.')[0]}`;
-        let rootSuttaSection = this.$.segmented_text_content.querySelector(sectionId);        
-        if (!rootSuttaSection){          
-          const newSection = document.createElement('p');
-          newSection.id = `rootSutta-sc${key.split(':')[1].split('.')[0]}`;                
-          const articleElement = this.$.segmented_text_content.getElementsByTagName('article')[0];          
-          if (articleElement) articleElement.appendChild(newSection);            
-        }        
-        
-        const newTranslatedSegment = document.createElement('sc-seg');
-        newTranslatedSegment.id = key;
-        newTranslatedSegment.classList.add('translated-text');
-        this._setScriptISOCode(newTranslatedSegment, this.translationLang);     
-
-        if (key !== rootSuttaLastkey){          
-          rootSuttaSection = this.$.segmented_text_content.querySelector(sectionId);        
-          rootSuttaSection.appendChild(newTranslatedSegment);            
-          let segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
-          segment.parentNode.insertBefore(newSegment, segment.nextSibling);       
-        } else {
-          const newEndSectionP = document.createElement('p');        
-          newEndSectionP.classList.add('endsection');
-          const articleElement = this.$.segmented_text_content.getElementsByTagName('article')[0];          
-          if (articleElement) articleElement.appendChild(newEndSectionP);
-
-          const endsection = this.$.segmented_text_content.querySelector('.endsection');
-          endsection.appendChild(newTranslatedSegment);
-          endsection.appendChild(newSegment);          
-        }            
+        this.addRootAndTranslatedSegment(key, subkey, newSegment);            
       }            
     }
+  }
+
+  addRootAndTranslatedSegment(key, subkey, newSegment) {
+    let { rootSuttaSection, sectionId } = this.addRootSuttaSection(key);
+
+    const newTranslatedSegment = document.createElement('sc-seg');
+    newTranslatedSegment.id = key;
+    newTranslatedSegment.classList.add('translated-text');
+    this._setScriptISOCode(newTranslatedSegment, this.translationLang);
+
+    var rootSuttaLastkey = Object.keys(this.rootSutta.strings).sort().pop();
+    if (key !== rootSuttaLastkey) {
+      rootSuttaSection = this.$.segmented_text_content.querySelector(`#${sectionId}`);
+      if (rootSuttaSection) rootSuttaSection.appendChild(newTranslatedSegment);
+      let segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
+      if (segment) segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+    }
+    else {
+      this.addEndSection();
+      const endSection = this.$.segmented_text_content.querySelector('.endsection');
+      if (endSection){
+        endSection.appendChild(newTranslatedSegment);
+        endSection.appendChild(newSegment);
+      }      
+    }
+  }
+
+  addEndSection() {
+    const newEndSection = document.createElement('p');
+    newEndSection.classList.add('endsection');
+    const articleElement = this.$.segmented_text_content.getElementsByTagName('article')[0];
+    if (articleElement)
+      articleElement.appendChild(newEndSection);
+  }
+
+  addRootSuttaSection(key) {
+    let sectionId = `rootSutta-sc${key.split(':')[1].split('.')[0]}`;
+    let rootSuttaSection = this.$.segmented_text_content.querySelector(`#${sectionId}`);
+    if (!rootSuttaSection) {
+      const newSection = document.createElement('p');
+      newSection.id = sectionId;
+      const articleElement = this.$.segmented_text_content.getElementsByTagName('article')[0];
+      if (articleElement)
+        articleElement.appendChild(newSection);
+    }
+    return { rootSuttaSection, sectionId };
   }
 
   // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.

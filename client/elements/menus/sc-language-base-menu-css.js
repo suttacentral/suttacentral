@@ -76,10 +76,10 @@ export const languageBaseMenuCss = html`
         var(--notchSize) 100%, 
         0% calc(100% - var(--notchSize))
       );
-    }
+  }
 
-  #jpn::before, #sld::before, #kln::before{
+  #jpn::after, #sld::after, #kln::after{
     letter-spacing: 0;
-    font-size: 12px
+    font-size: 11px
   }    
 </style>`;
