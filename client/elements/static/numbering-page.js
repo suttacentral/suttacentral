@@ -4,8 +4,14 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { staticStyles } from '../styles/static-styles.js';
 import { SCStaticPage } from '../addons/sc-static-page.js';
 
-
 class SCNumberingPage extends SCStaticPage {
+
+  firstUpdated(changedProperties) {
+    if (this.localize('LocalizationEnabled') && this.localize('LocalizationEnabled') === "false"){                  
+      this.LoadFallbackLanguage();
+    }
+  }
+
   render() {
     return html`
     ${staticStyles}
