@@ -400,7 +400,7 @@ class SCHomePage extends SCStaticPage {
           </paper-card>
         </div>
         <div class="row cards">
-          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="/img/home-page/becomingone-min.jpg" alt="${this.localize('742e700832d62bb2f6a17592968b4dab')}">
+          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="/img/home-page/returninghome.jpeg" alt="${this.localize('742e700832d62bb2f6a17592968b4dab')}">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">
                 ${this.localize('742e700832d62bb2f6a17592968b4dab')}
@@ -410,7 +410,7 @@ class SCHomePage extends SCStaticPage {
               </div>
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="/img/home-page/contemplatingthemoon-min.jpg" alt="${this.localize('a5172cf2c34de3fc8e2af331ac915ec9')}">
+          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="/img/home-page/contemplatingthemoon.jpeg" alt="${this.localize('a5172cf2c34de3fc8e2af331ac915ec9')}">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">
                 ${this.localize('a5172cf2c34de3fc8e2af331ac915ec9')}
@@ -449,7 +449,7 @@ class SCHomePage extends SCStaticPage {
             ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
           </div>
           <div class="three-elements-grid">
-            <paper-card alt="${this.localize('5392c2400632f879aaa8bceac40a05ce')}" class="three-elements-big paper-card-with-button" elevation="2" image="/img/home-page/burmese_kammavaca.jpg" title="${this.localize('4312510269ff1286ae8beb8ceb193c4b')}">
+            <paper-card alt="${this.localize('5392c2400632f879aaa8bceac40a05ce')}" class="three-elements-big paper-card-with-button" elevation="2" image="/img/home-page/burmese_kammavaca.jpeg" title="${this.localize('4312510269ff1286ae8beb8ceb193c4b')}">
               <div class="card-content-wrapper no-bottom-padding">
                 <div class="card-title-text">
                   ${this.localize('e30baf2773fd1ff10ac21a7ebd63198d')}
@@ -510,7 +510,7 @@ class SCHomePage extends SCStaticPage {
           </paper-card>
         </div>
         <div class="row cards">
-          <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword-min.jpg" alt="${this.localize('078365b3da2eb8b34d23c36661309359')}">
+          <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword.jpeg" alt="${this.localize('078365b3da2eb8b34d23c36661309359')}">
             <div class="card-content-wrapper">
               <div class="card-title-text">
                 ${this.localize('078365b3da2eb8b34d23c36661309359')}
@@ -523,7 +523,7 @@ class SCHomePage extends SCStaticPage {
               ${unsafeHTML(this.localize('0b689c82a3c57190d06581150a74ae85'))}
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain-min.jpg" alt="${this.localize('149842aa5477edb219ce272ec2aab269')}">
+          <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain.jpeg" alt="${this.localize('149842aa5477edb219ce272ec2aab269')}">
             <div class="card-content-wrapper">
               <div class="card-title-text">
                 ${this.localize('149842aa5477edb219ce272ec2aab269')}
