@@ -384,8 +384,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
 
 @font-face {
     font-family: 'Noto Sans CJK JP';
-    src: url('/files/fonts/noto-sans-jp_regular_jp_462a49732c9d.woff2') format('woff2'),
-    url('/files/fonts/noto-sans-jp_regular_jp_462a49732c9d.ttf') format('truetype');
+    src: url('/files/fonts/noto-sans-jp_regular_jp_462a49732c9d.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
@@ -413,32 +412,28 @@ template.innerHTML=` <custom-style > <style > @font-face {
 
 @font-face {
     font-family: 'Noto Sans CJK TC';
-    src: url('/files/fonts/noto-sans-tc_regular_zh_lzh_785da7cebd0b.woff2') format('woff2'),
-    url('/files/fonts/noto-sans-tc_regular_zh_lzh_785da7cebd0b.ttf') format('truetype');
+    src: url('/files/fonts/noto-sans-tc_regular_zh_lzh_785da7cebd0b.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Noto Sans CJK TC';
-    src: url('/files/fonts/noto-sans-tc_bold_zh_lzh_bbcfc9a4d4b2.woff2') format('woff2'),
-    url('/files/fonts/noto-sans-tc_bold_zh_lzh_bbcfc9a4d4b2.ttf') format('truetype');
+    src: url('/files/fonts/noto-sans-tc_bold_zh_lzh_bbcfc9a4d4b2.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Noto Sans CJK SC';
-    src: url('/files/fonts/noto-sans-sc_regular_zh_lzh_b3bccbd8d25b.woff2') format('woff2'),
-    url('/files/fonts/noto-sans-sc_regular_zh_lzh_b3bccbd8d25b.ttf') format('truetype');
+    src: url('/files/fonts/noto-sans-sc_regular_zh_lzh_b3bccbd8d25b.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Noto Sans CJK SC';
-    src: url('/files/fonts/noto-sans-sc_bold_zh_lzh_f57371fc2dca.woff2') format('woff2'),
-    url('/files/fonts/noto-sans-sc_bold_zh_lzh_f57371fc2dca.ttf') format('truetype');
+    src: url('/files/fonts/noto-sans-sc_bold_zh_lzh_f57371fc2dca.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
 }
