@@ -299,7 +299,8 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       detail: {
         pageTitle: `${acronym}: ${title}—${author}`,
         title: `${title}—${author}`,
-        description: description,
+        description: description,          
+        openGraphType: 'article',  // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’           
         bubbles: true,
         composed: true
       }
