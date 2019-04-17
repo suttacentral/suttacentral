@@ -27,7 +27,7 @@
         content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
   <meta itemprop="image" content="https://i.vimeocdn.com/portrait/23756910_500x500.jpg">
   <!-- Twitter -->
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SuttaCentral">
   <meta name="twitter:description" content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings.">
   <meta name="twitter:player" content="https://player.vimeo.com/video/257038431">
@@ -37,7 +37,8 @@
   <meta property="og:title" content="SuttaCentral">
   <meta property="og:description" content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
   <meta property="og:image"
-        content="https://suttacentral.net/img/social_image.png">
+        content="https://suttacentral.net/img/social_sharing_image.png">
+  <meta property="og:image:alt" content="SuttaCentral">        
   <meta property="og:url" content="https://suttacentral.net/">
   <meta property="og:site_name" content="SuttaCentral">
   <meta property="og:type" content="website">
@@ -223,14 +224,16 @@
             document.head.querySelector("[property='og:url']").content = url;
             document.head.querySelector("[property='og:title']").content = metaData.title;
             document.head.querySelector("[property='og:description']").content = metaData.description;
+            document.head.querySelector("[property='og:type']").content = metaData.openGraphType ? metaData.openGraphType : 'website';            
             document.head.querySelector("[name='title']").content = metaData.title;
             document.head.querySelector("[name='description']").content = metaData.description;
             document.head.querySelector("[name='twitter:title']").content = metaData.title;
             document.head.querySelector("[name='twitter:description']").content = metaData.description.substring(0,120);
             document.head.querySelector("[itemprop='name']").content = metaData.title;
-            document.head.querySelector("[itemprop='description']").content = metaData.description;
+            document.head.querySelector("[itemprop='description']").content = metaData.description;            
         }
     });
+  
     document.addEventListener("keyword-metadata", function(e) {
         var metaData = e.detail;
         if (metaData) {
