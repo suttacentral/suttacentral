@@ -50,8 +50,26 @@ class SCLanguagesPage extends SCStaticPage {
   }
 
   get languageTemplate() {
-    const { name, percent } = this.findLanguage(this.selectedLanguage);
+    const { name, percent } = this.findLanguage(this.selectedLanguage);    
+    let rootLanguages = [];
+    
+    if (this.languageData) {
+      this.languageData.division.map(item => {
+        if (item.root_lang) {
+          let { name } = this.findLanguage(item.root_lang);        
+          item.rootLanguageFullName = name;
+        } else {
+          item.rootLanguageFullName = 'Other';
+        }
+      })
 
+      let hash = {};
+      rootLanguages = this.languageData.division.reduce(function (item, next) {
+        hash[next.rootLanguageFullName] ? '' : hash[next.rootLanguageFullName] = true && item.push(next.rootLanguageFullName);
+        return item;
+      }, []);            
+    }    
+    
     const list = (title, names) => html`
       <h2>${this.localize(title)}</h2>
       <ul>
@@ -59,6 +77,17 @@ class SCLanguagesPage extends SCStaticPage {
         <li>${item.name} (${item.total})</li>
         `)}
       </ul>
+    `;
+
+    const listOfRootLanguage = () => html`          
+      ${rootLanguages.map(rootLang => html`         
+        <h3>${rootLang}</h3>        
+        <ul>
+          ${this.languageData.division.filter(rootItem => rootItem.rootLanguageFullName === rootLang).map(item => html`
+            <li>${item.name} (${item.total})</li>
+          `)}
+        </ul>
+      `)}
     `;
 
     const chart = (name, percent) => html`
@@ -76,12 +105,12 @@ class SCLanguagesPage extends SCStaticPage {
           ${
             percent
             ? html`
-              ${chart(name, percent)}
-              ${list('translations', this.languageData.division)}
+              ${chart(name, percent)}              
+              ${listOfRootLanguage()}
               ${list('translators', this.languageData.author)}
             `
-            : html `
-              ${list('divisions', this.languageData.division)}
+            : html `              
+              ${listOfRootLanguage()}
               ${list('authors', this.languageData.author)}
             `
           }
