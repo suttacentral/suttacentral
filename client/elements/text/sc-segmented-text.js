@@ -587,7 +587,7 @@ class SCSegmentedText extends SCTextPage {
       item.innerHTML = `
               <span class="image-link" >
                   <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
-                  <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-svg-icons:book">
+                  <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-iron-icons:book">
                   </iron-icon>
               </span>
           `;
