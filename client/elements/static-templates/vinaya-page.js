@@ -160,7 +160,7 @@ class SCVinaya extends SCStaticPage {
             ${_`The third last chapter of the Khandhakas deals with rules and procedures that are specific to the nuns, including their ordination procedure. Unless specifically stated or implied, the rest of Khandhakas are equally valid for both Orders.`}
           </p>
           <p>
-            ${_`The Khandhakas end with a description of the first <i>saṅgīti</i>, the first “communal recitation” of the teachings after the Buddha’s passing away, as well as the famous Vesālī affair, sometimes known as the Second Council, where the Order with difficulty resolved a disagreement over issues of Vinaya. The Vesālī affair is said to have happened around one hundred years after the Buddha passed away. It is around this time that sectarian tendencies are starting to form in the monastic Order, and this is roughly the cut-of-point for the common heritage of all Buddhists.`}
+            ${_`The Khandhakas end with a description of the first <i>saṅgīti</i>, the first “communal recitation” of the teachings after the Buddha’s passing away, as well as the famous Vesālī affair, sometimes known as the Second Council, where the Order with difficulty resolved a disagreement over issues of Vinaya. The Vesālī affair is said to have happened around one hundred years after the Buddha passed away. It is around this time that sectarian tendencies are starting to form in the monastic Order, and this is roughly the cut-off point for the common heritage of all Buddhists.`}
           </p>
           <h3>
             ${_`Other Texts`}
