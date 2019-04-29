@@ -1,4 +1,5 @@
-import { html } from '@polymer/lit-element/lit-element.js';
+import { html } from 'lit-element';
+
 import { until } from 'lit-html/directives/until.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 

@@ -1,4 +1,4 @@
-import { html } from '@polymer/lit-element';
+import { html } from 'lit-element';
 import { scrollbarStyle } from '../../styles/sc-scrollbar-style.js';
 
 const litScrollbarStyle = html([scrollbarStyle.innerHTML]);
