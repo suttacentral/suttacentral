@@ -1,4 +1,4 @@
-import { html } from "@polymer/lit-element/lit-element.js";
+import { html } from "lit-element";
 import { html as legacyHtml } from '@polymer/polymer/polymer-element.js';
 
 export const staticStyles = html`

@@ -1,4 +1,4 @@
-import { LitElement } from "@polymer/lit-element/lit-element.js";
+import { LitElement } from "lit-element";
 
 import { LitLocalized } from "./localization-mixin.js";
 
