@@ -9,10 +9,11 @@ import { Localized } from './addons/localization-mixin.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
 import { scrollbarStyle } from './styles/sc-scrollbar-style.js';
 
+const polymer_dictStyles = html([dictStyles.strings.join('')]);
 class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {
   static get template() {
     return html`
-    ${dictStyles}
+    ${polymer_dictStyles}
     ${scrollbarStyle}
     <style>
       .dictionary-results-container, .related-terms {
