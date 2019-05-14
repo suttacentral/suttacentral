@@ -161,7 +161,7 @@ export const LitLocalized = base => class extends connect(store)(base) {
     }
   }
 
-  LoadFallbackLanguage() {
+  loadFallbackLanguage() {
     this.__siteLanguageChanged(FALLBACK_LANGUAGE);
   }    
 };

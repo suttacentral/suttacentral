@@ -7,8 +7,8 @@ import { SCStaticPage } from '../addons/sc-static-page.js';
 class SCNumberingPage extends SCStaticPage {
 
   firstUpdated(changedProperties) {
-    if (this.localize('LocalizationEnabled') && this.localize('LocalizationEnabled') === "false"){                  
-      this.LoadFallbackLanguage();
+    if (this.localize('LocalizationEnabled') && this.localize('LocalizationEnabled') === "false") {                  
+      this.loadFallbackLanguage();
     }
   }
 

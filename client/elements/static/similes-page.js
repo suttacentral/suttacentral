@@ -5,7 +5,13 @@ import { staticStyles } from '../styles/static-styles.js';
 import { SCStaticPage } from '../addons/sc-static-page.js';
 
 
-class SCSimiles extends SCStaticPage {
+class SCSimiles extends SCStaticPage {  
+  firstUpdated(changedProperties) {
+    if (this.localize('LocalizationEnabled') && this.localize('LocalizationEnabled') === "false") {                  
+      this.loadFallbackLanguage();
+    }
+  }
+  
   render() {
     return html`
     ${staticStyles}
