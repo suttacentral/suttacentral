@@ -15,6 +15,7 @@ import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
 import { Transliterator } from './transliterator.js';
 
+const polymer_lookupStyles = html([lookupStyles.strings.join('')]);
 
 class SCSegmentedText extends SCTextPage {
   static get template() {
@@ -22,7 +23,7 @@ class SCSegmentedText extends SCTextPage {
     ${textStyles}
     ${textHeadingStyles}
     ${textParagraphNumStyles}
-    ${lookupStyles}
+    ${polymer_lookupStyles}
     <style>
       :host {
         --iron-icon-fill-color: var(--sc-disabled-text-color);

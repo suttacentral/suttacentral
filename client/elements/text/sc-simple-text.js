@@ -12,13 +12,15 @@ import '../lookups/sc-lzh2en.js';
 import { lookupStyles } from '../lookups/sc-lookup-styles.js';
 import { Transliterator } from './transliterator.js';
 
+const polymer_lookupStyles = html([lookupStyles.strings.join('')]);
+
 class SCSimpleText extends SCTextPage {
   static get template() {
     return html`
     ${textStyles}
     ${textHeadingStyles}
     ${textParagraphNumStyles}
-    ${lookupStyles}
+    ${polymer_lookupStyles}
     <style>
       :host {
         --iron-icon-fill-color: var(--sc-disabled-text-color);
