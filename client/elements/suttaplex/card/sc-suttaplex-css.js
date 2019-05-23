@@ -43,7 +43,7 @@ export const suttaplexCss = html`
   }
 
   .top-row .compact {
-    cursor:pointer;
+    cursor: pointer;
   }
 
   .tx-level-icon {
@@ -211,7 +211,7 @@ export const suttaplexTxCss = html`
   }
 
   .tx.compact {
-    padding: 0;    
+    padding: 0;
   }
 
   .tx-icon {
