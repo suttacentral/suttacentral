@@ -39,7 +39,11 @@ export const suttaplexCss = html`
     justify-content: space-between;
     align-items: center;
     --iron-icon-height: 20px;
-    --iron-icon-width: 20px;
+    --iron-icon-width: 20px;    
+  }
+
+  .top-row .compact {
+    cursor: pointer;
   }
 
   .tx-level-icon {
