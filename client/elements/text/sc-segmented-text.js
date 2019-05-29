@@ -16,13 +16,16 @@ import '../lookups/sc-lzh2en.js';
 import { Transliterator } from './transliterator.js';
 
 const polymer_lookupStyles = html([lookupStyles.strings.join('')]);
+const polymer_textHeadingStyles = html([textHeadingStyles.strings.join('')]);
+const polymer_textStyles = html([textStyles.strings.join('')]);
+const polymer_textParagraphNumStyles = html([textParagraphNumStyles.strings.join('')]);
 
 class SCSegmentedText extends SCTextPage {
   static get template() {
     return html`
-    ${textStyles}
-    ${textHeadingStyles}
-    ${textParagraphNumStyles}
+    ${polymer_textStyles}
+    ${polymer_textHeadingStyles}
+    ${polymer_textParagraphNumStyles}
     ${polymer_lookupStyles}
     <style>
       :host {

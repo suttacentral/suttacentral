@@ -12,11 +12,12 @@ import { suttaplexStyles } from '../styles/sc-suttaplex-styles.js';
 /*
 Pulls in one relevant suttaplex-card inside a collapse-item to display on top of each sutta text.
 */
+const polymer_suttaplexStyles= html([suttaplexStyles.strings.join('')]);
 
 class SCTextOptions extends ReduxMixin(Localized(PolymerElement)) {
   static get template() {
     return html`
-    ${suttaplexStyles}
+    ${polymer_suttaplexStyles}    
     <style>
       @media print {
         :host {
