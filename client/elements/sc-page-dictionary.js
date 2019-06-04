@@ -10,11 +10,12 @@ import { dictStyles } from './styles/sc-dict-styles.js';
 import { scrollbarStyle } from './styles/sc-scrollbar-style.js';
 
 const polymer_dictStyles = html([dictStyles.strings.join('')]);
-class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {
+const polymer_scrollbarStyle = html([scrollbarStyle.strings.join('')]);
+class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {  
   static get template() {
     return html`
     ${polymer_dictStyles}
-    ${scrollbarStyle}
+    ${polymer_scrollbarStyle}    
     <style>
       .dictionary-results-container, .related-terms {
         padding: var(--sc-size-xxl) 0;

@@ -1,10 +1,8 @@
 import { html } from 'lit-element';
 import { scrollbarStyle } from '../../styles/sc-scrollbar-style.js';
 
-const litScrollbarStyle = html([scrollbarStyle.innerHTML]);
-
 export const scNavigationMenuCss =  html`
-${litScrollbarStyle}
+${scrollbarStyle}
 
 <style>
   .sc-nav {
