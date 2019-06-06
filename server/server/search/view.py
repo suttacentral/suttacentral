@@ -81,15 +81,18 @@ class Search(Resource):
         restrict = request.args.get('restrict', None)
         if restrict == 'all':
             restrict = None
-        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
 
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
 
         results = {'total': 0, 'hits': []}
         try:
-            es_text_results = query_search.search(query, limit=limit, offset=offset, language=language,
-                                                  restrict=restrict)
+            es_text_results = query_search.search(
+                query, limit=limit, offset=offset, language=language, restrict=restrict
+            )
             if es_text_results:
                 text_results = []
 
@@ -98,17 +101,19 @@ class Search(Resource):
                     uid = source['uid']
                     lang = source['lang']
                     author_uid = source['author_uid']
-                    text_results.append({
-                        'acronym': source['acronym'],
-                        'uid': uid,
-                        'lang': lang,
-                        'author': source['author'],
-                        'author_short': source['author_short'],
-                        'heading': source['heading'],
-                        'is_root': source['is_root'],
-                        'highlight': entry['highlight'],
-                        'url': f'/{uid}/{lang}/{author_uid}'
-                    })
+                    text_results.append(
+                        {
+                            'acronym': source['acronym'],
+                            'uid': uid,
+                            'lang': lang,
+                            'author': source['author'],
+                            'author_short': source['author_short'],
+                            'heading': source['heading'],
+                            'is_root': source['is_root'],
+                            'highlight': entry['highlight'],
+                            'url': f'/{uid}/{lang}/{author_uid}',
+                        }
+                    )
 
                 results['total'] += es_text_results['hits']['total']
                 results['hits'].extend(text_results)
@@ -124,18 +129,30 @@ class Search(Resource):
                 if offset == 0 or restrict == 'dictionary':
                     # Yeah this is a hack in terms of offset and stuff
                     # but it works: if the client asks for 10 results
-                    # it'll return 11. But it doesn't mess with 
+                    # it'll return 11. But it doesn't mess with
                     # the elasticsearch offset and limit.
                     results['hits'].insert(0, dictionary_result)
                     results['total'] += 1
 
         db = get_db()
         query_lower = query.lower()
-        possible_uids = [query_lower, query_lower.replace(' ', '.'), query_lower.replace('.', '.')]
-        found = list(db.aql.execute('FOR r IN root FILTER r.uid IN @uids AND r.type == "text" LIMIT 1 RETURN r.uid',
-                                    bind_vars={'uids': possible_uids}))
+        possible_uids = [
+            query_lower,
+            query_lower.replace(' ', '.'),
+            query_lower.replace('.', '.'),
+        ]
+        found = list(
+            db.aql.execute(
+                'FOR r IN root FILTER r.uid IN @uids AND r.type == "text" LIMIT 1 RETURN r.uid',
+                bind_vars={'uids': possible_uids},
+            )
+        )
         if found:
-            suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': language}))[0]
+            suttaplex = list(
+                db.aql.execute(
+                    SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': language}
+                )
+            )[0]
             results['suttaplex'] = suttaplex
 
         return results

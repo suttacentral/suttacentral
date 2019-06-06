@@ -378,7 +378,8 @@ FOR dict IN dictionaries
     }
 '''
 
-SUTTA_VIEW = '''
+SUTTA_VIEW = (
+    '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
 
 LET legacy_html = (
@@ -442,7 +443,9 @@ LET translated_po_obj = (
         }
 )[0]
 
-LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
+LET suttaplex = ('''
+    + SUTTAPLEX_LIST
+    + ''')[0]
     
 RETURN {
     root_text: translated_po_obj ? root_po_obj : null,
@@ -453,6 +456,7 @@ RETURN {
     suttaplex: suttaplex
 }
 '''
+)
 
 CURRENCIES = '''
 FOR currency IN currencies
@@ -774,7 +778,6 @@ RETURN SORTED_UNIQUE(UNION(parent_uids, text_uids))
 '''
 
 
-
 GET_ANCESTORS = '''
     /* Return uids that are ancestors to any uid in @uid_list */
     RETURN UNIQUE(FLATTEN(
@@ -789,4 +792,3 @@ GET_ANCESTORS = '''
             return parents
     ))
 '''
-

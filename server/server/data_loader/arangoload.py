@@ -16,10 +16,24 @@ from common.utils import chunks
 from common.uid_matcher import UidMatcher
 from .util import json_load
 from .change_tracker import ChangeTracker
-from . import biblio, currencies, dictionaries, dictionary_full, paragraphs, po, textdata, \
-    divisions, images_files, homepage, localized_languages, order, sizes
+from . import (
+    biblio,
+    currencies,
+    dictionaries,
+    dictionary_full,
+    paragraphs,
+    po,
+    textdata,
+    divisions,
+    images_files,
+    homepage,
+    localized_languages,
+    order,
+    sizes,
+)
 
 from .generate_sitemap import generate_sitemap
+
 
 def update_data(repo: Repo, repo_addr: str):
     """Updates given git repo.
@@ -77,15 +91,20 @@ def process_root_languages(structure_dir):
             data.update({sutta_id: uid for sutta_id in lang['contains']})
     return data
 
-def process_division_files(docs, name_docs, edges, mapping, division_files, root_languages,
-                           structure_dir):
+
+def process_division_files(
+    docs, name_docs, edges, mapping, division_files, root_languages, structure_dir
+):
     sutta_file = json_load(structure_dir / 'sutta.json')
 
     sutta_data = {}
     for sutta in sutta_file:
         uid = sutta.pop('uid')
-        sutta_data[uid] = {'acronym': sutta['acronym'], 'biblio_uid': sutta['biblio_uid'],
-                           'volpage': sutta['volpage']}
+        sutta_data[uid] = {
+            'acronym': sutta['acronym'],
+            'biblio_uid': sutta['biblio_uid'],
+            'volpage': sutta['volpage'],
+        }
 
     reg = regex.compile(r'^\D+')
     number_reg = regex.compile(r'.*?([0-9]+)$')
@@ -102,7 +121,7 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
             uid = path.name
             entry['_key'] = uid
             entry['uid'] = uid
-            
+
             is_link = entry.get('type') == 'link'
             if not is_link:
                 mapping[uid] = entry
@@ -122,11 +141,15 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
                         base_uid = '-'.join(base_uid.split('-')[:-1])
 
                 if 'name' in entry:
-                    name_docs.append({'name': entry['name'],
-                                      'uid': uid,
-                                      'lang': lang,
-                                      'root': True,
-                                      '_key': f'{uid}_{lang}'})
+                    name_docs.append(
+                        {
+                            'name': entry['name'],
+                            'uid': uid,
+                            'lang': lang,
+                            'root': True,
+                            '_key': f'{uid}_{lang}',
+                        }
+                    )
 
                 del entry['_path']
                 if 'num' not in entry:
@@ -143,8 +166,13 @@ def process_division_files(docs, name_docs, edges, mapping, division_files, root
             parent = mapping.get(path.parent.name)
             edge_type = entry.get('type', 'text')
             if parent:
-                edges.append({'_from': 'root/' + parent['_key'], '_to': 'root/' + entry['_key'],
-                              'type': edge_type})
+                edges.append(
+                    {
+                        '_from': 'root/' + parent['_key'],
+                        '_to': 'root/' + entry['_key'],
+                        'type': edge_type,
+                    }
+                )
     for uid, paths in uids_seen.items():
         if len(paths) == 1:
             continue
@@ -177,36 +205,42 @@ def process_category_files(category_files, db, edges, mapping):
                 for uid in entry['contains']:
                     child = mapping.get(uid)
                     if child is None:
-                        logging.error(f'Division defined in {category_name} not found: {uid}')
+                        logging.error(
+                            f'Division defined in {category_name} not found: {uid}'
+                        )
                         continue
                     child[entry['type']] = entry['uid']
-                    edges.append({
-                        '_from': f'{category_name}/{entry["_key"]}',
-                        '_to': f'root/{child["_key"]}',
-                        'type': edge_type
-                    })
+                    edges.append(
+                        {
+                            '_from': f'{category_name}/{entry["_key"]}',
+                            '_to': f'root/{child["_key"]}',
+                            'type': edge_type,
+                        }
+                    )
                 del entry['contains']
 
             category_docs.append(entry)
         collection.import_bulk(category_docs, overwrite=True)
-    
+
     for i, uid in enumerate(division_ordering):
         try:
             mapping[uid]['num'] = i
         except KeyError:
             # We should've already reported an error earlier
             continue
-        
+
 
 def perform_update_queries(db):
     # add root language uid to everything.
-    db.aql.execute('''
+    db.aql.execute(
+        '''
     FOR lang IN language
         FOR sutta IN 1..10 OUTBOUND lang root_edges
             UPDATE sutta WITH {
                 "root_lang": lang.uid
             } IN root
-    ''')
+    '''
+    )
 
 
 def add_root_docs_and_edges(change_tracker, db, structure_dir):
@@ -219,13 +253,22 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
 
     root_languages = process_root_languages(structure_dir)
 
-    if (change_tracker.is_any_file_new_or_changed(division_files + category_files)
-            or change_tracker.is_any_function_changed(
-                [process_division_files, process_category_files, perform_update_queries])):
+    if change_tracker.is_any_file_new_or_changed(
+        division_files + category_files
+    ) or change_tracker.is_any_function_changed(
+        [process_division_files, process_category_files, perform_update_queries]
+    ):
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
-        process_division_files(docs, name_docs, edges, mapping, division_files, root_languages,
-                               structure_dir)
+        process_division_files(
+            docs,
+            name_docs,
+            edges,
+            mapping,
+            division_files,
+            root_languages,
+            structure_dir,
+        )
 
         process_category_files(category_files, db, edges, mapping)
 
@@ -262,16 +305,22 @@ def print_once(msg: Any, antispam: Set):
 
 
 def get_uid_matcher(db):
-    all_uids = set(db.aql.execute('''
+    all_uids = set(
+        db.aql.execute(
+            '''
     FOR doc IN root
         SORT doc.num
         RETURN doc.uid
-    '''))
+    '''
+        )
+    )
 
     return UidMatcher(all_uids)
 
 
-def generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db):
+def generate_relationship_edges(
+    change_tracker, relationship_dir, additional_info_dir, db
+):
     relationship_files = list(relationship_dir.glob('*.json'))
 
     if not change_tracker.is_any_file_new_or_changed(relationship_files):
@@ -311,12 +360,14 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                 for from_uid in full:
                     m = regex.search('[0-9]+$', from_uid)
                     if m:
-                      from_nr = int(m[0])
+                        from_nr = int(m[0])
                     else:
-                      from_nr = 0
+                        from_nr = 0
                     true_from_uids = uid_matcher.get_matching_uids(from_uid)
                     if not true_from_uids and ' ' not in from_uid:
-                        logging.error(f'Relationship from uid could not be matched: {from_uid} (dropped)')
+                        logging.error(
+                            f'Relationship from uid could not be matched: {from_uid} (dropped)'
+                        )
                         continue
 
                     for to_uids, is_resembling in ((full, False), (partial, True)):
@@ -325,70 +376,87 @@ def generate_relationship_edges(change_tracker, relationship_dir, additional_inf
                                 continue
                             true_to_uids = uid_matcher.get_matching_uids(to_uid)
                             if not true_to_uids:
-                                logging.error(f'Relationship to uid could not be matched: {to_uid} (appears as orphan)')
+                                logging.error(
+                                    f'Relationship to uid could not be matched: {to_uid} (appears as orphan)'
+                                )
                                 true_to_uids = ['orphan']
 
                             for true_from_uid in true_from_uids:
                                 for true_to_uid in true_to_uids:
-                                    remark = remarks.get(frozenset([true_from_uid, true_to_uid]),
-                                                         None)
-                                    ll_edges.append({
-                                        '_from': true_from_uid,
-                                        '_to': true_to_uid,
-                                        'from': from_uid,
-                                        'number': from_nr,
-                                        'to': to_uid.lstrip('~'),
-                                        'type': r_type,
-                                        'resembling': is_resembling,
-                                        'remark': remark
-                                    })
+                                    remark = remarks.get(
+                                        frozenset([true_from_uid, true_to_uid]), None
+                                    )
+                                    ll_edges.append(
+                                        {
+                                            '_from': true_from_uid,
+                                            '_to': true_to_uid,
+                                            'from': from_uid,
+                                            'number': from_nr,
+                                            'to': to_uid.lstrip('~'),
+                                            'type': r_type,
+                                            'resembling': is_resembling,
+                                            'remark': remark,
+                                        }
+                                    )
             else:
                 first_uid = uids[0]
                 m = regex.search('[0-9]+$', first_uid)
                 if m:
-                  from_nr = int(m[0])
+                    from_nr = int(m[0])
                 else:
-                  from_nr = 0
+                    from_nr = 0
                 true_first_uids = uid_matcher.get_matching_uids(first_uid)
                 for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
                     true_from_uids = uid_matcher.get_matching_uids(to_uid)
                     if not true_from_uids and ' ' not in from_uid:
-                        logging.error(f'Relationship from uid could not be matched: {from_uid} (dropped)')
+                        logging.error(
+                            f'Relationship from uid could not be matched: {from_uid} (dropped)'
+                        )
                         continue
                     for true_from_uid in true_from_uids:
-                        remark = remarks.get(frozenset([true_from_uid, true_first_uid]), None)
-                        ll_edges.append({
-                            '_from': true_first_uid,
-                            '_to': true_from_uid,
-                            'from': first_uid.lstrip('~'),
-                            'to': to_uid,
-                            'number': from_nr,
-                            'type': r_type,
-                            'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
-                            'remark': remark
-                        })
+                        remark = remarks.get(
+                            frozenset([true_from_uid, true_first_uid]), None
+                        )
+                        ll_edges.append(
+                            {
+                                '_from': true_first_uid,
+                                '_to': true_from_uid,
+                                'from': first_uid.lstrip('~'),
+                                'to': to_uid,
+                                'number': from_nr,
+                                'type': r_type,
+                                'resembling': any(
+                                    x.startswith('~') for x in [first_uid, from_uid]
+                                ),
+                                'remark': remark,
+                            }
+                        )
                         m = regex.search('[0-9]+$', to_uid)
                         if m:
-                          to_nr = int(m[0])
+                            to_nr = int(m[0])
                         else:
-                          to_nr = 0
-                        ll_edges.append({
-                            '_from': true_from_uid,
-                            '_to': true_first_uid,
-                            'from': to_uid,
-                            'to': first_uid.lstrip('~'),
-                            'number': to_nr,
-                            'type': r_type,
-                            'resembling': any(x.startswith('~') for x in [first_uid, from_uid]),
-                            'remark': remark
-                        })
-    
-    
+                            to_nr = 0
+                        ll_edges.append(
+                            {
+                                '_from': true_from_uid,
+                                '_to': true_first_uid,
+                                'from': to_uid,
+                                'to': first_uid.lstrip('~'),
+                                'number': to_nr,
+                                'type': r_type,
+                                'resembling': any(
+                                    x.startswith('~') for x in [first_uid, from_uid]
+                                ),
+                                'remark': remark,
+                            }
+                        )
+
     # Because there are many edges (nearly 400k at last count) chunk the import
     db['relationship'].truncate()
     for chunk in chunks(ll_edges, 10000):
         db['relationship'].import_bulk(chunk, from_prefix='root/', to_prefix='root/')
-    
+
+
 def load_author_edition(change_tracker, additional_info_dir, db):
     author_file = additional_info_dir / 'author_edition.json'
     if change_tracker.is_file_new_or_changed(author_file):
@@ -396,11 +464,13 @@ def load_author_edition(change_tracker, additional_info_dir, db):
             authors = json.load(authorf)
         db['author_edition'].import_bulk(authors, overwrite=True)
 
+
 def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir):
     print('Loading HTML texts')
-        
+
     force = change_tracker.is_any_function_changed(
-        [textdata.TextInfoModel, textdata.ArangoTextInfoModel])
+        [textdata.TextInfoModel, textdata.ArangoTextInfoModel]
+    )
     if force:
         print('This might take a while')
         db['html_text'].truncate()
@@ -409,9 +479,12 @@ def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
         for lang_dir in tqdm(html_dir.glob('*')):
             if not lang_dir.is_dir:
                 continue
-            tim.process_lang_dir(lang_dir=lang_dir, data_dir=data_dir,
-                                 files_to_process=change_tracker.changed_or_new,
-                                 force=force)
+            tim.process_lang_dir(
+                lang_dir=lang_dir,
+                data_dir=data_dir,
+                files_to_process=change_tracker.changed_or_new,
+                force=force,
+            )
 
 
 def load_json_file(db, change_tracker, json_file):
@@ -434,9 +507,12 @@ def process_blurbs(db, additional_info_dir):
 
     blurb_info = json_load(blurb_file)
 
-    docs = [{'uid': uid, 'lang': lang, 'blurb': blurb}
-            for lang, groups in blurb_info.items() for suttas in groups.values() for uid, blurb in
-            tqdm(suttas.items())]
+    docs = [
+        {'uid': uid, 'lang': lang, 'blurb': blurb}
+        for lang, groups in blurb_info.items()
+        for suttas in groups.values()
+        for uid, blurb in tqdm(suttas.items())
+    ]
 
     db.collection('blurbs').import_bulk(docs, overwrite=True)
 
@@ -447,8 +523,11 @@ def process_difficulty(db, additional_info_dir):
 
     difficulty_info = json_load(difficulty_file)
 
-    docs = [{'uid': uid, 'difficulty': lvl}
-            for x in difficulty_info.values() for uid, lvl in tqdm(x.items())]
+    docs = [
+        {'uid': uid, 'difficulty': lvl}
+        for x in difficulty_info.values()
+        for uid, lvl in tqdm(x.items())
+    ]
 
     db.collection('difficulties').import_bulk(docs, overwrite=True)
 
@@ -483,18 +562,22 @@ def run(no_pull=False):
     images_files.load_images_links(db)
 
     change_tracker = ChangeTracker(data_dir, db)
-    
+
     load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
 
     load_author_edition(change_tracker, additional_info_dir, db)
-    
+
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
-    localized_languages.update_languages(db, current_app.config.get('ASSETS_DIR') / 'localization/elements')
+    localized_languages.update_languages(
+        db, current_app.config.get('ASSETS_DIR') / 'localization/elements'
+    )
 
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
-    generate_relationship_edges(change_tracker, relationship_dir, additional_info_dir, db)
+    generate_relationship_edges(
+        change_tracker, relationship_dir, additional_info_dir, db
+    )
 
     load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
 
@@ -518,20 +601,14 @@ def run(no_pull=False):
 
     homepage.load_why_we_read(db, additional_info_dir)
 
-    
-    
     sitemap = generate_sitemap(db)
-    
+
     for folder in pathlib.Path('/opt/sc/frontend/builds').glob('*'):
         if folder.is_dir():
             (folder / 'sitemap.xml').open('w').write(sitemap)
-    
+
     order.add_next_prev_using_menu_data(db)
-    
-    
 
     sizes.load_sizes(sizes_dir, db)
 
     change_tracker.update_mtimes()
-
-

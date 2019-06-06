@@ -1,6 +1,7 @@
 from pathlib import Path
 from .util import json_load
 
+
 def load_biblios(db, additional_info_dir: Path):
     print('Loading biblio data')
 

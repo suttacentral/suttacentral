@@ -8,10 +8,11 @@ from flask import current_app, g
 
 import logging
 
+
 class ArangoDB:
     def __init__(self, app=None):
         self.app = app
-        
+
     def connect(self) -> ArangoClient:
         """Connect to the ArangoDB"""
         config = current_app.config['ARANGO_CLIENT']
@@ -60,7 +61,6 @@ class ArangoDB:
         """
         return getattr(g, '_database_client', None)
 
-    
 
 def get_client() -> ArangoClient:
     """
@@ -81,13 +81,18 @@ def get_db() -> Database:
         db = ArangoDB(current_app).db
     return db
 
+
 def get_system_db() -> Database:
     config = current_app.config['ARANGO_CLIENT']
-    db = get_client().db(**{'username': config['username'], 'password': config['password']})
+    db = get_client().db(
+        **{'username': config['username'], 'password': config['password']}
+    )
     return db
+
 
 def delete_db(db: Database):
     get_system_db().delete_database(db.name)
+
 
 def update_views_hack(db):
     # This is a hack to help reduce view corruption in 3.4

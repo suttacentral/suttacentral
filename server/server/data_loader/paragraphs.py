@@ -1,6 +1,7 @@
 from pathlib import Path
 from .util import json_load
 
+
 def load_paragraphs(db, additional_info_dir: Path):
     print('Loading paragraphs')
 
