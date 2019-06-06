@@ -1,4 +1,11 @@
-from api.views import Languages, LookupDictionaries, Menu, Parallels, Sutta, SuttaplexList
+from api.views import (
+    Languages,
+    LookupDictionaries,
+    Menu,
+    Parallels,
+    Sutta,
+    SuttaplexList,
+)
 from app import api
 from common import utils
 
@@ -81,10 +88,7 @@ def test_lookup_dictionaries(client):
 
     utils.generate_lookup_dict(_from='pli', to='en')
 
-    data = {
-        'from': 'pli',
-        'to': 'en'
-    }
+    data = {'from': 'pli', 'to': 'en'}
     res = client.get(api.url_for(LookupDictionaries, **data))
 
     assert res.status_code == 200

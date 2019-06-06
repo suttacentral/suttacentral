@@ -9,5 +9,3 @@ def load_sizes(containing_dir: Path, db):
 
     db.collection('pwa_sizes').import_bulk(data, overwrite=True)
     print('DONE')
-
-

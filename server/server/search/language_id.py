@@ -1,6 +1,7 @@
 import pathlib
 from langid import langid
 from flask import request
+
 identifier = None
 
 
@@ -8,7 +9,9 @@ def load_model():
     global identifier
     # langid is frightfully hacky in general
     langid_model_file = pathlib.Path(__file__).parent / 'langid.model'
-    identifier = langid.LanguageIdentifier.from_modelpath(langid_model_file, norm_probs=True)
+    identifier = langid.LanguageIdentifier.from_modelpath(
+        langid_model_file, norm_probs=True
+    )
 
 
 def rank(text):
@@ -33,17 +36,17 @@ def smart_rank(text):
     trillion times more confident the text is French than English, then
     fr will be returned anyway.
     """
-    
+
     results = rank(text)
-    
+
     # these codes get special privelage
     special_codes = {'en', 'pli'}
     # if there are other codes in the Accept-Language header we
     # also give those codes special privelage
     special_codes.update(get_accept_languages())
-    
+
     good_matches = []
-    
+
     # this comparison might seem extreme, but it's how langid works
     # a bad match is like a quadzillion times smaller than a good match
     # a mildly bad match can be like 5.5e-21
@@ -56,13 +59,13 @@ def smart_rank(text):
         # We only indiscriminately return the best result if there
         # is no good alternative
         return [results[0][0]]
-    
-    
+
+
 def get_accept_languages():
     header = request.headers.get('Accept-Language')
     if not header:
         return {}
-    
+
     results = {}
     for pair in header.split(','):
         if ';' in pair:
