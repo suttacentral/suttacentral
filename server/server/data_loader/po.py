@@ -328,8 +328,8 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
                 doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
                 string_docs.append(doc)
 
-        db['po_markup'].import_bulk_logged(markup_docs, on_duplicate='ignore')
-        r = db['po_strings'].import_bulk_logged(string_docs, on_duplicate='ignore')
+        db['po_markup'].insert_many_logged(markup_docs, on_duplicate='ignore')
+        r = db['po_strings'].insert_many_logged(string_docs, on_duplicate='ignore')
 
 
 class VolpageGetter:

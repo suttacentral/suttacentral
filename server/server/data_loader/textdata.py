@@ -255,11 +255,12 @@ class ArangoTextInfoModel(TextInfoModel):
     def add_document(self, doc):
         doc['_key'] = doc['path'].replace('/', '_')
         self.queue.append(doc)
-        if len(self.queue) > 1000:
+        if len(self.queue) > 100:
             self.flush_documents()
 
     def flush_documents(self):
-        self.db['html_text'].import_bulk_logged(self.queue, overwrite=True)
+        print('\033[2K\r' + self.queue[-1]['path'],end='')
+        self.db['html_text'].insert_many(self.queue, overwrite=True)
         self.queue.clear()
 
     def update_code_points(self, lang_uid, unicode_points, force=False):

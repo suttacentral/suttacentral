@@ -40,4 +40,4 @@ def update_languages(db, localized_elements_dir):
             }
         )
 
-    db['language'].import_bulk_logged(updates, on_duplicate='update')
+    db['language'].insert_many_logged(updates, on_duplicate='update')
