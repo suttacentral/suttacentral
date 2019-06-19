@@ -220,7 +220,7 @@ def process_category_files(category_files, db, edges, mapping):
                 del entry['contains']
 
             category_docs.append(entry)
-        collection.import_bulk_logged(category_docs, overwrite=True)
+        collection.insert_many_logged(category_docs, overwrite=True)
 
     for i, uid in enumerate(division_ordering):
         try:
@@ -278,9 +278,9 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
                     entry['grouping'] = 'other'
 
         # make documents
-        db['root'].import_bulk_logged(docs, overwrite=True)
-        db['root_names'].import_bulk_logged(name_docs, overwrite=True)
-        db['root_edges'].import_bulk_logged(edges, overwrite=True)
+        db['root'].insert_many_logged(docs, overwrite=True)
+        db['root_names'].insert_many_logged(name_docs, overwrite=True)
+        db['root_edges'].insert_many_logged(edges, overwrite=True)
 
         perform_update_queries(db)
 
@@ -454,7 +454,7 @@ def generate_relationship_edges(
     # Because there are many edges (nearly 400k at last count) chunk the import
     db['relationship'].truncate()
     for chunk in chunks(ll_edges, 10000):
-        db['relationship'].import_bulk_logged(chunk, from_prefix='root/', to_prefix='root/')
+        db['relationship'].insert_many_logged(chunk, from_prefix='root/', to_prefix='root/')
 
 
 def load_author_edition(change_tracker, additional_info_dir, db):
@@ -462,7 +462,7 @@ def load_author_edition(change_tracker, additional_info_dir, db):
     if change_tracker.is_file_new_or_changed(author_file):
         with author_file.open('r', encoding='utf-8') as authorf:
             authors = json.load(authorf)
-        db['author_edition'].import_bulk_logged(authors, overwrite=True)
+        db['author_edition'].insert_many_logged(authors, overwrite=True)
 
 
 def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir):
@@ -497,7 +497,7 @@ def load_json_file(db, change_tracker, json_file):
     if 'uid' in data[0]:
         for d in data:
             d['_key'] = d['uid']
-        db[collection_name].import_bulk_logged(data, overwrite=True)
+        db[collection_name].insert_many_logged(data, overwrite=True)
 
 
 def process_blurbs(db, additional_info_dir):
@@ -514,7 +514,7 @@ def process_blurbs(db, additional_info_dir):
         for uid, blurb in tqdm(suttas.items())
     ]
 
-    db.collection('blurbs').import_bulk_logged(docs, overwrite=True)
+    db.collection('blurbs').insert_many_logged(docs, overwrite=True)
 
 
 def process_difficulty(db, additional_info_dir):
@@ -529,7 +529,7 @@ def process_difficulty(db, additional_info_dir):
         for uid, lvl in tqdm(x.items())
     ]
 
-    db.collection('difficulties').import_bulk_logged(docs, overwrite=True)
+    db.collection('difficulties').insert_many_logged(docs, overwrite=True)
 
 
 def run(no_pull=False):

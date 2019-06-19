@@ -11,20 +11,25 @@ import pprint
 
 from arango.collection import StandardCollection
 
-def import_bulk_logged(self, *args, raise_exception=True, **kwargs):
-    raise_exception = False
-    if 'halt_on_error' in kwargs:
-        raise ValueError('Use raise_exception instead of halt_on_error')
-    result = self.import_bulk(*args, halt_on_error=False, **kwargs)
-    if result['errors'] > 0:
-        logging.error(pprint.pformat(result))
-        if raise_exception:
-            raise ValueError('Import bulk failed with an error, see log for details')
-    return result
 
 
-StandardCollection.import_bulk_logged = import_bulk_logged
-del import_bulk_logged
+def insert_many_logged(self, docs, *args, **kwargs):
+    results = self.import_bulk(docs, *args, **kwargs)
+
+    for outcome, doc in zip(results, docs):
+        if isinstance(outcome, Exception):
+            if doc["_key"] in outcome.error_message:
+                logging.error(f'Error inserting document: {outcome.error_message}')
+            else:
+                logging.error(f'Error inserting document: {outcome.error_message}; key: {doc["_key"]}')
+
+
+
+
+
+
+StandardCollection.insert_many_logged = insert_many_logged
+del insert_many_logged
 
 
 class ArangoDB:

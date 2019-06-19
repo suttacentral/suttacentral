@@ -91,7 +91,7 @@ class ChangeTracker:
                 bind_vars={'to_remove': list(self.deleted)},
             )
 
-        self.db['mtimes'].import_bulk_logged(
+        self.db['mtimes'].insert_many_logged(
             [
                 {'path': k, 'mtime': v, '_key': k.replace('/', '_')}
                 for k, v in self.changed_or_new.items()
@@ -100,7 +100,7 @@ class ChangeTracker:
         )
         self.db['function_hashes'].truncate()
         docs = [{'_key': k, 'hash': v} for k, v in self.new_function_hashes.items()]
-        self.db['function_hashes'].import_bulk_logged(docs, overwrite=True)
+        self.db['function_hashes'].insert_many_logged(docs, overwrite=True)
 
 
 def function_source(function):
