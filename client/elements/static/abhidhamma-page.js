@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit-element.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { staticStyles } from '../styles/static-styles.js';
