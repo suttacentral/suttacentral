@@ -23,8 +23,8 @@ def load_divisions(db, structure_dir: Path):
         ]
         text_division_data_objects += division_data
 
-    divisions_collection.import_bulk(division_objects)
-    text_divisions_collection.import_bulk(text_division_data_objects)
+    divisions_collection.import_bulk_logged(division_objects)
+    text_divisions_collection.import_bulk_logged(text_division_data_objects)
 
 
 def get_uid(entry):

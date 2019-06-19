@@ -7,6 +7,24 @@ from arango.database import Database
 from flask import current_app, g
 
 import logging
+import pprint
+
+from arango.collection import StandardCollection
+
+def import_bulk_logged(self, *args, raise_exception=True, **kwargs):
+    raise_exception = False
+    if 'halt_on_error' in kwargs:
+        raise ValueError('Use raise_exception instead of halt_on_error')
+    result = self.import_bulk(*args, halt_on_error=False, **kwargs)
+    if result['errors'] > 0:
+        logging.error(pprint.pformat(result))
+        if raise_exception:
+            raise ValueError('Import bulk failed with an error, see log for details')
+    return result
+
+
+StandardCollection.import_bulk_logged = import_bulk_logged
+del import_bulk_logged
 
 
 class ArangoDB:
@@ -99,3 +117,4 @@ def update_views_hack(db):
     for view in db.views():
         name = view['name']
         db.update_view(name, db.view(name))
+
