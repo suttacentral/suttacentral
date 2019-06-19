@@ -9,43 +9,55 @@ from .util import iter_sub_dirs, humansortkey
 
 
 import sys
+
 current_module = sys.modules[__name__]
 
 
 class PoProcessingError(Exception):
     pass
-    
+
+
 def remove_leading_zeros(string):
     return regex.sub(r'([A-Za-z.])0+', r'\1', string)
 
 
 def strip_number_from_title(title):
-    title = title.replace('​','')
+    title = title.replace('​', '')
     return regex.sub(r'[\d\.\{\} –-]*', '', title, 1)
 
+
 def sanitize_title(title):
-    #If stripping the number returns an empty string, return that so suttaplex picks up
+    # If stripping the number returns an empty string, return that so suttaplex picks up
     # the root title instead.
     return strip_number_from_title(title)
+
 
 def tilde_to_html_lists(po):
     for entry in po:
         if '~' in entry.msgstr:
             if not entry.msgstr.startswith('~'):
-                raise ValueError('Case not handled: msgstr contains but does not start with ~')
-                
-            entry.msgstr = ('<ol><li>' + 
-                            '</li><li>'.join(entry.msgstr.split('~')[1:]) + 
-                            '</li></ol>'
-                            )
+                raise ValueError(
+                    'Case not handled: msgstr contains but does not start with ~'
+                )
+
+            entry.msgstr = (
+                '<ol><li>'
+                + '</li><li>'.join(entry.msgstr.split('~')[1:])
+                + '</li></ol>'
+            )
+
 
 def ref_match_repl(m):
     return ''.join(
-        '<a class="{}" id="{}"></a>'.format(_class, _id) 
-            for _class, _id in zip(m.captures(1), m.captures(2)))
+        '<a class="{}" id="{}"></a>'.format(_class, _id)
+        for _class, _id in zip(m.captures(1), m.captures(2))
+    )
+
 
 def clean_html(string):
-    out = regex.sub(r'<html>.*<body>', r'', string, flags=regex.DOTALL).replace('\n', ' ')
+    out = regex.sub(r'<html>.*<body>', r'', string, flags=regex.DOTALL).replace(
+        '\n', ' '
+    )
     out = out.replace('HTML: ', '')
     out = regex.sub(r'REF: (?:([a-z]+)([\w.-]+),?\s*)+', ref_match_repl, out)
     out = regex.sub(r'>\s*VAR.*?<', '><', out)
@@ -60,16 +72,19 @@ def load_info(po_file):
     """Info files contain metadata about the project"""
     po = polib.pofile(po_file)
 
-    data = {entry.msgid: entry.msgstr for entry in po}
-
-    return {
-        'author': data['translation_author_uid'],
-        'author_blurb': data['translation_author_blurb'],
-        'publication_date': get_publication_date(data['translation_author_blurb']),
-        'root_author': data['root_author_uid'],
-        'root_author_blurb': data['root_author_blurb'],
-        'root_publication_date': get_publication_date(data['root_author_blurb']),
-    }
+    data = {entry.msgid.strip(): entry.msgstr.strip() for entry in po}
+    try:
+        return {
+            'author': data['translation_author_uid'],
+            'author_blurb': data['translation_author_blurb'],
+            'publication_date': get_publication_date(data['translation_author_blurb']),
+            'root_author': data['root_author_uid'],
+            'root_author_blurb': data['root_author_blurb'],
+            'root_publication_date': get_publication_date(data['root_author_blurb']),
+        }
+    except KeyError:
+        logging.error(f'When processing file {po_file}')
+        raise
 
 
 def get_publication_date(author_blurb):
@@ -80,11 +95,11 @@ def get_publication_date(author_blurb):
     else:
         return None
 
+
 def extract_strings_from_po(po):
     markup = []
     msgids = {}
     msgstrs = {}
-
 
     for entry in po:
         markup.append(entry.comment + f'<sc-seg id="{entry.msgctxt}"></sc-seg>')
@@ -95,18 +110,14 @@ def extract_strings_from_po(po):
 
     markup = clean_html(''.join(markup))
 
-    return {
-        'markup': markup,
-        'msgids': msgids,
-        'msgstrs': msgstrs,
-    }
+    return {'markup': markup, 'msgids': msgids, 'msgstrs': msgstrs}
 
 
 def extract_headings_from_po(po):
     # If the title only contains numbers, an empty string is returned so the
     # suttaplex only picks up the original title instead.
     found = {'tr': {}, 'root': {}}
-    for string, key in ( ('<h1', 'title'), ('class="division"', 'division') ):
+    for string, key in (('<h1', 'title'), ('class="division"', 'division')):
         tr_strings = []
         root_strings = []
         for entry in po[:10]:
@@ -114,6 +125,7 @@ def extract_headings_from_po(po):
                 found['tr'][key] = sanitize_title(entry.msgstr)
                 found['root'][key] = sanitize_title(entry.msgid)
     return found
+
 
 def process_dir(change_tracker, po_dir, authors, info, storage_dir):
     """Process po files in folder
@@ -138,25 +150,29 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
     for po_file in sorted(po_files, key=humansortkey):
         if change_tracker and not change_tracker.is_file_new_or_changed(po_file):
             continue
-        
+
         po = polib.pofile(po_file)
-        
+
         tilde_to_html_lists(po)
-        
+
         headings = extract_headings_from_po(po)
         data = extract_strings_from_po(po)
-        
+
         uid = remove_leading_zeros(po_file.stem)
 
         root_author_data = get_author(info['root_author'], authors)
         author_data = get_author(info['author'], authors)
-        
+
         mtime = po_file.stat().st_mtime
-        
-        markup_storage_file = (storage_dir / f'{uid}_{info["root_author"]}.html').resolve()
+
+        markup_storage_file = (
+            storage_dir / f'{uid}_{info["root_author"]}.html'
+        ).resolve()
         msgstrs_storage_file = (storage_dir / f'{uid}_{info["author"]}.json').resolve()
-        msgids_storage_file = (storage_dir / f'{uid}_{info["root_author"]}.json').resolve()
-        
+        msgids_storage_file = (
+            storage_dir / f'{uid}_{info["root_author"]}.json'
+        ).resolve()
+
         volpage = get_volpage(data['markup'], po_file.relative_to(po_dir))
 
         with markup_storage_file.open('w') as f:
@@ -165,25 +181,25 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
             json.dump(data['msgstrs'], f)
         with msgids_storage_file.open('w') as f:
             json.dump(data['msgids'], f)
-        
-        
+
         should_include_strings = True
         if not data['msgstrs']:
             should_include_strings = False
-        
+
         try:
             root_division_title = headings['root']['division']
         except KeyError as e:
             logging.error(f'Could not determine root division title for {str(po_file)}')
             root_division_title = ''
-            
+
         try:
             tr_division_title = headings['tr']['division']
         except KeyError as e:
-            logging.error(f'Could not determine translation division title for {str(po_file)}')
+            logging.error(
+                f'Could not determine translation division title for {str(po_file)}'
+            )
             tr_division_title = ''
-            
-            
+
         # This doc is for root strings
         yield {
             'uid': uid,
@@ -203,9 +219,9 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
             'title': headings['root']['title'],
             'division_title': root_division_title,
             'volpage': volpage,
-            'mtime': mtime
+            'mtime': mtime,
         }
-        
+
         if should_include_strings:
             # This doc is for the translated strings
             yield {
@@ -215,25 +231,21 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
                 'author': author_data[0],
                 'author_short': author_data[1],
                 'author_uid': info['author'],
-                'author_blurb': {
-                    info['tr_lang']: info['author_blurb']
-                },
+                'author_blurb': {info['tr_lang']: info['author_blurb']},
                 'publication_date': info['publication_date'],
                 'strings_path': str(msgstrs_storage_file),
                 'title': headings['tr']['title'],
                 'division_title': tr_division_title,
-                'mtime': mtime
+                'mtime': mtime,
             }
 
         # this doc is for the markup
-        yield {
-            'uid': uid,
-            'markup_path': str(markup_storage_file),
-            'mtime': mtime
-        }
+        yield {'uid': uid, 'markup_path': str(markup_storage_file), 'mtime': mtime}
 
     for sub_folder in po_dir.glob('*/'):
-        yield from process_dir(change_tracker, sub_folder, authors, info=info, storage_dir=storage_dir)
+        yield from process_dir(
+            change_tracker, sub_folder, authors, info=info, storage_dir=storage_dir
+        )
 
 
 def get_author(author_uid, authors):
@@ -277,7 +289,7 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
         authors = json.load(authorf)
 
     # It's a little hard to properly manage deleted po files,
-    # as it happens deletion is really rare: so if a deletion 
+    # as it happens deletion is really rare: so if a deletion
     # does occur we just nuke and rebuild.
 
     deleted_po = [f for f in change_tracker.deleted if f.endswith('.po')]
@@ -300,11 +312,9 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
             change_tracker,
             lang_dir,
             authors,
-            info={
-                'tr_lang': tr_lang,
-                'root_lang': root_lang
-            },
-            storage_dir=storage_dir)
+            info={'tr_lang': tr_lang, 'root_lang': root_lang},
+            storage_dir=storage_dir,
+        )
 
         markup_docs = []
         string_docs = []
@@ -318,8 +328,8 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
                 doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
                 string_docs.append(doc)
 
-        db['po_markup'].import_bulk(markup_docs, on_duplicate='ignore')
-        db['po_strings'].import_bulk(string_docs, on_duplicate='ignore')
+        db['po_markup'].insert_many_logged(markup_docs, on_duplicate='ignore')
+        r = db['po_strings'].insert_many_logged(string_docs, on_duplicate='ignore')
 
 
 class VolpageGetter:
@@ -329,9 +339,10 @@ class VolpageGetter:
         regex.compile(r'<a class="(pts2ed)" id="(.*?)"></a>'),
         regex.compile(r'<a class="(pts-vp-pli|pts)" id="(.*?)"></a>'),
     ]
+
     def __init__(self):
         self.last_volpage = None
-    
+
     def __call__(self, markup, filepath):
         volpages = []
 
@@ -343,7 +354,7 @@ class VolpageGetter:
                 if not volpage.startswith(class_):
                     volpage = class_ + volpage
                 volpages.append(volpage)
-            
+
         volpage = ', '.join(volpages)
         if volpage:
             self.last_volpage = volpage

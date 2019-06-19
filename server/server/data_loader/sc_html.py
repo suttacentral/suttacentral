@@ -183,9 +183,9 @@ class HtHtmlElementMixin:
 
         for e in self.iter():
             if e.tag not in validtags:
-                e.attrib['class'] = (e.attrib['class'] + ' ' + e.tag
-                                     if 'class' in e.attrib
-                                     else e.tag)
+                e.attrib['class'] = (
+                    e.attrib['class'] + ' ' + e.tag if 'class' in e.attrib else e.tag
+                )
                 e.tag = 'span'
                 for desc in e.iterdescendants():
                     print(e.tag)
@@ -209,7 +209,9 @@ class HtHtmlElementMixin:
                 yield from parent.itersiblings()
                 parent = parent.getparent()
 
-        ees = itertools.chain(self.iterchildren(), self.itersiblings(), iterparentsiblings(self))
+        ees = itertools.chain(
+            self.iterchildren(), self.itersiblings(), iterparentsiblings(self)
+        )
 
         for e in ees:
             if isinstance(e, HtHtmlElement):
@@ -221,8 +223,12 @@ class HtHtmlElementMixin:
         """ Return a string with prettified whitespace """
         string = _html.tostring(self, pretty_print=True, **kwargs).decode()
         extra_tags = ('article', 'section', 'hgroup')
-        string = regex.sub(r'(<(?:{})[^>]*>)'.format('|'.join(extra_tags)), r'\n\1\n', string)
-        string = regex.sub(r'(</(?:{})>)'.format('|'.join(extra_tags)), r'\n\1\n', string)
+        string = regex.sub(
+            r'(<(?:{})[^>]*>)'.format('|'.join(extra_tags)), r'\n\1\n', string
+        )
+        string = regex.sub(
+            r'(</(?:{})>)'.format('|'.join(extra_tags)), r'\n\1\n', string
+        )
         string = string.replace('<br>', '<br>\n')
         string = string.replace('\n\n', '\n')
         string = regex.sub(r'\n +', '\n', string)
@@ -250,7 +256,9 @@ class HtHtmlElementMixin:
     def remove_class(self, value):
         if 'class' in self.attrib:
             if 'value' in self.attrib['class']:
-                new_class = ' '.join(e for e in self.attr['class'].split() if e != value)
+                new_class = ' '.join(
+                    e for e in self.attr['class'].split() if e != value
+                )
                 if new_class:
                     self.attrib['class'] = new_class
                 else:
@@ -258,9 +266,7 @@ class HtHtmlElementMixin:
 
     def id_map(self):
         """ Get a mapping of ids to elements """
-        return {id: e for
-                id, e in ((e.get('id'), e) for e in self.iter())
-                if e}
+        return {id: e for id, e in ((e.get('id'), e) for e in self.iter()) if e}
 
     def __bool__(self):
         """ Objects are always truth, as in future lxml

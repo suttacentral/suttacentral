@@ -5,7 +5,9 @@ from pathlib import Path
 
 import os
 
-es = elasticsearch.Elasticsearch([{'host': os.getenv("ES_HOST"), 'port': int(os.getenv("ES_PORT"))}])
+es = elasticsearch.Elasticsearch(
+    [{'host': os.getenv("ES_HOST"), 'port': int(os.getenv("ES_PORT"))}]
+)
 
 
 def is_available():
@@ -55,5 +57,6 @@ def set_constants():
 
     # Assign all constants to the module.
     globals().update(locals())
+
 
 set_constants()

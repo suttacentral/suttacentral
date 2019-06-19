@@ -9,4 +9,3 @@ class SecondMigration(Migration):
     def add_index(self):
         db = get_db()
         db['dictionary_full'].add_skiplist_index(fields=['num'], unique=False)
-

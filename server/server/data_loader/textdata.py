@@ -5,12 +5,14 @@ import regex
 from arango.exceptions import DocumentReplaceError
 
 from . import sc_html, util
+
 logger = logging.getLogger(__name__)
+
 
 class TextInfoModel:
     def __init__(self):
         self._metadata = {}
-    
+
     def get_author_by_name(self, name):
         raise NotImplementedError
 
@@ -61,7 +63,9 @@ class TextInfoModel:
             return True
         return False
 
-    def process_lang_dir(self, lang_dir, data_dir=None, files_to_process=None, force=False):
+    def process_lang_dir(
+        self, lang_dir, data_dir=None, files_to_process=None, force=False
+    ):
         # files_to_process is actually "files that may be processed" its
         # not the list of files to actually process
 
@@ -75,21 +79,23 @@ class TextInfoModel:
             self._ppn = PaliPageNumbinator(data_dir=data_dir)
 
             # It should be noted SuttaCentral does not use bolditalic
-        unicode_points = {
-            'normal': set(),
-            'bold': set(),
-            'italic': set()
-        }
+        unicode_points = {'normal': set(), 'bold': set(), 'italic': set()}
 
         lang_uid = lang_dir.stem
-        all_files = sorted(lang_dir.glob('**/*.html'), key=lambda f: util.numericsortkey(f.stem))
-        files = [f for f in all_files if f.stem == 'metadata'] + [f for f in all_files if
-                                                                  f.stem != 'metadata']
+        all_files = sorted(
+            lang_dir.glob('**/*.html'), key=lambda f: util.numericsortkey(f.stem)
+        )
+        files = [f for f in all_files if f.stem == 'metadata'] + [
+            f for f in all_files if f.stem != 'metadata'
+        ]
         for i, htmlfile in enumerate(files):
             try:
                 # Should we process this file?
 
-                if not force and str(htmlfile.relative_to(data_dir)) not in files_to_process:
+                if (
+                    not force
+                    and str(htmlfile.relative_to(data_dir)) not in files_to_process
+                ):
                     continue
 
                 # By the way we can't just iterate over the files_to_process
@@ -114,7 +120,7 @@ class TextInfoModel:
                     else:
                         _stack.extend(e)
                 unicode_points['normal'].update(root.text_content())
-                
+
                 author = self._get_author(root, htmlfile)
                 author_data = self.get_author_by_name(author, htmlfile)
 
@@ -124,12 +130,12 @@ class TextInfoModel:
                 else:
                     author_uid = None
                     author_short = None
-                
+
                 if author_uid:
                     path = f'{lang_uid}/{uid}/{author_uid}'
                 else:
                     path = f'{lang_uid}/{uid}'
-                    
+
                 publication_date = self._get_publication_date(root)
 
                 name = self._get_name(root, lang_uid, uid)
@@ -147,7 +153,7 @@ class TextInfoModel:
                     "author_uid": author_uid,
                     "publication_date": publication_date,
                     "volpage": volpage,
-                    "mtime": mtime,                    
+                    "mtime": mtime,
                     "file_path": str(htmlfile.resolve()),
                 }
 
@@ -157,7 +163,9 @@ class TextInfoModel:
                 print('An exception occured: {!s}'.format(htmlfile))
                 raise
 
-        self.update_code_points(unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force)
+        self.update_code_points(
+            unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
+        )
 
         del self._ppn
 
@@ -171,7 +179,7 @@ class TextInfoModel:
             e = root.select_one('meta[name=author]')
             if e:
                 author = e.attrib['content']
-        
+
         if not author:
             logging.critical(f'Author not found: {str(file)}')
         return author
@@ -180,7 +188,7 @@ class TextInfoModel:
         e = root.select_one('.publication-date')
         if e:
             return e.text_content()
-        
+
         return None
 
     def _get_name(self, root, lang_uid, uid):
@@ -188,18 +196,18 @@ class TextInfoModel:
         if not hgroup:
             logger.error(f'No hgroup found in {lang_uid}/{uid}')
             return ''
-            
+
         h1 = hgroup.select_one('h1')
         if not h1:
             logger.error(f'No h1 found in {lang_uid}/{uid}')
             return ''
-            
+
         if lang_uid == 'lzh':
             left_side = h1.select_one('.mirror-left')
             right_side = h1.select_one('.mirror-right')
             if left_side and right_side:
-                return right_side.text_content()+' ('+left_side.text_content()+')'
-        
+                return right_side.text_content() + ' (' + left_side.text_content() + ')'
+
         return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
 
     def _get_volpage(self, element, lang_uid, uid):
@@ -211,7 +219,7 @@ class TextInfoModel:
                 e = e.next_in_order()
             else:
                 return
-            return '{}'.format(e.attrib['id']).replace('t','T ')
+            return '{}'.format(e.attrib['id']).replace('t', 'T ')
         elif lang_uid == 'pli':
             ppn = self._ppn
             e = element.next_in_order()
@@ -228,12 +236,16 @@ class ArangoTextInfoModel(TextInfoModel):
         super().__init__()
         self.db = db
         self.queue = []
-        self._author_cache = dict(db.aql.execute('''
+        self._author_cache = dict(
+            db.aql.execute(
+                '''
             RETURN MERGE(
                 FOR doc IN author_edition
                     RETURN {[doc.long_name]: doc}
-            )''').next())
-        
+            )'''
+            ).next()
+        )
+
     def get_author_by_name(self, name, file):
         author = self._author_cache.get(name)
         if author is None:
@@ -243,11 +255,12 @@ class ArangoTextInfoModel(TextInfoModel):
     def add_document(self, doc):
         doc['_key'] = doc['path'].replace('/', '_')
         self.queue.append(doc)
-        if len(self.queue) > 1000:
+        if len(self.queue) > 100:
             self.flush_documents()
 
     def flush_documents(self):
-        self.db['html_text'].import_bulk(self.queue, on_duplicate='replace')
+        print('\033[2K\r' + self.queue[-1]['path'],end='')
+        self.db['html_text'].insert_many(self.queue, overwrite=True)
         self.queue.clear()
 
     def update_code_points(self, lang_uid, unicode_points, force=False):
@@ -284,6 +297,7 @@ class ArangoTextInfoModel(TextInfoModel):
 # data dump into a form useful for us
 # Maybe put it in DB one day
 
+
 class PaliPageNumbinator:
     msbook_to_ptsbook_mapping = {
         'a': 'AN',
@@ -316,10 +330,32 @@ class PaliPageNumbinator:
         'v': 'Vin',
         'vbh': 'Vb',
         'vv': 'Vv',
-        'y': 'Ya'}
+        'y': 'Ya',
+    }
 
-    default_attempts = [0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, 1, 2,
-                        3, 4, 5]
+    default_attempts = [
+        0,
+        -1,
+        -2,
+        -3,
+        -4,
+        -5,
+        -6,
+        -7,
+        -8,
+        -9,
+        -10,
+        -11,
+        -12,
+        -13,
+        -14,
+        -15,
+        1,
+        2,
+        3,
+        4,
+        5,
+    ]
 
     def __init__(self, data_dir):
         self.load(data_dir)
@@ -368,6 +404,7 @@ class PaliPageNumbinator:
         if not book:
             return '{} {}'.format(ptsbook, num)
 
-        book = {'1': 'i', '2': 'ii', '3': 'iii', '4': 'iv', '5': 'v', '6': 'vi'
-                }.get(book, book)
+        book = {'1': 'i', '2': 'ii', '3': 'iii', '4': 'iv', '5': 'v', '6': 'vi'}.get(
+            book, book
+        )
         return '{} {} {}'.format(ptsbook, book, num)

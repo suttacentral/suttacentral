@@ -9,7 +9,6 @@ from common.arangodb import get_db
 from common.queries import LANGUAGES
 
 
-
 HASH = hashlib._hashlib.HASH
 
 
@@ -60,7 +59,10 @@ class TimedCache:
         try:
             while True:
                 append_time, doomed_key = self._added.popleft()
-                if now - append_time > self._lifetime or len(self._added) > self._maxsize:
+                if (
+                    now - append_time > self._lifetime
+                    or len(self._added) > self._maxsize
+                ):
                     del self._values[doomed_key]
                 else:
                     # pop and put back is for thread safety

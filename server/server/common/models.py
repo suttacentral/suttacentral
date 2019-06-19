@@ -53,19 +53,28 @@ class ModelList(list):
     """
     Extend standard list implementation with save method for bulk data importing to db.
     """
+
     def save(self):
         collection = self[0].collection
         db = get_db()
         collection = db.collection(collection)
 
-        return collection.import_bulk([m.document for m in self])
+        return collection.insert_many_logged([m.document for m in self])
 
 
 class Language(Model):
     collection = 'language'  # this is constant
 
-    def __init__(self, uid: str, name: str, is_root: bool, iso_code: str, num: int,
-                 *args, **kwargs):
+    def __init__(
+        self,
+        uid: str,
+        name: str,
+        is_root: bool,
+        iso_code: str,
+        num: int,
+        *args,
+        **kwargs,
+    ):
         super().__init__(*args, **kwargs)
         self.uid = uid
         self.name = name
@@ -85,7 +94,9 @@ class Language(Model):
         """
         fake = Faker()
         _key = iso_code = uid = fake.language_code()
-        name = fake.color_name()  # Faker has no language name generator, use color instead.
+        name = (
+            fake.color_name()
+        )  # Faker has no language name generator, use color instead.
         is_root = bool(randint(0, 1))
         num = randint(1, 50)
         return cls(uid, name, is_root, iso_code, num, _key=_key)
@@ -187,7 +198,7 @@ class RootEdges(Model):
         for submenu in roots:
             for i, menu_element in enumerate(submenu):
                 try:
-                    _from = submenu[i-1]._id
+                    _from = submenu[i - 1]._id
                 except IndexError:
                     _from = None
                 _to = menu_element._id
@@ -200,11 +211,7 @@ class RootEdges(Model):
         Returns:
             Arango document representation
         """
-        data = {
-            'type': self.type,
-            '_from': self._from,
-            '_to': self._to
-        }
+        data = {'type': self.type, '_from': self._from, '_to': self._to}
         self._add_data(data)
 
         return data
@@ -230,7 +237,9 @@ class Blurb(Model):
             Generated object.
         """
         fake = Faker()
-        blurb = fake.paragraph(nb_sentences=3, variable_nb_sentences=True, ext_word_list=None)
+        blurb = fake.paragraph(
+            nb_sentences=3, variable_nb_sentences=True, ext_word_list=None
+        )
         lang = fake.language_code()
         uid = generate_uid()
         return cls(blurb, lang, uid)
@@ -241,11 +250,7 @@ class Blurb(Model):
         Returns:
             Arango document representation
         """
-        data = {
-            'blurb': self.blurb,
-            'uid': self.uid,
-            'lang': self.lang
-        }
+        data = {'blurb': self.blurb, 'uid': self.uid, 'lang': self.lang}
         self._add_data(data)
 
         return data
@@ -280,10 +285,7 @@ class Difficulty(Model):
         Returns:
             Arango document representation
         """
-        data = {
-            'difficulty': self.difficulty,
-            'uid': self.uid,
-        }
+        data = {'difficulty': self.difficulty, 'uid': self.uid}
         self._add_data(data)
 
         return data
@@ -292,7 +294,20 @@ class Difficulty(Model):
 class HtmlText(Model):
     collection = 'html_text'
 
-    def __init__(self, uid, lang, name, author, volpage, prev_uid, next_uid, mtime, text, *args, **kwargs):
+    def __init__(
+        self,
+        uid,
+        lang,
+        name,
+        author,
+        volpage,
+        prev_uid,
+        next_uid,
+        mtime,
+        text,
+        *args,
+        **kwargs,
+    ):
         self.uid = uid
         self.lang = lang
         self.name = name
@@ -342,7 +357,7 @@ class HtmlText(Model):
             'prev_uid': self.prev_uid,
             'next_uid': self.next_uid,
             'mtime': self.mtime,
-            'text': self.text
+            'text': self.text,
         }
         self._add_data(data)
 
@@ -370,7 +385,9 @@ class PoMarkup(Model):
             Generated object.
         """
         fake = Faker()
-        markup = fake.paragraph(nb_sentences=3, variable_nb_sentences=True, ext_word_list=None)
+        markup = fake.paragraph(
+            nb_sentences=3, variable_nb_sentences=True, ext_word_list=None
+        )
         uid = generate_uid()
         return cls(uid, markup)
 
@@ -380,10 +397,7 @@ class PoMarkup(Model):
         Returns:
             Arango document representation
         """
-        data = {
-            'uid': self.uid,
-            'markup': self.markup
-        }
+        data = {'uid': self.uid, 'markup': self.markup}
         self._add_data(data)
 
         return data
@@ -392,7 +406,9 @@ class PoMarkup(Model):
 class PoString(Model):
     collection = 'po_strings'
 
-    def __init__(self, uid, markup_uid, lang, author, author_blurb, strings, *args, **kwargs):
+    def __init__(
+        self, uid, markup_uid, lang, author, author_blurb, strings, *args, **kwargs
+    ):
         self.uid = uid
         self.markup_uid = markup_uid
         self.lang = lang
@@ -436,7 +452,7 @@ class PoString(Model):
             'lang': self.lang,
             'author': self.author,
             'author_blurb': self.author_blurb,
-            'strings': self.strings
+            'strings': self.strings,
         }
         self._add_data(data)
 
@@ -492,7 +508,7 @@ class Relationship(Model):
             'to': self.to,
             'type': self.type,
             '_from': self._from,
-            '_to': self._to
+            '_to': self._to,
         }
         self._add_data(data)
 
