@@ -1,10 +1,10 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-ripple/paper-ripple.js';
 
-class SCStepper extends PolymerElement {
-  static get template() {
+class SCStepper extends LitElement {
+  render() {
     return html`
     <style>
       @media print {
@@ -117,40 +117,40 @@ class SCStepper extends PolymerElement {
     </style>
 
     <div class="bar">
-      <div class="button-container">
-        <template is="dom-if" if="[[previous.uid]]">
+      <div class="button-container">        
+        ${this.previous && this.previous.uid ? html`
           <paper-ripple></paper-ripple>
-          <a href="[[_getUrl(previous)]]" class="link">
+          <a href="${this._getUrl(this.previous)}" class="link">
             <div class="button button-left">
               <div class="text">
                 <iron-icon icon="sc-iron-icons:arrow-back" class="arrow arrow-left"></iron-icon>
                 <div class="text-element">
                   <span class="action">Previous</span>
-                  <span class="text-title">[[previous.name]]</span>
+                  <span class="text-title">${this.previous.name}</span>
                 </div>
               </div>
             </div>
-          </a>
-        </template>
+          </a>        
+        ` : ''}
       </div>
 
       <div class="separator"></div>
 
-      <div class="button-container">
-        <template is="dom-if" if="[[next.uid]]">
+      <div class="button-container">        
+        ${this.next && this.next.uid ? html`
           <paper-ripple></paper-ripple>
-          <a href="[[_getUrl(next)]]" class="link">
+          <a href="${this._getUrl(this.next)}" class="link">
             <div class="button button-right">
               <div class="text">
                 <div class="text-element text-element-right">
                   <span class="action">Next</span>
-                  <span class="text-title">[[next.name]]</span>
+                  <span class="text-title">${this.next.name}</span>
                 </div>
                 <iron-icon icon="sc-iron-icons:arrow-forward" class="arrow arrow-right"></iron-icon>
               </div>
             </div>
           </a>
-        </template>
+          ` : ''}
       </div>
 
     </div>`;
@@ -158,15 +158,9 @@ class SCStepper extends PolymerElement {
 
   static get properties() {
     return {
-      next: {
-        type: Object
-      },
-      previous: {
-        type: Object
-      },
-      lang: {
-        type: String
-      }
+      next: { type: Object },
+      previous: { type: Object },
+      lang: { type: String }
     }
   }
 
