@@ -29,7 +29,7 @@ class TextIndexer(ElasticIndexer):
         super().__init__(lang)
 
     def get_extra_state(self):
-        # If this class has changed not much choice but to 
+        # If this class has changed not much choice but to
         # re-index all texts.
         return change_tracker.function_source(TextIndexer)
 
@@ -95,9 +95,9 @@ class TextIndexer(ElasticIndexer):
             'heading': {
                 'title': title,
                 'division': division,
-                'subhead': [e.text_content().strip() for e in others]
+                'subhead': [e.text_content().strip() for e in others],
             },
-            'boost': self.boost_factor(content)
+            'boost': self.boost_factor(content),
         }
 
     def boost_factor(self, content):
@@ -109,10 +109,9 @@ class TextIndexer(ElasticIndexer):
         return boost
 
     def yield_po_texts(self, lang, size, to_add):
-        po_texts = list(get_db().aql.execute(
-            PO_TEXTS_BY_LANG,
-            bind_vars={'lang': lang}
-        ))
+        po_texts = list(
+            get_db().aql.execute(PO_TEXTS_BY_LANG, bind_vars={'lang': lang})
+        )
 
         if not po_texts:
             return
@@ -142,9 +141,13 @@ class TextIndexer(ElasticIndexer):
                 'mtime': int(text['mtime']),
                 'heading': {
                     'title': self.fix_text(text['title']),
-                    'division': [self.fix_text(text['division_title']) if 'division_title' in text else '']
+                    'division': [
+                        self.fix_text(text['division_title'])
+                        if 'division_title' in text
+                        else ''
+                    ],
                 },
-                'content': '\n\n'.join(strings.values())
+                'content': '\n\n'.join(strings.values()),
             }
 
             chunk_size += len(action['content'].encode('utf-8'))
@@ -158,10 +161,7 @@ class TextIndexer(ElasticIndexer):
             yield chunk
 
     def yield_html_texts(self, lang, size, to_add):
-        html_texts = list(get_db().aql.execute(
-            TEXTS_BY_LANG,
-            bind_vars={'lang': lang}
-        ))
+        html_texts = list(get_db().aql.execute(TEXTS_BY_LANG, bind_vars={'lang': lang}))
 
         if not html_texts:
             return
@@ -193,7 +193,7 @@ class TextIndexer(ElasticIndexer):
                     'author_uid': author_uid,
                     'author_short': text['author_short'],
                     'is_root': lang == root_lang,
-                    'mtime': int(text['mtime'])
+                    'mtime': int(text['mtime']),
                 }
 
                 action.update(self.extract_fields_from_html(html_bytes))
@@ -210,23 +210,29 @@ class TextIndexer(ElasticIndexer):
             yield chunk
 
     def yield_actions_for_lang(self, lang, size):
-        stored_mtimes = {hit["_id"]: hit["_source"]["mtime"] for hit in scan(self.es,
-                                                                             index=self.index_name,
-                                                                             doc_type="text",
-                                                                             _source_include=[
-                                                                                 "mtime"],
-                                                                             query=None,
-                                                                             size=500)}
-        current_html_mtimes = list(get_db().aql.execute(CURRENT_MTIMES,
-                                                        bind_vars={
-                                                            'lang': self.lang,
-                                                            '@collection': 'html_text'
-                                                        }))
-        current_po_mtimes = list(get_db().aql.execute(CURRENT_MTIMES,
-                                                      bind_vars={
-                                                          'lang': self.lang,
-                                                          '@collection': 'po_strings'
-                                                      }))
+        stored_mtimes = {
+            hit["_id"]: hit["_source"]["mtime"]
+            for hit in scan(
+                self.es,
+                index=self.index_name,
+                doc_type="text",
+                _source_include=["mtime"],
+                query=None,
+                size=500,
+            )
+        }
+        current_html_mtimes = list(
+            get_db().aql.execute(
+                CURRENT_MTIMES,
+                bind_vars={'lang': self.lang, '@collection': 'html_text'},
+            )
+        )
+        current_po_mtimes = list(
+            get_db().aql.execute(
+                CURRENT_MTIMES,
+                bind_vars={'lang': self.lang, '@collection': 'po_strings'},
+            )
+        )
 
         to_add = set()
         to_delete = set(stored_mtimes)
@@ -240,10 +246,7 @@ class TextIndexer(ElasticIndexer):
 
         delete_actions = []
         for _id in to_delete:
-            delete_actions.append({
-                '_id': _id,
-                '_op_type': 'delete'
-            })
+            delete_actions.append({'_id': _id, '_op_type': 'delete'})
         if delete_actions:
             print(f'Deleting {len(delete_actions)} documents from {lang} index')
             yield delete_actions
@@ -264,7 +267,9 @@ class TextIndexer(ElasticIndexer):
         except Exception as e:
             logger.warning(
                 'No indexer settings or invalid settings for language "{}" ({}), using "default"'.format(
-                    config_name, type(e)))
+                    config_name, type(e)
+                )
+            )
             try:
                 return ElasticIndexer.load_index_config('default')
             except:

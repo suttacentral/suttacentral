@@ -16,8 +16,10 @@ from common.extensions import make_cache_key, cache
 
 from ebooklib import epub
 
+
 def monkey_patch_EpubWriter():
     from ebooklib.epub import EpubWriter
+
     # evil function that replaces h2 with h1 in nav
 
     if not hasattr(EpubWriter, '_get_nav'):
@@ -27,8 +29,9 @@ def monkey_patch_EpubWriter():
     def _get_nav(self, item):
         result = _old_get_nav(self, item)
         return regex.sub(rb'<h2([^>]*)>(.*)</h2>', rb'<h1\1>\2</h1>', result)
-    
+
     EpubWriter._get_nav = _get_nav
+
 
 monkey_patch_EpubWriter()
 
@@ -195,74 +198,88 @@ def create_epub(data, language, filename, debug=False):
     
 
     '''
-    
+
     is_root = len(language) == 3
 
-    
     author = data['author']
     if is_root:
         about = None
     else:
         about = f'A translation of {data["root_title"]} by'
-    
-    cover_data = make_cover_png(title=data['title'], author=author, about=about, debug=False)
+
+    cover_data = make_cover_png(
+        title=data['title'], author=author, about=about, debug=False
+    )
 
     book = epub.EpubBook()
 
     book_id = f"SuttaCentral:{data['author']}:{data['title']}"
-    
+
     book.set_identifier(book_id)
     book.set_title(data['title'])
     book.set_language(language)
 
     book.add_author(data['author'])
 
-    
-
     font_dir = pathlib.Path('/tmp/font_dir')
     if not font_dir.exists():
         font_dir.mkdir()
-    
-    fonts = subset_files_by_names(names=['RaloksPE-Regular', 'RaloksPE-Italic', 'RaloksPE-Bold'], text=str(data), out_dir=font_dir)
+
+    fonts = subset_files_by_names(
+        names=['RaloksPE-Regular', 'RaloksPE-Italic', 'RaloksPE-Bold'],
+        text=str(data),
+        out_dir=font_dir,
+    )
 
     for name, font_file in fonts.items():
-        font = epub.EpubItem(uid=name, file_name=f'fonts/{name}.woff', media_type='application/font-woff')
+        font = epub.EpubItem(
+            uid=name, file_name=f'fonts/{name}.woff', media_type='application/font-woff'
+        )
         book.add_item(font)
 
-    style_sheet = epub.EpubItem(uid="style", file_name='style/fonts.css', media_type='text/css', content=stylesheet)
+    style_sheet = epub.EpubItem(
+        uid="style",
+        file_name='style/fonts.css',
+        media_type='text/css',
+        content=stylesheet,
+    )
     book.add_item(style_sheet)
 
     book.set_cover('cover.png', cover_data)
 
     chapters = []
 
-    #book.add_page(title=data['title'], content='<img src="../images/cover.png" alt="cover image">', uid='cover')
-    intro_page = epub.EpubHtml(title='Introduction', file_name='intro.xhtml', lang='en', uid='intro')
+    # book.add_page(title=data['title'], content='<img src="../images/cover.png" alt="cover image">', uid='cover')
+    intro_page = epub.EpubHtml(
+        title='Introduction', file_name='intro.xhtml', lang='en', uid='intro'
+    )
     intro_page.set_content(introduction_page)
     book.add_item(intro_page)
     chapters.append(intro_page)
-   
+
     for page in data['pages']:
-        title = page.get('long_title') or page.get('title')        
+        title = page.get('long_title') or page.get('title')
         if not title:
             title = page['acronym']
-        chapter = epub.EpubHtml(title=title, file_name=page['uid'] + '.xhtml', uid=page['uid'])
+        chapter = epub.EpubHtml(
+            title=title, file_name=page['uid'] + '.xhtml', uid=page['uid']
+        )
         chapter.set_content(page['html'])
         chapters.append(chapter)
         book.add_item(chapter)
-    
+
     for chapter in chapters:
         chapter.add_item(style_sheet)
 
     book.toc = (
-        (epub.Section('Front Matter'), (
-            epub.Link('intro.xhtml', 'Introduction', 'intro'),
-            epub.Link('guide.xhtml', 'Guide', 'guide')
-        )
+        (
+            epub.Section('Front Matter'),
+            (
+                epub.Link('intro.xhtml', 'Introduction', 'intro'),
+                epub.Link('guide.xhtml', 'Guide', 'guide'),
+            ),
         ),
-        (epub.Section('Discourses'),
-            tuple(chapters[2:])
-        )
+        (epub.Section('Discourses'), tuple(chapters[2:])),
     )
 
     book.spine = ['nav'] + chapters
@@ -276,8 +293,7 @@ def create_epub(data, language, filename, debug=False):
 
     with filename.open('rb') as f:
         file_hash = hashlib.md5(str(data).encode()).hexdigest()[:6]
-    
-    
+
     epub_file = filename.parent / f'{filename.stem}_{file_hash}.epub'
     filename.rename(epub_file)
     return epub_file
@@ -285,23 +301,26 @@ def create_epub(data, language, filename, debug=False):
 
 def generate_epub(uid, language, author):
     data = get_html_data(uid, language, author)
-        
+
     filename = export_dir / f'{uid}_{language}_{author}.epub'
-    
+
     epub_file = create_epub(data, language, filename, debug=False)
-    
+
     result = {
         'uid': uid,
         'language': language,
         'author': author,
         'format': 'epub',
         'file': epub_file,
-        'href': f'{current_app.config["SERVER_ADDRESS"]}/ebook/{epub_file.name}'
+        'href': f'{current_app.config["SERVER_ADDRESS"]}/ebook/{epub_file.name}',
     }
 
     return result
 
+
 _cache = {}
+
+
 class EBook(Resource):
     def get(self, name, **kwargs):
         filepath = pathlib.Path(name)
@@ -312,7 +331,7 @@ class EBook(Resource):
         cache_key = f'{uid}_{language}_{author}_{details}'
         if cache_key not in _cache:
             if ebook_format != '.epub':
-                return 500, "Format not supported"           
+                return 500, "Format not supported"
 
             result = generate_epub(uid, language, author)
             _cache[cache_key] = result

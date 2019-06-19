@@ -6,16 +6,36 @@ from flask import Blueprint, Flask, redirect
 from flask_cors import CORS
 from flask_restful import Api
 
-from api.views import (Currencies, Donations, Languages, LookupDictionaries, Menu, Paragraphs, Parallels, Sutta,
-                       SuttaplexList, Images, Epigraphs, WhyWeRead, DictionaryFull, Glossary, DictionaryAdjacent,
-                       DictionarySimilar, Expansion, CollectionUrlList, StripePublicKey, PWASizes, Redirect,
-                       TranslationCountByDivision, TranslationCountByLanguage)
+from api.views import (
+    Currencies,
+    Donations,
+    Languages,
+    LookupDictionaries,
+    Menu,
+    Paragraphs,
+    Parallels,
+    Sutta,
+    SuttaplexList,
+    Images,
+    Epigraphs,
+    WhyWeRead,
+    DictionaryFull,
+    Glossary,
+    DictionaryAdjacent,
+    DictionarySimilar,
+    Expansion,
+    CollectionUrlList,
+    StripePublicKey,
+    PWASizes,
+    Redirect,
+    TranslationCountByDivision,
+    TranslationCountByLanguage,
+)
 from api.ebook.ebook import EBook
 from common.arangodb import ArangoDB
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
 from common.extensions import cache
-
 
 
 def app_factory() -> Tuple[Api, Flask]:
@@ -33,7 +53,9 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Menu, '/menu', '/menu/<path:submenu_id>')
     api.add_resource(SuttaplexList, '/suttaplex/<path:uid>')
     api.add_resource(Parallels, '/parallels/<path:uid>')
-    api.add_resource(Sutta, '/suttas/<string:uid>/<string:author_uid>', '/suttas/<string:uid>')
+    api.add_resource(
+        Sutta, '/suttas/<string:uid>/<string:author_uid>', '/suttas/<string:uid>'
+    )
     api.add_resource(LookupDictionaries, '/dictionaries/lookup')
     api.add_resource(Currencies, '/currencies')
     api.add_resource(Donations, '/donate')
@@ -50,7 +72,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(PWASizes, '/pwa/sizes')
     api.add_resource(Redirect, '/redirect/<path:url>')
     api.add_resource(EBook, '/ebook/<string:name>')
-    
+
     app.register_blueprint(api_bp)
     register_extensions(app)
 
