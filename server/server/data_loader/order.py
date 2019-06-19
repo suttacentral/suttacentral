@@ -152,4 +152,4 @@ def add_next_prev_using_menu_data(db):
                 for _key, update in collection_updates.items()
                 if _key in matching_keys
             ]
-            collection.import_bulk(updates, on_duplicate="update")
+            collection.import_bulk_logged(updates, on_duplicate="update")
