@@ -14,10 +14,7 @@ from common.arangodb import get_db
 
 MEAN_DIFFERENCE = 240
 BASE_URL = 'http://sc-nginx/api'
-LOOKUP_LANGUAGES = {
-    'pli': ['en', 'es', 'de', 'zh', 'pt', 'id', 'nl'],
-    'lzh': ['en']
-}
+LOOKUP_LANGUAGES = {'pli': ['en', 'es', 'de', 'zh', 'pt', 'id', 'nl'], 'lzh': ['en']}
 
 
 def get_size(response: Response) -> int:
@@ -52,15 +49,21 @@ def make_request(url: str, stream=True) -> Response:
 
 
 def get_non_root_languages(db: Database) -> List[str]:
-    return list(db.aql.execute('FOR l IN language FILTER l.is_root == false RETURN l.iso_code'))
+    return list(
+        db.aql.execute('FOR l IN language FILTER l.is_root == false RETURN l.iso_code')
+    )
 
 
-def generate_menu_urls(menu_uids: Iterable[str], lang: str) -> Generator[str, None, None]:
+def generate_menu_urls(
+    menu_uids: Iterable[str], lang: str
+) -> Generator[str, None, None]:
     for menu_uid in menu_uids:
         yield get_menu_url(menu_uid, lang)
 
 
-def generate_suttaplex_urls(suttaplex_uids: Iterable[str], lang: str) -> Generator[str, None, None]:
+def generate_suttaplex_urls(
+    suttaplex_uids: Iterable[str], lang: str
+) -> Generator[str, None, None]:
     for suttaplex_uid in suttaplex_uids:
         yield get_suttaplex_url(suttaplex_uid, lang)
 
@@ -75,30 +78,29 @@ def generate_text_urls(text_data: List[dict]) -> Generator[str, None, None]:
 
 
 def generate_parallel_urls(uids: Iterable[str]) -> Generator[str, None, None]:
-        for uid in uids:
-            yield get_parallel_url(uid)
+    for uid in uids:
+        yield get_parallel_url(uid)
 
 
 def generate_urls(lang: str, root=False) -> Generator[str, None, None]:
-        res = make_request(get_lang_collection_url(lang, root), stream=False)
-        res_data = json.loads(res.content)
+    res = make_request(get_lang_collection_url(lang, root), stream=False)
+    res_data = json.loads(res.content)
 
-        if not root:
-            yield from generate_menu_urls(res_data['menu'], lang)
+    if not root:
+        yield from generate_menu_urls(res_data['menu'], lang)
 
-            yield from generate_suttaplex_urls(res_data['suttaplex'], lang)
+        yield from generate_suttaplex_urls(res_data['suttaplex'], lang)
 
-        yield from generate_text_urls(res_data['texts'])
+    yield from generate_text_urls(res_data['texts'])
 
-        yield 'parallels'
+    yield 'parallels'
 
-        yield from generate_parallel_urls((t['uid'] for t in res_data['texts']))
+    yield from generate_parallel_urls((t['uid'] for t in res_data['texts']))
 
 
 def check_language(lang: str, root=False) -> Dict[str, int]:
     data_type = 'base'
-    sizes = {'base': 0,
-             'parallels': 0}
+    sizes = {'base': 0, 'parallels': 0}
 
     for url in tqdm(generate_urls(lang, root=root)):
         if url == 'parallels':
@@ -117,7 +119,9 @@ def get_root_size() -> Dict[str, int]:
 
 def save_results(data: dict):
     transformed_data = [{'lang': k, **v} for k, v in data.items()]
-    with (Path(os.path.dirname(os.path.abspath(__file__))) / 'pwa_sizes.json').open('w') as f:
+    with (Path(os.path.dirname(os.path.abspath(__file__))) / 'pwa_sizes.json').open(
+        'w'
+    ) as f:
         json.dump(transformed_data, f, ensure_ascii=False, indent=2)
 
 

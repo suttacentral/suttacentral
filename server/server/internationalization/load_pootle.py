@@ -26,15 +26,22 @@ class Loader:
         self._reset_counters()
 
         collection = self.db[collection_name]
-        for file in tqdm(list((GENERATED_PO_FILES_DIR / f'server_{collection_name}').glob('*.po'))):
+        for file in tqdm(
+            list((GENERATED_PO_FILES_DIR / f'server_{collection_name}').glob('*.po'))
+        ):
             po_data = polib.pofile(str(file))
 
-            self._process_entries(po_data, collection, translated_field, file.stem, uid_field)
+            self._process_entries(
+                po_data, collection, translated_field, file.stem, uid_field
+            )
 
         print(f'UPDATED {self.counter_updated}; CREATED {self.counter_created}')
 
     def _process_entries(self, po_data, collection, translated_field, lang, uid_field):
-        in_lang = {document[uid_field]: document for document in collection.find({'lang': lang})}
+        in_lang = {
+            document[uid_field]: document
+            for document in collection.find({'lang': lang})
+        }
         for entry in po_data:
             self._process_entry(entry, collection, translated_field, lang, in_lang)
 
@@ -51,7 +58,12 @@ class Loader:
                 return
             update = True
         except KeyError:
-            document = {'uid': uid, 'lang': language, '_key': f'{uid}_{language}', 'root': False}
+            document = {
+                'uid': uid,
+                'lang': language,
+                '_key': f'{uid}_{language}',
+                'root': False,
+            }
 
         document[translated_field] = field
 

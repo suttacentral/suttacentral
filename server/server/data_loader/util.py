@@ -36,8 +36,9 @@ def humansortkey(string, _split=regex.compile(r'(\d+(?:[.-]\d+)*)').split):
 
     """
     # With split, every second element will be the one in the capturing group.
-    return [numericsortkey(s) if i % 2 else s
-            for i, s in enumerate(_split(str(string)))]
+    return [
+        numericsortkey(s) if i % 2 else s for i, s in enumerate(_split(str(string)))
+    ]
 
 
 def recursive_merge(dict1, dict2):
@@ -135,6 +136,7 @@ class TwoWayDict(dict):
     def __len__(self):
         """Returns the number of connections"""
         return dict.__len__(self) // 2
+
 
 def sort_and_groupby(iterable, function):
     return itertools.groupby(sorted(iterable, key=function), key=function)
