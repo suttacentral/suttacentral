@@ -357,14 +357,6 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Gr`}
-                </td>
-                <td>
-                  ${_`Gāndhārī`}
-                </td>
-              </tr>
-              <tr>
-                <td>
                   ${_`GRETIL`}
                 </td>
                 <td>
@@ -389,10 +381,10 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Hsan`}
+                  ${_`BHS`}
                 </td>
                 <td>
-                  ${_`Hybrid Sanskrit`}
+                  ${_`Buddhist Hybrid Sanskrit`}
                 </td>
               </tr>
               <tr>
@@ -913,14 +905,6 @@ class SCAbbreviationsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${_`Sekhiya`}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  ${_`Skt`}
-                </td>
-                <td>
-                  ${_`Sanskrit`}
                 </td>
               </tr>
               <tr>
