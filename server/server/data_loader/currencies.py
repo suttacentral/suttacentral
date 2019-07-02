@@ -19,5 +19,5 @@ def load_currencies(db, additional_info_dir: Path):
                 '_key': f'{entry["symbol"]}_en',
             }
         )
-    currencies_collection.insert_many_logged(data, overwrite=True)
-    currency_names_collection.insert_many_logged(name_data, overwrite=True)
+    currencies_collection.import_bulk_logged(data, wipe=True)
+    currency_names_collection.import_bulk_logged(name_data, wipe=True)

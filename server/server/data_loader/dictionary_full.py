@@ -64,4 +64,4 @@ def load_dictionary_full(db, dictionaries_dir, change_tracker):
 
     dictionary_full_collection.truncate()
     for chunk in chunks(docs, 1000):
-        dictionary_full_collection.insert_many_logged(chunk, on_duplicate="ignore")
+        dictionary_full_collection.import_bulk_logged(chunk, on_duplicate="ignore")
