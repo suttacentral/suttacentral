@@ -260,7 +260,7 @@ class ArangoTextInfoModel(TextInfoModel):
 
     def flush_documents(self):
         print('\033[2K\r' + self.queue[-1]['path'],end='')
-        self.db['html_text'].insert_many(self.queue, overwrite=True)
+        self.db['html_text'].import_bulk_logged(self.queue)
         self.queue.clear()
 
     def update_code_points(self, lang_uid, unicode_points, force=False):

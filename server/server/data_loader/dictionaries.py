@@ -33,4 +33,4 @@ def load_lookups(db, dictionaries_dir):
             )
         except ValueError:
             print(f'unknown dictionary name format {dictionary.stem}')
-    dictionaries_collection.insert_many_logged(docs)
+    dictionaries_collection.import_bulk_logged(docs)

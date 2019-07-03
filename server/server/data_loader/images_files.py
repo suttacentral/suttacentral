@@ -35,7 +35,7 @@ def load_images_links(db):
             )
 
     collection = db['images']
-    collection.insert_many_logged(entries, overwrite=True)
+    collection.import_bulk_logged(entries, wipe=True)
 
 
 def get_data():

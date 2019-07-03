@@ -7,4 +7,4 @@ def load_paragraphs(db, additional_info_dir: Path):
 
     paragraphs_collection = db['paragraphs']
     data = json_load(additional_info_dir / 'paragraphs.json')
-    paragraphs_collection.insert_many_logged(data, overwrite=True)
+    paragraphs_collection.import_bulk_logged(data, wipe=True)

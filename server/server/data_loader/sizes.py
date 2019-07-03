@@ -7,5 +7,5 @@ def load_sizes(containing_dir: Path, db):
     with (containing_dir / 'pwa_sizes.json').open() as f:
         data = json.load(f)
 
-    db.collection('pwa_sizes').insert_many_logged(data, overwrite=True)
+    db.collection('pwa_sizes').import_bulk_logged(data, wipe=True)
     print('DONE')

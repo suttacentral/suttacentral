@@ -59,7 +59,7 @@ class ModelList(list):
         db = get_db()
         collection = db.collection(collection)
 
-        return collection.insert_many_logged([m.document for m in self])
+        return collection.import_bulk_logged([m.document for m in self])
 
 
 class Language(Model):
