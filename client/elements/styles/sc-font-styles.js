@@ -855,7 +855,6 @@ html {
         @apply --sc-skolar-font-size-h1-md;
         @apply --paper-font-common-base;
         font-weight: 400;
-        letter-spacing: -.01em;
         line-height: 40px;
     }
     ;
@@ -888,7 +887,6 @@ html {
         @apply --paper-font-common-base;
         @apply --sc-skolar-font-size-static-subtitle;
         font-weight: 400;
-        letter-spacing: -.012em;
         line-height: 32px;
     }
     ;

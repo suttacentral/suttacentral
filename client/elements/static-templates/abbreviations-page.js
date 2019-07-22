@@ -357,14 +357,6 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Gr`}
-                </td>
-                <td>
-                  ${_`Gāndhārī`}
-                </td>
-              </tr>
-              <tr>
-                <td>
                   ${_`GRETIL`}
                 </td>
                 <td>
@@ -389,10 +381,10 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Hskt`}
+                  ${_`BHS`}
                 </td>
                 <td>
-                  ${_`Hybrid Sanskrit`}
+                  ${_`Buddhist Hybrid Sanskrit`}
                 </td>
               </tr>
               <tr>
@@ -437,6 +429,14 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Kam`}
+                </td>
+                <td>
+                  ${_`Kammavācā`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`KA`}
                 </td>
                 <td>
@@ -453,7 +453,7 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Kdv`}
+                  ${_`Khv`}
                 </td>
                 <td>
                   ${_`Khuddakavatthu`}
@@ -645,7 +645,7 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Oa`}
+                  ${_`OA`}
                 </td>
                 <td>
                   ${_`Other Āgama`}
@@ -653,10 +653,18 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Other-t`}
+                  ${_`Other T`}
                 </td>
                 <td>
                   ${_`Other Taishō`}
+                </td>
+              </tr>
+               <tr>
+                <td>
+                  ${_`OM`}
+                </td>
+                <td>
+                  ${_`Other Mātikā`}
                 </td>
               </tr>
               <tr>
@@ -845,6 +853,14 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Sammitiya`}
+                </td>
+                <td>
+                  ${_`Saṁmitīya Śāstra`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Sb`}
                 </td>
                 <td>
@@ -889,14 +905,6 @@ class SCAbbreviationsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${_`Sekhiya`}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  ${_`Skt`}
-                </td>
-                <td>
-                  ${_`Sanskrit`}
                 </td>
               </tr>
               <tr>
@@ -1053,6 +1061,14 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Utg`}
+                </td>
+                <td>
+                  ${_`Uttaragantha`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Vb`}
                 </td>
                 <td>
@@ -1129,6 +1145,14 @@ class SCAbbreviationsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${_`Yamaka`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Ybs`}
+                </td>
+                <td>
+                  ${_`Yogācārabhūmi`}
                 </td>
               </tr>
             </table>

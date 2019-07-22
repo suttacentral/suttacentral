@@ -7,7 +7,6 @@ from migrations.exceptions import MigrationException
 
 class TestBaseMigrationClass:
     def test_cant_run_without_migration_id_set(self):
-
         class T(BaseMigration):
             tasks = ['test']
 
@@ -15,7 +14,6 @@ class TestBaseMigrationClass:
             T()
 
     def test_cant_run_without_tasks(self):
-
         class T(BaseMigration):
             migration_id = '123'
 

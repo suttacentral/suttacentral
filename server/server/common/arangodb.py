@@ -1,17 +1,77 @@
 #!/usr/bin/env python3
 # coding=utf-8
 from typing import Union
-
+import re
 from arango import ArangoClient
 from arango.database import Database
+from arango.exceptions import DocumentInsertError
 from flask import current_app, g
 
 import logging
+import pprint
+
+from arango.collection import StandardCollection
+
+
+def explain_error(coll, e, docs, kwargs):
+    # illegal document key, unique constraint violated
+    explained = False
+    if e.error_code in (1221, 1210):
+        existing_keys = set(coll.keys())
+
+        seen = {}
+        for i, doc in enumerate(docs, 0):
+            key = doc['_key']
+            illegal_chars = ''.join(re.findall(r'''[^a-zA-Z0-9_:.@()+,=;$!*'%-]''', key))
+            if illegal_chars:
+                logging.error(f'{coll.name}: document key "{key}" contains illegal characters "{illegal_chars}"')
+                explained = True
+            if e.error_code == 1210:
+                if key in seen:
+                    logging.error(f'{coll.name}: unique constraint violated "{key}"\n\t{doc}\n\t{seen[key][1]}')
+                    
+                    explained = True
+                elif key in existing_keys and not kwargs.get('overwrite'):
+                    logging.error(f'{coll.name}: document {i}, "{key}" has a duplicate key, already in the collection')
+                    explained = True
+            seen[key] = (i, doc)
+    return explained
+
+def import_bulk_logged(self, docs, wipe=False, *args, **kwargs):
+    if 'overwrite' in args:
+        raise ValueError('Overwrite not allowed as it is ambigious, use "wipe=True" to clear collection')
+    try:
+        results = self.import_bulk(docs, overwrite=wipe, *args, **kwargs)
+    except DocumentInsertError as e:
+        logging.error(kwargs)
+        
+        explained = explain_error(self, e, docs, kwargs)
+        if not explained:
+            logging.error(f'{self.name}: Document Insertion Error, [ERR: {e.error_code}]: {e.error_message}, explaination not available, you may proceed to panic and/or despair')
+        raise
+    except Exception as e:
+        logging.error(f'{self.name}: error inserting documents: {e}: {docs}')
+        raise
+
+    for outcome, doc in zip(results, docs):
+        if isinstance(outcome, Exception):
+            if '_key' in doc:
+                if doc["_key"] in outcome.error_message:
+                    logging.error(f'Error inserting document: {outcome.error_message}')
+                else:
+                    logging.error(f'Error inserting document: {outcome.error_message}; key: {doc["_key"]}')
+            else:
+                logging.error(f'Error inserting document: {outcome.error_message}, {doc}')
+
+
+StandardCollection.import_bulk_logged = import_bulk_logged
+del import_bulk_logged
+
 
 class ArangoDB:
     def __init__(self, app=None):
         self.app = app
-        
+
     def connect(self) -> ArangoClient:
         """Connect to the ArangoDB"""
         config = current_app.config['ARANGO_CLIENT']
@@ -60,7 +120,6 @@ class ArangoDB:
         """
         return getattr(g, '_database_client', None)
 
-    
 
 def get_client() -> ArangoClient:
     """
@@ -81,16 +140,22 @@ def get_db() -> Database:
         db = ArangoDB(current_app).db
     return db
 
+
 def get_system_db() -> Database:
     config = current_app.config['ARANGO_CLIENT']
-    db = get_client().db(**{'username': config['username'], 'password': config['password']})
+    db = get_client().db(
+        **{'username': config['username'], 'password': config['password']}
+    )
     return db
+
 
 def delete_db(db: Database):
     get_system_db().delete_database(db.name)
+
 
 def update_views_hack(db):
     # This is a hack to help reduce view corruption in 3.4
     for view in db.views():
         name = view['name']
         db.update_view(name, db.view(name))
+

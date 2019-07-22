@@ -6,12 +6,6 @@ import { SCStaticPage } from '../addons/sc-static-page.js';
 
 
 class SCNamesPage extends SCStaticPage {
-  firstUpdated(changedProperties) {
-    if (this.localize('LocalizationEnabled') && this.localize('LocalizationEnabled') === "false") {                  
-      this.loadFallbackLanguage();
-    }
-  }
-
   render() {
     return html`
     ${staticStyles}

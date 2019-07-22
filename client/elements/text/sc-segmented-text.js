@@ -5,6 +5,7 @@ import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/paper-toast/paper-toast.js';
 import '@polymer/iron-icon/iron-icon.js';
 
+import '../addons/sc-nav-contents';
 import { SCTextPage } from "./sc-text-page.js";
 import './sc-text-options.js';
 import { textStyles } from '../styles/sc-text-styles.js';
@@ -89,6 +90,8 @@ class SCSegmentedText extends SCTextPage {
 
     <iron-a11y-keys id="a11y" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
 
+    <sc-nav-contents items="[[navItems]]"></sc-nav-contents>
+
     <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]" hidden$="[[isTextViewHidden]]"></div>
 
     <template is="dom-if" if="[[_shouldShowError(rootSutta, translatedSutta)]]">
@@ -104,6 +107,10 @@ class SCSegmentedText extends SCTextPage {
 
   static get properties() {
     return {
+      navItems: {
+        type: Array,
+        value: [],
+      },
       rootSutta: {
         type: Object
       },
@@ -264,6 +271,8 @@ class SCSegmentedText extends SCTextPage {
       this._addSegmentedTextualInfoElements();
     }
     this._scrollToSectionInUrl();
+
+    this.navItems = this._prepareNavigation();
   }
 
   _updateView() {
@@ -279,6 +288,8 @@ class SCSegmentedText extends SCTextPage {
       this._computeParagraphs();
     }
     this.dispatch('changeSuttaMetaText', this._computeMeta());
+
+    this.navItems = this._prepareNavigation();
   }
 
   _addTextContent() {
@@ -1274,6 +1285,21 @@ class SCSegmentedText extends SCTextPage {
         this._computeParagraphs();
       }, 0);
     }
+  }
+
+  _prepareNavigation() {
+    const dummyElement = document.createElement('template');
+    dummyElement.innerHTML = this.markup.trim();
+    return Array.from(
+      dummyElement.content.querySelectorAll('h2')
+    ).map(elem => {
+      const id = elem.firstElementChild.id;
+      return { link: id, name: this._stripLeadingOrdering(this.translatedSutta.strings[id]) }
+    })
+  }
+
+  _stripLeadingOrdering(name) {
+    return name.replace(/^\d+\./, '').trim();
   }
 }
 
