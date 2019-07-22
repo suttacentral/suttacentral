@@ -5,6 +5,7 @@
         "INTRODUCTION": "INTRODUCTION",
         "DONATIONS": "DONATIONS",
         "USEOFFLINE": "USE OFFLINE",
+        "OFFLINE": "USE OFFLINE",
         "WHATSNEW": "WHAT'S NEW",
         "error404": "Error 404",
         "pageNotFound": "Page not found",
@@ -26,6 +27,20 @@
         "MIDDLE": "MIDDLE",
         "LINKED": "LINKED",
         "NUMBERED": "NUMBERED",
-        "metaDescriptionText": "Early Buddhist texts and modern translations. Suttas (sutras) from the Tipitaka (Tripitaka) in Pali, Chinese, Sanskrit, and Tibetan with the Buddha's teachings on mindfulness, insight, wisdom, and meditation."
+        "metaDescriptionText": "Early Buddhist texts and modern translations. Suttas (sutras) from the Tipitaka (Tripitaka) in Pali, Chinese, Sanskrit, and Tibetan with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.",
+        "LANGUAGES": "LANGUAGES",
+        "DOWNLOADS": "DOWNLOADS",
+        "INTRODUCTION-TITLE": "Introduction to SuttaCentral",
+        "DONATIONS-TITLE": "SuttaCentral Donations",
+        "OFFLINE-TITLE": "Using SuttaCentral offline",
+        "DOWNLOADS-TITLE": "Downloads",
+        "LANGUAGES-TITLE": "Languages on SuttaCentral",
+        "NUMBERING-TITLE": "Sutta Numbering",
+        "ABBREVIATIONS-TITLE": "Abbreviations",
+        "METHODOLOGY-TITLE": "Methodology and Sources",
+        "ACKNOWLEDGMENTS-TITLE": "Acknowledgements",
+        "LICENSING-TITLE": "Licensing",
+        "ABOUT-TITLE": "About SuttaCentral"
+
     }
 }

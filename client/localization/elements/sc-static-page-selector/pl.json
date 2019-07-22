@@ -5,6 +5,7 @@
     "INTRODUCTION": "WPROWADZENIE",
     "DONATIONS": "DOTACJE",
     "USEOFFLINE": "UŻYWAJ OFFLINE",
+    "OFFLINE": "UŻYWAJ OFFLINE",
     "WHATSNEW": "CO NOWEGO",
     "error404": "Błąd 404",
     "pageNotFound": "Nie znaleziono strony",
@@ -21,6 +22,19 @@
     "ACKNOWLEDGMENTS": "PODZIĘKOWANIA",
     "LICENSING": "LICENCJONOWANIE",
     "ABOUT": "O NAS",
-    "metaDescriptionText": "Wczesne teksty buddyjskie i współczesne tłumaczenia. Suttas (sutry) z Tipitaka (Tripitaka) w Pali, chińskim, sanskrycie i tybetańskim, z naukami Buddy na temat uważności, wglądu, mądrości i medytacji."
+    "metaDescriptionText": "Wczesne teksty buddyjskie i współczesne tłumaczenia. Suttas (sutry) z Tipitaka (Tripitaka) w Pali, chińskim, sanskrycie i tybetańskim, z naukami Buddy na temat uważności, wglądu, mądrości i medytacji.",
+    "LANGUAGES": "JĘZYK",
+    "DOWNLOADS": "DO POBRANIA",
+    "INTRODUCTION-TITLE": "Introduction to SuttaCentral",
+    "DONATIONS-TITLE": "SuttaCentral Donations",
+    "OFFLINE-TITLE": "Używaj SuttaCentral w trybie offline",
+    "DOWNLOADS-TITLE": "Downloads",
+    "LANGUAGES-TITLE": "Languages on SuttaCentral",
+    "NUMBERING-TITLE": "Sutta Numbering",
+    "ABBREVIATIONS-TITLE": "Abbreviations",
+    "METHODOLOGY-TITLE": "Methodology and Sources",
+    "ACKNOWLEDGMENTS-TITLE": "Acknowledgements",
+    "LICENSING-TITLE": "Licensing",
+    "ABOUT-TITLE": "About SuttaCentral"
   }
 }
