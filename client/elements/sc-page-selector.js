@@ -31,7 +31,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
         display: block;
         box-sizing: border-box;
-        height: 100%;
+        height: 100%;        
       }
 
       .container, app-header-layout {
@@ -47,7 +47,11 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
       .toolbar-header, #sc_toolbar {
         background-color: var(--sc-primary-color);
-        white-space: nowrap;
+        white-space: nowrap;                
+      }
+          
+      .smallScreenPadding {
+        padding: 0px;
       }
 
       #toolbar_title_box {
@@ -79,7 +83,10 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       #header {
-        transition: all 200ms !important;
+        transition: all 200ms !important;        
+        --app-header-shadow: {
+          box-shadow: 0px;
+        };        
       }
 
       @media screen and (min-width: 960px) {
@@ -107,6 +114,10 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
           display: none;
         }
       }
+
+      .hideTitle {
+        display: none;
+      }      
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -115,10 +126,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       <app-header-layout fullbleed>
 
         <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header">
-          <app-toolbar class="toolbar-header">
-            <a href="/" class$="[[_shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
-              <paper-icon-button icon="sc-svg-icons:sc-logo-bw" id="to_home_button" title="{{localize('goHome')}}"></paper-icon-button>
-            </a>
+          <app-toolbar id="toolbarHeader" class="toolbar-header">            
             <paper-icon-button icon="sc-iron-icons:menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
 
             <div main-title="" id="toolbar_title_box">
@@ -224,8 +232,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         type: Boolean
       },
       isDrawerOpen: {
-        type: Boolean,
-        observer: '_drawerOpenStateChanged'
+        type: Boolean,          
+        observer: '_drawerOpenStateChanged'        
       },
       localizedStringsPath: {
         type: String,
@@ -235,6 +243,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         type: String
       },
       isNarrowScreen: {
+        type: Boolean
+      },
+      isFirstLoad: {
         type: Boolean
       }
     }
@@ -272,7 +283,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   ready() {
-    super.ready();
+    super.ready();    
+    this.isFirstLoad = true;    
     const lowerCaseRoute = this.route.path.toLowerCase();
     this.set('route.path', lowerCaseRoute);
     if (this._shouldRedirect()) {
@@ -287,15 +299,21 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
       this._showToast(success, e.detail.message);
     });
-    this.addEventListener('webkitfullscreenchange', e => {
+    this.addEventListener('webkitfullscreenchange', e => {            
       const currentZIndex = this.$.header.style.zIndex;
       if (currentZIndex === '-1') {
         this.$.header.style.zIndex = this.originalDrawerZIndex;
       } else {
         this.originalDrawerZIndex = currentZIndex;
         this.$.header.style.zIndex = -1;
-      }
-    });
+      }            
+    });         
+    
+    if (window.innerWidth < 480) {
+      this.$.toolbarHeader.classList.add('smallScreenPadding');
+    } else {
+      this.$.toolbarHeader.classList.remove('smallScreenPadding');
+    }    
   }
 
   _redirectFromLegacyLink() {
@@ -347,7 +365,28 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.shouldShowSearchPage = this._isSearchPage();
     this.shouldShowSuttaTextPage = this._isSuttaTextPage();
     this.shouldShowDictionaryPage = this._isDictionaryPage();
-    this._resolveImports();
+    this._resolveImports();          
+    this._addWindowScrollEvent(this.shouldShowStaticPage);      
+  }
+
+  _addWindowScrollEvent(isStaticPage) {    
+    const toolBarTitleElement = this.$.toolbar_title;      
+  
+    if (isStaticPage) {      
+      toolBarTitleElement.classList.add('hideTitle');      
+    } else {
+      toolBarTitleElement.classList.remove('hideTitle');      
+    } 
+
+    window.onscroll = () => {
+      if (!isStaticPage) return;      
+      let scrollTop = document.documentElement.scrollTop;                  
+      if (scrollTop !== 0) {                        
+        toolBarTitleElement.classList.remove('hideTitle');
+      } else {
+        toolBarTitleElement.classList.add('hideTitle');        
+      }            
+    }        
   }
 
   // Lazy loading for site elements
@@ -370,7 +409,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   // Dispatches the CHANGE_ROUTE action and sets the toolbar attributes.
-  _handleRouteChange() {
+  _handleRouteChange() {    
     const routeName = this._getBaseRouteName();
     if (routeName === '') {
       this.dispatch('changeToolbarTitle', '');
@@ -503,12 +542,13 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
-  _changeView() {
-    this.$.sc_toolbar._closeSearch();
+  _changeView() {    
+    if (!this._isSearchPage())
+      this.$.sc_toolbar._closeSearch();        
   }
 
   // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
-  _toggleDrawer(largeScreenOnly) {
+  _toggleDrawer(largeScreenOnly) {        
     this.dispatchEvent(new CustomEvent('toggleDrawer', {
       detail: { largeScreenOnly: largeScreenOnly },
       composed: true,
@@ -527,11 +567,17 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     return (isDrawerOpen || shouldShowStaticPage) ? 'hidebutton' : '';
   }
 
-  _drawerOpenStateChanged() {
+  _drawerOpenStateChanged() {        
+    if (this.isFirstLoad && this.isDrawerOpen) {
+      this.$.header.classList.add('drawer-closed');
+      this._closeDrawer();
+      this.isFirstLoad = false;
+    }
+
     if (this.isDrawerOpen) {
       this.$.header.classList.remove('drawer-closed');
     } else {
-      this.$.header.classList.add('drawer-closed');
+      this.$.header.classList.add('drawer-closed');      
     }
   }
 

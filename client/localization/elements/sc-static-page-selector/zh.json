@@ -5,6 +5,7 @@
         "INTRODUCTION": "介绍",
         "DONATIONS": "捐赠",
         "USEOFFLINE": "离线使用",
+        "OFFLINE": "离线使用",
         "WHATSNEW": "新项",
         "error404": "故障 404",
         "pageNotFound": "找不到网页",
@@ -21,6 +22,20 @@
         "ACKNOWLEDGMENTS": "致谢",
         "LICENSING": "许可协议",
         "ABOUT": "关于SUTTACENTRAL",
-        "metaDescriptionText": "早期佛教文献和现代译本。关于佛学上的正念，内观，智慧与禅修的巴利文，中文，梵文和藏文的三藏佛典。"
+        "metaDescriptionText": "早期佛教文献和现代译本。关于佛学上的正念，内观，智慧与禅修的巴利文，中文，梵文和藏文的三藏佛典。",
+        "LANGUAGES": "语言",
+        "DOWNLOADS": "下载",
+        "INTRODUCTION-TITLE": "SuttaCentral介绍",
+        "DONATIONS-TITLE": "SuttaCentral捐款",
+        "OFFLINE-TITLE": "无网路下使用SuttaCentral",
+        "DOWNLOADS-TITLE": "下载",
+        "LANGUAGES-TITLE": "Languages on SuttaCentral",
+        "NUMBERING-TITLE": "缩略语",
+        "ABBREVIATIONS-TITLE": "Abbreviations",
+        "METHODOLOGY-TITLE": "方法和来源",
+        "ACKNOWLEDGMENTS-TITLE": "致谢",
+        "LICENSING-TITLE": "许可证",
+        "ABOUT-TITLE": "关于SuttaCentral"
+        
     }
 }

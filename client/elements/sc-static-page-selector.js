@@ -154,7 +154,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         left: 50%;
         z-index: 999;
         transform: translateX(-50%);
-        width: 100%;
+        width: 100%;        
       }
 
       #subtitle_toolbar {
@@ -167,30 +167,54 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
           display: none;
         }
       }
+    
+      .title-home-link {
+        text-decoration: none;
+        background: none;
+        height: 100%;
+        /* display: flex; */
+        align-items: center;
+        justify-content: flex-start;
+        color: var(--sc-tertiary-text-color);   
+        pointer-events: auto;       
+      }
+
+      .title-home-link:hover {
+        background: none;
+      }
+
+      .title-home-link:focus {
+        outline: none;
+      }
+
+      .hideTitle {
+        display: none;
+      }
     </style>
 
     [[_createMetaData(selectedPage, localize)]]
+    [[_changeToolbarTitle(selectedPage, localize)]]
     
     <app-toolbar id="title_toolbar">
-      <div class="title" main-title="">
-        <span class="title-text">
-          <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
-          <h1>SuttaCentral</h1>
-        </span>
-      </div>
+        <div class="title" main-title="">
+          <a class="title-home-link" href="/">
+            <span class="title-text">
+              <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
+              <h1>SuttaCentral</h1>
+            </span>
+          </a>
+        </div>
     </app-toolbar>
     <app-toolbar id="subtitle_toolbar">
       <div class="title" main-title="">
-        <p class="subtitle" lang="{{language}}">{{localize('pageSubtitle')}}</p>
+        <a class="title-home-link" href="/">
+          <p class="subtitle" lang="{{language}}">{{localize('pageSubtitle')}}</p>
+        </a>
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item="">
       <template is="dom-if" if="[[_isToolbarSelected(shouldShowTipitakaToolbar, shouldShowSecondToolbar, shouldShowOrganizationalToolbar, shouldShowAcademicToolbar, shouldShowGuidesToolbar)]]">
-        <paper-tabs id="nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-          <paper-tab class="nav-link" data-name="HOME">
-            <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
-          </paper-tab>
+        <paper-tabs id="nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">          
           <paper-tab class="nav-link" data-name="INTRODUCTION">
             <div>{{localize('INTRODUCTION')}}</div>
             <a class="link-anchor" aria-label$="{{localize('INTRODUCTION')}}" href="/introduction" tabindex="-1"></a>
@@ -211,11 +235,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         </paper-tabs>
       </template>
       <template is="dom-if" if="[[shouldShowSecondToolbar]]">
-        <paper-tabs id="second_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-          <paper-tab class="nav-link" data-name="HOME">
-            <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
-          </paper-tab>
+        <paper-tabs id="second_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">          
           <paper-tab class="nav-link" data-name="SUBJECTS">
             <div>{{localize('SUBJECTS')}}</div>
             <a class="link-anchor" aria-label$="{{localize('SUBJECTS')}}" href="/subjects" tabindex="-1"></a>
@@ -236,11 +256,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       </template>
 
       <template is="dom-if" if="[[shouldShowTipitakaToolbar]]">
-        <paper-tabs id="tipitaka_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-          <paper-tab class="nav-link" data-name="HOME">
-            <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
-          </paper-tab>
+        <paper-tabs id="tipitaka_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">          
           <paper-tab class="nav-link" data-name="DISCOURSES">
             <div>{{localize('DISCOURSES')}}</div>
             <a class="link-anchor" aria-label$="{{localize('DISCOURSES')}}" href="/discourses" tabindex="-1"></a>
@@ -257,11 +273,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       </template>
 
       <template is="dom-if" if="[[shouldShowAcademicToolbar]]">
-        <paper-tabs id="academic_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-          <paper-tab class="nav-link" data-name="HOME">
-            <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
-          </paper-tab>
+        <paper-tabs id="academic_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">          
           <paper-tab class="nav-link" data-name="NUMBERING">
             <div>{{localize('NUMBERING')}}</div>
             <a class="link-anchor" aria-label$="{{localize('NUMBERING')}}" href="/numbering" tabindex="-1"></a>
@@ -278,11 +290,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       </template>
 
       <template is="dom-if" if="[[shouldShowOrganizationalToolbar]]">
-        <paper-tabs id="organizational_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-          <paper-tab class="nav-link" data-name="HOME">
-            <div>{{localize('HOME')}}</div>
-            <a class="link-anchor" aria-label$="{{localize('HOME')}}" href="/home"></a>
-          </paper-tab>
+        <paper-tabs id="organizational_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">          
           <paper-tab class="nav-link" data-name="ACKNOWLEDGMENTS">
             <div>{{localize('ACKNOWLEDGMENTS')}}</div>
             <a class="link-anchor" aria-label$="{{localize('ACKNOWLEDGMENTS')}}" href="/acknowledgments" tabindex="-1"></a>
@@ -518,6 +526,23 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         composed: true
       }
     }));
+  }
+
+  _changeToolbarTitle(pageSelection, localize) {
+    if (!localize) return;
+    const pageNameTitle = localize(`${pageSelection}-TITLE`);            
+    this.dispatch('changeToolbarTitle', pageNameTitle);    
+  }
+
+  static get actions() {
+    return {
+      changeToolbarTitle(title) {
+        return {
+          type: "CHANGE_TOOLBAR_TITLE",
+          title: title
+        }
+      }      
+    }
   }
 }
 
