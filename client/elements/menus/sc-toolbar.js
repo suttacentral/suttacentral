@@ -1,4 +1,4 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html } from 'lit-element';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/paper-listbox/paper-listbox.js';
@@ -8,29 +8,28 @@ import '@polymer/iron-location/iron-location.js';
 import '@polymer/neon-animation/animations/slide-from-right-animation.js';
 
 import './sc-more-menu.js';
-import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-import { Localized } from '../addons/localization-mixin.js';
-import { ReduxMixin } from '../../redux-store.js';
+import { store } from '../../redux-store';
+import { LitLocalized } from '../addons/localization-mixin'
 
 /*
 Base toolbar that appears on the top right in the header of every page. This toolbar is called from the page-selector.
 */
 
-class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
-  static get template() {
+class SCToolbar extends LitLocalized(LitElement) {
+  render() {
     return html`
     <style>
       .white-icon {
         color: var(--sc-tertiary-text-color);
       }
 
-      .toolbar-paper-button {
+      .toolbar-paper-button {        
         --paper-menu-button-dropdown: {
           max-width: 100%;
         };
         --paper-menu-button-content: {
           @apply --shadow-elevation-8dp;
-        };
+        };        
       }
 
       .toolbar-input {
@@ -90,13 +89,18 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .toolbar-link, .toolbar-paper-button {
-        margin: 0 var(--sc-size-sm);
+        /* margin: 0 var(--sc-size-sm); */
+        margin: 0;
+      }
+
+      .smallScreenMargin {
+        margin: 0;
       }
 
       #tools_menu {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: center;        
       }
 
       #more_vert_button {
@@ -104,17 +108,45 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
       }
     </style>
 
-    <iron-location path="{{path}}" query="{{query}}"></iron-location>
+    <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
 
     <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
-      <iron-a11y-keys target="[[search_input]]" keys="enter" on-keys-pressed="_startSearch"></iron-a11y-keys>
-      <paper-icon-button icon="sc-iron-icons:search" title="{{localize('searchTooltip')}}" class="white-icon toolbar-paper-button" on-tap="openSearch"></paper-icon-button>
-      <paper-input class="toolbar-input" label="{{localize('Search')}}" no-label-float="" id="search_input"></paper-input>
-      <paper-icon-button icon="sc-iron-icons:close" class="white-icon toolbar-paper-button" id="close_button" on-tap="_closeSearch"></paper-icon-button>
+      <iron-a11y-keys 
+        target=${this.search_input} 
+        keys="enter" 
+        @keys-pressed="${this._startSearch}">
+      </iron-a11y-keys>
+
+      <paper-icon-button 
+        icon="sc-iron-icons:search" 
+        title="${this.localize('searchTooltip')}" 
+        class="white-icon toolbar-paper-button" 
+        @tap="${this.openSearch}">
+      </paper-icon-button>
+
+      <paper-input 
+        class="toolbar-input" 
+        label="${this.localize('Search')}" 
+        no-label-float="" 
+        id="search_input">
+      </paper-input>
+
+      <paper-icon-button 
+        icon="sc-iron-icons:close"
+        class="white-icon toolbar-paper-button"
+        id="close_button" 
+        @tap="${this._closeSearch}">
+      </paper-icon-button>
 
       <!-- Menu for more options like language and other static pages -->
-      <paper-menu-button class="toolbar-paper-button" horizontal-align="right" open-animation-config="[[paperMenuButtonAnimations]]" ignore-select="" id="more_vert_button" vertical-align="auto">
+      <paper-menu-button 
+        class="toolbar-paper-button" 
+        horizontal-align="right" 
+        .open-animation-config="${this.paperMenuButtonAnimations}" 
+        ignore-select="" 
+        id="more_vert_button" 
+        vertical-align="auto">
         <paper-icon-button icon="sc-iron-icons:more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
         <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">
           <sc-more-menu id="more_menu"></sc-more-menu>
@@ -125,130 +157,161 @@ class SCToolbar extends ReduxMixin(Localized(PolymerElement)) {
 
   static get properties() {
     return {
-      path: {
-        type: String
-      },
-      suttaplexDisplay: {
-        type: Boolean
-      },
-      suttaplexListEnabled: {
-        type: Boolean,
-        statePath: 'suttaplexListDisplay'
-      },
-      query: {
-        type: String
-      },
-      mode: {
-        type: String,
-        statePath: 'toolbarOptions.mode'
-      },
-      localizedStringsPath: {
-        type: String,
-        value: '/localization/elements/sc-toolbar'
-      },
-      // Polymer lint fails if you don't include this:
-      search_input: Object,
-      paperMenuButtonAnimations: {
-        type: Function,
-        value: () => {
-          return [
-            {name: 'fade-in-animation', timing: {delay: 100, duration: 200}},
-            {
-              name: 'paper-menu-grow-width-animation',
-              timing: {
-                delay: 100,
-                duration: 150,
-                easing: 'cubic-bezier(.3,.95,.5,1)'
-              }
-            },
-            {
-              name: 'slide-from-right-animation',
-              timing: {
-                delay: 100,
-                duration: 150,
-                easing: 'cubic-bezier(.3,.95,.5,1)',
-              }
-            },
-            {
-              name: 'paper-menu-grow-height-animation',
-              timing: {
-                delay: 100,
-                duration: 275,
-                easing: 'cubic-bezier(.3,.95,.5,1)'
-              }
-            }
-          ];
-        }
-      }
+      path: { type: String },
+      suttaplexDisplay: { type: Boolean },
+      suttaplexListEnabled: { type: Boolean },
+      query: { type: String },
+      mode: { type: String },
+      localizedStringsPath: { type: String },
+      search_input: { type: Object },
+      searchKeyword: { type: String },
+      paperMenuButtonAnimations: { type: Function }
     }
   }
 
-  static get actions() {
+  constructor() {
+    super();
+    this.path = '';
+    this.suttaplexDisplay = '';
+    this.suttaplexListEnabled = store.getState().suttaplexListDisplay;
+    this.query = '';
+    this.mode = store.getState().toolbarOptions.mode;
+    this.localizedStringsPath = '/localization/elements/sc-toolbar';
+    this.searchKeyword = store.getState().searchQuery;
+    this.search_input = this.shadowRoot.getElementById('search_input');
+    this.paperMenuButtonAnimations = () => {
+      return [
+        {name: 'fade-in-animation', timing: {delay: 100, duration: 200}},
+        {
+          name: 'paper-menu-grow-width-animation',
+          timing: {
+            delay: 100,
+            duration: 150,
+            easing: 'cubic-bezier(.3,.95,.5,1)'
+          }
+        },
+        {
+          name: 'slide-from-right-animation',
+          timing: {
+            delay: 100,
+            duration: 150,
+            easing: 'cubic-bezier(.3,.95,.5,1)',
+          }
+        },
+        {
+          name: 'paper-menu-grow-height-animation',
+          timing: {
+            delay: 100,
+            duration: 275,
+            easing: 'cubic-bezier(.3,.95,.5,1)'
+          }
+        }
+      ];
+    }
+  }
+
+get actions() {
     return {
       toggleSuttaplexDisplay(suttaplexdisplay) {
-        return {
+        store.dispatch({
           type: 'SUTTPLEX_LIST_DISPLAY',
           suttaplexdisplay: suttaplexdisplay
-        }
-      }
+        })
+      },
+      toggleChangeSearchQuery(searchKeyword) {
+        store.dispatch({
+          type: 'CHANGE_SEARCH_QUERY',
+          searchKeyword: searchKeyword
+        })
+      }      
     }
   }
 
-  ready() {
-    super.ready();
-    this.$.more_menu.addEventListener('item-selected', (e) => {
-      this.$.more_vert_button.close();
-    });
+  firstUpdated() {
+    const moreMenuElement = this.shadowRoot.getElementById('more_menu');
+    if (moreMenuElement) {
+      moreMenuElement.addEventListener('item-selected', (e) => {
+        const moreVertButtonElement = this.shadowRoot.getElementById('more_vert_button');
+        moreVertButtonElement.close();
+      });
+    }
+
+    const searchInputElement = this.shadowRoot.getElementById('search_input');
+    if (searchInputElement && this.searchKeyword.length != 0) {
+      searchInputElement.value = this.searchKeyword;
+      this.openSearch();
+    }
   }
 
   // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
   // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
   openSearch() {
-    if (this.$.search_input.classList.contains('opened')) {
+    const searchInputElement = this.shadowRoot.getElementById('search_input');
+    if (searchInputElement.classList.contains('opened')) {
       this._startSearch();
     } else {
-      this.$.search_input.classList.add('opened');
-      this.$.search_input.focus();
-      this.$.close_button.style.display = 'inline-block';
-      this.$.search_input.value = '';
-      let searchSize = 500;
+      searchInputElement.classList.add('opened');
+      this.shadowRoot.getElementById('close_button').style.display = 'inline-block';
+            
       if (window.innerWidth < 1040) {
-        dom(this.root.host.offsetParent).querySelector('#toolbar_title_box')
-          .setAttribute('style', 'visibility:hidden')
+        this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'visibility:hidden');
       }
-      let searchWidth;
-      if (window.innerWidth > 840) {
-        searchWidth = window.innerWidth - searchSize;
-      } else if (window.innerWidth > 480) {
-        searchWidth = window.innerWidth - (searchSize - 210);
-      } else {
-        this.$.tools_menu.classList.add('search-open');
-        searchWidth = window.innerWidth - (searchSize - 320);
+      if (window.innerWidth < 480) {
+        this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'display:none');
+        this.parentNode.querySelector('#drawertoggle').setAttribute('style', 'display:none');
       }
-      if (searchWidth > 360) {
-        searchWidth = 360
-      }
-      this.shadowRoot.querySelector('.opened').style.width = `${searchWidth}px`;
+      this.setOpenedClassWidth();
+      
+      searchInputElement.focus();
+      searchInputElement.value = '';
+    }    
+  }
+
+  setOpenedClassWidth() {
+    let searchSize = 500;
+    let searchWidth;
+    if (window.innerWidth > 840) {
+      searchWidth = window.innerWidth - searchSize;
     }
+    else if (window.innerWidth > 480) {
+      searchWidth = window.innerWidth - (searchSize - 210);
+    }
+    else {
+      this.shadowRoot.getElementById('tools_menu').classList.add('search-open');
+      searchWidth = window.innerWidth - (searchSize - 420);
+    }
+    if (searchWidth > 360) {
+      searchWidth = 360;
+    }
+    this.shadowRoot.querySelector('.opened').style.width = `${searchWidth}px`;
   }
 
   // Closes the searchbox and resets original values.
   _closeSearch() {
-    if (this.$.search_input.classList.contains('opened')) {
-      this.$.search_input.classList.remove('opened');
-      this.$.search_input.removeAttribute('style', 'width');
-      this.$.close_button.style.display = 'none';
-      this.$.tools_menu.classList.remove('search-open');
-      dom(this.root.host.offsetParent).querySelector('#toolbar_title_box')
-        .removeAttribute('style', 'display');
+    const searchInputElement = this.shadowRoot.getElementById('search_input');
+    if (searchInputElement && searchInputElement.classList.contains('opened')) {
+      searchInputElement.value = '';
+      this.actions.toggleChangeSearchQuery('');
+
+      searchInputElement.classList.remove('opened');
+      searchInputElement.removeAttribute('style', 'width');
+
+      this.shadowRoot.getElementById('close_button').style.display = 'none';
+      this.shadowRoot.getElementById('tools_menu').classList.remove('search-open');
+      this.parentNode.querySelector('#toolbar_title_box').removeAttribute('style', 'display');
+      this.parentNode.querySelector('#drawertoggle').removeAttribute('style', 'display');
     }
   }
 
   // Initiates the search function.
-  _startSearch() {
-    const searchQuery = this.$.search_input.value;
-    this.set('path', '/search');
-    this.set('query', `query=${searchQuery}`);
+  _startSearch() {    
+    const searchQuery = this.shadowRoot.getElementById('search_input').value;
+    this.actions.toggleChangeSearchQuery(searchQuery);
+    this.path = '/search';
+    this.query = `query=${searchQuery}`;
+    const pageLocationElement = this.shadowRoot.getElementById('pageLocation');
+    pageLocationElement.path = this.path;
+    pageLocationElement.query = this.query;
   }
 }
 

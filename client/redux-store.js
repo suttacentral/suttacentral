@@ -22,6 +22,7 @@ const initialState = {
         title: '',
     },
     searchParams: {},
+    searchQuery: '',
     suttaText: {},
     suttaMetaText: '',
     textOptions: {
@@ -65,6 +66,8 @@ const reducer = (state, action) => {
                 { toolbarOptions: Object.assign({}, state.toolbarOptions, { title: action.title }) });
         case 'INITIATE_SEARCH':
             return Object.assign({}, state, { searchParams: action.params });
+        case 'CHANGE_SEARCH_QUERY':
+            return Object.assign({}, state, { searchQuery: action.searchKeyword });            
         case 'DOWNLOAD_SUTTA_TEXT':
             return Object.assign({}, state, { suttaText: action.text });
         case 'CHANGE_SUTTA_META_TEXT':
