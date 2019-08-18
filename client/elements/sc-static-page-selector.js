@@ -154,7 +154,7 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         left: 50%;
         z-index: 999;
         transform: translateX(-50%);
-        width: 100%;        
+        width: 100%;
       }
 
       #subtitle_toolbar {
@@ -179,6 +179,10 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         pointer-events: auto;       
       }
 
+      .title-home-logo-link {
+        pointer-events: auto;
+      }      
+
       .title-home-link:hover {
         background: none;
       }
@@ -196,20 +200,16 @@ class SCStaticPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     [[_changeToolbarTitle(selectedPage, localize)]]
     
     <app-toolbar id="title_toolbar">
-        <div class="title" main-title="">
-          <a class="title-home-link" href="/">
-            <span class="title-text">
-              <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
-              <h1>SuttaCentral</h1>
-            </span>
-          </a>
-        </div>
+      <div class="title" main-title="">
+        <span class="title-text">
+          <a class="title-home-logo-link" href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon></a>
+          <a class="title-home-link" href="/"><h1>SuttaCentral</h1></a>
+        </span>
+      </div>
     </app-toolbar>
     <app-toolbar id="subtitle_toolbar">
       <div class="title" main-title="">
-        <a class="title-home-link" href="/">
-          <p class="subtitle" lang="{{language}}">{{localize('pageSubtitle')}}</p>
-        </a>
+        <p class="subtitle" lang="{{language}}"><a class="title-home-link" href="/">{{localize('pageSubtitle')}}</a></p>
       </div>
     </app-toolbar>
     <app-toolbar id="nav_toolbar" bottom-item="">
