@@ -7,7 +7,6 @@
 import { compose, createStore } from "redux";
 import PolymerRedux from "polymer-redux";
 
-
 const initialState = {
     currentRoute: {
         name: 'HOME',
@@ -51,6 +50,7 @@ const initialState = {
     suttaplexListDisplay: false,
     isOnline: true,
     showedLanguagePrompt: false,
+    //sidebar open state
     drawerOpened: false,
 };
 

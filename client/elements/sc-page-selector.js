@@ -97,7 +97,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       #header {
-        transition: all 200ms !important;        
+        transition: all 200ms !important;
         --app-header-shadow: {
           box-shadow: 0px;
         };
@@ -140,7 +140,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       <app-header-layout fullbleed>
 
         <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header">
-          <app-toolbar id="toolbarHeader" class="toolbar-header">            
+          <app-toolbar id="toolbarHeader" class="toolbar-header">
             <paper-icon-button icon="sc-iron-icons:menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
 
             <div main-title="" id="toolbar_title_box">
@@ -247,7 +247,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       },
       isDrawerOpen: {
         type: Boolean,
-        observer: '_drawerOpenStateChanged'        
+        observer: '_drawerOpenStateChanged'
       },
       localizedStringsPath: {
         type: String,
@@ -303,8 +303,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   ready() {
-    super.ready();    
-    this.isFirstLoad = true;    
+    super.ready();
+    this.isFirstLoad = true;
     const lowerCaseRoute = this.route.path.toLowerCase();
     this.set('route.path', lowerCaseRoute);
     if (this._shouldRedirect()) {
@@ -397,13 +397,13 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     }
   }
 
-  _addWindowScrollEvent(isStaticPage) {    
+  _addWindowScrollEvent(isStaticPage) {
     const toolBarTitleElement = this.$.toolbar_title;
   
     if (isStaticPage) {
-      toolBarTitleElement.classList.add('hideTitle');      
+      toolBarTitleElement.classList.add('hideTitle');
     } else {
-      toolBarTitleElement.classList.remove('hideTitle');      
+      toolBarTitleElement.classList.remove('hideTitle');
     }
 
     window.onscroll = () => {
@@ -612,7 +612,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.dispatchEvent(new CustomEvent('closeDrawer', {
       composed: true,
       bubbles: true
-    }));    
+    }));
   }
 
   _shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage) {
@@ -621,12 +621,12 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
   _drawerOpenStateChanged() {
     if (this.isFirstLoad && this.isDrawerOpen && !this.isNarrowScreen) {
-      this.$.header.classList.add('drawer-closed');      
+      this.$.header.classList.add('drawer-closed');
       this._closeDrawer();
       this.isFirstLoad = false;
       this.dispatch('changeDrawerOpenState', false);
     }
-    
+
     if (this.isDrawerOpen) {
       this.$.header.classList.remove('drawer-closed');
     } else {

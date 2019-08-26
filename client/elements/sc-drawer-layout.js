@@ -302,7 +302,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   ready() {
-    super.ready();    
+    super.ready();
     this.removeAttribute('unresolved');
     // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
     this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
@@ -310,15 +310,15 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     this.addEventListener('app-drawer-transitioned', () => this._trapScroll());
     // Lock scroll for the text dialogs:
     this._addScrollLockListeners();
-    this.addEventListener('webkitfullscreenchange', e => {            
+    this.addEventListener('webkitfullscreenchange', e => {
       let drawer = this.shadowRoot.querySelector('.sc-app-drawer');
       const currentZIndex = drawer.style.zIndex;
-      if (currentZIndex === '-1') {        
+      if (currentZIndex === '-1') {
         drawer.style.zIndex = this.originalDrawerZIndex;
       } else {
         this.originalDrawerZIndex = currentZIndex;
         drawer.style.zIndex = -1;
-      }      
+      }
     });
     this.addEventListener('open-dialog', e => this._openDialog(e));
 
@@ -339,7 +339,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   // traps a scroll when app-drawer is opened (fix necessary for iOS devices)
-  _trapScroll() {        
+  _trapScroll() {
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
     if (this.isNarrowScreen) {
       if (appDrawer.hasAttribute('opened')) {
@@ -348,21 +348,21 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       } else {
         enableBodyScroll(this);
       }
-    }    
+    }
   }
 
-  _closeDrawer() {    
+  _closeDrawer() {
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
     if(!this.isNarrowScreen) {
       const contentContainer = this.$.drawer_layout.shadowRoot.querySelector('#contentContainer');
       contentContainer.removeAttribute('drawer-position');
     }
-    appDrawer.close();    
+    appDrawer.close();
     //this.dispatch('changeDrawerOpenState', false);    
   }
 
   // opens the app-drawer when it is not visible.
-  _toggleDrawer(e) {    
+  _toggleDrawer(e) {
     const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
     const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
