@@ -16,7 +16,7 @@ import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js'
 import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock/lib/bodyScrollLock.es6';
 setPassiveTouchGestures(true);
 
-import { ReduxMixin } from '../redux-store.js';
+import { ReduxMixin, store } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 import '../img/sc-svg-icons.js';
 import '../img/sc-iron-icons.js';
@@ -291,12 +291,18 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
           type: 'SET_ONLINE_STATUS',
           isOnline
         };
-      }
+      },
+      changeDrawerOpenState(opened) {
+        return {
+          type: 'CHANGE_DRAWER_OPEN_STATE',
+          drawerOpened: opened
+        }
+      }      
     };
   }
 
   ready() {
-    super.ready();
+    super.ready();    
     this.removeAttribute('unresolved');
     // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
     this.addEventListener('toggleDrawer', (e) => this._toggleDrawer(e));
@@ -304,15 +310,15 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     this.addEventListener('app-drawer-transitioned', () => this._trapScroll());
     // Lock scroll for the text dialogs:
     this._addScrollLockListeners();
-    this.addEventListener('webkitfullscreenchange', e => {
+    this.addEventListener('webkitfullscreenchange', e => {            
       let drawer = this.shadowRoot.querySelector('.sc-app-drawer');
       const currentZIndex = drawer.style.zIndex;
-      if (currentZIndex === '-1') {
+      if (currentZIndex === '-1') {        
         drawer.style.zIndex = this.originalDrawerZIndex;
       } else {
         this.originalDrawerZIndex = currentZIndex;
         drawer.style.zIndex = -1;
-      }
+      }      
     });
     this.addEventListener('open-dialog', e => this._openDialog(e));
 
@@ -333,7 +339,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   // traps a scroll when app-drawer is opened (fix necessary for iOS devices)
-  _trapScroll() {
+  _trapScroll() {        
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
     if (this.isNarrowScreen) {
       if (appDrawer.hasAttribute('opened')) {
@@ -342,20 +348,21 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       } else {
         enableBodyScroll(this);
       }
-    }
+    }    
   }
 
-  _closeDrawer() {
+  _closeDrawer() {    
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
     if(!this.isNarrowScreen) {
       const contentContainer = this.$.drawer_layout.shadowRoot.querySelector('#contentContainer');
       contentContainer.removeAttribute('drawer-position');
     }
-    appDrawer.close();
+    appDrawer.close();    
+    //this.dispatch('changeDrawerOpenState', false);    
   }
 
   // opens the app-drawer when it is not visible.
-  _toggleDrawer(e) {
+  _toggleDrawer(e) {    
     const drawerLayout = this.shadowRoot.querySelector('#drawer_layout');
     const contentContainer = drawerLayout.shadowRoot.querySelector('#contentContainer');
     const appDrawer = this.shadowRoot.querySelector('.sc-app-drawer');
@@ -370,9 +377,17 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
         if (appDrawer.hasAttribute('opened')) {
           // hide drawer
           contentContainer.removeAttribute('drawer-position');
+          this.dispatch('changeDrawerOpenState', false);
         } else {
           // show drawer
           contentContainer.setAttribute('drawer-position', 'left');
+          this.dispatch('changeDrawerOpenState', true);
+        }
+      } else {
+        if (appDrawer.hasAttribute('opened')) {
+          this.dispatch('changeDrawerOpenState', false);
+        } else {
+          this.dispatch('changeDrawerOpenState', true);
         }
       }
       appDrawer.toggle();
