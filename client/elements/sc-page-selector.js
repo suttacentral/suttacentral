@@ -4,7 +4,7 @@ import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import { html, PolymerElement } from '@polymer/polymer';
-import { ReduxMixin } from '../redux-store.js';
+import { ReduxMixin, store } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 
 import './menus/sc-toolbar.js';
@@ -31,7 +31,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
         display: block;
         box-sizing: border-box;
-        height: 100%;        
+        height: 100%;
       }
 
       .container, app-header-layout {
@@ -45,11 +45,21 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         flex-direction: column;
       }
 
+      /* Only static pages use transparent backgrounds, other pages use the original backgrounds. */
       .toolbar-header, #sc_toolbar {
-        background-color: var(--sc-primary-color);
-        white-space: nowrap;                
+        /* background-color: var(--sc-primary-color); */
+        /* background-color: transparent; */
+        white-space: nowrap;
       }
-          
+      
+      .headerPrimaryBackgroundColor {
+        background-color: var(--sc-primary-color);
+      }
+
+      .headerTransparent {
+        background-color: transparent;
+      }
+
       .smallScreenPadding {
         padding: 0px;
       }
@@ -57,6 +67,10 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       #toolbar_title_box {
         width: 1px;
         z-index: -10;
+      }
+
+      .HeaderOpacity {
+        opacity: 0;
       }
 
       #toolbar_title {
@@ -83,10 +97,10 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       #header {
-        transition: all 200ms !important;        
+        transition: all 200ms !important;
         --app-header-shadow: {
           box-shadow: 0px;
-        };        
+        };
       }
 
       @media screen and (min-width: 960px) {
@@ -126,7 +140,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       <app-header-layout fullbleed>
 
         <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header">
-          <app-toolbar id="toolbarHeader" class="toolbar-header">            
+          <app-toolbar id="toolbarHeader" class="toolbar-header">
             <paper-icon-button icon="sc-iron-icons:menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
 
             <div main-title="" id="toolbar_title_box">
@@ -232,8 +246,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         type: Boolean
       },
       isDrawerOpen: {
-        type: Boolean,          
-        observer: '_drawerOpenStateChanged'        
+        type: Boolean,
+        observer: '_drawerOpenStateChanged'
       },
       localizedStringsPath: {
         type: String,
@@ -278,13 +292,19 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
           type: 'SELECT_NAVIGATION_MENU_ITEM',
           id: id
         }
+      },
+      changeDrawerOpenState(opened) {
+        return {
+          type: 'CHANGE_DRAWER_OPEN_STATE',
+          drawerOpened: opened
+        }
       }
     }
   }
 
   ready() {
-    super.ready();    
-    this.isFirstLoad = true;    
+    super.ready();
+    this.isFirstLoad = true;
     const lowerCaseRoute = this.route.path.toLowerCase();
     this.set('route.path', lowerCaseRoute);
     if (this._shouldRedirect()) {
@@ -299,21 +319,21 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
       this._showToast(success, e.detail.message);
     });
-    this.addEventListener('webkitfullscreenchange', e => {            
+    this.addEventListener('webkitfullscreenchange', e => {
       const currentZIndex = this.$.header.style.zIndex;
       if (currentZIndex === '-1') {
         this.$.header.style.zIndex = this.originalDrawerZIndex;
       } else {
         this.originalDrawerZIndex = currentZIndex;
         this.$.header.style.zIndex = -1;
-      }            
-    });         
+      }
+    });
     
     if (window.innerWidth < 480) {
       this.$.toolbarHeader.classList.add('smallScreenPadding');
     } else {
       this.$.toolbarHeader.classList.remove('smallScreenPadding');
-    }    
+    }
   }
 
   _redirectFromLegacyLink() {
@@ -365,28 +385,60 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.shouldShowSearchPage = this._isSearchPage();
     this.shouldShowSuttaTextPage = this._isSuttaTextPage();
     this.shouldShowDictionaryPage = this._isDictionaryPage();
-    this._resolveImports();          
-    this._addWindowScrollEvent(this.shouldShowStaticPage);      
+    this._resolveImports();
+    this._addWindowScrollEvent(this.shouldShowStaticPage);
+    // window.onresize = () => {
+      //TODO
+    // }
+
+    if (!this.shouldShowStaticPage) {
+      this.$.toolbarHeader.classList.add('headerPrimaryBackgroundColor');
+      this.$.toolbarHeader.classList.remove('headerTransparent');
+    }
   }
 
-  _addWindowScrollEvent(isStaticPage) {    
-    const toolBarTitleElement = this.$.toolbar_title;      
+  _addWindowScrollEvent(isStaticPage) {
+    const toolBarTitleElement = this.$.toolbar_title;
   
-    if (isStaticPage) {      
-      toolBarTitleElement.classList.add('hideTitle');      
+    if (isStaticPage) {
+      toolBarTitleElement.classList.add('hideTitle');
     } else {
-      toolBarTitleElement.classList.remove('hideTitle');      
-    } 
+      toolBarTitleElement.classList.remove('hideTitle');
+    }
 
     window.onscroll = () => {
-      if (!isStaticPage) return;      
-      let scrollTop = document.documentElement.scrollTop;                  
-      if (scrollTop !== 0) {                        
-        toolBarTitleElement.classList.remove('hideTitle');
+      if (!isStaticPage) return;
+      let scrollTop = document.documentElement.scrollTop;
+      const headerElement = this.$.toolbarHeader;
+
+      if (scrollTop >= 265) {
+        headerElement.classList.add('headerPrimaryBackgroundColor');
+        headerElement.classList.remove('headerTransparent');
       } else {
-        toolBarTitleElement.classList.add('hideTitle');        
-      }            
-    }        
+        headerElement.classList.remove('headerPrimaryBackgroundColor');
+        headerElement.classList.add('headerTransparent');
+      }
+      
+      if (scrollTop <= 212) {
+        toolBarTitleElement.classList.add('hideTitle');
+      } else {
+        toolBarTitleElement.classList.remove('hideTitle');
+      }
+
+      if (scrollTop === 212) {
+        headerElement.classList.add('HeaderOpacity');
+      } else {
+        headerElement.classList.remove('HeaderOpacity');
+      }
+
+      if (window.innerWidth < 480) {
+        if (scrollTop >= 53 && scrollTop <= 159) {
+          headerElement.classList.add('HeaderOpacity');
+        } else {
+          headerElement.classList.remove('HeaderOpacity');
+        }
+      }
+    }
   }
 
   // Lazy loading for site elements
@@ -409,7 +461,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   // Dispatches the CHANGE_ROUTE action and sets the toolbar attributes.
-  _handleRouteChange() {    
+  _handleRouteChange() {
     const routeName = this._getBaseRouteName();
     if (routeName === '') {
       this.dispatch('changeToolbarTitle', '');
@@ -542,13 +594,13 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
-  _changeView() {    
+  _changeView() {
     if (!this._isSearchPage())
-      this.$.sc_toolbar._closeSearch();        
+      this.$.sc_toolbar._closeSearch();
   }
 
   // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
-  _toggleDrawer(largeScreenOnly) {        
+  _toggleDrawer(largeScreenOnly) {
     this.dispatchEvent(new CustomEvent('toggleDrawer', {
       detail: { largeScreenOnly: largeScreenOnly },
       composed: true,
@@ -567,17 +619,23 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     return (isDrawerOpen || shouldShowStaticPage) ? 'hidebutton' : '';
   }
 
-  _drawerOpenStateChanged() {        
-    if (this.isFirstLoad && this.isDrawerOpen) {
+  _drawerOpenStateChanged() {
+    if (this.isFirstLoad && this.isDrawerOpen && !this.isNarrowScreen) {
       this.$.header.classList.add('drawer-closed');
       this._closeDrawer();
       this.isFirstLoad = false;
+      this.dispatch('changeDrawerOpenState', false);
     }
 
     if (this.isDrawerOpen) {
       this.$.header.classList.remove('drawer-closed');
     } else {
-      this.$.header.classList.add('drawer-closed');      
+      this.$.header.classList.add('drawer-closed');
+    }
+
+    let drawerOpened = store.getState().drawerOpened;
+    if (!drawerOpened && this.isDrawerOpen) {
+      this._closeDrawer();
     }
   }
 

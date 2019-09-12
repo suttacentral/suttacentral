@@ -7,7 +7,6 @@
 import { compose, createStore } from "redux";
 import PolymerRedux from "polymer-redux";
 
-
 const initialState = {
     currentRoute: {
         name: 'HOME',
@@ -51,6 +50,8 @@ const initialState = {
     suttaplexListDisplay: false,
     isOnline: true,
     showedLanguagePrompt: false,
+    //sidebar open state
+    drawerOpened: false,
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -67,7 +68,9 @@ const reducer = (state, action) => {
         case 'INITIATE_SEARCH':
             return Object.assign({}, state, { searchParams: action.params });
         case 'CHANGE_SEARCH_QUERY':
-            return Object.assign({}, state, { searchQuery: action.searchKeyword });            
+            return Object.assign({}, state, { searchQuery: action.searchKeyword });
+        case 'CHANGE_DRAWER_OPEN_STATE':
+            return Object.assign({}, state, { drawerOpened: action.drawerOpened });
         case 'DOWNLOAD_SUTTA_TEXT':
             return Object.assign({}, state, { suttaText: action.text });
         case 'CHANGE_SUTTA_META_TEXT':
