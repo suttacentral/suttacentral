@@ -1288,13 +1288,14 @@ class SCSegmentedText extends SCTextPage {
   }
 
   _prepareNavigation() {
+    let sutta = this.translatedSutta ? this.translatedSutta : this.rootSutta;
     const dummyElement = document.createElement('template');
     dummyElement.innerHTML = this.markup.trim();
     return Array.from(
       dummyElement.content.querySelectorAll('h2')
     ).map(elem => {
       const id = elem.firstElementChild.id;
-      return { link: id, name: this._stripLeadingOrdering(this.translatedSutta.strings[id]) }
+      return { link: id, name: this._stripLeadingOrdering(sutta.strings[id]) };
     })
   }
 
