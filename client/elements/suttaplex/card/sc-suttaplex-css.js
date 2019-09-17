@@ -421,6 +421,7 @@ export const parallelItemCss = html`
   
   .disabled {
     cursor: default;
+    background-color: #f4f3f1;
   }
   
   .disabled paper-ripple {
