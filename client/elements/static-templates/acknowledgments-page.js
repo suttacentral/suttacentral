@@ -232,7 +232,7 @@ class AcknowledgmentsPage extends SCStaticPage {
                   ${_`Anagarika Sabbamitta`}
                 </td>
                 <td>
-                  ${_`SuttaCentral Voice development team, German translation.`}
+                  ${_`SuttaCentral Voice development team, German translation, text preparation.`}
                 </td>
               </tr>
               <tr>
