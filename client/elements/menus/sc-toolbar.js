@@ -23,13 +23,13 @@ class SCToolbar extends LitLocalized(LitElement) {
         color: var(--sc-tertiary-text-color);
       }
 
-      .toolbar-paper-button {        
+      .toolbar-paper-button {
         --paper-menu-button-dropdown: {
           max-width: 100%;
         };
         --paper-menu-button-content: {
           @apply --shadow-elevation-8dp;
-        };        
+        };
       }
 
       .toolbar-input {
@@ -100,7 +100,7 @@ class SCToolbar extends LitLocalized(LitElement) {
       #tools_menu {
         display: flex;
         justify-content: space-between;
-        align-items: center;        
+        align-items: center;
       }
 
       #more_vert_button {
@@ -112,40 +112,40 @@ class SCToolbar extends LitLocalized(LitElement) {
 
     <div id="tools_menu">
       <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
-      <iron-a11y-keys 
-        target=${this.search_input} 
-        keys="enter" 
+      <iron-a11y-keys
+        target=${this.search_input}
+        keys="enter"
         @keys-pressed="${this._startSearch}">
       </iron-a11y-keys>
 
-      <paper-icon-button 
-        icon="sc-iron-icons:search" 
-        title="${this.localize('searchTooltip')}" 
-        class="white-icon toolbar-paper-button" 
+      <paper-icon-button
+        icon="sc-iron-icons:search"
+        title="${this.localize('searchTooltip')}"
+        class="white-icon toolbar-paper-button"
         @tap="${this.openSearch}">
       </paper-icon-button>
 
-      <paper-input 
-        class="toolbar-input" 
-        label="${this.localize('Search')}" 
-        no-label-float="" 
+      <paper-input
+        class="toolbar-input"
+        label="${this.localize('Search')}"
+        no-label-float=""
         id="search_input">
       </paper-input>
 
-      <paper-icon-button 
+      <paper-icon-button
         icon="sc-iron-icons:close"
         class="white-icon toolbar-paper-button"
-        id="close_button" 
+        id="close_button"
         @tap="${this._closeSearch}">
       </paper-icon-button>
 
       <!-- Menu for more options like language and other static pages -->
-      <paper-menu-button 
-        class="toolbar-paper-button" 
-        horizontal-align="right" 
-        .open-animation-config="${this.paperMenuButtonAnimations}" 
-        ignore-select="" 
-        id="more_vert_button" 
+      <paper-menu-button
+        class="toolbar-paper-button"
+        horizontal-align="right"
+        .openAnimationConfig=${this.paperMenuButtonAnimations}
+        ignore-select=""
+        id="more_vert_button"
         vertical-align="auto">
         <paper-icon-button icon="sc-iron-icons:more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
         <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">
@@ -165,7 +165,7 @@ class SCToolbar extends LitLocalized(LitElement) {
       localizedStringsPath: { type: String },
       search_input: { type: Object },
       searchKeyword: { type: String },
-      paperMenuButtonAnimations: { type: Function }
+      paperMenuButtonAnimations: { type: Object }
     }
   }
 
@@ -179,35 +179,33 @@ class SCToolbar extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/sc-toolbar';
     this.searchKeyword = store.getState().searchQuery;
     this.search_input = this.shadowRoot.getElementById('search_input');
-    this.paperMenuButtonAnimations = () => {
-      return [
-        {name: 'fade-in-animation', timing: {delay: 100, duration: 200}},
-        {
-          name: 'paper-menu-grow-width-animation',
-          timing: {
-            delay: 100,
-            duration: 150,
-            easing: 'cubic-bezier(.3,.95,.5,1)'
-          }
-        },
-        {
-          name: 'slide-from-right-animation',
-          timing: {
-            delay: 100,
-            duration: 150,
-            easing: 'cubic-bezier(.3,.95,.5,1)',
-          }
-        },
-        {
-          name: 'paper-menu-grow-height-animation',
-          timing: {
-            delay: 100,
-            duration: 275,
-            easing: 'cubic-bezier(.3,.95,.5,1)'
-          }
+    this.paperMenuButtonAnimations =  [
+      {name: 'fade-in-animation', timing: {delay: 100, duration: 200}},
+      {
+        name: 'paper-menu-grow-width-animation',
+        timing: {
+          delay: 100,
+          duration: 150,
+          easing: 'cubic-bezier(.3,.95,.5,1)'
         }
-      ];
-    }
+      },
+      {
+        name: 'slide-from-right-animation',
+        timing: {
+          delay: 100,
+          duration: 150,
+          easing: 'cubic-bezier(.3,.95,.5,1)',
+        }
+      },
+      {
+        name: 'paper-menu-grow-height-animation',
+        timing: {
+          delay: 100,
+          duration: 275,
+          easing: 'cubic-bezier(.3,.95,.5,1)'
+        }
+      }
+    ];
   }
 
 get actions() {
@@ -223,11 +221,11 @@ get actions() {
           type: 'CHANGE_SEARCH_QUERY',
           searchKeyword: searchKeyword
         })
-      }      
+      }
     }
   }
 
-  firstUpdated() {
+  firstUpdated() {    
     const moreMenuElement = this.shadowRoot.getElementById('more_menu');
     if (moreMenuElement) {
       moreMenuElement.addEventListener('item-selected', (e) => {
@@ -252,7 +250,7 @@ get actions() {
     } else {
       searchInputElement.classList.add('opened');
       this.shadowRoot.getElementById('close_button').style.display = 'inline-block';
-            
+
       if (window.innerWidth < 1040) {
         this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'visibility:hidden');
       }
@@ -261,10 +259,10 @@ get actions() {
         this.parentNode.querySelector('#drawertoggle').setAttribute('style', 'display:none');
       }
       this.setOpenedClassWidth();
-      
+
       searchInputElement.focus();
       searchInputElement.value = '';
-    }    
+    }
   }
 
   setOpenedClassWidth() {
@@ -304,7 +302,7 @@ get actions() {
   }
 
   // Initiates the search function.
-  _startSearch() {    
+  _startSearch() {
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     this.actions.toggleChangeSearchQuery(searchQuery);
     this.path = '/search';
