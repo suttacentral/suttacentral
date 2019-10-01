@@ -400,7 +400,7 @@ class SCHomePage extends SCStaticPage {
           </paper-card>
         </div>
         <div class="row cards">
-          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="/img/home-page/returninghome.jpeg" alt="${_`What’s here`}">
+          <paper-card class="two-paper-cards paper-cards-no-background first-card transparent-card" elevation="2" image="/img/home-page/returninghome.jpg" alt="${_`What’s here`}">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">
                 ${_`What’s here`}
@@ -410,7 +410,7 @@ class SCHomePage extends SCStaticPage {
               </div>
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="/img/home-page/contemplatingthemoon.jpeg" alt="${_`Where to begin`}">
+          <paper-card class="two-paper-cards paper-cards-no-background second-card transparent-card" elevation="2" image="/img/home-page/contemplatingthemoon.jpg" alt="${_`Where to begin`}">
             <div class="transparent-card-content-wrapper">
               <div class="card-title-text">
                 ${_`Where to begin`}
@@ -449,7 +449,7 @@ class SCHomePage extends SCStaticPage {
             ${_`Tipiṭaka—the three baskets`}
           </div>
           <div class="three-elements-grid">
-            <paper-card alt="${_`Sixteen gilt and lacquer leaves with two gilt and lacquer book covers. Wood coated with lacquer, \n                        twelve lines to each leaf written in Pali script in black lacquer, the text interspersed and bordered \n                        with undulating floral and vegetal motifs in gold on an orange ground. Burma, 19th century. 16 x 63 cm.`}" class="three-elements-big paper-card-with-button" elevation="2" image="/img/home-page/burmese_kammavaca.jpeg" title="${_`A decorative kammavaca manuscript`}">
+            <paper-card alt="${_`Sixteen gilt and lacquer leaves with two gilt and lacquer book covers. Wood coated with lacquer, \n                        twelve lines to each leaf written in Pali script in black lacquer, the text interspersed and bordered \n                        with undulating floral and vegetal motifs in gold on an orange ground. Burma, 19th century. 16 x 63 cm.`}" class="three-elements-big paper-card-with-button" elevation="2" image="/img/home-page/burmese_kammavaca.jpg" title="${_`A decorative kammavaca manuscript`}">
               <div class="card-content-wrapper no-bottom-padding">
                 <div class="card-title-text">
                   ${_`Discourses`}
@@ -510,7 +510,7 @@ class SCHomePage extends SCStaticPage {
           </paper-card>
         </div>
         <div class="row cards">
-          <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword.jpeg" alt="${_`A Reader’s Guide to the Pali Suttas`}">
+          <paper-card class="two-paper-cards first-card paper-card-with-button" elevation="2" image="/img/home-page/noword.jpg" alt="${_`A Reader’s Guide to the Pali Suttas`}">
             <div class="card-content-wrapper">
               <div class="card-title-text">
                 ${_`A Reader’s Guide to the Pali Suttas`}
@@ -523,7 +523,7 @@ class SCHomePage extends SCStaticPage {
               ${_`<a class="button-link" href="/general-guide-sujato"><paper-button class="button card-button" raised>GUIDES</paper-button></a>`}
             </div>
           </paper-card>
-          <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain.jpeg" alt="${_`Indexes and Terminology`}">
+          <paper-card class="two-paper-cards second-card paper-card-with-button" elevation="2" image="/img/home-page/listeningtotherain.jpg" alt="${_`Indexes and Terminology`}">
             <div class="card-content-wrapper">
               <div class="card-title-text">
                 ${_`Indexes and Terminology`}
