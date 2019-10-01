@@ -71,6 +71,8 @@ def handler(path):
     data = request.json
 
     if data.get('ref') == 'refs/heads/master':
+        head_commit_id = data['head_commit']['id']
+        print(f'Building @ commit {head_commit_id}')
         terminate_builder()
         builder = Builder()
         builder.start()
