@@ -42,7 +42,7 @@ class Builder(Thread):
                 print('Terminated')
                 return
             else:
-                print(f'=== {command} ===')
+                print('=== {command} ==='.format(command=command))
                 self.process = subprocess.Popen(command.split(), stdout=sys.stdout, stderr=sys.stderr)
                 self.process.wait()
     
@@ -72,7 +72,7 @@ def handler(path):
 
     if data.get('ref') == 'refs/heads/master':
         head_commit_id = data['head_commit']['id']
-        print(f'Building @ commit {head_commit_id}')
+        print('Building @ commit {head_commit_id}'.format(head_commit_id=head_commit_id))
         terminate_builder()
         builder = Builder()
         builder.start()
