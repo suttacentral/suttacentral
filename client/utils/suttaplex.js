@@ -8,7 +8,6 @@ export function transformId(rootId, expansionData, idOrName = 0) {
       const idNumbers = rootId.substring(5);
       return `G-3 Dhp ${idNumbers}`;
     }
-    //const idPart = getParagraphRange(rootId).replace('--', '–').replace('#', ': ').replace(/[a-z]+/g,'');
     const idPart = getParagraphRange(rootId).replace('--', '–').replace('#', ': ');
     let scAcronym = '';
     const rootPart = rootId.split('#')[0];
