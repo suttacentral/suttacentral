@@ -362,13 +362,15 @@ class PaliPageNumbinator:
 
     def load(self, data_dir):
         with (data_dir / 'misc' / 'pali_concord.json').open('r', encoding='utf8') as f:
-            entries = json.load(f)
+            entries = json.load(f, object_pairs_hook=lambda o:o)
 
         self.mapping = mapping = {}
-        for k, v in entries.items():
-            msbook, msnum, edition = k.split(':')
+        for k, v in entries:
+            msbook, msnum = k.split('_')
+            msbook = msbook.replace('ms','').lower()
             msnum = int(msnum)
-            mapping[(msbook, msnum, edition)] = tuple(v)
+            edition, vol, page = regex.match(r'^([a-z0-9]*?)([0-9]*)\.?([0-9]+)$', v).groups()
+            mapping[(msbook, msnum, edition)] = (vol, page)
 
     def msbook_to_ptsbook(self, msbook):
         m = regex.match(r'\d+([A-Za-z]+(?:(?<=th)[12])?)', msbook)
@@ -388,13 +390,16 @@ class PaliPageNumbinator:
             n = msnum + i
             if n < 1:
                 continue
-            key1 = (msbook, n, 'pts1')
-            key2 = (msbook, n, 'pts2')
+            key0 = (msbook, n, 'pts')
+            key1 = (msbook, n, 'pts1ed')
+            key2 = (msbook, n, 'pts2ed')
             key = None
-            if key1 in self.mapping:
-                key = key1
-            elif key2 in self.mapping:
+            if key2 in self.mapping:
                 key = key2
+            elif key0 in self.mapping:
+                key = key0
+            elif key1 in self.mapping:
+                key = key1
             if key:
                 book, num = self.mapping[key]
                 ptsbook = self.msbook_to_ptsbook(msbook)
