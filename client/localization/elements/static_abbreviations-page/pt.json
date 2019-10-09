@@ -1,13 +1,13 @@
 {
     "pt": {
         "3bb4308c50a15dbd03c8fc4bf38d338d": "Abreviações",
-        "3cc62bd88ad36d4ca386961ce14721e6": "O SuttaCentral é estruturado em torno da idéia de uma entidade distinta — geralmente um sutta, uma regra do Vinaya ou uma seção de texto — que tem uma identidade única. Essa identidade é representada por uma abreviatura, que serve tanto para rotular o texto quanto para criar o <span class=\"smallcaps\">URL</span> para esse texto. Essas abreviaturas são tão curtas e flexíveis quanto as podemos fazer. Embora não nos afastemos arbitrariamente do uso aceito, em certos casos os requisitos especiais do SuttaCentral fizeram com que novas abreviaturas fossem adotadas. Todas as abreviaturas devem satisfazer os seguintes critérios.",
+        "3cc62bd88ad36d4ca386961ce14721e6": "O SuttaCentral é estruturado em torno da idéia de uma entidade distinta — geralmente um sutta, uma regra do Vinaya ou uma seção de texto — que tem uma identidade única. Essa identidade é representada por uma abreviatura, que serve tanto para rotular o texto quanto para criar o <span class='smallcaps'>URL</span> para esse texto. Essas abreviaturas são tão curtas e flexíveis quanto as podemos fazer. Embora não nos afastemos arbitrariamente do uso aceito, em certos casos os requisitos especiais do SuttaCentral fizeram com que novas abreviaturas fossem adotadas. Todas as abreviaturas devem satisfazer os seguintes critérios.",
         "41583f937ea8ea5b4a4278d21101c75f": "Ocorre de forma única no corpus do SuttaCentral;",
-        "52011726058d116f5ab72f9020b9962b": "Não contém caracteres especiais ou sinais diacríticos (já que este não podem ser usados em <span class=\"smallcaps\">URL</span>s);",
+        "52011726058d116f5ab72f9020b9962b": "Não contém caracteres especiais ou sinais diacríticos (já que este não podem ser usados em <span class='smallcaps'>URL</span>s);",
         "2eaad7b771a152377e96d0c80ae48f4c": "Minúsculas apenas;",
         "7c4b0cb542e17fbe2f7fca247b570e07": "Entre dois e três caracteres;",
-        "8d7078d27c134d2d6123f8c08e431bc0": "Em conformidade com padrões e convenções reconhecidos como <span class=\"smallcaps\">ISO</span>.",
-        "6b233289388402e333ce3555fef61717": "Para manter a lista num tamanho razoável, omitimos os códigos de idioma, que usam o <span class=\"smallcaps\">ISO</span> 639-1 de duas letras para idiomas modernos, e os códigos ISO 639-3 de três letras para idiomas antigos.",
+        "8d7078d27c134d2d6123f8c08e431bc0": "Em conformidade com padrões e convenções reconhecidos como <span class='smallcaps'>ISO</span>.",
+        "6b233289388402e333ce3555fef61717": "Para manter a lista num tamanho razoável, omitimos os códigos de idioma, que usam o <span class='smallcaps'>ISO</span> 639-1 de duas letras para idiomas modernos, e os códigos ISO 639-3 de três letras para idiomas antigos.",
         "ef10121e1fed95aff40a13f7d0d80782": "Lista de abreviações",
         "37caf0ee262229a9ddc60877eec6883f": "-a",
         "c961e7f4c3f1b32a09bea733336d7652": "Aṭṭhakathā",
