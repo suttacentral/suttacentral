@@ -1,13 +1,13 @@
 {
     "en": {
         "3bb4308c50a15dbd03c8fc4bf38d338d": "Abbreviations",
-        "3cc62bd88ad36d4ca386961ce14721e6": "SuttaCentral is structured around the idea of a distinct entity—usually a sutta, Vinaya rule, or section of text—which has a unique identity. That identity is represented by an abbreviation, which serves both to label the text and to create the <span class=\"smallcaps\">URL</span> for that text. These abbreviations are as short and flexible as we can make them. While we don’t arbitrarily depart from accepted usage, in certain cases the special requirements of SuttaCentral have meant we have adopted new abbreviations. All abbreviations must satisfy the following criteria.",
+        "3cc62bd88ad36d4ca386961ce14721e6": "SuttaCentral is structured around the idea of a distinct entity—usually a sutta, Vinaya rule, or section of text—which has a unique identity. That identity is represented by an abbreviation, which serves both to label the text and to create the <span class='smallcaps'>URL</span> for that text. These abbreviations are as short and flexible as we can make them. While we don’t arbitrarily depart from accepted usage, in certain cases the special requirements of SuttaCentral have meant we have adopted new abbreviations. All abbreviations must satisfy the following criteria.",
         "41583f937ea8ea5b4a4278d21101c75f": "Unique across the entire SuttaCentral corpus;",
-        "52011726058d116f5ab72f9020b9962b": "No special characters or diacritical marks (as these can’t be used in <span class=\"smallcaps\">URL</span>s);",
+        "52011726058d116f5ab72f9020b9962b": "No special characters or diacritical marks (as these can’t be used in <span class='smallcaps'>URL</span>s);",
         "2eaad7b771a152377e96d0c80ae48f4c": "Case insenstive;",
         "7c4b0cb542e17fbe2f7fca247b570e07": "Usually two, hopefully no more than three characters long;",
-        "8d7078d27c134d2d6123f8c08e431bc0": "Conforming to recognized standards and conventions such as <span class=\"smallcaps\">ISO</span>.",
-        "6b233289388402e333ce3555fef61717": "To keep the list a reasonable length we omit language codes, which use the two-letter <span class=\"smallcaps\">ISO</span> 639-1 for modern languages, and the three-letter ISO 639-3 codes for ancient languages.",
+        "8d7078d27c134d2d6123f8c08e431bc0": "Conforming to recognized standards and conventions such as <span class='smallcaps'>ISO</span>.",
+        "6b233289388402e333ce3555fef61717": "To keep the list a reasonable length we omit language codes, which use the two-letter <span class='smallcaps'>ISO</span> 639-1 for modern languages, and the three-letter ISO 639-3 codes for ancient languages.",
         "ef10121e1fed95aff40a13f7d0d80782": "List of Abbreviations",
         "37caf0ee262229a9ddc60877eec6883f": "-a",
         "c961e7f4c3f1b32a09bea733336d7652": "Aṭṭhakathā",

@@ -137,7 +137,7 @@ def search(
 
     if highlight:
         body["highlight"] = {
-            "pre_tags": ["<strong class=\"highlight\">"],
+            "pre_tags": ["<strong class='highlight'>"],
             "post_tags": ["</strong>"],
             "order": "score",
             "require_field_match": False,

@@ -1,7 +1,7 @@
 {
     "pt": {
         "usingOffline": "Usando o SuttaCentral offline",
-        "pwaDescription": "SuttaCentral é um <a href=\"https://developers.google.com/web/progressive-web-apps/\" target=\"_blank\" rel=\"noopener\">Progressive Web App (PWA)</a>. Em aparelhos suportados, várias funcionalidades, inclusive navegação e histórico de páginas já visitadas, continuará a funcionar mesmo quando não há conexão.",
+        "pwaDescription": "SuttaCentral é um <a href='https://developers.google.com/web/progressive-web-apps/' target='_blank' rel='noopener'>Progressive Web App (PWA)</a>. Em aparelhos suportados, várias funcionalidades, inclusive navegação e histórico de páginas já visitadas, continuará a funcionar mesmo quando não há conexão.",
         "additionalInfo": "Além disso, é possível fazer o download de textos em idiomas de sua preferência para leitura posterior, quando offline. Isto é especialmente útil para usuários com conexões móveis limitadas, ou em regiões sem boa cobertura. Se há restrições em relação ao volume de dados em sua conexão móvel, é recomendado estar conectado à uma rede wi-fi antes de se fazer o download.",
         "newTech": "PWAs são relativamente recentes. Por ora, o uso desconectado tem algumas restrições:",
         "suttasOnly": "Disponível apenas para os Suttas, não para Vinaya ou Abhidhamma.",
