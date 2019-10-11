@@ -82,6 +82,9 @@ class SCSegmentedText extends SCTextPage {
         transition: background-color 300ms ease-in;
       }
 
+      p, li {
+        hanging-punctuation: first last;
+      }
     </style>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
@@ -252,7 +255,7 @@ class SCSegmentedText extends SCTextPage {
 
     this.addEventListener('click', () => {
       requestAnimationFrame(() => {
-        this._scrollToSection(window.location.hash.substr(1), true, 0);
+        this._scrollToSection(window.location.hash.substr(1), false, 0);
       });
     });
     window.addEventListener('hashchange', () => {
@@ -273,6 +276,9 @@ class SCSegmentedText extends SCTextPage {
     this._scrollToSectionInUrl();
 
     this.navItems = this._prepareNavigation();
+    const elementHgroup = this.shadowRoot.querySelector(".hgroup");
+    const elementNav = this.shadowRoot.querySelector('sc-nav-contents');
+    elementHgroup.appendChild(elementNav);
   }
 
   _updateView() {
@@ -467,7 +473,7 @@ class SCSegmentedText extends SCTextPage {
   _addSecondaryText() {
     const textContainer = this.$.segmented_text_content;
     if (!this.shadowRoot.querySelector('.original-text')) {
-      const stringsArr = Object.entries(this.rootSutta.strings);            
+      const stringsArr = Object.entries(this.rootSutta.strings);
       stringsArr.forEach(item => {
         this._insertSecondaryTextSegment(item);
       });
@@ -480,20 +486,20 @@ class SCSegmentedText extends SCTextPage {
 
   _insertSecondaryTextSegment([key, content]) {
     if (!key.startsWith('_')) {
-      const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');      
+      const subkey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
       const segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
       const newSegment = document.createElement('sc-seg');
       newSegment.id = key;
       newSegment.classList.add('original-text');
-      newSegment.innerHTML = this._tweakText(content);            
-      this._setScriptISOCode(newSegment, this.rootLang);            
+      newSegment.innerHTML = this._tweakText(content);
+      this._setScriptISOCode(newSegment, this.rootLang);
       if (segment){
-        segment.parentNode.insertBefore(newSegment, segment.nextSibling);     
+        segment.parentNode.insertBefore(newSegment, segment.nextSibling);
       }
-      else{                
+      else{
         this.translatedSutta.strings[key] = "";
-        this.addRootAndTranslatedSegment(key, subkey, newSegment);            
-      }            
+        this.addRootAndTranslatedSegment(key, subkey, newSegment);
+      }
     }
   }
 
@@ -518,7 +524,7 @@ class SCSegmentedText extends SCTextPage {
       if (endSection){
         endSection.appendChild(newTranslatedSegment);
         endSection.appendChild(newSegment);
-      }      
+      }
     }
   }
 
