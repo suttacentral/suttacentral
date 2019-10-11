@@ -351,7 +351,7 @@ class PaliPageNumbinator:
         -4,
         -5,
         -6,
-        -7,
+        -7, 
         -8,
         -9,
         -10,
@@ -371,16 +371,44 @@ class PaliPageNumbinator:
         self.load(data_dir)
 
     def load(self, data_dir):
-        with (data_dir / 'misc' / 'pali_concord.json').open('r', encoding='utf8') as f:
-            entries = json.load(f, object_pairs_hook=lambda o:o)
+        with (data_dir / 'misc' / 'all_pali_concordance.json').open('r', encoding='utf8') as f:
+            entries = json.load(f)
 
         self.mapping = mapping = {}
-        for k, v in entries:
-            msbook, msnum = k.split('_')
-            msbook = msbook.replace('ms','').lower()
-            msnum = int(msnum)
-            edition, vol, page = regex.match(r'^([a-z0-9]*?)([0-9]*)\.?([0-9]+)$', v).groups()
-            mapping[(msbook, msnum, edition)] = (vol, page)
+        # v is an array of reference-strings. Each such string is a
+        # reference into a particular manuscript edition for the given
+        # text segment (k).
+        for k, v in entries.items():
+
+            # We are here only interested in concordance between Mahasangiti
+            # volumes and Pali Text Society ones.
+            ms = None
+            pts = []
+
+            # Pick out only the references we're interested in.
+            for ref in v:
+                match = regex.match(r'^ms(\d+[A-Za-z]+\d*)_(\d+)$', ref)
+                if not match is None:
+                    ms = match
+                else:
+                    match = regex.match(r'^pts-vp-pli([12]ed)?(\d+)??\.?(\d+)$', ref)
+                    if not match is None:
+                        pts_edition, vol, page = match.groups()
+                        pts_edition = '0' if pts_edition is None else pts_edition
+                        vol = '' if vol is None else vol
+                        pts.append((pts_edition, vol, int(page)))
+                        continue
+
+                    match = regex.match(r'^vnp(\d+)$', ref)
+                    if not match is None:
+                        verse = match[1]
+                        pts.append(('', '', int(verse)))
+                        continue
+            if not ms is None and len(pts) > 0:
+                msbook, msnum = ms.groups()
+                pts.sort()
+                pts_edition, vol, page = pts[0]
+                mapping[(msbook.lower(), int(msnum))] = (vol, page)
 
     def msbook_to_ptsbook(self, msbook):
         m = regex.match(r'\d+([A-Za-z]+(?:(?<=th)[12])?)', msbook)
@@ -400,17 +428,8 @@ class PaliPageNumbinator:
             n = msnum + i
             if n < 1:
                 continue
-            key0 = (msbook, n, 'pts')
-            key1 = (msbook, n, 'pts1ed')
-            key2 = (msbook, n, 'pts2ed')
-            key = None
-            if key2 in self.mapping:
-                key = key2
-            elif key0 in self.mapping:
-                key = key0
-            elif key1 in self.mapping:
-                key = key1
-            if key:
+            key = (msbook, n)
+            if key in self.mapping:
                 book, num = self.mapping[key]
                 ptsbook = self.msbook_to_ptsbook(msbook)
                 return self.format_book(ptsbook, book, num)
