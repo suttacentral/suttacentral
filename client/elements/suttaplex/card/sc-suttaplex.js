@@ -1,5 +1,5 @@
 import '@polymer/iron-icon/iron-icon.js';
-import { html, LitElement } from 'lit-element';
+import { html, css, LitElement } from 'lit-element';
 import '@polymer/paper-card/paper-card.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-listbox/paper-listbox.js';
@@ -171,6 +171,16 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
   get listenUrl() {
     return `${SUTTACENTRAL_VOICE_URL}scv/#/?search=${this.item.uid}&lang=${this.language}`;
+  }
+
+  static get styles() {
+    return css`
+      .section-details.main-translations {
+        border-top: 1px solid var(--sc-border-color);
+        margin-top: var(--sc-size-md);
+        padding-top: var(--sc-size-sm);
+      }
+    `;
   }
 
   render() {
