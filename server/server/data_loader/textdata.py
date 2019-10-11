@@ -76,7 +76,10 @@ class TextInfoModel:
 
         self._ppn = None
         if lang_dir.stem == 'pli':
-            self._ppn = PaliPageNumbinator(data_dir=data_dir)
+            try:
+                self._ppn = PaliPageNumbinator(data_dir=data_dir)
+            except:
+                logger.exception("Error while loading Pali volpages")
 
             # It should be noted SuttaCentral does not use bolditalic
         unicode_points = {'normal': set(), 'bold': set(), 'italic': set()}
@@ -221,11 +224,17 @@ class TextInfoModel:
                 return
             return '{}'.format(e.attrib['id']).replace('t', 'T ')
         elif lang_uid == 'pli':
+            if self._ppn is None:
+                return None 
             ppn = self._ppn
             e = element.next_in_order()
             while e:
                 if e.tag == 'a' and e.select_one('.ms'):
-                    return ppn.get_pts_ref_from_pid(e.attrib['id'])
+                    try:
+                        return ppn.get_pts_ref_from_pid(e.attrib['id'])
+                    except:
+                        logger.exception(f'Error while loading Pali volpage for {uid}')
+                        return None
                 e = e.next_in_order()
 
         return None
