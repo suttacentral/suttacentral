@@ -261,6 +261,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Ariya Baumann (Ariyanyani)`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Dr. Asha Das`}
                 </td>
                 <td>
@@ -881,6 +889,14 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${_`Setting up VPS, managing shift from PHP to Python, IT consultant and technician.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Josef Wilgen`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
                 </td>
               </tr>
               <tr>
