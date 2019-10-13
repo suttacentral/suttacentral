@@ -268,9 +268,10 @@ class ArangoTextInfoModel(TextInfoModel):
             self.flush_documents()
 
     def flush_documents(self):
-        print('\033[2K\r' + self.queue[-1]['path'],end='')
-        self.db['html_text'].import_bulk_logged(self.queue)
-        self.queue.clear()
+        if len(self.queue) > 0:
+            print('\033[2K\r' + self.queue[-1]['path'],end='')
+            self.db['html_text'].import_bulk_logged(self.queue)
+            self.queue.clear()
 
     def update_code_points(self, lang_uid, unicode_points, force=False):
         keys = ('normal', 'bold', 'italic')
