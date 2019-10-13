@@ -390,25 +390,24 @@ class PaliPageNumbinator:
                 match = regex.match(r'^ms(\d+[A-Za-z]+\d*)_(\d+)$', ref)
                 if not match is None:
                     ms = match
-                else:
-                    match = regex.match(r'^pts-vp-pli([12]ed)?(\d+)??\.?(\d+)$', ref)
-                    if not match is None:
-                        pts_edition, vol, page = match.groups()
-                        pts_edition = '0' if pts_edition is None else pts_edition
-                        vol = '' if vol is None else vol
-                        pts.append((pts_edition, vol, int(page)))
-                        continue
+                    continue
 
-                    match = regex.match(r'^vnp(\d+)$', ref)
-                    if not match is None:
-                        verse = match[1]
-                        pts.append(('', '', int(verse)))
-                        continue
+                match = regex.match(r'^pts-vp-pli([12]ed)?(\d+)??\.?(\d+)$', ref)
+                if not match is None:
+                    pts_edition, vol, page = match.groups()
+                    pts.append((pts_edition, vol, int(page)))
+                    continue
+
+                match = regex.match(r'^vnp(\d+)$', ref)
+                if not match is None:
+                    verse = match[1]
+                    pts.append((None, None, int(verse)))
+                    continue
+
             if not ms is None and len(pts) > 0:
                 msbook, msnum = ms.groups()
-                pts.sort()
-                pts_edition, vol, page = pts[0]
-                mapping[(msbook.lower(), int(msnum))] = (vol, page)
+                for pts_edition, vol, page in pts:
+                    mapping[msbook.lower(), int(msnum), pts_edition] = (vol, page)
 
     def msbook_to_ptsbook(self, msbook):
         m = regex.match(r'\d+([A-Za-z]+(?:(?<=th)[12])?)', msbook)
@@ -424,15 +423,20 @@ class PaliPageNumbinator:
     def get_pts_ref(self, msbook, msnum, attempts=None):
         if not attempts:
             attempts = self.default_attempts
-        for i in attempts:
-            n = msnum + i
-            if n < 1:
-                continue
-            key = (msbook, n)
-            if key in self.mapping:
-                book, num = self.mapping[key]
-                ptsbook = self.msbook_to_ptsbook(msbook)
-                return self.format_book(ptsbook, book, num)
+
+        refs = []
+        for edition in ['1ed', '2ed', None]:
+            for i in attempts:
+                n = msnum + i
+                if n < 1:
+                    continue
+                key = (msbook, n, edition)
+                if key in self.mapping:
+                    ptsbook = self.msbook_to_ptsbook(msbook)
+                    book, num = self.mapping[key]
+                    refs.append(self.format_book(ptsbook, book, num))
+                    break
+        return '//'.join(refs)
 
     def format_book(self, ptsbook, book, num):
         if not book:
