@@ -64,7 +64,7 @@ export const Localized = base => class extends base {
     this.languageLoaded();
   }
 
-  async __loadLanguage(lang) {    
+  async __loadLanguage(lang) {
     if (SUPPORTED_TRANSLATIONS.includes(lang)) {
       const path = `${this.localizedStringsPath}/${lang}.json`;
 
@@ -116,7 +116,7 @@ export const LitLocalized = base => class extends connect(store)(base) {
 
     if (params) {
       return string.replace(
-        /\{([a-z]+)\}/gi,
+        /\{([a-z0-9]+)\}/gi,
         (match, group) => undefined !== params[group] ? params[group] : group
       );
     }
@@ -163,5 +163,5 @@ export const LitLocalized = base => class extends connect(store)(base) {
 
   loadFallbackLanguage() {
     this.__siteLanguageChanged(FALLBACK_LANGUAGE);
-  }    
+  }
 };

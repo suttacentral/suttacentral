@@ -208,7 +208,7 @@ class AcknowledgmentsPage extends SCStaticPage {
                   ${_`Amaradasa Liyanagamage`}
                 </td>
                 <td>
-                  ${_`Consultation and liason.`}
+                  ${_`Consultation and liaison.`}
                 </td>
               </tr>
               <tr>
@@ -216,7 +216,7 @@ class AcknowledgmentsPage extends SCStaticPage {
                   ${_`Aminah Borg-Luck`}
                 </td>
                 <td>
-                  ${_`Team manager, text-preparation, forum moderation.`}
+                  ${_`Team facilitator, text-preparation, forum moderation, SuttaCentral Voice development team.`}
                 </td>
               </tr>
               <tr>
@@ -229,10 +229,10 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Anāgārikā Sabbamittā (Maria Backes)`}
+                  ${_`Anagarika Sabbamitta`}
                 </td>
                 <td>
-                  ${_`SuttaCentral Voice development team, German translation, text preparation, and organisation of fund-raising events.`}
+                  ${_`SuttaCentral Voice development team, German translation, text preparation.`}
                 </td>
               </tr>
               <tr>
@@ -257,6 +257,14 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${_`Indonesian translations.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Ariya Baumann (Ariyanyani)`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
                 </td>
               </tr>
               <tr>
@@ -885,6 +893,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Josef Wilgen`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Jyotipal Mahasthabir`}
                 </td>
                 <td>
@@ -1149,7 +1165,7 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Raimund Beyerlein and Verlag Beyerlein-Steinschulte`}
+                  ${_`Raimund Beyerlein and Verlag Beyerlein & Steinschulte`}
                 </td>
                 <td>
                   ${_`German translations: copyrights and advice.`}
