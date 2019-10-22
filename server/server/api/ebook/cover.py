@@ -82,7 +82,7 @@ css_template = '''
 
 @font-face {
     font-family: "Raloks Sans Sb";
-    src: url('/files/RaloksSansPE-SbIt.woff2') format('woff2');
+    src: url('/files/RaloksSansPE-Sb.woff2') format('woff2');
     font-style: italic;
 }
 @page {
