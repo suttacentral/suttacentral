@@ -13,7 +13,7 @@ from flask import current_app
 
 def get_font_file_by_name(name):
     fonts_dir = current_app.config.get('BASE_DIR').resolve() / 'frontend/files/fonts'
-    font_files = {file.name: file for file in fonts_dir.glob('*.woff')}
+    font_files = {file.name: file for file in fonts_dir.glob('*.woff2')}
 
     assert len(font_files) > 0
 
@@ -22,7 +22,7 @@ def get_font_file_by_name(name):
         # Returning the matching font with the shortest name
         return font_files[sorted(matches, key=len)[0]]
     else:
-        return None
+        raise ValueError(f'Could not find font containing {name}')
 
 
 def get_font_files_by_names(names):
