@@ -1,9 +1,7 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html } from 'lit-element';
 import '@polymer/paper-item/paper-item.js';
-import '@polymer/iron-ajax/iron-ajax.js';
 
-import { ReduxMixin } from '../../redux-store.js';
-import { Localized } from '../addons/localization-mixin.js';
+import { LitLocalized } from '../addons/localization-mixin'
 import { API_ROOT } from '../../constants.js';
 import copyToClipboard from '../../utils/copy.js'
 
@@ -11,8 +9,8 @@ import copyToClipboard from '../../utils/copy.js'
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
 */
 
-class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
-  static get template() {
+class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
+  render() {
     return html`
     <style>
       .button-text {
@@ -29,8 +27,8 @@ class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .table-element[disabled] {
-        --iron-icon-fill-color: var(--sc-primary-background-color);
-        color: var(--sc-primary-background-color);
+        --iron-icon-fill-color: var(--sc-disabled-text-color);
+        color: var(--sc-disabled-text-color);
       }
 
       .table-element .grey-icon {
@@ -43,47 +41,47 @@ class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
       }
     </style>
 
-    <iron-ajax id="parallels_ajax" url="[[_getAPIEndpoint(item)]]" handle-as="json" loading="{{loadingParallels}}" last-response="{{parallels}}"></iron-ajax>
-
-    <paper-item class="table-element button-text" on-tap="_copyLink" title="[[_computeLink(item)]]">
+    <paper-item class="table-element button-text" @tap=${this._copyLink} title="${this._computeLink(this.item)}">
       <iron-icon class="grey-icon" icon="sc-iron-icons:link"></iron-icon>
-      {{localize('copyLink')}}
+      ${this.localize('copyLink')}
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyContent" disabled="[[areParallelsAvailable]]">
+    <paper-item class="table-element button-text" @tap=${this._copyContent} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
       <iron-icon class="grey-icon" icon="sc-iron-icons:content-copy"></iron-icon>
-      {{localize('copyTable')}}
+      ${this.localize('copyTable')}
     </paper-item>
-    <paper-item class="table-element button-text" on-tap="_copyCite" disabled="[[areParallelsAvailable]]">
+    <paper-item class="table-element button-text" @tap=${this._copyCite} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
       <iron-icon class="grey-icon" icon="sc-iron-icons:format-quote"></iron-icon>
-      {{localize('cite')}}
+      ${this.localize('cite')}
     </paper-item>`;
   }
 
   static get properties() {
     return {
-      item: {
-        type: Object
-      },
-      inputData: {
-        type: Object,
-        notify: true
-      },
-      parallels: {
-        type: Object
-      },
-      loadingParallels: {
-        type: Boolean
-      },
-      areParallelsAvailable: {
-        type: Boolean,
-        value: false,
-        computed: '_setAreParallelsAvaiable(loadingParallels)'
-      },
-      localizedStringsPath: {
-        type: String,
-        value: '/localization/elements/sc-suttaplex-share-menu'
-      }
+      item: { type: Object },
+      parallels: { type: Object },
+      loadingParallels: { type: Boolean },
+      areParallelsAvailable: { type: Boolean },
+      localizedStringsPath: { type: String }
     }
+  }
+
+  constructor() {
+    super();
+    this.item = [];
+    this.parallels = [];
+    this.loadingParallels = false;
+    this.areParallelsAvailable = false;
+    this.localizedStringsPath = '/localization/elements/sc-suttaplex-share-menu';
+  }
+
+  firstUpdated() {
+    this._fetchParallels();
+  }
+
+  async _fetchParallels() {
+    this.loadingParallels = true;
+    this.parallels = await (await fetch(this._getAPIEndpoint(this.item))).json();
+    this.loadingParallels = false;
   }
 
   _notifyCopy(message, success) {
@@ -98,7 +96,6 @@ class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
     if (this.parallels) {
       return;
     }
-    this.$.parallels_ajax.generateRequest();
   }
 
   // copy the parallels-table in html-string
@@ -113,7 +110,7 @@ class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
     }
   }
 
-  _setAreParallelsAvaiable(loadingParallels) {
+  _setAreParallelsAvailable(loadingParallels) {
     if (this.parallels === undefined || this.parallels === null) {
       return false;
     }
@@ -200,7 +197,6 @@ class SCSuttaplexShareMenu extends ReduxMixin(Localized(PolymerElement)) {
 
   _computeCiteData() {
     let result = '';
-
     for (let section of Object.keys(this.parallels)) {
       let acronymUid = this._generateAcronymUid(this.item.acronym, section)
       result += `Parallels for ${acronymUid} ${this.item.original_title} `;
