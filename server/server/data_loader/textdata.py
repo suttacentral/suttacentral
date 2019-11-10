@@ -343,29 +343,7 @@ class PaliPageNumbinator:
         'y': 'Ya',
     }
 
-    default_attempts = [
-        0,
-        -1,
-        -2,
-        -3,
-        -4,
-        -5,
-        -6,
-        -7,
-        -8,
-        -9,
-        -10,
-        -11,
-        -12,
-        -13,
-        -14,
-        -15,
-        1,
-        2,
-        3,
-        4,
-        5,
-    ]
+    default_attempts = list(range(0, -16, -1)) + list(range(1, 6))
 
     def __init__(self, data_dir):
         self.load(data_dir)
@@ -405,10 +383,9 @@ class PaliPageNumbinator:
                     pts.append((None, None, int(verse)))
                     continue
 
-            if ms and pts:
-                for msbook, msnum in ms:
-                    for pts_edition, vol, page in pts:
-                        mapping[msbook, msnum, pts_edition] = (vol, page)
+            for msbook, msnum in ms:
+                for pts_edition, vol, page in pts:
+                    mapping[msbook, msnum, pts_edition] = (vol, page)
 
     def msbook_to_ptsbook(self, msbook):
         m = regex.match(r'\d+([A-Za-z]+(?:(?<=th)[12])?)', msbook)

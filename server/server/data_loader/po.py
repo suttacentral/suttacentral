@@ -242,7 +242,8 @@ def process_dir(change_tracker, po_dir, authors, info, storage_dir):
         # this doc is for the markup
         yield {'uid': uid, 'markup_path': str(markup_storage_file), 'mtime': mtime}
 
-    for sub_folder in po_dir.glob('*/'):
+    sub_folders = (f for f in po_dir.glob('*/'))
+    for sub_folder in sorted(sub_folders, key=humansortkey):
         yield from process_dir(
             change_tracker, sub_folder, authors, info=info, storage_dir=storage_dir
         )
@@ -313,7 +314,7 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
             lang_dir,
             authors,
             info={'tr_lang': tr_lang, 'root_lang': root_lang},
-            storage_dir=storage_dir,
+            storage_dir=storage_dir
         )
 
         markup_docs = []
@@ -335,30 +336,57 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
 class VolpageGetter:
 
     regexes = [
-        regex.compile(r'<a class="(pts1ed)" id="(.*?)"></a>'),
-        regex.compile(r'<a class="(pts2ed)" id="(.*?)"></a>'),
-        regex.compile(r'<a class="(pts-vp-pli|pts)" id="(.*?)"></a>'),
+        regex.compile(r'<a class="pts" id="1ed(.*?)"></a>'),
+        regex.compile(r'<a class="pts" id="2ed(.*?)"></a>'),
+        regex.compile(r'<a class="vnp" id="vnp(.*?)"></a>'),
+        regex.compile(r'<a class="pts" id="-vp-pli(.*?)"></a>')
     ]
+
+    uid_to_ptsbook_mapping = {
+        'an': 'AN',
+        'dn': 'DN',
+        'mn': 'MN',
+        'sn': 'SN',
+        'thag': 'Thag',
+        'thig': 'Thig',
+        'bu': 'Vin',
+        'bi': 'Vin',
+        'pvr': 'Vin',
+    }
+
+    # (Since six is good enough for textdata.py's PaliPageNumbinator.)
+    dec_to_rom_mapping = {'1': 'i', '2': 'ii', '3': 'iii', '4': 'iv', '5': 'v', '6': 'vi'}
 
     def __init__(self):
         self.last_volpage = None
 
     def __call__(self, markup, filepath):
         volpages = []
+        # Determine PTS shorthand from filename
+        ptsbook = None
+        for prefix in regex.match(r'^[a-z-]+', filepath.stem)[0].split('-'):
+            if prefix in self.uid_to_ptsbook_mapping:
+                ptsbook = self.uid_to_ptsbook_mapping[prefix]
+                break
+        if ptsbook is None:
+            print(f'Could not determine volpage for {filepath}')
+            return None
 
         for rex in self.regexes:
             m = rex.search(markup)
             if m:
-                class_ = m[1]
-                volpage = m[2]
-                if not volpage.startswith(class_):
-                    volpage = class_ + volpage
-                volpages.append(volpage)
+                num = m[1].split('.')
+                if len(num) == 1:
+                    volpages.append(f'{ptsbook} {num[0]}')
+                else:
+                    vol, page = num
+                    vol = self.dec_to_rom_mapping[vol]
+                    volpages.append(f'{ptsbook} {vol} {page}')
 
-        volpage = ', '.join(volpages)
+        volpage = '//'.join(volpages)
         if volpage:
-            self.last_volpage = volpage
-            return volpage
+            self.last_volpage = volpages[-1]
+            return '//'.join(volpages)
         elif self.last_volpage:
             return self.last_volpage
         print(f'Could not determine volpage for {filepath}')
