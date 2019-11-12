@@ -143,7 +143,7 @@ ${scrollbarStyle}
   }
 
   .yellow-brick:not(.open) > .menu-dropdown-icon {
-      color: var(--sc-tertiary-text-color);
+    color: var(--sc-tertiary-text-color);
   }
 
   .nav-menu-item.selected > .nav-link {
@@ -251,6 +251,7 @@ ${scrollbarStyle}
 
   #main_navigation .nav-tertiary .nav-link.link-text-ellipsis {
     padding-right: calc(var(--sc-size-sm) + var(--sc-size-lg));
+    padding-bottom: 2px;
   }
 
   #main_navigation:not(.active)::-webkit-scrollbar-thumb {
@@ -336,6 +337,6 @@ ${scrollbarStyle}
         var(--notchSize) 100%, 
         0% calc(100% - var(--notchSize))
       );
-  }  
+  }
 </style>`;
 
