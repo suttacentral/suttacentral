@@ -276,9 +276,11 @@ class SCSegmentedText extends SCTextPage {
     this._scrollToSectionInUrl();
 
     this.navItems = this._prepareNavigation();
-    const elementHgroup = this.shadowRoot.querySelector(".hgroup");
-    const elementNav = this.shadowRoot.querySelector('sc-nav-contents');
-    elementHgroup.appendChild(elementNav);
+    setTimeout(() => {
+      const elementHgroup = this.shadowRoot.querySelector(".hgroup");
+      const elementNav = this.shadowRoot.querySelector('sc-nav-contents');
+      elementHgroup.appendChild(elementNav);
+    }, 0);
   }
 
   _updateView() {
