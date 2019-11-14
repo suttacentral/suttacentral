@@ -1,21 +1,19 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-ajax/iron-ajax.js';
+import { LitElement, html, css } from 'lit-element';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
 import '@polymer/paper-tooltip/paper-tooltip.js';
-import { ReduxMixin } from '../redux-store.js';
 import { API_ROOT } from '../constants.js';
-import { Localized } from './addons/localization-mixin.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
 import { scrollbarStyle } from './styles/sc-scrollbar-style.js';
 
-const polymer_dictStyles = html([dictStyles.strings.join('')]);
-const polymer_scrollbarStyle = html([scrollbarStyle.strings.join('')]);
-class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {  
-  static get template() {
+import { LitLocalized } from './addons/localization-mixin'
+
+class SCPageDictionary extends LitLocalized(LitElement) {
+  render() {
     return html`
-    ${polymer_dictStyles}
-    ${polymer_scrollbarStyle}    
+    ${scrollbarStyle}
+    ${dictStyles}
     <style>
       .dictionary-results-container, .related-terms {
         padding: var(--sc-size-xxl) 0;
@@ -135,94 +133,137 @@ class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {
       }
     </style>
 
-    <iron-ajax auto="" id="glossary_ajax" url="/api/glossary" handle-as="json" last-response="{{glossaryReturns}}"></iron-ajax>
-
-    <iron-ajax id="ajax" handle-as="json" last-response="{{dictionaryReturns}}" on-response="_didRespond"></iron-ajax>
-
-    <iron-ajax id="adjacent_ajax" handle-as="json" last-response="{{adjacentReturns}}"></iron-ajax>
-
-    <iron-ajax id="similar_ajax" handle-as="json" last-response="{{similarReturns}}"></iron-ajax>
-
     <div class="dictionary-results-container">
       <main class="dictionary-results-main">
         <div class="dictionary-results-head">
-          <h1><span class="dictionary-results-description">{{localize('definitionsFor')}}</span> <span class="dictionary-results-term">[[dictionaryWord]]</span></h1>
+          <h1><span class="dictionary-results-description">${this.localize('definitionsFor')}</span> <span class="dictionary-results-term">${this.dictionaryWord}</span></h1>
           <span class="terms-button">
-            <paper-icon-button icon="sc-iron-icons:menu" id="menu_icon" on-tap="_toggleDrawer"></paper-icon-button>
-            <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds="">{{localize('relatedItems')}}</paper-tooltip>
+            <paper-icon-button icon="sc-iron-icons:menu" id="menu_icon" @tap=${this._toggleDrawer}></paper-icon-button>
+            <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds="">${this.localize('relatedItems')}</paper-tooltip>
           </span>
         </div>
         <div class="dictionary-entries">
-          <template is="dom-repeat" items="[[dictionaryResults]]" as="result">
-            <div class="dictionary-book-entry">
-              <div class="dictionary-source">[[_getDictionaryTitle(result.dictname)]]</div>
-              <div class="dictionary-text" inner-h-t-m-l="[[result.text]]"></div>
-            </div>
-          </template>
+          ${this.dictionaryEntriesTemplate}
         </div>
 
         <app-drawer id="drawer" align="right" class="sc-scrollbar" swipe-open="">
           <div class="related-terms sc-scrollbar">
-            <h3>{{localize('adjacentTerms')}}</h3>
+            <h3>${this.localize('adjacentTerms')}</h3>
             <ul class="near-terms">
-              <template is="dom-repeat" items="[[dictionaryAdjacent]]">
-                <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
-              </template>
+              ${this.dictionaryAdjacentTemplate}
             </ul>
-            <h3>{{localize('similarSpelling')}}</h3>
+            <h3>${this.localize('similarSpelling')}</h3>
             <ul class="fuzzy-terms">
-              <template is="dom-repeat" items="[[dictionarySimilar]]">
-                <li class$="[[_calculateClass(item.glossWord)]]" inner-h-t-m-l="[[item.glossText]]"></li>
-              </template>
+              ${this.dictionarySimilarTemplate}
             </ul>
           </div>
         </app-drawer>
 
       </main>
     </div>
+    ${this._createMetaData()}
+    `;
+  }
 
-    [[_createMetaData(dictionaryWord, localize)]]`;
+  get dictionarySimilarTemplate() {
+    return html`
+      ${this.dictionarySimilar ? this.dictionarySimilar.map(dicSimilarItem => html`
+        <li class="${this._calculateClass(dicSimilarItem.glossWord)}">${unsafeHTML(dicSimilarItem.glossText)}</li>
+      `) : ''}
+    `;
+  }
+
+  get dictionaryAdjacentTemplate() {
+    return html`
+      ${this.dictionaryAdjacent ? this.dictionaryAdjacent.map(dicAdjacentItem => html`
+        <li class="${this._calculateClass(dicAdjacentItem.glossWord)}">${unsafeHTML(dicAdjacentItem.glossText)}</li>
+      `) : ''}
+    `;
+  }
+
+  get dictionaryEntriesTemplate() {
+    return html`
+      ${this.dictionaryResults ? this.dictionaryResults.map(dicItem => html`
+        <div class="dictionary-book-entry">
+          <div class="dictionary-source">${this._getDictionaryTitle(dicItem.dictname)}</div>
+          <div class="dictionary-text">${unsafeHTML(dicItem.text)}</div>
+        </div>
+      `) : ''}
+    `;
   }
 
   static get properties() {
     return {
-      dictionaryResults: Array,
-      dictionaryReturns: Array,
-      glossaryReturns: Array,
-      adjacentReturns: Array,
-      similarReturns: Array,
-      dictionaryWord: {
-        type: String,
-        observer: '_loadNewResult'
-      },
-      localizedStringsPath: {
-        type: String,
-        value: '/localization/elements/sc-page-dictionary'
-      },
-      dictionaryTitles: {
-        type: Object,
-        value: {
-          'ncped': 'New Concise Pali English Dictionary',
-          'cped': 'Concise Pali English Dictionary',
-          'dhammika': 'Nature and the Environment in Early Buddhism by S. Dhammika',
-          'dppn': 'Dictionary of Pali Proper Names',
-          'pts': 'PTS Pali English Dictionary'
-        }
-      },
-      adjacent: {
-        type: Boolean,
-        value: true
-      },
-      dictionaryAdjacent: Array,
-      dictionarySimilar: Array
+      dictionaryResults: { type: Array },
+      dictionaryReturns: { type: Array },
+      glossaryReturns: { type: Array },
+      adjacentReturns: { type: Array },
+      similarReturns: { type: Array },
+      dictionaryWord: { type: String },
+      localizedStringsPath: { type: String },
+      dictionaryTitles: { type: Object },
+      adjacent: { type: Boolean },
+      dictionaryAdjacent: { type: Array },
+      dictionarySimilar: { type: Array },
     }
   }
 
-  static get observers() {
-    return [
-      '_getGlossaryItems(glossaryReturns,adjacentReturns,adjacent)',
-      '_getGlossaryItems(glossaryReturns,similarReturns)'
-    ];
+  constructor() {
+    super();
+    this.dictionaryResults = [];
+    this.dictionaryReturns = [];
+    this.glossaryReturns = [];
+    this.adjacentReturns = [];
+    this.similarReturns = [];
+    this.dictionaryWord = '';
+    this.localizedStringsPath = '/localization/elements/sc-page-dictionary';
+    this.dictionaryTitles = {
+      'ncped': 'New Concise Pali English Dictionary',
+      'cped': 'Concise Pali English Dictionary',
+      'dhammika': 'Nature and the Environment in Early Buddhism by S. Dhammika',
+      'dppn': 'Dictionary of Pali Proper Names',
+      'pts': 'PTS Pali English Dictionary'
+    };
+    this.adjacent = true;
+    this.dictionaryAdjacent = [];
+    this.dictionarySimilar = [];
+  }
+
+  firstUpdated() {
+    this._fetchGlossary();
+    this._loadNewResult();
+  }
+
+  updated(changedProps) {
+    super.update(changedProps);
+    if (changedProps.has('dictionaryWord')) {
+      this._loadNewResult();
+    }
+    if (changedProps.has('glossaryReturns') || changedProps.has('similarReturns')) {
+      this._getGlossaryItems(this.glossaryReturns, this.similarReturns);
+    }
+    if (changedProps.has('glossaryReturns') || changedProps.has('similarReturns') || changedProps.has('adjacent') ) {
+      this._getGlossaryItems(this.glossaryReturns, this.adjacentReturns, this.adjacent);
+    }
+  }
+
+  async _fetchGlossary() {
+    this.glossaryReturns = await (await fetch('/api/glossary')).json();
+  }
+
+  async _fetchDictionary() {
+    fetch(this._computeUrl()).then(r => r.json()).then((response) => {
+      this.dictionaryReturns = response;
+      this._didRespond();
+    });
+  }
+
+  async _fetchAdjacent() {
+    this.adjacentReturns = await (await fetch(this._computeAdjacentUrl())).json();
+  }
+
+  async _fetchSimilar() {
+    this.similarReturns = await (await fetch(this._computeSimilarUrl())).json();
   }
 
   _computeUrl() {
@@ -232,8 +273,7 @@ class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {
   _loadNewResult() {
     this._loadAdjacent();
     this._loadSimilar();
-    this.$.ajax.url = this._computeUrl();
-    return this.$.ajax.generateRequest();
+    this._fetchDictionary();
   }
 
   _didRespond() {
@@ -266,8 +306,7 @@ class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _loadAdjacent() {
-    this.$.adjacent_ajax.url = this._computeAdjacentUrl();
-    return this.$.adjacent_ajax.generateRequest();
+    this._fetchAdjacent();
   }
 
   // Adding Similar Terms
@@ -276,8 +315,7 @@ class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _loadSimilar() {
-    this.$.similar_ajax.url = this._computeSimilarUrl();
-    return this.$.similar_ajax.generateRequest();
+    this._fetchSimilar();
   }
 
   // Calculating if the current item is selected
@@ -311,18 +349,19 @@ class SCPageDictionary extends ReduxMixin(Localized(PolymerElement)) {
 
   // toggles the drawer on the right to show the related/similar items.
   _toggleDrawer() {
-    this.$.drawer.toggle();
+    this.shadowRoot.getElementById('drawer').toggle();
   }
 
-  _createMetaData(dictionaryWord, localize) {
-    if (!localize) return;
-    const description = localize('metaDescriptionText');
-    const dictionaryResultsText = localize('dictionaryResultsText');
+  _createMetaData() {
+    if (!this.localize) return;
+    const description = this.localize('metaDescriptionText');
+    const dictionaryResultsText = this.localize('dictionaryResultsText');
+    const defineFor = this.localize('definitionsFor');
 
     document.dispatchEvent(new CustomEvent('metadata', {
       detail: {
-        pageTitle: `Define: ${dictionaryWord}`,
-        title: `${dictionaryResultsText} ${dictionaryWord}`,
+        pageTitle: `${defineFor}: ${this.dictionaryWord}`,
+        title: `${dictionaryResultsText} ${this.dictionaryWord}`,
         description: description,
         bubbles: true,
         composed: true
