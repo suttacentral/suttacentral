@@ -2,7 +2,6 @@ import { LitElement, html } from 'lit-element';
 
 const styles = html`
 <style>
-
   .contents {
     margin: 0 auto !important;
     padding: 0 var(--sc-size-md);
@@ -52,7 +51,7 @@ export class SCNavContents extends LitElement {
       <div class="wrapper">
         <nav class="contents">
           <ol>
-              ${this.items.map(item => html`<li><a href="${'#' + item.link}">${item.name}</a></li>`)}
+            ${this.items ? this.items.map(item => html`<li><a href="${'#' + item.link}">${item.name}</a></li>`) : ''}
           </ol>
         </nav>
       </div>
