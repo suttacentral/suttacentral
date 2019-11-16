@@ -371,16 +371,18 @@ class PaliPageNumbinator:
                     ms.append((msbook.lower(), int(msnum)))
                     continue
 
-                match = regex.fullmatch(r'pts-vp-pli([12]ed)?(\d+)??\.?(\d+)', ref)
+                match = regex.fullmatch(r'(pts-vp-pli(?:[12]ed)?)(?:(\d+)\.)?(\d+)', ref)
                 if match:
                     pts_edition, vol, page = match.groups()
+                    if pts_edition == 'pts-vp-pli':
+                        pts_edition = 'pts-vp-pli1ed'
                     pts.append((pts_edition, vol, int(page)))
                     continue
 
                 match = regex.fullmatch(r'vnp(\d+)', ref)
                 if match:
                     verse = match[1]
-                    pts.append((None, None, int(verse)))
+                    pts.append(('vnp', None, int(verse)))
                     continue
 
             for msbook, msnum in ms:
@@ -402,8 +404,8 @@ class PaliPageNumbinator:
         if not attempts:
             attempts = self.default_attempts
 
-        refs = []
-        for edition in ['1ed', '2ed', None]:
+        refs = {}
+        for edition in ['pts-vp-pli1ed', 'pts-vp-pli2ed', 'vnp']:
             for i in attempts:
                 n = msnum + i
                 if n < 1:
@@ -412,9 +414,9 @@ class PaliPageNumbinator:
                 if key in self.mapping:
                     book, num = self.mapping[key]
                     ptsbook = self.msbook_to_ptsbook(msbook)
-                    refs.append(self.format_book(ptsbook, book, num))
+                    refs[edition] = self.format_book(ptsbook, book, num)
                     break
-        return '//'.join(refs) # TODO: volpages should probably get its own DB table
+        return refs if refs else None
 
     def format_book(self, ptsbook, book, num):
         if not book:

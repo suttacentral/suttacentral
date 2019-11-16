@@ -7,7 +7,11 @@ import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/paper-styles/paper-styles.js';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import '../../../img/sc-svg-icons.js';
-import { transformId } from '../../../utils/suttaplex';
+import {
+  transformId,
+  pickVolPage,
+  hasTwoPTSEditions
+} from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
 import '../../menus/sc-suttaplex-share-menu.js';
 import './sc-parallel-list.js';
@@ -134,17 +138,13 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get volPage() {
-    const volPages = this.item.volpages.split('//');
-    return volPages[1] ? volPages[1] : this.item.volpages;
+    return pickVolPage(this.item.volpages);
   }
 
   get volPageTitle() {
-    const volPages = this.item.volpages.split('//');
-    if (volPages[1] && (volPages[0] !== volPages[1])) {
-      return this.localize('volumeAndPagePTS1', { 'pts1': volPages[0], 'pts2': volPages[1] });
-    } else {
-      return this.localize('volumeAndPage');
-    }
+    return hasTwoPTSEditions(this.item.volpages) ?
+      this.localize('volumeAndPagePTS1', this.item.volpages) :
+      this.localize('volumeAndPage');
   }
 
   revealHiddenNerdyRowContent() {

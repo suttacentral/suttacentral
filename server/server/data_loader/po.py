@@ -336,10 +336,10 @@ def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
 class VolpageGetter:
 
     regexes = [
-        regex.compile(r'<a class="pts" id="1ed(.*?)"></a>'),
-        regex.compile(r'<a class="pts" id="2ed(.*?)"></a>'),
-        regex.compile(r'<a class="vnp" id="vnp(.*?)"></a>'),
-        regex.compile(r'<a class="pts" id="-vp-pli(.*?)"></a>')
+        ('pts-vp-pli1ed', regex.compile(r'<a class="pts" id="-vp-pli(.*?)"></a>')),
+        ('pts-vp-pli1ed', regex.compile(r'<a class="pts" id="1ed(.*?)"></a>')),
+        ('pts-vp-pli2ed', regex.compile(r'<a class="pts" id="2ed(.*?)"></a>')),
+        ('vnp', regex.compile(r'<a class="vnp" id="vnp(.*?)"></a>')),
     ]
 
     uid_to_ptsbook_mapping = {
@@ -361,7 +361,6 @@ class VolpageGetter:
         self.last_volpage = None
 
     def __call__(self, markup, filepath):
-        volpages = []
         # Determine PTS shorthand from filename
         ptsbook = None
         for prefix in regex.match(r'^[a-z-]+', filepath.stem)[0].split('-'):
@@ -372,22 +371,23 @@ class VolpageGetter:
             print(f'Could not determine volpage for {filepath}')
             return None
 
-        for rex in self.regexes:
+        volpages = {}
+        for edition, rex in self.regexes:
             m = rex.search(markup)
             if m:
                 num = m[1].split('.')
                 if len(num) == 1:
-                    volpages.append(f'{ptsbook} {num[0]}')
+                    volpages[edition] = f'{ptsbook} {num[0]}'
                 else:
                     vol, page = num
                     vol = self.dec_to_rom_mapping[vol]
-                    volpages.append(f'{ptsbook} {vol} {page}')
+                    volpages[edition] = f'{ptsbook} {vol} {page}'
 
-        volpage = '//'.join(volpages)
-        if volpage:
-            self.last_volpage = volpages[-1]
-            return '//'.join(volpages)
+        if volpages:
+            self.last_volpage = volpages
+            return volpages
         elif self.last_volpage:
             return self.last_volpage
-        print(f'Could not determine volpage for {filepath}')
-        return None
+        else:
+            print(f'Could not determine volpage for {filepath}')
+            return None
