@@ -1,4 +1,3 @@
-import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icon/iron-icon.js';
 import { html, LitElement } from 'lit-element';
 import '@polymer/paper-icon-button/paper-icon-button.js';
@@ -151,7 +150,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
         <nav class="sc-nav">
           <div id="sub_navigation_header" class="nav-back-button swap-section up ${this.isChildMenu ? 'active' : ''}" title="${this.localize('goBack')}">
             <paper-icon-button id="back_arrow" icon="sc-iron-icons:arrow-back" @click="${this.closeChildMenu}"></paper-icon-button>
-            <a class="nav-back-title" href="${this.headerHref}">${this.headerTitle}</a>
+            <a class="nav-back-title" href="${this.headerHref}">${this.localize(this.headerTitle) ? this.localize(this.headerTitle) : this.headerTitle}</a>
           </div>
           <div id="sub_navigation" class="sub-nav-container swap-section right open ${this.isChildMenu ? 'active' : ''}" data-menuid="${this.subMenuId}">
             ${this.isChildMenu && this.childMenuData.length ? this.getChildMenuTemplate(this.childMenuData[0], 0) : ''}
@@ -184,17 +183,17 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
       <ul id="main_navigation" class="nav-list sc-scrollbar swap-section left ${this.isMainMenu ? 'active' : ''}">
         ${this.mainMenuData.map(topLevelItem => html`
           <li class="nav-menu-item top-menu-item ${topLevelItem.yellow_brick_road ? 'yellow-brick' : ''}">
-            <span class="nav-link">${topLevelItem.name}</span>
+            <span class="nav-link">${this.localize(topLevelItem.name) ? this.localize(topLevelItem.name) : topLevelItem.name}</span>
             ${this.expandMoreButtonTemplate}
             <ul class="nav-secondary">
               ${topLevelItem.children.map(groupingLevelItem => html`
                 <li class="nav-menu-item ${groupingLevelItem.yellow_brick_road ? 'yellow-brick' : ''}">
-                      
+
                   ${groupingLevelItem.lang_iso ? html`
                     <span class="nav-link" data-iso="${this.getLanguageName(groupingLevelItem.lang_iso)}">
-                      ${groupingLevelItem.name}
+                      ${this.localize(groupingLevelItem.name) ? this.localize(groupingLevelItem.name) : groupingLevelItem.name}
                     </span>
-                  ` : html`<span class="nav-link">${groupingLevelItem.name}</span>`
+                  ` : html`<span class="nav-link">${this.localize(groupingLevelItem.name) ? this.localize(groupingLevelItem.name) : groupingLevelItem.name}</span>`
                   }
 
                   ${groupingLevelItem.children.length > 0 ? html`
@@ -220,26 +219,26 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
           ${item.children.map(childItem => html`
             <li class="nav-menu-item ${this.selectedItemId === childItem.id || this.parentId === childItem.id ? 'selected' : ''} ${childItem.yellow_brick_road ? 'yellow-brick' : ''}">
               ${listType === 'nav-secondary' ? html`
-                
-                ${childItem.lang_iso ? html`                  
+
+                ${childItem.lang_iso ? html`
                   <span class="nav-link" data-iso="${this.getLanguageName(childItem.lang_iso)}">${childItem.name}</span>
                 ` : html`
                   <span class="nav-link">${childItem.name}</span>`}
                 ` : html`
-                  ${childItem.lang_iso ? html`                  
+                  ${childItem.lang_iso ? html`
                     <a class="nav-link link-text-ellipsis" title="${childItem.name}"
                       href="${this.getSuttaplexUrl(childItem.id)}"
                       data-iso="${this.getLanguageName(childItem.lang_iso)}">
-                      ${childItem.name}
-                    </a>                    
+                      ${this.localize(childItem.name) ? this.localize(childItem.name) : childItem.name}
+                    </a>
                   ` : html`
                     <a class="nav-link link-text-ellipsis" title="${childItem.name}"
                       href="${this.getSuttaplexUrl(childItem.id)}">
-                      ${childItem.name}
-                    </a>                  
-                  `}                
+                      ${this.localize(childItem.name) ? this.localize(childItem.name) : childItem.name}
+                    </a>
+                  `}
               `}
-              
+
               ${childItem.children && childItem.children.length > 0 ? html`
                 ${this.expandMoreButtonTemplate}
                 ${this.deepMainMenuLevelsTemplate(childItem, false)}
@@ -268,15 +267,15 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
                 style="${this.calculateSubmenuChildrenStyle(menuLevel)}"
                 href="${this.getSuttaplexUrl(childItem.id)}"
                 data-iso="${this.getLanguageName(childItem.lang_iso)}">
-                ${this.getPrefixedItemName(childItem.name, childItem.display_num)}
-              </a>              
+                ${this.localize(this.getPrefixedItemName(childItem.name, childItem.display_num)) ? this.localize(this.getPrefixedItemName(childItem.name, childItem.display_num)) : this.getPrefixedItemName(childItem.name, childItem.display_num)}
+              </a>
             ` : html`
               <a class="nav-link link-text-ellipsis" title="${childItem.name}"
                   style="${this.calculateSubmenuChildrenStyle(menuLevel)}"
                   href="${this.getSuttaplexUrl(childItem.id)}">
-                  ${this.getPrefixedItemName(childItem.name, childItem.display_num)}
-              </a>                          
-            `}            
+                  ${this.localize(this.getPrefixedItemName(childItem.name, childItem.display_num)) ? this.localize(this.getPrefixedItemName(childItem.name, childItem.display_num)) : this.getPrefixedItemName(childItem.name, childItem.display_num)}
+              </a>
+            `}
             ${childItem.children && childItem.children.length > 0 ? html`
               ${this.expandMoreButtonTemplate}
               ${this.getChildMenuTemplate(childItem, menuLevel + 1)}
