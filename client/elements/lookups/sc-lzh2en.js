@@ -35,7 +35,7 @@ class SCChineseLookup extends LitLocalized(LitElement) {
   }
 
   updated(changedProps) {
-    super.update(changedProps);
+    super.updated(changedProps);
     if (changedProps.has('toLang')) {
       this._targetLanguageChanged();
     }
@@ -43,13 +43,14 @@ class SCChineseLookup extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    let targetLanguage = store.getState().textOptions.chineseLookupTargetLanguage;
+    let targetLanguage = state.textOptions.chineseLookupTargetLanguage;
     if (this.toLang !== targetLanguage) {
       this.toLang = targetLanguage;
     }
   }
 
   async getNewDict() {
+    if (!this.toLang) return;
     this.loadingDict = true;
     this.loadedLanguage = this.toLang;
     if (this.toLang === 'en') {
