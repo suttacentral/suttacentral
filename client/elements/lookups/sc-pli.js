@@ -297,6 +297,9 @@ class SCPaliLookup extends LitLocalized(LitElement) {
   }
 
   fuzzyMatch(word) {
+    if (!this.dictData || !this.dictData.dictionary) {
+      return;
+    }
     let end = this._getEndings();
     for (let i = 0; i < end.length; i++) {
       if (word.length > end[i][2] && word.substring(word.length - end[i][0].length, word.length) === end[i][0]) {
