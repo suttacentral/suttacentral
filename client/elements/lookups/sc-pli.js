@@ -233,7 +233,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
   }
 
   matchPartial(word, maxlength) {
-    if (!this.dictData) {
+    if (!this.dictData || !this.dictData.dictionary) {
       return;
     }
     //Matching partials is somewhat simpler, since all ending cases are clipped off.
