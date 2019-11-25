@@ -35,7 +35,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
   }
 
   updated(changedProps) {
-    super.update(changedProps);
+    super.updated(changedProps);
     if (changedProps.has('toLang')) {
       this._targetLanguageChanged();
     }
@@ -43,7 +43,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    let targetLanguage = store.getState().textOptions.paliLookupTargetLanguage;
+    let targetLanguage = state.textOptions.paliLookupTargetLanguage;
     if (this.toLang !== targetLanguage) {
       this.toLang = targetLanguage;
     }
