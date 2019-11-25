@@ -4,6 +4,7 @@ import '@polymer/paper-item/paper-item.js';
 import { LitLocalized } from '../addons/localization-mixin'
 import { API_ROOT } from '../../constants.js';
 import copyToClipboard from '../../utils/copy.js'
+import { volPagesToString } from '../../utils/suttaplex';
 
 /*
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
@@ -200,17 +201,15 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
     for (let section of Object.keys(this.parallels)) {
       let acronymUid = this._generateAcronymUid(this.item.acronym, section)
       result += `Parallels for ${acronymUid} ${this.item.original_title} `;
-      if (this.item.volpages && this.item.volpages.length > 0) {
-        result += `(${this.item.volpages})`;
-      }
+      let volpages = volPagesToString(this.item.volpages);
+      result += volpages ? `(${volpages})` : '';
       result = this._strip(result, ' ');
       result += ': ';
       for (let parallel of this.parallels[section]) {
         result += this._generateAcronymUid(parallel.to.acronym, parallel.to.to);
         result += ' ';
-        if (parallel.to.volpages) {
-          result += `(${parallel.to.volpages}) `;
-        }
+        let parallelVolpages = volPagesToString(parallel.to.volpages);
+        result += parallelVolpages ? `(${parallelVolpages}) ` : '';
         if (parallel.to.biblio) {
           result += this._getTextFromHtml(parallel.to.biblio);
         }

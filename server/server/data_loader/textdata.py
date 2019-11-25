@@ -76,7 +76,10 @@ class TextInfoModel:
 
         self._ppn = None
         if lang_dir.stem == 'pli':
-            self._ppn = PaliPageNumbinator(data_dir=data_dir)
+            try:
+                self._ppn = PaliPageNumbinator(data_dir=data_dir)
+            except:
+                logger.exception("Error while loading Pali volpages")
 
             # It should be noted SuttaCentral does not use bolditalic
         unicode_points = {'normal': set(), 'bold': set(), 'italic': set()}
@@ -221,11 +224,17 @@ class TextInfoModel:
                 return
             return '{}'.format(e.attrib['id']).replace('t', 'T ')
         elif lang_uid == 'pli':
+            if self._ppn is None:
+                return None
             ppn = self._ppn
             e = element.next_in_order()
             while e:
                 if e.tag == 'a' and e.select_one('.ms'):
-                    return ppn.get_pts_ref_from_pid(e.attrib['id'])
+                    try:
+                        return ppn.get_pts_ref_from_pid(e.attrib['id'])
+                    except:
+                        logger.exception(f'Error while loading Pali volpage for {uid}')
+                        return None
                 e = e.next_in_order()
 
         return None
@@ -259,9 +268,10 @@ class ArangoTextInfoModel(TextInfoModel):
             self.flush_documents()
 
     def flush_documents(self):
-        print('\033[2K\r' + self.queue[-1]['path'],end='')
-        self.db['html_text'].import_bulk_logged(self.queue)
-        self.queue.clear()
+        if len(self.queue) > 0:
+            print('\033[2K\r' + self.queue[-1]['path'],end='')
+            self.db['html_text'].import_bulk_logged(self.queue)
+            self.queue.clear()
 
     def update_code_points(self, lang_uid, unicode_points, force=False):
         keys = ('normal', 'bold', 'italic')
@@ -333,42 +343,51 @@ class PaliPageNumbinator:
         'y': 'Ya',
     }
 
-    default_attempts = [
-        0,
-        -1,
-        -2,
-        -3,
-        -4,
-        -5,
-        -6,
-        -7,
-        -8,
-        -9,
-        -10,
-        -11,
-        -12,
-        -13,
-        -14,
-        -15,
-        1,
-        2,
-        3,
-        4,
-        5,
-    ]
+    default_attempts = list(range(0, -16, -1)) + list(range(1, 6))
 
     def __init__(self, data_dir):
         self.load(data_dir)
 
     def load(self, data_dir):
-        with (data_dir / 'misc' / 'pali_concord.json').open('r', encoding='utf8') as f:
+        with (data_dir / 'misc' / 'all_pali_concordance.json').open('r', encoding='utf8') as f:
             entries = json.load(f)
 
+        # v is an array of reference-strings. Each such string is a
+        # reference into a particular manuscript edition for the given
+        # text segment (k).
         self.mapping = mapping = {}
         for k, v in entries.items():
-            msbook, msnum, edition = k.split(':')
-            msnum = int(msnum)
-            mapping[(msbook, msnum, edition)] = tuple(v)
+
+            # We are so far only interested in concordance between Mahasangiti
+            # volumes and Pali Text Society ones.
+            ms = []
+            pts = []
+
+            # Pick out only the references we're interested in.
+            for ref in v:
+                match = regex.fullmatch(r'ms(\d+[A-Z][a-z]*\d*)_(\d+)', ref)
+                if match:
+                    msbook, msnum = match.groups()
+                    ms.append((msbook.lower(), int(msnum)))
+                    continue
+
+                match = regex.fullmatch(r'(pts-vp-pli(?:[12]ed)?)(?:(\d+)\.)?(\d+)', ref)
+                if match:
+                    pts_edition, vol, page = match.groups()
+                    if pts_edition == 'pts-vp-pli':
+                        pts_edition = 'pts-vp-pli1ed'
+                    pts.append((pts_edition, vol, int(page)))
+                    continue
+
+                match = regex.fullmatch(r'vnp(\d+)', ref)
+                if match:
+                    verse = match[1]
+                    pts.append(('vnp', None, int(verse)))
+                    continue
+
+            for msbook, msnum in ms:
+                for pts_edition, vol, page in pts:
+                    mapping[msbook, msnum, pts_edition] = (vol, page)
 
     def msbook_to_ptsbook(self, msbook):
         m = regex.match(r'\d+([A-Za-z]+(?:(?<=th)[12])?)', msbook)
@@ -384,21 +403,20 @@ class PaliPageNumbinator:
     def get_pts_ref(self, msbook, msnum, attempts=None):
         if not attempts:
             attempts = self.default_attempts
-        for i in attempts:
-            n = msnum + i
-            if n < 1:
-                continue
-            key1 = (msbook, n, 'pts1')
-            key2 = (msbook, n, 'pts2')
-            key = None
-            if key1 in self.mapping:
-                key = key1
-            elif key2 in self.mapping:
-                key = key2
-            if key:
-                book, num = self.mapping[key]
-                ptsbook = self.msbook_to_ptsbook(msbook)
-                return self.format_book(ptsbook, book, num)
+
+        refs = {}
+        for edition in ['pts-vp-pli1ed', 'pts-vp-pli2ed', 'vnp']:
+            for i in attempts:
+                n = msnum + i
+                if n < 1:
+                    continue
+                key = (msbook, n, edition)
+                if key in self.mapping:
+                    book, num = self.mapping[key]
+                    ptsbook = self.msbook_to_ptsbook(msbook)
+                    refs[edition] = self.format_book(ptsbook, book, num)
+                    break
+        return refs if refs else None
 
     def format_book(self, ptsbook, book, num):
         if not book:
