@@ -6,7 +6,7 @@ from arango.exceptions import ServerConnectionError
 
 
 def connect():
-    client = ArangoClient(host=os.getenv('ARANGO_HOST'), port=os.getenv('ARANGO_PORT'))
+    client = ArangoClient(hosts=os.getenv('ARANGO_HOSTS'))
 
     # arango client >= 4 thows only when verify is set to True
     client.db(

@@ -19,8 +19,7 @@ class Config:
         pass
 
     ARANGO_CLIENT = {
-        'host': os.getenv('ARANGO_HOST'),
-        'port': int(os.getenv('ARANGO_PORT')),
+        'hosts': os.getenv('ARANGO_HOSTS'),
         'username': os.getenv('ARANGO_USER', None),
         'password': os.getenv('ARANGO_ROOT_PASSWORD', None),
     }

@@ -75,7 +75,7 @@ class ArangoDB:
     def connect(self) -> ArangoClient:
         """Connect to the ArangoDB"""
         config = current_app.config['ARANGO_CLIENT']
-        return ArangoClient(host=config['host'], port=config['port'])
+        return ArangoClient(hosts=config['hosts'])
 
     @property
     def client(self) -> ArangoClient:

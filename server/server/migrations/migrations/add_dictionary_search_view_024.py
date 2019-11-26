@@ -8,14 +8,14 @@ class SecondMigration(Migration):
 
     def create_view(self):
         db = get_db()
-
-        db.create_view(
+        db.create_arangosearch_view(
             'v_dict',
-            view_type='arangosearch',
             properties={
                 'links': {
                     'dictionary_full': {
-                        'fields': {'word_ascii': {'analyzers': ['identity']}}
+                        'fields': {
+                            'word_ascii': {'analyzers': ['identity']}
+                        }
                     }
                 }
             },
