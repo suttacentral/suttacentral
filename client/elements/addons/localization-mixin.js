@@ -116,7 +116,7 @@ export const LitLocalized = base => class extends connect(store)(base) {
 
     if (params) {
       return string.replace(
-        /\{([a-z0-9]+)\}/gi,
+        /\{([a-z][a-z0-9-]*)\}/gi,
         (match, group) => undefined !== params[group] ? params[group] : group
       );
     }

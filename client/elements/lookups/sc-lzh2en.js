@@ -1,60 +1,65 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-ajax/iron-ajax.js';
+import { LitElement, html } from 'lit-element';
 
-import { ReduxMixin } from '../../redux-store.js';
+import { store } from '../../redux-store';
+import { LitLocalized } from '../addons/localization-mixin'
 import { API_ROOT } from '../../constants.js';
 
-class SCChineseLookup extends ReduxMixin(PolymerElement) {
-  static get template() {
-    return html`
-    <iron-ajax
-        id="ajax"
-        handle-as="json"
-        loading="{{loadingDict}}"
-        last-response="{{dictData}}"></iron-ajax>
-
-    <iron-ajax
-        id="fallback_ajax"
-        handle-as="json"
-        loading="{{loadingFallbackDictData}}"
-        last-response="{{fallbackDictData}}"></iron-ajax>`;
+class SCChineseLookup extends LitLocalized(LitElement) {
+  render() {
+    return html``;
   }
 
   static get properties() {
     return {
-      loadedLanguage: {
-        type: String
-      },
-      toLang: {
-        type: String,
-        statePath: 'textOptions.chineseLookupTargetLanguage',
-        observer: '_targetLanguageChanged'
-      },
-      dictData: {
-        type: Object
-      },
-      loadingDict: {
-        type: Boolean,
-        value: true
-      },
-      loadingFallbackDictData: {
-        type: Boolean,
-        value: true
-      },
-      fallbackDictData: {
-        type: Object
-      }
+      loadedLanguage: { type: String },
+      toLang: { type: String },
+      dictData: { type: Object },
+      loadingDict: { type: Boolean },
+      loadingFallbackDictData: { type: Boolean },
+      fallbackDictData: { type: Object }
     }
   }
 
-  getNewDict() {
-    this.$.ajax.url = this._computeUrl();
+  constructor() {
+    super();
+    this.loadedLanguage = '';
+    this.toLang = store.getState().textOptions.chineseLookupTargetLanguage;
+    this.dictData = {}
+    this.loadingDict = true;
+    this.loadFallbackLanguage = true;
+    this.fallbackDictData = {};
+  }
+
+  firstUpdated() {
+    this.getNewDict();
+  }
+
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('toLang')) {
+      this._targetLanguageChanged();
+    }
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    let targetLanguage = state.textOptions.chineseLookupTargetLanguage;
+    if (this.toLang !== targetLanguage) {
+      this.toLang = targetLanguage;
+    }
+  }
+
+  async getNewDict() {
+    if (!this.toLang) return;
+    this.loadingDict = true;
     this.loadedLanguage = this.toLang;
     if (this.toLang === 'en') {
-      this.$.fallback_ajax.url = this._computeUrl(true);
-      this.$.fallback_ajax.generateRequest();
+      this.loadingFallbackDictData = true;
+      this.fallbackDictData = await (await fetch(this._computeUrl(true))).json();
+      this.loadingFallbackDictData = false;
     }
-    return this.$.ajax.generateRequest();
+    this.dictData = await (await fetch(this._computeUrl())).json();
+    this.loadingDict = false;
   }
 
   lookupWord(graphs) {
@@ -71,7 +76,7 @@ class SCChineseLookup extends ReduxMixin(PolymerElement) {
   }
 
   _lookupWord(graph) {
-    if (!this.dictData) {
+    if (!this.dictData || !this.dictData.dictionary) {
       return;
     }
     graph = graph.replace(/\u2060/, '');
