@@ -276,9 +276,11 @@ class SCSegmentedText extends SCTextPage {
     this._scrollToSectionInUrl();
 
     this.navItems = this._prepareNavigation();
-    const elementHgroup = this.shadowRoot.querySelector(".hgroup");
-    const elementNav = this.shadowRoot.querySelector('sc-nav-contents');
-    elementHgroup.appendChild(elementNav);
+    setTimeout(() => {
+      const elementHgroup = this.shadowRoot.querySelector(".hgroup");
+      const elementNav = this.shadowRoot.querySelector('sc-nav-contents');
+      elementHgroup.appendChild(elementNav);
+    }, 0);
   }
 
   _updateView() {
@@ -1297,12 +1299,22 @@ class SCSegmentedText extends SCTextPage {
     let sutta = this.translatedSutta ? this.translatedSutta : this.rootSutta;
     const dummyElement = document.createElement('template');
     dummyElement.innerHTML = this.markup.trim();
-    return Array.from(
+    let arrayTOC = Array.from(
       dummyElement.content.querySelectorAll('h2')
     ).map(elem => {
       const id = elem.firstElementChild.id;
-      return { link: id, name: this._stripLeadingOrdering(sutta.strings[id]) };
-    })
+      if (sutta.strings[id]) {
+        return { link: id, name: this._stripLeadingOrdering(sutta.strings[id]) };
+      }
+    });
+
+    /**
+    * Because some Pali text does not have a proper structure to generate TOC,
+    * the array generated here will have undefined array elements.
+    * this command deletes the undefined array elements
+    */
+    arrayTOC = arrayTOC.filter(Boolean);
+    return arrayTOC;
   }
 
   _stripLeadingOrdering(name) {

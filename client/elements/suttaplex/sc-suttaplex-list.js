@@ -1,4 +1,3 @@
-import '@polymer/iron-ajax/iron-ajax.js';
 import { html, LitElement } from 'lit-element';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';

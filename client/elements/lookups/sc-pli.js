@@ -1,50 +1,60 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-ajax/iron-ajax.js';
+import { LitElement, html } from 'lit-element';
 
-import { ReduxMixin } from '../../redux-store.js';
+import { store } from '../../redux-store';
+import { LitLocalized } from '../addons/localization-mixin'
 import { API_ROOT } from '../../constants.js';
 
-class SCPaliLookup extends ReduxMixin(PolymerElement) {
-  static get template() {
-    return html`
-    <iron-ajax
-        id="ajax"
-        handle-as="json"
-        loading="{{loadingDict}}"
-        last-response="{{dictData}}"></iron-ajax>`;
+class SCPaliLookup extends LitLocalized(LitElement) {
+  render() {
+    return html``;
   }
 
   static get properties() {
     return {
-      syllSpacer: {
-        type: String,
-        value: '‧'
-      },
-      dictData: {
-        type: Object
-      },
-      loadingDict: {
-        type: Boolean,
-        value: true
-      },
-      isTi: {
-        type: Boolean
-      },
-      loadedLanguage: {
-        type: String
-      },
-      toLang: {
-        type: String,
-        statePath: 'textOptions.paliLookupTargetLanguage',
-        observer: '_targetLanguageChanged'
-      }
+      syllSpacer: { type: String },
+      dictData: { type: Object },
+      loadingDict: { type: Boolean },
+      isTi: { type: Boolean },
+      loadedLanguage: { type: String },
+      toLang: { type: String }
     }
   }
 
-  getNewDict() {
-    this.$.ajax.url = this._computeUrl();
+  constructor() {
+    super();
+    this.syllSpacer = '‧';
+    this.dictData = {};
+    this.loadingDict = true;
+    this.isTi = false;
+    this.loadedLanguage = '';
+    this.toLang = store.getState().textOptions.paliLookupTargetLanguage;
+  }
+
+  firstUpdated() {
+    this.getNewDict();
+  }
+
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('toLang')) {
+      this._targetLanguageChanged();
+    }
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    let targetLanguage = state.textOptions.paliLookupTargetLanguage;
+    if (this.toLang !== targetLanguage) {
+      this.toLang = targetLanguage;
+    }
+  }
+
+  async getNewDict() {
+    if (!this.toLang) return;
+    this.loadingDict = true;
     this.loadedLanguage = this.toLang;
-    return this.$.ajax.generateRequest();
+    this.dictData = await (await fetch(this._computeUrl())).json();
+    this.loadingDict = false;
   }
 
   lookupWord(word) {
@@ -223,7 +233,7 @@ class SCPaliLookup extends ReduxMixin(PolymerElement) {
   }
 
   matchPartial(word, maxlength) {
-    if (!this.dictData) {
+    if (!this.dictData || !this.dictData.dictionary) {
       return;
     }
     //Matching partials is somewhat simpler, since all ending cases are clipped off.
@@ -270,7 +280,7 @@ class SCPaliLookup extends ReduxMixin(PolymerElement) {
   // "leftovers": Anything which wasn't matched by the function, should be empty string
   //  or null if meaningless (such as a grammatical insertion ie. 'ti')
   exactMatch(word) {
-    if (!this.dictData) {
+    if (!this.dictData || !this.dictData.dictionary) {
       return;
     }
     let target = this.dictData.dictionary[word];
@@ -287,6 +297,9 @@ class SCPaliLookup extends ReduxMixin(PolymerElement) {
   }
 
   fuzzyMatch(word) {
+    if (!this.dictData || !this.dictData.dictionary) {
+      return;
+    }
     let end = this._getEndings();
     for (let i = 0; i < end.length; i++) {
       if (word.length > end[i][2] && word.substring(word.length - end[i][0].length, word.length) === end[i][0]) {

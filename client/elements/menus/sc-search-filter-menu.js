@@ -1,10 +1,8 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { html, LitElement } from 'lit-element';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-item/paper-item.js';
-
-import { Localized } from '../addons/localization-mixin.js';
-import { ReduxMixin } from '../../redux-store.js';
+import { LitLocalized } from '../addons/localization-mixin'
 
 /*
 This dropdown for the search pages is normally hidden, and only shows when necessary.
@@ -14,8 +12,8 @@ The two necessary conditions are:
 - there are more than ten results in total
 */
 
-class SCSearchFilterMenu extends ReduxMixin(Localized(PolymerElement)) {
-  static get template() {
+class SCSearchFilterMenu extends LitLocalized(LitElement) {
+  render() {
     return html`
     <style>
       :host {
@@ -54,27 +52,34 @@ class SCSearchFilterMenu extends ReduxMixin(Localized(PolymerElement)) {
       }
     </style>
 
-    <paper-dropdown-menu id="filter_dropdown" class="filter-dropdown" title="Select search scope" vertical-align="auto" label="{{localize('filter')}}">
-      <paper-listbox class="filter-menu-items" slot="dropdown-content" selected="{{searchSelected}}">
-        <paper-item class="filter-menu-item" id="all">{{localize('all')}}</paper-item>
-        <paper-item class="filter-menu-item" id="root-texts">{{localize('rootTexts')}}</paper-item>
-        <paper-item class="filter-menu-item" id="translations">{{localize('translations')}}</paper-item>
-        <paper-item class="filter-menu-item" id="dictionaries">{{localize('dictionaries')}}</paper-item>
+    <paper-dropdown-menu id="filter_dropdown" class="filter-dropdown" title="Select search scope" vertical-align="auto" label="${this.localize('filter')}" @selected-item-changed=${(e) => this._onSelectedItemChanged(e)}>
+      <paper-listbox class="filter-menu-items" slot="dropdown-content" selected="${this.searchSelected}">
+        <paper-item class="filter-menu-item" id="all">${this.localize('all')}</paper-item>
+        <paper-item class="filter-menu-item" id="root-texts">${this.localize('rootTexts')}</paper-item>
+        <paper-item class="filter-menu-item" id="translations">${this.localize('translations')}</paper-item>
+        <paper-item class="filter-menu-item" id="dictionaries">${this.localize('dictionaries')}</paper-item>
       </paper-listbox>
     </paper-dropdown-menu>`;
   }
 
   static get properties() {
     return {
-      searchSelected: {
-        type: String,
-        value: '0',
-        observer: '_searchChanged'
-      },
-      localizedStringsPath: {
-        type: String,
-        value: '/localization/elements/sc-search-filter-menu'
-      }
+      searchSelected: { type: String },
+      localizedStringsPath: { type: String }
+    }
+  }
+
+  constructor() {
+    super();
+    this.searchSelected = '0';
+    this.localizedStringsPath = '/localization/elements/sc-search-filter-menu';
+  }
+
+  _onSelectedItemChanged(e) {
+    let selectedItem = e.currentTarget.selectedItem;
+    if (selectedItem) {
+      this.searchSelected = selectedItem.parentNode.selected;
+      this._searchChanged();
     }
   }
 
@@ -88,7 +93,7 @@ class SCSearchFilterMenu extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   resetFilter() {
-    this.searchSelected = 0;
+    this.searchSelected = '0';
   }
 }
 
