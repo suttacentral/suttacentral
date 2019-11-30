@@ -34,7 +34,6 @@
     "localization/elements/**/*.json",
     "elements/styles/*.json",
     "manifest.json",
-    "polyfills/*.js",
     "service-worker.js",
     "node_modules/workbox-sw/build/importScripts/*",
     "node_modules/web-animations-js/*.js",
@@ -52,26 +51,6 @@
       "browserCapabilities": ["es2015"],
       "js": {
         "compile": false,
-        "minify": true
-      },
-      "css": {
-        "minify": true
-      },
-      "html": {
-        "minify": true
-      },
-      "addServiceWorker": false,
-      "addPushManifest": false
-    },
-    {
-      "name": "es5-bundled",
-      "bundle": {
-        "stripComments": true,
-        "inlineCss": true,
-        "sourcemaps": false
-      },
-      "js": {
-        "compile": true,
         "minify": true
       },
       "css": {
