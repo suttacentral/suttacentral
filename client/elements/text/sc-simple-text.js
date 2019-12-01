@@ -63,6 +63,9 @@ class SCSimpleText extends SCTextPage {
         transition: background-color 300ms ease-in;
       }
 
+      p, li {
+        hanging-punctuation: first last;
+      }
     </style>
 
     <iron-a11y-keys id="a11y" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
@@ -229,8 +232,6 @@ class SCSimpleText extends SCTextPage {
 
   ready() {
     super.ready();
-
-    
     this.addEventListener('click', () => {
       setTimeout(() => {
         this._scrollToSection(window.location.hash.substr(1), true, 0);
@@ -259,6 +260,7 @@ class SCSimpleText extends SCTextPage {
       this._scrollToSection(window.location.hash.substr(1), false, 500);
     }, 0);
     this.dispatch('changeSuttaMetaText', this._computeMeta());
+    this._loadingChanged();
   }
 
   _setAttributes() {
@@ -390,13 +392,6 @@ class SCSimpleText extends SCTextPage {
         } else {
           Array.from(textualInfoClassRefs).forEach(item => item.title = '');
         }
-      }
-      const varElements = textElement.querySelectorAll('.var');
-      if (varElements[0] && varElements[0].innerHTML.indexOf('class="varnote"') === -1) {
-        Array.from(varElements).forEach((item) => {
-          item.innerHTML = this._markupVarNote(item.title, item.innerHTML);
-          item.title = '';
-        });
       }
       const corrElements = textElement.querySelectorAll('.corr');
       for (let key in corrElements) {
@@ -878,45 +873,6 @@ class SCSimpleText extends SCTextPage {
         this.isTextViewHidden = false;
       }, 0);
     }
-  }
-
-  _markupVarNote(noteData, referenceText) {
-    const noteItems = noteData.split(/ \| /);
-    let noteText = `
-                        ${referenceText}
-                      <paper-tooltip class="varnote" fit-to-visible-bounds><table><tbody>
-                     `;
-    let out = '';
-
-    for (let item in noteItems) {
-      let m = noteItems[item].match(/^(\(.*?\)|[^\(]+)(.*)/),
-        variant = m[1],
-        comment = m[2];
-      if (variant && !comment) {
-        // In some cases there is no variant, it's simply a comment
-        // In this case, the comment takes the entire line.
-        out = `
-                    <tr><td colspan=2>
-                      ${this._markupComment(variant)}
-                    </td></tr>
-                  `;
-      } else {
-        // The normal case is a variant and a comment or qualification
-        // pertaining to that variant reading.
-        out = `
-                  <tr><td>
-                    ${variant}
-                  </td><td>
-                    ${this._markupComment(comment)}
-                  </td></tr>
-                 `;
-      }
-      noteText += out;
-    }
-    return `
-                ${noteText}
-              </tbody></table></paper-tooltip>
-             `;
   }
 
   _markupComment(comment) {
