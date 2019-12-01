@@ -223,10 +223,9 @@ export const staticStyles = html`
   }
   .gatha {
     font-size: inherit;
-    display: table;
     width: auto;
     margin: 0 auto;
-    max-width: 90%;
+    padding: 0 1em;
   }
   .pre {
     @apply --sc-monospace-font;
