@@ -124,6 +124,23 @@ export const LitLocalized = base => class extends connect(store)(base) {
     return string;
   }
 
+  localizeEx(key, ...params) {
+    const string = (this.__resources && this.__resources[key]) ? this.__resources[key] : '';
+
+    if (!string && this._languageLoaded) {
+      console.warn('missing translation key', key);
+    }
+
+    if (params.length) {
+      return string.replace(
+        /\{([a-z][a-z0-9-]*)\}/gi,
+        (match, group) => undefined !== params[params.indexOf(group) + 1] ? params[params.indexOf(group) + 1] : group
+      );
+    }
+
+    return string;
+  }
+
   _stateChanged(state) {
     if (this.language !== state.siteLanguage) {
       this.language = state.siteLanguage;

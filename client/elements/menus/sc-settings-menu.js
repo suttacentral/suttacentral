@@ -1,8 +1,7 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html, css } from 'lit-element';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@polymer/paper-radio-button/paper-radio-button.js';
 import '@polymer/paper-radio-group/paper-radio-group.js';
-import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/paper-listbox/paper-listbox.js';
@@ -10,17 +9,17 @@ import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '@polymer/iron-overlay-behavior/iron-overlay-backdrop.js';
 import '@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import { ReduxMixin } from '../../redux-store.js';
 import { API_ROOT } from '../../constants.js';
-import { Localized } from '../addons/localization-mixin.js';
+import { store } from '../../redux-store';
+import { LitLocalized } from '../addons/localization-mixin'
 
 /*
 Settings menu appears in the toolbar on text pages only. It has setting for textual-details (paragraph numbers),
 type of view for segmented pages (showing pali next to translated text), lookup tools and publication details .
 */
 
-class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
-  static get template() {
+class SCSettingsMenu extends LitLocalized(LitElement) {
+  render() {
     return html`
     <style>
       :host {
@@ -136,295 +135,271 @@ class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
       }
     </style>
 
-    <iron-ajax id="paragraphs_ajax" url="[[_getParagraphsUrl()]]" handle-as="json" last-response="{{textualInfoResponse}}"></iron-ajax>
-
     <div class="paper-dialogue-container">
       <div class="loading-indicator">
-        <paper-spinner-lite active="[[showLoadingSpinner]]"></paper-spinner-lite>
+        <paper-spinner-lite ?active=${this.showLoadingSpinner}></paper-spinner-lite>
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">{{localize('viewTextualInfo')}}</h3>
-        <div class="nerdy-row">{{localize('displaysInfo')}}</div>
-        <paper-toggle-button id="textual_info_toggle_button" class="menu-toggle-button" active="{{textualInfoToggleEnabled}}"></paper-toggle-button>
+        <h3 class="menu-item-title">${this.localize('viewTextualInfo')}</h3>
+        <div class="nerdy-row">${this.localize('displaysInfo')}</div>
+        <paper-toggle-button id="textual_info_toggle_button" class="menu-toggle-button"
+          ?active=${this.textualInfoToggleEnabled} ?checked=${this.textualInfoToggleEnabled}></paper-toggle-button>
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">{{localize('viewOriginal')}}</h3>
-        <div class="nerdy-row">{{localize('onlyWorks')}}</div>
-        <paper-radio-group id="text_view_menu" selected="{{selectedTextView}}">
+        <h3 class="menu-item-title">${this.localize('viewOriginal')}</h3>
+        <div class="nerdy-row">${this.localize('onlyWorks')}</div>
+        <paper-radio-group id="text_view_menu" selected="${this.selectedTextView}">
           <paper-radio-button name="none" class="menu-option">
-            {{localize('none')}}
+            ${this.localize('none')}
           </paper-radio-button>
           <paper-radio-button id="sides" name="sidebyside" class="menu-option">
             <iron-icon class="menu-icon" icon="sc-iron-icons:view-column"></iron-icon>
-            {{localize('sideBySide')}}
+            ${this.localize('sideBySide')}
           </paper-radio-button>
           <paper-radio-button name="linebyline" class="menu-option">
             <iron-icon class="menu-icon" icon="sc-iron-icons:view-headline"></iron-icon>
-            {{localize('lineByLine')}}
+            ${this.localize('lineByLine')}
           </paper-radio-button>
           <paper-radio-button name="popup" class="menu-option">
             <iron-icon class="menu-icon" icon="sc-iron-icons:insert-comment"></iron-icon>
-            {{localize('popUp')}}
+            ${this.localize('popUp')}
           </paper-radio-button>
         </paper-radio-group>
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">{{localize('activatePaliLookup')}}</h3>
+        <h3 class="menu-item-title">${this.localize('activatePaliLookup')}</h3>
         <div class="nerdy-row">
-          {{localize('activatePaliDescription')}}
+          ${this.localize('activatePaliDescription')}
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="pali_lookup_menu" vertical-align="auto">
-          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliLookupSelected}}">
-            <template is="dom-repeat" items="[[paliLookupArray]]" as="dictlanguage">
-              <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
-            </template>
+        <paper-dropdown-menu class="menu-dropdown" label="${this.localize('lookup')}" id="pali_lookup_menu" vertical-align="auto">
+          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="${this.paliLookupSelected}">
+            ${this.paliLookupTemplate}
           </paper-listbox>
         </paper-dropdown-menu>
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">{{localize('activateChineseLookup')}}</h3>
+        <h3 class="menu-item-title">${this.localize('activateChineseLookup')}</h3>
         <div class="nerdy-row">
-          {{localize('activateChineseDescription')}}
+          ${this.localize('activateChineseDescription')}
         </div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('lookup')}}" id="chinese_lookup_menu" vertical-align="auto">
-          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{chineseLookupSelected}}">
-            <template is="dom-repeat" items="[[chineseLookupArray]]" as="dictlanguage">
-              <paper-item class="menu-item">[[dictlanguage.language]]</paper-item>
-            </template>
+        <paper-dropdown-menu class="menu-dropdown" label="${this.localize('lookup')}" id="chinese_lookup_menu" vertical-align="auto">
+          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="${this.chineseLookupSelected}">
+            ${this.chineseLookupTemplate}
           </paper-listbox>
         </paper-dropdown-menu>
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">{{localize('changePaliScript')}}</h3>
-        <div class="nerdy-row">{{localize('changePaliScriptDescription')}}</div>
-        <paper-dropdown-menu class="menu-dropdown" label="{{localize('changePaliScriptLabel')}}" id="pali_script_menu" vertical-align="auto">
-          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="{{paliScriptSelected}}">
-            <template is="dom-repeat" items="[[paliScripts]]" as="script">
-              <paper-item class="menu-item">[[script.language]]</paper-item>
-            </template>
+        <h3 class="menu-item-title">${this.localize('changePaliScript')}</h3>
+        <div class="nerdy-row">${this.localize('changePaliScriptDescription')}</div>
+        <paper-dropdown-menu class="menu-dropdown" label="${this.localize('changePaliScriptLabel')}" id="pali_script_menu" vertical-align="auto">
+          <paper-listbox class="menu-listbox" slot="dropdown-content" selected="${this.paliScriptSelected}">
+            ${this.paliScriptsTemplate}
           </paper-listbox>
         </paper-dropdown-menu>
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">{{localize('rememberSettings')}}</h3>
-        <div class="nerdy-row">{{localize('rememberSettingsDescription')}}</div>
-        <paper-toggle-button id="remember_settings_button" class="menu-toggle-button" noink="" checked="" active="{{rememberSettings}}"></paper-toggle-button>
+        <h3 class="menu-item-title">${this.localize('rememberSettings')}</h3>
+        <div class="nerdy-row">${this.localize('rememberSettingsDescription')}</div>
+        <paper-toggle-button id="remember_settings_button" class="menu-toggle-button" noink="" ?checked=${this.rememberSettings} ?active=${this.rememberSettings}></paper-toggle-button>
       </div>
 
     </div>
 
-    <app-localstorage-document key="rememberTextSettings" data="{{rememberSettings}}"></app-localstorage-document>`;
+    <app-localstorage-document key="rememberTextSettings" .data="${this.rememberSettings}"></app-localstorage-document>`;
+  }
+
+  get paliLookupTemplate() {
+    return this.paliLookupArray ? this.paliLookupArray.map(dictLanguage => html`
+      <paper-item class="menu-item">${dictLanguage.language}</paper-item>
+    `) : '';
+  }
+
+  get chineseLookupTemplate() {
+    return this.chineseLookupArray ? this.chineseLookupArray.map(dictLanguage => html`
+      <paper-item class="menu-item">${dictLanguage.language}</paper-item>
+    `) : '';
+  }
+
+  get paliScriptsTemplate() {
+    return this.paliScripts ? this.paliScripts.map(script => html`
+      <paper-item class="menu-item">${script.language}</paper-item>
+    `) : '';
   }
 
   static get properties() {
     return {
       // Selected type of view for segmented-text pages.
-      selectedTextView: {
-        type: String,
-        observer: '_textViewChanged',
-        statePath: 'textOptions.segmentedSuttaTextView'
-      },
-      paliLookupArray: {
-        type: Array,
-        value: [
-          {
-            'dict': 'none',
-            'language': 'None'
-          },
-          {
-            'dict': 'pli2en',
-            'language': 'Pāli → English'
-          },
-          {
-            'dict': 'pli2es',
-            'language': 'Pāli → Español'
-          },
-          {
-            'dict': 'pli2zh',
-            'language': 'Pāli → 汉语'
-          },
-          {
-            'dict': 'pli2pt',
-            'language': 'Pāli → Português'
-          },
-          {
-            'dict': 'pli2id',
-            'language': 'Pāli → Bahasa Indonesia'
-          },
-          {
-            'dict': 'pli2nl',
-            'language': 'Pāli → Nederlands'
-          }
-        ]
-      },
-      paliLookupLanguage: {
-        type: String,
-        statePath: 'textOptions.paliLookupTargetDictRepr'
-      },
+      selectedTextView: { type: String },
+      paliLookupArray: { type: Array },
+      paliLookupLanguage: { type: String },
       // pali to language lookup selected number.
-      paliLookupSelected: {
-        type: Number,
-        computed: '_findPaliLookupLanguageIndex(paliLookupLanguage)'
-      },
+      paliLookupSelected: { type: Number }, //computed: '_findPaliLookupLanguageIndex(paliLookupLanguage)'
       // possible values for the chinese to language lookup.
-      chineseLookupArray: {
-        type: Array,
-        value: [
-          {
-            'dict': 'none',
-            'language': 'None'
-          },
-          {
-            'dict': 'lzh2en',
-            'language': '汉语 → English'
-          }
-        ]
-      },
-      chineseLookupLanguage: {
-        type: String,
-        statePath: 'textOptions.chineseLookupTargetDictRepr'
-      },
+      chineseLookupArray: { type: Array },
+      chineseLookupLanguage: { type: String },
       // chinese to language lookup selected number.
-      chineseLookupSelected: {
-        type: Number,
-        computed: '_findChineseLookupLanguageIndex(chineseLookupLanguage)'
-      },
+      chineseLookupSelected: { type: Number }, //computed: '_findChineseLookupLanguageIndex(chineseLookupLanguage)'
       // possible values for the script chooser for pali.
-      paliScripts: {
-        type: Array,
-        value: [
-          {
-            'script': 'latin',
-            'language': 'Latin'
-          },
-          {
-            'script': 'sinhala',
-            'language': 'සිංහල'
-          },
-          {
-            'script': 'devanagari',
-            'language': 'नागरी'
-          },
-          {
-            'script': 'thai',
-            'language': 'ไทย'
-          },
-          {
-            'script': 'myanmar',
-            'language': 'မြန်မာဘာသာ'
-          }
-        ]
-      },
+      paliScripts: { type: Array },
       // pali script selected number.
-      paliScriptSelected: {
-        type: Number,
-        computed: '_findPaliScriptIndex(paliScript)'
-      },
-      paliScript: {
-        type: String,
-        statePath: 'textOptions.script'
-      },
+      paliScriptSelected: { type: Number }, //computed: '_findPaliScriptIndex(paliScript)'
+      paliScript: { type: String },
       // The state of the textual info paper-toggle-button
-      textualInfoToggleEnabled: {
-        type: Boolean,
-        statePath: 'textOptions.paragraphsEnabled'
-      },
-      textualInfoResponse: {
-        type: Object,
-        observer: '_onParagraphsLoaded'
-      },
-      textualParagraphs: {
-        type: Object,
-        statePath: 'textOptions.paragraphDescriptions'
-      },
+      textualInfoToggleEnabled: { type: Boolean },
+      textualInfoResponse: { type: Object },
+      textualParagraphs: { type: Object },
       // Boolean that remembers settings on this page.
-      rememberSettings: {
-        type: Boolean
-      },
-      showLoadingSpinner: {
-        type: Boolean,
-        value: false
-      },
-      paliSelectedItemChanged: {
-        type: Boolean,
-        value: false
-      },
-      chineseSelectedItemChanged: {
-        type: Boolean,
-        value: false
-      },
-      paliScriptItemChanged: {
-        type: Boolean,
-        value: false
-      },
-      textViewItemChanged: {
-        type: Boolean,
-        value: false
-      },
-      localizedStringsPath: {
-        type: String,
-        value: '/localization/elements/sc-settings-menu'
-      }
+      rememberSettings: { type: Boolean },
+      showLoadingSpinner: { type: Boolean },
+      paliSelectedItemChanged: { type: Boolean },
+      chineseSelectedItemChanged: { type: Boolean },
+      paliScriptItemChanged: { type: Boolean },
+      textViewItemChanged: { type: Boolean },
+      localizedStringsPath: { type: String }
     }
   }
 
-  static get actions() {
+  constructor() {
+    super();
+    let state = store.getState().textOptions;
+    this.selectedTextView = state.segmentedSuttaTextView;
+    this.paliLookupArray = [
+      {
+        'dict': 'none',
+        'language': 'None'
+      },
+      {
+        'dict': 'pli2en',
+        'language': 'Pāli → English'
+      },
+      {
+        'dict': 'pli2es',
+        'language': 'Pāli → Español'
+      },
+      {
+        'dict': 'pli2zh',
+        'language': 'Pāli → 汉语'
+      },
+      {
+        'dict': 'pli2pt',
+        'language': 'Pāli → Português'
+      },
+      {
+        'dict': 'pli2id',
+        'language': 'Pāli → Bahasa Indonesia'
+      },
+      {
+        'dict': 'pli2nl',
+        'language': 'Pāli → Nederlands'
+      }
+    ];
+    this.paliLookupLanguage = state.paliLookupTargetDictRepr;
+    this.paliLookupSelected = this._findPaliLookupLanguageIndex(this.paliLookupLanguage);
+    this.chineseLookupArray = [
+      {
+        'dict': 'none',
+        'language': 'None'
+      },
+      {
+        'dict': 'lzh2en',
+        'language': '汉语 → English'
+      }
+    ];
+    this.chineseLookupLanguage = state.chineseLookupTargetDictRepr;
+    this.chineseLookupSelected = this._findChineseLookupLanguageIndex(this.chineseLookupLanguage);
+    this.paliScripts = [
+      {
+        'script': 'latin',
+        'language': 'Latin'
+      },
+      {
+        'script': 'sinhala',
+        'language': 'සිංහල'
+      },
+      {
+        'script': 'devanagari',
+        'language': 'नागरी'
+      },
+      {
+        'script': 'thai',
+        'language': 'ไทย'
+      },
+      {
+        'script': 'myanmar',
+        'language': 'မြန်မာဘာသာ'
+      }
+    ]
+    this.paliScript = state.script;
+    this.paliScriptSelected = this._findPaliScriptIndex(this.paliScript);
+    this.textualInfoToggleEnabled = state.paragraphsEnabled;
+    this.textualInfoResponse = {};
+    this.textualParagraphs = state.paragraphDescriptions;
+    this.rememberSettings = localStorage.getItem('rememberTextSettings') === 'true';
+    this.showLoadingSpinner = false;
+    this.paliSelectedItemChanged = false;
+    this.chineseSelectedItemChanged = false;
+    this.paliScriptItemChanged = false;
+    this.textViewItemChanged = false;
+    this.localizedStringsPath = '/localization/elements/sc-settings-menu';
+  }
+
+  get actions() {
     return {
       toggleTextualInfo(enabled) {
-        return {
+        store.dispatch({
           type: 'TOGGLE_TEXTUAL_INFORMATION_ENABLED',
           enabled: enabled
-        }
+        })
       },
       downloadParagraphs(data) {
-        return {
+        store.dispatch({
           type: 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS',
           descriptions: data
-        }
+        })
       },
       chooseSegmentedSuttaTextView(view) {
-        return {
+        store.dispatch({
           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
           view: view
-        }
+        })
       },
       choosePaliTextScript(script) {
-        return {
+        store.dispatch({
           type: 'CHOOSE_PALI_TEXT_SCRIPT',
           script: script
-        }
+        })
       },
       activatePaliLookup(activated, targetLanguage, targetDictRepr) {
-        return {
+        store.dispatch({
           type: 'ACTIVATE_PALI_LOOKUP',
           paliLookupTargetLanguage: targetLanguage,
           paliLookupActivated: activated,
           paliLookupTargetDictRepr: targetDictRepr
-        }
+        })
       },
       activateChineseLookup(activated, targetLanguage, targetDictRepr) {
-        return {
+        store.dispatch({
           type: 'ACTIVATE_CHINESE_LOOKUP',
           chineseLookupTargetLanguage: targetLanguage,
           chineseLookupActivated: activated,
           chineseLookupTargetDictRepr: targetDictRepr
-        }
+        })
       }
     }
   }
 
-  connectedCallback() {
-    super.connectedCallback();
+  firstUpdated() {
     this.shadowRoot.querySelector('#textual_info_toggle_button').addEventListener('active-changed', (e) => {
       this._textualInfoToggleStateChanged(e.detail.value);
     });
-    this.shadowRoot.querySelector('#text_view_menu').addEventListener('selected-item-changed', () => {
+    this.shadowRoot.querySelector('#text_view_menu').addEventListener('selected-item-changed', (e) => {
+      this.selectedTextView = e.currentTarget.selected;
       this.textViewItemChanged = true;
     });
     this.shadowRoot.querySelector('#pali_lookup_menu').addEventListener('value-changed', (e) => {
@@ -450,17 +425,38 @@ class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
     });
   }
 
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('selectedTextView')) {
+      this._textViewChanged();
+    }
+    if (changedProps.has('textualInfoResponse')) {
+      this._onParagraphsLoaded();
+    }
+    if (changedProps.has('paliLookupLanguage')) {
+      this.paliLookupSelected = this._findPaliLookupLanguageIndex(this.paliLookupLanguage);
+    }
+    if (changedProps.has('chineseLookupLanguage')) {
+      this.chineseLookupSelected = this._findChineseLookupLanguageIndex(this.chineseLookupLanguage);
+    }
+    if (changedProps.has('paliScript')) {
+      this.paliScriptSelected = this._findPaliScriptIndex(this.paliScript);
+    }
+  }
+
   _textualInfoToggleStateChanged(toggleChecked) {
     if (this.textualParagraphs) {
       if (toggleChecked) {
         this.showLoadingSpinner = true;
-        this.$.paragraphs_ajax.generateRequest().completes.then(() => {
-          this.dispatch('toggleTextualInfo', true);
+        fetch(this._getParagraphsUrl()).then(r => r.json()).then((response) => {
+          this.textualInfoResponse = response;
+          this.actions.toggleTextualInfo(true);
           this.showLoadingSpinner = false;
         });
+
         this._showToast(this.localize('textualInformationEnabled'));
       } else {
-        this.dispatch('toggleTextualInfo', false);
+        this.actions.toggleTextualInfo(false);
         this._showToast(this.localize('textualInformationDisabled'));
       }
     }
@@ -469,9 +465,9 @@ class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
   _onParagraphsLoaded() {
     if (this.textualInfoResponse) {
       if (!this.textualInfoDescriptions || this.textualInfoDescriptions.length === 0) {
-        this.dispatch('downloadParagraphs', this.textualInfoResponse);
+        this.actions.downloadParagraphs(this.textualInfoResponse);
       } else {
-        this.dispatch('toggleTextualInfo', true);
+        this.actions.toggleTextualInfo(true);
       }
     }
   }
@@ -488,7 +484,7 @@ class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
       this._showLookupToast(targetDictRepr, 'pli');
       this.paliSelectedItemChanged = false;
     }
-    this.dispatch('activatePaliLookup', !!(langIndex), targetLanguage, targetDictRepr);
+    this.actions.activatePaliLookup(!!(langIndex), targetLanguage, targetDictRepr);
   }
 
   _findPaliLookupLanguageIndex(languageName) {
@@ -507,7 +503,7 @@ class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
       this._showLookupToast(targetDictRepr, 'lzh');
       this.chineseSelectedItemChanged = false;
     }
-    this.dispatch('activateChineseLookup', !!(langIndex), targetLanguage, targetDictRepr);
+    this.actions.activateChineseLookup(!!(langIndex), targetLanguage, targetDictRepr);
   }
 
   _findChineseLookupLanguageIndex(languageName) {
@@ -530,14 +526,14 @@ class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
             textViewMessage = this.localize('popUp');
             break;
         }
-        this._showToast(this.localize('textViewEnabled', 'textView', textViewMessage));
+        this._showToast(this.localizeEx('textViewEnabled', 'textView', textViewMessage));
       } else {
         this._showToast(this.localize('textViewDisabled'));
       }
       this.textViewItemChanged = false;
     }
     setTimeout(() => {
-      this.dispatch('chooseSegmentedSuttaTextView', this.selectedTextView);
+      this.actions.chooseSegmentedSuttaTextView(this.selectedTextView);
       this.showLoadingSpinner = false;
     }, 0);
   }
@@ -548,14 +544,14 @@ class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
       return;
     }
     if (this.paliScriptItemChanged) {
-      const scriptChangeMessage = this.localize('scriptChanged', 'paliScript', language);
+      const scriptChangeMessage = this.localizeEx('scriptChanged', 'paliScript', language);
       this._showToast(scriptChangeMessage);
       this.paliScriptItemChanged = false;
     }
     const script = this.paliScripts.find(i => i.language === language).script;
     this.showLoadingSpinner = true;
     setTimeout(() => {
-      this.dispatch('choosePaliTextScript', script);
+      this.actions.choosePaliTextScript(script);
       this.showLoadingSpinner = false;
     }, 0);
   }
@@ -570,15 +566,17 @@ class SCSettingsMenu extends ReduxMixin(Localized(PolymerElement)) {
 
   _rememberSettingsChanged(setting) {
     if (setting) {
+      localStorage.setItem('rememberTextSettings', 'true');
       this._showToast(this.localize('rememberSettingsEnabled'));
     } else {
+      localStorage.setItem('rememberTextSettings', 'false');
       this._showToast(this.localize('rememberSettingsDisabled'));
     }
   }
 
   _showLookupToast(dictName, lang) {
     if (dictName !== 'None') {
-      const dictChangeMessage = this.localize('lookupDictionaryEnabled', 'lookupDictionary', dictName);
+      const dictChangeMessage = this.localizeEx('lookupDictionaryEnabled', 'lookupDictionary', dictName);
       this._showToast(dictChangeMessage);
     } else {
       if (lang === 'pli') {
