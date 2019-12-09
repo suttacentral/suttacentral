@@ -10,6 +10,7 @@ import { Localized } from './addons/localization-mixin.js';
 import './menus/sc-toolbar.js';
 import './text/sc-segmented-text.js';
 import './text/sc-simple-text.js';
+import { throttle } from 'throttle-debounce';
 
 /*
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
@@ -50,8 +51,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         /* background-color: var(--sc-primary-color); */
         /* background-color: transparent; */
         white-space: nowrap;
+        z-index: 99999;
       }
-      
+
       .headerPrimaryBackgroundColor {
         background-color: var(--sc-primary-color);
       }
@@ -69,7 +71,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         z-index: -10;
       }
 
-      .HeaderOpacity {
+      .headerOpacity {
         opacity: 0;
       }
 
@@ -131,7 +133,31 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
       .hideTitle {
         display: none;
-      }      
+      }
+
+      #nav_toolbar {
+        background-color: var(--sc-primary-color-dark);
+        height: auto;
+      }
+
+      .navigation-tabs {
+        width: 100%;
+        --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
+      }
+
+      .nav-link {
+        color: var(--sc-tertiary-text-color);
+        --paper-tab-ink: var(--sc-primary-color-light);
+        padding-left: 10px;
+        padding-right: 10px;
+        @apply --sc-all-caps;
+      }
+
+      .link-anchor {
+        position: absolute;
+        width: calc(100% + 20px);
+        height: 100%;
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -140,7 +166,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       <app-header-layout fullbleed>
 
         <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header">
-          <app-toolbar id="toolbarHeader" class="toolbar-header">
+          <app-toolbar id="toolbarHeader" class="toolbar-header" sticky>
             <paper-icon-button icon="sc-iron-icons:menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
 
             <div main-title="" id="toolbar_title_box">
@@ -328,12 +354,14 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         this.$.header.style.zIndex = -1;
       }
     });
-    
-    if (window.innerWidth < 480) {
-      this.$.toolbarHeader.classList.add('smallScreenPadding');
-    } else {
-      this.$.toolbarHeader.classList.remove('smallScreenPadding');
-    }
+
+    window.addEventListener('resize', throttle(300, () => {
+      if (window.innerWidth < 480) {
+        this.$.toolbarHeader.classList.add('smallScreenPadding');
+      } else {
+        this.$.toolbarHeader.classList.remove('smallScreenPadding');
+      }
+    }));
   }
 
   _redirectFromLegacyLink() {
@@ -387,10 +415,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.shouldShowDictionaryPage = this._isDictionaryPage();
     this._resolveImports();
     this._addWindowScrollEvent(this.shouldShowStaticPage);
-    // window.onresize = () => {
-      //TODO
-    // }
-
     if (!this.shouldShowStaticPage) {
       this.$.toolbarHeader.classList.add('headerPrimaryBackgroundColor');
       this.$.toolbarHeader.classList.remove('headerTransparent');
@@ -399,46 +423,50 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
   _addWindowScrollEvent(isStaticPage) {
     const toolBarTitleElement = this.$.toolbar_title;
-  
     if (isStaticPage) {
       toolBarTitleElement.classList.add('hideTitle');
     } else {
       toolBarTitleElement.classList.remove('hideTitle');
     }
 
-    window.onscroll = () => {
-      if (!isStaticPage) return;
-      let scrollTop = document.documentElement.scrollTop;
-      const headerElement = this.$.toolbarHeader;
+    window.addEventListener('scroll', throttle(300, () => {
+      if (isStaticPage) {
+        let scrollTop = document.documentElement.scrollTop;
+        const headerElement = this.$.toolbarHeader;
+        if (scrollTop >= 265) {
+          headerElement.classList.add('headerPrimaryBackgroundColor');
+          headerElement.classList.remove('headerTransparent');
+        } else {
+          headerElement.classList.remove('headerPrimaryBackgroundColor');
+          headerElement.classList.add('headerTransparent');
+        }
 
-      if (scrollTop >= 265) {
-        headerElement.classList.add('headerPrimaryBackgroundColor');
-        headerElement.classList.remove('headerTransparent');
+        if (scrollTop <= 212) {
+          toolBarTitleElement.classList.add('hideTitle');
+        } else {
+          toolBarTitleElement.classList.remove('hideTitle');
+        }
+
+        if (scrollTop === 212) {
+          headerElement.classList.add('headerOpacity');
+        } else {
+          headerElement.classList.remove('headerOpacity');
+        }
+
+        if (window.innerWidth < 480) {
+          if (scrollTop >= 53 && scrollTop <= 159) {
+            headerElement.classList.add('headerOpacity');
+          } else {
+            headerElement.classList.remove('headerOpacity');
+          }
+        }
       } else {
-        headerElement.classList.remove('headerPrimaryBackgroundColor');
-        headerElement.classList.add('headerTransparent');
-      }
-      
-      if (scrollTop <= 212) {
-        toolBarTitleElement.classList.add('hideTitle');
-      } else {
+        this.$.toolbarHeader.classList.add('headerPrimaryBackgroundColor');
+        this.$.toolbarHeader.classList.remove('headerTransparent');
+        this.$.toolbarHeader.classList.remove('headerOpacity');
         toolBarTitleElement.classList.remove('hideTitle');
       }
-
-      if (scrollTop === 212) {
-        headerElement.classList.add('HeaderOpacity');
-      } else {
-        headerElement.classList.remove('HeaderOpacity');
-      }
-
-      if (window.innerWidth < 480) {
-        if (scrollTop >= 53 && scrollTop <= 159) {
-          headerElement.classList.add('HeaderOpacity');
-        } else {
-          headerElement.classList.remove('HeaderOpacity');
-        }
-      }
-    }
+    }));
   }
 
   // Lazy loading for site elements
@@ -492,7 +520,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.dispatch('changeRoute', Object.assign({}, this.route, suttaRouteParams));
     }
     else if (this._isAPI()) {
-      
+
     }
     else {
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
