@@ -54,11 +54,11 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         z-index: 99999;
       }
 
-      .headerPrimaryBackgroundColor {
+      .primaryBackgroundColor {
         background-color: var(--sc-primary-color);
       }
 
-      .headerTransparent {
+      .backgroundTransparent {
         background-color: transparent;
       }
 
@@ -416,8 +416,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this._resolveImports();
     this._addWindowScrollEvent(this.shouldShowStaticPage);
     if (!this.shouldShowStaticPage) {
-      this.$.toolbarHeader.classList.add('headerPrimaryBackgroundColor');
-      this.$.toolbarHeader.classList.remove('headerTransparent');
+      this.$.toolbarHeader.classList.add('primaryBackgroundColor');
+      this.$.toolbarHeader.classList.remove('backgroundTransparent');
     }
   }
 
@@ -431,38 +431,35 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
     window.addEventListener('scroll', throttle(300, () => {
       if (isStaticPage) {
+        const ALL_TOOLBAR_HEIGHT = 262;
+        const TOOLBAR_AND_TITLEBAR_HEIGHT = 198;
         let scrollTop = document.documentElement.scrollTop;
         const headerElement = this.$.toolbarHeader;
-        if (scrollTop >= 265) {
-          headerElement.classList.add('headerPrimaryBackgroundColor');
-          headerElement.classList.remove('headerTransparent');
+        if (scrollTop >= ALL_TOOLBAR_HEIGHT) {
+          headerElement.classList.add('primaryBackgroundColor');
+          headerElement.classList.remove('backgroundTransparent');
         } else {
-          headerElement.classList.remove('headerPrimaryBackgroundColor');
-          headerElement.classList.add('headerTransparent');
+          headerElement.classList.remove('primaryBackgroundColor');
+          headerElement.classList.add('backgroundTransparent');
         }
-
-        if (scrollTop <= 212) {
+        if (scrollTop <= ALL_TOOLBAR_HEIGHT) {
           toolBarTitleElement.classList.add('hideTitle');
-        } else {
-          toolBarTitleElement.classList.remove('hideTitle');
-        }
-
-        if (scrollTop === 212) {
           headerElement.classList.add('headerOpacity');
         } else {
+          toolBarTitleElement.classList.remove('hideTitle');
           headerElement.classList.remove('headerOpacity');
         }
 
-        if (window.innerWidth < 480) {
-          if (scrollTop >= 53 && scrollTop <= 159) {
-            headerElement.classList.add('headerOpacity');
-          } else {
-            headerElement.classList.remove('headerOpacity');
-          }
+        if (scrollTop >= TOOLBAR_AND_TITLEBAR_HEIGHT - 28 && scrollTop <= ALL_TOOLBAR_HEIGHT) {
+          headerElement.style.display = 'none';
+        } else {
+          headerElement.classList.remove('headerOpacity');
+          headerElement.style.display = '';
         }
+
       } else {
-        this.$.toolbarHeader.classList.add('headerPrimaryBackgroundColor');
-        this.$.toolbarHeader.classList.remove('headerTransparent');
+        this.$.toolbarHeader.classList.add('primaryBackgroundColor');
+        this.$.toolbarHeader.classList.remove('backgroundTransparent');
         this.$.toolbarHeader.classList.remove('headerOpacity');
         toolBarTitleElement.classList.remove('hideTitle');
       }
