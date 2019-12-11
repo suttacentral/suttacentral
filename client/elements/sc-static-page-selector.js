@@ -440,7 +440,10 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
   firstUpdated() {
     this.selectedPage = store.getState().currentRoute.name;
     this._changeView();
-    this._addWindowScrollEvent();
+
+    if (!this._isMobileDevice()) {
+      this._addWindowScrollEvent();
+    }
   }
 
   _addWindowScrollEvent() {
@@ -473,6 +476,14 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
         setTimeout(function() { beforeScrollTop = scrollTop; }, 0);
       }
     }));
+  }
+
+  _isMobileDevice() {
+    let isMobileDevice = false;
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      isMobileDevice = true;
+    }
+    return isMobileDevice;
   }
 
   updated(changedProps) {
