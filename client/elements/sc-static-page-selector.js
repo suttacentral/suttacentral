@@ -440,34 +440,37 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
   firstUpdated() {
     this.selectedPage = store.getState().currentRoute.name;
     this._changeView();
+    this._addWindowScrollEvent();
+  }
+
+  _addWindowScrollEvent() {
     const navToolbarElement = this.shadowRoot.querySelector('#nav_toolbar');
     const subtitleToolbarElement = this.shadowRoot.querySelector('#subtitle_toolbar');
     const header = this.parentNode.querySelector('#header');
-
     let scrollTop = 0;
     let beforeScrollTop = 0;
+    const ALL_TOOLBAR_HEIGHT = 262;
     window.addEventListener('scroll', throttle(300, () => {
       if (this.selectedPage.substr(0, 5) === "SUTTA" || this.selectedPage === "SEARCH") {
         this.insertAfter(navToolbarElement, subtitleToolbarElement);
       } else {
         scrollTop = document.documentElement.scrollTop;
         //scroll up
-        if(beforeScrollTop > scrollTop){
-          if (scrollTop >= 265) {
+        if (beforeScrollTop > scrollTop) {
+          if (scrollTop >= ALL_TOOLBAR_HEIGHT) {
             if (header) {
               header.appendChild(navToolbarElement);
             }
             navToolbarElement.style.top = 0;
-            //navToolbarElement.style.zIndex = 0;
           } else {
             this.insertAfter(navToolbarElement, subtitleToolbarElement);
           }
         } else {
-          if (scrollTop >= 265) {
+          if (scrollTop >= ALL_TOOLBAR_HEIGHT) {
             this.insertAfter(navToolbarElement, subtitleToolbarElement);
           }
         }
-        setTimeout(function(){ beforeScrollTop = scrollTop; }, 0);
+        setTimeout(function() { beforeScrollTop = scrollTop; }, 0);
       }
     }));
   }
