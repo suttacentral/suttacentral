@@ -1,6 +1,6 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html, css } from 'lit-element';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@polymer/iron-location/iron-location.js';
-import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-scroll-threshold/iron-scroll-threshold.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
@@ -9,8 +9,8 @@ import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import './menus/sc-search-filter-menu.js';
 import './suttaplex/card/sc-suttaplex.js';
 import './addons/sc-error-icon.js';
-import { ReduxMixin } from '../redux-store.js';
-import { Localized } from './addons/localization-mixin.js';
+import { store } from '../redux-store';
+import { LitLocalized } from '../elements/addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
 
 /*
@@ -22,10 +22,9 @@ If the results are in more than one category of root texts, translations, and di
 than ten results in total, a dropdown selection menu appears at the top.
 */
 
-class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
-  static get template() {
-    return html`
-    <style>
+class SCPageSearch extends LitLocalized(LitElement) {
+  static get styles() {
+    return css`
       :host {
         display: block;
         width: 100%;
@@ -150,8 +149,8 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .dictionary dfn {
-       @apply --paper-font-headline;
-       font-weight: bold;
+        @apply --paper-font-headline;
+        font-weight: bold;
       }
 
       .dictionary dd p {
@@ -196,172 +195,183 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
       [hidden] {
         display: none !important;
       }
-    </style>
+    `;
+  }
 
-    <iron-ajax id="ajax" url="[[_getUrl()]]" params="[[searchParams]]" handle-as="json" loading="{{loadingResults}}" on-response="_didRespond"></iron-ajax>
-    
-    <iron-ajax id="uid_expansion_ajax" url="[[_getExpansionUrl()]]" handle-as="json" last-response="{{expansionReturns}}"></iron-ajax>
+  render() {
+    return html`
+      <paper-spinner-lite class="paper-spinner" ?active=${this.loadingResults}></paper-spinner-lite>
+      ${this.isOnlineTemplate}
+      ${this.offLineTemplate}
+      ${this._createMetaData()}
+    `;
+  }
 
-    <paper-spinner-lite class="paper-spinner" active="[[loadingResults]]"></paper-spinner-lite>
+  get offLineTemplate() {
+    return html`
+      ${!this.isOnline ? html`
+        <sc-error-icon type="no-network"></sc-error-icon>
+      ` : ''}
+    `;
+  }
 
-    <template is="dom-if" if="[[isOnline]]">
-      <div class="search-results-container">
-        <main class="search-results-main">
-          <template is="dom-if" if="[[!loadingResults]]">
-            <div class="search-result-head">
-              <h1 class="search-result-header">
-                <span class="search-result-number">[[_calculateResultCount(resultCount)]]</span>
-                <span class="search-result-description">{{localize('resultsFor')}}</span>
-                <span class="search-result-term">[[searchQuery]]</span>
-              </h1>
-                <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
-            </div>
-          </template>
-
+  get isOnlineTemplate() {
+    return html`
+      ${this.isOnline ? html`
+        <div class="search-results-container">
+          <main class="search-results-main">
+            ${this.searchResultTemplate}
             <div class="suttaplex-item">
-                <sc-suttaplex item="[[suttaplex]]" parallels-opened="[[false]]" difficulty="[[_computeItemDifficulty(suttaplex.difficulty)]]" expansion-data="[[expansionReturns]]">
+                <sc-suttaplex .item=${this.suttaplex} .parallels-opened=${false}
+                  .difficulty="${this._computeItemDifficulty(this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : '')}"
+                  .expansion-data=${this.expansionReturns}>
                 </sc-suttaplex>
             </div>
+            <iron-scroll-threshold id="scroll_threshold" @lower-threshold=${this._loadMoreData} scroll-target="document">
+              ${this.searchResultListTemplate}
+            </iron-scroll-threshold>
+          </main>
+        </div>
+      ` : ''}
+    `;
+  }
 
-            <iron-scroll-threshold id="scroll_threshold" on-lower-threshold="_loadMoreData" scroll-target="document">
+  get searchResultTemplate() {
+    return html`
+      ${!this.loadingResults ? html`
+        <div class="search-result-head">
+          <h1 class="search-result-header">
+            <span class="search-result-number">${this._calculateResultCount(this.resultCount)}</span>
+            <span class="search-result-description">${this.localize('resultsFor')}</span>
+            <span class="search-result-term">${this.searchQuery}</span>
+          </h1>
+          <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
+        </div>
+      ` : ''}
+    `;
+  }
 
-            <template is="dom-repeat" id="search_result_list" items="[[visibleSearchResults]]" as="item" >
-              <div class$="search-result-item [[_calculateItemCategory(item)]]" tabindex$="[[tabIndex]]">
-                <div class="padded-container">
-                  <a class="search-result-link" href="[[_calculateLink(item)]]">
-                    <div class="primary">
-                      <h2 class="search-result-title">[[_calculateTitle(item)]]</h2>
-                    </div>
-                    <div class="secondary">
-                      <p class="search-result-division" inner-h-t-m-l="[[_calculateDivision(item)]]"></p>
-                    </div>
-                  </a>
-                  <div class="secondary">
-                    <p class="search-result-snippet" inner-h-t-m-l="{{_calculateSnippetContent(item.highlight.content)}}"></p>
-                  </div>
-                </div>
+  get searchResultListTemplate() {
+    return html`
+      ${this.visibleSearchResults ? this.visibleSearchResults.map(item => html`
+        <div class="search-result-item ${this._calculateItemCategory(item)}" tabindex="${this.tabIndex}">
+          <div class="padded-container">
+            <a class="search-result-link" href="${this._calculateLink(item)}">
+              <div class="primary">
+                <h2 class="search-result-title">${this._calculateTitle(item)}</h2>
               </div>
-            </template>
-          </iron-scroll-threshold>
-
-        </main>
-      </div>
-    </template>
-
-    <template is="dom-if" if="[[!isOnline]]">
-      <sc-error-icon type="no-network"></sc-error-icon>
-    </template>
-
-    [[_createMetaData(searchQuery, localize)]]`;
+              <div class="secondary">
+                <p class="search-result-division">${unsafeHTML(this._calculateDivision(item))}</p>
+              </div>
+            </a>
+            <div class="secondary">
+              <p class="search-result-snippet">${unsafeHTML(this._calculateSnippetContent(item.highlight.content))}</p>
+            </div>
+          </div>
+        </div>
+      `) : ''}
+    `;
   }
 
   static get properties() {
     return {
       // The query to search for
-      searchQuery: {
-        type: String,
-        value: '',
-        statePath: 'currentRoute.__queryParams.query',
-        observer: '_startNewSearchWithNewWord'
-      },
+      searchQuery: { type: String },
       // The actual query parameters of the search
-      searchParams: {
-        type: Object,
-        statePath: 'searchParams'
-      },
-      lastSearchResults: {
-        type: Array,
-        value: [],
-        observer: '_populateList'
-      },
-      allSearchResults: {
-        type: Array,
-        value: []
-      },
-      visibleSearchResults: {
-        type: Array,
-        value: []
-      },
-      resultCount: {
-        type: Number,
-        value: 0
-      },
+      searchParams: { type: Object },
+      lastSearchResults: { type: Array },
+      allSearchResults: { type: Array },
+      visibleSearchResults: { type: Array },
+      resultCount: { type: Number },
       // Number of items to be loaded each time the scroll threshold is reached
-      resultsPerLoad: {
-        type: Number,
-        value: 20
-      },
-      currentPage: {
-        type: Number,
-        value: 0
-      },
-      currentFilter: {
-        type: String,
-        value: 'all'
-      },
-      searchResultElemHeight: {
-        type: Number,
-        value: 170
-      },
-      localizedStringsPath: {
-        type: String,
-        value: '/localization/elements/sc-page-search'
-      },
-      totalLoadedResults: {
-        type: Number
-      },
-      isOnline: {
-        type: Boolean,
-        statePath: 'isOnline'
-      },
-      dictionaryTitles: {
-        type: Object,
-        value: {
-          'ncped': 'New Concise Pali English Dictionary',
-          'cped': 'Concise Pali English Dictionary',
-          'dhammika': 'Nature and the Environment in Early Buddhism by S. Dhammika',
-          'dppn': 'Dictionary of Pali Proper Names',
-          'pts': 'PTS Pali English Dictionary'
-        }
-      },
-      suttaplex: {
-        type: Array
-      },
-      expansionReturns: {
-        type: Array
-      },
-      waitTimeAfterNewWordExpired: {
-        type: Boolean,
-        value: true
-      }
+      resultsPerLoad: {type: Number },
+      currentPage: { type: Number },
+      currentFilter: { type: String },
+      searchResultElemHeight: { type: Number },
+      localizedStringsPath: { type: String },
+      totalLoadedResults: { type: Number },
+      isOnline: { type: Boolean },
+      dictionaryTitles: { type: Object },
+      suttaplex: { type: Array },
+      expansionReturns: { type: Array },
+      waitTimeAfterNewWordExpired: { type: Boolean },
+      loadingResults: { type: Boolean }
     }
   }
 
-  static get actions() {
+  constructor() {
+    super();
+    this.searchQuery = store.getState().currentRoute.__queryParams.query;
+    this.searchParams = store.getState().searchParams;
+    this.lastSearchResults = [];
+    this.allSearchResults = [];
+    this.visibleSearchResults = [];
+    this.resultCount = 0;
+    this.resultsPerLoad = 20;
+    this.currentPage = 0;
+    this.currentFilter = 'all';
+    this.searchResultElemHeight = 170;
+    this.localizedStringsPath = '/localization/elements/sc-page-search';
+    this.totalLoadedResults = 0;
+    this.isOnline = store.getState().isOnline;
+    this.dictionaryTitles = {
+      'ncped': 'New Concise Pali English Dictionary',
+      'cped': 'Concise Pali English Dictionary',
+      'dhammika': 'Nature and the Environment in Early Buddhism by S. Dhammika',
+      'dppn': 'Dictionary of Pali Proper Names',
+      'pts': 'PTS Pali English Dictionary'
+    };
+    this.suttaplex = [];
+    this.expansionReturns = [];
+    this.waitTimeAfterNewWordExpired = true;
+    this.loadingResults = false;
+  }
+
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('searchQuery')) {
+      this._startNewSearchWithNewWord();
+    }
+    if (changedProps.has('lastSearchResults')) {
+      this._populateList();
+    }
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    if (this.searchQuery !== state.currentRoute.__queryParams.query) {
+      this.searchQuery = state.currentRoute.__queryParams.query;
+    }
+    if (this.searchParams !== state.searchParams) {
+      this.searchParams = state.searchParams;
+    }
+  }
+
+  get actions() {
     return {
       initiateSearch(params) {
-        return {
+        store.dispatch({
           type: 'INITIATE_SEARCH',
           params: params
-        };
+        });
       }
     }
   }
 
-  ready() {
-    super.ready();
+  firstUpdated() {
     this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
+    this._startNewSearchWithNewWord();
   }
 
   // After results have been loaded into memory, pushes items to an array.
   // After first load, the lastSearchResults is equal to all the items in the
   // search results and _populateList is called.
-  _didRespond(e) {
-    const results = e.detail.response;
+  _didRespond(results) {
+    //const results = e.detail.response;
     this.suttaplex = results.suttaplex;
     this.lastSearchResults = results.hits;
     this.resultCount = results.total;
-    this.set('waitTimeAfterNewWordExpired', true);
+    this.waitTimeAfterNewWordExpired = true;
   }
 
   // Saves the fetched search results to be displayed in the list.
@@ -376,10 +386,10 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
         return;
       }
       this.totalLoadedResults++;
-      this.push('allSearchResults', items[i]);
+      this.allSearchResults.push(items[i]);
       // If the filter fits, add to visible items
       if (this._belongsToFilterScope(items[i])) {
-        this.push('visibleSearchResults', items[i]);
+        this.visibleSearchResults.push(items[i]);
       }
     }
   }
@@ -388,17 +398,12 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
   // depending on the number of items to be loaded and on previously set parameters.
   _loadMoreData() {
     this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
-    // Don't load once all items have already been loaded.
-    const searchListNode = this.shadowRoot.querySelector('#search_result_list');
-    if (!searchListNode || searchListNode.items.length === this.resultCount) {
-      return;
-    }
     this._loadNextPage();
   }
 
   _loadNextPage() {
     this.currentPage++;
-    this.dispatch('initiateSearch', {
+    this.actions.initiateSearch({
       limit: this.resultsPerLoad,
       offset: (this.currentPage * this.resultsPerLoad),
       query: this.searchQuery,
@@ -413,8 +418,8 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
     if (!this.isOnline || !this.searchQuery) {
       return;
     }
-    this.set('waitTimeAfterNewWordExpired', false);
-    this.set('currentFilter', 'all');
+    this.waitTimeAfterNewWordExpired = false;
+    this.currentFilter = 'all';
     const filterMenu = this.shadowRoot.querySelector('#filter_menu');
     if (filterMenu) {
       filterMenu.resetFilter();
@@ -428,7 +433,7 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
       return;
     }
     this.clearSearchPage();
-    this.dispatch('initiateSearch', {
+    this.actions.initiateSearch({
       limit: this.resultsPerLoad,
       query: this.searchQuery,
       language: this.language,
@@ -439,10 +444,10 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
 
   // Clears search result arrays, resets variables
   clearSearchPage() {
-    this.splice('visibleSearchResults', 0, this.visibleSearchResults.length);
-    this.splice('allSearchResults', 0, this.allSearchResults.length);
-    this.set('currentPage', 0);
-    this.set('totalLoadedResults', 0);
+    this.visibleSearchResults.splice(0, this.visibleSearchResults.length);
+    this.allSearchResults.splice(0, this.allSearchResults.length);
+    this.currentPage = 0;
+    this.totalLoadedResults = 0;
   }
 
   // Checks if the item's category fits in the current filter.
@@ -460,8 +465,51 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
     if (!this.searchParams || !this.searchQuery || this._areAllItemsLoaded()) {
       return;
     }
-    this.$.uid_expansion_ajax.generateRequest();
-    this.shadowRoot.querySelector('#ajax').generateRequest();
+    this._fetchExpansion();
+    this._fetchSearchResult();
+  }
+
+  async _fetchExpansion() {
+    this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();
+  }
+
+  async _fetchSearchResult() {
+    this.loadingResults = true;
+    let requestUrl = this._getUrl() || '';
+    let bindingChar = requestUrl.indexOf('?') >= 0 ? '&' : '?';
+    requestUrl = requestUrl + bindingChar + this._getQueryString();
+    fetch(requestUrl).then(r => r.json()).then((response) => {
+      let searchResult = response;
+      const results = searchResult;
+      this.suttaplex = results.suttaplex;
+      this.lastSearchResults = results.hits;
+      this.resultCount = results.total;
+      this.waitTimeAfterNewWordExpired = true;
+      this._didRespond(results);
+    });
+    this.loadingResults = false;
+  }
+
+  _getQueryString() {
+    let queryParts = [];
+    let param;
+    let value;
+
+    for (param in this.searchParams) {
+      value = this.searchParams[param];
+      param = window.encodeURIComponent(param);
+
+      if (Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          queryParts.push(param + '=' + window.encodeURIComponent(value[i]));
+        }
+      } else if (value !== null) {
+        queryParts.push(param + '=' + window.encodeURIComponent(value));
+      } else {
+        queryParts.push(param);
+      }
+    }
+    return queryParts.join('&');
   }
 
   // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
@@ -583,14 +631,14 @@ class SCPageSearch extends ReduxMixin(Localized(PolymerElement)) {
     return `${API_ROOT}/expansion`;
   }
 
-  _createMetaData(searchWord, localize) {
-    const description = localize('metaDescriptionText');
-    const searchResultsText = localize('searchResultsText');
+  _createMetaData() {
+    const description = this.localize('metaDescriptionText');
+    const searchResultsText = this.localize('searchResultsText');
 
     document.dispatchEvent(new CustomEvent('metadata', {
       detail: {
-        pageTitle: `Search: ${searchWord}`,
-        title: `${searchResultsText} ${searchWord}`,
+        pageTitle: `${this.localize('Search')}: ${this.searchQuery}`,
+        title: `${searchResultsText} ${this.searchQuery}`,
         description: description,
         bubbles: true,
         composed: true
