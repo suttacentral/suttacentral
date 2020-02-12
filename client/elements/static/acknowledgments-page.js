@@ -1,4 +1,4 @@
-import { html } from '@polymer/lit-element/lit-element.js';
+import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { staticStyles } from '../styles/static-styles.js';
@@ -232,7 +232,7 @@ class AcknowledgmentsPage extends SCStaticPage {
                   ${this.localize('52f92ea9d8c8b4ade79d24fc24c2365e')}
                 </td>
                 <td>
-                  ${this.localize('1a9b25378181d1fcca8e6c9fb8481261')}
+                  ${this.localize('76a344b22da5b0f052bff3edee98544a')}
                 </td>
               </tr>
               <tr>
@@ -257,6 +257,14 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${this.localize('5345d3b676f69c33621f2305fb52b80c')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('ec86a5ef2265c0008e2131d9041235c0')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
                 </td>
               </tr>
               <tr>
@@ -333,6 +341,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('0d2fae0923650620195bb1c88d3711bb')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('2a8fdd4e9e3071c13a8f4a65a36d4e93')}
                 </td>
                 <td>
@@ -349,10 +365,34 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('cc45268682fb8ec0eeedb8fccdf67ed8')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('c38b5cbb06dd3a4df479e46074ab10e2')}
                 </td>
                 <td>
                   ${this.localize('40164895f1138304f788069fb77945db')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('0ecdd7d33735803e7b0db1063a88d108')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('720425235e9afbd567efa75e399105d0')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
                 </td>
               </tr>
               <tr>
@@ -365,6 +405,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('21c1bb0098579067e61a031c43a60c27')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('6e8f17414b1b7fccc2dd689af3c04688')}
                 </td>
                 <td>
@@ -373,10 +421,26 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('0b3e6bafd3539c98c387c69a528b9336')}
+                </td>
+                <td>
+                  ${this.localize('fc9850e8ddeb28ffa8c3853306501c54')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('9645681e577ef7c6ff996bb3d07ceed6')}
                 </td>
                 <td>
                   ${this.localize('838bb7590710b8d0def0e0fae27a2040')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('6e27d7a989998c59e617420bd08ddc8c')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
                 </td>
               </tr>
               <tr>
@@ -421,6 +485,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('ec252e316c4d178db9114e08eaeaddb5')}
+                </td>
+                <td>
+                  ${this.localize('573414ffe819be6046fc7dcfee7bf965')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('8fce86ab7382053d1d802b85828e21dd')}
                 </td>
                 <td>
@@ -429,10 +501,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('2fbf9f77a03ca85a0d60c7b3aeb43cbe')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('3469ba295c45db45e422fd59b64c4521')}
                 </td>
                 <td>
                   ${this.localize('4f2b36b1925c227b1c410e636a94214d')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('9d50ebd944ec1a83ee698929243872af')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('8012b45d1776bdf368f4c41482069af3')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('a2e13688aa4b8f8e5b5003b80267d81a')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
                 </td>
               </tr>
               <tr>
@@ -565,6 +669,22 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('a993f9cd5bee63fb07b893e18e9778eb')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('992b2fa724036825d3791d8d2e76e0e4')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('c1413e25bf036b444c458825709b90af')}
                 </td>
                 <td>
@@ -597,10 +717,34 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('eb95ebd1acae7f07f27e10163084b0d2')}
+                </td>
+                <td>
+                  ${this.localize('7053f19a933599798b45f6595d163c33')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('3d767c39e2feb0fc895d28048da05cff')}
+                </td>
+                <td>
+                  ${this.localize('9cae01f80dca04704d3a997407f0bc4b')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('5f831c15230d943f6ce8278fe2417ed9')}
                 </td>
                 <td>
                   ${this.localize('f84edadd820c002f76663779d78639c9')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('f87a8db3d18ed596f5928b184e5bb99c')}
+                </td>
+                <td>
+                  ${this.localize('dd01b5b8fa96b5e10dcc67b1957f2e26')}
                 </td>
               </tr>
               <tr>
@@ -616,7 +760,7 @@ class AcknowledgmentsPage extends SCStaticPage {
                   ${this.localize('1b85114c6e69e54d93dcc5ef51491773')}
                 </td>
                 <td>
-                  ${this.localize('ba60d0ffa6871f18ee069fed631d3b0b')}
+                  ${this.localize('3a4c825191e1d234a847d6f739c82b06')}
                 </td>
               </tr>
               <tr>
@@ -629,10 +773,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('315e90bd285e5ff270ce3515ca7a5eba')}
+                </td>
+                <td>
+                  ${this.localize('3536ea27d7252d18e07723532096bd95')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('425eb46903c46c549f14de4d67185b65')}
+                </td>
+                <td>
+                  ${this.localize('dd01b5b8fa96b5e10dcc67b1957f2e26')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('cad6cdc90008d45bb4f09bcf9751a1c5')}
                 </td>
                 <td>
-                  ${this.localize('ed9283691c7435781aa712a5f0535602')}
+                  ${this.localize('146ff05ca35c76f704c07a7791bfe0e4')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('00a817e5fc2f03a9332be3b6748b3ab5')}
+                </td>
+                <td>
+                  ${this.localize('3536ea27d7252d18e07723532096bd95')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('85e0885cef5becec33815554c17c31ac')}
+                </td>
+                <td>
+                  ${this.localize('fc9850e8ddeb28ffa8c3853306501c54')}
                 </td>
               </tr>
               <tr>
@@ -649,6 +825,14 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${this.localize('5345d3b676f69c33621f2305fb52b80c')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('f3bc692f51a9c2555e4c43499a22cecb')}
+                </td>
+                <td>
+                  ${this.localize('9cae01f80dca04704d3a997407f0bc4b')}
                 </td>
               </tr>
               <tr>
@@ -677,6 +861,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('ef43e24c86b87fb305c9c30fcb92c864')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('55e2d1a7cbd2826f16e3430157ba15e7')}
                 </td>
                 <td>
@@ -689,6 +881,14 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${this.localize('145e7b78b8e753f0d2bb7e8dc9b32293')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('d70973c070d2bdda6f04b18e905b0f8b')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
                 </td>
               </tr>
               <tr>
@@ -717,6 +917,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('7305971cf2ccf2b7c5e9fc2e2216c79f')}
+                </td>
+                <td>
+                  ${this.localize('0c50c7298545416d26465b9981cdaa23')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('a73eb58d80c410c43f68aac902c4c52b')}
                 </td>
                 <td>
@@ -725,10 +933,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('913917cfe9a813482f6c11048b728152')}
+                </td>
+                <td>
+                  ${this.localize('6c907ff3067e6a752f015051ca199d9d')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('5e2e89ee9be4860a946bc17c5942e7cf')}
                 </td>
                 <td>
                   ${this.localize('cf26f92a642013c3dddec1228cb7935f')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('9ff0742b988c312b9a4d68ff4b810381')}
+                </td>
+                <td>
+                  ${this.localize('c1ede13bbb74f32b3c4f830c5696d52b')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('52311b417480759009f73d92da902d65')}
+                </td>
+                <td>
+                  ${this.localize('7053f19a933599798b45f6595d163c33')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('3ed4fb3e60de21d4e9fab11356b0deba')}
+                </td>
+                <td>
+                  ${this.localize('9cae01f80dca04704d3a997407f0bc4b')}
                 </td>
               </tr>
               <tr>
@@ -761,6 +1001,14 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${this.localize('7cfc482eb3bc707623733a25cda3fce7')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('020e077c210115ec31e30434a61b7cc0')}
+                </td>
+                <td>
+                  ${this.localize('ff7919045e4870a7026e254acf496d42')}
                 </td>
               </tr>
               <tr>
@@ -813,10 +1061,34 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('78bf87b2065c27e543128cbcf3cedfb1')}
+                </td>
+                <td>
+                  ${this.localize('fc9850e8ddeb28ffa8c3853306501c54')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('5e711d66234d77dcc352e1b5f85942e8')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('5d503abea97bc8c229d4533cbe51d522')}
                 </td>
                 <td>
                   ${this.localize('3b5f53a0f44d358e863adf1cc82f76a2')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('d2b7932ca981c7369dcb3289f7c75e49')}
+                </td>
+                <td>
+                  ${this.localize('9cae01f80dca04704d3a997407f0bc4b')}
                 </td>
               </tr>
               <tr>
@@ -845,18 +1117,26 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${this.localize('ec7e68d6027b1461c4a802ccba14d1f1')}
+                  ${this.localize('f981ceb7fc0dd5fd06e8df455b35f99b')}
                 </td>
                 <td>
-                  ${this.localize('ed9283691c7435781aa712a5f0535602')}
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
                 </td>
               </tr>
               <tr>
                 <td>
-                  ${this.localize('913917cfe9a813482f6c11048b728152')}
+                  ${this.localize('ec5872bd3c90344c7c707664cc89e44e')}
                 </td>
                 <td>
-                  ${this.localize('6c907ff3067e6a752f015051ca199d9d')}
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('ec7e68d6027b1461c4a802ccba14d1f1')}
+                </td>
+                <td>
+                  ${this.localize('ed9283691c7435781aa712a5f0535602')}
                 </td>
               </tr>
               <tr>
@@ -885,10 +1165,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('17ab13571e8516560e305a1e78119892')}
+                </td>
+                <td>
+                  ${this.localize('1bde26f973a459d583a5267f0d400c7e')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('56a65e08a36c1acb3abd0efbd948742b')}
+                </td>
+                <td>
+                  ${this.localize('9cae01f80dca04704d3a997407f0bc4b')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('ffc597a915c64194b9b5c7f7e9a863e8')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('862898cb90324b67c06566a899976a7e')}
                 </td>
                 <td>
                   ${this.localize('4c0946c5eeee7b43491746a195f428aa')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('08aabc45cbee85f8b2c5d67a8dbc6d67')}
+                </td>
+                <td>
+                  ${this.localize('9c1bd18f515e6c843c4534555e90d35c')}
                 </td>
               </tr>
               <tr>
@@ -909,10 +1221,26 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('ad8adffd15cd7a08d6ca94c502c9f316')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('cdc935e77393916b541657b0c6a6b40c')}
                 </td>
                 <td>
                   ${this.localize('7d3779321d3e38c1915ec6ab86b3378b')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('a01274b15fca14a41eff27316d20e51c')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
                 </td>
               </tr>
               <tr>
@@ -957,10 +1285,58 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('2b4193ef6eb22e234aebca07b9d1b4f3')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('8c0c0eeef903bcd294aa2155f12af161')}
                 </td>
                 <td>
                   ${this.localize('69f35a4ec897a88fc9546abaf5f366e4')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('556aaf830214aebce9449d5fa886f3fb')}
+                </td>
+                <td>
+                  ${this.localize('eb0772762b3e1faa30fdba0fa9bfcf74')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('e526305c0645f36c2201ed01ddd96ef8')}
+                </td>
+                <td>
+                  ${this.localize('fc9850e8ddeb28ffa8c3853306501c54')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('598da5f11006ab90b4ffdd30f0b95bd9')}
+                </td>
+                <td>
+                  ${this.localize('6f4124e961965d9ce9310c733131c8e4')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('4014c26984c852466102cd135967d7bf')}
+                </td>
+                <td>
+                  ${this.localize('dd01b5b8fa96b5e10dcc67b1957f2e26')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('2600a09cfceb2ac6e0560f74df30aa5e')}
+                </td>
+                <td>
+                  ${this.localize('fc9850e8ddeb28ffa8c3853306501c54')}
                 </td>
               </tr>
               <tr>
@@ -981,10 +1357,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${this.localize('d55c0073a492137a79ac04cbeac2a1a9')}
+                </td>
+                <td>
+                  ${this.localize('dd01b5b8fa96b5e10dcc67b1957f2e26')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('e62427b468915925c30c19026af16c76')}
+                </td>
+                <td>
+                  ${this.localize('6f4124e961965d9ce9310c733131c8e4')}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${this.localize('aac53df4fcfedbe6accbd8d4bf778582')}
                 </td>
                 <td>
                   ${this.localize('fc9850e8ddeb28ffa8c3853306501c54')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('2d55516d370801af511f1410132e15d2')}
+                </td>
+                <td>
+                  ${this.localize('42aa96272a2d7d3ab08abe1e2cbe46b1')}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${this.localize('d910c831d7025287a58d44c2cf32e257')}
+                </td>
+                <td>
+                  ${this.localize('3536ea27d7252d18e07723532096bd95')}
                 </td>
               </tr>
             </table>

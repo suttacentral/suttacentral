@@ -17,7 +17,7 @@
   "--sc-primary-background-color": "#414141",
   "--sc-secondary-background-color": "#515151",
   "--sc-tertiary-background-color": "rgb(113, 113, 113)",
-  "--sc-paper-tooltip-color": "#E2E2E2",
+  "--sc-paper-tooltip-color": "#000000",
   "--sc-paper-tooltip-text-color": "#212121",
   "--sc-border-color": "rgba(0, 0, 0, 0.12)",
   "--sc-textual-info-background-color": "#515151",

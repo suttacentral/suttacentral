@@ -1,5 +1,5 @@
 import '@polymer/iron-icon/iron-icon.js';
-import { html, LitElement } from '@polymer/lit-element';
+import { html, LitElement } from 'lit-element';
 import '../../../img/sc-svg-icons.js';
 import '../../menus/sc-suttaplex-share-menu.js';
 import { suttaplexTxCss } from './sc-suttaplex-css';

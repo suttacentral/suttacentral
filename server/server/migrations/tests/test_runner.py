@@ -44,4 +44,6 @@ def test_ensure_db_exists(app):
     client = get_client()
 
     runner._ensure_sutta_db_exists()
-    client.db(app.config.get('ARANGO_DB'))  # No error means that the db has been created.
+    client.db(
+        app.config.get('ARANGO_DB')
+    )  # No error means that the db has been created.

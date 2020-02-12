@@ -1,23 +1,22 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html, css } from 'lit-element';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-tooltip/paper-tooltip.js';
 import '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
 import '@polymer/iron-collapse/iron-collapse.js';
 
 import '../suttaplex/card/sc-suttaplex.js';
-import { ReduxMixin } from '../../redux-store.js';
-import { Localized } from '../addons/localization-mixin.js';
 import { suttaplexStyles } from '../styles/sc-suttaplex-styles.js';
+
+import { store } from '../../redux-store';
+import { LitLocalized } from '../addons/localization-mixin'
 
 /*
 Pulls in one relevant suttaplex-card inside a collapse-item to display on top of each sutta text.
 */
 
-class SCTextOptions extends ReduxMixin(Localized(PolymerElement)) {
-  static get template() {
-    return html`
-    ${suttaplexStyles}
-    <style>
+class SCTextOptions extends LitLocalized(LitElement) {
+  static get styles() {
+    return css`
       @media print {
         :host {
           display: none;
@@ -58,52 +57,68 @@ class SCTextOptions extends ReduxMixin(Localized(PolymerElement)) {
           white-space: normal;
         };
       }
-    </style>
+    `;
+  }
 
+  render() {
+    return html`
+    ${suttaplexStyles}
     <div class="container">
       <div class="heading">
-        <template is="dom-if" if="[[metaArea]]">
-          <paper-icon-button id="text_info_button" icon="sc-iron-icons:info" on-tap="_openInfoDialog" aria-label$="{{localize('information')}}"></paper-icon-button>
-          <paper-tooltip class="sc-tooltip" for="text_info_button" offset="0">
-            {{localize('information')}}
-          </paper-tooltip>
-        </template>
-        <paper-icon-button id="text_settings_button" icon="sc-iron-icons:settings" on-tap="_openSettingsDialog" aria-label$="{{localize('textSettings')}}"></paper-icon-button>
+        ${this.textInfoButtonTemplate}
+        <paper-icon-button id="text_settings_button" icon="sc-iron-icons:settings" @tap=${this._openSettingsDialog} aria-label="${this.localize('textSettings')}"></paper-icon-button>
         <paper-tooltip class="sc-tooltip" for="text_settings_button" offset="0">
-          {{localize('textSettings')}}
+          ${this.localize('textSettings')}
         </paper-tooltip>
-        <paper-icon-button id="suttaplex_button" icon="[[_toggleIcon]]" on-tap="_toggleOpened" aria-label$="{{localize('viewParallels')}}"></paper-icon-button>
+        <paper-icon-button id="suttaplex_button" icon="${this._toggleIcon}" @tap=${this._toggleOpened} aria-label="${this.localize('viewParallels')}"></paper-icon-button>
         <paper-tooltip class="sc-tooltip" for="suttaplex_button" offset="0" fit-to-visible-bounds="">
-          {{localize('viewParallels')}}
+          ${this.localize('viewParallels')}
         </paper-tooltip>
       </div>
 
-      <iron-collapse opened="{{opened}}">
+      <iron-collapse .opened="${this.opened}">
         <div class="sutta-list">
-          <sc-suttaplex item="[[suttaplexItem]]"></sc-suttaplex>
+          <sc-suttaplex .item=${this.suttaplexItem}></sc-suttaplex>
         </div>
       </iron-collapse>
     </div>`;
   }
 
+  get textInfoButtonTemplate() {
+    return this.metaArea ? html`
+      <paper-icon-button id="text_info_button" icon="sc-iron-icons:info" @tap=${this._openInfoDialog} aria-label="${this.localize('information')}"></paper-icon-button>
+        <paper-tooltip class="sc-tooltip" for="text_info_button" offset="0">
+          ${this.localize('information')}
+        </paper-tooltip>
+    ` : '';
+  }
+
   static get properties() {
     return {
-      _toggleIcon: {
-        type: String,
-        computed: '_computeToggleIcon(opened)'
-      },
-      suttaplexItem: {
-        type: Object
-      },
-      opened: Boolean,
-      metaArea: {
-        type: String,
-        statePath: 'suttaMetaText'
-      },
-      localizedStringsPath: {
-        type: String,
-        value: '/localization/elements/sc-text-options'
-      }
+      _toggleIcon: { type: String },
+      suttaplexItem: { type: Object },
+      opened: { type: Boolean },
+      metaArea: { type: String },
+      localizedStringsPath: { type: String }
+    }
+  }
+
+  constructor() {
+    super();
+    this.suttaplexItem = [];
+    this.opened = false;
+    this.localizedStringsPath = '/localization/elements/sc-text-options';
+    this._toggleIcon = this.opened ? 'sc-iron-icons:expand-less' : 'sc-iron-icons:expand-more';
+  }
+
+  firstUpdated() {
+    this.metaArea = store.getState().suttaMetaText;
+  }
+
+  updated(changedProps) {
+    super.update(changedProps);
+    if (changedProps.has('opened')) {
+      this._toggleIcon = this._computeToggleIcon();
     }
   }
 

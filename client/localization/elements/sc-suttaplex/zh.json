@@ -7,7 +7,7 @@
         "suttaCentralID": "SuttaCentral ID",
         "alternateText": "{book}版本中的代数：",
         "volumeAndPage": "卷和页",
-        "volumeAndPagePTS1": "PTS 卷和页：\n第一版= {pts1}\n第二版= {pts2}",
+        "volumeAndPagePTS1": "PTS 卷和页：\n第一版= {pts-vp-pli1ed}\n第二版= {pts-vp-pli2ed}",
         "blurb": "Blurb",
         "goToTranslation": "转到{author}翻译",
         "hasParallels": "这段文字有{num}个相似之处。",

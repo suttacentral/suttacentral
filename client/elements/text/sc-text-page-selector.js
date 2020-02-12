@@ -17,11 +17,12 @@ import { API_ROOT } from '../../constants.js';
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
   either the simple sutta text view or the segmented view.
 */
+const polymer_textHeadingStyles = html([textHeadingStyles.strings.join('')]);
 
 class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   static get template() {
     return html`
-    ${textHeadingStyles}
+    ${polymer_textHeadingStyles}
     <style>
       .loading-indicator {
         @apply --sc-skolar-font-size-s;
@@ -299,7 +300,8 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       detail: {
         pageTitle: `${acronym}: ${title}—${author}`,
         title: `${title}—${author}`,
-        description: description,
+        description: description,          
+        openGraphType: 'article',  // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’           
         bubbles: true,
         composed: true
       }

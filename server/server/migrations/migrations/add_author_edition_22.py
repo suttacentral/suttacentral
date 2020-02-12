@@ -1,6 +1,7 @@
 from common.arangodb import get_db
 from migrations.base import Migration
 
+
 class SecondMigration(Migration):
     migration_id = 'add_author_edition_022'
     tasks = ['create_collection']

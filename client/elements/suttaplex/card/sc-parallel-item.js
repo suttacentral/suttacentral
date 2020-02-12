@@ -1,7 +1,12 @@
-import { html, LitElement } from '@polymer/lit-element';
+import { html, LitElement } from 'lit-element';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/polymer/lib/elements/dom-if.js';
-import { getParagraphRange, transformId } from '../../../utils/suttaplex';
+import {
+  getParagraphRange,
+  transformId,
+  pickVolPage,
+  hasTwoPTSEditions
+} from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
 import { parallelItemCss } from './sc-suttaplex-css';
 
@@ -101,24 +106,13 @@ class SCParallelItem extends LitLocalized(LitElement) {
   }
 
   get volPage() {
-    let volPages;
-    if (this.parallelItem.volpages) {
-      volPages = this.parallelItem.volpages.split('//');
-    }
-    return (volPages && volPages[1]) ? volPages[1] : this.parallelItem.volpages;
+    return pickVolPage(this.parallelItem.volpages);
   }
 
   get volPageTitle() {
-    if (!this.parallelItem.volpages) {
-      return;
-    }
-
-    const volPages = this.parallelItem.volpages.split('//');
-    if (volPages[1] && (volPages[0] !== volPages[1])) {
-      return this.localize('volumeAndPagePTS1', 'pts1', volPages[0], 'pts2', volPages[1]);
-    } else {
-      return this.localize('volumeAndPage');
-    }
+    return hasTwoPTSEditions(this.parallelItem.volpages) ?
+      this.localize('volumeAndPagePTS1', this.parallelItem.volpages) :
+      this.localize('volumeAndPage');
   }
 
   render() {

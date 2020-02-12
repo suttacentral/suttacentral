@@ -1,4 +1,4 @@
-import { html } from '@polymer/lit-element/lit-element.js';
+import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { staticStyles } from '../styles/static-styles.js';
@@ -56,7 +56,7 @@ class SCVinaya extends SCStaticPage {
             ${unsafeHTML(this.localize('3d3af796c12075cc187886a0a68bf9aa'))}
           </p>
           <p>
-            ${this.localize('fd1f3440be9d87512f0dfa9f78745e89')}
+            ${this.localize('21201d432aa96607713fffd2038aefc5')}
           </p>
           <p>
             ${this.localize('ba10fd3e936b180aeb209e27a673e19f')}
@@ -160,7 +160,7 @@ class SCVinaya extends SCStaticPage {
             ${this.localize('13285730a97a4ada290e6db554697435')}
           </p>
           <p>
-            ${unsafeHTML(this.localize('40b9f7676042b92f3cef3b9b0e14b2fa'))}
+            ${unsafeHTML(this.localize('c3f2d677a3f877f0a837934a3756438b'))}
           </p>
           <h3>
             ${this.localize('ffea49c317de8f91891632cdd05abe2a')}

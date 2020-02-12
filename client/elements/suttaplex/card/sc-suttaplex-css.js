@@ -1,4 +1,4 @@
-import { html } from '@polymer/lit-element';
+import { html } from 'lit-element';
 
 
 export const suttaplexCss = html`
@@ -39,7 +39,11 @@ export const suttaplexCss = html`
     justify-content: space-between;
     align-items: center;
     --iron-icon-height: 20px;
-    --iron-icon-width: 20px;
+    --iron-icon-width: 20px;    
+  }
+
+  .top-row .compact {
+    cursor: pointer;
   }
 
   .tx-level-icon {
@@ -417,6 +421,7 @@ export const parallelItemCss = html`
   
   .disabled {
     cursor: default;
+    background-color: #f4f3f1;
   }
   
   .disabled paper-ripple {

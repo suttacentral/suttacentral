@@ -8,7 +8,7 @@ export function transformId(rootId, expansionData, idOrName = 0) {
       const idNumbers = rootId.substring(5);
       return `G-3 Dhp ${idNumbers}`;
     }
-    const idPart = getParagraphRange(rootId).replace('--', '–').replace('#', ': ').replace(/[a-z]+/g,'');
+    const idPart = getParagraphRange(rootId).replace('--', '–').replace('#', ': ');
     let scAcronym = '';
     const rootPart = rootId.split('#')[0];
     const uidParts = rootPart.split('-');
@@ -59,3 +59,34 @@ export function getParagraphRange(toParallel, isUrl) {
   }
 }
 
+const PTS1 = 'pts-vp-pli1ed', PTS2 = 'pts-vp-pli2ed';
+
+export function pickVolPage(volpages) {
+  if (typeof volpages === 'string') {
+    return volpages;
+  } else if (volpages instanceof Object && Object.values(volpages).length) {
+    if (volpages[PTS2]) return volpages[PTS2];
+    if (volpages[PTS1]) return volpages[PTS1];
+    return Object.values(volpages)[0];
+  } else {
+    return '';
+  }
+}
+
+export function hasTwoPTSEditions(volpages) {
+  return volpages instanceof Object 
+    && volpages[PTS1] && volpages[PTS2] 
+    && volpages[PTS1] != volpages[PTS2];
+}
+
+export function volPagesToString(volpages) {
+  if (typeof volpages === 'string') {
+    return volpages;
+  } else if (hasTwoPTSEditions(volpages)) {
+    return `${volpages[PTS1]}; ${volpages[PTS2]}`;
+  } else if (volpages instanceof Object) {
+    return Array.from(new Set(Object.values(volpages))).join('; ');
+  } else {
+    return '';
+  }
+}

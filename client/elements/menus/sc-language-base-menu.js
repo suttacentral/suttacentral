@@ -1,13 +1,12 @@
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icon/iron-icon.js';
-import { html, LitElement } from '@polymer/lit-element';
+import { html, LitElement } from 'lit-element';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '@polymer/paper-item/paper-icon-item.js';
 import '@polymer/paper-item/paper-item-body.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 
 import { API_ROOT } from '../../constants.js';
-import '../../img/sc-language-icons.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { languageBaseMenuCss } from './sc-language-base-menu-css';
@@ -71,9 +70,6 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
   languageTemplate(language) {
     return html`
       <paper-icon-item class="language-menu-paper-item" id="${language.uid}">
-        <iron-icon class="iso-code-image" title="${language.name}" slot="item-icon" icon="sc-language-icons:${language.iso_code}">
-        </iron-icon>
-
         <paper-item-body>
           <div class="language-name">${language.name}</div>
         </paper-item-body>

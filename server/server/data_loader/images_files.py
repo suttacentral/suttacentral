@@ -10,25 +10,32 @@ def load_images_links(db):
     entries = []
 
     pts_re = re.compile(
-        r'''^pts(?P<vol_number_pts>\d?)-(?P<division>[a-z\-A-Z]+)(?:-|\.)(?:vol\.(?P<vol_number>\d+)(?:-|\.))?pg.(?P<page_number>\d+)\.(?:png|jpg)$''')
+        r'''^pts(?P<vol_number_pts>\d?)-(?P<division>[a-z\-A-Z]+)(?:-|\.)(?:vol\.(?P<vol_number>\d+)(?:-|\.))?pg.(?P<page_number>\d+)\.(?:png|jpg)$'''
+    )
 
     for entry in tqdm(data):
         if 'pg' not in entry:
             continue
         if entry.startswith('pts'):
             re_data = pts_re.match(entry)
-            vol_number = re_data['vol_number'] if re_data['vol_number'] else re_data['vol_number_pts']
+            vol_number = (
+                re_data['vol_number']
+                if re_data['vol_number']
+                else re_data['vol_number_pts']
+            )
             if not vol_number:
                 vol_number = 1
-            entries.append({
-                'name': entry,
-                'division': re_data['division'],
-                'vol': int(vol_number),
-                'page_number': int(re_data['page_number'])
-            })
+            entries.append(
+                {
+                    'name': entry,
+                    'division': re_data['division'],
+                    'vol': int(vol_number),
+                    'page_number': int(re_data['page_number']),
+                }
+            )
 
     collection = db['images']
-    collection.import_bulk(entries, overwrite=True)
+    collection.import_bulk_logged(entries, wipe=True)
 
 
 def get_data():

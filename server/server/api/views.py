@@ -14,18 +14,45 @@ from common.arangodb import get_db
 from common.extensions import make_cache_key, cache
 from common.mail import send_email
 
-from common.queries import (CURRENCIES, DICTIONARIES, LANGUAGES, MENU, SUBMENU, PARAGRAPHS, PARALLELS,
-                            SUTTA_VIEW, SUTTAPLEX_LIST, IMAGES, EPIGRAPHS, WHY_WE_READ, DICTIONARYFULL, GLOSSARY,
-                            DICTIONARY_ADJACENT, DICTIONARY_SIMILAR, EXPANSION, PWA, AVAILABLE_TRANSLATIONS_LIST,
-                            TRANSLATION_COUNT_BY_DIVISION, TRANSLATION_COUNT_BY_AUTHOR, TRANSLATION_COUNT_BY_LANGUAGE)
+from common.queries import (
+    CURRENCIES,
+    DICTIONARIES,
+    LANGUAGES,
+    MENU,
+    SUBMENU,
+    PARAGRAPHS,
+    PARALLELS,
+    SUTTA_VIEW,
+    SUTTAPLEX_LIST,
+    IMAGES,
+    EPIGRAPHS,
+    WHY_WE_READ,
+    DICTIONARYFULL,
+    GLOSSARY,
+    DICTIONARY_ADJACENT,
+    DICTIONARY_SIMILAR,
+    EXPANSION,
+    PWA,
+    AVAILABLE_TRANSLATIONS_LIST,
+    TRANSLATION_COUNT_BY_DIVISION,
+    TRANSLATION_COUNT_BY_AUTHOR,
+    TRANSLATION_COUNT_BY_LANGUAGE,
+)
 
-from common.utils import (flat_tree, language_sort, recursive_sort, sort_parallels_key, sort_parallels_type_key,
-                          groupby_unsorted)
+from common.utils import (
+    flat_tree,
+    language_sort,
+    recursive_sort,
+    sort_parallels_key,
+    sort_parallels_type_key,
+    groupby_unsorted,
+)
 
 from data_loader.textfunctions import asciify_roman as asciify
 
 default_cache_timeout = 600
 long_cache_timeout = 7200
+
 
 class Languages(Resource):
     """
@@ -78,8 +105,6 @@ class Languages(Resource):
         return response, 200
 
 
-
-
 class TranslationCountByDivision(Resource):
     """
     Return a summary of translation count by division and author
@@ -127,11 +152,18 @@ class TranslationCountByDivision(Resource):
             return {"error": f'language code not recognized "{iso_code}"'}, 422
 
         response = {
-            'division': list(db.aql.execute(TRANSLATION_COUNT_BY_DIVISION, bind_vars={'lang': iso_code})),
-            'author': list(db.aql.execute(TRANSLATION_COUNT_BY_AUTHOR, bind_vars={'lang': iso_code}))
+            'division': list(
+                db.aql.execute(
+                    TRANSLATION_COUNT_BY_DIVISION, bind_vars={'lang': iso_code}
+                )
+            ),
+            'author': list(
+                db.aql.execute(
+                    TRANSLATION_COUNT_BY_AUTHOR, bind_vars={'lang': iso_code}
+                )
+            ),
         }
         return response, 200
- 
 
 
 class TranslationCountByLanguage(Resource):
@@ -169,7 +201,7 @@ class TranslationCountByLanguage(Resource):
         '''
 
         db = get_db()
-        
+
         response = next(db.aql.execute(TRANSLATION_COUNT_BY_LANGUAGE))
         return response, 200
 
@@ -177,12 +209,13 @@ class TranslationCountByLanguage(Resource):
 def has_translated_descendent(uid, lang, _cache={}):
     if lang not in _cache:
         db = get_db()
-        uids = next(db.aql.execute(AVAILABLE_TRANSLATIONS_LIST, bind_vars={'lang': lang}))
+        uids = next(
+            db.aql.execute(AVAILABLE_TRANSLATIONS_LIST, bind_vars={'lang': lang})
+        )
         _cache[lang] = set(uids)
-    
+
     lang_mapping = _cache[lang]
     return uid in lang_mapping
-
 
 
 class Menu(Resource):
@@ -231,15 +264,23 @@ class Menu(Resource):
                     type:
                         type: string
         """
-        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
         return self.get_data(submenu_id, language=language), 200
 
-    def get_data(self, submenu_id=None, menu_query=MENU, submenu_query=SUBMENU, language=None, bind_vars=None):
+    def get_data(
+        self,
+        submenu_id=None,
+        menu_query=MENU,
+        submenu_query=SUBMENU,
+        language=None,
+        bind_vars=None,
+    ):
         db = get_db()
 
         if bind_vars is None:
             bind_vars = {'language': language}
-        
 
         if submenu_id:
             bind_vars['submenu_id'] = submenu_id
@@ -251,7 +292,7 @@ class Menu(Resource):
             data = divisions
         else:
             data = self.group_by_parents(divisions, ['pitaka'])
-        
+
         for pitaka in data:
             if 'children' in pitaka:
                 children = pitaka.pop('children')
@@ -271,10 +312,12 @@ class Menu(Resource):
 
     @staticmethod
     def group_by_parent_property(entries, prop):
-        return ((json.loads(key), list(group))
-                for key, group
-                in groupby_unsorted(entries, lambda d: json.dumps(d['parents'].get(prop), sort_keys=True))
-                )
+        return (
+            (json.loads(key), list(group))
+            for key, group in groupby_unsorted(
+                entries, lambda d: json.dumps(d['parents'].get(prop), sort_keys=True)
+            )
+        )
 
     def group_by_parents(self, entries, props):
         out = []
@@ -284,11 +327,7 @@ class Menu(Resource):
             if parent is None:
                 # This intentionally looks as bad as possible in the menu
                 # it's a "hey classify me!"
-                parent = {
-                    'uid': f'{prop}/none',
-                    'name': f'None {prop}',
-                    'num': 84000
-                }
+                parent = {'uid': f'{prop}/none', 'name': f'None {prop}', 'num': 84000}
             out.append(parent)
             if remaining_props:
                 parent['children'] = self.group_by_parents(children, remaining_props)
@@ -309,15 +348,23 @@ class Menu(Resource):
                 iso = sub_child.pop('lang_iso', None)
                 new_data[iso].append(sub_child)
             child.pop('children')
-            new_data = [{**child, **cls.get_additional_data_from_child(iso, children),'children': children} for
-                        iso, children in new_data.items()]
+            new_data = [
+                {
+                    **child,
+                    **cls.get_additional_data_from_child(iso, children),
+                    'children': children,
+                }
+                for iso, children in new_data.items()
+            ]
             for data_item in new_data:
                 for child in data_item['children']:
                     try:
                         del child['lang_name']
                     except KeyError:
                         pass
-            pitaka['children'] = pitaka['children'][:i] + new_data + pitaka['children'][i + 1:]
+            pitaka['children'] = (
+                pitaka['children'][:i] + new_data + pitaka['children'][i + 1 :]
+            )
             i += len(new_data)
 
     @staticmethod
@@ -346,7 +393,7 @@ class Menu(Resource):
         menu_entries.sort(key=self.num_sort_key)
         for menu_entry in menu_entries:
             mapping[menu_entry['uid']] = menu_entry
-            self.update_display_num(menu_entry)            
+            self.update_display_num(menu_entry)
             if 'descendents' in menu_entry:
                 descendents = menu_entry.pop('descendents')
                 mapping.update({d['uid']: d for d in descendents})
@@ -372,13 +419,16 @@ class Menu(Resource):
                 uid = entry['uid'].split('/', 1)[1]
             else:
                 uid = entry['id']
-            
+
             is_entry_yellow_brick = has_translated_descendent(uid, language)
             if 'children' in entry:
-                is_entry_yellow_brick += self.make_yellow_brick_road(entry['children'], language)
+                is_entry_yellow_brick += self.make_yellow_brick_road(
+                    entry['children'], language
+                )
             entry['yellow_brick_road'] = bool(is_entry_yellow_brick)
             is_submenu_yellow_brick_road += is_entry_yellow_brick
         return is_submenu_yellow_brick_road
+
 
 class SuttaplexList(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
@@ -435,26 +485,27 @@ class SuttaplexList(Resource):
                     title:
                         type: string
         """
-        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
         uid = uid.replace('/', '-').strip('-')
 
         db = get_db()
-        results = db.aql.execute(SUTTAPLEX_LIST,
-                                 bind_vars={'language': language, 'uid': uid})
+        results = db.aql.execute(
+            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': uid}
+        )
 
-        difficulties = {
-            3: 'advanced',
-            2: 'intermediate',
-            1: 'beginner'
-        }
+        difficulties = {3: 'advanced', 2: 'intermediate', 1: 'beginner'}
 
         data = []
         edges = {}
         for result in results:
             _from = result.pop('from')
             if result['difficulty']:
-                result['difficulty'] = {'name': difficulties[result['difficulty']],
-                                        'level': result['difficulty']}
+                result['difficulty'] = {
+                    'name': difficulties[result['difficulty']],
+                    'level': result['difficulty'],
+                }
             parent = None
             try:
                 parent = edges[_from]
@@ -462,7 +513,9 @@ class SuttaplexList(Resource):
                 data.append(result)
             _id = f'root/{result["uid"]}'
             edges[_id] = result
-            result['translations'] = sorted(result['translations'], key=language_sort(result['root_lang']))
+            result['translations'] = sorted(
+                result['translations'], key=language_sort(result['root_lang'])
+            )
 
             if parent:
                 try:
@@ -478,7 +531,7 @@ class SuttaplexList(Resource):
 
 
 class Parallels(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout/10)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout / 10)
     def get(self, uid):
         """
         Send parallel information for given sutta.
@@ -530,13 +583,16 @@ class Parallels(Resource):
                         items:
                             $ref: '#/definitions/Translation'
         """
-        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
         uid = uid.replace('/', '-').strip('-')
         uid = f'root/{uid}'
 
         db = get_db()
-        results = db.aql.execute(PARALLELS,
-                                 bind_vars={'language': language, 'uid': uid})
+        results = db.aql.execute(
+            PARALLELS, bind_vars={'language': language, 'uid': uid}
+        )
 
         data = SortedDict(sort_parallels_key)
         for result in results:
@@ -549,8 +605,10 @@ class Parallels(Resource):
                 data[_from].append(result)
             except KeyError:
                 data[_from] = [result]
-            result['to']['translations'] = sorted(result['to']['translations'],
-                                                  key=language_sort(result['to']['root_lang']))
+            result['to']['translations'] = sorted(
+                result['to']['translations'],
+                key=language_sort(result['to']['root_lang']),
+            )
         for entry in data:
             data[entry] = sorted(data[entry], key=sort_parallels_type_key)
 
@@ -602,8 +660,10 @@ class LookupDictionaries(Resource):
 
         db = get_db()
 
-        result = db.aql.execute(DICTIONARIES,
-                                bind_vars={'from': from_lang, 'to': to_lang, 'main': main_dict})
+        result = db.aql.execute(
+            DICTIONARIES,
+            bind_vars={'from': from_lang, 'to': to_lang, 'main': main_dict},
+        )
 
         try:
             return result.next(), 200
@@ -693,8 +753,10 @@ class Sutta(Resource):
 
         db = get_db()
 
-        results = db.aql.execute(SUTTA_VIEW,
-                                 bind_vars={'uid': uid, 'language': lang, 'author_uid': author_uid})
+        results = db.aql.execute(
+            SUTTA_VIEW,
+            bind_vars={'uid': uid, 'language': lang, 'author_uid': author_uid},
+        )
 
         result = results.next()
         self.convert_paths_to_content(result)
@@ -702,17 +764,17 @@ class Sutta(Resource):
             doc = result[k]
             if doc:
                 self.convert_paths_to_content(doc)
-        
+
         return result, 200
-        
+
     @staticmethod
     def convert_paths_to_content(doc):
         conversions = (
-            ('file_path', 'text', lambda f: f.read() ),
-            ('markup_path', 'markup', lambda f: f.read() ),
-            ('strings_path', 'strings', json.load ),
+            ('file_path', 'text', lambda f: f.read()),
+            ('markup_path', 'markup', lambda f: f.read()),
+            ('strings_path', 'strings', json.load),
         )
-        
+
         for from_prop, to_prop, load_func in conversions:
             if (to_prop not in doc) and (from_prop in doc):
                 file_path = doc.pop(from_prop)
@@ -753,7 +815,9 @@ class Currencies(Resource):
         """
         db = get_db()
 
-        language = request.args.get('language', current_app.config.get('DEFAULT_LANGUAGE'))
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
 
         data = db.aql.execute(CURRENCIES, bind_vars={'language': language})
 
@@ -769,7 +833,7 @@ class Currencies(Resource):
 
         response_data = {
             'default_currency_index': default_currency_index,
-            'currencies': currencies
+            'currencies': currencies,
         }
 
         return response_data, 200
@@ -860,7 +924,9 @@ class DictionarySimilar(Resource):
         """
         db = get_db()
 
-        data = db.aql.execute(DICTIONARY_SIMILAR, bind_vars={'word': word, 'word_ascii': asciify(word)})
+        data = db.aql.execute(
+            DICTIONARY_SIMILAR, bind_vars={'word': word, 'word_ascii': asciify(word)}
+        )
 
         return list(data), 200
 
@@ -927,9 +993,7 @@ class Donations(Resource):
         else:
             amount = inputted_amount
 
-        customer_data = {
-            'source': stripe_data['id']
-        }
+        customer_data = {'source': stripe_data['id']}
 
         if email_address:
             customer_data['email'] = email_address
@@ -946,14 +1010,13 @@ class Donations(Resource):
                     currency=currency['symbol'],
                     metadata={"name": name, "message": message},
                     description=f'''Donation by {name if name else ""}, 
-                                message {message if message else ""}'''
+                                message {message if message else ""}''',
                 )
 
             elif monthly_donation:
                 plan = self._get_plan(amount, currency['symbol'])
                 subscription = stripe.Subscription.create(
-                    customer=customer.id,
-                    items=[{"plan": plan.stripe_id}]
+                    customer=customer.id, items=[{"plan": plan.stripe_id}]
                 )
 
             else:
@@ -964,7 +1027,9 @@ class Donations(Resource):
             if 'Amount must convert to at least 50 cents' in str(e):
                 code = 1
 
-            elif any(x in str(e) for x in ['99999999', '999,999.99', 'Invalid integer']):
+            elif any(
+                x in str(e) for x in ['99999999', '999,999.99', 'Invalid integer']
+            ):
                 code = 2
 
             return {'err_code': code}, 400
@@ -974,7 +1039,7 @@ class Donations(Resource):
             'amount': inputted_amount,
             'currency': currency['symbol'],
             'dateTime': datetime.datetime.now().strftime('%d-%m-%y %H:%M'),
-            'subscription': monthly_donation
+            'subscription': monthly_donation,
         }
 
         if email_address:
@@ -994,15 +1059,17 @@ class Donations(Resource):
                 name='Monthly Donation to SuttaCentral',
                 currency=currency,
                 statement_descriptor='SuttaCentralDonation',
-                id=plan_id)
+                id=plan_id,
+            )
         return plan
 
     @staticmethod
     def send_email(data, email_address):
-        msg = {'subject': 'Payment confirmation',
-               'from_email': current_app.config.get('MAIL_DONATIONS_SENDER'),
-               'to_email': email_address,
-               'html': f'''
+        msg = {
+            'subject': 'Payment confirmation',
+            'from_email': current_app.config.get('MAIL_DONATIONS_SENDER'),
+            'to_email': email_address,
+            'html': f'''
         <div>We gratefully acknowledge your donation to support SuttaCentral.</div><br>
         <div>Here are the transaction details for your records. 
         If you have entered your email address, a copy of these details will be sent there too.</div><br>
@@ -1026,7 +1093,8 @@ class Donations(Resource):
             Your donation will be used for the development of SuttaCentral.
         </div><br>
         <div class="cursive">Sadhu! Sadhu! Sadhu!</div>
-'''}
+''',
+        }
         try:
             send_email(**msg)
         except Exception:
@@ -1056,7 +1124,9 @@ class Images(Resource):
         """
         db = get_db()
 
-        data = db.aql.execute(IMAGES, bind_vars={'division': division, 'vol': vol, 'page': page})
+        data = db.aql.execute(
+            IMAGES, bind_vars={'division': division, 'vol': vol, 'page': page}
+        )
 
         return list(data), 200
 
@@ -1198,7 +1268,11 @@ class CollectionUrlList(Resource):
         languages = languages.split(',') if languages else []
 
         db = get_db()
-        return next(db.aql.execute(PWA.MENU, bind_vars={'languages': languages, 'include_root': root_lang}))
+        return next(
+            db.aql.execute(
+                PWA.MENU, bind_vars={'languages': languages, 'include_root': root_lang}
+            )
+        )
 
 
 class StripePublicKey(Resource):
@@ -1221,6 +1295,7 @@ class PWASizes(Resource):
         except IndexError:
             return 'Language not found', 404
 
+
 class Redirect(Resource):
     def get(self, url):
         print(url)
@@ -1232,7 +1307,8 @@ class Redirect(Resource):
                 lang = 'pli'
             languages = db.collection('language')
             if lang in languages:
-                hits = db.aql.execute('''
+                hits = db.aql.execute(
+                    '''
                     LET modern = (FOR text IN po_strings
                         FILTER text.lang == @lang
                         FILTER text.uid == @uid
@@ -1244,7 +1320,9 @@ class Redirect(Resource):
                         RETURN {author_uid: text.author_uid, legacy: true})
 
                     RETURN APPEND(modern, legacy)
-                ''', bind_vars={"lang": lang, "uid": uid}).next()
+                ''',
+                    bind_vars={"lang": lang, "uid": uid},
+                ).next()
                 if hits:
                     author_uid = hits[0]['author_uid']
                     return "Redirect", 301, {'Location': f'/{uid}/{lang}/{author_uid}'}
@@ -1252,6 +1330,5 @@ class Redirect(Resource):
                     root = db.collection('root')
                     if uid in root:
                         return "Redirect", 301, {'Location': f'/{uid}'}
-                    
-        
+
         return "Not found", 403

@@ -12,6 +12,7 @@ from migrations.runner import run_migrations
 
 def current_app():
     from app import app_factory
+
     api, app = app_factory()
     return app
 
@@ -20,15 +21,20 @@ def remove_test_db():
     """
     Delete the test db.
     """
-    get_system_db().delete_database(current_app().config.get('ARANGO_DB'), ignore_missing=True)
+    get_system_db().delete_database(
+        current_app().config.get('ARANGO_DB'), ignore_missing=True
+    )
+
 
 def app_context(func: Callable):
     """
     Run function in flask's app context.
     """
+
     def wrapper(func: Callable, *args, **kwargs):
         with current_app().app_context():
             return func(*args, **kwargs)
+
     return decorator.decorator(wrapper, func)
 
 
@@ -36,6 +42,7 @@ def empty_arango(func: Callable):
     """
     Decorator that removes arango test database before running the test and re-create it after.
     """
+
     def remove_existing_database(func: Callable, *args, **kwargs):
 
         with current_app().app_context():
@@ -101,14 +108,16 @@ def generate_relationships(roots: List[models.Root]) -> models.ModelList:
 
 def generate_lookup_dict(_from, to):
     db = get_db()
-    db['dictionaries'].insert({
-        'from': _from,
-        'to': to,
-        'dictionary': [],
-        'lookup': True,
-        'main': True,
-        'type': 'maindata'
-    })
+    db['dictionaries'].insert(
+        {
+            'from': _from,
+            'to': to,
+            'dictionary': [],
+            'lookup': True,
+            'main': True,
+            'type': 'maindata',
+        }
+    )
 
 
 def uid_sort_key(string, reg=re.compile(r'\d+')):
@@ -121,7 +130,9 @@ def uid_sort_key(string, reg=re.compile(r'\d+')):
     return [int(x) for x in reg.findall(string)]
 
 
-def recursive_sort(data: List[Dict], sort_by: str, children='children', key: Callable=lambda x: x) -> List[Dict]:
+def recursive_sort(
+    data: List[Dict], sort_by: str, children='children', key: Callable = lambda x: x
+) -> List[Dict]:
     """Sorts data in tree structure recursively and inplace.
 
     Args:
@@ -133,12 +144,14 @@ def recursive_sort(data: List[Dict], sort_by: str, children='children', key: Cal
     Returns:
         data
     """
+
     def r_sort(data: List[Dict]):
         data.sort(key=lambda x: key(x[sort_by]))
 
         for entry in data:
             if children in entry:
                 r_sort(entry[children])
+
     r_sort(data)
 
     return data
@@ -210,12 +223,7 @@ def sort_parallels_type_key(x):
         p_type = 'resembling'
     else:
         p_type = x['type']
-    values = {
-        'full': 1,
-        'resembling': 2,
-        'mention': 3,
-        'retelling': 4,
-    }
+    values = {'full': 1, 'resembling': 2, 'mention': 3, 'retelling': 4}
     return values[p_type], x['to']['to']
 
 
@@ -227,9 +235,12 @@ def groupby_unsorted(seq, key=lambda x: x):
     for k, idxs in indexes.items():
         yield k, (seq[i] for i in idxs)
 
+
 def chunks(iterable, chunk_size):
     if isinstance(iterable, list):
-        yield from (iterable[i:i+chunk_size] for i in range(0, len(iterable), chunk_size))
+        yield from (
+            iterable[i : i + chunk_size] for i in range(0, len(iterable), chunk_size)
+        )
     else:
         iterator = iter(iterable)
         while True:

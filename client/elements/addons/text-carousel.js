@@ -1,6 +1,5 @@
-import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icon/iron-icon.js';
-import { html, LitElement } from '@polymer/lit-element';
+import { html, LitElement } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-ripple/paper-ripple.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';

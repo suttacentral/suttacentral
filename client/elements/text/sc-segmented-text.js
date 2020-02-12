@@ -5,6 +5,7 @@ import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/paper-toast/paper-toast.js';
 import '@polymer/iron-icon/iron-icon.js';
 
+import '../addons/sc-nav-contents';
 import { SCTextPage } from "./sc-text-page.js";
 import './sc-text-options.js';
 import { textStyles } from '../styles/sc-text-styles.js';
@@ -15,14 +16,18 @@ import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
 import { Transliterator } from './transliterator.js';
 
+const polymer_lookupStyles = html([lookupStyles.strings.join('')]);
+const polymer_textHeadingStyles = html([textHeadingStyles.strings.join('')]);
+const polymer_textStyles = html([textStyles.strings.join('')]);
+const polymer_textParagraphNumStyles = html([textParagraphNumStyles.strings.join('')]);
 
 class SCSegmentedText extends SCTextPage {
   static get template() {
     return html`
-    ${textStyles}
-    ${textHeadingStyles}
-    ${textParagraphNumStyles}
-    ${lookupStyles}
+    ${polymer_textStyles}
+    ${polymer_textHeadingStyles}
+    ${polymer_textParagraphNumStyles}
+    ${polymer_lookupStyles}
     <style>
       :host {
         --iron-icon-fill-color: var(--sc-disabled-text-color);
@@ -58,7 +63,7 @@ class SCSegmentedText extends SCTextPage {
       }
 
       .highlight-wrapper {
-        display: flex;
+        display: block;
       }
 
       .disabled-highlight-wrapper {
@@ -77,6 +82,9 @@ class SCSegmentedText extends SCTextPage {
         transition: background-color 300ms ease-in;
       }
 
+      p, li {
+        hanging-punctuation: first last;
+      }
     </style>
 
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
@@ -84,6 +92,8 @@ class SCSegmentedText extends SCTextPage {
     </div>
 
     <iron-a11y-keys id="a11y" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
+
+    <sc-nav-contents items="[[navItems]]"></sc-nav-contents>
 
     <div id="segmented_text_content" class="html-text-content" inner-h-t-m-l="[[markup]]" hidden$="[[isTextViewHidden]]"></div>
 
@@ -100,6 +110,10 @@ class SCSegmentedText extends SCTextPage {
 
   static get properties() {
     return {
+      navItems: {
+        type: Array,
+        value: [],
+      },
       rootSutta: {
         type: Object
       },
@@ -241,7 +255,7 @@ class SCSegmentedText extends SCTextPage {
 
     this.addEventListener('click', () => {
       requestAnimationFrame(() => {
-        this._scrollToSection(window.location.hash.substr(1), true, 0);
+        this._scrollToSection(window.location.hash.substr(1), false, 0);
       });
     });
     window.addEventListener('hashchange', () => {
@@ -255,6 +269,18 @@ class SCSegmentedText extends SCTextPage {
     });
     this.inputElement = this.$.segmented_text_content;
     this.$.a11y.target = document.querySelector('body');
+    // Add segmented textual information paragraphs if not added already
+    if (!this.segmentedIDsAdded) {
+      this._addSegmentedTextualInfoElements();
+    }
+    this._scrollToSectionInUrl();
+
+    this.navItems = this._prepareNavigation();
+    setTimeout(() => {
+      const elementHgroup = this.shadowRoot.querySelector(".hgroup");
+      const elementNav = this.shadowRoot.querySelector('sc-nav-contents');
+      elementHgroup.appendChild(elementNav);
+    }, 0);
   }
 
   _updateView() {
@@ -270,6 +296,8 @@ class SCSegmentedText extends SCTextPage {
       this._computeParagraphs();
     }
     this.dispatch('changeSuttaMetaText', this._computeMeta());
+
+    this.navItems = this._prepareNavigation();
   }
 
   _addTextContent() {
@@ -467,8 +495,60 @@ class SCSegmentedText extends SCTextPage {
       newSegment.classList.add('original-text');
       newSegment.innerHTML = this._tweakText(content);
       this._setScriptISOCode(newSegment, this.rootLang);
+      if (segment){
+        segment.parentNode.insertBefore(newSegment, segment.nextSibling);
+      }
+      else{
+        this.translatedSutta.strings[key] = "";
+        this.addRootAndTranslatedSegment(key, subkey, newSegment);
+      }
+    }
+  }
+
+  addRootAndTranslatedSegment(key, subkey, newSegment) {
+    let { rootSuttaSection, sectionId } = this.addRootSuttaSection(key);
+
+    const newTranslatedSegment = document.createElement('sc-seg');
+    newTranslatedSegment.id = key;
+    newTranslatedSegment.classList.add('translated-text');
+    this._setScriptISOCode(newTranslatedSegment, this.translationLang);
+
+    var rootSuttaLastkey = Object.keys(this.rootSutta.strings).sort().pop();
+    if (key !== rootSuttaLastkey) {
+      rootSuttaSection = this.$.segmented_text_content.querySelector(`#${sectionId}`);
+      if (rootSuttaSection) rootSuttaSection.appendChild(newTranslatedSegment);
+      let segment = this.$.segmented_text_content.querySelector(`#${subkey}`);
       if (segment) segment.parentNode.insertBefore(newSegment, segment.nextSibling);
     }
+    else {
+      this.addEndSection();
+      const endSection = this.$.segmented_text_content.querySelector('.endsection');
+      if (endSection){
+        endSection.appendChild(newTranslatedSegment);
+        endSection.appendChild(newSegment);
+      }
+    }
+  }
+
+  addEndSection() {
+    const newEndSection = document.createElement('p');
+    newEndSection.classList.add('endsection');
+    const articleElement = this.$.segmented_text_content.getElementsByTagName('article')[0];
+    if (articleElement)
+      articleElement.appendChild(newEndSection);
+  }
+
+  addRootSuttaSection(key) {
+    let sectionId = `rootSutta-sc${key.split(':')[1].split('.')[0]}`;
+    let rootSuttaSection = this.$.segmented_text_content.querySelector(`#${sectionId}`);
+    if (!rootSuttaSection) {
+      const newSection = document.createElement('p');
+      newSection.id = sectionId;
+      const articleElement = this.$.segmented_text_content.getElementsByTagName('article')[0];
+      if (articleElement)
+        articleElement.appendChild(newSection);
+    }
+    return { rootSuttaSection, sectionId };
   }
 
   // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
@@ -493,11 +573,6 @@ class SCSegmentedText extends SCTextPage {
       });
     });
 
-    // Add segmented textual information paragraphs if not added already
-    if (!this.segmentedIDsAdded) {
-      this._addSegmentedTextualInfoElements();
-    }
-    this._scrollToSectionInUrl();
     setTimeout(() => {
       this._applyQuoteHanger();
     });
@@ -535,7 +610,7 @@ class SCSegmentedText extends SCTextPage {
       item.innerHTML = `
               <span class="image-link" >
                   <span title="${paragraph ? paragraph.description : ''}" class="${prefix}">${displayText}</span>
-                  <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-svg-icons:book">
+                  <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-iron-icons:book">
                   </iron-icon>
               </span>
           `;
@@ -627,7 +702,7 @@ class SCSegmentedText extends SCTextPage {
     return wrapper;
   }
 
-  _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists) {
+  _processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, isLineByLineView, wrapperAlreadyExists) {
     const paddingBottom = window.getComputedStyle(section).paddingBottom;
     const marginTop = window.getComputedStyle(section).marginTop;
     if (paddingBottom && paddingBottom !== '0px') {
@@ -638,19 +713,24 @@ class SCSegmentedText extends SCTextPage {
       section.style.marginTop = '0';
       section.style.paddingTop = marginTop;
     }
-
     if ((idFrom.includes('.') && !idFrom.startsWith('pts')) ||
       (idTo && idTo.includes('.') && !idTo.startsWith('pts'))) {
-      let newSection = section.nextElementSibling;
+      let newSection;
+      (isSideBySideView || isLineByLineView) ? newSection = section.nextElementSibling : newSection = section;
+
       if (isSideBySideView && !wrapperAlreadyExists) {
         section.remove();
       }
-      section = newSection;
+      newSection ? section = newSection : '';
+
       if (!isSideBySideView) {
         section.classList.add('highlight');
+        isLineByLineView ? section.parentNode.style.margin = '0' : '';
       }
       if (isSideBySideView && !wrapperAlreadyExists) {
         wrapper.appendChild(section.cloneNode(true));
+        wrapper.style.paddingTop = window.getComputedStyle(wrapper.parentNode).marginTop;
+        wrapper.parentNode.style.marginTop = "0";
         section.remove();
       }
 
@@ -660,21 +740,31 @@ class SCSegmentedText extends SCTextPage {
   _processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper) {
     let paragraph = section.parentNode;
     const margin = window.getComputedStyle(paragraph).margin;
-    requestAnimationFrame(() => {
-      paragraph.style.margin = '0';
-    });
+    if (this.chosenTextView !== 'none') {
+      requestAnimationFrame(() => {
+        if (!paragraph.previousElementSibling.classList.contains("hgroup")) {
+          paragraph.style.margin = '0';
+        }
+      });
+    }
     if (isSideBySideView && !wrapperAlreadyExists) {
       requestAnimationFrame(() => {
         wrapper.style.padding = margin;
       })
-    } else if (this.chosenTextView === 'none') {
-      requestAnimationFrame(() => {
-        paragraph.style.padding = margin;
-      })
     }
-    let newSection = paragraph.nextElementSibling.firstChild;
+
+    let newSection = paragraph.nextElementSibling.getElementsByTagName("sc-seg")[0];
     if (isSideBySideView && !wrapperAlreadyExists) {
       section.remove();
+    }
+    if (!newSection) {
+      let sectionList = paragraph.parentNode.getElementsByTagName("sc-seg");
+      for (let i = 0; i < sectionList.length; i++) {
+        if (sectionList[i] === section) {
+            sectionList[i+1] ? newSection = sectionList[i+1] : '';
+            break;
+        }
+      }
     }
     return newSection;
   }
@@ -700,32 +790,45 @@ class SCSegmentedText extends SCTextPage {
       toSection = this._getElementToHighlight(toSection);
     }
     const isSideBySideView = !!(this.chosenTextView === 'sidebyside' && this.translatedSutta)
-    this._processSections(section, isSideBySideView, toSection, idFrom, idTo);
+    const isLineByLineView = !!(this.chosenTextView === 'linebyline' && this.translatedSutta);
+    this._processSections(section, isSideBySideView, isLineByLineView, toSection, idFrom, idTo);
     return firstSection;
   }
 
-  _processSections(section, isSideBySideView, toSection, idFrom, idTo) {
-    while (section) {
+  _processSections(section, isSideBySideView, isLineByLineView, toSection, idFrom, idTo) {
+    while (section && section.classList) {
       let wrapper;
 
       if (isSideBySideView) {
         wrapper = this._putSectionIntoWrapper(section);
       } else {
         section.classList.add('highlight');
+        if (section.nextElementSibling && section.nextElementSibling.classList.contains("added")){
+          section.nextElementSibling.classList.add('highlight');
+        }
       }
 
       const wrapperAlreadyExists = !wrapper;
 
       const margin = window.getComputedStyle(section).margin;
+
       if (section === toSection || !toSection) {
-        this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, wrapperAlreadyExists);
+        if (section.nextElementSibling && section.nextElementSibling.classList.contains("added") && margin && margin !== '0px') {
+            section.nextElementSibling.style.margin = '0';
+            section.nextElementSibling.style.padding = margin;
+        }
+        if (section.nextElementSibling && section.nextElementSibling.parentNode.classList.contains("added")) {
+            section.nextElementSibling.parentNode.style.margin = '0';
+            section.nextElementSibling.parentNode.style.padding = margin;
+        }
+        this._processLastSection(section, wrapper, idFrom, idTo, isSideBySideView, isLineByLineView, wrapperAlreadyExists);
         break;
       } else if (margin && margin !== '0px') {
         section.style.margin = '0';
         section.style.padding = margin;
       }
 
-      if (section.nextElementSibling === null && section.parentNode.nodeName === 'P') {
+      if (section.nextElementSibling === null && (section.parentNode.nodeName === 'P' || section.parentNode.nodeName === 'SPAN')) {
         section = this._processParagraphHighlight(section, isSideBySideView, wrapperAlreadyExists, wrapper);
       } else {
         let newSection = section.nextElementSibling;
@@ -1190,6 +1293,32 @@ class SCSegmentedText extends SCTextPage {
         this._computeParagraphs();
       }, 0);
     }
+  }
+
+  _prepareNavigation() {
+    let sutta = this.translatedSutta ? this.translatedSutta : this.rootSutta;
+    const dummyElement = document.createElement('template');
+    dummyElement.innerHTML = this.markup.trim();
+    let arrayTOC = Array.from(
+      dummyElement.content.querySelectorAll('h2')
+    ).map(elem => {
+      const id = elem.firstElementChild.id;
+      if (sutta.strings[id]) {
+        return { link: id, name: this._stripLeadingOrdering(sutta.strings[id]) };
+      }
+    });
+
+    /**
+    * Because some Pali text does not have a proper structure to generate TOC,
+    * the array generated here will have undefined array elements.
+    * this command deletes the undefined array elements
+    */
+    arrayTOC = arrayTOC.filter(Boolean);
+    return arrayTOC;
+  }
+
+  _stripLeadingOrdering(name) {
+    return name.replace(/^\d+\./, '').trim();
   }
 }
 

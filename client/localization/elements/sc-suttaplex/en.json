@@ -7,7 +7,7 @@
         "suttaCentralID": "SuttaCentral ID",
         "alternateText": "Alternate number in {book} edition:",
         "volumeAndPage": "Volume and page",
-        "volumeAndPagePTS1": "PTS volume and page:\n1st edition = {pts1}\n2nd edition = {pts2}",
+        "volumeAndPagePTS1": "PTS volume and page:\n1st edition = {pts-vp-pli1ed}\n2nd edition = {pts-vp-pli2ed}",
         "blurb": "Blurb",
         "goToTranslation": "Go to a translation by {author}",
         "itemNotFound": "Error 404: Item not found.",

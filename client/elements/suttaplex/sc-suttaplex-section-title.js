@@ -1,5 +1,5 @@
 import '@polymer/iron-collapse/iron-collapse.js';
-import { html, LitElement } from '@polymer/lit-element';
+import { html, LitElement } from 'lit-element';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-styles/typography.js';
 import { suttaplexSectionTitleCss } from './sc-suttaplex-section-title-css';

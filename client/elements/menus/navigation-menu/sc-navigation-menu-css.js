@@ -1,10 +1,8 @@
-import { html } from '@polymer/lit-element';
+import { html } from 'lit-element';
 import { scrollbarStyle } from '../../styles/sc-scrollbar-style.js';
 
-const litScrollbarStyle = html([scrollbarStyle.innerHTML]);
-
 export const scNavigationMenuCss =  html`
-${litScrollbarStyle}
+${scrollbarStyle}
 
 <style>
   .sc-nav {
@@ -145,7 +143,7 @@ ${litScrollbarStyle}
   }
 
   .yellow-brick:not(.open) > .menu-dropdown-icon {
-      color: var(--sc-tertiary-text-color);
+    color: var(--sc-tertiary-text-color);
   }
 
   .nav-menu-item.selected > .nav-link {
@@ -253,6 +251,7 @@ ${litScrollbarStyle}
 
   #main_navigation .nav-tertiary .nav-link.link-text-ellipsis {
     padding-right: calc(var(--sc-size-sm) + var(--sc-size-lg));
+    padding-bottom: 2px;
   }
 
   #main_navigation:not(.active)::-webkit-scrollbar-thumb {
@@ -309,6 +308,35 @@ ${litScrollbarStyle}
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+
+  [data-iso]::before {
+    content: attr(data-iso);
+      background-color:var(--sc-disabled-text-color);
+      color: var(--sc-tertiary-text-color);
+      font-weight: 800;
+      width: var(--sc-size-md-larger);
+      height: 20px;
+      line-height: 20px;
+      text-transform: uppercase;
+      display: inline-block;
+      text-align: center;
+      font-size:11px;
+      position:absolute;
+      margin-top:1px;
+      margin-left: -40px;
+      --notchSize: 4px;
+      clip-path: 
+      polygon(
+        0% var(--notchSize), 
+        var(--notchSize) 0%, 
+        calc(100% - var(--notchSize)) 0%, 
+        100% var(--notchSize), 
+        100% calc(100% - var(--notchSize)), 
+        calc(100% - var(--notchSize)) 100%, 
+        var(--notchSize) 100%, 
+        0% calc(100% - var(--notchSize))
+      );
   }
 </style>`;
 

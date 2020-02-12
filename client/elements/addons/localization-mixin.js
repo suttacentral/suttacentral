@@ -116,8 +116,25 @@ export const LitLocalized = base => class extends connect(store)(base) {
 
     if (params) {
       return string.replace(
-        /\{([a-z]+)\}/gi,
+        /\{([a-z][a-z0-9-]*)\}/gi,
         (match, group) => undefined !== params[group] ? params[group] : group
+      );
+    }
+
+    return string;
+  }
+
+  localizeEx(key, ...params) {
+    const string = (this.__resources && this.__resources[key]) ? this.__resources[key] : '';
+
+    if (!string && this._languageLoaded) {
+      console.warn('missing translation key', key);
+    }
+
+    if (params.length) {
+      return string.replace(
+        /\{([a-z][a-z0-9-]*)\}/gi,
+        (match, group) => undefined !== params[params.indexOf(group) + 1] ? params[params.indexOf(group) + 1] : group
       );
     }
 
@@ -159,5 +176,9 @@ export const LitLocalized = base => class extends connect(store)(base) {
     } else {
       return Promise.resolve({});
     }
+  }
+
+  loadFallbackLanguage() {
+    this.__siteLanguageChanged(FALLBACK_LANGUAGE);
   }
 };

@@ -1,4 +1,4 @@
-import { html } from '@polymer/lit-element/lit-element.js';
+import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { staticStyles } from '../styles/static-styles.js';
@@ -208,7 +208,7 @@ class AcknowledgmentsPage extends SCStaticPage {
                   ${_`Amaradasa Liyanagamage`}
                 </td>
                 <td>
-                  ${_`Consultation and liason.`}
+                  ${_`Consultation and liaison.`}
                 </td>
               </tr>
               <tr>
@@ -216,7 +216,7 @@ class AcknowledgmentsPage extends SCStaticPage {
                   ${_`Aminah Borg-Luck`}
                 </td>
                 <td>
-                  ${_`Team manager, text-preparation, forum moderation.`}
+                  ${_`Team facilitator, text-preparation, forum moderation, SuttaCentral Voice development team.`}
                 </td>
               </tr>
               <tr>
@@ -229,10 +229,10 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Anāgārikā Sabbamittā (Maria Backes)`}
+                  ${_`Anagarika Sabbamitta`}
                 </td>
                 <td>
-                  ${_`German translations: text preparation and organisation of fund-raising events.`}
+                  ${_`SuttaCentral Voice development team, German translation, text preparation.`}
                 </td>
               </tr>
               <tr>
@@ -257,6 +257,22 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${_`Indonesian translations.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Ariya Baumann (Ariyanyani)`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Dr. Asha Das`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
                 </td>
               </tr>
               <tr>
@@ -333,6 +349,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Bhikkhu Bangish`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Bhikkhu Bodhi`}
                 </td>
                 <td>
@@ -349,10 +373,34 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Bhikkhu Buddhabangsha`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Bhikkhu Dhammadāsa (AKA Brother Joe Smith)`}
                 </td>
                 <td>
                   ${_`English translations: text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Bhikkhu Gansanta`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Bhikkhu Gyanendriya`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
                 </td>
               </tr>
               <tr>
@@ -365,6 +413,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Bhikkhu Indragupta`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Bhikkhu Jaganātha`}
                 </td>
                 <td>
@@ -373,10 +429,26 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Bhikkhu Jivaka`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Bhikkhu Jodoshinshu`}
                 </td>
                 <td>
                   ${_`Japanese translations: permission to link to his site.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Bhikkhu Jyotipal`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
                 </td>
               </tr>
               <tr>
@@ -421,6 +493,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Bhikkhu Nibbuto`}
+                </td>
+                <td>
+                  ${_`Hindi Text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Bhikkhu Ñāṇatusita`}
                 </td>
                 <td>
@@ -429,10 +509,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Bhikkhu Pragyadarshi`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Bhikkhu Pāsādika`}
                 </td>
                 <td>
                   ${_`English translation of the Ekottarikāgama.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Bhikkhu Rahula`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Bhikkhu Sambodhi`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Bhikkhu Shilabhadra`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
                 </td>
               </tr>
               <tr>
@@ -565,6 +677,22 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Dharmadhar Mahasthabir`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Dharmatilak Sthabir`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Dheerayupa Sukonthapanthu`}
                 </td>
                 <td>
@@ -597,10 +725,34 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`dzt`}
+                </td>
+                <td>
+                  ${_`Russian translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Edmir Terra`}
+                </td>
+                <td>
+                  ${_`Proofreading Portuguese translations.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Enzo Alfano`}
                 </td>
                 <td>
                   ${_`Italian translations.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Erik O'Donnell`}
+                </td>
+                <td>
+                  ${_`Forum moderation.`}
                 </td>
               </tr>
               <tr>
@@ -616,7 +768,7 @@ class AcknowledgmentsPage extends SCStaticPage {
                   ${_`Gabriel Laera`}
                 </td>
                 <td>
-                  ${_`Portuguese translations: preparation and creation of Pali→Portugese dictionary.`}
+                  ${_`Portuguese translation, text preparation and creation of Pali→Portugese dictionary.`}
                 </td>
               </tr>
               <tr>
@@ -629,10 +781,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Gillian Ang`}
+                </td>
+                <td>
+                  ${_`Chinese translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Gillian Perrett`}
+                </td>
+                <td>
+                  ${_`Forum moderation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Handaka Vijjananda`}
                 </td>
                 <td>
-                  ${_`General support.`}
+                  ${_`Indonesian translation team co-ordination and general support.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Hansen Walker`}
+                </td>
+                <td>
+                  ${_`Chinese translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Hector Alvarez`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
                 </td>
               </tr>
               <tr>
@@ -649,6 +833,14 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${_`Indonesian translations.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Iúri Leão`}
+                </td>
+                <td>
+                  ${_`Proofreading Portuguese translations.`}
                 </td>
               </tr>
               <tr>
@@ -677,6 +869,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Jinabangsha Mahasthabir`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`John Kelly`}
                 </td>
                 <td>
@@ -689,6 +889,22 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${_`Setting up VPS, managing shift from PHP to Python, IT consultant and technician.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Josef Wilgen`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Jyotipal Mahasthabir`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
                 </td>
               </tr>
               <tr>
@@ -717,6 +933,14 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Karl Lew`}
+                </td>
+                <td>
+                  ${_`SuttaCentral Voice creator and lead developer.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Ken Yifer`}
                 </td>
                 <td>
@@ -725,10 +949,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Prof. Kobus Kruger`}
+                </td>
+                <td>
+                  ${_`Afrikaans translations.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Kumārī Jayawardena`}
                 </td>
                 <td>
                   ${_`Sinhala translations: permission to use the work by her father, A.P. de Zoysa.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Leonarda Smith`}
+                </td>
+                <td>
+                  ${_`Translation corrections.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Leonid Shapovalov`}
+                </td>
+                <td>
+                  ${_`Russian translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Luciano Tadeu`}
+                </td>
+                <td>
+                  ${_`Proofreading Portuguese translations.`}
                 </td>
               </tr>
               <tr>
@@ -761,6 +1017,14 @@ class AcknowledgmentsPage extends SCStaticPage {
                 </td>
                 <td>
                   ${_`Pali→Spanish Dictionary.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Marco Quaresma`}
+                </td>
+                <td>
+                  ${_`Portuguese translation.`}
                 </td>
               </tr>
               <tr>
@@ -813,10 +1077,34 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Nbezzala`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Pajnananda Thera`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Patcharaporn Sahaponghirun`}
                 </td>
                 <td>
                   ${_`Thai translations: text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Pedro Farage`}
+                </td>
+                <td>
+                  ${_`Proofreading Portuguese translations.`}
                 </td>
               </tr>
               <tr>
@@ -845,18 +1133,26 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Premalal Mirihagalla`}
+                  ${_`Pragyaloke Mahasthabir`}
                 </td>
                 <td>
-                  ${_`General support.`}
+                  ${_`Bengali translation.`}
                 </td>
               </tr>
               <tr>
                 <td>
-                  ${_`Prof. Kobus Kruger`}
+                  ${_`Prajnabangsha Mahathera`}
                 </td>
                 <td>
-                  ${_`Afrikaans translations.`}
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Premalal Mirihagalla`}
+                </td>
+                <td>
+                  ${_`General support.`}
                 </td>
               </tr>
               <tr>
@@ -869,7 +1165,7 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Raimund Beyerlein and Verlag Beyerlein-Steinschulte`}
+                  ${_`Raimund Beyerlein and Verlag Beyerlein & Steinschulte`}
                 </td>
                 <td>
                   ${_`German translations: copyrights and advice.`}
@@ -885,10 +1181,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Rina Vongthongsri`}
+                </td>
+                <td>
+                  ${_`UX & UI design.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Robson da Silva`}
+                </td>
+                <td>
+                  ${_`Proofreading Portuguese translations.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Sadhanananda Mahasthabir`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Sarah “Samurai” Lappin`}
                 </td>
                 <td>
                   ${_`Japanese translations: support.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Saurabh Kapoor`}
+                </td>
+                <td>
+                  ${_`Hindi text preparation.`}
                 </td>
               </tr>
               <tr>
@@ -909,10 +1237,26 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Shantarakkhit Mahasthabir`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Shikha Panjwani, Rahul Patel, and the team at Edatamine Services`}
                 </td>
                 <td>
                   ${_`Typing and markup of several Hindi texts.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Shilalankar Mahasthabir`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
                 </td>
               </tr>
               <tr>
@@ -957,10 +1301,58 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Dr. Sitangshu Bikash Barua`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Štěpán Chromovský`}
                 </td>
                 <td>
                   ${_`Czech translations.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Prof. Sumangal Barua`}
+                </td>
+                <td>
+                  ${_`Bengali translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Tara Athan`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Tasfan Santacitta`}
+                </td>
+                <td>
+                  ${_`Indonesian translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Timothy Patterson`}
+                </td>
+                <td>
+                  ${_`Forum moderation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Tracy Lau`}
+                </td>
+                <td>
+                  ${_`Text preparation.`}
                 </td>
               </tr>
               <tr>
@@ -981,10 +1373,42 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
+                  ${_`Viveka`}
+                </td>
+                <td>
+                  ${_`Forum moderation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`William Tekimam`}
+                </td>
+                <td>
+                  ${_`Indonesian translation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
                   ${_`Yasoj`}
                 </td>
                 <td>
                   ${_`Text preparation.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Yew-Thong Teo`}
+                </td>
+                <td>
+                  ${_`Chinese translation team co-ordination.`}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  ${_`Yixuan Zhang`}
+                </td>
+                <td>
+                  ${_`Chinese translation.`}
                 </td>
               </tr>
             </table>

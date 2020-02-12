@@ -14,39 +14,42 @@ from common.render import render_html_to_png
 
 files_dir = pathlib.Path(__file__).parent / 'files'
 
+
 def make_data_uris(css):
-       
     def replace_url_with_data_uri(match):
         filepath = match[1]
         print(filepath)
-        
+
         with (files_dir / filepath).open('rb') as f:
             data = base64.b64encode(f.read()).decode()
         return f'url(data:font/woff2;charset=utf-8;base64,{data})'
-        
+
     css = regex.sub(r'''url\('/files/(.*?)'\)''', replace_url_with_data_uri, css)
-    
+
     return css
-    
+
+
 def make_img_data_uris(html):
-    
     def replace_src_with_data_uri(match):
         filepath = match[1]
         with (files_dir / filepath).open('rb') as f:
             data = base64.b64encode(f.read()).decode()
         return f'src="data:image/png;base64,{data}"'
-        
+
     html = regex.sub(r'src="/files/(.*?)"', replace_src_with_data_uri, html)
     return html
 
-def make_cover_png(title, author, about, version='v2', debug=False):    
+
+def make_cover_png(title, author, about, version='v2', debug=False):
     cover_file = export_cover_dir / f'{title}_{author}_{version}.png'.replace(' ', '-')
     if not debug and cover_file.exists():
         with cover_file.open('rb') as f:
             return f.read()
-    
+
     css = make_data_uris(css_template)
-    html = make_img_data_uris(html_template.render(title=title, about=about, author=author, css=css))
+    html = make_img_data_uris(
+        html_template.render(title=title, about=about, author=author, css=css)
+    )
     if debug:
         with (pathlib.Path(__file__).parent / 'last_cover.html').open('w') as f:
             f.write(html)
@@ -61,8 +64,9 @@ def make_cover_png(title, author, about, version='v2', debug=False):
     if not debug:
         with cover_file.open('wb') as f:
             f.write(image_data)
-    
+
     return image_data
+
 
 css_template = '''
 @font-face {
@@ -78,7 +82,7 @@ css_template = '''
 
 @font-face {
     font-family: "Raloks Sans Sb";
-    src: url('/files/RaloksSansPE-SbIt.woff2') format('woff2');
+    src: url('/files/RaloksSansPE-Sb.woff2') format('woff2');
     font-style: italic;
 }
 @page {
@@ -155,7 +159,8 @@ font-size:80px;
 }
 '''
 
-html_template = Template('''
+html_template = Template(
+    '''
 <!doctype html>
 <html>
 <head>
@@ -178,5 +183,5 @@ html_template = Template('''
 </main>
 </body>
 </html>
-''')
-
+'''
+)

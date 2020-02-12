@@ -19,7 +19,7 @@
   <meta name="title" content="SuttaCentral">
   <meta name="description" content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
   <meta name="image" content="https://i.vimeocdn.com/portrait/23756910_500x500.jpg">
-  <meta name="keywords" content="Buddha, Buddhism, Buddhist, sutta, sutra, tipitaka, tripitaka, wisdom, teaching, mindfulness, meditation, scripture, canon, Pali, Sanskrit, Tibetan, Chinese, insight, vipassana">
+  <meta name="keywords" content="Buddha, Buddhism, Buddhist, sutta, suttas, sutra, sutras, tipitaka, tripitaka, wisdom, teaching, mindfulness, meditation, scripture, canon, Pali, Sanskrit, Tibetan, Chinese, insight, vipassana">
 
   <!-- Schema.org for Google -->
   <meta itemprop="name" content="SuttaCentral">
@@ -27,7 +27,7 @@
         content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
   <meta itemprop="image" content="https://i.vimeocdn.com/portrait/23756910_500x500.jpg">
   <!-- Twitter -->
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SuttaCentral">
   <meta name="twitter:description" content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings.">
   <meta name="twitter:player" content="https://player.vimeo.com/video/257038431">
@@ -37,7 +37,8 @@
   <meta property="og:title" content="SuttaCentral">
   <meta property="og:description" content="Early Buddhist texts from the Tipitaka (Tripitaka). Suttas (sutras) with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.">
   <meta property="og:image"
-        content="https://suttacentral.net/img/social_image.png">
+        content="https://suttacentral.net/img/social_sharing.png">
+  <meta property="og:image:alt" content="SuttaCentral">        
   <meta property="og:url" content="https://suttacentral.net/">
   <meta property="og:site_name" content="SuttaCentral">
   <meta property="og:type" content="website">
@@ -57,26 +58,6 @@
   ga('send', 'pageview');
   </script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-  <!-- Polyfills -->
-  <script>
-    var head = document.querySelector('head');
-    if (!Array.prototype.includes) {
-        var script = document.createElement('script');
-        script.src = '/polyfills/arrayIncludes.js';
-        head.appendChild(script);
-    }
-    if (!Object.entries) {
-        var script = document.createElement('script');
-        script.src = '/polyfills/objectEntries.js';
-        head.appendChild(script);
-    }
-    if (!String.prototype.includes) {
-        var script = document.createElement('script');
-        script.src = '/polyfills/stringIncludes.js';
-        head.appendChild(script);
-    }
-  </script>
 
   <!-- Temporary fix for broken CSS mixins (@apply) inside LitElement
        https://github.com/Polymer/lit-html/issues/518 -->
@@ -223,14 +204,16 @@
             document.head.querySelector("[property='og:url']").content = url;
             document.head.querySelector("[property='og:title']").content = metaData.title;
             document.head.querySelector("[property='og:description']").content = metaData.description;
+            document.head.querySelector("[property='og:type']").content = metaData.openGraphType ? metaData.openGraphType : 'website';            
             document.head.querySelector("[name='title']").content = metaData.title;
             document.head.querySelector("[name='description']").content = metaData.description;
             document.head.querySelector("[name='twitter:title']").content = metaData.title;
             document.head.querySelector("[name='twitter:description']").content = metaData.description.substring(0,120);
             document.head.querySelector("[itemprop='name']").content = metaData.title;
-            document.head.querySelector("[itemprop='description']").content = metaData.description;
+            document.head.querySelector("[itemprop='description']").content = metaData.description;            
         }
     });
+  
     document.addEventListener("keyword-metadata", function(e) {
         var metaData = e.detail;
         if (metaData) {

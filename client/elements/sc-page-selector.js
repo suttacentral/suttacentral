@@ -4,12 +4,13 @@ import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import { html, PolymerElement } from '@polymer/polymer';
-import { ReduxMixin } from '../redux-store.js';
+import { ReduxMixin, store } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 
 import './menus/sc-toolbar.js';
 import './text/sc-segmented-text.js';
 import './text/sc-simple-text.js';
+import { throttle } from 'throttle-debounce';
 
 /*
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
@@ -45,14 +46,33 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         flex-direction: column;
       }
 
+      /* Only static pages use transparent backgrounds, other pages use the original backgrounds. */
       .toolbar-header, #sc_toolbar {
-        background-color: var(--sc-primary-color);
+        /* background-color: var(--sc-primary-color); */
+        /* background-color: transparent; */
         white-space: nowrap;
+        z-index: 99999;
+      }
+
+      .primaryBackgroundColor {
+        background-color: var(--sc-primary-color);
+      }
+
+      .backgroundTransparent {
+        background-color: transparent;
+      }
+
+      .smallScreenPadding {
+        padding: 0px;
       }
 
       #toolbar_title_box {
         width: 1px;
         z-index: -10;
+      }
+
+      .headerOpacity {
+        opacity: 0;
       }
 
       #toolbar_title {
@@ -80,6 +100,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
       #header {
         transition: all 200ms !important;
+        --app-header-shadow: {
+          box-shadow: 0px;
+        };
       }
 
       @media screen and (min-width: 960px) {
@@ -107,6 +130,34 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
           display: none;
         }
       }
+
+      .hideTitle {
+        display: none;
+      }
+
+      #nav_toolbar {
+        background-color: var(--sc-primary-color-dark);
+        height: auto;
+      }
+
+      .navigation-tabs {
+        width: 100%;
+        --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
+      }
+
+      .nav-link {
+        color: var(--sc-tertiary-text-color);
+        --paper-tab-ink: var(--sc-primary-color-light);
+        padding-left: 10px;
+        padding-right: 10px;
+        @apply --sc-all-caps;
+      }
+
+      .link-anchor {
+        position: absolute;
+        width: calc(100% + 20px);
+        height: 100%;
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -115,10 +166,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       <app-header-layout fullbleed>
 
         <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header">
-          <app-toolbar class="toolbar-header">
-            <a href="/" class$="[[_shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage)]]">
-              <paper-icon-button icon="sc-svg-icons:sc-logo-bw" id="to_home_button" title="{{localize('goHome')}}"></paper-icon-button>
-            </a>
+          <app-toolbar id="toolbarHeader" class="toolbar-header" sticky>
             <paper-icon-button icon="sc-iron-icons:menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
 
             <div main-title="" id="toolbar_title_box">
@@ -236,6 +284,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       },
       isNarrowScreen: {
         type: Boolean
+      },
+      isFirstLoad: {
+        type: Boolean
       }
     }
   }
@@ -267,12 +318,19 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
           type: 'SELECT_NAVIGATION_MENU_ITEM',
           id: id
         }
+      },
+      changeDrawerOpenState(opened) {
+        return {
+          type: 'CHANGE_DRAWER_OPEN_STATE',
+          drawerOpened: opened
+        }
       }
     }
   }
 
   ready() {
     super.ready();
+    this.isFirstLoad = true;
     const lowerCaseRoute = this.route.path.toLowerCase();
     this.set('route.path', lowerCaseRoute);
     if (this._shouldRedirect()) {
@@ -296,6 +354,14 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         this.$.header.style.zIndex = -1;
       }
     });
+
+    window.addEventListener('resize', throttle(300, () => {
+      if (window.innerWidth < 480) {
+        this.$.toolbarHeader.classList.add('smallScreenPadding');
+      } else {
+        this.$.toolbarHeader.classList.remove('smallScreenPadding');
+      }
+    }));
   }
 
   _redirectFromLegacyLink() {
@@ -348,6 +414,56 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.shouldShowSuttaTextPage = this._isSuttaTextPage();
     this.shouldShowDictionaryPage = this._isDictionaryPage();
     this._resolveImports();
+    this._addWindowScrollEvent(this.shouldShowStaticPage);
+    if (!this.shouldShowStaticPage) {
+      this.$.toolbarHeader.classList.add('primaryBackgroundColor');
+      this.$.toolbarHeader.classList.remove('backgroundTransparent');
+    }
+  }
+
+  _addWindowScrollEvent(isStaticPage) {
+    const toolBarTitleElement = this.$.toolbar_title;
+    if (isStaticPage) {
+      toolBarTitleElement.classList.add('hideTitle');
+    } else {
+      toolBarTitleElement.classList.remove('hideTitle');
+    }
+
+    window.addEventListener('scroll', throttle(300, () => {
+      if (isStaticPage) {
+        const ALL_TOOLBAR_HEIGHT = 262;
+        const TOOLBAR_AND_TITLEBAR_HEIGHT = 198;
+        let scrollTop = document.documentElement.scrollTop;
+        const headerElement = this.$.toolbarHeader;
+        if (scrollTop >= ALL_TOOLBAR_HEIGHT) {
+          headerElement.classList.add('primaryBackgroundColor');
+          headerElement.classList.remove('backgroundTransparent');
+        } else {
+          headerElement.classList.remove('primaryBackgroundColor');
+          headerElement.classList.add('backgroundTransparent');
+        }
+        if (scrollTop <= ALL_TOOLBAR_HEIGHT) {
+          toolBarTitleElement.classList.add('hideTitle');
+          headerElement.classList.add('headerOpacity');
+        } else {
+          toolBarTitleElement.classList.remove('hideTitle');
+          headerElement.classList.remove('headerOpacity');
+        }
+
+        if (scrollTop >= TOOLBAR_AND_TITLEBAR_HEIGHT - 28 && scrollTop <= ALL_TOOLBAR_HEIGHT) {
+          headerElement.style.display = 'none';
+        } else {
+          headerElement.classList.remove('headerOpacity');
+          headerElement.style.display = '';
+        }
+
+      } else {
+        this.$.toolbarHeader.classList.add('primaryBackgroundColor');
+        this.$.toolbarHeader.classList.remove('backgroundTransparent');
+        this.$.toolbarHeader.classList.remove('headerOpacity');
+        toolBarTitleElement.classList.remove('hideTitle');
+      }
+    }));
   }
 
   // Lazy loading for site elements
@@ -401,7 +517,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.dispatch('changeRoute', Object.assign({}, this.route, suttaRouteParams));
     }
     else if (this._isAPI()) {
-      
+
     }
     else {
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
@@ -504,7 +620,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
   // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
   _changeView() {
-    this.$.sc_toolbar._closeSearch();
+    if (!this._isSearchPage())
+      this.$.sc_toolbar._closeSearch();
   }
 
   // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
@@ -528,10 +645,22 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _drawerOpenStateChanged() {
+    if (this.isFirstLoad && this.isDrawerOpen && !this.isNarrowScreen) {
+      this.$.header.classList.add('drawer-closed');
+      this._closeDrawer();
+      this.isFirstLoad = false;
+      this.dispatch('changeDrawerOpenState', false);
+    }
+
     if (this.isDrawerOpen) {
       this.$.header.classList.remove('drawer-closed');
     } else {
       this.$.header.classList.add('drawer-closed');
+    }
+
+    let drawerOpened = store.getState().drawerOpened;
+    if (!drawerOpened && this.isDrawerOpen) {
+      this._closeDrawer();
     }
   }
 

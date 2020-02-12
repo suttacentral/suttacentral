@@ -1,4 +1,4 @@
-import { html } from '@polymer/lit-element/lit-element.js';
+import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { staticStyles } from '../styles/static-styles.js';
@@ -113,7 +113,7 @@ class SCDNGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('9e4a9702da430deddb27b390912dc9dd'))}</p>
             <p>${this.localize('59df3992fea1cbe01eea6f99794c67ee')}</p>
             <p>${unsafeHTML(this.localize('b56ba866475ec3742dbfa70fa3021ab9'))}</p>
-            <p>${unsafeHTML(this.localize('f99e199ad8db16f3982dc26df020c151'))}</p>
+            <p>${unsafeHTML(this.localize('6b9ffd32ce9cc3f013fa81b1dd38258b'))}</p>
             <p>${this.localize('7225afe2010618e1903e65145283e11f')}</p>
             <p>${unsafeHTML(this.localize('85b102b5a0b5d125350f9cb9321994aa'))}</p>
             <p>${unsafeHTML(this.localize('971eaea4e91baf61f44c7ee674f092f3'))}</p>

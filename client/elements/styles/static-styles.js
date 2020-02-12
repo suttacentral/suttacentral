@@ -1,4 +1,4 @@
-import { html } from "@polymer/lit-element/lit-element.js";
+import { html } from "lit-element";
 import { html as legacyHtml } from '@polymer/polymer/polymer-element.js';
 
 export const staticStyles = html`
@@ -223,10 +223,9 @@ export const staticStyles = html`
   }
   .gatha {
     font-size: inherit;
-    display: table;
     width: auto;
     margin: 0 auto;
-    max-width: 90%;
+    padding: 0 1em;
   }
   .pre {
     @apply --sc-monospace-font;

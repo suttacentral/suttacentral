@@ -288,12 +288,11 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
                 author_short: text.author_short,
                 author_uid: text.author_uid,
                 id: text._key,
-                segmented: false
+                segmented: false,
+                volpage: text.volpage
                 }
             // Add title if it is in desired language
-            LET res2 = (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
-            // Add volpage info if it exists.
-            RETURN (text.volpage != null) ? MERGE(res2, {volpage: text.volpage}) : res2
+            RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res
         )
 
     LET po_translations = (
@@ -306,17 +305,12 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
                 author_short: text.author_short,
                 author_uid: text.author_uid,
                 id: text._key,
-                segmented: true
+                segmented: true,
+                volpage: text.volpage
             }
             //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
             RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
     )
-    
-    LET legacy_volpages = (
-        FOR text IN legacy_translations
-            FILTER HAS(text, "volpage")
-            RETURN text.volpage
-    )[0]
     
     SORT e.resembling
     
@@ -328,6 +322,13 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
     )[0]
 
     LET translations = FLATTEN([po_translations, legacy_translations])
+
+    LET volpages = (
+        FOR text IN translations
+            FILTER text.volpage != null
+            LIMIT 1
+            RETURN text.volpage
+    )
 
     LET translated_titles = (
         FOR translation IN translations
@@ -349,7 +350,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
         enumber: e.number,
         to: {
             to: e.to,
-            volpages: v.volpage ? v.volpage : legacy_volpages,
+            volpages: v.volpage ? v.volpage : volpages[0],
             acronym: v.acronym,
             uid: v.uid,
             root_lang: v.root_lang,
@@ -378,7 +379,8 @@ FOR dict IN dictionaries
     }
 '''
 
-SUTTA_VIEW = '''
+SUTTA_VIEW = (
+    '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
 
 LET legacy_html = (
@@ -442,7 +444,9 @@ LET translated_po_obj = (
         }
 )[0]
 
-LET suttaplex = (''' + SUTTAPLEX_LIST + ''')[0]
+LET suttaplex = ('''
+    + SUTTAPLEX_LIST
+    + ''')[0]
     
 RETURN {
     root_text: translated_po_obj ? root_po_obj : null,
@@ -453,6 +457,7 @@ RETURN {
     suttaplex: suttaplex
 }
 '''
+)
 
 CURRENCIES = '''
 FOR currency IN currencies
@@ -774,7 +779,6 @@ RETURN SORTED_UNIQUE(UNION(parent_uids, text_uids))
 '''
 
 
-
 GET_ANCESTORS = '''
     /* Return uids that are ancestors to any uid in @uid_list */
     RETURN UNIQUE(FLATTEN(
@@ -789,4 +793,3 @@ GET_ANCESTORS = '''
             return parents
     ))
 '''
-
