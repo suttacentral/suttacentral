@@ -208,12 +208,12 @@ class SCToolbar extends LitLocalized(LitElement) {
       }
     ];
 
-    window.addEventListener('resize', throttle(300, () => {
-      const searchInputElement = this.shadowRoot.getElementById('search_input');
-      if (searchInputElement && searchInputElement.classList.contains('opened')) {
-        this._closeSearch();
-      }
-    }));
+    //window.addEventListener('resize', throttle(300, () => {
+      //const searchInputElement = this.shadowRoot.getElementById('search_input');
+      //if (searchInputElement && searchInputElement.classList.contains('opened')) {
+        //this._closeSearch();
+      //}
+    //}));
   }
 
   get actions() {
