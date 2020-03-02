@@ -155,6 +155,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       expansionReturns: { type: Array }, //observer: '_onResponseExpansionData'
       showedLanguagePrompt: { type: Boolean }, //statePath: 'showedLanguagePrompt'
       isLoading: { type: Boolean },
+      isProcessing: { type: Boolean },
       haveBilaraSegmentedText: { type: Boolean },
       bilaraDataPath: { type: String }
     }
@@ -165,6 +166,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
     this.isLoading = false;
+    this.isProcessing = true;
     this.bilaraDataPath = '/files/bilara-data';
   }
 
@@ -193,13 +195,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this._fetchExpansion();
-    //this._fetchSuttaText();
     this.addEventListener('show-image', e => {
       let scTextImageElement = this.shadowRoot.querySelector('#sc_text_image');
       if (scTextImageElement) {
         scTextImageElement.showImage(e.detail);
       }
     });
+    this.isProcessing = false;
   }
 
   updated(changedProps) {
@@ -224,6 +226,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   _onResponse() {
     if (!this.responseData) {
+      this.isProcessing = false;
       return;
     }
     this.setProperties();
@@ -232,6 +235,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       textOptions._closeSuttaplex();
     }
     this.actions.downloadSuttaText(this.responseData);
+    this.isProcessing = false;
   }
 
   _onResponseExpansionData() {
@@ -527,6 +531,10 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _shouldDisplayBilaraSegmentedText() {
+    return false;
+    if (!this.translatedSutta) {
+      return false;
+    }
     let suttaDivision = this._getSuttaDivision();
     return (this.isSegmentedText && !this.isLoading
       && this.translatedSutta.author_uid === 'sujato'
@@ -539,7 +547,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _shouldDisplayError() {
-    return (!this.rootSutta && !this.translatedSutta) || this.lastError;
+    return (!this.isProcessing && !this.rootSutta && !this.translatedSutta) || this.lastError;
   }
 
   _updateToolbar(title) {
