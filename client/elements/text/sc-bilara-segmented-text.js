@@ -140,7 +140,7 @@ class SCBilaraSegmentedText extends SCTextPage {
   }
 
   firstUpdated() {
-    this._updateView();
+    //this._updateView();
     this._initMinimapForFirefox();
   }
 
@@ -464,9 +464,9 @@ class SCBilaraSegmentedText extends SCTextPage {
 
   _deleteTranslatedSuttaMarkup() {
     let articleElement = this._articleElement();
-    const rootMarkup = articleElement.querySelectorAll('.translation');
-    if (rootMarkup) {
-      rootMarkup.forEach((element) => { element.parentNode.removeChild(element) });
+    const translatedSuttaMarkup = articleElement.querySelectorAll('.translation');
+    if (translatedSuttaMarkup) {
+      translatedSuttaMarkup.forEach((element) => { element.parentNode.removeChild(element) });
     }
   }
 
@@ -519,6 +519,10 @@ class SCBilaraSegmentedText extends SCTextPage {
   }
 
   _initReference() {
+    if (!this.bilaraRootSutta) {
+      return
+    }
+
     let articleElement = this._articleElement();
     let mapSutta = new Map(Object.entries(this.bilaraRootSutta));
     if (articleElement && mapSutta) {
@@ -637,6 +641,7 @@ class SCBilaraSegmentedText extends SCTextPage {
     if (!this.suttaReference) {
       return;
     }
+    console.log('add reference text');
     let articleElement = this._articleElement();
     let mapRef = new Map(Object.entries(this.suttaReference));
     if (articleElement && mapRef) {

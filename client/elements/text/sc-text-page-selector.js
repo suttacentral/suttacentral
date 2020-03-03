@@ -531,7 +531,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _shouldDisplayBilaraSegmentedText() {
-    return false;
     if (!this.translatedSutta) {
       return false;
     }
