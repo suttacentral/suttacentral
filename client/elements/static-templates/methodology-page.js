@@ -121,7 +121,7 @@ class SCMethodologyPage extends SCStaticPage {
               ${_`Discourses listed as full parallels to a given Pali discourse can safely be assumed to be full parallels to one another. For example, DN 22 is shown as having full parallels in MN 10, MA 98, and EA 12.1, and from this one can safely infer that MA 98 is a full parallel to MN 10 and EA 12.1.`}
             </p>
             <p>
-              ${_`However, for discourses listed as partial parallels to a given Pali discourse, no such inferences can be drawn. For example, DN 22 is shown as having partial parallels in MN 141, MA 31, and T 32. From this one cannot infer any correspondence between MA 31 and T 32 (though in fact they are full parallels of each other), or between MA 31 and EA 12.1 (which in fact are quite unrelated).`}
+              ${_`However, for discourses listed as partial parallels to a given Pali discourse, no such inferences can be drawn. For example, DN 22 is shown as having partial parallels in MN 141, MA 31, and T 32. From this one cannot infer any correspondence between MA 31 and T 32 (though in fact they are full parallels of each other), or between MA 31 and MN 141 (which in fact are quite unrelated).`}
             </p>
             <h2 id="item3">
               ${_`Vinaya Parallels`}
