@@ -459,60 +459,23 @@ RETURN {
 '''
 )
 
-BILARA_SUTTA_VIEW = (
-    '''
-LET root_json = (
-    FOR root IN bilara_root
-        FILTER root.uid == @uid
-        LIMIT 1
-        RETURN root.strings
-)[0]
 
-LET translation_json = (
-    FOR translation IN bilara_translation
-        FILTER translation.uid == @uid AND translation.author == @author_uid
-        LIMIT 1
-        RETURN translation.strings
-)[0]
+SEGMENTED_SUTTA_VIEW = '''
 
-LET reference_json = (
-    FOR reference IN bilara_reference
-        FILTER reference.uid == @uid 
-        LIMIT 1
-        RETURN reference.strings
-)[0]
-
-LET variant_json = (
-    FOR variant IN bilara_variant
-        FILTER variant.uid == @uid
-        LIMIT 1
-        RETURN variant.strings
-)[0]
-
-LET comment_json = (
-    FOR comment IN bilara_comment
-        FILTER comment.uid == @uid AND comment.author == @author_uid
-        LIMIT 1
-        RETURN comment.strings
-)[0]
-
-LET html_json = (
-    FOR html IN bilara_html
-        FILTER html.uid == @uid
-        LIMIT 1
-        RETURN html.strings
-)[0]
-
-RETURN {
-    root_text: root_json,
-    translation_text: translation_json,
-    reference_text: reference_json,
-    variant_text: variant_json,
-    comment_text: comment_json,
-    html_text: html_json
-}
-'''
+LET result = MERGE(
+    FOR doc IN segmented_data
+        FILTER doc.uid == @uid
+        FILTER 'translation' NOT IN doc.muids OR @author_uid IN doc.muids
+        FILTER 'comment' NOT IN doc.muids OR @author_uid IN doc.muids
+        
+        LET type = doc.muids[0]
+        RETURN {
+            [CONCAT(type, '_text')]: doc.filepath
+        }
 )
+
+RETURN result
+'''
 
 CURRENCIES = '''
 FOR currency IN currencies
