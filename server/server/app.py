@@ -30,6 +30,7 @@ from api.views import (
     Redirect,
     TranslationCountByDivision,
     TranslationCountByLanguage,
+    BilaraSutta
 )
 from api.ebook.ebook import EBook
 from common.arangodb import ArangoDB
@@ -72,6 +73,9 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(PWASizes, '/pwa/sizes')
     api.add_resource(Redirect, '/redirect/<path:url>')
     api.add_resource(EBook, '/ebook/<string:name>')
+    api.add_resource(
+        BilaraSutta, '/bilarasuttas/<string:uid>/<string:author_uid>', '/bilarasuttas/<string:uid>'
+    )
 
     app.register_blueprint(api_bp)
     register_extensions(app)

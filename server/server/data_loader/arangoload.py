@@ -2,6 +2,7 @@ import json
 import regex
 import logging
 import pathlib
+import os
 
 from collections import defaultdict
 from itertools import product
@@ -30,6 +31,7 @@ from . import (
     localized_languages,
     order,
     sizes,
+    bilara
 )
 
 from .generate_sitemap import generate_sitemap
@@ -643,3 +645,26 @@ def run(no_pull=False):
     change_tracker.update_mtimes()
 
     print_stage('All done')
+
+def bilara_run():
+    print("Loading bilara data")
+    data_dir = current_app.config.get('BASE_DIR') / 'sc-data' / 'bilara-data'
+    if not os.path.exists(data_dir):
+        print("Bilara data directory does not exist.")
+        return
+
+    root_dir = data_dir / 'root'
+    translation_dir = data_dir / 'translation'
+    comment_dir = data_dir / 'comment'
+    variant_dir = data_dir / 'variant'
+    reference_dir = data_dir / 'reference'
+    html_dir = data_dir / 'html'
+
+    db = arangodb.get_db()
+    bilara.createBilaraCollections(db)
+    bilara.load_root(db, root_dir)
+    bilara.load_translation(db, translation_dir)
+    bilara.load_comment(db, comment_dir)
+    bilara.load_reference(db, reference_dir)
+    bilara.load_variant(db, variant_dir)
+    bilara.load_html(db, html_dir)

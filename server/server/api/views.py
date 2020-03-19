@@ -37,6 +37,7 @@ from common.queries import (
     TRANSLATION_COUNT_BY_DIVISION,
     TRANSLATION_COUNT_BY_AUTHOR,
     TRANSLATION_COUNT_BY_LANGUAGE,
+    BILARA_SUTTA_VIEW,
 )
 
 from common.utils import (
@@ -784,6 +785,16 @@ class Sutta(Resource):
                     with open(file_path) as f:
                         doc[to_prop] = load_func(f)
 
+class BilaraSutta(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid, author_uid=''):
+        db = get_db()
+        results = db.aql.execute(
+            BILARA_SUTTA_VIEW,
+            bind_vars={'uid': uid, 'author_uid': author_uid}
+        )
+        result = results.next()
+        return result, 200
 
 class Currencies(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)

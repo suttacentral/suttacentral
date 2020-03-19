@@ -140,7 +140,7 @@ class SCBilaraSegmentedText extends SCTextPage {
   }
 
   firstUpdated() {
-    //this._updateView();
+    this._updateView();
     this._initMinimapForFirefox();
   }
 
@@ -641,7 +641,6 @@ class SCBilaraSegmentedText extends SCTextPage {
     if (!this.suttaReference) {
       return;
     }
-    console.log('add reference text');
     let articleElement = this._articleElement();
     let mapRef = new Map(Object.entries(this.suttaReference));
     if (articleElement && mapRef) {
