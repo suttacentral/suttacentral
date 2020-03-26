@@ -31,7 +31,7 @@ from . import (
     localized_languages,
     order,
     sizes,
-    bilara
+    segmented_data
 )
 
 from .generate_sitemap import generate_sitemap
@@ -544,6 +544,7 @@ def run(no_pull=False):
     """
 
     data_dir = current_app.config.get('BASE_DIR') / 'sc-data'
+    segmented_data_dir = data_dir / 'segmented_data'
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
@@ -587,6 +588,9 @@ def run(no_pull=False):
     localized_languages.update_languages(
         db, current_app.config.get('ASSETS_DIR') / 'localization/elements'
     )
+
+    print_stage('Loading Segmented Data')
+    segmented_data.load_segmented_data(db, change_tracker, segmented_data_dir)
 
     print_stage("Loading po_text")
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
@@ -646,6 +650,8 @@ def run(no_pull=False):
 
     print_stage('All done')
 
+
+
 def bilara_run():
     print("Loading bilara data")
     data_dir = current_app.config.get('BASE_DIR') / 'sc-data' / 'bilara-data'
@@ -653,18 +659,3 @@ def bilara_run():
         print("Bilara data directory does not exist.")
         return
 
-    root_dir = data_dir / 'root'
-    translation_dir = data_dir / 'translation'
-    comment_dir = data_dir / 'comment'
-    variant_dir = data_dir / 'variant'
-    reference_dir = data_dir / 'reference'
-    html_dir = data_dir / 'html'
-
-    db = arangodb.get_db()
-    bilara.createBilaraCollections(db)
-    bilara.load_root(db, root_dir)
-    bilara.load_translation(db, translation_dir)
-    bilara.load_comment(db, comment_dir)
-    bilara.load_reference(db, reference_dir)
-    bilara.load_variant(db, variant_dir)
-    bilara.load_html(db, html_dir)
