@@ -150,9 +150,9 @@ class SCBilaraSegmentedText extends SCTextPage {
       this._addRootText();
       this._initReference();
       this._addReferenceText();
-      this._addCommentText();
+      //this._addCommentText();
       this._addVariantText();
-      this._addCommentSpanId();
+      //this._addCommentSpanId();
 
       if (this.isPaliLookupEnabled) {
         this._initPaliLookup();
