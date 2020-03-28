@@ -37,6 +37,7 @@ from common.queries import (
     TRANSLATION_COUNT_BY_DIVISION,
     TRANSLATION_COUNT_BY_AUTHOR,
     TRANSLATION_COUNT_BY_LANGUAGE,
+    SEGMENTED_SUTTA_VIEW,
 )
 
 from common.utils import (
@@ -783,6 +784,28 @@ class Sutta(Resource):
                 else:
                     with open(file_path) as f:
                         doc[to_prop] = load_func(f)
+
+class SegmentedSutta(Resource):
+    
+
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid, author_uid=''):
+        db = get_db()
+        results = db.aql.execute(
+            SEGMENTED_SUTTA_VIEW,
+            bind_vars={'uid': uid, 'author_uid': author_uid}
+        )
+        result = next(results)
+        if not result:
+            return {'error': 'Not Found'}, 404
+        
+        return {k: self.load_json(v) for k,v in result.items()}, 200
+
+    @staticmethod
+    def load_json(path):
+        data_dir = current_app.config.get('DATA_REP_DIR') / 'segmented_data'
+        with (data_dir / path).open() as f:
+            return json.load(f)
 
 
 class Currencies(Resource):

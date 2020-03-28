@@ -459,6 +459,24 @@ RETURN {
 '''
 )
 
+
+SEGMENTED_SUTTA_VIEW = '''
+
+LET result = MERGE(
+    FOR doc IN segmented_data
+        FILTER doc.uid == @uid
+        FILTER 'translation' NOT IN doc.muids OR @author_uid IN doc.muids
+        FILTER 'comment' NOT IN doc.muids OR @author_uid IN doc.muids
+        
+        LET type = doc.muids[0]
+        RETURN {
+            [CONCAT(type, '_text')]: doc.filepath
+        }
+)
+
+RETURN result
+'''
+
 CURRENCIES = '''
 FOR currency IN currencies
     FILTER currency.use == true

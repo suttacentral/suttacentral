@@ -281,6 +281,14 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
   }
 
+  _getBilaraTextUrl() {
+    if (this.authorUid) {
+      return `${API_ROOT}/bilarasuttas/${this.suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
+    } else {
+      return `${API_ROOT}/bilarasuttas/${this.suttaId}?lang=${this.langIsoCode}`;
+    }
+  }
+
   async _fetchSuttaText() {
     this.isLoading = true;
     try {
@@ -291,181 +299,28 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.isLoading = false;
   }
 
-  _getSuttaDivision() {
-    if (!this.responseData.translation) {
-      return '';
-    }
-    let suttaID = this.responseData.translation.uid;
-    if (suttaID.includes('sn')) {
-      return 'sn';
-    }
-    if (suttaID.includes('mn')) {
-      return 'mn';
-    }
-    if (suttaID.includes('an')) {
-      return 'an';
-    }
-    if (suttaID.includes('dn')) {
-      return 'dn';
-    }
-    if (suttaID.includes('thag') || suttaID.includes('thig') || suttaID.includes('dhp') ) {
-      return 'kn';
-    }
-  }
-
-  _getSuttaSubDivision() {
-    let suttaID = this.responseData.translation.uid.split('.');
-    if (suttaID.length > 0) {
-      return suttaID[0];
-    }
-  }
-
-  _getBilaraTranslatedSuttaUrl() {
-    let transSutta = this.responseData.translation;
-    if (!transSutta) {
-      return '';
-    }
-    let suttaDivision = this._getSuttaDivision();
-    let suttaFileName = `${transSutta.uid}_translation-${transSutta.lang}-${transSutta.author_uid}.json`;
-    switch(suttaDivision) {
-      case 'an':
-        return `${this.bilaraDataPath}/translation/${transSutta.lang}/${transSutta.author_uid}/sutta/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${suttaFileName}`;
-      case 'dn':
-        return `${this.bilaraDataPath}/translation/${transSutta.lang}/${transSutta.author_uid}/sutta/${this._getSuttaDivision()}/${suttaFileName}`;
-      case 'kn':
-        break;
-      case 'mn':
-        return `${this.bilaraDataPath}/translation/${transSutta.lang}/${transSutta.author_uid}/sutta/${this._getSuttaDivision()}/${suttaFileName}`;
-      case 'sn':
-        return `${this.bilaraDataPath}/translation/${transSutta.lang}/${transSutta.author_uid}/sutta/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${suttaFileName}`;
-    }
-  }
-
-  async _fetchBilaraTranslatedSuttaText() {
-    let jsonUrl = this._getBilaraTranslatedSuttaUrl();
-    if (!jsonUrl) {
-      return;
-    }
+  async _fetchBilaraText() {
     this.isLoading = true;
     try {
-      this.bilaraTranslatedSutta = await (await fetch(jsonUrl)).json();
+      let bilaraData = await (await fetch(this._getBilaraTextUrl())).json();
+      this.bilaraRootSutta = bilaraData.root_text;
+      this.bilaraTranslatedSutta = bilaraData.translation_text;
+      this.bilaraSuttaMarkup = bilaraData.html_text;
+      this.suttaReference = bilaraData.reference_text;
+      this.suttaComment = bilaraData.comment_text;
+      this.suttaVariant = bilaraData.variant_text;
     } catch (error) {
       this.lastError = error;
     }
     this.isLoading = false;
   }
 
-  _getBilaraRootSuttaUrl() {
-    let transSutta = this.responseData.translation;
-    if (!transSutta) {
-      return '';
-    }
-    let fileName = `${transSutta.uid}_root-pli-ms.json`;
-    let suttaDivision = this._getSuttaDivision();
-    switch(suttaDivision) {
-      case 'an': return `${this.bilaraDataPath}/root/pli/ms/sutta/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${fileName}`;
-      case 'dn': return `${this.bilaraDataPath}/root/pli/ms/sutta/${this._getSuttaDivision()}/${fileName}`;
-      case 'kn':
-      case 'mn': return `${this.bilaraDataPath}/root/pli/ms/sutta/${this._getSuttaDivision()}/${fileName}`;
-      case 'sn': return `${this.bilaraDataPath}/root/pli/ms/sutta/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${fileName}`;
-    }
-  }
-
-  async _fetchBilaraRootSutta() {
-    this.bilaraRootSutta = await (await fetch(this._getBilaraRootSuttaUrl())).json();
-  }
-
-  _getBilaraCommentUrl() {
-    let transSutta = this.responseData.translation;
-    if (!transSutta) {
-      return '';
-    }
-    //let commentPath = 'comment/pli/ms/sutta';
-    let fileName = `${transSutta.uid}_comment-${transSutta.lang}-${transSutta.author_uid}.json`;
-    let suttaDivision = this._getSuttaDivision();
-    switch(suttaDivision) {
-      case 'an': return `${this.bilaraDataPath}/comment/${transSutta.lang}/${transSutta.author_uid}/sutta/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${fileName}`;
-      case 'dn': return `${this.bilaraDataPath}/comment/${transSutta.lang}/${transSutta.author_uid}/sutta/${this._getSuttaDivision()}/${fileName}`;
-      case 'kn':
-      case 'mn': return `${this.bilaraDataPath}/comment/${transSutta.lang}/${transSutta.author_uid}/sutta/${this._getSuttaDivision()}/${fileName}`;
-      case 'sn': return `${this.bilaraDataPath}/comment/${transSutta.lang}/${transSutta.author_uid}/sutta/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${fileName}`;
-    }
-  }
-
-  async _fetchSuttaComment() {
-    try {
-      this.suttaComment = await (await fetch(this._getBilaraCommentUrl())).json();
-    } catch(e) {
-      this.suttaComment = '';
-    }
-  }
-
-  _getBilaraVariantUrl() {
-    let transSutta = this.responseData.translation;
-    if (!transSutta) {
-      return '';
-    }
-    let variantPath = 'variant/pli/ms/sutta';
-    let fileName = `${transSutta.uid}_variant-pli-ms.json`;
-    return `${this.bilaraDataPath}/${variantPath}/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${fileName}`;
-  }
-
-  async _fetchSuttaVariant() {
-    try {
-      this.suttaVariant = await (await fetch(this._getBilaraVariantUrl())).json();
-    } catch(e) {
-      this.suttaVariant = '';
-    }
-  }
-
-  _getBilaraReferenceUrl() {
-    let transSutta = this.responseData.translation;
-    if (!transSutta) {
-      return '';
-    }
-    let referencePath = 'reference/pli/ms/sutta';
-    let fileName = `${transSutta.uid}_reference.json`;
-    return `${this.bilaraDataPath}/${referencePath}/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${fileName}`;
-  }
-
-  async _fetchSuttaReference() {
-    try {
-      this.suttaReference = await (await fetch(this._getBilaraReferenceUrl())).json();
-    } catch(e) {
-      this.suttaReference = '';
-    }
-  }
-
-  _getBilaraMarkupUrl() {
-    let transSutta = this.responseData.translation;
-    if (!transSutta) {
-      return '';
-    }
-    let htmlMarkupPath = 'html/pli/ms/sutta';
-    let fileName = `${transSutta.uid}_markup.json`;
-    let suttaDivision = this._getSuttaDivision();
-    switch(suttaDivision) {
-      case 'an': return `${this.bilaraDataPath}/${htmlMarkupPath}/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${fileName}`;
-      case 'dn': return `${this.bilaraDataPath}/${htmlMarkupPath}/${this._getSuttaDivision()}/${fileName}`;
-      case 'kn':
-      case 'mn': return `${this.bilaraDataPath}/${htmlMarkupPath}/${this._getSuttaDivision()}/${fileName}`;
-      case 'sn': return `${this.bilaraDataPath}/${htmlMarkupPath}/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${fileName}`;
-    }
-
-    return `${this.bilaraDataPath}/html/${this._getSuttaDivision()}/${this._getSuttaSubDivision()}/${fileName}`;
-  }
-
   _getBilaraText() {
-    this._fetchBilaraTranslatedSuttaText();
-    this._fetchBilaraRootSutta();
-    this._fetchSuttaComment();
-    this._fetchSuttaVariant();
-    this._fetchSuttaReference();
     this._generateMarkup();
   }
 
   async _generateMarkup() {
-    this.bilaraSuttaMarkup = await (await fetch(this._getBilaraMarkupUrl())).json();
+    await this._fetchBilaraText();
     if (!this.bilaraSuttaMarkup) {
       return;
     }
@@ -531,15 +386,10 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _shouldDisplayBilaraSegmentedText() {
-    return false;
     if (!this.translatedSutta) {
       return false;
     }
-    let suttaDivision = this._getSuttaDivision();
-    return (this.isSegmentedText && !this.isLoading
-      && this.translatedSutta.author_uid === 'sujato'
-        && (suttaDivision === 'an' || suttaDivision === 'dn'
-            || suttaDivision === 'mn' || suttaDivision === 'sn'));
+    return (this.isSegmentedText && !this.isLoading && this.translatedSutta.author_uid === 'sujato');
   }
 
   _shouldDisplayStepper() {

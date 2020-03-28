@@ -49,6 +49,14 @@ def load_data(no_pull=False):
 
     run(no_pull=no_pull)
 
+@manager.command
+def load_bilara_data(no_pull=False):
+    """
+    Loads data from the bilara data repo to database.
+    """
+    from data_loader.arangoload import bilara_run
+
+    bilara_run()
 
 @manager.command
 def delete_db():

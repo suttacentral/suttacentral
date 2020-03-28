@@ -150,9 +150,9 @@ class SCBilaraSegmentedText extends SCTextPage {
       this._addRootText();
       this._initReference();
       this._addReferenceText();
-      this._addCommentText();
+      //this._addCommentText();
       this._addVariantText();
-      this._addCommentSpanId();
+      //this._addCommentSpanId();
 
       if (this.isPaliLookupEnabled) {
         this._initPaliLookup();
@@ -464,9 +464,9 @@ class SCBilaraSegmentedText extends SCTextPage {
 
   _deleteTranslatedSuttaMarkup() {
     let articleElement = this._articleElement();
-    const rootMarkup = articleElement.querySelectorAll('.translation');
-    if (rootMarkup) {
-      rootMarkup.forEach((element) => { element.parentNode.removeChild(element) });
+    const translatedSuttaMarkup = articleElement.querySelectorAll('.translation');
+    if (translatedSuttaMarkup) {
+      translatedSuttaMarkup.forEach((element) => { element.parentNode.removeChild(element) });
     }
   }
 
@@ -519,6 +519,10 @@ class SCBilaraSegmentedText extends SCTextPage {
   }
 
   _initReference() {
+    if (!this.bilaraRootSutta) {
+      return
+    }
+
     let articleElement = this._articleElement();
     let mapSutta = new Map(Object.entries(this.bilaraRootSutta));
     if (articleElement && mapSutta) {

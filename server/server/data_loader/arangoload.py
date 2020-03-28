@@ -2,6 +2,7 @@ import json
 import regex
 import logging
 import pathlib
+import os
 
 from collections import defaultdict
 from itertools import product
@@ -30,6 +31,7 @@ from . import (
     localized_languages,
     order,
     sizes,
+    segmented_data
 )
 
 from .generate_sitemap import generate_sitemap
@@ -542,6 +544,7 @@ def run(no_pull=False):
     """
 
     data_dir = current_app.config.get('BASE_DIR') / 'sc-data'
+    segmented_data_dir = data_dir / 'segmented_data'
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
@@ -585,6 +588,9 @@ def run(no_pull=False):
     localized_languages.update_languages(
         db, current_app.config.get('ASSETS_DIR') / 'localization/elements'
     )
+
+    print_stage('Loading Segmented Data')
+    segmented_data.load_segmented_data(db, change_tracker, segmented_data_dir)
 
     print_stage("Loading po_text")
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
@@ -643,3 +649,13 @@ def run(no_pull=False):
     change_tracker.update_mtimes()
 
     print_stage('All done')
+
+
+
+def bilara_run():
+    print("Loading bilara data")
+    data_dir = current_app.config.get('BASE_DIR') / 'sc-data' / 'bilara-data'
+    if not os.path.exists(data_dir):
+        print("Bilara data directory does not exist.")
+        return
+
