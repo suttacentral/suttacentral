@@ -3,7 +3,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { store } from '../../redux-store';
 
 import '../addons/sc-nav-contents';
-import { SCTextPage } from "./sc-text-page.js";
+import { SCLitTextPage } from "./sc-lit-text-page.js";
 import './sc-text-options.js';
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
@@ -11,7 +11,6 @@ import { Transliterator } from './transliterator.js';
 
 //import '../addons/sc-super-title'
 import '../addons/sc-bottom-sheet';
-//import '../addons/sc-bouncing-loader'
 import {
   commonStyles,
   plainStyles,
@@ -24,7 +23,7 @@ import {
   mainInlineReferenceStyles
 } from '../styles/sc-bilara-segmented-text-styles.js';
 
-class SCBilaraSegmentedText extends SCTextPage {
+class SCBilaraSegmentedText extends SCLitTextPage {
   static get properties() {
     return {
       navItems: { type: Array },
