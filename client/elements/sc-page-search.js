@@ -23,9 +23,10 @@ than ten results in total, a dropdown selection menu appears at the top.
 */
 
 class SCPageSearch extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      :host {
+  render() {
+    return html`
+      <style>
+        :host {
         display: block;
         width: 100%;
         height: calc(100vh - var(--sc-size-xxl));
@@ -195,11 +196,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
       [hidden] {
         display: none !important;
       }
-    `;
-  }
+      </style>
 
-  render() {
-    return html`
       <paper-spinner-lite class="paper-spinner" ?active=${this.loadingResults}></paper-spinner-lite>
       ${this.isOnlineTemplate}
       ${this.offLineTemplate}
