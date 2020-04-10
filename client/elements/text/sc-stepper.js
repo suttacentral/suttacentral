@@ -17,7 +17,7 @@ class SCStepper extends LitElement {
         display: flex;
         width: 100%;
         height: calc(var(--sc-size-xxl) * 1.5);
-        background-color: var(--sc-primary-color);
+        background-color: var(--sc-secondary-text-color);
         overflow: hidden
       }
 
@@ -117,7 +117,7 @@ class SCStepper extends LitElement {
     </style>
 
     <div class="bar">
-      <div class="button-container">        
+      <div class="button-container">
         ${this.previous && this.previous.uid ? html`
           <paper-ripple></paper-ripple>
           <a href="${this._getUrl(this.previous)}" class="link">
@@ -130,13 +130,13 @@ class SCStepper extends LitElement {
                 </div>
               </div>
             </div>
-          </a>        
+          </a>
         ` : ''}
       </div>
 
       <div class="separator"></div>
 
-      <div class="button-container">        
+      <div class="button-container">
         ${this.next && this.next.uid ? html`
           <paper-ripple></paper-ripple>
           <a href="${this._getUrl(this.next)}" class="link">

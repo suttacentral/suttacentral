@@ -1,15 +1,15 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-ajax/iron-ajax.js';
+import { LitElement, html } from 'lit-element';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/iron-icon/iron-icon.js';
 
 import './sc-segmented-text.js';
+import './sc-bilara-segmented-text.js';
 import './sc-simple-text.js';
 import './sc-stepper.js';
 import './sc-text-image.js';
 import '../addons/sc-error-icon.js';
-import { ReduxMixin } from '../../redux-store.js';
-import { Localized } from '../addons/localization-mixin.js';
+import { store } from '../../redux-store';
+import { LitLocalized } from '../../elements/addons/localization-mixin';
 import { textHeadingStyles } from '../styles/sc-text-heading-styles.js';
 import { API_ROOT } from '../../constants.js';
 
@@ -17,168 +17,206 @@ import { API_ROOT } from '../../constants.js';
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
   either the simple sutta text view or the segmented view.
 */
-const polymer_textHeadingStyles = html([textHeadingStyles.strings.join('')]);
 
-class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
-  static get template() {
+class SCTextPageSelector extends LitLocalized(LitElement) {
+  render() {
     return html`
-    ${polymer_textHeadingStyles}
-    <style>
-      .loading-indicator {
-        @apply --sc-skolar-font-size-s;
-        text-align: center;
-        height: 60px;
-        margin-top: 25vh;
-      }
+      ${textHeadingStyles}
+      <style>
+        .loading-indicator {
+          @apply --sc-skolar-font-size-s;
+          text-align: center;
+          height: 60px;
+          margin-top: 25vh;
+        }
 
-      .text-options {
-        padding: var(--sc-size-lg);
-      }
+        .text-options {
+          padding: var(--sc-size-lg);
+        }
 
-      .wrapper {
-        flex: 1;
-      }
-    </style>
+        .wrapper {
+          flex: 1;
+        }
+      </style>
 
-    <iron-ajax id="sutta_text_ajax" url="[[_getSuttaTextUrl()]]" debounce-duration="500" handle-as="json" loading="{{isLoading}}" last-error="{{lastError}}" last-response="{{responseData}}"></iron-ajax>
-
-    <iron-ajax id="uid_expansion_ajax" url="[[_getExpansionUrl()]]" handle-as="json" last-response="{{expansionReturns}}"></iron-ajax>
-
-    <div class="wrapper">
-      <template is="dom-if" if="[[!_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
-        <sc-text-options id="sutta_text_options" class="text-options" suttaplex-item="[[suttaplex]]"></sc-text-options>
-      </template>
-
-      <div class="loading-indicator" hidden$="[[!isLoading]]">
-        <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
+      <div class="wrapper">
+        ${this.displaySCTextOptions}
+        <div class="loading-indicator" ?hidden=${!this.isLoading}>
+          <paper-spinner-lite ?active=${this.isLoading}></paper-spinner-lite>
+        </div>
+        ${this.displaySimpleTextTemplate}
+        ${this.displaySegmentedTextTemplate}
+        ${this.displayBilaraSegmentedTextTemplate}
+        ${this.displayError}
       </div>
+      ${this.displayStepper}
+      <sc-text-image id="sc_text_image"></sc-text-image>
 
-      <template is="dom-if" if="[[!_shouldHideSimpleText(isSegmentedText, isLoading)]]">
-        <sc-simple-text id="simple_text" sutta="[[translatedSutta]]" is-loading="{{isLoading}}" error="[[lastError]]" hidden$="[[_shouldHideSimpleText(isSegmentedText, isLoading)]]">
-        </sc-simple-text>
-      </template>
-
-      <template is="dom-if" if="[[!_shouldHideSegmentedText(isSegmentedText, isLoading)]]" restamp="">
-        <sc-segmented-text id="segmented_text" root-sutta="[[rootSutta]]" markup="[[markup]]" translated-sutta="[[translatedSutta]]" root-lang="[[responseData.root_text.lang]]" is-loading="{{isLoading}}" error="[[lastError]]" hidden$="[[_shouldHideSegmentedText(isSegmentedText, isLoading)]]">
-        </sc-segmented-text>
-      </template>
-
-      <template is="dom-if" if="[[_shouldDisplayError(rootSutta, translatedSutta, lastError)]]">
-        <sc-error-icon type="no-network"></sc-error-icon>
-      </template>
-
-    </div>
-
-    <template is="dom-if" if="[[_shouldDisplayStepper(isLoading, next, previous)]]">
-      <sc-stepper next="[[next]]" previous="[[previous]]" lang="[[langIsoCode]]"></sc-stepper>
-    </template>
-
-    <sc-text-image id="sc_text_image"></sc-text-image>
-    [[_createMetaData(responseData, expansionReturns, localize)]]
+      ${this._createMetaData(this.responseData, this.expansionReturns)}
     `;
+  }
+
+  get displayStepper() {
+    return this._shouldDisplayStepper() ? html`
+      <sc-stepper .next=${this.next} .previous=${this.previous} .lang="${this.langIsoCode}"></sc-stepper>
+    ` : '';
+  }
+
+  get displayError() {
+    return this._shouldDisplayError() ? html`
+      <sc-error-icon type="no-network"></sc-error-icon>
+    ` : '';
+  }
+
+  get displaySCTextOptions() {
+    return !this._shouldDisplayError() ? html`
+      <sc-text-options id="sutta_text_options" class="text-options" .suttaplexItem=${this.suttaplex}></sc-text-options>
+    ` : '';
+  }
+
+  get displaySimpleTextTemplate() {
+    return !this._shouldHideSimpleText() ? html`
+      <sc-simple-text
+        id="simple_text"
+        .sutta=${this.translatedSutta}
+        .isLoading=${this.isLoading}
+        .error=${this.lastError}
+        ?hidden=${this._shouldHideSimpleText()}>
+      </sc-simple-text>
+    ` : '';
+  }
+
+  get displaySegmentedTextTemplate() {
+    if (!this.responseData || !this.responseData.root_text) {
+      return '';
+    }
+    return !this._shouldHideSegmentedText() ? html`
+      <sc-segmented-text
+        id="segmented_text"
+        .rootSutta=${this.rootSutta}
+        .markup="${this.markup}"
+        .translatedSutta=${this.translatedSutta}
+        .rootLang="${this.responseData.root_text.lang}"
+        .isLoading=${this.isLoading}
+        .error=${this.lastError}
+        ?hidden=${this._shouldHideSegmentedText()}>
+      </sc-segmented-text>
+    ` : '';
+  }
+
+  get displayBilaraSegmentedTextTemplate() {
+    if (!this.responseData || !this.responseData.root_text) {
+      return '';
+    }
+    return this._shouldDisplayBilaraSegmentedText() ? html`
+      <sc-bilara-segmented-text
+        id="segmented_text"
+        .rootSutta=${this.rootSutta}
+        .bilaraRootSutta=${this.bilaraRootSutta}
+        .markup="${this.suttaMarkup}"
+        .translatedSutta=${this.translatedSutta}
+        .bilaraTranslatedSutta=${this.bilaraTranslatedSutta}
+        .suttaComment=${this.suttaComment}
+        .suttaReference=${this.suttaReference}
+        .suttaVariant=${this.suttaVariant}
+        .rootLang="${this.responseData.root_text.lang}"
+        .isLoading=${this.isLoading}
+        .error=${this.lastError}
+        ?hidden=${!this._shouldDisplayBilaraSegmentedText()}>
+      </sc-bilara-segmented-text>
+    ` : '';
   }
 
   static get properties() {
     return {
-      responseData: {
-        type: Object,
-        observer: '_onResponse'
-      },
-      lastError: {
-        type: Object
-      },
-      author: {
-        type: String
-      },
-      suttaId: {
-        type: String
-      },
-      langIsoCode: {
-        type: String
-      },
-      stopRequests: {
-        type: Boolean
-      },
-      isSegmentedText: {
-        type: Boolean
-      },
-      suttaplex: {
-        type: Object
-      },
-      translatedSutta: {
-        type: Object
-      },
-      rootSutta: {
-        type: Object
-      },
-      markup: {
-        type: String
-      },
-      localizedStringsPath: {
-        type: String,
-        value: '/localization/elements/sc-text'
-      },
-      authorUid: {
-        type: String
-      },
-      authorShort: {
-        type: String
-      },
-      next: {
-        type: Object
-      },
-      previous: {
-        type: Object
-      },
-      expansionReturns: {
-        type: Array,
-        observer: '_onResponseExpansionData'
-      },
-      showedLanguagePrompt: {
-        type: Boolean,
-        statePath: 'showedLanguagePrompt'
-      }
+      responseData: { type: Object }, //observer: '_onResponse'
+      lastError: { type: Object },
+      author: { type: String },
+      suttaId: { type: String },
+      langIsoCode: { type: String },
+      stopRequests: { type: Boolean },
+      isSegmentedText: { type: Boolean },
+      suttaplex: { type: Object },
+      translatedSutta: { type: Object },
+      rootSutta: { type: Object },
+      bilaraRootSutta: { type: Object },
+      bilaraTranslatedSutta: { type: Object },
+      suttaReference: { type: Object },
+      suttaComment: { type: Object },
+      suttaVariant: { type: Object },
+      suttaMarkup: { type: String },
+      markup: { type: String },
+      bilaraSuttaMarkup: { type: String },
+      localizedStringsPath: { type: String }, //value: '/localization/elements/sc-text'
+      authorUid: { type: String },
+      authorShort: { type: String },
+      next: { type: Object },
+      previous: { type: Object },
+      expansionReturns: { type: Array }, //observer: '_onResponseExpansionData'
+      showedLanguagePrompt: { type: Boolean }, //statePath: 'showedLanguagePrompt'
+      isLoading: { type: Boolean },
+      haveBilaraSegmentedText: { type: Boolean },
+      bilaraDataPath: { type: String }
     }
   }
 
-  static get observers() {
-    return ['_paramChanged(authorUid, suttaId, langIsoCode)'];
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/sc-text';
+    this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
+    this.isLoading = false;
+    this.bilaraDataPath = '/files/bilara-data';
   }
 
-  static get actions() {
+  get actions() {
     return {
       downloadSuttaText(text) {
-        return {
+        store.dispatch({
           type: 'DOWNLOAD_SUTTA_TEXT',
           text: text
-        }
+        });
       },
       changeToolbarTitle(title) {
-        return {
+        store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
           title: title
-        };
+        });
       },
       setShowedLanguagePrompt() {
-        return {
+        store.dispatch({
           type: 'SET_SHOWED_LANGUAGE_PROMPT',
           showedLanguagePrompt: true
-        };
+        });
       },
     }
   }
 
-  ready() {
-    super.ready();
+  firstUpdated() {
+    this._fetchExpansion();
     this.addEventListener('show-image', e => {
-      this.$.sc_text_image.showImage(e.detail);
+      let scTextImageElement = this.shadowRoot.querySelector('#sc_text_image');
+      if (scTextImageElement) {
+        scTextImageElement.showImage(e.detail);
+      }
     });
   }
 
-  languageLoaded() {
+  updated(changedProps) {
+    //super.updated(changedProps);
+    if (changedProps.has('responseData')) {
+      this._onResponse();
+    }
+    if (changedProps.has('expansionReturns')) {
+      this._onResponseExpansionData();
+    }
+    if (changedProps.has('authorUid') || changedProps.has('suttaId') || changedProps.has('langIsoCode')) {
+      this._paramChanged();
+    }
+  }
 
-  if (this.langIsoCode !== 'en' && !this.showedLanguagePrompt) {
-      this.dispatch('setShowedLanguagePrompt');
+  languageLoaded() {
+    if (this.langIsoCode !== 'en' && !this.showedLanguagePrompt) {
+      this.actions.setShowedLanguagePrompt();
       this._showLanguagePromptToast();
     }
   }
@@ -192,16 +230,11 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     if (textOptions) {
       textOptions._closeSuttaplex();
     }
-    this.dispatch('downloadSuttaText', this.responseData);
-  }
-
-  _getExpansionUrl() {
-    return `${API_ROOT}/expansion`;
+    this.actions.downloadSuttaText(this.responseData);
   }
 
   _onResponseExpansionData() {
-    this.$.sutta_text_ajax.url = this._getSuttaTextUrl();
-    this.$.sutta_text_ajax.generateRequest();
+    this._fetchSuttaText();
   }
 
   setProperties() {
@@ -229,33 +262,10 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     if (this.previous && !this.previous.name) {
       this.previous.name = this._transformId(this.previous.uid, this.expansionReturns);
     }
-  }
 
-  _paramChanged() {
-    // The stopRequests variable exists so that we don't make 3 consequent requests in case the
-    // author, suttaId and the langIsoCode all change at the same time.
-    if (!this.stopRequests) {
-      this.stopRequests = true;
-      // wait 50ms until all route parameters are changed
-      setTimeout(() => {
-        if (!this.expansionReturns) {
-            this.$.uid_expansion_ajax.url = this._getExpansionUrl();
-            this.$.uid_expansion_ajax.generateRequest();
-        } else {
-            this.$.sutta_text_ajax.url = this._getSuttaTextUrl();
-            this.$.sutta_text_ajax.generateRequest();
-        }
-        this.stopRequests = false;
-      }, 50);
+    if (this._shouldDisplayBilaraSegmentedText()) {
+      this._getBilaraText();
     }
-  }
-
-  _shouldHideSimpleText(isSegmentedText, isLoading) {
-    return (isSegmentedText || isLoading);
-  }
-
-  _shouldHideSegmentedText(isSegmentedText, isLoading) {
-    return (!isSegmentedText || isLoading);
   }
 
   _getSuttaTextUrl() {
@@ -266,26 +276,137 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     }
   }
 
-  _shouldDisplayStepper(isLoading, next, previous) {
-    return !isLoading && (next || previous);
+  _getBilaraTextUrl() {
+    if (this.authorUid) {
+      return `${API_ROOT}/bilarasuttas/${this.suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
+    } else {
+      return `${API_ROOT}/bilarasuttas/${this.suttaId}?lang=${this.langIsoCode}`;
+    }
   }
 
-  _shouldDisplayError(rootSutta, translatedSutta, networkError) {
-    return (!rootSutta && !translatedSutta) || networkError;
+  async _fetchSuttaText() {
+    this.isLoading = true;
+    try {
+      this.responseData = await (await fetch(this._getSuttaTextUrl())).json();
+    } catch (error) {
+      this.lastError = error;
+    }
+    this.isLoading = false;
+  }
+
+  async _fetchBilaraText() {
+    this.isLoading = true;
+    try {
+      let bilaraData = await (await fetch(this._getBilaraTextUrl())).json();
+      this.bilaraRootSutta = bilaraData.root_text;
+      this.bilaraTranslatedSutta = bilaraData.translation_text;
+      this.bilaraSuttaMarkup = bilaraData.html_text;
+      this.suttaReference = bilaraData.reference_text;
+      this.suttaComment = bilaraData.comment_text;
+      this.suttaVariant = bilaraData.variant_text;
+    } catch (error) {
+      this.lastError = error;
+    }
+    this.isLoading = false;
+  }
+
+  _getBilaraText() {
+    this._generateMarkup();
+  }
+
+  async _generateMarkup() {
+    await this._fetchBilaraText();
+    if (!this.bilaraSuttaMarkup) {
+      return;
+    }
+    let mapSuttaMarkup = new Map(Object.entries(this.bilaraSuttaMarkup));
+    if (!mapSuttaMarkup) {
+      return;
+    }
+    let suttaMarkup = '';
+    mapSuttaMarkup.forEach((value, key) => {
+      if (key !== '~') {
+        if (value.includes('{}')) {
+          suttaMarkup += value.replace(/{}/, `<span class="segment" id="${key}"></span>`);
+        } else {
+          suttaMarkup += value + `<span class="segment" id="${key}"></span>`;
+        }
+      } else {
+        suttaMarkup += value;
+      }
+    });
+    suttaMarkup = suttaMarkup.replace(/<article>/, '<article><header>');
+    suttaMarkup = suttaMarkup.replace(/<\/h1><\/div>/, '</h1></div></header>');
+    suttaMarkup = suttaMarkup.replace(/{}/g, '');
+    this.suttaMarkup = suttaMarkup;
+  }
+
+  _getExpansionUrl() {
+    return `${API_ROOT}/expansion`;
+  }
+
+  async _fetchExpansion() {
+    this.isLoading = true;
+    try {
+      this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();
+    } catch (error) {
+      this.lastError = error;
+    }
+    this.isLoading = false;
+  }
+
+  _paramChanged() {
+    // The stopRequests variable exists so that we don't make 3 consequent requests in case the
+    // author, suttaId and the langIsoCode all change at the same time.
+    if (!this.stopRequests) {
+      this.stopRequests = true;
+      // wait 50ms until all route parameters are changed
+      setTimeout(() => {
+        if (!this.expansionReturns) {
+          this._fetchExpansion();
+        } else {
+          this._fetchSuttaText();
+        }
+        this.stopRequests = false;
+      }, 50);
+    }
+  }
+
+  _shouldHideSimpleText() {
+    return (this.isSegmentedText || this.isLoading);
+  }
+
+  _shouldHideSegmentedText() {
+    return (!this.isSegmentedText || this.isLoading || this._shouldDisplayBilaraSegmentedText());
+  }
+
+  _shouldDisplayBilaraSegmentedText() {
+    if (!this.translatedSutta) {
+      return false;
+    }
+    return (this.isSegmentedText && !this.isLoading && this.translatedSutta.author_uid === 'sujato');
+  }
+
+  _shouldDisplayStepper() {
+    return !this.isLoading && (this.next || this.previous);
+  }
+
+  _shouldDisplayError() {
+    if (this.isLoading) {
+      return false;
+    }
+    return (!this.rootSutta && !this.translatedSutta) || this.lastError;
   }
 
   _updateToolbar(title) {
-    this.dispatch('changeToolbarTitle', title);
+    this.actions.changeToolbarTitle(title);
   }
 
   _createMetaData(responseData, expansionReturns) {
     if (!responseData) {
       return;
     }
-    // The localization on this page does not work.
-    // There is a bug report for this so in the mean time I use English.
-    // let description = localize('metaDescriptionText');
-    let description = "Early Buddhist texts and modern translations. Suttas (sutras) from the Tipitaka (Tripitaka) in Pali, Chinese, Sanskrit, and Tibetan with the Buddha's teachings on mindfulness, insight, wisdom, and meditation."
+    let description = this.localize('metaDescriptionText');
     if (responseData.suttaplex.blurb) {
       description = responseData.suttaplex.blurb;
     }
@@ -300,8 +421,8 @@ class SCTextPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       detail: {
         pageTitle: `${acronym}: ${title}—${author}`,
         title: `${title}—${author}`,
-        description: description,          
-        openGraphType: 'article',  // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’           
+        description: description,
+        openGraphType: 'article',  // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
         bubbles: true,
         composed: true
       }

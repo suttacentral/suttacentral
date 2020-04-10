@@ -773,7 +773,7 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
               <tr>
                 <td>
-                  ${_`Prv`}
+                  ${_`Pvr`}
                 </td>
                 <td>
                   ${_`Parivāra`}

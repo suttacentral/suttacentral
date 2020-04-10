@@ -10,6 +10,7 @@ import '@polymer/neon-animation/animations/slide-from-right-animation.js';
 import './sc-more-menu.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
+import { throttle } from 'throttle-debounce';
 
 /*
 Base toolbar that appears on the top right in the header of every page. This toolbar is called from the page-selector.
@@ -56,7 +57,7 @@ class SCToolbar extends LitLocalized(LitElement) {
 
       #search_input {
         width: 0;
-        transition: width .2s cubic-bezier(.4, 0, .2, 1);
+        transition: width .2s linear;
       }
 
       #more_menu:focus {
@@ -206,9 +207,16 @@ class SCToolbar extends LitLocalized(LitElement) {
         }
       }
     ];
+
+    //window.addEventListener('resize', throttle(300, () => {
+      //const searchInputElement = this.shadowRoot.getElementById('search_input');
+      //if (searchInputElement && searchInputElement.classList.contains('opened')) {
+        //this._closeSearch();
+      //}
+    //}));
   }
 
-get actions() {
+  get actions() {
     return {
       toggleSuttaplexDisplay(suttaplexdisplay) {
         store.dispatch({
@@ -221,21 +229,33 @@ get actions() {
           type: 'CHANGE_SEARCH_QUERY',
           searchKeyword: searchKeyword
         })
+      },
+      changeToolbarTitle(title) {
+        store.dispatch({
+          type: "CHANGE_TOOLBAR_TITLE",
+          title: title
+        })
+      },
+      saveToolbarTitle(title) {
+        store.dispatch({
+          type: "SAVE_TOOLBAR_TITLE",
+          toolbarTitle: title
+        })
       }
     }
   }
 
-  firstUpdated() {    
+  firstUpdated() {
     const moreMenuElement = this.shadowRoot.getElementById('more_menu');
     if (moreMenuElement) {
-      moreMenuElement.addEventListener('item-selected', (e) => {
+      moreMenuElement.addEventListener('item-selected', () => {
         const moreVertButtonElement = this.shadowRoot.getElementById('more_vert_button');
         moreVertButtonElement.close();
       });
     }
 
     const searchInputElement = this.shadowRoot.getElementById('search_input');
-    if (searchInputElement && this.searchKeyword.length != 0) {
+    if (searchInputElement && this.searchKeyword.length !== 0) {
       searchInputElement.value = this.searchKeyword;
       this.openSearch();
     }
@@ -244,44 +264,52 @@ get actions() {
   // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
   // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
   openSearch() {
+    this.actions.saveToolbarTitle(this.parentNode.querySelector('#toolbar_title').innerText);
     const searchInputElement = this.shadowRoot.getElementById('search_input');
+    let largeWindowInnerWidth = 1040;
+    let mediumWindowInnerWidth = 480;
     if (searchInputElement.classList.contains('opened')) {
       this._startSearch();
     } else {
       searchInputElement.classList.add('opened');
       this.shadowRoot.getElementById('close_button').style.display = 'inline-block';
 
-      if (window.innerWidth < 1040) {
+      if (window.innerWidth < largeWindowInnerWidth) {
         this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'visibility:hidden');
       }
-      if (window.innerWidth < 480) {
+      if (window.innerWidth < mediumWindowInnerWidth) {
         this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'display:none');
         this.parentNode.querySelector('#drawertoggle').setAttribute('style', 'display:none');
       }
-      this.setOpenedClassWidth();
+      this.setSearchInputWidth();
 
       searchInputElement.focus();
       searchInputElement.value = '';
     }
   }
 
-  setOpenedClassWidth() {
-    let searchSize = 500;
-    let searchWidth;
-    if (window.innerWidth > 840) {
-      searchWidth = window.innerWidth - searchSize;
+  setSearchInputWidth() {
+    const searchSize = 500;
+    const wideWindowInnerWidth = 840;
+    const mediumWindowInnerWidth = 480;
+    const searchInputMaxWidth = 360;
+    let searchInputWidth;
+    if (window.innerWidth > wideWindowInnerWidth) {
+      searchInputWidth = window.innerWidth - searchSize;
     }
-    else if (window.innerWidth > 480) {
-      searchWidth = window.innerWidth - (searchSize - 210);
+    else if (window.innerWidth > mediumWindowInnerWidth) {
+      this.actions.changeToolbarTitle('');
+      searchInputWidth = window.innerWidth - (searchSize - 210);
     }
     else {
       this.shadowRoot.getElementById('tools_menu').classList.add('search-open');
-      searchWidth = window.innerWidth - (searchSize - 420);
+      searchInputWidth = window.innerWidth - (searchSize - 420);
     }
-    if (searchWidth > 360) {
-      searchWidth = 360;
+
+    if (searchInputWidth > searchInputMaxWidth) {
+      searchInputWidth = searchInputMaxWidth;
     }
-    this.shadowRoot.querySelector('.opened').style.width = `${searchWidth}px`;
+    this.shadowRoot.querySelector('.opened').style.width = `${searchInputWidth}px`;
   }
 
   // Closes the searchbox and resets original values.
@@ -298,6 +326,7 @@ get actions() {
       this.shadowRoot.getElementById('tools_menu').classList.remove('search-open');
       this.parentNode.querySelector('#toolbar_title_box').removeAttribute('style', 'display');
       this.parentNode.querySelector('#drawertoggle').removeAttribute('style', 'display');
+      this.actions.changeToolbarTitle(store.getState().toolbarTitle);
     }
   }
 
