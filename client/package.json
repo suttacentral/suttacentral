@@ -26,8 +26,7 @@
     "@polymer/iron-overlay-behavior": "^3.0.0",
     "@polymer/iron-pages": "^3.0.0",
     "@polymer/iron-scroll-threshold": "^3.0.0",
-    "lit-element": "^2.1.0",
-    "lit-html": "^1.0.0",
+    "lit-element": "^2.3.1",
     "@polymer/neon-animation": "^3.0.0",
     "@polymer/paper-button": "^3.0.0",
     "@polymer/paper-card": "^3.0.0",
@@ -47,6 +46,7 @@
     "@polymer/paper-styles": "^3.0.0",
     "@polymer/paper-tabs": "^3.0.0",
     "@polymer/paper-toast": "^3.0.0",
+    "dile-toast": "^1.0.6",
     "@polymer/paper-toggle-button": "^3.0.0",
     "@polymer/paper-tooltip": "^3.0.0",
     "@polymer/polymer": "^3.0.0",
@@ -60,7 +60,8 @@
     "redux": "^3.7.2",
     "viewerjs": "^0.10.0",
     "web-animations-js": "^2.3.1",
-    "workbox-sw": "3.6.3"
+    "workbox-sw": "3.6.3",
+    "throttle-debounce": "2.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

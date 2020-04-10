@@ -1,8 +1,9 @@
-import { html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/polymer/polymer-element.js';
+import { LitElement, html } from 'lit-element';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@polymer/paper-tooltip/paper-tooltip.js';
 
-import { SCTextPage } from "./sc-text-page.js";
+import { SCLitTextPage } from "./sc-lit-text-page.js";
+//import { SCTextPage } from "./sc-text-page.js";
 import './sc-text-options.js';
 import { textStyles } from '../styles/sc-text-styles.js';
 import { textHeadingStyles } from '../styles/sc-text-heading-styles.js';
@@ -11,19 +12,15 @@ import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
 import { lookupStyles } from '../lookups/sc-lookup-styles.js';
 import { Transliterator } from './transliterator.js';
+import { store } from '../../redux-store';
 
-const polymer_lookupStyles = html([lookupStyles.strings.join('')]);
-const polymer_textHeadingStyles = html([textHeadingStyles.strings.join('')]);
-const polymer_textStyles = html([textStyles.strings.join('')]);
-const polymer_textParagraphNumStyles = html([textParagraphNumStyles.strings.join('')]);
-
-class SCSimpleText extends SCTextPage {
-  static get template() {
+class SCSimpleText extends SCLitTextPage {
+  render() {
     return html`
-    ${polymer_textStyles}
-    ${polymer_textHeadingStyles}
-    ${polymer_textParagraphNumStyles}
-    ${polymer_lookupStyles}
+    ${textStyles}
+    ${textHeadingStyles}
+    ${textParagraphNumStyles}
+    ${lookupStyles}
     <style>
       :host {
         --iron-icon-fill-color: var(--sc-disabled-text-color);
@@ -63,11 +60,16 @@ class SCSimpleText extends SCTextPage {
         transition: background-color 300ms ease-in;
       }
 
+      p, li {
+        hanging-punctuation: first last;
+      }
     </style>
 
-    <iron-a11y-keys id="a11y" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" keys="alt+m" @keys-pressed=${this.deathToTheBeast}></iron-a11y-keys>
 
-    <div id="simple_text_content" class="html-text-content" inner-h-t-m-l="[[_extractSuttaText(sutta.text)]]" hidden$="[[isTextViewHidden]]"></div>
+    <div id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
+      ${unsafeHTML(this._extractSuttaText())}
+    </div>
 
     <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
     <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>`;
@@ -76,161 +78,91 @@ class SCSimpleText extends SCTextPage {
   static get properties() {
     return {
       // in simple texts, both root texts and translations are returned by the API in the translation object.
-      sutta: {
-        type: Object,
-        observer: '_updateView'
-      },
+      sutta: { type: Object },
       // If true, shows the paragraph numbers on the right of the text.
-      showParagraphs: {
-        type: Boolean,
-        statePath: 'textOptions.paragraphsEnabled',
-        observer: '_computeParagraphs'
-      },
-      paliScript: {
-        type: String,
-        statePath: 'textOptions.script',
-        observer: 'changeScript'
-      },
-      paragraphs: {
-        type: Array,
-        statePath: 'textOptions.paragraphDescriptions'
-      },
-      suttaTitle: {
-        type: String
-      },
-      author: {
-        type: String
-      },
-      error: {
-        type: Object
-      },
-      lang: {
-        type: String
-      },
-      isLoading: {
-        type: Boolean,
-        observer: '_loadingChanged'
-      },
-      isTextViewHidden: {
-        type: Boolean,
-        value: false
-      },
-      isPaliLookupEnabled: {
-        type: Boolean,
-        statePath: 'textOptions.paliLookupActivated',
-        observer: '_paliLookupStateChanged'
-      },
-      tooltipCount: {
-        type: Number,
-        value: 0
-      },
-      spansForWordsGenerated: {
-        type: Boolean,
-        value: false
-      },
-      spansForGraphsGenerated: {
-        type: Boolean,
-        value: false
-      },
-      isChineseLookupEnabled: {
-        type: Boolean,
-        statePath: 'textOptions.chineseLookupActivated',
-        observer: '_chineseLookupStateChanged'
-      },
-      textualInfoClassTitles: {
-        type: Object,
-        value: {
-          'gloss': 'Definition of term.',
-          'add': 'Text added by the editor or translator for clarification',
-          'supplied': 'Text hypothetically reconstructed by the editor or translator.',
-          'supplied2': 'Text hypothetically reconstructed by the editor or translator.',
-          'expanded': 'Text expanded by editor or translator although elided in original.',
-          'surplus': 'Text present in the source which the editor believes to be superfluous or redundant.',
-          'del': 'Text deleted by the editor as superfluous',
-          'del-scribe': 'Text deleted by the scribe as superfluous',
-          'corrected': 'Corrected reading.'
-        }
-      },
-      classTitles: {
-        type: Object,
-        value: {
-          'gap': 'Gap in the manuscript.',
-          't-gaiji': 'Chinese characters not in Unicode.',
-          'term': 'Defined term.',
-          'pe': 'Instructions for expanding text supplied by the editor or translator.',
-          'unclear': 'Unclear reading.',
-          'scribe': 'Note of attribution by the scribe of the manuscript.',
-          'suppliedmetre': 'Metre reconstructed by the editor.'
-        }
-      },
-      editionsExpansionData: {
-        type: Object,
-        value: {
-          'sī1': 'Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)',
-          'c-a': 'Chaṭṭhasaṅgīti Piṭakaṃ Atthakathā',
-          'c1': 'Chaṭṭhasaṅgīti Piṭakaṃ 2496–2499 (1952–1955)',
-          'c2': 'Chaṭṭhasaṅgīti Piṭakaṃ 2nd ed. 2500–2506 (1956–1962)',
-          'c3': 'Chaṭṭhasaṅgīti Piṭakaṃ (1997)',
-          'cha1': 'Chaṭṭhasaṅgīti Piṭakaṃ 2496–2499 (1952–1955)',
-          'cha2': 'Chaṭṭhasaṅgīti Piṭakaṃ 2nd ed. 2500–2506 (1956–1962)',
-          'cha3': 'Chaṭṭhasaṅgīti Piṭakaṃ (1997)',
-          'mr': 'Maramma Tipiṭaka 2541 (1997)',
-          'ka-ma': 'Maramma Tipiṭaka 2541 (1997)',
-          'si': 'Sinhala Tipiṭaka 2501 (1957)',
-          'ka-sī': 'Sinhala Tipiṭaka 2501 (1957)',
-          'km': 'Phratraipiṭakapāḷi 2501–2512 (1958–1969)',
-          'maku': 'Mahāmakurājāvidyālai 2466 (1923)',
-          'ms': 'Mūlasarvāstivādavinayavastu, part 1-4',
-          'dutt': 'Mūlasarvāstivādavinayavastu, part 1-4, Dutt (1939-1959)',
-          'divy': 'Divyāvadāna (1886)',
-          'ms84': 'Mūlasarvāstivādavinayavastu, part 1-4, (1984)',
-          'pts-a': 'Pali Text Society Atthakathā',
-          'pts1': 'Pali Text Society 1st ed. 2424–2535 (1881–1992)',
-          'pts2': 'Pali Text Society 2nd ed. 2517–2541 (1974–1998)',
-          'pā1': 'Pali Text Society 1st ed. 2424–2535 (1881–1992)',
-          'pā2': 'Pali Text Society 2nd ed. 2517–2541 (1974–1998)',
-          's-a': 'Syāmaraṭṭhassa Tepiṭakaṃ Atthakathā',
-          's1': 'Chulachomklao Pāḷi Tipiṭaka 2436 (1893)',
-          's2': 'Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928)',
-          's3': 'Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)',
-          's1-3': 'Chulachomklao Pāḷi Tipiṭaka 2436 (1893), Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928) & 2538 (1995)',
-          'syā1-3': 'Chulachomklao Pāḷi Tipiṭaka 2436 (1893), Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928) & 2538 (1995)',
-          'syā1': 'Chulachomklao Pāḷi Tipiṭaka 2436 (1893)',
-          'syā2': 'Syāmaraṭṭhassa Tepiṭakaṃ 2469–2471 (1926–1928)',
-          'syā3': 'Syāmaraṭṭhassa Tepiṭakaṃ 2538 (1995)',
-          'bj': 'Buddhajayantītripiṭakagranthamālā 2501–2531 (1957–1989)',
-          'bj-a': 'Buddhajayantītripiṭakagranthamālā Atthakathā)'
-        }
-      },
-      localizedStringsPath: {
-        type: String,
-        value: '/localization/elements/sc-text'
-      },
-      currentId: {
-        type: String,
-        value: ''
-      },
-      inputElement: {
-        type: Object
-      }
+      showParagraphs: { type: Boolean },
+      paliScript: { type: String },
+      paragraphs: { type: Array },
+      suttaTitle: { type: String },
+      author: { type: String },
+      error: { type: Object },
+      lang: { type: String },
+      isLoading: { type: Boolean },
+      isTextViewHidden: { type: Boolean },
+      isPaliLookupEnabled: { type: Boolean },
+      tooltipCount: { type: Number },
+      spansForWordsGenerated: { type: Boolean },
+      spansForGraphsGenerated: { type: Boolean },
+      isChineseLookupEnabled: { type: Boolean },
+      textualInfoClassTitles: { type: Object },
+      classTitles: { type: Object },
+      editionsExpansionData: { type: Object },
+      localizedStringsPath: { type: String },
+      currentId: { type: String },
+      inputElement: { type: Object }
     }
   }
 
-  static get actions() {
+  constructor() {
+    super();
+    let textOptionsState = store.getState().textOptions;
+    this.sutta = {};
+    this.showParagraphs = false;
+    this.paliScript = textOptionsState.script;
+    this.paragraphs = textOptionsState.paragraphDescriptions;
+    this.suttaTitle = '';
+    this.author = '';
+    this.lang = '';
+    this.isLoading = false;
+    this.isTextViewHidden = false;
+    this.isPaliLookupEnabled = textOptionsState.paliLookupActivated;
+    this.tooltipCount = 0;
+    this.spansForWordsGenerated = false;
+    this.spansForGraphsGenerated = false;
+    this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
+    this.textualInfoClassTitles = {
+      'gloss': 'Definition of term.',
+      'add': 'Text added by the editor or translator for clarification',
+      'supplied': 'Text hypothetically reconstructed by the editor or translator.',
+      'supplied2': 'Text hypothetically reconstructed by the editor or translator.',
+      'expanded': 'Text expanded by editor or translator although elided in original.',
+      'surplus': 'Text present in the source which the editor believes to be superfluous or redundant.',
+      'del': 'Text deleted by the editor as superfluous',
+      'del-scribe': 'Text deleted by the scribe as superfluous',
+      'corrected': 'Corrected reading.'
+    };
+    this.classTitles = {
+      'gap': 'Gap in the manuscript.',
+      't-gaiji': 'Chinese characters not in Unicode.',
+      'term': 'Defined term.',
+      'pe': 'Instructions for expanding text supplied by the editor or translator.',
+      'unclear': 'Unclear reading.',
+      'scribe': 'Note of attribution by the scribe of the manuscript.',
+      'suppliedmetre': 'Metre reconstructed by the editor.'
+    };
+    this.editionsExpansionData = {
+      'ms': 'Mūlasarvāstivādavinayavastu, part 1-4',
+      'dutt': 'Mūlasarvāstivādavinayavastu, part 1-4, Dutt (1939-1959)',
+      'divy': 'Divyāvadāna (1886)',
+      'ms84': 'Mūlasarvāstivādavinayavastu, part 1-4, (1984)'
+    };
+    this.localizedStringsPath = '/localization/elements/sc-text';
+    this.currentId = '';
+    this.inputElement = {};
+  }
+
+  get actions() {
     return {
       changeSuttaMetaText(metaText) {
-        return {
+        store.dispatch({
           type: 'CHANGE_SUTTA_META_TEXT',
           metaText: metaText
-        }
+        })
       }
     }
   }
 
-  ready() {
-    super.ready();
-
-    
+  firstUpdated() {
     this.addEventListener('click', () => {
       setTimeout(() => {
         this._scrollToSection(window.location.hash.substr(1), true, 0);
@@ -241,12 +173,50 @@ class SCSimpleText extends SCTextPage {
         this._scrollToSection(window.location.hash.substr(1), true, 0);
       });
     });
-    this.inputElement = this.$.simple_text_content;
-    this.$.a11y.target = document.querySelector('body');
+    this.inputElement = this.shadowRoot.querySelector('#simple_text_content');
+    this.shadowRoot.querySelector('#a11y').target = document.querySelector('body');
+    this._updateView();
+  }
+
+  updated(changedProps) {
+    if (changedProps.has('sutta')) {
+      this._updateView();
+    }
+    if (changedProps.has('showParagraphs')) {
+      this._computeParagraphs();
+    }
+    if (changedProps.has('paliScript')) {
+      this.changeScript();
+    }
+    if (changedProps.has('isLoading')) {
+      this._loadingChanged();
+    }
+    if (changedProps.has('isPaliLookupEnabled')) {
+      this._paliLookupStateChanged();
+    }
+    if (changedProps.has('isChineseLookupEnabled')) {
+      this._chineseLookupStateChanged();
+    }
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    let textOptionsState = state.textOptions;
+    if (this.paliScript !== textOptionsState.script) {
+      this.paliScript = textOptionsState.script;
+    }
+    if (this.showParagraphs !== textOptionsState.paragraphsEnabled) {
+      this.showParagraphs = textOptionsState.paragraphsEnabled;
+    }
+    if (this.isPaliLookupEnabled !== textOptionsState.paliLookupActivated) {
+      this.isPaliLookupEnabled = textOptionsState.paliLookupActivated;
+    }
+    if (this.isChineseLookupEnabled !== textOptionsState.chineseLookupActivated) {
+      this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
+    }
   }
 
   _updateView() {
-    this._applyFirefoxShadyDomFix();
     this._setAttributes();
     this._computeParagraphs();
     this.currentId = '';
@@ -254,11 +224,13 @@ class SCSimpleText extends SCTextPage {
     this.spansForGraphsGenerated = false;
     this._paliLookupStateChanged();
     this._chineseLookupStateChanged();
+    this.changeScript();
     // Scroll to the section after the hash sign in the url:
     setTimeout(() => {
       this._scrollToSection(window.location.hash.substr(1), false, 500);
     }, 0);
-    this.dispatch('changeSuttaMetaText', this._computeMeta());
+    this.actions.changeSuttaMetaText(this._computeMeta());
+    this._loadingChanged();
   }
 
   _setAttributes() {
@@ -270,9 +242,9 @@ class SCSimpleText extends SCTextPage {
     this.suttaTitle = this.sutta.title;
   }
 
-  _extractSuttaText(suttaText) {
-    if (suttaText) {
-      return suttaText.replace(/<head>((.|\n)*)<\/head>/, '');
+  _extractSuttaText() {
+    if (this.sutta && this.sutta.text) {
+      return this.sutta.text.replace(/<head>((.|\n)*)<\/head>/, '');
     }
   }
 
@@ -304,7 +276,7 @@ class SCSimpleText extends SCTextPage {
     if (divisionId === 'iti') divisionId = 'it';
     if (this.paragraphs && this.showParagraphs) {
       this.paragraphs.forEach((paragraph) => {
-        const refs = this.$.simple_text_content.querySelectorAll(`.${paragraph.uid}`);
+        const refs = this.shadowRoot.querySelector('#simple_text_content').querySelectorAll(`.${paragraph.uid}`);
         Array.from(refs).forEach((item) => {
           if (this._shouldDisplayBookIcon(divisionId, item.id)) {
             this._processVolPageInfo(item, divisionId, paragraph);
@@ -349,12 +321,12 @@ class SCSimpleText extends SCTextPage {
     }
     setTimeout(() => {
       item.innerHTML = `
-                            <span class="image-link">
-                                <span class="${prefix}" title="${paragraph.description}">${displayText}</span>
-                                <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-iron-icons:book">
-                                </iron-icon>
-                            </span>
-                        `;
+        <span class="image-link">
+            <span class="${prefix}" title="${paragraph.description}">${displayText}</span>
+            <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-iron-icons:book">
+            </iron-icon>
+        </span>
+      `;
       item.classList.add('image-book-link');
       item.classList.add('textual-info-paragraph');
       item.addEventListener('click', () => {
@@ -376,7 +348,7 @@ class SCSimpleText extends SCTextPage {
 
   // adds a class to the main container to either show or hide the textual info incl. paragraphs
   _setTextualInformationVisible(visible) {
-    const textElement = this.$.simple_text_content;
+    const textElement = this.shadowRoot.querySelector('#simple_text_content');
     if (textElement) {
       visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
       for (let key in this.classTitles) {
@@ -390,13 +362,6 @@ class SCSimpleText extends SCTextPage {
         } else {
           Array.from(textualInfoClassRefs).forEach(item => item.title = '');
         }
-      }
-      const varElements = textElement.querySelectorAll('.var');
-      if (varElements[0] && varElements[0].innerHTML.indexOf('class="varnote"') === -1) {
-        Array.from(varElements).forEach((item) => {
-          item.innerHTML = this._markupVarNote(item.title, item.innerHTML);
-          item.title = '';
-        });
       }
       const corrElements = textElement.querySelectorAll('.corr');
       for (let key in corrElements) {
@@ -512,15 +477,15 @@ class SCSimpleText extends SCTextPage {
     }
   }
 
-  changeScript(paliScript) {
+  changeScript() {
     if (!this.sutta || this.sutta.lang !== 'pli') {
       return;
     }
     const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
     this._resetScript();
-    switch (paliScript) {
+    switch (this.paliScript) {
       case 'latin':
-        this.$.simple_text_content.classList.add('latin-script');
+        this.shadowRoot.querySelector('#simple_text_content').classList.add('latin-script');
         break;
       case 'sinhala':
         this._setScript('sinhala', tooltips);
@@ -539,14 +504,14 @@ class SCSimpleText extends SCTextPage {
   }
 
   _resetScript() {
-    this.$.simple_text_content.classList
+    this.shadowRoot.querySelector('#simple_text_content').classList
       .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-    let words = this.$.simple_text_content.querySelectorAll('.word');
+    let words = this.shadowRoot.querySelector('#simple_text_content').querySelectorAll('.word');
     Array.from(words).forEach(word => word.innerHTML = word.dataset.latin_text || word.innerHTML);
   }
 
   _setScript(scriptName, tooltips) {
-    this.$.simple_text_content.classList.add(`${scriptName}-script`);
+    this.shadowRoot.querySelector('#simple_text_content').classList.add(`${scriptName}-script`);
     const t = new Transliterator();
     const scriptFunctionName = `to${this._capitalize(scriptName)}`;
     this._ensureSpansExist();
@@ -870,55 +835,6 @@ class SCSimpleText extends SCTextPage {
 
   // Lookup word end
 
-  _applyFirefoxShadyDomFix() {
-    if (navigator.userAgent.indexOf('Firefox') !== -1) {
-      this.isTextViewHidden = true;
-      setTimeout(() => {
-        this.$.simple_text_content.innerHTML = this.$.simple_text_content.innerHTML;
-        this.isTextViewHidden = false;
-      }, 0);
-    }
-  }
-
-  _markupVarNote(noteData, referenceText) {
-    const noteItems = noteData.split(/ \| /);
-    let noteText = `
-                        ${referenceText}
-                      <paper-tooltip class="varnote" fit-to-visible-bounds><table><tbody>
-                     `;
-    let out = '';
-
-    for (let item in noteItems) {
-      let m = noteItems[item].match(/^(\(.*?\)|[^\(]+)(.*)/),
-        variant = m[1],
-        comment = m[2];
-      if (variant && !comment) {
-        // In some cases there is no variant, it's simply a comment
-        // In this case, the comment takes the entire line.
-        out = `
-                    <tr><td colspan=2>
-                      ${this._markupComment(variant)}
-                    </td></tr>
-                  `;
-      } else {
-        // The normal case is a variant and a comment or qualification
-        // pertaining to that variant reading.
-        out = `
-                  <tr><td>
-                    ${variant}
-                  </td><td>
-                    ${this._markupComment(comment)}
-                  </td></tr>
-                 `;
-      }
-      noteText += out;
-    }
-    return `
-                ${noteText}
-              </tbody></table></paper-tooltip>
-             `;
-  }
-
   _markupComment(comment) {
     comment = comment.replace('(', '').replace(')', '');
     const commentParts = comment.split(/,/);
@@ -940,19 +856,19 @@ class SCSimpleText extends SCTextPage {
     let tooltipText = '';
     if (commentParts[1]) {
       tooltipText = `
-                        ${commentParts[0]}
-                        has&nbsp;been&nbsp;corrected&nbsp;to
-                        ${commentParts[1]}
-                      `;
+        ${commentParts[0]}
+        has&nbsp;been&nbsp;corrected&nbsp;to
+        ${commentParts[1]}
+      `;
     } else {
       tooltipText = commentParts[0];
     }
     return `
-                ${referenceText}
-              <paper-tooltip fit-to-visible-bounds class="corrnote">
-                ${tooltipText}
-              </paper-tooltip>
-             `;
+      ${referenceText}
+      <paper-tooltip fit-to-visible-bounds class="corrnote">
+        ${tooltipText}
+      </paper-tooltip>
+    `;
   }
 }
 

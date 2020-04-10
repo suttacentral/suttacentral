@@ -190,7 +190,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
                 <li class="nav-menu-item ${groupingLevelItem.yellow_brick_road ? 'yellow-brick' : ''}">
 
                   ${groupingLevelItem.lang_iso ? html`
-                    <span class="nav-link" data-iso="${this.getLanguageName(groupingLevelItem.lang_iso)}">
+                    <span class="nav-link" data-iso="${this.getLanguageName(groupingLevelItem.lang_iso)}" title="${this.localizeEx('rootLangTitle', 'lang', this.localize(groupingLevelItem.lang_iso))}">
                       ${this.localize(groupingLevelItem.name) ? this.localize(groupingLevelItem.name) : groupingLevelItem.name}
                     </span>
                   ` : html`<span class="nav-link">${this.localize(groupingLevelItem.name) ? this.localize(groupingLevelItem.name) : groupingLevelItem.name}</span>`
@@ -221,12 +221,12 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
               ${listType === 'nav-secondary' ? html`
 
                 ${childItem.lang_iso ? html`
-                  <span class="nav-link" data-iso="${this.getLanguageName(childItem.lang_iso)}">${childItem.name}</span>
+                  <span class="nav-link" data-iso="${this.getLanguageName(childItem.lang_iso)}" title="${this.localizeEx('rootLangTitle', 'lang', this.localize(childItem.lang_iso))}">${childItem.name}</span>
                 ` : html`
                   <span class="nav-link">${childItem.name}</span>`}
                 ` : html`
                   ${childItem.lang_iso ? html`
-                    <a class="nav-link link-text-ellipsis" title="${childItem.name}"
+                    <a class="nav-link link-text-ellipsis" title="${this.localizeEx('rootLangTitle', 'lang', this.localize(childItem.lang_iso))}"
                       href="${this.getSuttaplexUrl(childItem.id)}"
                       data-iso="${this.getLanguageName(childItem.lang_iso)}">
                       ${this.localize(childItem.name) ? this.localize(childItem.name) : childItem.name}
@@ -263,7 +263,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
             @click="${() => this.selectChildItem(menuItem)}"
           >
             ${childItem.lang_iso ? html`
-              <a class="nav-link link-text-ellipsis" title="${childItem.name}"
+              <a class="nav-link link-text-ellipsis" title="${this.localizeEx('rootLangTitle', 'lang', this.localize(childItem.lang_iso))}"
                 style="${this.calculateSubmenuChildrenStyle(menuLevel)}"
                 href="${this.getSuttaplexUrl(childItem.id)}"
                 data-iso="${this.getLanguageName(childItem.lang_iso)}">

@@ -52,6 +52,7 @@ const initialState = {
     showedLanguagePrompt: false,
     //sidebar open state
     drawerOpened: false,
+    toolbarTitle: ''
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -65,6 +66,8 @@ const reducer = (state, action) => {
         case 'CHANGE_TOOLBAR_TITLE':
             return Object.assign({}, state,
                 { toolbarOptions: Object.assign({}, state.toolbarOptions, { title: action.title }) });
+        case 'SAVE_TOOLBAR_TITLE':
+            return Object.assign({}, state, { toolbarTitle: action.toolbarTitle });
         case 'INITIATE_SEARCH':
             return Object.assign({}, state, { searchParams: action.params });
         case 'CHANGE_SEARCH_QUERY':

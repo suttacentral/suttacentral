@@ -59,26 +59,6 @@
   </script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
 
-  <!-- Polyfills -->
-  <script>
-    var head = document.querySelector('head');
-    if (!Array.prototype.includes) {
-        var script = document.createElement('script');
-        script.src = '/polyfills/arrayIncludes.js';
-        head.appendChild(script);
-    }
-    if (!Object.entries) {
-        var script = document.createElement('script');
-        script.src = '/polyfills/objectEntries.js';
-        head.appendChild(script);
-    }
-    if (!String.prototype.includes) {
-        var script = document.createElement('script');
-        script.src = '/polyfills/stringIncludes.js';
-        head.appendChild(script);
-    }
-  </script>
-
   <!-- Temporary fix for broken CSS mixins (@apply) inside LitElement
        https://github.com/Polymer/lit-html/issues/518 -->
   <script src="/node_modules/@webcomponents/shadycss/apply-shim.min.js"></script>
