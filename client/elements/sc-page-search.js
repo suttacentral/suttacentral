@@ -1,14 +1,11 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@polymer/iron-location/iron-location.js';
-import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-scroll-threshold/iron-scroll-threshold.js';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
-
 import './menus/sc-search-filter-menu.js';
 import './suttaplex/card/sc-suttaplex.js';
 import './addons/sc-error-icon.js';
+import './addons/sc-bouncing-loader';
 import { store } from '../redux-store';
 import { LitLocalized } from '../elements/addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
@@ -27,254 +24,266 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return html`
       <style>
         :host {
-        display: block;
-        width: 100%;
-        height: calc(100vh - var(--sc-size-xxl));
-      }
+          display: block;
+          width: 100%;
+          height: calc(100vh - var(--sc-size-xxl));
+        }
 
-      #search_result_list {
-        padding: var(--sc-size-xl) 0 var(--sc-size-md);
-      }
+        #search_result_list {
+          padding: var(--sc-size-xl) 0 var(--sc-size-md);
+        }
 
-      .suttaplex-item {
+        .suttaplex-item {
           margin-top: var(--sc-size-xl);
           margin-bottom: calc(-1 * var(--sc-size-md));
-      }
+        }
 
-      .search-results-container {
-        padding: var(--sc-size-xxl) 0;
-      }
+        .search-results-container {
+          padding: var(--sc-size-xxl) 0;
+        }
 
-      .search-results-main {
-        max-width: 720px;
-        margin: 0 auto;
-      }
+        .search-results-main {
+          max-width: 720px;
+          margin: 0 auto;
+        }
 
-      .search-result-head {
-        color: var(--sc-secondary-text-color);
-        padding: 0 var(--sc-size-md);
-        display: flex;
-        justify-content: space-between;
-      }
+        .search-result-head {
+          color: var(--sc-secondary-text-color);
+          padding: 0 var(--sc-size-md);
+          display: flex;
+          justify-content: space-between;
+        }
 
-      .search-result-header {
-        @apply --paper-font-display1;
-        display: inline-block;
-        margin: 0;
-      }
+        .search-result-header {
+          @apply --paper-font-display1;
+          display: inline-block;
+          margin: 0;
+        }
 
-      .search-result-term {
-        @apply --sc-serif-font;
-        font-weight: bold;
-        color: var(--sc-primary-accent-color);
-      }
+        .search-result-term {
+          @apply --sc-serif-font;
+          font-weight: bold;
+          color: var(--sc-primary-accent-color);
+        }
 
-      .search-result-item {
-        border-bottom: var(--sc-border);
-        @apply --layout-horizontal;
-      }
+        .search-result-item {
+          border-bottom: var(--sc-border);
+          @apply --layout-horizontal;
+        }
 
-      .search-result-item dl a {
-        @apply --sc-inline-link;
-      }
+        .search-result-item dl a {
+          @apply --sc-inline-link;
+        }
 
-      .search-result-item dl a:hover {
-        @apply --sc-inline-link-hover;
-      }
+        .search-result-item dl a:hover {
+          @apply --sc-inline-link-hover;
+        }
 
-      .search-result-item dl a:visited {
-        @apply --sc-inline-link-visited;
-      }
+        .search-result-item dl a:visited {
+          @apply --sc-inline-link-visited;
+        }
 
-      .search-result-item:focus {
-        outline: 0;
-        background: linear-gradient(to right, var(--sc-primary-accent-color) 4px, transparent 4px);
-      }
+        .search-result-item:focus {
+          outline: 0;
+          background: linear-gradient(to right, var(--sc-primary-accent-color) 4px, transparent 4px);
+        }
 
-      .padded-container {
-        @apply --layout-flex;
-        @apply --layout-vertical;
-        padding: 0 var(--sc-size-md);
-      }
+        .padded-container {
+          @apply --layout-flex;
+          @apply --layout-vertical;
+          padding: 0 var(--sc-size-md);
+        }
 
-      .search-result-title {
-        @apply --paper-font-headline;
-        @apply --sc-serif-font;
-        color: var(--sc-primary-accent-color);
-        margin: 22px 0 0 0;
-      }
+        .search-result-title {
+          @apply --paper-font-headline;
+          @apply --sc-serif-font;
+          color: var(--sc-primary-accent-color);
+          margin: 22px 0 0 0;
+        }
 
-      .search-result-division {
-        @apply --paper-font-body2;
-        color: var(--sc-secondary-text-color);
-        margin: 0 0 var(--sc-size-md);
-        white-space: nowrap;
-        overflow: hidden;
-      }
+        .search-result-division {
+          @apply --paper-font-body2;
+          color: var(--sc-secondary-text-color);
+          margin: 0 0 var(--sc-size-md);
+          white-space: nowrap;
+          overflow: hidden;
+        }
 
-      .search-result-snippet {
-        @apply --sc-paper-font-body;
-        margin: 0 0 20px 0;
-      }
+        .search-result-snippet {
+          @apply --sc-paper-font-body;
+          margin: 0 0 20px 0;
+        }
 
-      .search-result-snippet dd {
-        margin-left: 0;
-      }
+        .search-result-snippet dd {
+          margin-left: 0;
+        }
 
-      .search-result-snippet dfn {
-        font-style: normal;
-        font-weight: bold;
-      }
+        .search-result-snippet dfn {
+          font-style: normal;
+          font-weight: bold;
+        }
 
-      .search-result-filter-menu {
-        margin-top: -20px;
-      }
+        .search-result-filter-menu {
+          margin-top: -20px;
+        }
 
-      .search-result-link {
-        text-decoration: none;
-        color: initial;
-      }
+        .search-result-link {
+          text-decoration: none;
+          color: initial;
+        }
 
-      .dictionary {
-        background-color: var(--sc-secondary-background-color);
-        @apply --shadow-elevation-2dp;
-        border-radius: var(--sc-size-xxs);
-      }
+        .dictionary {
+          background-color: var(--sc-secondary-background-color);
+          @apply --shadow-elevation-2dp;
+          border-radius: var(--sc-size-xxs);
+        }
 
-      .dictionary .search-result-division {
-        display: none;
-      }
+        .dictionary .search-result-division {
+          display: none;
+        }
 
-      .dictionary .search-result-title {
-        @apply --paper-font-subhead;
-      }
+        .dictionary .search-result-title {
+          @apply --paper-font-subhead;
+        }
 
-      .dictionary dfn {
-        @apply --paper-font-headline;
-        font-weight: bold;
-      }
+        .dictionary dfn {
+          @apply --paper-font-headline;
+          font-weight: bold;
+        }
 
-      .dictionary dd p {
-        margin: 0 0 var(--sc-size-s) 0;
-      }
+        .dictionary dd p {
+          margin: 0 0 var(--sc-size-s) 0;
+        }
 
-      .dictionary .case {
-        color: var(--sc-secondary-text-color);
-        @apply --sc-all-small-caps;
-        display: block;
-      }
+        .dictionary .case {
+          color: var(--sc-secondary-text-color);
+          @apply --sc-all-small-caps;
+          display: block;
+        }
 
-      .dictionary .ref {
-        @apply --sc-skolar-font-size-s;
-        color: var(--sc-secondary-text-color);
-        background-color: var(--sc-textual-info-background-color);
-        border-radius: var(--sc-size-xxs);
-        padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
-        white-space: nowrap;
-      }
+        .dictionary .ref {
+          @apply --sc-skolar-font-size-s;
+          color: var(--sc-secondary-text-color);
+          background-color: var(--sc-textual-info-background-color);
+          border-radius: var(--sc-size-xxs);
+          padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
+          white-space: nowrap;
+        }
 
-      .paper-spinner {
-        @apply --center;
-        --paper-spinner-color: var(--sc-primary-color);
-      }
+        .paper-spinner {
+          @apply --center;
+          --paper-spinner-color: var(--sc-primary-color);
+        }
 
-      .google-maps {
-        height: 480px;
-        margin: var(--sc-size-md-larger) 0;
-      }
+        .google-maps {
+          height: 480px;
+          margin: var(--sc-size-md-larger) 0;
+        }
 
-      .google-maps iframe {
-        height: 480px;
-        width: 100%;
-        border: none;
-      }
+        .google-maps iframe {
+          height: 480px;
+          width: 100%;
+          border: none;
+        }
 
-      .d-none {
-        display: none;
-      }
+        .d-none {
+          display: none;
+        }
 
-      [hidden] {
-        display: none !important;
-      }
+        [hidden] {
+          display: none !important;
+        }
+
+        .loading-indicator {
+          @apply --sc-skolar-font-size-s;
+          text-align: center;
+          height: 60px;
+          margin-top: 25vh;
+        }
       </style>
 
-      <paper-spinner-lite class="paper-spinner" ?active=${this.loadingResults}></paper-spinner-lite>
-      ${this.isOnlineTemplate}
+      ${this.displayLoader}
+      ${this.onlineTemplate}
       ${this.offLineTemplate}
       ${this._createMetaData()}
     `;
   }
 
   get offLineTemplate() {
-    return html`
-      ${!this.isOnline ? html`
-        <sc-error-icon type="no-network"></sc-error-icon>
-      ` : ''}
-    `;
+    return !this.isOnline ? html`
+      <sc-error-icon type="no-network"></sc-error-icon>
+    ` : '';
   }
 
-  get isOnlineTemplate() {
-    return html`
-      ${this.isOnline ? html`
-        <div class="search-results-container">
-          <main class="search-results-main">
-            ${this.searchResultTemplate}
-            <div class="suttaplex-item">
-                <sc-suttaplex .item=${this.suttaplex} .parallels-opened=${false}
-                  .difficulty="${this._computeItemDifficulty(this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : '')}"
-                  .expansion-data=${this.expansionReturns}>
-                </sc-suttaplex>
-            </div>
-            <iron-scroll-threshold id="scroll_threshold" @lower-threshold=${this._loadMoreData} scroll-target="document">
-              ${this.searchResultListTemplate}
-            </iron-scroll-threshold>
-          </main>
-        </div>
-      ` : ''}
-    `;
+  get displayLoader() {
+    return this.loadingResults ? html`
+      <div class="loading-indicator"><sc-bouncing-loader></sc-bouncing-loader></div>
+    ` : '';
+  }
+
+  get onlineTemplate() {
+    return this.isOnline ? html`
+      <div class="search-results-container">
+        <main class="search-results-main">
+          ${this.searchResultTemplate}
+        </main>
+      </div>
+    ` : '';
   }
 
   get searchResultTemplate() {
-    return html`
-      ${!this.loadingResults ? html`
-        <div class="search-result-head">
-          <h1 class="search-result-header">
-            <span class="search-result-number">${this._calculateResultCount(this.resultCount)}</span>
-            <span class="search-result-description">${this.localize('resultsFor')}</span>
-            <span class="search-result-term">${this.searchQuery}</span>
-          </h1>
-          <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
-        </div>
-      ` : ''}
-    `;
+    return !this.loadingResults ? html`
+      <div class="search-result-head">
+        <h1 class="search-result-header">
+          <span class="search-result-number">${this._calculateResultCount(this.resultCount)}</span>
+          <span class="search-result-description">${this.localize('resultsFor')}</span>
+          <span class="search-result-term">${this.searchQuery}</span>
+        </h1>
+        <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
+      </div>
+      <div class="suttaplex-item">
+        <sc-suttaplex .item=${this.suttaplex} .parallels-opened=${false}
+          .difficulty="${this._computeItemDifficulty(this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : '')}"
+          .expansion-data=${this.expansionReturns}>
+        </sc-suttaplex>
+      </div>
+      <iron-scroll-threshold id="scroll_threshold" @lower-threshold=${this._loadMoreData} scroll-target="document">
+        ${this.searchResultListTemplate}
+      </iron-scroll-threshold>
+    ` : '';
   }
 
   get searchResultListTemplate() {
-    return html`
-      ${this.visibleSearchResults ? this.visibleSearchResults.map(item => html`
-        <div class="search-result-item ${this._calculateItemCategory(item)}" tabindex="${this.tabIndex}">
-          <div class="padded-container">
-            <a class="search-result-link" href="${this._calculateLink(item)}">
-              <div class="primary">
-                <h2 class="search-result-title">${this._calculateTitle(item)}</h2>
-              </div>
-              <div class="secondary">
-                <p class="search-result-division">${unsafeHTML(this._calculateDivision(item))}</p>
-              </div>
-            </a>
-            <div class="secondary">
-              <p class="search-result-snippet">${unsafeHTML(this._calculateSnippetContent(item.highlight.content))}</p>
+    return this.visibleSearchResults ? this.visibleSearchResults.map(item => html`
+      <div class="search-result-item ${this._calculateItemCategory(item)}" tabindex="${this.tabIndex}">
+        <div class="padded-container">
+          <a class="search-result-link" href="${this._calculateLink(item)}">
+            <div class="primary">
+              <h2 class="search-result-title">${this._calculateTitle(item)}</h2>
             </div>
+            <div class="secondary">
+              <p class="search-result-division">${unsafeHTML(this._calculateDivision(item))}</p>
+            </div>
+          </a>
+          <div class="secondary">
+            <p class="search-result-snippet">${unsafeHTML(this._calculateSnippetContent(item.highlight.content))}</p>
           </div>
         </div>
-      `) : ''}
-    `;
+      </div>
+    `) : '';
   }
 
   static get properties() {
     return {
       // The query to search for
-      searchQuery: { type: String },
+      searchQuery: {
+        type: String,
+        hasChanged(newVal) {
+          if (newVal) {
+            return true;
+          }
+        }
+      },
       // The actual query parameters of the search
       searchParams: { type: Object },
       lastSearchResults: { type: Array },
@@ -322,16 +331,28 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.suttaplex = [];
     this.expansionReturns = [];
     this.waitTimeAfterNewWordExpired = true;
-    this.loadingResults = false;
+    this.loadingResults = true;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
+  }
+
+  shouldUpdate(prevProps) {
+    if (prevProps.has('searchQuery')) {
+      this._startNewSearchWithNewWord();
+    }
+    if (prevProps.has('lastSearchResults')) {
+      this._populateList();
+    }
+    return true;
   }
 
   updated(changedProps) {
     super.updated(changedProps);
-    if (changedProps.has('searchQuery')) {
-      this._startNewSearchWithNewWord();
-    }
     if (changedProps.has('lastSearchResults')) {
-      this._populateList();
+      this.loadingResults = false;
     }
   }
 
@@ -356,24 +377,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-  firstUpdated() {
-    this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
-    this._startNewSearchWithNewWord();
-  }
-
-  // After results have been loaded into memory, pushes items to an array.
-  // After first load, the lastSearchResults is equal to all the items in the
-  // search results and _populateList is called.
-  _didRespond(results) {
-    //const results = e.detail.response;
-    this.suttaplex = results.suttaplex;
-    this.lastSearchResults = results.hits;
-    this.resultCount = results.total;
-    this.waitTimeAfterNewWordExpired = true;
-  }
-
   // Saves the fetched search results to be displayed in the list.
-  // Automatically called after the lastSearchResults array is updated in _didRespond.
   _populateList() {
     const items = this.lastSearchResults;
     if (items.length === 0) {
@@ -416,6 +420,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (!this.isOnline || !this.searchQuery) {
       return;
     }
+    this.loadingResults = true;
     this.waitTimeAfterNewWordExpired = false;
     this.currentFilter = 'all';
     const filterMenu = this.shadowRoot.querySelector('#filter_menu');
@@ -472,20 +477,18 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   async _fetchSearchResult() {
-    this.loadingResults = true;
     let requestUrl = this._getUrl() || '';
     let bindingChar = requestUrl.indexOf('?') >= 0 ? '&' : '?';
     requestUrl = requestUrl + bindingChar + this._getQueryString();
-    fetch(requestUrl).then(r => r.json()).then((response) => {
-      let searchResult = response;
-      const results = searchResult;
-      this.suttaplex = results.suttaplex;
-      this.lastSearchResults = results.hits;
-      this.resultCount = results.total;
-      this.waitTimeAfterNewWordExpired = true;
-      this._didRespond(results);
-    });
-    this.loadingResults = false;
+    let searchResult = await (await fetch(requestUrl)).json();
+    this._setProperties(searchResult);
+  }
+
+  _setProperties(searchResult) {
+    this.suttaplex = searchResult.suttaplex;
+    this.lastSearchResults = searchResult.hits;
+    this.resultCount = searchResult.total;
+    this.waitTimeAfterNewWordExpired = true;
   }
 
   _getQueryString() {
@@ -536,7 +539,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   // The endless scroll is dependant on a scroll event, but if there's less then 1 item
   // on a search result page, it won't trigger loading more, hence this function:
-  // TODO: perform new search on filter change
   _loadMoreIfMinimumNotReached() {
     if (this.visibleSearchResults.length < 1 && !this._areAllItemsLoaded()) {
       this._loadNextPage();
@@ -589,7 +591,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   _transformId(rootId) {
-    if (!rootId || !this.expansionReturns) {
+    if (!rootId || !this.expansionReturns  || !this.expansionReturns[0]) {
       return '';
     }
     const expansionData = this.expansionReturns;
