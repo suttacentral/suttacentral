@@ -4,6 +4,7 @@
         "networkError": "网络错误",
         "generalError": "通用错误",
         "pageNoFound": "找不到页面",
-        "dataLoadError": "数据加载错误"
+        "dataLoadError": "数据加载错误",
+        "connectToInternet": "请连接到互联网以使用搜索功能。"
     }
 }

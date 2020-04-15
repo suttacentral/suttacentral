@@ -212,7 +212,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   get offLineTemplate() {
     return !this.isOnline ? html`
-      <sc-error-icon type="no-network"></sc-error-icon>
+      <sc-error-icon type="connect-to-internet"></sc-error-icon>
     ` : '';
   }
 

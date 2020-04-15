@@ -34,6 +34,11 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
         title: 'dataLoadError',
         message: 'dataLoadError'
       },
+      "connect-to-internet": {
+        icon: '/img/connecttointernet.svg',
+        title: 'connectToInternet',
+        message: 'connectToInternet'
+      }
     };
   }
 

@@ -4,6 +4,7 @@
         "networkError": "Erro de rede.",
         "generalError": "Erro geral",
         "pageNoFound": "Página não encontrada",
-        "dataLoadError": "Erro Da carga de dados"
+        "dataLoadError": "Erro Da carga de dados",
+        "connectToInternet": "Por favor, ligue-se à internet para utilizar a pesquisa."
     }
 }

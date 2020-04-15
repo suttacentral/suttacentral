@@ -4,6 +4,7 @@
         "networkError": "Network error",
         "generalError": "General Error",
         "pageNoFound": "Page No Found",
-        "dataLoadError": "Data Load Error"
+        "dataLoadError": "Data Load Error",
+        "connectToInternet": "Please connect to the internet to use search."
     }
 }
