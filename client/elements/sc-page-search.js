@@ -202,6 +202,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
       </style>
 
+      ${this.displayDataLoadError}  
       ${this.displayLoader}
       ${this.onlineTemplate}
       ${this.offLineTemplate}
@@ -221,8 +222,14 @@ class SCPageSearch extends LitLocalized(LitElement) {
     ` : '';
   }
 
+  get displayDataLoadError() {
+    return this.lastError ? html`
+      <sc-error-icon type="data-load-error"></sc-error-icon>
+  ` : '';
+  }
+
   get onlineTemplate() {
-    return this.isOnline ? html`
+    return this.isOnline && !this.lastError ? html`
       <div class="search-results-container">
         <main class="search-results-main">
           ${this.searchResultTemplate}
@@ -302,7 +309,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
       suttaplex: { type: Array },
       expansionReturns: { type: Array },
       waitTimeAfterNewWordExpired: { type: Boolean },
-      loadingResults: { type: Boolean }
+      loadingResults: { type: Boolean },
+      lastError: { type: Object }
     }
   }
 
@@ -473,15 +481,25 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   async _fetchExpansion() {
-    this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();
+    try {
+      this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();  
+    } catch (error) {
+      this.lastError = error;
+      console.error(error);
+    }
   }
 
   async _fetchSearchResult() {
     let requestUrl = this._getUrl() || '';
     let bindingChar = requestUrl.indexOf('?') >= 0 ? '&' : '?';
     requestUrl = requestUrl + bindingChar + this._getQueryString();
-    let searchResult = await (await fetch(requestUrl)).json();
-    this._setProperties(searchResult);
+    try {
+      let searchResult = await (await fetch(requestUrl)).json();
+      this._setProperties(searchResult);
+    } catch (error) {
+      this.lastError = error;
+      console.error(error);
+    }
   }
 
   _setProperties(searchResult) {

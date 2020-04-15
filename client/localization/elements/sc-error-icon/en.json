@@ -1,6 +1,9 @@
 {
     "en": {
         "offline": "You're offline.",
-        "networkError": "Network error"
+        "networkError": "Network error",
+        "generalError": "General Error",
+        "pageNoFound": "Page No Found",
+        "dataLoadError": "Data Load Error"
     }
 }

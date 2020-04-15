@@ -1,6 +1,9 @@
 {
     "zh": {
-        "offline": "你已离线。",
-        "networkError": "网络错误。"
+        "offline": "你已离线",
+        "networkError": "网络错误",
+        "generalError": "通用错误",
+        "pageNoFound": "找不到页面",
+        "dataLoadError": "数据加载错误"
     }
 }
