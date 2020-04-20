@@ -18,6 +18,26 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
         icon: '/img/nonetwork.svg',
         title: 'networkError',
         message: 'offline'
+      },
+      "general-error": {
+        icon: '/img/generalerror.svg',
+        title: 'generalError',
+        message: 'generalError'
+      },
+      "page-no-found": {
+        icon: '/img/pagenofound.svg',
+        title: 'pageNoFound',
+        message: 'pageNoFound'
+      },
+      "data-load-error": {
+        icon: '/img/dataloaderror.svg',
+        title: 'dataLoadError',
+        message: 'dataLoadError'
+      },
+      "connect-to-internet": {
+        icon: '/img/connecttointernet.svg',
+        title: 'connectToInternet',
+        message: 'connectToInternet'
       }
     };
   }
