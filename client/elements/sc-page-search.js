@@ -357,13 +357,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return true;
   }
 
-  updated(changedProps) {
-    super.updated(changedProps);
-    if (changedProps.has('lastSearchResults')) {
-      this.loadingResults = false;
-    }
-  }
-
   _stateChanged(state) {
     super._stateChanged(state);
     if (this.searchQuery !== state.currentRoute.__queryParams.query) {
@@ -507,6 +500,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.lastSearchResults = searchResult.hits;
     this.resultCount = searchResult.total;
     this.waitTimeAfterNewWordExpired = true;
+    this.updateComplete.then(() => { 
+      this.loadingResults = false; 
+    });
   }
 
   _getQueryString() {
