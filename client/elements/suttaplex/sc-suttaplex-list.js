@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit-element';
 import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
+import '../addons/sc-bouncing-loader';
 import { repeat } from 'lit-html/directives/repeat';
 import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
@@ -155,7 +155,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
     <div class="division-content main">
       <div class="loading-indicator">
-        <paper-spinner-lite class="loading-spinner" .active="${this.suttaplexLoading}"></paper-spinner-lite>
+        <sc-bouncing-loader class="loading-spinner" .active="${this.suttaplexLoading}"></sc-bouncing-loader>
       </div>
 
       ${this.hasError() ? html`<sc-error-icon type="no-network"></sc-error-icon>` : ''}

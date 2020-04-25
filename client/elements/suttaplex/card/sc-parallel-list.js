@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
+import '../../addons/sc-bouncing-loader';
 import { API_ROOT } from '../../../constants.js';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
@@ -111,7 +111,7 @@ class SCParallels extends LitLocalized(LitElement) {
     ${parallelsListCss}
     <div>
       ${this.loadingResults ? html`
-        <paper-spinner-lite class="paper-spinner" .active="${this.loadingResults}"></paper-spinner-lite>
+        <sc-bouncing-loader class="paper-spinner" .active="${this.loadingResults}"></sc-bouncing-loader>
       ` : ''}
 
       ${this.rootKeys ? html`

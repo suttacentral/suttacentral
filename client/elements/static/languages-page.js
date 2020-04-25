@@ -1,8 +1,7 @@
 import { html } from 'lit-element';
 
 import { until } from 'lit-html/directives/until.js';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
-
+import '../addons/sc-bouncing-loader';
 import { staticStyles } from '../styles/static-styles.js';
 import { SCStaticPage } from '../addons/sc-static-page.js';
 import { API_ROOT } from '../../constants.js';
@@ -51,13 +50,13 @@ class SCLanguagesPage extends SCStaticPage {
   }
 
   get languageTemplate() {
-    const { name, percent } = this.findLanguage(this.selectedLanguage);    
+    const { name, percent } = this.findLanguage(this.selectedLanguage);
     let rootLanguages = [];
-    
+
     if (this.languageData) {
       this.languageData.division.map(item => {
         if (item.root_lang) {
-          let { name } = this.findLanguage(item.root_lang);        
+          let { name } = this.findLanguage(item.root_lang);
           item.rootLanguageFullName = name;
         } else {
           item.rootLanguageFullName = 'Other';
@@ -68,9 +67,9 @@ class SCLanguagesPage extends SCStaticPage {
       rootLanguages = this.languageData.division.reduce(function (item, next) {
         hash[next.rootLanguageFullName] ? '' : hash[next.rootLanguageFullName] = true && item.push(next.rootLanguageFullName);
         return item;
-      }, []);            
-    }    
-    
+      }, []);
+    }
+
     const list = (title, names) => html`
       <h2>${this.localize(title)}</h2>
       <ul>
@@ -80,9 +79,9 @@ class SCLanguagesPage extends SCStaticPage {
       </ul>
     `;
 
-    const listOfRootLanguage = () => html`          
-      ${rootLanguages.map(rootLang => html`         
-        <h3>${rootLang}</h3>        
+    const listOfRootLanguage = () => html`
+      ${rootLanguages.map(rootLang => html`
+        <h3>${rootLang}</h3>
         <ul>
           ${this.languageData.division.filter(rootItem => rootItem.rootLanguageFullName === rootLang).map(item => html`
             <li>${item.name} (${item.total})</li>
@@ -106,17 +105,17 @@ class SCLanguagesPage extends SCStaticPage {
           ${
             percent
             ? html`
-              ${chart(name, percent)}              
+              ${chart(name, percent)}
               ${listOfRootLanguage()}
               ${list('translators', this.languageData.author)}
             `
-            : html `              
+            : html `
               ${listOfRootLanguage()}
               ${list('authors', this.languageData.author)}
             `
           }
         `
-        : html`<paper-spinner-lite active></paper-spinner-lite>`
+        : html`<sc-bouncing-loader></sc-bouncing-loader>`
       }
     `;
   }
@@ -153,8 +152,7 @@ class SCLanguagesPage extends SCStaticPage {
         margin-top: .5em;
       }
 
-      paper-spinner-lite {
-        --paper-spinner-color: var(--sc-primary-color);
+      sc-bouncing-loader {
         display: block;
         margin: 3em auto;
       }
@@ -167,7 +165,7 @@ class SCLanguagesPage extends SCStaticPage {
               ? this.selectedLanguage
                 ? this.languageTemplate
                 : this.languageListTemplate
-              : html`<paper-spinner-lite active></paper-spinner-lite>`
+              : html`<sc-bouncing-loader></sc-bouncing-loader>`
             }
           </article>
         </section>

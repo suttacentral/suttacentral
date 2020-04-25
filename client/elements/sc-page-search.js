@@ -172,7 +172,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
         .paper-spinner {
           @apply --center;
-          --paper-spinner-color: var(--sc-primary-color);
         }
 
         .google-maps {

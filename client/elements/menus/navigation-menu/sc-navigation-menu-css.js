@@ -13,7 +13,6 @@ ${scrollbarStyle}
 
   .paper-spinner {
     @apply --center;
-    --paper-spinner-color: var(--sc-primary-color);
   }
 
   .network-error {

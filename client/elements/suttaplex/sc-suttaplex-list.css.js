@@ -31,6 +31,5 @@ export const suttaplexListCss = html`<style>
   .loading-spinner {
     @apply --center;
     z-index: 999;
-    --paper-spinner-color: var(--sc-primary-color);
   }
 </style>`;

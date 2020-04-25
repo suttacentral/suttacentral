@@ -42,10 +42,6 @@ export const textCarouselStyles = html`<style>
       color: var(--sc-disabled-text-color);
     }
 
-    .spinner {
-      --paper-spinner-color: var(--sc-primary-color);
-    }
-
     .chevron:focus {
       outline: none;
     }
