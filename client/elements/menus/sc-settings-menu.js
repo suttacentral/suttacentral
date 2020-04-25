@@ -3,7 +3,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@polymer/paper-radio-button/paper-radio-button.js';
 import '@polymer/paper-radio-group/paper-radio-group.js';
 import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
+import '../addons/sc-bouncing-loader';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '@polymer/iron-overlay-behavior/iron-overlay-backdrop.js';
@@ -137,7 +137,7 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
 
     <div class="paper-dialogue-container">
       <div class="loading-indicator">
-        <paper-spinner-lite ?active=${this.showLoadingSpinner}></paper-spinner-lite>
+        <sc-bouncing-loader ?active=${this.showLoadingSpinner}></sc-bouncing-loader>
       </div>
 
       <div class="dialog-section">
@@ -239,16 +239,16 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
       paliLookupArray: { type: Array },
       paliLookupLanguage: { type: String },
       // pali to language lookup selected number.
-      paliLookupSelected: { type: Number }, //computed: '_findPaliLookupLanguageIndex(paliLookupLanguage)'
+      paliLookupSelected: { type: Number },
       // possible values for the chinese to language lookup.
       chineseLookupArray: { type: Array },
       chineseLookupLanguage: { type: String },
       // chinese to language lookup selected number.
-      chineseLookupSelected: { type: Number }, //computed: '_findChineseLookupLanguageIndex(chineseLookupLanguage)'
+      chineseLookupSelected: { type: Number },
       // possible values for the script chooser for pali.
       paliScripts: { type: Array },
       // pali script selected number.
-      paliScriptSelected: { type: Number }, //computed: '_findPaliScriptIndex(paliScript)'
+      paliScriptSelected: { type: Number },
       paliScript: { type: String },
       // The state of the textual info paper-toggle-button
       textualInfoToggleEnabled: { type: Boolean },

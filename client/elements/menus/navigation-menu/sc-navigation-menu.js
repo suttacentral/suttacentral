@@ -1,7 +1,7 @@
 import '@polymer/iron-icon/iron-icon.js';
 import { html, LitElement } from 'lit-element';
 import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
+import '../../addons/sc-bouncing-loader';
 import { API_ROOT } from '../../../constants';
 
 import { LitLocalized } from '../../addons/localization-mixin';
@@ -170,7 +170,7 @@ class SCNavigationMenu extends LitLocalized(LitElement) {
 
   get spinnerTemplate() {
     return html`<div class="loading-indicator">
-      <paper-spinner-lite class="paper-spinner" active="${this.loading}"></paper-spinner-lite>
+      <sc-bouncing-loader class="paper-spinner" active="${this.loading}"></sc-bouncing-loader>
     </div>`;
   }
 
