@@ -20,6 +20,7 @@ class InitialMigration(Migration):
             ('html_text', False),
             ('unicode_points', False),
             ('mtimes', False),
+            ('segmented_data', False),
         ]
 
         for name, edge in collections:
