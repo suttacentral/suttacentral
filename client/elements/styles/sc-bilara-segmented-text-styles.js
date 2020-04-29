@@ -57,6 +57,8 @@ export const commonStyles = css`
     font-variant-caps: small-caps;
     font-weight: normal;
     font-size: 2em;
+    @apply --sc-serif-font;
+    @apply --sc-mixed-small-caps;
   }
 
   .evam .text {
@@ -212,8 +214,8 @@ export const commonStyles = css`
   }
 
   .spanFocused {
-    border: 1px dotted;
-    color: #b48c3d;
+    background-color: var(--sc-primary-color-light);
+    color: var(--sc-primary-text-color);
   }
 
   span, p, li {
