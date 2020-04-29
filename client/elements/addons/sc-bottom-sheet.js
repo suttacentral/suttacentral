@@ -51,7 +51,6 @@ export class SCBottomSheet extends LitElement {
         display: flex;
     }
 
-
     header {
         padding: 0px var(--sc-size-md);
         justify-content: space-between;
@@ -104,8 +103,6 @@ export class SCBottomSheet extends LitElement {
         color: inherit;
     }
 
-
-
     dfn {
         background-color: var(--sc-primary-color-light);
         color: var(--sc-primary-text-color);
@@ -157,11 +154,13 @@ export class SCBottomSheet extends LitElement {
     footer div {
         width: 50%;
         text-align: center;
+        position: relative
     }
 
     #next {
         border-left: 1px solid var(--sc-border-color);
     }
+
     footer div button {
         font-size: 2em;
         width: 100%;
