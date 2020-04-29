@@ -2,12 +2,6 @@ import { LitElement, html, css } from 'lit-element';
 import '@material/mwc-snackbar';
 
 class SCToasts extends LitElement {
-  static get properties() {
-    return {
-      defaultDuration: { type: Number },
-      message: { type: String }
-    }
-  }
 
   static get styles() {
     return css`
@@ -48,11 +42,6 @@ class SCToasts extends LitElement {
     `;
   }
 
-  constructor() {
-    super();
-    this.defaultDuration = 4000;
-  }
-
   firstUpdated() {
     this.parentNode.addEventListener('show-sc-toast', (e) => { this._displayToast(e); });
   }
@@ -60,7 +49,7 @@ class SCToasts extends LitElement {
   _displayToast(e) {
     let toast = this._getToast(e.detail.toastType);
     toast.labelText = e.detail.message;
-    toast.timeoutMs = this.defaultDuration;
+    toast.timeoutMs = e.detail.duration || 4000;
     requestAnimationFrame(() => {
       toast.open();
     });
