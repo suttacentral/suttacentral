@@ -1,17 +1,26 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/paper-toast/paper-toast.js';
+import { LitElement, html, css } from 'lit-element';
+import '@material/mwc-snackbar';
 
-class SCToasts extends PolymerElement {
-  static get template() {
-    return html`
-    <style>
+class SCToasts extends LitElement {
+  static get properties() {
+    return {
+      defaultDuration: { type: Number },
+      message: { type: String }
+    }
+  }
+
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+        position: absolute;
+        z-index: 9999;
+        --mdc-typography-body2-font-size: calc(19px * var(--sc-skolar-font-scale));
+      }
+
       .toast {
-        @apply --sc-skolar-font-size-xl;
-        color: var(--sc-paper-tooltip-text-color);
-        --paper-toast-background-color: var(--sc-paper-tooltip-color);
         text-align: center;
         margin-left: calc(50vw);
-        transform: translateX(-50%);
       }
 
       /* 841px: width at which the persistent sidebar appears*/
@@ -22,54 +31,44 @@ class SCToasts extends PolymerElement {
       }
 
       .success-toast {
-        --paper-toast-background-color: var(--sc-toast-success-color);
+        --mdc-snackbar-fill-color: var(--sc-toast-success-color);
       }
 
       .error-toast {
-        --paper-toast-background-color: var(--sc-toast-error-color);
+        --mdc-snackbar-fill-color: var(--sc-toast-error-color);
       }
-    </style>
-
-    <paper-toast id="error_toast" class="toast error-toast" allow-click-through=""></paper-toast>
-    <paper-toast id="success_toast" class="toast success-toast" allow-click-through=""></paper-toast>
-    <paper-toast id="info_toast" class="toast" allow-click-through=""></paper-toast>`;
+    `;
   }
 
-  static get properties() {
-    return {
-      defaultDuration: {
-        type: Number,
-        value: 5000
-      },
-      message: {
-        type: String
-      }
-    }
+  render() {
+    return html`
+      <mwc-snackbar id="error_toast" class="toast error-toast"></mwc-snackbar>
+      <mwc-snackbar id="success_toast" class="toast success-toast"></mwc-snackbar>
+      <mwc-snackbar id="info_toast" class="toast"><mwc-snackbar>
+    `;
   }
 
-  ready() {
-    super.ready();
+  constructor() {
+    super();
+    this.defaultDuration = 4000;
+  }
+
+  firstUpdated() {
     this.parentNode.addEventListener('show-sc-toast', (e) => { this._displayToast(e); });
   }
 
   _displayToast(e) {
     let toast = this._getToast(e.detail.toastType);
-    toast.text = e.detail.message;
-    toast.duration = e.detail.duration || this.defaultDuration;
+    toast.labelText = e.detail.message;
+    toast.timeoutMs = this.defaultDuration;
     requestAnimationFrame(() => {
       toast.open();
     });
   }
 
   _getToast(toastType) {
-    switch (toastType) {
-      case 'info':
-        return this.$.info_toast;
-      case 'success':
-        return this.$.success_toast;
-      case 'error':
-        return this.$.error_toast;
-    }
+    let toastId = ['info', 'success', 'error'].includes(toastType) ? `${toastType}_toast` : 'info_toast';
+    return this.shadowRoot.getElementById(toastId);
   }
 }
 
