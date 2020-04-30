@@ -2,7 +2,6 @@ import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
 import { API_ROOT } from '../constants.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
 import { scrollbarStyle } from './styles/sc-scrollbar-style.js';
@@ -121,18 +120,6 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         --app-drawer-content-container: {
           overflow-y: scroll;
           background-color: var(--sc-secondary-background-color);
-        }
-      }
-
-      .sc-tooltip {
-        --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--sc-paper-tooltip-color);
-        --paper-tooltip: {
-          font-size: var(--sc-skolar-font-size-xs);
-          line-height: var(--sc-size-md);
-          padding: var(--sc-size-sm) var(--sc-size-md);
-          text-shadow: 0 0 var(--sc-secondary-background-color);
-          white-space: normal;
         }
       }
 

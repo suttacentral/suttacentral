@@ -1,6 +1,5 @@
 import { html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/polymer/polymer-element.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/paper-toast/paper-toast.js';
 import '@polymer/iron-icon/iron-icon.js';

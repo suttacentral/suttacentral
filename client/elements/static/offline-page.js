@@ -5,10 +5,8 @@ import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-progress/paper-progress.js';
 import "@polymer/paper-checkbox/paper-checkbox.js";
-import "@polymer/paper-tooltip/paper-tooltip.js";
 import "@polymer/iron-ajax/iron-ajax.js";
 import { queue } from 'd3-queue';
-
 import '../menus/sc-language-base-menu.js';
 import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from "../addons/localization-mixin.js";
@@ -89,20 +87,6 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
-
-      .tooltip {
-        --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--sc-paper-tooltip-color);
-        --paper-tooltip: {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-xs);
-          line-height: var(--sc-size-md);
-          padding: var(--sc-size-sm) var(--sc-size-md);
-          text-shadow: 0 0 var(--sc-secondary-background-color);
-          white-space: normal;
-          max-width: 100% !important;
-        }
       }
 
       .options-section {
@@ -312,13 +296,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
                 <div class="download-current-url">{{localize('downloading')}}: [[currentDownloadingUrl]]</div>
                 <div class="control-button-row">
                   <paper-icon-button id="play_button" class="control-button" icon="sc-iron-icons:play-arrow"></paper-icon-button>
-                  <paper-tooltip for="play_button" class="tooltip">
-                    [[_getPlayButtonTooltip(isDownloadPaused, localize)]]
-                  </paper-tooltip>
                   <paper-icon-button id="stop_button" class="control-button" icon="sc-iron-icons:stop"></paper-icon-button>
-                  <paper-tooltip for="stop_button" class="tooltip">
-                    {{localize('stop')}}
-                  </paper-tooltip>
                 </div>
               </div>
               <paper-progress id="cache_progress"></paper-progress>
@@ -833,10 +811,6 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
 
   _isPrimaryDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress, shouldButtonBeActive) {
     return !shouldButtonBeActive || this._isDownloadButtonDisabled(browserSupportsPWA, cacheDownloadInProgress);
-  }
-
-  _getPlayButtonTooltip(isDownloadPaused, localize) {
-    return isDownloadPaused ? localize('resume') : localize('pause');
   }
 
   _togglePaliCheckbox(e) {
