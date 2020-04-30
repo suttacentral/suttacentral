@@ -8,7 +8,10 @@ export const suttaplexSectionTitleCss = html`<style>
   }
 
   .node-top-heading {
-    @apply --paper-font-headline;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
+        font-weight: 400;
+        line-height: 32px;
     display: flex;
     justify-content: space-between;
     border-top: 0;
@@ -16,12 +19,18 @@ export const suttaplexSectionTitleCss = html`<style>
   }
 
   .node-secondary-heading {
-    @apply --paper-font-title;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-xl);
+        font-weight: 400;
+        line-height: 28px;
     margin: 0;
   }
 
   .node-description {
-    @apply --paper-font-body1;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
   }
 
   .grey-icon {

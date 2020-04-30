@@ -21,7 +21,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
     ${legacyStaticStyles}
     <style>
       .button {
-        @apply --sc-skolar-font-size-s;
+        font-size: var(--sc-skolar-font-size-s);
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
@@ -62,15 +62,15 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .download-progress-percentage {
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-s;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
         margin: var(--sc-size-md);
         text-align: right;
       }
 
       .download-current-url {
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-s;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
         margin: var(--sc-size-md);
       }
 
@@ -95,8 +95,8 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
-          @apply --sc-sans-font;
-          @apply --sc-skolar-font-size-xs;
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-xs);
           line-height: var(--sc-size-md);
           padding: var(--sc-size-sm) var(--sc-size-md);
           text-shadow: 0 0 var(--sc-secondary-background-color);
@@ -110,13 +110,19 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .option-title {
-        @apply --paper-font-title;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-xl);
+        font-weight: 400;
+        line-height: 28px;
         color: var(--sc-primary-text-color);
         margin: var(--sc-size-sm) 0;
       }
 
       .option-description {
-        @apply --paper-font-body1;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
         color: var(--sc-secondary-text-color);
         margin: var(--sc-size-sm) 0;
       }
@@ -171,8 +177,12 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .separator {
-        @apply --sc-separator;
+        background-color: var(--sc-border-color);
+        width: 100%;
+        overflow: hidden;
+        height: 1px;
         margin-top: var(--sc-size-md);
+        margin-bottom: var(--sc-size-xxs);
       }
 
       .no-margin {

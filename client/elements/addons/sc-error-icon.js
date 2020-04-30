@@ -48,9 +48,13 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
     return html`
       <style>
         .error {
-          @apply --center;
-          @apply --sc-sans-font;
-          @apply --sc-skolar-font-size-static-subtitle;
+                  position: absolute;
+        margin: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-static-subtitle);
           color: var(--sc-secondary-text-color);
           text-align: center;
         }

@@ -25,7 +25,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       ${textHeadingStyles}
       <style>
         .loading-indicator {
-          @apply --sc-skolar-font-size-s;
+          font-size: var(--sc-skolar-font-size-s);
           text-align: center;
           height: 60px;
           margin-top: 25vh;

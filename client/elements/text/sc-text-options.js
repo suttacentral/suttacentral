@@ -50,7 +50,7 @@ class SCTextOptions extends LitLocalized(LitElement) {
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
-          @apply --sc-skolar-font-size-xs;
+          font-size: var(--sc-skolar-font-size-xs);
           line-height: var(--sc-size-md);
           padding: var(--sc-size-sm) var(--sc-size-md);
           text-shadow: 0 0 var(--sc-secondary-background-color);

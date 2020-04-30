@@ -40,7 +40,7 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
       .currency-dropdown {
         --paper-menu-button-content: {
           display: flex;
-          @apply --shadow-elevation-8dp;
+          box-shadow: var(--sc-shadow-elevation-8dp);
         };
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-dropdown-menu-icon: {
@@ -98,7 +98,8 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
         background: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
-        @apply --sc-all-caps;
+        text-transform: uppercase;
+        letter-spacing: var(--sc-caps-letter-spacing);
       }
 
       .submit-button[disabled] {
@@ -144,7 +145,7 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
         --paper-tooltip-opacity: 0.98;
         --paper-tooltip-background: var(--sc-paper-tooltip-color);
         --paper-tooltip: {
-          @apply --sc-skolar-font-size-xs;
+          font-size: var(--sc-skolar-font-size-xs);
           line-height: var(--sc-size-md);
           padding: var(--sc-size-sm) var(--sc-size-md);
           text-shadow: 0 0 var(--sc-secondary-background-color);

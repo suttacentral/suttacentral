@@ -15,7 +15,8 @@ class SCDonationsPage extends SCStaticPage {
         background: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
-        @apply --sc-all-caps;
+        text-transform: uppercase;
+        letter-spacing: var(--sc-caps-letter-spacing);
       }
 
 
