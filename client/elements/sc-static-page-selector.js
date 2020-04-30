@@ -17,9 +17,10 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
         }
 
         h1 {
-          @apply --sc-serif-font;
-          @apply --sc-mixed-small-caps;
-          @apply --sc-skolar-font-size-static-main-title;
+          font-family: var(--sc-serif-font);
+          font-variant-caps: small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
+          font-size: var(--sc-skolar-font-size-static-main-title);
           text-align: left;
           color: var(--sc-tertiary-text-color);
           padding-top: 8px;
@@ -30,8 +31,8 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
         }
 
         .subtitle {
-          @apply --sc-skolar-font-size-static-subtitle;
-          @apply --paper-font-common-base;
+          font-size: var(--sc-skolar-font-size-static-subtitle);
+          font-family: var(--sc-sans-font);
           color: var(--sc-tertiary-text-color);
           font-style: italic;
           margin-bottom: 24px;
@@ -78,8 +79,8 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
         }
 
         .page-not-found-container {
-          @apply --sc-skolar-font-size-static-subtitle;
-          @apply --sc-sans-font;
+          font-size: var(--sc-skolar-font-size-static-subtitle);
+          font-family: var(--sc-sans-font);
           color: var(--sc-secondary-text-color);
           margin-top: var(--sc-size-xxl);
           text-align: center;
@@ -95,7 +96,8 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
           --paper-tab-ink: var(--sc-primary-color-light);
           padding-left: 10px;
           padding-right: 10px;
-          @apply --sc-all-caps;
+          text-transform: uppercase;
+        letter-spacing: var(--sc-caps-letter-spacing);
         }
 
         #nav_toolbar {
@@ -111,7 +113,7 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
 
         @media (max-width: 925px) {
           .subtitle {
-            @apply --sc-skolar-font-size-xl;
+            font-size: var(--sc-skolar-font-size-xl);
             margin-bottom: 0.5em;
           }
         }
@@ -124,7 +126,7 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
 
         @media (max-width: 600px) {
           h1 {
-            @apply --sc-skolar-font-size-xxl;
+            font-size: var(--sc-skolar-font-size-xxl);
             padding-top: 0.2em;
           }
           .title-logo-icon {
@@ -132,7 +134,7 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
             width: 40px;
           }
           .subtitle {
-            @apply --sc-skolar-font-size-md;
+            font-size: var(--sc-skolar-font-size-md);
             margin-bottom: 0.5em;
           }
         }

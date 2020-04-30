@@ -51,22 +51,16 @@
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Noto+Serif" rel="stylesheet">
   <link rel="canonical" href="https://suttacentral.net/">
 
-  <!-- Google Analytics -->
-  <script>
-  window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-  ga('create', 'UA-39277629-1', 'auto');
-  ga('send', 'pageview');
-  </script>
-  <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-  <!-- Temporary fix for broken CSS mixins (@apply) inside LitElement
-       https://github.com/Polymer/lit-html/issues/518 -->
-  <script src="/node_modules/@webcomponents/shadycss/apply-shim.min.js"></script>
 
   <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
   <script src="/node_modules/web-animations-js/web-animations-next.min.js"></script>
 
   <style>
+
+    :root{
+      font-family: var(--sc-sans-font);
+    }
+    
     html, body {
       height: 100%;
     }

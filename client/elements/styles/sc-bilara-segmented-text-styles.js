@@ -57,8 +57,9 @@ export const commonStyles = css`
     font-variant-caps: small-caps;
     font-weight: normal;
     font-size: 2em;
-    @apply --sc-serif-font;
-    @apply --sc-mixed-small-caps;
+    font-family: var(--sc-serif-font);
+    font-variant-caps: small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
   }
 
   .evam .text {

@@ -1,6 +1,5 @@
 import { html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/polymer/polymer-element.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/paper-toast/paper-toast.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -57,7 +56,7 @@ class SCSegmentedText extends SCTextPage {
       }
 
       .loading-indicator {
-        @apply --sc-skolar-font-size-s;
+        font-size: var(--sc-skolar-font-size-s);
         text-align: center;
         height: 60px;
       }
@@ -90,8 +89,6 @@ class SCSegmentedText extends SCTextPage {
     <div class="loading-indicator" hidden$="[[!_shouldShowLoadingIndicator(error, isLoading, isTextViewHidden)]]">
       <paper-spinner-lite active="[[isLoading]]"></paper-spinner-lite>
     </div>
-
-    <iron-a11y-keys id="a11y" keys="alt+m" on-keys-pressed="deathToTheBeast"></iron-a11y-keys>
 
     <sc-nav-contents items="[[navItems]]"></sc-nav-contents>
 
@@ -571,10 +568,6 @@ class SCSegmentedText extends SCTextPage {
           this._addParagraphData(item, paragraph);
         }
       });
-    });
-
-    setTimeout(() => {
-      this._applyQuoteHanger();
     });
   }
 

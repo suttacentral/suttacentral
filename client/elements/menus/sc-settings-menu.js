@@ -32,7 +32,10 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
       }
 
       .dialog-header {
-        @apply --paper-font-title;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-xl);
+        font-weight: 400;
+        line-height: 28px;
         margin: 0;
       }
 
@@ -45,13 +48,19 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
       }
 
       .nerdy-row {
-        @apply --paper-font-body1;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
         color: var(--sc-secondary-text-color);
         margin: var(--sc-size-sm) 0;
       }
 
       .menu-item-title {
-        @apply --paper-font-title;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-xl);
+        font-weight: 400;
+        line-height: 28px;
         color: var(--sc-primary-text-color);
         margin: var(--sc-size-sm) 0;
       }
@@ -71,7 +80,7 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
       }
 
       .menu-item {
-        @apply --sc-skolar-font-size-md;
+        font-size: var(--sc-skolar-font-size-md);
         color: var(--sc-primary-text-color);
         --paper-item-selected-weight: 500;
         cursor: pointer;
@@ -82,7 +91,7 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
       }
 
       .menu-dropdown, .menu-listbox {
-        @apply --sc-skolar-font-size-md;
+        font-size: var(--sc-skolar-font-size-md);
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-dropdown-menu-icon: {
           color: var(--sc-disabled-text-color);
@@ -92,7 +101,7 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
           --paper-input-container-color: var(--sc-secondary-text-color);
         };
         --paper-menu-button-dropdown: {
-          @apply --shadow-elevation-8dp;
+          box-shadow: var(--sc-shadow-elevation-8dp);
           background-color: var(--sc-secondary-background-color);
         };
         background-color: var(--sc-secondary-background-color);
@@ -124,7 +133,7 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
       }
 
       .loading-indicator {
-        @apply --sc-skolar-font-size-s;
+        font-size: var(--sc-skolar-font-size-s);
         width: 90%;
         display: flex;
         text-align: center;
