@@ -170,49 +170,6 @@ export const commonStyles = css`
     border-color: var(--sc-secondary-accent-color);
   }
 
-  #map {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 180px;
-    height: 100%;
-    z-index: 100;
-  }
-
-  #minimap {
-    background: rgba(254,213,70,.1) -moz-element(#segmented_text_content) no-repeat center / contain;
-    position: fixed;
-    right: 10px;
-    top: 80px;
-    width: 10vw;
-    height: auto;
-    max-height: 90vh;
-    display: none;
-  }
-
-  #minimap-range {
-    transform: translatey(-100%) rotate(90deg);
-    transform-origin: bottom left;
-    background-color: transparent;
-    opacity: 0.5;
-    transition: opacity .2s;
-    margin: 0;
-    padding: 0;
-    max-width: 90vh; /* same as #minimap's max-height */
-    height: 10vw; /* same as #minimap's width */
-  }
-
-  #minimap-range::-moz-range-thumb {
-    width: 25px;
-    height: 10vw; /* same as #minimap's width */
-    background-color: dodgerblue;
-    cursor: pointer;
-  }
-
-  #minimap-range::-moz-range-track{
-    background-color: transparent;
-  }
-
   .spanFocused {
     background-color: var(--sc-primary-color-light);
     color: var(--sc-primary-text-color);
