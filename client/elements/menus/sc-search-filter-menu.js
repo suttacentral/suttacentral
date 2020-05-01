@@ -30,7 +30,7 @@ class SCSearchFilterMenu extends LitLocalized(LitElement) {
           --paper-input-container-color: var(--sc-secondary-text-color);
         };
         --paper-menu-button-dropdown: {
-          @apply --shadow-elevation-8dp;
+          box-shadow: var(--sc-shadow-elevation-8dp);
           background-color: var(--sc-secondary-background-color);
         };
         width: 150px;

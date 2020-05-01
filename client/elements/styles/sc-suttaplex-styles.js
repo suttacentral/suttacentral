@@ -5,7 +5,8 @@ export const suttaplexStyles = html`
   paper-button a {
     color: var(--sc-primary-accent-color);
     text-decoration: none;
-    @apply --sc-all-caps;
+    text-transform: uppercase;
+        letter-spacing: var(--sc-caps-letter-spacing);
     font-weight:bold;
   }
 
@@ -14,7 +15,7 @@ export const suttaplexStyles = html`
   }
 
   paper-button.dense {
-    @apply --sc-skolar-font-size-s;
+    font-size: var(--sc-skolar-font-size-s);
     padding-bottom: var(--sc-size-sm);
   }
 

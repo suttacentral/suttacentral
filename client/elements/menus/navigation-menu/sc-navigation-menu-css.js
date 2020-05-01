@@ -8,17 +8,25 @@ ${scrollbarStyle}
   .sc-nav {
     user-select: none;
     height: 100%;
-    @apply --paper-font-common-base;
+    font-family: var(--sc-sans-font);
   }
 
   .paper-spinner {
-    @apply --center;
+            position: absolute;
+        margin: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
   }
 
   .network-error {
-    @apply --center;
-    @apply --sc-sans-font;
-    @apply --sc-skolar-font-size-l;
+            position: absolute;
+        margin: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-l);
     color: var(--sc-secondary-text-color);
     text-align: center;
   }
@@ -33,7 +41,7 @@ ${scrollbarStyle}
   }
 
   .nav-back-button {
-    @apply --sc-skolar-font-size-l;
+    font-size: var(--sc-skolar-font-size-l);
     background-color: var(--sc-disabled-text-color);
     padding: var(--sc-size-sm);
     display: flex;
@@ -48,7 +56,7 @@ ${scrollbarStyle}
   }
 
   .nav-back-title {
-    @apply --sc-skolar-font-size-xl;
+    font-size: var(--sc-skolar-font-size-xl);
     color: var(--sc-tertiary-text-color);
     margin-left: var(--sc-size-sm);
     padding-right: var(--sc-size-md);
@@ -113,8 +121,9 @@ ${scrollbarStyle}
   }
 
   .nav-link {
-    @apply --sc-skolar-font-size-md;
-    @apply --sc-all-caps;
+    font-size: var(--sc-skolar-font-size-md);
+    text-transform: uppercase;
+        letter-spacing: var(--sc-caps-letter-spacing);
     color: var(--sc-primary-text-color);
     display: block;
     font-weight: bold;
@@ -194,7 +203,7 @@ ${scrollbarStyle}
 
   .nav-secondary .nav-link,
   .nav-tertiary .nav-link {
-    @apply --sc-skolar-font-size-s;
+    font-size: var(--sc-skolar-font-size-s);
     padding-right: var(--sc-size-lg);
     font-weight: 400;
   }

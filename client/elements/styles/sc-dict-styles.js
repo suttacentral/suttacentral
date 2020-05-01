@@ -8,8 +8,11 @@ export const dictStyles = html`
 
   dd {
     margin: 0;
-    @apply --sc-paper-font-body;
-    @apply --sc-serif-font;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
+    font-family: var(--sc-serif-font);
   }
 
   dd > p {
@@ -17,11 +20,14 @@ export const dictStyles = html`
   }
 
   dfn {
-    @apply --paper-font-headline;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
+        font-weight: 400;
+        line-height: 32px;
     font-style: normal;
     text-transform: lowercase;
     color: var(--sc-primary-accent-color);
-    @apply --sc-serif-font;
+    font-family: var(--sc-serif-font);
   }
 
   .dppn-entry dfn {
@@ -29,18 +35,22 @@ export const dictStyles = html`
   }
 
   .case {
-    @apply --sc-all-small-caps;
+    font-variant-caps: all-small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
     color: var(--sc-secondary-text-color);
-    @apply --sc-sans-font;
+    font-family: var(--sc-sans-font);
     display: block;
-    @apply --paper-font-body2;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 24px;
     white-space: nowrap;
     overflow: hidden;
   }
 
   dd .ref {
-    @apply --sc-sans-font;
-    @apply --sc-skolar-font-size-s;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-s);
     color: var(--sc-secondary-text-color);
     background-color: var(--sc-textual-info-background-color);
     border-radius: var(--sc-size-xxs);
@@ -49,12 +59,14 @@ export const dictStyles = html`
   }
 
   dd .author {
-    @apply --sc-mixed-small-caps
+    font-variant-caps: all-small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
   }
 
   dd .eti {
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-s);
     color: var(--sc-secondary-text-color);
-    @apply --paper-font-body1
   }
 
   dd .term {
@@ -62,8 +74,8 @@ export const dictStyles = html`
   }
 
   dd .abbr {
-    @apply --sc-skolar-font-size-s;
-    @apply --sc-sans-font;
+    font-size: var(--sc-skolar-font-size-s);
+    font-family: var(--sc-sans-font);
     background-color: var(--sc-paper-tooltip-color);
     color: var(--sc-tertiary-text-color);
     font-weight: bold;
@@ -72,7 +84,7 @@ export const dictStyles = html`
   }
 
   dd .inline-li {
-    @apply --sc-sans-font;
+    font-family: var(--sc-sans-font);
     color: var(--sc-secondary-text-color);
     font-weight: bold;
     padding: 0 8px;
@@ -157,7 +169,7 @@ export const dictStyles = html`
   }
 
   dd li::before {
-    @apply --sc-sans-font;
+    font-family: var(--sc-sans-font);
     color: var(--sc-secondary-text-color);
     font-weight: bold;
     position: absolute;
@@ -166,7 +178,7 @@ export const dictStyles = html`
   }
 
   .google-maps {
-    @apply --vertical-margin-md;
+    margin var(--sc-size-md) 0;
     height: 480px;
   }
 
@@ -186,14 +198,17 @@ export const dictStyles = html`
   }
 
   dd a {
-    @apply --sc-inline-link;
+            color: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--sc-primary-color);
+        text-decoration-skip-ink: auto;
   }
 
   dd a:hover {
-    @apply --sc-inline-link-hover;
+    color: var(--sc-primary-color);
   }
 
   dd a:visited {
-    @apply --sc-inline-link-visited;
+    text-decoration-color: var(--sc-primary-color-dark);
   }
 </style>`;

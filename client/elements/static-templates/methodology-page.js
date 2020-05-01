@@ -11,7 +11,8 @@ class SCMethodologyPage extends SCStaticPage {
     ${staticStyles}
     <style>
       .author {
-        @apply --sc-mixed-small-caps;
+        font-variant-caps: small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
       }
 
       .byline {

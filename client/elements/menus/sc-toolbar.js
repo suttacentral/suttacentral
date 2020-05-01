@@ -29,12 +29,15 @@ class SCToolbar extends LitLocalized(LitElement) {
           max-width: 100%;
         };
         --paper-menu-button-content: {
-          @apply --shadow-elevation-8dp;
+          box-shadow: var(--sc-shadow-elevation-8dp);
         };
       }
 
       .toolbar-input {
-        @apply --sc-paper-font-body;
+        font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
         --paper-input-container: {
           padding: 0;
         };

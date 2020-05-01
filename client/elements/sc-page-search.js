@@ -55,32 +55,39 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .search-result-header {
-          @apply --paper-font-display1;
+          font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-h1-md);
+    font-weight: 400;
+    line-height: 40px;
           display: inline-block;
           margin: 0;
         }
 
         .search-result-term {
-          @apply --sc-serif-font;
+          font-family: var(--sc-serif-font);
           font-weight: bold;
           color: var(--sc-primary-accent-color);
         }
 
         .search-result-item {
           border-bottom: var(--sc-border);
-          @apply --layout-horizontal;
+          display: flex;
+          flex-direction: row;
         }
 
         .search-result-item dl a {
-          @apply --sc-inline-link;
+                  color: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--sc-primary-color);
+        text-decoration-skip-ink: auto;
         }
 
         .search-result-item dl a:hover {
-          @apply --sc-inline-link-hover;
+          color: var(--sc-primary-color);
         }
 
         .search-result-item dl a:visited {
-          @apply --sc-inline-link-visited;
+          text-decoration-color: var(--sc-primary-color-dark);
         }
 
         .search-result-item:focus {
@@ -89,20 +96,27 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .padded-container {
-          @apply --layout-flex;
-          @apply --layout-vertical;
+          display: flex;
+          flex-basis: 0.000000001px;
+          flex-direction: column;
           padding: 0 var(--sc-size-md);
         }
 
         .search-result-title {
-          @apply --paper-font-headline;
-          @apply --sc-serif-font;
+          font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
+        font-weight: 400;
+        line-height: 32px;
+          font-family: var(--sc-serif-font);
           color: var(--sc-primary-accent-color);
           margin: 22px 0 0 0;
         }
 
         .search-result-division {
-          @apply --paper-font-body2;
+          font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 24px;
           color: var(--sc-secondary-text-color);
           margin: 0 0 var(--sc-size-md);
           white-space: nowrap;
@@ -110,7 +124,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .search-result-snippet {
-          @apply --sc-paper-font-body;
+          font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
           margin: 0 0 20px 0;
         }
 
@@ -134,7 +151,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
         .dictionary {
           background-color: var(--sc-secondary-background-color);
-          @apply --shadow-elevation-2dp;
+          box-shadow: var(--sc-shadow-elevation-2dp);
           border-radius: var(--sc-size-xxs);
         }
 
@@ -143,11 +160,17 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .dictionary .search-result-title {
-          @apply --paper-font-subhead;
+          font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
         }
 
         .dictionary dfn {
-          @apply --paper-font-headline;
+          font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
+        font-weight: 400;
+        line-height: 32px;
           font-weight: bold;
         }
 
@@ -157,12 +180,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
         .dictionary .case {
           color: var(--sc-secondary-text-color);
-          @apply --sc-all-small-caps;
+          font-variant-caps: all-small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
           display: block;
         }
 
         .dictionary .ref {
-          @apply --sc-skolar-font-size-s;
+          font-size: var(--sc-skolar-font-size-s);
           color: var(--sc-secondary-text-color);
           background-color: var(--sc-textual-info-background-color);
           border-radius: var(--sc-size-xxs);
@@ -171,7 +195,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .paper-spinner {
-          @apply --center;
+                  position: absolute;
+        margin: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         }
 
         .google-maps {
@@ -194,7 +222,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .loading-indicator {
-          @apply --sc-skolar-font-size-s;
+          font-size: var(--sc-skolar-font-size-s);
           text-align: center;
           height: 60px;
           margin-top: 25vh;

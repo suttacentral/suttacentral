@@ -16,12 +16,15 @@ export const suttaplexCss = html`
   }
 
   h1 {
-    @apply --paper-font-compact-title;
+    font-family: var(--sc-serif-font);
+        font-size: var(--sc-skolar-font-size-xl);
+        font-weight: 400;
+        line-height: 28px;
     margin: 0;
   }
 
   h1:not(.compact) {
-    @apply --sc-skolar-font-size-static-subtitle;
+    font-size: var(--sc-skolar-font-size-static-subtitle);
   }
 
   .hide-element {
@@ -55,7 +58,7 @@ export const suttaplexCss = html`
   .top-menu-button {
     padding: 0;
     --paper-menu-button-dropdown: {
-      @apply --shadow-elevation-8dp;
+      box-shadow: var(--sc-shadow-elevation-8dp);
     };
   }
 
@@ -83,7 +86,10 @@ export const suttaplexCss = html`
   }
  
   .suttaplex-nerdy-row {
-    @apply --paper-font-body2;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 24px;
     color: var(--sc-secondary-text-color);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -109,7 +115,10 @@ export const suttaplexCss = html`
   }
 
   .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
-    @apply --paper-font-body1;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
     position: absolute;
     z-index: 200;
     background-color: var(--sc-tertiary-background-color);
@@ -141,7 +150,10 @@ export const suttaplexCss = html`
   }
   
   .blurb, .section-details h3 {
-    @apply --sc-paper-font-body;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
   }
   
   .top-row-icons {
@@ -237,12 +249,18 @@ export const suttaplexTxCss = html`
 
   .tx-creator {
     margin-right: var(--sc-size-md);
-    @apply --sc-paper-font-body-serif;
+    font-family: var(--sc-serif-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
   }
 
   .tx-publication {
     color: var(--sc-secondary-text-color);
-    @apply --paper-font-body2;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 24px;
   }
   
   .arrow {
@@ -304,7 +322,10 @@ export const parallelsListCss = html`
   }
   
   .parallels-root-id {
-    @apply --paper-font-body1;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
   }
 
   .paper-spinner {
@@ -348,13 +369,19 @@ export const parallelItemCss = html`
   }
 
   .parallel-item-title {
-    @apply --paper-font-body1;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
     word-wrap: normal;
   }
 
   .parallel-item-biblio-info {
-    @apply --paper-font-body1;
-    @apply --shadow-elevation-3dp;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
+    box-shadow: var(--sc-shadow-elevation-3dp);
     border-top: var(--sc-border);
     position: absolute;
     z-index: 200;
@@ -369,7 +396,10 @@ export const parallelItemCss = html`
   }
 
   .parallel-item-details {
-    @apply --paper-font-body2;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 24px;
     color: var(--sc-secondary-text-color);
     overflow: hidden;
   }

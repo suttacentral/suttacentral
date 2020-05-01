@@ -29,216 +29,288 @@ export const textStyles = html`
   }
 
   [lang="ar"] .sutta, [lang="fa"] .sutta {
-    @apply --sc-arabic-serif-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-arabic-serif-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="ar"] .hgroup p, [lang="fa"] .hgroup p {
-    @apply --sc-arabic-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-arabic-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="he"] .sutta {
-    @apply --sc-hebrew-serif-font;
+    font-family: var(--sc-hebrew-serif-font);
   }
 
   [lang="he"] .hgroup p {
-    @apply --sc-hebrew-sans-font;
-    @apply --sc-remove-small-caps;
+    font-family: var(--sc-hebrew-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
   }
 
   [lang="hi"] .sutta, [lang="mr"] .sutta,
   [lang="pli-Deva"] .word, .devanagari-script .word {
-    @apply --sc-devanagari-serif-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-devanagari-serif-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="hi"] .hgroup p, [lang="mr"] .hgroup p,
   .hgroup p [lang="pli-Deva"] .word,
   .devanagari-script .hgroup p .word {
-    @apply --sc-devanagari-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-devanagari-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   .uddanagatha [lang="pli-Deva"] .word,
   .devanagari-script .uddanagatha .word {
-    @apply --sc-devanagari-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-s;
+    font-family: var(--sc-devanagari-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-s);
+    line-height: 23px;
   }
 
   [lang="my"] .sutta, [lang="pli-Mymr"] .word,
   .myanmar-script .word {
-    @apply --sc-myanmar-serif-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-myanmar-serif-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="my"] .hgroup p, .hgroup p [lang="pli-Mymr"] .word,
   .myanmar-script .hgroup p .word {
-    @apply --sc-myanmar-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-myanmar-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   .uddanagatha [lang="pli-Mymr"] .word,
   .myanmar-script .uddanagatha .word {
-    @apply --sc-myanmar-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-s;
+    font-family: var(--sc-myanmar-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-s);
+    line-height: 23px;
   }
 
   [lang="si"] .sutta, [lang="pli-Sinh"] .word,
   .sinhala-script .word {
-    @apply --sc-sinhala-serif-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-sinhala-serif-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="si"] .hgroup p, .hgroup p [lang="pli-Sinh"] .word,
   .sinhala-script .hgroup p .word {
-    @apply --sc-sinhala-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-sinhala-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   .uddanagatha [lang="pli-Sinh"] .word,
   .sinhala-script .uddanagatha .word {
-    @apply --sc-sinhala-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-s;
+    font-family: var(--sc-sinhala-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-s);
+    line-height: 23px;
   }
 
   [lang="ta"] .sutta {
-    @apply --sc-tamil-serif-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-tamil-serif-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="ta"] .hgroup p {
-    @apply --sc-tamil-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-tamil-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="bn"] .sutta {
-    @apply --sc-bengali-serif-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-bengali-serif-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="bn"] .hgroup p {
-    @apply --sc-bengali-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-bengali-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="th"] .sutta, [lang="pli-Thai"] .word,
   .thai-script .word {
-    @apply --sc-thai-serif-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-thai-serif-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="th"] .hgroup p, .hgroup p [lang="pli-Thai"] .word,
   .thai-script .hgroup p .word {
-    @apply --sc-thai-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-thai-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="th"] .uddana, .uddanagatha [lang="pli-Thai"] .word,
   .thai-script .uddanagatha .word {
-    @apply --sc-thai-sans-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-s;
+    font-family: var(--sc-thai-sans-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-s);
+    line-height: 23px;
   }
 
   [lang="xct"] .sutta {
-    @apply --sc-tibetan-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-tibetan-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="xct"] .hgroup p {
-    @apply --sc-tibetan-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-tibetan-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="zh"] .sutta, [lang="lzh"] .sutta {
-    @apply --sc-traditional-chinese-font;
-    @apply --sc-dense-font-size-md;
+    font-family: var(--sc-traditional-chinese-font);
+    font-size: var(--sc-dense-font-size-md);
+    line-height: 26px;
   }
 
   [lang="lzh"] .hgroup p, [lang="zh"] .hgroup p,
   [lang="lzh"] .counter, [lang="lzh"] .t-counter {
-    @apply --sc-traditional-chinese-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-dense-font-size-md;
+    font-family: var(--sc-traditional-chinese-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-dense-font-size-md);
+    line-height: 26px;
   }
 
   [lang="lzh"] .uddana, [lang="zh"] .uddanagatha {
-    @apply --sc-traditional-chinese-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-dense-font-size-s;
+    font-family: var(--sc-traditional-chinese-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-dense-font-size-s);
+    line-height: 23px;
   }
 
   [lang="ko"] .sutta {
-    @apply --sc-korean-font;
-    @apply --sc-dense-font-size-md;
+    font-family: var(--sc-korean-font);
+    font-size: var(--sc-dense-font-size-md);
+    line-height: 26px;
   }
 
   [lang="ko"] .hgroup p {
-    @apply --sc-korean-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-dense-font-size-md;
+    font-family: var(--sc-korean-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-dense-font-size-md);
+    line-height: 26px;
   }
 
   [lang="jpn"] .sutta {
-    @apply --sc-japanese-font;
-    @apply --sc-dense-font-size-md;
+    font-family: var(--sc-japanese-font);
+    font-size: var(--sc-dense-font-size-md);
+    line-height: 26px;
   }
 
   [lang="jpn"] .hgroup p {
-    @apply --sc-japanese-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-dense-font-size-md;
+    font-family: var(--sc-japanese-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-dense-font-size-md);
+    line-height: 26px;
   }
 
   [lang="jpn"] .uddana {
-    @apply --sc-japanese-font;
-    @apply --sc-remove-small-caps;
-    @apply --sc-dense-font-size-s;
+    font-family: var(--sc-japanese-font);
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
+    font-size: var(--sc-dense-font-size-s);
+    line-height: 23px;
   }
 
   [lang="ev"] .sutta {
-    @apply --sc-tengwar-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-tengwar-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="kln"] .sutta {
-    @apply --sc-klingon-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-klingon-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="vu"] .sutta {
-    @apply --sc-vulcan-font;
-    @apply --sc-tall-font-size-xl;
+    font-family: var(--sc-vulcan-font);
+    font-size: var(--sc-tall-font-size-xl);
+    line-height: 30px;
   }
 
   [lang="au"] .sutta {
-    @apply --sc-aurebesh-font;
-    @apply --sc-tall-font-size-md;
+    font-family: var(--sc-aurebesh-font);
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="vi"] .sutta, [lang="vi"] .hgroup p {
-    @apply --sc-tall-font-size-md;
+    font-size: var(--sc-tall-font-size-md);
+    line-height: 34px;
   }
 
   [lang="vi"] .uddana, [lang="vi"] .uddanagatha {
-    @apply --sc-tall-font-size-s;
+    font-size: var(--sc-tall-font-size-s);
+    line-height: 23px;
   }
 
   .sutta, article.latin-script {
-    @apply --sc-paper-font-body;
-    @apply --sc-serif-font;
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
+    font-family: var(--sc-serif-font);
   }
 
   .html-text-content section {
@@ -258,7 +330,7 @@ export const textStyles = html`
   }
 
   .html-text-content.line-by-line .original-text {
-    @apply --sc-sans-font;
+   font-family: var(--sc-sans-font);
     color: var(--sc-secondary-text-color);
     margin-bottom: 20px;
   }
@@ -269,17 +341,21 @@ export const textStyles = html`
 
   .original-text:not([lang='pli-Latn']) {
     font-style: normal;
-    @apply --sc-remove-small-caps;
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
     font-synthesis: none;
   }
 
   .html-text-content:not(.latin-script) .word {
     font-style: normal;
-    @apply --sc-remove-small-caps;
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
   }
 
   [lang='pli-Latn'] .original-text {
-    @apply --sc-serif-font;
+    font-family: var(--sc-serif-font);
   }
 
   .side-by-side .translated-text {
@@ -290,7 +366,7 @@ export const textStyles = html`
   }
 
   .side-by-side .original-text {
-    @apply --sc-sans-font;
+   font-family: var(--sc-sans-font);
     display: inline-block;
     width: 47%;
     padding-left: 5px;
@@ -306,7 +382,7 @@ export const textStyles = html`
   }
 
   .show-pali .original-text {
-    @apply --sc-serif-font;
+    font-family: var(--sc-serif-font);
     display: inline;
   }
 
@@ -314,8 +390,8 @@ export const textStyles = html`
     --paper-tooltip-opacity: 0.98;
     --paper-tooltip-background: var(--sc-paper-tooltip-color);
     --paper-tooltip: {
-      @apply --sc-sans-font;
-      @apply --sc-skolar-font-size-xs;
+     font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-xs);
       line-height: var(--sc-size-md);
       padding: var(--sc-size-sm) var(--sc-size-md);
       text-shadow: 0 0 var(--sc-secondary-background-color);
@@ -336,8 +412,11 @@ export const textStyles = html`
 
   .suttainfo,
   .colophon {
-    @apply --paper-font-body1;
-    @apply --padding-md;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
+    padding: var(--sc-size-md);
     color: var(--sc-secondary-text-color);
     background: var(--sc-primary-background-color);
     border: 1px solid var(--sc-tertiary-background-color);
@@ -349,10 +428,11 @@ export const textStyles = html`
   [lang="lzh"] .suttainfo,
   .xu,
   .w {
-    @apply --sc-traditional-chinese-font;
-    @apply --sc-dense-font-size-md;
+    font-family: var(--sc-traditional-chinese-font);
+    font-size: var(--sc-dense-font-size-md);
+    line-height: 26px;
     font-weight: 400;
-    @apply --padding-md;
+    padding: var(--sc-size-md);
     color: var(--sc-secondary-text-color);
     background: var(--sc-primary-background-color);
     border: 1px solid var(--sc-tertiary-background-color);
@@ -441,7 +521,10 @@ export const textStyles = html`
 
   .uddana {
     color: var(--sc-secondary-text-color);
-    @apply --paper-font-body1;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
   }
 
   .uddana-intro {
@@ -453,13 +536,16 @@ export const textStyles = html`
   .endvagga {
     text-align: center;
     color: var(--sc-secondary-text-color);
-    @apply --sc-all-caps;
+    text-transform: uppercase;
+        letter-spacing: var(--sc-caps-letter-spacing);
   }
 
   [lang="si"] .endbook,
   [lang="zh"] .endbook,
   [lang="si"] .endvagga {
-    @apply --sc-remove-small-caps;
+    font-variant-caps: normal;
+    letter-spacing: normal;
+    text-transform: none;;
   }
 
   .endbook {
@@ -490,13 +576,13 @@ export const textStyles = html`
   [lang="en"] .add,
   .infomode .add {
     color: var(--sc-secondary-text-color);
-    @apply --sc-sans-font;
+   font-family: var(--sc-sans-font);
   }
 
   [lang="lzh"] .add,
   [lang="xct"] .add {
     color: var(--sc-secondary-text-color);
-    @apply --sc-noto-sans-font;
+    font-family: var(--sc-noto-sans-font);
   }
 
   [lang="pli"] p,
@@ -518,7 +604,7 @@ export const textStyles = html`
   }
 
   .infomode .metre {
-    @apply --sc-skolar-font-size-xxs;
+    font-size: var(--sc-skolar-font-size-xxs);
     color: var(--sc-primary-accent-color);
     display: inline-block;
     position: absolute;
@@ -567,8 +653,8 @@ export const textStyles = html`
     --paper-tooltip-opacity: 0.98;
     --paper-tooltip-background: var(--sc-paper-tooltip-color);
     --paper-tooltip: {
-      @apply --sc-sans-font;
-      @apply --sc-skolar-font-size-xs;
+     font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-xs);
       line-height: var(--sc-size-md);
       padding: var(--sc-size-sm) var(--sc-size-md);
       text-shadow: 0 0 var(--sc-secondary-background-color);
@@ -660,12 +746,16 @@ export const textStyles = html`
 
   .uddanagatha {
     color: var(--sc-secondary-text-color);
-    @apply --paper-font-body1;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
     font-style: inherit;
   }
 
   .evam {
-    @apply --sc-all-small-caps;
+    font-variant-caps: all-small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
   }
 
   .namo {
@@ -693,7 +783,11 @@ export const textStyles = html`
 
   .counter,
   .t-counter {
-    @apply --paper-font-body2-chinese;
+    font-family: var(--sc-traditional-chinese-font);
+        font-size: var(--sc-dense-font-size-s);
+    line-height: 23px;
+        font-weight: 400;
+        line-height: 20px;
     color: var(--sc-secondary-text-color);
   }
 
