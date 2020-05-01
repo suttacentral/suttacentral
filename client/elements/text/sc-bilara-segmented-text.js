@@ -22,7 +22,6 @@ import {
   allInlineReferenceStyles,
   mainInlineReferenceStyles
 } from '../styles/sc-bilara-segmented-text-styles.js';
-import { textHeadingStyles } from '../styles/sc-text-heading-styles.js';
 
 class SCBilaraSegmentedText extends SCLitTextPage {
   static get properties() {
