@@ -1,7 +1,6 @@
 import { html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
-import '@polymer/paper-toast/paper-toast.js';
 import '@polymer/iron-icon/iron-icon.js';
 
 import '../addons/sc-nav-contents';
@@ -180,10 +179,6 @@ class SCSegmentedText extends SCTextPage {
         type: Boolean,
         statePath: 'textOptions.paliLookupActivated',
         observer: '_paliLookupStateChanged'
-      },
-      tooltipCount: {
-        type: Number,
-        value: 0
       },
       spansForWordsGenerated: {
         type: Boolean,
@@ -365,7 +360,6 @@ class SCSegmentedText extends SCTextPage {
         break;
       case 'popup':
         textContent.classList.add('popup');
-        this._addPopupTooltips(textContent);
         break;
     }
   }
@@ -382,9 +376,6 @@ class SCSegmentedText extends SCTextPage {
   // reset all classes and remove tooltips.
   _resetViewOptions() {
     this.$.segmented_text_content.classList.remove('side-by-side', 'line-by-line', 'popup', 'show-pali');
-    Array.from(this.shadowRoot.querySelectorAll('paper-tooltip')).forEach(item =>
-      item.parentNode.removeChild(item)
-    );
     Array.from(this.shadowRoot.querySelectorAll('.translated-text')).forEach(item =>
       item.classList.remove('highlightable-segment')
     );
@@ -914,10 +905,9 @@ class SCSegmentedText extends SCTextPage {
       return;
     }
     const segments = this.shadowRoot.querySelectorAll('.original-text');
-    const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
     const scriptNames = Object.keys(this.scriptIsoCodes);
     if (this.hasScriptBeenChanged) {
-      this._resetScript(segments, tooltips);
+      this._resetScript(segments);
     }
     if (toScript === 'latin') {
       this.$.segmented_text_content.classList.add('latin-script');
@@ -927,7 +917,7 @@ class SCSegmentedText extends SCTextPage {
       }
       this.hasScriptBeenChanged = false;
     } else if (scriptNames.includes(toScript)) { // if the script name is valid:
-      this._setScript(toScript, segments, tooltips);
+      this._setScript(toScript, segments);
       this.hasScriptBeenChanged = true;
     }
     if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
@@ -945,7 +935,7 @@ class SCSegmentedText extends SCTextPage {
     targetNode.setAttribute('lang', langAttr);
   }
 
-  _resetScript(segments, tooltips) {
+  _resetScript(segments) {
     Object.keys(this.scriptIsoCodes).forEach((scriptName) => {
       this.$.segmented_text_content.classList.remove(`${scriptName}-script`);
     });
@@ -953,16 +943,14 @@ class SCSegmentedText extends SCTextPage {
       let words = item.querySelectorAll('.word');
       Array.from(words).forEach(word => word.innerHTML = word.dataset.latin_text || word.innerHTML);
     });
-    Array.from(tooltips).forEach(item => item.innerHTML = this.rootSutta.strings[item.id]);
   }
 
-  _setScript(scriptName, segments, tooltips) {
+  _setScript(scriptName, segments) {
     this.$.segmented_text_content.classList.add(`${scriptName}-script`);
     const t = new Transliterator();
     const scriptFunctionName = `to${this._capitalize(scriptName)}`;
     this._ensureSpansExist();
     this._setScriptOfSegments(segments, scriptFunctionName, t);
-    Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
   }
 
   _ensureSpansExist() {
@@ -1021,7 +1009,6 @@ class SCSegmentedText extends SCTextPage {
       }
       empty = false;
       this._putSegmentIntoSpans(segment, unit, this);
-      this._addLookupTooltips(segment, this);
     }
     if (empty) {
       return;
@@ -1083,47 +1070,6 @@ class SCSegmentedText extends SCTextPage {
     node.data = str;
   }
 
-  _addPopupTooltips(textContent) {
-    const transliterator = new Transliterator();
-    Array.from(textContent.querySelectorAll('.translated-text')).forEach(segment => {
-      let tooltip = document.createElement('paper-tooltip');
-      let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
-      this._setTooltipOptions(tooltip);
-      segment.addEventListener('mouseover', () => {
-        if (this.chosenTextView !== 'popup') return;
-        requestAnimationFrame(() => {
-          segment.style.color = this._getAccentColor();
-          states.isWordHovered = true;
-          this._showPopupTooltip(segment, tooltip, states, transliterator);
-        });
-      });
-      segment.addEventListener('mouseout', () => {
-        states.isWordHovered = false;
-        this._resetColor(states, segment);
-        this._removeTooltip(segment, tooltip, states);
-      });
-      tooltip.addEventListener('mouseover', () => {
-        states.isTooltipHovered = true;
-      });
-      tooltip.addEventListener('mouseout', () => {
-        states.isTooltipHovered = false;
-        this._removeTooltip(segment, tooltip, states);
-      });
-    }
-    );
-  }
-
-  _showPopupTooltip(segment, tooltip, states, transliterator) {
-    tooltip.innerHTML = this._transliterateFragment(this.rootSutta.strings[segment.id], transliterator);
-    segment.appendChild(tooltip);
-    requestAnimationFrame(() => {
-      if (states.isWordHovered && !states.isTooltipShown) {
-        tooltip.show();
-        states.isTooltipShown = true;
-      }
-    });
-  }
-
   _transliterateFragment(fragment, transliterator) {
     if (this.paliScript === 'latin') {
       return fragment;
@@ -1131,72 +1077,6 @@ class SCSegmentedText extends SCTextPage {
       const scriptFunctionName = `to${this._capitalize(this.paliScript)}`;
       return transliterator[scriptFunctionName](fragment);
     }
-  }
-
-  _showLookupTooltip(v, tooltip, paliLookup, states) {
-    let lookupResult = paliLookup.lookupWord(v.dataset.latin_text || v.textContent);
-    tooltip.innerHTML = lookupResult.html;
-    v.parentNode.insertBefore(tooltip, v.nextSibling);
-    if (states.isWordHovered && !states.isTooltipShown) {
-      v.id = `lookup_target${this.tooltipCount}`;
-      tooltip.for = `lookup_target${this.tooltipCount}`;
-      this.tooltipCount++;
-      tooltip.show();
-      states.isTooltipShown = true;
-    }
-  }
-
-  _removeTooltip(word, tooltip, states) {
-    requestAnimationFrame(() => {
-      if (!states.isWordHovered && !states.isTooltipHovered) {
-        word.style.color = '';
-        if (word.nodeName !== 'SC-SEG') {
-          word.removeAttribute('id');
-        }
-        tooltip.hide();
-        states.isTooltipShown = false;
-      }
-    });
-  }
-
-  _addLookupTooltips(textContainer) {
-    let paliLookup = this.shadowRoot.querySelector('#pali_lookup');
-    textContainer.querySelectorAll('.word').forEach((word) => {
-      let tooltip = document.createElement('paper-tooltip');
-      let states = { isWordHovered: false, isTooltipHovered: false, isTooltipShown: false };
-      this._setTooltipOptions(tooltip);
-      word.addEventListener('mouseover', () => {
-        if (this.isPaliLookupEnabled) {
-          requestAnimationFrame(() => {
-            word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
-            states.isWordHovered = true;
-            this._showLookupTooltip(word, tooltip, paliLookup, states);
-          });
-        }
-      });
-      word.addEventListener('mouseout', () => {
-        states.isWordHovered = false;
-        this._resetColor(states, word);
-        this._removeTooltip(word, tooltip, states);
-      });
-      tooltip.addEventListener('mouseover', () => {
-        states.isTooltipHovered = true;
-      });
-      tooltip.addEventListener('mouseout', () => {
-        states.isTooltipHovered = false;
-        this._removeTooltip(word, tooltip, states);
-      });
-    })
-  }
-
-  _setTooltipOptions(tooltip) {
-    tooltip.classList.add('lookup-tooltip');
-    tooltip.animationDelay = 0;
-    tooltip.position = 'top';
-    tooltip.manualMode = true;
-    tooltip.fitToVisibleBounds = true;
-    tooltip.offset = 0;
-    tooltip.style['padding-bottom'] = '.2em';
   }
 
   _getAccentColor() {
