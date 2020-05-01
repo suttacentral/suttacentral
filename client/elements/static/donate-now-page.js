@@ -15,7 +15,6 @@ import "@polymer/paper-item/paper-item-body.js";
 import "@polymer/iron-form/iron-form.js";
 import "@polymer/paper-spinner/paper-spinner.js";
 import "@polymer/iron-location/iron-location.js";
-import "@polymer/paper-toast/paper-toast.js";
 
 import '../addons/stripe-card.js';
 import '../addons/sc-error-icon.js';
