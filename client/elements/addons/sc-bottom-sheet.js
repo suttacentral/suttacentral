@@ -105,7 +105,7 @@ export class SCBottomSheet extends LitElement {
 
     dfn {
         background-color: var(--sc-primary-color-light);
-        color: var(--sc-primary-text-color);
+        color: var(--sc-paper-tooltip-color);
         padding: 0 var(--sc-size-sm);
         margin-left: calc((100vw - 960px) / 2);
     }
@@ -118,7 +118,7 @@ export class SCBottomSheet extends LitElement {
         height: 120px;
         overflow-x: hidden;
         overflow-y: auto;
-        padding: 16px 16px 0;
+        padding: 12px 16px 0;
         box-sizing: border-box;
         width: 960px
     }

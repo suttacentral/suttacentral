@@ -307,7 +307,6 @@ export const textStyles = html`
   }
 
   .sutta, article.latin-script {
-    font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
     line-height: 24px;
