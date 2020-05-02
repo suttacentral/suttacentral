@@ -1,5 +1,4 @@
 import { html,css } from 'lit-element';
-import '../styles/sc-font-styles.js'
 
 export const commonStyles = css`
   :root{
@@ -16,70 +15,150 @@ export const commonStyles = css`
     --sc-size-lg: 32px;
     --sc-size-xl: 48px;
     --sc-size-xxl: 64px;
+     font-size: var(--sc-skolar-font-size-md);
   }
+  * {
+  margin: 0
+}
 
-  nav{
-    display: inline-block;
-  }
-  body {
-    margin: 4em 0;
-    background-color: var(--sc-primary-background-color);
-    font-family: var(--sc-sans-font);
-    color: var(--sc-primary-text-color);
-  }
   main {
     display: flex;
     justify-content: center;
-    margin: 2em 1em;
-  }
+    background-color: var(--sc-tertiary-background-color);
+    color: var(--sc-primary-text-color);
 
-  /* Anchor tooltips. */
-  article {
-    position: relative;
-  }
-
-  .text{
-  font-family: var(--sc-serif-font);
-}
-
-p{
-  font-size: var(--sc-skolar-font-size-md);
-  line-height: 1.4em
-}
-
-p .text{
-  
-}
-
+          }
+          article{
+                margin: 4em 1em ;
+          }
   header {
     text-align: center;
-    margin: 2em 0;
     color: var(--sc-secondary-text-color);
+    margin: 4em 0;
   }
-
-  header p span.text{
-    margin: 0;
+  header li span.text
+  {
     font-variant-caps: all-small-caps;
     font-weight: normal;
     font-family: var(--sc-sans-font);
   }
 
-  header p{
-    margin: 0
+
+header ul{
+  margin: 0.7em 0;
+  list-style-type: none;
+}
+
+h2, h3, h4, h5, h6 {
+  margin: 1em 0 0 0;
+  color: var(--sc-secondary-text-color);
+}
+p, ul, ol{
+  margin: 0.75em 0 0 0;
+  line-height: 1.5;
+  font-family: var(--sc-serif-font);
+  font-size: 1em;
+  padding: 0
+}
+/* font sizes */
+h1, h2, h3, h4, h5, h6{
+    line-height: 1.3333;
+    font-family: var(--sc-serif-font);
+}
+h1{
+  font-size: 2em;
+  font-size: clamp(1.5em, 5vw, 2em);
+  font-weight: 300;
+  font-family: "Skolar PE Light";
+  font-variant-caps: small-caps;
+  letter-spacing: var(--sc-caps-letter-spacing);
+  text-align: center;
+}
+h2{
+  font-size: 1.5em;
+  font-size: clamp(1.125em, 3.75vw, 1.5em);
+  font-weight: 400;
+  font-variant-caps: small-caps;
+  letter-spacing: var(--sc-caps-letter-spacing);
+  text-align: center;
+}
+h3{
+  font-size: 1.333em;
+  font-size: clamp(1em, 3.333vw, 1.333em);
+  font-weight: 400;
+  font-variant-caps: small-caps;
+  letter-spacing: var(--sc-caps-letter-spacing);
+  text-align: center;
+}
+h4{
+  font-size: clamp(1em, 5vw, 1.333em);;
+  font-weight: 600;
+}
+h5{
+  font-size: 1em;
+  font-weight: 600;
+}
+h6{
+  font-size: 1em;
+  font-weight: 400;
+}
+
+  .evam  {
+    font-variant-caps: all-small-caps;
   }
 
-  header h1 {
-    margin: 0;
-    font-variant-caps: small-caps;
-    font-weight: normal;
-    font-size: 2.15rem;
-    font-family: var(--sc-serif-font);
-    font-variant-caps: small-caps;
+  blockquote {
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+
+   .endsection,
+  .end,
+  .endkanda  {
+    font-style: italic;
+    text-align: center;
+    color: var(--sc-secondary-text-color);
+  }
+
+  .endsutta {
+    font-weight: bold;
+    text-align: center;
+    color: var(--sc-secondary-text-color);
+  }
+    .endbook {
+    font-weight: bold;
+    text-align: center;
+    color: var(--sc-secondary-text-color);
+    text-transform: uppercase;
     letter-spacing: var(--sc-caps-letter-spacing);
   }
 
-  .evam  {
-    font-variant-caps: small-caps;
+  .endvagga {
+    text-align: center;
+    color: var(--sc-secondary-text-color);
+    text-transform: uppercase;
+    letter-spacing: var(--sc-caps-letter-spacing);
+  }
+
+  .uddana,
+  .uddanagatha,
+   {
+    color: var(--sc-secondary-text-color);
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
+  }
+
+  .uddana-intro {
+    font-weight: bold;
+    color: var(--sc-secondary-text-color);
+  }
+
+
+/* Notes */
+
+  /* Anchor tooltips. */
+  article {
+    position: relative;
   }
 
   .variant,
@@ -94,11 +173,10 @@ p .text{
 
   .variant,
   .comment {
-    font-size: var( --sc-skolar-font-size-xs);
     padding: var(--sc-size-sm) var(--sc-size-md);
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-secondary-background-color);
-    line-height: 1.3
+
   }
 
   .variant:hover,
@@ -109,10 +187,8 @@ p .text{
 .reference  a {
     color: var(--sc-secondary-text-color);
     text-decoration: none;
-    padding-right: var(--sc-size-xs);
     white-space: nowrap;
    font-feature-settings: "dnom";
-  font-size: var(--sc-skolar-font-size-md);
   font-weight: 500;
   letter-spacing: -0.4px;
   font-variant-caps: normal;
@@ -120,7 +196,18 @@ p .text{
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    line-height: 0.3;
+  }
+  .reference  a:after{
+    content: " ";
+    white-space: pre;
+  }
+  header .reference a,
+  h2 .reference a,
+  h3 .reference a,
+  h4 .reference a,
+  h5 .reference a,
+  h6 .reference a{
+    display: none
   }
 
   .pts:before{
@@ -129,13 +216,7 @@ p .text{
      font-feature-settings: "ordn";
   }
 
-  blockquote{
-    margin: 0;
-  }
 
-  blockquote .text{
-    margin-left: 2em;
-  }
 
   /* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
 
@@ -177,6 +258,7 @@ p .text{
   span, p, li {
     hanging-punctuation: first last;
   }
+
 `;
 
 export const plainStyles = html`

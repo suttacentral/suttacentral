@@ -138,7 +138,6 @@ class SCPageDictionary extends LitLocalized(LitElement) {
           <h1><span class="dictionary-results-description">${this.localize('definitionsFor')}</span> <span class="dictionary-results-term">${this.dictionaryWord}</span></h1>
           <span class="terms-button">
             <paper-icon-button icon="sc-iron-icons:menu" id="menu_icon" @tap=${this._toggleDrawer}></paper-icon-button>
-            <paper-tooltip for="menu_icon" class="sc-tooltip" fit-to-visible-bounds="">${this.localize('relatedItems')}</paper-tooltip>
           </span>
         </div>
         <div class="dictionary-entries">

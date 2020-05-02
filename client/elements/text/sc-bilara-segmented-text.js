@@ -590,7 +590,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _addVariantSpan(value) {
     let span = document.createElement('span');
     span.className = 'variant';
-    span.title = 'variant reading';
     span.dataset.tooltip = value;
     let text = document.createTextNode(value);
     span.appendChild(text);
