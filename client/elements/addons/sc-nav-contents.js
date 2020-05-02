@@ -12,7 +12,10 @@ const styles = html`
   }
 
   li {
-    @apply --sc-paper-font-body;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
     margin: 0.5em 0;
     padding: var(--sc-size-xs) 0;
   }
@@ -22,16 +25,19 @@ const styles = html`
   }
 
   a {
-    @apply --sc-inline-link;
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--sc-primary-color);
+        text-decoration-skip-ink: auto;
     text-decoration: none;
   }
 
   a:hover  {
-    @apply --sc-inline-link-hover;
+    color: var(--sc-primary-color);
   }
 
   a:visited {
-    @apply --sc-inline-link-visited;
+    text-decoration-color: var(--sc-primary-color-dark);
   }
 </style>`;
 

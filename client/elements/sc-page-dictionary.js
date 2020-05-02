@@ -2,7 +2,6 @@ import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
 import { API_ROOT } from '../constants.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
 import { scrollbarStyle } from './styles/sc-scrollbar-style.js';
@@ -38,14 +37,17 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       }
 
       h1 {
-        @apply --paper-font-display1;
+        font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-h1-md);
+    font-weight: 400;
+    line-height: 40px;
         color: var(--sc-secondary-text-color);
         display: inline-block;
         margin: 0 0 0 -2px;
       }
 
       .dictionary-results-term {
-        @apply --sc-serif-font;
+        font-family: var(--sc-serif-font);
         font-weight: bold;
         color: var(--sc-primary-accent-color);
       }
@@ -67,7 +69,10 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       }
 
       .related-terms h3 {
-        @apply --paper-font-body1;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
         color: var(--sc-secondary-text-color);
         margin: var(--sc-size-md-larger) 0 0 var(--sc-size-md);
         font-weight: bold;
@@ -78,7 +83,10 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       }
 
       .related-terms li {
-        @apply --paper-font-body1;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
       }
 
       .related-terms a {
@@ -94,11 +102,14 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       }
 
       .dictionary-source {
-        @apply --paper-font-body1;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
         color: var(--sc-secondary-text-color);
         margin: var(--sc-size-sm) 0 var(--sc-size-md);
         font-weight: bold;
-        @apply --sc-serif-font;
+        font-family: var(--sc-serif-font);
       }
 
       .dictionary-book-entry {
@@ -109,18 +120,6 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         --app-drawer-content-container: {
           overflow-y: scroll;
           background-color: var(--sc-secondary-background-color);
-        }
-      }
-
-      .sc-tooltip {
-        --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--sc-paper-tooltip-color);
-        --paper-tooltip: {
-          @apply --sc-skolar-font-size-xs;
-          line-height: var(--sc-size-md);
-          padding: var(--sc-size-sm) var(--sc-size-md);
-          text-shadow: 0 0 var(--sc-secondary-background-color);
-          white-space: normal;
         }
       }
 

@@ -65,8 +65,6 @@ class SCSimpleText extends SCLitTextPage {
       }
     </style>
 
-    <iron-a11y-keys id="a11y" keys="alt+m" @keys-pressed=${this.deathToTheBeast}></iron-a11y-keys>
-
     <div id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
       ${unsafeHTML(this._extractSuttaText())}
     </div>
@@ -286,9 +284,6 @@ class SCSimpleText extends SCLitTextPage {
         });
       });
     }
-    setTimeout(() => {
-      this._applyQuoteHanger();
-    });
   }
 
   _shouldDisplayBookIcon(divisionId, itemId) {

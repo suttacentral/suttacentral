@@ -4,7 +4,7 @@ export const lookupStyles = html`
 <style>
   :host {
     --paper-tooltip: {
-      @apply --sc-skolar-font-size-s;
+      font-size: var(--sc-skolar-font-size-s);
       background-color: var(--sc-paper-tooltip-color);
       font-feature-settings: normal;
       letter-spacing: 0;

@@ -23,9 +23,8 @@ export const commonStyles = css`
   }
   body {
     margin: 4em 0;
-    line-height: 1.4;
     background-color: var(--sc-primary-background-color);
-    font-family: "Skolar PE", "Skolar Sans PE";
+    font-family: var(--sc-sans-font);
     color: var(--sc-primary-text-color);
   }
   main {
@@ -39,29 +38,47 @@ export const commonStyles = css`
     position: relative;
   }
 
+  .text{
+  font-family: var(--sc-serif-font);
+}
+
+p{
+  font-size: var(--sc-skolar-font-size-md);
+  line-height: 1.4em
+}
+
+p .text{
+  
+}
+
   header {
     text-align: center;
     margin: 2em 0;
     color: var(--sc-secondary-text-color);
   }
 
-  header p {
+  header p span.text{
     margin: 0;
     font-variant-caps: all-small-caps;
     font-weight: normal;
-    font-family: sans-serif;
+    font-family: var(--sc-sans-font);
+  }
+
+  header p{
+    margin: 0
   }
 
   header h1 {
     margin: 0;
     font-variant-caps: small-caps;
     font-weight: normal;
-    font-size: 2em;
-    @apply --sc-serif-font;
-    @apply --sc-mixed-small-caps;
+    font-size: 2.15rem;
+    font-family: var(--sc-serif-font);
+    font-variant-caps: small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
   }
 
-  .evam .text {
+  .evam  {
     font-variant-caps: small-caps;
   }
 
@@ -72,27 +89,16 @@ export const commonStyles = css`
     font-family: sans-serif;
     z-index: 10;
     box-sizing: border-box;
-    background-color: var(--sc-secondary-background-color);
     color: var(--sc-secondary-text-color);
   }
 
   .variant,
   .comment {
-    font-size: 13px;
+    font-size: var( --sc-skolar-font-size-xs);
     padding: var(--sc-size-sm) var(--sc-size-md);
     border-radius: var(--sc-size-sm);
-  }
-
-  .variant::before {
-    content: "🔀";
-    margin-right: var(--sc-size-sm);
-    color: var(--sc-secondary-accent-color);
-  }
-
-  .comment::before {
-    content: "👉";
-    margin-right: var(--sc-size-sm);
-    color: var(--sc-primary-accent-color);
+    background-color: var(--sc-secondary-background-color);
+    line-height: 1.3
   }
 
   .variant:hover,
@@ -100,34 +106,27 @@ export const commonStyles = css`
     cursor: help;
   }
 
-  a {
-    font-size: 10px;
-    border: 1px solid var(--sc-border-color);
+.reference  a {
     color: var(--sc-secondary-text-color);
     text-decoration: none;
-    border-radius: 16px 2px 2px 16px;
-    padding: 1px var(--sc-size-xs);
+    padding-right: var(--sc-size-xs);
     white-space: nowrap;
-    vertical-align: text-top;
+   font-feature-settings: "dnom";
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  font-variant-caps: normal;
+  position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 0.3;
   }
 
-  a.sc{
-    border: 1px solid var(--sc-primary-color);
-  }
-
-  a::before {
-    content: "🔗";
-    margin-right: var(--sc-size-xxs);
-    color: var(--sc-disabled-text-color);
-  }
-
-  a.sc::before {
-    color: var(--sc-primary-color);
-  }
-
-  .root,
-  .translation {
-    font-family: sans-serif;
+  .pts:before{
+    content: "pts";
+    font-variant-caps: all-small-caps;
+     font-feature-settings: "ordn";
   }
 
   blockquote{
@@ -170,52 +169,9 @@ export const commonStyles = css`
     border-color: var(--sc-secondary-accent-color);
   }
 
-  #map {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 180px;
-    height: 100%;
-    z-index: 100;
-  }
-
-  #minimap {
-    background: rgba(254,213,70,.1) -moz-element(#segmented_text_content) no-repeat center / contain;
-    position: fixed;
-    right: 10px;
-    top: 80px;
-    width: 10vw;
-    height: auto;
-    max-height: 90vh;
-    display: none;
-  }
-
-  #minimap-range {
-    transform: translatey(-100%) rotate(90deg);
-    transform-origin: bottom left;
-    background-color: transparent;
-    opacity: 0.5;
-    transition: opacity .2s;
-    margin: 0;
-    padding: 0;
-    max-width: 90vh; /* same as #minimap's max-height */
-    height: 10vw; /* same as #minimap's width */
-  }
-
-  #minimap-range::-moz-range-thumb {
-    width: 25px;
-    height: 10vw; /* same as #minimap's width */
-    background-color: dodgerblue;
-    cursor: pointer;
-  }
-
-  #minimap-range::-moz-range-track{
-    background-color: transparent;
-  }
-
   .spanFocused {
     background-color: var(--sc-primary-color-light);
-    color: var(--sc-primary-text-color);
+    color: var(--sc-paper-tooltip-color);
   }
 
   span, p, li {
@@ -234,7 +190,7 @@ export const plainStyles = html`
       display: none;
     }
 
-    /* Set styles for tooltip marker. First we hide the actual content of the <small> tag. These settings ensure the beginning of <small>, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
+    /* Set styles for tooltip marker. First we hide the actual content. These settings ensure the beginning, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
       width: 10px;

@@ -441,471 +441,136 @@ template.innerHTML=` <custom-style > <style > @font-face {
 
 html {
     --sc-skolar-font-scale: 1.13;
+
     --sc-tall-font-scale: 1.13;
+
     --sc-dense-font-scale: 1.13;
 
-    --sc-sans-font: {
-        font-family: "Skolar Sans PE", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-        font-feature-settings: ‘calt’ 0;
-    }
-    ;
-
-    --sc-serif-font: {
-        font-family: "Skolar PE", "Noto Serif", "Skolar Sans PE", "Noto Sans", serif;
-        -webkit-font-smoothing: antialiased;
-        font-feature-settings: ‘calt’ 0;
-    }
-    ;
-
-    --sc-monospace-font: {
-        font-family: "Source Code Pro", monospace;
-        -webkit-font-smoothing: antialiased;
-        font-feature-settings: ‘calt’ 0;
-    }
-    ;
-
-    --sc-noto-sans-font: {
-        font-family: "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-        font-feature-settings: ‘calt’ 0;
-    }
-    ;
-
-    --sc-arabic-sans-font: {
-        font-family: "Noto Sans Arabic", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-arabic-serif-font: {
-        font-family: "Noto Naskh Arabic", "Noto Serif", "Noto Sans Arabic", "Noto Sans", serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-hebrew-sans-font: {
-        font-family: "Noto Sans Hebrew", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-hebrew-serif-font: {
-        font-family: "Noto Serif Hebrew", "Noto Serif", "Noto Sans Hebrew", "Noto Sans", serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-devanagari-sans-font: {
-        font-family: "Noto Sans Devanagari", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-devanagari-serif-font: {
-        font-family: "Skolar Devanagari", "Skolar PE", "Noto Serif", "Noto Sans Devanagari", "Noto Sans", serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-myanmar-sans-font: {
-        font-family: "Noto Sans Myanmar", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-myanmar-serif-font: {
-        font-family: "Noto Serif Myanmar", "Noto Serif", "Noto Sans Myanmar", "Noto Sans", serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-sinhala-sans-font: {
-        font-family: "Noto Sans Sinhala", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-sinhala-serif-font: {
-        font-family: "Noto Serif Sinhala", "Noto Serif", "Noto Sans Sinhala", "Noto Sans", serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-tamil-sans-font: {
-        font-family: "Noto Sans Tamil", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-tamil-serif-font: {
-        font-family: "Noto Serif Tamil", "Noto Serif", "Noto Sans Tamil", "Noto Sans", serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-bengali-sans-font: {
-        font-family: "Noto Sans Bengali", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-bengali-serif-font: {
-        font-family: "Noto Serif Bengali", "Noto Serif", "Noto Sans", serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-thai-sans-font: {
-        font-family: "Noto Sans Thai", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-thai-serif-font: {
-        font-family: "Noto Serif Thai", "Noto Serif", "Noto Sans Thai", "Noto Sans", serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-tibetan-font: {
-        font-family: "Noto Sans Tibetan", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-tengwar-font: {
-        font-family: "Tengwar Annatar Italic", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-klingon-font: {
-        font-family: "Klingon", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-vulcan-font: {
-        font-family: "Vulcan", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-aurebesh-font: {
-        font-family: "Aurebesh", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-japanese-font: {
-        font-family: "Noto Sans CJK JP", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-korean-font: {
-        font-family: "Noto Sans CJK KR", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-traditional-chinese-font: {
-        font-family: "Noto Sans CJK TC", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-simple-chinese-font: {
-        font-family: "Noto Sans CJK SC", "Noto Sans", sans-serif;
-        -webkit-font-smoothing: antialiased;
-    }
-    ;
-
-    --sc-skolar-font-size-xxs: {
-        font-size: calc(10px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-xs: {
-        font-size: calc(12px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-s: {
-        font-size: calc(14px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-md: {
-        font-size: calc(16px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-l: {
-        font-size: calc(18px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-xl: {
-        font-size: calc(19px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-static-subtitle: {
-        font-size: calc(24px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-dialog-header: {
-        font-size: calc(26px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-xxl: {
-        font-size: calc(32px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-h1-md: {
-        font-size: calc(34px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-skolar-font-size-static-main-title: {
-        font-size: calc(50px * var(--sc-skolar-font-scale));
-    }
-    ;
-
-    --sc-tall-font-size-xs: {
-        font-size: calc(13px * var(--sc-tall-font-scale));
-    }
-    ;
-
-    --sc-tall-font-size-s: {
-        font-size: calc(15px * var(--sc-tall-font-scale));
-        line-height: 23px;
-    }
-    ;
-
-    --sc-tall-font-size-md: {
-        font-size: calc(17px * var(--sc-tall-font-scale));
-        line-height: 34px;
-    }
-    ;
-
-    --sc-tall-font-size-l: {
-        font-size: calc(19px * var(--sc-tall-font-scale));
-    }
-    ;
-
-    --sc-tall-font-size-xl: {
-        font-size: calc(20px * var(--sc-tall-font-scale));
-        line-height: 30px;
-    }
-    ;
-
-    --sc-tall-font-size-static-subtitle: {
-        font-size: calc(24px * var(--sc-tall-font-scale));
-        line-height: 34px;
-    }
-    ;
-
-    --sc-tall-font-size-dialog-header: {
-        font-size: calc(26px * var(--sc-tall-font-scale));
-    }
-    ;
-
-    --sc-tall-font-size-xxl: {
-        font-size: calc(32px * var(--sc-tall-font-scale));
-    }
-    ;
-
-    --sc-tall-font-size-h1-md: {
-        font-size: calc(34px * var(--sc-tall-font-scale));
-        line-height: 48px;
-    }
-    ;
-
-    --sc-tall-font-size-static-main-title: {
-        font-size: calc(50px * var(--sc-tall-font-scale));
-    }
-    ;
-
-    --sc-dense-font-size-xs: {
-        font-size: calc(13px * var(--sc-dense-font-scale));
-    }
-    ;
-
-    --sc-dense-font-size-s: {
-        font-size: calc(15px * var(--sc-dense-font-scale));
-        line-height: 23px;
-    }
-    ;
-
-    --sc-dense-font-size-md: {
-        font-size: calc(17px * var(--sc-dense-font-scale));
-        line-height: 26px;
-    }
-    ;
-
-    --sc-dense-font-size-l: {
-        font-size: calc(19px * var(--sc-dense-font-scale));
-    }
-    ;
-
-    --sc-dense-font-size-xl: {
-        font-size: calc(20px * var(--sc-dense-font-scale));
-        line-height: 30px;
-    }
-    ;
-
-    --sc-dense-font-size-static-subtitle: {
-        font-size: calc(24px * var(--sc-dense-font-scale));
-        line-height: 34px;
-    }
-    ;
-
-    --sc-dense-font-size-dialog-header: {
-        font-size: calc(26px * var(--sc-dense-font-scale));
-    }
-    ;
-
-    --sc-dense-font-size-xxl: {
-        font-size: calc(32px * var(--sc-dense-font-scale));
-    }
-    ;
-
-    --sc-dense-font-size-h1-md: {
-        font-size: calc(34px * var(--sc-dense-font-scale));
-        line-height: 48px;
-    }
-    ;
-
-    --sc-dense-font-size-static-main-title: {
-        font-size: calc(50px * var(--sc-dense-font-scale));
-    }
-    ;
-
-    --sc-paper-font-body: {
-        @apply --paper-font-common-base;
-        @apply --sc-skolar-font-size-md;
-        font-weight: 400;
-        line-height: 24px;
-    }
-    ;
-
-    --sc-paper-font-body-serif: {
-        @apply --sc-serif-font;
-        @apply --sc-skolar-font-size-md;
-        font-weight: 400;
-        line-height: 24px;
-    }
-    ;
-
-    --sc-all-small-caps: {
-        font-feature-settings: "smcp", "c2sc";
-        text-transform: lowercase;
-        letter-spacing: 0.02em;
-    }
-    ;
-
-    --sc-mixed-small-caps: {
-        font-feature-settings: "smcp";
-        letter-spacing: 0.02em;
-    }
-    ;
-
-    --sc-all-caps: {
-        letter-spacing: 0.02em;
-        text-transform: uppercase;
-    }
-    ;
-
-    --sc-transform-caps-to-bold: {
-        @apply --sc-remove-small-caps;
-        font-weight: 700;
-    }
-    ;
-
-    --sc-remove-small-caps: {
-        font-feature-settings: normal;
-        letter-spacing: normal;
-        text-transform: none;
-    }
-    ;
-
-    --paper-font-common-base: {
-        @apply --sc-sans-font;
-    }
-    ;
-
-    --paper-font-subhead: {
-        @apply --sc-sans-font;
-        @apply --sc-skolar-font-size-md;
-    }
-    ;
-
-    --paper-font-caption: {
-        @apply --sc-skolar-font-size-xs;
-    }
-    ;
-
-    --paper-font-display1: {
-        @apply --sc-skolar-font-size-h1-md;
-        @apply --paper-font-common-base;
-        font-weight: 400;
-        line-height: 40px;
-    }
-    ;
-
-    --paper-font-body1: {
-        @apply --paper-font-common-base;
-        @apply --sc-skolar-font-size-s;
-        font-weight: 400;
-        line-height: 20px;
-    }
-    ;
-
-    --paper-font-body2: {
-        @apply --paper-font-common-base;
-        @apply --sc-skolar-font-size-s;
-        font-weight: 400;
-        line-height: 24px;
-    }
-    ;
-
-    --paper-font-body2-chinese: {
-        @apply --sc-traditional-chinese-font;
-        @apply --sc-dense-font-size-s;
-        font-weight: 400;
-        line-height: 26px;
-    }
-    ;
-
-    --paper-font-headline: {
-        @apply --paper-font-common-base;
-        @apply --sc-skolar-font-size-static-subtitle;
-        font-weight: 400;
-        line-height: 32px;
-    }
-    ;
-
-    --paper-font-title: {
-        @apply --paper-font-common-base;
-        @apply --sc-skolar-font-size-xl;
-        font-weight: 400;
-        line-height: 28px;
-    }
-    ;
-
-    --paper-font-compact-title: {
-        @apply --sc-serif-font;
-        @apply --sc-skolar-font-size-xl;
-        font-weight: 400;
-        line-height: 28px;
-    }
-    ;
+    --sc-sans-font: "Skolar Sans PE", "Noto Sans", sans-serif;
+
+    --sc-serif-font: "Skolar PE", "Noto Serif", "Skolar Sans PE", "Noto Sans", serif;
+    
+    --sc-monospace-font: "Source Code Pro", monospace;
+
+    --sc-noto-sans-font: "Noto Sans", sans-serif;
+
+    --sc-arabic-sans-font: "Noto Sans Arabic", "Noto Sans", sans-serif;
+
+    --sc-arabic-serif-font: "Noto Naskh Arabic", "Noto Serif", "Noto Sans Arabic", "Noto Sans", serif;
+
+    --sc-hebrew-sans-font: "Noto Sans Hebrew", "Noto Sans", sans-serif;
+
+    --sc-hebrew-serif-font: "Noto Serif Hebrew", "Noto Serif", "Noto Sans Hebrew", "Noto Sans", serif;
+
+    --sc-devanagari-sans-font: "Noto Sans Devanagari", "Noto Sans", sans-serif;
+
+    --sc-devanagari-serif-font: "Skolar Devanagari", "Skolar PE", "Noto Serif", "Noto Sans Devanagari", "Noto Sans", serif;
+
+    --sc-myanmar-sans-font: "Noto Sans Myanmar", "Noto Sans", sans-serif;
+
+    --sc-myanmar-serif-font: "Noto Serif Myanmar", "Noto Serif", "Noto Sans Myanmar", "Noto Sans", serif;
+
+    --sc-sinhala-sans-font: "Noto Sans Sinhala", "Noto Sans", sans-serif;
+
+    --sc-sinhala-serif-font: "Noto Serif Sinhala", "Noto Serif", "Noto Sans Sinhala", "Noto Sans", serif;
+
+    --sc-tamil-sans-font: "Noto Sans Tamil", "Noto Sans", sans-serif;
+
+    --sc-tamil-serif-font: "Noto Serif Tamil", "Noto Serif", "Noto Sans Tamil", "Noto Sans", serif;
+
+    --sc-bengali-sans-font: "Noto Sans Bengali", "Noto Sans", sans-serif;
+
+    --sc-bengali-serif-font: "Noto Serif Bengali", "Noto Serif", "Noto Sans", serif;
+
+    --sc-thai-sans-font: "Noto Sans Thai", "Noto Sans", sans-serif;
+
+    --sc-thai-serif-font: "Noto Serif Thai", "Noto Serif", "Noto Sans Thai", "Noto Sans", serif;
+
+    --sc-tibetan-font: "Noto Sans Tibetan", "Noto Sans", sans-serif;
+
+    --sc-tengwar-font: "Tengwar Annatar Italic", sans-serif;
+
+    --sc-klingon-font: "Klingon", sans-serif;
+
+    --sc-vulcan-font: "Vulcan", sans-serif;
+
+    --sc-aurebesh-font: "Aurebesh", sans-serif;
+
+    --sc-japanese-font: "Noto Sans CJK JP", "Noto Sans", sans-serif;
+
+    --sc-korean-font: "Noto Sans CJK KR", "Noto Sans", sans-serif;
+
+    --sc-traditional-chinese-font: "Noto Sans CJK TC", "Noto Sans", sans-serif;
+
+    --sc-simple-chinese-font: "Noto Sans CJK SC", "Noto Sans", sans-serif;
+
+    --sc-skolar-font-size-xxs: calc(10px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-xs: calc(12px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-s: calc(14px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-md: calc(16px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-l: calc(18px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-xl: calc(19px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-static-subtitle: calc(24px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-dialog-header: calc(26px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-xxl: calc(32px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-h1-md: calc(34px * var(--sc-skolar-font-scale));
+
+    --sc-skolar-font-size-static-main-title: calc(50px * var(--sc-skolar-font-scale));
+
+    --sc-tall-font-size-xs: calc(13px * var(--sc-tall-font-scale));
+
+    --sc-tall-font-size-s: calc(15px * var(--sc-tall-font-scale));
+        
+    --sc-tall-font-size-md: calc(17px * var(--sc-tall-font-scale));
+ 
+    --sc-tall-font-size-l: calc(19px * var(--sc-tall-font-scale));
+
+    --sc-tall-font-size-xl: calc(20px * var(--sc-tall-font-scale));
+
+    --sc-tall-font-size-static-subtitle: calc(24px * var(--sc-tall-font-scale));
+
+    --sc-tall-font-size-dialog-header: calc(26px * var(--sc-tall-font-scale));
+
+    --sc-tall-font-size-xxl: calc(32px * var(--sc-tall-font-scale));
+
+    --sc-tall-font-size-h1-md: calc(34px * var(--sc-tall-font-scale));
+
+    --sc-tall-font-size-static-main-title: calc(50px * var(--sc-tall-font-scale));
+
+    --sc-dense-font-size-xs: calc(13px * var(--sc-dense-font-scale));
+
+    --sc-dense-font-size-s: calc(15px * var(--sc-dense-font-scale));
+
+    --sc-dense-font-size-md: calc(17px * var(--sc-dense-font-scale));
+
+    --sc-dense-font-size-l: calc(19px * var(--sc-dense-font-scale));
+
+    --sc-dense-font-size-xl: calc(20px * var(--sc-dense-font-scale));
+
+    --sc-dense-font-size-static-subtitle: calc(24px * var(--sc-dense-font-scale));
+
+    --sc-dense-font-size-dialog-header: calc(26px * var(--sc-dense-font-scale));
+
+    --sc-dense-font-size-xxl: calc(32px * var(--sc-dense-font-scale));
+
+    --sc-dense-font-size-h1-md: calc(34px * var(--sc-dense-font-scale));
+
+--sc-skolar-font-size-md: calc(16px * var(--sc-skolar-font-scale));
+
+--sc-caps-letter-spacing: 0.02em;
+
+/*temporary hack for paper elements*/
+--paper-font-common-base_-_font-family: var(--sc-sans-font)!important;
+
 }
 </style > </custom-style > `;
 
