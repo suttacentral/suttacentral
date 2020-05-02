@@ -69,7 +69,6 @@ h1{
   font-size: 2em;
   font-size: clamp(1.5em, 5vw, 2em);
   font-weight: 300;
-  font-family: "Skolar PE Light";
   font-variant-caps: small-caps;
   letter-spacing: var(--sc-caps-letter-spacing);
   text-align: center;
@@ -140,15 +139,15 @@ h6{
     letter-spacing: var(--sc-caps-letter-spacing);
   }
 
-  .uddana,
-  .uddanagatha,
+  .uddana .text,
+  .uddanagatha .text
    {
     color: var(--sc-secondary-text-color);
     font-size: var(--sc-skolar-font-size-s);
     font-weight: 400;
   }
 
-  .uddana-intro {
+  .uddana-intro .text {
     font-weight: bold;
     color: var(--sc-secondary-text-color);
   }
@@ -165,7 +164,7 @@ h6{
   .comment,
   a {
     display: inline-block;
-    font-family: sans-serif;
+    font-family: var(--sc-sans-font);
     z-index: 10;
     box-sizing: border-box;
     color: var(--sc-secondary-text-color);
@@ -176,6 +175,8 @@ h6{
     padding: var(--sc-size-sm) var(--sc-size-md);
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-secondary-background-color);
+    font-size: var(--sc-skolar-font-size-s);
+    line-height: 1.3333;
 
   }
 
@@ -190,12 +191,9 @@ h6{
     white-space: nowrap;
    font-feature-settings: "dnom";
   font-weight: 500;
+  font-style: normal;
   letter-spacing: -0.4px;
   font-variant-caps: normal;
-  position: relative;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
   }
   .reference  a:after{
     content: " ";
@@ -275,7 +273,7 @@ export const plainStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content. These settings ensure the beginning, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -420,7 +418,7 @@ export const sideBySideStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -622,7 +620,7 @@ export const lineByLineStyles = html`
 
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -767,7 +765,7 @@ export const allInlineReferenceStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -817,7 +815,7 @@ export const mainInlineReferenceStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
