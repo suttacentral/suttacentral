@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
+
 
 import { SCLitTextPage } from "./sc-lit-text-page.js";
 //import { SCTextPage } from "./sc-text-page.js";

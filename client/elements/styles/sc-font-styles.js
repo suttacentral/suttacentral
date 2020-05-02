@@ -564,8 +564,6 @@ html {
 
     --sc-dense-font-size-h1-md: calc(34px * var(--sc-dense-font-scale));
 
---sc-skolar-font-size-md: calc(16px * var(--sc-skolar-font-scale));
-
 --sc-caps-letter-spacing: 0.02em;
 
 /*temporary hack for paper elements*/
