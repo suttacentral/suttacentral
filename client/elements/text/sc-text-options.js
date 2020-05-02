@@ -54,12 +54,22 @@ class SCTextOptions extends LitLocalized(LitElement) {
     <div class="container">
       <div class="heading">
         ${this.textInfoButtonTemplate}
-        <paper-icon-button id="text_settings_button" icon="sc-iron-icons:settings" @tap=${this._openSettingsDialog} aria-label="${this.localize('textSettings')}"></paper-icon-button>
-          ${this.localize('textSettings')}
-        </paper-tooltip>
-        <paper-icon-button id="suttaplex_button" icon="${this._toggleIcon}" @tap=${this._toggleOpened} aria-label="${this.localize('viewParallels')}"></paper-icon-button>
-          ${this.localize('viewParallels')}
-        </paper-tooltip>
+
+        <paper-icon-button 
+          id="text_settings_button"
+          icon="sc-iron-icons:settings"
+          @tap="${this._openSettingsDialog}"
+          aria-label="${this.localize('textSettings')}"
+          title="${this.localize('textSettings')}">
+        </paper-icon-button>
+
+        <paper-icon-button 
+          id="suttaplex_button"
+          icon="${this._toggleIcon}"
+          @tap="${this._toggleOpened}"
+          aria-label="${this.localize('viewParallels')}"
+          title="${this.localize('viewParallels')}">
+        </paper-icon-button>
       </div>
 
       <iron-collapse .opened="${this.opened}">
@@ -72,7 +82,13 @@ class SCTextOptions extends LitLocalized(LitElement) {
 
   get textInfoButtonTemplate() {
     return this.metaArea ? html`
-      <paper-icon-button id="text_info_button" icon="sc-iron-icons:info" @tap=${this._openInfoDialog} aria-label="${this.localize('information')}"></paper-icon-button>
+      <paper-icon-button 
+        id="text_info_button" 
+        icon="sc-iron-icons:info" 
+        @tap="${this._openInfoDialog}"
+        aria-label="${this.localize('information')}"
+        title="${this.localize('information')}">
+      </paper-icon-button>
     ` : '';
   }
 
@@ -99,7 +115,7 @@ class SCTextOptions extends LitLocalized(LitElement) {
   }
 
   updated(changedProps) {
-    super.update(changedProps);
+    super.updated(changedProps);
     if (changedProps.has('opened')) {
       this._toggleIcon = this._computeToggleIcon();
     }
