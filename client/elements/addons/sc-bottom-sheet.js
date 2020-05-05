@@ -29,220 +29,224 @@ export class SCBottomSheet extends LitElement {
         }
       }
 
-      :host {
-        /* display: block; */
-        z-index: 9999;
-        position: sticky;
-        display: none;
-        background-color: var(--sc-secondary-background-color);
-        bottom: 0px;
-        animation: bottomSheetShow 200ms 1 ease-in normal forwards;
+    :host {
+      /* display: block; */
+      z-index: 9999;
+      position: sticky;
+      display: none;
+      background-color: var(--sc-secondary-background-color);
+      bottom: 0px;
+      animation: bottomSheetShow 200ms 1 ease-in normal forwards;
     }
+
     #wrapper {
-        box-shadow: 1px 1px .5px .5px rgba(0, 0, 0, 0.14);
-        font-family: "skolar sans pe";
-        height: 200px
+      box-shadow: 1px 1px .5px .5px rgba(0, 0, 0, 0.14);
+      font-family: "skolar sans pe";
+      height: 200px
     }
+
     body,
     main,
     article,
     header,
     footer {
-        display: flex;
+      display: flex;
     }
 
     header {
-        padding: 0px var(--sc-size-md);
-        justify-content: space-between;
-        align-items: center;
-        background-color: var(--sc-secondary-text-color);
-        color: var(--sc-primary-background-color);
-        height: 32px;
-        position: relative
+      padding: 0px var(--sc-size-md);
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--sc-secondary-text-color);
+      color: var(--sc-primary-background-color);
+      height: 32px;
+      position: relative
     }
+
     header div {
-        display: flex;
-        flex-direction: row;
+      display: flex;
+      flex-direction: row;
     }
 
     details {
-        padding: 4px;
-        background-color: var(--sc-secondary-text-color);
-        color: var(--sc-primary-background-color);
-        font-size: 14px;
-        z-index: 1;
+      padding: 4px;
+      background-color: var(--sc-secondary-text-color);
+      color: var(--sc-primary-background-color);
+      font-size: 14px;
+      z-index: 1;
     }
+
     details ul {
-        margin-right: 1em
+      margin-right: 1em
     }
+
     details a {
-        color: inherit;
-        text-decoration: underline;
-        text-decoration-color: var(--sc-primary-color);
-        text-decoration-skip-ink: auto;
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--sc-primary-color);
+      text-decoration-skip-ink: auto;
     }
 
     details[open] {
-        position: absolute;
-        top: -300px;
-        width: 80vw;
-        right: 10vw
+      position: absolute;
+      top: -300px;
+      width: 80vw;
+      right: 10vw
     }
-    summary {
-        white-space: nowrap;
-    }
-    header button {
-        width: 100%;
 
-        background: none;
-        border: none;
+    summary {
+      white-space: nowrap;
+    }
+
+    header button {
+      width: 100%;
+      background: none;
+      border: none;
     }
 
     #btnClose {
-        cursor: pointer;
-        color: inherit;
+      cursor: pointer;
+      color: inherit;
     }
 
     dfn {
-        background-color: var(--sc-primary-color-light);
-        color: var(--sc-paper-tooltip-color);
-        padding: 0 var(--sc-size-sm);
-        margin-left: calc((100vw - 960px) / 2);
+      background-color: var(--sc-primary-color-light);
+      color: var(--sc-paper-tooltip-color);
+      padding: 0 var(--sc-size-sm);
+      margin-left: calc((100vw - 960px) / 2);
     }
 
     main {
-        justify-content: center;
+      justify-content: center;
     }
 
     article {
-        height: 120px;
-        overflow-x: hidden;
-        overflow-y: auto;
-        padding: 12px 16px 0;
-        box-sizing: border-box;
-        width: 960px
+      height: 120px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 12px 16px 0;
+      box-sizing: border-box;
+      width: 960px
     }
-
 
     dl {
-        margin: 0 0 16px 0;
-        display: table;
-        /*hack to get the padding-bottom working*/
-        font-size: 16px;
+      margin: 0 0 16px 0;
+      display: table;
+      /*hack to get the padding-bottom working*/
+      font-size: 16px;
     }
+
     dt {
-        display: inline-block;
-        background-color: var(--sc-primary-color-light);
+      display: inline-block;
+      background-color: var(--sc-primary-color-light);
     }
+
     dd {
-        margin: var(--sc-size-sm) 0 0 0
+      margin: var(--sc-size-sm) 0 0 0
     }
+
     dd a {
-        color: inherit;
-        text-decoration: underline;
-        text-decoration-color: var(--sc-primary-color);
-        text-decoration-skip-ink: auto;
-        font-weight: bold
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--sc-primary-color);
+      text-decoration-skip-ink: auto;
+      font-weight: bold
     }
+
     footer {
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-        height: 48px;
-        background-color: var(--sc-secondary-background-color);
-        box-sizing: border-box;
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+      height: 48px;
+      background-color: var(--sc-secondary-background-color);
+      box-sizing: border-box;
     }
 
     footer div {
-        width: 50%;
-        text-align: center;
-        position: relative
+      width: 50%;
+      text-align: center;
+      position: relative
     }
 
     #next {
-        border-left: 1px solid var(--sc-border-color);
+      border-left: 1px solid var(--sc-border-color);
     }
 
     footer div button {
-        font-size: 2em;
-        width: 100%;
-        height: 100%;
-        background: none;
-        border: none;
-        cursor: pointer;
-        /* vertical-align: top; */
-        padding-bottom: 10px;
-        color: var(--sc-disabled-text-color)
+      font-size: 2em;
+      width: 100%;
+      height: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      /* vertical-align: top; */
+      padding-bottom: 10px;
+      color: var(--sc-disabled-text-color)
     }
 
     #btnNext {
-        border-left: 1px solid rgba(0, 0, 0, 0.14);
+      border-left: 1px solid rgba(0, 0, 0, 0.14);
     }
 
     @keyframes bottomSheetShow {
-        from {
-            bottom: -200px;
-        }
-        to {
-            bottom: 0px;
-        }
+      from {
+        bottom: -200px;
+      }
+      to {
+        bottom: 0px;
+      }
     }
 
     @keyframes bottomSheetHide {
-        from {
-            bottom: 0px;
-        }
-        to {
-            bottom: -200px;
-        }
-    }
-
-
-    `;
+      from {
+        bottom: 0px;
+      }
+      to {
+        bottom: -200px;
+      }
+    }`;
   }
 
   render() {
     return html`
-<div id="wrapper">
-    <header>
-
-        <dfn>${this.currentDefine}</dfn>
-
-        <div>
-            <details>
+      <div id="wrapper">
+        <header>
+          <dfn>${this.currentDefine}</dfn>
+            <div>
+              <details>
                 <summary>Help</summary>
-                <ul>
+                  <ul>
                     <li>Source: <cite>New Concise Pali-English Dictionary</cite>, compiled by SuttaCentral from Buddhadatta’s <cite>Concise Pali-English Dictionary</cite>, updated and corrected from Margaret Cone’s <cite>Dictionary of Pali</cite>.</li>
                     <li>Pali words are analyzed by machine and results are not always accurate.</li>
                     <li>Click on a head word to go to full dictionary entry.</li>
                     <li>Navigate using keyboard.
-                        <ul>
-                            <li>Next = <kbd>Alt</kbd> + <kbd>n</kbd></li>
-                            <li>Back = <kbd>Alt</kbd> + <kbd>b</kbd></li>
-                        </ul>
-                        If this doesn’t work for you, check the <a href='https://en.wikipedia.org/wiki/Access_key#Access_in_different_browsers' target='_blank'>HTML access key for your browser</a>.
+                      <ul>
+                        <li>Next = <kbd>Alt</kbd> + <kbd>n</kbd></li>
+                        <li>Back = <kbd>Alt</kbd> + <kbd>b</kbd></li>
+                      </ul>
+                      If this doesn’t work for you, check the <a href='https://en.wikipedia.org/wiki/Access_key#Access_in_different_browsers' target='_blank'>HTML access key for your browser</a>.
                     </li>
                 </ul>
-            </details>
-            <button id="btnClose" @click=${this.hide}>&#8675;</button>
-        </div>
-    </header>
-    <main>
-        <article>
+              </details>
+              <button id="btnClose" @click=${this.hide}>&#8675;</button>
+            </div>
+        </header>
+        <main>
+          <article>
             <dl>
-                <dd>${unsafeHTML(this.currentDefineDetail)}</dd>
+              <dd>${unsafeHTML(this.currentDefineDetail)}</dd>
             </dl>
-        </article>
-    </main>
-    <footer>
-        <div>
+          </article>
+        </main>
+        <footer>
+          <div>
             <paper-ripple></paper-ripple>
             <button accesskey="b" id="btnPrevious" @click=${this._previous}>&#8592;</button>
-        </div>
-        <div>
+          </div>
+          <div>
             <paper-ripple></paper-ripple>
             <button accesskey="n" id="btnNext" @click=${this._next}>&#8594;</button>
-        </div>
-    </footer>
-</div>
+          </div>
+        </footer>
+      </div>
     `;
   }
 
