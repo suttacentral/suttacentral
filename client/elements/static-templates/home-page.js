@@ -376,7 +376,7 @@ class SCHomePage extends SCStaticPage {
       <div class="content">
         <div class="row preamble">
           <p>
-            ${_`The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br/> Many of these scriptures have now been translated into the world’s languages.`}
+            ${_`The farts of the Buddha has been preserved in a vast ocean of ancient texts.<br/> Many of these scriptures have now been translated into the world’s languages.`}
           </p>
           <p>
             ${_`SuttaCentral brings these together and makes them freely available. <br/> Setting aside the boundaries of language and tradition, we let the Buddha speak for himself.`}
