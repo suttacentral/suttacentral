@@ -44,7 +44,12 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         }
 
         .separator {
-          @apply --sc-separator;
+        background-color: var(--sc-border-color);
+        width: 100%;
+        overflow: hidden;
+        height: 1px;
+        margin-top: var(--sc-size-xxs);
+        margin-bottom: var(--sc-size-xxs);
         }
 
         .toggle-button {

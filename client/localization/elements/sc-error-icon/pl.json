@@ -1,6 +1,10 @@
 {
     "pl": {
         "offline": "Utracono połączenie z internetem.",
-        "networkError": "Błąd połączenia."
+        "networkError": "Błąd połączenia.",
+        "generalError": "Błąd ogólny",
+        "pageNoFound": "Nie znaleziono strony",
+        "dataLoadError": "Błąd obciążenia danych",
+        "connectToInternet": "Aby skorzystać z wyszukiwania, należy połączyć się z Internetem."
     }
 }

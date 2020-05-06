@@ -71,9 +71,11 @@ test-api:
 	docker-compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
 load-data:
+	@make migrate
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
 
 load-data-no-pull:
+	@make migrate
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data --no_pull"
 
 delete-database:

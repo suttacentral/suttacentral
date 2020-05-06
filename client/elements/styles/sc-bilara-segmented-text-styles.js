@@ -1,5 +1,4 @@
 import { html,css } from 'lit-element';
-import '../styles/sc-font-styles.js'
 
 export const commonStyles = css`
   :root{
@@ -16,130 +15,221 @@ export const commonStyles = css`
     --sc-size-lg: 32px;
     --sc-size-xl: 48px;
     --sc-size-xxl: 64px;
+     font-size: var(--sc-skolar-font-size-md);
   }
 
-  nav{
-    display: inline-block;
-  }
-  body {
-    margin: 4em 0;
-    line-height: 1.4;
-    background-color: var(--sc-primary-background-color);
-    font-family: "Skolar PE", "Skolar Sans PE";
-    color: var(--sc-primary-text-color);
-  }
-  main {
+main {
     display: flex;
     justify-content: center;
-    margin: 2em 1em;
-  }
+    color: var(--sc-primary-text-color);
+    margin: 4em 2em;
+}
 
-  /* Anchor tooltips. */
-  article {
-    position: relative;
-  }
+/* text title */
 
-  header {
+header {
     text-align: center;
-    margin: 2em 0;
     color: var(--sc-secondary-text-color);
-  }
-
-  header p {
-    margin: 0;
+    margin: 4em 0;
+}
+header ul {
+    padding: 0;
+    list-style-type: none;
     font-variant-caps: all-small-caps;
     font-weight: normal;
-    font-family: sans-serif;
-  }
-
-  header h1 {
-    margin: 0;
-    font-variant-caps: small-caps;
-    font-weight: normal;
+    font-family: var(--sc-sans-font);
+}
+h1 {
+    line-height: 1.3333;
+    margin: 0.5em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
     font-size: 2em;
-  }
-
-  .evam .text {
+    font-size: clamp(1.5em, 5vw, 2em);
+    font-weight: 300;
     font-variant-caps: small-caps;
-  }
+    text-align: center;
+}
 
-  .variant,
-  .comment,
-  a {
+/* text general */
+
+h2 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1.5em;
+    font-size: clamp(1.125em, 3.75vw, 1.5em);
+    font-weight: 400;
+}
+h3 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1.333em;
+    font-size: clamp(1em, 3.333vw, 1.333em);
+    font-weight: 400;
+}
+h4 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1.25em;
+    font-size: clamp(1em, 5vw, 1.25em);
+    font-weight: 400;
+}
+h5 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1em;
+    font-weight: 600;
+}
+h6 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1em;
+    font-weight: 400;
+    font-style: italic
+}
+p,
+ul,
+ol {
+    margin: 0.75em 0 0 0;
+    line-height: 1.5;
+    font-family: var(--sc-serif-font);
+}
+blockquote {
+    margin: 0 2em;
+}
+
+/* currently supported by safari only */
+
+p,
+li {
+    hanging-punctuation: first last;
+}
+
+/* special text classes  */
+
+.evam {
+    font-variant-caps: all-small-caps;
+}
+.namo {
+    text-align: center;
+    font-style: italic;
+}
+.speaker {
+    font-style: italic;
+    display: block;
+    margin-left: 1em;
+    height: 0;
+    color: var(--sc-secondary-text-color);
+}
+.endsection,
+.end,
+.endkanda {
+    font-style: italic;
+    text-align: center;
+    color: var(--sc-secondary-text-color);
+}
+.endsutta {
+    font-weight: bold;
+    text-align: center;
+    color: var(--sc-secondary-text-color);
+}
+.endbook {
+    font-weight: bold;
+    text-align: center;
+    color: var(--sc-secondary-text-color);
+    text-transform: uppercase;
+    letter-spacing: var(--sc-caps-letter-spacing);
+}
+.endvagga {
+    text-align: center;
+    color: var(--sc-secondary-text-color);
+    text-transform: uppercase;
+    letter-spacing: var(--sc-caps-letter-spacing);
+}
+.uddana,
+.uddanagatha {
+    color: var(--sc-secondary-text-color);
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
+}
+.uddana-intro {
+    font-weight: bold;
+    color: var(--sc-secondary-text-color);
+}
+
+/* lookup */
+
+.spanFocused {
+    background-color: var(--sc-primary-color-light);
+    color: var(--sc-paper-tooltip-color);
+}
+
+/* Notes */
+/* Anchor tooltips. */
+article {
+    position: relative;
+}
+.variant,
+.comment,
+a {
     display: inline-block;
-    font-family: sans-serif;
+    font-family: var(--sc-sans-font);
     z-index: 10;
     box-sizing: border-box;
-    background-color: var(--sc-secondary-background-color);
     color: var(--sc-secondary-text-color);
-  }
-
-  .variant,
-  .comment {
-    font-size: 13px;
+}
+.variant,
+.comment {
     padding: var(--sc-size-sm) var(--sc-size-md);
     border-radius: var(--sc-size-sm);
-  }
-
-  .variant::before {
-    content: "🔀";
-    margin-right: var(--sc-size-sm);
-    color: var(--sc-secondary-accent-color);
-  }
-
-  .comment::before {
-    content: "👉";
-    margin-right: var(--sc-size-sm);
-    color: var(--sc-primary-accent-color);
-  }
-
-  .variant:hover,
-  .comment:hover{
+    background-color: var(--sc-secondary-background-color);
+    font-size: var(--sc-skolar-font-size-s);
+    line-height: 1.3333;
+}
+.variant:hover,
+.comment:hover {
     cursor: help;
-  }
-
-  a {
-    font-size: 10px;
-    border: 1px solid var(--sc-border-color);
+}
+.reference a {
     color: var(--sc-secondary-text-color);
     text-decoration: none;
-    border-radius: 16px 2px 2px 16px;
-    padding: 1px var(--sc-size-xs);
     white-space: nowrap;
-    vertical-align: text-top;
-  }
-
-  a.sc{
-    border: 1px solid var(--sc-primary-color);
-  }
-
-  a::before {
-    content: "🔗";
-    margin-right: var(--sc-size-xxs);
-    color: var(--sc-disabled-text-color);
-  }
-
-  a.sc::before {
-    color: var(--sc-primary-color);
-  }
-
-  .root,
-  .translation {
-    font-family: sans-serif;
-  }
-
-  blockquote{
-    margin: 0;
-  }
-
-  blockquote .text{
-    margin-left: 2em;
-  }
-
-  /* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
-
-  .comment[data-tooltip]::after,
-  .variant[data-tooltip]::after {
+    font-feature-settings: "dnom";
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: -0.4px;
+    font-variant-caps: normal;
+}
+.reference a:after {
+    content: " ";
+    white-space: pre;
+}
+header .reference a,
+h2 .reference a,
+h3 .reference a,
+h4 .reference a,
+h5 .reference a,
+h6 .reference a {
+    display: none
+}
+.pts:before {
+    content: "pts";
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "ordn";
+}
+/* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
+.comment[data-tooltip]::after,
+.variant[data-tooltip]::after {
     content: attr(data-tooltip);
     display: none;
     position: absolute;
@@ -154,71 +244,18 @@ export const commonStyles = css`
     box-sizing: border-box;
     background-color: var(--sc-secondary-background-color);
     color: var(--sc-secondary-text-color);
-  }
-
-  .comment[data-tooltip]::after {
+}
+.comment[data-tooltip]::after {
     border-style: solid;
     border-width: 1px 1px 1px 4px;
     border-color: var(--sc-primary-accent-color);
-  }
-
-  .variant[data-tooltip]::after {
+}
+.variant[data-tooltip]::after {
     border-style: solid;
     border-width: 1px 1px 1px 4px;
     border-color: var(--sc-secondary-accent-color);
-  }
+}
 
-  #map {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 180px;
-    height: 100%;
-    z-index: 100;
-  }
-
-  #minimap {
-    background: rgba(254,213,70,.1) -moz-element(#segmented_text_content) no-repeat center / contain;
-    position: fixed;
-    right: 10px;
-    top: 80px;
-    width: 10vw;
-    height: auto;
-    max-height: 90vh;
-    display: none;
-  }
-
-  #minimap-range {
-    transform: translatey(-100%) rotate(90deg);
-    transform-origin: bottom left;
-    background-color: transparent;
-    opacity: 0.5;
-    transition: opacity .2s;
-    margin: 0;
-    padding: 0;
-    max-width: 90vh; /* same as #minimap's max-height */
-    height: 10vw; /* same as #minimap's width */
-  }
-
-  #minimap-range::-moz-range-thumb {
-    width: 25px;
-    height: 10vw; /* same as #minimap's width */
-    background-color: dodgerblue;
-    cursor: pointer;
-  }
-
-  #minimap-range::-moz-range-track{
-    background-color: transparent;
-  }
-
-  .spanFocused {
-    border: 1px dotted;
-    color: #b48c3d;
-  }
-
-  span, p, li {
-    hanging-punctuation: first last;
-  }
 `;
 
 export const plainStyles = html`
@@ -232,10 +269,10 @@ export const plainStyles = html`
       display: none;
     }
 
-    /* Set styles for tooltip marker. First we hide the actual content of the <small> tag. These settings ensure the beginning of <small>, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
+    /* Set styles for tooltip marker. First we hide the actual content. These settings ensure the beginning, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -380,7 +417,7 @@ export const sideBySideStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -582,7 +619,7 @@ export const lineByLineStyles = html`
 
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -727,7 +764,7 @@ export const allInlineReferenceStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -777,7 +814,7 @@ export const mainInlineReferenceStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 10px;
+      width: 12px;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;

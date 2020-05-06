@@ -1,12 +1,11 @@
 import { LitElement, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
+
 
 import { SCLitTextPage } from "./sc-lit-text-page.js";
-//import { SCTextPage } from "./sc-text-page.js";
 import './sc-text-options.js';
-import { textStyles } from '../styles/sc-text-styles.js';
-import { textHeadingStyles } from '../styles/sc-text-heading-styles.js';
+import { textStylesNew } from '../styles/sc-text-styles-new.js';
+import { textHeadingStylesNew } from '../styles/sc-text-heading-styles-new.js'
 import { textParagraphNumStyles } from '../styles/sc-text-paragraph-num-styles.js';
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
@@ -17,8 +16,8 @@ import { store } from '../../redux-store';
 class SCSimpleText extends SCLitTextPage {
   render() {
     return html`
-    ${textStyles}
-    ${textHeadingStyles}
+    ${textStylesNew}
+    ${textHeadingStylesNew}
     ${textParagraphNumStyles}
     ${lookupStyles}
     <style>
@@ -64,8 +63,6 @@ class SCSimpleText extends SCLitTextPage {
         hanging-punctuation: first last;
       }
     </style>
-
-    <iron-a11y-keys id="a11y" keys="alt+m" @keys-pressed=${this.deathToTheBeast}></iron-a11y-keys>
 
     <div id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
       ${unsafeHTML(this._extractSuttaText())}
@@ -253,10 +250,10 @@ class SCSimpleText extends SCLitTextPage {
     let metaText = '';
     let matches = [];
     if (this.sutta && this.sutta.text) {
-      matches = this.sutta.text.match(/<aside id="metaarea">((.|\n)*)<\/aside>/);
+      matches = this.sutta.text.match(/<footer>((.|\n)*)<\/footer>/);
     }
     try {
-      if (matches.length > 0) {
+      if (matches && matches.length > 0) {
         metaText = matches[1];
       }
     } catch (e) {
@@ -286,9 +283,6 @@ class SCSimpleText extends SCLitTextPage {
         });
       });
     }
-    setTimeout(() => {
-      this._applyQuoteHanger();
-    });
   }
 
   _shouldDisplayBookIcon(divisionId, itemId) {
@@ -515,7 +509,7 @@ class SCSimpleText extends SCLitTextPage {
     const t = new Transliterator();
     const scriptFunctionName = `to${this._capitalize(scriptName)}`;
     this._ensureSpansExist();
-    const textElement = this.shadowRoot.querySelector('#text').querySelector('article');
+    const textElement = this.shadowRoot.querySelector('article');
     this.setSimpleTextContentScript(textElement, t, scriptFunctionName);
     Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
   }
