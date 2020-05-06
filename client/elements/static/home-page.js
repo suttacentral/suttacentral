@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { css, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
 
@@ -6,9 +6,8 @@ import { SCStaticPage } from '../addons/sc-static-page.js';
 import { API_ROOT } from '../../constants.js';
 
 class SCHomePage extends SCStaticPage {
-  render() {
-    return html`
-    <style>
+  static get styles() {
+    return css`
    html {
 
    }
@@ -16,8 +15,7 @@ mwc-button {
   --mdc-theme-primary: var(--sc-primary-accent-color);
   --mdc-theme-on-primary: white;
 }
-   html,
-   body {
+   :root {
      font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
@@ -40,27 +38,33 @@ mwc-button {
        display: flex;
        align-items: center;
        flex-direction: column;
-       width: 80%;
        padding: 6% 0 0;
        margin: auto;
    }
    blockquote {
+        width: 80%;
        font-style: italic;
        font-size: 1.5rem;
-       font-family: "skolar pe";
+       font-size: clamp(1.125em, 3.75vw, 1.5em);
+       line-height: 1.5;
+       font-family: var(--sc-serif-font);
        font-weight: 300;
        padding: 0;
        margin: 0 0 2% 0;
        text-align: center;
        position: relative;
    }
-   blockquote:before {
-       content: "“";
-       font-size: 4em;
-       color: #757575;
-       position: absolute;
-       left: -0.5em;
-       line-height: 1;
+   /* ensure a consistent spacing for the quote decoration */
+   blockquote span{
+    position: relative
+   }
+   blockquote span:before{
+    content: "“";
+    font-size: 4em;
+    line-height: 1;
+    position: absolute;
+    left: -0.5em;
+    color: var(--sc-secondary-text-color);
    }
 
    article {
@@ -96,26 +100,31 @@ mwc-button {
    .three-card-row-third {
        grid-row: 2 / 3;
    }
-
    figure {
        margin: 0;
        height: 480px;
        overflow: hidden;
+       position: relative;
    }
    img {
        height: 100%;
        object-fit: cover;
    }
    figcaption {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
        font-size: 0.8em;
        color: white;
        font-weight: 600;
-       margin: -48px 0px 0 0px;
        padding: 16px;
-       text-shadow: 0px 0px 1px black, 0px 0px 2px black, 0px 0px 3px black,0px 0px 4px black,0px 0px 1px black, 0px 0px 2px black, 0px 0px 3px black,0px 0px 4px black;
+       background-color: rgba(0,0,0,0.5);
        text-align: right;
+       letter-spacing: 0.5px;
+       width: 100%;
+       box-sizing: border-box;
+       backdrop-filter: blur(2px)
    }
-
    .card-content {
        display: flex;
        flex-direction: column;
@@ -137,19 +146,22 @@ mwc-button {
    h1 {
        margin: 0 0 0.25em 0;
        font-size: 2em;
+       font-size: clamp(1.5em, 5vw, 2em);
        line-height: 1.3333;
        font-weight: 300;
-       font-family: "skolar pe";
+       font-family: var(--sc-serif-font);
        padding-left: 4%;
    }
    h2 {
        margin: 0 0 0 0;
        font-size: 1.5em;
+       font-size: clamp(1.125em, 3.75vw, 1.5em);
        line-height: 1.3333;
        font-weight: 400;
-       font-family: "skolar pe";
+       font-family: var(--sc-serif-font);
    }
    p {
+    font-size: var(--sc-skolar-font-size-md);
        margin: 0.75em 0 0 0;
        line-height: 1.5;
    }
@@ -165,6 +177,7 @@ a{
        box-shadow: var(--sc-shadow-elevation-1dp);
    }
 
+
    @media (max-width: 680px) {
        .two-cards,
        .three-card-row {
@@ -172,8 +185,21 @@ a{
            flex-direction: column;
            grid-gap: 0;
        }
+       video{
+    width: 100%;
+    height: 56.25%;
+       }
+           br {
+      content: "";
+    }
+    h2{
+      font-weight: 500
+    }
    }
-    </style>
+   `;
+ }
+     render() {
+      return html `
     <main>
         <section class="plain">
             <p>
@@ -184,16 +210,16 @@ a{
         </section>
 
         <section class="plain">
-            <blockquote>The Buddha said to the monks who were quarrelling: “If animals can be courteous to each other, so can you.”
+            <blockquote><span>The Buddha said to the monks who were quarrelling: “If animals can be courteous to each other, so can you.”</span>
             </blockquote>
-            <a class="quote-button" href="/"><mwc-button unelevated label="Read this sutta" class="quote-button"></mwc-button></a>
+            <a class="quote-button" href="/"><mwc-button outlined label="Read this sutta" class="quote-button"></mwc-button></a>
         </section>
 
         <section class="video">
 
-<video width="640" height="360" controls preload="none" tabindex="-1" style="" poster="/img/home-page/video_overlay.webp">
-	<source src="https://archive.org/download/suttacentral_video/suttacentral_video.webm">
-	<source src="https://archive.org/download/suttacentral_video/suttacentral_video.mkv">
+<video width="640" height="360" controls preload="none" tabindex="-1" style="" poster="/img/home-page/video_overlay.jpg">
+	<source src="https://ia801504.us.archive.org/18/items/suttacentral_video/suttacentral_video.webm">
+	<source src="https://ia601504.us.archive.org/18/items/suttacentral_video/suttacentral_video.mp4">
 	</video>
         </section>
 
@@ -201,7 +227,7 @@ a{
 
             <article>
                 <figure>
-                    <img src="/img/home-page/pali1.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/pali1.webp, /img/home-page/pali1.jpg" src="/img/home-page/pali1.webp" alt="Pali manuscript" style="width:100%">
                     <figcaption>Palm leaf (ola) manuscript from Sri Lanka</figcaption>
                 </figure>
                 <div class="card-content">
@@ -214,14 +240,14 @@ a{
                         </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/introduction"><mwc-button unelevated label="Introduction"></mwc-button></a>
+                        <a href="/introduction"><mwc-button outlined label="Introduction"></mwc-button></a>
                     </div>
                 </div>
             </article>
 
             <article>
                 <figure>
-                    <img src="/img/home-page/koreana.webp" alt="Chinese Buddhist woodblock" style="width:100%">
+                    <img srcset="/img/home-page/koreana.webp, /img/home-page/koreana.jpg" src="/img/home-page/koreana.webp" alt="Chinese Buddhist woodblock" style="width:100%">
                     <figcaption>A block from the Tripiṭaka Koreana at Haeinsa Temple</figcaption>
                 </figure>
                 <div class="card-content">
@@ -234,7 +260,7 @@ a{
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/start"><mwc-button unelevated label="Get started"></mwc-button></a>
+                        <a href="/start"><mwc-button outlined label="Get started"></mwc-button></a>
                     </div>
                 </div>
             </article>
@@ -248,7 +274,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
         <div class="three-card-row">
             <article class="three-card-row-first">
                 <figure>
-                    <img src="/img/home-page/pali4.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/pali4.webp, /img/home-page/pali4.jpg" src="/img/home-page/pali4.webp" alt="Pali manuscript" style="width:100%">
                     <figcaption>Palm leaf (ola) manuscript from Sri Lanka</figcaption>
                 </figure>
                 <div class="card-content">
@@ -260,7 +286,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                         ${this.localize('31f31787de5aa09d662dfef82b0b686e')}</p>
                     </div>
                     <div class="card-actions">
-                        <a href="/discourses"><mwc-button unelevated label="More …"></mwc-button></a>
+                        <a href="/discourses"><mwc-button outlined label="More …"></mwc-button></a>
                     </div>
                 </div>
             </article>
@@ -276,7 +302,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/vinaya"><mwc-button unelevated label="More …"></mwc-button></a>
+                        <a href="/vinaya"><mwc-button outlined label="More …"></mwc-button></a>
                     </div>
                 </div>
             </article>
@@ -291,7 +317,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/abhidhamma"><mwc-button unelevated label="More …"></mwc-button></a>
+                        <a href="/abhidhamma"><mwc-button outlined label="More …"></mwc-button></a>
                     </div>
                 </div>
             </article>
@@ -299,16 +325,16 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
         </section>
 </section>
         <section class="plain">
-            <blockquote>I read the suttas because they teach how to “read”; how to read oneself, one’s existence, one’s confusions, one’s tragedy. This “whole mass of suffering” becomes readable sentences. The pen that writes these sentences become apparent. And it becomes clear, right then, that with the disappearance of the pen, no more tears are written.
+            <blockquote><span>I read the suttas because they teach how to “read”; how to read oneself, one’s existence, one’s confusions, one’s tragedy. This “whole mass of suffering” becomes readable sentences. The pen that writes these sentences become apparent. And it becomes clear, right then, that with the disappearance of the pen, no more tears are written.</span>
             </blockquote>
-            <a class="quote-button" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"><mwc-button unelevated label="Testimonies"></mwc-button></a>
+            <a class="quote-button" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"><mwc-button outlined label="Testimonies"></mwc-button></a>
         </section>
 
         <section class="two-cards">
 
             <article>
                 <figure>
-                    <img src="/img/home-page/pali6.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/pali6.webp, /img/home-page/pali6.jpg" src="/img/home-page/pali6.webp" alt="Pali manuscript" style="width:100%">
                     <figcaption>Pali manuscript from Myanmar.</figcaption>
                 </figure>
                 <div class="card-content">
@@ -321,14 +347,14 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/general-guide-sujato"><mwc-button unelevated label="Guides"></mwc-button></a>
+                        <a href="/general-guide-sujato"><mwc-button outlined label="Guides"></mwc-button></a>
                     </div>
                 </div>
             </article>
 
             <article>
                 <figure>
-                    <img src="/img/home-page/bhikkhuni.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/bhikkhuni.webp, /img/home-page/bhikkhuni.jpg" src="/img/home-page/bhikkhuni.webp" alt="Pali manuscript" style="width:100%">
                     <figcaption>Bhikkhuni-patimokkha, Burmese manuscript, 19th century. British Library.</figcaption>
                 </figure>
                 <div class="card-content">
@@ -341,7 +367,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/subjects"><mwc-button unelevated label="Indexes"></mwc-button></a>
+                        <a href="/subjects"><mwc-button outlined label="Indexes"></mwc-button></a>
                     </div>
                 </div>
             </article>
@@ -349,6 +375,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
         </section>
     </main>`;
   }
+
 
   constructor() {
     super();
