@@ -2,8 +2,9 @@ import { html } from 'lit-element';
 
 export const textCarouselStyles = html`<style>
     .button {
-      @apply --sc-skolar-font-size-s;
-      @apply --sc-all-caps;
+      font-size: var(--sc-skolar-font-size-s);
+      text-transform: uppercase;
+        letter-spacing: var(--sc-caps-letter-spacing);
       width: fit-content;
       margin-top: var(--sc-size-md);
       background-color: var(--sc-primary-accent-color);
@@ -42,10 +43,6 @@ export const textCarouselStyles = html`<style>
       color: var(--sc-disabled-text-color);
     }
 
-    .spinner {
-      --paper-spinner-color: var(--sc-primary-color);
-    }
-
     .chevron:focus {
       outline: none;
     }
@@ -76,6 +73,7 @@ export const textCarouselStyles = html`<style>
       opacity: 1;
       transition: all .4s ease;
       color: var(--sc-primary-text-color);
+      font-family: var(--sc-sans-font);
     }
 
     .transparent {

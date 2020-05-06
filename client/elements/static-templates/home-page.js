@@ -37,7 +37,7 @@ class SCHomePage extends SCStaticPage {
       }
 
       .preamble {
-        @apply --sc-skolar-font-size-xl;
+        font-size: var(--sc-skolar-font-size-xl);
         color: var(--sc-primary-text-color);
         text-align: center;
       }
@@ -51,7 +51,7 @@ class SCHomePage extends SCStaticPage {
       }
 
       .card-heading {
-        @apply --sc-skolar-font-size-xxl;
+        font-size: var(--sc-skolar-font-size-xxl);
         width: 100%;
         background-color: var(--sc-primary-color-medium);
         color: var(--sc-tertiary-text-color);
@@ -72,7 +72,7 @@ class SCHomePage extends SCStaticPage {
       }
 
       .card-content-text {
-        @apply --sc-skolar-font-size-md;
+        font-size: var(--sc-skolar-font-size-md);
         padding: var(--sc-size-lg);
         text-align: center;
       }
@@ -83,7 +83,7 @@ class SCHomePage extends SCStaticPage {
       }
 
       .card-heading-text {
-        @apply --sc-sans-font;
+        font-family: var(--sc-sans-font);
         padding: var(--sc-size-lg);
         text-align: center;
         direction: rtl;
@@ -99,12 +99,12 @@ class SCHomePage extends SCStaticPage {
       }
 
       .card-text {
-        @apply --sc-skolar-font-size-l;
+        font-size: var(--sc-skolar-font-size-l);
         font-style: italic;
       }
 
       .button {
-        @apply --sc-skolar-font-size-s;
+        font-size: var(--sc-skolar-font-size-s);
         margin-top: var(--sc-size-md);
         background-color: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
@@ -139,8 +139,11 @@ class SCHomePage extends SCStaticPage {
       }
 
       .card-title-text {
-        @apply --paper-font-headline;
-        @apply --sc-serif-font;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
+        font-weight: 400;
+        line-height: 32px;
+        font-family: var(--sc-serif-font);
       }
 
       .why-we-read {
@@ -222,7 +225,7 @@ class SCHomePage extends SCStaticPage {
       }
 
       .big-card-title {
-        @apply --sc-skolar-font-size-static-subtitle;
+        font-size: var(--sc-skolar-font-size-static-subtitle);
         margin-bottom: var(--sc-size-md);
       }
 
@@ -246,7 +249,7 @@ class SCHomePage extends SCStaticPage {
       }
 
       .card-heading-subtext {
-        @apply --sc-skolar-font-size-md;
+        font-size: var(--sc-skolar-font-size-md);
         font-weight: normal;
         line-height: 1em;
         margin: 0 var(--sc-size-md-larger) var(--sc-size-md-larger);
@@ -260,13 +263,13 @@ class SCHomePage extends SCStaticPage {
       }
 
       .buddhas-words-text {
-        @apply --sc-skolar-font-size-xl;
+        font-size: var(--sc-skolar-font-size-xl);
         line-height: 1.1;
       }
 
       @media (min-width: 960px) {
         .buddhas-words-text {
-          @apply --sc-skolar-font-size-static-subtitle;
+          font-size: var(--sc-skolar-font-size-static-subtitle);
         }
       }
 
@@ -349,7 +352,7 @@ class SCHomePage extends SCStaticPage {
         }
 
         .smaller-title {
-          @apply --sc-skolar-font-size-dialog-header;
+          font-size: var(--sc-skolar-font-size-dialog-header);
         }
 
         .d-none {
@@ -363,7 +366,7 @@ class SCHomePage extends SCStaticPage {
 
       @media (min-width: 1680px) {
         .smaller-title {
-          @apply --sc-skolar-font-size-xxl;
+          font-size: var(--sc-skolar-font-size-xxl);
         }
       }
 
@@ -373,7 +376,7 @@ class SCHomePage extends SCStaticPage {
       <div class="content">
         <div class="row preamble">
           <p>
-            ${_`The wisdom of the Buddha has been preserved in a vast ocean of ancient texts.<br/> Many of these scriptures have now been translated into the world’s languages.`}
+            ${_`The farts of the Buddha has been preserved in a vast ocean of ancient texts.<br/> Many of these scriptures have now been translated into the world’s languages.`}
           </p>
           <p>
             ${_`SuttaCentral brings these together and makes them freely available. <br/> Setting aside the boundaries of language and tradition, we let the Buddha speak for himself.`}

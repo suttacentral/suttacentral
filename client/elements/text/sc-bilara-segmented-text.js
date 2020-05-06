@@ -132,15 +132,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
       <sc-bottom-sheet></sc-bottom-sheet>
 
-      <div id="minimap">
-        <input id="minimap-range" type="range" max="100" value="0">
-      </div>
     `;
   }
 
   firstUpdated() {
     this._updateView();
-    this._initMinimapForFirefox();
   }
 
   _updateView() {
@@ -242,18 +238,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         e.currentTarget.style.zIndex = '1';
       };
     });
-  }
-
-  _initMinimapForFirefox() {
-    if (navigator.userAgent.includes('Firefox')) {
-      const minimapRange = this.shadowRoot.querySelector('#minimap-range');
-      const minimap = this.shadowRoot.querySelector('#minimap');
-      const article = this.shadowRoot.querySelector('#segmented_text_content');
-      const $ = getComputedStyle.bind();
-      minimap.style.display = 'block';
-      minimapRange.style.width = minimap.style.height = parseInt($(minimapRange).width) * parseInt($(article).height) / parseInt($(article).width) + 'px';
-      minimapRange.onchange = evt => scrollTo(0, parseInt($(article).height) * (evt.target.value / 100));
-    }
   }
 
   updated(changedProps) {
@@ -606,7 +590,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _addVariantSpan(value) {
     let span = document.createElement('span');
     span.className = 'variant';
-    span.title = 'variant reading';
     span.dataset.tooltip = value;
     let text = document.createTextNode(value);
     span.appendChild(text);

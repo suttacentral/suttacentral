@@ -1,8 +1,8 @@
-import '@polymer/iron-icon/iron-icon.js';
 import { html, LitElement } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
+import '@material/mwc-icon';
 import '@polymer/paper-ripple/paper-ripple.js';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
+import '../addons/sc-bouncing-loader';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
@@ -88,21 +88,21 @@ class SCTextCarousel extends LitLocalized(LitElement) {
     ${textCarouselStyles}
 
     <div id="container" class="container">
-      ${this.loading ? html`<paper-spinner-lite active class="spinner"></paper-spinner-lite>` : ''}
+      ${this.loading ? html`<sc-bouncing-loader></sc-bouncing-loader>` : ''}
 
       <button id="previous_button" class="chevron previous" @tap="${this.loadPreviousItem}" type="button" aria-label="${this.localize('previous')}">
         <paper-ripple></paper-ripple>
-        <iron-icon icon="sc-iron-icons:chevron-left"></iron-icon>
+        <mwc-icon>keyboard_arrow_left</mwc-icon>
       </button>
 
       <div id="text" class="text">${unsafeHTML(this.selectedItem)}</div>
-      <a class="button-link" href="${this.url}">
+        <a class="button-link" href="${this.url}">
         <paper-button class="button card-button-middle" raised>${this.buttonText}</paper-button>
       </a>
 
       <button id="next_button" class="chevron next" @tap="${this.loadNextItem}" aria-label="${this.localize('next')}">
         <paper-ripple></paper-ripple>
-        <iron-icon icon="sc-iron-icons:chevron-right"></iron-icon>
+        <mwc-icon>keyboard_arrow_right</mwc-icon>  
       </button>
     </div>`;
   }

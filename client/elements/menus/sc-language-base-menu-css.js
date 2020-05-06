@@ -10,7 +10,7 @@ export const languageBaseMenuCss = html`
   }
 
   .language-menu-dropdown {
-    @apply --sc-skolar-font-size-md;
+    font-size: var(--sc-skolar-font-size-md);
     background-color: transparent;
     --paper-input-container-focus-color: var(--sc-primary-accent-color);
     --paper-dropdown-menu-icon: {
@@ -21,7 +21,7 @@ export const languageBaseMenuCss = html`
       --paper-input-container-color: var(--sc-secondary-text-color);
     };
     --paper-menu-button-dropdown: {
-      @apply --sc-shadow-elevation-9dp;
+      box-shadow: var(--sc-shadow-elevation-9dp);
       width: 180px;
       background-color: var(--sc-secondary-background-color);
     };
@@ -32,7 +32,7 @@ export const languageBaseMenuCss = html`
   }
   
   .language-menu-paper-item {
-    @apply --sc-skolar-font-size-md;
+    font-size: var(--sc-skolar-font-size-md);
     color: var(--sc-primary-text-color); 
     /*19px for the icon, 16px for the margin */
     --paper-item-icon-width: calc(var(--sc-size-language-icon) + var(--sc-size-md));

@@ -50,9 +50,10 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .nav-home-title {
-        @apply --sc-serif-font;
-        @apply --sc-mixed-small-caps;
-        @apply --sc-skolar-font-size-static-subtitle;
+        font-family: var(--sc-serif-font);
+        font-variant-caps: small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
         position: relative;
         z-index: 100;
         background-color: var(--sc-secondary-text-color);
@@ -88,7 +89,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .nav-drawer-box {
-        @apply --shadow-elevation-16dp;
+        box-shadow: var(--sc-shadow-elevation-16dp);
         background-color: var(--sc-secondary-background-color);
         overflow: hidden;
         z-index: 60;
@@ -115,7 +116,10 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .dialog-header {
-        @apply --paper-font-headline;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
+        font-weight: 400;
+        line-height: 32px;
         padding: var(--sc-size-lg) 0;
         color: var(--sc-tertiary-text-color);
         margin: 0;
@@ -141,11 +145,14 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       .dialog-section {
         margin-top: var(--sc-size-lg);
         color: var(--sc-primary-text-color);
-        @apply --paper-font-body1;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
+        line-height: 20px;
       }
 
       .dialog-section p[lang="ev"] {
-        @apply --sc-tengwar-font;
+        font-family: var(--sc-tengwar-font);
       }
 
       p a, li a {

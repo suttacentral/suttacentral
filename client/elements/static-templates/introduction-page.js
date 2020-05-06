@@ -65,7 +65,7 @@ class SCIntroduction extends SCStaticPage {
           </p>
           <ul>
             <li>
-              ${_`<a href="/discourses" title="SuttaCentral article on Discourses"><strong>Discourses:</strong></a> <i lang="pli">Sutta</i> in Pali, <i lang="san">sūtra</i> in Sanskrit. These are the primary texts, consisting of records of teachings or conversations by the Buddha or his disciples, and arranged by litarary style or subject matter.`}
+              ${_`<a href="/discourses" title="SuttaCentral article on Discourses"><strong>Discourses:</strong></a> <i lang="pli">Sutta</i> in Pali, <i lang="san">sūtra</i> in Sanskrit. These are the primary texts, consisting of records of teachings or conversations by the Buddha or his disciples, and arranged by literary style or subject matter.`}
             </li>
             <li>
               ${_`<a href="/vinaya" title="SuttaCentral article on Vinaya"><strong>Monastic Law:</strong></a> <i lang="pli">Vinaya</i> in both Pali and Sanskrit. These contain the famous list of rules for monks and nuns (<i>pātimokkha</i>). But they are much more than that, including many details of community life, and a multitude of stories about life in ancient India.`}

@@ -4,7 +4,10 @@ import { html as legacyHtml } from '@polymer/polymer/polymer-element.js';
 export const staticStyles = html`
 <style>
   #page-wrap {
-    @apply --sc-paper-font-body;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
     height: auto !important;
     margin: 0 auto;
     min-width: 320px;
@@ -21,23 +24,40 @@ export const staticStyles = html`
   }
 
   h1 {
-    @apply --paper-font-display1;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-h1-md);
+    font-weight: 400;
+    line-height: 40px;
   }
   h2 {
-    @apply --paper-font-headline;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
+        font-weight: 400;
+        line-height: 32px;
   }
   h3 {
-    @apply --paper-font-title;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-xl);
+        font-weight: 400;
+        line-height: 28px;
   }
   h4 {
-    @apply --paper-font-subhead;
-    @apply --sc-skolar-font-size-l;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-l);
+    font-weight: 400;
+    line-height: 24px;
   }
   h5 {
-    @apply --paper-font-subhead;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
   }
   h6 {
-    @apply --paper-font-subhead;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
   }
   h1,
   h2,
@@ -46,7 +66,7 @@ export const staticStyles = html`
   h5,
   h6 {
     color: var(--sc-secondary-text-color);
-    @apply --sc-serif-font;
+    font-family: var(--sc-serif-font);
   }
   p,
   li,
@@ -54,10 +74,16 @@ export const staticStyles = html`
   dt,
   dd,
   blockquote {
-    @apply --sc-paper-font-body;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 24px;
   }
   caption {
-    @apply --paper-font-title;
+    font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-xl);
+        font-weight: 400;
+        line-height: 28px;
     padding: 20px;
   }
   table {
@@ -87,7 +113,7 @@ export const staticStyles = html`
     padding-left: 0;
   }
   dt {
-    @apply --sc-serif-font;
+    font-family: var(--sc-serif-font);
     font-weight: bold;
   }
   .description {
@@ -104,11 +130,11 @@ export const staticStyles = html`
     font-style: italic;
   }
   .translation {
-    @apply --sc-serif-font;
+    font-family: var(--sc-serif-font);
     font-style: normal;
   }
   .ref {
-    @apply --sc-skolar-font-size-s;
+    font-size: var(--sc-skolar-font-size-s);
     color: var(--sc-secondary-text-color);
     background-color: var(--sc-textual-info-background-color);
     border-radius: var(--sc-size-xxs);
@@ -161,7 +187,10 @@ export const staticStyles = html`
   }
   .static-copyright {
     color: var(--sc-secondary-text-color);
-    @apply --paper-font-display1;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-h1-md);
+    font-weight: 400;
+    line-height: 40px;
     margin-top: 64px;
     background: var(--sc-tertiary-background-color);
     padding: 16px 32px;
@@ -191,24 +220,27 @@ export const staticStyles = html`
   dd a,
   td a,
   blockquote a {
-    @apply --sc-inline-link;
+            color: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--sc-primary-color);
+        text-decoration-skip-ink: auto;
   }
 
   p a:hover,
   li a:hover,
   dd a:hover,
   td a:hover  {
-    @apply --sc-inline-link-hover;
+    color: var(--sc-primary-color);
   }
 
   p a:visited,
   li a:visited,
   dd a:visited,
   td a:visited {
-    @apply --sc-inline-link-visited;
+    text-decoration-color: var(--sc-primary-color-dark);
   }
   code > p {
-    @apply --sc-monospace-font
+    font-family: var(--sc-monospace-font);
   }
   img {
     display: block;
@@ -216,7 +248,8 @@ export const staticStyles = html`
     max-width: 100%;
   }
   .author {
-    @apply --sc-mixed-small-caps;
+    font-variant-caps: small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
   }
   .byline {
     font-style: italic;
@@ -228,7 +261,7 @@ export const staticStyles = html`
     padding: 0 1em;
   }
   .pre {
-    @apply --sc-monospace-font;
+    font-family: var(--sc-monospace-font);
     margin: var(--sc-size-xxl) var(--sc-size-md);
   }
 </style>`;

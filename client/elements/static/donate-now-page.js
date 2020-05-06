@@ -7,7 +7,6 @@ import "@polymer/paper-input/paper-textarea.js";
 import "@polymer/paper-listbox/paper-listbox.js";
 import "@polymer/paper-dropdown-menu/paper-dropdown-menu.js";
 import "@polymer/paper-checkbox/paper-checkbox.js";
-import "@polymer/paper-tooltip/paper-tooltip.js";
 import "@polymer/iron-icon/iron-icon.js";
 import "@polymer/iron-ajax/iron-ajax.js";
 import "@polymer/paper-item/paper-item.js";
@@ -15,7 +14,6 @@ import "@polymer/paper-item/paper-item-body.js";
 import "@polymer/iron-form/iron-form.js";
 import "@polymer/paper-spinner/paper-spinner.js";
 import "@polymer/iron-location/iron-location.js";
-import "@polymer/paper-toast/paper-toast.js";
 
 import '../addons/stripe-card.js';
 import '../addons/sc-error-icon.js';
@@ -40,7 +38,7 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
       .currency-dropdown {
         --paper-menu-button-content: {
           display: flex;
-          @apply --shadow-elevation-8dp;
+          box-shadow: var(--sc-shadow-elevation-8dp);
         };
         --paper-input-container-focus-color: var(--sc-primary-accent-color);
         --paper-dropdown-menu-icon: {
@@ -98,7 +96,8 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
         background: var(--sc-primary-accent-color);
         color: var(--sc-tertiary-text-color);
         font-weight: bold;
-        @apply --sc-all-caps;
+        text-transform: uppercase;
+        letter-spacing: var(--sc-caps-letter-spacing);
       }
 
       .submit-button[disabled] {
@@ -138,18 +137,6 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
       .form-prefix {
         color: var(--sc-disabled-text-color);
         margin-right: 0.5em;
-      }
-
-      .sc-tooltip {
-        --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--sc-paper-tooltip-color);
-        --paper-tooltip: {
-          @apply --sc-skolar-font-size-xs;
-          line-height: var(--sc-size-md);
-          padding: var(--sc-size-sm) var(--sc-size-md);
-          text-shadow: 0 0 var(--sc-secondary-background-color);
-          white-space: normal;
-        }
       }
 
       .margin-bottom-md {
@@ -204,12 +191,6 @@ class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
                       </template>
                     </paper-listbox>
                   </paper-dropdown-menu>
-
-                  <template is="dom-repeat" items="[[currencies]]">
-                    <paper-tooltip for="[[item.symbol]]" position="right" class="sc-tooltip" animation-delay="100">
-                      [[item.name]]
-                    </paper-tooltip>
-                  </template>
 
                   <paper-input label="{{localize('amount')}}" class="data-input amount-input" auto-validate
                               pattern="^[+]?(\\d+[.,]?\\d{0,2})$" allowed-pattern="[0-9.,]" required maxlength=20></paper-input>

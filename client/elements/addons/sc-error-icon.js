@@ -18,6 +18,26 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
         icon: '/img/nonetwork.svg',
         title: 'networkError',
         message: 'offline'
+      },
+      "general-error": {
+        icon: '/img/generalerror.svg',
+        title: 'generalError',
+        message: 'generalError'
+      },
+      "page-no-found": {
+        icon: '/img/pagenofound.svg',
+        title: 'pageNoFound',
+        message: 'pageNoFound'
+      },
+      "data-load-error": {
+        icon: '/img/dataloaderror.svg',
+        title: 'dataLoadError',
+        message: 'dataLoadError'
+      },
+      "connect-to-internet": {
+        icon: '/img/connecttointernet.svg',
+        title: 'connectToInternet',
+        message: 'connectToInternet'
       }
     };
   }
@@ -28,9 +48,13 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
     return html`
       <style>
         .error {
-          @apply --center;
-          @apply --sc-sans-font;
-          @apply --sc-skolar-font-size-static-subtitle;
+                  position: absolute;
+        margin: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-static-subtitle);
           color: var(--sc-secondary-text-color);
           text-align: center;
         }

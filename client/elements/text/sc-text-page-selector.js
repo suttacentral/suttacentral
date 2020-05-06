@@ -1,5 +1,4 @@
 import { LitElement, html } from 'lit-element';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/iron-icon/iron-icon.js';
 
 import './sc-segmented-text.js';
@@ -8,6 +7,8 @@ import './sc-simple-text.js';
 import './sc-stepper.js';
 import './sc-text-image.js';
 import '../addons/sc-error-icon.js';
+import '../addons/sc-bouncing-loader';
+
 import { store } from '../../redux-store';
 import { LitLocalized } from '../../elements/addons/localization-mixin';
 import { textHeadingStyles } from '../styles/sc-text-heading-styles.js';
@@ -24,7 +25,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       ${textHeadingStyles}
       <style>
         .loading-indicator {
-          @apply --sc-skolar-font-size-s;
+          font-size: var(--sc-skolar-font-size-s);
           text-align: center;
           height: 60px;
           margin-top: 25vh;
@@ -42,7 +43,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       <div class="wrapper">
         ${this.displaySCTextOptions}
         <div class="loading-indicator" ?hidden=${!this.isLoading}>
-          <paper-spinner-lite ?active=${this.isLoading}></paper-spinner-lite>
+          <sc-bouncing-loader></sc-bouncing-loader>
         </div>
         ${this.displaySimpleTextTemplate}
         ${this.displaySegmentedTextTemplate}
@@ -64,7 +65,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   get displayError() {
     return this._shouldDisplayError() ? html`
-      <sc-error-icon type="no-network"></sc-error-icon>
+      <sc-error-icon type="data-load-error"></sc-error-icon>
     ` : '';
   }
 
@@ -403,7 +404,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _createMetaData(responseData, expansionReturns) {
-    if (!responseData) {
+    if (!responseData || !responseData.translation || !responseData.root_text) {
       return;
     }
     let description = this.localize('metaDescriptionText');

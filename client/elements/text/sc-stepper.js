@@ -38,15 +38,15 @@ class SCStepper extends LitElement {
       }
 
       .action {
-        @apply --paper-font-common-base;
-        @apply --sc-skolar-font-size-md;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-md);
         color: var(--sc-paper-tooltip-text-color);
         opacity: .55;
       }
 
       .text-title {
-        @apply --paper-font-common-base;
-        @apply --sc-skolar-font-size-l;
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-l);
         color: var(--sc-paper-tooltip-text-color);
         text-overflow: ellipsis;
         overflow: hidden;
@@ -82,7 +82,7 @@ class SCStepper extends LitElement {
       }
 
       .arrow {
-        @apply --sc-skolar-font-size-l;
+        font-size: var(--sc-skolar-font-size-l);
         width: var(--sc-size-md-larger);
         min-width: var(--sc-size-md-larger);
         color: var(--sc-paper-tooltip-text-color);

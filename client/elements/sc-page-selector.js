@@ -76,7 +76,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       #toolbar_title {
-        @apply --paper-font-common-base;
+        font-family: var(--sc-sans-font);
         color: var(--sc-tertiary-text-color);
         white-space: nowrap;
         overflow: hidden;
@@ -117,7 +117,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
       @media screen and (max-width: 600px) {
         #toolbar_title {
-          @apply --sc-skolar-font-size-md;
+          font-size: var(--sc-skolar-font-size-md);
         }
       }
 
@@ -150,7 +150,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         --paper-tab-ink: var(--sc-primary-color-light);
         padding-left: 10px;
         padding-right: 10px;
-        @apply --sc-all-caps;
+        text-transform: uppercase;
+        letter-spacing: var(--sc-caps-letter-spacing);
       }
 
       .link-anchor {

@@ -11,7 +11,7 @@ class SCNumberingPage extends SCStaticPage {
     ${staticStyles}
     <style>
       .pre {
-        @apply --sc-monospace-font;
+        font-family: var(--sc-monospace-font);
         margin: var(--sc-size-xxl) var(--sc-size-md);
       }
     </style>

@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
 import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
 import '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
 import '@polymer/iron-collapse/iron-collapse.js';
 
@@ -46,17 +45,6 @@ class SCTextOptions extends LitLocalized(LitElement) {
         margin: 0 auto var(--sc-size-xxl);
       }
 
-      .sc-tooltip {
-        --paper-tooltip-opacity: 0.98;
-        --paper-tooltip-background: var(--sc-paper-tooltip-color);
-        --paper-tooltip: {
-          @apply --sc-skolar-font-size-xs;
-          line-height: var(--sc-size-md);
-          padding: var(--sc-size-sm) var(--sc-size-md);
-          text-shadow: 0 0 var(--sc-secondary-background-color);
-          white-space: normal;
-        };
-      }
     `;
   }
 
@@ -66,14 +54,22 @@ class SCTextOptions extends LitLocalized(LitElement) {
     <div class="container">
       <div class="heading">
         ${this.textInfoButtonTemplate}
-        <paper-icon-button id="text_settings_button" icon="sc-iron-icons:settings" @tap=${this._openSettingsDialog} aria-label="${this.localize('textSettings')}"></paper-icon-button>
-        <paper-tooltip class="sc-tooltip" for="text_settings_button" offset="0">
-          ${this.localize('textSettings')}
-        </paper-tooltip>
-        <paper-icon-button id="suttaplex_button" icon="${this._toggleIcon}" @tap=${this._toggleOpened} aria-label="${this.localize('viewParallels')}"></paper-icon-button>
-        <paper-tooltip class="sc-tooltip" for="suttaplex_button" offset="0" fit-to-visible-bounds="">
-          ${this.localize('viewParallels')}
-        </paper-tooltip>
+
+        <paper-icon-button 
+          id="text_settings_button"
+          icon="sc-iron-icons:settings"
+          @tap="${this._openSettingsDialog}"
+          aria-label="${this.localize('textSettings')}"
+          title="${this.localize('textSettings')}">
+        </paper-icon-button>
+
+        <paper-icon-button 
+          id="suttaplex_button"
+          icon="${this._toggleIcon}"
+          @tap="${this._toggleOpened}"
+          aria-label="${this.localize('viewParallels')}"
+          title="${this.localize('viewParallels')}">
+        </paper-icon-button>
       </div>
 
       <iron-collapse .opened="${this.opened}">
@@ -86,10 +82,13 @@ class SCTextOptions extends LitLocalized(LitElement) {
 
   get textInfoButtonTemplate() {
     return this.metaArea ? html`
-      <paper-icon-button id="text_info_button" icon="sc-iron-icons:info" @tap=${this._openInfoDialog} aria-label="${this.localize('information')}"></paper-icon-button>
-        <paper-tooltip class="sc-tooltip" for="text_info_button" offset="0">
-          ${this.localize('information')}
-        </paper-tooltip>
+      <paper-icon-button 
+        id="text_info_button" 
+        icon="sc-iron-icons:info" 
+        @tap="${this._openInfoDialog}"
+        aria-label="${this.localize('information')}"
+        title="${this.localize('information')}">
+      </paper-icon-button>
     ` : '';
   }
 
@@ -116,7 +115,7 @@ class SCTextOptions extends LitLocalized(LitElement) {
   }
 
   updated(changedProps) {
-    super.update(changedProps);
+    super.updated(changedProps);
     if (changedProps.has('opened')) {
       this._toggleIcon = this._computeToggleIcon();
     }
