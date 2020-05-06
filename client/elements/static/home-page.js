@@ -274,7 +274,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
         <div class="three-card-row">
             <article class="three-card-row-first">
                 <figure>
-                    <img srcset="/img/home-page/pali4.webp, /img/home-page/pali4.jpg" src="/img/home-page/pali4.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/pali4.webp, /img/home-page/pali4.jpg" src="/img/home-page/pali4.webp" loading="lazy" alt="Pali manuscript" style="width:100%">
                     <figcaption>Palm leaf (ola) manuscript from Sri Lanka</figcaption>
                 </figure>
                 <div class="card-content">
@@ -334,7 +334,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
 
             <article>
                 <figure>
-                    <img srcset="/img/home-page/pali6.webp, /img/home-page/pali6.jpg" src="/img/home-page/pali6.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/pali6.webp, /img/home-page/pali6.jpg" src="/img/home-page/pali6.webp" loading="lazy" alt="Pali manuscript" style="width:100%">
                     <figcaption>Pali manuscript from Myanmar.</figcaption>
                 </figure>
                 <div class="card-content">
@@ -354,7 +354,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
 
             <article>
                 <figure>
-                    <img srcset="/img/home-page/bhikkhuni.webp, /img/home-page/bhikkhuni.jpg" src="/img/home-page/bhikkhuni.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/bhikkhuni.webp, /img/home-page/bhikkhuni.jpg" src="/img/home-page/bhikkhuni.webp" loading="lazy" alt="Pali manuscript" style="width:100%">
                     <figcaption>Bhikkhuni-patimokkha, Burmese manuscript, 19th century. British Library.</figcaption>
                 </figure>
                 <div class="card-content">
