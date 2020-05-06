@@ -59,7 +59,7 @@ termcolor==1.1.0
 text-unidecode==1.2
 tqdm==4.26.0
 translate-toolkit==2.3.0
-urllib3==1.23
+urllib3==1.24.2
 uWSGI==2.0.17.1
 Werkzeug==0.15.3
 Flask-Caching==1.4.0
