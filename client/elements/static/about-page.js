@@ -9,9 +9,7 @@ class SCAboutPage extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('55d139c73398413f27c7e15a4cad3a59')}
@@ -38,9 +36,7 @@ class SCAboutPage extends SCStaticPage {
               ${this.localize('cf6137f06caf2b738caa0cd89612f3ec')}
             </p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

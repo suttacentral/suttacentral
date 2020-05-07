@@ -15,9 +15,7 @@ class SCDownloadsPage extends SCStaticPage {
         width: 50%;
       }
     </style>
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('c20c35ef53bf1b70789ce94e66800147')}
@@ -83,9 +81,7 @@ class SCDownloadsPage extends SCStaticPage {
               ${unsafeHTML(this.localize('eee6d23294bbce6a8fc67d3b5755ce6b'))}
             </p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

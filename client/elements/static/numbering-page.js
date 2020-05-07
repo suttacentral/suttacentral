@@ -15,9 +15,7 @@ class SCNumberingPage extends SCStaticPage {
         margin: var(--sc-size-xxl) var(--sc-size-md);
       }
     </style>
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('d50989fc5b69892fcb35a4a23b8d9a59')}
@@ -193,9 +191,7 @@ class SCNumberingPage extends SCStaticPage {
               ${this.localize('8f70644fc24846742da5830bb2f87163')}
             </p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

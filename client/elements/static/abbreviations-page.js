@@ -9,9 +9,7 @@ class SCAbbreviationsPage extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('3bb4308c50a15dbd03c8fc4bf38d338d')}
@@ -1133,9 +1131,7 @@ class SCAbbreviationsPage extends SCStaticPage {
               </tr>
             </table>
           </article>
-        </section>
       </main>
-    </div>
   `;
   }
 

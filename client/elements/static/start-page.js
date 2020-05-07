@@ -9,9 +9,7 @@ class SCStart extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('bf647454e36069fd16f1a7a35cf6a865')}
@@ -115,9 +113,7 @@ class SCStart extends SCStaticPage {
               ${unsafeHTML(this.localize('9992f0d8b5a13651684f890f0ced9046'))}
             </p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

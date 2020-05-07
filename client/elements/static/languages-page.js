@@ -157,9 +157,7 @@ class SCLanguagesPage extends SCStaticPage {
         margin: 3em auto;
       }
     </style>
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             ${this.languages
               ? this.selectedLanguage
@@ -168,9 +166,7 @@ class SCLanguagesPage extends SCStaticPage {
               : html`<sc-bouncing-loader></sc-bouncing-loader>`
             }
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 }
 

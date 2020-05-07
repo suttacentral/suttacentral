@@ -9,9 +9,7 @@ class SCMNGuide extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>${this.localize('c6df63c511da5056d15d25c3e99ff2a2')}</h1>
             <p class="byline">${this.localize('7c952261dd788f03d59a9f4e630f68c6')}</p>
@@ -167,9 +165,7 @@ class SCMNGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('48d8e0340ad0135bf3586d2fafa7533e'))}</p>
             <p>${this.localize('1fd6955d7c03d34a936f0a90a62bdbca')}</p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

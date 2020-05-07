@@ -195,9 +195,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
         handle-as="json"
         last-response="{{PWASizes}}"></iron-ajax>
 
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>{{localize('usingOffline')}}</h1>
             <div class="button-info">
@@ -307,9 +305,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
               </template>
             </paper-card>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   static get properties() {

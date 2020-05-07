@@ -9,9 +9,7 @@ class SCANGuide extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>${this.localize('9e374b788daf9a3e465a9b0c9ed106cf')}</h1>
             <p class="byline">${this.localize('7c952261dd788f03d59a9f4e630f68c6')}</p>
@@ -161,9 +159,7 @@ class SCANGuide extends SCStaticPage {
             <p>${unsafeHTML(this.localize('f0a1680f11cce16505bed29c7008f550'))}</p>
             <p>${this.localize('0949a2513c988b1ca9a3c2f0a09d8241')}</p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

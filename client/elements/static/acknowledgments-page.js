@@ -9,9 +9,7 @@ class AcknowledgmentsPage extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('0407c27180c9b019e644e8ad4c6a9324')}
@@ -1397,9 +1395,7 @@ class AcknowledgmentsPage extends SCStaticPage {
               </tr>
             </table>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

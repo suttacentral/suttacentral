@@ -9,53 +9,11 @@ class SCSubjects extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('aade20b58558aba8a95e2eaaeddf0a8b')}
             </h1>
-            <p>
-              ${unsafeHTML(this.localize('b43b7f44e3ee8ca7e12bcfcd9e634ddf'))}
-            </p>
-            <ul>
-              <li>
-                ${this.localize('a52884d4949311176c9a0cc75030ca98')}
-              </li>
-              <li>
-                ${this.localize('af2b95d00c342b56a096393936671a35')}
-              </li>
-              <li>
-                ${this.localize('fab0579db5a6612182cbc65f1e546c1e')}
-              </li>
-              <li>
-                ${this.localize('6c9760885a191d6d17d16842fbb005db')}
-              </li>
-              <li>
-                ${this.localize('20b53ce860730d9c22b37c86e0ea0a73')}
-              </li>
-              <li>
-                ${unsafeHTML(this.localize('d460b95d17966d890894378969aa1fa9'))}
-              </li>
-            </ul>
-            <p>
-              ${this.localize('b90f13f0a33fcb1515eeeda273754970')}
-            </p>
-            <blockquote>
-              ${this.localize('880ad806c51c03da1d780c3d8e51daf6')}
-            </blockquote>
-            <p>
-              ${this.localize('3ba88ea5aa20d3fc77c4ed4ac60577e6')}
-            </p>
-            <ul>
-              <li>
-                ${this.localize('0abdaf0e93b1bd21a4a65abdd3e73e7e')}
-              </li>
-              <li>
-                ${this.localize('795db24bd7d9254aef82c996fc984171')}
-              </li>
-            </ul>
             <nav class="contents">
               <ul class="entry-list">
                 <li>
@@ -5318,6 +5276,48 @@ class SCSubjects extends SCStaticPage {
                 ${unsafeHTML(this.localize('6a3ecf3c3b5a3efb0c190a5efc750372'))}
               </dd>
             </dl>
+            <aside class='about-index'>
+             <p>
+              ${unsafeHTML(this.localize('b43b7f44e3ee8ca7e12bcfcd9e634ddf'))}
+            </p>
+            <ul>
+              <li>
+                ${this.localize('a52884d4949311176c9a0cc75030ca98')}
+              </li>
+              <li>
+                ${this.localize('af2b95d00c342b56a096393936671a35')}
+              </li>
+              <li>
+                ${this.localize('fab0579db5a6612182cbc65f1e546c1e')}
+              </li>
+              <li>
+                ${this.localize('6c9760885a191d6d17d16842fbb005db')}
+              </li>
+              <li>
+                ${this.localize('20b53ce860730d9c22b37c86e0ea0a73')}
+              </li>
+              <li>
+                ${unsafeHTML(this.localize('d460b95d17966d890894378969aa1fa9'))}
+              </li>
+            </ul>
+            <p>
+              ${this.localize('b90f13f0a33fcb1515eeeda273754970')}
+            </p>
+            <blockquote>
+              ${this.localize('880ad806c51c03da1d780c3d8e51daf6')}
+            </blockquote>
+            <p>
+              ${this.localize('3ba88ea5aa20d3fc77c4ed4ac60577e6')}
+            </p>
+            <ul>
+              <li>
+                ${this.localize('0abdaf0e93b1bd21a4a65abdd3e73e7e')}
+              </li>
+              <li>
+                ${this.localize('795db24bd7d9254aef82c996fc984171')}
+              </li>
+            </ul>
+            </aside>
             <aside class="static-copyright">
               <p>
                 ${this.localize('0efe06960d71afdb0add54d2b6bab04e')}
@@ -5330,9 +5330,7 @@ class SCSubjects extends SCStaticPage {
               </p>
             </aside>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {
