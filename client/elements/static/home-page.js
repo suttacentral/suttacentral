@@ -233,7 +233,7 @@ a{
 
         <section class="video">
 
-<video width="640" height="360" controls preload="none" tabindex="-1" style="" poster="/img/home-page/video_overlay.jpg">
+<video width="640" height="360" controls preload="none" style="" poster="/img/home-page/video_overlay.jpg">
 	<source src="https://ia801504.us.archive.org/18/items/suttacentral_video/suttacentral_video.webm">
 	<source src="https://ia601504.us.archive.org/18/items/suttacentral_video/suttacentral_video.mp4">
 	</video>
