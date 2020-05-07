@@ -1,8 +1,7 @@
-import { html } from "lit-element";
+import { css } from "lit-element";
 import { html as legacyHtml } from '@polymer/polymer/polymer-element.js';
 
-export const staticStyles = html`
-<style>
+export const staticStyles = css`
 
   main {
     display: flex;
@@ -245,6 +244,6 @@ export const staticStyles = html`
     font-family: var(--sc-monospace-font);
     margin: var(--sc-size-xxl) var(--sc-size-md);
   }
-</style>`;
+`;
 
 export const legacyStaticStyles = legacyHtml([staticStyles.strings.join('')]);
