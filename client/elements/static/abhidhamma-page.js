@@ -9,9 +9,7 @@ class Abhidhamma extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('ff9331ad058b3717457b73d2bdc51534')}
@@ -233,9 +231,7 @@ class Abhidhamma extends SCStaticPage {
               ${this.localize('b4ffe656fe3d451fab0e9464a9e025e2')}
             </p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

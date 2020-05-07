@@ -9,9 +9,8 @@ class SCVinaya extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
+          <article>
           <h1>
             ${this.localize('bb8ff9c42f8990da63641e45b0c5c928')}
           </h1>
@@ -236,9 +235,8 @@ class SCVinaya extends SCStaticPage {
               ${unsafeHTML(this.localize('2a7fcdd078e9f459fcf7f9ae95bde627'))}
             </li>
           </ul>
-        </section>
-      </main>
-    </div>`;
+          </article>
+      </main>`;
   }
 
   constructor() {

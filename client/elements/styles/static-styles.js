@@ -3,70 +3,70 @@ import { html as legacyHtml } from '@polymer/polymer/polymer-element.js';
 
 export const staticStyles = html`
 <style>
-  #page-wrap {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-    line-height: 24px;
-    height: auto !important;
-    margin: 0 auto;
-    min-width: 320px;
+main {
+    display: flex;
+    justify-content: center;
+    color: var(--sc-primary-text-color);
+    margin: 6em 2em;
   }
-  main {
-    margin-top: 3em;
-    margin-bottom: 6em;
-  }
-  section {
-    margin: 6em auto 0 !important;
-    padding: 0 5% !important;
+  article {
     max-width: 720px;
-    display: block;
+    min-width: 320px;
+    height: auto;
   }
 
   h1 {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-h1-md);
-    font-weight: 400;
-    line-height: 40px;
-  }
-  h2 {
-    font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-static-subtitle);
-        font-weight: 400;
-        line-height: 32px;
-  }
-  h3 {
-    font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-xl);
-        font-weight: 400;
-        line-height: 28px;
-  }
-  h4 {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-l);
-    font-weight: 400;
-    line-height: 24px;
-  }
-  h5 {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-    line-height: 24px;
-  }
-  h6 {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-    line-height: 24px;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+    line-height: 1.3333;
+    margin: 0.5em 0 0 0;
     color: var(--sc-secondary-text-color);
     font-family: var(--sc-serif-font);
+    font-size: 2em;
+    font-size: clamp(1.5em, 5vw, 2em);
+    font-weight: 300;
+  }
+  h2 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1.5em;
+    font-size: clamp(1.125em, 3.75vw, 1.5em);
+    font-weight: 400;
+  }
+  h3 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1.333em;
+    font-size: clamp(1em, 3.333vw, 1.333em);
+    font-weight: 400;
+  }
+  h4 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1.25em;
+    font-size: clamp(1em, 5vw, 1.25em);
+    font-weight: 400;
+  }
+  h5 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1em;
+    font-weight: 600;
+  }
+  h6 {
+    line-height: 1.3333;
+    margin: 1em 0 0 0;
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-serif-font);
+    font-size: 1em;
+    font-weight: 400;
+    font-style: italic
   }
   p,
   li,
@@ -77,14 +77,11 @@ export const staticStyles = html`
     font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
-    line-height: 24px;
+    line-height: 1.5;
   }
   caption {
-    font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-xl);
-        font-weight: 400;
-        line-height: 28px;
-    padding: 20px;
+        padding: 20px;
   }
   table {
     margin: var(--sc-size-xl) auto;
@@ -113,19 +110,17 @@ export const staticStyles = html`
     padding-left: 0;
   }
   dt {
-    font-family: var(--sc-serif-font);
     font-weight: bold;
   }
   .description {
-    color: var(--sc-secondary-text-color);
     margin: 0;
     font-style: italic;
   }
   .type {
-    margin-bottom: 8px;
+    margin-bottom: 0.5em;
   }
   .life-events {
-    margin-top: 8px;
+    margin-top: 0.5em;
     color: var(--sc-secondary-text-color);
     font-style: italic;
   }
@@ -134,18 +129,15 @@ export const staticStyles = html`
     font-style: normal;
   }
   .ref {
-    font-size: var(--sc-skolar-font-size-s);
     color: var(--sc-secondary-text-color);
-    background-color: var(--sc-textual-info-background-color);
-    border-radius: var(--sc-size-xxs);
-    padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
     white-space: nowrap;
+    font-weight: 600;
+    text-decoration: none;
   }
-  nav.contents{
-    border-radius: 2px;
-    border-left: 4px solid #F6C200;
+  .contents{
+    border-radius: 4px;
+    border-left: 4px solid var(--sc-primary-color-light);
     margin: 64px 0;
-    padding: 0px;
   }
   .entry-list {
     list-style-type: none;
@@ -156,21 +148,15 @@ export const staticStyles = html`
     text-align: center;
   }
   .entry-list a {
-    padding: 8px 0;
+    padding: 0.5em 0;
     display: inline-block;
-    margin: 8px;
+    margin: 1em 0.5em;
     text-decoration: none;
     border-radius: 2px;
     width: 64px;
   }
   .entry-list a:hover {
     background-color: var(--sc-textual-info-background-color)
-  }
-  nav.contents li{
-    margin:0.5em 0;
-  }
-  nav.contents a{
-    text-decoration: none;
   }
   .subject {
     font-style: italic;
@@ -182,27 +168,21 @@ export const staticStyles = html`
   .subject:after {
     content: ")"
   }
-  a.ref {
-    text-decoration: none;
-  }
   .static-copyright {
     color: var(--sc-secondary-text-color);
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-h1-md);
-    font-weight: 400;
-    line-height: 40px;
     margin-top: 64px;
     background: var(--sc-tertiary-background-color);
-    padding: 16px 32px;
+    padding: 1em 2em;
     border: 1px solid var(--sc-border-color);
     border-radius: 2px;
   }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
+  .about-index{
+    color: var(--sc-secondary-text-color);
+    margin-top: 64px;
+    padding: 1em 2em;
+    border: 1px solid var(--sc-border-color);
+    border-radius: 2px;
+  }
   ul,
   ol,
   dt,
@@ -212,7 +192,7 @@ export const staticStyles = html`
   table,
   fieldset,
   hr {
-    margin: 1em 0 0 0;
+    margin: 0.75em 0 0 0;
   }
 
   p a,
@@ -220,7 +200,7 @@ export const staticStyles = html`
   dd a,
   td a,
   blockquote a {
-            color: inherit;
+        color: inherit;
         text-decoration: underline;
         text-decoration-color: var(--sc-primary-color);
         text-decoration-skip-ink: auto;
@@ -238,6 +218,23 @@ export const staticStyles = html`
   dd a:visited,
   td a:visited {
     text-decoration-color: var(--sc-primary-color-dark);
+  }
+  .link-button{
+    background-color: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sc-primary-accent-color);
+    border: 2px solid var(--sc-primary-accent-color);
+    height: 36px;
+    padding: 0px 15px;
+    letter-spacing: var(--sc-caps-letter-spacing);
+    font-variant-caps: all-small-caps;
+    box-sizing: border-box;
+    min-width: 64px;
+  }
+  .link-button:hover{
+    background-color: var(--sc-primary-accent-color-light-transparent);
   }
   code > p {
     font-family: var(--sc-monospace-font);
@@ -263,7 +260,6 @@ export const staticStyles = html`
   .pre {
     font-family: var(--sc-monospace-font);
     margin: var(--sc-size-xxl) var(--sc-size-md);
-  }
 </style>`;
 
 export const legacyStaticStyles = legacyHtml([staticStyles.strings.join('')]);

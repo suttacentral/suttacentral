@@ -9,9 +9,7 @@ class SCANewBeginning extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('4e1776b6d0f3ec62485bd2f61ea7f101')}
@@ -61,9 +59,7 @@ class SCANewBeginning extends SCStaticPage {
               </li>
             </ul>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

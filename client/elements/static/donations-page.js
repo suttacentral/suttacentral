@@ -37,9 +37,7 @@ class SCDonationsPage extends SCStaticPage {
         padding-right: var(--sc-size-md);
       }
     </style>
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('91aa88d8aaf128db44e4465b1926344d')}
@@ -139,9 +137,7 @@ class SCDonationsPage extends SCStaticPage {
               ${this.localize('adc0f2ba4b4715efdf170207895b8e13')}
             </p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

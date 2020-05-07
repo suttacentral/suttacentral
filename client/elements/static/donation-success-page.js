@@ -21,9 +21,8 @@ class SCDonationSuccessPage extends ReduxMixin(Localized(PolymerElement)) {
 
     <iron-location path="{{path}}"></iron-location>
 
-    <div id="page-wrap">
       <main>
-        <section>
+          <article>
           <template is="dom-if" if="{{donationSuccessData.amount}}">
             <div>{{localize('Acknowledge')}}</div><br>
             <div>{{localize('Description')}}</div><br>
@@ -49,9 +48,8 @@ class SCDonationSuccessPage extends ReduxMixin(Localized(PolymerElement)) {
             </div><br>
             <div class="cursive">Sadhu! Sadhu! Sadhu!</div>
           </template>
-        </section>
-      </main>
-    </div>`;
+          </article>
+      </main>`;
   }
 
   static get properties() {

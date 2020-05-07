@@ -9,9 +9,7 @@ class SCGeneralGuide extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>${this.localize('078365b3da2eb8b34d23c36661309359')}</h1>
             <p class="byline">${this.localize('7c952261dd788f03d59a9f4e630f68c6')}</p>
@@ -301,9 +299,7 @@ class SCGeneralGuide extends SCStaticPage {
             <p>${this.localize('799b0d0127e1f49ff7387d2bfb1444ce')}</p>
             <p>${this.localize('b0418394dd07cd105d2ce5502334f630')}</p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

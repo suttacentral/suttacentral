@@ -9,9 +9,8 @@ class Discourses extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
+          <article>
           <h1>
             ${this.localize('e30baf2773fd1ff10ac21a7ebd63198d')}
           </h1>
@@ -311,9 +310,8 @@ class Discourses extends SCStaticPage {
           <p>
             ${this.localize('deeeb294792ea448af97d47d73a24248')}
           </p>
-        </section>
-      </main>
-    </div>`;
+          </article>
+      </main>`;
   }
 
   constructor() {

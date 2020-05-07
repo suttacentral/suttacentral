@@ -9,38 +9,11 @@ class SCTerminology extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('c791601564731c3eeabd3ff61ce35ed7')}
             </h1>
-            <p>
-              ${unsafeHTML(this.localize('f306af1a418abc728e477b00c0fc7de8'))}
-            </p>
-            <ul>
-              <li>
-                ${this.localize('a52884d4949311176c9a0cc75030ca98')}
-              </li>
-              <li>
-                ${this.localize('444cf1caf43c7c2b28c61cc296e80665')}
-              </li>
-              <li>
-                ${this.localize('fab0579db5a6612182cbc65f1e546c1e')}
-              </li>
-            </ul>
-            <p>
-              ${this.localize('3ba88ea5aa20d3fc77c4ed4ac60577e6')}
-            </p>
-            <ul>
-              <li>
-                ${this.localize('0abdaf0e93b1bd21a4a65abdd3e73e7e')}
-              </li>
-              <li>
-                ${this.localize('0ba3c878fc3c05ca0985c5b9b56de823')}
-              </li>
-            </ul>
             <nav class="contents">
               <ul class="entry-list">
                 <li>
@@ -1409,6 +1382,33 @@ class SCTerminology extends SCStaticPage {
                 ${this.localize('f0822b1c6ad349049bdaa5d7b13b6b23')}
               </dd>
             </dl>
+            <aside class='about-index'>
+            <p>
+              ${unsafeHTML(this.localize('f306af1a418abc728e477b00c0fc7de8'))}
+            </p>
+            <ul>
+              <li>
+                ${this.localize('a52884d4949311176c9a0cc75030ca98')}
+              </li>
+              <li>
+                ${this.localize('444cf1caf43c7c2b28c61cc296e80665')}
+              </li>
+              <li>
+                ${this.localize('fab0579db5a6612182cbc65f1e546c1e')}
+              </li>
+            </ul>
+            <p>
+              ${this.localize('3ba88ea5aa20d3fc77c4ed4ac60577e6')}
+            </p>
+            <ul>
+              <li>
+                ${this.localize('0abdaf0e93b1bd21a4a65abdd3e73e7e')}
+              </li>
+              <li>
+                ${this.localize('0ba3c878fc3c05ca0985c5b9b56de823')}
+              </li>
+            </ul>
+            </aside>
             <aside class="static-copyright">
               <p>
                 ${this.localize('468f479bb1c8e962f33de687d0daafbc')}
@@ -1421,9 +1421,7 @@ class SCTerminology extends SCStaticPage {
               </p>
             </aside>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

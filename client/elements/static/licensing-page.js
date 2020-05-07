@@ -9,9 +9,7 @@ class SCLicensingPage extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('0b9c6eef4e3d3a222eb04e910d252339')}
@@ -93,9 +91,7 @@ class SCLicensingPage extends SCStaticPage {
               ${this.localize('fb869e822a73d682c5b013f5338b95dd')}
             </p>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

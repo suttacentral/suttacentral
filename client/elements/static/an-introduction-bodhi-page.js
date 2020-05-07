@@ -9,9 +9,7 @@ class SCANIntroduction extends SCStaticPage {
   render() {
     return html`
     ${staticStyles}
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>${this.localize('51f1c4d07f8dbdf24c4148f8a6caebcd')}</h1>
             <p class="byline">${this.localize('00e0f26c4e49e5a75eb4e3c749968bbc')}</p>
@@ -278,9 +276,7 @@ class SCANIntroduction extends SCStaticPage {
             </blockquote>
             </aside>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

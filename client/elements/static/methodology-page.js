@@ -19,9 +19,7 @@ class SCMethodologyPage extends SCStaticPage {
         font-style: italic;
       }
     </style>
-    <div id="page-wrap">
       <main>
-        <section>
           <article>
             <h1>
               ${this.localize('5e16430ea3941e14ec95a6da95f0cadc')}
@@ -940,9 +938,7 @@ class SCMethodologyPage extends SCStaticPage {
               </li>
             </ul>
           </article>
-        </section>
-      </main>
-    </div>`;
+      </main>`;
   }
 
   constructor() {

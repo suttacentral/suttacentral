@@ -1,6 +1,5 @@
 import { css, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@material/mwc-button';
 
 import { SCStaticPage } from '../addons/sc-static-page.js';
 import { API_ROOT } from '../../constants.js';
@@ -8,13 +7,6 @@ import { API_ROOT } from '../../constants.js';
 class SCHomePage extends SCStaticPage {
   static get styles() {
     return css`
-   html {
-
-   }
-mwc-button {
-  --mdc-theme-primary: var(--sc-primary-accent-color);
-  --mdc-theme-on-primary: white;
-}
    :root {
      font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-md);
@@ -140,6 +132,30 @@ mwc-button {
        display: flex;
        align-items: flex-end;
    }
+     .link-button{
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sc-primary-accent-color);
+    border: 1px solid var(--sc-primary-accent-color);
+    border-radius: 4px;
+    height: 36px;
+    padding: 0px 15px 2px;
+    letter-spacing: var(--sc-caps-letter-spacing);
+    font-variant-caps: all-small-caps;
+    box-sizing: border-box;
+    min-width: 64px;
+    text-decoration: none;
+  }
+
+  .link-button:hover{
+background-color: var(--sc-primary-accent-color-light-transparent);
+  }
+    .link-button:active{
+background-color: var(--sc-primary-accent-color);
+color: white;
+  }
    .quote-button {
        align-self: flex-end;
    }
@@ -212,7 +228,7 @@ a{
         <section class="plain">
             <blockquote><span>The Buddha said to the monks who were quarrelling: “If animals can be courteous to each other, so can you.”</span>
             </blockquote>
-            <a class="quote-button" href="/"><mwc-button outlined label="Read this sutta" class="quote-button"></mwc-button></a>
+            <a class="link-button quote-button" href="/">Read this sutta</a>
         </section>
 
         <section class="video">
@@ -240,7 +256,8 @@ a{
                         </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/introduction"><mwc-button outlined label="Introduction"></mwc-button></a>
+                        <a href="/introduction" class="link-button">Introduction</a>
+
                     </div>
                 </div>
             </article>
@@ -260,7 +277,7 @@ a{
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/start"><mwc-button outlined label="Get started"></mwc-button></a>
+                        <a href="/start" class="link-button">Get started</a>
                     </div>
                 </div>
             </article>
@@ -274,7 +291,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
         <div class="three-card-row">
             <article class="three-card-row-first">
                 <figure>
-                    <img srcset="/img/home-page/pali4.webp, /img/home-page/pali4.jpg" src="/img/home-page/pali4.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/pali4.webp, /img/home-page/pali4.jpg" src="/img/home-page/pali4.webp" loading="lazy" alt="Pali manuscript" style="width:100%">
                     <figcaption>Palm leaf (ola) manuscript from Sri Lanka</figcaption>
                 </figure>
                 <div class="card-content">
@@ -286,7 +303,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                         ${this.localize('31f31787de5aa09d662dfef82b0b686e')}</p>
                     </div>
                     <div class="card-actions">
-                        <a href="/discourses"><mwc-button outlined label="More …"></mwc-button></a>
+                        <a href="/discourses" class="link-button">More …</a>
                     </div>
                 </div>
             </article>
@@ -302,7 +319,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/vinaya"><mwc-button outlined label="More …"></mwc-button></a>
+                        <a href="/vinaya" class="link-button">More …</a>
                     </div>
                 </div>
             </article>
@@ -317,7 +334,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/abhidhamma"><mwc-button outlined label="More …"></mwc-button></a>
+                        <a href="/abhidhamma" class="link-button">More …</a>
                     </div>
                 </div>
             </article>
@@ -327,14 +344,14 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
         <section class="plain">
             <blockquote><span>I read the suttas because they teach how to “read”; how to read oneself, one’s existence, one’s confusions, one’s tragedy. This “whole mass of suffering” becomes readable sentences. The pen that writes these sentences become apparent. And it becomes clear, right then, that with the disappearance of the pen, no more tears are written.</span>
             </blockquote>
-            <a class="quote-button" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"><mwc-button outlined label="Testimonies"></mwc-button></a>
+            <a class="link-button quote-button" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747">Testimonies</a>
         </section>
 
         <section class="two-cards">
 
             <article>
                 <figure>
-                    <img srcset="/img/home-page/pali6.webp, /img/home-page/pali6.jpg" src="/img/home-page/pali6.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/pali6.webp, /img/home-page/pali6.jpg" src="/img/home-page/pali6.webp" loading="lazy" alt="Pali manuscript" style="width:100%">
                     <figcaption>Pali manuscript from Myanmar.</figcaption>
                 </figure>
                 <div class="card-content">
@@ -347,14 +364,14 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/general-guide-sujato"><mwc-button outlined label="Guides"></mwc-button></a>
+                        <a href="/general-guide-sujato" class="link-button">Guides</a>
                     </div>
                 </div>
             </article>
 
             <article>
                 <figure>
-                    <img srcset="/img/home-page/bhikkhuni.webp, /img/home-page/bhikkhuni.jpg" src="/img/home-page/bhikkhuni.webp" alt="Pali manuscript" style="width:100%">
+                    <img srcset="/img/home-page/bhikkhuni.webp, /img/home-page/bhikkhuni.jpg" src="/img/home-page/bhikkhuni.webp" loading="lazy" alt="Pali manuscript" style="width:100%">
                     <figcaption>Bhikkhuni-patimokkha, Burmese manuscript, 19th century. British Library.</figcaption>
                 </figure>
                 <div class="card-content">
@@ -367,7 +384,7 @@ ${this.localize('24cbc4d3253a2779ae4dab326e42659b')}
                     </p>
                     </div>
                     <div class="card-actions">
-                        <a href="/subjects"><mwc-button outlined label="Indexes"></mwc-button></a>
+                        <a href="/subjects" class="link-button">Indexes</a>
                     </div>
                 </div>
             </article>
