@@ -22,6 +22,7 @@ template.innerHTML = `
       --sc-primary-color-darkest: rgba(138, 93, 0, 1);
       --sc-primary-accent-color: #43a047;
       --sc-primary-accent-color-light: #52c756;
+      --sc-primary-accent-color-light-transparent: rgba(67,160,71,0.1);
       --sc-primary-accent-color-dark: #428342;
       --sc-secondary-accent-color: #9c27b0;
 

@@ -1,9 +1,9 @@
-import { css } from "lit-element";
+import { html } from "lit-element";
 import { html as legacyHtml } from '@polymer/polymer/polymer-element.js';
 
-export const staticStyles = css`
-
-  main {
+export const staticStyles = html`
+<style>
+main {
     display: flex;
     justify-content: center;
     color: var(--sc-primary-text-color);
@@ -219,6 +219,23 @@ export const staticStyles = css`
   td a:visited {
     text-decoration-color: var(--sc-primary-color-dark);
   }
+  .link-button{
+    background-color: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sc-primary-accent-color);
+    border: 2px solid var(--sc-primary-accent-color);
+    height: 36px;
+    padding: 0px 15px;
+    letter-spacing: var(--sc-caps-letter-spacing);
+    font-variant-caps: all-small-caps;
+    box-sizing: border-box;
+    min-width: 64px;
+  }
+  .link-button:hover{
+    background-color: var(--sc-primary-accent-color-light-transparent);
+  }
   code > p {
     font-family: var(--sc-monospace-font);
   }
@@ -243,7 +260,6 @@ export const staticStyles = css`
   .pre {
     font-family: var(--sc-monospace-font);
     margin: var(--sc-size-xxl) var(--sc-size-md);
-  }
-`;
+</style>`;
 
 export const legacyStaticStyles = legacyHtml([staticStyles.strings.join('')]);
