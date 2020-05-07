@@ -34,7 +34,9 @@ const initialState = {
         paliLookupTargetLanguage: '',
         chineseLookupActivated: false,
         chineseLookupTargetDictRepr: 'None',
-        chineseLookupTargetLanguage: ''
+        chineseLookupTargetLanguage: '',
+        referenceDisplayType: 'none',
+        noteDisplayType: 'none'
     },
     colorTheme: 'light',
     selectedNavigationMenuItemId: '',
@@ -122,6 +124,12 @@ const reducer = (state, action) => {
             return Object.assign({}, state, { isOnline: action.isOnline });
         case 'SET_SHOWED_LANGUAGE_PROMPT':
             return Object.assign({}, state, { showedLanguagePrompt: action.showedLanguagePrompt });
+        case 'SET_REFERENCE_DISPLAY_TYPE':
+            return Object.assign({}, state,
+                { textOptions: Object.assign({}, state.textOptions, { referenceDisplayType: action.referenceDisplayType }) });
+        case 'SET_NOTE_DISPLAY_TYPE':
+            return Object.assign({}, state,
+                { textOptions: Object.assign({}, state.textOptions, { noteDisplayType: action.noteDisplayType }) });
         default:
             return state;
     }

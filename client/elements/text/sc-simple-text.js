@@ -163,6 +163,7 @@ class SCSimpleText extends SCLitTextPage {
     this.addEventListener('click', () => {
       setTimeout(() => {
         this._scrollToSection(window.location.hash.substr(1), true, 0);
+        this._hideSettingMenu();
       });
     });
     window.addEventListener('hashchange', () => {
@@ -173,6 +174,13 @@ class SCSimpleText extends SCLitTextPage {
     this.inputElement = this.shadowRoot.querySelector('#simple_text_content');
     this.shadowRoot.querySelector('#a11y').target = document.querySelector('body');
     this._updateView();
+  }
+
+  _hideSettingMenu() {
+    this.dispatchEvent(new CustomEvent('hide-sc-top-sheet', {
+      bubbles: true,
+      composed: true
+    }));
   }
 
   updated(changedProps) {

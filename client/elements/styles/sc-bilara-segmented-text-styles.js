@@ -15,31 +15,33 @@ export const commonStyles = css`
     --sc-size-lg: 32px;
     --sc-size-xl: 48px;
     --sc-size-xxl: 64px;
-     font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-skolar-font-size-md);
   }
 
-main {
+  main {
     display: flex;
     justify-content: center;
     color: var(--sc-primary-text-color);
     margin: 4em 2em;
-}
+  }
 
-/* text title */
+  /* text title */
 
-header {
+  header {
     text-align: center;
     color: var(--sc-secondary-text-color);
     margin: 4em 0;
-}
-header ul {
+  }
+
+  header ul {
     padding: 0;
     list-style-type: none;
     font-variant-caps: all-small-caps;
     font-weight: normal;
     font-family: var(--sc-sans-font);
-}
-h1 {
+  }
+
+  h1 {
     line-height: 1.3333;
     margin: 0.5em 0 0 0;
     color: var(--sc-secondary-text-color);
@@ -49,11 +51,11 @@ h1 {
     font-weight: 300;
     font-variant-caps: small-caps;
     text-align: center;
-}
+  }
 
-/* text general */
+  /* text general */
 
-h2 {
+  h2 {
     line-height: 1.3333;
     margin: 1em 0 0 0;
     color: var(--sc-secondary-text-color);
@@ -61,8 +63,9 @@ h2 {
     font-size: 1.5em;
     font-size: clamp(1.125em, 3.75vw, 1.5em);
     font-weight: 400;
-}
-h3 {
+  }
+
+  h3 {
     line-height: 1.3333;
     margin: 1em 0 0 0;
     color: var(--sc-secondary-text-color);
@@ -70,8 +73,9 @@ h3 {
     font-size: 1.333em;
     font-size: clamp(1em, 3.333vw, 1.333em);
     font-weight: 400;
-}
-h4 {
+  }
+
+  h4 {
     line-height: 1.3333;
     margin: 1em 0 0 0;
     color: var(--sc-secondary-text-color);
@@ -79,16 +83,18 @@ h4 {
     font-size: 1.25em;
     font-size: clamp(1em, 5vw, 1.25em);
     font-weight: 400;
-}
-h5 {
+  }
+
+  h5 {
     line-height: 1.3333;
     margin: 1em 0 0 0;
     color: var(--sc-secondary-text-color);
     font-family: var(--sc-serif-font);
     font-size: 1em;
     font-weight: 600;
-}
-h6 {
+  }
+
+  h6 {
     line-height: 1.3333;
     margin: 1em 0 0 0;
     color: var(--sc-secondary-text-color);
@@ -96,111 +102,125 @@ h6 {
     font-size: 1em;
     font-weight: 400;
     font-style: italic
-}
-p,
-ul,
-ol {
+  }
+
+  p,
+  ul,
+  ol {
     margin: 0.75em 0 0 0;
     line-height: 1.5;
     font-family: var(--sc-serif-font);
-}
-blockquote {
+  }
+
+  blockquote {
     margin: 0 2em;
-}
+  }
 
-/* currently supported by safari only */
+  /* currently supported by safari only */
 
-p,
-li {
+  p,
+  li {
     hanging-punctuation: first last;
-}
+  }
 
-/* special text classes  */
+  /* special text classes  */
 
-.evam {
+  .evam {
     font-variant-caps: all-small-caps;
-}
-.namo {
+  }
+
+  .namo {
     text-align: center;
     font-style: italic;
-}
-.speaker {
+  }
+
+  .speaker {
     font-style: italic;
     display: block;
     margin-left: 1em;
     height: 0;
     color: var(--sc-secondary-text-color);
-}
-.endsection,
-.end,
-.endkanda {
+  }
+
+  .endsection,
+  .end,
+  .endkanda {
     font-style: italic;
     text-align: center;
     color: var(--sc-secondary-text-color);
-}
-.endsutta {
+  }
+
+  .endsutta {
     font-weight: bold;
     text-align: center;
     color: var(--sc-secondary-text-color);
-}
-.endbook {
+  }
+
+  .endbook {
     font-weight: bold;
     text-align: center;
     color: var(--sc-secondary-text-color);
     text-transform: uppercase;
     letter-spacing: var(--sc-caps-letter-spacing);
-}
-.endvagga {
+  }
+
+  .endvagga {
     text-align: center;
     color: var(--sc-secondary-text-color);
     text-transform: uppercase;
     letter-spacing: var(--sc-caps-letter-spacing);
-}
-.uddana,
-.uddanagatha {
+  }
+
+  .uddana,
+  .uddanagatha {
     color: var(--sc-secondary-text-color);
     font-size: var(--sc-skolar-font-size-s);
     font-weight: 400;
-}
-.uddana-intro {
+  }
+
+  .uddana-intro {
     font-weight: bold;
     color: var(--sc-secondary-text-color);
-}
+  }
 
-/* lookup */
+  /* lookup */
 
-.spanFocused {
+  .spanFocused {
     background-color: var(--sc-primary-color-light);
     color: var(--sc-paper-tooltip-color);
-}
+  }
 
-/* Notes */
-/* Anchor tooltips. */
-article {
+  /* Notes */
+  /* Anchor tooltips. */
+  article {
     position: relative;
-}
-.variant,
-.comment,
-a {
+  }
+
+  .variant,
+  .comment,
+  a {
     display: inline-block;
     font-family: var(--sc-sans-font);
     z-index: 10;
     box-sizing: border-box;
     color: var(--sc-secondary-text-color);
-}
-.variant,
-.comment {
+  }
+
+  .variant,
+  .comment {
     padding: var(--sc-size-sm) var(--sc-size-md);
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-secondary-background-color);
     font-size: var(--sc-skolar-font-size-s);
     line-height: 1.3333;
-}
-.variant:hover,
-.comment:hover {
+  }
+
+  .variant:hover,
+  .comment:hover {
     cursor: help;
-}
-.reference a {
+  }
+
+  .reference a {
     color: var(--sc-secondary-text-color);
     text-decoration: none;
     white-space: nowrap;
@@ -209,27 +229,31 @@ a {
     font-style: normal;
     letter-spacing: -0.4px;
     font-variant-caps: normal;
-}
-.reference a:after {
+  }
+
+  .reference a:after {
     content: " ";
     white-space: pre;
-}
-header .reference a,
-h2 .reference a,
-h3 .reference a,
-h4 .reference a,
-h5 .reference a,
-h6 .reference a {
+  }
+
+  header .reference a,
+  h2 .reference a,
+  h3 .reference a,
+  h4 .reference a,
+  h5 .reference a,
+  h6 .reference a {
     display: none
-}
-.pts:before {
+  }
+
+  .pts:before {
     content: "pts";
     font-variant-caps: all-small-caps;
     font-feature-settings: "ordn";
-}
-/* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
-.comment[data-tooltip]::after,
-.variant[data-tooltip]::after {
+  }
+
+  /* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
+  .comment[data-tooltip]::after,
+  .variant[data-tooltip]::after {
     content: attr(data-tooltip);
     display: none;
     position: absolute;
@@ -244,18 +268,34 @@ h6 .reference a {
     box-sizing: border-box;
     background-color: var(--sc-secondary-background-color);
     color: var(--sc-secondary-text-color);
-}
-.comment[data-tooltip]::after {
+  }
+
+  .comment[data-tooltip]::after {
     border-style: solid;
     border-width: 1px 1px 1px 4px;
     border-color: var(--sc-primary-accent-color);
-}
-.variant[data-tooltip]::after {
+  }
+
+  .variant[data-tooltip]::after {
     border-style: solid;
     border-width: 1px 1px 1px 4px;
     border-color: var(--sc-secondary-accent-color);
-}
+  }
 
+  .note-wrap {
+    position: relative;
+  }
+
+  .note-wrap small {
+    position: absolute;
+    top: -18px;
+    font-size: 12px;
+    line-height: 1;
+    background: #fff;
+    padding: 2px 4px;
+    border: 1px solid var(--sc-primary-accent-color);
+    border-radius: 4px;
+  }
 `;
 
 export const plainStyles = html`

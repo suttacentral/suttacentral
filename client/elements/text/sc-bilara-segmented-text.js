@@ -47,7 +47,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       error: { type: Object },
       isTextViewHidden: { type: Boolean },
       hidden: { type: Boolean },
-      chosenTextView: { type: String }, //observer: '_setViewOptions'
+      chosenTextView: { type: String },
+      chosenReferenceDisplayType: { type: String },
+      chosenNoteDisplayType: { type: String },
       paliScript: { type: String },
       markup: { type: String },
       isPaliLookupEnabled: { type: Boolean },
@@ -73,6 +75,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.isTextViewHidden = false;
     this.hidden = false;
     this.chosenTextView = textOptions.segmentedSuttaTextView;
+    this.chosenReferenceDisplayType = textOptions.referenceDisplayType;
+    this.chosenNoteDisplayType = textOptions.noteDisplayType;
     this.paliScript = textOptions.script;
     this.isPaliLookupEnabled = textOptions.paliLookupActivated;
     this.spansForWordsGenerated = false;
@@ -93,13 +97,40 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.translationTextSelector = '.translation .text';
     this.rootTextSelector = '.root .text';
     this.commentSpanRectInfo = new Map();
+    this.variantSpanRectInfo = new Map();
+    this.mapTypeOfNeedToRecalculate = new Map([
+      ['.comment', this.commentSpanRectInfo],
+      ['.variant', this.variantSpanRectInfo]
+    ]);
+    // Return the corresponding style sheet according to different combinations of text viewing options.
     this.mapStyle = new Map([
-      ['plain', plainStyles],
-      ['plainplus', plainPlusStyles],
-      ['sidebyside', sideBySideStyles],
-      ['sidebysideplus', sideBySidePlusStyles],
-      ['linebyline', lineByLineStyles],
-      ['linebylineplus', lineByLinePlusStyles],
+      ['none_none_plain', plainStyles],
+      ['main_none_plain', mainInlineReferenceStyles],
+      ['all_none_plain', allInlineReferenceStyles],
+      ['none_asterisk_plain', plainStyles],
+      ['main_asterisk_plain', mainInlineReferenceStyles],
+      ['all_asterisk_plain', allInlineReferenceStyles],
+      ['none_sidenotes_plain', plainPlusStyles],
+      ['main_sidenotes_plain', plainPlusStyles],
+      ['all_sidenotes_plain', plainPlusStyles], 
+      ['none_none_sidebyside', sideBySideStyles],
+      ['main_none_sidebyside', sideBySideStyles],
+      ['all_none_sidebyside', sideBySideStyles],
+      ['none_asterisk_sidebyside', sideBySideStyles],
+      ['main_asterisk_sidebyside', sideBySideStyles],
+      ['all_asterisk_sidebyside', sideBySideStyles],
+      ['none_sidenotes_sidebyside', sideBySidePlusStyles],
+      ['all_sidenotes_sidebyside', sideBySidePlusStyles],
+      ['main_sidenotes_sidebyside', sideBySidePlusStyles],
+      ['none_none_linebyline', lineByLineStyles],
+      ['all_none_linebyline', lineByLineStyles],
+      ['main_none_linebyline', lineByLineStyles],
+      ['none_asterisk_linebyline', lineByLineStyles],
+      ['all_asterisk_linebyline', lineByLineStyles],
+      ['main_asterisk_linebyline', lineByLineStyles],
+      ['none_sidenotes_linebyline', lineByLinePlusStyles],
+      ['all_sidenotes_linebyline', lineByLinePlusStyles],
+      ['main_sidenotes_linebyline', lineByLinePlusStyles],
     ]);
   }
 
@@ -107,18 +138,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     return html`
       <style>${commonStyles}</style>
       ${this.currentStyles}
-      <paper-dropdown-menu label="Text view" @selected-item-changed=${(e) => this._getStyles(e)}>
-        <paper-listbox slot="dropdown-content" selected="0">
-          <paper-item>Plain</paper-item>
-          <paper-item>Plain with main inline references</paper-item>
-          <paper-item>Plain with all inline references</paper-item>
-          <paper-item>Plain +</paper-item>
-          <paper-item>Side by side</paper-item>
-          <paper-item>Side by side +</paper-item>
-          <paper-item>Line by line</paper-item>
-          <paper-item>Line by line +</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
 
       <sc-nav-contents .items="${this.navItems}"></sc-nav-contents>
       <main>
@@ -131,12 +150,19 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
       <sc-bottom-sheet></sc-bottom-sheet>
-
     `;
   }
 
   firstUpdated() {
     this._updateView();
+    this.addEventListener('click', () => { this._hideSettingMenu() });
+  }
+
+  _hideSettingMenu() {
+    this.dispatchEvent(new CustomEvent('hide-sc-top-sheet', {
+      bubbles: true,
+      composed: true
+    }));
   }
 
   _updateView() {
@@ -148,7 +174,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       //this._addCommentText();
       this._addVariantText();
       //this._addCommentSpanId();
-
       if (this.isPaliLookupEnabled) {
         this._initPaliLookup();
       }
@@ -157,10 +182,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.currentSutta = this.translatedSutta ? this.translatedSutta : this.rootSutta;
 
     setTimeout(() => {
-      this._recalculateCommentSpanHeight();
+      //this._recalculateCommentSpanHeight();
+      this._changeTextView();
     }, 0);
   }
-
+  
   _segmentedTextContentElement() {
     return this.shadowRoot.querySelector('#segmented_text_content');
   }
@@ -178,7 +204,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.commentSpanRectInfo.clear();
     const Comments = this.shadowRoot.querySelectorAll('.comment');
     Comments.forEach(element => {
-     // debugger;
       let rect = element.getBoundingClientRect();
       let elementNoId = element.id.slice(8); //id:comment_1 => get: 1
       let nextComment = this.shadowRoot.querySelector(`#comment_${parseInt(elementNoId) + 1}`);
@@ -261,13 +286,19 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     if (changedProps.has('currentStyles')) {
       if (this._isPlusStyle()) {
-        this._recalculateCommentSpanHeight();
+        //this._recalculateCommentSpanHeight();
       } else {
-        this._resetCommentSpan();
+        //this._resetCommentSpan();
       }
     }
     if (changedProps.has('markup')) {
       this._updateView();
+    }
+    if (changedProps.has('chosenReferenceDisplayType')) {
+      this._changeTextView();
+    }
+    if (changedProps.has('chosenNoteDisplayType')) {
+      this._changeTextView();
     }
   }
 
@@ -319,10 +350,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _changeTextView() {
-    // if (!this.markup || !this.translatedSutta) {
-    //   return;
-    // }
-    this.currentStyles = this.mapStyle.get(this.chosenTextView);
+    let viewCompose = `${this.chosenReferenceDisplayType}_${this.chosenNoteDisplayType}_${this.chosenTextView}`;
+    this.currentStyles = this.mapStyle.get(viewCompose) ? this.mapStyle.get(viewCompose) : plainStyles;
   }
 
   _stateChanged(state) {
@@ -336,40 +365,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (this.isPaliLookupEnabled !== state.textOptions.paliLookupActivated) {
       this.isPaliLookupEnabled = state.textOptions.paliLookupActivated;
     }
-  }
-
-  _getStyles(e) {
-    let selectedItem = e.currentTarget.selectedItem;
-    if (selectedItem) {
-      switch (selectedItem.parentNode.selected) {
-        case 0:
-          this.currentStyles = plainStyles;
-          break;
-        case 1:
-          this.currentStyles = mainInlineReferenceStyles;
-          break;
-        case 2:
-          this.currentStyles = allInlineReferenceStyles;
-          break;
-        case 3:
-          this.currentStyles = plainPlusStyles;
-          break;
-        case 4:
-          this.currentStyles = sideBySideStyles;
-          break;
-        case 5:
-          this.currentStyles = sideBySidePlusStyles;
-          break;
-        case 6:
-          this.currentStyles = lineByLineStyles;
-          break;
-        case 7:
-          this.currentStyles = lineByLinePlusStyles;
-          break;
-        default:
-          this.currentStyles = plainStyles;
-          break;
-      }
+    if (this.chosenReferenceDisplayType !== state.textOptions.referenceDisplayType) {
+      this.chosenReferenceDisplayType = state.textOptions.referenceDisplayType;
+    }
+    if (this.chosenNoteDisplayType !== state.textOptions.noteDisplayType) {
+      this.chosenNoteDisplayType = state.textOptions.noteDisplayType;
     }
   }
 
@@ -475,7 +475,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _addTranslationSuttaMarkup() {
     let articleElement = this._articleElement();
     let mapSutta = new Map(Object.entries(this.bilaraTranslatedSutta));
-    //debugger;
     if (articleElement && mapSutta) {
       mapSutta.forEach((value, key, mapSutta) => {
         let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
@@ -591,7 +590,18 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     let span = document.createElement('span');
     span.className = 'variant';
     span.dataset.tooltip = value;
-    let text = document.createTextNode(value);
+    span.appendChild(this._addVariantNoteWrapSpan(value));
+    return span;
+  }
+
+  _addVariantNoteWrapSpan(value) {
+    let span = document.createElement('span');
+    span.className = 'note-wrap';
+    let smallElement = document.createElement('small');
+    let text = document.createTextNode('Variant reading');
+    smallElement.appendChild(text);
+    text = document.createTextNode(value);
+    span.appendChild(smallElement);
     span.appendChild(text);
     return span;
   }
