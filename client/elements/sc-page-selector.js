@@ -8,6 +8,7 @@ import { ReduxMixin, store } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 
 import './menus/sc-toolbar.js';
+import './addons/sc-top-sheet';
 import './text/sc-segmented-text.js';
 import './text/sc-simple-text.js';
 import { throttle } from 'throttle-debounce';
@@ -81,6 +82,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        width: calc(80%);
       }
 
       #drawertoggle {
@@ -176,6 +178,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
             <sc-toolbar id="sc_toolbar" suttaplex-display="[[shouldShowSuttaplexListPage]]"></sc-toolbar>
           </app-toolbar>
+          <sc-top-sheet id="setting_Menu"></sc-top-sheet>
         </app-header>
 
         [[_createMetaData(localize)]]
@@ -363,6 +366,15 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         this.$.toolbarHeader.classList.remove('smallScreenPadding');
       }
     }));
+
+    this.addEventListener('open-dialog', e => this._openDialog(e));
+    this.addEventListener('hide-sc-top-sheet', e => { this.$['setting_Menu'].hide(); });
+  }
+
+  _openDialog(event) {
+    if (event.detail.id === 'settings_dialog') {
+      this.$['setting_Menu'].show();
+    }
   }
 
   _redirectFromLegacyLink() {
