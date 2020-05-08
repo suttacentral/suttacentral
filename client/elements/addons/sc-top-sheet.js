@@ -45,27 +45,27 @@ class SCTopSheet extends LitLocalized(LitElement) {
       },
       {
         'dict': 'pli2en',
-        'language': 'Pāli → English'
+        'language': 'English'
       },
       {
         'dict': 'pli2es',
-        'language': 'Pāli → Español'
+        'language': 'Español'
       },
       {
         'dict': 'pli2zh',
-        'language': 'Pāli → 汉语'
+        'language': '汉语'
       },
       {
         'dict': 'pli2pt',
-        'language': 'Pāli → Português'
+        'language': 'Português'
       },
       {
         'dict': 'pli2id',
-        'language': 'Pāli → Bahasa Indonesia'
+        'language': 'Indonesia'
       },
       {
         'dict': 'pli2nl',
-        'language': 'Pāli → Nederlands'
+        'language': 'Nederlands'
       }
     ];
     this.paliLookupLanguage = textOptions.paliLookupTargetDictRepr;    
@@ -166,26 +166,53 @@ class SCTopSheet extends LitLocalized(LitElement) {
         width: 100%;
         display: grid;
         grid-template-columns: repeat(7, 360px);
-        max-height: 50vh;
+        height: 240px;
         overflow-y: scroll;
         overflow-x: scroll;
         padding: 16px 16px 8px 16px;
         z-index: 1000;
-        font-family: sans-serif;
+        font-family: var(--sc-sans-font);
         position: absolute;
-        box-shadow:
-          0 0.3px 0.6px rgba(0, 0, 0, 0.056),
-          0 0.7px 1.3px rgba(0, 0, 0, 0.081),
-          0 1.3px 2.5px rgba(0, 0, 0, 0.1),
-          0 2.2px 4.5px rgba(0, 0, 0, 0.119),
-          0 4.2px 8.4px rgba(0, 0, 0, 0.144),
-          0 10px 20px rgba(0, 0, 0, 0.2)
+        box-shadow: var(--sc-shadow-elevation-4dp)
       }
 
-      div.tools {
+      .tools {
         padding: 8px;
+        position: relative;
       }
 
+      details{
+      	background-color: var(--sc-secondary-background-color);
+      	position: absolute;
+      	margin: 0 0 0.5em 0;
+      	padding: 8px;
+      	border-radius: 2px;
+      	z-index: 10;
+      	box-sizing: border-box;
+      }
+
+      details[open]{
+      	width: 340px;
+      	box-shadow: var(--sc-shadow-elevation-8dp);
+      	border: 1px solid var(--sc-border-color);
+      }
+
+      details p {
+      	padding: 8px;
+      	margin: 0.5em 0 0 0;
+      	color: var(--sc-secondary-text-color);
+      }
+
+      summary{
+      	font-weight: 600
+      }
+.form-controls{
+	margin-top: 48px;
+}
+.two-column{
+	column-count: 2;
+	margin-right: 48px;
+}
       section::-webkit-scrollbar {
         height: 10px;
       }
@@ -211,20 +238,10 @@ class SCTopSheet extends LitLocalized(LitElement) {
           background-color: var(--sc-secondary-background-color);
         }
 
-        h2.tools {
-          margin: 0;
-          font-weight: normal;
-          color: var(--sc-primary-text-color);
-        }
-
-        p.tools {
-          color: var(--sc-primary-text-color);
-          margin-top: 0;
-        }
-
         mwc-formfield {
           line-height: 2;
           color: var(--sc-tertiary-text-color);
+          display: block
         }
 
         .mdc-label {
@@ -248,8 +265,9 @@ class SCTopSheet extends LitLocalized(LitElement) {
   get referenceDisplayTypeTemplate() {
     return this.referenceDisplayTypeArray.length ? html`
       <div class="tools">
-        <h2 class="tools">${this.localize('reference')}</h2>
-        <p class="tools">${this.localize('referenceDescription')}</p>
+        <details><summary>${this.localize('reference')}</summary>
+        <p>${this.localize('referenceDescription')}</p></details>
+<div class="form-controls">
           ${this.referenceDisplayTypeArray.map(item => html`
             <mwc-formfield label="${this.localize(`referenceDisplayType_${item.displayTypeLabel}`)}">
               <mwc-radio
@@ -259,16 +277,16 @@ class SCTopSheet extends LitLocalized(LitElement) {
                 @change="${this._onReferenceDisplayTypeChanged}">
               </mwc-radio>
             </mwc-formfield>
-            </br>
           `)}
-      </div>` : '';
+      </div></div>` : '';
   }
 
   get noteDisplayTypeTemplate() {
     return this.referenceDisplayTypeArray.length ? html` 
       <div class="tools">
-        <h2 class="tools">${this.localize('notes')}</h2>
-        <p class="tools">${this.localize('notesDescription')}</p>
+        <details><summary>${this.localize('notes')}</summary>
+        <p>${this.localize('notesDescription')}</p></details>
+<div class="form-controls">
           ${this.noteDisplayTypeArray.map(item => html`
             <mwc-formfield label="${this.localize(`noteDisplayType_${item.displayTypeLabel}`)}">
               <mwc-radio
@@ -278,16 +296,16 @@ class SCTopSheet extends LitLocalized(LitElement) {
                 @change="${this._onNoteDisplayTypeChanged}">
               </mwc-radio>
             </mwc-formfield>
-            </br>
           `)}
-      </div>` : '';
+      </div></div>` : '';
   }
   
   get textViewTemplate() {
     return this.textViewArray.length ? html`
       <div class="tools">
-        <h2 class="tools">${this.localize('viewOriginal')}</h2>
-        <p class="tools">${unsafeHTML(this.localize('textViewDescription'))}</p>
+        <details><summary>${this.localize('viewOriginal')}</summary>
+        <p>${unsafeHTML(this.localize('textViewDescription'))}</p></details>
+<div class="form-controls">
           ${this.textViewArray.map(item => html`
             <mwc-formfield label="${this.localize(item.textViewLabel)}">
               <mwc-radio
@@ -297,16 +315,16 @@ class SCTopSheet extends LitLocalized(LitElement) {
                 @change="${this._onTextViewChanged}">
               </mwc-radio>
             </mwc-formfield>
-            </br>
           `)}
-      </div>` : '';
+      </div></div>` : '';
   }
 
   get paliLookupTemplate() {
     return this.paliLookupArray.length ? html` 
       <div class="tools">
-        <h2 class="tools">${this.localize('activatePaliLookup')}</h2>
-        <p class="tools">${this.localize('activatePaliDescription')}</p>
+        <details><summary>${this.localize('activatePaliLookup')}</summary>
+        <p>${this.localize('activatePaliDescription')}</p></details>
+<div class="form-controls two-column">
           ${this.paliLookupArray.map(dictLanguage => html`
             <mwc-formfield label="${dictLanguage.language}">
               <mwc-radio 
@@ -318,14 +336,15 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-      </div>` : '';
+      </div></div>` : '';
   }
 
   get chineseLookupTemplate() {
     return this.chineseLookupArray.length ? html`
       <div class="tools">
-        <h2 class="tools">${this.localize('activateChineseLookup')}</h2>
-        <p class="tools">${this.localize('activateChineseDescription')}</p>
+        <details><summary>${this.localize('activateChineseLookup')}</summary>
+        <p>${this.localize('activateChineseDescription')}</p></details>
+<div class="form-controls">
           ${this.chineseLookupArray.map(dictLanguage => html`
             <mwc-formfield label="${dictLanguage.language}">
               <mwc-radio 
@@ -336,16 +355,16 @@ class SCTopSheet extends LitLocalized(LitElement) {
                 @change="${this._onChineseLookupChanged}">
               </mwc-radio>
             </mwc-formfield>
-            </br>
           `)}
-      </div>` : '';
+      </div></div>` : '';
   }
 
   get paliScriptsTemplate() {
     return this.paliScripts.length ? html`
       <div class="tools">
-        <h2 class="tools">${this.localize('changePaliScript')}</h2>
-        <p class="tools">${this.localize('changePaliScriptDescription')}</p>
+        <details><summary>${this.localize('changePaliScript')}</summary>
+        <p>${this.localize('changePaliScriptDescription')}</p></details>
+<div class="form-controls two-column">
           ${this.paliScripts.map(script => html`
             <mwc-formfield label="${script.language}">
               <mwc-radio 
@@ -357,14 +376,15 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-      </div>` : '';
+      </div></div>` : '';
   }
 
   get rememberSettingsTemplate() {
     return html`
       <div class="tools">
-        <h2 class="tools">${this.localize('rememberSettings')}</h2>
-        </br>
+       <details><summary>${this.localize('rememberSettings')}</summary>
+        <p>Check this to remember your settings next session.</p></details>
+<div class="form-controls">
         <mwc-switch 
           ?checked="${this.rememberSettings}"
           @change="${this._onRememberSettingsChanged}">

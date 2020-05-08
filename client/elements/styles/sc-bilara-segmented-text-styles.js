@@ -263,7 +263,7 @@ export const commonStyles = css`
     margin-left: -150px;
     padding: var(--sc-size-sm) var(--sc-size-md);
     border-radius: var(--sc-size-sm);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    box-shadow: var(--sc-shadow-elevation-8dp);
     z-index: 10;
     box-sizing: border-box;
     background-color: var(--sc-secondary-background-color);
@@ -272,13 +272,13 @@ export const commonStyles = css`
 
   .comment[data-tooltip]::after {
     border-style: solid;
-    border-width: 1px 1px 1px 4px;
+    border-width: 0px 0px 0px 8px;
     border-color: var(--sc-primary-accent-color);
   }
 
   .variant[data-tooltip]::after {
     border-style: solid;
-    border-width: 1px 1px 1px 4px;
+    border-width: 0px 0px 0px 8px;
     border-color: var(--sc-secondary-accent-color);
   }
 
@@ -312,7 +312,7 @@ export const plainStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content. These settings ensure the beginning, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 12px;
+      width: 1ex;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -324,7 +324,7 @@ export const plainStyles = html`
     /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
     .comment::before,
     .variant::before {
-      content: "✱";
+      content: "*";
       color: var(--sc-primary-color);
       vertical-align: super;
       line-height: 1;
@@ -380,19 +380,19 @@ export const plainPlusStyles = html`
       grid-column: 2;
       position: absolute;
       grid-row: 1;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+       box-shadow: var(--sc-shadow-elevation-1dp);
     }
 
     .comment {
       border-style: solid;
-      border-width: 1px 1px 1px 4px;
+      border-width: 0px 0px 0px 8px;
       border-color: var(--sc-primary-accent-color);
     }
 
     /* click on notes to raise obscured note when they overlap. this should be replaced by JS  */
     .comment:active{
       z-index: 1000;
-      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+       box-shadow: var(--sc-shadow-elevation-8dp);
     }
 
     /* remove <br> tags to avoid unsighlty spaces in verses. */
@@ -413,12 +413,6 @@ export const plainPlusStyles = html`
         display: table;
         position: relative;
         margin-top: var(--sc-size-sm);
-      }
-
-      .comment:active,
-      .variant:active {
-        z-index: 1;
-        box-shadow: none;
       }
     }
   </style>
@@ -457,7 +451,7 @@ export const sideBySideStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 12px;
+      width: 1ex;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -468,7 +462,7 @@ export const sideBySideStyles = html`
     /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
     .comment:before,
     .variant:before {
-      content: "✱";
+      content: "*";
       color: var(--sc-primary-color);
       vertical-align: super;
       line-height: 1;
@@ -538,25 +532,25 @@ export const sideBySidePlusStyles = html`
       grid-column: 2;
       position: absolute;
       grid-row: 1;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+       box-shadow: var(--sc-shadow-elevation-1dp);
     }
 
     .variant {
       border-style: solid;
-      border-width: 1px 1px 1px 4px;
+      border-width: 0px 0px 0px 8px;
       border-color: var(--sc-secondary-accent-color);
     }
 
     .comment {
       border-style: solid;
-      border-width: 1px 1px 1px 4px;
+      border-width: 0px 0px 0px 8px;
       border-color: var(--sc-primary-accent-color);
     }
 
     .comment:active,
     .variant:active {
       z-index: 1000;
-      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+       box-shadow: var(--sc-shadow-elevation-8dp);
     }
 
     br {
@@ -574,7 +568,6 @@ export const sideBySidePlusStyles = html`
       .comment {
         display: table;
         position: relative;
-        box-shadow: none;
         margin-top: var(--sc-size-sm);
       }
 
@@ -594,11 +587,6 @@ export const sideBySidePlusStyles = html`
         grid-column: 2;
       }
 
-      .comment:active,
-      .variant:active {
-        z-index: 1;
-        box-shadow: none;
-      }
     }
 
     @media only screen and (max-width: 600px) {
@@ -613,14 +601,7 @@ export const sideBySidePlusStyles = html`
       .comment {
         display: table;
         position: relative;
-        box-shadow: none;
         margin-top: var(--sc-size-sm);
-      }
-
-      .comment:active,
-      .variant:active {
-        z-index: 1;
-        box-shadow: none;
       }
 
       .root .text {
@@ -659,7 +640,7 @@ export const lineByLineStyles = html`
 
     .comment,
     .variant {
-      width: 12px;
+      width: 1ex;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -670,7 +651,7 @@ export const lineByLineStyles = html`
     /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
     .comment:before,
     .variant:before {
-      content: "✱";
+      content: "*";
       color: var(--sc-primary-color);
       vertical-align: super;
       line-height: 1;
@@ -731,25 +712,25 @@ export const lineByLineStyles = html`
       grid-column: 2;
       position: absolute;
       grid-row: 1;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+       box-shadow: var(--sc-shadow-elevation-1dp);
     }
 
     .variant {
       border-style: solid;
-      border-width: 1px 1px 1px 4px;
+      border-width: 0px 0px 0px 8px;
       border-color: var(--sc-secondary-accent-color);
     }
 
     .comment {
       border-style: solid;
-      border-width: 1px 1px 1px 4px;
+      border-width: 0px 0px 0px 8px;
       border-color: var(--sc-primary-accent-color);
     }
 
     .comment:active,
     .variant:active {
       z-index: 1000;
-      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      box-shadow: var(--sc-shadow-elevation-8dp);
     }
 
     br {
@@ -776,14 +757,7 @@ export const lineByLineStyles = html`
       .comment {
         display: table;
         position: relative;
-        box-shadow: none;
         margin-top: var(--sc-size-sm);
-      }
-
-      .comment:active,
-      .variant:active{
-        z-index: 1;
-        box-shadow: none;
       }
     }
   </style>
@@ -804,7 +778,7 @@ export const allInlineReferenceStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 12px;
+      width: 1ex;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -815,7 +789,7 @@ export const allInlineReferenceStyles = html`
     /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
     .comment:before,
     .variant:before {
-      content: "✱";
+      content: "*";
       color: red;
       vertical-align: super;
       line-height: 1;
@@ -854,7 +828,7 @@ export const mainInlineReferenceStyles = html`
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
-      width: 12px;
+      width: 1ex;
       height: 1em;
       white-space: nowrap;
       background-color: inherit;
@@ -865,7 +839,7 @@ export const mainInlineReferenceStyles = html`
     /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
     .comment:before,
     .variant:before {
-      content: "✱";
+      content: "*";
       color: red;
       vertical-align: super;
       line-height: 1;
