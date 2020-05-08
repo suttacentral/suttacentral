@@ -52,7 +52,7 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
       .nav-home-title {
         font-family: var(--sc-serif-font);
         font-variant-caps: small-caps;
-    letter-spacing: var(--sc-caps-letter-spacing);
+        letter-spacing: var(--sc-caps-letter-spacing);
         font-size: var(--sc-skolar-font-size-static-subtitle);
         position: relative;
         z-index: 100;
@@ -193,8 +193,6 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
         }
       }
     </style>
-
-    <iron-ajax id="colors_ajax" handle-as="json" last-response="{{colorsResponse}}" on-response="_colorsResponseReceived"></iron-ajax>
 
     <app-drawer-layout id="drawer_layout" responsive-width="960px" _drawer-position="hidden" narrow="{{isNarrowScreen}}">
 
@@ -342,7 +340,9 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _openDialog(event) {
-    this.$[event.detail.id].open();
+    if (event.detail.id === 'info_dialog') {
+      this.$[event.detail.id].open();
+    }
   }
 
   // traps a scroll when app-drawer is opened (fix necessary for iOS devices)
@@ -425,8 +425,11 @@ class SCDrawerLayout extends ReduxMixin(Localized(PolymerElement)) {
     if (oldVal === undefined && newVal === 'light') {
       return;
     }
-    this.$.colors_ajax.url = `/elements/styles/sc-colors-${this.appColorTheme}.json`;
-    this.$.colors_ajax.generateRequest();
+    let colorThemeUrl = `/elements/styles/sc-colors-${this.appColorTheme}.json`;
+    fetch(colorThemeUrl).then(r => r.json()).then((response) => {
+      this.colorsResponse = response;
+      this._colorsResponseReceived();
+    });
   }
 
   _colorsResponseReceived() {
