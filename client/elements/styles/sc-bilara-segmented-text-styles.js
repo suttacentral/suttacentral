@@ -1,7 +1,7 @@
 import { html,css } from 'lit-element';
 
 export const commonStyles = css`
-  :root{
+  :root {
     --sc-screen-sm: 600px;
     --sc-screen-md: 840px;
     --sc-screen-l: 960px;
@@ -281,21 +281,6 @@ export const commonStyles = css`
     border-width: 0px 0px 0px 8px;
     border-color: var(--sc-secondary-accent-color);
   }
-
-  .note-wrap {
-    position: relative;
-  }
-
-  .note-wrap small {
-    position: absolute;
-    top: -18px;
-    font-size: 12px;
-    line-height: 1;
-    background: #fff;
-    padding: 2px 4px;
-    border: 1px solid var(--sc-primary-accent-color);
-    border-radius: 4px;
-  }
 `;
 
 export const plainStyles = html`
@@ -321,17 +306,8 @@ export const plainStyles = html`
       border: none;
     }
 
-    /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
-    .comment::before,
-    .variant::before {
-      content: "*";
-      color: var(--sc-primary-color);
-      vertical-align: super;
-      line-height: 1;
-    }
-
     .comment[data-tooltip]:hover,
-    .variant[data-tooltip]:hover{
+    .variant[data-tooltip]:hover {
       cursor: help;
     }
 
@@ -380,7 +356,7 @@ export const plainPlusStyles = html`
       grid-column: 2;
       position: absolute;
       grid-row: 1;
-       box-shadow: var(--sc-shadow-elevation-1dp);
+      box-shadow: var(--sc-shadow-elevation-1dp);
     }
 
     .comment {
@@ -392,7 +368,7 @@ export const plainPlusStyles = html`
     /* click on notes to raise obscured note when they overlap. this should be replaced by JS  */
     .comment:active{
       z-index: 1000;
-       box-shadow: var(--sc-shadow-elevation-8dp);
+      box-shadow: var(--sc-shadow-elevation-8dp);
     }
 
     /* remove <br> tags to avoid unsighlty spaces in verses. */
@@ -459,15 +435,6 @@ export const sideBySideStyles = html`
       overflow: hidden;
     }
 
-    /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
-    .comment:before,
-    .variant:before {
-      content: "*";
-      color: var(--sc-primary-color);
-      vertical-align: super;
-      line-height: 1;
-    }
-
     .comment[data-tooltip]:hover,
     .variant[data-tooltip]:hover {
       cursor: help;
@@ -532,7 +499,7 @@ export const sideBySidePlusStyles = html`
       grid-column: 2;
       position: absolute;
       grid-row: 1;
-       box-shadow: var(--sc-shadow-elevation-1dp);
+      box-shadow: var(--sc-shadow-elevation-1dp);
     }
 
     .variant {
@@ -550,7 +517,7 @@ export const sideBySidePlusStyles = html`
     .comment:active,
     .variant:active {
       z-index: 1000;
-       box-shadow: var(--sc-shadow-elevation-8dp);
+      box-shadow: var(--sc-shadow-elevation-8dp);
     }
 
     br {
@@ -586,7 +553,6 @@ export const sideBySidePlusStyles = html`
       .root{
         grid-column: 2;
       }
-
     }
 
     @media only screen and (max-width: 600px) {
@@ -648,15 +614,6 @@ export const lineByLineStyles = html`
       overflow: hidden;
     }
 
-    /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
-    .comment:before,
-    .variant:before {
-      content: "*";
-      color: var(--sc-primary-color);
-      vertical-align: super;
-      line-height: 1;
-    }
-
     .comment[data-tooltip]:hover,
     .variant[data-tooltip]:hover {
       cursor: help;
@@ -712,7 +669,7 @@ export const lineByLineStyles = html`
       grid-column: 2;
       position: absolute;
       grid-row: 1;
-       box-shadow: var(--sc-shadow-elevation-1dp);
+      box-shadow: var(--sc-shadow-elevation-1dp);
     }
 
     .variant {
@@ -763,97 +720,54 @@ export const lineByLineStyles = html`
   </style>
 `;
 
-export const allInlineReferenceStyles = html`
+export const hideReferenceStyles = html`
   <style>
-    /* Set column width on article. Position: relative ensures that the tooltips anchor to <article> */
-    article {
-      max-width: 720px;
-    }
-
-    .variant,
-    .root {
+    .reference {
       display: none;
-    }
-
-    /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
-    .comment,
-    .variant {
-      width: 1ex;
-      height: 1em;
-      white-space: nowrap;
-      background-color: inherit;
-      padding: 0 5px 0 0;
-      overflow: hidden;
-    }
-
-    /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
-    .comment:before,
-    .variant:before {
-      content: "*";
-      color: red;
-      vertical-align: super;
-      line-height: 1;
-    }
-
-    .comment[data-tooltip]:hover,
-    .variant[data-tooltip]:hover {
-      cursor: help;
-    }
-
-    /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
-    .comment[data-tooltip]:hover::after,
-    .variant[data-tooltip]:hover::after {
-      display: block;
     }
   </style>
 `;
 
-export const mainInlineReferenceStyles = html`
+export const hidePTSReferenceStyles = html`
   <style>
-    /* Set column width on article. Position: relative ensures that the tooltips anchor to <article> */
-    article {
-      max-width: 720px;
+    .reference {
+      display: inherit;
     }
-
-    .variant,
-    .root,
-    a {
+    a.pts {
       display: none;
     }
-
-    a:first-of-type {
-      display: inline-block;
+    a.sc {
+      display: inherit;
     }
+  </style>
+`;
 
-    /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
-    .comment,
-    .variant {
-      width: 1ex;
-      height: 1em;
-      white-space: nowrap;
-      background-color: inherit;
-      padding: 0 5px 0 0;
-      overflow: hidden;
+export const showAllReferenceStyles = html`
+  <style>
+    .reference {
+      display: inherit;
     }
+  </style>
+`;
 
-    /* Set asterisk as note marker, align it as superscript, and ensure the line-height is not affected. */
+export const hideAsterisk = html`
+  <style>
+    .comment:before,
+    .variant:before {
+      content: none !important;
+      display: none !important;
+    }
+  </style>
+`;
+
+export const showAsterisk = html`
+  <style>
     .comment:before,
     .variant:before {
       content: "*";
-      color: red;
+      color: var(--sc-primary-color);
       vertical-align: super;
       line-height: 1;
-    }
-
-    .comment[data-tooltip]:hover,
-    .variant[data-tooltip]:hover {
-      cursor: help;
-    }
-
-    /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
-    .comment[data-tooltip]:hover::after,
-    .variant[data-tooltip]:hover::after {
-      display: block;
     }
   </style>
 `;
