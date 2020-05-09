@@ -8,8 +8,6 @@ import './sc-text-options.js';
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
 import { Transliterator } from './transliterator.js';
-
-//import '../addons/sc-super-title'
 import '../addons/sc-bottom-sheet';
 import {
   commonStyles,
@@ -19,8 +17,11 @@ import {
   sideBySidePlusStyles,
   lineByLineStyles,
   lineByLinePlusStyles,
-  allInlineReferenceStyles,
-  mainInlineReferenceStyles
+  hideReferenceStyles,
+  hidePTSReferenceStyles,
+  showAllReferenceStyles,
+  hideAsterisk,
+  showAsterisk
 } from '../styles/sc-bilara-segmented-text-styles.js';
 
 class SCBilaraSegmentedText extends SCLitTextPage {
@@ -62,7 +63,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       localizedStringsPath: { type: String },
       currentId: { type: String },
       currentSutta: { type: Object },
-      currentStyles: { type: Object }
+      currentStyles: { type: Object },
+      referencesDisplayStyles: { type: Object },
+      notesDisplayStyles: { type: Object },
     }
   }
 
@@ -103,34 +106,26 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       ['.variant', this.variantSpanRectInfo]
     ]);
     // Return the corresponding style sheet according to different combinations of text viewing options.
-    this.mapStyle = new Map([
-      ['none_none_plain', plainStyles],
-      ['main_none_plain', mainInlineReferenceStyles],
-      ['all_none_plain', allInlineReferenceStyles],
-      ['none_asterisk_plain', plainStyles],
-      ['main_asterisk_plain', mainInlineReferenceStyles],
-      ['all_asterisk_plain', allInlineReferenceStyles],
-      ['none_sidenotes_plain', plainPlusStyles],
-      ['main_sidenotes_plain', plainPlusStyles],
-      ['all_sidenotes_plain', plainPlusStyles], 
-      ['none_none_sidebyside', sideBySideStyles],
-      ['main_none_sidebyside', sideBySideStyles],
-      ['all_none_sidebyside', sideBySideStyles],
-      ['none_asterisk_sidebyside', sideBySideStyles],
-      ['main_asterisk_sidebyside', sideBySideStyles],
-      ['all_asterisk_sidebyside', sideBySideStyles],
-      ['none_sidenotes_sidebyside', sideBySidePlusStyles],
-      ['all_sidenotes_sidebyside', sideBySidePlusStyles],
-      ['main_sidenotes_sidebyside', sideBySidePlusStyles],
-      ['none_none_linebyline', lineByLineStyles],
-      ['all_none_linebyline', lineByLineStyles],
-      ['main_none_linebyline', lineByLineStyles],
-      ['none_asterisk_linebyline', lineByLineStyles],
-      ['all_asterisk_linebyline', lineByLineStyles],
-      ['main_asterisk_linebyline', lineByLineStyles],
-      ['none_sidenotes_linebyline', lineByLinePlusStyles],
-      ['all_sidenotes_linebyline', lineByLinePlusStyles],
-      ['main_sidenotes_linebyline', lineByLinePlusStyles],
+    this.mapStyles = new Map([
+      ["sidenotes_plain", plainPlusStyles],
+      ["sidenotes_sidebyside", sideBySidePlusStyles],
+      ["sidenotes_linebyline", lineByLinePlusStyles],
+      ['none_plain', plainStyles],
+      ['asterisk_plain', plainStyles],
+      ['none_sidebyside', sideBySideStyles],
+      ['asterisk_sidebyside', sideBySideStyles],
+      ['none_linebyline', lineByLineStyles],
+      ['asterisk_linebyline', lineByLineStyles]
+    ]);
+    this.mapReferenceDisplayStyles = new Map([
+      ['none', hideReferenceStyles],
+      ['main', hidePTSReferenceStyles],
+      ['all', showAllReferenceStyles],
+    ]);
+    this.mapNoteDisplayStyles = new Map([
+      ["none", hideAsterisk],
+      ["asterisk", showAsterisk],
+      ["sidenotes", hideAsterisk]
     ]);
   }
 
@@ -138,11 +133,12 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     return html`
       <style>${commonStyles}</style>
       ${this.currentStyles}
-
+      ${this.referencesDisplayStyles}
+      ${this.notesDisplayStyles}
+      
       <sc-nav-contents .items="${this.navItems}"></sc-nav-contents>
       <main>
         <div id="segmented_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
-          <!-- <sc-super-title></sc-super-title> -->
           ${unsafeHTML(this.markup)}
         </div>
       </main>
@@ -309,14 +305,18 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _paliLookupStateChanged() {
-    if (this.hidden) {
-      return;
+    if (this.hidden) { 
+      return; 
     }
     if (this.isPaliLookupEnabled) {
-      if (!this.spansForWordsGenerated) {
-        //this._conditionallyPutWordsIntoSpans();
-        this._initPaliLookup();
+      this._initPaliLookup();
+    } else {
+      const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+      if (scBottomSheet) {
+        scBottomSheet.hide();
       }
+      this._removeDefineFocusedClass();
+      this._removeLookupEvent('.root .text .word');
     }
   }
 
@@ -350,8 +350,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _changeTextView() {
-    let viewCompose = `${this.chosenReferenceDisplayType}_${this.chosenNoteDisplayType}_${this.chosenTextView}`;
-    this.currentStyles = this.mapStyle.get(viewCompose) ? this.mapStyle.get(viewCompose) : plainStyles;
+    let viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
+    this.currentStyles = this.mapStyles.get(viewCompose) ? this.mapStyles.get(viewCompose) : plainStyles;
+    this.referencesDisplayStyles = this.mapReferenceDisplayStyles.get(this.chosenReferenceDisplayType);
+    this.notesDisplayStyles = this.mapNoteDisplayStyles.get(this.chosenNoteDisplayType);
   }
 
   _stateChanged(state) {
@@ -371,10 +373,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (this.chosenNoteDisplayType !== state.textOptions.noteDisplayType) {
       this.chosenNoteDisplayType = state.textOptions.noteDisplayType;
     }
-  }
-
-  async _getStyleByTextview() {
-    let allStyles = await import('../styles/sc-bilara-segmented-text-styles.js');
   }
 
   _prepareNavigation() {
@@ -587,21 +585,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addVariantSpan(value) {
+    let variantText = `Variant: ${value}`;
     let span = document.createElement('span');
     span.className = 'variant';
-    span.dataset.tooltip = value;
-    span.appendChild(this._addVariantNoteWrapSpan(value));
-    return span;
-  }
-
-  _addVariantNoteWrapSpan(value) {
-    let span = document.createElement('span');
-    span.className = 'note-wrap';
-    let smallElement = document.createElement('small');
-    let text = document.createTextNode('Variant reading');
-    smallElement.appendChild(text);
-    text = document.createTextNode(value);
-    span.appendChild(smallElement);
+    span.dataset.tooltip = variantText;
+    let text = document.createTextNode(variantText);
     span.appendChild(text);
     return span;
   }
@@ -788,7 +776,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     let allWordSpans = this.shadowRoot.querySelectorAll(selector);
     let arraySpans = Array.from(allWordSpans);
     arraySpans.forEach(word => {
-      word.addEventListener('click', (e) => {
+      word.onclick = (e) => {
         if (!this.isPaliLookupEnabled) return;
         const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
         if (scBottomSheet) {
@@ -796,7 +784,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
           this._addDefineFocusedClass(e.currentTarget);
           this._setSCBottomSheet(scBottomSheet, word, paliLookup, e.currentTarget);
         }
-      });
+      };
     });
   }
 
@@ -810,6 +798,14 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     });
   }
 
+  _removeLookupEvent(selector) {
+    let allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    let arraySpans = Array.from(allWordSpans);
+    arraySpans.forEach(word => {
+      word.onclick = null;
+    });
+  }
+
   _setSCBottomSheet(scBottomSheet, word, paliLookup, currentTarget) {
     scBottomSheet.currentDefine = word.textContent;
     let lookupResult = paliLookup.lookupWord(word.dataset.latin_text || word.textContent);
@@ -820,7 +816,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _initPaliLookup() {
-    this._putWordsIntoSpans('.root .text', 'word');
+    if (!this.spansForWordsGenerated) {
+      this._putWordsIntoSpans('.root .text', 'word');
+    }
     this._addWordSpanId();
     this._addLookupEvent('.root .text .word');
   }
