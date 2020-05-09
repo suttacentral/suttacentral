@@ -159,6 +159,9 @@ class SCTopSheet extends LitLocalized(LitElement) {
       :host {
         display: none;
         --mdc-theme-secondary: var(--sc-primary-color);
+        --mdc-typography-font-family: var(--sc-sans-font);
+        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
       }
 
       section {
