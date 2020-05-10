@@ -185,37 +185,41 @@ class SCTopSheet extends LitLocalized(LitElement) {
       }
 
       details{
-      	background-color: var(--sc-secondary-background-color);
-      	position: absolute;
-      	margin: 0 0 0.5em 0;
-      	padding: 8px;
-      	border-radius: 2px;
-      	z-index: 10;
-      	box-sizing: border-box;
+        background-color: var(--sc-secondary-background-color);
+        position: absolute;
+        margin: 0 0 0.5em 0;
+        padding: 8px;
+        border-radius: 2px;
+        z-index: 10;
+        box-sizing: border-box;
       }
 
       details[open]{
-      	width: 340px;
-      	box-shadow: var(--sc-shadow-elevation-8dp);
-      	border: 1px solid var(--sc-border-color);
+        width: 340px;
+        box-shadow: var(--sc-shadow-elevation-8dp);
+        border: 1px solid var(--sc-border-color);
       }
 
       details p {
-      	padding: 8px;
-      	margin: 0.5em 0 0 0;
-      	color: var(--sc-secondary-text-color);
+        padding: 8px;
+        margin: 0.5em 0 0 0;
+        color: var(--sc-secondary-text-color);
       }
 
       summary{
-      	font-weight: 600
+        font-weight: 600;
+        cursor: pointer;
       }
-.form-controls{
-	margin-top: 48px;
-}
-.two-column{
-	column-count: 2;
-	margin-right: 48px;
-}
+
+      .form-controls{
+        margin-top: 48px;
+      }
+
+      .two-column{
+        column-count: 2;
+        margin-right: 48px;
+      }
+
       section::-webkit-scrollbar {
         height: 10px;
       }
@@ -246,10 +250,6 @@ class SCTopSheet extends LitLocalized(LitElement) {
           color: var(--sc-tertiary-text-color);
           display: block
         }
-
-        .mdc-label {
-          color: wheat;
-        }
       </style>
       <div class="container">
         <section class="tools">
@@ -270,7 +270,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('reference')}</summary>
         <p>${this.localize('referenceDescription')}</p></details>
-<div class="form-controls">
+        <div class="form-controls">
           ${this.referenceDisplayTypeArray.map(item => html`
             <mwc-formfield label="${this.localize(`referenceDisplayType_${item.displayTypeLabel}`)}">
               <mwc-radio
@@ -281,7 +281,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-      </div></div>` : '';
+        </div></div>` : '';
   }
 
   get noteDisplayTypeTemplate() {
@@ -289,7 +289,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('notes')}</summary>
         <p>${this.localize('notesDescription')}</p></details>
-<div class="form-controls">
+        <div class="form-controls">
           ${this.noteDisplayTypeArray.map(item => html`
             <mwc-formfield label="${this.localize(`noteDisplayType_${item.displayTypeLabel}`)}">
               <mwc-radio
@@ -300,7 +300,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-      </div></div>` : '';
+        </div></div>` : '';
   }
   
   get textViewTemplate() {
@@ -308,7 +308,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('viewOriginal')}</summary>
         <p>${unsafeHTML(this.localize('textViewDescription'))}</p></details>
-<div class="form-controls">
+        <div class="form-controls">
           ${this.textViewArray.map(item => html`
             <mwc-formfield label="${this.localize(item.textViewLabel)}">
               <mwc-radio
@@ -319,7 +319,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-      </div></div>` : '';
+        </div></div>` : '';
   }
 
   get paliLookupTemplate() {
@@ -327,7 +327,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('activatePaliLookup')}</summary>
         <p>${this.localize('activatePaliDescription')}</p></details>
-<div class="form-controls two-column">
+        <div class="form-controls two-column">
           ${this.paliLookupArray.map(dictLanguage => html`
             <mwc-formfield label="${dictLanguage.language}">
               <mwc-radio 
@@ -339,7 +339,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-      </div></div>` : '';
+        </div></div>` : '';
   }
 
   get chineseLookupTemplate() {
@@ -347,7 +347,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('activateChineseLookup')}</summary>
         <p>${this.localize('activateChineseDescription')}</p></details>
-<div class="form-controls">
+        <div class="form-controls">
           ${this.chineseLookupArray.map(dictLanguage => html`
             <mwc-formfield label="${dictLanguage.language}">
               <mwc-radio 
@@ -359,7 +359,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-      </div></div>` : '';
+        </div></div>` : '';
   }
 
   get paliScriptsTemplate() {
@@ -367,7 +367,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('changePaliScript')}</summary>
         <p>${this.localize('changePaliScriptDescription')}</p></details>
-<div class="form-controls two-column">
+        <div class="form-controls two-column">
           ${this.paliScripts.map(script => html`
             <mwc-formfield label="${script.language}">
               <mwc-radio 
@@ -379,20 +379,20 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-      </div></div>` : '';
+        </div></div>` : '';
   }
 
   get rememberSettingsTemplate() {
     return html`
       <div class="tools">
-       <details><summary>${this.localize('rememberSettings')}</summary>
+        <details><summary>${this.localize('rememberSettings')}</summary>
         <p>Check this to remember your settings next session.</p></details>
-<div class="form-controls">
-        <mwc-switch 
-          ?checked="${this.rememberSettings}"
-          @change="${this._onRememberSettingsChanged}">
-        </mwc-switch>
-      </div>
+        <div class="form-controls">
+          <mwc-switch 
+            ?checked="${this.rememberSettings}"
+            @change="${this._onRememberSettingsChanged}">
+          </mwc-switch>
+        </div>
     `;
   }
 
@@ -414,13 +414,15 @@ class SCTopSheet extends LitLocalized(LitElement) {
   _onPaliLookupChanged(e) {
     this.paliLookupLanguage = e.target.dataset.language;
     const targetLanguage = e.target.value.split('2')[1];
-    this.actions.activatePaliLookup(true, targetLanguage, this.paliLookupLanguage);
+    let isActive = this.paliLookupLanguage !== 'None';
+    this.actions.activatePaliLookup(isActive, targetLanguage, this.paliLookupLanguage);
   }
 
   _onChineseLookupChanged(e) {
     this.chineseLookupLanguage = e.target.dataset.language;
     const targetLanguage = e.target.value.split('2')[1];
-    this.actions.activateChineseLookup(true, targetLanguage, this.chineseLookupLanguage);
+    let isActive = this.chineseLookupLanguage !== 'None';
+    this.actions.activateChineseLookup(isActive, targetLanguage, this.chineseLookupLanguage);
   }
 
   _onPaliScriptChanged(e) {

@@ -27,7 +27,7 @@ const initialState = {
     textOptions: {
         paragraphsEnabled: false,
         paragraphDescriptions: [],
-        segmentedSuttaTextView: 'none',
+        segmentedSuttaTextView: 'plain',
         script: 'latin',
         paliLookupActivated: false,
         paliLookupTargetDictRepr: 'None',
@@ -36,7 +36,7 @@ const initialState = {
         chineseLookupTargetDictRepr: 'None',
         chineseLookupTargetLanguage: '',
         referenceDisplayType: 'none',
-        noteDisplayType: 'none'
+        noteDisplayType: 'asterisk'
     },
     colorTheme: 'light',
     selectedNavigationMenuItemId: '',

@@ -251,11 +251,12 @@ export class SCBottomSheet extends LitElement {
   }
 
   hide() {
-    //this.shadowRoot.querySelector('#wrapper').classList.add('fadeOut');
     this.style.animation = 'bottomSheetHide 200ms 1 ease-in normal forwards';
+    setTimeout(() => {
+      this.style.display = 'none';
+    }, 100);
   }
   show() {
-    //this.shadowRoot.querySelector('#wrapper').classList.add('bottomSheetHide');
     this.style.display = 'block';
     this.style.animation = 'bottomSheetShow 200ms 1 ease-in normal forwards';
   }

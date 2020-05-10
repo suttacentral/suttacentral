@@ -5,9 +5,9 @@
       "viewOriginal": "查看原文与翻译",
       "onlyWorks": "这只适用于某些文本，其中包括Sujato和Brahmali的翻译。",
       "none": "无",
-      "plain": "原文",
-      "sideBySide": "并排",
-      "lineByLine": "逐行",
+      "plain": "只显示译文",
+      "sideBySide": "译文和原文并排显示",
+      "lineByLine": "译文和原文逐行显示",
       "lookup": "查找",
       "activatePaliLookup": "启用巴利文查找",
       "activatePaliDescription": "分析巴利文与尝试显示单词的含义。请注意，这只是一个辅助，并不一定准确。单词的解读来自New Concise Pali English Dictionary。",
@@ -37,7 +37,7 @@
       "referenceDisplayType_All": "全部 (参阅传统引用号)",
       "noteDisplayType_None": "无",
       "noteDisplayType_Asterisk": "当鼠标移动到星号上进行提示",
-      "noteDisplayType_Sidenotes": "显示为侧边栏提示",
+      "noteDisplayType_Sidenotes": "显示在侧边栏",
       "textViewDescription": "一些SuttaCentral的文本已经被分段; 原文与译文逐行匹配. (<a href='' title='查看已分段的文本' class='tools'>See list of segmented texts.</a>)对于此类文本, 可同时参阅原文与译文。"
   }
 }
