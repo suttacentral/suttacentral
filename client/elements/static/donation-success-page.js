@@ -3,12 +3,10 @@ import "@polymer/iron-location/iron-location.js";
 
 import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from '../addons/localization-mixin.js';
-import { legacyStaticStyles } from '../styles/static-styles.js';
 
 class SCDonationSuccessPage extends ReduxMixin(Localized(PolymerElement)) {
   static get template() {
     return html`
-    ${legacyStaticStyles}
     <style>
       .bolded {
         font-weight: bold;

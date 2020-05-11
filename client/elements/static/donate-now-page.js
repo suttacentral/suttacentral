@@ -19,13 +19,12 @@ import '../addons/stripe-card.js';
 import '../addons/sc-error-icon.js';
 import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from "../addons/localization-mixin.js";
-import { legacyStaticStyles } from '../styles/static-styles.js';
 import { API_ROOT } from '../../constants.js';
 
 class SCDonateNow extends ReduxMixin(Localized(PolymerElement)) {
   static get template() {
     return html`
-    ${legacyStaticStyles}
+
     <style>
       .flex-row {
         display: flex;

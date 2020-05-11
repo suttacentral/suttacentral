@@ -2,7 +2,9 @@ import { html } from 'lit-element';
 
 import { until } from 'lit-html/directives/until.js';
 import '../addons/sc-bouncing-loader';
-import { staticStyles } from '../styles/static-styles.js';
+import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
+import { typographyStaticStyles } from '../styles/sc-typography-static-styles.js';
 import { SCStaticPage } from '../addons/sc-static-page.js';
 import { API_ROOT } from '../../constants.js';
 import '../addons/sc-pie-chart.js';
@@ -139,7 +141,11 @@ class SCLanguagesPage extends SCStaticPage {
 
   render() {
     return html`
-    ${staticStyles}
+      <style> 
+        ${layoutSimpleStyles}
+        ${typographyCommonStyles}
+        ${typographyStaticStyles}
+      </style>
     <style>
       figure {
         width: 240px;

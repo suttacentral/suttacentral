@@ -1,7 +1,9 @@
 import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
-import { staticStyles } from '../styles/static-styles.js';
+import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
+import { typographyStaticStyles } from '../styles/sc-typography-static-styles.js';
 import { SCStaticPage } from '../addons/sc-static-page.js';
 import _ from '../../localization/macro.js';
 
@@ -9,7 +11,11 @@ import _ from '../../localization/macro.js';
 class SCNamesPage extends SCStaticPage {
   render() {
     return html`
-    ${staticStyles}
+      <style> 
+        ${layoutSimpleStyles}
+        ${typographyCommonStyles}
+        ${typographyStaticStyles}
+      </style>
     <div id="page-wrap">
       <main>
         <section>
