@@ -25,7 +25,7 @@ import {
   showAllReferenceStyles,
   hideAsterisk,
   showAsterisk
-} from '../styles/sc-bilara-segmented-text-styles.js';
+} from '../styles/sc-layout-bilara-styles.js';
 
 class SCBilaraSegmentedText extends SCLitTextPage {
   static get properties() {
