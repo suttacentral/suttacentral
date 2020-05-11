@@ -431,7 +431,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
   }
 
   _onRememberSettingsChanged(e) {
-    localStorage.setItem('rememberTextSettings', e.target.toString());
+    localStorage.setItem('rememberTextSettings', e.target.checked.toString());
   }
 
   show() {
