@@ -38,6 +38,8 @@
       "noteDisplayType_None": "无",
       "noteDisplayType_Asterisk": "当鼠标移动到星号上进行提示",
       "noteDisplayType_Sidenotes": "显示在侧边栏",
-      "textViewDescription": "一些SuttaCentral的文本已经被分段; 原文与译文逐行匹配. (<a href='' title='查看已分段的文本' class='tools'>See list of segmented texts.</a>)对于此类文本, 可同时参阅原文与译文。"
+      "textViewDescription": "一些SuttaCentral的文本已经被分段; 原文与译文逐行匹配. (<a href='' title='查看已分段的文本' class='tools'>See list of segmented texts.</a>)对于此类文本, 可同时参阅原文与译文。",
+      "showHighlighting": "高亮显示",
+      "showHighlightingDescription": "在适用的情况下, 高亮文本以显示额外的结构细节。"
   }
 }
