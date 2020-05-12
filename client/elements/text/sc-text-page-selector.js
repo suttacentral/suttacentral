@@ -11,7 +11,6 @@ import '../addons/sc-bouncing-loader';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../../elements/addons/localization-mixin';
-import { textHeadingStyles } from '../styles/sc-text-heading-styles.js';
 import { API_ROOT } from '../../constants.js';
 
 /*
@@ -22,7 +21,6 @@ import { API_ROOT } from '../../constants.js';
 class SCTextPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
-      ${textHeadingStyles}
       <style>
         .loading-indicator {
           font-size: var(--sc-skolar-font-size-s);

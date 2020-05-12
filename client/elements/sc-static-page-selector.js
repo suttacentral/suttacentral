@@ -297,7 +297,7 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
             </paper-tab>
             <paper-tab class="nav-link" data-name="SIMILES">
               <div>${this.localize('SIMILES')}</div>
-              <a class="link-anchor" aria-label="${this.localize('SMILES')}" href="/similes" tabindex="-1"></a>
+              <a class="link-anchor" aria-label="${this.localize('SIMILES')}" href="/similes" tabindex="-1"></a>
             </paper-tab>
             <paper-tab class="nav-link" data-name="NAMES">
               <div>${this.localize('NAMES')}</div>

@@ -1,14 +1,20 @@
 import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
-import { staticStyles } from '../styles/static-styles.js';
+import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
+import { typographyStaticStyles } from '../styles/sc-typography-static-styles.js';
 import { SCStaticPage } from '../addons/sc-static-page.js';
 
 
 class SCMNGuide extends SCStaticPage {
   render() {
     return html`
-    ${staticStyles}
+      <style> 
+        ${layoutSimpleStyles}
+        ${typographyCommonStyles}
+        ${typographyStaticStyles}
+      </style>
       <main>
           <article>
             <h1>${this.localize('c6df63c511da5056d15d25c3e99ff2a2')}</h1>

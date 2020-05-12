@@ -1,12 +1,12 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 
 import { SCLitTextPage } from "./sc-lit-text-page.js";
 import './sc-text-options.js';
-import { textStylesNew } from '../styles/sc-text-styles-new.js';
-import { textHeadingStylesNew } from '../styles/sc-text-heading-styles-new.js'
-import { textParagraphNumStyles } from '../styles/sc-text-paragraph-num-styles.js';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
+import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles.js';
+import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles.js';
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
 import { lookupStyles } from '../lookups/sc-lookup-styles.js';
@@ -16,9 +16,10 @@ import { store } from '../../redux-store';
 class SCSimpleText extends SCLitTextPage {
   render() {
     return html`
-    ${textStylesNew}
-    ${textHeadingStylesNew}
-    ${textParagraphNumStyles}
+   <style> ${typographyCommonStyles}
+    ${typographyLegacyStyles}
+    ${typographyI18nStyles}
+    </style>
     ${lookupStyles}
     <style>
       :host {
@@ -64,9 +65,9 @@ class SCSimpleText extends SCLitTextPage {
       }
     </style>
 
-    <div id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
+    <main id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
       ${unsafeHTML(this._extractSuttaText())}
-    </div>
+    </main>
 
     <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
     <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>`;

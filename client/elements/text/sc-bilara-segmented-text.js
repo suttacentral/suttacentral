@@ -9,6 +9,9 @@ import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
 import { Transliterator } from './transliterator.js';
 import '../addons/sc-bottom-sheet';
+
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
+import { typographyBilaraStyles } from '../styles/sc-typography-bilara-styles.js';
 import {
   commonStyles,
   plainStyles,
@@ -22,7 +25,7 @@ import {
   showAllReferenceStyles,
   hideAsterisk,
   showAsterisk
-} from '../styles/sc-bilara-segmented-text-styles.js';
+} from '../styles/sc-layout-bilara-styles.js';
 
 class SCBilaraSegmentedText extends SCLitTextPage {
   static get properties() {
@@ -124,14 +127,17 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     ]);
     this.mapNoteDisplayStyles = new Map([
       ["none", hideAsterisk],
-      ["asterisk", showAsterisk],
-      ["sidenotes", hideAsterisk]
+      ["asterisk", showAsterisk]
     ]);
   }
 
   render() {
     return html`
-      <style>${commonStyles}</style>
+      <style>
+      ${commonStyles} 
+      ${typographyCommonStyles} 
+      ${typographyBilaraStyles}
+      </style>
       ${this.currentStyles}
       ${this.referencesDisplayStyles}
       ${this.notesDisplayStyles}
