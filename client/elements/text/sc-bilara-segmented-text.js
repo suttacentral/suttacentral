@@ -69,6 +69,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       currentStyles: { type: Object },
       referencesDisplayStyles: { type: Object },
       notesDisplayStyles: { type: Object },
+      showHighlighting: { type: Boolean }
     }
   }
 
@@ -88,6 +89,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptions.chineseLookupActivated;
+    this.showHighlighting = textOptions.showHighlighting;
     this.scriptIsoCodes = {
       'latin': 'Latn',
       'sinhala': 'Sinh',
@@ -179,6 +181,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       if (this.isPaliLookupEnabled) {
         this._initPaliLookup();
       }
+      this._showHighlightingChanged();
     }, 100);
     //this.navItems = this._prepareNavigation();
     this.currentSutta = this.translatedSutta ? this.translatedSutta : this.rootSutta;
@@ -302,6 +305,17 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (changedProps.has('chosenNoteDisplayType')) {
       this._changeTextView();
     }
+    if (changedProps.has('showHighlighting')) {
+      this._showHighlightingChanged();
+    }
+  }
+
+  _showHighlightingChanged() {
+    if (this.showHighlighting) {
+      this._articleElement().classList.add('highlight');
+    } else {
+      this._articleElement().classList.remove('highlight');
+    }
   }
 
   _isPlusStyle() {
@@ -378,6 +392,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     if (this.chosenNoteDisplayType !== state.textOptions.noteDisplayType) {
       this.chosenNoteDisplayType = state.textOptions.noteDisplayType;
+    }
+    if (this.showHighlighting !== state.textOptions.showHighlighting) {
+      this.showHighlighting = state.textOptions.showHighlighting;
     }
   }
 
