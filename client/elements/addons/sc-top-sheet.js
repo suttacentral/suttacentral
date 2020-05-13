@@ -214,7 +214,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
         border-bottom: 1px solid #ccc;
         width: 100%;
         display: grid;
-        grid-template-columns: 720px 360px 360px 360px 360px 360px 360px;
+        grid-template-columns: 720px 360px 360px 360px 360px 360px 360px 360px;
         height: 260px;
         overflow-y: scroll;
         overflow-x: scroll;
