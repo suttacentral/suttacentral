@@ -194,4 +194,8 @@ export const typographyLegacyStyles = css`
     color: var(--sc-primary-accent-color);
 }
 
+a {display: none}
+.legacy-reference a{
+display: inline-block
+}
 `

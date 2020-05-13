@@ -701,4 +701,9 @@ export const textParagraphNumStyles = html`
   .sidebyside .line a {
     visibility: hidden !important;
   }
+a {display: none}
+.legacy-reference a{
+display: inline-block
+}
+
 </style>`;
