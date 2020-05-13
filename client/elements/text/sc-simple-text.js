@@ -16,61 +16,62 @@ import { store } from '../../redux-store';
 class SCSimpleText extends SCLitTextPage {
   render() {
     return html`
-   <style> 
-   ${ layoutSimpleStyles }
-   ${ typographyCommonStyles }
-    ${ typographyLegacyStyles }
-    ${ typographyI18nStyles }
-    ${lookupStyles}
-      :host {
-        --iron-icon-fill-color: var(--sc-disabled-text-color);
-        --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
-        --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
-      }
+      <style> 
+        ${layoutSimpleStyles}
+        ${typographyCommonStyles}
+        ${typographyLegacyStyles}
+        ${typographyI18nStyles}
+        ${lookupStyles}
+        :host {
+          --iron-icon-fill-color: var(--sc-disabled-text-color);
+          --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
+          --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
+        }
 
-      .image-link {
-        cursor: pointer;
-      }
+        .image-link {
+          cursor: pointer;
+        }
 
-      .image-book-link {
-        margin-bottom: .5em;
-        margin-left: .2em;
-      }
+        .image-book-link {
+          margin-bottom: .5em;
+          margin-left: .2em;
+        }
 
-      .image-book-link:before {
-        display: none;
-      }
+        .image-book-link:before {
+          display: none;
+        }
 
-      .text-center {
-        text-align: center;
-      }
+        .text-center {
+          text-align: center;
+        }
 
-      .margin-top-xl {
-        margin-top: var(--sc-size-xl);
-      }
+        .margin-top-xl {
+          margin-top: var(--sc-size-xl);
+        }
 
-      .highlight {
-        background-color: var(--sc-disabled-text-color-opaque);
-      }
+        .highlight {
+          background-color: var(--sc-disabled-text-color-opaque);
+        }
 
-      article p,
-      .word,
-      .translated-text,
-      .original-text {
-        transition: background-color 300ms ease-in;
-      }
+        article p,
+        .word,
+        .translated-text,
+        .original-text {
+          transition: background-color 300ms ease-in;
+        }
 
-      p, li {
-        hanging-punctuation: first last;
-      }
-    </style>
+        p, li {
+          hanging-punctuation: first last;
+        }
+      </style>
 
-    <main id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
-      ${unsafeHTML(this._extractSuttaText())}
-    </main>
+      <main id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
+        ${unsafeHTML(this._extractSuttaText())}
+      </main>
 
-    <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
-    <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>`;
+      <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
+      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
+    `;
   }
 
   static get properties() {
@@ -97,7 +98,9 @@ class SCSimpleText extends SCLitTextPage {
       editionsExpansionData: { type: Object },
       localizedStringsPath: { type: String },
       currentId: { type: String },
-      inputElement: { type: Object }
+      inputElement: { type: Object },
+      showHighlighting: { type: Boolean },
+      chosenReferenceDisplayType: { type: String }
     }
   }
 
@@ -118,6 +121,8 @@ class SCSimpleText extends SCLitTextPage {
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
+    this.showHighlighting = textOptionsState.showHighlighting;
+    this.chosenReferenceDisplayType = textOptionsState.referenceDisplayType;
     this.textualInfoClassTitles = {
       'gloss': 'Definition of term.',
       'add': 'Text added by the editor or translator for clarification',
@@ -172,9 +177,9 @@ class SCSimpleText extends SCLitTextPage {
         this._scrollToSection(window.location.hash.substr(1), true, 0);
       });
     });
+    this._updateView();
     this.inputElement = this.shadowRoot.querySelector('#simple_text_content');
     this.shadowRoot.querySelector('#a11y').target = document.querySelector('body');
-    this._updateView();
   }
 
   _hideSettingMenu() {
@@ -203,6 +208,32 @@ class SCSimpleText extends SCLitTextPage {
     if (changedProps.has('isChineseLookupEnabled')) {
       this._chineseLookupStateChanged();
     }
+    if (changedProps.has('showHighlighting')) {
+      this._showHighlightingChanged();
+    }
+    if (changedProps.has('chosenReferenceDisplayType')) {
+      this._referenceDisplayTypeChanged();
+    }
+  }
+
+  _articleElement() {
+    return this.shadowRoot.querySelector('article');
+  }
+
+  _showHighlightingChanged() {
+    if (this.showHighlighting) {
+      this._articleElement().classList.add('highlight');
+    } else {
+      this._articleElement().classList.remove('highlight');
+    }
+  }
+
+  _referenceDisplayTypeChanged() {
+    if (this.chosenReferenceDisplayType === 'main') {
+      this._articleElement().classList.add('legacy-reference');
+    } else {
+      this._articleElement().classList.remove('legacy-reference');
+    }
   }
 
   _stateChanged(state) {
@@ -219,6 +250,12 @@ class SCSimpleText extends SCLitTextPage {
     }
     if (this.isChineseLookupEnabled !== textOptionsState.chineseLookupActivated) {
       this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
+    }
+    if (this.showHighlighting !== textOptionsState.showHighlighting) {
+      this.showHighlighting = textOptionsState.showHighlighting;
+    }
+    if (this.chosenReferenceDisplayType !== textOptionsState.referenceDisplayType) {
+      this.chosenReferenceDisplayType = textOptionsState.referenceDisplayType;
     }
   }
 
@@ -237,6 +274,8 @@ class SCSimpleText extends SCLitTextPage {
     }, 0);
     this.actions.changeSuttaMetaText(this._computeMeta());
     this._loadingChanged();
+    this._showHighlightingChanged();
+    this._referenceDisplayTypeChanged();
   }
 
   _setAttributes() {
