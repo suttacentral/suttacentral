@@ -1,9 +1,9 @@
 import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
-
 import { SCLitTextPage } from "./sc-lit-text-page.js";
 import './sc-text-options.js';
+import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles.js';
 import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles.js';
@@ -16,12 +16,12 @@ import { store } from '../../redux-store';
 class SCSimpleText extends SCLitTextPage {
   render() {
     return html`
-   <style> ${typographyCommonStyles}
-    ${typographyLegacyStyles}
-    ${typographyI18nStyles}
-    </style>
+   <style> 
+   ${ layoutSimpleStyles }
+   ${ typographyCommonStyles }
+    ${ typographyLegacyStyles }
+    ${ typographyI18nStyles }
     ${lookupStyles}
-    <style>
       :host {
         --iron-icon-fill-color: var(--sc-disabled-text-color);
         --iron-icon-height: calc(var(--sc-size-sm) * 1.5);

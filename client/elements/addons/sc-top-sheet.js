@@ -3,6 +3,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import '@material/mwc-formfield';
 import '@material/mwc-radio';
+import '@material/mwc-checkbox';
 import '@material/mwc-switch';
 import '@material/mwc-button';
 
@@ -31,7 +32,6 @@ class SCTopSheet extends LitLocalized(LitElement) {
       referenceDisplayTypeArray: { type: Array },
       noteDisplayTypeArray: { type: Array },
       textViewArray: { type: Array },
-      showHighlighting: { type: Boolean }
     };
   }
 
@@ -113,7 +113,51 @@ class SCTopSheet extends LitLocalized(LitElement) {
         'displayType': 'main'
       },
       {
-        'displayTypeLabel': 'All',
+        'displayTypeLabel': 'ms',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'pts',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'vri',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'mr',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'si',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'km',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'lv',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'maku',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'ndp',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'cck',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'sya',
+        'displayType': 'all'
+      },
+      {
+        'displayTypeLabel': 'bj',
         'displayType': 'all'
       },
     ];
@@ -170,8 +214,8 @@ class SCTopSheet extends LitLocalized(LitElement) {
         border-bottom: 1px solid #ccc;
         width: 100%;
         display: grid;
-        grid-template-columns: repeat(8, 360px);
-        height: 240px;
+        grid-template-columns: 720px 360px 360px 360px 360px 360px 360px 360px;
+        height: 260px;
         overflow-y: scroll;
         overflow-x: scroll;
         padding: 16px 16px 8px 16px;
@@ -220,6 +264,14 @@ class SCTopSheet extends LitLocalized(LitElement) {
       .two-column{
         column-count: 2;
         margin-right: 48px;
+      }
+
+      .three-column{
+        column-count: 3;
+        margin-right: 48px;
+      }
+      mwc-formfield{
+      	height: 36px;
       }
 
       section::-webkit-scrollbar {
@@ -273,15 +325,15 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('reference')}</summary>
         <p>${this.localize('referenceDescription')}</p></details>
-        <div class="form-controls">
+        <div class="form-controls three-column">
           ${this.referenceDisplayTypeArray.map(item => html`
             <mwc-formfield label="${this.localize(`referenceDisplayType_${item.displayTypeLabel}`)}">
-              <mwc-radio
+              <mwc-checkbox
                 name="referenceDisplayType"
                 value="${item.displayType}"
                 ?checked="${this.selectedReferenceDisplayType === item.displayType ? true : false}"
                 @change="${this._onReferenceDisplayTypeChanged}">
-              </mwc-radio>
+              </mwc-checkbox>
             </mwc-formfield>
           `)}
         </div></div>` : '';
