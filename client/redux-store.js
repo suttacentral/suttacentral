@@ -36,7 +36,8 @@ const initialState = {
         chineseLookupTargetDictRepr: 'None',
         chineseLookupTargetLanguage: '',
         referenceDisplayType: 'none',
-        noteDisplayType: 'asterisk'
+        noteDisplayType: 'asterisk',
+        showHighlighting: false
     },
     colorTheme: 'light',
     selectedNavigationMenuItemId: '',
@@ -130,6 +131,9 @@ const reducer = (state, action) => {
         case 'SET_NOTE_DISPLAY_TYPE':
             return Object.assign({}, state,
                 { textOptions: Object.assign({}, state.textOptions, { noteDisplayType: action.noteDisplayType }) });
+        case 'SET_SHOW_HIGHLIGHTING':
+            return Object.assign({}, state,
+                { textOptions: Object.assign({}, state.textOptions, { showHighlighting: action.showHighlighting }) });
         default:
             return state;
     }

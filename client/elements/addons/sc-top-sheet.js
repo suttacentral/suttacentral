@@ -197,6 +197,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/sc-top-sheet';
     this.selectedReferenceDisplayType = textOptions.referenceDisplayType;
     this.selectedNoteDisplayType = textOptions.noteDisplayType;
+    this.showHighlighting = textOptions.showHighlighting;
   }
 
   static get styles() {
@@ -312,6 +313,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
           ${this.paliLookupTemplate}
           ${this.chineseLookupTemplate}
           ${this.paliScriptsTemplate}
+          ${this.showHighlightingTemplate}
           ${this.rememberSettingsTemplate}
         </section>
       </div>
@@ -449,6 +451,20 @@ class SCTopSheet extends LitLocalized(LitElement) {
     `;
   }
 
+  get showHighlightingTemplate() {
+    return html`
+        <div class="tools">
+        <details><summary>${this.localize('showHighlighting')}</summary>
+        <p>${this.localize('showHighlightingDescription')}</p></details>
+        <div class="form-controls">
+          <mwc-switch 
+            ?checked="${this.showHighlighting}"
+            @change="${this._onShowHighlightingChanged}">
+          </mwc-switch>
+        </div>
+    `;
+  }
+
   _onReferenceDisplayTypeChanged(e) {
     this.selectedReferenceDisplayType = e.target.value;
     this.actions.setReferenceDisplayType(this.selectedReferenceDisplayType);
@@ -485,6 +501,11 @@ class SCTopSheet extends LitLocalized(LitElement) {
 
   _onRememberSettingsChanged(e) {
     localStorage.setItem('rememberTextSettings', e.target.checked.toString());
+  }
+
+  _onShowHighlightingChanged(e) {
+    this.showHighlighting = e.target.checked;
+    this.actions.setShowHighlighting(e.target.checked);
   }
 
   show() {
@@ -547,6 +568,12 @@ class SCTopSheet extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'SET_NOTE_DISPLAY_TYPE',
           noteDisplayType: displayType
+        })
+      },
+      setShowHighlighting(showHighlighting) {
+        store.dispatch({
+          type: 'SET_SHOW_HIGHLIGHTING',
+          showHighlighting: showHighlighting
         })
       }
     }
