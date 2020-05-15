@@ -7,7 +7,7 @@ li{
     padding: 0.25em 0.5em;
     margin: 0 0 0 1em;
 }
-}
+
 pre
 {
     font-family: var(--sc-monospace-font);
