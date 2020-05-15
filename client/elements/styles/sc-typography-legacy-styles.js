@@ -65,7 +65,24 @@ export const typographyLegacyStyles = css`
     border-radius: var(--sc-size-xxs);
     background: var(--sc-primary-background-color);
 }
+.ref
+{
+    font-family: var(--sc-sans-font);
+    font-size: .75em;
 
+    display: none;
+
+    box-sizing: border-box;
+    margin: 0 4px;
+    padding: 0 4px;
+
+    white-space: nowrap;
+    text-decoration: none;
+
+    color: var(--sc-secondary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+}
 .suppliedmetre
 {
     color: var(--sc-secondary-text-color);
