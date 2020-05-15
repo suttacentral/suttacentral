@@ -337,16 +337,6 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a{
 }
 /* descriptive classes for metadata*/
 
-.ref
-{
-    font-weight: 600;
-
-    white-space: nowrap;
-    text-decoration: none;
-
-    color: var(--sc-secondary-text-color);
-}
-
 .author
 {
     letter-spacing: var(--sc-caps-letter-spacing);
