@@ -13,7 +13,7 @@ class SCHomePage extends SCStaticPage {
     font-weight: 400;
    }
    body {
-       background-color: var(--sc-background-color);
+       background-color: var(--sc-primary-background-color);
        padding-top: 4rem;
    }
    main {
@@ -60,7 +60,7 @@ class SCHomePage extends SCStaticPage {
    }
 
    article {
-       background-color: #fff;
+       background-color: var(--sc-secondary-background-color);
        border-radius: 8px;
        box-shadow: var(--sc-shadow-elevation-1dp);
        overflow: hidden;

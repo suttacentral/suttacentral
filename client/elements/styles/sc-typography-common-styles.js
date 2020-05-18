@@ -344,4 +344,34 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a{
     font-variant-caps: small-caps;
 }
 
+.ref
+{
+    font-family: var(--sc-sans-font);
+    font-size: .8em;
+    font-weight: 400;
+    font-style: normal;
+
+    display: inline-block;
+
+    box-sizing: border-box;
+    margin: 0 4px;
+    padding: .1em 4px;
+
+    white-space: nowrap;
+    text-decoration: none;
+    letter-spacing: normal;
+
+    color: var(--sc-secondary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+    background-color: var(--sc-secondary-background-color);
+
+    font-variant-caps: normal;
+}
+
+.ref:hover
+{
+    background-color: var(--sc-tertiary-background-color);
+}
+
 `

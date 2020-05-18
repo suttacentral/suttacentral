@@ -111,15 +111,6 @@ img
 {
     content: ')';
 }
-.ref
-{
-    font-weight: 600;
-
-    white-space: nowrap;
-    text-decoration: none;
-
-    color: var(--sc-secondary-text-color);
-}
 .static-copyright
 {
     margin-top: 64px;
