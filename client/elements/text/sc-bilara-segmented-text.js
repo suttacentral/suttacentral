@@ -136,9 +136,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   render() {
     return html`
       <style>
-      ${commonStyles} 
-      ${typographyCommonStyles} 
-      ${typographyBilaraStyles}
+        ${commonStyles} 
+        ${typographyCommonStyles} 
+        ${typographyBilaraStyles}
       </style>
       ${this.currentStyles}
       ${this.referencesDisplayStyles}
@@ -197,7 +197,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _articleElement() {
-    return this.shadowRoot.querySelector('article');
+    return this.shadowRoot.querySelectorAll('article');
   }
 
   _shouldShowLoadingIndicator() {
@@ -312,9 +312,13 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _showHighlightingChanged() {
     if (this.showHighlighting) {
-      this._articleElement().classList.add('highlight');
+      this._articleElement().forEach(article => {
+        article.classList.add('highlight');
+      });
     } else {
-      this._articleElement().classList.remove('highlight');
+      this._articleElement().forEach(article => {
+        article.classList.remove('highlight');
+      });
     }
   }
 
@@ -437,78 +441,94 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addRootText() {
-    if (!this.bilaraRootSutta) {
+    if (!this.bilaraRootSutta || this._articleElement().length === 0) {
       return;
     }
-    let articleElement = this._articleElement();
     let mapSutta = new Map(Object.entries(this.bilaraRootSutta));
-    if (!mapSutta || !articleElement) {
+    if (!mapSutta || mapSutta.size === 0) {
       return;
     }
-
     this._deleteRootSuttaMarkup();
     this._addRootSuttaMarkup();
-
-    mapSutta.forEach((value, key, mapSutta) => {
+    mapSutta.forEach((value, key) => {
       let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      const spanElement = articleElement.querySelector(`#${escapeKey} .root .text`);
-      if (spanElement) {
-        spanElement.innerHTML = this._tweakText(value);
+      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
+      if (suttaArticle) {
+        const spanElement = suttaArticle.querySelector(`#${escapeKey} .root .text`);
+        if (spanElement) {
+          spanElement.innerHTML = this._tweakText(value);
+        }
       }
-    })
+    });
   }
 
   _deleteRootSuttaMarkup() {
-    let articleElement = this._articleElement();
-    const rootMarkup = articleElement.querySelectorAll('.root [lang=pli-Latn]');
-    if (rootMarkup) {
-      rootMarkup.forEach((element) => { element.parentNode.removeChild(element) });
-    }
+    this._articleElement().forEach(article => {
+      let rootMarkup = article.querySelectorAll('.root [lang=pli-Latn]');
+      if (rootMarkup) {
+        rootMarkup.forEach((element) => { element.parentNode.removeChild(element) });
+      }
+    });
   }
 
   _deleteTranslatedSuttaMarkup() {
-    let articleElement = this._articleElement();
-    const translatedSuttaMarkup = articleElement.querySelectorAll('.translation');
-    if (translatedSuttaMarkup) {
-      translatedSuttaMarkup.forEach((element) => { element.parentNode.removeChild(element) });
-    }
+    this._articleElement().forEach(article => {
+      let translatedSuttaMarkup = article.querySelectorAll('.translation');
+      if (translatedSuttaMarkup) {
+        translatedSuttaMarkup.forEach((element) => { element.parentNode.removeChild(element) });
+      }
+    });
   }
 
   _addRootSuttaMarkup() {
-    let articleElement = this._articleElement();
+    if (!this.bilaraRootSutta || this._articleElement().length === 0) {
+      return;
+    }
     let mapSutta = new Map(Object.entries(this.bilaraRootSutta));
-
-    if (articleElement && mapSutta) {
-      mapSutta.forEach((value, key, mapSutta) => {
-        let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-        const segmentElement = articleElement.querySelector(`#${escapeKey}`);
+    if (!mapSutta || mapSutta.size === 0) {
+      return;
+    }
+    mapSutta.forEach((value, key) => {
+      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
+      if (suttaArticle) {
+        const segmentElement = suttaArticle.querySelector(`#${escapeKey}`);
         if (segmentElement) {
           segmentElement.appendChild(this._addRootSuttaSpan());
         } else {
           let newSegmentElement = this._addSegmentSpan();
           newSegmentElement.appendChild(this._addRootSuttaSpan());
-          articleElement.appendChild(newSegmentElement);
+          suttaArticle.appendChild(newSegmentElement);
         }
-      })
-    }
+      }
+    });
   }
 
   _addTranslationSuttaMarkup() {
-    let articleElement = this._articleElement();
+    if (!this.bilaraTranslatedSutta || this._articleElement().length === 0) {
+      return;
+    }
     let mapSutta = new Map(Object.entries(this.bilaraTranslatedSutta));
-    if (articleElement && mapSutta) {
-      mapSutta.forEach((value, key, mapSutta) => {
-        let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-        const segmentElement = articleElement.querySelector(`#${escapeKey}`);
+    if (!mapSutta || mapSutta.size === 0) {
+      return;
+    }
+    mapSutta.forEach((value, key) => {
+      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
+      if (suttaArticle) {
+        const segmentElement = suttaArticle.querySelector(`#${escapeKey}`);
         if (segmentElement) {
           segmentElement.appendChild(this._addTranslationSuttaSpan());
         } else {
           //let newSegmentElement = this._addSegmentSpan();
           //newSegmentElement.appendChild(this._addTranslationSuttaSpan());
-          //articleElement.appendChild(newSegmentElement);
+          //suttaArticle.appendChild(newSegmentElement);
         }
-      })
-    }
+      }
+    });
   }
 
   _addTranslationSuttaSpan() {
@@ -522,24 +542,27 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _initReference() {
-    if (!this.bilaraRootSutta) {
+    if (!this.bilaraRootSutta || this._articleElement().length === 0) {
       return
     }
-
-    let articleElement = this._articleElement();
     let mapSutta = new Map(Object.entries(this.bilaraRootSutta));
-    if (articleElement && mapSutta) {
-      mapSutta.forEach((value, key, mapSutta) => {
-        let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-        const segmentElement = articleElement.querySelector(`#${escapeKey}`);
+    if (!mapSutta || mapSutta.size === 0) {
+      return;
+    }
+    mapSutta.forEach((value, key) => {
+      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
+      if (suttaArticle) {
+        const segmentElement = suttaArticle.querySelector(`#${escapeKey}`);
         if (segmentElement) {
           let refSpan = this._addReferenceSpan();
           refSpan.appendChild(this._addDefaultReferenceAnchor(key));
           this._prependChild(segmentElement, refSpan);
           //segmentElement.appendChild(refSpan);
         }
-      })
-    }
+      }
+    });
   }
 
   _prependChild(parent, newChild) {
@@ -564,20 +587,24 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addCommentText() {
-    if (!this.suttaComment) {
+    if (!this.suttaComment || this._articleElement().length === 0) {
       return;
     }
-    let articleElement = this._articleElement();
     let mapComment = new Map(Object.entries(this.suttaComment));
-    if (articleElement && mapComment) {
-      mapComment.forEach((value, key, mapComment) => {
-        let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-        const translationSpan = articleElement.querySelector(`#${escapeKey} .translation`);
+    if (!mapComment || mapComment.size === 0) {
+      return;
+    }
+    mapComment.forEach((value, key) => {
+      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
+      if (suttaArticle) {
+        const translationSpan = suttaArticle.querySelector(`#${escapeKey} .translation`);
         if (translationSpan) {
           translationSpan.appendChild(this._addCommentSpan(value));
         }
-      })
-    }
+      }
+    });
   }
 
   _addCommentSpan(value) {
@@ -591,20 +618,24 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addVariantText() {
-    if (!this.suttaVariant) {
+    if (!this.suttaVariant || this._articleElement().length === 0) {
       return;
     }
-    let articleElement = this._articleElement();
     let mapVariant = new Map(Object.entries(this.suttaVariant));
-    if (articleElement && mapVariant) {
-      mapVariant.forEach((value, key, mapComment) => {
-        let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-        const rootSpan = articleElement.querySelector(`#${escapeKey} .root`);
+    if (!mapVariant || mapVariant.size === 0) {
+      return;
+    }
+    mapVariant.forEach((value, key) => {
+      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
+      if (suttaArticle) {
+        const rootSpan = suttaArticle.querySelector(`#${escapeKey} .root`);
         if (rootSpan) {
           rootSpan.appendChild(this._addVariantSpan(value));
         }
-      })
-    }
+      }
+    });
   }
 
   _addVariantSpan(value) {
@@ -641,20 +672,24 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addReferenceText() {
-    if (!this.suttaReference) {
+    if (!this.suttaReference || this._articleElement().length === 0) {
       return;
     }
-    let articleElement = this._articleElement();
     let mapRef = new Map(Object.entries(this.suttaReference));
-    if (articleElement && mapRef) {
-      mapRef.forEach((value, key, mapRef) => {
-        let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-        const refElement = articleElement.querySelector(`#${escapeKey} .reference`);
+    if (!mapRef || mapRef.size === 0) {
+      return;
+    }
+    mapRef.forEach((value, key) => {
+      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
+      if (suttaArticle) {
+        const refElement = suttaArticle.querySelector(`#${escapeKey} .reference`);
         if (refElement) {
           this._addReferenceAnchor(value, refElement);
         }
-      })
-    }
+      }
+    });
   }
 
   _addReferenceAnchor(ref, refElement) {
@@ -690,23 +725,26 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addTranslationText() {
-    if (!this.bilaraTranslatedSutta) {
+    if (!this.bilaraTranslatedSutta || this._articleElement().length === 0) {
       return;
     }
-    let articleElement = this._articleElement();
     let mapSutta = new Map(Object.entries(this.bilaraTranslatedSutta));
-    if (articleElement && mapSutta) {
-      this._deleteTranslatedSuttaMarkup();
-      this._addTranslationSuttaMarkup();
-
-      mapSutta.forEach((value, key) => {
-        let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-        const spanElement = articleElement.querySelector(`#${escapeKey} .translation .text`);
+    if (!mapSutta || mapSutta.size === 0) {
+      return;
+    }
+    this._deleteTranslatedSuttaMarkup();
+    this._addTranslationSuttaMarkup();
+    mapSutta.forEach((value, key) => {
+      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
+      if (suttaArticle) {
+        const spanElement = suttaArticle.querySelector(`#${escapeKey} .translation .text`);
         if (spanElement) {
           spanElement.innerHTML = this._tweakText(value);
         }
-      })
-    }
+      }
+    });
   }
 
   _tweakText(text) {
