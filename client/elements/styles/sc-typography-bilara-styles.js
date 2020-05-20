@@ -115,6 +115,7 @@ article
     font-size: .8em;
     font-weight: 400;
     font-style: normal;
+        text-align: left;
 
     display: inline-block;
 

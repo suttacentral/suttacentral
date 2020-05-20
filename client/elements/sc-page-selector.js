@@ -88,7 +88,12 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       #drawertoggle {
         z-index: 1;
         color: var(--sc-tertiary-text-color);
-        margin-right: var(--sc-size-md);
+      }
+
+    .readme {
+        color: var(--sc-tertiary-text-color);;
+        font-weight: 500;
+
       }
 
       #to_home_button {
@@ -161,6 +166,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         width: calc(100% + 20px);
         height: 100%;
       }
+
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -170,8 +176,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
         <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header">
           <app-toolbar id="toolbarHeader" class="toolbar-header" sticky>
-            <paper-icon-button icon="sc-iron-icons:menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
-
+          <span class='readme'>  <paper-icon-button icon="sc-iron-icons:menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
+Read Suttas</span>
             <div main-title="" id="toolbar_title_box">
               <p id="toolbar_title">{{_getToolbarTitle(toolbarTitle, localize)}}</p>
             </div>
