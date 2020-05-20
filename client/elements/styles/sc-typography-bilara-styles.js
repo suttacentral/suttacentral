@@ -109,45 +109,46 @@ article
 
 /* references */
 
-a
+.reference
 {
     font-family: var(--sc-sans-font);
-
-    z-index: 10;
+    font-size: .8em;
+    font-weight: 400;
+    font-style: normal;
+        text-align: left;
 
     display: inline-block;
 
     box-sizing: border-box;
-
-    color: var(--sc-secondary-text-color);
-}
-
-.reference a
-{
-    font-weight: 500;
-    font-style: normal;
+    margin: 0 4px;
+    padding: .1em 4px;
 
     white-space: nowrap;
     text-decoration: none;
+    letter-spacing: normal;
 
     color: var(--sc-secondary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+    background-color: var(--sc-secondary-background-color);
 
-    font-feature-settings: 'dnom';
     font-variant-caps: normal;
 }
 
-.reference a:after
-{
-    content: ' ';
-    white-space: pre;
+.reference:hover{
+    background-color: var(--sc-tertiary-background-color);
 }
 
-header .reference a,
-h2 .reference a,
-h3 .reference a,
-h4 .reference a,
-h5 .reference a,
-h6 .reference a
+.reference a{
+    text-decoration: none;
+}
+
+header .reference,
+h2 .reference,
+h3 .reference,
+h4 .reference,
+h5 .reference,
+h6 .reference
 {
     display: none;
 }
