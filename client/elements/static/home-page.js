@@ -7,147 +7,50 @@ import { API_ROOT } from '../../constants.js';
 class SCHomePage extends SCStaticPage {
   static get styles() {
     return css`
-   :root {
-     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-   }
-   body {
-       background-color: var(--sc-primary-background-color);
-       padding-top: 4rem;
-   }
-   main {
-       max-width: 1600px;
-       margin: 0 auto 8em;
-       padding: 0 2%;
-   }
-   section + section {
-       margin-top: 4%;
-   }
-   .plain {
-   		font-size: 1.125rem;
-       text-align: center;
-       display: flex;
-       align-items: center;
-       flex-direction: column;
-       padding: 6% 0 0;
-       margin: auto;
-   }
-   blockquote {
+      :root {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-md);
+        font-weight: 400;
+      }
+
+      body {
+        background-color: var(--sc-primary-background-color);
+        padding-top: 4rem;
+      }
+
+      main {
+        max-width: 1600px;
+        margin: 0 auto 8em;
+        padding: 0 2%;
+      }
+
+      section + section {
+          margin-top: 4%;
+      }
+
+      .plain {
+        font-size: 1.125rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 6% 0 0;
+        margin: auto;
+      }
+
+      blockquote {
         width: 80%;
-       font-style: italic;
-       font-size: 1.5rem;
-       font-size: clamp(1.125em, 3.75vw, 1.5em);
-       line-height: 1.5;
-       font-family: var(--sc-serif-font);
-       font-weight: 300;
-       padding: 0;
-       margin: 0 0 2% 0;
-       text-align: center;
-       position: relative;
-   }
-   /* ensure a consistent spacing for the quote decoration */
-   blockquote span{
-    position: relative
-   }
-   blockquote span:before{
-    content: "“";
-    font-size: 4em;
-    line-height: 1;
-    position: absolute;
-    left: -0.5em;
-    color: var(--sc-secondary-text-color);
-   }
-
-   article {
-       background-color: var(--sc-secondary-background-color);
-       border-radius: 8px;
-       box-shadow: var(--sc-shadow-elevation-1dp);
-       overflow: hidden;
-       display: flex;
-       flex-direction: column;
-       margin-bottom: 16px;
-   }
-
-   .two-cards {
-       display: grid;
-       justify-content: center;
-       grid-template-columns: repeat(2, minmax(240px, 1fr));
-       grid-gap: 3% 2%;
-   }
-
-   .three-card-row {
-       display: grid;
-       justify-content: center;
-       grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-       grid-gap: 3% 2%;
-   }
-   .three-card-row-first {
-       grid-column: 1/-2;
-       grid-row: 1/3;
-   }
-   .three-card-row-second {
-       grid-row: 1 / 2;
-   }
-   .three-card-row-third {
-       grid-row: 2 / 3;
-   }
-   figure {
-       margin: 0;
-       height: 480px;
-       overflow: hidden;
-       position: relative;
-   }
-   img {
-       height: 100%;
-       object-fit: cover;
-   }
-   figcaption {
-      position: absolute;
-      bottom: 0px;
-      right: 0px;
-       font-size: 0.8em;
-       color: white;
-       font-weight: 600;
-       padding: 16px;
-       background-color: rgba(0,0,0,0.5);
-       text-align: right;
-       letter-spacing: 0.5px;
-       width: 100%;
-       box-sizing: border-box;
-       backdrop-filter: blur(2px)
-   }
-   .card-content {
-       display: flex;
-       flex-direction: column;
-       justify-content: space-between;
-       flex: 1;
-   }
-   .card-text {
-       padding: 6% 4% 0;
-   }
-   .card-actions {
-       padding: 16px;
-       min-height: 52px;
-       display: flex;
-       align-items: flex-end;
-   }
-     .link-button{
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--sc-primary-accent-color);
-    border: 1px solid var(--sc-primary-accent-color);
-    border-radius: 4px;
-    height: 36px;
-    padding: 0px 15px 2px;
-    letter-spacing: var(--sc-caps-letter-spacing);
-    font-variant-caps: all-small-caps;
-    box-sizing: border-box;
-    min-width: 64px;
-    text-decoration: none;
-  }
+        font-style: italic;
+        font-size: 1.5rem;
+        font-size: clamp(1.125em, 3.75vw, 1.5em);
+        line-height: 1.5;
+        font-family: var(--sc-serif-font);
+        font-weight: 300;
+        padding: 0;
+        margin: 0 0 2% 0;
+        text-align: center;
+        position: relative;
+      }
 
       /* ensure a consistent spacing for the quote decoration */
       blockquote span {
@@ -164,7 +67,7 @@ class SCHomePage extends SCStaticPage {
       }
 
       article {
-        background-color: #fff;
+        background-color: var(--sc-secondary-background-color);
         border-radius: 8px;
         box-shadow: var(--sc-shadow-elevation-1dp);
         overflow: hidden;
@@ -220,7 +123,7 @@ class SCHomePage extends SCStaticPage {
         color: white;
         font-weight: 600;
         padding: 16px;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0,0,0,0.5);
         text-align: right;
         letter-spacing: 0.5px;
         width: 100%;
