@@ -64,7 +64,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       segmentedIDsAdded: { type: Boolean },
       hasScriptBeenChanged: { type: Boolean },
       localizedStringsPath: { type: String },
-      currentId: { type: String },
       currentSutta: { type: Object },
       currentStyles: { type: Object },
       referencesDisplayStyles: { type: Object },
@@ -100,7 +99,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.segmentedIDsAdded = false;
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/sc-text';
-    this.currentId = '';
     this.currentSutta = {};
     this.translationTextSelector = '.translation .text';
     this.rootTextSelector = '.root .text';
@@ -143,7 +141,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       ${this.currentStyles}
       ${this.referencesDisplayStyles}
       ${this.notesDisplayStyles}
-      
+
       <sc-nav-contents .items="${this.navItems}"></sc-nav-contents>
       <main>
         <div id="segmented_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
@@ -448,24 +446,31 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (!mapSutta || mapSutta.size === 0) {
       return;
     }
+
+    const suttasSection = this.shadowRoot.querySelector('section.range');
     this._deleteRootSuttaMarkup();
     this._addRootSuttaMarkup();
     mapSutta.forEach((value, key) => {
       let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
       let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
-      if (suttaArticle) {
-        const spanElement = suttaArticle.querySelector(`#${escapeKey} .root .text`);
-        if (spanElement) {
-          spanElement.innerHTML = this._tweakText(value);
-        }
-      }
+      this._addRootTextToSpan(suttasSection, escapeKey, value);
+      this._addRootTextToSpan(suttaArticle, escapeKey, value);
     });
+  }
+
+  _addRootTextToSpan(suttaRootElement, key, value) {
+    if (suttaRootElement) {
+      let spanElement = suttaRootElement.querySelector(`#${key} .root .text`);
+      if (spanElement) {
+        spanElement.innerHTML = this._tweakText(value);
+      }
+    }
   }
 
   _deleteRootSuttaMarkup() {
     this._articleElement().forEach(article => {
-      let rootMarkup = article.querySelectorAll('.root [lang=pli-Latn]');
+      let rootMarkup = article.querySelectorAll('.root');
       if (rootMarkup) {
         rootMarkup.forEach((element) => { element.parentNode.removeChild(element) });
       }
@@ -489,21 +494,27 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (!mapSutta || mapSutta.size === 0) {
       return;
     }
+    const suttasSection = this.shadowRoot.querySelector('section.range');
     mapSutta.forEach((value, key) => {
       let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
       let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
-      if (suttaArticle) {
-        const segmentElement = suttaArticle.querySelector(`#${escapeKey}`);
-        if (segmentElement) {
-          segmentElement.appendChild(this._addRootSuttaSpan());
-        } else {
-          let newSegmentElement = this._addSegmentSpan();
-          newSegmentElement.appendChild(this._addRootSuttaSpan());
-          suttaArticle.appendChild(newSegmentElement);
-        }
-      }
+      this._addRootSuttaMarkupToSpan(suttasSection, escapeKey);
+      this._addRootSuttaMarkupToSpan(suttaArticle, escapeKey);
     });
+  }
+
+  _addRootSuttaMarkupToSpan(suttaRootElement, key) {
+    if (suttaRootElement) {
+      const segmentElement = suttaRootElement.querySelector(`#${key}`);
+      if (segmentElement) {
+        segmentElement.appendChild(this._addRootSuttaSpan());
+      } else {
+        let newSegmentElement = this._addSegmentSpan();
+        newSegmentElement.appendChild(this._addRootSuttaSpan());
+        suttaRootElement.appendChild(newSegmentElement);
+      }
+    }
   }
 
   _addTranslationSuttaMarkup() {
@@ -514,21 +525,23 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (!mapSutta || mapSutta.size === 0) {
       return;
     }
+    const suttasSection = this.shadowRoot.querySelector('section.range');
     mapSutta.forEach((value, key) => {
       let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
       let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
-      if (suttaArticle) {
-        const segmentElement = suttaArticle.querySelector(`#${escapeKey}`);
-        if (segmentElement) {
-          segmentElement.appendChild(this._addTranslationSuttaSpan());
-        } else {
-          //let newSegmentElement = this._addSegmentSpan();
-          //newSegmentElement.appendChild(this._addTranslationSuttaSpan());
-          //suttaArticle.appendChild(newSegmentElement);
-        }
-      }
+      this._addTranslationSuttaMarkupToSpan(suttasSection, escapeKey);
+      this._addTranslationSuttaMarkupToSpan(suttaArticle, escapeKey);
     });
+  }
+
+  _addTranslationSuttaMarkupToSpan(transSuttaRootElement, key) {
+    if (transSuttaRootElement) {
+      const segmentElement = transSuttaRootElement.querySelector(`#${key}`);
+      if (segmentElement) {
+        segmentElement.appendChild(this._addTranslationSuttaSpan());
+      }
+    }
   }
 
   _addTranslationSuttaSpan() {
@@ -734,17 +747,23 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     this._deleteTranslatedSuttaMarkup();
     this._addTranslationSuttaMarkup();
+    const suttasSection = this.shadowRoot.querySelector('section.range');
     mapSutta.forEach((value, key) => {
       let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
       let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
-      if (suttaArticle) {
-        const spanElement = suttaArticle.querySelector(`#${escapeKey} .translation .text`);
-        if (spanElement) {
-          spanElement.innerHTML = this._tweakText(value);
-        }
-      }
+      this._addTranslationTextToSpan(suttasSection, escapeKey, value);
+      this._addTranslationTextToSpan(suttaArticle, escapeKey, value);
     });
+  }
+
+  _addTranslationTextToSpan(transSuttaRootElement, key, value) {
+    if (transSuttaRootElement) {
+      const spanElement = transSuttaRootElement.querySelector(`#${key} .translation .text`);
+      if (spanElement) {
+        spanElement.innerHTML = this._tweakText(value);
+      }
+    }
   }
 
   _tweakText(text) {
