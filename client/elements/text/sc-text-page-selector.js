@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit-element';
 import '@polymer/iron-icon/iron-icon.js';
 
-import './sc-segmented-text.js';
 import './sc-bilara-segmented-text.js';
 import './sc-simple-text.js';
 import './sc-stepper.js';
@@ -45,7 +44,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         </div>
         ${this.displaySimpleTextTemplate}
         ${this.displaySegmentedTextTemplate}
-        ${this.displayBilaraSegmentedTextTemplate}
         ${this.displayError}
       </div>
       ${this.displayStepper}
@@ -90,24 +88,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       return '';
     }
     return !this._shouldHideSegmentedText() ? html`
-      <sc-segmented-text
-        id="segmented_text"
-        .rootSutta=${this.rootSutta}
-        .markup="${this.markup}"
-        .translatedSutta=${this.translatedSutta}
-        .rootLang="${this.responseData.root_text.lang}"
-        .isLoading=${this.isLoading}
-        .error=${this.lastError}
-        ?hidden=${this._shouldHideSegmentedText()}>
-      </sc-segmented-text>
-    ` : '';
-  }
-
-  get displayBilaraSegmentedTextTemplate() {
-    if (!this.responseData || !this.responseData.root_text) {
-      return '';
-    }
-    return this._shouldDisplayBilaraSegmentedText() ? html`
       <sc-bilara-segmented-text
         id="segmented_text"
         .rootSutta=${this.rootSutta}
@@ -118,10 +98,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         .suttaComment=${this.suttaComment}
         .suttaReference=${this.suttaReference}
         .suttaVariant=${this.suttaVariant}
-        .rootLang="${this.responseData.root_text.lang}"
         .isLoading=${this.isLoading}
-        .error=${this.lastError}
-        ?hidden=${!this._shouldDisplayBilaraSegmentedText()}>
+        .error=${this.lastError}>
       </sc-bilara-segmented-text>
     ` : '';
   }
@@ -262,9 +240,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.previous.name = this._transformId(this.previous.uid, this.expansionReturns);
     }
 
-    if (this._shouldDisplayBilaraSegmentedText()) {
-      this._getBilaraText();
-    }
+    this._getBilaraText();
   }
 
   _getSuttaTextUrl() {
@@ -376,14 +352,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _shouldHideSegmentedText() {
-    return (!this.isSegmentedText || this.isLoading || this._shouldDisplayBilaraSegmentedText());
-  }
-
-  _shouldDisplayBilaraSegmentedText() {
-    if (!this.translatedSutta) {
-      return false;
-    }
-    return (this.isSegmentedText && !this.isLoading && this.translatedSutta.author_uid === 'sujato');
+    return (!this.isSegmentedText || this.isLoading);
   }
 
   _shouldDisplayStepper() {
