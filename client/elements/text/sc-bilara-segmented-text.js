@@ -15,6 +15,7 @@ import { typographyBilaraStyles } from '../styles/sc-typography-bilara-styles.js
 import {
   commonStyles,
   plainStyles,
+  plainPaliStyles,
   plainPlusStyles,
   sideBySideStyles,
   sideBySidePlusStyles,
@@ -38,12 +39,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       showParagraphs: { type: Boolean },
       paragraphs: { type: Array },
       paragraphTitles: { type: Object },
-      rootAuthor: { type: String },
-      rootLang: { type: String },
-      rootTitle: { type: String },
-      translationAuthor: { type: String },
-      translationLang: { type: String },
-      translatedTitle: { type: String },
       suttaReference: { type: Object },
       suttaComment: { type: Object },
       suttaVariant: { type: Object },
@@ -64,7 +59,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       segmentedIDsAdded: { type: Boolean },
       hasScriptBeenChanged: { type: Boolean },
       localizedStringsPath: { type: String },
-      currentSutta: { type: Object },
       currentStyles: { type: Object },
       referencesDisplayStyles: { type: Object },
       notesDisplayStyles: { type: Object },
@@ -99,7 +93,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.segmentedIDsAdded = false;
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/sc-text';
-    this.currentSutta = {};
     this.translationTextSelector = '.translation .text';
     this.rootTextSelector = '.root .text';
     this.commentSpanRectInfo = new Map();
@@ -118,7 +111,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       ['none_sidebyside', sideBySideStyles],
       ['asterisk_sidebyside', sideBySideStyles],
       ['none_linebyline', lineByLineStyles],
-      ['asterisk_linebyline', lineByLineStyles]
+      ['asterisk_linebyline', lineByLineStyles],
+      ['pali', plainPaliStyles],
     ]);
     this.mapReferenceDisplayStyles = new Map([
       ['none', hideReferenceStyles],
@@ -182,7 +176,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this._showHighlightingChanged();
     }, 100);
     //this.navItems = this._prepareNavigation();
-    this.currentSutta = this.translatedSutta ? this.translatedSutta : this.rootSutta;
 
     setTimeout(() => {
       //this._recalculateCommentSpanHeight();
@@ -373,6 +366,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _changeTextView() {
     let viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
+    if (!this.bilaraTranslatedSutta && this.bilaraRootSutta) {
+      viewCompose = 'pali';
+    }
     this.currentStyles = this.mapStyles.get(viewCompose) ? this.mapStyles.get(viewCompose) : plainStyles;
     this.referencesDisplayStyles = this.mapReferenceDisplayStyles.get(this.chosenReferenceDisplayType);
     this.notesDisplayStyles = this.mapNoteDisplayStyles.get(this.chosenNoteDisplayType);
@@ -401,7 +397,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _prepareNavigation() {
-    let sutta = this.translatedSutta ? this.translatedSutta : this.rootSutta;
+    let sutta = this.bilaraTranslatedSutta ? this.bilaraTranslatedSutta : this.bilaraRootSutta;
     if (!sutta) {
       return;
     }
@@ -451,8 +447,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._deleteRootSuttaMarkup();
     this._addRootSuttaMarkup();
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       this._addRootTextToSpan(suttasSection, escapeKey, value);
       this._addRootTextToSpan(suttaArticle, escapeKey, value);
@@ -496,8 +492,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     const suttasSection = this.shadowRoot.querySelector('section.range');
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       this._addRootSuttaMarkupToSpan(suttasSection, escapeKey);
       this._addRootSuttaMarkupToSpan(suttaArticle, escapeKey);
@@ -527,8 +523,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     const suttasSection = this.shadowRoot.querySelector('section.range');
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.').replace(/\^/ug, '\\\^');
+      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       this._addTranslationSuttaMarkupToSpan(suttasSection, escapeKey);
       this._addTranslationSuttaMarkupToSpan(suttaArticle, escapeKey);
@@ -563,8 +559,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       if (suttaArticle) {
         const segmentElement = suttaArticle.querySelector(`#${escapeKey}`);
@@ -608,8 +604,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     mapComment.forEach((value, key) => {
-      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       if (suttaArticle) {
         const translationSpan = suttaArticle.querySelector(`#${escapeKey} .translation`);
@@ -639,8 +635,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     mapVariant.forEach((value, key) => {
-      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       if (suttaArticle) {
         const rootSpan = suttaArticle.querySelector(`#${escapeKey} .root`);
@@ -693,8 +689,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     mapRef.forEach((value, key) => {
-      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
+      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       if (suttaArticle) {
         const refElement = suttaArticle.querySelector(`#${escapeKey} .reference`);
@@ -749,8 +745,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._addTranslationSuttaMarkup();
     const suttasSection = this.shadowRoot.querySelector('section.range');
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/g, '\\\:').replace(/\./g, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./g, '\\\.');
+      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.').replace(/\^/ug, '\\\^');
+      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       this._addTranslationTextToSpan(suttasSection, escapeKey, value);
       this._addTranslationTextToSpan(suttaArticle, escapeKey, value);
@@ -927,7 +923,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this._segmentedTextContentElement().classList.add('latin-script');
       // set the latin text segment iso codes, if not set already
       if (!this._segmentedTextContentElement().querySelector(`.original-text[lang='pli-Latn']`)) {
-        segments.forEach((item) => this._setScriptISOCode(item, this.rootLang));
+        segments.forEach((item) => this._setScriptISOCode(item, this.rootSutta.lang));
       }
       this.hasScriptBeenChanged = false;
     } else if (scriptNames.includes(this.paliScript)) { // if the script name is valid:
@@ -935,7 +931,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this.hasScriptBeenChanged = true;
     }
     if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
-      this._setScriptISOCode(this._segmentedTextContentElement(), this.rootLang);
+      this._setScriptISOCode(this._segmentedTextContentElement(), this.rootSutta.lang);
     } else {
       this._segmentedTextContentElement().removeAttribute('lang');
     }
@@ -974,7 +970,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _setScriptOfSegments(segments, scriptFunctionName, t) {
     Array.from(segments).forEach(item => {
-      this._setScriptISOCode(item, this.rootLang);
+      this._setScriptISOCode(item, this.rootSutta.lang);
       let words = item.querySelectorAll('.word');
       Array.from(words).forEach(word => {
         word.dataset.latin_text = word.innerHTML;

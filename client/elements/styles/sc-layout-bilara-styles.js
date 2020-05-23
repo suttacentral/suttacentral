@@ -1,593 +1,515 @@
 import { html,css } from 'lit-element';
 
 export const commonStyles = css`
-
-  main
-{
+  main {
     display: flex;
-
     margin: 4em 2em;
-
     justify-content: center;
-}
-
-`;
+  }`;
 
 export const plainStyles = html`
   <style>
+    article {
+      max-width: 720px;
+    }
 
-  article
-{
-    max-width: 720px;
-}
+    .root {
+      display: none;
+    }
 
-.reference,
-.root
-{
-    display: none;
-}
+    /* Set styles for tooltip marker. First we hide the actual content. These settings ensure the beginning, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
+    .comment,
+    .variant {
+      overflow: hidden;
 
-/* Set styles for tooltip marker. First we hide the actual content. These settings ensure the beginning, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
-.comment,
-.variant
-{
-    overflow: hidden;
+      width: 1ex;
+      height: 1em;
+      padding: 0 6px 0 0;
 
-    width: 1ex;
-    height: 1em;
-    padding: 0 6px 0 0;
+      white-space: nowrap;
 
-    white-space: nowrap;
+      border: none;
+      background-color: inherit;
+    }
 
-    border: none;
-    background-color: inherit;
-}
+  /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
+    .comment[data-tooltip]:hover::after,
+    .variant[data-tooltip]:hover::after {
+      display: block;
+    }
+  </style>
+`;
 
-/* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
-.comment[data-tooltip]:hover::after,
-.variant[data-tooltip]:hover::after
-{
-    display: block;
-}
+export const plainPaliStyles = html`
+  <style>
+    section, article {
+      max-width: 720px;
+    }
 
+    .comment,
+    .variant {
+      overflow: hidden;
+
+      width: 1ex;
+      height: 1em;
+      padding: 0 6px 0 0;
+
+      white-space: nowrap;
+
+      border: none;
+      background-color: inherit;
+    }
+
+    .comment[data-tooltip]:hover::after,
+    .variant[data-tooltip]:hover::after {
+      display: block;
+    }
   </style>
 `;
 
 export const plainPlusStyles = html`
   <style>
-
-.root
-{
-    display: none;
-}
-
-/* Let min width be handled by media queries, max width according to the nested grid width.*/
-.segment
-{
-    display: grid;
-
-    grid-template-columns: 100px minmax(0, auto);
-    grid-column-gap: var(--sc-size-lg);
-}
-
-.reference
-{
-    grid-column: 1;
-    grid-row: 1 / span 3;
-}
-
-.translation
-{
-    grid-column: 2;
-}
-
-.translation
-{
-    position: relative;
-
-    display: grid;
-
-    grid-template-columns: minmax(240px, 720px) minmax(120px, 480px);
-    grid-column-gap: var(--sc-size-lg);
-}
-
-.text
-{
-    grid-column: 1;
-}
-
-.comment
-{
-    position: absolute;
-
-    padding: var(--sc-size-sm) var(--sc-size-md);
-
-    box-shadow: var(--sc-shadow-elevation-1dp);
-
-    grid-column: 2;
-    grid-row: 1;
-}
-
-/* remove <br> tags to avoid unsightly spaces in verses. */
-br
-{
-    content: '';
-}
-
-@media only screen and (max-width: 600px)
-{
-    .segment,
-    .reference,
-    .translation,
-    .root
-    {
-        display: block;
+    .root {
+      display: none;
     }
 
-    .variant,
-    .comment
-    {
+    /* Let min width be handled by media queries, max width according to the nested grid width.*/
+    .segment {
+      display: grid;
+
+      grid-template-columns: 100px minmax(0, auto);
+      grid-column-gap: var(--sc-size-lg);
+    }
+
+    .reference {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+    }
+
+    .translation {
+      grid-column: 2;
+    }
+
+    .translation {
+      position: relative;
+
+      display: grid;
+
+      grid-template-columns: minmax(240px, 720px) minmax(120px, 480px);
+      grid-column-gap: var(--sc-size-lg);
+    }
+
+    .text {
+      grid-column: 1;
+    }
+
+    .comment {
+      position: absolute;
+
+      padding: var(--sc-size-sm) var(--sc-size-md);
+
+      box-shadow: var(--sc-shadow-elevation-1dp);
+
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    /* remove <br> tags to avoid unsightly spaces in verses. */
+    br {
+      content: '';
+    }
+
+    @media only screen and (max-width: 600px) {
+      .segment,
+      .reference,
+      .translation,
+      .root {
+        display: block;
+      }
+
+      .variant,
+      .comment {
         position: relative;
 
         display: table;
 
         margin-top: var(--sc-size-sm);
+      }
     }
-}
-
   </style>
 `;
 
 export const sideBySideStyles = html`
-  <style>
- 
-.segment
-{
-    display: grid;
+  <style> 
+    .segment {
+      display: grid;
 
-    grid-template-columns: minmax(240px, 720px) minmax(240px, 720px);
-    grid-column-gap: var(--sc-size-lg);
-}
+      grid-template-columns: minmax(240px, 720px) minmax(240px, 720px);
+      grid-column-gap: var(--sc-size-lg);
+    }
 
-.reference
-{
-    display: none;
-}
+    .translation {
+      grid-column: 1;
+    }
 
-.translation
-{
-    grid-column: 1;
-}
+    .root {
+      grid-column: 2;
+    }
 
-.root
-{
-    grid-column: 2;
-}
+    br {
+      content: '';
+    }
 
-br
-{
-    content: '';
-}
-
-/* Center the tooltip in the respective column */
-.translation,
-.root
-{
-    position: relative;
-}
-
-/* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
-.comment,
-.variant
-{
-    overflow: hidden;
-
-    width: 1ex;
-    height: 1em;
-    padding: 0 6px 0 0;
-
-    white-space: nowrap;
-
-    border: none;
-    background-color: inherit;
-}
-
-/* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
-.comment[data-tooltip]:hover::after,
-.variant[data-tooltip]:hover::after
-{
-    display: block;
-}
-
-@media only screen and (max-width: 600px)
-{
-    .segment,
+    /* Center the tooltip in the respective column */
     .translation,
-    .root
-    {
+    .root {
+      position: relative;
+    }
+
+    /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
+    .comment,
+    .variant {
+      overflow: hidden;
+
+      width: 1ex;
+      height: 1em;
+      padding: 0 6px 0 0;
+
+      white-space: nowrap;
+
+      border: none;
+      background-color: inherit;
+    }
+
+    /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
+    .comment[data-tooltip]:hover::after,
+    .variant[data-tooltip]:hover::after {
+      display: block;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .segment,
+      .translation,
+      .root {
         position: relative;
 
         display: block;
-    }
-    .root .text
-    {
-        color: var(--sc-secondary-text-color);
-    }
-}
+      }
 
+      .root .text {
+        color: var(--sc-secondary-text-color);
+      }
+    }
   </style>
 `;
 
 export const sideBySidePlusStyles = html`
   <style>
+    .segment {
+      position: relative;
 
-.segment
-{
-    position: relative;
+      display: grid;
 
-    display: grid;
+      grid-template-columns: 100px  minmax(0, auto) minmax(0, auto);
+      grid-column-gap: var(--sc-size-lg);
+    }
 
-    grid-template-columns: 100px  minmax(0, auto) minmax(0, auto);
-    grid-column-gap: var(--sc-size-lg);
-}
+    .reference {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+    }
 
-.reference
-{
-    grid-column: 1;
-    grid-row: 1 / span 3;
-}
+    .translation {
+      grid-column: 2;
+    }
 
-.translation
-{
-    grid-column: 2;
-}
+    .root {
+      grid-column: 3;
+    }
 
-.root
-{
-    grid-column: 3;
-}
-
-.translation,
-.root
-{
-    position: relative;
-
-    display: grid;
-
-    grid-template-columns: minmax(240px, 720px) minmax(120px, 300px);
-    grid-column-gap: var(--sc-size-lg);
-}
-
-.text
-{
-    grid-column: 1;
-}
-
-.comment,
-.variant
-{
-    position: absolute;
-
-    padding: var(--sc-size-sm) var(--sc-size-md);
-
-    box-shadow: var(--sc-shadow-elevation-1dp);
-
-    grid-column: 2;
-    grid-row: 1;
-}
-
-br
-{
-    content: '';
-}
-
-blockquote
-{
-    margin: 0;
-}
-
-@media only screen and (max-width: 1280px)
-{
     .translation,
-    .root,
-    .variant,
-    .comment
-    {
+    .root {
+      position: relative;
+
+      display: grid;
+
+      grid-template-columns: minmax(240px, 720px) minmax(120px, 300px);
+      grid-column-gap: var(--sc-size-lg);
+    }
+
+    .text {
+      grid-column: 1;
+    }
+
+    .comment,
+    .variant {
+      position: absolute;
+
+      padding: var(--sc-size-sm) var(--sc-size-md);
+
+      box-shadow: var(--sc-shadow-elevation-1dp);
+
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    br {
+      content: '';
+    }
+
+    blockquote {
+      margin: 0;
+    }
+
+    @media only screen and (max-width: 1280px) {
+      .translation,
+      .root,
+      .variant,
+      .comment {
         position: relative;
 
         display: table;
 
         margin-top: var(--sc-size-sm);
-    }
+      }
 
-    .segment
-    {
+      .segment {
         grid-template-columns: minmax(240px, 720px) minmax(240px, 720px);
-    }
+      }
 
-    .reference
-    {
+      .reference {
         grid-column: 1 / span 2;
-    }
+      }
 
-    .translation
-    {
+      .translation {
         grid-column: 1;
-    }
+      }
 
-    .root
-    {
+      .root {
         grid-column: 2;
+      }
     }
-}
 
-@media only screen and (max-width: 600px)
-{
-    .segment,
-    .reference,
-    .translation,
-    .root
-    {
+    @media only screen and (max-width: 600px) {
+      .segment,
+      .reference,
+      .translation,
+      .root {
         display: block;
-    }
+      }
 
-    .variant,
-    .comment
-    {
+      .variant,
+      .comment {
         position: relative;
 
         display: table;
 
         margin-top: var(--sc-size-sm);
-    }
+      }
 
-    .root .text
-    {
+      .root .text {
         color: var(--sc-secondary-text-color);
+      }
     }
-}
-
   </style>
 `;
 
 export const lineByLineStyles = html`
   <style>
+    .segment {
+      display: grid;
 
-.segment
-{
-    display: grid;
-
-    grid-template-columns: minmax(200px, 720px);
-}
-
-.reference
-{
-    display: none;
-}
-
-.translation
-{
-    grid-column: 1;
-}
-
-.root
-{
-    grid-column: 1;
-}
-
-.root .text
-{
-    color: var(--sc-secondary-text-color);
-}
-
-br
-{
-    content: '';
-}
-
-.comment,
-.variant
-{
-    overflow: hidden;
-
-    width: 1ex;
-    height: 1em;
-    padding: 0 6px 0 0;
-
-    white-space: nowrap;
-
-    border: none;
-    background-color: inherit;
-}
-
-/* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
-.comment[data-tooltip]:hover::after,
-.variant[data-tooltip]:hover::after
-{
-    display: block;
-}
-
-    </style>
-  `;
-
-  export const lineByLinePlusStyles = html`
-    <style>
-
-    .segment
-{
-    display: grid;
-
-    grid-template-columns: 100px minmax(0, auto);
-    grid-column-gap: var(--sc-size-lg);
-}
-
-.reference
-{
-    grid-column: 1;
-    grid-row: 1 / span 3;
-}
-
-.translation
-{
-    grid-column: 2;
-}
-
-.root
-{
-    grid-column: 2;
-}
-
-.root .text
-{
-    color: var(--sc-secondary-text-color);
-}
-
-.translation,
-.root
-{
-    position: relative;
-
-    display: grid;
-
-    grid-template-columns: minmax(240px, 720px) minmax(120px, 480px);
-    grid-column-gap: var(--sc-size-lg);
-}
-
-.text
-{
-    grid-column: 1;
-}
-
-.comment,
-.variant
-{
-    position: absolute;
-
-    padding: var(--sc-size-sm) var(--sc-size-md);
-
-    box-shadow: var(--sc-shadow-elevation-1dp);
-
-    grid-column: 2;
-    grid-row: 1;
-}
-
-br
-{
-    content: '';
-}
-
-blockquote
-{
-    margin: 0;
-}
-
-blockquote .text
-{
-    margin-left: 2em;
-}
-
-@media only screen and (max-width: 840px)
-{
-    .segment,
-    .reference,
-    .translation,
-    .root
-    {
-        display: block;
+      grid-template-columns: minmax(200px, 720px);
     }
 
-    .variant,
-    .comment
-    {
+    .reference {
+      display: none;
+    }
+
+    .translation {
+      grid-column: 1;
+    }
+
+    .root {
+      grid-column: 1;
+    }
+
+    .root .text {
+      color: var(--sc-secondary-text-color);
+    }
+
+    br {
+      content: '';
+    }
+
+    .comment,
+    .variant {
+      overflow: hidden;
+
+      width: 1ex;
+      height: 1em;
+      padding: 0 6px 0 0;
+
+      white-space: nowrap;
+
+      border: none;
+      background-color: inherit;
+    }
+
+    /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
+    .comment[data-tooltip]:hover::after,
+    .variant[data-tooltip]:hover::after {
+      display: block;
+    }
+  </style>
+`;
+
+export const lineByLinePlusStyles = html`
+  <style>
+    .segment {
+      display: grid;
+
+      grid-template-columns: 100px minmax(0, auto);
+      grid-column-gap: var(--sc-size-lg);
+    }
+
+    .reference {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+    }
+
+    .translation {
+      grid-column: 2;
+    }
+
+    .root {
+      grid-column: 2;
+    }
+
+    .root .text {
+      color: var(--sc-secondary-text-color);
+    }
+
+    .translation,
+    .root {
+      position: relative;
+
+      display: grid;
+
+      grid-template-columns: minmax(240px, 720px) minmax(120px, 480px);
+      grid-column-gap: var(--sc-size-lg);
+    }
+
+    .text {
+      grid-column: 1;
+    }
+
+    .comment,
+    .variant {
+      position: absolute;
+
+      padding: var(--sc-size-sm) var(--sc-size-md);
+
+      box-shadow: var(--sc-shadow-elevation-1dp);
+
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    br {
+      content: '';
+    }
+
+    blockquote {
+      margin: 0;
+    }
+
+    blockquote .text {
+      margin-left: 2em;
+    }
+
+    @media only screen and (max-width: 840px) {
+      .segment,
+      .reference,
+      .translation,
+      .root {
+          display: block;
+      }
+
+      .variant,
+      .comment {
         position: relative;
 
         display: table;
 
         margin-top: var(--sc-size-sm);
+      }
     }
-}
-
   </style>
 `;
 
 export const hideReferenceStyles = html`
   <style>
-
-.reference
-{
-    display: none;
-}
-
+    .reference {
+      display: none;
+    }
   </style>
 `;
 
 export const hidePTSReferenceStyles = html`
   <style>
+    .reference {
+      display: inherit;
+    }
 
-.reference
-{
-    display: inherit;
-}
-a.pts
-{
-    display: none;
-}
-a.sc
-{
-    display: inherit;
-}
+    a.pts {
+      display: none;
+    }
 
+    a.sc {
+      display: inherit;
+    }
   </style>
 `;
 
 export const showAllReferenceStyles = html`
   <style>
-
-.reference
-{
-    display: inherit;
-}
-
+    .reference {
+      display: inherit;
+    }
   </style>
 `;
 
 export const hideAsterisk = html`
   <style>
-
-.comment,
-.variant
-{
-    display: none;
-}
-.comment:before,
-.variant:before
-{
-    content: none;
-}
-
+    .comment,
+    .variant {
+      display: none;
+    }
+    
+    .comment:before,
+    .variant:before {
+      content: none;
+    }
   </style>
 `;
 
 export const showAsterisk = html`
   <style>
+    .comment:before,
+    .variant:before {
+      line-height: 1;
 
-.comment:before,
-.variant:before
-{
-    line-height: 1;
+      content: '*';
+      vertical-align: super;
+    }
 
-    content: '*';
-    vertical-align: super;
-}
-.comment:before
-{
-    color: var(--sc-primary-accent-color);
-}
+    .comment:before {
+      color: var(--sc-primary-accent-color);
+    }
 
-.variant:before
-{
-    color: var(--sc-secondary-accent-color);
-}
-
+    .variant:before {
+      color: var(--sc-secondary-accent-color);
+    }
   </style>
 `;
