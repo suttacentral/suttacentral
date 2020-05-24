@@ -56,7 +56,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       spansForGraphsGenerated: { type: Boolean },
       isChineseLookupEnabled: { type: Boolean },
       scriptIsoCodes: { type: Object },
-      segmentedIDsAdded: { type: Boolean },
       hasScriptBeenChanged: { type: Boolean },
       localizedStringsPath: { type: String },
       currentStyles: { type: Object },
@@ -90,17 +89,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       'thai': 'Thai',
       'myanmar': 'Mymr'
     };
-    this.segmentedIDsAdded = false;
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.translationTextSelector = '.translation .text';
     this.rootTextSelector = '.root .text';
     this.commentSpanRectInfo = new Map();
-    this.variantSpanRectInfo = new Map();
-    this.mapTypeOfNeedToRecalculate = new Map([
-      ['.comment', this.commentSpanRectInfo],
-      ['.variant', this.variantSpanRectInfo]
-    ]);
     // Return the corresponding style sheet according to different combinations of text viewing options.
     this.mapStyles = new Map([
       ["sidenotes_plain", plainPlusStyles],
@@ -543,7 +536,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _addTranslationSuttaSpan() {
     let spanElement = document.createElement('span');
     spanElement.className = 'translation';
-    spanElement.lang = 'en';//this.translatedSutta.lang;
+    spanElement.lang = this.translatedSutta.lang;
     let textSpan = document.createElement('span');
     textSpan.className = 'text';
     spanElement.appendChild(textSpan);
@@ -589,7 +582,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     anchor.className = 'sc';
     anchor.id = subKey;
     anchor.href = `#${subKey}`;
-    anchor.title = 'SuttaCentral segment number';
+    anchor.title = this.localize('segmentNumber');
     let text = document.createTextNode(subKey);
     anchor.appendChild(text);
     return anchor;
@@ -709,7 +702,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       if (item.length > 3 && (item.substring(0, 3).toLowerCase() === 'pts' || item.substring(0, 4).toLowerCase() === 'pts-')) {
         let anchor = document.createElement('a');
         anchor.className = 'pts';
-        anchor.title = 'Pali Text Society vol/page number.';
+        anchor.title = this.localize('paliTextSocietyPageNo');
 
         let refStr = '';
         if (item.substring(0, 4).toLowerCase() === 'pts-') {
@@ -781,7 +774,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       }
       empty = false;
       this._putSegmentIntoSpans(segment, unit);
-      //this._addLookupTooltips(segment);
     }
     if (empty) {
       return;
