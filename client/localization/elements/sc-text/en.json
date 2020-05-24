@@ -7,6 +7,7 @@
         "noMetadata": "No metadata available.",
         "segmentNumber": "SuttaCentral segment number",
         "metaDescriptionText": "Early Buddhist texts and modern translations. Suttas (sutras) from the Tipitaka (Tripitaka) in Pali, Chinese, Sanskrit, and Tibetan with the Buddha's teachings on mindfulness, insight, wisdom, and meditation.",
-        "languagePromptMessage": "You can change the language from the menu in the toolbar."
+        "languagePromptMessage": "You can change the language from the menu in the toolbar.",
+        "paliTextSocietyPageNo": "Pali Text Society vol/page number."
     }
 }
