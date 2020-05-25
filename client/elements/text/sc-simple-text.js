@@ -217,22 +217,30 @@ class SCSimpleText extends SCLitTextPage {
   }
 
   _articleElement() {
-    return this.shadowRoot.querySelector('article');
+    return this.shadowRoot.querySelectorAll('article');
   }
 
   _showHighlightingChanged() {
     if (this.showHighlighting) {
-      this._articleElement().classList.add('highlight');
+      this._articleElement().forEach(article => {
+        article.classList.add('highlight');
+      });
     } else {
-      this._articleElement().classList.remove('highlight');
+      this._articleElement().forEach(article => {
+        article.classList.remove('highlight');
+      });
     }
   }
 
   _referenceDisplayTypeChanged() {
     if (this.chosenReferenceDisplayType === 'main') {
-      this._articleElement().classList.add('legacy-reference');
+      this._articleElement().forEach(article => {
+        article.classList.add('legacy-reference');
+      });
     } else {
-      this._articleElement().classList.remove('legacy-reference');
+      this._articleElement().forEach(article => {
+        article.classList.remove('legacy-reference');
+      });
     }
   }
 
