@@ -115,13 +115,13 @@ class SCNumberingPage extends SCStaticPage {
             </p>
             <ul>
               <li>
-                ${_`SN: from SN 22.150 [SN 22.149] to end of <i>saṃyutta</i>`}
+                ${_`SN: from SN 22.150 [SN 22.149] to end of <i>saṁyutta</i>`}
               </li>
               <li>
-                ${_`from SN 35.136 [SN 35.135] to end of <i>saṃyutta</i>`}
+                ${_`from SN 35.136 [SN 35.135] to end of <i>saṁyutta</i>`}
               </li>
               <li>
-                ${_`from SN 36.26 [SN 36.25] to end of <i>saṃyutta</i>`}
+                ${_`from SN 36.26 [SN 36.25] to end of <i>saṁyutta</i>`}
               </li>
               <li>
                 ${_`AN: from AN 1.98 [AN 1.10.1] to end of <i>nipāta</i>`}
@@ -146,7 +146,7 @@ class SCNumberingPage extends SCStaticPage {
               </li>
             </ul>
             <p>
-              ${_`For example, in the PTS edition of SN, the sutta titled “Etaṃ mama” in Khandha-saṃyutta is numbered SN 22.150; and in Bhikkhu Bodhi’s English translation (as also in several native-script editions of the Pali text) this sutta is instead numbered SN 22.151. In most cases there is no such ambiguity about the sutta number and therefore no alternative number.`}
+              ${_`For example, in the PTS edition of SN, the sutta titled “Etaṁ mama” in Khandha-saṁyutta is numbered SN 22.150; and in Bhikkhu Bodhi’s English translation (as also in several native-script editions of the Pali text) this sutta is instead numbered SN 22.151. In most cases there is no such ambiguity about the sutta number and therefore no alternative number.`}
             </p>
             <h3>
               ${_`Multiple sets of verse numbers`}

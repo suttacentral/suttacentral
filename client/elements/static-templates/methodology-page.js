@@ -290,13 +290,13 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Allon</span>, Mark & <span class="author">Salomon</span>, Richard 2000. Kharoṣṭhī Fragments of a Gāndhārī Version of the Mahāparinirvāṇasūtra. In <span class="author">Braarvig</span>, Jens (ed). <cite>Buddhist Manuscripts</cite> vol. <span class="roman_numerals">I</span> (<cite>= Manuscripts in the Schøyen Collection</cite> 1), Oslo: Hermes Publishing, 242–284.`}
               </li>
               <li>
-                ${_`<span class="author">Anālayo</span>, Bhikkhu 2012. On the Five Aggregates (1): A translation of Saṃyukta-āgama Discourses 1 to 32. <cite>Dharma Drum Journal of Buddhist Studies</cite> 11: 1–61.`}
+                ${_`<span class="author">Anālayo</span>, Bhikkhu 2012. On the Five Aggregates (1): A translation of Saṁyukta-āgama Discourses 1 to 32. <cite>Dharma Drum Journal of Buddhist Studies</cite> 11: 1–61.`}
               </li>
               <li>
                 ${_`<span class="author">Anālayo</span> and <span class="author">Bucknell</span>, Roderick S. 2006. Correspondence Table for Parallels to the Discourses of <i>Majjhima Nikāya</i>: Toward a Revision of Akanuma’s <cite>Comparative Catalogue</cite>. <cite>Journal of the Centre for Buddhist Studies, Sri Lanka</cite> 4: 215–238.`}
               </li>
               <li>
-                ${_`<span class="author">Anesaki</span>, Masaharu 1905. Le <i>Sagātha-vagga</i> du <i>Saṃyutta-nikāya</i> et ses versions chinoises. <cite>Le Muséon</cite> (nouvelle série) 24: 23–37.`}
+                ${_`<span class="author">Anesaki</span>, Masaharu 1905. Le <i>Sagātha-vagga</i> du <i>Saṁyutta-nikāya</i> et ses versions chinoises. <cite>Le Muséon</cite> (nouvelle série) 24: 23–37.`}
               </li>
               <li>
                 ${_`<span class="author">Anesaki</span>, Masaharu 1908. The Four Buddhist Āgamas in Chinese: A Concordance of their Parts and the Corresponding Counterparts in the Pāli Nikāyas. <cite>Transactions of the Asiatic Society of Japan</cite> 35.3: 1–149.`}
@@ -326,10 +326,10 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Bersing</span>, Siegfried 1930. <cite>Das Chung-tsi-king des chinesischen Dīrghāgama, Übersetztung und Anmerkungen</cite>. Leipzig: Asia Major.`}
               </li>
               <li>
-                ${_`<span class="author">Bingenheimer</span>, Marcus 2011. <cite>Studies in Āgama Literature: With special reference to the Shorter Chinese Saṃyuktāgama</cite>. (<cite>Dharma Drum Buddhist College Special Series</cite>) Taipei: Xin Wen Feng.`}
+                ${_`<span class="author">Bingenheimer</span>, Marcus 2011. <cite>Studies in Āgama Literature: With special reference to the Shorter Chinese Saṁyuktāgama</cite>. (<cite>Dharma Drum Buddhist College Special Series</cite>) Taipei: Xin Wen Feng.`}
               </li>
               <li>
-                ${_`<span class="author">Bodhi</span>, Bhikkhu 2000. <cite>The Connected Discourses of the Buddha: A New Translation of the Saṃyutta Nikāya</cite>. Boston: Wisdom Publications.`}
+                ${_`<span class="author">Bodhi</span>, Bhikkhu 2000. <cite>The Connected Discourses of the Buddha: A New Translation of the Saṁyutta Nikāya</cite>. Boston: Wisdom Publications.`}
               </li>
               <li>
                 ${_`<span class="author">Bollée</span>, Willem 2002. <cite>The Story of Paesi</cite>. Wiesbaden: Harrassowitz.`}
@@ -338,10 +338,10 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Bongard-Levin</span>, Gregory 1989. Three New Fragments of the Bodharājakumārasūtra from Eastern Turkestan. <cite>Journal of the American Oriental Society</cite> 109: 509–512.`}
               </li>
               <li>
-                ${_`<span class="author">Bongard-Levin</span>, Gregory et al. 1996. The Nagaropamasūtra: An Apotropaic Text from the Saṃyuktāgama. In <cite>Sanskrit Wörterbuch der Buddhistischen Texte aus den Turfan Funden</cite>, Beiheft 6: 7–103.`}
+                ${_`<span class="author">Bongard-Levin</span>, Gregory et al. 1996. The Nagaropamasūtra: An Apotropaic Text from the Saṁyuktāgama. In <cite>Sanskrit Wörterbuch der Buddhistischen Texte aus den Turfan Funden</cite>, Beiheft 6: 7–103.`}
               </li>
               <li>
-                ${_`<span class="author">Brekke</span>, Torkel 2000. The Caṃgīsūtra of the Mahāsaṃghika-Lokottaravādins. In <span class="author">Braarvig</span>, Jens (ed.) <cite>Buddhist Manuscripts</cite> vol. 1 (= <cite>Manuscripts in the Schøyen Collection</cite> <span class="roman_numerals">I</span>), Oslo: Hermes Publishing, 53–62.`}
+                ${_`<span class="author">Brekke</span>, Torkel 2000. The Caṁgīsūtra of the Mahāsaṁghika-Lokottaravādins. In <span class="author">Braarvig</span>, Jens (ed.) <cite>Buddhist Manuscripts</cite> vol. 1 (= <cite>Manuscripts in the Schøyen Collection</cite> <span class="roman_numerals">I</span>), Oslo: Hermes Publishing, 53–62.`}
               </li>
               <li>
                 ${_`<span class="author">Brough</span>, John 1962/2001. <cite>The Gāndhārī Dharmapada, edited with an Introduction and Commentary</cite> (= <cite>Buddhist Tradition Series</cite>, vol. 43) Delhi: Motilal Banarsidass.`}
@@ -350,10 +350,10 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Chakravarti</span>, N. p. 1930. <cite>L’Udānavarga sanskrit: Texte sanscrit en transcription, avec traduction et annotations, suivi d’une étude critique et de planches</cite> (<cite>Mission Pelliot en Asie Centrale</cite>, série petit in-octavo, vol. iv). Paris: Paul Geuthner.`}
               </li>
               <li>
-                ${_`<span class="author">Choong</span>, Mun-keat 2004. <cite>Annotated Translations of Sutras from the Chinese Saṃyuktāgama Relevant to the Early Buddhist Teachings on Emptiness and the Middle Way</cite>. Penang: Chee Khoon Printings.`}
+                ${_`<span class="author">Choong</span>, Mun-keat 2004. <cite>Annotated Translations of Sutras from the Chinese Saṁyuktāgama Relevant to the Early Buddhist Teachings on Emptiness and the Middle Way</cite>. Penang: Chee Khoon Printings.`}
               </li>
               <li>
-                ${_`<span class="author">Chung</span>, Jin-il 2008. <cite>A Survey of the Sanskrit Fragments Corresponding to the Chinese Saṃyuktāgama</cite>. Tokyo: Sankibō Busshorin.`}
+                ${_`<span class="author">Chung</span>, Jin-il 2008. <cite>A Survey of the Sanskrit Fragments Corresponding to the Chinese Saṁyuktāgama</cite>. Tokyo: Sankibō Busshorin.`}
               </li>
               <li>
                 ${_`<span class="author">Chung</span>, Jin-il and <span class="author">Fukita</span>, Takamichi 2011. <cite>A Survey of the Sanskrit Fragments Corresponding to the Chinese Madhyamāgama (including references to Sanskrit parallels, citations, numerical categories of doctrinal concepts, and stock phrases)</cite>. Tokyo: Sankibō Busshorin.`}
@@ -371,7 +371,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Devacandra</span> 1996. <cite>Gaṅ po la sogs pa’i rtogs pa brjod pa brgya pa</cite>. Xining.`}
               </li>
               <li>
-                ${_`<span class="author">Dhammadinnā</span> 2012. A Translation of the Quotations in Śamathadeva’s Abhidharmakośopāyikā-ṭīkā Parallel to the Chinese Saṃyukta-āgama Discourses 8, 9, 11, 12, 17 and 28. <cite>Dharma Drum Journal of Buddhist Studies</cite> 11: 63–96.`}
+                ${_`<span class="author">Dhammadinnā</span> 2012. A Translation of the Quotations in Śamathadeva’s Abhidharmakośopāyikā-ṭīkā Parallel to the Chinese Saṁyukta-āgama Discourses 8, 9, 11, 12, 17 and 28. <cite>Dharma Drum Journal of Buddhist Studies</cite> 11: 63–96.`}
               </li>
               <li>
                 ${_`<span class="author">Dietz</span>, Siglinde 2002. Fragments of the Andhasūtra, of the Sūtra on the Three Moral Defects of Devadatta, and of the Kavikumārāvadāna. In <span class="author">Braarvig</span>, Jens (ed.) <cite>Buddhist Manuscripts</cite> vol. <span class="roman_numerals">II</span> (= <cite>Manuscripts in the Schøyen Collection</cite> <span class="roman_numerals">III</span>), Oslo: Hermes Publishing, 25–36.`}
@@ -383,22 +383,22 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Eimer</span>, Helmut 1983. <cite>Rab tu ''byuṅ ba''i gźi. Die Tibetische Übersetzung des Pravrajyāvastu im Vinaya der Mūlasarvāstivādins</cite>. Wiesbaden: Harrasowitz. vol. 2.`}
               </li>
               <li>
-                ${_`<span class="author">Enomoto</span>, Fumio 1985. Zōagon-gyō kankei no Bonbun shahon danpen [Sanskrit fragments relating to the Saṃyuktāgama. Identification of some fragments of SHT5]. <cite>Bukkyō Kenkyū</cite> 15 (Dec.): 81–93.`}
+                ${_`<span class="author">Enomoto</span>, Fumio 1985. Zōagon-gyō kankei no Bonbun shahon danpen [Sanskrit fragments relating to the Saṁyuktāgama. Identification of some fragments of SHT5]. <cite>Bukkyō Kenkyū</cite> 15 (Dec.): 81–93.`}
               </li>
               <li>
-                ${_`<span class="author">Enomoto</span>, Fumio 1989. Sanskrit fragments from the Saṃyuktāgama discovered in Bamiyan and Eastern Turkestan. In <span class="author">Enomoto</span> Fumio, <span class="author">Hartmann</span>, Jens-Uwe, and <span class="author">Matsumura</span> Hisashi (eds) Sanskrit-Texte aus dem buddhistischen Kanon: Neuentdeckungen und Neueditionen (= Sanskrit-Wörterbuch der buddhistischen Texte aus den Turfan-Funden, Beiheft 2), Göttingen: 7–16.`}
+                ${_`<span class="author">Enomoto</span>, Fumio 1989. Sanskrit fragments from the Saṁyuktāgama discovered in Bamiyan and Eastern Turkestan. In <span class="author">Enomoto</span> Fumio, <span class="author">Hartmann</span>, Jens-Uwe, and <span class="author">Matsumura</span> Hisashi (eds) Sanskrit-Texte aus dem buddhistischen Kanon: Neuentdeckungen und Neueditionen (= Sanskrit-Wörterbuch der buddhistischen Texte aus den Turfan-Funden, Beiheft 2), Göttingen: 7–16.`}
               </li>
               <li>
-                ${_`<span class="author">Enomoto</span>, Fumio 1994. A comprehensive study of the Chinese Saṃyuktāgama: Indic texts corresponding to the Chinese Saṃyuktāgama as found in the Sarvāstivāda-Mūlasarvāstivāda literature. Part 1: *Saṃgītanipāta. Kyoto: Kacho Junior College.`}
+                ${_`<span class="author">Enomoto</span>, Fumio 1994. A comprehensive study of the Chinese Saṁyuktāgama: Indic texts corresponding to the Chinese Saṁyuktāgama as found in the Sarvāstivāda-Mūlasarvāstivāda literature. Part 1: *Saṁgītanipāta. Kyoto: Kacho Junior College.`}
               </li>
               <li>
-                ${_`<span class="author">Enomoto</span>, Fumio 1997. Sanskrit Fragments from the Saṃgītanipāta of the Saṃyuktāgama. In <span class="author">Kieffer-Pülz</span>, Petra and <span class="author">Hartmann</span>, Jens-Uwe (eds), Bauddhavidyasudhakarah: Studies in Honour of Heinz Bechert on the Occasion of his 65th birthday, Swisstal-Odendorf, India et Tibetica 30: 91–105.`}
+                ${_`<span class="author">Enomoto</span>, Fumio 1997. Sanskrit Fragments from the Saṁgītanipāta of the Saṁyuktāgama. In <span class="author">Kieffer-Pülz</span>, Petra and <span class="author">Hartmann</span>, Jens-Uwe (eds), Bauddhavidyasudhakarah: Studies in Honour of Heinz Bechert on the Occasion of his 65th birthday, Swisstal-Odendorf, India et Tibetica 30: 91–105.`}
               </li>
               <li>
                 ${_`<span class="author">Feer</span>, Léon 1883. Fragments extraits du Kanjour (= Annales du Musée Guimet, tome 5). Paris: E. Leroux.`}
               </li>
               <li>
-                ${_`<span class="author">Foguang</span> 1972–1987. Foguang Dazangjing, Ahan zang: Za Ahan (1972), Zhong Ahan (1984), Chang Ahan (1985), Zengyi Ahan (1987) [Foguang Tripiṭaka, Āgama: Saṃyuktāgama (1972), Madhyamāgama (1984), Dīrghāgama (1985), Ekottarikāgama (1987)]. Kaohsiung: Foguang.`}
+                ${_`<span class="author">Foguang</span> 1972–1987. Foguang Dazangjing, Ahan zang: Za Ahan (1972), Zhong Ahan (1984), Chang Ahan (1985), Zengyi Ahan (1987) [Foguang Tripiṭaka, Āgama: Saṁyuktāgama (1972), Madhyamāgama (1984), Dīrghāgama (1985), Ekottarikāgama (1987)]. Kaohsiung: Foguang.`}
               </li>
               <li>
                 ${_`<span class="author">Fukita</span>, Takamichi 1982. Bonbun Daihongyō engisetsu no fukugen ni tsuite [On a restoration of the pratītyasamutpāda in the Mahāvadānasūtra]. <cite>Bukkyō Shigaku Kenkyū</cite> 24/2: 26–43.`}
@@ -419,7 +419,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Fukita</span>, Takamichi 1987c. Vipaśyin-Butsu ichie sanga no ninzū o megutte: Bonbun Daihongyō dai-jusshō kessonbubun no fukugen [On the number of bhikṣus in Buddha Vipaśyin’s first Sangha: A reconstruction of the lost part of chapter 10 of the Mahāvadānasūtra]. <cite>Jōdo-shū Kyōgakuin Kenkyūsho-hō</cite> 9: 22–26.`}
               </li>
               <li>
-                ${_`<span class="author">Fukita</span>, Takamichi 1988a. Daihongyō to Hasōji ni miru kyōtsū no dentō to chihōteki hensen, tokuni Bosatsu-tanjō-densetsu o chūshin to shite [Common tradition and local development of the Mahāvadānasūtra and the Saṃghabhedavastu, particularly focusing on the Bodhisattva’s birth legend]. <cite>Hōnen Gakkai Ronsō</cite> 6: 5–22.`}
+                ${_`<span class="author">Fukita</span>, Takamichi 1988a. Daihongyō to Hasōji ni miru kyōtsū no dentō to chihōteki hensen, tokuni Bosatsu-tanjō-densetsu o chūshin to shite [Common tradition and local development of the Mahāvadānasūtra and the Saṁghabhedavastu, particularly focusing on the Bodhisattva’s birth legend]. <cite>Hōnen Gakkai Ronsō</cite> 6: 5–22.`}
               </li>
               <li>
                 ${_`<span class="author">Fukita</span>, Takamichi 1988b. Higashi Torukisutan Ubu no dokuju kyōten—Nagaropanavyākaraṇa (= Nagarasūtra)—to mayoke [A recitation of the Sarvāstivādins in Eastern Turkestan—the Nagaropamavyākaraṇa (= Nagarasūtra)—and a charm]. <cite>Sankō Bunka Kenkyūsho Nenpō</cite> 20: 27–49.`}
@@ -428,7 +428,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Fukita</span>, Takamichi 2003. <cite>The Mahāvadānasūtra: A new edition based on manuscripts discovered in northern Turkestan</cite> (= <cite>Sanskrit-Wörterbuch der buddhistischen Texte aus den Turfan-Funden</cite>, Beiheft 10). Göttingen: Vandenhoeck & Ruprecht.`}
               </li>
               <li>
-                ${_`<span class="author">Glass</span>, Andrew. 2007. <cite>Four Gāndhārī Saṃyuktāgama sūtras: Senior Kharoṣṭhī fragment 5.</cite> (= <cite>Gandhāran Buddhist Texts, vol. 4</cite>). Seattle and London: University of Washington Press.`}
+                ${_`<span class="author">Glass</span>, Andrew. 2007. <cite>Four Gāndhārī Saṁyuktāgama sūtras: Senior Kharoṣṭhī fragment 5.</cite> (= <cite>Gandhāran Buddhist Texts, vol. 4</cite>). Seattle and London: University of Washington Press.`}
               </li>
               <li>
                 ${_`<span class="author">Gnoli</span>, Raniero 1977. <cite>The Gilgit manuscript of the Saṅghabhedavastu: Being the 17th and last section of the Vinaya of the Mūlasarvāstivādin</cite>, Part <span class="roman_numerals">I</span> (= <cite>Serie Orientale Roma</cite>, <span class="roman_numerals">XLIX</span>, 1). Roma: Istituto Italiano per il Medio ed Estremo Oriente.`}
@@ -443,13 +443,13 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Hahlweg</span>, Klaus 1954. <cite>Das Mahāgovinda-Sūtra, eine vergleichende Analyse der indischen und chinesischen Versionen</cite>, dissertation, University of München.`}
               </li>
               <li>
-                ${_`<span class="author">Hahn</span>, Michael 1977. Das Saptamaithunasaṃyuktasūtra: Ein Sūtra des Ekottarikāgama. In <span class="author">Härtel</span>, Herbert (ed.), <cite>Beiträge zur Indienforschung, Ernst Waldschmidt zum 80. Geburtstag gewidmet</cite>, Berlin: Museum für indische Kunst, 205–224.`}
+                ${_`<span class="author">Hahn</span>, Michael 1977. Das Saptamaithunasaṁyuktasūtra: Ein Sūtra des Ekottarikāgama. In <span class="author">Härtel</span>, Herbert (ed.), <cite>Beiträge zur Indienforschung, Ernst Waldschmidt zum 80. Geburtstag gewidmet</cite>, Berlin: Museum für indische Kunst, 205–224.`}
               </li>
               <li>
                 ${_`<span class="author">Harrison</span>, Paul 1997. The Ekottarikāgama Translations of An Shigao. In Bauddhavidyasudhakarah: Studies in Honour of Heinz Bechert. <span class="author">Kieffer-Pülz</span>, Petra. and <span class="author">Hartmann</span>, Jens-Uwe (eds). Swisstal-Oldendorf, pp. 261–283.`}
               </li>
               <li>
-                ${_`<span class="author">Harrison</span>, Paul 2002. Another Addition to the An Shigao Corpus? Preliminary Notes on an Early Chinese Saṃyuktāgama Translation. In Sakurabe Ronshu Committee (ed.), <cite>Early Buddhism and Abhidharma Thought: In Honor of Doctor Hajime Sakurabe on His Seventy-seventh Birthday</cite>, Kyoto: Heirakuji Shoten, 1–32.`}
+                ${_`<span class="author">Harrison</span>, Paul 2002. Another Addition to the An Shigao Corpus? Preliminary Notes on an Early Chinese Saṁyuktāgama Translation. In Sakurabe Ronshu Committee (ed.), <cite>Early Buddhism and Abhidharma Thought: In Honor of Doctor Hajime Sakurabe on His Seventy-seventh Birthday</cite>, Kyoto: Heirakuji Shoten, 1–32.`}
               </li>
               <li>
                 ${_`<span class="author">Hartmann</span>, Jens-Uwe 1989. Fragmente aus dem Dīrghāgama der Sarvāstivādins. In <span class="author">Enomoto</span> Fumio, <span class="author">Hartmann</span>, Jens-Uwe, and <span class="author">Matsumura</span> Hisashi (eds), Sanskrit-Texte aus dem buddhistischen Kanon: Neuentdeckungen und Neueditionen (= Sanskrit-Wörterbuch der buddhistischen Texte aus den Turfan-Funden, Beiheft 2), Göttingen: Vandenhoeck & Ruprecht, 37–67.`}
@@ -479,16 +479,16 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Honjō</span>, Yoshifumi 1984. <cite>A Table of Āgama-Citations in the Abhidharmakośa and the Abhidharmakośopāyikā</cite>. Kyoto.`}
               </li>
               <li>
-                ${_`<span class="author">Hosoda</span>, Noriaki 1989a. Sanskrit fragments from the Parivrājakasaṃyukta of the Saṃyuktāgama (1). In <cite>Indian Philosophy and Buddhism: Essays in honour of Professor Kotatsu Fujita on his sixtieth birthday</cite>: 185–206. Kyoto.`}
+                ${_`<span class="author">Hosoda</span>, Noriaki 1989a. Sanskrit fragments from the Parivrājakasaṁyukta of the Saṁyuktāgama (1). In <cite>Indian Philosophy and Buddhism: Essays in honour of Professor Kotatsu Fujita on his sixtieth birthday</cite>: 185–206. Kyoto.`}
               </li>
               <li>
-                ${_`<span class="author">Hosoda</span>, Noriaki 1989b. Bonbun Zōagongyō Busshosetsuhon Gedōsōō (2) [Sanskrit fragments from the Parivrājakasaṃyukta of the Saṃyuktāgama (2)]. <cite>Hokkaidō Journal of Indological and Buddhist Studies</cite> 4: 140–153.`}
+                ${_`<span class="author">Hosoda</span>, Noriaki 1989b. Bonbun Zōagongyō Busshosetsuhon Gedōsōō (2) [Sanskrit fragments from the Parivrājakasaṁyukta of the Saṁyuktāgama (2)]. <cite>Hokkaidō Journal of Indological and Buddhist Studies</cite> 4: 140–153.`}
               </li>
               <li>
-                ${_`<span class="author">Hosoda</span>, Noriaki 1989c. Torufan shōrai mokuhansatsu Bonbun Zōagongyō danken: R. Pischel kōhyō Bonbun danken ni tsuite [Fragmentary woodblock mss of the Sanskrit Saṃyuktāgama from Turfan: On Sanskrit fragments published by R. Pischel]. <cite>Indogaku Bukkyōgaku Kenkyū</cite> 37.2: 540–546.`}
+                ${_`<span class="author">Hosoda</span>, Noriaki 1989c. Torufan shōrai mokuhansatsu Bonbun Zōagongyō danken: R. Pischel kōhyō Bonbun danken ni tsuite [Fragmentary woodblock mss of the Sanskrit Saṁyuktāgama from Turfan: On Sanskrit fragments published by R. Pischel]. <cite>Indogaku Bukkyōgaku Kenkyū</cite> 37.2: 540–546.`}
               </li>
               <li>
-                ${_`<span class="author">Hosoda</span>, Noriaki 1991. Bonbun Zōagongyō Busshosetsuhon Gedōsōō (3) [Sanskrit fragments from the Parivrājakasaṃyukta of the Saṃyuktāgama (3)]. <cite>Hokkaidō Journal of Indological and Buddhist Studies</cite> 6: 172–191.`}
+                ${_`<span class="author">Hosoda</span>, Noriaki 1991. Bonbun Zōagongyō Busshosetsuhon Gedōsōō (3) [Sanskrit fragments from the Parivrājakasaṁyukta of the Saṁyuktāgama (3)]. <cite>Hokkaidō Journal of Indological and Buddhist Studies</cite> 6: 172–191.`}
               </li>
               <li>
                 ${_`<span class="author">Johnston</span>, E. H. 1995. <cite>Aśvaghoṣa’s Buddhacarita or Acts of the Buddha</cite>. Delhi: Munshiram Manoharlal.`}
@@ -524,13 +524,13 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">La Vallée Poussin</span>, Louis de 1911. Documents Sanscrits de la Second Collection M. Stein. <cite>Journal of the Royal Asiatic Society</cite>: 759–777 and 1063–1079.`}
               </li>
               <li>
-                ${_`<span class="author">La Vallée Poussin</span>, Louis de 1913. Documents sanskrit de la seconde collection M. A. Stein. Fragments du Saṃyuktakāgama. <cite>Journal of the Royal Asiatic Society of Great Britain and Ireland</cite>: 569–580.`}
+                ${_`<span class="author">La Vallée Poussin</span>, Louis de 1913. Documents sanskrit de la seconde collection M. A. Stein. Fragments du Saṁyuktakāgama. <cite>Journal of the Royal Asiatic Society of Great Britain and Ireland</cite>: 569–580.`}
               </li>
               <li>
                 ${_`<span class="author">Lefmann</span>, S. 1902. <cite>Lalita Vistara: Leben und Lehre des Çakya-Buddha, Textausgabe mit Varianten-, Metren- und Wörterverzeichnis</cite>. Halle: Verlag der Buchhandlung des Waisenhauses.`}
               </li>
               <li>
-                ${_`<span class="author">Lévi</span>, Sylvain 1904. Le Saṃyuktāgama sanscrit et les feuillets Grünwedel. <cite>T’oung Pao</cite> <span class="roman_numerals">II</span> 5: 297–307.`}
+                ${_`<span class="author">Lévi</span>, Sylvain 1904. Le Saṁyuktāgama sanscrit et les feuillets Grünwedel. <cite>T’oung Pao</cite> <span class="roman_numerals">II</span> 5: 297–307.`}
               </li>
               <li>
                 ${_`<span class="author">Lévi</span>, Sylvain 1910. Documents de l’Asie Central (Mission Pelliot). Textes sanscrits de Touen-Houang: Nidâna-Sûtra, Daçabala-Sûtra, Dharmapada, Hymne de Mâtṛceṭa. <cite>Journal Asiatique</cite>, sér. 10, 16: 433–456.`}
@@ -542,7 +542,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Lévi</span>, Sylvain 1932. <cite>Mahākarmavibhaṅga (La Grande Classification des Actes) et Karmavibhaṅgopadeśa (Discussion sur le Mahā Karmavibhaṅga), Textes sanscrits rapportés du Népal, édités et traduits avec les textes parallèles en Sanscrit, en Pali, en Tibétain, en Chinois et en Koutchéen</cite>. Paris: Librairie Ernest Leroux.`}
               </li>
               <li>
-                ${_`<span class="author">Lévi</span>, Sylvain 1933. <cite>Fragments de Textes Koutchéens: Udānavarga, Udānastotra, Udānālaṃkāra et Karmavibhaṅga, Publiés et traduits avec un vocabulaire et une introduction sur le ‘Tocharien’ (Cahiers de la Société Asiatique, Première Série)</cite>. Paris: Imprimerie Nationale.`}
+                ${_`<span class="author">Lévi</span>, Sylvain 1933. <cite>Fragments de Textes Koutchéens: Udānavarga, Udānastotra, Udānālaṁkāra et Karmavibhaṅga, Publiés et traduits avec un vocabulaire et une introduction sur le ‘Tocharien’ (Cahiers de la Société Asiatique, Première Série)</cite>. Paris: Imprimerie Nationale.`}
               </li>
               <li>
                 ${_`<span class="author">Maggi</span>, Mauro 1995. <cite>The Khotanese Karmavibhaṅga</cite> (= <cite>Serie Orientale Roma</cite>, <span class="roman_numerals">LXXIV</span>). Roma: Istituto Italiano per il Medio ed Estremo Oriente.`}
@@ -599,7 +599,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Pauly</span>, Bernard 1959. Fragments sanskrits de Haute Asie (Mission Pelliot). Journal Asiatique (Année 1959): 247, 203–249.`}
               </li>
               <li>
-                ${_`<span class="author">Peipina</span>, Lita 2008. <cite>The Piṅgalātreya sūtra of the (Mūla-)sarvāstivādins: Its Edition and Study. Investigation of the Piṃgalātreya sūtra’s status within the Dīrghāgama “Collection of Long (Discourses of the Buddha)”</cite>. MA thesis, University of Oslo.`}
+                ${_`<span class="author">Peipina</span>, Lita 2008. <cite>The Piṅgalātreya sūtra of the (Mūla-)sarvāstivādins: Its Edition and Study. Investigation of the Piṁgalātreya sūtra’s status within the Dīrghāgama “Collection of Long (Discourses of the Buddha)”</cite>. MA thesis, University of Oslo.`}
               </li>
               <li>
                 ${_`<span class="author">Peyrot</span>, Michael 2008. More Sanskrit, Tocharian B Bilingual Udānavarga Fragments. <cite>Indogermanische Forschungen, Zeitschrift für Indogermanistik und allgemeine Sprachwissenschaft</cite> 113: 83–125.`}
@@ -680,7 +680,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Skilling</span>, Peter 2011. Discourse on the Twenty-two Faculties, Translated from Śamathadeva’s Upāyikā-ṭīkā. In <cite>Felicitation Volume for Professor Samtani</cite>. L. Shravak (ed.) (forthcoming).`}
               </li>
               <li>
-                ${_`<span class="author">Somaratne</span>, G. A. 1999. <cite>Saṃyutta-nikāya Vol. <span class="roman_numerals">I</span>.</cite> Oxford: Pali Text Society.`}
+                ${_`<span class="author">Somaratne</span>, G. A. 1999. <cite>Saṁyutta-nikāya Vol. <span class="roman_numerals">I</span>.</cite> Oxford: Pali Text Society.`}
               </li>
               <li>
                 ${_`<span class="author">Speyer</span>, J. S. 1970a (1906). <i>Avadānaśataka: A Century of Edifying Tales Belonging to the Hīnayāna</i>, vol. 1 <cite>(Bibliotheca Buddhica <span class="roman_numerals">III</span>)</cite>. Osnabrück: Biblio Verlag.`}
@@ -704,7 +704,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Thich</span> Huyen-vi and <span class="author">Pāsādiko</span> Bhikkhu 1984–2004. [Partial Translation of Ekottarikāgama, T125]. <cite>Buddhist Studies Review</cite> 1.2 onwards.`}
               </li>
               <li>
-                ${_`<span class="author">Tripāṭhi</span>, Chandrabhal 1962. Fünfundzwanzig Sūtras des Nidānasaṃyukta (= <cite>Sanskrittexte aus den Turfanfunden</cite> <span class="roman_numerals">VIII</span>). Berlin: Akademie-Verlag.`}
+                ${_`<span class="author">Tripāṭhi</span>, Chandrabhal 1962. Fünfundzwanzig Sūtras des Nidānasaṁyukta (= <cite>Sanskrittexte aus den Turfanfunden</cite> <span class="roman_numerals">VIII</span>). Berlin: Akademie-Verlag.`}
               </li>
               <li>
                 ${_`<span class="author">Tripāṭhi</span>, Chandrabhal 1980. Die Einleitung des Daśottarasūtra. <cite>Indianisme et Bouddhisme</cite> 23: 353–358.`}
@@ -749,19 +749,19 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Waldschmidt</span>, Ernst 1955b. Die Einleitung des Saṅgītisūtra. <cite>Zeitschrift der deutschen morgenländischen Gesellschaft</cite> 105: 298–318. Reprinted 1967 in B <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 258–278.`}
               </li>
               <li>
-                ${_`<span class="author">Waldschmidt</span>, Ernst 1956a. Ein Fragment des Saṃyuktāgama aus den “Turfan-Funden” (M476). <cite>Nachrichten der Akademie der Wissenschaften in Göttingen, Philologisch-Historische Klasse</cite> 1956/3: 45–53. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 279–287.`}
+                ${_`<span class="author">Waldschmidt</span>, Ernst 1956a. Ein Fragment des Saṁyuktāgama aus den “Turfan-Funden” (M476). <cite>Nachrichten der Akademie der Wissenschaften in Göttingen, Philologisch-Historische Klasse</cite> 1956/3: 45–53. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 279–287.`}
               </li>
               <li>
-                ${_`<span class="author">Waldschmidt</span>, Ernst 1956b. A fragment from the Saṃyuktāgama found in Chinese-Turkestan (“Turfan”). <cite>Adyar Library Bulletin</cite> 20: 213–228. (Revised translation of Waldschmidt 1956a).`}
+                ${_`<span class="author">Waldschmidt</span>, Ernst 1956b. A fragment from the Saṁyuktāgama found in Chinese-Turkestan (“Turfan”). <cite>Adyar Library Bulletin</cite> 20: 213–228. (Revised translation of Waldschmidt 1956a).`}
               </li>
               <li>
-                ${_`<span class="author">Waldschmidt</span>, Ernst 1957a. Identifizierung einer Handschrift des Nidānasaṃyukta aus den Turfanfunden. <cite>Zeitschrift der deutschen morgenländischen Gesellschaft</cite> 107: 372–401. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 288–317.`}
+                ${_`<span class="author">Waldschmidt</span>, Ernst 1957a. Identifizierung einer Handschrift des Nidānasaṁyukta aus den Turfanfunden. <cite>Zeitschrift der deutschen morgenländischen Gesellschaft</cite> 107: 372–401. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 288–317.`}
               </li>
               <li>
-                ${_`<span class="author">Waldschmidt</span>, Ernst 1957b. Sūtra 25 of the Nidānasaṃyukta. <cite>Bulletin of the School of Oriental and African Studies</cite> 20: 569–579. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 318–328.`}
+                ${_`<span class="author">Waldschmidt</span>, Ernst 1957b. Sūtra 25 of the Nidānasaṁyukta. <cite>Bulletin of the School of Oriental and African Studies</cite> 20: 569–579. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 318–328.`}
               </li>
               <li>
-                ${_`<span class="author">Waldschmidt</span>, Ernst 1957c. Das Upasenasūtra, ein Zauber gegen Schlangenbiss aus dem Saṃyuktāgama. <cite>Nachrichten der Akademie der Wissenschaften in Göttingen, Philologisch-Historische Klasse</cite> 1957/2: 27–44. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 329–346.`}
+                ${_`<span class="author">Waldschmidt</span>, Ernst 1957c. Das Upasenasūtra, ein Zauber gegen Schlangenbiss aus dem Saṁyuktāgama. <cite>Nachrichten der Akademie der Wissenschaften in Göttingen, Philologisch-Historische Klasse</cite> 1957/2: 27–44. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 329–346.`}
               </li>
               <li>
                 ${_`<span class="author">Waldschmidt</span>, Ernst 1957d. <cite>Das Catuṣpariṣatsūtra, eine Kanonische Lehrschrift über die Begründung der Buddhistischen Gemeinde</cite>. <cite>Text in Sanskrit und Tibetisch, verglichen mit dem Pali nebst einer Übersetzung der chinesischen Entsprechung im Vinaya der Mūlasarvāstivādins. Auf Grund von Turfan-Handschriten herausgegeben und bearbeitet</cite>. Teil <span class="roman_numerals">II</span>. Berlin: Akademie-Verlag = <cite>Abhandlungen der Deutschen Akademie der Wissenschaften zu Berlin, Klasse für Sprachen, Literatur und Kunst,</cite> 1956/1.`}
@@ -773,7 +773,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Waldschmidt</span>, Ernst 1959a. Kleine Brahmi-Schriftrolle. <cite>Nachrichten der Akademie der Wissenschaften in Göttingen, Philologisch-Historische Klasse</cite> 1959/1: 1–25. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 371–395.`}
               </li>
               <li>
-                ${_`<span class="author">Waldschmidt</span>, Ernst 1959b. The Upasenasūtra, a charm against snake-bites from the Saṃyuktāgama. In <cite>Jñānamuktāvaī, Commemoration volume in honour of Johannes Nobel</cite>, New Delhi, 234–253.`}
+                ${_`<span class="author">Waldschmidt</span>, Ernst 1959b. The Upasenasūtra, a charm against snake-bites from the Saṁyuktāgama. In <cite>Jñānamuktāvaī, Commemoration volume in honour of Johannes Nobel</cite>, New Delhi, 234–253.`}
               </li>
               <li>
                 ${_`<span class="author">Waldschmidt</span>, Ernst 1961a. Der Buddha preist die Verehrungswürdigkeit seiner Reliquien. <cite>Nachrichten der Akademie der Wissenschaften in Göttingen, Philologisch-Historische Klasse</cite> 1961.11: 375–385. Reprinted 1967 in <span class="author">Bechert</span>, Heinz (ed.), <cite>Ernst Waldschmidt, Von Ceylon bis Turfan, Schriften zur Geschichte, Literatur, Religion und Kunst des indischen Kulturraumes. Festgabe zum 70. Geburtstag am 15. Juli 1967</cite>, Göttingen: Vandenhoeck & Ruprecht, 417–427.`}
@@ -788,7 +788,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Waldschmidt</span>, Ernst 1968a. Drei Fragmente buddhistischer Sūtras aus den Turfan-handschriften. Nachrichten der Akademie der Wissenschaften in Göttingen, Philologisch-Historische Klasse 1968.1, 3–26. Reprinted 1989 in <span class="author">Bechert</span>, Heinz & <span class="author">Kieffer-Pülz</span>, Petra (eds), Ernst Waldschmidt, Ausgewählte kleine Schriften, Stuttgart: Franz Steiner Verlag, 232–255.`}
               </li>
               <li>
-                ${_`<span class="author">Waldschmidt</span>, Ernst 1968b. Ein Beitrag zur Überlieferung vom Sthavira Śroṇa Koṭiviṃśa. In Mélanges d’indianisme. À la mémoire de Louis Renou (= Publications de l’Institut de Civilisation Indienne, Fasc. 28). Paris: E. de Boccard, 773–787. Reprinted 1989 in <span class="author">Bechert</span>, Heinz & <span class="author">Kieffer-Pülz</span>, Petra (eds), Ernst Waldschmidt, Ausgewählte kleine Schriften, Stuttgart: Franz Steiner Verlag, 217–231.`}
+                ${_`<span class="author">Waldschmidt</span>, Ernst 1968b. Ein Beitrag zur Überlieferung vom Sthavira Śroṇa Koṭiviṁśa. In Mélanges d’indianisme. À la mémoire de Louis Renou (= Publications de l’Institut de Civilisation Indienne, Fasc. 28). Paris: E. de Boccard, 773–787. Reprinted 1989 in <span class="author">Bechert</span>, Heinz & <span class="author">Kieffer-Pülz</span>, Petra (eds), Ernst Waldschmidt, Ausgewählte kleine Schriften, Stuttgart: Franz Steiner Verlag, 217–231.`}
               </li>
               <li>
                 ${_`<span class="author">Waldschmidt</span>, Ernst 1968c. A Note on Names and Surnames of Indra in a Fragment of a Buddhist Canonical Sanskrit Text from Central Asia, Journal of the Bihar Research Society, 54: 33–39. Reprinted 1989 in <span class="author">Bechert</span>, Heinz & <span class="author">Kieffer-Pülz</span>, Petra (eds), Ernst Waldschmidt, Ausgewählte kleine Schriften, Stuttgart: Franz Steiner Verlag, 256–264.`}
@@ -800,7 +800,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Waldschmidt</span>, Ernst 1970b. Fragment of a Buddhist Sanskrit text on cosmogony. In Tilakasiri, J. (ed.), Añjali. Papers on Indology and Buddhism. O. H. Vijesekera felicitation volume: 40–45. Peradeniya. Reprinted 1989 in <span class="author">Bechert</span>, Heinz & <span class="author">Kieffer-Pülz</span>, Petra (eds), Ernst Waldschmidt, Ausgewählte kleine Schriften, Stuttgart: Franz Steiner, 290–295.`}
               </li>
               <li>
-                ${_`<span class="author">Waldschmidt</span>, Ernst 1972. A contribution to our knowledge of Sthavira Sroṇa Koṭhiviṃśa. In <span class="author">Hazra</span>, R. C. & <span class="author">Banerji</span>, S. C. (eds), S. K. De memorial volume, Calcutta, 107–116.`}
+                ${_`<span class="author">Waldschmidt</span>, Ernst 1972. A contribution to our knowledge of Sthavira Sroṇa Koṭhiviṁśa. In <span class="author">Hazra</span>, R. C. & <span class="author">Banerji</span>, S. C. (eds), S. K. De memorial volume, Calcutta, 107–116.`}
               </li>
               <li>
                 ${_`<span class="author">Waldschmidt</span>, Ernst 1976. “Teufeleien” in den Turfan-Sanskrittexten. In <span class="author">Franke</span>, H., <span class="author">Heissig</span>, W. & <span class="author">Treue</span>, W. (eds), Folia rara, Wolfgang Voigt <span class="roman_numerals">LXV</span>. diem natalem celebranti: 140–147. Wiesbaden: Franz Steiner. Reprinted 1989 in <span class="author">Bechert</span>, Heinz & <span class="author">Kieffer-Pülz</span>, Petra (eds), Ernst Waldschmidt, Ausgewählte kleine Schriften, Stuttgart: Franz Steiner, 312–319.`}
@@ -818,7 +818,7 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Waldschmidt</span>, Ernst 1980b. The Rāṣṭrapālasūtra in Sanskrit remnants from Central Asia. In Indianisme et Bouddhisme: Mélanges offerts à Mgr. Étienne Lamotte: 359–374. Louvain-la-Neuve: Institut Orientaliste de l’Université Catholique, Reprinted 1989 in <span class="author">Bechert</span>, Heinz & <span class="author">Kieffer-Pülz</span>, Petra (eds), Ernst Waldschmidt, Ausgewählte kleine Schriften, Stuttgart: Franz Steiner, 346–361.`}
               </li>
               <li>
-                ${_`<span class="author">Waldschmidt</span>, Ernst 1980c. On a Sanskrit version of the Verahaccāni Sutta of the Saṃyuttanikāya. Nachrichten der Akademie der Wissenschaften in Göttingen, Philologisch-Historische Klasse 1980.4: 69–76. Reprinted 1989 in <span class="author">Bechert</span>, Heinz & <span class="author">Kieffer-Pülz</span>, Petra (eds), Ernst Waldschmidt, Ausgewählte kleine Schriften, Stuttgart: Franz Steiner, 362–369.`}
+                ${_`<span class="author">Waldschmidt</span>, Ernst 1980c. On a Sanskrit version of the Verahaccāni Sutta of the Saṁyuttanikāya. Nachrichten der Akademie der Wissenschaften in Göttingen, Philologisch-Historische Klasse 1980.4: 69–76. Reprinted 1989 in <span class="author">Bechert</span>, Heinz & <span class="author">Kieffer-Pülz</span>, Petra (eds), Ernst Waldschmidt, Ausgewählte kleine Schriften, Stuttgart: Franz Steiner, 362–369.`}
               </li>
               <li>
                 ${_`<span class="author">Weller</span>, Friedrich, 1935. Das tibetische Brahmajālasūtra. <cite>Zeitschrift für Indologie und Iranistik</cite>, 10: 1–61.`}
@@ -836,10 +836,10 @@ class SCMethodologyPage extends SCStaticPage {
                 ${_`<span class="author">Yinshun</span> 1971. <cite>Yuanshi Fojiao shengdian zhi jicheng</cite> [The Compilation of the Scriptures of Early Buddhism]. Reprinted 1988, Taipei: Zhengwen.`}
               </li>
               <li>
-                ${_`<span class="author">Yinshun</span> 1983. <cite>Za Ahan jing lun huibian</cite> [Saṃyuktāgama Sūtra and Commentary] (3 vols.). Taipei: Zhengwen.`}
+                ${_`<span class="author">Yinshun</span> 1983. <cite>Za Ahan jing lun huibian</cite> [Saṁyuktāgama Sūtra and Commentary] (3 vols.). Taipei: Zhengwen.`}
               </li>
               <li>
-                ${_`<span class="author">Zhang</span>, Lixiang 2003. <cite>Das Śaṃkarakasūtra: Eine Übersetzung des Sanskrit-Textes im Vergleich mit der Pāli-Fassung</cite>. München.`}
+                ${_`<span class="author">Zhang</span>, Lixiang 2003. <cite>Das Śaṁkarakasūtra: Eine Übersetzung des Sanskrit-Textes im Vergleich mit der Pāli-Fassung</cite>. München.`}
               </li>
               <li>
                 ${_`<span class="author">Zhou</span>, Chungyang 2008. <cite>Das Kaivartisūtra der neuentdeckten Dīrghāgama-Handschrift: Eine Edition und Rekonstruction des Textes</cite>. MA thesis. Göttingen: Georg-August-Universität.`}

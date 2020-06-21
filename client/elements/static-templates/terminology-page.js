@@ -168,7 +168,7 @@ class SCTerminology extends SCStaticPage {
                 ${_`anāgāmī`}
               </dt>
               <dd>
-                ${_`Non-returner. A person who has abandoned the five lower fetters that bind the mind to the cycle of rebirth (see <a href="#samyojana"><i>saṃyojana</i></a>), and who after death will appear in one of the Brahmā worlds called the <a href="https://www.accesstoinsight.org/ptf/dhamma/sagga/loka.html#plane27">Pure Abodes</a>, there to attain <a href="#nibbana"><i>nibbāna</i></a>, never again to return to this world. This is the third of the four stages of awakening.`}
+                ${_`Non-returner. A person who has abandoned the five lower fetters that bind the mind to the cycle of rebirth (see <a href="#samyojana"><i>saṁyojana</i></a>), and who after death will appear in one of the Brahmā worlds called the <a href="https://www.accesstoinsight.org/ptf/dhamma/sagga/loka.html#plane27">Pure Abodes</a>, there to attain <a href="#nibbana"><i>nibbāna</i></a>, never again to return to this world. This is the third of the four stages of awakening.`}
               </dd>
               <dt id="anapanasati">
                 ${_`ānāpānasati`}
@@ -204,7 +204,7 @@ class SCTerminology extends SCStaticPage {
                 ${_`anusaya`}
               </dt>
               <dd>
-                ${_`Underlying tendency. (The etymology of this term means “lying down with”.) There are seven major underlying tendencies to which the mind returns over and over again: sensual passion (<i>kāma-rāgānusaya</i>), resistance (<i>paṭighānusaya</i>), views (<i>diṭṭhānusaya</i>), uncertainty (<i>vicikicchānusaya</i>), conceit (<i>mānānusaya</i>), desire to be reborn (<i>bhava-rāgānusaya</i>), and ignorance (<i>avijjānusaya</i>). Compare <i><a href="#samyojana">saṃyojana</a></i>.`}
+                ${_`Underlying tendency. (The etymology of this term means “lying down with”.) There are seven major underlying tendencies to which the mind returns over and over again: sensual passion (<i>kāma-rāgānusaya</i>), resistance (<i>paṭighānusaya</i>), views (<i>diṭṭhānusaya</i>), uncertainty (<i>vicikicchānusaya</i>), conceit (<i>mānānusaya</i>), desire to be reborn (<i>bhava-rāgānusaya</i>), and ignorance (<i>avijjānusaya</i>). Compare <i><a href="#samyojana">saṁyojana</a></i>.`}
               </dd>
               <dt id="apaya-bhumi">
                 ${_`apāya-bhūmi`}
@@ -222,7 +222,7 @@ class SCTerminology extends SCStaticPage {
                 ${_`arahant`}
               </dt>
               <dd>
-                ${_`A “worthy one” or “perfected one”; a person whose mind is free of defilement (see <a href="#kilesa"><i>kilesa</i></a>), who has abandoned all ten of the fetters that bind the mind to the cycle of rebirth (see <a href="#samyojana"><i>saṃyojana</i></a>), whose heart is free of mental defilements (see <a href="#asava"><i>āsava</i></a>), and who is thus not destined for further rebirth. A title for the Buddha and the highest level of his noble disciples.`}
+                ${_`A “worthy one” or “perfected one”; a person whose mind is free of defilement (see <a href="#kilesa"><i>kilesa</i></a>), who has abandoned all ten of the fetters that bind the mind to the cycle of rebirth (see <a href="#samyojana"><i>saṁyojana</i></a>), whose heart is free of mental defilements (see <a href="#asava"><i>āsava</i></a>), and who is thus not destined for further rebirth. A title for the Buddha and the highest level of his noble disciples.`}
               </dd>
               <dt id="arammana">
                 ${_`ārammaṇa`}
@@ -838,7 +838,7 @@ class SCTerminology extends SCStaticPage {
                 ${_`“Going forth (from home to the homeless life)”. In the earliest period, this was used together with <i>upasampadā</i> (“full acceptance”) to refer to ordination as a mendicant. Gradually, however, the “going forth” came to be applied to ordination as a <i><a href="#samanera">samaṇera (samaṇeri)</a></i>, or novice monk (nun). See <a href="#upasampada"><i>upasampadā</i></a>.`}
               </dd>
               <dt id="paccattam">
-                ${_`paccattaṃ`}
+                ${_`paccattaṁ`}
               </dt>
               <dd>
                 ${_`Personal; individual.`}
@@ -1001,19 +1001,19 @@ class SCTerminology extends SCStaticPage {
                 ${_`sagga`}
               </dt>
               <dd>
-                ${_`Heaven, heavenly realm. The dwelling place of the <i><a href="#deva">devas</a></i>. Rebirth in the heavens is said to be one of the rewards for practicing generosity (see <i><a href="#dana">dāna</a></i>) and virtue (see <i><a href="#sila">sīla</a></i>). Like all waystations in <i><a href="#samsara">saṃsāra</a>,</i> however, rebirth here is temporary. See also <i><a href="#sugati">sugati.</a></i>`}
+                ${_`Heaven, heavenly realm. The dwelling place of the <i><a href="#deva">devas</a></i>. Rebirth in the heavens is said to be one of the rewards for practicing generosity (see <i><a href="#dana">dāna</a></i>) and virtue (see <i><a href="#sila">sīla</a></i>). Like all waystations in <i><a href="#samsara">saṁsāra</a>,</i> however, rebirth here is temporary. See also <i><a href="#sugati">sugati.</a></i>`}
               </dd>
               <dt id="sakadagami">
                 ${_`sakadāgāmī`}
               </dt>
               <dd>
-                ${_`Once-returner. A person who has abandoned the first three of the fetters that bind the mind to the cycle of rebirth (see <a href="#samyojana"><i>saṃyojana</i></a>), has weakened the fetters of sensual passion and resistance, and who after death is destined to be reborn in this world only once more.`}
+                ${_`Once-returner. A person who has abandoned the first three of the fetters that bind the mind to the cycle of rebirth (see <a href="#samyojana"><i>saṁyojana</i></a>), has weakened the fetters of sensual passion and resistance, and who after death is destined to be reborn in this world only once more.`}
               </dd>
               <dt id="sakkaya-ditthi">
                 ${_`sakkāya-diṭṭhi`}
               </dt>
               <dd>
-                ${_`Self-identification view. The view that mistakenly identifies any of the <i><a href="#khandha">khandha</a></i> as “self”; the first of the ten fetters (<i><a href="#samyojana">saṃyojana</a></i>). Abandonment of <i>sakkāya-diṭṭhi</i> is one of the hallmarks of stream-entry (see <i><a href="#sotapanna">sotāpanna</a></i>).`}
+                ${_`Self-identification view. The view that mistakenly identifies any of the <i><a href="#khandha">khandha</a></i> as “self”; the first of the ten fetters (<i><a href="#samyojana">saṁyojana</a></i>). Abandonment of <i>sakkāya-diṭṭhi</i> is one of the hallmarks of stream-entry (see <i><a href="#sotapanna">sotāpanna</a></i>).`}
               </dd>
               <dt id="sakyamuni">
                 ${_`Sākyamuni`}
@@ -1070,19 +1070,19 @@ class SCTerminology extends SCStaticPage {
                 ${_`Situational awareness; presence of mind; clear comprehension. See <i><a href="#sati">sati</a></i>.`}
               </dd>
               <dt id="samsara">
-                ${_`saṃsāra`}
+                ${_`saṁsāra`}
               </dt>
               <dd>
                 ${_`Transmigration; the round of death and rebirth. See <a href="#vatta"><i>vaṭṭa</i></a>.`}
               </dd>
               <dt id="samvega">
-                ${_`saṃvega`}
+                ${_`saṁvega`}
               </dt>
               <dd>
                 ${_`A sense of awe or inspiration when confronted with spiritual realities; especially a sense of urgency to practice.`}
               </dd>
               <dt id="samyojana">
-                ${_`saṃyojana`}
+                ${_`saṁyojana`}
               </dt>
               <dd>
                 ${_`Fetter that binds the mind to the cycle of rebirth (see <a href="#vatta"><i>vaṭṭa</i></a>)—self-identification views (<i><a href="#sakkaya-ditthi">sakkāya-diṭṭhi</a></i>), uncertainty (<i>vicikiccha</i>), grasping at precepts and practices (<i>sīlabbata-parāmāsa);</i> sensual passion (<i>kāma-rāga</i>), aversion (<i>vyāpāda);</i> desire to be reborn in a realm of luminous form (<i>rūpa-rāga</i>), desire to be reborn in a formless realm (<i>arūpa-rāga</i>), conceit (<i>māna</i>), restlessness (<i>uddhacca</i>), and ignorance (<i><a href="#avijja">avijjā</a></i>). Compare <i><a href="#anusaya">anusaya</a></i>.`}
@@ -1128,7 +1128,7 @@ class SCTerminology extends SCStaticPage {
                 ${_`sanyojana`}
               </dt>
               <dd>
-                ${_`See <a href="#samyojana"><i>saṃyojana</i></a>.`}
+                ${_`See <a href="#samyojana"><i>saṁyojana</i></a>.`}
               </dd>
               <dt id="sasana">
                 ${_`sāsana`}
@@ -1182,7 +1182,7 @@ class SCTerminology extends SCStaticPage {
                 ${_`sotāpanna`}
               </dt>
               <dd>
-                ${_`Stream winner. A person who has abandoned the first three of the fetters that bind the mind to the cycle of rebirth (see <a href="#samyojana"><i>saṃyojana</i></a>) and has thus entered the “stream” flowing inexorably to <a href="#nibbana"><i>nibbāna</i></a>, ensuring that one will be reborn at most only seven more times, and only into human or higher realms.`}
+                ${_`Stream winner. A person who has abandoned the first three of the fetters that bind the mind to the cycle of rebirth (see <a href="#samyojana"><i>saṁyojana</i></a>) and has thus entered the “stream” flowing inexorably to <a href="#nibbana"><i>nibbāna</i></a>, ensuring that one will be reborn at most only seven more times, and only into human or higher realms.`}
               </dd>
               <dt>
                 ${_`stream-entry, stream-winner`}
@@ -1329,7 +1329,7 @@ class SCTerminology extends SCStaticPage {
                 ${_`vaṭṭa`}
               </dt>
               <dd>
-                ${_`The cycle of birth, death, and rebirth. See <a href="#samsara"><i>saṃsāra</i></a>.`}
+                ${_`The cycle of birth, death, and rebirth. See <a href="#samsara"><i>saṁsāra</i></a>.`}
               </dd>
               <dt id="vedana">
                 ${_`vedanā`}

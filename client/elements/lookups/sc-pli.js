@@ -63,7 +63,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
     word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), '');//optional hyphen, syllable-breaker
     let meaning = '';
 
-    word = word.replace(/ṃg/g, 'ṅg').replace(/ṃk/g, 'ṅk').replace(/ṃ/g, 'ṃ').replace(/Ṃ/g, 'ṃ');
+    word = word.replace(/ṁg/g, 'ṅg').replace(/ṁk/g, 'ṅk').replace(/ṁ/g, 'ṁ').replace(/ṁ/g, 'ṁ');
     let allMatches = this._lookupWord(word);
     meaning = this._toHtml(allMatches, word);
     return { html: meaning };
@@ -180,7 +180,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
         }
         if (!m) {
           let base = firstchar + leftover;
-          if (base !== 'ṃ') {
+          if (base !== 'ṁ') {
             allMatches.push({ 'base': base, 'meaning': '?' });
           }
           break;
@@ -201,7 +201,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
           let wordp = word;
           //On the second pass we change the last vowel if 'ti', otherwise skip.
           if (ti && args.ti === true) {
-            wordp = wordp.replace(/ī$/, 'i').replace(/ā$/, 'i').replace(/ū$/, 'i').replace(/n$/, '').replace(/n$/, 'ṃ');
+            wordp = wordp.replace(/ī$/, 'i').replace(/ā$/, 'i').replace(/ū$/, 'i').replace(/n$/, '').replace(/n$/, 'ṁ');
           }
           if (pi) {
             if (wordp.search(/pi$/) === -1) {

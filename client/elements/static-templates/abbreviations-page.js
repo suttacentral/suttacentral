@@ -158,7 +158,7 @@ class SCAbbreviationsPage extends SCStaticPage {
                   ${_`Bv`}
                 </td>
                 <td>
-                  ${_`Buddhavaṃsa`}
+                  ${_`Buddhavaṁsa`}
                 </td>
               </tr>
               <tr>
@@ -830,7 +830,7 @@ class SCAbbreviationsPage extends SCStaticPage {
                   ${_`SA`}
                 </td>
                 <td>
-                  ${_`Saṃyuktāgama`}
+                  ${_`Saṁyuktāgama`}
                 </td>
               </tr>
               <tr>
@@ -838,7 +838,7 @@ class SCAbbreviationsPage extends SCStaticPage {
                   ${_`SA2`}
                 </td>
                 <td>
-                  ${_`2nd Saṃyuktāgama`}
+                  ${_`2nd Saṁyuktāgama`}
                 </td>
               </tr>
               <tr>
@@ -846,7 +846,7 @@ class SCAbbreviationsPage extends SCStaticPage {
                   ${_`SA3`}
                 </td>
                 <td>
-                  ${_`3rd Saṃyuktāgama`}
+                  ${_`3rd Saṁyuktāgama`}
                 </td>
               </tr>
               <tr>
@@ -918,7 +918,7 @@ class SCAbbreviationsPage extends SCStaticPage {
                   ${_`SN`}
                 </td>
                 <td>
-                  ${_`Saṃyutta Nikāya`}
+                  ${_`Saṁyutta Nikāya`}
                 </td>
               </tr>
               <tr>
@@ -1126,7 +1126,7 @@ class SCAbbreviationsPage extends SCStaticPage {
                   ${_`VS`}
                 </td>
                 <td>
-                  ${_`(Vinaya) Saṃyutta`}
+                  ${_`(Vinaya) Saṁyutta`}
                 </td>
               </tr>
               <tr>

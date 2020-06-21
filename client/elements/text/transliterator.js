@@ -14,7 +14,7 @@ export const Transliterator = function() {
             'ū': 'ූ',
             e: 'ෙ',
             o: 'ො',
-            'ṃ': 'ං',
+            'ṁ': 'ං',
             k: 'ක',
             g: 'ග',
             'ṅ': 'ඞ',
@@ -108,7 +108,7 @@ export const Transliterator = function() {
                     if (b[f] && f !== 'a') {
                         c += b[f];
                         h++;
-                        if (a[e] && f !== 'ṃ') {
+                        if (a[e] && f !== 'ṁ') {
                             c += '්';
                         }
                     } else {
@@ -151,7 +151,7 @@ export const Transliterator = function() {
             u: 'ု',
             'ū': 'ူ',
             e: 'ေ',
-            'ṃ': 'ံ',
+            'ṁ': 'ံ',
             k: 'က',
             kh: 'ခ',
             g: 'ဂ',
@@ -264,7 +264,7 @@ export const Transliterator = function() {
                         if (d !== 'y' && !h) {
                             h = e;
                         }
-                        if (a[d] && e !== 'ṃ') {
+                        if (a[d] && e !== 'ṁ') {
                             b += '္';
                         }
                     } else {
@@ -311,7 +311,7 @@ export const Transliterator = function() {
             'ū': 'ू',
             e: 'े',
             o: 'ो',
-            'ṃ': 'ं',
+            'ṁ': 'ं',
             k: 'क',
             kh: 'ख',
             g: 'ग',
@@ -364,14 +364,14 @@ export const Transliterator = function() {
             } else {
                 if (f === 'h' && n[g + f]) {
                     c += n[g + f];
-                    if (e && !m[e] && f !== 'ṃ') {
+                    if (e && !m[e] && f !== 'ṁ') {
                         c += '्';
                     }
                     j += 2;
                 } else {
                     if (n[g]) {
                         c += n[g];
-                        if (f && !m[f] && !m[g] && g !== 'ṃ') {
+                        if (f && !m[f] && !m[g] && g !== 'ṁ') {
                             c += '्';
                         }
                         j++;
@@ -403,18 +403,18 @@ export const Transliterator = function() {
     this.toThai = (m) => {
         m = m.replace(/<.*?>/g, '');
         m = m.toLowerCase() + ' ';
-        const n = { a: '1', 'ā': '1', i: '1', 'ī': '1', 'iṃ': '1', u: '1', 'ū': '1', e: '2', o: '2' };
+        const n = { a: '1', 'ā': '1', i: '1', 'ī': '1', 'iṁ': '1', u: '1', 'ū': '1', e: '2', o: '2' };
         const j = {
             a: 'อ',
             'ā': 'า',
             i: 'ิ',
             'ī': 'ี',
-            'iṃ': 'ึ',
+            'iṁ': 'ึ',
             u: 'ุ',
             'ū': 'ู',
             e: 'เ',
             o: 'โ',
-            'ṃ': 'ํ',
+            'ṁ': 'ํ',
             k: 'ก',
             kh: 'ข',
             g: 'ค',
@@ -492,7 +492,7 @@ export const Transliterator = function() {
                     if (k === 0) {
                         c += j.a;
                     }
-                    if (g === 'i' && f === 'ṃ') {
+                    if (g === 'i' && f === 'ṁ') {
                         c += j[g + f];
                         k++;
                     } else {
@@ -520,7 +520,7 @@ export const Transliterator = function() {
                             k++;
                         }
                         c += j[g];
-                        if (a[f] && g !== 'ṃ') {
+                        if (a[f] && g !== 'ṁ') {
                             c += 'ฺ';
                         }
                         k++;

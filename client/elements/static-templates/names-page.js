@@ -2651,7 +2651,7 @@ class SCNamesPage extends SCStaticPage {
                 ${_`<a class="ref" href="/mn118">MN 118</a>, <a class="ref" href="/ud1.5">Ud 1.5</a>`}
               </dd>
               <dt>
-                ${_`Karaṃvī`}
+                ${_`Karaṁvī`}
               </dt>
               <dd class="type">
                 ${_`forest`}
@@ -3136,7 +3136,7 @@ class SCNamesPage extends SCStaticPage {
                 ${_`goes for refuge: <a class="ref" href="/dn.12.0">DN 12.0</a>`}
               </dd>
               <dt>
-                ${_`Lomahaṃsa`}
+                ${_`Lomahaṁsa`}
               </dt>
               <dd class="type">
                 ${_`private Buddha`}
@@ -5403,7 +5403,7 @@ class SCNamesPage extends SCStaticPage {
                 ${_`<a class="ref" href="/mn116">MN 116</a>`}
               </dd>
               <dt>
-                ${_`Siṃsapā`}
+                ${_`Siṁsapā`}
               </dt>
               <dd class="type">
                 ${_`forest`}
