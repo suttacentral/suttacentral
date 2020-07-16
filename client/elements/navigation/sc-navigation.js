@@ -58,20 +58,21 @@ class SCNavigation extends LitLocalized(LitElement) {
     this._fetchMainMenuData();
     this.routePath = store.getState().currentRoute.path;
     let navType = 'pitaka';
-    if (!this.navArray[navIndex.get(navType).index]) {
-      this.navArray[1] = {
-        title: `${this._getPathParamNumber(navIndex.get(navType).pathParamIndex)}`,
-        url: `/pitaka/${this._getPathParamNumber(navIndex.get(navType).pathParamIndex)}`,
+    let navIndexesOfType = navIndex.get(navType);
+    if (!this.navArray[navIndexesOfType.index]) {
+      this.navArray[navIndexesOfType.index] = {
+        title: `${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}`,
+        url: `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}`,
         type: navType,
         displayPitaka: true,
         displayParallels: false,
         displayVaggas: false,
-        position: navIndex.get(navType).position,
-        navigationArrayLength: navIndex.get(navType).navArrayLength
+        position: navIndexesOfType.position,
+        navigationArrayLength: navIndexesOfType.navArrayLength
       };
       this.actions.setNavigation(this.navArray);
-      this.actions.setCurrentNavPosition(navIndex.get(navType).position);
-      this.actions.changeToolbarTitle(this._getPathParamNumber(navIndex.get(navType).pathParamIndex));
+      this.actions.setCurrentNavPosition(navIndexesOfType.position);
+      this.actions.changeToolbarTitle(this._getPathParamNumber(navIndexesOfType.pathParamIndex));
     }
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
   }
@@ -274,20 +275,21 @@ class SCNavigation extends LitLocalized(LitElement) {
   
   _onPitakaCardClick(childName) {
     let navType = 'parallels';
+    let navIndexesOfType = navIndex.get(navType);
     this.parallelsName = childName;
-    this.navArray[navIndex.get(navType).index] = {
+    this.navArray[navIndexesOfType.index] = {
         title: childName,
-        url: `/pitaka/${this._getPathParamNumber(navIndex.get(navType).pathParamIndex)}`,
+        url: `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}`,
         type: navType,
         displayPitaka: false,
         displayParallels: true,
         displayVaggas: false,
         parallelsName: childName,
-        position: navIndex.get(navType).position,
-        navigationArrayLength: navIndex.get(navType).navArrayLength
+        position: navIndexesOfType.position,
+        navigationArrayLength: navIndexesOfType.navArrayLength
     };
     this.actions.setNavigation(this.navArray);
-    this.actions.setCurrentNavPosition(navIndex.get(navType).position);
+    this.actions.setCurrentNavPosition(navIndexesOfType.position);
     this.actions.changeToolbarTitle(childName);
   }
 
@@ -343,22 +345,22 @@ class SCNavigation extends LitLocalized(LitElement) {
     this._fetchChildMenuData();
 
     let navType = 'vaggas';
-    this.navArray[navIndex.get(navType).index] = {
+    let navIndexesOfType = navIndex.get(navType);
+    this.navArray[navIndexesOfType.index] = {
       title: childName,
-      //url: `${this.navArray[2].url}`,
-      url: `/pitaka/${this._getPathParamNumber(navIndex.get(navType).pathParamIndex)}`,
+      url: `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}`,
       type: navType,
       displayPitaka: false,
       displayParallels: false,
       displayVaggas: true,
       vaggasId: childId,
       vaggasName: childName,
-      position: navIndex.get(navType).position,
-      navigationArrayLength: navIndex.get(navType).navArrayLength
+      position: navIndexesOfType.position,
+      navigationArrayLength: navIndexesOfType.navArrayLength
     };
 
     this.actions.setNavigation(this.navArray);
-    this.actions.setCurrentNavPosition(navIndex.get(navType).position);
+    this.actions.setCurrentNavPosition(navIndexesOfType.position);
     this.actions.changeToolbarTitle(childName);
     this.requestUpdate();
   }
@@ -405,16 +407,17 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   _onVaggasCardClick(childId, childName) {
     let navType = 'vagga';
+    let navIndexesOfType = navIndex.get(navType);
     this.navArray.push({
       title: childName,
       url: `/${childId}`,
       type: navType,
-      position: navIndex.get(navType).position,
-      navigationArrayLength: navIndex.get(navType).navArrayLength
+      position: navIndexesOfType.position,
+      navigationArrayLength: navIndexesOfType.navArrayLength
     });
 
     this.actions.setNavigation(this.navArray);
-    this.actions.setCurrentNavPosition(navIndex.get(navType).position);
+    this.actions.setCurrentNavPosition(navIndexesOfType.position);
     this.actions.changeToolbarTitle(childName);
     this.requestUpdate();
 
