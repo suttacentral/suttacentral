@@ -1,5 +1,3 @@
-import '@polymer/app-layout/app-header-layout/app-header-layout.js';
-import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
@@ -12,6 +10,19 @@ import './addons/sc-top-sheet';
 import './text/sc-segmented-text.js';
 import './text/sc-simple-text.js';
 import { throttle } from 'throttle-debounce';
+
+// import './navigation/sc-pitaka.js';
+// import './navigation/sc-pitaka-parallels.js';
+// import './navigation/sc-vaggas.js';
+// import './navigation/sc-suttas.js';
+import './navigation/sc-navigation.js';
+
+import '@material/mwc-top-app-bar';
+import '@material/mwc-top-app-bar-fixed';
+import '@material/mwc-icon-button';
+import '@material/mwc-tab';
+import '@material/mwc-tab-bar';
+import './navigation/sc-linden-leaves.js';
 
 /*
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
@@ -36,7 +47,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         height: 100%;
       }
 
-      .container, app-header-layout {
+      .container {
         position: relative;
         height: 100%;
       }
@@ -45,101 +56,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         display: flex;
         flex: 1;
         flex-direction: column;
-      }
-
-      /* Only static pages use transparent backgrounds, other pages use the original backgrounds. */
-      .toolbar-header, #sc_toolbar {
-        /* background-color: var(--sc-primary-color); */
-        /* background-color: transparent; */
-        white-space: nowrap;
-        z-index: 99999;
-      }
-
-      .primaryBackgroundColor {
-        background-color: var(--sc-primary-color);
-      }
-
-      .backgroundTransparent {
-        background-color: transparent;
-      }
-
-      .smallScreenPadding {
-        padding: 0px;
-      }
-
-      #toolbar_title_box {
-        width: 1px;
-        z-index: -10;
-      }
-
-      .headerOpacity {
-        opacity: 0;
-      }
-
-      #toolbar_title {
-        font-family: var(--sc-sans-font);
-        color: var(--sc-tertiary-text-color);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: calc(80%);
-      }
-
-      #drawertoggle {
-        z-index: 1;
-        color: var(--sc-tertiary-text-color);
-      }
-
-    .readme {
-        color: var(--sc-tertiary-text-color);;
-        font-weight: 500;
-
-      }
-
-      #to_home_button {
-        color: var(--sc-tertiary-text-color);
-        z-index: 1;
-        padding: 0;
-        width: var(--sc-size-lg);
-        height: var(--sc-size-lg);
-        margin-right: var(--sc-size-sm);
-      }
-
-      #header {
-        transition: all 200ms !important;
-        --app-header-shadow: {
-          box-shadow: 0px;
-        };
-      }
-
-      @media screen and (min-width: 960px) {
-        #header.drawer-closed {
-          left: 0 !important;
-        }
-
-        #header {
-          left: var(--app-drawer-width) !important;
-        }
-      }
-
-      @media screen and (max-width: 600px) {
-        #toolbar_title {
-          font-size: var(--sc-skolar-font-size-md);
-        }
-      }
-
-      .hidebutton {
-        display: none;
-      }
-
-      @media print {
-        #header {
-          display: none;
-        }
-      }
-
-      .hideTitle {
-        display: none;
       }
 
       #nav_toolbar {
@@ -166,51 +82,36 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         width: calc(100% + 20px);
         height: 100%;
       }
-
     </style>
 
     <app-location route="{{route}}"></app-location>
 
     <div class="container">
-      <app-header-layout fullbleed>
+      [[_createMetaData(localize)]]
 
-        <app-header id="header" class="drawer-closed" condenses="" reveals="" effects="waterfall" slot="header">
-          <app-toolbar id="toolbarHeader" class="toolbar-header" sticky>
-          <span class='readme'>  <paper-icon-button icon="sc-iron-icons:menu" id="drawertoggle" on-tap="_toggleDrawer" title="{{localize('menu')}}"></paper-icon-button>
-Read Suttas</span>
-            <div main-title="" id="toolbar_title_box">
-              <p id="toolbar_title">{{_getToolbarTitle(toolbarTitle, localize)}}</p>
-            </div>
+      <template is="dom-if" if="[[shouldShowPitakaPage]]" restamp="">
+        <sc-navigation pitaka-Name=[[_getPathParamNumber(2)]]></sc-navigation>
+      </template>
 
-            <sc-toolbar id="sc_toolbar" suttaplex-display="[[shouldShowSuttaplexListPage]]"></sc-toolbar>
-          </app-toolbar>
-          <sc-top-sheet id="setting_Menu"></sc-top-sheet>
-        </app-header>
+      <template is="dom-if" if="[[shouldShowStaticPage]]" restamp="">
+        <sc-static-page-selector></sc-static-page-selector>
+      </template>
 
-        [[_createMetaData(localize)]]
+      <template is="dom-if" if="[[shouldShowSuttaplexListPage]]" restamp="">
+        <sc-suttaplex-list></sc-suttaplex-list>
+      </template>
 
-        <template is="dom-if" if="[[shouldShowStaticPage]]" restamp="">
-          <sc-static-page-selector></sc-static-page-selector>
-        </template>
+      <template is="dom-if" if="[[shouldShowSearchPage]]" restamp="">
+        <sc-page-search></sc-page-search>
+      </template>
 
-        <template is="dom-if" if="[[shouldShowSuttaplexListPage]]" restamp="">
-          <sc-suttaplex-list></sc-suttaplex-list>
-        </template>
+      <template is="dom-if" if="[[shouldShowSuttaTextPage]]" restamp="">
+        <sc-text-page-selector author-uid="[[suttaAuthor]]" sutta-id="[[suttaId]]" lang-iso-code="[[langIsoCode]]"></sc-text-page-selector>
+      </template>
 
-        <template is="dom-if" if="[[shouldShowSearchPage]]" restamp="">
-          <sc-page-search></sc-page-search>
-        </template>
-
-        <template is="dom-if" if="[[shouldShowSuttaTextPage]]" restamp="">
-          <sc-text-page-selector author-uid="[[suttaAuthor]]" sutta-id="[[suttaId]]" lang-iso-code="[[langIsoCode]]"></sc-text-page-selector>
-        </template>
-
-        <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp="">
-          <sc-page-dictionary dictionary-word="[[dictionaryWord]]"></sc-page-dictionary>
-        </template>
-
-      </app-header-layout>
-
+      <template is="dom-if" if="[[shouldShowDictionaryPage]]" restamp="">
+        <sc-page-dictionary dictionary-word="[[dictionaryWord]]"></sc-page-dictionary>
+      </template>
     </div>`;
   }
 
@@ -281,22 +182,16 @@ Read Suttas</span>
       shouldShowDictionaryPage: {
         type: Boolean
       },
-      isDrawerOpen: {
-        type: Boolean,
-        observer: '_drawerOpenStateChanged'
-      },
       localizedStringsPath: {
         type: String,
         value: '/localization/elements/sc-page-selector'
       },
-      originalDrawerZIndex: {
-        type: String
-      },
       isNarrowScreen: {
         type: Boolean
       },
-      isFirstLoad: {
-        type: Boolean
+      shouldShowPitakaPage: {
+        type: Boolean,
+        value: false
       }
     }
   }
@@ -329,18 +224,35 @@ Read Suttas</span>
           id: id
         }
       },
-      changeDrawerOpenState(opened) {
+      changeDisplayToolButtonState(display) {
         return {
-          type: 'CHANGE_DRAWER_OPEN_STATE',
-          drawerOpened: opened
+          type: 'CHANGE_DISPLAY_TOOL_BUTTON_STATE',
+          displayToolButton: display
         }
-      }
+      },
+      changeDisplayInfoButtonState(display) {
+        return {
+          type: 'CHANGE_DISPLAY_INFO_BUTTON_STATE',
+          displayInfoButton: display
+        }
+      },
+      changeDisplayViewModeButtonState(display) {
+        return {
+          type: 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE',
+          displayViewModeButton: display
+        }
+      },
+      changeDisplaySCSiteTitleState(display) {
+        return {
+          type: 'CHANGE_DISPLAY_SC_SITE_TITLE_STATE',
+          displaySCSiteTitle: display
+        }
+      },
     }
   }
 
   ready() {
     super.ready();
-    this.isFirstLoad = true;
     const lowerCaseRoute = this.route.path.toLowerCase();
     this.set('route.path', lowerCaseRoute);
     if (this._shouldRedirect()) {
@@ -355,31 +267,16 @@ Read Suttas</span>
       }
       this._showToast(success, e.detail.message);
     });
-    this.addEventListener('webkitfullscreenchange', e => {
-      const currentZIndex = this.$.header.style.zIndex;
-      if (currentZIndex === '-1') {
-        this.$.header.style.zIndex = this.originalDrawerZIndex;
-      } else {
-        this.originalDrawerZIndex = currentZIndex;
-        this.$.header.style.zIndex = -1;
-      }
-    });
-
-    window.addEventListener('resize', throttle(300, () => {
-      if (window.innerWidth < 480) {
-        this.$.toolbarHeader.classList.add('smallScreenPadding');
-      } else {
-        this.$.toolbarHeader.classList.remove('smallScreenPadding');
-      }
-    }));
 
     this.addEventListener('open-dialog', e => this._openDialog(e));
-    this.addEventListener('hide-sc-top-sheet', e => { this.$['setting_Menu'].hide(); });
+    //this.addEventListener('hide-sc-top-sheet', e => { this.$['setting_Menu'].hide(); });
   }
+
+  
 
   _openDialog(event) {
     if (event.detail.id === 'settings_dialog') {
-      this.$['setting_Menu'].show();
+      //this.$['setting_Menu'].show();
     }
   }
 
@@ -432,57 +329,27 @@ Read Suttas</span>
     this.shouldShowSearchPage = this._isSearchPage();
     this.shouldShowSuttaTextPage = this._isSuttaTextPage();
     this.shouldShowDictionaryPage = this._isDictionaryPage();
+    this.shouldShowPitakaPage = this._isPitakaPage();
     this._resolveImports();
-    this._addWindowScrollEvent(this.shouldShowStaticPage);
-    if (!this.shouldShowStaticPage) {
-      this.$.toolbarHeader.classList.add('primaryBackgroundColor');
-      this.$.toolbarHeader.classList.remove('backgroundTransparent');
-    }
-  }
 
-  _addWindowScrollEvent(isStaticPage) {
-    const toolBarTitleElement = this.$.toolbar_title;
-    if (isStaticPage) {
-      toolBarTitleElement.classList.add('hideTitle');
+    if (this.shouldShowSuttaTextPage) {
+      setTimeout(() => {
+        this.parentNode.querySelector('#titlebar').style.display = 'none';
+      }, 0);
+    }
+
+    this.dispatch('changeDisplayToolButtonState', this.shouldShowSuttaTextPage);
+    this.dispatch('changeDisplayInfoButtonState', this.shouldShowSuttaTextPage);
+
+    if (this.shouldShowStaticPage) {
+      this.parentNode.querySelector('#titlebar').style.display = 'block';  
     } else {
-      toolBarTitleElement.classList.remove('hideTitle');
+      this.parentNode.querySelector('#titlebar').style.display = 'none';
     }
 
-    window.addEventListener('scroll', throttle(300, () => {
-      if (isStaticPage) {
-        const ALL_TOOLBAR_HEIGHT = 262;
-        const TOOLBAR_AND_TITLEBAR_HEIGHT = 198;
-        let scrollTop = document.documentElement.scrollTop;
-        const headerElement = this.$.toolbarHeader;
-        if (scrollTop >= ALL_TOOLBAR_HEIGHT) {
-          headerElement.classList.add('primaryBackgroundColor');
-          headerElement.classList.remove('backgroundTransparent');
-        } else {
-          headerElement.classList.remove('primaryBackgroundColor');
-          headerElement.classList.add('backgroundTransparent');
-        }
-        if (scrollTop <= ALL_TOOLBAR_HEIGHT) {
-          toolBarTitleElement.classList.add('hideTitle');
-          headerElement.classList.add('headerOpacity');
-        } else {
-          toolBarTitleElement.classList.remove('hideTitle');
-          headerElement.classList.remove('headerOpacity');
-        }
 
-        if (scrollTop >= TOOLBAR_AND_TITLEBAR_HEIGHT - 28 && scrollTop <= ALL_TOOLBAR_HEIGHT) {
-          headerElement.style.display = 'none';
-        } else {
-          headerElement.classList.remove('headerOpacity');
-          headerElement.style.display = '';
-        }
-
-      } else {
-        this.$.toolbarHeader.classList.add('primaryBackgroundColor');
-        this.$.toolbarHeader.classList.remove('backgroundTransparent');
-        this.$.toolbarHeader.classList.remove('headerOpacity');
-        toolBarTitleElement.classList.remove('hideTitle');
-      }
-    }));
+    this._setViewModeButtonDisplayState();
+    this.dispatch('changeDisplaySCSiteTitleState', this.shouldShowStaticPage);
   }
 
   // Lazy loading for site elements
@@ -541,10 +408,6 @@ Read Suttas</span>
     else {
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
     }
-
-    if (this.isNarrowScreen) {
-      this._closeDrawer();
-    }
   }
 
   _isStaticPage(pageName) {
@@ -555,12 +418,14 @@ Read Suttas</span>
     if (path.length !== 2 && pageName !== 'NOT-FOUND' && path[1] !== 'languages') {
       return false;
     }
-    return this.staticPages.includes(pageName.toUpperCase());
+    return this.staticPages.includes(pageName.toUpperCase()) && !this._isNavPage();
   }
 
   _isSearchPage() {
     return (this.route.path === '/search');
   }
+
+  //TODO nav
 
   _isDictionaryPage() {
     const path = this.route.path.split('/');
@@ -570,11 +435,20 @@ Read Suttas</span>
   // if the URL only contains an ID, this is a suttaplex page (either a list or a single item).
   _isSuttaplexListPage() {
     const idParam = this._getPathParamNumber(1);
+
     // Static sites and the search page also only has one path parameter, so we need additional checks here:
     if (this._isStaticPage(idParam) || this._isSearchPage()) {
       return false;
     }
     return idParam && !this._getPathParamNumber(2);
+  }
+
+  _isNavPage() {
+    return this._isPitakaPage();
+  }
+
+  _isPitakaPage() {
+    return this.route.path.split('/').length === 3 && this._getPathParamNumber(1) === 'pitaka';
   }
 
   // returns true if the path has three path parameters or - (for suttas with no author) if the second param
@@ -585,6 +459,9 @@ Read Suttas</span>
       return false;
     }
     if (this._isStaticPage(this._getPathParamNumber(1))) {
+      return false;
+    }
+    if (this._isNavPage()) {
       return false;
     }
     const pathIsoCode = this._getPathParamNumber(2);
@@ -639,48 +516,12 @@ Read Suttas</span>
 
   // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
   _changeView() {
-    if (!this._isSearchPage())
-      this.$.sc_toolbar._closeSearch();
+    // if (!this._isSearchPage())
+    //   this.$.sc_toolbar._closeSearch();
   }
 
-  // when the navbar is not visible on small screens, a menu item appears and this fires when tapped.
-  _toggleDrawer(largeScreenOnly) {
-    this.dispatchEvent(new CustomEvent('toggleDrawer', {
-      detail: { largeScreenOnly: largeScreenOnly },
-      composed: true,
-      bubbles: true
-    }));
-  }
-
-  _closeDrawer() {
-    this.dispatchEvent(new CustomEvent('closeDrawer', {
-      composed: true,
-      bubbles: true
-    }));
-  }
-
-  _shouldHideHomeButton(isDrawerOpen, shouldShowStaticPage) {
-    return (isDrawerOpen || shouldShowStaticPage) ? 'hidebutton' : '';
-  }
-
-  _drawerOpenStateChanged() {
-    if (this.isFirstLoad && this.isDrawerOpen && !this.isNarrowScreen) {
-      this.$.header.classList.add('drawer-closed');
-      this._closeDrawer();
-      this.isFirstLoad = false;
-      this.dispatch('changeDrawerOpenState', false);
-    }
-
-    if (this.isDrawerOpen) {
-      this.$.header.classList.remove('drawer-closed');
-    } else {
-      this.$.header.classList.add('drawer-closed');
-    }
-
-    let drawerOpened = store.getState().drawerOpened;
-    if (!drawerOpened && this.isDrawerOpen) {
-      this._closeDrawer();
-    }
+  _toggleLindenLeaves() {
+    this.$.breadCrumb.style.display = 'none';
   }
 
   _scrollToTop() {
@@ -696,6 +537,14 @@ Read Suttas</span>
       bubbles: true,
       composed: true
     }));
+  }
+
+  _setViewModeButtonDisplayState() {
+    if (this.shouldShowPitakaPage || this.shouldShowSuttaplexListPage) {
+      this.dispatch('changeDisplayViewModeButtonState', true);
+    } else {
+      this.dispatch('changeDisplayViewModeButtonState', false);
+    }
   }
 }
 

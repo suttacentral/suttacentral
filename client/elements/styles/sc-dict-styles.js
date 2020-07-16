@@ -21,9 +21,9 @@ export const dictStyles = html`
 
   dfn {
     font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-static-subtitle);
-        font-weight: 400;
-        line-height: 32px;
+    font-size: var(--sc-skolar-font-size-static-subtitle);
+    font-weight: 400;
+    line-height: 32px;
     font-style: normal;
     text-transform: lowercase;
     color: var(--sc-primary-accent-color);
@@ -41,9 +41,9 @@ export const dictStyles = html`
     font-family: var(--sc-sans-font);
     display: block;
     font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 24px;
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
+    line-height: 24px;
     white-space: nowrap;
     overflow: hidden;
   }
@@ -198,10 +198,10 @@ export const dictStyles = html`
   }
 
   dd a {
-            color: inherit;
-        text-decoration: underline;
-        text-decoration-color: var(--sc-primary-color);
-        text-decoration-skip-ink: auto;
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--sc-primary-color);
+    text-decoration-skip-ink: auto;
   }
 
   dd a:hover {

@@ -88,7 +88,11 @@
     "@material/mwc-tab-scroller": "0.15.0",
     "@material/mwc-tab-indicator": "0.15.0",
     "@material/mwc-floating-label": "0.15.0",
-    "@material/mwc-notched-outline": "0.15.0"
+    "@material/mwc-notched-outline": "0.15.0",
+    "@lion/select-rich": "0.15.2",
+    "@lion/tooltip": "0.8.11",
+    "@lion/switch": "0.8.1",
+    "@alangdm/block-link": "0.1.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

@@ -3,6 +3,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { SCStaticPage } from '../addons/sc-static-page.js';
 import { API_ROOT } from '../../constants.js';
+import '../navigation/sc-tipitaka.js';
 
 class SCHomePage extends SCStaticPage {
   static get styles() {
@@ -242,6 +243,7 @@ class SCHomePage extends SCStaticPage {
   render() {
     return html`
       <main>
+        <sc-tipitaka></sc-tipitaka>
         <section class="plain">
           <p>${unsafeHTML(this.localize('2797e2ab111cd1d938bd327b38002092'))}</p>
           <p>${unsafeHTML(this.localize('9db604c6c61c4cb7431619341bc037bf'))}</p>

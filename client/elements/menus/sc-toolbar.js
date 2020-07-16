@@ -5,7 +5,10 @@ import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/iron-location/iron-location.js';
-import '@polymer/neon-animation/animations/slide-from-right-animation.js';
+//import '@polymer/neon-animation/animations/slide-from-right-animation.js';
+
+import '@material/mwc-icon';
+import '@material/mwc-icon-button';
 
 import './sc-more-menu.js';
 import { store } from '../../redux-store';
@@ -13,7 +16,7 @@ import { LitLocalized } from '../addons/localization-mixin'
 import { throttle } from 'throttle-debounce';
 
 /*
-Base toolbar that appears on the top right in the header of every page. This toolbar is called from the page-selector.
+Base toolbar that appears on the top right in the header of every page.
 */
 
 class SCToolbar extends LitLocalized(LitElement) {
@@ -35,9 +38,9 @@ class SCToolbar extends LitLocalized(LitElement) {
 
       .toolbar-input {
         font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-    line-height: 24px;
+        font-size: var(--sc-skolar-font-size-md);
+        font-weight: 400;
+        line-height: 24px;
         --paper-input-container: {
           padding: 0;
         };
@@ -110,6 +113,10 @@ class SCToolbar extends LitLocalized(LitElement) {
       #more_vert_button {
         margin: 0;
       }
+
+      /* [hidden] {
+        display: none !important;
+      } */
     </style>
 
     <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
@@ -122,12 +129,71 @@ class SCToolbar extends LitLocalized(LitElement) {
         @keys-pressed="${this._startSearch}">
       </iron-a11y-keys>
 
-      <paper-icon-button
-        icon="sc-iron-icons:search"
+      <mwc-icon-button 
+        icon="wb_sunny" 
+        class="white-icon toolbar-paper-button" 
+        id="btnLightTheme" 
+        title="Light theme"  
+        @click="${this._onBtnLightThemeClick}" 
+        slot="actionItems" 
+        ?hidden="${this.displayLightThemeButton}">
+      </mwc-icon-button>
+
+      <mwc-icon-button icon="bedtime"
+        class="white-icon toolbar-paper-button" 
+        id="btnDarkTheme" 
+        title="Dark theme" 
+        @click="${this._onBtnDarkThemeClick}" 
+        slot="actionItems" 
+        ?hidden="${this.displayDarkThemeButton}">
+      </mwc-icon-button>
+
+      <mwc-icon-button 
+        icon="view_compact" 
+        class="white-icon toolbar-paper-button" 
+        id="btnViewCompact" 
+        title="Compact mode" 
+        @click="${this._onBtnViewCompactClick}" 
+        slot="actionItems" 
+        ?hidden="${this.displayCompactButton}">
+      </mwc-icon-button>
+
+      <mwc-icon-button 
+        icon="view_comfy" 
+        class="white-icon toolbar-paper-button" 
+        id="btnViewComfy" 
+        title="Comfy mode" 
+        @click="${this._onBtnViewCompactClick}" 
+        slot="actionItems" 
+        ?hidden="${this.displayComfyButton}">
+      </mwc-icon-button>
+
+      <mwc-icon-button 
+        icon="info" 
+        class="white-icon toolbar-paper-button" 
+        id="btnInfo" 
+        title="Text info" 
+        @click="${this._onBtnInfoClick}" 
+        slot="actionItems" 
+        ?hidden="${this.displayInfoButton}">
+      </mwc-icon-button>
+
+      <!-- <mwc-icon-button icon="content_copy" class="white-icon toolbar-paper-button" id="btnCopy" title="Copy text" @click="${this._onBtnCopyClick}" slot="actionItems" ?hidden="${!this.displayInfoButton}"></mwc-icon-button> -->
+      <mwc-icon-button 
+        icon="settings" 
+        class="white-icon toolbar-paper-button" 
+        id="btnTools" 
+        title="Text options" 
+        @click="${this._onBtnToolsClick}" 
+        slot="actionItems" 
+        ?hidden="${this.displayToolButton}">
+      </mwc-icon-button>
+
+      <mwc-icon-button icon="search"
         title="${this.localize('searchTooltip')}"
         class="white-icon toolbar-paper-button"
-        @tap="${this.openSearch}">
-      </paper-icon-button>
+        @click="${this.openSearch}">
+      </mwc-icon-button>
 
       <paper-input
         class="toolbar-input"
@@ -136,12 +202,12 @@ class SCToolbar extends LitLocalized(LitElement) {
         id="search_input">
       </paper-input>
 
-      <paper-icon-button
-        icon="sc-iron-icons:close"
+      <mwc-icon-button
+        icon="close"
         class="white-icon toolbar-paper-button"
         id="close_button"
-        @tap="${this._closeSearch}">
-      </paper-icon-button>
+        @click="${this._closeSearch}">
+      </mwc-icon-button>
 
       <!-- Menu for more options like language and other static pages -->
       <paper-menu-button
@@ -169,7 +235,16 @@ class SCToolbar extends LitLocalized(LitElement) {
       localizedStringsPath: { type: String },
       search_input: { type: Object },
       searchKeyword: { type: String },
-      paperMenuButtonAnimations: { type: Object }
+      paperMenuButtonAnimations: { type: Object },
+      displaySettingMenu: { type: Boolean },
+      displayToolButton: { type: Boolean },
+      displayInfoButton: { type: Boolean },
+      displayCompactButton: { type: Boolean},
+      displayComfyButton: { type: Boolean},
+      displayLightThemeButton: { type: Boolean },
+      displayDarkThemeButton: { type: Boolean },
+      displayViewModeButton: { type: Boolean},
+      colorTheme: { type: String }
     }
   }
 
@@ -178,38 +253,40 @@ class SCToolbar extends LitLocalized(LitElement) {
     this.path = '';
     this.suttaplexDisplay = '';
     this.suttaplexListEnabled = store.getState().suttaplexListDisplay;
+    this.colorTheme = store.getState().colorTheme;
+    //this._colorThemeChanged();
     this.query = '';
     this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/sc-toolbar';
     this.searchKeyword = store.getState().searchQuery;
     this.search_input = this.shadowRoot.getElementById('search_input');
-    this.paperMenuButtonAnimations =  [
-      {name: 'fade-in-animation', timing: {delay: 100, duration: 200}},
-      {
-        name: 'paper-menu-grow-width-animation',
-        timing: {
-          delay: 100,
-          duration: 150,
-          easing: 'cubic-bezier(.3,.95,.5,1)'
-        }
-      },
-      {
-        name: 'slide-from-right-animation',
-        timing: {
-          delay: 100,
-          duration: 150,
-          easing: 'cubic-bezier(.3,.95,.5,1)',
-        }
-      },
-      {
-        name: 'paper-menu-grow-height-animation',
-        timing: {
-          delay: 100,
-          duration: 275,
-          easing: 'cubic-bezier(.3,.95,.5,1)'
-        }
-      }
-    ];
+    // this.paperMenuButtonAnimations =  [
+    //   {name: 'fade-in-animation', timing: {delay: 100, duration: 200}},
+    //   {
+    //     name: 'paper-menu-grow-width-animation',
+    //     timing: {
+    //       delay: 100,
+    //       duration: 150,
+    //       easing: 'cubic-bezier(.3,.95,.5,1)'
+    //     }
+    //   },
+    //   {
+    //     name: 'slide-from-right-animation',
+    //     timing: {
+    //       delay: 100,
+    //       duration: 150,
+    //       easing: 'cubic-bezier(.3,.95,.5,1)',
+    //     }
+    //   },
+    //   {
+    //     name: 'paper-menu-grow-height-animation',
+    //     timing: {
+    //       delay: 100,
+    //       duration: 275,
+    //       easing: 'cubic-bezier(.3,.95,.5,1)'
+    //     }
+    //   }
+    // ];
 
     //window.addEventListener('resize', throttle(300, () => {
       //const searchInputElement = this.shadowRoot.getElementById('search_input');
@@ -217,6 +294,10 @@ class SCToolbar extends LitLocalized(LitElement) {
         //this._closeSearch();
       //}
     //}));
+    this.displaySettingMenu = store.getState().displaySettingMenu;
+    this.displayToolButton = store.getState().displayToolButton;
+    this.displayInfoButton = store.getState().displayInfoButton;
+    this.displayViewModeButton = store.getState().displayViewModeButton;
   }
 
   get actions() {
@@ -244,7 +325,31 @@ class SCToolbar extends LitLocalized(LitElement) {
           type: "SAVE_TOOLBAR_TITLE",
           toolbarTitle: title
         })
-      }
+      },
+      changeDisplaySettingMenuState(display) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
+          displaySettingMenu: display
+        })
+      },
+      changeDisplayToolButtonState(display) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_TOOL_BUTTON_STATE',
+          displayToolButton: display
+        })
+      },
+      toggleSuttaplexDisplay(view) {
+        store.dispatch({
+          type: 'SUTTPLEX_LIST_DISPLAY',
+          suttaplexdisplay: view
+        })
+      },
+      changeAppTheme(theme) {
+        store.dispatch({
+          type: 'CHANGE_COLOR_THEME',
+          theme: theme
+        })
+      },
     }
   }
 
@@ -262,12 +367,173 @@ class SCToolbar extends LitLocalized(LitElement) {
       searchInputElement.value = this.searchKeyword;
       this.openSearch();
     }
+
+    // this.shadowRoot.querySelector('#btnTools').addEventListener('click', (e)=>{
+    //   this.displaySettingMenu = store.getState().displaySettingMenu;
+    //   if (!this.displaySettingMenu) {
+    //     this.actions.changeDisplaySettingMenuState(true);
+    //     this.parentNode.parentNode.querySelector('#setting_Menu').show();
+    //   } else {
+    //     this.actions.changeDisplaySettingMenuState(false);
+    //     this.parentNode.parentNode.querySelector('#setting_Menu').hide();
+    //   }
+    // });
+    this._displayToolButtonStateChange();
+    this._colorThemeChanged();
+    this._viewModeChanged();
+
+    // this.shadowRoot.querySelector('#btnInfo').addEventListener('click', (e) => {
+    //   this.dispatchEvent(new CustomEvent('show-info-dialog', {
+    //     bubbles: true,
+    //     composed: true
+    //   }));
+    // });
+
+    // this.shadowRoot.querySelector('#btnViewCompact').addEventListener('click', (e) => {
+    //   let isCompactView = store.getState().suttaplexListDisplay;
+    //   if (!isCompactView) {
+    //     this.actions.toggleSuttaplexDisplay(true);
+    //   } else {
+    //     this.actions.toggleSuttaplexDisplay(false);
+    //   }
+    // });
+  }
+
+  _onBtnLightThemeClick() {
+    this.actions.changeAppTheme('light');
+  }
+
+  _onBtnDarkThemeClick() {
+    this.actions.changeAppTheme('dark');
+  }
+
+  _onBtnInfoClick(e) {
+    this.dispatchEvent(new CustomEvent('show-info-dialog', {
+      bubbles: true,
+      composed: true
+    }));
+  }
+
+  _onBtnCopyClick(e) {
+
+  }
+
+  _onBtnViewCompactClick(e) {
+    this.actions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact' ? true : false);
+    this._viewModeChanged();
+  }
+
+  _viewModeChanged() {
+    let isCompactView = store.getState().suttaplexListDisplay;
+    if (isCompactView) {
+      this.displayCompactButton = false;
+      this.displayComfyButton = true;
+      this.shadowRoot.querySelector('#btnViewCompact').style.display = 'none';
+      this.shadowRoot.querySelector('#btnViewComfy').style.display = 'inherit';
+    } else {
+      this.displayCompactButton = true;
+      this.displayComfyButton = false;
+      this.shadowRoot.querySelector('#btnViewCompact').style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnViewComfy').style.display = 'none';
+    }
+    this.requestUpdate();
+  }
+
+  _onBtnToolsClick(e) {
+    this.displaySettingMenu = store.getState().displaySettingMenu;
+    if (!this.displaySettingMenu) {
+      this.actions.changeDisplaySettingMenuState(true);
+      //this.parentNode.parentNode.querySelector('#setting_Menu').show();
+      this._showSettingMenu();
+    } else {
+      this.actions.changeDisplaySettingMenuState(false);
+      //this.parentNode.parentNode.querySelector('#setting_Menu').hide();
+      this._hideSettingMenu();
+    }
+  }
+
+  _hideSettingMenu() {
+    this.dispatchEvent(new CustomEvent('hide-sc-top-sheet', {
+      bubbles: true,
+      composed: true
+    }));
+  }
+
+  _showSettingMenu() {
+    this.dispatchEvent(new CustomEvent('show-sc-top-sheet', {
+      bubbles: true,
+      composed: true
+    }));
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    if (this.displaySettingMenu !== state.displaySettingMenu) {
+      this.displaySettingMenu = state.displaySettingMenu;
+    }
+    if (this.displayToolButton !== state.displayToolButton) {
+      this.displayToolButton = state.displayToolButton;
+    }
+    if (this.displayViewModeButton !== state.displayViewModeButton) {
+      this.displayViewModeButton = state.displayViewModeButton;
+    }
+    if (this.colorTheme !== state.colorTheme) {
+      this.colorTheme = state.colorTheme;
+    }
+  }
+
+  updated(changedProps) {
+    if (changedProps.has('displayToolButton')) {
+      this._displayToolButtonStateChange();
+    }
+    if (changedProps.has('displayViewModeButton')) {
+      this._displayViewModeButtonStateChange();
+    }
+    if (changedProps.has('colorTheme')) {
+      this._colorThemeChanged();
+    }
+    if (changedProps.has('suttaplexListEnabled')) {
+      this._viewModeChanged();
+    }
+  }
+
+  _colorThemeChanged() {
+    this.displayLightThemeButton = this.colorTheme === 'light' ? true : false;
+    this.displayDarkThemeButton = !this.displayLightThemeButton;
+
+    if (this.displayLightThemeButton) {
+      this.shadowRoot.querySelector('#btnLightTheme').style.display = 'none';
+      this.shadowRoot.querySelector('#btnDarkTheme').style.display = 'inherit';
+    } else {
+      this.shadowRoot.querySelector('#btnLightTheme').style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnDarkTheme').style.display = 'none';
+    }
+  }
+
+  _displayViewModeButtonStateChange() {
+    if (this.displayViewModeButton) {
+      this.shadowRoot.querySelector('#btnViewCompact').style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnViewComfy').style.display = 'inherit';
+    } else {
+      this.shadowRoot.querySelector('#btnViewCompact').style.display = 'none';
+      this.shadowRoot.querySelector('#btnViewComfy').style.display = 'none';
+    }
+  }
+
+  _displayToolButtonStateChange() {
+    if (this.displayToolButton) {
+      this.shadowRoot.querySelector('#btnTools').style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnInfo').style.display = 'inherit';
+    } else {
+      this.shadowRoot.querySelector('#btnTools').style.display = 'none';
+      this.shadowRoot.querySelector('#btnInfo').style.display = 'none';
+    }
   }
 
   // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
   // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
   openSearch() {
-    this.actions.saveToolbarTitle(this.parentNode.querySelector('#toolbar_title').innerText);
+    this.actions.saveToolbarTitle(this.parentNode.querySelector('#toolbarTitle').innerText);
     const searchInputElement = this.shadowRoot.getElementById('search_input');
     let largeWindowInnerWidth = 1040;
     let mediumWindowInnerWidth = 480;
@@ -278,11 +544,11 @@ class SCToolbar extends LitLocalized(LitElement) {
       this.shadowRoot.getElementById('close_button').style.display = 'inline-block';
 
       if (window.innerWidth < largeWindowInnerWidth) {
-        this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'visibility:hidden');
+        //this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'visibility:hidden');
       }
       if (window.innerWidth < mediumWindowInnerWidth) {
-        this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'display:none');
-        this.parentNode.querySelector('#drawertoggle').setAttribute('style', 'display:none');
+        //this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'display:none');
+        //this.parentNode.querySelector('#drawertoggle').setAttribute('style', 'display:none');
       }
       this.setSearchInputWidth();
 
@@ -327,8 +593,8 @@ class SCToolbar extends LitLocalized(LitElement) {
 
       this.shadowRoot.getElementById('close_button').style.display = 'none';
       this.shadowRoot.getElementById('tools_menu').classList.remove('search-open');
-      this.parentNode.querySelector('#toolbar_title_box').removeAttribute('style', 'display');
-      this.parentNode.querySelector('#drawertoggle').removeAttribute('style', 'display');
+      //this.parentNode.querySelector('#toolbar_title_box').removeAttribute('style', 'display');
+      //this.parentNode.querySelector('#drawertoggle').removeAttribute('style', 'display');
       this.actions.changeToolbarTitle(store.getState().toolbarTitle);
     }
   }

@@ -329,7 +329,6 @@ export const parallelsListCss = html`
   }
 
   .paper-spinner {
-    --paper-spinner-color: var(--sc-primary-color);
     margin: var(--sc-size-md) 0;
     left: 50%;
   }
