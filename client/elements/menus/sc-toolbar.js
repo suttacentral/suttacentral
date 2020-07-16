@@ -117,6 +117,10 @@ class SCToolbar extends LitLocalized(LitElement) {
       /* [hidden] {
         display: none !important;
       } */
+
+      .invisible {
+        display: none !important;
+      }
     </style>
 
     <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
@@ -131,7 +135,7 @@ class SCToolbar extends LitLocalized(LitElement) {
 
       <mwc-icon-button 
         icon="wb_sunny" 
-        class="white-icon toolbar-paper-button" 
+        class="white-icon toolButtons" 
         id="btnLightTheme" 
         title="Light theme"  
         @click="${this._onBtnLightThemeClick}" 
@@ -140,7 +144,7 @@ class SCToolbar extends LitLocalized(LitElement) {
       </mwc-icon-button>
 
       <mwc-icon-button icon="bedtime"
-        class="white-icon toolbar-paper-button" 
+        class="white-icon toolButtons" 
         id="btnDarkTheme" 
         title="Dark theme" 
         @click="${this._onBtnDarkThemeClick}" 
@@ -150,7 +154,7 @@ class SCToolbar extends LitLocalized(LitElement) {
 
       <mwc-icon-button 
         icon="view_compact" 
-        class="white-icon toolbar-paper-button" 
+        class="white-icon toolButtons" 
         id="btnViewCompact" 
         title="Compact mode" 
         @click="${this._onBtnViewCompactClick}" 
@@ -160,7 +164,7 @@ class SCToolbar extends LitLocalized(LitElement) {
 
       <mwc-icon-button 
         icon="view_comfy" 
-        class="white-icon toolbar-paper-button" 
+        class="white-icon toolButtons" 
         id="btnViewComfy" 
         title="Comfy mode" 
         @click="${this._onBtnViewCompactClick}" 
@@ -170,18 +174,17 @@ class SCToolbar extends LitLocalized(LitElement) {
 
       <mwc-icon-button 
         icon="info" 
-        class="white-icon toolbar-paper-button" 
+        class="white-icon toolButtons" 
         id="btnInfo" 
         title="Text info" 
         @click="${this._onBtnInfoClick}" 
         slot="actionItems" 
         ?hidden="${this.displayInfoButton}">
       </mwc-icon-button>
-
-      <!-- <mwc-icon-button icon="content_copy" class="white-icon toolbar-paper-button" id="btnCopy" title="Copy text" @click="${this._onBtnCopyClick}" slot="actionItems" ?hidden="${!this.displayInfoButton}"></mwc-icon-button> -->
+      
       <mwc-icon-button 
         icon="settings" 
-        class="white-icon toolbar-paper-button" 
+        class="white-icon toolButtons" 
         id="btnTools" 
         title="Text options" 
         @click="${this._onBtnToolsClick}" 
@@ -260,40 +263,6 @@ class SCToolbar extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/sc-toolbar';
     this.searchKeyword = store.getState().searchQuery;
     this.search_input = this.shadowRoot.getElementById('search_input');
-    // this.paperMenuButtonAnimations =  [
-    //   {name: 'fade-in-animation', timing: {delay: 100, duration: 200}},
-    //   {
-    //     name: 'paper-menu-grow-width-animation',
-    //     timing: {
-    //       delay: 100,
-    //       duration: 150,
-    //       easing: 'cubic-bezier(.3,.95,.5,1)'
-    //     }
-    //   },
-    //   {
-    //     name: 'slide-from-right-animation',
-    //     timing: {
-    //       delay: 100,
-    //       duration: 150,
-    //       easing: 'cubic-bezier(.3,.95,.5,1)',
-    //     }
-    //   },
-    //   {
-    //     name: 'paper-menu-grow-height-animation',
-    //     timing: {
-    //       delay: 100,
-    //       duration: 275,
-    //       easing: 'cubic-bezier(.3,.95,.5,1)'
-    //     }
-    //   }
-    // ];
-
-    //window.addEventListener('resize', throttle(300, () => {
-      //const searchInputElement = this.shadowRoot.getElementById('search_input');
-      //if (searchInputElement && searchInputElement.classList.contains('opened')) {
-        //this._closeSearch();
-      //}
-    //}));
     this.displaySettingMenu = store.getState().displaySettingMenu;
     this.displayToolButton = store.getState().displayToolButton;
     this.displayInfoButton = store.getState().displayInfoButton;
@@ -368,35 +337,9 @@ class SCToolbar extends LitLocalized(LitElement) {
       this.openSearch();
     }
 
-    // this.shadowRoot.querySelector('#btnTools').addEventListener('click', (e)=>{
-    //   this.displaySettingMenu = store.getState().displaySettingMenu;
-    //   if (!this.displaySettingMenu) {
-    //     this.actions.changeDisplaySettingMenuState(true);
-    //     this.parentNode.parentNode.querySelector('#setting_Menu').show();
-    //   } else {
-    //     this.actions.changeDisplaySettingMenuState(false);
-    //     this.parentNode.parentNode.querySelector('#setting_Menu').hide();
-    //   }
-    // });
     this._displayToolButtonStateChange();
     this._colorThemeChanged();
     this._viewModeChanged();
-
-    // this.shadowRoot.querySelector('#btnInfo').addEventListener('click', (e) => {
-    //   this.dispatchEvent(new CustomEvent('show-info-dialog', {
-    //     bubbles: true,
-    //     composed: true
-    //   }));
-    // });
-
-    // this.shadowRoot.querySelector('#btnViewCompact').addEventListener('click', (e) => {
-    //   let isCompactView = store.getState().suttaplexListDisplay;
-    //   if (!isCompactView) {
-    //     this.actions.toggleSuttaplexDisplay(true);
-    //   } else {
-    //     this.actions.toggleSuttaplexDisplay(false);
-    //   }
-    // });
   }
 
   _onBtnLightThemeClick() {
@@ -412,10 +355,6 @@ class SCToolbar extends LitLocalized(LitElement) {
       bubbles: true,
       composed: true
     }));
-  }
-
-  _onBtnCopyClick(e) {
-
   }
 
   _onBtnViewCompactClick(e) {
@@ -544,11 +483,10 @@ class SCToolbar extends LitLocalized(LitElement) {
       this.shadowRoot.getElementById('close_button').style.display = 'inline-block';
 
       if (window.innerWidth < largeWindowInnerWidth) {
-        //this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'visibility:hidden');
+
       }
       if (window.innerWidth < mediumWindowInnerWidth) {
-        //this.parentNode.querySelector('#toolbar_title_box').setAttribute('style', 'display:none');
-        //this.parentNode.querySelector('#drawertoggle').setAttribute('style', 'display:none');
+
       }
       this.setSearchInputWidth();
 
@@ -558,27 +496,44 @@ class SCToolbar extends LitLocalized(LitElement) {
   }
 
   setSearchInputWidth() {
-    const searchSize = 500;
     const wideWindowInnerWidth = 840;
     const mediumWindowInnerWidth = 480;
-    const searchInputMaxWidth = 360;
-    let searchInputWidth;
+    const minWindowInnerWidth = 280;
+    const searchInputMaxWidth = 30;
+    let searchInputWidth = 8;
     if (window.innerWidth > wideWindowInnerWidth) {
-      searchInputWidth = window.innerWidth - searchSize;
-    }
-    else if (window.innerWidth > mediumWindowInnerWidth) {
+      searchInputWidth = 30;
+    } else if (window.innerWidth > mediumWindowInnerWidth) {
       this.actions.changeToolbarTitle('');
-      searchInputWidth = window.innerWidth - (searchSize - 210);
-    }
-    else {
+      this._setToolButtonsVisible(false);
+      searchInputWidth = 20;
+    } else if (window.innerWidth > minWindowInnerWidth) {
+      this.actions.changeToolbarTitle('');
+      this._setToolButtonsVisible(false);
+      searchInputWidth = 10;
+    } else {
+      this.actions.changeToolbarTitle('');
       this.shadowRoot.getElementById('tools_menu').classList.add('search-open');
-      searchInputWidth = window.innerWidth - (searchSize - 420);
+      this._setToolButtonsVisible(false);
+      searchInputWidth = 8;
     }
 
     if (searchInputWidth > searchInputMaxWidth) {
-      searchInputWidth = searchInputMaxWidth;
+      searchInputWidth = 20;
     }
-    this.shadowRoot.querySelector('.opened').style.width = `${searchInputWidth}px`;
+    this.shadowRoot.querySelector('.opened').style.width = `${searchInputWidth}em`;
+  }
+
+  _setToolButtonsVisible(visible) {
+    this.shadowRoot.querySelectorAll('.toolButtons').forEach((e) => {
+      if (e.style.display !== 'none') {
+        if (visible) {
+          e.classList.remove('invisible');
+        } else {
+          e.classList.add('invisible');
+        }
+      }
+    });
   }
 
   // Closes the searchbox and resets original values.
@@ -593,9 +548,8 @@ class SCToolbar extends LitLocalized(LitElement) {
 
       this.shadowRoot.getElementById('close_button').style.display = 'none';
       this.shadowRoot.getElementById('tools_menu').classList.remove('search-open');
-      //this.parentNode.querySelector('#toolbar_title_box').removeAttribute('style', 'display');
-      //this.parentNode.querySelector('#drawertoggle').removeAttribute('style', 'display');
       this.actions.changeToolbarTitle(store.getState().toolbarTitle);
+      this._setToolButtonsVisible(true);
     }
   }
 

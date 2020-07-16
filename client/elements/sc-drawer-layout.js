@@ -77,6 +77,20 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           }
         }
 
+        @media screen and (max-width: 480px) {
+          #titlebarSitetitle {
+            font-size: 2.25rem !important;
+          }
+
+          #titlebarSubtitle{
+            font-size: 1.05rem !important;
+          }
+
+          #SCTitle {
+            font-size: 1.5rem !important;
+          }
+        }
+
         .dialog-header {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-static-subtitle);
@@ -426,7 +440,6 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
 
     ['load', 'online', 'offline'].forEach(eventName => {
       window.addEventListener(eventName, () => {
-        //this.dispatch('setOnlineStatus', navigator.onLine);
         this.actions.setOnlineStatus(navigator.onLine);
       });
     });
