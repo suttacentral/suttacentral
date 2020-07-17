@@ -199,7 +199,7 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           /* position: relative; */ 
           top: 0;
           box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05), 2px 2px 2px rgba(0, 0, 0, 0.05), 4px 4px 4px rgba(0, 0, 0, 0.05), 8px 8px 8px rgba(0, 0, 0, 0.05);
-          z-index: 99;
+          z-index: 9999;
         }
 
         #titlebarCenter {
@@ -407,6 +407,18 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           displaySettingMenu: display
         })
       },
+      setNavigation(navArray) {
+        store.dispatch({
+          type: 'SET_NAVIGATION',
+          navigationArray: navArray
+        })
+      },
+      setCurrentNavPosition(position) {
+        store.dispatch({
+          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
+          currentNavPosition: position
+        })
+      },
     };
   }
 
@@ -481,7 +493,31 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
       }
       lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
     }));
+
+    this._initNavigation();
   }
+
+  _initNavigation() {
+    this.navArray = store.getState().navigationArray;
+    this.currentNavPosition = store.getState().currentNavPosition;
+    if (!this.navArray) {
+      this.navArray = [
+        {
+          title: 'Home',
+          url: '/',
+          type: 'home',
+          position: 0,
+          navigationArrayLength: 1
+        },
+      ];
+      this.actions.setNavigation(this.navArray);
+    }
+    
+    if (!this.currentNavPosition) {
+      this.actions.setCurrentNavPosition(0);
+    }
+  }
+
   updated(changedProps) {
     //super.updated(changedProps);
     if (changedProps.has('siteLanguage')) {
