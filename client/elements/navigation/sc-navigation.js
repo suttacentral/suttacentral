@@ -369,7 +369,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     return this.navArray[this.currentNavPosition].displayVaggas && this.vaggasData ? html`
       <main>
         ${this.vaggasData[0].children.map(child => html`
-          <a href="/${child.id.toLowerCase()}">
           <section class='card' @click=${() => this._onVaggasCardClick(child.id.toLowerCase(), child.name)}>
             <header>
               <span class='header-left'>
@@ -398,9 +397,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                 <button class='transition'>View suttas</button>
               </span>
             </div>
-
           </section>
-          </a>
         `)}
       </main>` : '';
   }

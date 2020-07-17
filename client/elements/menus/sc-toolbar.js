@@ -119,7 +119,7 @@ class SCToolbar extends LitLocalized(LitElement) {
       } */
 
       .invisible {
-        display: none !important;
+        display: none;
       }
     </style>
 
@@ -488,18 +488,18 @@ class SCToolbar extends LitLocalized(LitElement) {
       if (window.innerWidth < mediumWindowInnerWidth) {
 
       }
-      this.setSearchInputWidth();
+      this.calcSearchInputWidth();
 
       searchInputElement.focus();
       searchInputElement.value = '';
     }
   }
 
-  setSearchInputWidth() {
+  calcSearchInputWidth() {
     const wideWindowInnerWidth = 840;
     const mediumWindowInnerWidth = 480;
     const minWindowInnerWidth = 280;
-    const searchInputMaxWidth = 30;
+    const searchInputMaxWidth = 20;
     let searchInputWidth = 8;
     if (window.innerWidth > wideWindowInnerWidth) {
       searchInputWidth = 30;
@@ -519,7 +519,7 @@ class SCToolbar extends LitLocalized(LitElement) {
     }
 
     if (searchInputWidth > searchInputMaxWidth) {
-      searchInputWidth = 20;
+      searchInputWidth = searchInputMaxWidth;
     }
     this.shadowRoot.querySelector('.opened').style.width = `${searchInputWidth}em`;
   }
