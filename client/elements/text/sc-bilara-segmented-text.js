@@ -144,7 +144,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   firstUpdated() {
     this._updateView();
-    this.addEventListener('click', () => { this._hideSettingMenu() });
+    this.addEventListener('click', () => { 
+      this._hideSettingMenu() 
+      this.actions.changeDisplaySettingMenuState(false);
+    });
   }
 
   _hideSettingMenu() {
@@ -423,7 +426,13 @@ class SCBilaraSegmentedText extends SCLitTextPage {
           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
           view: viewNumber
         })
-      }
+      },
+      changeDisplaySettingMenuState(display) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
+          displaySettingMenu: display
+        })
+      },
     }
   }
 

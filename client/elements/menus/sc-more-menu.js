@@ -78,14 +78,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           ${this.localize('UseOffline')}
         </paper-item>
       </a>
-      <paper-item class="more-menu-paper-item">
-        <paper-toggle-button id="theme_toggler" class="toggle-button" ?checked="${this.darkThemeChosen}"></paper-toggle-button>
-        ${this.localize('DarkTheme')}
-      </paper-item>
-      <paper-item class="more-menu-paper-item">
-        <paper-toggle-button id="view_toggler" class="toggle-button" ?checked="${this.compactViewChosen}"></paper-toggle-button>
-        ${this.localize('SuttaplexCompactView')}
-      </paper-item>
       <a class="more-menu-link" href="/downloads">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:file-download"></iron-icon>
@@ -223,22 +215,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
   }
 
   _initializeListeners() {
-    const themeTogglerElement = this.shadowRoot.getElementById('theme_toggler');
-    if (themeTogglerElement) {
-      themeTogglerElement.addEventListener('checked-changed', () => {
-        const newTheme = this.darkThemeChosen ? 'light' : 'dark';
-        this.actions.changeAppTheme(newTheme);
-      });
-    }
-
-    const viewTogglerElement = this.shadowRoot.getElementById('view_toggler');
-    if (viewTogglerElement) {
-      viewTogglerElement.addEventListener('checked-changed', () => {
-        const newView = this.compactViewChosen ? false : true;
-        this.actions.toggleSuttaplexDisplay(newView);
-      });
-    }
-
     this.shadowRoot.querySelectorAll('.more-menu-link').forEach((e) => {
       e.addEventListener('click', (e) => {
         this._dispatchItemSelectedEvent();

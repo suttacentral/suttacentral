@@ -56,9 +56,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
         .search-result-header {
           font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-h1-md);
-    font-weight: 400;
-    line-height: 40px;
+          font-size: var(--sc-skolar-font-size-h1-md);
+          font-weight: 400;
+          line-height: 40px;
           display: inline-block;
           margin: 0;
         }
@@ -76,10 +76,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .search-result-item dl a {
-                  color: inherit;
-        text-decoration: underline;
-        text-decoration-color: var(--sc-primary-color);
-        text-decoration-skip-ink: auto;
+          color: inherit;
+          text-decoration: underline;
+          text-decoration-color: var(--sc-primary-color);
+          text-decoration-skip-ink: auto;
         }
 
         .search-result-item dl a:hover {
@@ -104,9 +104,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
         .search-result-title {
           font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-static-subtitle);
-        font-weight: 400;
-        line-height: 32px;
+          font-size: var(--sc-skolar-font-size-static-subtitle);
+          font-weight: 400;
+          line-height: 32px;
           font-family: var(--sc-serif-font);
           color: var(--sc-primary-accent-color);
           margin: 22px 0 0 0;
@@ -114,9 +114,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
         .search-result-division {
           font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 24px;
+          font-size: var(--sc-skolar-font-size-s);
+          font-weight: 400;
+          line-height: 24px;
           color: var(--sc-secondary-text-color);
           margin: 0 0 var(--sc-size-md);
           white-space: nowrap;
@@ -125,9 +125,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
         .search-result-snippet {
           font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-    line-height: 24px;
+          font-size: var(--sc-skolar-font-size-md);
+          font-weight: 400;
+          line-height: 24px;
           margin: 0 0 20px 0;
         }
 
@@ -161,16 +161,16 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
         .dictionary .search-result-title {
           font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-    line-height: 24px;
+          font-size: var(--sc-skolar-font-size-md);
+          font-weight: 400;
+          line-height: 24px;
         }
 
         .dictionary dfn {
           font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-static-subtitle);
-        font-weight: 400;
-        line-height: 32px;
+          font-size: var(--sc-skolar-font-size-static-subtitle);
+          font-weight: 400;
+          line-height: 32px;
           font-weight: bold;
         }
 
@@ -181,7 +181,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         .dictionary .case {
           color: var(--sc-secondary-text-color);
           font-variant-caps: all-small-caps;
-    letter-spacing: var(--sc-caps-letter-spacing);
+          letter-spacing: var(--sc-caps-letter-spacing);
           display: block;
         }
 
@@ -195,11 +195,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .paper-spinner {
-                  position: absolute;
-        margin: 0;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+          position: absolute;
+          margin: 0;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
 
         .google-maps {
@@ -393,7 +393,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       this.searchParams = state.searchParams;
     }
   }
-
+  
   get actions() {
     return {
       initiateSearch(params) {
@@ -401,7 +401,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           type: 'INITIATE_SEARCH',
           params: params
         });
-      }
+      },
     }
   }
 

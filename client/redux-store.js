@@ -53,9 +53,23 @@ const initialState = {
     suttaplexListDisplay: false,
     isOnline: true,
     showedLanguagePrompt: false,
-    //sidebar open state
-    drawerOpened: false,
-    toolbarTitle: ''
+    toolbarTitle: '',
+    navigationArray: [
+      {
+        title: 'Home',
+        url: '/',
+        type: 'home',
+        position: 0,
+        navigationArrayLength: 1
+      },
+    ],
+    currentNavPosition: 1,
+    displayParallels: false,
+    displaySettingMenu: false,
+    displayToolButton: false,
+    displayInfoButton: false,
+    displayViewModeButton: true,
+    displaySCSiteTitle: true,
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -75,8 +89,6 @@ const reducer = (state, action) => {
             return Object.assign({}, state, { searchParams: action.params });
         case 'CHANGE_SEARCH_QUERY':
             return Object.assign({}, state, { searchQuery: action.searchKeyword });
-        case 'CHANGE_DRAWER_OPEN_STATE':
-            return Object.assign({}, state, { drawerOpened: action.drawerOpened });
         case 'DOWNLOAD_SUTTA_TEXT':
             return Object.assign({}, state, { suttaText: action.text });
         case 'CHANGE_SUTTA_META_TEXT':
@@ -134,6 +146,24 @@ const reducer = (state, action) => {
         case 'SET_SHOW_HIGHLIGHTING':
             return Object.assign({}, state,
                 { textOptions: Object.assign({}, state.textOptions, { showHighlighting: action.showHighlighting }) });
+        case 'SET_NAVIGATION':
+            return Object.assign({}, state, { navigationArray: action.navigationArray });
+        case 'CHANGE_DISPLAY_PARALLELS_STATE':
+            return Object.assign({}, state, { displayParallels: action.displayParallels });
+        case 'CHANGE_DISPLAY_SETTING_MENU_STATE':
+            return Object.assign({}, state, { displaySettingMenu: action.displaySettingMenu });
+        case 'CHANGE_DISPLAY_TOOL_BUTTON_STATE':
+            return Object.assign({}, state, { displayToolButton: action.displayToolButton });
+        case 'CHANGE_DISPLAY_INFO_BUTTON_STATE':
+          return Object.assign({}, state, { displayInfoButton: action.displayInfoButton });
+        case 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE':
+          return Object.assign({}, state, { displayViewModeButton: action.displayViewModeButton });
+        case 'CHANGE_DISPLAY_SC_SITE_TITLE_STATE':
+          return Object.assign({}, state, { displaySCSiteTitle: action.displaySCSiteTitle });
+        case 'CHANGE_NAV_STATE':
+            return Object.assign({}, state, { navState: action.navState });
+        case 'CHANGE_CURRENT_NAV_POSITION_STATE':
+          return Object.assign({}, state, { currentNavPosition: action.currentNavPosition });
         default:
             return state;
     }

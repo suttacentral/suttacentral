@@ -161,7 +161,13 @@ class SCSimpleText extends SCLitTextPage {
           type: 'CHANGE_SUTTA_META_TEXT',
           metaText: metaText
         })
-      }
+      },
+      changeDisplaySettingMenuState(display) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
+          displaySettingMenu: display
+        })
+      },
     }
   }
 
@@ -170,6 +176,7 @@ class SCSimpleText extends SCLitTextPage {
       setTimeout(() => {
         this._scrollToSection(window.location.hash.substr(1), true, 0);
         this._hideSettingMenu();
+        this.actions.changeDisplaySettingMenuState(false);
       });
     });
     window.addEventListener('hashchange', () => {

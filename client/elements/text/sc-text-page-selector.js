@@ -35,6 +35,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         .wrapper {
           flex: 1;
         }
+
+        .sutta-list {
+          max-width: 720px;
+          transition: margin-top 0.3s, margin-bottom 0.3s;
+          margin: 0 auto var(--sc-size-xxl);
+        }
       </style>
 
       <div class="wrapper">
@@ -66,8 +72,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   get displaySCTextOptions() {
-    return !this._shouldDisplayError() ? html`
-      <sc-text-options id="sutta_text_options" class="text-options" .suttaplexItem=${this.suttaplex}></sc-text-options>
+    return !this._shouldDisplayError() && this.displayTextOptions ? html`
+      <!-- <sc-text-options id="sutta_text_options" class="text-options" .suttaplexItem=${this.suttaplex}></sc-text-options> -->
+      <br/>
+      <div class="sutta-list" id="suttaList">
+        <sc-suttaplex .item=${this.suttaplex}></sc-suttaplex>
+      </div>
     ` : '';
   }
 
@@ -133,7 +143,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       showedLanguagePrompt: { type: Boolean }, //statePath: 'showedLanguagePrompt'
       isLoading: { type: Boolean },
       haveBilaraSegmentedText: { type: Boolean },
-      bilaraDataPath: { type: String }
+      bilaraDataPath: { type: String },
+      displayTextOptions: { type: Boolean }
     }
   }
 
@@ -143,6 +154,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
     this.isLoading = false;
     this.bilaraDataPath = '/files/bilara-data';
+    this.displayTextOptions = store.getState().displayParallels;
   }
 
   get actions() {
@@ -165,6 +177,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           showedLanguagePrompt: true
         });
       },
+      setNavigation(navArray) {
+        store.dispatch({
+          type: 'SET_NAVIGATION',
+          navigationArray: navArray
+        })
+      }
     }
   }
 
@@ -177,6 +195,25 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       }
     });
   }
+  
+  _updateNav() {
+    let navArray = store.getState().navigationArray;
+    if (!navArray[5]) {
+      let suttaTitle = this.responseData.translation ? this.responseData.translation.title : '';
+      if (suttaTitle === '') {
+        suttaTitle = this.responseData.suttaplex.translated_title ? this.responseData.suttaplex.translated_title : this.responseData.suttaplex.original_title;
+      }
+      navArray.push(
+        {
+          'title': suttaTitle,
+          'url': store.getState().currentRoute.path,
+          'type': 'sutta',
+        }
+      );
+      this.actions.setNavigation(navArray);
+      this.actions.setCurrentNavPosition(5);
+    }
+  }
 
   updated(changedProps) {
     //super.updated(changedProps);
@@ -188,6 +225,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
     if (changedProps.has('authorUid') || changedProps.has('suttaId') || changedProps.has('langIsoCode')) {
       this._paramChanged();
+    }
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    if (this.displayTextOptions !== state.displayParallels) {
+      this.displayTextOptions = state.displayParallels;
     }
   }
 
@@ -241,6 +285,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
 
     this._getBilaraText();
+    this._updateNav();
   }
 
   _getSuttaTextUrl() {
@@ -366,10 +411,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     return (!this.rootSutta && !this.translatedSutta) || this.lastError;
   }
 
-  _updateToolbar(title) {
-    this.actions.changeToolbarTitle(title);
-  }
-
   _createMetaData(responseData, expansionReturns) {
     if (!responseData || !responseData.translation || !responseData.root_text) {
       return;
@@ -399,7 +440,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!title) {
       title = this._transformId(this.suttaId, this.expansionReturns);
     }
-    this._updateToolbar(`${title}—${author}`);
+    this.actions.changeToolbarTitle(`${title}—${author}`);
   }
 
   _transformId(rootId, expansionReturns) {
