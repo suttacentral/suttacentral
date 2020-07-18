@@ -7,7 +7,8 @@ import { LitLocalized } from '../addons/localization-mixin';
 
 import { navigationNormaModelStyles, navigationCompactModeStyles } from './sc-navigation-styles.js';
 
-import "@alangdm/block-link";
+import '@alangdm/block-link';
+import '../addons/sc-bouncing-loader';
 
 class SCTipitaka extends LitLocalized(LitElement) {
 
@@ -25,6 +26,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
       currentStyles: { type: Object },
       compactStyles: { type: Boolean },
       isCompactMode: { type: Boolean },
+      loading: { type: Boolean },
     };
   }
 
@@ -131,6 +133,9 @@ class SCTipitaka extends LitLocalized(LitElement) {
     return html`
       ${this.currentStyles}
       ${this.compactStyles}
+      <div class="loading-indicator">
+        <sc-bouncing-loader class="loading-spinner" ?active="${this.loading}"></sc-bouncing-loader>
+      </div>
       ${this.tipitakaCardTemplate}
     `;
   }

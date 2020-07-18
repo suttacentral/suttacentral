@@ -7,7 +7,8 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 
 import { pitakaGuide, navIndex } from './sc-navigation-common';
-import "@alangdm/block-link";
+import '@alangdm/block-link';
+import '../addons/sc-bouncing-loader';
 
 const childMenuCache = {};
 
@@ -31,6 +32,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       routePath: { type: String },
       currentNavPosition: { type: Number },
       languages: { type: Object },
+      loading: { type: Boolean },
     };
   }
 
@@ -161,6 +163,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   async _fetchMainMenuData() {
     try {
+      this.loading = true;
       this.mainMenuData = await (await fetch(`${API_ROOT}/menu?language=${this.language}`)).json();
       this.pitakaData = this.mainMenuData.find(x => {
         return x.uid === `pitaka/${this.pitakaName}`
@@ -168,6 +171,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       this.parallelsData = this.pitakaData.children.find(x => {
         return x.name === `${this.parallelsName}`
       });
+      this.loading = false;
     } catch (err) {
       this.mainMenuError = err;
     }
@@ -175,18 +179,21 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   async _fetchPitakaData() {
     try {
+      this.loading = true;
       if (!this.mainMenuData) {
         this._fetchMainMenuData();
       }
       this.pitakaData = this.mainMenuData.find(x => {
         return x.uid === `pitaka/${this.pitakaName}`
       });
+      this.loading = false;
     } catch (err) {
       this.mainMenuError = err;
     }
   }
 
   async _attachLanguageCount() {
+    this.loading = true;
     this.languageCountData = undefined;
     this.languageCountData = await (await fetch(`${API_ROOT}/translation_count/${this.language}`)).json();
     this.languageCountData.division.map(lang => {
@@ -195,6 +202,7 @@ class SCNavigation extends LitLocalized(LitElement) {
         langNumSpan.innerText = lang.total.toString();
       }
     });
+    this.loading = false;
   }
 
   _displayGuideLink() {
@@ -224,6 +232,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     return html`
       ${navigationNormaModelStyles}
       ${this.compactStyles}
+      <div class="loading-indicator">
+        <sc-bouncing-loader class="loading-spinner" ?active="${this.loading}"></sc-bouncing-loader>
+      </div>
       <main>
         ${this.pitakaContentTemplate}
         ${this.parallelsContentTemplate}
@@ -297,6 +308,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     this._fetchMainMenuData();
     this._attachLanguageCount();
     this._displayGuideLink();
+    if (!this.fullSiteLanguageName) {
+      this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    }
   }
 
   get parallelsContentTemplate() {
@@ -335,7 +349,6 @@ class SCNavigation extends LitLocalized(LitElement) {
               <!-- <a href='dn.html'><button class='transition demphasized-button'>View all discourses</button></a> -->
             </span>
           </div>
-
         </section>
       `)}`: '';
   }
@@ -405,13 +418,13 @@ class SCNavigation extends LitLocalized(LitElement) {
   _onVaggasCardClick(childId, childName) {
     let navType = 'vagga';
     let navIndexesOfType = navIndex.get(navType);
-    this.navArray.push({
+    this.navArray[navIndexesOfType.index] = {
       title: childName,
       url: `/${childId}`,
       type: navType,
       position: navIndexesOfType.position,
       navigationArrayLength: navIndexesOfType.navArrayLength
-    });
+    };
 
     this.actions.setNavigation(this.navArray);
     this.actions.setCurrentNavPosition(navIndexesOfType.position);

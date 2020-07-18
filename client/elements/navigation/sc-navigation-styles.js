@@ -378,8 +378,8 @@ export const navigationNormaModelStyles = html`
       height: 100%;
       padding: .3333em .5em;
 
-      color: var(--sc-primary-text-color);
-      background-color: var(--sc-primary-color-dark);
+      color: var(--sc-tertiary-text-color);
+      background-color: var(--sc-primary-color);
 
       justify-content: center;
       align-items: center;
@@ -452,6 +452,15 @@ export const navigationNormaModelStyles = html`
 
     titlebarSitetitle {
       
+    }
+
+    .loading-spinner {
+      position: absolute;
+      margin: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
     }
   </style>
 `;
