@@ -60,9 +60,9 @@ class SCTipitaka extends LitLocalized(LitElement) {
     this._appViewModeChanged();
     this._fetchMainMenu();
     this.tipitakaGuide = new Map([
-      ['Sutta', '/discourses'],
-      ['Vinaya', '/vinaya'],
-      ['Abhidhamma', '/abhidhamma'],
+      ['Discourses', '/discourses'],
+      ['Monastic Law', '/vinaya'],
+      ['Systematic Treatises', '/abhidhamma'],
     ]);
     this.tipitakaBlurb = new Map([
       ['Sutta', 'These are our primary sources for understanding what the Buddha taught. They record the Buddha’s teachings and conversations on specific occasions with a diverse range of people. Discourses are called sutta in Pali,which is spelled sūtra in Sanskrit.'],

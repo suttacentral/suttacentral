@@ -247,7 +247,6 @@ class SCHomePage extends SCStaticPage {
         <section class="plain">
           <p>${unsafeHTML(this.localize('2797e2ab111cd1d938bd327b38002092'))}</p>
           <p>${unsafeHTML(this.localize('9db604c6c61c4cb7431619341bc037bf'))}</p>
-          <p>Access the Buddha’s words with the sidebar at top left, or start with the guides and introductions on this page.</p>
         </section>
 
         <section class="plain">

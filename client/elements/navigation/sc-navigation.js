@@ -235,7 +235,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   get pitakaContentTemplate() {
     return this.navArray[this.currentNavPosition].displayPitaka && this.pitakaData ? html`
       ${this.pitakaData.children.map(child => html`
-        <section class='card' @click=${() => this._onPitakaCardClick(child.name)}>
+        <section class='card nav-card' @click=${() => this._onPitakaCardClick(child.name)}>
           <header>
             <span class='header-left'>
               <span class='title' lang='${this.language}'>
@@ -302,7 +302,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   get parallelsContentTemplate() {
     return this.navArray[this.currentNavPosition].displayParallels && this.parallelsData ? html`
       ${this.parallelsData.children.map(child => html`
-        <section class='card' @click=${() => this._onParallelsCardClick(child.id.toLowerCase(), child.name)}>
+        <section class='card nav-card' @click=${() => this._onParallelsCardClick(child.id.toLowerCase(), child.name)}>
           <header>
             <span class='header-left'>
               <span class='title' lang='${child.lang_iso}'>
@@ -369,8 +369,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     return this.navArray[this.currentNavPosition].displayVaggas && this.vaggasData ? html`
       <main>
         ${this.vaggasData[0].children.map(child => html`
-          <a href="/${child.id.toLowerCase()}">
-          <section class='card' @click=${() => this._onVaggasCardClick(child.id.toLowerCase(), child.name)}>
+          <section class='card nav-card' @click=${() => this._onVaggasCardClick(child.id.toLowerCase(), child.name)}>
             <header>
               <span class='header-left'>
                 <span class='title' lang='en'>
@@ -400,7 +399,6 @@ class SCNavigation extends LitLocalized(LitElement) {
             </div>
 
           </section>
-          </a>
         `)}
       </main>` : '';
   }

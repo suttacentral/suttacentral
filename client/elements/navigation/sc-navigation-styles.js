@@ -8,123 +8,48 @@ export const navigationNormaModelStyles = html`
       --sc-ambient-opacity: rgba(0, 0, 0, .12);
       --sc-shadow-elevation-1dp: 0px 2px 1px -1px var(--sc-umbra-opacity), 0px 1px 1px 0px var(--sc-penumbra-opacity), 0px 1px 3px 0px var(--sc-ambient-opacity);
       --sc-shadow-elevation-8dp: 0px 5px 5px -3px var(--sc-umbra-opacity), 0px 8px 10px 1px var(--sc-penumbra-opacity), 0px 3px 14px 2px var(--sc-ambient-opacity);
-      --sc-serif: 'source serif variable';
-      --sc-sans: 'source sans variable';
     }
 
-    body {
-      font-family: var(--sc-sans), sans-serif;
-      margin: 0;
-      background-color: rgb(251, 250, 249);
-    }
-
-    .appbar {
-      font-size: 22.6px;
-
+        main{
       display: flex;
-
-      height: 64px;
-      padding: 0 2rem 0 32px;
-
-      color: white;
-      background-color: goldenrod;
-
       align-items: center;
-      justify-content: space-between;
-    }
-
-    .text-functions {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .icon {
-      font-size: 1.2rem;
-      line-height: 1.5;
-    }
-
-    .appbar-function {
-      display: flex;
       flex-direction: column;
-
-      padding: 0 16px;
-
-      align-items: center;
-    }
-
-    .label {
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .home-page {
-      height: 12rem;
-
-      justify-content: center;
-    }
-
-    .home-page .page-title {
-      font-family: var(--sc-serif);
-      font-size: 3em;
-
-      font-variant-caps: small-caps;
-    }
-
-    nav,
-    header {
-      margin: 0;
-    }
-
-    main {
-      display: flex;
-      flex-direction: column;
-
-      height: 100%;
-      margin: 2em 0;
-
-      align-items: center;
     }
 
     .main-nav {
       display: flex;
       flex-direction: row;
-      flex-gap: 1em;
       justify-content: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      margin-top: 4em;
     }
 
-    section {
-      width: 720px;
-      margin: 1em 0 0 0;
-    }
-
-    @media screen and (min-width: 320px) and (max-width: 480px){
-      section {
-        max-width: 300px;
-        max-width: min-content;
+    @media screen and (max-width: 720px){
+      .main-nav {
+        flex-wrap: wrap;
+        
       }
-    }
-
-    .home-card {
-      max-width: 30em;
-      margin: 4em 1em 0;
     }
 
     .card {
       position: relative;
 
       /* overflow: hidden; */
+      max-width: 30em;
 
-      min-width: 20em;
+      min-width: 10em;
       padding-bottom: 1rem;
+      margin: 0.5em;
 
       transition: box-shadow 200ms ease-out;
 
-      border-radius: 8px;
-      background-color: var(--sc-primary-background-color);
+      border-radius: var(--sc-size-sm);
+      background-color: var(--sc-secondary-background-color);
       box-shadow: var(--sc-shadow-elevation-1dp);
 
       cursor: pointer;
+
+      overflow: hidden
     }
 
     .card:hover {
@@ -135,8 +60,23 @@ export const navigationNormaModelStyles = html`
       box-shadow: var(--sc-shadow-elevation-8dp);
     }
 
+    .card:hover .title{
+      text-decoration: underline;
+      text-decoration-color: var(--sc-primary-color);
+    }
+
     .card:active {
       box-shadow: var(--sc-shadow-elevation-1dp);
+    }
+
+.nav-card{
+  min-width: 30em;
+}
+    .nav-card:first-of-type{
+margin-top: 4em
+    }
+    .nav-car:last-of-type{
+      margin-bottom: 4em
     }
 
     .blurb {
@@ -156,7 +96,6 @@ export const navigationNormaModelStyles = html`
     }
 
     /* .title:lang(en) {
-      font-family: var(--sc-serif);
       font-size: 1.5em;
       font-weight: 500;
 
@@ -170,7 +109,7 @@ export const navigationNormaModelStyles = html`
     } */
 
     .title {
-      font-family: var(--sc-serif);
+      font-family: var(--sc-serif-font);
       font-size: 1.5em;
       font-weight: 500;
 
@@ -369,20 +308,22 @@ export const navigationNormaModelStyles = html`
     }
 
     .header-right {
-      font-size: .75em;
+      font-size: var(--sc-skolar-font-size-xs);
       line-height: 1;
 
       display: flex;
       flex-direction: column;
 
       height: 100%;
-      padding: .3333em .5em;
+      padding: .3333rem .5rem;
 
-      color: var(--sc-primary-text-color);
+      color: var(--sc-paper-tooltip-text-color);
+      font-weight: 600;
       background-color: var(--sc-primary-color-dark);
 
       justify-content: center;
       align-items: center;
+
     }
 
     .number {
@@ -397,13 +338,9 @@ export const navigationNormaModelStyles = html`
       color: rgba(67, 160, 71, 1);
     }
 
-    .essay:hover {
+    .essay a:hover {
       cursor: pointer;
       text-decoration: underline;
-    }
-
-    .essay:hover:after {
-      content: '↗';
     }
 
     .text {

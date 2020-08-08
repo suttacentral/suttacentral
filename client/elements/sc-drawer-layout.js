@@ -251,13 +251,14 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
         }
 
         #toolbarTitle {
-          font-weight: bold;
+          font-weight: normal;
           display: flex;
           align-items: center;
 
           margin-left: 1.2em;
 
           font-family: var(--sc-sans-font);
+          font-size: var(--app-toolbar-font-size, 20px);
           color: var(--sc-tertiary-text-color);
           white-space: nowrap;
           overflow: hidden;
