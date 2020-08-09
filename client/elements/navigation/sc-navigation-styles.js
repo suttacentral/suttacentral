@@ -14,6 +14,8 @@ export const navigationNormaModelStyles = html`
       display: flex;
       align-items: center;
       flex-direction: column;
+    margin: var(--sc-size-md-larger) auto;
+    max-width: 720px;
     }
 
     .main-nav {
@@ -35,9 +37,7 @@ export const navigationNormaModelStyles = html`
       position: relative;
 
       /* overflow: hidden; */
-      max-width: 30em;
 
-      min-width: 10em;
       padding-bottom: 1rem;
       margin: 0.5em;
 
@@ -404,14 +404,12 @@ export const navigationCompactModeStyles = html`
       display: none;
     }
 
-    section {
-      margin: 0 0 1px 0;
-    }
-
     .card {
       border-radius: 0px;
       padding-bottom: 0;
       cursor: pointer;
+      margin-top: 0;
+      margin-bottom: 1px;
     }
 
     .title {

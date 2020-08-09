@@ -367,7 +367,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   get vaggasContentTemplate() {
     return this.navArray[this.currentNavPosition].displayVaggas && this.vaggasData ? html`
-      <main>
+     
         ${this.vaggasData[0].children.map(child => html`
           <section class='card nav-card' @click=${() => this._onVaggasCardClick(child.id.toLowerCase(), child.name)}>
             <header>
@@ -399,8 +399,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             </div>
 
           </section>
-        `)}
-      </main>` : '';
+        `)}` : '';
   }
 
   _onVaggasCardClick(childId, childName) {
