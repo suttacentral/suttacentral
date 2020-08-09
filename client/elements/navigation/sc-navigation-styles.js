@@ -262,16 +262,20 @@ margin-top: 4em
       font-size: .8em;
       font-weight: 500;
 
-      margin: 0;
-      margin: 0 8px 0 16px;
-      padding: 14px 8px 10px 4px;
+      margin: 0 0 0 8px;
+      
 
       list-style-type: none;
 
       color: white;
     }
 
-    nav li:hover {
+    nav li a {
+      display: inline-block;
+      padding: 14px 8px 10px 4px;
+    }
+
+    nav li a:hover {
       cursor: pointer;
 
       border-bottom: 4px solid gold;
@@ -282,9 +286,10 @@ margin-top: 4em
       border-bottom: 4px solid gold;
     }
 
-    nav li:last-child:hover {
+    nav li:last-child a:hover {
       color: white;
       cursor: default;
+      border-bottom: none;
     }
 
     nav li:last-child a {
@@ -294,17 +299,15 @@ margin-top: 4em
     nav li:after {
       font-weight: 400;
 
-      position: absolute;
-
-      margin-left: 16px;
+      margin-left: 8px;
 
       content: '❭';
-      /* transform: scale(0.707) rotate(45deg); */
       color: white;
     }
 
     nav li:last-of-type:after {
       content: '';
+      margin-left: 0;
     }
 
     .header-right {
