@@ -164,6 +164,7 @@ class SCToolbar extends LitLocalized(LitElement) {
 {
     content: 'spacing';
 }
+
     </style>
 
     <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>

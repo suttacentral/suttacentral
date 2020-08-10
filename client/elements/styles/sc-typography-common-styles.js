@@ -4,7 +4,7 @@ export const typographyCommonStyles = css`
 
 /* includes all text styles found in one or more of static, legacy, or bilara */
 
-:root
+:host
 {
     font-family: var(--sc-serif-font);
     font-size: var(--sc-skolar-font-size-md);

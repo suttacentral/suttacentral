@@ -3,11 +3,7 @@ import { html } from 'lit-element';
 export const navigationNormaModelStyles = html`
   <style>
     html {
-      --sc-umbra-opacity: rgba(0, 0, 0, .2);
-      --sc-penumbra-opacity: rgba(0, 0, 0, .14);
-      --sc-ambient-opacity: rgba(0, 0, 0, .12);
-      --sc-shadow-elevation-1dp: 0px 2px 1px -1px var(--sc-umbra-opacity), 0px 1px 1px 0px var(--sc-penumbra-opacity), 0px 1px 3px 0px var(--sc-ambient-opacity);
-      --sc-shadow-elevation-8dp: 0px 5px 5px -3px var(--sc-umbra-opacity), 0px 8px 10px 1px var(--sc-penumbra-opacity), 0px 3px 14px 2px var(--sc-ambient-opacity);
+
     }
 
         main{
@@ -53,7 +49,7 @@ export const navigationNormaModelStyles = html`
     .card:hover {
       z-index: 10;
 
-      transition: box-shadow 200ms ease-out;
+      transition: all 200ms ease-out;
 
       box-shadow: var(--sc-shadow-elevation-8dp);
       background-color: var(--sc-primary-color-light-transparent);
@@ -74,7 +70,7 @@ margin-top: 4em
       padding: .5rem 1rem;
     font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 24px;
     }
 
     .blurb:empty{

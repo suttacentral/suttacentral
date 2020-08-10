@@ -214,7 +214,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
         border-bottom: 1px solid #ccc;
         width: 100%;
         display: grid;
-        grid-template-columns: 720px 360px 360px 360px 360px 360px 360px 360px;
+        grid-template-columns: 360px 360px 360px 360px 360px 720px 360px;
         height: 260px;
         overflow-y: scroll;
         overflow-x: scroll;
@@ -306,56 +306,18 @@ class SCTopSheet extends LitLocalized(LitElement) {
         }
       </style>
       <div class="container">
-        <section class="tools">
-          ${this.referenceDisplayTypeTemplate}
+        <section>
           ${this.noteDisplayTypeTemplate}
           ${this.textViewTemplate}
           ${this.paliLookupTemplate}
           ${this.chineseLookupTemplate}
           ${this.paliScriptsTemplate}
           ${this.showHighlightingTemplate}
+          ${this.referenceDisplayTypeTemplate}
           ${this.rememberSettingsTemplate}
         </section>
       </div>
     `;
-  }
-
-  get referenceDisplayTypeTemplate() {
-    return this.referenceDisplayTypeArray.length ? html`
-      <div class="tools">
-        <details><summary>${this.localize('reference')}</summary>
-        <p>${this.localize('referenceDescription')}</p></details>
-        <div class="form-controls three-column">
-          ${this.referenceDisplayTypeArray.map(item => html`
-            <mwc-formfield label="${this.localize(`referenceDisplayType_${item.displayTypeLabel}`)}">
-              <mwc-checkbox
-                name="referenceDisplayType"
-                value="${item.displayType}"
-                ?checked="${this.selectedReferenceDisplayType === item.displayType ? true : false}"
-                @change="${this._onReferenceDisplayTypeChanged}">
-              </mwc-checkbox>
-            </mwc-formfield>
-          `)}
-        </div></div>` : '';
-  }
-
-  get noteDisplayTypeTemplate() {
-    return this.referenceDisplayTypeArray.length ? html` 
-      <div class="tools">
-        <details><summary>${this.localize('notes')}</summary>
-        <p>${this.localize('notesDescription')}</p></details>
-        <div class="form-controls">
-          ${this.noteDisplayTypeArray.map(item => html`
-            <mwc-formfield label="${this.localize(`noteDisplayType_${item.displayTypeLabel}`)}">
-              <mwc-radio
-                name="noteDisplayType"
-                value="${item.displayType}"
-                ?checked="${this.selectedNoteDisplayType === item.displayType ? true : false}"
-                @change="${this._onNoteDisplayTypeChanged}">
-              </mwc-radio>
-            </mwc-formfield>
-          `)}
-        </div></div>` : '';
   }
   
   get textViewTemplate() {
@@ -432,6 +394,25 @@ class SCTopSheet extends LitLocalized(LitElement) {
                 ?checked="${this.paliScript === script.script ? true : false}"
                 @change="${this._onPaliScriptChanged}">
               </mwc-radio>
+            </mwc-formfield>
+          `)}
+        </div></div>` : '';
+  }
+
+    get referenceDisplayTypeTemplate() {
+    return this.referenceDisplayTypeArray.length ? html`
+      <div class="tools">
+        <details><summary>${this.localize('reference')}</summary>
+        <p>${this.localize('referenceDescription')}</p></details>
+        <div class="form-controls three-column">
+          ${this.referenceDisplayTypeArray.map(item => html`
+            <mwc-formfield label="${this.localize(`referenceDisplayType_${item.displayTypeLabel}`)}">
+              <mwc-checkbox
+                name="referenceDisplayType"
+                value="${item.displayType}"
+                ?checked="${this.selectedReferenceDisplayType === item.displayType ? true : false}"
+                @change="${this._onReferenceDisplayTypeChanged}">
+              </mwc-checkbox>
             </mwc-formfield>
           `)}
         </div></div>` : '';
