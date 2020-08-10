@@ -241,9 +241,10 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
         } 
 
         nav {
-          /* height: 64px; */
+          height: 64px;
           display: flex;
           background-color: var(--sc-primary-color);
+          padding: 0 2%;
         }
 
         nav span:first-child {
@@ -255,7 +256,7 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           display: flex;
           align-items: center;
 
-          margin-left: 1.2em;
+          
 
           font-family: var(--sc-sans-font);
           font-size: var(--app-toolbar-font-size, 20px);

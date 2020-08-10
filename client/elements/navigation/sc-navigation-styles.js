@@ -59,11 +59,6 @@ export const navigationNormaModelStyles = html`
       background-color: var(--sc-primary-color-light-transparent);
     }
 
-    .card:hover .title{
-      text-decoration: underline;
-      text-decoration-color: var(--sc-primary-color);
-    }
-
     .card:active {
       box-shadow: var(--sc-shadow-elevation-1dp);
     }
@@ -122,7 +117,6 @@ margin-top: 4em
 
     .subTitle {
     font-size: var(--sc-skolar-font-size-s);
-    font-weight: 400;
     color: var(--sc-secondary-text-color);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -196,35 +190,11 @@ text-decoration: underline;
       color: inherit;
     }
 
-    .stats {
-      font-size: .8em;
-
-      display: flex;
-      flex-direction: row;
-
-      margin-top: 1em;
-      padding: 2rem 1rem .5rem;
-      padding-top: 2em;
-
-      border-top: 1px solid #ccc;
-
-      justify-content: space-between;
-    }
-
-    .stats-head {
-      font-weight: bold;
-
-      padding: .5rem 1rem;
-
-      color: white;
-      background-color: #757575;
-    }
-
     nav {
       display: flex;
       flex-direction: row;
       box-sizing: border-box;
-      padding: 0 2rem 0 12px;
+      padding: 0 2%;
       background-color: rgb(75, 74, 74);
       justify-content: space-between;
       overflow-x: auto;
@@ -301,6 +271,10 @@ text-decoration: underline;
       margin-left: 0;
     }
 
+    nav li:first-of-type{
+      margin-left: 0
+    }
+
     .header-right {
       font-size: var(--sc-skolar-font-size-xxs);
       line-height: 1;
@@ -372,10 +346,15 @@ export const navigationCompactModeStyles = html`
       min-width: 20em;
     }
 
+.header-left {
+    padding: 12px 1rem 0;
+}
     .title {
-      font-size: var(--sc-skolar-font-size-xl);
-
+      font-size: var(--sc-skolar-font-size-l);
+      line-height: 1;
     }
-
+.shortcut{
+  font-size: var(--sc-skolar-font-size-s);
+}
   </style>
 `;

@@ -65,7 +65,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
       ['Systematic Treatises', '/abhidhamma'],
     ]);
     this.tipitakaBlurb = new Map([
-      ['Sutta', 'These are our primary sources for understanding what the Buddha taught. They record the Buddha’s teachings and conversations on specific occasions with a diverse range of people. Discourses are called sutta in Pali,which is spelled sūtra in Sanskrit.'],
+      ['Sutta', 'These are our primary sources for understanding what the Buddha taught. They record the Buddha’s teachings and conversations on specific occasions with a diverse range of people. Discourses are called sutta in Pali, which is spelled sūtra in Sanskrit.'],
       ['Vinaya', 'The texts on Monastic Law (vinaya) detail the lifestyle, rules, and procedures for Buddhist monks and nuns. They provide the guidelines for Buddhist monastics to this day, and in addition, paint a detailed and vivid picture of everyday life in ancient India.'],
       ['Abhidhamma', 'Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses. The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.'],
     ]);
@@ -88,6 +88,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
           <div class="main-nav">
             ${this.mainMenuData.map((item) => html`
               <section class="card home-card" @click=${() => this._onTipitakaCardClick(item.uid)}>
+
                 <header>
                   <span class="header-left">
                     <span class="title" lang="${this.language}">
@@ -111,6 +112,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                     <a href="${this.tipitakaGuide.get(item.name)}">Introduction to the ${item.name}.</a>
                   </block-link>
                 </div>
+                <mwc-ripple></mwc-ripple>
               </section>`
             )}
           </div>
