@@ -85,6 +85,11 @@ margin-top: 4em
       color: var(--sc-primary-text-color);
     }
 
+    .blurb:empty{
+      margin: 0;
+      padding: 0;
+    }
+
     .card header {
       display: flex;
 

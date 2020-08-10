@@ -316,9 +316,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ` : ''}
           </header>
 
-          <div class='blurb' id="${child.id}_blurb">
-
-          </div>
+          <div class='blurb' id="${child.id}_blurb"></div>
 
           <!-- <a href='https://en.wikipedia.org/wiki/Rickrolling'>
             <div class='essay'>Reader’s Guide to the ${child.name}.</div>
@@ -382,9 +380,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ` : ''}
             </header>
 
-            <div class='blurb' id="${child.id}_blurb">
-            
-            </div>
+            <div class='blurb' id="${child.id}_blurb"></div>
 
           </section>
         `)}` : '';
