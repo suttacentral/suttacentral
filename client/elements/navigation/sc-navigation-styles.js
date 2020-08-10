@@ -90,21 +90,10 @@ margin-top: 4em
       padding: 1rem 1rem 0.333rem;
     }
 
-    /* .title:lang(en) {
-      font-size: var(--sc-skolar-font-size-static-subtitle);
-
-      display: block;
-    }
-
-    .title:lang(pli) {
-      font-weight: 600;
-
-      color: #757575;
-    } */
-
     .title {
       font-family: var(--sc-serif-font);
-      font-size: 1.5em;
+      font-size: var(--sc-skolar-font-size-static-subtitle);
+
       font-weight: 500;
 
       display: block;
