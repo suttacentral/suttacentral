@@ -93,7 +93,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                     <span class="title" lang="${this.language}">
                       ${item.name}
                     </span>
-                    <span class="rootTitle" lang="pli">
+                    <span class="subTitle" lang="pli">
                       ${item.name}
                     </span>
                   </span>
