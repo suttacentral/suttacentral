@@ -111,11 +111,6 @@ class SCTipitaka extends LitLocalized(LitElement) {
                     <a href="${this.tipitakaGuide.get(item.name)}">Introduction to the ${item.name}.</a>
                   </block-link>
                 </div>
-                <div class="actions">
-                  <span>
-                    <a href="/${item.uid}"><button class="transition">View ${item.name}</button></a>
-                  </span>
-                </div>
               </section>`
             )}
           </div>
