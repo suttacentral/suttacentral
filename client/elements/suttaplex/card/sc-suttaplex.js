@@ -173,16 +173,6 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     return `${SUTTACENTRAL_VOICE_URL}scv/#/?search=${this.item.uid}&lang=${this.language}`;
   }
 
-  static get styles() {
-    return css`
-      .section-details.main-translations {
-        border-top: 1px solid var(--sc-border-color);
-        margin-top: var(--sc-size-md);
-        padding-top: var(--sc-size-sm);
-      }
-    `;
-  }
-
   render() {
     if (!this.item || !this.item.uid) {
       return '';
@@ -191,7 +181,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     return html`
       ${suttaplexCss}
       
-      <paper-card class="suttaplex" id="${this.item.uid}" elevation="1">
+      <paper-card class="suttaplex ${this.suttaplexListStyle}" id="${this.item.uid}" elevation="1">
         <div>
           <div class="top-row">
             <h1 class="${this.suttaplexListStyle}" title="${this.mainHeadingTitle}" @click="${this.toggleCompact}">

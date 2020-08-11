@@ -33,9 +33,26 @@ export const suttaplexCss = html`
 
   .suttaplex {
     display: block;
-    padding: var(--sc-size-md);
-    margin-bottom: var(--sc-size-md);
+    padding: var(--sc-size-sm) var(--sc-size-md);
+    margin-bottom: 1px;
   }
+
+    .suttaplex:not(.compact) {
+    margin-bottom: var(--sc-size-md);
+    padding: var(--sc-size-md);
+  }
+
+      .section-details.main-translations {
+        border-top: 1px solid var(--sc-border-color);
+        margin-top: var(--sc-size-md);
+        padding-top: var(--sc-size-sm);
+      }
+
+      .compact .section-details.main-translations{
+        border-top: none;
+        padding-top: 0;
+        margin-top: var(--sc-size-sm);
+      }
 
   .top-row {
     display: flex;
@@ -89,7 +106,7 @@ export const suttaplexCss = html`
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
-        line-height: 24px;
+        line-height: 1;
     color: var(--sc-secondary-text-color);
     text-overflow: ellipsis;
     white-space: nowrap;
