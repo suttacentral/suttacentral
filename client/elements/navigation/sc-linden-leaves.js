@@ -47,8 +47,6 @@ nav li
     margin: 0 0 0 8px;
 
     list-style-type: none;
-
-    color: white;
 }
 
 nav li a
@@ -56,6 +54,12 @@ nav li a
     display: inline-block;
 
     padding: 14px 8px 10px 4px;
+
+    color: white;
+
+    text-decoration: none;
+
+    opacity: 0.8
 }
 
 nav li a:hover
@@ -67,9 +71,10 @@ nav li a:hover
 
 nav li:last-child
 {
-    font-weight: 700;
+    font-weight: 800;
 
     border-bottom: 4px solid var(--sc-primary-color-light);
+
 }
 
 nav li:last-child a:hover
@@ -83,6 +88,8 @@ nav li:last-child a:hover
 nav li:last-child a
 {
     cursor: default;
+
+    opacity: 1
 }
 
 nav li:after
@@ -94,6 +101,8 @@ nav li:after
     content: '❭';
 
     color: white;
+
+    opacity: 0,8;
 }
 
 nav li:last-of-type:after
@@ -166,7 +175,6 @@ nav li:first-of-type
 
   render() {
     return html`
-      ${navigationNormaModelStyles}
       <nav>
         <ul>
           ${this.navArray ? this.navArray.map(nav => html`
@@ -192,7 +200,7 @@ nav li:first-of-type
     this.actions.setCurrentNavPosition(nav.position);
     if (nav.type === 'home') {
       this.navArray.length = 1;
-      this.actions.setNavigation(this.navArray);
+      this.actions.setNavigation(this.navArray); 
       window.location.href = nav.url;
     }
 

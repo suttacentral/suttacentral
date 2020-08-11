@@ -20,19 +20,17 @@ main
     flex-wrap: nowrap;
 }
 
-@media screen and (max-width: 720px)
+@media screen and (max-width: 780px)
 {
     .main-nav
     {
-        flex-wrap: wrap;
+        flex-direction: column;
     }
 }
 
 .card
 {
-    position: relative;
-
-    overflow: hidden;;
+    overflow: hidden;
 
     margin: .5em;
     padding-bottom: .5rem;
@@ -43,6 +41,8 @@ main
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-secondary-background-color);
     box-shadow: var(--sc-shadow-elevation-1dp);
+
+    flex: 1;
 }
 
 .card:hover
@@ -70,6 +70,12 @@ main
     margin-bottom: 4em;
 }
 
+.nav-card-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - 76px);
+}
 .blurb
 {
     font-size: var(--sc-skolar-font-size-md);
@@ -191,9 +197,9 @@ a
 {
     display: flex;
 
-    margin-right: 1rem;;
+    margin-right: 1rem;
 
-    justify-content: flex-end;
+    justify-content: flex-end;;
 }
 
 .shortcut block-link
@@ -203,14 +209,14 @@ a
 
 .shortcut-link
 {
-    font-style: italic;;
+    font-style: italic;
 
     display: inline-block;
 
     padding: .333rem 1rem;
 
     border-radius: 8px;
-    background-color: var(--sc-primary-background-color);
+    background-color: var(--sc-primary-background-color);;
 }
 
 .shortcut:before
@@ -235,6 +241,7 @@ a
 
     text-decoration-color: var(--sc-primary-color);
 }
+
 
   </style>
 `;

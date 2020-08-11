@@ -68,7 +68,6 @@ class SCHomePage extends SCStaticPage {
       }
 
       article {
-        background-color: var(--sc-secondary-background-color);
         border-radius: 8px;
         box-shadow: var(--sc-shadow-elevation-1dp);
         overflow: hidden;
@@ -299,55 +298,6 @@ class SCHomePage extends SCStaticPage {
               </div>
             </div>
           </article>
-        </section>
-
-        <section class="three-cards">
-          <h1>${this.localize('24cbc4d3253a2779ae4dab326e42659b')}</h1>
-          <div class="three-card-row">
-            <article class="three-card-row-first">
-              <figure>
-                <img 
-                  srcset="/img/home-page/pali4.webp, /img/home-page/pali4.jpg"
-                  src="/img/home-page/pali4.webp"
-                  loading="lazy"
-                  alt="Pali manuscript"
-                  style="width:100%">
-                <figcaption>Palm leaf (ola) manuscript from Sri Lanka</figcaption>
-              </figure>
-              <div class="card-content">
-                <div class="card-text">
-                  <h2>${this.localize('e30baf2773fd1ff10ac21a7ebd63198d')}</h2>
-                  <p>${this.localize('31f31787de5aa09d662dfef82b0b686e')}</p>
-                </div>
-                <div class="card-actions">
-                  <a href="/discourses" class="link-button">More …</a>
-                </div>
-              </div>
-            </article>
-
-            <article class="three-card-row-second">
-              <div class="card-content">
-                <div class="card-text">
-                  <h2>${this.localize('09c18e7d1f00a37ba925092e7a101a05')}</h2>
-                  <p>${this.localize('45cc0214114c2d971cf2701f842f8926')}</p>
-                </div>
-                <div class="card-actions">
-                  <a href="/vinaya" class="link-button">More …</a>
-                </div>
-              </div>
-            </article>
-
-            <article class="three-card-row-third">
-              <div class="card-content">
-                <div class="card-text">
-                  <h2> ${this.localize('ff9331ad058b3717457b73d2bdc51534')}</h2>
-                  <p>${this.localize('db01f7b42cfc777fd2f2a84d3a6787fa')}</p>
-                </div>
-                <div class="card-actions">
-                  <a href="/abhidhamma" class="link-button">More …</a>
-                </div>
-              </div>
-            </article>
         </section>
 
         <section class="plain">

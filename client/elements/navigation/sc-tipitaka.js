@@ -103,7 +103,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                     <span class="number-translated">${this.fullSiteLanguageName}</span>
                   </span>
                 </header>
-
+                <div class='nav-card-content'>
                 <div class="blurb">
                   ${this.tipitakaBlurb.get(item.name)}
                 </div>
@@ -111,6 +111,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                   <block-link>
                     <a href="${this.tipitakaGuide.get(item.name)}">Introduction to the ${item.name}.</a>
                   </block-link>
+                </div>
                 </div>
                 <mwc-ripple></mwc-ripple>
               </section>`
