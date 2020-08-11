@@ -9,9 +9,105 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
   static get styles() {
     return css`
-      :host {
-        display: block;
-      }
+:host
+{
+    display: block;
+}
+
+nav
+{
+    display: flex;
+    overflow-x: auto;
+    flex-direction: row;
+
+    box-sizing: border-box;
+    padding: 0 2%;
+
+    white-space: nowrap;
+
+    background-color: rgb(75, 74, 74);
+
+    justify-content: space-between;
+}
+
+nav ul
+{
+    display: flex;
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+nav li
+{
+    font-size: .8em;
+    font-weight: 500;
+
+    margin: 0 0 0 8px;
+
+    list-style-type: none;
+
+    color: white;
+}
+
+nav li a
+{
+    display: inline-block;
+
+    padding: 14px 8px 10px 4px;
+}
+
+nav li a:hover
+{
+    cursor: pointer;
+
+    border-bottom: 4px solid var(--sc-primary-color-light);
+}
+
+nav li:last-child
+{
+    font-weight: 700;
+
+    border-bottom: 4px solid var(--sc-primary-color-light);
+}
+
+nav li:last-child a:hover
+{
+    cursor: default;
+
+    color: white;
+    border-bottom: none;
+}
+
+nav li:last-child a
+{
+    cursor: default;
+}
+
+nav li:after
+{
+    font-weight: 400;
+
+    margin-left: 8px;
+
+    content: '❭';
+
+    color: white;
+}
+
+nav li:last-of-type:after
+{
+    margin-left: 0;
+
+    content: '';
+}
+
+nav li:first-of-type
+{
+    margin-left: 0;
+}
+
     `;
   }
 
