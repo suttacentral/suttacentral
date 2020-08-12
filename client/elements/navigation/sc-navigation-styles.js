@@ -30,6 +30,7 @@ main
 
 .card
 {
+    position: relative;
     overflow: hidden;
 
     margin: .5em;
@@ -216,7 +217,7 @@ a
     padding: .333rem 1rem;
 
     border-radius: 8px;
-    background-color: var(--sc-primary-background-color);;
+    background-color: var(--sc-primary-background-color);
 }
 
 .shortcut:before

@@ -53,13 +53,13 @@ nav li a
 {
     display: inline-block;
 
-    padding: 14px 8px 10px 4px;
+    padding: 14px 4px 10px 0px;
 
     color: white;
 
     text-decoration: none;
 
-    opacity: 0.8
+    opacity: 0.8;
 }
 
 nav li a:hover
@@ -102,7 +102,7 @@ nav li:after
 
     color: white;
 
-    opacity: 0,8;
+    opacity: 0.8;
 }
 
 nav li:last-of-type:after

@@ -17,7 +17,7 @@ export const typographyCommonStyles = css`
   main {
     display: flex;
     justify-content: center;
-    margin: 4em 2em;
+    margin: 4em 1em;
   }
 
 /* text block elements */
