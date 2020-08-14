@@ -9,9 +9,114 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
   static get styles() {
     return css`
-      :host {
-        display: block;
-      }
+:host
+{
+    display: block;
+}
+
+nav
+{
+    display: flex;
+    overflow-x: auto;
+    flex-direction: row;
+
+    box-sizing: border-box;
+    padding: 0 2%;
+
+    white-space: nowrap;
+
+    background-color: rgb(75, 74, 74);
+
+    justify-content: space-between;
+}
+
+nav ul
+{
+    display: flex;
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+nav li
+{
+    font-size: .8em;
+    font-weight: 500;
+
+    margin: 0 0 0 8px;
+
+    list-style-type: none;
+}
+
+nav li a
+{
+    display: inline-block;
+
+    padding: 14px 4px 10px 0px;
+
+    color: white;
+
+    text-decoration: none;
+
+    opacity: 0.8;
+}
+
+nav li a:hover
+{
+    cursor: pointer;
+
+    border-bottom: 4px solid var(--sc-primary-color-light);
+}
+
+nav li:last-child
+{
+    font-weight: 800;
+
+    border-bottom: 4px solid var(--sc-primary-color-light);
+
+}
+
+nav li:last-child a:hover
+{
+    cursor: default;
+
+    color: white;
+    border-bottom: none;
+}
+
+nav li:last-child a
+{
+    cursor: default;
+
+    opacity: 1
+}
+
+nav li:after
+{
+    font-weight: 400;
+
+    margin-left: 8px;
+
+    content: '❭';
+
+    color: white;
+
+    opacity: 0.8;
+}
+
+nav li:last-of-type:after
+{
+    margin-left: 0;
+
+    content: '';
+}
+
+nav li:first-of-type
+{
+    margin-left: 0;
+}
+
     `;
   }
 
@@ -70,7 +175,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      ${navigationNormaModelStyles}
       <nav>
         <ul>
           ${this.navArray ? this.navArray.map(nav => html`
@@ -96,7 +200,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
     this.actions.setCurrentNavPosition(nav.position);
     if (nav.type === 'home') {
       this.navArray.length = 1;
-      this.actions.setNavigation(this.navArray);
+      this.actions.setNavigation(this.navArray); 
       window.location.href = nav.url;
     }
 

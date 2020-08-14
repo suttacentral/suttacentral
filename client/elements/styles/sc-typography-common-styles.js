@@ -4,7 +4,7 @@ export const typographyCommonStyles = css`
 
 /* includes all text styles found in one or more of static, legacy, or bilara */
 
-:root
+:host
 {
     font-family: var(--sc-serif-font);
     font-size: var(--sc-skolar-font-size-md);
@@ -17,7 +17,7 @@ export const typographyCommonStyles = css`
   main {
     display: flex;
     justify-content: center;
-    margin: 4em 2em;
+    margin: 4em 1em;
   }
 
 /* text block elements */

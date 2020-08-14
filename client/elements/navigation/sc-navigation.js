@@ -246,13 +246,13 @@ class SCNavigation extends LitLocalized(LitElement) {
   get pitakaContentTemplate() {
     return this.navArray[this.currentNavPosition].displayPitaka && this.pitakaData ? html`
       ${this.pitakaData.children.map(child => html`
-        <section class='card' @click=${() => this._onPitakaCardClick(child.name)}>
+        <section class='card nav-card' @click=${() => this._onPitakaCardClick(child.name)}>
           <header>
             <span class='header-left'>
               <span class='title' lang='${this.language}'>
                 Collections of ${child.name} ${this.pitakaName}
               </span>
-              <span class='rootTitle' lang='pli'>
+              <span class='subTitle' lang='pli'>
                 ${child.name}
               </span>
             </span>
@@ -265,6 +265,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ` : ''}
           </header>
 
+
           <div class='blurb'>
             Collections of ${child.name} discourses in Pali and Chinese.
           </div>
@@ -273,12 +274,6 @@ class SCNavigation extends LitLocalized(LitElement) {
             <block-link>
               <a href="${pitakaGuide.get(child.name)}">Introduction to the ${child.name}.</a>
             </block-link>
-          </div>
-
-          <div class='actions'>
-            <span>
-              <button class='transition'>View ${child.name}</button>
-            </span>
           </div>
         </section>
       `)}` : '';
@@ -316,13 +311,13 @@ class SCNavigation extends LitLocalized(LitElement) {
   get parallelsContentTemplate() {
     return this.navArray[this.currentNavPosition].displayParallels && this.parallelsData ? html`
       ${this.parallelsData.children.map(child => html`
-        <section class='card' @click=${() => this._onParallelsCardClick(child.id.toLowerCase(), child.name)}>
+        <section class='card nav-card' @click=${() => this._onParallelsCardClick(child.id.toLowerCase(), child.name)}>
           <header>
             <span class='header-left'>
               <span class='title' lang='${child.lang_iso}'>
                 ${child.name} ${this.pitakaName}
               </span>
-              <span class='rootTitle' lang='pli'>
+              <span class='subTitle' lang='pli'>
                 ${child.name}
               </span>
             </span>
@@ -335,20 +330,18 @@ class SCNavigation extends LitLocalized(LitElement) {
             ` : ''}
           </header>
 
-          <div class='blurb' id="${child.id}_blurb">
-
-          </div>
+          <div class='blurb' id="${child.id}_blurb"></div>
 
           <!-- <a href='https://en.wikipedia.org/wiki/Rickrolling'>
             <div class='essay'>Reader’s Guide to the ${child.name}.</div>
           </a> -->
 
-          <div class='actions'>
-            <span>
-              <button class='transition' @click=${() => this._onParallelsCardClick(child.id.toLowerCase(), child.name)}>View chapters</button>
-              <!-- <a href='dn.html'><button class='transition demphasized-button'>View all discourses</button></a> -->
-            </span>
-          </div>
+              <div class='shortcut'>
+          <block-link>
+        <a href="/dn" class='shortcut-link'>Shortcut to full list</a>
+        </block-link>
+        </div>
+
         </section>
       `)}`: '';
   }
@@ -380,15 +373,15 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   get vaggasContentTemplate() {
     return this.navArray[this.currentNavPosition].displayVaggas && this.vaggasData ? html`
-      <main>
+     
         ${this.vaggasData[0].children.map(child => html`
-          <section class='card' @click=${() => this._onVaggasCardClick(child.id.toLowerCase(), child.name)}>
+          <section class='card nav-card' @click=${() => this._onVaggasCardClick(child.id.toLowerCase(), child.name)}>
             <header>
               <span class='header-left'>
                 <span class='title' lang='en'>
                   ${child.name} ${this.parallelName}
                 </span>
-                <span class='rootTitle' lang='pli'>
+                <span class='subTitle' lang='pli'>
                   ${child.name}
                 </span>
               </span>
@@ -401,18 +394,10 @@ class SCNavigation extends LitLocalized(LitElement) {
             ` : ''}
             </header>
 
-            <div class='blurb' id="${child.id}_blurb">
-            
-            </div>
-  
-            <div class='actions'>
-              <span>
-                <button class='transition'>View suttas</button>
-              </span>
-            </div>
+            <div class='blurb' id="${child.id}_blurb"></div>
+
           </section>
-        `)}
-      </main>` : '';
+        `)}` : '';
   }
 
   _onVaggasCardClick(childId, childName) {

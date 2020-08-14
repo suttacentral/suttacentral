@@ -121,6 +121,50 @@ class SCToolbar extends LitLocalized(LitElement) {
       .invisible {
         display: none;
       }
+
+#btnLightTheme,
+#btnDarkTheme,
+#btnViewCompact,
+#btnViewComfy
+{
+    position: relative;
+}
+
+#btnLightTheme:after,
+#btnDarkTheme:after,
+#btnViewCompact:after,
+#btnViewComfy:after
+{
+    font-size: var(--sc-skolar-font-size-xxs);;
+
+    position: absolute;
+    bottom: -4px;
+
+    width: 100%;
+
+    text-align: center;
+}
+
+#btnLightTheme:after
+{
+    content: 'colors';
+}
+
+#btnDarkTheme:after
+{
+    content: 'colors';
+}
+
+#btnViewCompact:after
+{
+    content: 'spacing';
+}
+
+#btnViewComfy:after
+{
+    content: 'spacing';
+}
+
     </style>
 
     <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>

@@ -3,7 +3,7 @@ import { html,css } from 'lit-element';
 export const commonStyles = css`
   main {
     display: flex;
-    margin: 4em 2em;
+    margin: 4em 1em;
     justify-content: center;
   }`;
 
