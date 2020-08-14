@@ -179,7 +179,7 @@ nav li:first-of-type
         <ul>
           ${this.navArray ? this.navArray.map(nav => html`
             ${nav.title ? html`
-              <li><a href='#' data-position='${nav.position}' @click=${() => this._navClick(nav)}>${nav.title}</a></li>
+              <li @click=${() => this._navClick(nav)}><a href='#'>${nav.title}</a></li>
             ` : ''}
           `) : ''}
         </ul>

@@ -309,6 +309,7 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
             <span id="SCTitle">SuttaCentral</span>
             <sc-toolbar id="sc_toolbar"></sc-toolbar>
           </nav>
+          <sc-top-sheet id="setting_Menu"></sc-top-sheet>
       </div>
 
       <header>
@@ -318,7 +319,6 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
             <span id="titlebarSubtitle"><a href="/">Early Buddhist texts, translations, and parallels</a></span>
           </span>
         </div>
-        <sc-top-sheet id="setting_Menu"></sc-top-sheet>
       </header>
 
       <sc-page-selector id="page_selector" .isNarrowScreen="${this.isNarrowScreen}"></sc-page-selector>
