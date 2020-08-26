@@ -12,6 +12,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../../elements/addons/localization-mixin';
 import { API_ROOT } from '../../constants.js';
 
+import { navIndex } from '../navigation/sc-navigation-common.js'
 /*
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
   either the simple sutta text view or the segmented view.
@@ -197,22 +198,21 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
   
   _updateNav() {
+    let navIndexesOfType = navIndex.get('sutta');
     let navArray = store.getState().navigationArray;
-    if (!navArray[5]) {
-      let suttaTitle = this.responseData.translation ? this.responseData.translation.title : '';
-      if (suttaTitle === '') {
-        suttaTitle = this.responseData.suttaplex.translated_title ? this.responseData.suttaplex.translated_title : this.responseData.suttaplex.original_title;
-      }
-      navArray.push(
-        {
-          'title': suttaTitle,
-          'url': store.getState().currentRoute.path,
-          'type': 'sutta',
-        }
-      );
-      this.actions.setNavigation(navArray);
-      this.actions.setCurrentNavPosition(5);
+    let suttaTitle = this.responseData.translation ? this.responseData.translation.title : '';
+    if (suttaTitle === '') {
+      suttaTitle = this.responseData.suttaplex.translated_title ? this.responseData.suttaplex.translated_title : this.responseData.suttaplex.original_title;
     }
+    navArray[navIndexesOfType.index] = {
+      title: suttaTitle,
+      url: store.getState().currentRoute.path,
+      type: navIndexesOfType.type,
+      position: navIndexesOfType.position,
+      navigationArrayLength: navIndexesOfType.navArrayLength
+    };
+    this.actions.setNavigation(navArray);
+    this.actions.setCurrentNavPosition(navIndexesOfType.position);
   }
 
   updated(changedProps) {
