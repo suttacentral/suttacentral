@@ -121,7 +121,7 @@ export const LitLocalized = base => class extends connect(store)(base) {
       );
     }
 
-    return string;
+    return string ? string : key;
   }
 
   localizeEx(key, ...params) {
@@ -138,7 +138,7 @@ export const LitLocalized = base => class extends connect(store)(base) {
       );
     }
 
-    return string;
+    return string ? string : key;
   }
 
   _stateChanged(state) {
