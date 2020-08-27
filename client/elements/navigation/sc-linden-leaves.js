@@ -5,6 +5,9 @@ import { LitLocalized } from '../addons/localization-mixin';
 
 import { navigationNormaModelStyles } from './sc-navigation-styles.js';
 
+import '@material/mwc-ripple';
+import '@polymer/paper-ripple/paper-ripple.js';
+
 class SCLindenLeaves extends LitLocalized(LitElement) {
 
   static get styles() {
@@ -131,7 +134,8 @@ nav li:first-of-type
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-linden-leaves';
+    //this.localizedStringsPath = '/localization/elements/sc-linden-leaves';
+    this.localizedStringsPath = '/localization/elements/sc-navigation';
     this.navArray = store.getState().navigationArray;
   }
 
@@ -178,8 +182,8 @@ nav li:first-of-type
       <nav>
         <ul>
           ${this.navArray ? this.navArray.map(nav => html`
-            ${nav.title ? html`
-              <li @click=${() => this._navClick(nav)}><a href='#'>${nav.title}</a></li>
+            ${nav && nav.title ? html`
+              <li @click=${() => this._navClick(nav)}><a href='${nav.url}'>${this.localize(nav.title)}<paper-ripple></paper-ripple></a></li>
             ` : ''}
           `) : ''}
         </ul>

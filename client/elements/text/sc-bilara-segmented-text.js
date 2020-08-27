@@ -177,6 +177,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       //this._recalculateCommentSpanHeight();
       this._changeTextView();
     }, 0);
+    this.actions.changeSuttaMetaText(this._computeMeta());
   }
   
   _segmentedTextContentElement() {
@@ -982,6 +983,22 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _scriptFunctionName() {
     return this.paliScript.charAt(0).toUpperCase() + this.paliScript.slice(1);
+  }
+
+  _computeMeta() {
+    let metaText = '';
+    let matches = [];
+    if (this.markup) {
+      matches = this.markup.match(/<footer>((.|\n)*)<\/footer>/);
+    }
+    try {
+      if (matches && matches.length > 0) {
+        metaText = matches[1];
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return metaText;
   }
 }
 

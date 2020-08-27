@@ -255,6 +255,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       summary{
         font-weight: 600;
         cursor: pointer;
+        color: var(--sc-primary-text-color);
       }
 
       .form-controls{

@@ -155,7 +155,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
     <div class="division-content main">
       <div class="loading-indicator">
-        <sc-bouncing-loader class="loading-spinner" .active="${this.suttaplexLoading}"></sc-bouncing-loader>
+        <sc-bouncing-loader class="loading-spinner" ?active="${this.suttaplexLoading}"></sc-bouncing-loader>
       </div>
 
       ${this.hasError() ? html`<sc-error-icon type="no-network"></sc-error-icon>` : ''}

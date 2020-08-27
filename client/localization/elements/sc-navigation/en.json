@@ -1,6 +1,12 @@
 {
   "en": {
       "networkError": "Network error",
-      "goBack": "Go back to previous menu"
+      "goBack": "Go back to previous menu",
+      "sutta": "Discourses",
+      "vinaya": "Monastic Law",
+      "abhidhamma": "Systematic Treatises",
+      "CollectionOf": "Collection of {pitaka} {sutta}",
+      "view": "View {pitaka}",
+      "introduction": "Introduction to the {pitaka}"
   }
 }
