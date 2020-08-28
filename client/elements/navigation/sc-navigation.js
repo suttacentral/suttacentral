@@ -106,7 +106,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path
     }
-    //this.requestUpdate();
   }
   
   updated(changedProps) {
@@ -364,20 +363,35 @@ class SCNavigation extends LitLocalized(LitElement) {
       `)}`: '';
   }
 
-  _onParallelsCardClick(childId, childName) {
+  async _onParallelsCardClick(childId, childName) {
     this.vaggasId = childId;
-    this._fetchChildMenuData();
+
+    let lang = this.language ? this.language : 'en';
+    const url = `${API_ROOT}/menu/${this.vaggasId}?language=${lang}`;
+    try {
+      this.vaggasData = await (await fetch(url)).json();
+    } catch (err) {
+      this.childMenuError = err;
+    }
+
+    let displayVaggasMenu = this.vaggasData[0] && this.vaggasData[0].children &&
+      this.vaggasData[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
+
+    let currentUrl = `/${childId}`;
+    if (displayVaggasMenu) {
+      currentUrl = this._genCurrentURL(childId.toLowerCase());
+    }
 
     let navType = 'vaggas';
     let navIndexesOfType = navIndex.get(navType);
-    let currentUrl = this._genCurrentURL(childId.toLowerCase());
+
     this.navArray[navIndexesOfType.index] = {
       title: childName,
       url: currentUrl,
       type: navType,
       displayPitaka: false,
       displayParallels: false,
-      displayVaggas: true,
+      displayVaggas: displayVaggasMenu,
       displayVaggaChildren: false,
       displayVaggaChildrenChildren: false, 
       vaggasId: childId,
@@ -392,6 +406,10 @@ class SCNavigation extends LitLocalized(LitElement) {
     this._setCurrentURL(childId.toLowerCase());
 
     this.requestUpdate();
+
+    if (!displayVaggasMenu) {
+      window.location.href = currentUrl;
+    }
   }
 
   _setCurrentURL(lastPath) {
@@ -444,16 +462,17 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   async _onVaggasCardClick(childId, childName) {
     this.vaggasId = childId;
-    //this._fetchChildMenuData();
 
     try {
       let url = `${API_ROOT}/menu/${this.vaggasId}?language=en`;
       this.vaggasData = await (await fetch(url)).json();
       this.vaggaChildren = this.vaggasData[0].children;
-      this.displayVaggaChildren = this.vaggaChildren ? true : false;  
     } catch (error) {
       this.errors = error;
     }
+
+    this.displayVaggaChildren = this.vaggaChildren && 
+      this.vaggaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
 
     let currentUrl = `/${childId}`;
     if (this.displayVaggaChildren) {
