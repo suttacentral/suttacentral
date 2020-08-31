@@ -49,19 +49,23 @@ export const navIndex = new Map([
     pathParamIndex: -1,
     navArrayLength: 6
   }],
-  
   ['vaggaChildrenChildren', {
     index: 6,
     position: 6,
     pathParamIndex: -1,
     navArrayLength: 7
   }],
-
-  ['sutta', {
+  ['sakaChildren', {
     index: 7,
     position: 7,
     pathParamIndex: -1,
     navArrayLength: 8
+  }],
+  ['sutta', {
+    index: 8,
+    position: 8,
+    pathParamIndex: -1,
+    navArrayLength: 9
   }],
   ['staticPage', {
     index: 1,
