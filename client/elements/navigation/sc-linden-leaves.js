@@ -12,114 +12,101 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
   static get styles() {
     return css`
-:host
-{
-    display: block;
-}
+      :host {
+        display: block;
+      }
 
-nav
-{
-    display: flex;
-    overflow-x: auto;
-    flex-direction: row;
+      nav {
+        display: flex;
+        overflow-x: auto;
+        flex-direction: row;
 
-    box-sizing: border-box;
-    padding: 0 2%;
+        box-sizing: border-box;
+        padding: 0 2%;
 
-    white-space: nowrap;
+        white-space: nowrap;
 
-    background-color: rgb(75, 74, 74);
+        background-color: rgb(75, 74, 74);
 
-    justify-content: space-between;
-}
+        justify-content: space-between;
+      }
 
-nav ul
-{
-    display: flex;
+      nav ul {
+        display: flex;
 
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
 
-nav li
-{
-    font-size: .8em;
-    font-weight: 500;
+      nav li {
+        font-size: 0.8em;
+        font-weight: 500;
 
-    margin: 0 0 0 8px;
+        margin: 0 0 0 8px;
 
-    list-style-type: none;
-}
+        list-style-type: none;
 
-nav li a
-{
-    display: inline-block;
+        position: relative;
+      }
 
-    padding: 14px 4px 10px 0px;
+      nav li a {
+        display: inline-block;
 
-    color: white;
+        padding: 14px 4px 10px 0px;
 
-    text-decoration: none;
+        color: white;
 
-    opacity: 0.8;
-}
+        text-decoration: none;
 
-nav li a:hover
-{
-    cursor: pointer;
+        opacity: 0.8;
+      }
 
-    border-bottom: 4px solid var(--sc-primary-color-light);
-}
+      nav li a:hover {
+        cursor: pointer;
 
-nav li:last-child
-{
-    font-weight: 800;
+        border-bottom: 4px solid var(--sc-primary-color-light);
+      }
 
-    border-bottom: 4px solid var(--sc-primary-color-light);
+      nav li:last-child {
+        font-weight: 800;
 
-}
+        border-bottom: 4px solid var(--sc-primary-color-light);
+      }
 
-nav li:last-child a:hover
-{
-    cursor: default;
+      nav li:last-child a:hover {
+        cursor: default;
 
-    color: white;
-    border-bottom: none;
-}
+        color: white;
+        border-bottom: none;
+      }
 
-nav li:last-child a
-{
-    cursor: default;
+      nav li:last-child a {
+        cursor: default;
 
-    opacity: 1
-}
+        opacity: 1;
+      }
 
-nav li:after
-{
-    font-weight: 400;
+      nav li:after {
+        font-weight: 400;
 
-    margin-left: 8px;
+        margin-left: 8px;
 
-    content: '❭';
+        content: "❭";
 
-    color: white;
+        color: white;
 
-    opacity: 0.8;
-}
+        opacity: 0.8;
+      }
 
-nav li:last-of-type:after
-{
-    margin-left: 0;
+      nav li:last-of-type:after {
+        margin-left: 0;
+        content: "";
+      }
 
-    content: '';
-}
-
-nav li:first-of-type
-{
-    margin-left: 0;
-}
-
+      nav li:first-of-type {
+        margin-left: 0;
+      }
     `;
   }
 

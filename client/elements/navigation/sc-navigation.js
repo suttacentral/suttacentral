@@ -382,7 +382,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
 
     let displayVaggasMenu = this.vaggasData[0] && this.vaggasData[0].children &&
-      this.vaggasData[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
+      this.vaggasData[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type)); 
 
     let currentUrl = `/${childId}`;
     if (displayVaggasMenu) {
@@ -479,7 +479,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
 
     this.displayVaggaChildren = this.vaggaChildren && 
-      this.vaggaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
+      this.vaggaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type)); 
 
     let currentUrl = `/${childId}`;
     if (this.displayVaggaChildren) {
@@ -551,7 +551,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
 
     this.displayVaggaChildrenChildren = this.vaggaChildrenChildren && 
-      this.vaggaChildrenChildren[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
+      this.vaggaChildrenChildren[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type));
 
     this.displayVaggaChildren = false;
     let currentUrl = `/${childId}`;
@@ -626,7 +626,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
 
     this.displaySakaChildren = this.sakaChildren && 
-      this.sakaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
+      this.sakaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type));
 
     this.displayVaggaChildrenChildren = !this.displaySakaChildren;
 
