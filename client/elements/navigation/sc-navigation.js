@@ -69,7 +69,7 @@ class SCNavigation extends LitLocalized(LitElement) {
         this._onVaggaChildrenCardClick(currentNavState.vaggaId, currentNavState.vaggaName);
       }
       if (currentNavState.type === 'vaggaChildrenChildren') {
-        this._onVaggaChildrenChildrenCardClick(currentNavState.vaggasId, currentNavState.vaggasName);
+        this._onVaggaChildrenChildrenCardClick(currentNavState.vaggaId, currentNavState.vaggaName);
       }
     }
 
@@ -106,7 +106,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path
     }
-    //this.requestUpdate();
   }
   
   updated(changedProps) {
@@ -133,6 +132,12 @@ class SCNavigation extends LitLocalized(LitElement) {
         if (currentNavState.type === 'vagga') {
           this.vaggasId = currentNavState.vaggasId;
           this._onVaggasCardClick(currentNavState.vaggaId, currentNavState.vaggaName);
+        }
+        if (currentNavState.type === 'vaggaChildren') {
+          this._onVaggaChildrenCardClick(currentNavState.vaggaId, currentNavState.vaggaName);
+        }
+        if (currentNavState.type === 'vaggaChildrenChildren') {
+          this._onVaggaChildrenChildrenCardClick(currentNavState.vaggaId, currentNavState.vaggaName);
         }
       }
     }
@@ -256,6 +261,7 @@ class SCNavigation extends LitLocalized(LitElement) {
         ${this.vaggasContentTemplate}
         ${this.vaggaChildrenContentTemplate}
         ${this.vaggaChildrenChildrenContentTemplate}
+        ${this.sakaChildrenContentTemplate}
       </main>
     `;
   }
@@ -364,20 +370,35 @@ class SCNavigation extends LitLocalized(LitElement) {
       `)}`: '';
   }
 
-  _onParallelsCardClick(childId, childName) {
+  async _onParallelsCardClick(childId, childName) {
     this.vaggasId = childId;
-    this._fetchChildMenuData();
+
+    let lang = this.language ? this.language : 'en';
+    const url = `${API_ROOT}/menu/${this.vaggasId}?language=${lang}`;
+    try {
+      this.vaggasData = await (await fetch(url)).json();
+    } catch (err) {
+      this.childMenuError = err;
+    }
+
+    let displayVaggasMenu = this.vaggasData[0] && this.vaggasData[0].children &&
+      this.vaggasData[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
+
+    let currentUrl = `/${childId}`;
+    if (displayVaggasMenu) {
+      currentUrl = this._genCurrentURL(childId.toLowerCase());
+    }
 
     let navType = 'vaggas';
     let navIndexesOfType = navIndex.get(navType);
-    let currentUrl = this._genCurrentURL(childId.toLowerCase());
+
     this.navArray[navIndexesOfType.index] = {
       title: childName,
       url: currentUrl,
       type: navType,
       displayPitaka: false,
       displayParallels: false,
-      displayVaggas: true,
+      displayVaggas: displayVaggasMenu,
       displayVaggaChildren: false,
       displayVaggaChildrenChildren: false, 
       vaggasId: childId,
@@ -392,6 +413,10 @@ class SCNavigation extends LitLocalized(LitElement) {
     this._setCurrentURL(childId.toLowerCase());
 
     this.requestUpdate();
+
+    if (!displayVaggasMenu) {
+      window.location.href = currentUrl;
+    }
   }
 
   _setCurrentURL(lastPath) {
@@ -444,16 +469,17 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   async _onVaggasCardClick(childId, childName) {
     this.vaggasId = childId;
-    //this._fetchChildMenuData();
 
     try {
       let url = `${API_ROOT}/menu/${this.vaggasId}?language=en`;
       this.vaggasData = await (await fetch(url)).json();
       this.vaggaChildren = this.vaggasData[0].children;
-      this.displayVaggaChildren = this.vaggaChildren ? true : false;  
     } catch (error) {
       this.errors = error;
     }
+
+    this.displayVaggaChildren = this.vaggaChildren && 
+      this.vaggaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
 
     let currentUrl = `/${childId}`;
     if (this.displayVaggaChildren) {
@@ -518,20 +544,14 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   async _onVaggaChildrenCardClick(childId, childName) {
     try {
-      let url = `${API_ROOT}/menu/${this.vaggasId}?language=en`;
-      this.vaggasData = await (await fetch(url)).json();
-      this.vaggaChildren = this.vaggasData[0].children;
-      this.vaggaChildrenChildren = this.vaggaChildren.find(x => {
-        return x.id === childId
-      });  
+      let url = `${API_ROOT}/menu/${childId}?language=en`;
+      this.vaggaChildrenChildren = await (await fetch(url)).json();
     } catch (error) {
       this.errors = error;
     }
 
-    this.displayVaggaChildrenChildren = false;
-    if (this.vaggaChildrenChildren && this.vaggaChildrenChildren.children) {
-      this.displayVaggaChildrenChildren = true;
-    }
+    this.displayVaggaChildrenChildren = this.vaggaChildrenChildren && 
+      this.vaggaChildrenChildren[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
 
     this.displayVaggaChildren = false;
     let currentUrl = `/${childId}`;
@@ -571,7 +591,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   get vaggaChildrenChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren ? html`
-      ${this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren.children.map(child => html`
+      ${this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren[0].children.map(child => html`
         <section class='card vaggaChildrenChildren' @click=${() => this._onVaggaChildrenChildrenCardClick(child.id.toLowerCase(), child.name)}>
           <header>
             <span class='header-left'>
@@ -596,8 +616,25 @@ class SCNavigation extends LitLocalized(LitElement) {
       `)}` : '';
   }
 
-  _onVaggaChildrenChildrenCardClick(childId, childName) {
+  async _onVaggaChildrenChildrenCardClick(childId, childName) {
+    try {
+      let url = `${API_ROOT}/menu/${childId}?language=en`;
+      this.sakaData = await (await fetch(url)).json();
+      this.sakaChildren = this.sakaData[0].children;
+    } catch (error) {
+      this.errors = error;
+    }
+
+    this.displaySakaChildren = this.sakaChildren && 
+      this.sakaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type)) ? true : false; 
+
+    this.displayVaggaChildrenChildren = !this.displaySakaChildren;
+
     let currentUrl = `/${childId}`;
+    if (this.displaySakaChildren) {
+      currentUrl = this._genCurrentURL(childId.toLowerCase());
+    }
+
     let navType = 'vaggaChildrenChildren';
     let navIndexesOfType = navIndex.get(navType);
     this.navArray[navIndexesOfType.index] = {
@@ -606,6 +643,12 @@ class SCNavigation extends LitLocalized(LitElement) {
       type: navType,
       vaggaId: childId,
       vaggaName: childName,
+      displayPitaka: false,
+      displayParallels: false,
+      displayVaggas: false,
+      displayVaggaChildren: false,
+      displayVaggaChildrenChildren: false, 
+      displaySakaChildren: this.displaySakaChildren,
       position: navIndexesOfType.position,
       navigationArrayLength: navIndexesOfType.navArrayLength
     };
@@ -616,6 +659,59 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     this._setCurrentURL(childId.toLowerCase());
     this.requestUpdate();
+
+    if (!this.displaySakaChildren) {
+      window.location.href = `/${childId}`;
+    }
+  }
+
+  get sakaChildrenContentTemplate() {
+    return this.navArray[this.currentNavPosition].displaySakaChildren && this.sakaChildren ? html`
+      ${this.navArray[this.currentNavPosition].displaySakaChildren && this.sakaChildren.map(child => html`
+        <section class='card sakaChildren' @click=${() => this._onSakaChildrenCardClick(child.id.toLowerCase(), child.name)}>
+          <header>
+            <span class='header-left'>
+              <span class='title' lang='en'>
+                ${this.localize(child.name)} ${this.parallelName}
+              </span>
+              <span class='rootTitle' lang='pli'>
+                ${child.name}
+              </span>
+            </span>
+
+            ${child.yellow_brick_road ? html`
+              <span class='header-right'>
+                <span class='number' id="${child.id}_number"></span>
+                <span class='number-translated'>${this.fullSiteLanguageName}</span>
+              </span>
+          ` : ''}
+          </header>
+          <div class='blurb' id="${child.id}_blurb"></div>
+          <paper-ripple></paper-ripple>
+        </section>
+      `)}` : '';
+  }
+
+  _onSakaChildrenCardClick(childId, childName) {
+    let currentUrl = `/${childId}`;
+    let navType = 'sakaChildren';
+    let navIndexesOfType = navIndex.get(navType);
+    this.navArray[navIndexesOfType.index] = {
+      title: childName,
+      url: currentUrl,
+      type: navType,
+      vaggaId: childId,
+      vaggaName: childName,
+      position: navIndexesOfType.position,
+      navigationArrayLength: navIndexesOfType.navArrayLength
+    };
+    this.actions.setNavigation(this.navArray);
+    this.actions.setCurrentNavPosition(navIndexesOfType.position);
+    this.actions.changeToolbarTitle(this.localize(childName));
+
+    this._setCurrentURL(childId.toLowerCase());
+    this.requestUpdate();
+    
     window.location.href = `/${childId}`;
   }
 }
