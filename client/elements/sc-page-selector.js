@@ -336,7 +336,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.parentNode.querySelector('#titlebar').style.display = displayStyle;
 
     this._setViewModeButtonDisplayState();
-    this.dispatch('changeDisplaySCSiteTitleState', this.shouldShowStaticPage);
+    this.dispatch('changeDisplaySCSiteTitleState', this.route.path === '/' ? true : false);
   }
 
   // Lazy loading for site elements
