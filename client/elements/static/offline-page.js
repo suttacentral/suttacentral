@@ -784,15 +784,16 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
       return false;
     }
-    if (M[1] === 'Chrome') {
-      tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
-      if (tem != null) return false;
-    }
+
     M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
     if ((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
 
     // Check if it is supported browser
-    return M[0].toLowerCase() === 'chrome' && parseInt(M[1]) >= 65;
+    return (M[0].toLowerCase() === 'chrome' && parseInt(M[1]) >= 65) || 
+              (M[0].toLowerCase() === 'firefox' && parseInt(M[1]) >= 79) ||
+                (M[0].toLowerCase() === 'safari' && parseInt(M[1]) >= 11.3) ||
+                  (M[0].toLowerCase() === 'opera' && parseInt(M[1]) >= 65) ||
+                    (M[0].toLowerCase() === 'edge' && parseInt(M[1]) >= 79);
   }
 
   _canBeAddedToHomeScreen() {

@@ -265,6 +265,7 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           overflow: hidden;
           text-overflow: ellipsis;
           width: calc(80%);
+          text-transform: capitalize;
         }
 
         #SCTitle {
@@ -309,6 +310,7 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
             <span id="SCTitle">SuttaCentral</span>
             <sc-toolbar id="sc_toolbar"></sc-toolbar>
           </nav>
+          <sc-top-sheet id="setting_Menu"></sc-top-sheet>
       </div>
 
       <header>
@@ -318,7 +320,6 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
             <span id="titlebarSubtitle"><a href="/">Early Buddhist texts, translations, and parallels</a></span>
           </span>
         </div>
-        <sc-top-sheet id="setting_Menu"></sc-top-sheet>
       </header>
 
       <sc-page-selector id="page_selector" .isNarrowScreen="${this.isNarrowScreen}"></sc-page-selector>
@@ -363,7 +364,6 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
       appColorTheme: { type: String }, //observer: '_colorThemeChanged'
       localizedStringsPath: { type: String },
       changedRoute: { type: String }, //observer: '_routeChanged'
-      drawerPersistent: { type: Boolean },
       displaySettingMenu: { type: Boolean },
       toolbarTitle: { type: String },
       displaySCSiteTitle: { type: Boolean },
@@ -383,7 +383,6 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
     this._colorThemeChanged();
     this.localizedStringsPath = '/localization/elements/sc-drawer-layout';
     this.changedRoute = state.currentRoute;
-    this.drawerPersistent = false;
     this.displaySettingMenu = state.displaySettingMenu;
     this.toolbarTitle = state.toolbarOptions.title;
     this.displaySCSiteTitle = state.displaySCSiteTitle;

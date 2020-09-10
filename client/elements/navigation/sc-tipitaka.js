@@ -7,7 +7,9 @@ import { LitLocalized } from '../addons/localization-mixin';
 
 import { navigationNormaModelStyles, navigationCompactModeStyles } from './sc-navigation-styles.js';
 
-import "@alangdm/block-link";
+import '@alangdm/block-link';
+import '../addons/sc-bouncing-loader';
+import '@polymer/paper-ripple/paper-ripple.js';
 
 class SCTipitaka extends LitLocalized(LitElement) {
 
@@ -25,6 +27,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
       currentStyles: { type: Object },
       compactStyles: { type: Boolean },
       isCompactMode: { type: Boolean },
+      loading: { type: Boolean },
     };
   }
 
@@ -60,9 +63,9 @@ class SCTipitaka extends LitLocalized(LitElement) {
     this._appViewModeChanged();
     this._fetchMainMenu();
     this.tipitakaGuide = new Map([
-      ['Discourses', '/discourses'],
-      ['Monastic Law', '/vinaya'],
-      ['Systematic Treatises', '/abhidhamma'],
+      ['Sutta', '/discourses'],
+      ['Vinaya', '/vinaya'],
+      ['Abhidhamma', '/abhidhamma'],
     ]);
     this.tipitakaBlurb = new Map([
       ['Sutta', 'These are our primary sources for understanding what the Buddha taught. They record the Buddha’s teachings and conversations on specific occasions with a diverse range of people. Discourses are called sutta in Pali, which is spelled sūtra in Sanskrit.'],
@@ -70,6 +73,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
       ['Abhidhamma', 'Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses. The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.'],
     ]);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    this.localizedStringsPath = '/localization/elements/sc-navigation';
   }
 
   async _fetchMainMenu() {
@@ -92,7 +96,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                 <header>
                   <span class="header-left">
                     <span class="title" lang="${this.language}">
-                      ${item.name}
+                      ${this.localize(item.name.toLowerCase())}
                     </span>
                     <span class="subTitle" lang="pli">
                       ${item.name}
@@ -109,11 +113,11 @@ class SCTipitaka extends LitLocalized(LitElement) {
                 </div>
                 <div class="essay">
                   <block-link>
-                    <a href="${this.tipitakaGuide.get(item.name)}">Introduction to the ${item.name}.</a>
+                    <a href="${this.tipitakaGuide.get(item.name)}">${this.localizeEx('introduction', 'pitaka', this.localize(item.name.toLowerCase()))}</a>
                   </block-link>
                 </div>
                 </div>
-                <mwc-ripple></mwc-ripple>
+                <paper-ripple></paper-ripple>
               </section>`
             )}
           </div>
@@ -129,6 +133,9 @@ class SCTipitaka extends LitLocalized(LitElement) {
     return html`
       ${this.currentStyles}
       ${this.compactStyles}
+      <div class="loading-indicator">
+        <sc-bouncing-loader class="loading-spinner" ?active="${this.loading}"></sc-bouncing-loader>
+      </div>
       ${this.tipitakaCardTemplate}
     `;
   }

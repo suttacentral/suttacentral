@@ -11,17 +11,7 @@ import './text/sc-segmented-text.js';
 import './text/sc-simple-text.js';
 import { throttle } from 'throttle-debounce';
 
-// import './navigation/sc-pitaka.js';
-// import './navigation/sc-pitaka-parallels.js';
-// import './navigation/sc-vaggas.js';
-// import './navigation/sc-suttas.js';
 import './navigation/sc-navigation.js';
-
-import '@material/mwc-top-app-bar';
-import '@material/mwc-top-app-bar-fixed';
-import '@material/mwc-icon-button';
-import '@material/mwc-tab';
-import '@material/mwc-tab-bar';
 import './navigation/sc-linden-leaves.js';
 
 /*
@@ -331,6 +321,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.shouldShowSuttaTextPage = this._isSuttaTextPage();
     this.shouldShowDictionaryPage = this._isDictionaryPage();
     this.shouldShowPitakaPage = this._isPitakaPage();
+
     this._resolveImports();
 
     if (this.shouldShowSuttaTextPage) {
@@ -342,15 +333,11 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.dispatch('changeDisplayToolButtonState', this.shouldShowSuttaTextPage);
     this.dispatch('changeDisplayInfoButtonState', this.shouldShowSuttaTextPage);
 
-    if (this.shouldShowStaticPage) {
-      this.parentNode.querySelector('#titlebar').style.display = 'block';  
-    } else {
-      this.parentNode.querySelector('#titlebar').style.display = 'none';
-    }
-
+    let displayStyle = this.route.path === '/' ? 'block' : 'none';
+    this.parentNode.querySelector('#titlebar').style.display = displayStyle;
 
     this._setViewModeButtonDisplayState();
-    this.dispatch('changeDisplaySCSiteTitleState', this.shouldShowStaticPage);
+    this.dispatch('changeDisplaySCSiteTitleState', this.route.path === '/' ? true : false);
   }
 
   // Lazy loading for site elements
@@ -406,6 +393,10 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     else if (this._isAPI()) {
 
     }
+    else if (this._isPitakaPage()) {
+      this.dispatch('changeToolbarTitle', '');
+      this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NAVIGATION' }));
+    }
     else {
       this.dispatch('changeRoute', Object.assign({}, this.route, { name: 'NOT-FOUND' }));
     }
@@ -438,7 +429,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     const idParam = this._getPathParamNumber(1);
 
     // Static sites and the search page also only has one path parameter, so we need additional checks here:
-    if (this._isStaticPage(idParam) || this._isSearchPage()) {
+    if (this._isStaticPage(idParam) || this._isSearchPage() || this._isPitakaPage()) {
       return false;
     }
     return idParam && !this._getPathParamNumber(2);
@@ -449,7 +440,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _isPitakaPage() {
-    return this.route.path.split('/').length === 3 && this._getPathParamNumber(1) === 'pitaka';
+    //return this.route.path.split('/').length === 3 && this._getPathParamNumber(1) === 'pitaka';
+    return this.route.path.split('/').length >= 2 && this._getPathParamNumber(1) === 'pitaka';
   }
 
   // returns true if the path has three path parameters or - (for suttas with no author) if the second param

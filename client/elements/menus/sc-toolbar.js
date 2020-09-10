@@ -119,7 +119,7 @@ class SCToolbar extends LitLocalized(LitElement) {
       } */
 
       .invisible {
-        display: none !important;
+        display: none;
       }
 
 #btnLightTheme,
@@ -291,7 +291,8 @@ class SCToolbar extends LitLocalized(LitElement) {
       displayLightThemeButton: { type: Boolean },
       displayDarkThemeButton: { type: Boolean },
       displayViewModeButton: { type: Boolean},
-      colorTheme: { type: String }
+      colorTheme: { type: String },
+      suttaMetaText: { type: String }
     }
   }
 
@@ -426,11 +427,9 @@ class SCToolbar extends LitLocalized(LitElement) {
     this.displaySettingMenu = store.getState().displaySettingMenu;
     if (!this.displaySettingMenu) {
       this.actions.changeDisplaySettingMenuState(true);
-      //this.parentNode.parentNode.querySelector('#setting_Menu').show();
       this._showSettingMenu();
     } else {
       this.actions.changeDisplaySettingMenuState(false);
-      //this.parentNode.parentNode.querySelector('#setting_Menu').hide();
       this._hideSettingMenu();
     }
   }
@@ -463,6 +462,9 @@ class SCToolbar extends LitLocalized(LitElement) {
     if (this.colorTheme !== state.colorTheme) {
       this.colorTheme = state.colorTheme;
     }
+    if (this.suttaMetaText !== state.suttaMetaText) {
+      this.suttaMetaText = state.suttaMetaText;
+    }
   }
 
   updated(changedProps) {
@@ -478,6 +480,14 @@ class SCToolbar extends LitLocalized(LitElement) {
     if (changedProps.has('suttaplexListEnabled')) {
       this._viewModeChanged();
     }
+    if (changedProps.has('suttaMetaText')) {
+    this._suttaMetaTextChanged();
+    }
+  }
+
+  _suttaMetaTextChanged() {
+    let displayStyle = this.suttaMetaText ? 'inherit' : 'none';
+    this.shadowRoot.querySelector('#btnInfo').style.display = displayStyle;
   }
 
   _colorThemeChanged() {
@@ -507,6 +517,7 @@ class SCToolbar extends LitLocalized(LitElement) {
     if (this.displayToolButton) {
       this.shadowRoot.querySelector('#btnTools').style.display = 'inherit';
       this.shadowRoot.querySelector('#btnInfo').style.display = 'inherit';
+      this._suttaMetaTextChanged();
     } else {
       this.shadowRoot.querySelector('#btnTools').style.display = 'none';
       this.shadowRoot.querySelector('#btnInfo').style.display = 'none';
@@ -532,18 +543,18 @@ class SCToolbar extends LitLocalized(LitElement) {
       if (window.innerWidth < mediumWindowInnerWidth) {
 
       }
-      this.setSearchInputWidth();
+      this.calcSearchInputWidth();
 
       searchInputElement.focus();
       searchInputElement.value = '';
     }
   }
 
-  setSearchInputWidth() {
+  calcSearchInputWidth() {
     const wideWindowInnerWidth = 840;
     const mediumWindowInnerWidth = 480;
     const minWindowInnerWidth = 280;
-    const searchInputMaxWidth = 30;
+    const searchInputMaxWidth = 20;
     let searchInputWidth = 8;
     if (window.innerWidth > wideWindowInnerWidth) {
       searchInputWidth = 30;
@@ -563,7 +574,7 @@ class SCToolbar extends LitLocalized(LitElement) {
     }
 
     if (searchInputWidth > searchInputMaxWidth) {
-      searchInputWidth = 20;
+      searchInputWidth = searchInputMaxWidth;
     }
     this.shadowRoot.querySelector('.opened').style.width = `${searchInputWidth}em`;
   }

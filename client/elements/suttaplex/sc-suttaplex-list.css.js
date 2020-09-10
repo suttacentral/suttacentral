@@ -29,11 +29,11 @@ export const suttaplexListCss = html`<style>
   }
 
   .loading-spinner {
-            position: absolute;
-        margin: 0;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 999;
   }
 </style>`;
