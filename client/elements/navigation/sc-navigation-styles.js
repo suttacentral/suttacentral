@@ -299,5 +299,9 @@ export const navigationCompactModeStyles = html`
     font-size: var(--sc-skolar-font-size-s);
 }
 
+h2{
+    display: none
+}
+
   </style>
 `;
