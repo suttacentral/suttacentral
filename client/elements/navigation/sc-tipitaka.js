@@ -89,6 +89,8 @@ class SCTipitaka extends LitLocalized(LitElement) {
   get tipitakaCardTemplate() {
     return this.mainMenuData.length
       ? html`
+      <nav class='tipitaka-block'>
+      <h2>Tipiṭaka: canonical scriptures of early Buddhism</h2>
           <div class="main-nav">
             ${this.mainMenuData.map((item) => html`
               <section class="card home-card" @click=${() => this._onTipitakaCardClick(item.uid)}>
@@ -121,6 +123,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
               </section>`
             )}
           </div>
+          </nav>
         `
       : `${this.mainMenuData.length}`; 
   }
