@@ -409,6 +409,7 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
 
   _changeToolbarTitle() {
     if (!this.localize) return;
+    if (this.selectedPage.toLowerCase() === 'home') return;
     const pageNameTitle = this.localize(`${this.selectedPage}-TITLE`);
     this.actions.changeToolbarTitle(pageNameTitle);
   }

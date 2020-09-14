@@ -5,7 +5,7 @@ import { html, PolymerElement } from '@polymer/polymer';
 import { ReduxMixin, store } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 
-import './menus/sc-toolbar.js';
+import './menus/sc-action-items.js';
 import './addons/sc-top-sheet';
 import './text/sc-segmented-text.js';
 import './text/sc-simple-text.js';
@@ -416,8 +416,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     return (this.route.path === '/search');
   }
 
-  //TODO nav
-
   _isDictionaryPage() {
     const path = this.route.path.split('/');
     return (path.length === 3 && path[1] === 'define');
@@ -509,7 +507,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
   _changeView() {
     // if (!this._isSearchPage())
-    //   this.$.sc_toolbar._closeSearch();
+    //   this.$.sc_action_items._closeSearch();
   }
 
   _toggleLindenLeaves() {

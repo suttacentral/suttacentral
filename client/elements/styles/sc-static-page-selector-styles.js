@@ -40,7 +40,7 @@ export const SCPageStaticSelectorStyles = css`
     justify-content: center;
   }
 
-  #topbar {
+  #universal-toolbar {
     color: white;
     position: sticky;
     top: 0;

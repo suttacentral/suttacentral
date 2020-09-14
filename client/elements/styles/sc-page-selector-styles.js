@@ -22,7 +22,7 @@ export const SCPageSelectorStyles = html`
 
     /* Only static pages use transparent backgrounds, other pages use the original backgrounds. */
     .toolbar-header,
-    #sc_toolbar {
+    #sc_action_items {
       background-color: var(--sc-primary-color);
       /* background-color: transparent; */
       white-space: nowrap;
@@ -244,7 +244,7 @@ export const SCPageSelectorStyles = html`
     }
 
     /* Topbar (AKA toolbar, AKA app-bar)*/
-    #topbar {
+    #universal-toolbar {
       color: white;
       position: sticky;
       top: 0;
@@ -334,7 +334,7 @@ export const SCPageSelectorStyles = html`
     }
 
     /* Transitions. Fun! */
-    #topbar {
+    #universal-toolbar {
       transition: transform 300ms ease-in-out;
     }
     #titlebarLeft {

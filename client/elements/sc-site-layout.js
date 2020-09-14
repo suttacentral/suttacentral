@@ -28,12 +28,12 @@ import './styles/sc-colors.js';
 
 import { initSentry } from '../sentry.js';
 initSentry();
-import { LitLocalized } from '../elements/addons/localization-mixin';
+import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
 import './navigation/sc-linden-leaves.js';
 import './addons/sc-top-sheet.js';
 
-import './menus/sc-toolbar.js';
+import './menus/sc-action-items.js';
 
 import '@material/mwc-icon';
 import '@material/mwc-ripple';
@@ -42,7 +42,7 @@ import '@material/mwc-textfield';
 import { throttle } from 'throttle-debounce';
 
 
-class SCDrawerLayout extends LitLocalized(LitElement) {
+class SCSiteLayout extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
@@ -161,7 +161,7 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           box-sizing: border-box;
           height: 8em; 
           margin: auto;
-          padding-top: 1.8em;
+          /* padding-top: 1.8em; */
 
           background-color: var(--sc-primary-color);
 
@@ -171,7 +171,7 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
         }
 
         #titlebarSitetitle {
-          font-size: 3rem;
+          font-size: 3.5rem;
           font-family: "skolar pe";
           font-variant-caps: small-caps;
           text-align: center;
@@ -191,9 +191,10 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           display: flex;
           /* align-items: center; */
           justify-content: center;
+          margin-left: 1em;
         }
 
-        #topbar {
+        #universal-toolbar {
           color: white;
           position: sticky;
           /* position: relative; */ 
@@ -203,18 +204,17 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
         }
 
         #titlebarCenter {
-          transform: translateY(60px);
           min-width: 0;
         }
 
-        #titlebarSitetitle {
+        /* #titlebarSitetitle {
           transform: scale(1);
         }
 
         #titlebarSubtitle {
           opacity: 1;
           transform: scale(1);
-        }
+        } */
 
         .hover-underline-animation {
           display: inline-block;
@@ -240,14 +240,14 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           transform-origin: bottom left;
         } 
 
-        nav {
+        #context-toolbar {
           height: 64px;
           display: flex;
           background-color: var(--sc-primary-color);
           padding: 0 2%;
         }
 
-        nav span:first-child {
+        #context-toolbar span:first-child {
           margin-right: auto;
         }
 
@@ -255,9 +255,6 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           font-weight: normal;
           display: flex;
           align-items: center;
-
-          
-
           font-family: var(--sc-sans-font);
           font-size: var(--app-toolbar-font-size, 20px);
           color: var(--sc-tertiary-text-color);
@@ -272,7 +269,6 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           align-items: center;
           font-size: 1.9rem;
           font-variant-caps: small-caps;
-          /* font-family: var(--sc-sans-font); */
           font-family: "skolar pe";
           line-height: 0.9;
           color: var(--sc-tertiary-text-color);
@@ -286,7 +282,7 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
           text-decoration: none;
         }
 
-        header {
+        titlebar {
           background-color: var(--sc-primary-color);
         }
 
@@ -297,33 +293,57 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
         }
 
         @media print {
-          #topbar, header {
+          #universal-toolbar, titlebar {
             display: none;
+          }
+        }
+
+        .title-logo-icon {
+          vertical-align: bottom;
+          height: var(--sc-size-xxl);
+          width: var(--sc-size-xxl);
+          margin: 0 var(--sc-size-sm);
+        }
+
+        @media (max-width: 600px) {
+          h1 {
+            font-size: var(--sc-skolar-font-size-xxl);
+            padding-top: 0.2em;
+          }
+          .title-logo-icon {
+            height: 40px;
+            width: 40px;
+          }
+          .subtitle {
+            font-size: var(--sc-skolar-font-size-md);
+            margin-bottom: 0.5em;
+          }
+          #titlebarSitetitle {
+            padding-top: 0.4em;
           }
         }
       </style>
 
-      <div id="topbar">
+      <div id="universal-toolbar">
         <sc-linden-leaves id="breadCrumb"></sc-linden-leaves>
-          <nav>
-            <span id="toolbarTitle">${this.toolbarTitle}</span>
-            <span id="SCTitle">SuttaCentral</span>
-            <sc-toolbar id="sc_toolbar"></sc-toolbar>
-          </nav>
-          <sc-top-sheet id="setting_Menu"></sc-top-sheet>
+
+        <div id="context-toolbar">
+          <span id="toolbarTitle">${this.toolbarTitle}</span>
+          <span id="SCTitle">SuttaCentral</span>
+          <sc-action-items id="sc_action_items"></sc-action-items>
+        </div>
+
+        <sc-top-sheet id="setting_Menu"></sc-top-sheet>
+        
+        <div id="titlebar">
+          <div id="titlebarCenter">
+            <span id="titlebarSitetitle"><a href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>SuttaCentral</a></span>
+            <span id="titlebarSubtitle"><a href="/">Early Buddhist texts, translations, and parallels</a></span>
+          </div>
+        </div>
       </div>
 
-      <header>
-        <div id="titlebar">
-          <span id="titlebarCenter">
-            <span id="titlebarSitetitle"><a href="/">SuttaCentral</a></span>
-            <span id="titlebarSubtitle"><a href="/">Early Buddhist texts, translations, and parallels</a></span>
-          </span>
-        </div>
-      </header>
-
       <sc-page-selector id="page_selector" .isNarrowScreen="${this.isNarrowScreen}"></sc-page-selector>
-
       <sc-toasts></sc-toasts>
 
       <!--
@@ -355,15 +375,15 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
 
   static get properties() {
     return {
-      inputLanguage: {type: String }, //notify: true
+      inputLanguage: {type: String },
       infoDialogMetaArea: { type: String },
       item: { type: Object },
       colorsResponse: { type: Object },
-      siteLanguage: { type: String }, //observer: '_setSiteLanguage'
+      siteLanguage: { type: String },
       isNarrowScreen: { type: Boolean },
-      appColorTheme: { type: String }, //observer: '_colorThemeChanged'
+      appColorTheme: { type: String },
       localizedStringsPath: { type: String },
-      changedRoute: { type: String }, //observer: '_routeChanged'
+      changedRoute: { type: String },
       displaySettingMenu: { type: Boolean },
       toolbarTitle: { type: String },
       displaySCSiteTitle: { type: Boolean },
@@ -381,7 +401,7 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
     this.isNarrowScreen = false;
     this.appColorTheme = state.colorTheme;
     this._colorThemeChanged();
-    this.localizedStringsPath = '/localization/elements/sc-drawer-layout';
+    this.localizedStringsPath = '/localization/elements/sc-site-layout';
     this.changedRoute = state.currentRoute;
     this.displaySettingMenu = state.displaySettingMenu;
     this.toolbarTitle = state.toolbarOptions.title;
@@ -472,27 +492,31 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
       }
     });
 
+    let titlebarElement = this.shadowRoot.querySelector('#titlebar');
     let lastScrollTop = 0;
+    titlebarElement.style.transition = 'height 0.2s';
     addEventListener('scroll', throttle(300, () => {
-      let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-      if (currentScrollTop > lastScrollTop){
-        // down scroll code
-        //this.shadowRoot.querySelector('#topbar').style.position = 'relative';
-        this.shadowRoot.querySelector('#titlebar').style.transform = 'scale(0)';
-        this.shadowRoot.querySelector('#titlebar').style.height = '0em';
-        if (this.displaySCSiteTitle) {
-          this.shadowRoot.querySelector('#SCTitle').style.display = 'inherit';
+      if (this.displaySCSiteTitle) {
+        let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        // if (currentScrollTop > lastScrollTop){
+        if (currentScrollTop >= 50){
+          // down scroll code
+          this.shadowRoot.querySelector('#titlebar').style.height = '0em';
+          this.shadowRoot.querySelector('#titlebarCenter').style.opacity = '0';
+          if (this.displaySCSiteTitle) {
+            this.shadowRoot.querySelector('#SCTitle').style.display = 'inherit';
+          }
+        } else {
+          // up scroll code
+          if (currentScrollTop < 50) {
+            this.shadowRoot.querySelector('#titlebar').style.display = 'inherit';
+            this.shadowRoot.querySelector('#titlebar').style.height = '8em';
+            this.shadowRoot.querySelector('#SCTitle').style.display = 'none';
+            this.shadowRoot.querySelector('#titlebarCenter').style.opacity = '1';
+          }
         }
-      } else {
-        // up scroll code
-        //this.shadowRoot.querySelector('#topbar').style.position = 'sticky';
-        if (currentScrollTop === 0) {
-          this.shadowRoot.querySelector('#titlebar').style.transform = 'scale(1)';
-          this.shadowRoot.querySelector('#titlebar').style.height = '8em';
-          this.shadowRoot.querySelector('#SCTitle').style.display = 'none';
-        }
+        lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
       }
-      lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
     }));
 
     this._initNavigation();
@@ -589,4 +613,4 @@ class SCDrawerLayout extends LitLocalized(LitElement) {
   }
 }
 
-customElements.define('sc-drawer-layout', SCDrawerLayout);
+customElements.define('sc-site-layout', SCSiteLayout);
