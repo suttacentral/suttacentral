@@ -6,10 +6,10 @@ import { LitLocalized } from '../addons/localization-mixin';
 import { navigationNormaModelStyles } from './sc-navigation-styles.js';
 
 import '@material/mwc-ripple';
+import '@material/mwc-icon';
 import '@polymer/paper-ripple/paper-ripple.js';
 
 class SCLindenLeaves extends LitLocalized(LitElement) {
-
   static get styles() {
     return css`
       :host {
@@ -33,7 +33,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
       nav ul {
         display: flex;
-
         width: 100%;
         margin: 0;
         padding: 0;
@@ -48,6 +47,9 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         list-style-type: none;
 
         position: relative;
+
+        display: flex;
+        align-items: center;
       }
 
       nav li a {
@@ -87,18 +89,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         opacity: 1;
       }
 
-      nav li:after {
-        font-weight: 400;
-
-        margin-left: 8px;
-
-        content: "❭";
-
-        color: white;
-
-        opacity: 0.8;
-      }
-
       nav li:last-of-type:after {
         margin-left: 0;
         content: "";
@@ -106,6 +96,10 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
       nav li:first-of-type {
         margin-left: 0;
+      }
+
+      mwc-icon {
+        color: var(--sc-secondary-text-color);
       }
     `;
   }
@@ -168,10 +162,12 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
     return html`
       <nav>
         <ul>
-          ${this.navArray ? this.navArray.map(nav => html`
+          ${this.navArray ? this.navArray.map((nav, i) => html`
             ${nav && nav.title ? html`
-              <li @click=${() => this._navClick(nav)}><a href='${nav.url}'>${this.localize(nav.title)}<paper-ripple></paper-ripple></a></li>
-            ` : ''}
+              <li @click=${() => this._navClick(nav)}>
+                <a href='${nav.url}'>${this.localize(nav.title)}<paper-ripple></paper-ripple></a>
+                ${this.navArray.length !== i + 1 ? html`<mwc-icon>chevron_right</mwc-icon>` : ''}
+              </li>` : ''}
           `) : ''}
         </ul>
       </nav>
