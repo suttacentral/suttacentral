@@ -530,7 +530,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _setViewModeButtonDisplayState() {
-    if (this.shouldShowPitakaPage || this.shouldShowSuttaplexListPage) {
+    if (this.shouldShowPitakaPage || this.shouldShowSuttaplexListPage || this.route.path === '/') {
       this.dispatch('changeDisplayViewModeButtonState', true);
     } else {
       this.dispatch('changeDisplayViewModeButtonState', false);

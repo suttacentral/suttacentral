@@ -122,49 +122,43 @@ class SCActionItems extends LitLocalized(LitElement) {
         display: none;
       }
 
-#btnLightTheme,
-#btnDarkTheme,
-#btnViewCompact,
-#btnViewComfy
-{
-    position: relative;
-}
+      #btnLightTheme,
+      #btnDarkTheme,
+      #btnViewCompact,
+      #btnViewComfy {
+        position: relative;
+      }
 
-#btnLightTheme:after,
-#btnDarkTheme:after,
-#btnViewCompact:after,
-#btnViewComfy:after
-{
-    font-size: var(--sc-skolar-font-size-xxs);;
+      #btnLightTheme:after,
+      #btnDarkTheme:after,
+      #btnViewCompact:after,
+      #btnViewComfy:after {
+        font-size: var(--sc-skolar-font-size-xxs);;
 
-    position: absolute;
-    bottom: -4px;
+        position: absolute;
+        bottom: -4px;
 
-    width: 100%;
+        width: 100%;
 
-    text-align: center;
-}
+        text-align: center;
+      }
 
-#btnLightTheme:after
-{
-    content: 'colors';
-}
+      #btnLightTheme:after {
+        content: 'colors';
+      }
 
-#btnDarkTheme:after
-{
-    content: 'colors';
-}
+      #btnDarkTheme:after {
+        content: 'colors';
+      }
 
-#btnViewCompact:after
-{
-    content: 'spacing';
-}
+      #btnViewCompact:after {
+        content: 'spacing';
+      }
 
-#btnViewComfy:after
-{
-    content: 'spacing';
-}
-
+      #btnViewComfy:after
+      {
+        content: 'spacing';
+      }
     </style>
 
     <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
@@ -381,7 +375,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       searchInputElement.value = this.searchKeyword;
       this.openSearch();
     }
-
+    
     this._displayToolButtonStateChange();
     this._colorThemeChanged();
     this._viewModeChanged();
@@ -405,6 +399,12 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnViewCompactClick(e) {
     this.actions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact' ? true : false);
     this._viewModeChanged();
+  }
+
+  _displayViewModeButtonStateChange() {
+    let displayStyle = this.displayViewModeButton ? 'inherit' : 'none';
+    this.shadowRoot.querySelector('#btnViewCompact').style.display = displayStyle;
+    this.shadowRoot.querySelector('#btnViewComfy').style.display = displayStyle;
   }
 
   _viewModeChanged() {
@@ -500,16 +500,6 @@ class SCActionItems extends LitLocalized(LitElement) {
     } else {
       this.shadowRoot.querySelector('#btnLightTheme').style.display = 'inherit';
       this.shadowRoot.querySelector('#btnDarkTheme').style.display = 'none';
-    }
-  }
-
-  _displayViewModeButtonStateChange() {
-    if (this.displayViewModeButton) {
-      this.shadowRoot.querySelector('#btnViewCompact').style.display = 'inherit';
-      this.shadowRoot.querySelector('#btnViewComfy').style.display = 'inherit';
-    } else {
-      this.shadowRoot.querySelector('#btnViewCompact').style.display = 'none';
-      this.shadowRoot.querySelector('#btnViewComfy').style.display = 'none';
     }
   }
 
