@@ -14,10 +14,26 @@ main
     display: flex;
     flex-direction: row;
 
-    margin-top: 4em;
-
     justify-content: center;
     flex-wrap: nowrap;
+}
+.tipitaka-block
+{
+    margin-top: 2em;
+}
+
+h2
+{
+    font-family: var(--sc-sans-font);
+    font-size: 24px;
+    font-weight: 300;
+    font-style: italic;
+
+    margin: 0 1rem 4px;
+    padding: .333em .5em .2em;
+
+    color: var(--sc-secondary-text-color);
+    border-bottom: 1px solid var(--sc-border-color);
 }
 
 @media screen and (max-width: 780px)
@@ -281,6 +297,10 @@ export const navigationCompactModeStyles = html`
 .shortcut
 {
     font-size: var(--sc-skolar-font-size-s);
+}
+
+h2{
+    display: none
 }
 
   </style>
