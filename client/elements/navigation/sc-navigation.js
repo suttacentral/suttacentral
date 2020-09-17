@@ -252,9 +252,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     return html`
       ${navigationNormaModelStyles}
       ${this.compactStyles}
-      <div class="loading-indicator">
-        <sc-bouncing-loader class="loading-spinner" ?active="${this.loading}"></sc-bouncing-loader>
-      </div>
       <main>
         ${this.pitakaContentTemplate}
         ${this.parallelsContentTemplate}
@@ -634,6 +631,8 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (this.displaySakaChildren) {
       currentUrl = this._genCurrentURL(childId.toLowerCase());
     }
+
+    //let a = this.sakaChildren?.children?.hello;
 
     let navType = 'vaggaChildrenChildren';
     let navIndexesOfType = navIndex.get(navType);
