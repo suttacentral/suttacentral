@@ -12,93 +12,104 @@ import '@polymer/paper-ripple/paper-ripple.js';
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
     return css`
-      :host {
-        display: block;
-      }
+      :host
+{
+    display: block;
+}
 
-      nav {
-        display: flex;
-        overflow-x: auto;
-        flex-direction: row;
+nav
+{
+    display: flex;
+    overflow-x: auto;
+    flex-direction: row;
 
-        box-sizing: border-box;
-        padding: 0 2%;
+    box-sizing: border-box;
+    padding: 0 2%;
 
-        white-space: nowrap;
+    white-space: nowrap;
 
-        background-color: rgb(75, 74, 74);
+    background-color: rgb(75, 74, 74);
 
-        justify-content: space-between;
-      }
+    justify-content: space-between;
+}
 
-      nav ul {
-        display: flex;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-      }
+nav ul
+{
+    display: flex;
 
-      nav li {
-        font-size: 0.8em;
-        font-weight: 500;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-        list-style-type: none;
+nav li
+{
+    font-size: .8em;
+    font-weight: 500;
 
-        display: flex;
-        align-items: center;
-      }
+    display: flex;
 
-      nav li a {
-        display: inline-block;
+    list-style-type: none;
 
-        padding: 14px 8px 10px 8px;
+    align-items: center;
+}
 
-        color: white;
+nav li a
+{
+    position: relative;
 
-        text-decoration: none;
+    display: inline-block;
 
-        opacity: 0.8;
+    padding: 14px 8px 10px 8px;
 
-        border-bottom: 4px solid rgba(0,0,0,0);
-        position: relative;
-      }
+    text-decoration: none;
 
-      nav li a:hover {
-        cursor: pointer;
+    opacity: .8;
+    color: white;
+    border-bottom: 4px solid rgba(0,0,0,0);
+}
 
-        border-bottom: 4px solid var(--sc-primary-color-light);
-      }
+nav li a:hover
+{
+    cursor: pointer;
 
-      nav li:last-child {
-        font-weight: 800;
+    border-bottom: 4px solid var(--sc-primary-color-light);
+}
 
-        border-bottom: 4px solid var(--sc-primary-color-light);
-      }
+nav li:last-child
+{
+    font-weight: 800;
 
-      nav li:last-child a:hover {
-        cursor: default;
+    padding: 14px 8px 10px 8px;
 
-        color: white;
-        border-bottom: none;
-      }
+    border-bottom: 4px solid var(--sc-primary-color-light);
+}
 
-      nav li:last-child a {
-        cursor: default;
+nav li:last-child a:hover
+{
+    cursor: default;
 
-        opacity: 1;
-      }
+    color: white;
+    border-bottom: none;
+}
 
-      nav li:first-of-type {
-        margin-left: 0;
-      }
+nav li:last-child a
+{
+    cursor: default;
 
-      mwc-icon {
-        color: var(--sc-disabled-text-color);
-      }
+    opacity: 1;
+}
 
-      .lastLiPadding {
-        padding: 14px 8px 10px 8px;
-      }
+nav li:first-of-type
+{
+    margin-left: 0;
+}
+
+mwc-icon
+{
+    color: var(--sc-disabled-text-color);
+}
+
     `;
   }
 
@@ -166,7 +177,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
                 <li @click=${() => this._navClick(nav)}>
                   <a href='${nav.url}'>${this.localize(nav.title)}<paper-ripple></paper-ripple></a>
                   <mwc-icon>chevron_right</mwc-icon>
-                </li>` : html`<li class='lastLiPadding'>${this.localize(nav.title)}</li>`}
+                </li>` : html`<li>${this.localize(nav.title)}</li>`}
               ` : ''}
           `) : ''}
         </ul>
