@@ -89,17 +89,16 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         opacity: 1;
       }
 
-      nav li:last-of-type:after {
-        margin-left: 0;
-        content: "";
-      }
-
       nav li:first-of-type {
         margin-left: 0;
       }
 
       mwc-icon {
         color: var(--sc-secondary-text-color);
+      }
+
+      .lastLiPadding {
+        padding: 14px 4px 10px 0px;
       }
     `;
   }
@@ -164,10 +163,12 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         <ul>
           ${this.navArray ? this.navArray.map((nav, i) => html`
             ${nav && nav.title ? html`
-              <li @click=${() => this._navClick(nav)}>
-                <a href='${nav.url}'>${this.localize(nav.title)}<paper-ripple></paper-ripple></a>
-                ${this.navArray.length !== i + 1 ? html`<mwc-icon>chevron_right</mwc-icon>` : ''}
-              </li>` : ''}
+              ${this.navArray.length !== i + 1 ? html`
+                <li @click=${() => this._navClick(nav)}>
+                  <a href='${nav.url}'>${this.localize(nav.title)}<paper-ripple></paper-ripple></a>
+                  <mwc-icon>chevron_right</mwc-icon>
+                </li>` : html`<li class='lastLiPadding'>${this.localize(nav.title)}</li>`}
+              ` : ''}
           `) : ''}
         </ul>
       </nav>
