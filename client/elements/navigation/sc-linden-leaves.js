@@ -42,11 +42,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         font-size: 0.8em;
         font-weight: 500;
 
-        margin: 0 0 0 8px;
-
         list-style-type: none;
-
-        position: relative;
 
         display: flex;
         align-items: center;
@@ -55,13 +51,16 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       nav li a {
         display: inline-block;
 
-        padding: 14px 4px 10px 0px;
+        padding: 14px 8px 10px 8px;
 
         color: white;
 
         text-decoration: none;
 
         opacity: 0.8;
+
+        border-bottom: 4px solid rgba(0,0,0,0);
+        position: relative;
       }
 
       nav li a:hover {
@@ -94,11 +93,11 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       }
 
       mwc-icon {
-        color: var(--sc-secondary-text-color);
+        color: var(--sc-disabled-text-color);
       }
 
       .lastLiPadding {
-        padding: 14px 4px 10px 0px;
+        padding: 14px 8px 10px 8px;
       }
     `;
   }
