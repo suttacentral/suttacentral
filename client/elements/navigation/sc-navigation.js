@@ -290,12 +290,6 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))} in Pali and Chinese.
           </div>
 
-          <div class="essay" id="${child.name}_essay" hidden>
-            <block-link>
-              <a href="${pitakaGuide.get(child.name)}">${this.localizeEx('introduction', 'pitaka', this.localize(child.name))}</a>
-            </block-link>
-          </div>
-
           <paper-ripple></paper-ripple>
         </section>
       `)}` : '';
@@ -355,6 +349,12 @@ class SCNavigation extends LitLocalized(LitElement) {
           </header>
 
           <div class='blurb' id="${child.id}_blurb"></div>
+
+          <div class="essay" id="${child.id}_essay" hidden>
+            <block-link>
+              <a href="${pitakaGuide.get(child.id)}">${this.localize(`${child.id}_essayTitle`)}</a>
+            </block-link>
+          </div>
 
           <div class='shortcut'>
             <block-link>
