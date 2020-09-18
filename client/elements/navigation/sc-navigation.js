@@ -90,7 +90,8 @@ class SCNavigation extends LitLocalized(LitElement) {
       };
       this.actions.setNavigation(this.navArray);
       this.actions.setCurrentNavPosition(navIndexesOfType.position);
-      this.actions.changeToolbarTitle(this._getPathParamNumber(navIndexesOfType.pathParamIndex));
+      let title  = this.localize(this._getPathParamNumber(navIndexesOfType.pathParamIndex).toLowerCase());
+      this.actions.changeToolbarTitle(title);
     }
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
   }
@@ -119,6 +120,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (changedProps.has('currentNavPosition')) {
       this._fetchMainMenuData();
       this._attachLanguageCount();
+      this._displayGuideLink();
 
       let currentNavState = this.navArray[this.currentNavPosition];
       if (currentNavState) {
@@ -281,8 +283,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='header-right'>
                 <span class='number'></span>
                 <span class='number-translated'>${this.fullSiteLanguageName}</span>
-              </span>
-            ` : ''}
+              </span>` : ''}
           </header>
 
           <div class='blurb'>
@@ -350,8 +351,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='header-right'>
                 <span class='number' id="${child.id}_number"></span>
                 <span class='number-translated'>${this.fullSiteLanguageName}</span>
-              </span>
-            ` : ''}
+              </span>` : ''}
           </header>
 
           <div class='blurb' id="${child.id}_blurb"></div>
@@ -454,8 +454,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                 <span class='header-right'>
                   <span class='number' id="${child.id}_number"></span>
                   <span class='number-translated'>${this.fullSiteLanguageName}</span>
-                </span>
-            ` : ''}
+                </span>` : ''}
             </header>
 
             <div class='blurb' id="${child.id}_blurb"></div>
@@ -530,8 +529,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='header-right'>
                 <span class='number' id="${child.id}_number"></span>
                 <span class='number-translated'>${this.fullSiteLanguageName}</span>
-              </span>
-          ` : ''}
+              </span>` : ''}
           </header>
           <div class='blurb' id="${child.id}_blurb"></div>
           <paper-ripple></paper-ripple>
@@ -604,8 +602,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='header-right'>
                 <span class='number' id="${child.id}_number"></span>
                 <span class='number-translated'>${this.fullSiteLanguageName}</span>
-              </span>
-          ` : ''}
+              </span>` : ''}
           </header>
           <div class='blurb' id="${child.id}_blurb"></div>
           <paper-ripple></paper-ripple>
@@ -631,8 +628,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (this.displaySakaChildren) {
       currentUrl = this._genCurrentURL(childId.toLowerCase());
     }
-
-    //let a = this.sakaChildren?.children?.hello;
 
     let navType = 'vaggaChildrenChildren';
     let navIndexesOfType = navIndex.get(navType);
@@ -682,8 +677,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='header-right'>
                 <span class='number' id="${child.id}_number"></span>
                 <span class='number-translated'>${this.fullSiteLanguageName}</span>
-              </span>
-          ` : ''}
+              </span>` : ''}
           </header>
           <div class='blurb' id="${child.id}_blurb"></div>
           <paper-ripple></paper-ripple>
