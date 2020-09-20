@@ -9,7 +9,6 @@ import { LitLocalized } from '../addons/localization-mixin';
 import { pitakaGuide, navIndex } from './sc-navigation-common';
 import '@alangdm/block-link';
 import '../addons/sc-bouncing-loader';
-import '@polymer/paper-ripple/paper-ripple.js';
 
 const childMenuCache = {};
 
@@ -120,7 +119,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (changedProps.has('currentNavPosition')) {
       this._fetchMainMenuData();
       this._attachLanguageCount();
-      this._displayGuideLink();
 
       let currentNavState = this.navArray[this.currentNavPosition];
       if (currentNavState) {
@@ -230,15 +228,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
   }
 
-  _displayGuideLink() {
-    pitakaGuide.forEach((value, key) => {
-      let essaySpan = this.shadowRoot.querySelector(`#${key}_essay`);
-      if (essaySpan) {
-        essaySpan.removeAttribute('hidden');
-      }
-    });
-  }
-
   async _fetchChildMenuData() {
     let lang = this.language ? this.language : 'en';
     const url = `${API_ROOT}/menu/${this.vaggasId}?language=${lang}`;
@@ -321,7 +310,6 @@ class SCNavigation extends LitLocalized(LitElement) {
   firstUpdated() {
     this._fetchMainMenuData();
     this._attachLanguageCount();
-    this._displayGuideLink();
     if (!this.fullSiteLanguageName) {
       this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     }
@@ -350,11 +338,13 @@ class SCNavigation extends LitLocalized(LitElement) {
 
           <div class='blurb' id="${child.id}_blurb"></div>
 
-          <div class="essay" id="${child.id}_essay" hidden>
-            <block-link>
-              <a href="${pitakaGuide.get(child.id)}">${this.localize(`${child.id}_essayTitle`)}</a>
-            </block-link>
-          </div>
+          ${pitakaGuide.get(child.id) ? html`
+            <div class="essay" id="${child.id}_essay">
+              <block-link>
+                <a href="${pitakaGuide.get(child.id)}">${this.localize(`${child.id}_essayTitle`)}</a>
+              </block-link>
+            </div>
+          ` : ''}
 
           <div class='shortcut'>
             <block-link>
