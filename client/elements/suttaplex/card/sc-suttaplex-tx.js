@@ -3,6 +3,7 @@ import { html, LitElement } from 'lit-element';
 import '../../../img/sc-svg-icons.js';
 import '../../menus/sc-suttaplex-share-menu.js';
 import { suttaplexTxCss } from './sc-suttaplex-css';
+import '@moduware/morph-ripple';
 
 
 class SCSuttaplexTx extends LitElement {
@@ -23,7 +24,7 @@ class SCSuttaplexTx extends LitElement {
       ${suttaplexTxCss}
       
       <a href="${this.translationUrl}" class="tx ${this.isCompact ? 'compact' : ''}">
-        <paper-ripple></paper-ripple>
+        <morph-ripple></morph-ripple>
         <div class="tx-icon">
           <iron-icon icon="sc-svg-icons:translation"></iron-icon>
         </div>

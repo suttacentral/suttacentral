@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 import '@material/mwc-icon';
-import '@polymer/paper-ripple/paper-ripple.js';
+import '@moduware/morph-ripple';
 import '../addons/sc-bouncing-loader';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
@@ -91,7 +91,7 @@ class SCTextCarousel extends LitLocalized(LitElement) {
       ${this.loading ? html`<sc-bouncing-loader></sc-bouncing-loader>` : ''}
 
       <button id="previous_button" class="chevron previous" @tap="${this.loadPreviousItem}" type="button" aria-label="${this.localize('previous')}">
-        <paper-ripple></paper-ripple>
+        <morph-ripple></morph-ripple>
         <mwc-icon>keyboard_arrow_left</mwc-icon>
       </button>
 
@@ -101,7 +101,7 @@ class SCTextCarousel extends LitLocalized(LitElement) {
       </a>
 
       <button id="next_button" class="chevron next" @tap="${this.loadNextItem}" aria-label="${this.localize('next')}">
-        <paper-ripple></paper-ripple>
+        <morph-ripple></morph-ripple>
         <mwc-icon>keyboard_arrow_right</mwc-icon>  
       </button>
     </div>`;

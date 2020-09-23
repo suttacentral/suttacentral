@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
+import '@moduware/morph-ripple';
+
 export class SCBottomSheet extends LitElement {
   static get properties() {
     return {
@@ -186,6 +188,10 @@ export class SCBottomSheet extends LitElement {
       border-left: 1px solid rgba(0, 0, 0, 0.14);
     }
 
+    morph-ripple {
+      --ripple-color: var(--sc-primary-color);
+    }
+
     @keyframes bottomSheetShow {
       from {
         bottom: -200px;
@@ -238,12 +244,10 @@ export class SCBottomSheet extends LitElement {
         </main>
         <footer>
           <div>
-            <paper-ripple></paper-ripple>
-            <button accesskey="b" id="btnPrevious" @click=${this._previous}>&#8592;</button>
+            <button accesskey="b" id="btnPrevious" @click=${this._previous}>&#8592;<morph-ripple></morph-ripple></button>
           </div>
           <div>
-            <paper-ripple></paper-ripple>
-            <button accesskey="n" id="btnNext" @click=${this._next}>&#8594;</button>
+            <button accesskey="n" id="btnNext" @click=${this._next}>&#8594;<morph-ripple></morph-ripple></button>
           </div>
         </footer>
       </div>

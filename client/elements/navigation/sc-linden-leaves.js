@@ -5,110 +5,102 @@ import { LitLocalized } from '../addons/localization-mixin';
 
 import { navigationNormaModelStyles } from './sc-navigation-styles.js';
 
-import '@material/mwc-ripple';
 import '@material/mwc-icon';
-import '@polymer/paper-ripple/paper-ripple.js';
+import '@moduware/morph-ripple';
 
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
     return css`
-      :host
-{
-    display: block;
-}
+      :host {
+        display: block;
+      }
 
-nav
-{
-    display: flex;
-    overflow-x: auto;
-    flex-direction: row;
+      nav {
+        display: flex;
+        overflow-x: auto;
+        flex-direction: row;
 
-    box-sizing: border-box;
-    padding: 0 2%;
+        box-sizing: border-box;
+        padding: 0 2%;
 
-    white-space: nowrap;
+        white-space: nowrap;
 
-    background-color: rgb(75, 74, 74);
+        background-color: rgb(75, 74, 74);
 
-    justify-content: space-between;
-}
+        justify-content: space-between;
+      }
 
-nav ul
-{
-    display: flex;
+      nav ul {
+        display: flex;
 
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
 
-nav li
-{
-    font-size: .8em;
-    font-weight: 500;
+      nav li {
+        font-size: .8em;
+        font-weight: 500;
 
-    display: flex;
+        display: flex;
 
-    list-style-type: none;
+        list-style-type: none;
 
-    align-items: center;
-}
+        align-items: center;
+      }
 
-nav li a
-{
-    position: relative;
+      nav li a {
+        position: relative;
 
-    display: inline-block;
+        display: inline-block;
 
-    padding: 14px 8px 10px 8px;
+        padding: 14px 8px 10px 8px;
 
-    text-decoration: none;
+        text-decoration: none;
 
-    opacity: .8;
-    color: white;
-    border-bottom: 4px solid rgba(0,0,0,0);
-}
+        opacity: .8;
+        color: white;
+        border-bottom: 4px solid rgba(0,0,0,0);
+      }
 
-nav li a:hover
-{
-    cursor: pointer;
+      nav li a:hover {
+        cursor: pointer;
 
-    border-bottom: 4px solid var(--sc-primary-color-light);
-}
+        border-bottom: 4px solid var(--sc-primary-color-light);
+      }
 
-nav li:last-child
-{
-    font-weight: 800;
+      nav li:last-child {
+        font-weight: 800;
 
-    padding: 14px 8px 10px 8px;
+        padding: 14px 8px 10px 8px;
 
-    border-bottom: 4px solid var(--sc-primary-color-light);
-}
+        border-bottom: 4px solid var(--sc-primary-color-light);
+      }
 
-nav li:last-child a:hover
-{
-    cursor: default;
+      nav li:last-child a:hover {
+        cursor: default;
 
-    color: white;
-    border-bottom: none;
-}
+        color: white;
+        border-bottom: none;
+      }
 
-nav li:last-child a
-{
-    cursor: default;
+      nav li:last-child a {
+        cursor: default;
 
-    opacity: 1;
-}
+        opacity: 1;
+      }
 
-nav li:first-of-type
-{
-    margin-left: 0;
-}
+      nav li:first-of-type {
+        margin-left: 0;
+      }
 
-mwc-icon
-{
-    color: var(--sc-disabled-text-color);
-}
+      mwc-icon {
+        color: var(--sc-disabled-text-color);
+      }
+
+      morph-ripple {
+        --ripple-color: var(--sc-primary-color);
+      }
 
     `;
   }
@@ -175,7 +167,7 @@ mwc-icon
             ${nav && nav.title ? html`
               ${this.navArray.length !== i + 1 ? html`
                 <li @click=${() => this._navClick(nav)}>
-                  <a href='${nav.url}'>${this.localize(nav.title)}<paper-ripple></paper-ripple></a>
+                  <a href='${nav.url}'>${this.localize(nav.title)}<morph-ripple></morph-ripple></a>
                   <mwc-icon>chevron_right</mwc-icon>
                 </li>` : html`<li>${this.localize(nav.title)}</li>`}
               ` : ''}

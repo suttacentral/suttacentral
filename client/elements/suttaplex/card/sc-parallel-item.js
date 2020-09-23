@@ -9,6 +9,7 @@ import {
 } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
 import { parallelItemCss } from './sc-suttaplex-css';
+import '@moduware/morph-ripple';
 
 const stopPropagation = (e) => e.stopPropagation();
 
@@ -120,7 +121,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
     ${parallelItemCss}
 
     <a href="${this.parallelUrl}" class="${this.parallelUrl ? '' : 'disabled'}">
-      <paper-ripple></paper-ripple>
+      <morph-ripple></morph-ripple>
       <div class="parallel-item d-flex justify-content-space-between">
         <div class="parallel-item-main-info-container">
           <div class="parallel-item-title vertical-margin-xs" title="${this.headingTitle}">
