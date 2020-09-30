@@ -1,4 +1,3 @@
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import { html, PolymerElement } from '@polymer/polymer';
@@ -31,7 +30,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     return html`
     <style>
       :host {
-        --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
         display: block;
         box-sizing: border-box;
         height: 100%;
@@ -46,25 +44,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         display: flex;
         flex: 1;
         flex-direction: column;
-      }
-
-      #nav_toolbar {
-        background-color: var(--sc-primary-color-dark);
-        height: auto;
-      }
-
-      .navigation-tabs {
-        width: 100%;
-        --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
-      }
-
-      .nav-link {
-        color: var(--sc-tertiary-text-color);
-        --paper-tab-ink: var(--sc-primary-color-light);
-        padding-left: 10px;
-        padding-right: 10px;
-        text-transform: uppercase;
-        letter-spacing: var(--sc-caps-letter-spacing);
       }
 
       .link-anchor {
@@ -175,9 +154,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       localizedStringsPath: {
         type: String,
         value: '/localization/elements/sc-page-selector'
-      },
-      isNarrowScreen: {
-        type: Boolean
       },
       shouldShowPitakaPage: {
         type: Boolean,

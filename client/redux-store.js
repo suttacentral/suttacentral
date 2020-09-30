@@ -70,6 +70,14 @@ const initialState = {
     displayInfoButton: false,
     displayViewModeButton: true,
     displaySCSiteTitle: true,
+    staticPagesToolbarDisplayState: {
+      displayFirstToolbar: true,
+      displaySecondToolbar: false,
+      displayTipitakaToolbar: false,
+      displayAcademicToolbar: false,
+      displayOrganizationalToolbar: false,
+      displayGuidesToolbar: false
+    }
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -164,6 +172,8 @@ const reducer = (state, action) => {
             return Object.assign({}, state, { navState: action.navState });
         case 'CHANGE_CURRENT_NAV_POSITION_STATE':
           return Object.assign({}, state, { currentNavPosition: action.currentNavPosition });
+        case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':
+          return Object.assign({}, state, { staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState });
         default:
             return state;
     }

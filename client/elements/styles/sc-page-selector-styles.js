@@ -3,7 +3,6 @@ import { html } from "lit-element";
 export const SCPageSelectorStyles = html`
   <style>
     :host {
-      --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
       display: block;
       box-sizing: border-box;
       height: 100%;
@@ -104,30 +103,6 @@ export const SCPageSelectorStyles = html`
       #header {
         display: none;
       }
-    }
-
-    .hideTitle {
-      display: none;
-    }
-
-    #nav_toolbar {
-      background-color: var(--sc-primary-color-dark);
-      height: auto;
-      /* top: 48px; */
-    }
-
-    .navigation-tabs {
-      width: 100%;
-      --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
-    }
-
-    .nav-link {
-      color: var(--sc-tertiary-text-color);
-      --paper-tab-ink: var(--sc-primary-color-light);
-      padding-left: 10px;
-      padding-right: 10px;
-      text-transform: uppercase;
-      letter-spacing: var(--sc-caps-letter-spacing);
     }
 
     .link-anchor {

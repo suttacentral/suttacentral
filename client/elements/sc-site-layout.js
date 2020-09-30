@@ -12,6 +12,8 @@ import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/neon-animation/animations/fade-in-animation.js';
 import '@polymer/neon-animation/animations/fade-out-animation.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '@material/mwc-icon';
+import { throttle } from 'throttle-debounce';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
 import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock/lib/bodyScrollLock.es6';
 setPassiveTouchGestures(true);
@@ -32,302 +34,23 @@ import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
 import './navigation/sc-linden-leaves.js';
 import './addons/sc-top-sheet.js';
-
 import './menus/sc-action-items.js';
 
-import '@material/mwc-icon';
-import '@material/mwc-ripple';
-import '@material/mwc-textfield';
-
-import { throttle } from 'throttle-debounce';
-
+import { SCSiteLayoutStyles} from './styles/sc-site-layout-styles.js';
 
 class SCSiteLayout extends LitLocalized(LitElement) {
+  static get styles() {
+    return css`
+      ${SCSiteLayoutStyles}
+    `;
+  }
+
   render() {
     return html`
-      <style>
-        :host {
-          display: block;
-        }
+      <div id="universal-toolbar" class="transitionTransform">
+        <sc-linden-leaves id="breadCrumb" class="transitionTransform"></sc-linden-leaves>
 
-        .nav-logo-icon {
-          margin-left: var(--sc-size-md);
-          margin-right: var(--sc-size-md);
-          vertical-align: text-bottom;
-          width: var(--sc-size-lg);
-          height: var(--sc-size-lg);
-        }
-
-        /* styles for the text dialogs: */
-
-        .dialog {
-          left: 0;
-          background-color: var(--sc-secondary-background-color);
-          white-space: initial;
-          max-width: 630px;
-          position: fixed;
-          top: 50px;
-          margin: 5% auto;
-          right: 0;
-        }
-
-        @media screen and (max-width: 960px) {
-          .dialog {
-            left: 0;
-          }
-        }
-
-        @media screen and (max-width: 480px) {
-          #titlebarSitetitle {
-            font-size: 2.25rem !important;
-          }
-
-          #titlebarSubtitle{
-            font-size: 1.05rem !important;
-          }
-
-          #SCTitle {
-            font-size: 1.5rem !important;
-          }
-        }
-
-        .dialog-header {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-weight: 400;
-          line-height: 32px;
-          padding: var(--sc-size-lg) 0;
-          color: var(--sc-tertiary-text-color);
-          margin: 0;
-        }
-
-        .buttons-bar {
-          margin-top: 0;
-          padding-right: 0;
-          display: flex;
-          justify-content: space-between;
-        }
-
-        .green-bg {
-          background-color: var(--sc-primary-accent-color);
-        }
-
-        .scrollable-dialog {
-          margin-bottom: var(--sc-size-lg);
-          margin-top: 0;
-          --divider-color: transparent;
-        }
-
-        .dialog-section {
-          margin-top: var(--sc-size-lg);
-          color: var(--sc-primary-text-color);
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-s);
-          font-weight: 400;
-          line-height: 20px;
-        }
-
-        .dialog-section p[lang="ev"] {
-          font-family: var(--sc-tengwar-font);
-        }
-
-        p a, li a {
-          color: inherit;
-          text-decoration: underline;
-          text-decoration-color: var(--sc-primary-color);
-          text-decoration-skip-ink: auto;
-        }
-
-        p a:hover, li a:hover {
-          color: var(--sc-primary-color);
-        }
-
-        p a:visited, li a:visited {
-          text-decoration-color: var(--sc-primary-color-dark);
-        }
-
-        .close-dialog-icon {
-          color: var(--sc-tertiary-text-color);
-          margin: var(--sc-size-sm);
-        }
-
-        .navigation-menu {
-          height: 100%;
-        }
-
-        #titlebar {
-          /* display: flex !important; */
-          display: flex;
-          box-sizing: border-box;
-          height: 8em; 
-          margin: auto;
-          /* padding-top: 1.8em; */
-
-          background-color: var(--sc-primary-color);
-
-          /* align-items: center; */
-          justify-content: center;
-          transition: all 0.1s;
-        }
-
-        #titlebarSitetitle {
-          font-size: 3.5rem;
-          font-family: "skolar pe";
-          font-variant-caps: small-caps;
-          text-align: center;
-          line-height: 0.9;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: flex;
-          /* align-items: center; */
-          justify-content: center;
-        }
-
-        #titlebarSubtitle{
-          text-align: center;
-          font-style: italic;
-          font-size: 1.5rem;
-          display: flex;
-          /* align-items: center; */
-          justify-content: center;
-          margin-left: 1em;
-        }
-
-        #universal-toolbar {
-          color: white;
-          position: sticky;
-          /* position: relative; */ 
-          top: 0;
-          box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05), 2px 2px 2px rgba(0, 0, 0, 0.05), 4px 4px 4px rgba(0, 0, 0, 0.05), 8px 8px 8px rgba(0, 0, 0, 0.05);
-          z-index: 9999;
-        }
-
-        #titlebarCenter {
-          min-width: 0;
-        }
-
-        /* #titlebarSitetitle {
-          transform: scale(1);
-        }
-
-        #titlebarSubtitle {
-          opacity: 1;
-          transform: scale(1);
-        } */
-
-        .hover-underline-animation {
-          display: inline-block;
-          position: relative;
-          /* color: #0087ca; */
-        }
-
-        .hover-underline-animation:after {
-          content: '';
-          position: absolute;
-          width: 100%;
-          transform: scaleX(0);
-          height: 2px;
-          bottom: 0;
-          left: 0;
-          background-color: gold;
-          transform-origin: bottom right;
-          transition: transform 0.25s ease-out;
-        }
-
-        .hover-underline-animation:hover:after {
-          transform: scaleX(1);
-          transform-origin: bottom left;
-        } 
-
-        #context-toolbar {
-          height: 64px;
-          display: flex;
-          background-color: var(--sc-primary-color);
-          padding: 0 2%;
-        }
-
-        #context-toolbar span:first-child {
-          margin-right: auto;
-        }
-
-        #toolbarTitle {
-          font-weight: normal;
-          display: flex;
-          align-items: center;
-          font-family: var(--sc-sans-font);
-          font-size: var(--app-toolbar-font-size, 20px);
-          color: var(--sc-tertiary-text-color);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          width: calc(80%);
-          text-transform: capitalize;
-        }
-
-        #SCTitle {
-          align-items: center;
-          font-size: 1.9rem;
-          font-variant-caps: small-caps;
-          font-family: "skolar pe";
-          line-height: 0.9;
-          color: var(--sc-tertiary-text-color);
-          text-overflow: ellipsis;
-          width: calc(80%);
-          display: none;
-        }
-
-        #titlebarCenter span a {
-          color: var(--sc-tertiary-text-color);
-          text-decoration: none;
-        }
-
-        titlebar {
-          background-color: var(--sc-primary-color);
-        }
-
-        @media screen and (max-width: 600px) {
-          #toolbar_title {
-            font-size: var(--sc-skolar-font-size-md);
-          }
-        }
-
-        @media print {
-          #universal-toolbar, titlebar {
-            display: none;
-          }
-        }
-
-        .title-logo-icon {
-          vertical-align: bottom;
-          height: var(--sc-size-xxl);
-          width: var(--sc-size-xxl);
-          margin: 0 var(--sc-size-sm);
-        }
-
-        @media (max-width: 600px) {
-          h1 {
-            font-size: var(--sc-skolar-font-size-xxl);
-            padding-top: 0.2em;
-          }
-          .title-logo-icon {
-            height: 40px;
-            width: 40px;
-          }
-          .subtitle {
-            font-size: var(--sc-skolar-font-size-md);
-            margin-bottom: 0.5em;
-          }
-          #titlebarSitetitle {
-            padding-top: 0.4em;
-          }
-        }
-      </style>
-
-      <div id="universal-toolbar">
-        <sc-linden-leaves id="breadCrumb"></sc-linden-leaves>
-
-        <div id="context-toolbar">
+        <div id="context-toolbar" class="transitionTransform">
           <span id="toolbarTitle">${this.toolbarTitle}</span>
           <span id="SCTitle">SuttaCentral</span>
           <sc-action-items id="sc_action_items"></sc-action-items>
@@ -337,13 +60,26 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         
         <div id="titlebar">
           <div id="titlebarCenter">
-            <span id="titlebarSitetitle"><a href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>SuttaCentral</a></span>
+            <span id="titlebarSitetitle" class="transitionTransform"><a href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>SuttaCentral</a></span>
             <span id="titlebarSubtitle"><a href="/">Early Buddhist texts, translations, and parallels</a></span>
           </div>
         </div>
+
+        <div id="static_pages_nav_menu">
+          <nav>
+            <ul>
+              ${this.toolbarSelectedTemplate}
+              ${this.shouldShowSecondToolbarTemplate}
+              ${this.shouldShowTipitakaToolbarTemplate}
+              ${this.shouldShowAcademicToolbarTemplate}
+              ${this.shouldShowOrganizationalToolbarTemplate}
+              ${this.shouldShowGuidesToolbarTemplate}
+            </ul>
+          </nav>
+        </div>
       </div>
 
-      <sc-page-selector id="page_selector" .isNarrowScreen="${this.isNarrowScreen}"></sc-page-selector>
+      <sc-page-selector id="page_selector"></sc-page-selector>
       <sc-toasts></sc-toasts>
 
       <!--
@@ -373,6 +109,89 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       </paper-dialog>`;
   }
 
+  get toolbarSelectedTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState && this.staticPagesToolbarDisplayState.displayFirstToolbar ? html`
+        <li><a href="/introduction">${this.localize('INTRODUCTION')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/donations">${this.localize('DONATIONS')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/offline">${this.localize('USEOFFLINE')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="https://discourse.suttacentral.net/c/meta/updates">${this.localize('WHATSNEW')}<morph-ripple></morph-ripple></a></li>
+      ` : ''}
+    `;
+  }
+
+  get shouldShowSecondToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState && this.staticPagesToolbarDisplayState.displaySecondToolbar ? html`
+        <li><a href="/subjects">${this.localize('SUBJECTS')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/similes">${this.localize('SIMILES')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/names">${this.localize('NAMES')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/terminology">${this.localize('TERMINOLOGY')}<morph-ripple></morph-ripple></a></li>
+      ` : ''}
+    `;
+  }
+
+  get shouldShowTipitakaToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState && this.staticPagesToolbarDisplayState.displayTipitakaToolbar ? html`
+        <li><a href="/discourses">${this.localize('DISCOURSES')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/vinaya">${this.localize('VINAYA')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/abhidhamma">${this.localize('ABHIDHAMMA')}<morph-ripple></morph-ripple></a></li>
+      ` : ''}
+    `;
+  }
+
+  get shouldShowAcademicToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState && this.staticPagesToolbarDisplayState.displayAcademicToolbar ? html`
+        <li><a href="/numbering">${this.localize('NUMBERING')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/abbreviations">${this.localize('ABBREVIATIONS')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/methodology">${this.localize('METHODOLOGY')}<morph-ripple></morph-ripple></a></li>
+      ` : ''}
+    `;
+  }
+
+  get shouldShowOrganizationalToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState && this.staticPagesToolbarDisplayState.displayOrganizationalToolbar ? html`
+        <li><a href="/acknowledgments">${this.localize('ACKNOWLEDGMENTS')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/licensing">${this.localize('LICENSING')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/about">${this.localize('ABOUT')}<morph-ripple></morph-ripple></a></li>
+      ` : ''}
+    `;
+  }
+
+  get shouldShowGuidesToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState && this.staticPagesToolbarDisplayState.displayGuidesToolbar ? html`
+        <li><a href="/general-guide-sujato">${this.localize('GENERAL')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/dn-guide-sujato">${this.localize('LONG')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/mn-guide-sujato">${this.localize('MIDDLE')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/sn-guide-sujato">${this.localize('LINKED')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="/an-guide-sujato">${this.localize('NUMBERED')}<morph-ripple></morph-ripple></a></li>
+      ` : ''}
+    `;
+  }
+
+  _removeSelectedClass() {
+    this.shadowRoot.querySelectorAll('.staticPageSelected').forEach((e) => {
+      e.classList.remove('staticPageSelected');
+    });
+  }
+
+  _addSelectedClass(e) {
+    e.classList.add('staticPageSelected');
+  }
+
+  _addStaticPageLinkEventListener() {
+    this.shadowRoot.querySelectorAll('#static_pages_nav_menu nav li a').forEach((element) => {
+      element.addEventListener('click', (e) => {
+        this._removeSelectedClass();
+        this._addSelectedClass(element);
+      });
+    });
+  }
+
   static get properties() {
     return {
       inputLanguage: {type: String },
@@ -380,13 +199,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       item: { type: Object },
       colorsResponse: { type: Object },
       siteLanguage: { type: String },
-      isNarrowScreen: { type: Boolean },
       appColorTheme: { type: String },
       localizedStringsPath: { type: String },
-      changedRoute: { type: String },
+      changedRoute: { type: Object },
       displaySettingMenu: { type: Boolean },
       toolbarTitle: { type: String },
       displaySCSiteTitle: { type: Boolean },
+      staticPagesToolbarDisplayState: { type: Object },
     }
   }
 
@@ -398,7 +217,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this.item = {};
     this.colorsResponse = {};
     this.siteLanguage = state.siteLanguage;
-    this.isNarrowScreen = false;
     this.appColorTheme = state.colorTheme;
     this._colorThemeChanged();
     this.localizedStringsPath = '/localization/elements/sc-site-layout';
@@ -406,6 +224,18 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this.displaySettingMenu = state.displaySettingMenu;
     this.toolbarTitle = state.toolbarOptions.title;
     this.displaySCSiteTitle = state.displaySCSiteTitle;
+    this.shouldShowFirstToolbar = true;
+    this.staticPagesToolbarDisplayState = state.staticPagesToolbarDisplayState;
+    if (!this.staticPagesToolbarDisplayState) {
+      this.staticPagesToolbarDisplayState = {
+        displayFirstToolbar: true,
+        displaySecondToolbar: false,
+        displayTipitakaToolbar: false,
+        displayAcademicToolbar: false,
+        displayOrganizationalToolbar: false,
+        displayGuidesToolbar: false
+      };
+    }
   }
 
   get actions() {
@@ -440,6 +270,12 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           currentNavPosition: position
         })
       },
+      setStaticPagesToolbarDisplayState(toolbarDisplayState) {
+        store.dispatch({
+          type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
+          staticPagesToolbarDisplayState: toolbarDisplayState
+        })
+      },
     };
   }
 
@@ -459,6 +295,12 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     }
     if (this.displaySCSiteTitle !== state.displaySCSiteTitle) {
       this.displaySCSiteTitle = state.displaySCSiteTitle;
+    }
+    if (this.staticPagesToolbarDisplayState !== state.staticPagesToolbarDisplayState) {
+      this.staticPagesToolbarDisplayState = state.staticPagesToolbarDisplayState;
+    }
+    if (this.changedRoute !== state.currentRoute) {
+      this.changedRoute = state.currentRoute;
     }
   }
 
@@ -492,34 +334,34 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       }
     });
 
-    let titlebarElement = this.shadowRoot.querySelector('#titlebar');
-    let lastScrollTop = 0;
-    titlebarElement.style.transition = 'height 0.2s';
+    let rootDOM = this.shadowRoot;
     addEventListener('scroll', throttle(300, () => {
-      if (this.displaySCSiteTitle) {
-        let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        // if (currentScrollTop > lastScrollTop){
-        if (currentScrollTop >= 50){
-          // down scroll code
-          this.shadowRoot.querySelector('#titlebar').style.height = '0em';
-          this.shadowRoot.querySelector('#titlebarCenter').style.opacity = '0';
-          if (this.displaySCSiteTitle) {
-            this.shadowRoot.querySelector('#SCTitle').style.display = 'inherit';
-          }
-        } else {
-          // up scroll code
-          if (currentScrollTop < 50) {
-            this.shadowRoot.querySelector('#titlebar').style.display = 'inherit';
-            this.shadowRoot.querySelector('#titlebar').style.height = '8em';
-            this.shadowRoot.querySelector('#SCTitle').style.display = 'none';
-            this.shadowRoot.querySelector('#titlebarCenter').style.opacity = '1';
-          }
-        }
-        lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+      if (this.changedRoute.path === '/' && (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)) {
+        rootDOM.getElementById("universal-toolbar").style.transform = "translateY(-116px)";
+        rootDOM.getElementById("context-toolbar").style.transform = "translateY(116px)";
+        rootDOM.getElementById("breadCrumb").style.transform = "translateY(116px)";;
+        rootDOM.getElementById("titlebarSitetitle").style.transform = "translateY(56px) scale(0.667)";
+      } else {
+        rootDOM.getElementById("universal-toolbar").style.transform = "none";
+        rootDOM.getElementById("context-toolbar").style.transform = "none";
+        rootDOM.getElementById("breadCrumb").style.transform = "none";
+        rootDOM.getElementById("titlebarSitetitle").style.transform = "none";
+        rootDOM.getElementById("titlebarSitetitle").style.transform = "scale(1)";
       }
     }));
 
     this._initNavigation();
+    this._initStaticPagesToolbarDisplayState();
+    this._addStaticPageLinkEventListener();
+    this._setStaticPageMenuItemSelected();
+  }
+
+  _setStaticPageMenuItemSelected() {
+    this._removeSelectedClass();
+    let element = this.shadowRoot.querySelector(`nav a[href="${this.changedRoute.path}"]`);
+    if (element) {
+      element.classList.add('staticPageSelected');
+    }
   }
 
   _initNavigation() {
@@ -543,6 +385,17 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     }
   }
 
+  _initStaticPagesToolbarDisplayState() {
+    this.actions.setStaticPagesToolbarDisplayState({
+      displayFirstToolbar: true,
+      displaySecondToolbar: false,
+      displayTipitakaToolbar: false,
+      displayAcademicToolbar: false,
+      displayOrganizationalToolbar: false,
+      displayGuidesToolbar: false
+    });
+  }
+
   updated(changedProps) {
     //super.updated(changedProps);
     if (changedProps.has('siteLanguage')) {
@@ -553,7 +406,12 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     }
     if (changedProps.has('changedRoute')) {
       this._routeChanged();
+      this._setStaticPageMenuItemSelected();
     }
+    if (changedProps.has('staticPagesToolbarDisplayState')) {
+      this._addStaticPageLinkEventListener();
+      this._setStaticPageMenuItemSelected();
+    }
   }
 
   _routeChanged() {

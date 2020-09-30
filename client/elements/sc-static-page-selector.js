@@ -1,15 +1,10 @@
 import { LitElement, html, css } from 'lit-element';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/iron-pages/iron-pages.js';
-import '@polymer/paper-tabs/paper-tabs.js';
-
 import { store } from '../redux-store';
 import { LitLocalized } from '../elements/addons/localization-mixin';
-import { throttle } from 'throttle-debounce';
 import { SCPageStaticSelectorStyles, SCPageStaticSelectorOriginStyles } from './styles/sc-static-page-selector-styles.js';
 
 class SCStaticPageSelector extends LitLocalized(LitElement) {
-
   static get styles() {
     return css`
       ${SCPageStaticSelectorStyles}
@@ -19,40 +14,9 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
       ${SCPageStaticSelectorOriginStyles}
-      <style>
-        #nav_toolbar {
-          /* position: sticky;
-          top: 0;
-          z-index: 99; */
-        }
-      </style>
 
       ${this._createMetaData()}
       ${this._changeToolbarTitle()}
-
-      <app-toolbar id="title_toolbar" style="display: none">
-        <div class="title" main-title="">
-          <span class="title-text">
-            <a class="title-home-logo-link" href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon></a>
-            <a class="title-home-link" href="/"><h1>SuttaCentral</h1></a>
-          </span>
-        </div>
-      </app-toolbar> 
-
-      <app-toolbar id="subtitle_toolbar"  style="display: none">
-        <div class="title" main-title="">
-          <p class="subtitle" lang="${this.language}"><a class="title-home-link" href="/">${this.localize('pageSubtitle')}</a></p>
-        </div>
-      </app-toolbar>
-
-      <app-toolbar id="nav_toolbar" bottom-item="" sticky>
-        ${this.toolbarSelectedTemplate}
-        ${this.shouldShowSecondToolbarTemplate}
-        ${this.shouldShowTipitakaToolbarTemplate}
-        ${this.shouldShowAcademicToolbarTemplate}
-        ${this.shouldShowOrganizationalToolbarTemplate}
-        ${this.shouldShowGuidesToolbarTemplate}
-      </app-toolbar>
 
       <iron-pages id="pages" role="main" .selected="${this.pages}" attr-for-selected="name" fallback-selection="NOT-FOUND">
         <home-page name="HOME"></home-page>
@@ -89,149 +53,6 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
           <h3>${this.localize('pageNotFound')}</h3>
         </div>
       </iron-pages>
-    `;
-  }
-
-  get toolbarSelectedTemplate() {
-    return html`
-      ${this._isToolbarSelected() ? html`
-        <paper-tabs id="nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-            <paper-tab class="nav-link" data-name="INTRODUCTION">
-              <div>${this.localize('INTRODUCTION')}</div>
-              <a class="link-anchor" aria-label="${this.localize('INTRODUCTION')}" href="/introduction" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="DONATIONS">
-              <div>${this.localize('DONATIONS')}</div>
-              <a class="link-anchor" aria-label="${this.localize('DONATIONS')}" href="/donations" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="OFFLINE">
-              <div>${this.localize('USEOFFLINE')}</div>
-              <a class="link-anchor" aria-label="${this.localize('USEOFFLINE')}" href="/offline" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="EXTERNAL_WHAT'S_NEW">
-              <div>${this.localize('WHATSNEW')}</div>
-              <a class="link-anchor" aria-label="${this.localize('WHATSNEW')}" href="https://discourse.suttacentral.net/c/meta/updates" tabindex="-1" target="_blank" rel="noopener">
-              </a>
-            </paper-tab>
-          </paper-tabs>
-      ` : ''}
-    `;
-  }
-
-  get shouldShowSecondToolbarTemplate() {
-    return html`
-      ${this.shouldShowSecondToolbar ? html`
-        <paper-tabs id="second_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-            <paper-tab class="nav-link" data-name="SUBJECTS">
-              <div>${this.localize('SUBJECTS')}</div>
-              <a class="link-anchor" aria-label="${this.localize('SUBJECTS')}" href="/subjects" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="SIMILES">
-              <div>${this.localize('SIMILES')}</div>
-              <a class="link-anchor" aria-label="${this.localize('SIMILES')}" href="/similes" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="NAMES">
-              <div>${this.localize('NAMES')}</div>
-              <a class="link-anchor" aria-label="${this.localize('NAMES')}" href="/names" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="TERMINOLOGY">
-              <div>${this.localize('TERMINOLOGY')}</div>
-              <a class="link-anchor" aria-label="${this.localize('TERMINOLOGY')}" href="/terminology" tabindex="-1"></a>
-            </paper-tab>
-          </paper-tabs>
-      ` : ''}
-    `;
-  }
-
-  get shouldShowTipitakaToolbarTemplate() {
-    return html`
-      ${this.shouldShowTipitakaToolbar ? html`
-        <paper-tabs id="tipitaka_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-            <paper-tab class="nav-link" data-name="DISCOURSES">
-              <div>${this.localize('DISCOURSES')}</div>
-              <a class="link-anchor" aria-label="${this.localize('DISCOURSES')}" href="/discourses" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="VINAYA">
-              <div>${this.localize('VINAYA')}</div>
-              <a class="link-anchor" aria-label="${this.localize('VINAYA')}" href="/vinaya" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="ABHIDHAMMA">
-              <div>${this.localize('ABHIDHAMMA')}</div>
-              <a class="link-anchor" aria-label="${this.localize('ABHIDHAMMA')}" href="/abhidhamma" tabindex="-1"></a>
-            </paper-tab>
-          </paper-tabs>
-      ` : ''}
-    `;
-  }
-
-  get shouldShowAcademicToolbarTemplate() {
-    return html`
-      ${this.shouldShowAcademicToolbar ? html`
-        <paper-tabs id="academic_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-            <paper-tab class="nav-link" data-name="NUMBERING">
-              <div>${this.localize('NUMBERING')}</div>
-              <a class="link-anchor" aria-label="${this.localize('NUMBERING')}" href="/numbering" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="ABBREVIATIONS">
-              <div>${this.localize('ABBREVIATIONS')}</div>
-              <a class="link-anchor" aria-label="${this.localize('ABBREVIATIONS')}" href="/abbreviations" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="METHODOLOGY">
-              <div>${this.localize('METHODOLOGY')}</div>
-              <a class="link-anchor" aria-label="${this.localize('METHODOLOGY')}" href="/methodology" tabindex="-1"></a>
-            </paper-tab>
-          </paper-tabs>
-      ` : ''}
-    `;
-  }
-
-  get shouldShowOrganizationalToolbarTemplate() {
-    return html`
-      ${this.shouldShowOrganizationalToolbar ? html`
-        <paper-tabs id="organizational_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-            <paper-tab class="nav-link" data-name="ACKNOWLEDGMENTS">
-              <div>${this.localize('ACKNOWLEDGMENTS')}</div>
-              <a class="link-anchor" aria-label="${this.localize('ACKNOWLEDGMENTS')}" href="/acknowledgments" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="LICENSING">
-              <div>${this.localize('LICENSING')}</div>
-              <a class="link-anchor" aria-label="${this.localize('LICENSING')}" href="/licensing" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="ABOUT">
-              <div>${this.localize('ABOUT')}</div>
-              <a class="link-anchor" aria-label="${this.localize('ABOUT')}" href="/about" tabindex="-1"></a>
-            </paper-tab>
-          </paper-tabs>
-      ` : ''}
-    `;
-  }
-
-  get shouldShowGuidesToolbarTemplate() {
-    return html`
-      ${this.shouldShowGuidesToolbar ? html`
-        <paper-tabs id="guides_nav_tabs" class="navigation-tabs" selected="0" scrollable="" hide-scroll-buttons="">
-            <paper-tab class="nav-link" data-name="GENERAL-GUIDE-SUJATO">
-              <div>${this.localize('GENERAL')}</div>
-              <a class="link-anchor" aria-label="${this.localize('GENERAL')}" href="/general-guide-sujato"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="DN-GUIDE-SUJATO">
-              <div>${this.localize('LONG')}</div>
-              <a class="link-anchor" aria-label="${this.localize('LONG')}"  href="/dn-guide-sujato" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="MN-GUIDE-SUJATO">
-              <div>${this.localize('MIDDLE')}</div>
-              <a class="link-anchor" aria-label="${this.localize('MIDDLE')}" href="/mn-guide-sujato" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="SN-GUIDE-SUJATO">
-              <div>${this.localize('LINKED')}</div>
-              <a class="link-anchor" aria-label="${this.localize('LINKED')}" href="/sn-guide-sujato" tabindex="-1"></a>
-            </paper-tab>
-            <paper-tab class="nav-link" data-name="AN-GUIDE-SUJATO">
-              <div>${this.localize('NUMBERED')}</div>
-              <a class="link-anchor" aria-label="${this.localize('NUMBERED')}" href="/an-guide-sujato" tabindex="-1"></a>
-            </paper-tab>
-          </paper-tabs>
-      ` : ''}
     `;
   }
 
@@ -283,17 +104,10 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
       this._updateNav();
     }
     if (changedProps.has('resources')) {
-      this.__resourcesChanged();
+      //
     }
     if (changedProps.has('pages')) {
       this.selectedPage = this.pages;
-    }
-  }
-
-  __resourcesChanged(newValue, oldValue) {
-    const tabs = this.shadowRoot.querySelector(this._getNavTabsSelector());
-    if (tabs) {
-      tabs.notifyResize();
     }
   }
 
@@ -305,41 +119,11 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
                     || this.shouldShowGuidesToolbar);
   }
 
-  _selectNavbarLink() {
-    const selector = this._getNavTabsSelector();
-    const tabs_element = this.shadowRoot.querySelector(selector);
-    const tabs = tabs_element.querySelectorAll('paper-tab');
-    for (let i = 0; i < tabs.length; i++) {
-      if (tabs[i].dataset.name === this.selectedPage) {
-        tabs_element.selectIndex(i);
-        return;
-      }
-    }
-    tabs_element.selectIndex(-1);
-  }
-
-  _getNavTabsSelector() {
-    let selector = '#nav_tabs';
-    if (this.shouldShowSecondToolbar) {
-      selector = '#second_nav_tabs';
-    } else if (this.shouldShowTipitakaToolbar) {
-      selector = '#tipitaka_nav_tabs';
-    } else if (this.shouldShowAcademicToolbar) {
-      selector = '#academic_nav_tabs';
-    } else if (this.shouldShowOrganizationalToolbar) {
-      selector = '#organizational_nav_tabs';
-    } else if (this.shouldShowGuidesToolbar) {
-      selector = '#guides_nav_tabs';
-    }
-    return selector;
-  }
-
   _changeView() {
     if (this.selectedPage.substr(0, 5) === "SUTTA" || this.selectedPage === "SEARCH") {
       return;
     }
     this._setVisibleToolbar();
-    setTimeout(() => { this._selectNavbarLink() });
     this.shadowRoot.querySelector('#pages').selected = this.selectedPage;
 
     switch (this.selectedPage.toLowerCase()) {
@@ -390,6 +174,15 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
     this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(this.selectedPage);
     this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(this.selectedPage);
     this.shouldShowGuidesToolbar = ['GENERAL-GUIDE-SUJATO', 'DN-GUIDE-SUJATO', 'MN-GUIDE-SUJATO', 'SN-GUIDE-SUJATO', 'AN-GUIDE-SUJATO', 'AN-INTRODUCTION-BODHI'].includes(this.selectedPage);
+
+    this.actions.setStaticPagesToolbarDisplayState({
+      displayFirstToolbar: this._isToolbarSelected(),
+      displaySecondToolbar: this.shouldShowSecondToolbar,
+      displayTipitakaToolbar: this.shouldShowTipitakaToolbar,
+      displayAcademicToolbar: this.shouldShowAcademicToolbar,
+      displayOrganizationalToolbar: this.shouldShowOrganizationalToolbar,
+      displayGuidesToolbar: this.shouldShowGuidesToolbar,
+    });
   }
 
   _createMetaData() {
@@ -450,6 +243,12 @@ class SCStaticPageSelector extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
           currentNavPosition: position
+        })
+      },
+      setStaticPagesToolbarDisplayState(toolbarDisplayState) {
+        store.dispatch({
+          type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
+          staticPagesToolbarDisplayState: toolbarDisplayState
         })
       },
     }
