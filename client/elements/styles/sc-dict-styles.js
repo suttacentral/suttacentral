@@ -50,12 +50,21 @@ export const dictStyles = html`
 
   dd .ref {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-    color: var(--sc-secondary-text-color);
-    background-color: var(--sc-textual-info-background-color);
-    border-radius: var(--sc-size-xxs);
-    padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
+    font-weight: 600;
+    font-style: normal;
+
     white-space: nowrap;
+    letter-spacing: normal;
+
+    padding: 0 4px;
+
+    color: var(--sc-secondary-text-color);
+
+    font-variant-caps: normal;
+
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+    background-color: var(--sc-secondary-background-color);
   }
 
   dd .author {
