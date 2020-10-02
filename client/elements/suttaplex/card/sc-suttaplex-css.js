@@ -35,11 +35,13 @@ export const suttaplexCss = html`
     display: block;
     padding: var(--sc-size-sm) var(--sc-size-md);
     margin-bottom: 1px;
+    box-shadow: var(--sc-shadow-elevation-1dp);
   }
 
     .suttaplex:not(.compact) {
     margin-bottom: var(--sc-size-md);
     padding: var(--sc-size-md);
+    border-radius: var(--sc-size-sm);
   }
 
       .section-details.main-translations {
