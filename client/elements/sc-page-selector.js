@@ -38,7 +38,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       .container {
         position: relative;
         display: flex;
-       min-height: calc(100vh - 108px);
+        justify-content: center;
+        min-height: calc(100vh - 108px);
       }
 
       sc-text-page-selector {
@@ -209,12 +210,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
           displayViewModeButton: display
         }
       },
-      changeDisplaySCSiteTitleState(display) {
-        return {
-          type: 'CHANGE_DISPLAY_SC_SITE_TITLE_STATE',
-          displaySCSiteTitle: display
-        }
-      },
     }
   }
 
@@ -311,9 +306,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
     let displayStyle = this.route.path === '/' ? 'block' : 'none';
     this.parentNode.querySelector('#titlebar').style.display = displayStyle;
+    this.parentNode.querySelector('#static_pages_nav_menu').style.display = this.shouldShowStaticPage ? 'block': 'none';
 
     this._setViewModeButtonDisplayState();
-    this.dispatch('changeDisplaySCSiteTitleState', this.route.path === '/' ? true : false);
   }
 
   // Lazy loading for site elements
