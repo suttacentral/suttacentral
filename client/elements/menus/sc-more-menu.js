@@ -59,6 +59,10 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           --paper-toggle-button-checked-ink-color: var(--sc-primary-accent-color-dark);
           margin-left: calc(var(--sc-size-xs) * -1);
         }
+
+        morph-ripple {
+          --ripple-color: var(--sc-primary-color);
+        }
       </style>
 
       <paper-item class="more-menu-paper-item language-choice-box">
@@ -70,24 +74,28 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:pray"></iron-icon>
           ${this.localize('Donations')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <a class="more-menu-link" href="/offline">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon pwa-icon" icon="sc-svg-icons:pwa"></iron-icon>
           ${this.localize('UseOffline')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <a class="more-menu-link" href="/downloads">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:file-download"></iron-icon>
           ${this.localize('Downloads')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <a class="more-menu-link" href="/languages">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:translate"></iron-icon>
           ${this.localize('Languages')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <div class="separator"></div>
@@ -95,18 +103,21 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:format-list-numbered"></iron-icon>
           ${this.localize('Numbering')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <a class="more-menu-link" href="/abbreviations">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:abbreviations"></iron-icon>
           ${this.localize('Abbreviations')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <a class="more-menu-link" href="/methodology">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:school"></iron-icon>
           ${this.localize('Methodology')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <div class="separator"></div>
@@ -114,18 +125,21 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:people"></iron-icon>
           ${this.localize('Acknowledgments')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <a class="more-menu-link" href="/licensing">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:copyright"></iron-icon>
           ${this.localize('Licensing')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <a class="more-menu-link" href="/about">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:info-outline"></iron-icon>
           ${this.localize('About')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
       <a class="more-menu-link" href="${this.getDiscourseUrl(this.routeName)}"
@@ -133,6 +147,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:forum"></iron-icon>
           ${this.localize('Discuss')}
+          <morph-ripple></morph-ripple>
         </paper-item>
       </a>
     `;
