@@ -285,7 +285,7 @@ export const SCSiteLayoutStyles = css`
 
   #static_pages_nav_menu {
     background-color: var(--sc-primary-color-dark);
-    height: 3em;
+    height: 46.333px;
   }
 
   #static_pages_nav_menu nav {
@@ -293,7 +293,7 @@ export const SCSiteLayoutStyles = css`
     overflow-x: auto;
     flex-direction: row;
     box-sizing: border-box;
-    padding: 0 2%;
+    padding: 0 calc(2% - 8px);
     white-space: nowrap;
     font-size: 1.1em;
   }
@@ -306,10 +306,13 @@ export const SCSiteLayoutStyles = css`
   }
 
   #static_pages_nav_menu nav li {
-    font-size: .8em;
+    font-size: var(--sc-skolar-font-size-xs);
     font-weight: 500;
     list-style-type: none;
     align-items: center;
+    letter-spacing: var(--sc-caps-letter-spacing);
+    text-transform: uppercase;
+    margin-right: 8px;
   }
 
   #static_pages_nav_menu nav li a {
@@ -324,6 +327,7 @@ export const SCSiteLayoutStyles = css`
   #static_pages_nav_menu nav li a:hover {
     cursor: pointer;
     border-bottom: 4px solid var(--sc-primary-color-light);
+    opacity: 1;
   }
 
   .staticPageSelected {
