@@ -285,7 +285,6 @@ export const SCSiteLayoutStyles = css`
 
   #static_pages_nav_menu {
     background-color: var(--sc-primary-color-dark);
-    height: 46.333px;
   }
 
   #static_pages_nav_menu nav {
@@ -318,8 +317,9 @@ export const SCSiteLayoutStyles = css`
   #static_pages_nav_menu nav li a {
     position: relative;
     display: inline-block;
-    padding: 14px 8px 11px 8px;
+    padding: 14px 8px 10px;
     text-decoration: none;
+    border-bottom: 4px solid rgba(0,0,0,0);
     opacity: .8;
     color: var(--sc-tertiary-text-color);
   }
