@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/paper-ripple/paper-ripple.js';
+import '@moduware/morph-ripple';
 
 class SCStepper extends LitElement {
   render() {
@@ -114,12 +114,16 @@ class SCStepper extends LitElement {
           margin-right: 1em;
         }
       }
+
+      morph-ripple {
+        --ripple-color: var(--sc-primary-color);
+      }
     </style>
 
     <div class="bar">
       <div class="button-container">
         ${this.previous && this.previous.uid ? html`
-          <paper-ripple></paper-ripple>
+          
           <a href="${this._getUrl(this.previous)}" class="link">
             <div class="button button-left">
               <div class="text">
@@ -130,6 +134,7 @@ class SCStepper extends LitElement {
                 </div>
               </div>
             </div>
+            <morph-ripple></morph-ripple>
           </a>
         ` : ''}
       </div>
@@ -138,7 +143,6 @@ class SCStepper extends LitElement {
 
       <div class="button-container">
         ${this.next && this.next.uid ? html`
-          <paper-ripple></paper-ripple>
           <a href="${this._getUrl(this.next)}" class="link">
             <div class="button button-right">
               <div class="text">
@@ -149,6 +153,7 @@ class SCStepper extends LitElement {
                 <iron-icon icon="sc-iron-icons:arrow-forward" class="arrow arrow-right"></iron-icon>
               </div>
             </div>
+            <morph-ripple></morph-ripple>
           </a>
           ` : ''}
       </div>

@@ -235,7 +235,7 @@ export const suttaplexTxCss = html`
     background-color: var(--sc-primary-color-light-transparent);
   }
 
-  .tx paper-ripple {
+  .tx morph-ripple {
     color: var(--sc-primary-color-medium);
   }
 
@@ -286,6 +286,10 @@ export const suttaplexTxCss = html`
     fill: white;
     margin-left: auto;
   }
+
+  morph-ripple {
+    --ripple-color: var(--sc-primary-color);
+  }
 </style>`;
 
 export const parallelsListCss = html`
@@ -334,7 +338,7 @@ export const parallelsListCss = html`
     left: 0;
   }
 
-  paper-ripple {
+  morph-ripple {
     color: var(--sc-primary-color-medium);
   }
   
@@ -455,8 +459,8 @@ export const parallelItemCss = html`
       overflow: hidden;
   }
   
-  paper-ripple {
-      color: var(--sc-primary-color-medium);
+  morph-ripple {
+    color: var(--sc-primary-color-medium);
   }
 
   iron-icon {
@@ -470,7 +474,7 @@ export const parallelItemCss = html`
     background-color: #f4f3f1;
   }
   
-  .disabled paper-ripple {
+  .disabled morph-ripple {
     display: none;
   }
   
@@ -483,6 +487,10 @@ export const parallelItemCss = html`
     cursor: help;
     --iron-icon-height: 20px;
     --iron-icon-width: 20px;
+  }
+
+  morph-ripple {
+    --ripple-color: var(--sc-primary-color);
   }
 </style>
 `;

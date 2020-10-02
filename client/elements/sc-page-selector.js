@@ -1,11 +1,10 @@
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import { html, PolymerElement } from '@polymer/polymer';
 import { ReduxMixin, store } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 
-import './menus/sc-toolbar.js';
+import './menus/sc-action-items.js';
 import './addons/sc-top-sheet';
 import './text/sc-segmented-text.js';
 import './text/sc-simple-text.js';
@@ -31,7 +30,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     return html`
     <style>
       :host {
-        --app-toolbar-font-size: calc(20px * var(--sc-skolar-font-scale));
         display: block;
         box-sizing: border-box;
         height: 100%;
@@ -47,25 +45,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         display: flex;
         flex: 1;
         flex-direction: column;
-      }
-
-      #nav_toolbar {
-        background-color: var(--sc-primary-color-dark);
-        height: auto;
-      }
-
-      .navigation-tabs {
-        width: 100%;
-        --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
-      }
-
-      .nav-link {
-        color: var(--sc-tertiary-text-color);
-        --paper-tab-ink: var(--sc-primary-color-light);
-        padding-left: 10px;
-        padding-right: 10px;
-        text-transform: uppercase;
-        letter-spacing: var(--sc-caps-letter-spacing);
       }
 
       .link-anchor {
@@ -176,9 +155,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       localizedStringsPath: {
         type: String,
         value: '/localization/elements/sc-page-selector'
-      },
-      isNarrowScreen: {
-        type: Boolean
       },
       shouldShowPitakaPage: {
         type: Boolean,
@@ -417,8 +393,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     return (this.route.path === '/search');
   }
 
-  //TODO nav
-
   _isDictionaryPage() {
     const path = this.route.path.split('/');
     return (path.length === 3 && path[1] === 'define');
@@ -510,7 +484,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
   _changeView() {
     // if (!this._isSearchPage())
-    //   this.$.sc_toolbar._closeSearch();
+    //   this.$.sc_action_items._closeSearch();
   }
 
   _toggleLindenLeaves() {
@@ -533,7 +507,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _setViewModeButtonDisplayState() {
-    if (this.shouldShowPitakaPage || this.shouldShowSuttaplexListPage) {
+    if (this.shouldShowPitakaPage || this.shouldShowSuttaplexListPage || this.route.path === '/') {
       this.dispatch('changeDisplayViewModeButtonState', true);
     } else {
       this.dispatch('changeDisplayViewModeButtonState', false);

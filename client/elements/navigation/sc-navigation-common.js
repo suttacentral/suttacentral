@@ -6,10 +6,10 @@ export const tipitakaGuide = new Map([
 ]);
 
 export const pitakaGuide = new Map([
-  ['Long', '/dn-guide-sujato'],
-  ['Middle', '/mn-guide-sujato'],
-  ['Linked', '/sn-guide-sujato'],
-  ['Numbered', '/an-guide-sujato']
+  ['dn', '/dn-guide-sujato'],
+  ['mn', '/mn-guide-sujato'],
+  ['sn', '/sn-guide-sujato'],
+  ['an', '/an-guide-sujato']
 ]);
 
 export const navIndex = new Map([

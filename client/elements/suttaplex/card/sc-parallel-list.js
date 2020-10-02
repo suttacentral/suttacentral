@@ -8,6 +8,7 @@ import { LitLocalized } from '../../addons/localization-mixin';
 
 import './sc-parallel-item.js';
 import { parallelsListCss } from './sc-suttaplex-css';
+import '@moduware/morph-ripple';
 
 class SCParallels extends LitLocalized(LitElement) {
   static get properties() {
@@ -121,7 +122,7 @@ class SCParallels extends LitLocalized(LitElement) {
               <tr class="parallels-row">
                 <td class="parallels-root-cell parallels-table-cell paper-lift" rowspan="${this.getRowspan(rootId)}">
                   <a class="root-link" href="${this.computeUrl(rootId)}">
-                    <paper-ripple></paper-ripple>
+                    <morph-ripple></morph-ripple>
                     <div class="parallels-root-id root" title="${this.localize('suttaCentralID')}">
                       ${transformId(rootId, this.expansionData)}
                     </div>

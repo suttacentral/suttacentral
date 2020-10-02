@@ -9,7 +9,7 @@ const { BabelMultiTargetPlugin } = require('webpack-babel-multi-target-plugin');
 const OUTPUT_PATH = 'build';
 
 const commonConfig = {
-  entry: './elements/sc-drawer-layout.js',
+  entry: './elements/sc-site-layout.js',
   bail: true,
   plugins: [
     new HtmlWebpackPlugin({
@@ -138,6 +138,7 @@ const swConfig = {
 };
 
 
+// eslint-disable-next-line no-undef
 module.exports = env => {
   switch (env) {
     case 'dev':

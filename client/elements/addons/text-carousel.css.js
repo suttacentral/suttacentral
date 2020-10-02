@@ -79,4 +79,8 @@ export const textCarouselStyles = html`<style>
     .transparent {
       opacity: 0;
     }
+
+    morph-ripple {
+      --ripple-color: var(--sc-primary-color);
+    }
 </style>`;

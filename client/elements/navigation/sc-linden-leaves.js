@@ -5,11 +5,10 @@ import { LitLocalized } from '../addons/localization-mixin';
 
 import { navigationNormaModelStyles } from './sc-navigation-styles.js';
 
-import '@material/mwc-ripple';
-import '@polymer/paper-ripple/paper-ripple.js';
+import '@material/mwc-icon';
+import '@moduware/morph-ripple';
 
 class SCLindenLeaves extends LitLocalized(LitElement) {
-
   static get styles() {
     return css`
       :host {
@@ -40,26 +39,28 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       }
 
       nav li {
-        font-size: 0.8em;
+        font-size: .8em;
         font-weight: 500;
 
-        margin: 0 0 0 8px;
+        display: flex;
 
         list-style-type: none;
 
-        position: relative;
+        align-items: center;
       }
 
       nav li a {
+        position: relative;
+
         display: inline-block;
 
-        padding: 14px 4px 10px 0px;
-
-        color: white;
+        padding: 14px 8px 10px 8px;
 
         text-decoration: none;
 
-        opacity: 0.8;
+        opacity: .8;
+        color: white;
+        border-bottom: 4px solid rgba(0,0,0,0);
       }
 
       nav li a:hover {
@@ -70,6 +71,8 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
       nav li:last-child {
         font-weight: 800;
+
+        padding: 14px 8px 10px 8px;
 
         border-bottom: 4px solid var(--sc-primary-color-light);
       }
@@ -87,26 +90,18 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         opacity: 1;
       }
 
-      nav li:after {
-        font-weight: 400;
-
-        margin-left: 8px;
-
-        content: "❭";
-
-        color: white;
-
-        opacity: 0.8;
-      }
-
-      nav li:last-of-type:after {
-        margin-left: 0;
-        content: "";
-      }
-
       nav li:first-of-type {
         margin-left: 0;
       }
+
+      mwc-icon {
+        color: var(--sc-disabled-text-color);
+      }
+
+      morph-ripple {
+        --ripple-color: var(--sc-primary-color);
+      }
+
     `;
   }
 
@@ -168,10 +163,14 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
     return html`
       <nav>
         <ul>
-          ${this.navArray ? this.navArray.map(nav => html`
+          ${this.navArray ? this.navArray.map((nav, i) => html`
             ${nav && nav.title ? html`
-              <li @click=${() => this._navClick(nav)}><a href='${nav.url}'>${this.localize(nav.title)}<paper-ripple></paper-ripple></a></li>
-            ` : ''}
+              ${this.navArray.length !== i + 1 ? html`
+                <li @click=${() => this._navClick(nav)}>
+                  <a href='${nav.url}'>${this.localize(nav.title)}<morph-ripple></morph-ripple></a>
+                  <mwc-icon>chevron_right</mwc-icon>
+                </li>` : html`<li>${this.localize(nav.title)}</li>`}
+              ` : ''}
           `) : ''}
         </ul>
       </nav>

@@ -40,7 +40,7 @@ export const SCPageStaticSelectorStyles = css`
     justify-content: center;
   }
 
-  #topbar {
+  #universal-toolbar {
     color: white;
     position: sticky;
     top: 0;
@@ -62,196 +62,81 @@ export const SCPageStaticSelectorStyles = css`
     opacity: 1;
     transform: scale(1);
   }
-
-  
-
 `;
 
 export const SCPageStaticSelectorOriginStyles = html`
-      <style>
-        app-toolbar {
-          background-color: var(--sc-primary-color);
-          height: auto;
-        }
+  <style>
+    h1 {
+      font-family: var(--sc-serif-font);
+      font-variant-caps: small-caps;
+      letter-spacing: var(--sc-caps-letter-spacing);
+      font-size: var(--sc-skolar-font-size-static-main-title);
+      text-align: left;
+      color: var(--sc-tertiary-text-color);
+      padding-top: 8px;
+      padding-bottom: 4px;
+      margin: 0;
+      line-height: 1em;
+      font-weight: normal;
+    }
 
-        h1 {
-          font-family: var(--sc-serif-font);
-          font-variant-caps: small-caps;
-          letter-spacing: var(--sc-caps-letter-spacing);
-          font-size: var(--sc-skolar-font-size-static-main-title);
-          text-align: left;
-          color: var(--sc-tertiary-text-color);
-          padding-top: 8px;
-          padding-bottom: 4px;
-          margin: 0;
-          line-height: 1em;
-          font-weight: normal;
-        }
+    [lang="ar"],
+    [lang="si"],
+    [lang="fa"],
+    [lang="he"],
+    [lang="hi"],
+    [lang="vi"],
+    [lang="jpn"],
+    [lang="lzh"],
+    [lang="zh"],
+    [lang="mr"],
+    [lang="my"],
+    [lang="ta"],
+    [lang="th"],
+    [lang="xct"],
+    [lang="ko"],
+    [lang="bn"] {
+      font-synthesis: none;
+    }
 
-        .subtitle {
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-family: var(--sc-sans-font);
-          color: var(--sc-tertiary-text-color);
-          font-style: italic;
-          margin-bottom: 24px;
-          margin-top: 0;
-          text-align: center;
-        }
+    .page-not-found-container {
+      font-size: var(--sc-skolar-font-size-static-subtitle);
+      font-family: var(--sc-sans-font);
+      color: var(--sc-secondary-text-color);
+      margin-top: var(--sc-size-xxl);
+      text-align: center;
+    }
 
-        [lang="ar"],
-        [lang="si"],
-        [lang="fa"],
-        [lang="he"],
-        [lang="hi"],
-        [lang="vi"],
-        [lang="jpn"],
-        [lang="lzh"],
-        [lang="zh"],
-        [lang="mr"],
-        [lang="my"],
-        [lang="ta"],
-        [lang="th"],
-        [lang="xct"],
-        [lang="ko"],
-        [lang="bn"] {
-          font-synthesis: none;
-        }
+    .link-anchor {
+      position: absolute;
+      width: calc(100% + 20px);
+      height: 100%;
+    }
 
-        .title {
-          max-width: 100%;
-        }
+    @media (max-width: 925px) {
+      .subtitle {
+        font-size: var(--sc-skolar-font-size-xl);
+        margin-bottom: 0.5em;
+      }
+    }
 
-        .title-text {
-          text-align: center;
-          color: var(--sc-tertiary-text-color);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
+    @media (max-width: 800px) {
+      .title {
+        margin-left: initial;
+      }
+    }
 
-        .title-logo-icon {
-          vertical-align: bottom;
-          height: var(--sc-size-xxl);
-          width: var(--sc-size-xxl);
-          margin: 0 var(--sc-size-sm);
-        }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: var(--sc-skolar-font-size-xxl);
+        padding-top: 0.2em;
+      }
+    }
 
-        .page-not-found-container {
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-family: var(--sc-sans-font);
-          color: var(--sc-secondary-text-color);
-          margin-top: var(--sc-size-xxl);
-          text-align: center;
-        }
-
-        .navigation-tabs {
-          width: 100%;
-          --paper-tabs-selection-bar-color: var(--sc-primary-color-light);
-        }
-
-        .nav-link {
-          color: var(--sc-tertiary-text-color);
-          --paper-tab-ink: var(--sc-primary-color-light);
-          padding-left: 10px;
-          padding-right: 10px;
-          text-transform: uppercase;
-        letter-spacing: var(--sc-caps-letter-spacing);
-        }
-
-        #nav_toolbar {
-          background-color: var(--sc-primary-color-dark);
-          height: auto;
-        }
-
-        .link-anchor {
-          position: absolute;
-          width: calc(100% + 20px);
-          height: 100%;
-        }
-
-        @media (max-width: 925px) {
-          .subtitle {
-            font-size: var(--sc-skolar-font-size-xl);
-            margin-bottom: 0.5em;
-          }
-        }
-
-        @media (max-width: 800px) {
-          .title {
-            margin-left: initial;
-          }
-        }
-
-        @media (max-width: 600px) {
-          h1 {
-            font-size: var(--sc-skolar-font-size-xxl);
-            padding-top: 0.2em;
-          }
-          .title-logo-icon {
-            height: 40px;
-            width: 40px;
-          }
-          .subtitle {
-            font-size: var(--sc-skolar-font-size-md);
-            margin-bottom: 0.5em;
-          }
-        }
-
-        #pages {
-          /* Subtract height of top bar */
-          min-height: calc(100vh - 145px - var(--sc-size-xxl) - var(--sc-size-xl));
-          position: relative;
-        }
-
-        #title_toolbar {
-          position: absolute;
-          padding-top: 58px;
-          padding-left: 0;
-          padding-right: 0;
-          top: 0;
-          left: 50%;
-          z-index: 999;
-          transform: translateX(-50%);
-          width: 100%;
-        }
-
-        #subtitle_toolbar {
-          padding-top: 62px;
-          padding-bottom: var(--sc-size-md-larger);
-        }
-
-        @media print {
-          app-toolbar {
-            display: none;
-          }
-        }
-
-        .title-home-link {
-          text-decoration: none;
-          background: none;
-          height: 100%;
-          /* display: flex; */
-          align-items: center;
-          justify-content: flex-start;
-          color: var(--sc-tertiary-text-color);
-          pointer-events: auto;
-        }
-
-        .title-home-logo-link {
-          pointer-events: auto;
-        }
-
-        .title-home-link:hover {
-          background: none;
-        }
-
-        .title-home-link:focus {
-          outline: none;
-        }
-
-        .hideTitle {
-          display: none;
-        }
-      </style>
-
+    #pages {
+      /* Subtract height of top bar */
+      min-height: calc(100vh - 145px - var(--sc-size-xxl) - var(--sc-size-xl));
+      position: relative;
+    }
+  </style>
 `;

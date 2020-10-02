@@ -88,44 +88,37 @@ class SCTipitaka extends LitLocalized(LitElement) {
 
   get tipitakaCardTemplate() {
     return this.mainMenuData.length
-      ? html`
-      <nav class='tipitaka-block'>
-      <h2>Tipiṭaka: canonical scriptures of early Buddhism</h2>
-          <div class="main-nav">
-            ${this.mainMenuData.map((item) => html`
-              <section class="card home-card" @click=${() => this._onTipitakaCardClick(item.uid)}>
+      ? html`<div class="main-nav">
+          ${this.mainMenuData.map((item) => html`
+            <section class="card home-card" @click=${() => this._onTipitakaCardClick(item.uid)}>
 
-                <header>
-                  <span class="header-left">
-                    <span class="title" lang="${this.language}">
-                      ${this.localize(item.name.toLowerCase())}
-                    </span>
-                    <span class="subTitle" lang="pli">
-                      ${item.name}
-                    </span>
+              <header>
+                <span class="header-left">
+                  <span class="title" lang="${this.language}">
+                    ${this.localize(item.name.toLowerCase())}
                   </span>
-                  <span class="header-right">
-                    <span class="number"></span>
-                    <span class="number-translated">${this.fullSiteLanguageName}</span>
+                  <span class="subTitle" lang="pli">
+                    ${item.name}
                   </span>
-                </header>
-                <div class='nav-card-content'>
-                <div class="blurb">
-                  ${this.tipitakaBlurb.get(item.name)}
-                </div>
-                <div class="essay">
-                  <block-link>
-                    <a href="${this.tipitakaGuide.get(item.name)}">${this.localizeEx('introduction', 'pitaka', this.localize(item.name.toLowerCase()))}</a>
-                  </block-link>
-                </div>
-                </div>
-                <paper-ripple></paper-ripple>
-              </section>`
-            )}
-          </div>
-          </nav>
-        `
-      : `${this.mainMenuData.length}`; 
+                </span>
+                <span class="header-right">
+                  <span class="number"></span>
+                  <span class="number-translated">${this.fullSiteLanguageName}</span>
+                </span>
+              </header>
+              <div class='nav-card-content'>
+              <div class="blurb">
+                ${this.tipitakaBlurb.get(item.name)}
+              </div>
+              <div class="essay">
+                <block-link>
+                  <a href="${this.tipitakaGuide.get(item.name)}">${this.localize(`${item.name}_essayTitle`)}</a>
+                </block-link>
+              </div>
+              </div>
+              <paper-ripple></paper-ripple>
+            </section>`)}
+          </div>`: ''; 
   }
 
   _onTipitakaCardClick(childUid) {

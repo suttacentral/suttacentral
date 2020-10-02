@@ -1,6 +1,6 @@
 {
   "entrypoint": "index.html",
-  "shell": "elements/sc-drawer-layout.js",
+  "shell": "elements/sc-site-layout.js",
   "sources": [
     "elements/**.js"
   ],

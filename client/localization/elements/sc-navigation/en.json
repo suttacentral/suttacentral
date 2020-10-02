@@ -7,6 +7,13 @@
       "abhidhamma": "Systematic Treatises",
       "CollectionOf": "Collection of {pitaka} {sutta}",
       "view": "View {pitaka}",
-      "introduction": "Introduction to the {pitaka}"
+      "introduction": "Introduction to the {pitaka}",
+      "dn_essayTitle": "The Long Discourses: Dhamma as literature and compilation",
+      "mn_essayTitle": "The Middle Discourses: conversations on matters of deep truth",
+      "sn_essayTitle": "The Linked Discourses: the blueprint for Buddhist philosophy",
+      "an_essayTitle": "The Numbered Discourses: things that are useful every day",
+      "Sutta_essayTitle": "Discourses: conversations with the Buddha",
+      "Vinaya_essayTitle": "The Monastic Law: how monastic communities should live",
+      "Abhidhamma_essayTitle": "Abhidhamma: a systematic analysis of the doctrine"
   }
 }
