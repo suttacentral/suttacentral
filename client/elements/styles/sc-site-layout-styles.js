@@ -157,8 +157,7 @@ export const SCSiteLayoutStyles = css`
     position: sticky;
     /* position: relative; */
     top: 0;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05), 2px 2px 2px rgba(0, 0, 0, 0.05),
-      4px 4px 4px rgba(0, 0, 0, 0.05), 8px 8px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--sc-shadow-elevation-2dp);
     z-index: 9999;
   }
 
@@ -174,30 +173,6 @@ export const SCSiteLayoutStyles = css`
   opacity: 1;
   transform: scale(1);
 } */
-
-  .hover-underline-animation {
-    display: inline-block;
-    position: relative;
-    /* color: #0087ca; */
-  }
-
-  .hover-underline-animation:after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    transform: scaleX(0);
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: gold;
-    transform-origin: bottom right;
-    transition: transform 0.25s ease-out;
-  }
-
-  .hover-underline-animation:hover:after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-  }
 
   #context-toolbar {
     height: 64px;
@@ -221,7 +196,6 @@ export const SCSiteLayoutStyles = css`
     overflow: hidden;
     text-overflow: ellipsis;
     width: calc(80%);
-    text-transform: capitalize;
   }
 
   #SCTitle {
@@ -287,24 +261,23 @@ export const SCSiteLayoutStyles = css`
     background-color: var(--sc-primary-color-dark);
   }
 
-  #static_pages_nav_menu nav {
+  nav {
     display: flex;
     overflow-x: auto;
     flex-direction: row;
     box-sizing: border-box;
     padding: 0 calc(2% - 8px);
     white-space: nowrap;
-    font-size: 1.1em;
   }
 
-  #static_pages_nav_menu nav ul {
+  ul {
     display: flex;
     width: 100%;
     margin: 0;
     padding: 0;
   }
 
-  #static_pages_nav_menu nav li {
+  li {
     font-size: var(--sc-skolar-font-size-xs);
     font-weight: 500;
     list-style-type: none;
@@ -314,7 +287,7 @@ export const SCSiteLayoutStyles = css`
     margin-right: 8px;
   }
 
-  #static_pages_nav_menu nav li a {
+  li a {
     position: relative;
     display: inline-block;
     padding: 14px 8px 10px;
@@ -324,14 +297,15 @@ export const SCSiteLayoutStyles = css`
     color: var(--sc-tertiary-text-color);
   }
 
-  #static_pages_nav_menu nav li a:hover {
+  li a:hover {
+    color: var(--sc-tertiary-text-color);
     cursor: pointer;
     border-bottom: 4px solid var(--sc-primary-color-light);
     opacity: 1;
   }
 
   .staticPageSelected {
-    color: red;
+    opacity: 1;
     border-bottom: 4px solid var(--sc-primary-color-light);
   }
 

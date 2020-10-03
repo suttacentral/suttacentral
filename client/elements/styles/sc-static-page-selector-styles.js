@@ -44,7 +44,7 @@ export const SCPageStaticSelectorStyles = css`
     color: white;
     position: sticky;
     top: 0;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05), 2px 2px 2px rgba(0, 0, 0, 0.05), 4px 4px 4px rgba(0, 0, 0, 0.05), 8px 8px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--sc-shadow-elevation-1dp);
     z-index: 10;
     /* Ensure main content does not show on animation */
   }
