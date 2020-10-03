@@ -8,11 +8,6 @@ export const SCPageSelectorStyles = html`
       height: 100%;
     }
 
-    .container {
-      position: relative;
-      height: 100%;
-    }
-
     sc-text-page-selector {
       display: flex;
       flex: 1;

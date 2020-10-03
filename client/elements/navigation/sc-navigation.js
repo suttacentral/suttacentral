@@ -263,7 +263,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='title' lang='${this.language}'>
                 ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))}
               </span>
-              <span class='rootTitle' lang='pli'>
+              <span class='subTitle'>
                 ${child.name}
               </span>
             </span>
@@ -324,7 +324,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='title' lang='${child.lang_iso}'>
                 ${this.localize(this.pitakaName)} ${this.localize(child.name)}
               </span>
-              <span class='rootTitle' lang='pli'>
+              <span class='subTitle'>
                 ${child.name}
               </span>
             </span>
@@ -435,7 +435,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                 <span class='title' lang='en'>
                   ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
                 </span>
-                <span class='rootTitle' lang='pli'>
+                <span class='subTitle'>
                   ${child.name ? child.name : child.id}
                 </span>
               </span>
@@ -510,7 +510,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='title' lang='en'>
                 ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
               </span>
-              <span class='rootTitle' lang='pli'>
+              <span class='subTitle'>
                 ${child.name ? child.name : child.id}
               </span>
             </span>
@@ -583,7 +583,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='title' lang='en'>
                 ${this.localize(child.name)} ${this.parallelName}
               </span>
-              <span class='rootTitle' lang='pli'>
+              <span class='subTitle'>
                 ${child.name}
               </span>
             </span>
@@ -658,7 +658,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class='title' lang='en'>
                 ${this.localize(child.name)} ${this.parallelName}
               </span>
-              <span class='rootTitle' lang='pli'>
+              <span class='subTitle'>
                 ${child.name}
               </span>
             </span>

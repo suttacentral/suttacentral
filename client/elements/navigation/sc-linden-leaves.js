@@ -21,7 +21,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         flex-direction: row;
 
         box-sizing: border-box;
-        padding: 0 2%;
+        padding: 0 calc(2% - 8px);
 
         white-space: nowrap;
 
@@ -39,7 +39,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       }
 
       nav li {
-        font-size: .8em;
+        font-size: var(--sc-skolar-font-size-xs);
         font-weight: 500;
 
         display: flex;
@@ -67,6 +67,8 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         cursor: pointer;
 
         border-bottom: 4px solid var(--sc-primary-color-light);
+
+        opacity: 1;
       }
 
       nav li:last-child {

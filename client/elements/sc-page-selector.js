@@ -37,8 +37,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
       .container {
         position: relative;
-        display: flex;
-        justify-content: center;
         min-height: calc(100vh - 108px);
       }
 
