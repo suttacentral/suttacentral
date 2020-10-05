@@ -8,12 +8,6 @@ export const SCPageSelectorStyles = html`
       height: 100%;
     }
 
-    sc-text-page-selector {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-    }
-
     /* Only static pages use transparent backgrounds, other pages use the original backgrounds. */
     .toolbar-header,
     #sc_action_items {

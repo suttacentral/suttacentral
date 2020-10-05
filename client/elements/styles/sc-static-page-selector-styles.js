@@ -134,8 +134,7 @@ export const SCPageStaticSelectorOriginStyles = html`
     }
 
     #pages {
-      /* Subtract height of top bar */
-      min-height: calc(100vh - 145px - var(--sc-size-xxl) - var(--sc-size-xl));
+      margin-bottom: 64px;
       position: relative;
     }
   </style>
