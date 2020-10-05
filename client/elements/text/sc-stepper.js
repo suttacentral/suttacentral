@@ -7,6 +7,7 @@ class SCStepper extends LitElement {
   render() {
     return html`
     <style>
+
       @media print {
         :host {
           display: none;
@@ -16,7 +17,7 @@ class SCStepper extends LitElement {
       .bar {
         display: flex;
         width: 100%;
-        height: calc(var(--sc-size-xxl) * 1.5);
+        height: 96px;
         background-color: var(--sc-secondary-text-color);
         overflow: hidden
       }
