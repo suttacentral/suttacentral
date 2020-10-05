@@ -34,15 +34,11 @@ export const SCSiteLayoutStyles = css`
 
   @media screen and (max-width: 480px) {
     #titlebarSitetitle {
-      font-size: 2.25rem !important;
+      font-size: 1.8rem !important;
     }
 
     #titlebarSubtitle {
       font-size: 1.05rem !important;
-    }
-
-    #SCTitle {
-      font-size: 1.5rem !important;
     }
   }
 
@@ -222,18 +218,6 @@ export const SCSiteLayoutStyles = css`
     text-overflow: ellipsis;
     width: calc(80%);
     text-transform: capitalize;
-  }
-
-  #SCTitle {
-    align-items: center;
-    font-size: 1.9rem;
-    font-variant-caps: small-caps;
-    font-family: "skolar pe";
-    line-height: 0.9;
-    color: var(--sc-tertiary-text-color);
-    text-overflow: ellipsis;
-    width: calc(80%);
-    display: none;
   }
 
   #titlebarCenter span a {
