@@ -4,14 +4,12 @@ export const navigationNormaModelStyles = html`
   <style>
     main {
       max-width: 720px;
-      margin: var(--sc-size-md-larger) auto;
+      margin: 0 auto 64px;
     }
 
     .main-nav {
       display: flex;
       flex-direction: row;
-
-      margin-top: 4em;
 
       justify-content: center;
       flex-wrap: nowrap;

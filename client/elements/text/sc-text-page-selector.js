@@ -34,7 +34,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         }
 
         .wrapper {
-          flex: 1;
+        min-height: calc(100vh - 334px);
+        margin-bottom: 64px;
         }
 
         .sutta-list {

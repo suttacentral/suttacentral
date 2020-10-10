@@ -19,6 +19,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         display: flex;
         overflow-x: auto;
         flex-direction: row;
+        height: 46px;
 
         box-sizing: border-box;
         padding: 0 calc(2% - 8px);
