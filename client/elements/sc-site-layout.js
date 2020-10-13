@@ -52,7 +52,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
         <div id="context-toolbar" class="transitionTransform">
           <span id="toolbarTitle">${this.toolbarTitle}</span>
-          <span id="SCTitle">SuttaCentral</span>
           <sc-action-items id="sc_action_items"></sc-action-items>
         </div>
 
@@ -60,8 +59,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         
         <div id="titlebar">
           <div id="titlebarCenter">
-            <span id="titlebarSitetitle" class="transitionTransform"><a href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>SuttaCentral</a></span>
-            <span id="titlebarSubtitle"><a href="/">Early Buddhist texts, translations, and parallels</a></span>
+            <span id="titlebarSitetitle" class="transitionTransform">
+              <a href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>SuttaCentral</a>
+            </span>
+            <span id="titlebarSubtitle"><a href="/">${this.localize('pageSubtitle')}</a></span>
           </div>
         </div>
 
@@ -204,7 +205,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       changedRoute: { type: Object },
       displaySettingMenu: { type: Boolean },
       toolbarTitle: { type: String },
-      displaySCSiteTitle: { type: Boolean },
       staticPagesToolbarDisplayState: { type: Object },
     }
   }
@@ -223,7 +223,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this.changedRoute = state.currentRoute;
     this.displaySettingMenu = state.displaySettingMenu;
     this.toolbarTitle = state.toolbarOptions.title;
-    this.displaySCSiteTitle = state.displaySCSiteTitle;
     this.shouldShowFirstToolbar = true;
     this.staticPagesToolbarDisplayState = state.staticPagesToolbarDisplayState;
     if (!this.staticPagesToolbarDisplayState) {
@@ -293,9 +292,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     if (this.appColorTheme !== state.colorTheme) {
       this.appColorTheme = state.colorTheme;
     }
-    if (this.displaySCSiteTitle !== state.displaySCSiteTitle) {
-      this.displaySCSiteTitle = state.displaySCSiteTitle;
-    }
     if (this.staticPagesToolbarDisplayState !== state.staticPagesToolbarDisplayState) {
       this.staticPagesToolbarDisplayState = state.staticPagesToolbarDisplayState;
     }
@@ -341,6 +337,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         rootDOM.getElementById("context-toolbar").style.transform = "translateY(116px)";
         rootDOM.getElementById("breadCrumb").style.transform = "translateY(116px)";;
         rootDOM.getElementById("titlebarSitetitle").style.transform = "translateY(56px) scale(0.667)";
+        if (window.innerWidth < 480) {
+          rootDOM.getElementById("titlebarSitetitle").style.transform = "translateY(56px) translateX(-100px) scale(0.667)";
+        }
       } else {
         rootDOM.getElementById("universal-toolbar").style.transform = "none";
         rootDOM.getElementById("context-toolbar").style.transform = "none";

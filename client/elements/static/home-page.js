@@ -21,7 +21,7 @@ class SCHomePage extends SCStaticPage {
 
       main {
         max-width: 1600px;
-        margin: 0 auto 8em;
+        margin: 0 auto;
         padding: 0 2%;
       }
 

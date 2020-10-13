@@ -7,14 +7,12 @@ export const suttaplexListCss = html`<style>
 
   .division-content {
     color: var(--sc-primary-text-color);
-    /* Subtract margins and top bar height */
-    height: calc(100vh - var(--sc-size-md-larger) * 2 - var(--sc-size-xxl));
     position: relative;
     padding: 0;
     }
 
   .main {
-    margin: var(--sc-size-md-larger) auto;
+    margin: 0 auto 64px;
     max-width: 720px;
   }
 

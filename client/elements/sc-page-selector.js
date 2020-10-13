@@ -35,15 +35,8 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
         height: 100%;
       }
 
-      .container {
-        position: relative;
-        min-height: calc(100vh - 108px);
-      }
-
-      sc-text-page-selector {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
+      .container{
+        margin-top: 64px;
       }
 
       .link-anchor {

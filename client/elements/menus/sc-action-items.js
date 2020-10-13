@@ -13,7 +13,6 @@ import '@material/mwc-icon-button';
 import './sc-more-menu.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
-import { throttle } from 'throttle-debounce';
 
 /*
 Base toolbar that appears on the top right in the header of every page.
@@ -70,10 +69,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         outline: none;
       }
 
-      .hidebutton {
-        display: none;
-      }
-
       .toolbar-link {
         text-decoration: none;
       }
@@ -100,10 +95,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         margin: 0;
       }
 
-      .smallScreenMargin {
-        margin: 0;
-      }
-
       #tools_menu {
         display: flex;
         justify-content: space-between;
@@ -113,10 +104,6 @@ class SCActionItems extends LitLocalized(LitElement) {
       #more_vert_button {
         margin: 0;
       }
-
-      /* [hidden] {
-        display: none !important;
-      } */
 
       .invisible {
         display: none;
@@ -155,8 +142,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         content: 'spacing';
       }
 
-      #btnViewComfy:after
-      {
+      #btnViewComfy:after {
         content: 'spacing';
       }
     </style>
@@ -518,23 +504,18 @@ class SCActionItems extends LitLocalized(LitElement) {
   // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
   openSearch() {
     this.actions.saveToolbarTitle(this.parentNode.querySelector('#toolbarTitle').innerText);
+    let universalToolbarTransformStyle = this.parentNode.parentNode.parentNode.querySelector('#universal-toolbar').style.transform
+    if (!['', 'none'].includes(universalToolbarTransformStyle) && window.innerWidth < 840) {
+      this.parentNode.parentNode.querySelector('#titlebarSitetitle').style.display = 'none';
+      this.parentNode.parentNode.querySelector('#titlebarSubtitle').style.display = 'none';
+    }
     const searchInputElement = this.shadowRoot.getElementById('search_input');
-    let largeWindowInnerWidth = 1040;
-    let mediumWindowInnerWidth = 480;
     if (searchInputElement.classList.contains('opened')) {
       this._startSearch();
     } else {
       searchInputElement.classList.add('opened');
       this.shadowRoot.getElementById('close_button').style.display = 'inline-block';
-
-      if (window.innerWidth < largeWindowInnerWidth) {
-
-      }
-      if (window.innerWidth < mediumWindowInnerWidth) {
-
-      }
       this.calcSearchInputWidth();
-
       searchInputElement.focus();
       searchInputElement.value = '';
     }
@@ -583,6 +564,8 @@ class SCActionItems extends LitLocalized(LitElement) {
 
   // Closes the searchbox and resets original values.
   _closeSearch() {
+    this.parentNode.parentNode.querySelector('#titlebarSitetitle').style.display = 'inherit';
+    this.parentNode.parentNode.querySelector('#titlebarSubtitle').style.display = 'inherit';
     const searchInputElement = this.shadowRoot.getElementById('search_input');
     if (searchInputElement && searchInputElement.classList.contains('opened')) {
       searchInputElement.value = '';
