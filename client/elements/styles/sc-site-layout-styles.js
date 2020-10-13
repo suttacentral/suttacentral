@@ -298,7 +298,6 @@ export const SCSiteLayoutStyles = css`
   }
 
   .transitionTransform {
-    will-change: transform;
     transition: transform 200ms ease-in-out;
   }
 `;
