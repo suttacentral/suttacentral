@@ -110,16 +110,13 @@ export const SCSiteLayoutStyles = css`
   }
 
   #titlebar {
-    /* display: flex !important; */
     display: flex;
     box-sizing: border-box;
     height: 8em;
     margin: auto;
-    /* padding-top: 1.8em; */
 
     background-color: var(--sc-primary-color);
 
-    /* align-items: center; */
     justify-content: center;
     transition: all 0.1s;
   }
@@ -134,7 +131,6 @@ export const SCSiteLayoutStyles = css`
     overflow: hidden;
     text-overflow: ellipsis;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
   }
 
@@ -143,7 +139,6 @@ export const SCSiteLayoutStyles = css`
     font-style: italic;
     font-size: 1.5rem;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
     margin-left: 1em;
   }
@@ -151,7 +146,6 @@ export const SCSiteLayoutStyles = css`
   #universal-toolbar {
     color: white;
     position: sticky;
-    /* position: relative; */
     top: 0;
     box-shadow: var(--sc-shadow-elevation-2dp);
     z-index: 9999;
@@ -161,17 +155,8 @@ export const SCSiteLayoutStyles = css`
     min-width: 0;
   }
 
-  /* #titlebarSitetitle {
-  transform: scale(1);
-}
-
-#titlebarSubtitle {
-  opacity: 1;
-  transform: scale(1);
-} */
-
   #context-toolbar {
-    height: 64px;
+    height: 3.5em;
     display: flex;
     background-color: var(--sc-primary-color);
     padding: 0 2%;

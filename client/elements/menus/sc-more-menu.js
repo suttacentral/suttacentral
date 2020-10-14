@@ -44,12 +44,12 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         }
 
         .separator {
-        background-color: var(--sc-border-color);
-        width: 100%;
-        overflow: hidden;
-        height: 1px;
-        margin-top: var(--sc-size-xxs);
-        margin-bottom: var(--sc-size-xxs);
+          background-color: var(--sc-border-color);
+          width: 100%;
+          overflow: hidden;
+          height: 1px;
+          margin-top: var(--sc-size-xxs);
+          margin-bottom: var(--sc-size-xxs);
         }
 
         .toggle-button {
@@ -64,7 +64,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           --ripple-color: var(--sc-primary-color);
         }
       </style>
-
+      <div id="menu_items">
       <paper-item class="more-menu-paper-item language-choice-box">
         <iron-icon class="more-menu-icon" icon="sc-iron-icons:language"></iron-icon>
         <sc-language-base-menu id="language_menu" noRoot="true"></sc-language-base-menu>
@@ -150,6 +150,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           <morph-ripple></morph-ripple>
         </paper-item>
       </a>
+      </div>
     `;
   }
 
@@ -157,10 +158,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     return {
       menuCreated: { type: Boolean },
       localizedStringsPath: { type: String },
-      appTheme: { type: String },
-      darkThemeChosen: { type: Boolean },
       compactViewChosen: { type: Boolean },
-      appView: { type: Boolean },
       routeName: { type: String },
     };
   }
@@ -169,21 +167,11 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     super();
     this.menuCreated = false;
     this.localizedStringsPath = '/localization/elements/sc-more-menu';
-    this.appTheme = store.getState().colorTheme;
-    this.appView = store.getState().suttaplexListDisplay;
     this.routeName = store.getState().currentRoute.name;
-    this.darkThemeChosen = this.appTheme === 'dark';
-    this.compactViewChosen = this.appView === true;
   }
 
   get actions() {
     return {
-      changeAppTheme(theme) {
-        store.dispatch({
-          type: 'CHANGE_COLOR_THEME',
-          theme: theme
-        })
-      },
       toggleSuttaplexDisplay(view) {
         store.dispatch({
           type: 'SUTTPLEX_LIST_DISPLAY',
@@ -195,17 +183,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-
-    if (this.appTheme !== state.colorTheme) {
-      this.appTheme = state.colorTheme;
-      this.darkThemeChosen = this.appTheme === 'dark';
-    }
-
-    if (this.appView !== state.suttaplexListDisplay) {
-      this.appView = state.suttaplexListDisplay;
-      this.compactViewChosen = this.appView === true;
-    }
-
     if (this.routeName !== state.currentRoute.name) {
       this.routeName = state.currentRoute.name;
     }
@@ -249,14 +226,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
   _dispatchItemSelectedEvent() {
     this.dispatchEvent(new CustomEvent('item-selected'));
-  }
-
-  _isDarkThemeChosen() {
-    return this.appTheme === 'dark';
-  }
-
-  _isCompactViewChosen() {
-    return this.appView === true;
   }
 }
 
