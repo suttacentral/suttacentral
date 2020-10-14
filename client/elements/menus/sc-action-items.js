@@ -5,7 +5,7 @@ import '@material/mwc-icon-button';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
-import '../addons/sc-icon';
+
 /*
 Base toolbar that appears on the top right in the header of every page.
 */
@@ -125,8 +125,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         slot="actionItems" 
         ?hidden="${this.displayToolButton}">
       </mwc-icon-button>
-      <!-- <sc-icon icon="light"></sc-icon>
-      <sc-icon icon="spacing"></sc-icon> -->
     </div>`;
   }
 
