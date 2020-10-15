@@ -36,6 +36,9 @@ export const navigationNormaModelStyles = html`
       box-shadow: var(--sc-shadow-elevation-1dp);
 
       flex: 1;
+
+    display: flex;
+    flex-direction: column;
     }
 
     .card:hover {
@@ -63,7 +66,7 @@ export const navigationNormaModelStyles = html`
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: calc(100% - 76px);
+      flex: 1;
     }
     .blurb {
       font-size: var(--sc-skolar-font-size-md);
@@ -128,7 +131,7 @@ export const navigationNormaModelStyles = html`
       display: flex;
       flex-direction: column;
 
-      height: 100%;
+      height: 24px;
       padding: 0.3333rem 0.5rem;
 
       color: var(--sc-paper-tooltip-text-color);
