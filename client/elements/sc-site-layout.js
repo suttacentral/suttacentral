@@ -59,10 +59,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         
         <div id="titlebar">
           <div id="titlebarCenter">
-          <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
-            <h1 id="titlebarSitetitle" class="transitionTransform">
-              SuttaCentral
-            </h1>
+            <span id="titlebarSitetitle" class="transitionTransform">
+            <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
+              <h1>SuttaCentral</h1>
+            </span>
             <span id="titlebarSubtitle">${this.localize('pageSubtitle')}</span>
           </div>
         </div>
@@ -337,7 +337,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         rootDOM.getElementById('universal-toolbar').style.transform = 'translateY(-116px)';
         rootDOM.getElementById('context-toolbar').style.transform = 'translateY(116px)';
         rootDOM.getElementById('breadCrumb').style.transform = 'translateY(116px)';
-        rootDOM.getElementById('titlebarSitetitle').style.transform = 'translateY(60px) scale(0.667)';
+        rootDOM.getElementById('titlebarSitetitle').style.transform = 'translateY(64px) scale(0.667)';
         rootDOM.getElementById('titlebarSubtitle').style.opacity = '0';
         if (window.innerWidth < 480) {
           rootDOM.getElementById('titlebarSitetitle').style.transform = 'translateY(60px) translateX(-80px) scale(0.667)';

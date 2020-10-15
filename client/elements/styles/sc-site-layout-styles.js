@@ -122,22 +122,24 @@ export const SCSiteLayoutStyles = css`
   }
 
   #titlebarSitetitle {
-    font-size: 3.5rem;
-    font-family: "skolar pe";
-    font-variant-caps: small-caps;
-    font-weight: 300;
-    text-align: center;
-    line-height: 0.9;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-flex;
+    display: flex;
     justify-content: center;
+    align-items: flex-end;
+    margin: 0;
+  }
+
+    #titlebarSitetitle h1 {
+    font-size: 3.5rem;
+    font-family: var(--sc-serif-font);
+    font-variant-caps: small-caps;
+    font-weight: 300;
+    line-height: 1;
     margin: 0;
   }
 
   #titlebarSubtitle {
-    text-align: center;
     font-style: italic;
     font-size: 1.5rem;
     display: flex;
@@ -204,7 +206,6 @@ export const SCSiteLayoutStyles = css`
   }
 
   .title-logo-icon {
-    vertical-align: bottom;
     height: var(--sc-size-xxl);
     width: var(--sc-size-xxl);
     margin: 0 var(--sc-size-sm);
